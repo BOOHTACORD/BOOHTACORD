@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "status": "PARTIAL",
+  "at_utc": "2026-10-27T21:26:49.788575+00:00",
+  "origin": "https://v.bootybay.ru",
+  "api_source": "UNKNOWN",
+  "android_candidate": {
+    "package": "ru.boohtacord.app",
+    "version_name": "1.0.47",
+    "version_code": 2082,
+    "installed_APK_sha256": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+    "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7"
+  },
+  "browser": "Chrome155.0.8059.85 headed on Windows11",
+  "web_source_outbound": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "web_source_final_receive": "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a",
+  "facets": {
+    "outbound": {
+      "status": "PASS",
+      "result": "paired-dm-attempt1.json#/actual_phone_to_PC_render",
+      "scope": "Own native DM persisted with the expected phone author and rendered on actual Chrome. The original two-way attempt retains FAIL_OR_CONTROLLER."
+    },
+    "manual_history": {
+      "status": "PASS",
+      "result": "refresh-receive-result.json",
+      "scope": "Observed native history action and two end-directed swipes revealed the owned PC message. No native realtime inference; Web receipt was not captured in this individual attempt."
+    },
+    "live_receive": {
+      "status": "PASS",
+      "result": "live-receive-result.json",
+      "scope": "Two fresh messages sent through actual Chrome UI appeared in physical native history without manual refresh. Each body bounds height >=54px; explicit history scrolling is allowed and recorded. No automatic-follow/latency SLO claim."
+    }
+  },
+  "final_receive_runner_binding": {
+    "live_receive.mjs": {
+      "original_sha256_before_execution": "68845836b9c0c6b4a120ab05d24d15a4e15fa427a789466ba52ee633597b50f4",
+      "retained_source": "runner-source/prod_native_live_receive.mjs.txt",
+      "retained_LF_sha256": "68845836b9c0c6b4a120ab05d24d15a4e15fa427a789466ba52ee633597b50f4"
+    },
+    "refresh_dm.py": {
+      "original_sha256_before_execution": "f48fc4e0d050f5132dfd9b65f6201b678474e05f5ae2e52b158421dddb7892dd",
+      "retained_source": "runner-source/prod_native_refresh_dm.py.txt",
+      "retained_LF_sha256": "f48fc4e0d050f5132dfd9b65f6201b678474e05f5ae2e52b158421dddb7892dd"
+    },
+    "native_dm.py": {
+      "original_sha256_before_execution": "3308d50df471c79c5fc92bd21bd331c02c5cff75ea90293ef618f49e774de0af",
+      "retained_source": "runner-source/prod_native_native_dm.py.txt",
+      "retained_LF_sha256": "3308d50df471c79c5fc92bd21bd331c02c5cff75ea90293ef618f49e774de0af"
+    },
+    "visible_echo.py": {
+      "original_sha256_before_execution": "ce3c1016171e68b03d78842c18e8ee51afc7c29a1b3542f4a5410cd15215c607",
+      "retained_source": "runner-source/prod_native_visible_echo.py.txt",
+      "retained_LF_sha256": "ce3c1016171e68b03d78842c18e8ee51afc7c29a1b3542f4a5410cd15215c607"
+    }
+  },
+  "interpretation": {
+    "first_anchor_attempt": "Original FAIL label retained. Recovery/retry controls were visible: native realtime availability precondition was unmet; this is not accepted as a product regression.",
+    "second_anchor_attempt": "Fresh marker arrived without native refresh; initial bounds were clipped to5px, so this proves history arrival only. The separate final two-cycle run verifies full body bounds after explicit scroll.",
+    "controller_limits": [
+      "Wrong Send accessible label caused a pre-send timeout; retained as attempt1. Corrected from observed actual aria-label.",
+      "Navigation stayed open in an earlier retry and one scroll attempt found2 scrollables; controller failure, not product failure. Its original JSON was overwritten; this note is reconstructed, not a raw receipt.",
+      "One concurrent read-only UIA state probe raised ParseError; discarded, no product failure inferred.",
+      "Private screenshot masking was incomplete. No screenshots, raw hierarchies, bodies, identities or session material from this packet are published."
+    ],
+    "transport_root_cause": "UNKNOWN; no packet-level WSS cause or client/server/router attribution",
+    "new_product_defect_confirmed": false,
+    "scope_limit": "No new bug issue is justified from these transient observations. All prior defects and broad QA gates remain open."
+  },
+  "preservation": {
+    "owned_message_cleanup": "PASS; real DELETE204 and native absence receipts retained",
+    "phone_session_or_base_url_changed": false,
+    "trust_store_or_router_changed": false,
+    "production_fault_or_load_injection": false,
+    "restart_performed": false,
+    "restart_guard": "Voice and microphone FGS became active by the second Retry observation. No join action was issued by these runners; recovery versus external activity is unproven. Existing media was preserved; restart was not attempted.",
+    "permission_flags_unchanged": true,
+    "local_main_services_running": 9,
+    "separate_native_preparation": "STOPPED; its HTTPS/device/fault acceptance remains BLOCKED without a trusted isolated QA origin/certificate. Production DM success does not lift that prerequisite.",
+    "human_audibility": "NOT_RUN; human listener unavailable",
+    "test_consolidation_or_deletion": false,
+    "public_body_or_identity_logged": false
+  }
+}

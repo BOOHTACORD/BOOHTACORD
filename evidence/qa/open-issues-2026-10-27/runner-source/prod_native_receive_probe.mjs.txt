@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict'
+import {readFile,writeFile,copyFile} from 'node:fs/promises'
+import {randomBytes,randomUUID} from 'node:crypto'
+import {execFileSync} from 'node:child_process'
+import {fileURLToPath} from 'node:url'
+import {setTimeout as delay} from 'node:timers/promises'
+import {chromium,fixture,api,origin} from 'file:///C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal/privacy_fixture.mjs'
+const root=new URL('./',import.meta.url),py=(name,...args)=>JSON.parse(execFileSync('python',['-X','utf8',fileURLToPath(new URL(name,root)),...args],{encoding:'utf8',windowsHide:true,timeout:40000,stdio:['ignore','pipe','pipe']}))
+await copyFile(new URL('paired-dm-result.json',root),new URL('paired-dm-attempt1.json',root));await copyFile(new URL('dm-fixture.private.json',root),new URL('dm-fixture-attempt1.private.json',root))
+const report={status:'RUNNING',at_utc:new Date().toISOString(),origin,physical_Android:true,body_or_identity_logged:false,phases:[]};const browser=await chromium.launch({channel:'chrome',headless:false});let f,b,prefix;const fixtures=[]
+const save=()=>writeFile(new URL('receive-probe-result.json',root),JSON.stringify(report,null,2)+'\n')
+async function sendAndObserve(phase){
+ const old=JSON.parse(await readFile(new URL('dm-fixture.private.json',root),'utf8'));old.pc_text='rx_'+randomBytes(9).toString('hex');await writeFile(new URL('dm-fixture.private.json',root),JSON.stringify(old))
+ const before=py('native_dm.py','inspect');assert.ok(before.composer_empty)
+ const r=await api(b.page,prefix+'/messages','POST',{client_message_id:randomUUID(),body:old.pc_text});assert.equal(r.status,201);fixtures.push(r.body.id)
+ const row={phase,server_created:201,native_before:before,observations:[]};report.phases.push(row)
+ for(let i=0;i<8;i++){const s=py('native_dm.py','inspect');row.observations.push({PC_echo_rendered:s.PC_echo_rendered});if(s.PC_echo_rendered)break;await delay(700)}
+ row.native_rendered=row.observations.some(x=>x.PC_echo_rendered);await save();return row
+}
+try{
+ f=await fixture(browser);b=await f.client('b');const known=JSON.parse(await readFile('C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal/private-upgrade-identity.json','utf8'));prefix='/direct-messages/'+known.conversation
+ const first=await sendAndObserve('unchanged_current_DM')
+ if(!first.native_rendered){report.navigation=py('reopen_dm.py');report.after_reopen=py('native_dm.py','inspect')}
+ const second=await sendAndObserve('after_explicit_owned_DM_reopen')
+ report.status=first.native_rendered&&second.native_rendered?'PASS_BOTH_NATIVE_DELIVERIES':'REVIEW_REQUIRED_NATIVE_REALTIME_OR_VIEWPORT'
+}catch(e){report.status='FAIL_OR_CONTROLLER';report.error_type=e.name}
+finally{
+ try{for(const id of fixtures)assert.equal((await api(b.page,prefix+'/messages/'+id,'DELETE')).status,204);report.owned_PC_fixtures_removed=true}catch(e){report.status='FAIL_FIXTURE_CLEANUP';report.cleanup_error_type=e.name}
+ for(const c of f?.contexts??[])await c.close();await browser.close();await save();console.log(JSON.stringify({status:report.status,phases:report.phases.map(x=>({phase:x.phase,native_rendered:x.native_rendered})),after_reopen:report.after_reopen,fixtures_removed:report.owned_PC_fixtures_removed}))
+}

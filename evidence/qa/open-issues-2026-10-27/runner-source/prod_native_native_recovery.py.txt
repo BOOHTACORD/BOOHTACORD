@@ -1,0 +1,30 @@
+"""Preserve the own empty QA DM/session; restart only with media and draft guards."""
+import json,re,sys,time,subprocess
+from pathlib import Path
+WORK=Path(__file__).parent
+sys.path.insert(0,'C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal')
+from android_permission_ui import call,nodes,label,tap_named,APP,state
+cfg=json.loads((WORK/'dm-fixture.private.json').read_text());action=sys.argv[1]
+def bounds(n):return list(map(int,re.findall(r'\d+',n.get('bounds'))))
+def surface():
+ rows=nodes();fields=[n for n in rows if n.get('class')=='android.widget.EditText'];s=state()
+ s['composer_empty']=len(fields)==1 and not fields[0].get('text');s['drawer_closed']=not any(label(n)=='Закрыть навигацию' for n in rows)
+ s['owned_DM_visible']=any(cfg['peer'] in label(n) and bounds(n)[1]<700 for n in rows)
+ raw=call('shell','dumpsys','media_projection');s['projection_grant_null']=bool(re.search(r'mProjectionGrant\s*[:=]\s*null',raw))
+ return s
+report={'action':action,'before':surface(),'body_or_identity_logged':False,'session_data_cleared':False}
+before=report['before'];assert before['composer_empty'] and before['drawer_closed'] and before['owned_DM_visible']
+if action=='restart':
+ assert not before['voice_connected'] and not before['microphone_fgs'] and before['projection_grant_null'],'Active media must remain intact'
+ call('shell','input','keyevent','KEYCODE_HOME');time.sleep(1);call('shell','am','kill',APP);time.sleep(1)
+ pid=subprocess.run([__import__('android_permission_ui').ADB,'shell','pidof',APP],capture_output=True,text=True,timeout=20);assert not pid.stdout.strip(),'Background-only kill did not terminate the process'
+ report['background_process_exit_confirmed']=True;call('shell','am','start','-n',APP+'/.MainActivity');time.sleep(3)
+ rows=nodes();assert not any(label(n) in ['Логин','Пароль'] for n in rows),'Session restore did not reach workspace'
+ if not any(label(n)=='Закрыть навигацию' for n in rows):tap_named('Открыть навигацию')
+ tap_named('Личные');rows=nodes()
+ choices=[n for n in rows if n.get('package')==APP and n.get('clickable')=='true' and cfg['peer'] in label(n) and 40<bounds(n)[3]-bounds(n)[1]<300 and bounds(n)[2]-bounds(n)[0]>300]
+ assert len(choices)==1,'Expected unique owned DM navigation row';b=bounds(choices[0]);call('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2))
+ rows=nodes()
+ if any(label(n)=='Закрыть навигацию' for n in rows):tap_named('Закрыть навигацию')
+elif action!='inspect':raise ValueError('Unknown scoped action')
+report['after']=surface();(WORK/('native-recovery-'+action+'.json')).write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))

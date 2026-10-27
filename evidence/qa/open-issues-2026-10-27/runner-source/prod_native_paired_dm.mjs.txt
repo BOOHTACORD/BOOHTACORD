@@ -1,0 +1,37 @@
+import assert from 'node:assert/strict'
+import {readFile,writeFile} from 'node:fs/promises'
+import {randomBytes,randomUUID} from 'node:crypto'
+import {execFileSync} from 'node:child_process'
+import {fileURLToPath} from 'node:url'
+import {setTimeout as delay} from 'node:timers/promises'
+import {chromium,fixture,api,expect,origin} from 'file:///C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal/privacy_fixture.mjs'
+const root=new URL('./',import.meta.url),py=(action)=>JSON.parse(execFileSync('python',['-X','utf8',fileURLToPath(new URL('native_dm.py',root)),action],{encoding:'utf8',windowsHide:true,timeout:40000,stdio:['ignore','pipe','pipe']}))
+const report={status:'RUNNING',at_utc:new Date().toISOString(),origin,api_mocks:false,physical_Android:true,body_or_identity_logged:false,actions:[]};const browser=await chromium.launch({channel:'chrome',headless:false});let f,b,cfg,prefix,phoneMessage,pcMessage
+const save=()=>writeFile(new URL('paired-dm-result.json',root),JSON.stringify(report,null,2)+'\n')
+const find=async body=>(await api(b.page,prefix+'/messages')).body.messages.find(m=>!m.deleted&&m.body===body)
+try{
+ f=await fixture(browser);b=await f.client('b');const known=JSON.parse(await readFile('C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal/private-upgrade-identity.json','utf8'))
+ const peers=(await api(b.page,'/direct-messages')).body.direct_messages.filter(d=>d.id===known.conversation&&d.other_participant_id===known.account);assert.equal(peers.length,1);prefix='/direct-messages/'+known.conversation
+ const release=await b.context.request.get(origin+'/release-receipt.json');assert.equal(release.status(),200);report.receiver_web_source=(await release.json()).source_revision;report.browser=browser.version()
+ await b.page.getByRole('button',{name:'Личные',exact:true}).click();await b.page.locator('.direct-message-navigation .channel-button').filter({hasText:peers[0].other_participant_display_name}).click();await expect(b.page.getByRole('textbox',{name:'Сообщение',exact:true})).toBeVisible()
+ cfg={peer:f.private.b.login,phone_text:'p_'+randomBytes(8).toString('hex'),pc_text:'r_'+randomBytes(8).toString('hex')};await writeFile(new URL('dm-fixture.private.json',root),JSON.stringify(cfg))
+ const before=py('inspect');assert.ok(before.composer_empty&&!before.PC_echo_rendered&&!before.phone_marker_rendered);report.before=before
+ report.actions.push(py('send'))
+ for(let i=0;i<30;i++){phoneMessage=await find(cfg.phone_text);if(phoneMessage)break;await delay(500)}assert.ok(phoneMessage&&phoneMessage.author_id===known.account)
+ await expect(b.page.getByText(cfg.phone_text,{exact:true})).toBeVisible();report.actual_phone_to_PC_render=true;report.phone_author_matches_retained_identity=true
+ const sent=await api(b.page,prefix+'/messages','POST',{client_message_id:randomUUID(),body:cfg.pc_text});assert.equal(sent.status,201);pcMessage=sent.body
+ report.actions.push(py('hide-ime'))
+ for(let i=0;i<12;i++){const r=py('inspect');if(r.PC_echo_rendered){report.actual_PC_to_phone_render=true;break}await delay(500)}assert.ok(report.actual_PC_to_phone_render)
+ report.status='PASS_REAL_PRODUCTION_NATIVE_PC_TWO_WAY_DM'
+}catch(e){report.status='FAIL_OR_CONTROLLER';report.error_type=e.name}
+finally{
+ try{
+  if(b&&cfg&&prefix){phoneMessage=phoneMessage??await find(cfg.phone_text)
+   if(phoneMessage){for(const a of ['hide-ime','delete-menu','delete','confirm-delete'])report.actions.push(py(a));await expect(b.page.getByText(cfg.phone_text,{exact:true})).toHaveCount(0);report.owned_phone_fixture_removed=true}
+   pcMessage=pcMessage??await find(cfg.pc_text);if(pcMessage){assert.equal((await api(b.page,prefix+'/messages/'+pcMessage.id,'DELETE')).status,204);report.owned_PC_fixture_removed=true}
+   for(let i=0;i<10;i++){const after=py('inspect');if(after.composer_empty&&!after.PC_echo_rendered&&!after.phone_marker_rendered){report.after=after;break}await delay(400)}assert.ok(report.after)
+  }
+ }catch(e){report.status='FAIL_FIXTURE_CLEANUP';report.cleanup_error_type=e.name}
+ for(const c of f?.contexts??[])await c.close();await browser.close();await save();console.log(JSON.stringify({status:report.status,phone_to_PC:report.actual_phone_to_PC_render,PC_to_phone:report.actual_PC_to_phone_render,fixtures_removed:report.owned_phone_fixture_removed&&report.owned_PC_fixture_removed}))
+}
+process.exitCode=report.status.startsWith('PASS')?0:1

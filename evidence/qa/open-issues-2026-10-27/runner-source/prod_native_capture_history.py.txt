@@ -1,0 +1,16 @@
+"""Source-resolution crop of the owned QA history; mask participant names and exclude headers."""
+import json,re,sys,io,subprocess
+from pathlib import Path
+from PIL import Image,ImageDraw
+WORK=Path(__file__).parent;cfg=json.loads((WORK/'dm-fixture.private.json').read_text())
+sys.path.insert(0,'C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal')
+from android_permission_ui import APP,ADB,nodes,label
+rows=nodes();assert not any(label(n)=='Закрыть навигацию' for n in rows)
+def box(n):return list(map(int,re.findall(r'\d+',n.get('bounds'))))
+choices=[n for n in rows if n.get('package')==APP and n.get('scrollable')=='true' and box(n)[3]-box(n)[1]>500];assert len(choices)==1
+b=box(choices[0]);raw=subprocess.check_output([ADB,'exec-out','screencap','-p']);im=Image.open(io.BytesIO(raw)).convert('RGB');d=ImageDraw.Draw(im)
+for n in rows:
+ text=label(n)
+ if any(name and name in text for name in cfg['private_names']) and box(n)[3]-box(n)[1]<150:d.rectangle(box(n),fill='#202020')
+im.crop(b).save(WORK/'owned-history-private.png')
+print(json.dumps({'history_crop_bounds':b,'source_size':list(im.size),'drawer_closed':True,'echo_a11y_match':any(cfg['pc_text'] in label(n) for n in rows),'identities_masked':True,'not_for_publication_before_review':True}))

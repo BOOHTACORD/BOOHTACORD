@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict'
+import {readFile} from 'node:fs/promises'
+import {chromium,fixture,api} from 'file:///C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal/privacy_fixture.mjs'
+const browser=await chromium.launch({channel:'chrome',headless:false});let f
+try{
+ f=await fixture(browser);const b=await f.client('b'),known=JSON.parse(await readFile('C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal/private-upgrade-identity.json','utf8'))
+ const peer=(await api(b.page,'/direct-messages')).body.direct_messages.find(d=>d.id===known.conversation&&d.other_participant_id===known.account);assert.ok(peer)
+ await b.page.getByRole('button',{name:'Личные',exact:true}).click();await b.page.locator('.direct-message-navigation .channel-button').filter({hasText:peer.other_participant_display_name}).click()
+ const field=b.page.getByRole('textbox',{name:'Сообщение',exact:true});assert.equal(await field.inputValue(),'');await field.fill('QAcontrol')
+ const rows=await b.page.getByRole('button').evaluateAll(ns=>ns.map(n=>({text:n.textContent,aria:n.getAttribute('aria-label'),title:n.getAttribute('title')})).filter(n=>Object.values(n).some(v=>v&&/^Отправ/.test(v))))
+ assert.ok(rows.length<=3);console.log(JSON.stringify({observed_static_send_controls:rows,fixture_sent:false}));await field.fill('')
+}finally{for(const c of f?.contexts??[])await c.close();await browser.close()}

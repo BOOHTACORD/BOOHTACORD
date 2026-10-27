@@ -1,0 +1,29 @@
+{
+  "workflow_class": "review_gate",
+  "task_size": "medium",
+  "route": "T041 native DM receive/realtime recovery on physical Android + Chrome peer",
+  "mode": "production physical verification; no implementation or branch synchronization",
+  "source_boundary": [
+    "clients/flutter/lib/src/features/direct/history/api.dart",
+    "clients/flutter/lib/src/screens/workspace_ui/direct_conversation/build/history_list/handler.dart",
+    "clients/flutter/lib/src/screens/workspace_ui/header/conversation_actions.dart",
+    "clients/flutter/lib/src/services/conversation_scroll_restore.dart",
+    "clients/flutter/lib/src/features/realtime/lifecycle/status.dart"
+  ],
+  "ratchet": "helpers <=120 lines; no product/test source edits",
+  "preservation": "existing production session/base URL/cert trust/router untouched; owned synthetic DM fixtures only; preserve current voice/media state",
+  "checks": [
+    "physical visible DM send to actual Chrome",
+    "manual history refresh and end anchor",
+    "fresh Chrome UI send without native refresh",
+    "explicit retry; banner observations; owned fixture cleanup",
+    "public privacy/source-row/manifest validation"
+  ],
+  "stop_condition": "retain separate source-bound per-attempt outcomes; classify only confirmed product failures after viewport/recovery preconditions; publish evidence and update applicable QA issue",
+  "unresolved": [
+    "API deployment source unknown",
+    "cause of transient native WebSocket recovery is unproven",
+    "human audibility unavailable",
+    "no trusted QA origin/cert for isolated native fault acceptance"
+  ]
+}

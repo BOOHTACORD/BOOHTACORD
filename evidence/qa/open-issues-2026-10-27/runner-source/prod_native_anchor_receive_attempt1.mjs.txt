@@ -1,0 +1,38 @@
+import assert from 'node:assert/strict'
+import {readFile,writeFile} from 'node:fs/promises'
+import {randomBytes} from 'node:crypto'
+import {execFileSync} from 'node:child_process'
+import {fileURLToPath} from 'node:url'
+import {setTimeout as delay} from 'node:timers/promises'
+import {chromium,fixture,api,expect,origin} from 'file:///C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal/privacy_fixture.mjs'
+const root=new URL('./',import.meta.url),owned=[]
+const py=(file,action)=>JSON.parse(execFileSync('python',['-X','utf8',fileURLToPath(new URL(file,root)),...(action?[action]:[])],{encoding:'utf8',windowsHide:true,timeout:40000,stdio:['ignore','pipe','pipe']}))
+const report={status:'RUNNING',at_utc:new Date().toISOString(),origin,physical_Android:true,real_Chrome_UI_send:true,polls:[],body_or_identity_logged:false}
+const browser=await chromium.launch({channel:'chrome',headless:false});let f,b,prefix,cfg
+async function marker(text){cfg.pc_text=text;await writeFile(new URL('dm-fixture.private.json',root),JSON.stringify(cfg))}
+async function send(field,text){owned.push(text);await field.fill(text);await b.page.getByRole('button',{name:'Отправить сообщение',exact:true}).click();await expect(field).toBeEmpty();assert.ok((await api(b.page,prefix+'/messages')).body.messages.find(m=>!m.deleted&&m.body===text))}
+async function reveal(){let s=py('refresh_dm.py','inspect');for(let i=0;i<4&&!s.after.echo_rendered;i++){py('native_dm.py','scroll-latest');s=py('refresh_dm.py','inspect')}return s}
+try{
+ f=await fixture(browser);b=await f.client('b');cfg=JSON.parse(await readFile(new URL('dm-fixture.private.json',root),'utf8'))
+ const known=JSON.parse(await readFile('C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal/private-upgrade-identity.json','utf8'));prefix='/direct-messages/'+known.conversation
+ const peer=(await api(b.page,'/direct-messages')).body.direct_messages.find(d=>d.id===known.conversation&&d.other_participant_id===known.account);assert.ok(peer)
+ report.web_source=(await (await b.context.request.get(origin+'/release-receipt.json')).json()).source_revision
+ await b.page.getByRole('button',{name:'Личные',exact:true}).click();await b.page.locator('.direct-message-navigation .channel-button').filter({hasText:peer.other_participant_display_name}).click()
+ const field=b.page.getByRole('textbox',{name:'Сообщение',exact:true});await expect(field).toBeEmpty()
+ const a='ECHO'+randomBytes(8).toString('hex'),c='ECHO'+randomBytes(8).toString('hex')
+ await marker(a);await send(field,a);py('refresh_dm.py','refresh');report.baseline=await reveal();assert.ok(report.baseline.after.echo_rendered)
+ report.baseline_visual=py('visible_echo.py');report.before_fresh_send_utc=new Date().toISOString()
+ await marker(c);await send(field,c);report.fresh_message_persisted=true
+ for(let i=0;i<6;i++){await delay(500);const s=py('refresh_dm.py','inspect');report.polls.push(s);if(s.after.echo_rendered)break}
+ report.after_no_refresh_scroll=await reveal();report.after_live_observation_utc=new Date().toISOString()
+ await marker(a);report.previous_anchor_still_visible=py('refresh_dm.py','inspect').after.echo_rendered
+ await marker(c);py('refresh_dm.py','refresh');report.after_explicit_refresh=await reveal()
+ if(report.after_explicit_refresh.after.echo_rendered)report.final_visual=py('visible_echo.py')
+ const live=report.polls.some(s=>s.after.echo_rendered)||report.after_no_refresh_scroll.after.echo_rendered
+ report.status=live?'PASS_LIVE_NATIVE_RECEIVE':report.previous_anchor_still_visible&&report.after_explicit_refresh.after.echo_rendered?'FAIL_FRESH_MESSAGE_REQUIRES_MANUAL_HISTORY_REFRESH':'REVIEW_REQUIRED'
+}catch(e){report.status='FAIL_OR_CONTROLLER';report.error_type=e.name}
+finally{
+ report.cleanup=[]
+ if(b&&prefix)for(const text of owned){const m=(await api(b.page,prefix+'/messages')).body.messages.find(m=>!m.deleted&&m.body===text);if(m)report.cleanup.push((await api(b.page,prefix+'/messages/'+m.id,'DELETE')).status===204)}
+ for(const c of f?.contexts??[])await c.close();await browser.close();await writeFile(new URL('anchor-receive-result.json',root),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report))
+}

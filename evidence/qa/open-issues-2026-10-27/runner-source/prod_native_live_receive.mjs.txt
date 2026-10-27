@@ -1,0 +1,38 @@
+import assert from 'node:assert/strict'
+import {readFile,writeFile} from 'node:fs/promises'
+import {randomBytes} from 'node:crypto'
+import {execFileSync} from 'node:child_process'
+import {fileURLToPath} from 'node:url'
+import {setTimeout as delay} from 'node:timers/promises'
+import {chromium,fixture,api,expect,origin} from 'file:///C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal/privacy_fixture.mjs'
+const root=new URL('./',import.meta.url)
+const py=(file,action)=>JSON.parse(execFileSync('python',['-X','utf8',fileURLToPath(new URL(file,root)),...(action?[action]:[])],{encoding:'utf8',windowsHide:true,timeout:40000,stdio:['ignore','pipe','pipe']}))
+const report={status:'RUNNING',at_utc:new Date().toISOString(),origin,physical_Android:true,real_Chrome_UI_send:true,explicit_native_refresh:false,cycles:[],body_or_identity_logged:false}
+const browser=await chromium.launch({channel:'chrome',headless:false});let f,b,prefix;const owned=[]
+try{
+ f=await fixture(browser);b=await f.client('b')
+ const known=JSON.parse(await readFile('C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal/private-upgrade-identity.json','utf8'));prefix='/direct-messages/'+known.conversation
+ const peers=(await api(b.page,'/direct-messages')).body.direct_messages.filter(d=>d.id===known.conversation&&d.other_participant_id===known.account);assert.equal(peers.length,1)
+ report.web_source=(await (await b.context.request.get(origin+'/release-receipt.json')).json()).source_revision;report.browser=browser.version()
+ await b.page.getByRole('button',{name:'Личные',exact:true}).click();await b.page.locator('.direct-message-navigation .channel-button').filter({hasText:peers[0].other_participant_display_name}).click()
+ const field=b.page.getByRole('textbox',{name:'Сообщение',exact:true});await expect(field).toBeEmpty()
+ for(let cycle=0;cycle<2;cycle++){
+  const cfg=JSON.parse(await readFile(new URL('dm-fixture.private.json',root),'utf8'));cfg.pc_text='ECHO'+randomBytes(9).toString('hex');await writeFile(new URL('dm-fixture.private.json',root),JSON.stringify(cfg));owned.push(cfg.pc_text)
+  const step={before:py('refresh_dm.py','inspect'),polls:[]};report.cycles.push(step)
+  await field.fill(cfg.pc_text);await b.page.getByRole('button',{name:'Отправить сообщение',exact:true}).click();await expect(field).toBeEmpty();step.sent_via_UI=true
+  const history=(await api(b.page,prefix+'/messages')).body.messages;assert.ok(history.find(m=>!m.deleted&&m.body===cfg.pc_text));step.persisted_on_server=true
+  for(let i=0;i<5;i++){await delay(500);const s=py('refresh_dm.py','inspect');step.polls.push(s);if(s.after.echo_rendered)break}
+  const full=s=>s.after.echo_rendered&&s.after.echo_bounds.some(b=>b[3]-b[1]>=54);step.minimum_full_body_height_px=54
+  step.scroll_steps=[];let current=step.polls.at(-1)
+  for(let i=0;i<3&&!full(current);i++){const scroll=py('native_dm.py','scroll-latest');current=py('refresh_dm.py','inspect');step.scroll_steps.push({scroll,inspect:current})}
+  step.native_visible=full(current);step.full_body_bounds_confirmed=step.native_visible
+  if(step.native_visible)step.visual=py('visible_echo.py')
+  if(!step.native_visible)break
+ }
+ report.status=report.cycles.length===2&&report.cycles.every(s=>s.native_visible)?'PASS_TWO_FRESH_UI_MESSAGES_WITHOUT_NATIVE_REFRESH':'REVIEW_REQUIRED_NATIVE_LIVE_RECEIVE'
+}catch(e){report.status='FAIL_OR_CONTROLLER';report.error_type=e.name}
+finally{
+ report.owned_fixture_cleanup=[]
+ if(b&&prefix)for(const text of owned){const m=(await api(b.page,prefix+'/messages')).body.messages.find(m=>!m.deleted&&m.body===text);if(m)report.owned_fixture_cleanup.push((await api(b.page,prefix+'/messages/'+m.id,'DELETE')).status===204)}
+ for(const c of f?.contexts??[])await c.close();await browser.close();await writeFile(new URL('live-receive-result.json',root),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report))
+}

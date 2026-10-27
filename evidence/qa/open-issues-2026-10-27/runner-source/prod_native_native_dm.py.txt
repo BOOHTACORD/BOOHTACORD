@@ -1,0 +1,48 @@
+"""Operate only the visible own QA DM; never emit bodies, identities or credentials."""
+import json,re,sys,xml.etree.ElementTree as ET
+from pathlib import Path
+WORK=Path(__file__).parent
+sys.path.insert(0,'C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal')
+from android_permission_ui import call,nodes,label,APP
+cfg=json.loads((WORK/'dm-fixture.private.json').read_text());peer=cfg['peer'];marker=cfg['phone_text'];action=sys.argv[1]
+def bounds(n):return list(map(int,re.findall(r'\d+',n.get('bounds'))))
+def tap(rows):
+ assert len(rows)==1,'Expected one observed owned control';b=bounds(rows[0]);assert 0<b[3]-b[1]<600
+ call('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2))
+rows=nodes()
+if action not in ['delete','confirm-delete']:
+ assert any(peer in label(n) and bounds(n)[1]<700 for n in rows),'Owned fixture DM header is required'
+report={'action':action,'body_or_identity_logged':False}
+if action=='inspect':
+ fields=[n for n in rows if n.get('class')=='android.widget.EditText'];report['composer_empty']=len(fields)==1 and not fields[0].get('text')
+ report['PC_echo_rendered']=any(cfg['pc_text'] in label(n) for n in rows if n.get('class')!='android.widget.EditText')
+ report['phone_marker_rendered']=any(marker in label(n) for n in rows if n.get('class')!='android.widget.EditText')
+elif action=='send':
+ fields=[n for n in rows if n.get('class')=='android.widget.EditText'];assert len(fields)==1 and not fields[0].get('text'),'Unknown draft must remain untouched'
+ tap(fields);call('shell','input','text',marker);rows=nodes();assert any(n.get('class')=='android.widget.EditText' and n.get('text')==marker for n in rows)
+ send=[n for n in rows if n.get('package')==APP and n.get('clickable')=='true' and label(n).startswith('Отправить')];assert len(send)==1
+ for leave in [n for n in rows if label(n)=='Выйти из голосового канала']:
+  a,b=bounds(send[0]),bounds(leave);assert min(a[3],b[3])<=max(a[1],b[1]) or min(a[2],b[2])<=max(a[0],b[0]),'Known Send/Leave overlap guard'
+ tap(send);report['own_send_control_activated']=True
+elif action=='hide-ime':
+ if 'mInputShown=true' in call('shell','dumpsys','input_method'):call('shell','input','keyevent','KEYCODE_BACK')
+ report['IME_hide_requested']=True
+elif action=='scroll-latest':
+ fields=[n for n in rows if n.get('class')=='android.widget.EditText'];assert len(fields)==1 and not fields[0].get('text')
+ choices=[n for n in rows if n.get('package')==APP and n.get('scrollable')=='true' and bounds(n)[3]-bounds(n)[1]>500 and bounds(n)[2]-bounds(n)[0]>500]
+ assert len(choices)==1,'Expected one observed message history viewport';b=bounds(choices[0]);report['history_viewport']=b
+ x=(b[0]+b[2])//2;call('shell','input','swipe',str(x),str(b[3]-(b[3]-b[1])//5),str(x),str(b[1]+(b[3]-b[1])//5),'450')
+ report['ascending_history_scrolled_toward_latest']=True
+elif action=='delete-menu':
+ raw=call('exec-out','uiautomator','dump','/dev/tty');tree=ET.fromstring(raw[raw.find('<hierarchy'):raw.find('</hierarchy>')+12]);parents={c:p for p in tree.iter() for c in p}
+ targets=[n for n in tree.iter('node') if marker in label(n) and n.get('class')!='android.widget.EditText' and not any(marker in label(c) for c in n.iter('node') if c is not n)];assert len(targets)==1
+ ancestor=targets[0];controls=[]
+ while ancestor in parents:
+  ancestor=parents[ancestor];controls=[n for n in ancestor.iter('node') if n.get('package')==APP and n.get('clickable')=='true' and 'Действия с сообщением' in label(n)]
+  if controls:break
+ assert len(controls)==1 and bounds(ancestor)[3]-bounds(ancestor)[1]<1200;tap(controls);report['own_message_menu_activated']=True
+elif action in ['delete','confirm-delete']:
+ previous='delete-menu' if action=='delete' else 'delete';assert json.loads((WORK/('native-dm-'+previous+'.json')).read_text())
+ tap([n for n in rows if label(n)=='Удалить' and n.get('package')==APP and n.get('clickable')=='true']);report['observed_delete_control_activated']=True
+else:raise ValueError('Unknown scoped action')
+(WORK/('native-dm-'+action+'.json')).write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))

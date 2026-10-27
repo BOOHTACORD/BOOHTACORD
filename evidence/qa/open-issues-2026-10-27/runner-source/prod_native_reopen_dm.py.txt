@@ -1,0 +1,17 @@
+"""Refresh only the owned QA DM by visiting permitted SHARE_TEST prejoin without joining."""
+import json,re,sys
+from pathlib import Path
+WORK=Path(__file__).parent;cfg=json.loads((WORK/'dm-fixture.private.json').read_text())
+sys.path.insert(0,'C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal')
+from android_permission_ui import call,nodes,label,tap_named,APP
+def box(n):return list(map(int,re.findall(r'\d+',n.get('bounds'))))
+def choose(needle):
+ rows=nodes();matches=[n for n in rows if n.get('package')==APP and n.get('clickable')=='true' and needle in label(n) and 40<box(n)[3]-box(n)[1]<300 and box(n)[2]-box(n)[0]>300]
+ assert len(matches)==1,'Expected one wide observed owned navigation row';b=box(matches[0]);call('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2))
+rows=nodes();assert any(cfg['peer'] in label(n) and box(n)[1]<700 for n in rows),'Owned DM required'
+if 'mInputShown=true' in call('shell','dumpsys','input_method'):call('shell','input','keyevent','KEYCODE_BACK')
+tap_named('Открыть навигацию');tap_named('Каналы');choose('SHARE_TEST')
+rows=nodes();assert any('SHARE_TEST' in label(n) for n in rows)
+if any(label(n)=='Открыть навигацию' for n in rows):tap_named('Открыть навигацию')
+tap_named('Личные');choose(cfg['peer']);rows=nodes();assert any(cfg['peer'] in label(n) and box(n)[1]<700 for n in rows)
+print(json.dumps({'owned_DM_reopened':True,'voice_join_requested':False,'body_or_identity_logged':False}))

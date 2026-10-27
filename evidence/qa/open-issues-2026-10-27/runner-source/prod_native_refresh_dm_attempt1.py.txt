@@ -1,0 +1,26 @@
+"""Inspect or explicitly refresh the visible owned QA conversation only."""
+import json,re,sys
+from pathlib import Path
+WORK=Path(__file__).parent
+sys.path.insert(0,'C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal')
+from android_permission_ui import call,nodes,label,tap_named,APP,state
+cfg=json.loads((WORK/'dm-fixture.private.json').read_text())
+def box(n):return list(map(int,re.findall(r'\d+',n.get('bounds'))))
+def inspect():
+ rows=nodes()
+ assert not any(label(n)=='Закрыть навигацию' for n in rows),'Drawer must be closed'
+ assert any(cfg['peer'] in label(n) and box(n)[1]<700 for n in rows),'Owned DM required'
+ fields=[n for n in rows if n.get('class')=='android.widget.EditText']
+ assert len(fields)==1 and not fields[0].get('text'),'Unknown draft must remain intact'
+ matches=[n for n in rows if n.get('class')!='android.widget.EditText' and any(cfg['pc_text'] in (n.get(k) or '') for k in ['text','content-desc'])]
+ labels=[label(n) for n in rows]
+ return {'echo_rendered':bool(matches),'echo_bounds':[box(n) for n in matches],'composer_empty':True,'drawer_closed':True,'retry_control_visible':'Повторить подключение' in labels,'recovery_banner_visible':any(s in labels for s in ['Восстанавливаем подключение…','Сервер пока недоступен'])}
+action=sys.argv[1];report={'action':action,'before':inspect(),'body_or_identity_logged':False}
+if action=='refresh':
+ tap_named('Действия диалога');tap_named('Обновить историю')
+ report['observed_refresh_activated']=True
+elif action=='retry':
+ tap_named('Повторить подключение');report['observed_retry_activated']=True
+elif action!='inspect':raise ValueError('Unknown scoped action')
+report['after']=inspect()
+print(json.dumps(report))

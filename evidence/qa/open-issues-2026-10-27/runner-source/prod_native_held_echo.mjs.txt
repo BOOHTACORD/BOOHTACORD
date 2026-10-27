@@ -1,0 +1,19 @@
+import assert from 'node:assert/strict'
+import {readFile,writeFile,stat} from 'node:fs/promises'
+import {randomBytes,randomUUID} from 'node:crypto'
+import {setTimeout as delay} from 'node:timers/promises'
+import {chromium,fixture,api,origin} from 'file:///C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal/privacy_fixture.mjs'
+const root=new URL('./',import.meta.url),browser=await chromium.launch({channel:'chrome',headless:false});let f,b,id,prefix
+const report={status:'RUNNING',at_utc:new Date().toISOString(),origin,body_or_identity_logged:false}
+try{
+ f=await fixture(browser);b=await f.client('b');const k=JSON.parse(await readFile('C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal/private-upgrade-identity.json','utf8'));prefix='/direct-messages/'+k.conversation
+ const all=(await api(b.page,'/direct-messages')).body.direct_messages;const peer=all.find(d=>d.id===k.conversation);assert.ok(peer)
+ const cfg=JSON.parse(await readFile(new URL('dm-fixture.private.json',root),'utf8'));cfg.pc_text='ECHO'+randomBytes(8).toString('hex');cfg.private_names=[f.private.b.login,peer.other_participant_display_name];await writeFile(new URL('dm-fixture.private.json',root),JSON.stringify(cfg))
+ const r=await api(b.page,prefix+'/messages','POST',{client_message_id:randomUUID(),body:cfg.pc_text});assert.equal(r.status,201);id=r.body.id
+ report.status='HELD_OWN_ECHO_READY';await writeFile(new URL('held-echo-result.json',root),JSON.stringify(report));console.log('HELD_OWN_ECHO_READY')
+ const until=Date.now()+180000
+ while(Date.now()<until){try{await stat(new URL('held-echo-release',root));break}catch{}await delay(500)}
+}finally{
+ if(b&&id){assert.equal((await api(b.page,prefix+'/messages/'+id,'DELETE')).status,204);report.owned_fixture_removed=true}
+ for(const c of f?.contexts??[])await c.close();await browser.close();report.status='HOLDER_CLOSED_AND_FIXTURE_REMOVED';await writeFile(new URL('held-echo-result.json',root),JSON.stringify(report,null,2)+'\n');console.log(report.status)
+}

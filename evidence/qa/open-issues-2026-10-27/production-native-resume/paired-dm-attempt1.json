@@ -1,0 +1,61 @@
+{
+  "status": "FAIL_OR_CONTROLLER",
+  "at_utc": "2026-10-27T20:56:41.165Z",
+  "origin": "https://v.bootybay.ru",
+  "api_mocks": false,
+  "physical_Android": true,
+  "body_or_identity_logged": false,
+  "actions": [
+    {
+      "action": "send",
+      "body_or_identity_logged": false,
+      "own_send_control_activated": true
+    },
+    {
+      "action": "hide-ime",
+      "body_or_identity_logged": false,
+      "IME_hide_requested": true
+    },
+    {
+      "action": "hide-ime",
+      "body_or_identity_logged": false,
+      "IME_hide_requested": true
+    },
+    {
+      "action": "delete-menu",
+      "body_or_identity_logged": false,
+      "own_message_menu_activated": true
+    },
+    {
+      "action": "delete",
+      "body_or_identity_logged": false,
+      "observed_delete_control_activated": true
+    },
+    {
+      "action": "confirm-delete",
+      "body_or_identity_logged": false,
+      "observed_delete_control_activated": true
+    }
+  ],
+  "receiver_web_source": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "browser": "155.0.8059.85",
+  "before": {
+    "action": "inspect",
+    "body_or_identity_logged": false,
+    "composer_empty": true,
+    "PC_echo_rendered": false,
+    "phone_marker_rendered": false
+  },
+  "actual_phone_to_PC_render": true,
+  "phone_author_matches_retained_identity": true,
+  "error_type": "AssertionError",
+  "owned_phone_fixture_removed": true,
+  "owned_PC_fixture_removed": true,
+  "after": {
+    "action": "inspect",
+    "body_or_identity_logged": false,
+    "composer_empty": true,
+    "PC_echo_rendered": false,
+    "phone_marker_rendered": false
+  }
+}

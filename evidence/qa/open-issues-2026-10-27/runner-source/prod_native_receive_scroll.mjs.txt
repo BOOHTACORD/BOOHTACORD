@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict'
+import {readFile,writeFile} from 'node:fs/promises'
+import {randomBytes,randomUUID} from 'node:crypto'
+import {execFileSync} from 'node:child_process'
+import {fileURLToPath} from 'node:url'
+import {setTimeout as delay} from 'node:timers/promises'
+import {chromium,fixture,api,origin} from 'file:///C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal/privacy_fixture.mjs'
+const root=new URL('./',import.meta.url),py=action=>JSON.parse(execFileSync('python',['-X','utf8',fileURLToPath(new URL('native_dm.py',root)),action],{encoding:'utf8',windowsHide:true,timeout:40000,stdio:['ignore','pipe','pipe']}))
+const report={status:'RUNNING',at_utc:new Date().toISOString(),origin,physical_Android:true,steps:[],body_or_identity_logged:false};const browser=await chromium.launch({channel:'chrome',headless:false});let f,b,prefix,id
+try{
+ f=await fixture(browser);b=await f.client('b');const known=JSON.parse(await readFile('C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal/private-upgrade-identity.json','utf8'));prefix='/direct-messages/'+known.conversation
+ const cfg=JSON.parse(await readFile(new URL('dm-fixture.private.json',root),'utf8'));cfg.pc_text='ECHO'+randomBytes(9).toString('hex');await writeFile(new URL('dm-fixture.private.json',root),JSON.stringify(cfg));report.before=py('inspect');assert.ok(report.before.composer_empty)
+ const r=await api(b.page,prefix+'/messages','POST',{client_message_id:randomUUID(),body:cfg.pc_text});assert.equal(r.status,201);id=r.body.id;report.server_status=201;await delay(2000)
+ report.before_scroll=py('inspect')
+ for(let i=0;i<12;i++){report.steps.push(py('scroll-latest'));const s=py('inspect');report.steps.at(-1).native_echo_rendered=s.PC_echo_rendered;if(s.PC_echo_rendered){report.after_scroll=s;break}}
+ report.status=report.after_scroll?.PC_echo_rendered?'PASS_NATIVE_RECEIVE_VISIBLE_AFTER_EXPLICIT_SCROLL':'REVIEW_REQUIRED_AFTER_OBSERVED_HISTORY_SCROLL'
+}catch(e){report.status='FAIL_OR_CONTROLLER';report.error_type=e.name}
+finally{
+ if(b&&id){assert.equal((await api(b.page,prefix+'/messages/'+id,'DELETE')).status,204);report.owned_PC_fixture_removed=true}
+ for(const c of f?.contexts??[])await c.close();await browser.close();await writeFile(new URL('receive-scroll-result.json',root),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({status:report.status,steps:report.steps.length,before_scroll:report.before_scroll,after_scroll:report.after_scroll,fixture_removed:report.owned_PC_fixture_removed}))
+}

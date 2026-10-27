@@ -349,7 +349,10 @@
             "WEB-session-revocation-draft-isolation",
             "ANDROID-native-PNG-picker-send-view-delete",
             "WEB-JPEG-GIF-private-image-lifecycle",
-            "WEB-viewer-download-format-mismatch"
+            "WEB-viewer-download-format-mismatch",
+            "ANDROID-production-resume-outbound",
+            "ANDROID-production-resume-manual-history",
+            "ANDROID-production-resume-live-receive"
           ],
           "evidence": [
             "privacy-result.json#/checks/actual_send_receive_and_peer_display",
@@ -358,7 +361,8 @@
             "web-result.json#/cases/0",
             "web-session-contract/logout.json",
             "native-image/summary.json",
-            "web-image-formats/summary.json"
+            "web-image-formats/summary.json",
+            "production-native-resume/summary.json"
           ],
           "execution": "node .out/qa-goal/privacy_run.mjs; node .out/qa-goal/web_runtime.mjs; control action prejoin; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs",
           "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts; Physical Windows PC, headed Chrome and actual Android/Windows participants; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS; Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
@@ -372,7 +376,8 @@
             "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance",
             "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim.",
             "WEB-JPEG-GIF-private-image-lifecycle: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
-            "WEB-viewer-download-format-mismatch: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance"
+            "WEB-viewer-download-format-mismatch: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
+            "Production native resume: three scoped DM facets pass; transient WSS recovery root cause unknown; all prior failures and remaining source-row/platform clauses remain required."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -11504,7 +11509,10 @@
             "ANDROID-orientation-draft-voice-retention",
             "ANDROID-landscape-ime-send-voice-dock-overlap",
             "ANDROID-wifi-cellular-native-DM-and-restoration",
-            "ANDROID-master-landscape-ime-send-voice-dock-overlap"
+            "ANDROID-master-landscape-ime-send-voice-dock-overlap",
+            "ANDROID-production-resume-outbound",
+            "ANDROID-production-resume-manual-history",
+            "ANDROID-production-resume-live-receive"
           ],
           "evidence": [
             "native-chat/summary.json",
@@ -11514,7 +11522,8 @@
             "native-ptt/summary.json",
             "android-orientation/summary.json",
             "android-connectivity/summary.json",
-            "android-orientation-master/summary.json"
+            "android-orientation-master/summary.json",
+            "production-native-resume/summary.json"
           ],
           "execution": "node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs",
           "platform": "Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS; Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
@@ -11525,7 +11534,8 @@
             "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance",
             "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim.",
             "WEB-JPEG-GIF-private-image-lifecycle: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
-            "WEB-viewer-download-format-mismatch: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance"
+            "WEB-viewer-download-format-mismatch: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
+            "Production native resume: three scoped DM facets pass; transient WSS recovery root cause unknown; all prior failures and remaining source-row/platform clauses remain required."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -15874,7 +15884,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-27T04:40:55.828024+00:00",
+  "updated_utc": "2026-10-27T21:26:49.788575+00:00",
   "known_defect_issues": [
     579,
     580,

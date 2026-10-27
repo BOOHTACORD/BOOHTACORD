@@ -1,0 +1,17 @@
+"""Retain a private source-resolution view; publish no message or identity pixels."""
+import io,json,re,subprocess,sys
+from pathlib import Path
+from PIL import Image,ImageDraw
+WORK=Path(__file__).parent
+sys.path.insert(0,'C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/.out/qa-goal')
+from android_permission_ui import ADB,nodes,label,APP
+cfg=json.loads((WORK/'dm-fixture.private.json').read_text());rows=nodes()
+assert not any(label(n)=='Закрыть навигацию' for n in rows)
+def box(n):return list(map(int,re.findall(r'\d+',n.get('bounds'))))
+targets=[n for n in rows if n.get('class')!='android.widget.EditText' and cfg['pc_text'] in label(n)]
+assert targets,'Visible owned echo is required'
+b=box(min(targets,key=lambda n:(box(n)[2]-box(n)[0])*(box(n)[3]-box(n)[1])))
+raw=subprocess.check_output([ADB,'exec-out','screencap','-p']);im=Image.open(io.BytesIO(raw)).convert('RGB')
+assert 0<=b[0]<b[2]<=im.width and 0<=b[1]<b[3]<=im.height
+im.crop((max(0,b[0]-8),max(0,b[1]-8),min(im.width,b[2]+8),min(im.height,b[3]+8))).save(WORK/'visible-echo-private.png')
+print(json.dumps({'physical_source_size':list(im.size),'visible_echo_bounds':b,'private_crop_saved':True,'public_message_pixels_retained':False}))

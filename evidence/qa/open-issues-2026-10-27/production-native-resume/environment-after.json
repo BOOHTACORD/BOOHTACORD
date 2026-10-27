@@ -1,0 +1,98 @@
+{
+  "at_utc": "2026-10-27T21:19:40.895888+00:00",
+  "production_mutations": "owned synthetic messages only",
+  "local_qa": [
+    {
+      "service": "api",
+      "state": "running",
+      "health": "",
+      "exit_code": 0
+    },
+    {
+      "service": "collector",
+      "state": "running",
+      "health": "",
+      "exit_code": 0
+    },
+    {
+      "service": "grafana",
+      "state": "running",
+      "health": "",
+      "exit_code": 0
+    },
+    {
+      "service": "init-qa-storage",
+      "state": "exited",
+      "health": "",
+      "exit_code": 0
+    },
+    {
+      "service": "livekit",
+      "state": "running",
+      "health": "",
+      "exit_code": 0
+    },
+    {
+      "service": "migrate",
+      "state": "exited",
+      "health": "",
+      "exit_code": 0
+    },
+    {
+      "service": "postgres",
+      "state": "running",
+      "health": "healthy",
+      "exit_code": 0
+    },
+    {
+      "service": "prometheus",
+      "state": "running",
+      "health": "",
+      "exit_code": 0
+    },
+    {
+      "service": "proxy",
+      "state": "running",
+      "health": "",
+      "exit_code": 0
+    },
+    {
+      "service": "tempo",
+      "state": "running",
+      "health": "",
+      "exit_code": 0
+    },
+    {
+      "service": "web",
+      "state": "running",
+      "health": "",
+      "exit_code": 0
+    }
+  ],
+  "native_preparation": [
+    {
+      "service": "init-qa-storage",
+      "state": "exited",
+      "health": ""
+    },
+    {
+      "service": "livekit",
+      "state": "exited",
+      "health": ""
+    },
+    {
+      "service": "postgres",
+      "state": "exited",
+      "health": ""
+    }
+  ],
+  "/api/v1/health": {
+    "status": 200,
+    "default_TLS_validation": true
+  },
+  "/release-receipt.json": {
+    "status": 200,
+    "default_TLS_validation": true,
+    "source_revision": "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a"
+  }
+}

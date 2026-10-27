@@ -181,3 +181,7 @@ execute the mapped source/platform variants, then reconcile every QA issue with
 evidence and exact blockers. No QA issue is closed by this checkpoint. Provider
 E2E, Mac/iOS/Pixel, calibrated media/load, all screen readers and real-user UX
 measurements remain separate gates. No test consolidation or deletion occurred.
+
+## Production native resume — 2026-10-28 Moscow
+
+[Three scoped DM facets](production-native-resume/summary.json) pass on the physical Android2082 and actual Windows Chrome. Outbound Web072426d6 and final inbound Web8a2cda38 are recorded separately. Recovery/controller/clipped-viewport attempts remain retained; they do not establish a new product regression. The final two fresh UI messages arrive without native refresh and reveal full body bounds after explicit scrolling. Owned fixtures are removed; session/trust/router and active media preserved. No fault/load injection, automatic-scroll, latency, acoustic, whole-platform or broad QA PASS is claimed. Isolated native HTTPS/fault acceptance remains BLOCKED on a trusted QA origin.

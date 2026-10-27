@@ -827,6 +827,48 @@
       ],
       "result": "upload-extended/global-result.json",
       "limits": "No production, physical Android, audibility, screen or load-capacity acceptance.; Writer test covers actual ENOSPC after8192 bytes, not every I/O/fsync failure; observed500 INTERNAL is retained and is not a friendly507 admission claim.; All fault fixture resources were removed; six static local QA quota accounts and one successful1024-byte main-profile attachment remain owned test fixtures.; Long-lived voice/realtime lifetime acceptance remains NOT_RUN; no source code/test consolidation was performed."
+    },
+    {
+      "id": "ANDROID-production-resume-outbound",
+      "status": "PASS",
+      "protects": "A DM sent by the signed-in native phone must persist under that author and render to the authorized Chrome peer.",
+      "command": "node .out/qa-prod-resume/paired_dm.mjs",
+      "platform": "Physical Samsung SM-A576B Android16 signed1.0.47+2082 source072426d6; Windows11 actual headed Chrome155; real production HTTPS",
+      "mandatory_when": "Before accepting the corresponding DM/native/reconnect facet or closing QA54/303; other source-row clauses remain required",
+      "issues": [
+        54,
+        303
+      ],
+      "result": "production-native-resume/summary.json#/facets/outbound",
+      "limits": "Scoped own synthetic DM only. No automatic-follow, p95, acoustic/media, admin ACL, TLS failure injection, native restart, provider, Mac/iOS or whole-row acceptance."
+    },
+    {
+      "id": "ANDROID-production-resume-manual-history",
+      "status": "PASS",
+      "protects": "Explicit native refresh must load the current authorized DM history.",
+      "command": "node .out/qa-prod-resume/refresh_receive.mjs",
+      "platform": "Physical Samsung SM-A576B Android16 signed1.0.47+2082 source072426d6; Windows11 actual headed Chrome155; real production HTTPS",
+      "mandatory_when": "Before accepting the corresponding DM/native/reconnect facet or closing QA54/303; other source-row clauses remain required",
+      "issues": [
+        54,
+        303
+      ],
+      "result": "production-native-resume/summary.json#/facets/manual_history",
+      "limits": "Scoped own synthetic DM only. No automatic-follow, p95, acoustic/media, admin ACL, TLS failure injection, native restart, provider, Mac/iOS or whole-row acceptance."
+    },
+    {
+      "id": "ANDROID-production-resume-live-receive",
+      "status": "PASS",
+      "protects": "A fresh peer DM must enter native history without manual refresh and remain readable after explicit scrolling.",
+      "command": "node .out/qa-prod-resume/live_receive.mjs",
+      "platform": "Physical Samsung SM-A576B Android16 signed1.0.47+2082 source072426d6; Windows11 actual headed Chrome155; real production HTTPS",
+      "mandatory_when": "Before accepting the corresponding DM/native/reconnect facet or closing QA54/303; other source-row clauses remain required",
+      "issues": [
+        54,
+        303
+      ],
+      "result": "production-native-resume/summary.json#/facets/live_receive",
+      "limits": "Scoped own synthetic DM only. No automatic-follow, p95, acoustic/media, admin ACL, TLS failure injection, native restart, provider, Mac/iOS or whole-row acceptance."
     }
   ]
 }
