@@ -1,0 +1,58 @@
+{
+  "at_utc": "2026-10-27T20:38:06.450202+00:00",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "services": [
+    {
+      "name": "api",
+      "state": "running"
+    },
+    {
+      "name": "collector",
+      "state": "running"
+    },
+    {
+      "name": "grafana",
+      "state": "running"
+    },
+    {
+      "name": "init-qa-storage",
+      "state": "exited"
+    },
+    {
+      "name": "livekit",
+      "state": "running"
+    },
+    {
+      "name": "migrate",
+      "state": "exited"
+    },
+    {
+      "name": "postgres",
+      "state": "running"
+    },
+    {
+      "name": "prometheus",
+      "state": "running"
+    },
+    {
+      "name": "proxy",
+      "state": "running"
+    },
+    {
+      "name": "tempo",
+      "state": "running"
+    },
+    {
+      "name": "web",
+      "state": "running"
+    }
+  ],
+  "upload_metrics": {
+    "voice_platform_uploads_inflight": 0.0,
+    "voice_platform_upload_oldest_inflight_seconds": 0.0,
+    "voice_platform_attachment_upload_reserved_bytes": 0.0
+  },
+  "staging_files": 0,
+  "api_health_status": 200,
+  "postgres_version": "17.6"
+}
