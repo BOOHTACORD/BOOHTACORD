@@ -1,0 +1,14 @@
+"""Validate a physical native keyboard receipt: exit1 for a witnessed focus failure."""
+import hashlib,json,re,sys
+from pathlib import Path
+P=Path(__file__).resolve().parent
+name=sys.argv[1];assert re.fullmatch(r'run[0-9]+\.json',name)
+source=P/name;d=json.loads(source.read_text(encoding='utf-8'))
+valid=d.get('empty_focused_IME_precondition') is True and bool(d['samples']) and all(s['own_prefix_exact'] and s['admin_retained'] for s in d['samples'])
+if not valid:status='INVALID_OBSERVATION';code=2
+elif not all(s['field_focused'] and s['ime_shown'] for s in d['samples']):status='FAIL';code=1
+elif d['status']=='PASS_GBOARD_FOUR_KEYS_AND_BACK':status='PASS';code=0
+else:status='INCOMPLETE';code=2
+r={'observation':name,'observation_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'protected_invariant':'Every actual Gboard character keeps native admin search focused with IME shown until explicit Back','status':status,'exit_code':code,'samples':len(d['samples']),'valid_owned_input_precondition':valid,'scope':'Physical observation validation; not a widget/CI/all-platform test'}
+(P/(source.stem+'-focus-invariant.json')).write_text(json.dumps(r,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps(r));sys.exit(code)

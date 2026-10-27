@@ -1,0 +1,23 @@
+"""Final independent readback after each own local filter is disposed on admin close."""
+import json,sys
+from pathlib import Path
+P=Path(__file__).resolve().parent;sys.path.insert(0,str(P.parent/'qa-android-admin'))
+from admin_common import call,nodes,label,box,tap_named,admin_present,read_font,snapshot,now
+from admin_ime_retry import ensure_admin,field,ime
+
+if __name__=='__main__':
+ before=json.loads((P/'operating-brief.json').read_text(encoding='utf-8'));r={'at_utc':now(),'status':'RUNNING','server_mutation_issued':False}
+ try:
+  assert read_font()==before['font_scale'];rows=ensure_admin();r['fresh_filter_empty']=not field(rows).get('text');assert r['fresh_filter_empty']
+  tap_named('Закрыть администрирование');rows=nodes();cfg=json.loads((P.parent/'qa-prod-resume/dm-fixture.private.json').read_text(encoding='utf-8'))
+  r['original_own_DM_returned']=any(cfg['peer'] in label(n) and box(n)[1]<700 for n in rows);r['admin_closed']=not admin_present(rows);r['IME_hidden']=ime() is False
+  r['native']=snapshot();r['font_scale']=read_font();r['permission_exact']=r['native']['permission']==before['native_before']['permission'];s=r['native']
+  assert r['original_own_DM_returned'] and r['admin_closed'] and r['IME_hidden'] and r['permission_exact']
+  assert s['voice_connected'] and s['mic_fgs'] and not s['muted_control'] and not s['unknown_draft'] and not s['screen_fgs'] and not s['projection_package_present']
+  r['status']='PASS_ORIGINAL_STATE_RESTORED'
+ except Exception as e:r['status']='FAIL_OR_CONTROLLER';r['error_type']=type(e).__name__
+ finally:
+  call('shell','settings','put','system','font_scale',str(before['font_scale']))
+  if admin_present(nodes()):tap_named('Закрыть администрирование')
+  r['finished_at_utc']=now();(P/'final-restoration.json').write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+ print(json.dumps(r))

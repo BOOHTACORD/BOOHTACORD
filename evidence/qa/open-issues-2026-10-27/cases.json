@@ -973,6 +973,36 @@
       ],
       "result": "native-admin/summary.json#/facets/ime_2x",
       "limits": "Navigation/static chrome only; no CRUD/API success, whole44dp/SafeArea/AT/contrast/keyboard matrix, acoustic or all-platform claim. Full QA gates remain open. Acceptance unproven. Three retained FAIL_OR_CONTROLLER attempts; last has focus+IME+empty guard but observed length1 versus expected23 and no exact marker. Cause unknown. No unknown text cleared; fresh instance readback resolves earlier local cleanup uncertainty. No product bug inferred"
+    },
+    {
+      "id": "ANDROID-admin-2x-Gboard-keeps-focus",
+      "status": "FAIL",
+      "protects": "Actual native admin search keeps focus and IME after each Gboard character at text2.0",
+      "command": "Follow native-admin-gboard/README.md: keyboard_probe.py / keyboard_probe_1x.py; gboard_filter_case.py runN scale; assert_focus.py runN.json; restore_keyboard_packet.py",
+      "platform": "Physical Samsung SM-A576B Android16, signed1.0.47+2082/source072426d6, actual Gboard18.5.4 via observed ADB touches; production HTTPS",
+      "mandatory_when": "Before native admin large-text input/IME and physical accessibility acceptance in I287.C14/I301.C4/I303.C2/C3",
+      "issues": [
+        287,
+        301,
+        303
+      ],
+      "result": "native-admin-gboard/summary.json#/facets/2x_actual_input",
+      "limits": "Physical Samsung/source072426d6/Gboard18.5.4 only; no TalkBack/human/hardware-keyboard/other-platform/whole-admin or acoustic acceptance. No exact latency/capacity/causal patch claim. Original controller failures remain historical."
+    },
+    {
+      "id": "ANDROID-admin-1x-Gboard-query-Back",
+      "status": "PASS",
+      "protects": "Actual Gboard query retains all four prefixes and explicit Back hides IME without losing the query at1.0",
+      "command": "Follow native-admin-gboard/README.md: keyboard_probe.py / keyboard_probe_1x.py; gboard_filter_case.py runN scale; assert_focus.py runN.json; restore_keyboard_packet.py",
+      "platform": "Physical Samsung SM-A576B Android16, signed1.0.47+2082/source072426d6, actual Gboard18.5.4 via observed ADB touches; production HTTPS",
+      "mandatory_when": "Before native admin large-text input/IME and physical accessibility acceptance in I287.C14/I301.C4/I303.C2/C3",
+      "issues": [
+        287,
+        301,
+        303
+      ],
+      "result": "native-admin-gboard/summary.json#/facets/1x_control_and_Back",
+      "limits": "Physical Samsung/source072426d6/Gboard18.5.4 only; no TalkBack/human/hardware-keyboard/other-platform/whole-admin or acoustic acceptance. No exact latency/capacity/causal patch claim. Original controller failures remain historical."
     }
   ]
 }

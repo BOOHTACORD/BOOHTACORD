@@ -1,0 +1,21 @@
+{
+  "installed_source": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "compared_master_source": "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a",
+  "master_observed_via": "git ls-remote origin refs/heads/master",
+  "content_via": "GitHub connected fetch_file pinned ref",
+  "path": "clients/flutter/lib/src/features/admin/members/layout/presentation.dart",
+  "GitHub_blob_sha": "b5f12a09cd40f57a44ced1297369c0c79d9fe251",
+  "normalized_SHA256": "3b2ccb9278c91b89b48cb92ae87f965d0dec7698cde8c798d4f4e5e510862009",
+  "same_as_installed_source": true,
+  "comparison_scope": "This exact layout file only; no claim of runtime testing a newer APK",
+  "line_numbers": {
+    "71": "final key = PageStorageKey(",
+    "72": "'admin-member-list:$search:$roleFilter:$statusFilter',",
+    "74": "if (MediaQuery.textScalerOf(context).scale(14) > 21 ||",
+    "75": "MediaQuery.viewInsetsOf(context).bottom > 0) {",
+    "77": "key: key,",
+    "81": "filters,",
+    "97": "filters,",
+    "104": "child: ListView(key: key, padding: listPadding, children: _items),"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "at_utc": "2026-10-27T22:45:15.582390+00:00",
+  "assertion_runner_sha256": "cf7add63665b6ce1680111f4bde9ec16ceac65c479a577a55941a22e428a7d9d",
+  "results": [
+    {
+      "command_argv": [
+        "C:\\Users\\egkur\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        ".out\\qa-admin-keyboard\\assert_focus.py",
+        "run1.json"
+      ],
+      "exit_code": 1,
+      "status": "FAIL",
+      "observation": "run1.json",
+      "stderr_empty": true
+    },
+    {
+      "command_argv": [
+        "C:\\Users\\egkur\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        ".out\\qa-admin-keyboard\\assert_focus.py",
+        "run2.json"
+      ],
+      "exit_code": 1,
+      "status": "FAIL",
+      "observation": "run2.json",
+      "stderr_empty": true
+    },
+    {
+      "command_argv": [
+        "C:\\Users\\egkur\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-X",
+        "utf8",
+        ".out\\qa-admin-keyboard\\assert_focus.py",
+        "run3.json"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "observation": "run3.json",
+      "stderr_empty": true
+    }
+  ]
+}

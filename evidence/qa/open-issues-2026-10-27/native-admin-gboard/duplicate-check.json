@@ -1,0 +1,111 @@
+{
+  "at_utc": "2026-10-27T22:42:53.056Z",
+  "queries": [
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue in:title \"фокус\"",
+      "topn": 100,
+      "returned_count": 0,
+      "issues": []
+    },
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue in:title \"клавиатура\"",
+      "topn": 100,
+      "returned_count": 0,
+      "issues": []
+    },
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue in:title \"focus\"",
+      "topn": 100,
+      "returned_count": 0,
+      "issues": []
+    },
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue \"admin-member-search\"",
+      "topn": 100,
+      "returned_count": 1,
+      "issues": [
+        {
+          "number": 303,
+          "title": "[UIUX-2026][UX-14][P1] Физическая UX-приёмка macOS/Windows/Android/iOS и мобильного Web",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/303"
+        }
+      ]
+    },
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue \"admin-member-list\"",
+      "topn": 30,
+      "returned_count": 0,
+      "issues": []
+    },
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue \"поиск\" \"фокус\"",
+      "topn": 30,
+      "returned_count": 4,
+      "issues": [
+        {
+          "number": 283,
+          "title": "[QA] Browser/device acceptance for channel and DM quick jump (#78)",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/283"
+        },
+        {
+          "number": 500,
+          "title": "[Flutter][Web parity][P1] Chat и Search: единый ритм TEXT/DM, даты, компактные результаты",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/500"
+        },
+        {
+          "number": 141,
+          "title": "[P2][F09] Web chat: индексировать ответы и ограничить рендеринг и кеш длинной истории",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/141"
+        },
+        {
+          "number": 554,
+          "title": "[Epic][NOTIFY][P1] Фоновые уведомления Web/iOS/Android: личные сообщения, упоминания и безопасный self-hosted push",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/554"
+        }
+      ]
+    },
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue \"клавиатура\" \"админ\"",
+      "topn": 30,
+      "returned_count": 1,
+      "issues": [
+        {
+          "number": 302,
+          "title": "[UIUX-2026][UX-13][P1] Автотесты UI/UX: viewport matrix, visual snapshots и сценарии E2E",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/302"
+        }
+      ]
+    }
+  ],
+  "comparison_issues": [
+    {
+      "number": 191,
+      "title": "[FlutterAdmin][FA-03] Members: optimistic concurrency и adaptive desktop/mobile UI",
+      "state": "closed",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/191",
+      "disposition": "Existing completed implementation/parity/accessibility scope; does not report this observed first-character loss. Keep closed; new concrete regression links QA287/303."
+    },
+    {
+      "number": 197,
+      "title": "[FlutterAdmin][FA-09] Cross-cutting accessibility, keyboard, SafeArea и resize behavior",
+      "state": "closed",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/197",
+      "disposition": "Existing completed implementation/parity/accessibility scope; does not report this observed first-character loss. Keep closed; new concrete regression links QA287/303."
+    },
+    {
+      "number": 295,
+      "title": "[UIUX-2026][UX-06][P1] Guild admin: единый контекст, вкладки и desktop/mobile оболочка",
+      "state": "closed",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/295",
+      "disposition": "Existing completed implementation/parity/accessibility scope; does not report this observed first-character loss. Keep closed; new concrete regression links QA287/303."
+    },
+    {
+      "number": 518,
+      "title": "[Parity][Web/iOS/Android][P1] Выровнять функциональность и исправления клиентов, закрыть realtime/admin/viewer-разрывы и защитить от повторного расхождения",
+      "state": "closed",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/518",
+      "disposition": "Existing completed implementation/parity/accessibility scope; does not report this observed first-character loss. Keep closed; new concrete regression links QA287/303."
+    }
+  ],
+  "conclusion": "No matching specific defect found in these bounded repository searches; broad QA/implementation coverage is distinct."
+}

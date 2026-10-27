@@ -1,0 +1,33 @@
+"""Open the known empty local admin search, inspect IME geometry, retain keys only."""
+import sys,json,re,time,io,subprocess,hashlib
+from pathlib import Path
+from PIL import Image
+P=Path(__file__).resolve().parent
+sys.path.insert(0,str(P.parent/'qa-android-admin'))
+from admin_common import call,nodes,label,box,tap,admin_present,read_font,APP,snapshot,now
+from admin_ime_retry import ensure_admin,field,ime
+from admin_tabs import select
+
+if __name__=='__main__':
+ r={'at_utc':now(),'status':'RUNNING','query_input_issued':False,'server_mutation_issued':False}
+ try:
+  assert read_font()==1.0;rows=ensure_admin();assert not field(rows).get('text')
+  call('shell','settings','put','system','font_scale','1.0');time.sleep(1)
+  rows=select('Участники');f=field(rows);assert not f.get('text');tap([f]);rows=nodes();f=field(rows)
+  r['field_focused']=f.get('focused')=='true';r['field_empty']=not f.get('text');r['ime_shown']=ime();r['field_bounds']=box(f)
+  assert r['field_focused'] and r['field_empty'] and r['ime_shown']
+  keys=[n for n in rows if n.get('package')=='com.google.android.inputmethod.latin' and label(n) in list('qwertyuiopasdfghjklzxcvbnmйцукенгшщзхъфывапролджэячсмитьбю')]
+  r['public_letter_key_nodes']=[{'label':label(n),'bounds':box(n),'clickable':n.get('clickable')} for n in keys]
+  raw=subprocess.check_output([sys.modules['admin_common'].ADB,'exec-out','screencap','-p'],timeout=20)
+  im=Image.open(io.BytesIO(raw)).convert('RGB');assert im.size==(1080,2340)
+  crop=(0,1600,1080,2300);im.crop(crop).save(P/'keyboard-keys-1x-before.png')
+  r['keyboard_crop']={'source_size':list(im.size),'crop':crop,'source_sha256':hashlib.sha256(raw).hexdigest(),'file':'keyboard-keys-1x-before.png','exclude_suggestion_strip':True}
+  r['status']='READY_EMPTY_1X_ADMIN_IME_NO_INPUT'
+ except Exception as e:
+  r['status']='FAIL_OR_CONTROLLER';r['error_type']=type(e).__name__
+  call('shell','settings','put','system','font_scale','1.0')
+  from admin_common import tap_named
+  if admin_present(nodes()):tap_named('Закрыть администрирование')
+ finally:
+  r['finished_at_utc']=now();(P/'keyboard-probe-1x.json').write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+ print(json.dumps(r,ensure_ascii=False))

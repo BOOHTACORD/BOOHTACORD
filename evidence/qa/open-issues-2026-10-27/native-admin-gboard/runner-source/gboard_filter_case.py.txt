@@ -1,0 +1,46 @@
+"""Observed Gboard touches into only the known empty local admin search."""
+import sys,json,time,re,io,subprocess,hashlib
+from pathlib import Path
+from PIL import Image
+P=Path(__file__).resolve().parent;sys.path.insert(0,str(P.parent/'qa-android-admin'))
+from admin_common import call,nodes,label,box,tap,tap_named,admin_present,read_font,APP,ADB,snapshot,now
+from admin_ime_retry import ensure_admin,field,ime
+from admin_tabs import select
+
+def capture_field(rows,name,owned):
+ f=field(rows);assert f.get('text')==owned;raw=subprocess.check_output([ADB,'exec-out','screencap','-p'],timeout=20)
+ im=Image.open(io.BytesIO(raw)).convert('RGB');assert im.size==(1080,2340);b=box(f);assert 0<b[3]-b[1]<500
+ im.crop(tuple(b)).save(P/name);return {'file':name,'bounds':b,'source_size':list(im.size),'own_filter_only':True}
+
+if __name__=='__main__':
+ name=sys.argv[1];scale=float(sys.argv[2]);assert re.fullmatch(r'run[0-9]+',name) and scale in [1.0,2.0]
+ out=P/(name+'.json');assert not out.exists();r={'status':'RUNNING','at_utc':now(),'scale':scale,'server_mutation_issued':False,'input_method':'Actual Gboard keys via ADB touches observed in keyboard-keys-before.png','samples':[]}
+ try:
+  rows=nodes()
+  if not (admin_present(rows) and read_font()==scale and field(rows).get('focused')=='true' and not field(rows).get('text') and ime() is True):
+   assert read_font()==1.0;rows=ensure_admin();assert not field(rows).get('text')
+   call('shell','settings','put','system','font_scale',str(scale));time.sleep(1);rows=select('Участники');assert not field(rows).get('text');tap([field(rows)]);rows=nodes()
+  f=field(rows);r['empty_focused_IME_precondition']=not f.get('text') and f.get('focused')=='true' and ime() is True;assert r['empty_focused_IME_precondition']
+  apk=call('shell','pm','path',APP).strip();assert re.fullmatch(r'package:/data/app/[^\r\n]+/base\.apk',apk)
+  r['installed_APK_sha256']=call('shell','sha256sum',apk[8:]).split()[0];assert r['installed_APK_sha256']=='c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243'
+  pkg=call('shell','dumpsys','package','com.google.android.inputmethod.latin');m=re.search(r'\bversionName=([^\r\n]+)',pkg);r['Gboard_version']=m[1].strip() if m else 'UNKNOWN'
+  expected=''
+  for letter,x,y in [('т',631,1976),('е',443,1695),('с',352,1976),('т',631,1976)]:
+   rows=nodes();f=field(rows);assert f.get('text')==expected and f.get('focused')=='true' and ime() is True
+   call('shell','input','tap',str(x),str(y));expected+=letter;rows=nodes();f=field(rows)
+   s={'after_key':len(expected),'own_prefix_exact':f.get('text')==expected,'field_focused':f.get('focused')=='true','ime_shown':ime(),'admin_retained':admin_present(rows),'observed_length':len(f.get('text') or ''),'field_bounds':box(f)}
+   r['samples'].append(s)
+   if s['own_prefix_exact']:s['crop']=capture_field(rows,name+'-key'+str(len(expected))+'.png',expected)
+   if not s['own_prefix_exact']:r['status']='FAIL_OR_CONTROLLER_TEXT_MISMATCH';break
+   if not s['field_focused'] or not s['ime_shown']:r['status']='FAIL_NATIVE_INPUT_FOCUS_OR_IME_LOST';break
+  else:
+   r['actual_four_key_query_exact']=expected=='тест';call('shell','input','keyevent','KEYCODE_BACK');rows=nodes()
+   r['Back_IME_hidden']=ime() is False;r['Back_admin_retained']=admin_present(rows);r['Back_query_retained']=field(rows).get('text')==expected
+   assert r['Back_IME_hidden'] and r['Back_admin_retained'] and r['Back_query_retained'];r['status']='PASS_GBOARD_FOUR_KEYS_AND_BACK'
+ except Exception as e:r['status']='FAIL_OR_CONTROLLER';r['error_type']=type(e).__name__
+ finally:
+  call('shell','settings','put','system','font_scale','1.0');r['font_restored']=read_font()==1.0
+  rows=nodes()
+  if admin_present(rows):tap_named('Закрыть администрирование');r['admin_explicitly_closed']=True
+  r['final_native']=snapshot();r['finished_at_utc']=now();out.write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+ print(json.dumps(r,ensure_ascii=False))

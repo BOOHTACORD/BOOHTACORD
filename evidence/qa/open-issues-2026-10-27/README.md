@@ -207,3 +207,14 @@ gates are open. No product/tests or43 consolidation decisions changed.
 Web-to-Android receiver preparation remains NOT_RUN: supported Windows Computer
 Use stopped on insufficient browser-URL confidence. No alternate UI bypass or
 receiver runtime occurred; see [exact prerequisite receipt](prerequisites/web-to-android-cua-stop.json).
+
+## Physical Android Gboard counterexample — 2026-10-28 Moscow
+
+[Actual Gboard input](native-admin-gboard/summary.json) resolves the previous
+2.0 uncertainty with a confirmed physical failure: two separate2x runs retain
+the exact first character, then lose field focus and hide IME before any Back.
+The1x control retains four exact Cyrillic prefixes, focus and IME; explicit Back
+keeps admin/query. Observation assertion exits are1/1/0. All8 keyboard/own-field
+crops reviewed at original resolution; source/installed APK fingerprints retained.
+Original DM/font/empty filters/voice restored. I287.C14/I301.C4 now FAIL; all
+480 source requirements and earlier failures preserved. Full gates remain open.

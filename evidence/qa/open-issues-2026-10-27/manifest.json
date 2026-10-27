@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-27T22:37:47.562677+00:00",
+  "at_utc": "2026-10-27T22:47:35.952723+00:00",
   "candidate_evidence": "../../android/physical-share-2026-10-27/result.json",
   "files": {
     "acceptance-methods.json": {
@@ -667,8 +667,8 @@
       "sha256": "7d2ac8691a4dd0bef3ffd7fd6c9ea028ab04c058060810c65c5f27501d34d867"
     },
     "cases.json": {
-      "bytes": 63468,
-      "sha256": "e804924d5fe69506f487e12895a569c1f7006dbe1524e52ba712522fe1116770"
+      "bytes": 65622,
+      "sha256": "769730403868afcd19b923227a564031ad8f4899caa83d74ed6a15cc6298dbfa"
     },
     "controlled-account-integrity.json": {
       "bytes": 640,
@@ -851,8 +851,8 @@
       "sha256": "4b7314f316cc66bb9c1c3e07919f4a2441de12db8ab970d26f9b4308a2cef8a4"
     },
     "matrix.json": {
-      "bytes": 1171790,
-      "sha256": "77a5dd4ea6474855a64c9cdb7db047fbe587dc456600825bd92923c7ea010553"
+      "bytes": 1174647,
+      "sha256": "a3555082c78ac3218459ad79ea643b846543df4c3cde4968868432af54f3c989"
     },
     "muted-background-resume.json": {
       "bytes": 250,
@@ -1105,6 +1105,146 @@
     "native-admin/visual-review.json": {
       "bytes": 4943,
       "sha256": "e8bc6d4fae5b364087f74d50d7fb5a7836a8267af0b1b10b4c89dae458f195c5"
+    },
+    "native-admin-gboard/duplicate-check.json": {
+      "bytes": 4785,
+      "sha256": "ab35acec72a72daa789e8d36eda2cf873307eeb33d67f3c6857916dfa8764b46"
+    },
+    "native-admin-gboard/final-restoration.json": {
+      "bytes": 993,
+      "sha256": "1d59bfd0347dc1e5fdf8f71a3da7c4458d1cf5b9434541b66f00c42ae568f944"
+    },
+    "native-admin-gboard/invariant-invocations.json": {
+      "bytes": 1187,
+      "sha256": "b868b3c25a27f787ddf25f70bd85e7167b36988c329defe954980cbfec80121e"
+    },
+    "native-admin-gboard/keyboard-keys-1x-before.png": {
+      "bytes": 59637,
+      "sha256": "8510f9ea33c8922254a6b22720200fe2a25577ba1d965e8afff7c632196a3839"
+    },
+    "native-admin-gboard/keyboard-keys-before.png": {
+      "bytes": 83748,
+      "sha256": "c0978db7c2eea6748fa29e8fa4f457ebd9d5e4fa1bf1970427fc77f62256ddc7"
+    },
+    "native-admin-gboard/keyboard-probe-1x.json": {
+      "bytes": 696,
+      "sha256": "411b152c15d4c05472651c5e3600d6e2cc8c86ee98674f021f08924ea320c346"
+    },
+    "native-admin-gboard/keyboard-probe.json": {
+      "bytes": 694,
+      "sha256": "c32c2cbbcea01d936b3d59134febf4dea48cae5f3941f4f48fc40c1a4bba7b97"
+    },
+    "native-admin-gboard/master-source-comparison.json": {
+      "bytes": 1047,
+      "sha256": "315ebe1e6f65d1d73cebb6fb0e95188b7281da0834266422b336ecb1ebef6067"
+    },
+    "native-admin-gboard/operating-brief.json": {
+      "bytes": 1712,
+      "sha256": "336641ea3b850013b508afdb19ba61fc5237d229f10225446ba6f149a94d6381"
+    },
+    "native-admin-gboard/README.md": {
+      "bytes": 6530,
+      "sha256": "0bf254db17ac7d822c93862c26882cc94643c9f5da96feac1578c07b6e3a1b01"
+    },
+    "native-admin-gboard/run1-focus-invariant.json": {
+      "bytes": 429,
+      "sha256": "514519e38e04d02671ffdc168571f25b2e36a04b6373d17e0752c06564d90c42"
+    },
+    "native-admin-gboard/run1-key1.png": {
+      "bytes": 1995,
+      "sha256": "5ebe3735ec209d6b636d348224906a16f2bf6b3eafa1655c839f68660df361c7"
+    },
+    "native-admin-gboard/run1.json": {
+      "bytes": 1742,
+      "sha256": "24399154b82c79a908ea84dea44860b442cd20eb32ce4a305329a7776019d494"
+    },
+    "native-admin-gboard/run2-focus-invariant.json": {
+      "bytes": 429,
+      "sha256": "c64a019e811edbc7ef4ceff5529e800dcde6cee26b107abfe3868c90b973c0d3"
+    },
+    "native-admin-gboard/run2-key1.png": {
+      "bytes": 1995,
+      "sha256": "5ebe3735ec209d6b636d348224906a16f2bf6b3eafa1655c839f68660df361c7"
+    },
+    "native-admin-gboard/run2.json": {
+      "bytes": 1742,
+      "sha256": "f48ff2dbb476c8dc0878011ce8d79d0c4394f0a2282f07d047065c0c09a7aead"
+    },
+    "native-admin-gboard/run3-focus-invariant.json": {
+      "bytes": 429,
+      "sha256": "b2e5466301f4b2341dc9db77c5c9300ac6e45f3bec7e535644124a524d2cbc50"
+    },
+    "native-admin-gboard/run3-key1.png": {
+      "bytes": 1539,
+      "sha256": "211490966a158ca9b03ff8248b7cf554594fa808e188a24d38e50b973705ce1e"
+    },
+    "native-admin-gboard/run3-key2.png": {
+      "bytes": 2391,
+      "sha256": "db23aa3946b69f6ff76dc7100c62a672dad64e624eb2b83c60082ea35ffb7142"
+    },
+    "native-admin-gboard/run3-key3.png": {
+      "bytes": 3091,
+      "sha256": "6861fc3b743a6d69fdad925f581083dfc93de505ff01bec2ccf48bf737db0d5e"
+    },
+    "native-admin-gboard/run3-key4.png": {
+      "bytes": 3156,
+      "sha256": "66ff71f369cb1ebd73106512d4016c54e5e192c8055da7dda1ae7f086accba40"
+    },
+    "native-admin-gboard/run3.json": {
+      "bytes": 3386,
+      "sha256": "6e349f64708d200be925e9e4695b6decd0631c81f07340a8452c47be76ecfd5b"
+    },
+    "native-admin-gboard/runner-before-1x-case.json": {
+      "bytes": 394,
+      "sha256": "c04dedc9011d33b7f0a7428989811e10d5cfc9ff5b4b333a66ed305061f4aa21"
+    },
+    "native-admin-gboard/runner-before-1x-probe.json": {
+      "bytes": 251,
+      "sha256": "fd1d3300e23daf27fbe4a6c1f49d086b72d0361dc5353cf67c5dfb38c15fed61"
+    },
+    "native-admin-gboard/runner-before-gboard.json": {
+      "bytes": 315,
+      "sha256": "112d7990cbc9462f7fcd237921a9bc2b6f60f00fdd954d240c4d9cc5b4ebce0a"
+    },
+    "native-admin-gboard/runner-before-probe.json": {
+      "bytes": 504,
+      "sha256": "e37eeb09b799698b8484786f2695266d25d01bb376cbffd96863e8a0373474b2"
+    },
+    "native-admin-gboard/runner-before-restoration.json": {
+      "bytes": 171,
+      "sha256": "7ffae18368c28c73beaa0ff2b0ca3165e05100ee569c06427dd0d1731ac4ad2d"
+    },
+    "native-admin-gboard/runner-source/assert_focus.py.txt": {
+      "bytes": 1241,
+      "sha256": "cf7add63665b6ce1680111f4bde9ec16ceac65c479a577a55941a22e428a7d9d"
+    },
+    "native-admin-gboard/runner-source/gboard_filter_case.py.txt": {
+      "bytes": 4014,
+      "sha256": "2bad72a5dc6ef5c3b3b128f98f97e75097713977a9aec5f14b77751cdb00cfc4"
+    },
+    "native-admin-gboard/runner-source/keyboard_probe.py.txt": {
+      "bytes": 2300,
+      "sha256": "abebb7e368a828798746d13ab735d7b80c1b2651030bc8842108f977c62c9d4b"
+    },
+    "native-admin-gboard/runner-source/keyboard_probe_1x.py.txt": {
+      "bytes": 2309,
+      "sha256": "4b673c6f2c65c7c5334870d381eeaee00819a93f16a078d744d3f8170e03b866"
+    },
+    "native-admin-gboard/runner-source/restore_keyboard_packet.py.txt": {
+      "bytes": 1933,
+      "sha256": "b5cb9dd8ee2fc5d6208e977c56e3478b783f2948e790ffdb69b6843db9921198"
+    },
+    "native-admin-gboard/source-fingerprints.json": {
+      "bytes": 1736,
+      "sha256": "85f5d5cc831ecf107f9e0b95802352f78eeb9fc9ba17d6defb1bcbc5eacb4ddb"
+    },
+    "native-admin-gboard/summary.json": {
+      "bytes": 3628,
+      "sha256": "593da3ddaf74735b9f0ce595c048e1fea2a103381cc51dfc888337bc616f8dd0"
+    },
+    "native-admin-gboard/visual-review.json": {
+      "bytes": 1970,
+      "sha256": "0077fa99c62bafb28ee987d68fcc19f3f4493a13bc4b2957f044cc88f3801b82"
     },
     "native-chat/append.json": {
       "bytes": 884,
@@ -1663,8 +1803,8 @@
       "sha256": "5c8013eb9693e540a771743fa74b10476a3b88dec2acdd1c683e36c8a6f9c391"
     },
     "README.md": {
-      "bytes": 15371,
-      "sha256": "9d5d0338cacd2f2dff62438fba04897bfbf79ba253d3e151823424f16f38e587"
+      "bytes": 16075,
+      "sha256": "026d5c10991de1f0ef6d6281d0e1cac9975abec57d14d8ead5d6ba378cd0dc04"
     },
     "restored-microphone.json": {
       "bytes": 269,
