@@ -113,7 +113,7 @@
       "result": "peers-result.json#/cases/0",
       "observed": "Both viewers had no inbound video stats, zero intrinsic video size, readyState0, and zero processed frames at the end of the initial30-second watch wait. After verified source scrolling both decoded/presented frames.",
       "limits": "One capture cycle.30s is the harness observation window, not an approved p95 threshold. Motion/recovery correlation is observed; capture, network or transport causality is unproven. Picker delay is an essential reproduction condition; no general failure rate is established.",
-      "defect_issue": null,
+      "defect_issue": 584,
       "precondition": "System app-only picker remained open for about150s while two Settings task cards were inspected. Ordinary immediate-picker behavior was not retested.",
       "capture_requested_to_prepared_device_log_seconds": 150.446
     },

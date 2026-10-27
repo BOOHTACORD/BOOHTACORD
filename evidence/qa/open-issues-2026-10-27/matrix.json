@@ -2049,7 +2049,10 @@
               "ANDROID-stop-with-mic",
               "AUDIO-audibility"
             ]
-          }
+          },
+          "defects": [
+            584
+          ]
         },
         {
           "section": "Приёмка",
@@ -2916,6 +2919,9 @@
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
           "witness_limits": [
             "Native sender/two Web receivers: scoped positive counters and Stop quiet passed; initial first-frame wait failed before source motion. RTT/source FPS/clocks/other lifecycle/platform/protocol repetitions and original row clauses remain unaccepted. Controller toolbar/guard failures retained."
+          ],
+          "defects": [
+            584
           ]
         },
         {
@@ -3011,6 +3017,9 @@
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
           "witness_limits": [
             "Native sender/two Web receivers: scoped positive counters and Stop quiet passed; initial first-frame wait failed before source motion. RTT/source FPS/clocks/other lifecycle/platform/protocol repetitions and original row clauses remain unaccepted. Controller toolbar/guard failures retained."
+          ],
+          "defects": [
+            584
           ]
         },
         {
@@ -3077,6 +3086,9 @@
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
           "witness_limits": [
             "Native sender/two Web receivers: scoped positive counters and Stop quiet passed; initial first-frame wait failed before source motion. RTT/source FPS/clocks/other lifecycle/platform/protocol repetitions and original row clauses remain unaccepted. Controller toolbar/guard failures retained."
+          ],
+          "defects": [
+            584
           ]
         },
         {
@@ -15926,7 +15938,8 @@
     579,
     580,
     581,
-    582
+    582,
+    584
   ],
   "criterion_witness_note": "Exact row links are scoped. PARTIAL/FAIL/BLOCKED never satisfy the complete multi-platform requirement; unlinked PENDING rows still need routing/execution.",
   "acceptance_method_catalog": "acceptance-methods.json",

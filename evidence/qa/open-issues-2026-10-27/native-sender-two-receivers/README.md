@@ -15,3 +15,5 @@ Toolbar Stop did not establish teardown; its source binds the same method as doc
 Native diagnostics retain fixed enums and numeric counters only. Full HTTP payload, sender/receiver RTT and source capture FPS remain UNKNOWN. RTT absence is not zero. Browser presentation callbacks mean compositor submissions, not unique-frame quality or human perception. Device clocks were not calibrated, and no cross-device subtraction was performed. The broad QA gates remain open.
 
 The system picker remained open about150s between native capture_requested and capture_prepared while the two Settings task cards were inspected. This is an essential precondition for the reported initial-frame failure. The ordinary immediate-picker path was not repeated, and the finding does not establish its failure rate.
+
+Initial-frame finding after approximately150s in the system picker is tracked as [#584](https://github.com/Egkurilov/BOOHTACORD/issues/584). Exact issue/QA body readbacks are retained in native-sender-two-receivers/github-updates.json (packet-local github-updates.json).

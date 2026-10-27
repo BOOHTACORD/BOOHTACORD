@@ -189,3 +189,5 @@ measurements remain separate gates. No test consolidation or deletion occurred.
 ## Physical Android sender / two Web receivers — 2026-10-28 Moscow
 
 [Source-bound numeric results and limitations](native-sender-two-receivers/summary.json): signed2082/source072426d6 published public Settings app-only to two actual Chrome155/Web8a2cda38 listeners. Native counters and HTTP success milestones grew; receivers decoded12→54 and12→56, with presentation callbacks. Initial30s first-frame wait failed before later source scrolling; root cause unknown. Parent bottom dock Stop cleared projection/screen FGS while retaining voice/mic;68s of sender-event quiet and two cleared receiver snapshots followed. Toolbar/guard failures and the missed240s bound are retained. No calibrated QoE/RTT/source-FPS/acoustic/whole-platform acceptance; all parent gates remain open.
+
+Initial-frame finding after approximately150s in the system picker is tracked as [#584](https://github.com/Egkurilov/BOOHTACORD/issues/584). Exact issue/QA body readbacks are retained in native-sender-two-receivers/github-updates.json (packet-local github-updates.json).
