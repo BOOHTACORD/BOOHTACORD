@@ -1,0 +1,27 @@
+"""Actual TEXT/DM request headers with a declared body but no transmitted multipart byte."""
+import concurrent.futures,json,time
+from datetime import datetime,timezone
+from support import SOURCE,ORIGIN,Client,scopes,snapshot,staging_count,abort,save,wait_active,guard
+guard();clients=[Client('member_a'),Client('member_b')]
+report={'status':'RUNNING','source_revision':SOURCE,'at_utc':datetime.now(timezone.utc).isoformat(),'origin':ORIGIN,'native_idle_seconds':60,'cases':[]}
+def read_response(c):
+ try:r=c.getresponse();r.read();return {'status':r.status}
+ except Exception as e:return {'transport_error_type':type(e).__name__}
+for kind,client,path in zip(['TEXT','DM'],clients,scopes()):
+ base=snapshot();staging=staging_count();case={'scope':kind,'baseline':base,'baseline_staging':staging,'samples':[]};report['cases'].append(case)
+ c=client.begin(path,partial=False);start=time.monotonic();pool=concurrent.futures.ThreadPoolExecutor(max_workers=1);job=pool.submit(read_response,c)
+ try:
+  for tick in [1,30,62,80]:
+   while time.monotonic()-start<tick and not job.done():time.sleep(.2)
+   m=snapshot();case['samples'].append({'elapsed_seconds':round(time.monotonic()-start,3),**m,'response_received':job.done()})
+   save('empty-body-result.json',report)
+   if job.done():break
+  case['response_before_disconnect']=job.result() if job.done() else None
+  case['status']='PASS_TIMEOUT' if case['response_before_disconnect'] and case['response_before_disconnect'].get('status')==408 else 'FAIL_NO_TIMEOUT_RESPONSE'
+ finally:
+  abort(c);pool.shutdown(wait=True);case['restored']=wait_active(base['voice_platform_uploads_inflight']);case['staging_after']=staging_count();assert case['staging_after']==staging
+  assert case['restored']['voice_platform_attachment_upload_reserved_bytes']==base['voice_platform_attachment_upload_reserved_bytes']
+  save('empty-body-result.json',report);print(json.dumps({'scope':kind,'status':case['status'],'resource_baseline_restored':True}),flush=True)
+report['status']='PASS_BOTH_EMPTY_BODY_TIMEOUTS' if all(c['status'].startswith('PASS') for c in report['cases']) else 'FAIL_EMPTY_BODY_TIMEOUTS'
+save('empty-body-result.json',report)
+raise SystemExit(0 if report['status'].startswith('PASS') else 1)

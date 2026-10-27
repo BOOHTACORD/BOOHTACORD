@@ -1,0 +1,48 @@
+{
+  "status": "FAIL_DEADLINES_WITH_PASS_GLOBAL_CAP_AND_REAL_WRITER_CLEANUP",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "qa_criterion": "I240.C2",
+  "defect_issue": 134,
+  "global_16_actor_count": 9,
+  "global_active": 16.0,
+  "global_reserved_bytes": 400000000.0,
+  "global_rejection": {
+    "status": 429,
+    "code": "UPLOAD_CONCURRENCY_LIMITED",
+    "retry_after": "1"
+  },
+  "global_retry_status": 201,
+  "writer_actual_bytes_before_ENOSPC": [
+    8192,
+    8192
+  ],
+  "writer_error_responses": [
+    {
+      "status": 500,
+      "code": "INTERNAL"
+    },
+    {
+      "status": 500,
+      "code": "INTERNAL"
+    }
+  ],
+  "writer_retry_statuses": [
+    201,
+    201
+  ],
+  "absolute_both_uploads_native_age_lower_bound_seconds": 931.9486994839999,
+  "absolute_native_idle_gap_upper_bound_seconds": 52.71678203900001,
+  "absolute_native_oldest_at_end": 933.932113473,
+  "absolute_last_progress_native_age": 881.215331434,
+  "absolute_responses": [
+    null,
+    null
+  ],
+  "absolute_cleanup": "PASS",
+  "limits": [
+    "No production, physical Android, audibility, screen or load-capacity acceptance.",
+    "Writer test covers actual ENOSPC after8192 bytes, not every I/O/fsync failure; observed500 INTERNAL is retained and is not a friendly507 admission claim.",
+    "All fault fixture resources were removed; six static local QA quota accounts and one successful1024-byte main-profile attachment remain owned test fixtures.",
+    "Long-lived voice/realtime lifetime acceptance remains NOT_RUN; no source code/test consolidation was performed."
+  ]
+}

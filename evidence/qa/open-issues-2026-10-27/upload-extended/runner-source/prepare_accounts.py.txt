@@ -1,0 +1,22 @@
+"""Create six owned quota-test members; preserve and obey actual registration429 Retry-After."""
+import json,secrets,time
+from datetime import datetime,timezone
+from support import WORK,SOURCE,Client,save,guard
+guard();path=WORK/'quota-users.private.json'
+assert not path.exists(),'Inspect existing owned fixture before resuming this initializer'
+users=[{'login':'qa_cap_'+str(i).zfill(2),'password':secrets.token_urlsafe(26),'registered':False} for i in range(1,7)]
+save(path.name,users);client=Client('admin');start=time.monotonic()
+report={'status':'RUNNING','source_revision':SOURCE,'at_utc':datetime.now(timezone.utc).isoformat(),'outcomes':[],'credentials_printed':False}
+for user in users:
+ while True:
+  status,body,headers=client.request('/auth/register','POST',{'login':user['login'],'password':user['password']})
+  row={'status':status,'elapsed_seconds':round(time.monotonic()-start,2),'registered_count':sum(u['registered'] for u in users)}
+  if status==429:
+   delay=int(headers['Retry-After']);assert 0<delay<=901;row['retry_after_seconds']=delay;report['outcomes'].append(row)
+   save('account-preparation.json',report);print(json.dumps(row),flush=True)
+   time.sleep(delay+1);continue
+  assert status==201,('owned_registration_status',status)
+  user.update(registered=True,account_id=body['id']);save(path.name,users)
+  row['registered_count']=sum(u['registered'] for u in users);report['outcomes'].append(row)
+  save('account-preparation.json',report);print(json.dumps(row),flush=True);break
+report['status']='PASS_SIX_OWNED_MEMBERS_READY_LIMIT_PRESERVED';save('account-preparation.json',report);print(report['status'],flush=True)

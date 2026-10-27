@@ -1,0 +1,39 @@
+"""Actual15-minute upload maximum with progress until native age880s, then observe to930s."""
+import concurrent.futures,json,time
+from datetime import datetime,timezone
+from support import WORK,SOURCE,ORIGIN,Client,connection,scopes,guard,snapshot,staging_count,abort,await_clean,save,wait_active
+guard();assert await_clean()['voice_platform_uploads_inflight']==0;assert staging_count()==0
+clients=[Client('member_a'),Client('member_b')];connections=[]
+report={'status':'RUNNING','at_utc':datetime.now(timezone.utc).isoformat(),'source_revision':SOURCE,'origin':ORIGIN,'native_maximum_seconds':900,'native_idle_seconds':60,'samples':[],'progress_native_ages':[]}
+pool=concurrent.futures.ThreadPoolExecutor(max_workers=2);start=time.monotonic();jobs=[]
+def response(c):
+ try:
+  r=c.getresponse();body=r.read();return {'status':r.status,'code':json.loads(body).get('error',{}).get('code') if body else None}
+ except Exception as e:return {'transport_error_type':type(e).__name__}
+try:
+ for client,path in zip(clients,scopes()):
+  c=connection(1300);connections.append(c);c.putrequest('POST','/api/v1'+path)
+  for k,v in {'Origin':ORIGIN,'Cookie':client.cookie,'Content-Type':'multipart/form-data; boundary=qa-absolute','Content-Length':'1000000'}.items():c.putheader(k,v)
+  c.endheaders();c.send(b'--qa-absolute\r\nContent-Disposition: form-data; name="file"; filename="synthetic.bin"\r\nContent-Type: application/octet-stream\r\n\r\n'+b'X'*8192)
+  jobs.append(pool.submit(response,c))
+ report['two_active_baseline']=wait_active(2);next_progress=20;last_record=-1
+ while time.monotonic()-start<1200:
+  s=snapshot();age=s['voice_platform_upload_oldest_inflight_seconds'];elapsed=round(time.monotonic()-start,3)
+  if age>=next_progress and next_progress<=880 and not any(j.done() for j in jobs):
+   for c in connections:c.send(b'X'*8192)
+   report['progress_native_ages'].append(age);next_progress+=20
+  if age-last_record>=20 or age>=890 or any(j.done() for j in jobs):
+   row={'elapsed_seconds':elapsed,**s,'response_received':[j.done() for j in jobs]};report['samples'].append(row);last_record=age
+   save('absolute-result.json',report);print(json.dumps(row),flush=True)
+  if all(j.done() for j in jobs) or age>=930:break
+  time.sleep(5)
+ report['responses_before_disconnect']=[j.result() if j.done() else None for j in jobs]
+ report['end_snapshot']=snapshot();report['staging_files_before_disconnect']=staging_count()
+ report['last_progress_native_age']=report['progress_native_ages'][-1] if report['progress_native_ages'] else None
+ report['status']='PASS_DEPLOYED_ABSOLUTE_RESPONSE' if all(r and r.get('status')==408 for r in report['responses_before_disconnect']) else 'FAIL_DEPLOYED_ABSOLUTE_NO_RESPONSE'
+finally:
+ for c in connections:abort(c)
+ pool.shutdown(wait=True);report['after_disconnect']=await_clean();report['staging_files_after']=staging_count()
+ report['restoration']='PASS' if report['staging_files_after']==0 else 'FAIL';save('absolute-result.json',report)
+ print(json.dumps({'status':report['status'],'restoration':report['restoration']}),flush=True)
+raise SystemExit(0 if report['status'].startswith('PASS') else 1)

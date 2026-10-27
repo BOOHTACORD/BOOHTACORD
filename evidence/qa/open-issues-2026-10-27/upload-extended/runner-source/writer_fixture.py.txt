@@ -1,0 +1,53 @@
+"""A separate owned DB/API and2GiB+32MB tmpfs; never fills the persistent QA/host disk."""
+import hashlib,json,re,secrets,subprocess,time,urllib.parse,urllib.request
+from support import WORK,SOURCE,PROJECT,docker,guard,save
+from profile_common import CONTEXT
+LABEL='boohtacord.qa.owner'
+class Fixture:
+ def __init__(self):
+  self.owner='qa-write-'+secrets.token_hex(6);self.api=PROJECT+'-'+self.owner;self.volume=self.api+'-files';self.database=self.owner.replace('-','_')
+  assert re.fullmatch(r'qa_write_[a-f0-9]{12}',self.database)
+  self.env=WORK/'writer-runtime.private.env';self.created_db=False;self.created_volume=False;self.created_api=False
+  self.password=secrets.token_urlsafe(26);self.peer_password=secrets.token_urlsafe(26);self.fillers=[]
+  save('writer-credentials.private.json',{'password':self.password,'peer_password':self.peer_password})
+ def sql(self,statement):return docker('exec',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','postgres','-At','-v','ON_ERROR_STOP=1','-c',statement).decode().strip()
+ def owned(self,kind,name):
+  data=json.loads(docker(kind,'inspect',name))[0];labels=data.get('Config',{}).get('Labels') if kind=='container' else data['Labels'];assert labels[LABEL]==self.owner;return data
+ def helper(self,*args):
+  self.owned('volume',self.volume)
+  return docker('run','--rm','--network','none','--read-only','--volume',self.volume+':/qa','--entrypoint','/bin/sh','postgres:17.6-alpine','-ec',*args)
+ def start(self):
+  guard();base=json.loads(docker('inspect',PROJECT+'-api-1'))[0];self.image=base['Image']
+  values=dict(x.split('=',1) for x in base['Config']['Env']);url=urllib.parse.urlsplit(values['DATABASE_URL']);values['DATABASE_URL']=urllib.parse.urlunsplit(url._replace(path='/'+self.database))
+  values.update(ATTACHMENTS_DIRECTORY='/qa',PUBLIC_ORIGIN='http://localhost:18089',OTEL_SERVICE_NAME='qa-upload-writer',LIVEKIT_API_KEY='qa'+secrets.token_hex(8),LIVEKIT_API_SECRET=secrets.token_urlsafe(32),LIVEKIT_PRIVATE_HTTP_URL='http://127.0.0.1:9',LIVEKIT_PUBLIC_WS_URL='ws://localhost:18089')
+  self.env.write_text(''.join(k+'='+v+'\n' for k,v in values.items()),encoding='utf-8',newline='\n')
+  self.sql('CREATE DATABASE '+self.database);self.created_db=True
+  common=['--rm','--network',PROJECT+'_runtime','--env-file',str(self.env)]
+  docker('run',*common,'--entrypoint','/migrate',self.image)
+  docker('run','-i',*common,'--entrypoint','/bootstrap-admin',self.image,'--login','qa_writer_owner','--password-stdin',input=(self.password+'\n').encode())
+  docker('volume','create','--label',LABEL+'='+self.owner,'--opt','type=tmpfs','--opt','device=tmpfs','--opt','o=size=2179483648',self.volume);self.created_volume=True
+  self.helper('chown 65532:65532 /qa; chmod 0700 /qa')
+  docker('run','-d','--name',self.api,'--label',LABEL+'='+self.owner,'--network',PROJECT+'_runtime','--env-file',str(self.env),'--publish','127.0.0.1:18089:8080','--cpus','1','--memory','2g','--pids-limit','128','--log-opt','max-size=2m','--log-opt','max-file=2','--volume',self.volume+':/qa',self.image);self.created_api=True
+  for _ in range(100):
+   try:
+    if urllib.request.urlopen('http://localhost:18089/api/v1/health',timeout=1).status==200:return
+   except Exception:time.sleep(.2)
+  raise AssertionError('owned_writer_fixture_not_ready')
+ def metrics(self):
+  raw=docker('exec',PROJECT+'-postgres-1','wget','-qO-','http://'+self.api+':8080/metrics').decode();result={}
+  for name in ['voice_platform_uploads_inflight','voice_platform_attachment_upload_reserved_bytes']:
+   rows=re.findall('^'+name+r' ([^\n]+)$',raw,re.M);assert len(rows)==1;result[name]=float(rows[0])
+  result['staging_files']=int(self.helper('find /qa/staging -type f | wc -l').decode());return result
+ def fill(self):
+  self.owned('volume',self.volume);name=self.api+'-fill-'+str(len(self.fillers));self.fillers.append(name)
+  args=['docker','--context',CONTEXT,'run','--name',name,'--label',LABEL+'='+self.owner,'--network','none','--read-only','--cpus','1','--memory','3g','--memory-swap','3g','--volume',self.volume+':/qa','--entrypoint','/bin/sh','postgres:17.6-alpine','-ec','dd if=/dev/zero of=/qa/qa-fault-fill bs=1048576 count=2100']
+  result=subprocess.run(args,capture_output=True,timeout=90);self.owned('container',name)
+  assert result.returncode==1 and b'No space left on device' in result.stderr,'bounded_filler_did_not_reach_ENOSPC'
+  assert self.helper('stat -f -c %a /qa').decode().strip()=='0'
+ def unfill(self):self.helper('rm -- /qa/qa-fault-fill')
+ def close(self):
+  if self.created_api:self.owned('container',self.api);docker('stop','--time','15',self.api);docker('rm',self.api)
+  for name in self.fillers:self.owned('container',name);docker('rm',name)
+  if self.created_volume:self.owned('volume',self.volume);docker('volume','rm',self.volume)
+  if self.created_db:self.sql('DROP DATABASE '+self.database+' WITH (FORCE)')
+  return {'owned_API_removed':self.created_api,'owned_tmpfs_removed':self.created_volume,'owned_database_removed':self.created_db,'main_staging_untouched':True}

@@ -1,0 +1,33 @@
+"""Force actual mid-write ENOSPC after admission and space guard; verify cleanup and201 recovery."""
+import concurrent.futures,json,time
+from datetime import datetime,timezone
+from support import SOURCE,save,abort,guard
+from writer_fixture import Fixture
+from writer_client import Client,END
+guard();fixture=Fixture();report={'status':'RUNNING','at_utc':datetime.now(timezone.utc).isoformat(),'source_revision':SOURCE,'tmpfs_bytes':2179483648,'filler_memory_limit_bytes':3221225472,'cases':[]};connections=[]
+try:
+ fixture.start();client=Client(fixture.password);report['api_image_id']=fixture.image
+ s,cat,_=client.request('/admin/categories','POST',{'name':'QA writer'});assert s==201
+ s,ch,_=client.request('/admin/categories/'+cat['id']+'/channels','POST',{'name':'QA writer','kind':'TEXT'});assert s==201
+ s,peer,_=client.request('/auth/register','POST',{'login':'qa_writer_peer','password':fixture.peer_password});assert s==201
+ s,dm,_=client.request('/direct-messages','POST',{'participant_id':peer['id']});assert s==201
+ for kind,path in [('TEXT','/channels/'+ch['id']+'/attachments'),('DM','/direct-messages/'+dm['id']+'/attachments')]:
+  case={'scope':kind,'baseline':fixture.metrics()};report['cases'].append(case);c=client.upload(path,True);connections.append(c)
+  for _ in range(50):
+   m=fixture.metrics()
+   if m['voice_platform_attachment_upload_reserved_bytes']==25000000 and m['staging_files']==1:break
+   time.sleep(.1)
+  assert m['voice_platform_uploads_inflight']==1 and m['voice_platform_attachment_upload_reserved_bytes']==25000000 and m['staging_files']==1
+  case['blocked_before_fill']=m;time.sleep(.5);sizes=fixture.helper('find /qa/staging -type f -exec stat -c %s {} \;').decode().split();case['written_bytes_before_full']=sum(map(int,sizes));assert case['written_bytes_before_full']>0
+  fixture.fill();case['filesystem_full_confirmed']=True
+  c.send(b'X'*24576+END);r=c.getresponse();body=json.loads(r.read());case['response']={'status':r.status,'code':body.get('error',{}).get('code')};abort(c);connections.remove(c)
+  assert case['response']=={'status':500,'code':'INTERNAL'}
+  case['after_error']=fixture.metrics();assert all(v==0 for v in case['after_error'].values())
+  fixture.unfill();c=client.upload(path,False);connections.append(c);r=c.getresponse();r.read();case['retry_status']=r.status;abort(c);connections.remove(c)
+  assert case['retry_status']==201;case['after_retry']=fixture.metrics();assert all(v==0 for v in case['after_retry'].values())
+  save('enospc-result.json',report);print(json.dumps({'scope':kind,'mid_write_error':500,'retry':201,'resources_released':True}),flush=True)
+ report['status']='PASS_REAL_TEXT_DM_MIDWRITE_ENOSPC_AND_RECOVERY'
+except Exception as e:report['status']='FAIL_OR_CONTROLLER';report['error_type']=type(e).__name__;raise
+finally:
+ for c in connections:abort(c)
+ report['cleanup']=fixture.close();save('enospc-result.json',report);print(json.dumps({'status':report['status'],'cleanup':report['cleanup']}),flush=True)

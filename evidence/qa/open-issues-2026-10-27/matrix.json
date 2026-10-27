@@ -5009,19 +5009,28 @@
             "UPLOAD-real-TEXT-idle-deadline",
             "UPLOAD-real-DM-idle-deadline",
             "UPLOAD-real-account-concurrency-and-progress",
-            "UPLOAD-native-HTTP1-idle-and-absolute"
+            "UPLOAD-native-HTTP1-idle-and-absolute",
+            "UPLOAD-real-TEXT-DM-midwrite-ENOSPC",
+            "UPLOAD-real-empty-TEXT-DM-body",
+            "UPLOAD-real-deployed-15min-absolute",
+            "UPLOAD-real-global16-cap"
           ],
           "evidence": [
             "upload-timeout/summary.json",
             "upload-timeout/idle-text-result.json",
             "upload-timeout/idle-dm-result.json",
             "upload-timeout/native-network-result.json",
-            "upload-timeout/controls-result.json"
+            "upload-timeout/controls-result.json",
+            "upload-extended/summary.json",
+            "upload-extended/global-result.json",
+            "upload-extended/enospc-result.json",
+            "upload-extended/absolute-result.json",
+            "upload-extended/empty-body-result.json"
           ],
           "execution": "Run the retained loopback-only probe_idle.py, probe_dm_idle.py and probe_controls.py; native overlay regression command retained in native-network-result.json.",
           "platform": "This Windows PC; real loopback Caddy/Go API and PostgreSQL17.6; source072426d6; no API mocks",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "upload-timeout/summary.json",
+          "result": "upload-timeout/summary.json; upload-extended/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_api_faults"
@@ -5039,16 +5048,20 @@
               "UPLOAD-real-TEXT-idle-deadline",
               "UPLOAD-real-DM-idle-deadline",
               "UPLOAD-real-account-concurrency-and-progress",
-              "UPLOAD-native-HTTP1-idle-and-absolute"
+              "UPLOAD-native-HTTP1-idle-and-absolute",
+              "UPLOAD-real-TEXT-DM-midwrite-ENOSPC",
+              "UPLOAD-real-empty-TEXT-DM-body",
+              "UPLOAD-real-deployed-15min-absolute",
+              "UPLOAD-real-global16-cap"
             ]
           },
-          "reason": "Both real stopped multipart requests still held active1/reserved25MB/staging1 at80s; no408 before forced disconnect. Original4 unit controls pass, real HTTP1 idle/absolute regression fails.",
-          "remaining_work_state": "FAIL_CONFIRMED; global/writer/other variants remain NOT_RUN",
+          "reason": "Original partial-body idle FAIL is now joined by byte-less body and actual15-minute absolute FAIL. Real global16 cap and mid-write ENOSPC cleanup/retry pass. See the separately bounded current witnesses.",
+          "remaining_work_state": "FAIL_CONFIRMED; #134 requires implementation repair; long-lived voice/realtime gate remains separate",
           "witness_limits": [
-            "No production, physical Android, microphone or media acceptance.",
-            "Global16 concurrency, writer/disk failure, byte-less stalled body and15-minute deployed absolute-duration variants remain NOT_RUN.",
-            "Two successful32768-byte unattached synthetic fixtures remain intentionally in this local QA storage; staging is0.",
-            "No product code changed, no test consolidation/deletion and no claim that existing unit PASS covers real server-body interruption."
+            "No production, physical Android, audibility, screen or load-capacity acceptance.",
+            "Writer test covers actual ENOSPC after8192 bytes, not every I/O/fsync failure; observed500 INTERNAL is retained and is not a friendly507 admission claim.",
+            "All fault fixture resources were removed; six static local QA quota accounts and one successful1024-byte main-profile attachment remain owned test fixtures.",
+            "Long-lived voice/realtime lifetime acceptance remains NOT_RUN; no source code/test consolidation was performed."
           ]
         },
         {
@@ -5654,7 +5667,11 @@
         "UPLOAD-real-TEXT-idle-deadline",
         "UPLOAD-real-DM-idle-deadline",
         "UPLOAD-real-account-concurrency-and-progress",
-        "UPLOAD-native-HTTP1-idle-and-absolute"
+        "UPLOAD-native-HTTP1-idle-and-absolute",
+        "UPLOAD-real-TEXT-DM-midwrite-ENOSPC",
+        "UPLOAD-real-empty-TEXT-DM-body",
+        "UPLOAD-real-deployed-15min-absolute",
+        "UPLOAD-real-global16-cap"
       ],
       "evidence": [
         "notification-readiness/summary.json",
@@ -5662,7 +5679,8 @@
         "web-session-contract/swagger.json",
         "trace-runtime/summary.json",
         "local-staging/summary.json",
-        "upload-timeout/summary.json"
+        "upload-timeout/summary.json",
+        "upload-extended/summary.json"
       ],
       "defects": [
         134

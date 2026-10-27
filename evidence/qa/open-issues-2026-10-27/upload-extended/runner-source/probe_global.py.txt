@@ -1,0 +1,36 @@
+"""Real global16-upload cap: eight actors hold2 each; a ninth unused actor must receive429."""
+import json,time
+from datetime import datetime,timezone
+from http.cookies import SimpleCookie
+from support import WORK,SOURCE,ORIGIN,Client,connection,credentials,scopes,snapshot,staging_count,abort,await_clean,save,wait_active,guard
+guard();assert await_clean()['voice_platform_uploads_inflight']==0;assert staging_count()==0
+owned=json.loads((WORK/'quota-users.private.json').read_text());assert len(owned)==6 and all(r['registered'] for r in owned)
+base=credentials();records=[{'login':base[k+'_login'],'password':base[k+'_password']} for k in ['admin','member_a','member_b']]+owned
+report={'status':'RUNNING','at_utc':datetime.now(timezone.utc).isoformat(),'source_revision':SOURCE,'origin':ORIGIN,'actor_count':9,'global_limit':16,'account_limit':2,'checks':[]};clients=[];held=[]
+path=scopes()[0];prefix=b'--qa-global\r\nContent-Disposition: form-data; name="file"; filename="synthetic.bin"\r\nContent-Type: application/octet-stream\r\n\r\n';body=prefix+b'X'*1024+b'\r\n--qa-global--\r\n'
+def complete(client):
+ c=connection()
+ try:
+  c.request('POST','/api/v1'+path,body=body,headers={'Origin':ORIGIN,'Cookie':client.cookie,'Content-Type':'multipart/form-data; boundary=qa-global'})
+  r=c.getresponse();raw=r.read();data=json.loads(raw);return {'status':r.status,'code':data.get('error',{}).get('code'),'retry_after':r.getheader('Retry-After')},data
+ finally:abort(c)
+try:
+ for record in records:
+  c=Client.__new__(Client);c.cookie='';s,_,h=c.request('/auth/login','POST',{'login':record['login'],'password':record['password']});assert s==204,('owned_global_login_status',s)
+  c.cookie='vp_session='+SimpleCookie(h['Set-Cookie'])['vp_session'].value;clients.append(c)
+ report['all_nine_real_logins']=True
+ for c in clients[:8]:
+  held.extend([c.begin(path),c.begin(path)])
+ report['saturated']=wait_active(16);assert report['saturated']['voice_platform_attachment_upload_reserved_bytes']==400000000;assert staging_count()==16
+ report['ninth_actor_active_before']=0;report['seventeenth_response'],_=complete(clients[8])
+ assert report['seventeenth_response']=={'status':429,'code':'UPLOAD_CONCURRENCY_LIMITED','retry_after':'1'}
+ report['after_reject']=snapshot();report['staging_after_reject']=staging_count();assert report['staging_after_reject']==16;assert report['after_reject']['voice_platform_uploads_inflight']==16 and report['after_reject']['voice_platform_attachment_upload_reserved_bytes']==400000000
+ report['checks'].append('global16_cap_rejects_ninth_actor_with_no_account_slot_in_use')
+ abort(held.pop());report['one_slot_released']=wait_active(15);assert report['one_slot_released']['voice_platform_attachment_upload_reserved_bytes']==375000000
+ retry,data=complete(clients[8]);report['ninth_actor_retry_status']=retry['status'];assert retry['status']==201
+ save('global-completed-attachment.private.json',{'id':data['id']});report['checks'].append('released_global_slot_allows_real201_retry_by_previously_rejected_actor')
+ report['status']='PASS_REAL_GLOBAL16_CAP_REJECTION_RELEASE_AND_RETRY'
+finally:
+ for c in held:abort(c)
+ report['after_disconnect']=await_clean();report['staging_files_after']=staging_count();assert report['staging_files_after']==0
+ save('global-result.json',report);print(json.dumps({'status':report['status'],'checks':report['checks'],'staging_files':report['staging_files_after']}),flush=True)

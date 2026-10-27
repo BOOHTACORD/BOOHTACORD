@@ -1,0 +1,20 @@
+"""Reuse the owned loopback upload authority; protect additional fixture credentials."""
+import json,os,subprocess,sys,time
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2];WORK=Path(__file__).parent
+sys.path.insert(0,str(ROOT/'.out/qa-upload-faults'))
+from common import Client,connection,guard,snapshot,staging_count,abort,await_clean,ORIGIN,SOURCE,docker,PROJECT
+from profile_common import credentials
+subprocess.run(['icacls',str(WORK),'/inheritance:r','/grant:r',os.environ['USERNAME']+':(OI)(CI)F'],capture_output=True,check=True)
+def save(name,value):(WORK/name).write_text(json.dumps(value,indent=2)+'\n',encoding='utf-8',newline='\n')
+def scopes():
+ text=json.loads((ROOT/'.out/local-qa/topology.private.json').read_text())['text']
+ dm=json.loads((ROOT/'.out/qa-upload-faults/dm-scope.private.json').read_text())['direct_message']
+ return ['/channels/'+text+'/attachments','/direct-messages/'+dm+'/attachments']
+def wait_active(n,seconds=10):
+ end=time.monotonic()+seconds
+ while time.monotonic()<end:
+  s=snapshot()
+  if s['voice_platform_uploads_inflight']==n:return s
+  time.sleep(.2)
+ raise AssertionError('owned_active_count_did_not_match')

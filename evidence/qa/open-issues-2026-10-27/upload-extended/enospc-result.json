@@ -1,0 +1,81 @@
+{
+  "status": "PASS_REAL_TEXT_DM_MIDWRITE_ENOSPC_AND_RECOVERY",
+  "at_utc": "2026-10-27T20:22:05.427279+00:00",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "tmpfs_bytes": 2179483648,
+  "filler_memory_limit_bytes": 3221225472,
+  "cases": [
+    {
+      "scope": "TEXT",
+      "baseline": {
+        "voice_platform_uploads_inflight": 0.0,
+        "voice_platform_attachment_upload_reserved_bytes": 0.0,
+        "staging_files": 0
+      },
+      "blocked_before_fill": {
+        "voice_platform_uploads_inflight": 1.0,
+        "voice_platform_attachment_upload_reserved_bytes": 25000000.0,
+        "staging_files": 1
+      },
+      "written_bytes_before_full": 8192,
+      "filesystem_full_confirmed": true,
+      "response": {
+        "status": 500,
+        "code": "INTERNAL"
+      },
+      "after_error": {
+        "voice_platform_uploads_inflight": 0.0,
+        "voice_platform_attachment_upload_reserved_bytes": 0.0,
+        "staging_files": 0
+      },
+      "retry_status": 201,
+      "after_retry": {
+        "voice_platform_uploads_inflight": 0.0,
+        "voice_platform_attachment_upload_reserved_bytes": 0.0,
+        "staging_files": 0
+      }
+    },
+    {
+      "scope": "DM",
+      "baseline": {
+        "voice_platform_uploads_inflight": 0.0,
+        "voice_platform_attachment_upload_reserved_bytes": 0.0,
+        "staging_files": 0
+      },
+      "blocked_before_fill": {
+        "voice_platform_uploads_inflight": 1.0,
+        "voice_platform_attachment_upload_reserved_bytes": 25000000.0,
+        "staging_files": 1
+      },
+      "written_bytes_before_full": 8192,
+      "filesystem_full_confirmed": true,
+      "response": {
+        "status": 500,
+        "code": "INTERNAL"
+      },
+      "after_error": {
+        "voice_platform_uploads_inflight": 0.0,
+        "voice_platform_attachment_upload_reserved_bytes": 0.0,
+        "staging_files": 0
+      },
+      "retry_status": 201,
+      "after_retry": {
+        "voice_platform_uploads_inflight": 0.0,
+        "voice_platform_attachment_upload_reserved_bytes": 0.0,
+        "staging_files": 0
+      }
+    }
+  ],
+  "api_image_id": "sha256:b34a09b6eebfb87fea478e7cd440cc7ab9c52dc7dbd3cf4d659b12a9eff98a47",
+  "cleanup": {
+    "owned_API_removed": true,
+    "owned_tmpfs_removed": true,
+    "owned_database_removed": true,
+    "main_staging_untouched": true
+  },
+  "cleanup_fresh_readback": {
+    "owned_containers_absent": true,
+    "owned_volumes_absent": true,
+    "owned_database_absent": true
+  }
+}

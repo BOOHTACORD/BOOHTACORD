@@ -1,0 +1,35 @@
+{
+  "command": "go test -json -count=1 ./internal/storage/write_upload",
+  "toolchain": "go1.26.4 windows/amd64",
+  "named_results": [
+    {
+      "Package": "voice-platform/backend/internal/storage/write_upload",
+      "Test": "TestWriteGuardedRemovesTemporaryFileAfterGuardFailure",
+      "Action": "pass"
+    },
+    {
+      "Package": "voice-platform/backend/internal/storage/write_upload",
+      "Test": "TestWriteKeepsExactlyTwentyFiveMillionBytes",
+      "Action": "pass"
+    },
+    {
+      "Package": "voice-platform/backend/internal/storage/write_upload",
+      "Test": "TestWriteRejectsExtraByteAndRemovesTemporaryFile",
+      "Action": "pass"
+    },
+    {
+      "Package": "voice-platform/backend/internal/storage/write_upload",
+      "Test": "TestWriteRemovesTemporaryFileAfterReadFailure",
+      "Action": "pass"
+    },
+    {
+      "Package": "voice-platform/backend/internal/storage/write_upload",
+      "Test": "TestWriteRejectsCancelledContextBeforeCreatingFile",
+      "Action": "pass"
+    }
+  ],
+  "counts": {
+    "pass": 5
+  },
+  "raw_sha256": "5ccb5576a5709581d733d5490109f26b39aafebe6f3a01ccfcce80b2e93562f5"
+}

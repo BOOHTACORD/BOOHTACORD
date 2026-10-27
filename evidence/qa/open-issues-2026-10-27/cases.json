@@ -775,6 +775,58 @@
       ],
       "result": "upload-timeout/native-network-result.json",
       "limits": "Real loopback net/http HTTP1 server,40ms policy and500ms observation. The deployed15-minute absolute policy was not waited out."
+    },
+    {
+      "id": "UPLOAD-real-TEXT-DM-midwrite-ENOSPC",
+      "status": "PASS",
+      "protects": "Native writer failures release resources and allow successful retry.",
+      "command": "python -X utf8 .out/qa-upload-extended/probe_enospc.py",
+      "platform": "This Windows PC; source072426d6 actual Docker Linux Go API/PostgreSQL17.6; loopback only; separate bounded DB/API/tmpfs for writer fault",
+      "mandatory_when": "Before accepting I240.C2/#134 and after corresponding upload policy changes",
+      "issues": [
+        240
+      ],
+      "result": "upload-extended/enospc-result.json",
+      "limits": "No production, physical Android, audibility, screen or load-capacity acceptance.; Writer test covers actual ENOSPC after8192 bytes, not every I/O/fsync failure; observed500 INTERNAL is retained and is not a friendly507 admission claim.; All fault fixture resources were removed; six static local QA quota accounts and one successful1024-byte main-profile attachment remain owned test fixtures.; Long-lived voice/realtime lifetime acceptance remains NOT_RUN; no source code/test consolidation was performed."
+    },
+    {
+      "id": "UPLOAD-real-empty-TEXT-DM-body",
+      "status": "FAIL",
+      "protects": "An authenticated declared-body upload without any body byte must time out and release its slot.",
+      "command": "python -X utf8 .out/qa-upload-extended/probe_empty_body.py",
+      "platform": "This Windows PC; source072426d6 actual Docker Linux Go API/PostgreSQL17.6; loopback only; separate bounded DB/API/tmpfs for writer fault",
+      "mandatory_when": "Before accepting I240.C2/#134 and after corresponding upload policy changes",
+      "issues": [
+        240
+      ],
+      "result": "upload-extended/empty-body-result.json",
+      "limits": "No production, physical Android, audibility, screen or load-capacity acceptance.; Writer test covers actual ENOSPC after8192 bytes, not every I/O/fsync failure; observed500 INTERNAL is retained and is not a friendly507 admission claim.; All fault fixture resources were removed; six static local QA quota accounts and one successful1024-byte main-profile attachment remain owned test fixtures.; Long-lived voice/realtime lifetime acceptance remains NOT_RUN; no source code/test consolidation was performed."
+    },
+    {
+      "id": "UPLOAD-real-deployed-15min-absolute",
+      "status": "FAIL",
+      "protects": "The actual15-minute maximum interrupts a blocked read even before the60s idle policy expires.",
+      "command": "python -X utf8 .out/qa-upload-extended/probe_absolute.py",
+      "platform": "This Windows PC; source072426d6 actual Docker Linux Go API/PostgreSQL17.6; loopback only; separate bounded DB/API/tmpfs for writer fault",
+      "mandatory_when": "Before accepting I240.C2/#134 and after corresponding upload policy changes",
+      "issues": [
+        240
+      ],
+      "result": "upload-extended/absolute-result.json",
+      "limits": "No production, physical Android, audibility, screen or load-capacity acceptance.; Writer test covers actual ENOSPC after8192 bytes, not every I/O/fsync failure; observed500 INTERNAL is retained and is not a friendly507 admission claim.; All fault fixture resources were removed; six static local QA quota accounts and one successful1024-byte main-profile attachment remain owned test fixtures.; Long-lived voice/realtime lifetime acceptance remains NOT_RUN; no source code/test consolidation was performed."
+    },
+    {
+      "id": "UPLOAD-real-global16-cap",
+      "status": "PASS",
+      "protects": "Sixteen uploads across eight accounts reject a ninth unused actor, then release permits201 retry.",
+      "command": "python -X utf8 .out/qa-upload-extended/probe_global.py",
+      "platform": "This Windows PC; source072426d6 actual Docker Linux Go API/PostgreSQL17.6; loopback only; separate bounded DB/API/tmpfs for writer fault",
+      "mandatory_when": "Before accepting I240.C2/#134 and after corresponding upload policy changes",
+      "issues": [
+        240
+      ],
+      "result": "upload-extended/global-result.json",
+      "limits": "No production, physical Android, audibility, screen or load-capacity acceptance.; Writer test covers actual ENOSPC after8192 bytes, not every I/O/fsync failure; observed500 INTERNAL is retained and is not a friendly507 admission claim.; All fault fixture resources were removed; six static local QA quota accounts and one successful1024-byte main-profile attachment remain owned test fixtures.; Long-lived voice/realtime lifetime acceptance remains NOT_RUN; no source code/test consolidation was performed."
     }
   ]
 }

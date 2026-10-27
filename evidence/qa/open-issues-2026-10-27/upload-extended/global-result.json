@@ -1,0 +1,43 @@
+{
+  "status": "PASS_REAL_GLOBAL16_CAP_REJECTION_RELEASE_AND_RETRY",
+  "at_utc": "2026-10-27T20:32:29.065656+00:00",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "origin": "http://localhost:18088",
+  "actor_count": 9,
+  "global_limit": 16,
+  "account_limit": 2,
+  "checks": [
+    "global16_cap_rejects_ninth_actor_with_no_account_slot_in_use",
+    "released_global_slot_allows_real201_retry_by_previously_rejected_actor"
+  ],
+  "all_nine_real_logins": true,
+  "saturated": {
+    "voice_platform_uploads_inflight": 16.0,
+    "voice_platform_upload_oldest_inflight_seconds": 28.364695044,
+    "voice_platform_attachment_upload_reserved_bytes": 400000000.0
+  },
+  "ninth_actor_active_before": 0,
+  "seventeenth_response": {
+    "status": 429,
+    "code": "UPLOAD_CONCURRENCY_LIMITED",
+    "retry_after": "1"
+  },
+  "after_reject": {
+    "voice_platform_uploads_inflight": 16.0,
+    "voice_platform_upload_oldest_inflight_seconds": 30.897430601,
+    "voice_platform_attachment_upload_reserved_bytes": 400000000.0
+  },
+  "staging_after_reject": 16,
+  "one_slot_released": {
+    "voice_platform_uploads_inflight": 15.0,
+    "voice_platform_upload_oldest_inflight_seconds": 31.555869662,
+    "voice_platform_attachment_upload_reserved_bytes": 375000000.0
+  },
+  "ninth_actor_retry_status": 201,
+  "after_disconnect": {
+    "voice_platform_uploads_inflight": 0.0,
+    "voice_platform_upload_oldest_inflight_seconds": 0.0,
+    "voice_platform_attachment_upload_reserved_bytes": 0.0
+  },
+  "staging_files_after": 0
+}

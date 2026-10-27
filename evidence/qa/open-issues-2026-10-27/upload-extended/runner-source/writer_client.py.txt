@@ -1,0 +1,21 @@
+"""Normal local-origin cookie authentication for the isolated writer-fault deployment."""
+import http.client,json
+from http.cookies import SimpleCookie
+ORIGIN='http://localhost:18089'
+START=b'--qa-writer\r\nContent-Disposition: form-data; name="file"; filename="synthetic.bin"\r\nContent-Type: application/octet-stream\r\n\r\n'
+END=b'\r\n--qa-writer--\r\n'
+class Client:
+ def __init__(self,password):
+  self.cookie='';status,_,headers=self.request('/auth/login','POST',{'login':'qa_writer_owner','password':password});assert status==204
+  self.cookie='vp_session='+SimpleCookie(headers['Set-Cookie'])['vp_session'].value
+ def request(self,path,method='GET',data=None):
+  c=http.client.HTTPConnection('localhost',18089,timeout=30)
+  try:
+   c.request(method,'/api/v1'+path,body=None if data is None else json.dumps(data),headers={'Origin':ORIGIN,'Cookie':self.cookie,'Content-Type':'application/json'})
+   r=c.getresponse();body=r.read();return r.status,json.loads(body) if body else None,dict(r.getheaders())
+  finally:c.close()
+ def upload(self,path,partial):
+  c=http.client.HTTPConnection('localhost',18089,timeout=40);c.putrequest('POST','/api/v1'+path)
+  data=START+b'X'*32768+END
+  for k,v in {'Origin':ORIGIN,'Cookie':self.cookie,'Content-Type':'multipart/form-data; boundary=qa-writer','Content-Length':str(len(data))}.items():c.putheader(k,v)
+  c.endheaders();c.send(START+b'X'*8192 if partial else data);return c
