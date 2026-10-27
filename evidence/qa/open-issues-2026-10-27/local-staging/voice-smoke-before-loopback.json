@@ -1,0 +1,128 @@
+{
+  "status": "FAIL_CONNECTION",
+  "at_utc": "2026-10-27T19:26:29.781Z",
+  "origin": "http://localhost:18088",
+  "attempts": [
+    {
+      "actor": 0,
+      "network": [
+        {
+          "method": "POST",
+          "path": "/api/v1/voice/channels/:id/leases",
+          "status": 201
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/voice/leases/:id/credential",
+          "status": 200
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/voice/leases/:id/screen-viewers",
+          "status": 204
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/v1/voice/leases/:id",
+          "status": 204
+        }
+      ],
+      "stage": "observed",
+      "handshake": [
+        {
+          "phase": "request",
+          "cookie_present": true,
+          "origin_matches": true
+        },
+        {
+          "phase": "response",
+          "status": 101
+        }
+      ],
+      "websocket": {
+        "origin": "ws://localhost:18088",
+        "path": "/rtc/v1"
+      },
+      "connecting_peers": [
+        {
+          "connection": "connecting",
+          "ice": "checking",
+          "signaling": "stable",
+          "candidates": [
+            {
+              "kind": "candidate-pair",
+              "loopback": false,
+              "state": "in-progress",
+              "nominated": false
+            },
+            {
+              "kind": "candidate-pair",
+              "loopback": false,
+              "state": "in-progress",
+              "nominated": false
+            },
+            {
+              "kind": "local-candidate",
+              "protocol": "tcp",
+              "candidateType": "host",
+              "port": 9,
+              "loopback": false
+            },
+            {
+              "kind": "remote-candidate",
+              "protocol": "tcp",
+              "candidateType": "host",
+              "port": 17882,
+              "loopback": false
+            },
+            {
+              "kind": "remote-candidate",
+              "protocol": "udp",
+              "candidateType": "host",
+              "port": 17884,
+              "loopback": false
+            },
+            {
+              "kind": "local-candidate",
+              "protocol": "udp",
+              "candidateType": "host",
+              "port": 53567,
+              "loopback": false
+            },
+            {
+              "kind": "local-candidate",
+              "protocol": "udp",
+              "candidateType": "srflx",
+              "port": 37046,
+              "loopback": false
+            },
+            {
+              "kind": "local-candidate",
+              "protocol": "udp",
+              "candidateType": "host",
+              "port": 53568,
+              "loopback": false
+            },
+            {
+              "kind": "local-candidate",
+              "protocol": "tcp",
+              "candidateType": "host",
+              "port": 9,
+              "loopback": false
+            }
+          ]
+        }
+      ],
+      "connected_UI": false,
+      "status_text": "Не удалось подключиться",
+      "peers": [
+        {
+          "connection": "closed",
+          "ice": "closed",
+          "signaling": "closed",
+          "candidates": []
+        }
+      ]
+    }
+  ]
+}

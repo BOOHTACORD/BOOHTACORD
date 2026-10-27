@@ -693,6 +693,36 @@
       "defects": [
         582
       ]
+    },
+    {
+      "id": "LOCAL-QA-runtime-and-telemetry",
+      "status": "PASS",
+      "protects": "Fault/load tests require an owned local deployment and queryable source-bound telemetry.",
+      "command": "python -X utf8 .out/local-qa/verify_deployment.py; node .out/local-qa/smoke_grafana.mjs",
+      "platform": "This Windows11 PC; Docker Desktop Linux engine; PostgreSQL17.6; pinned master072426d6; actual Chrome155",
+      "mandatory_when": "Before directing isolated fault/load probes at this profile; not a substitute for any source-row acceptance",
+      "issues": [
+        240,
+        241,
+        272
+      ],
+      "result": "local-staging/summary.json",
+      "limits": "Local bridge permits egress; endpoint isolation and credentials are separate, not an egress firewall.; Windows CPU/RAM/disk exporter and alert delivery are NOT_RUN; empty host-resource panels are not capacity measurements.; No microphone, audibility, screen, Android-native local origin, production TLS, reboot or capacity acceptance.; The #240/#241/#272 fault/load/platform acceptance rows retain their previous scope/status; provisioning alone cannot close them.; Host Compose5.3.1 differs from repository pin5.5.0; actual config/runtime checks passed."
+    },
+    {
+      "id": "LOCAL-QA-TEXT-ACL-and-two-SDK-peers",
+      "status": "PASS",
+      "protects": "The deployed Web/API/LiveKit stack supports real sessions, peer TEXT rendering, ACL/Origin refusal and two actual SDK connections.",
+      "command": "node .out/local-qa/smoke_final.mjs",
+      "platform": "This Windows PC; two installed Chrome155 contexts; real local Go/PostgreSQL/LiveKit; no API/media mocks",
+      "mandatory_when": "After local deployment/profile changes, before fault/load work relying on the baseline flow",
+      "issues": [
+        240,
+        241,
+        272
+      ],
+      "result": "local-staging/browser-final-smoke.json",
+      "limits": "Two listeners without microphone; no audibility, native Android, media payload or capacity acceptance."
     }
   ]
 }

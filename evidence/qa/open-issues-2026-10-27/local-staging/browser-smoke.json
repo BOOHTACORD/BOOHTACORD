@@ -1,0 +1,27 @@
+{
+  "status": "FAIL_OR_CONTROLLER",
+  "at_utc": "2026-10-27T19:03:45.898Z",
+  "origin": "http://localhost:18088",
+  "browser": "155.0.8059.85",
+  "api_mocks": false,
+  "synthetic_media": false,
+  "recording": false,
+  "checks": [
+    "real_admin_UI_login_and_secure_session",
+    "real_admin_mutations_and_two_owned_member_registrations",
+    "member_admin_ACL_and_missing_Origin_refusal",
+    "real_TEXT_send_realtime_peer_render_and_owned_fixture_deletion"
+  ],
+  "secure_context": true,
+  "cookie_security_attributes": [
+    {
+      "secure": true,
+      "httpOnly": true,
+      "sameSite": "Lax"
+    }
+  ],
+  "secure_httpOnly_lax_contract_cookie_observed": true,
+  "independent_PC_receiver_rendered_message": true,
+  "error_type": "Error",
+  "failed_after": "real_TEXT_send_realtime_peer_render_and_owned_fixture_deletion"
+}

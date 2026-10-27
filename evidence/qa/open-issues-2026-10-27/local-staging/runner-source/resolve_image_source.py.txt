@@ -1,0 +1,14 @@
+"""Resolve official Docker Hub Linux/amd64 digests without logging registry access tokens."""
+import hashlib,json,sys,urllib.request
+from profile_common import WORK,write
+repository,tag=sys.argv[1:];assert (repository,tag) in [('library/caddy','2.10.0-alpine'),('grafana/grafana','13.3.0')]
+def get(url,headers={}):
+ with urllib.request.urlopen(urllib.request.Request(url,headers=headers),timeout=30) as response:return response.read(),dict(response.headers)
+token=json.loads(get('https://auth.docker.io/token?service=registry.docker.io&scope=repository:'+repository+':pull')[0])['token']
+headers={'Authorization':'Bearer '+token,'Accept':','.join(['application/vnd.oci.image.index.v1+json','application/vnd.docker.distribution.manifest.list.v2+json','application/vnd.oci.image.manifest.v1+json','application/vnd.docker.distribution.manifest.v2+json'])}
+raw,h=get('https://registry-1.docker.io/v2/'+repository+'/manifests/'+tag,headers);index_digest='sha256:'+hashlib.sha256(raw).hexdigest();index=json.loads(raw)
+items=[m for m in index['manifests'] if m.get('platform',{}).get('os')=='linux' and m.get('platform',{}).get('architecture')=='amd64'];assert len(items)==1
+digest=items[0]['digest'];raw,_=get('https://registry-1.docker.io/v2/'+repository+'/manifests/'+digest,headers);assert 'sha256:'+hashlib.sha256(raw).hexdigest()==digest
+manifest=json.loads(raw)
+receipt={'status':'PASS_OFFICIAL_DOCKER_HUB_MANIFEST','repository':repository,'tag':tag,'platform':'linux/amd64','index_sha256':index_digest,'manifest_digest':digest,'config_digest':manifest['config']['digest'],'layer_bytes':sum(l['size'] for l in manifest['layers']),'mirror_reference':'mirror.gcr.io/'+repository+'@'+digest}
+name=repository.replace('/','-');write(WORK/(name+'-source.json'),receipt);print(json.dumps(receipt))

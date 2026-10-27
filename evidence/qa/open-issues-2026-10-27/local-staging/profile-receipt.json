@@ -1,0 +1,51 @@
+{
+  "status": "PASS_CONFIG_VALIDATION",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "project": "boohtacord-local-qa",
+  "origin": "http://localhost:18088",
+  "local_management_only": true,
+  "production_credentials_used": false,
+  "all_management_ports_loopback": true,
+  "media_ports_loopback_only": true,
+  "dedicated_single_runtime_bridge": true,
+  "production_endpoints_configured": false,
+  "public_metrics_route": "404 expected",
+  "private_data_files_not_printed": true,
+  "services": [
+    "api",
+    "bootstrap-admin",
+    "cleanup-hidden-attachments",
+    "cleanup-stale-staging",
+    "cleanup-unattached-attachments",
+    "collector",
+    "grafana",
+    "init-qa-storage",
+    "livekit",
+    "maintenance-admission",
+    "migrate",
+    "postgres",
+    "prometheus",
+    "proxy",
+    "recover-admin",
+    "recover-last-admin-access",
+    "tempo",
+    "web"
+  ],
+  "runtime_services": [
+    "api",
+    "collector",
+    "grafana",
+    "livekit",
+    "postgres",
+    "prometheus",
+    "proxy",
+    "tempo",
+    "web"
+  ],
+  "compose_model_sha256": "67168302f59f912c147951bfabb27bf3a18a2154b6a51f7fe51312b8a10dadec",
+  "limits": [
+    "HTTP is restricted to loopback; it does not establish production TLS or physical native acceptance.",
+    "Local hardware evidence does not prove production capacity.",
+    "The Android device cannot reach this host-only HTTP origin without a separate native QA access profile."
+  ]
+}

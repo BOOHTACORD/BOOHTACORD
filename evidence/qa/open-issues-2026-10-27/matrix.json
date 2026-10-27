@@ -5626,18 +5626,27 @@
         "ISOLATED-worker-durable-cause-sfu",
         "ISOLATED-websocket-replay-acl",
         "ISOLATED-traceql-semantic-fixtures",
-        "ISOLATED-traceql-dashboard-queries"
+        "ISOLATED-traceql-dashboard-queries",
+        "LOCAL-QA-runtime-and-telemetry",
+        "LOCAL-QA-TEXT-ACL-and-two-SDK-peers"
       ],
       "evidence": [
         "notification-readiness/summary.json",
         "web-session-contract/logout.json",
         "web-session-contract/swagger.json",
-        "trace-runtime/summary.json"
+        "trace-runtime/summary.json",
+        "local-staging/summary.json"
       ],
       "defects": [],
       "blockers": [],
       "source_body_sha256": "7cca703010a69ef8a373315fc6e27adac88f81ff7c8be3a80976e06bfdaba9d3",
-      "source_snapshot": ".out/qa-goal/open-issues-snapshot.json"
+      "source_snapshot": ".out/qa-goal/open-issues-snapshot.json",
+      "local_staging_prerequisite": {
+        "status": "AVAILABLE_SCOPED",
+        "evidence": "local-staging/summary.json",
+        "acceptance_rows_unchanged": true,
+        "fault_load_runs": "NOT_RUN in this deployment packet"
+      }
     },
     {
       "number": 241,
@@ -6875,16 +6884,25 @@
         "WEB-session-revocation-draft-isolation",
         "NOTIFY-deployment-readiness-consent",
         "ISOLATED-traceql-semantic-fixtures",
-        "ISOLATED-traceql-dashboard-queries"
+        "ISOLATED-traceql-dashboard-queries",
+        "LOCAL-QA-runtime-and-telemetry",
+        "LOCAL-QA-TEXT-ACL-and-two-SDK-peers"
       ],
       "evidence": [
         "web-session-contract/swagger.json",
-        "trace-runtime/summary.json"
+        "trace-runtime/summary.json",
+        "local-staging/summary.json"
       ],
       "defects": [],
       "blockers": [],
       "source_body_sha256": "c7015703e8c3646b54715e7fa253e04637f73666844cd5ab58d90aca55487f92",
-      "source_snapshot": ".out/qa-goal/open-issues-snapshot.json"
+      "source_snapshot": ".out/qa-goal/open-issues-snapshot.json",
+      "local_staging_prerequisite": {
+        "status": "AVAILABLE_SCOPED",
+        "evidence": "local-staging/summary.json",
+        "acceptance_rows_unchanged": true,
+        "fault_load_runs": "NOT_RUN in this deployment packet"
+      }
     },
     {
       "number": 243,
@@ -8325,19 +8343,28 @@
         "ANDROID-OS-microphone-denial",
         "ANDROID-populated-prejoin-no-permission",
         "WEB-session-revocation-draft-isolation",
-        "ANDROID-wifi-cellular-native-DM-and-restoration"
+        "ANDROID-wifi-cellular-native-DM-and-restoration",
+        "LOCAL-QA-runtime-and-telemetry",
+        "LOCAL-QA-TEXT-ACL-and-two-SDK-peers"
       ],
       "evidence": [
         "web-result.json",
         "voice-permission/summary.json",
         "native-prejoin/summary.json",
         "web-session-contract/logout.json",
-        "android-connectivity/summary.json"
+        "android-connectivity/summary.json",
+        "local-staging/summary.json"
       ],
       "defects": [],
       "blockers": [],
       "source_body_sha256": "916e3059dbaf2d6d058333dbc1120321a1042a66a046d3ee33a48d9345a76dc6",
-      "source_snapshot": ".out/qa-goal/open-issues-snapshot.json"
+      "source_snapshot": ".out/qa-goal/open-issues-snapshot.json",
+      "local_staging_prerequisite": {
+        "status": "AVAILABLE_SCOPED",
+        "evidence": "local-staging/summary.json",
+        "acceptance_rows_unchanged": true,
+        "fault_load_runs": "NOT_RUN in this deployment packet"
+      }
     },
     {
       "number": 278,

@@ -1,0 +1,41 @@
+{
+  "status": "PASS_SCOPED_LOCAL_DEPLOYMENT",
+  "at_utc": "2026-10-27T19:38:53.716Z",
+  "origin": "http://localhost:18088",
+  "browser": "155.0.8059.85",
+  "api_mocks": false,
+  "synthetic_media": false,
+  "recording": false,
+  "checks": [
+    "real_admin_UI_login_and_secure_session",
+    "existing_local_ADMIN_and_owned_QA_topology",
+    "member_admin_ACL_and_missing_Origin_refusal",
+    "real_TEXT_send_realtime_peer_render_and_owned_fixture_deletion",
+    "two_real_LiveKit_SDK_connections_server_roster_and_both_UI_rosters_no_microphone",
+    "public_metrics_route_refused"
+  ],
+  "secure_context": true,
+  "cookie_security_attributes": [
+    {
+      "secure": true,
+      "httpOnly": true,
+      "sameSite": "Lax"
+    }
+  ],
+  "secure_httpOnly_lax_contract_cookie_observed": true,
+  "independent_PC_receiver_rendered_message": true,
+  "actual_SFU_peer_states": [
+    [
+      {
+        "connection": "connected",
+        "ice": "connected"
+      }
+    ],
+    [
+      {
+        "connection": "connected",
+        "ice": "connected"
+      }
+    ]
+  ]
+}

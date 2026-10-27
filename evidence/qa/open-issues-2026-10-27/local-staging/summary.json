@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "status": "PASS_SCOPED_LOCAL_STAGING_PREREQUISITE",
+  "at_utc": "2026-10-27T19:43:37.427568+00:00",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "project": "boohtacord-local-qa",
+  "origin": "http://localhost:18088",
+  "runtime_services": 9,
+  "runtime_checks_passed": 32,
+  "browser_checks_passed": 6,
+  "grafana_UI_checks_passed": 3,
+  "dashboard_count": 6,
+  "queried_real_API_trace_hits": 5,
+  "production_untouched": true,
+  "all_published_ports_loopback": true,
+  "private_credentials_published": false,
+  "visual_observations": [
+    "1440x1000 source-resolution screenshot shows QA Voice with two synthetic listeners, both muted and green connected status.",
+    "1440x1000 Grafana screenshot identifies localhost QA, renders actual API/users metrics and explicitly leaves missing Windows host exporter panels as No data."
+  ],
+  "limits": [
+    "Local bridge permits egress; endpoint isolation and credentials are separate, not an egress firewall.",
+    "Windows CPU/RAM/disk exporter and alert delivery are NOT_RUN; empty host-resource panels are not capacity measurements.",
+    "No microphone, audibility, screen, Android-native local origin, production TLS, reboot or capacity acceptance.",
+    "The #240/#241/#272 fault/load/platform acceptance rows retain their previous scope/status; provisioning alone cannot close them.",
+    "Host Compose5.3.1 differs from repository pin5.5.0; actual config/runtime checks passed."
+  ],
+  "initial_attempts": [
+    "First browser controller expected200 login/Strict cookie; corrected to native204/Lax contract.",
+    "Initial private-network and LAN-advertised ICE trials did not connect. Canonical loopback profile passed two real SDK peers.",
+    "An intermediate autoplay-policy browser variant returned FAIL_CONNECTION; canonical Chrome without extra launch flags passed.",
+    "A later repeated-login run returned429 Retry-After48. The limit was preserved; final run after the delay passed.",
+    "Grafana controller initially looked for Sign in; observed native UI uses Log in. Corrected selector and real dashboard render passed."
+  ]
+}

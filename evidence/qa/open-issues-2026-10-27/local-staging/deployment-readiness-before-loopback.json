@@ -1,0 +1,126 @@
+{
+  "status": "PASS_RUNNING_STACK_AND_TELEMETRY",
+  "at_utc": "2026-10-27T19:31:38.947144+00:00",
+  "project": "boohtacord-local-qa",
+  "origin": "http://localhost:18088",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "checks": [
+    "api_running_owned",
+    "api_exact_source_image",
+    "web_running_owned",
+    "web_exact_source_image",
+    "proxy_running_owned",
+    "proxy_port_binding_private",
+    "postgres_running_owned",
+    "postgres_port_binding_private",
+    "livekit_running_owned",
+    "livekit_port_binding_private",
+    "livekit_port_binding_private",
+    "livekit_port_binding_private",
+    "livekit_port_binding_private",
+    "collector_running_owned",
+    "collector_port_binding_private",
+    "collector_port_binding_private",
+    "tempo_running_owned",
+    "tempo_port_binding_private",
+    "prometheus_running_owned",
+    "prometheus_port_binding_private",
+    "grafana_running_owned",
+    "grafana_port_binding_private",
+    "actual_PostgreSQL_17_6",
+    "public_API_health",
+    "served_Web_exact_source",
+    "Tempo_ready",
+    "Prometheus_ready",
+    "Grafana_ready",
+    "Grafana_boohtacord_tempo_health",
+    "Grafana_boohtacord_metrics_health",
+    "all_six_native_dashboards_provisioned",
+    "all_native_metric_targets_up",
+    "real_API_traces_queryable",
+    "trace_contains_no_QA_passwords_or_keys"
+  ],
+  "services": [
+    {
+      "name": "api",
+      "image_id": "sha256:b34a09b6eebfb87fea478e7cd440cc7ab9c52dc7dbd3cf4d659b12a9eff98a47",
+      "restart_count": 0,
+      "runtime_image_reference": "boohtacord-local-qa-api:072426d6"
+    },
+    {
+      "name": "web",
+      "image_id": "sha256:414cc79b7ff85cfca81252bd12eb8a9525f2fb5727932a88b02ccf63ebb42d20",
+      "restart_count": 0,
+      "runtime_image_reference": "boohtacord-local-qa-web:072426d6"
+    },
+    {
+      "name": "proxy",
+      "image_id": "sha256:f43d8810c944e27e6f7ea80b165de11dbdab16cff15c8a80d83ae3e1a109a35d",
+      "restart_count": 0,
+      "runtime_image_reference": "mirror.gcr.io/library/caddy@sha256:f43d8810c944e27e6f7ea80b165de11dbdab16cff15c8a80d83ae3e1a109a35d"
+    },
+    {
+      "name": "postgres",
+      "image_id": "sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94",
+      "restart_count": 0,
+      "runtime_image_reference": "postgres:17.6-alpine"
+    },
+    {
+      "name": "livekit",
+      "image_id": "sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3",
+      "restart_count": 0,
+      "runtime_image_reference": "livekit/livekit-server:v1.13.7"
+    },
+    {
+      "name": "collector",
+      "image_id": "sha256:b6d2b9a85b1029d05b5ad913150c1f014eed4ae99be81a1813ca5ade4a191913",
+      "restart_count": 0,
+      "runtime_image_reference": "otel/opentelemetry-collector:0.161.0"
+    },
+    {
+      "name": "tempo",
+      "image_id": "sha256:cac9de2ac9f6da8efca5b64b690a7cb8c786a0c49cac7b4517dd1b0089a6c703",
+      "restart_count": 0,
+      "runtime_image_reference": "grafana/tempo:2.10.3"
+    },
+    {
+      "name": "prometheus",
+      "image_id": "sha256:5550dc63da361dc30f6fe02ac0e4dfc736ededfef3c8d12a634db04a67824d78",
+      "restart_count": 0,
+      "runtime_image_reference": "prom/prometheus:v3.11.2"
+    },
+    {
+      "name": "grafana",
+      "image_id": "sha256:6e5d306338670f381a942f1c50d3c266bf71531e5ddd9ee4fc1a133dac5ce63d",
+      "restart_count": 0,
+      "runtime_image_reference": "mirror.gcr.io/grafana/grafana@sha256:6e5d306338670f381a942f1c50d3c266bf71531e5ddd9ee4fc1a133dac5ce63d"
+    }
+  ],
+  "postgres_version": "17.6",
+  "dashboard_count": 6,
+  "metrics_targets": [
+    {
+      "job": "boohtacord-collector",
+      "health": "up"
+    },
+    {
+      "job": "boohtacord-livekit",
+      "health": "up"
+    },
+    {
+      "job": "boohtacord-otel-metrics",
+      "health": "up"
+    },
+    {
+      "job": "boohtacord-prometheus",
+      "health": "up"
+    },
+    {
+      "job": "boohtacord-tempo",
+      "health": "up"
+    }
+  ],
+  "trace_hits": 5,
+  "sample_trace_id": "52c5590d14ca3ed6d662f10de32579",
+  "sample_trace_sha256": "a7df91ac2395d89f585d63358a561035f998a4431f07589482ddaf27ed32e523"
+}

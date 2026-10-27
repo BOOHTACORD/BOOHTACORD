@@ -1,0 +1,51 @@
+"""Derive a private, persistent QA profile from the exact repository Compose model."""
+import hashlib,json
+from profile_common import ROOT,WORK,PROJECT,ORIGIN,SOURCE,docker,run,write,credentials,environment,compose_config,compose
+from observability_profile import apply
+assert run('git','rev-parse','HEAD').decode().strip()==SOURCE
+assert not run('git','status','--porcelain')
+c=credentials();env=environment(c);model=compose_config('deploy/compose.yaml',env)
+obs=compose_config('docker/observability/compose.yaml',env);apply(model,obs,c);model['name']=PROJECT
+for name,v in model['volumes'].items():v['name']=PROJECT+'_'+name
+services=model['services']
+for service,receipt_name in [('proxy','library-caddy-source.json'),('grafana','grafana-grafana-source.json')]:
+ receipt_path=WORK/receipt_name
+ if receipt_path.exists():
+  source=json.loads(receipt_path.read_text());reference=source['mirror_reference']
+  import subprocess
+  result=subprocess.run(['docker','--context','desktop-linux','image','inspect',reference],capture_output=True)
+  if result.returncode==0:
+   image=json.loads(result.stdout)[0]
+   assert reference in image['RepoDigests'] and image['Descriptor']['digest']==source['manifest_digest'] and image['Architecture']=='amd64'
+   services[service]['image']=reference
+services['api']['environment']['PRODUCT_SUPPORT_ENDPOINT']='http://127.0.0.1:9/support/v1'
+services['api']['environment']['OTEL_SERVICE_NAME']='boohtacord-api'
+services['postgres']['ports']=[{'host_ip':'127.0.0.1','published':'15436','target':5432,'protocol':'tcp'}]
+services['proxy']['ports']=[{'host_ip':'127.0.0.1','published':'18088','target':18088,'protocol':'tcp'}]
+livekit=(ROOT/'deploy/livekit/livekit.yaml').read_text(encoding='utf-8').replace('tcp_port: 7882','tcp_port: 17882').replace('  port_range_start: 50000\n  port_range_end: 50100','  udp_port: 17884').replace('  use_external_ip: true','  use_external_ip: false\n  enable_loopback_candidate: true')
+(WORK/'livekit.yaml').write_text(livekit,encoding='utf-8',newline='\n')
+services['livekit']['volumes']=[{'type':'bind','source':str(WORK/'livekit.yaml'),'target':'/etc/livekit-template.yaml','read_only':True}]
+services['livekit']['ports']=[{'host_ip':host,'published':str(port),'target':port,'protocol':protocol} for host in ['127.0.0.1'] for port,protocol in [(17882,'tcp'),(17884,'udp')]]
+log={'driver':'json-file','options':{'max-size':'10m','max-file':'3'}}
+budgets={'postgres':(1,'1g'),'api':(2,'2g'),'web':(.5,'512m'),'proxy':(.5,'256m'),'livekit':(2,'2g'),'collector':(1,'512m'),'tempo':(1.5,'2g'),'prometheus':(.5,'512m'),'grafana':(1,'1g')}
+for name,(cpu,memory) in budgets.items():services[name].update({'cpus':cpu,'mem_limit':memory,'restart':'unless-stopped','logging':log})
+services['init-qa-storage']={'image':'postgres:17.6-alpine','entrypoint':['/bin/sh','-ec'],
+ 'command':['chown 65532:65532 /attachments && chmod 0700 /attachments && chown 10001:10001 /tempo && chmod 0700 /tempo'],
+ 'volumes':[{'type':'volume','source':'attachments-data','target':'/attachments'},{'type':'volume','source':'tempo-data','target':'/tempo'}],
+ 'networks':{'private':{}},'cpus':.25,'mem_limit':'64m','logging':log}
+services['api']['depends_on']['init-qa-storage']={'condition':'service_completed_successfully'}
+services['tempo']['depends_on']={'init-qa-storage':{'condition':'service_completed_successfully'}}
+model['networks']={'runtime':{'name':PROJECT+'_runtime','ipam':{'config':[{'subnet':env['PRIVATE_NETWORK_SUBNET']}]}}}
+for service in services.values():service['networks']={'runtime':{}}
+services['proxy']['networks']={'runtime':{'ipv4_address':env['PRIVATE_PROXY_IP']}}
+for name in ['api','web','livekit','postgres','collector','tempo','prometheus','grafana','proxy']:
+ assert 'latest' not in services[name]['image']
+ for port in services[name].get('ports',[]):assert port['host_ip']=='127.0.0.1'
+assert all(v['name'].startswith(PROJECT+'_') for v in model['volumes'].values())
+write(WORK/'compose.private.json',model);compose('config','--quiet')
+receipt={'status':'PASS_CONFIG_VALIDATION','source_revision':SOURCE,'project':PROJECT,'origin':ORIGIN,
+ 'local_management_only':True,'production_credentials_used':False,'all_management_ports_loopback':True,'media_ports_loopback_only':True,
+ 'dedicated_single_runtime_bridge':True,'production_endpoints_configured':False,'public_metrics_route':'404 expected','private_data_files_not_printed':True,
+ 'services':sorted(services),'runtime_services':sorted(budgets),'compose_model_sha256':hashlib.sha256((WORK/'compose.private.json').read_bytes()).hexdigest(),
+ 'limits':['HTTP is restricted to loopback; it does not establish production TLS or physical native acceptance.','Local hardware evidence does not prove production capacity.','The Android device cannot reach this host-only HTTP origin without a separate native QA access profile.']}
+write(WORK/'profile-receipt.json',receipt);print(json.dumps(receipt))

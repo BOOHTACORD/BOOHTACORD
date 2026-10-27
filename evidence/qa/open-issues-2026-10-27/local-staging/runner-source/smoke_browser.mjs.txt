@@ -1,0 +1,43 @@
+import assert from 'node:assert/strict'
+import {randomBytes,randomUUID} from 'node:crypto'
+import {fileURLToPath} from 'node:url'
+import {chromium,expect,root,origin,credentials,api,save,login} from './browser_common.mjs'
+const browser=await chromium.launch({channel:'chrome',headless:true,args:['--allow-loopback-in-peer-connection','--autoplay-policy=no-user-gesture-required']})
+const result={status:'RUNNING',at_utc:new Date().toISOString(),origin,browser:browser.version(),api_mocks:false,synthetic_media:false,recording:false,checks:[]};let admin,a,b,fixture
+let stage='admin-login'
+const checkpoint=async name=>{result.checks.push(name);stage=name;await save('browser-smoke.json',result)}
+try{
+ admin=await login(browser,'admin');const session=await api(admin.page,'/auth/session');assert.equal(session.body.role,'ADMINISTRATOR')
+ result.secure_context=await admin.page.evaluate(()=>isSecureContext);assert.ok(result.secure_context)
+ const cookies=await admin.context.cookies();result.cookie_security_attributes=cookies.map(c=>({secure:c.secure,httpOnly:c.httpOnly,sameSite:c.sameSite}));assert.ok(cookies.some(c=>c.secure&&c.httpOnly&&c.sameSite==='Lax'));result.secure_httpOnly_lax_contract_cookie_observed=true;await checkpoint('real_admin_UI_login_and_secure_session')
+ const initial=await api(admin.page,'/admin/guild-settings');assert.equal(initial.status,200)
+ const changed=await api(admin.page,'/admin/guild-settings','PATCH',{name:'BOOHTACORD Local QA',expected_revision:initial.body.revision});assert.equal(changed.status,200)
+ const category=await api(admin.page,'/admin/categories','POST',{name:'QA local'});assert.equal(category.status,201)
+ const text=await api(admin.page,'/admin/categories/'+category.body.id+'/channels','POST',{name:'QA Text',kind:'TEXT'});assert.equal(text.status,201)
+ const voice=await api(admin.page,'/admin/categories/'+category.body.id+'/channels','POST',{name:'QA Voice',kind:'VOICE'});assert.equal(voice.status,201)
+ await save('topology.private.json',{category:category.body.id,text:text.body.id,voice:voice.body.id})
+ for(const key of ['member_a','member_b']){const r=await api(admin.page,'/auth/register','POST',{login:credentials[key+'_login'],password:credentials[key+'_password']});assert.equal(r.status,201)}
+ await checkpoint('real_admin_mutations_and_two_owned_member_registrations')
+ a=await login(browser,'member_a');b=await login(browser,'member_b')
+ assert.equal((await api(a.page,'/auth/session')).body.role,'MEMBER');assert.equal((await api(a.page,'/admin/guild-settings')).status,403)
+ const noOrigin=await a.context.request.post(origin+'/api/v1/channels/'+text.body.id+'/messages',{data:{client_message_id:randomUUID(),body:'must-not-be-stored'}});assert.equal(noOrigin.status(),403)
+ await checkpoint('member_admin_ACL_and_missing_Origin_refusal')
+ for(const x of [a,b]){const c=x.page.locator('.channel-button').filter({hasText:'QA Text'});await expect(c).toHaveCount(1);await c.click();await expect(x.page.getByRole('textbox',{name:'Сообщение',exact:true})).toBeVisible()}
+ const marker='local_'+randomBytes(10).toString('hex');fixture={text:text.body.id,marker}
+ await a.page.getByRole('textbox',{name:'Сообщение',exact:true}).fill(marker);await a.page.getByRole('button',{name:'Отправить сообщение',exact:true}).click()
+ await expect(b.page.getByText(marker,{exact:true})).toBeVisible();result.independent_PC_receiver_rendered_message=true
+ const history=await api(a.page,'/channels/'+text.body.id+'/messages');const message=history.body.messages.find(m=>m.body===marker&&!m.deleted);assert.ok(message);fixture.message=message.id
+ const removed=await api(a.page,'/channels/'+text.body.id+'/messages/'+message.id,'DELETE');assert.equal(removed.status,204);await expect(b.page.getByText(marker,{exact:true})).toHaveCount(0);fixture.cleaned=true
+ await checkpoint('real_TEXT_send_realtime_peer_render_and_owned_fixture_deletion')
+ for(const x of [a,b]){await x.page.locator('.channel-button').filter({hasText:'QA Voice'}).click();await expect(x.page.locator('.voice-prejoin')).toBeVisible();await x.page.getByRole('button',{name:'Без микрофона',exact:true}).click();await expect(x.page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён',{timeout:30000})}
+ const roster=await api(a.page,'/voice/participants');assert.equal(roster.status,200);assert.equal(roster.body.channels.find(c=>c.channel_id===voice.body.id).participants.length,2)
+ for(const x of [a,b]){const states=await x.page.evaluate(()=>window.__qaPC.map(p=>({connection:p.connectionState,ice:p.iceConnectionState})));assert.ok(states.some(s=>s.connection==='connected'));result.actual_SFU_peer_states??=[];result.actual_SFU_peer_states.push(states)}
+ await checkpoint('two_real_LiveKit_SDK_connections_and_server_roster_no_microphone')
+ for(const x of [a,b])await x.page.getByTestId('voice-dock').getByRole('button',{name:'Выйти из голосового канала',exact:true}).click()
+ await a.page.reload();await expect(a.page.getByTestId('app-shell')).toBeVisible();await a.page.screenshot({path:fileURLToPath(new URL('workspace.private.png',root))});result.status='PASS_SCOPED_LOCAL_DEPLOYMENT'
+}catch(e){result.status='FAIL_OR_CONTROLLER';result.error_type=e.name;result.failed_after=stage}
+finally{
+ for(const x of [a,b])if(x){try{const dock=x.page.getByTestId('voice-dock');const leave=dock.getByRole('button',{name:'Выйти из голосового канала',exact:true});if(await leave.isVisible())await leave.click()}catch{}}
+ if(fixture&&!fixture.cleaned&&a&&fixture.message){try{await api(a.page,'/channels/'+fixture.text+'/messages/'+fixture.message,'DELETE')}catch{}}
+ for(const x of [admin,a,b])if(x)await x.context.close();await browser.close();await save('browser-smoke.json',result);console.log(JSON.stringify(result))
+}

@@ -1,0 +1,45 @@
+"""Measure running services, private bindings, real telemetry and provisioned dashboards."""
+import base64,hashlib,json,time,urllib.parse,urllib.request
+from datetime import datetime,timezone
+from profile_common import ROOT,WORK,PROJECT,ORIGIN,SOURCE,credentials,docker,write
+c=credentials();report={'status':'RUNNING','at_utc':datetime.now(timezone.utc).isoformat(),'project':PROJECT,'origin':ORIGIN,'source_revision':SOURCE,'checks':[]}
+def check(name,condition):
+ assert condition,name;report['checks'].append(name)
+def get(url,grafana=False):
+ assert url.startswith(('http://localhost:18088/','http://127.0.0.1:13200/','http://127.0.0.1:19091/','http://127.0.0.1:13000/'))
+ headers={}
+ if grafana:headers['Authorization']='Basic '+base64.b64encode((c['grafana_login']+':'+c['grafana_password']).encode()).decode()
+ with urllib.request.urlopen(urllib.request.Request(url,headers=headers),timeout=10) as r:return r.status,r.read()
+try:
+ model=json.loads((WORK/'compose.private.json').read_text());expected=['api','web','proxy','postgres','livekit','collector','tempo','prometheus','grafana'];services=[]
+ for name in expected:
+  data=json.loads(docker('inspect',PROJECT+'-'+name+'-1'))[0]
+  check(name+'_running_owned',data['State']['Running'] and data['Config']['Labels']['com.docker.compose.project']==PROJECT)
+  for port,bindings in data['NetworkSettings']['Ports'].items():
+   if not bindings:continue
+   for bound in bindings:check(name+'_port_binding_private',bound['HostIp']=='127.0.0.1')
+  image=json.loads(docker('image','inspect',data['Image']))[0]
+  if name in ['api','web']:check(name+'_exact_source_image',image['Config']['Labels']['org.opencontainers.image.revision']==SOURCE)
+  services.append({'name':name,'image_id':data['Image'],'restart_count':data['RestartCount'],'runtime_image_reference':data['Config']['Image']})
+ report['services']=services
+ version=docker('exec',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-Atc','SHOW server_version').decode().strip();check('actual_PostgreSQL_17_6',version.startswith('17.6'));report['postgres_version']=version
+ check('public_API_health',get(ORIGIN+'/api/v1/health')[0]==200)
+ check('served_Web_exact_source',json.loads(get(ORIGIN+'/release-receipt.json')[1])['source_revision']==SOURCE)
+ check('Tempo_ready',get('http://127.0.0.1:13200/ready')[0]==200)
+ check('Prometheus_ready',get('http://127.0.0.1:19091/-/ready')[0]==200)
+ gh=json.loads(get('http://127.0.0.1:13000/api/health')[1]);check('Grafana_ready',gh['database']=='ok' and gh['version']=='13.3.0')
+ for uid in ['boohtacord_tempo','boohtacord_metrics']:
+  health=json.loads(get('http://127.0.0.1:13000/api/datasources/uid/'+uid+'/health',True)[1]);check('Grafana_'+uid+'_health',health['status']=='OK')
+ dashboards=json.loads(get('http://127.0.0.1:13000/api/search?type=dash-db',True)[1]);uids={d['uid'] for d in dashboards}
+ required={json.loads(p.read_text(encoding='utf-8'))['uid'] for p in (ROOT/'docker/observability/dashboards').glob('*.json')};check('all_six_native_dashboards_provisioned',required<=uids);report['dashboard_count']=len(required)
+ targets=json.loads(get('http://127.0.0.1:19091/api/v1/targets')[1])['data']['activeTargets'];report['metrics_targets']=[{'job':t['labels'].get('job'),'health':t['health']} for t in targets];check('all_native_metric_targets_up',all(t['health']=='up' for t in targets) and len(targets)>=5)
+ query=urllib.parse.urlencode({'q':'{ resource.service.name = "boohtacord-api" }','limit':5})
+ traces=json.loads(get('http://127.0.0.1:13200/api/search?'+query)[1]).get('traces',[]);check('real_API_traces_queryable',len(traces)>0);report['trace_hits']=len(traces)
+ sample=traces[0]['traceID'];trace=get('http://127.0.0.1:13200/api/traces/'+sample)[1];(WORK/'sample-trace.private.json').write_bytes(trace)
+ check('trace_contains_no_QA_passwords_or_keys',all(v.encode() not in trace for k,v in c.items() if any(t in k for t in ['password','secret','ingest_auth']) and isinstance(v,str)))
+ report['sample_trace_id']=sample;report['sample_trace_sha256']=hashlib.sha256(trace).hexdigest()
+ report['status']='PASS_RUNNING_STACK_AND_TELEMETRY'
+except Exception as error:report['status']='FAIL_OR_NOT_READY';report['error_type']=type(error).__name__;report['failed_check']=str(error) if isinstance(error,AssertionError) else 'endpoint_or_runtime_read'
+write(WORK/'deployment-readiness.json',report);print(json.dumps({'status':report['status'],'checks_passed':len(report['checks']),'failed_check':report.get('failed_check'),'dashboard_count':report.get('dashboard_count'),'trace_hits':report.get('trace_hits')}))
+
+raise SystemExit(0 if report['status'].startswith('PASS') else 1)

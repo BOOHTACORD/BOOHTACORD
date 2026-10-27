@@ -1,0 +1,38 @@
+import assert from 'node:assert/strict'
+import {fileURLToPath} from 'node:url'
+import {chromium,expect,root,origin,api,save,login} from './browser_common.mjs'
+const browser=await chromium.launch({channel:'chrome',headless:true,args:[]})
+const report={status:'RUNNING',at_utc:new Date().toISOString(),origin,attempts:[]};let a,b
+const inspect=page=>page.evaluate(async()=>{
+ const rows=[]
+ for(const p of window.__qaPC){const candidates=[];for(const s of(await p.getStats()).values())if(['local-candidate','remote-candidate','candidate-pair'].includes(s.type))candidates.push({kind:s.type,protocol:s.protocol,candidateType:s.candidateType,port:s.port,loopback:typeof s.address==='string'&&/^(127\.|::1$)/.test(s.address),state:s.state,nominated:s.nominated})
+  rows.push({connection:p.connectionState,ice:p.iceConnectionState,signaling:p.signalingState,candidates})}
+ return rows
+})
+try{
+ a=await login(browser,'member_a');b=await login(browser,'member_b')
+ for(const [index,x] of [a,b].entries()){
+  const row={actor:index,network:[],stage:'select'};report.attempts.push(row)
+  const cdp=await x.context.newCDPSession(x.page);await cdp.send('Network.enable');row.handshake=[]
+  cdp.on('Network.webSocketWillSendHandshakeRequest',e=>{const h=Object.fromEntries(Object.entries(e.request.headers).map(([k,v])=>[k.toLowerCase(),v]));row.handshake.push({phase:'request',cookie_present:Boolean(h.cookie),origin_matches:h.origin===origin})})
+  cdp.on('Network.webSocketHandshakeResponseReceived',e=>row.handshake.push({phase:'response',status:e.response.status}))
+  x.page.on('response',async r=>{const url=new URL(r.url());if(url.origin!==origin||!url.pathname.startsWith('/api/v1/voice'))return
+   const item={method:r.request().method(),path:url.pathname.replace(/[a-f0-9-]{36}/g,':id'),status:r.status()};if(r.status()>=400){try{const body=await r.json();if(/^[A-Z0-9_]+$/.test(body.error?.code??''))item.code=body.error.code}catch{}}row.network.push(item)})
+  x.page.on('websocket',ws=>{const u=new URL(ws.url());row.websocket={origin:u.origin,path:u.pathname}})
+  await x.page.locator('.channel-button').filter({hasText:'QA Voice'}).click();await expect(x.page.locator('.voice-prejoin')).toBeVisible()
+  row.stage='explicit_listener_join';await x.page.getByRole('button',{name:'Без микрофона',exact:true}).click()
+  await x.page.waitForTimeout(3000);row.connecting_peers=await inspect(x.page);await save('voice-smoke.json',report)
+  try{await expect(x.page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён',{timeout:25000});row.connected_UI=true}catch{row.connected_UI=false}
+  row.status_text=await x.page.getByTestId('voice-dock').locator('.voice-status').textContent();row.peers=await inspect(x.page)
+  const dock=x.page.getByTestId('voice-dock');if(await dock.isVisible())await dock.screenshot({path:fileURLToPath(new URL('voice-dock-'+index+'.png',root))})
+  row.stage='observed';await save('voice-smoke.json',report)
+  if(!row.connected_UI)break
+ }
+ report.status=report.attempts.length===2&&report.attempts.every(r=>r.connected_UI)?'PASS_TWO_SDK_LISTENERS':'FAIL_CONNECTION'
+}catch(e){report.status='FAIL_OR_CONTROLLER';report.error_type=e.name}
+finally{
+ for(const x of [a,b])if(x){try{const leave=x.page.getByTestId('voice-dock').getByRole('button',{name:'Выйти из голосового канала',exact:true});if(await leave.isVisible())await leave.click()}catch{}}
+ for(const x of [a,b])if(x)await x.context.close();await browser.close();await save('voice-smoke.json',report);console.log(JSON.stringify({status:report.status,attempts:report.attempts.map(({actor,connected_UI,status_text})=>({actor,connected_UI,status_text}))}))
+}
+
+process.exitCode=report.status.startsWith('PASS')?0:1

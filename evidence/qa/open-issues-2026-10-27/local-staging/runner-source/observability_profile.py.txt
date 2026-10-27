@@ -1,0 +1,41 @@
+"""Add repository observability definitions and authenticated local Grafana."""
+import hashlib,json
+from profile_common import ROOT,WORK,PROJECT,write
+def apply(model,observability,credentials):
+ for name in ['collector','tempo','prometheus']:model['services'][name]=observability['services'][name]
+ for name in ['tempo-data','prometheus-data']:model['volumes'][name]={'name':PROJECT+'_'+name}
+ ports={'collector':[(14318,4318),(18889,8889)],'tempo':[(13200,3200)],'prometheus':[(19091,9090)]}
+ for name,pairs in ports.items():
+  model['services'][name]['ports']=[{'host_ip':'127.0.0.1','published':str(out),'target':inside,'protocol':'tcp'} for out,inside in pairs]
+ model['services']['collector']['networks']={'default':{}}
+ model['services']['tempo']['networks']={'default':{}}
+ model['services']['prometheus']['networks']={'default':{},'private':{},'livekit-metrics':{}}
+ config=WORK/'grafana';(config/'datasources').mkdir(parents=True,exist_ok=True);(config/'dashboards').mkdir(exist_ok=True)
+ write(config/'datasources/local.yaml',{'apiVersion':1,'datasources':[
+  {'name':'Tempo','uid':'boohtacord_tempo','type':'tempo','access':'proxy','url':'http://tempo:3200','isDefault':True},
+  {'name':'Prometheus','uid':'boohtacord_metrics','type':'prometheus','access':'proxy','url':'http://prometheus:9090'},
+  {'name':'Prometheus legacy binding','uid':'prometheus_main','type':'prometheus','access':'proxy','url':'http://prometheus:9090'}]})
+ write(config/'dashboards/local.yaml',{'apiVersion':1,'providers':[{'name':'BOOHTACORD QA','orgId':1,'folder':'BOOHTACORD QA','type':'file','disableDeletion':True,'options':{'path':'/var/lib/grafana/dashboards'}}]})
+ rendered=config/'rendered';rendered.mkdir(exist_ok=True);mapping=[]
+ for path in (ROOT/'docker/observability/dashboards').glob('*.json'):
+  original=path.read_bytes();data=json.loads(original)
+  def bind(value):
+   if isinstance(value,dict):
+    if value.get('type')=='prometheus' and value.get('uid')=='${DS_PROMETHEUS}':value['uid']='boohtacord_metrics'
+    if value.get('type')=='text' and 'Рабочий сервер' in value.get('options',{}).get('content',''):
+     value['options']['content']='Локальный QA · localhost · Windows / Docker Desktop. Метрики API относятся только к этому стенду. Метрики CPU/RAM/диска Windows не подключены; «Нет данных» означает отсутствие измерения.'
+    for child in value.values():bind(child)
+   elif isinstance(value,list):
+    for child in value:bind(child)
+  bind(data);write(rendered/path.name,data);mapping.append({'file':path.name,'source_sha256':hashlib.sha256(original).hexdigest(),'local_sha256':hashlib.sha256((rendered/path.name).read_bytes()).hexdigest()})
+ write(WORK/'dashboard-bindings.json',{'source_queries_unchanged':True,'local_overlays':['variable datasource UIDs bound to local Prometheus','runtime explanatory text identifies local QA and missing Windows host exporter'],'files':mapping})
+ model['volumes']['grafana-data']={'name':PROJECT+'_grafana-data'}
+ model['services']['grafana']={'image':'grafana/grafana:13.3.0','environment':{
+  'GF_SECURITY_ADMIN_USER':credentials['grafana_login'],'GF_SECURITY_ADMIN_PASSWORD':credentials['grafana_password'],
+  'GF_USERS_ALLOW_SIGN_UP':'false','GF_AUTH_ANONYMOUS_ENABLED':'false','GF_ANALYTICS_REPORTING_ENABLED':'false',
+  'GF_ANALYTICS_CHECK_FOR_UPDATES':'false','GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES':'false'},
+  'ports':[{'host_ip':'127.0.0.1','published':'13000','target':3000,'protocol':'tcp'}],
+  'volumes':[{'type':'volume','source':'grafana-data','target':'/var/lib/grafana'},
+   {'type':'bind','source':str(config),'target':'/etc/grafana/provisioning','read_only':True},
+   {'type':'bind','source':str(rendered),'target':'/var/lib/grafana/dashboards','read_only':True}],
+  'networks':{'default':{}},'depends_on':{'tempo':{'condition':'service_started'},'prometheus':{'condition':'service_started'}}}

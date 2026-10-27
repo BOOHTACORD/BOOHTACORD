@@ -1,0 +1,28 @@
+"""Operate only this explicit local QA namespace; never delete data or touch another project."""
+import json,sys
+from profile_common import WORK,PROJECT,ORIGIN,SOURCE,compose,docker,credentials,write
+runtime=['postgres','init-qa-storage','livekit','collector','tempo']
+command=sys.argv[1]
+if command=='infra':
+ before=docker('ps','-a','--filter','label=com.docker.compose.project='+PROJECT,'--format','{{.Names}}').decode().strip()
+ assert not before,'Fresh deployment expected; inspect existing owned state before retry'
+ compose('up','-d',*runtime)
+ print(json.dumps({'status':'INFRA_STARTED','project':PROJECT}))
+elif command=='observability':
+ compose('up','-d','prometheus','grafana');print(json.dumps({'status':'OBSERVABILITY_STARTED','project':PROJECT}))
+elif command=='bootstrap':
+ compose('up','-d','migrate');compose('wait','migrate')
+ c=credentials();compose('run','--rm','-T','bootstrap-admin','--login',c['admin_login'],'--password-stdin',input=(c['admin_password']+'\n').encode())
+ write(WORK/'bootstrap-receipt.json',{'status':'PASS','project':PROJECT,'source_revision':SOURCE,'password_channel':'stdin','password_printed':False})
+ print(json.dumps({'status':'MIGRATED_AND_INITIAL_ADMIN_BOOTSTRAPPED'}))
+elif command=='app':
+ assert (WORK/'bootstrap-receipt.json').is_file();compose('up','-d','api','web','proxy')
+ print(json.dumps({'status':'APPLICATION_STARTED','origin':ORIGIN}))
+elif command=='status':
+ rows=[json.loads(line) for line in compose('ps','-a','--format','json').decode().splitlines() if line.strip()]
+ print(json.dumps([{'service':r['Service'],'state':r['State'],'health':r.get('Health'),'exit_code':r.get('ExitCode')} for r in rows]))
+elif command in ('start','stop','restart'):
+ services=sys.argv[2:];allowed={'api','web','proxy','livekit','collector','tempo','prometheus','grafana','postgres'}
+ assert services and set(services)<=allowed
+ compose(command,*services);print(json.dumps({'action':command,'owned_services':services,'project':PROJECT}))
+else:raise ValueError('Use infra, bootstrap, app, status, start, stop or restart; deletion is not provided')

@@ -1,0 +1,23 @@
+import {createRequire} from 'node:module'
+import {readFile,writeFile} from 'node:fs/promises'
+import assert from 'node:assert/strict'
+const require=createRequire('C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD/clients/web/package.json')
+export const {chromium,expect}=require('@playwright/test')
+export const root=new URL('./',import.meta.url),origin='http://localhost:18088'
+export const credentials=JSON.parse(await readFile(new URL('credentials.private.json',root),'utf8'))
+assert.equal(credentials.origin,origin);assert.equal(new URL(origin).hostname,'localhost')
+export const api=(page,path,method='GET',body)=>page.evaluate(async a=>{
+ const r=await fetch('/api/v1'+a.path,{method:a.method,credentials:'same-origin',headers:{'Content-Type':'application/json'},...(a.body===undefined?{}:{body:JSON.stringify(a.body)})})
+ return {status:r.status,body:r.status===204?null:await r.json()}
+},{path,method,body})
+export const save=(name,value)=>writeFile(new URL(name,root),JSON.stringify(value,null,2)+'\n')
+export async function login(browser,key){
+ const context=await browser.newContext({viewport:{width:1440,height:1000}})
+ await context.grantPermissions(['local-network-access'],{origin})
+ await context.addInitScript(()=>{const Native=window.RTCPeerConnection;window.__qaPC=[];window.RTCPeerConnection=class extends Native{constructor(...a){super(...a);window.__qaPC.push(this)}}})
+ const page=await context.newPage();page.setDefaultTimeout(12000);await page.goto(origin)
+ await page.getByLabel('Логин',{exact:true}).fill(credentials[key+'_login']);await page.getByLabel('Пароль',{exact:true}).fill(credentials[key+'_password'])
+ const pending=page.waitForResponse(r=>new URL(r.url()).pathname==='/api/v1/auth/login'&&r.request().method()==='POST')
+ await page.getByRole('button',{name:'Войти',exact:true}).click();const response=await pending;if(response.status()!==204){const error=new Error('QA_LOGIN_REFUSED');error.status_code=response.status();error.retry_after=response.headers()['retry-after'];throw error}
+ await expect(page.getByTestId('app-shell')).toBeVisible();return {context,page}
+}

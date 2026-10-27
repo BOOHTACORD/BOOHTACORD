@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-27T04:44:19.170086+00:00",
+  "at_utc": "2026-10-27T19:44:41.211564+00:00",
   "candidate_evidence": "../../android/physical-share-2026-10-27/result.json",
   "files": {
     "acceptance-methods.json": {
@@ -667,8 +667,8 @@
       "sha256": "7d2ac8691a4dd0bef3ffd7fd6c9ea028ab04c058060810c65c5f27501d34d867"
     },
     "cases.json": {
-      "bytes": 42348,
-      "sha256": "0f648e1bf320fa85a1ef7e8c9e655b30834cb91079682348cae8c9ce24e647c8"
+      "bytes": 44376,
+      "sha256": "19b8115c401eeb6d909d854f03ca9e8172e4e651b29f4440edef62ebff0be691"
     },
     "controlled-account-integrity.json": {
       "bytes": 640,
@@ -706,9 +706,149 @@
       "bytes": 1824,
       "sha256": "57bb3a875edf514ab507a6b1c1100e0d8c2cc3a0ef30520fe3d3497622b6a6f0"
     },
+    "local-staging/bootstrap-receipt.json": {
+      "bytes": 184,
+      "sha256": "373f89a5ddeacc5b3cdaf2426523e244f4b341df14f0db4a1f47d88c8995e5ad"
+    },
+    "local-staging/browser-final-smoke-rate-limited.json": {
+      "bytes": 340,
+      "sha256": "bd889d6beeb6d332aad944c883f161f4ed138288cbad773c9255ecf93c61f810"
+    },
+    "local-staging/browser-final-smoke.json": {
+      "bytes": 1057,
+      "sha256": "66ffbe2c3e138d13eecb27f15ca27ff1de4fd16283cadeeb84135aa0c1a7ea8d"
+    },
+    "local-staging/browser-smoke-attempt1.json": {
+      "bytes": 267,
+      "sha256": "49e5e518ff43cb18789143d1e86992c7ce5b93b15149e2b890b3680e5b423890"
+    },
+    "local-staging/browser-smoke-attempt2.json": {
+      "bytes": 447,
+      "sha256": "8eab8a98fb8b3b60efbce769c51980596f66d05c4c2855371449b1dd604fcc1d"
+    },
+    "local-staging/browser-smoke.json": {
+      "bytes": 829,
+      "sha256": "fa0454a24c6aaacfb4c1c27c63ef89240e32249a6214f1856ebb3e75ae32df77"
+    },
+    "local-staging/connected-workspace.png": {
+      "bytes": 64783,
+      "sha256": "adcd4905d6006e3da5eff59503ccb7540205178020122ac1bfcefce7e7651c47"
+    },
+    "local-staging/dashboard-bindings.json": {
+      "bytes": 1578,
+      "sha256": "0d455faba62abe70dad4ae41377f4daf6789c2306790911fb109b9306e7861fb"
+    },
+    "local-staging/deployment-readiness-before-loopback.json": {
+      "bytes": 4106,
+      "sha256": "3903835bf4e857539d0cf9b1ea51cbbf9f2af0fa0551238ddfdc04173514cab6"
+    },
+    "local-staging/deployment-readiness.json": {
+      "bytes": 4035,
+      "sha256": "2989bda89b36b2b707524d2928b864db00617acf787bb095628014afacf22e93"
+    },
+    "local-staging/grafana-grafana-source.json": {
+      "bytes": 573,
+      "sha256": "bc2b2065e8f7e8bf6fd920fddc2928b0894a0f1c78eb859306a72e568f0214f4"
+    },
+    "local-staging/grafana-runtime.png": {
+      "bytes": 136418,
+      "sha256": "0cb45c4ea6098d4fa5c69dc29d2fcf32e7314d2130d615273a029e893b2c59f7"
+    },
+    "local-staging/grafana-ui-attempt1.json": {
+      "bytes": 163,
+      "sha256": "9a5ae9eb99743fd00e45aa5eb24b8104892d5840998170ab05d48a05f1f40303"
+    },
+    "local-staging/grafana-ui-attempt2.json": {
+      "bytes": 217,
+      "sha256": "b5ef86a8a076b24346bd732651e737f4d32fb12fad845aa718776cb3f875ba1c"
+    },
+    "local-staging/grafana-ui.json": {
+      "bytes": 413,
+      "sha256": "dcb8befd40a3bf43a41353727ed7dfe7dc0ed463162b8ef13e225d38e8447051"
+    },
+    "local-staging/host-runtime.json": {
+      "bytes": 400,
+      "sha256": "64171d00c735dd8718f7f0919bbfcb7b3517646cb52c04b69302d7cca25d7a72"
+    },
+    "local-staging/library-caddy-source.json": {
+      "bytes": 575,
+      "sha256": "175fd1ce4934f5c593cb69b6fc2a0f62a4631f86cde95759cd413d9d59c8ff87"
+    },
+    "local-staging/profile-receipt.json": {
+      "bytes": 1450,
+      "sha256": "1672d8cfda584f05d8b5aaad1f139db6968847e7c5320ffca617afcbdd1cd3df"
+    },
+    "local-staging/README.md": {
+      "bytes": 4507,
+      "sha256": "8accfe5cdeead7fc8af2a2e3847677b4d0de152c00c9ed93e57d4fba11cdc307"
+    },
+    "local-staging/RUNBOOK.md": {
+      "bytes": 4669,
+      "sha256": "ef675969be54368995089a164506f7b4e65b430eba03152446b1383f41e84bdf"
+    },
+    "local-staging/runner-source/browser_common.mjs.txt": {
+      "bytes": 2128,
+      "sha256": "0b3b349a8bfca467e970c2035a948433b5a9a20c732b06ffa1df77e7aef9830e"
+    },
+    "local-staging/runner-source/create_profile.py.txt": {
+      "bytes": 4918,
+      "sha256": "38f0f3494ad91303fa2efbfe1f2a6aacd3c27095c6c43100c7e9ff42845450b0"
+    },
+    "local-staging/runner-source/manage.py.txt": {
+      "bytes": 2093,
+      "sha256": "1073bfe61992d462d8bf418d892d1b3d93eccac521be6434f73313f9a507473f"
+    },
+    "local-staging/runner-source/observability_profile.py.txt": {
+      "bytes": 3987,
+      "sha256": "f3d8d4423050f9a709327183d82a0c63f1e01a5c65f21544bda7e620908a3837"
+    },
+    "local-staging/runner-source/profile_common.py.txt": {
+      "bytes": 3232,
+      "sha256": "678ef64af775ff98f1147b7432f78377d2dbdc57501d71849309cbd064df5602"
+    },
+    "local-staging/runner-source/resolve_image_source.py.txt": {
+      "bytes": 1793,
+      "sha256": "026d124e7d74a3ce62d05979f441710d78ce148b305563827c7d500cb86fc5f6"
+    },
+    "local-staging/runner-source/smoke_browser.mjs.txt": {
+      "bytes": 5879,
+      "sha256": "6572ad374d33ff14ab1dffc92441a1a3b7b294d712db31c345a219b0a643f400"
+    },
+    "local-staging/runner-source/smoke_final.mjs.txt": {
+      "bytes": 5630,
+      "sha256": "237cce4b7038341fa7eafaffbfdb02ca1a0cace308c0dfb283abe2f4ab992708"
+    },
+    "local-staging/runner-source/smoke_grafana.mjs.txt": {
+      "bytes": 2341,
+      "sha256": "98d73d49bf5bfd1ead9e4f26e565a880ad6755f5eb9eb7441512aa68475b7617"
+    },
+    "local-staging/runner-source/smoke_voice.mjs.txt": {
+      "bytes": 3762,
+      "sha256": "3bbdf09044e7bc329ff752191b9864b0c1c0385ba556ee718fd8167cda215f4e"
+    },
+    "local-staging/runner-source/verify_deployment.py.txt": {
+      "bytes": 4664,
+      "sha256": "238f938d4068d25b6c0e8e8cd020b2c6fcf8a5e73ec96956cdf444b90465c5d3"
+    },
+    "local-staging/summary.json": {
+      "bytes": 2146,
+      "sha256": "ebf60685c52830faf0520e99302ef0cd5e88789838113ab263142a0121f6a6c1"
+    },
+    "local-staging/voice-smoke-before-loopback.json": {
+      "bytes": 3273,
+      "sha256": "b8531baa19ecc75e7158dbb5730a5ff8920495f46d26933c928dee3c3ef90b5d"
+    },
+    "local-staging/voice-smoke.json": {
+      "bytes": 6263,
+      "sha256": "031072fb2e6292dcadbd187cbb13aa8e9ad8061ee2ade9038749ee6afb2626f6"
+    },
+    "local-staging/workspace.png": {
+      "bytes": 51060,
+      "sha256": "4b7314f316cc66bb9c1c3e07919f4a2441de12db8ab970d26f9b4308a2cef8a4"
+    },
     "matrix.json": {
-      "bytes": 1161430,
-      "sha256": "0dadcf357da4a68dcbe5514a9dd833cf4214810452ccb36aafa7f7a5d2fcb1e0"
+      "bytes": 1162534,
+      "sha256": "1e6d25cd4f7c87c5a977309fd7a819ea7f52adcc6c1f5e7c16ebc885662b331b"
     },
     "muted-background-resume.json": {
       "bytes": 250,

@@ -1,0 +1,29 @@
+import assert from 'node:assert/strict'
+import {fileURLToPath} from 'node:url'
+import {chromium,expect,root,credentials,save} from './browser_common.mjs'
+const base='http://127.0.0.1:13000'
+const browser=await chromium.launch({channel:'chrome',headless:true})
+const context=await browser.newContext({viewport:{width:1440,height:1000}})
+const page=await context.newPage();page.setDefaultTimeout(12000)
+const report={status:'RUNNING',at_utc:new Date().toISOString(),origin:base,checks:[]}
+try{
+ report.stage='navigate';await page.goto(base+'/login');report.stage='login_controls';report.inputs=await page.locator('input').evaluateAll(a=>a.map(e=>({name:e.name,type:e.type,placeholder:e.placeholder})));report.buttons=await page.getByRole('button').allTextContents()
+ await page.locator('input[name="user"]').fill(credentials.grafana_login)
+ await page.locator('input[name="password"]').fill(credentials.grafana_password)
+ report.stage='submit';await page.getByRole('button',{name:'Log in',exact:true}).click()
+ await expect(page.locator('input[name="password"]')).toHaveCount(0)
+ report.stage='authenticated_search';const r=await context.request.get(base+'/api/search?type=dash-db');assert.equal(r.status(),200)
+ const dashboards=await r.json();assert.equal(dashboards.length,6)
+ const dashboard=dashboards.find(d=>d.uid==='boohtacord-runtime')??dashboards.find(d=>/runtime/i.test(d.title))
+ report.stage='dashboard';assert.ok(dashboard);await page.goto(base+dashboard.url)
+ await expect(page.getByText(dashboard.title,{exact:true}).first()).toBeVisible()
+ await expect(page.getByText('Dashboard not found',{exact:true})).toHaveCount(0)
+ await page.waitForTimeout(4000)
+ await page.screenshot({path:fileURLToPath(new URL('grafana-runtime.png',root))})
+ report.dashboard_uid=dashboard.uid;report.dashboard_title=dashboard.title
+ report.checks=['actual_Grafana_UI_login','all_six_provisioned_dashboards_visible_to_authenticated_user','runtime_dashboard_rendered']
+ report.status='PASS_SCOPED_GRAFANA_UI'
+}catch(e){report.status='FAIL_OR_CONTROLLER';report.error_type=e.name;await page.screenshot({path:fileURLToPath(new URL('grafana-attempt.private.png',root))})}
+finally{await context.close();await browser.close();await save('grafana-ui.json',report);console.log(JSON.stringify(report))}
+
+process.exitCode=report.status.startsWith('PASS')?0:1
