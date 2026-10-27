@@ -1,0 +1,40 @@
+"""Local-only HTTP and owned Docker helpers. Credentials remain private."""
+import sys,json,http.client,http.cookies,uuid
+from pathlib import Path
+from datetime import datetime,timezone
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,ORIGIN,SOURCE,credentials
+assert PROJECT=='boohtacord-local-qa' and ORIGIN=='http://localhost:18088'
+def now():return datetime.now(timezone.utc).isoformat()
+def save(name,d):(P/name).write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+def load(name):return json.loads((P/name).read_text(encoding='utf-8'))
+def call(method,path,data=None,cookie=None):
+ assert path.startswith('/api/v1/') and '://' not in path
+ headers={'Host':'localhost:18088','Origin':ORIGIN,'Content-Type':'application/json'}
+ if cookie:headers['Cookie']=cookie
+ c=http.client.HTTPConnection('127.0.0.1',18088,timeout=12)
+ try:
+  c.request(method,path,body=None if data is None else json.dumps(data).encode(),headers=headers);r=c.getresponse();raw=r.read(65537);assert len(raw)<=65536
+  h=dict(r.getheaders());body=json.loads(raw) if raw else None;return r.status,body,h
+ finally:c.close()
+def extract_cookie(headers):
+ jar=http.cookies.SimpleCookie();jar.load(headers.get('Set-Cookie',''));assert 'vp_session' in jar
+ item=jar['vp_session'];assert item['secure'] and item['httponly'] and item['path']=='/'
+ return 'vp_session='+item.value
+def admin_account(cookie,uid):
+ cursor=None
+ for i in range(10):
+  path='/api/v1/admin/accounts?limit=100'+('&cursor='+cursor if cursor else '');s,d,_=call('GET',path,cookie=cookie);assert s==200
+  for a in d['accounts']:
+   if a['account_id']==uid:return a
+  cursor=d.get('next_cursor')
+  if not cursor:break
+ raise RuntimeError('Owned account absent')
+def update_block(cookie,uid,blocked):
+ a=admin_account(cookie,uid);assert a['role']=='MEMBER';body={'role':'MEMBER','blocked':blocked}
+ if a.get('updated_at'):body['expected_updated_at']=a['updated_at']
+ s,d,_=call('PATCH','/api/v1/admin/accounts/'+uid,body,cookie);assert s==200 and d['blocked']==blocked and d['role']=='MEMBER';return s
+def session_rows(ids):
+ for x in ids:assert str(uuid.UUID(x))==x
+ query='SELECT count(*) FROM sessions WHERE user_id IN ('+','.join("'"+x+"'::uuid" for x in ids)+');\n'
+ raw=docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-At',input=query.encode());return int(raw.decode().strip())

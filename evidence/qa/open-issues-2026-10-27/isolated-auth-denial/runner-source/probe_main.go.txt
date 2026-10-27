@@ -1,0 +1,34 @@
+package main
+
+import (
+ "context"
+ "encoding/json"
+ "math/rand"
+ "net"
+ "net/http"
+ "os"
+ "time"
+)
+
+func main(){
+ raw,err:=os.ReadFile("/probe.private.json");if err!=nil{panic("owned probe config unavailable")}
+ var cfg settings;if json.Unmarshal(raw,&cfg)!=nil||cfg.URL!="http://api:8080/api/v1/auth/login"||cfg.Origin!="http://localhost:18088"||cfg.Host!="localhost:18088"||cfg.Samples!=30||cfg.IntervalMS!=1700{panic("owned profile guard")}
+ addresses,err:=net.LookupIP("api");if err!=nil||len(addresses)==0{panic("owned API DNS unavailable")}
+ for _,a:=range addresses{if !a.IsPrivate(){panic("non-private API rejected")}}
+ ctx,cancel:=context.WithTimeout(context.Background(),360*time.Second);defer cancel()
+ client:=&http.Client{Timeout:12*time.Second,Transport:&http.Transport{Proxy:nil,MaxIdleConns:1,MaxIdleConnsPerHost:1},CheckRedirect:func(*http.Request,[]*http.Request)error{return http.ErrUseLastResponse}}
+ defer client.CloseIdleConnections();started:=time.Now();samples:=[]sample{};rng:=rand.New(rand.NewSource(136));baseline:="";failure:="";last:=time.Time{}
+ for round:=0;round<cfg.Samples&&failure=="";round++{
+  groups:=[]string{"unknown","active_wrong","blocked_wrong"};rng.Shuffle(3,func(i,j int){groups[i],groups[j]=groups[j],groups[i]})
+  for _,group:=range groups{
+   if !last.IsZero(){wait:=time.Until(last.Add(time.Duration(cfg.IntervalMS)*time.Millisecond));if wait>0{select{case <-time.After(wait):case <-ctx.Done():failure="profile deadline"}}}
+   if failure!=""{break};last=time.Now();s,e:=attempt(ctx,client,cfg,group,len(samples)%12);samples=append(samples,s)
+   if e!=nil{failure=e.Error();break};if s.Status!=401||s.Code!="UNAUTHENTICATED"||s.Cookie{failure="unexpected public denial or cookie";break}
+   if baseline==""{baseline=s.Semantic};if s.Semantic!=baseline{failure="semantic public payload differs";break}
+   if len(samples)%15==0{_ = json.NewEncoder(os.Stdout).Encode(map[string]any{"event":"progress","completed":len(samples),"total":90})}
+  }
+ }
+ status:="PASS_UNIFORM_NEGATIVE_HTTP_PROFILE";exit:=0;if failure!=""||len(samples)!=90{status="FAIL_OR_PROFILE";exit=1}
+ _=json.NewEncoder(os.Stdout).Encode(map[string]any{"event":"final","status":status,"failure":failure,"samples":samples,"sample_count":len(samples),"elapsed_seconds":time.Since(started).Seconds(),"cohort_count":12,"concurrency":1,"min_interval_ms":cfg.IntervalMS,"public_semantics_equal":failure=="","no_cookie_on_all_denials":failure==""})
+ os.Exit(exit)
+}

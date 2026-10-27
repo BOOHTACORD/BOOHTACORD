@@ -245,3 +245,16 @@ other existing failures stay intact. Whole target inventory/other platforms/AT
 remain unaccepted. All480 original requirements retained; no product/test edits.
 
 Physical Android search target defect: [#586](https://github.com/Egkurilov/BOOHTACORD/issues/586). Exact bug/QA readbacks: `native-search-touch-targets/github-updates.json`.
+
+## Isolated actual API login denials — 2026-10-28 Moscow
+
+[Source-bound I240.C4 results](isolated-auth-denial/README.md): actual Go API and
+PostgreSQL17.6 produce90/90 equal401/UNAUTHENTICATED responses without cookies or
+new sessions across unknown/active-wrong/blocked-wrong groups. Correct active
+and blocked controls, finite30/group timing distributions, bounded owned log
+marker scan and6 focused native Go tests with zero skips pass. Owned fixtures
+are unblocked and sessions revoked; all9 local services remain running/private.
+I240.C4 is PASS for its exact backend requirement. QA240 stays FAIL/open with
+defect134 and unfinished rows. No Nginx/TLS/native-login, other platform/media,
+production-capacity or statistical timing-channel-absence claim. All480 original
+requirements, previous failures and43 consolidation decisions are preserved.

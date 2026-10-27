@@ -1,0 +1,28 @@
+"""Execute a constrained client in the owned QA proxy network; no server restart."""
+import subprocess,os,ipaddress,hashlib,time
+from auth_common import *
+r={'at_utc':now(),'status':'RUNNING','origin':ORIGIN,'project':PROJECT,'source_revision':SOURCE,'production_touched':False};cfg=load('fixture.private.json')
+try:
+ proxy=json.loads(docker('inspect',cfg['proxy_id']))[0];api=json.loads(docker('inspect',PROJECT+'-api-1'))[0]
+ for x in [proxy,api]:assert x['State']['Running'] and x['Config']['Labels']['com.docker.compose.project']==PROJECT
+ assert api['Image']==cfg['api_image'];trusted=[ipaddress.ip_network(v.split('=',1)[1]) for v in api['Config']['Env'] if v.startswith('TRUSTED_PROXY_CIDRS=')]
+ assert any(ipaddress.ip_address(n['IPAddress']) in cidr for n in proxy['NetworkSettings']['Networks'].values() for cidr in trusted)
+ env={**os.environ,'GOOS':'linux','GOARCH':'amd64','CGO_ENABLED':'0','GOTOOLCHAIN':'local'}
+ files=[P/'probe_main.go',P/'probe_http.go'];build=subprocess.run(['go','build','-o',str(P/'auth_probe'),*[str(f) for f in files]],env=env,capture_output=True,cwd=Q)
+ (P/'build.private.log').write_bytes(build.stdout+build.stderr);assert build.returncode==0;r['probe_binary_SHA256']=hashlib.sha256((P/'auth_probe').read_bytes()).hexdigest()
+ name='boohtacord-auth-denial-probe';r['owned_client_name']=name;r['trusted_proxy_namespace_confirmed']=True
+ argv=['docker','run','--rm','--name',name,'--label','com.docker.compose.project='+PROJECT,'--network','container:'+cfg['proxy_id'],'--cpus','.5','--memory','128m','--pids-limit','64','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges','--mount','type=bind,source='+str(P/'auth_probe')+',target=/qa-probe,readonly','--mount','type=bind,source='+str(P/'probe.private.json')+',target=/probe.private.json,readonly','--entrypoint','/qa-probe',cfg['api_image']]
+ save('probe-runner.json',r)
+ with (P/'probe-stderr.private.log').open('wb') as errors:
+  process=subprocess.Popen(argv,stdout=subprocess.PIPE,stderr=errors,text=True,encoding='utf-8')
+  for line in process.stdout:
+   data=json.loads(line)
+   if data['event']=='progress':print(json.dumps(data),flush=True)
+   elif data['event']=='final':save('negative-profile.json',data);r['profile_status']=data['status'];r['sample_count']=data['sample_count']
+   else:raise RuntimeError('Unexpected owned probe output')
+  code=process.wait(timeout=15);r['client_exit_code']=code;assert code==0 and r['sample_count']==90
+ r['session_rows_after_negative_profile']=session_rows([a['id'] for a in cfg['accounts'].values()]);assert r['session_rows_after_negative_profile']==load('setup-result.json')['session_rows_before_negative_profile'];r['negative_session_rows_delta']=0
+ r['status']='PASS_REAL_HTTP_POSTGRES_NEGATIVE_PROFILE'
+except Exception as e:r['status']='FAIL_OR_RUNNER';r['error_type']=type(e).__name__
+finally:r['finished_at_utc']=now();save('probe-runner.json',r)
+print(json.dumps(r));sys.exit(0 if r['status'].startswith('PASS') else 1)

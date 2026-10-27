@@ -1,0 +1,58 @@
+{
+  "at_utc": "2026-10-27T23:37:45.365634+00:00",
+  "status": "PASS_MEASURED_FINITE_NEGATIVE_PROFILE",
+  "groups": {
+    "unknown": {
+      "n": 30,
+      "min_ms": 16.716,
+      "p25_ms": 16.93975,
+      "p50_ms": 17.167499999999997,
+      "p95_ms": 18.082549999999998,
+      "p99_ms": 19.14612,
+      "max_ms": 19.573,
+      "mean_ms": 17.3076,
+      "stdev_ms": 0.5745625382365506
+    },
+    "active_wrong": {
+      "n": 30,
+      "min_ms": 16.704,
+      "p25_ms": 16.89525,
+      "p50_ms": 17.064,
+      "p95_ms": 20.569549999999996,
+      "p99_ms": 29.64892000000001,
+      "max_ms": 33.144,
+      "mean_ms": 17.808033333333334,
+      "stdev_ms": 3.037494424383511
+    },
+    "blocked_wrong": {
+      "n": 30,
+      "min_ms": 16.512,
+      "p25_ms": 16.9325,
+      "p50_ms": 17.186500000000002,
+      "p95_ms": 19.162049999999997,
+      "p99_ms": 30.716740000000016,
+      "max_ms": 35.21,
+      "mean_ms": 17.911733333333334,
+      "stdev_ms": 3.323917691969599
+    }
+  },
+  "distinct_public_semantic_payloads": 1,
+  "all90_wrong_denials_http": 401,
+  "all90_wrong_denials_code": "UNAUTHENTICATED",
+  "SetCookie_headers_on_wrong_denials": 0,
+  "negative_session_rows_delta": 0,
+  "max_group_median_difference_ms": 0.12250000000000227,
+  "max_min_group_median_ratio": 1.0071788560712613,
+  "interpolation": "linear at(n-1)*p",
+  "profile": {
+    "samples_per_group": 30,
+    "synthetic_source_cohorts": 12,
+    "concurrency": 1,
+    "min_request_interval_ms": 1700,
+    "elapsed_seconds": 151.393666295,
+    "transport": "Compiled Go client in owned trusted-proxy network namespace directly to actual API; real PostgreSQL; no HTTP/API mocks",
+    "native_Nginx_forwarding_path_exercised": false
+  },
+  "limitations": "Local single-host finite profile; no absolute constant latency, remote exploitability, production capacity or statistical absence-of-channel claim",
+  "source_observation_SHA256": "7c46f48378ce0fc806e64bd9b8a5b22233ef95eaf5be237a07e7c15274538384"
+}

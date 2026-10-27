@@ -1,0 +1,18 @@
+"""Restore own local fixture block state and revoke only this test's sessions."""
+from auth_common import *
+r={'at_utc':now(),'status':'RUNNING','production_touched':False}
+try:
+ cfg=load('fixture.private.json');assert load('probe-runner.json')['status']!='RUNNING';admin=cfg['admin_cookie'];active=cfg['accounts']['active'];blocked=cfg['accounts']['blocked']
+ s,d,h=call('POST','/api/v1/auth/login',{'login':active['login'],'password':active['password']});assert s==204;cookie=extract_cookie(h);active['post_cookie']=cookie;save('fixture.private.json',cfg)
+ s,d,_=call('GET','/api/v1/auth/session',cookie=cookie);assert s==200 and d['authenticated'] and d['account_id']==active['id'];r['active_after_negative_login_http']=204;r['active_after_negative_identity_match']=True
+ assert call('POST','/api/v1/auth/logout',cookie=cookie)[0]==204
+ update_block(admin,blocked['id'],False);assert not admin_account(admin,blocked['id'])['blocked'];r['owned_block_restored_false']=True
+ s,d,h=call('POST','/api/v1/auth/login',{'login':blocked['login'],'password':blocked['password']});assert s==204;cookie=extract_cookie(h);blocked['post_cookie']=cookie;save('fixture.private.json',cfg)
+ s,d,_=call('GET','/api/v1/auth/session',cookie=cookie);assert s==200 and d['authenticated'] and d['account_id']==blocked['id'];r['restored_fixture_can_login']=True
+ assert call('POST','/api/v1/auth/logout',cookie=cookie)[0]==204
+ ids=[a['id'] for a in cfg['accounts'].values()];query='SELECT count(*) FROM sessions WHERE revoked_at IS NULL AND user_id IN ('+','.join("'"+str(uuid.UUID(x))+"'::uuid" for x in ids)+');\n';r['owned_member_active_sessions']=int(docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-At',input=query.encode()).decode().strip());assert r['owned_member_active_sessions']==0
+ assert call('POST','/api/v1/auth/logout',cookie=admin)[0]==204;s,d,_=call('GET','/api/v1/auth/session',cookie=admin);assert s==200 and not d['authenticated'];r['owned_admin_session_revoked']=True
+ r['owned_members_retained_unblocked']=2;r['no_other_accounts_modified']=True;r['status']='PASS_OWNED_FIXTURES_UNBLOCKED_AND_SESSIONS_REVOKED'
+except Exception as e:r['status']='FAIL_CLEANUP_OR_CONTROL';r['error_type']=type(e).__name__
+finally:r['finished_at_utc']=now();save('cleanup-result.json',r)
+print(json.dumps(r));sys.exit(0 if r['status'].startswith('PASS') else 1)

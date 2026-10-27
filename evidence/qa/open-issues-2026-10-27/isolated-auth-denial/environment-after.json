@@ -1,0 +1,142 @@
+{
+  "at_utc": "2026-10-27T23:37:46.592837+00:00",
+  "status": "PASS_ORIGINAL_NINE_SERVICES_SOURCE_AND_LOG_SCAN",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "project": "boohtacord-local-qa",
+  "production_touched": false,
+  "services": [
+    {
+      "service": "api",
+      "running": true,
+      "image_id": "sha256:b34a09b6eebfb87fea478e7cd440cc7ab9c52dc7dbd3cf4d659b12a9eff98a47",
+      "restart_count": 0
+    },
+    {
+      "service": "web",
+      "running": true,
+      "image_id": "sha256:414cc79b7ff85cfca81252bd12eb8a9525f2fb5727932a88b02ccf63ebb42d20",
+      "restart_count": 0
+    },
+    {
+      "service": "proxy",
+      "running": true,
+      "image_id": "sha256:f43d8810c944e27e6f7ea80b165de11dbdab16cff15c8a80d83ae3e1a109a35d",
+      "restart_count": 0
+    },
+    {
+      "service": "postgres",
+      "running": true,
+      "image_id": "sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94",
+      "restart_count": 0
+    },
+    {
+      "service": "livekit",
+      "running": true,
+      "image_id": "sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3",
+      "restart_count": 0
+    },
+    {
+      "service": "collector",
+      "running": true,
+      "image_id": "sha256:b6d2b9a85b1029d05b5ad913150c1f014eed4ae99be81a1813ca5ade4a191913",
+      "restart_count": 0
+    },
+    {
+      "service": "tempo",
+      "running": true,
+      "image_id": "sha256:cac9de2ac9f6da8efca5b64b690a7cb8c786a0c49cac7b4517dd1b0089a6c703",
+      "restart_count": 0
+    },
+    {
+      "service": "prometheus",
+      "running": true,
+      "image_id": "sha256:5550dc63da361dc30f6fe02ac0e4dfc736ededfef3c8d12a634db04a67824d78",
+      "restart_count": 0
+    },
+    {
+      "service": "grafana",
+      "running": true,
+      "image_id": "sha256:6e5d306338670f381a942f1c50d3c266bf71531e5ddd9ee4fc1a133dac5ce63d",
+      "restart_count": 0
+    }
+  ],
+  "postgres_version": "17.6",
+  "API_health_http": 200,
+  "owned_probe_absent": true,
+  "bounded_owned_logs_scan": [
+    {
+      "service": "api",
+      "bytes": 36819,
+      "stdout_bytes": 36818,
+      "stderr_bytes": 0,
+      "SHA256": "24c689e1feab87e899b2ae6bb626ee1a66eeb2e12378313bff3f7643effa46c8",
+      "own_credential_login_token_markers_found": false
+    },
+    {
+      "service": "web",
+      "bytes": 1,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "own_credential_login_token_markers_found": false
+    },
+    {
+      "service": "proxy",
+      "bytes": 1,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "own_credential_login_token_markers_found": false
+    },
+    {
+      "service": "postgres",
+      "bytes": 356,
+      "stdout_bytes": 0,
+      "stderr_bytes": 355,
+      "SHA256": "6d454648b0f907bd7e82fb8ddd3ad8874c1c4a80ec37a793da0f903a5419586e",
+      "own_credential_login_token_markers_found": false
+    },
+    {
+      "service": "livekit",
+      "bytes": 3668,
+      "stdout_bytes": 0,
+      "stderr_bytes": 3667,
+      "SHA256": "7de810e46b1d5cab8b8072ecbb010c2efcca94e0b16ae1fa26904d0d851d8935",
+      "own_credential_login_token_markers_found": false
+    },
+    {
+      "service": "collector",
+      "bytes": 18393,
+      "stdout_bytes": 0,
+      "stderr_bytes": 18392,
+      "SHA256": "ab099d487699d9b412b96d4209b5dd7b28ad528baabe586aba3df7acc01fce78",
+      "own_credential_login_token_markers_found": false
+    },
+    {
+      "service": "tempo",
+      "bytes": 10759,
+      "stdout_bytes": 0,
+      "stderr_bytes": 10758,
+      "SHA256": "afe3765db72fd271687b062176bf67dd254d0f7d653ca3d5e6e0bfc4013d64f9",
+      "own_credential_login_token_markers_found": false
+    },
+    {
+      "service": "prometheus",
+      "bytes": 1,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "own_credential_login_token_markers_found": false
+    },
+    {
+      "service": "grafana",
+      "bytes": 5154,
+      "stdout_bytes": 5153,
+      "stderr_bytes": 0,
+      "SHA256": "1e31a0ca17ac4677e9d03456ab207618b91d3a5fcc9452e72852645ccdd3cc00",
+      "own_credential_login_token_markers_found": false
+    }
+  ],
+  "logs_scope": "Owned local API/proxy/PG/SFU/observability logs since this setup; no raw logs published and no all-data privacy claim",
+  "finished_at_utc": "2026-10-27T23:37:50.225419+00:00"
+}

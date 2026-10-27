@@ -1,0 +1,39 @@
+package main
+
+import (
+ "bytes"
+ "context"
+ "crypto/sha256"
+ "encoding/hex"
+ "encoding/json"
+ "fmt"
+ "io"
+ "net/http"
+ "time"
+)
+
+type settings struct {
+ URL string `json:"url"`; Origin string `json:"origin"`; Host string `json:"host"`
+ Missing string `json:"missing_login"`; Active string `json:"active_login"`; Blocked string `json:"blocked_login"`; Wrong string `json:"wrong_password"`
+ Samples int `json:"samples_per_group"`; IntervalMS int `json:"interval_ms"`
+}
+type sample struct {
+ Group string `json:"group"`; Cohort int `json:"cohort"`; Status int `json:"http"`; Code string `json:"code"`
+ Cookie bool `json:"set_cookie_seen"`; Semantic string `json:"semantic_SHA256"`; MS float64 `json:"elapsed_ms"`
+}
+func attempt(ctx context.Context,client *http.Client,cfg settings,group string,cohort int)(sample,error){
+ login:=map[string]string{"unknown":cfg.Missing,"active_wrong":cfg.Active,"blocked_wrong":cfg.Blocked}[group]
+ s:=sample{Group:group,Cohort:cohort};body,_:=json.Marshal(map[string]string{"login":login,"password":cfg.Wrong})
+ req,err:=http.NewRequestWithContext(ctx,http.MethodPost,cfg.URL,bytes.NewReader(body));if err!=nil{return s,fmt.Errorf("request construction")}
+ req.Host=cfg.Host;req.Header.Set("Origin",cfg.Origin);req.Header.Set("Content-Type","application/json")
+ req.Header.Set("X-Forwarded-For",fmt.Sprintf("192.0.2.%d",100+cohort))
+ started:=time.Now();response,err:=client.Do(req);if err!=nil{return s,fmt.Errorf("local request transport")};defer response.Body.Close()
+ raw,err:=io.ReadAll(io.LimitReader(response.Body,65537));s.MS=float64(time.Since(started).Microseconds())/1000
+ if err!=nil||len(raw)>65536{return s,fmt.Errorf("response read or bound")}
+ s.Status=response.StatusCode;s.Cookie=len(response.Header.Values("Set-Cookie"))!=0
+ var data map[string]any;if json.Unmarshal(raw,&data)!=nil{return s,fmt.Errorf("response JSON")}
+ e,ok:=data["error"].(map[string]any);if !ok{return s,fmt.Errorf("response error shape")}
+ code,_:=e["code"].(string);if code=="UNAUTHENTICATED"||code=="RATE_LIMITED"||code=="ACCOUNT_BLOCKED"||code=="INTERNAL"{s.Code=code}else{s.Code="UNEXPECTED"}
+ delete(e,"request_id");delete(data,"request_id");canonical,_:=json.Marshal(data);digest:=sha256.Sum256(canonical);s.Semantic=hex.EncodeToString(digest[:])
+ return s,nil
+}

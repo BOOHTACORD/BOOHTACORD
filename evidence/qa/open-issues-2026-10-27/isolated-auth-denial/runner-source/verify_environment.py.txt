@@ -1,0 +1,27 @@
+"""Recheck all original local services, source binding, PostgreSQL and secret-free owned logs."""
+import hashlib,subprocess
+from auth_common import *
+from profile_common import CONTEXT
+r={'at_utc':now(),'status':'RUNNING','source_revision':SOURCE,'project':PROJECT,'production_touched':False,'services':[]}
+try:
+ cfg=load('fixture.private.json');expect=['api','web','proxy','postgres','livekit','collector','tempo','prometheus','grafana'];needles=[cfg['wrong_password'],cfg['missing']['login']]
+ for a in cfg['accounts'].values():needles.extend([a['login'],a['password']]);needles.extend(v.split('=',1)[1] for k,v in a.items() if k.endswith('cookie'))
+ needles.append(cfg['admin_cookie'].split('=',1)[1]);needles.extend(v for k,v in credentials().items() if any(s in k for s in ['password','secret','ingest_auth']) and isinstance(v,str));logs=[]
+ for name in expect:
+  v=json.loads(docker('inspect',PROJECT+'-'+name+'-1'))[0];assert v['State']['Running'] and v['Config']['Labels']['com.docker.compose.project']==PROJECT
+  for bindings in v['NetworkSettings']['Ports'].values():
+   for b in bindings or []:assert b['HostIp']=='127.0.0.1'
+  if name in ['api','web']:
+   image=json.loads(docker('image','inspect',v['Image']))[0];assert image['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+  output=subprocess.run(['docker','--context',CONTEXT,'logs','--since',cfg['start_utc'],PROJECT+'-'+name+'-1'],capture_output=True);assert output.returncode==0
+  raw=output.stdout+b'\n'+output.stderr;(P/(name+'-logs.private.log')).write_bytes(raw)
+  assert all(n.encode() not in raw for n in needles),'Owned credential/login marker found in logs'
+  logs.append({'service':name,'bytes':len(raw),'stdout_bytes':len(output.stdout),'stderr_bytes':len(output.stderr),'SHA256':hashlib.sha256(raw).hexdigest(),'own_credential_login_token_markers_found':False})
+  r['services'].append({'service':name,'running':True,'image_id':v['Image'],'restart_count':v['RestartCount']})
+ r['postgres_version']=docker('exec',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-Atc','SHOW server_version').decode().strip();assert r['postgres_version'].startswith('17.6')
+ assert call('GET','/api/v1/health')[0]==200;r['API_health_http']=200
+ r['owned_probe_absent']=not docker('ps','-a','--filter','name=^boohtacord-auth-denial-probe$','--format','{{.Names}}').decode().strip();assert r['owned_probe_absent']
+ r['bounded_owned_logs_scan']=logs;r['logs_scope']='Owned local API/proxy/PG/SFU/observability logs since this setup; no raw logs published and no all-data privacy claim';r['status']='PASS_ORIGINAL_NINE_SERVICES_SOURCE_AND_LOG_SCAN'
+except Exception as e:r['status']='FAIL_ENV_OR_LOG_SCAN';r['error_type']=type(e).__name__
+finally:r['finished_at_utc']=now();save('environment-after.json',r)
+print(json.dumps({k:v for k,v in r.items() if k not in ['services','bounded_owned_logs_scan']}));sys.exit(0 if r['status'].startswith('PASS') else 1)

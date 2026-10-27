@@ -1,0 +1,25 @@
+"""Create and block only new owned local QA fixtures; validate positive/blocked controls."""
+import secrets
+from auth_common import *
+r={'at_utc':now(),'status':'RUNNING','origin':ORIGIN,'project':PROJECT,'source_revision':SOURCE,'production_touched':False,'checks':[]}
+try:
+ assert not (P/'fixture.private.json').exists();c=credentials();s,d,h=call('POST','/api/v1/auth/login',{'login':c['admin_login'],'password':c['admin_password']});assert s==204;cookie=extract_cookie(h)
+ s,d,_=call('GET','/api/v1/auth/session',cookie=cookie);assert s==200 and d['authenticated'] and d['role']=='ADMINISTRATOR'
+ cfg={'admin_cookie':cookie,'accounts':{},'missing':{'login':'qa_missing_'+secrets.token_hex(6)},'wrong_password':secrets.token_urlsafe(26)};save('fixture.private.json',cfg)
+ for k in ['active','blocked']:
+  a={'login':'qa_auth_'+k+'_'+secrets.token_hex(5),'password':secrets.token_urlsafe(26)};s,d,_=call('POST','/api/v1/auth/register',a);assert s==201 and d['role']=='MEMBER';a['id']=d['id'];cfg['accounts'][k]=a;save('fixture.private.json',cfg)
+ r['owned_members_created']=2;blocked=cfg['accounts']['blocked'];assert not admin_account(cookie,blocked['id'])['blocked'];update_block(cookie,blocked['id'],True);r['owned_fixture_blocked_verified']=admin_account(cookie,blocked['id'])['blocked']
+ a=cfg['accounts']['active'];s,d,h=call('POST','/api/v1/auth/login',{'login':a['login'],'password':a['password']});assert s==204;a['cookie']=extract_cookie(h);save('fixture.private.json',cfg)
+ s,d,_=call('GET','/api/v1/auth/session',cookie=a['cookie']);assert s==200 and d['authenticated'] and d['account_id']==a['id'];r['active_positive_login_http']=204;r['active_positive_identity_match']=True;r['positive_cookie_Secure_HttpOnly']=True
+ assert call('POST','/api/v1/auth/logout',cookie=a['cookie'])[0]==204;r['positive_session_revoked']=True
+ before=session_rows([x['id'] for x in cfg['accounts'].values()]);s,d,h=call('POST','/api/v1/auth/login',{'login':blocked['login'],'password':blocked['password']});assert s==403 and d['error']['code']=='ACCOUNT_BLOCKED' and 'Set-Cookie' not in h
+ after=session_rows([x['id'] for x in cfg['accounts'].values()]);assert after==before;r['blocked_correct_http']=403;r['blocked_correct_code']='ACCOUNT_BLOCKED';r['blocked_correct_no_cookie']=True;r['blocked_correct_session_rows_delta']=0;r['session_rows_before_negative_profile']=after
+ proxy=json.loads(docker('inspect',PROJECT+'-proxy-1'))[0];api=json.loads(docker('inspect',PROJECT+'-api-1'))[0]
+ for v in [proxy,api]:assert v['Config']['Labels']['com.docker.compose.project']==PROJECT and v['State']['Running']
+ image=json.loads(docker('image','inspect',api['Image']))[0];assert image['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+ cfg['proxy_id']=proxy['Id'];cfg['api_image']=api['Image'];cfg['start_utc']=r['at_utc'];save('fixture.private.json',cfg)
+ probe={'url':'http://api:8080/api/v1/auth/login','origin':ORIGIN,'host':'localhost:18088','missing_login':cfg['missing']['login'],'active_login':a['login'],'blocked_login':blocked['login'],'wrong_password':cfg['wrong_password'],'samples_per_group':30,'interval_ms':1700};save('probe.private.json',probe)
+ r['API_image_id']=api['Image'];r['proxy_network_owned_and_local']=True;r['API_revision_label_matches']=True;r['API_container_restart_count']=api['RestartCount'];r['status']='PASS_OWNED_LOCAL_AUTH_FIXTURES_READY'
+except Exception as e:r['status']='FAIL_OR_SETUP';r['error_type']=type(e).__name__
+finally:r['finished_at_utc']=now();save('setup-result.json',r)
+print(json.dumps(r));sys.exit(0 if r['status'].startswith('PASS') else 1)

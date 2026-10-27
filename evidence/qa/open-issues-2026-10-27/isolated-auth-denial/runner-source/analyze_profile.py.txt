@@ -1,0 +1,12 @@
+"""Finite local distributions; no timing-channel absence or capacity assertion."""
+import statistics,math,hashlib
+from auth_common import *
+d=load('negative-profile.json');assert d['status']=='PASS_UNIFORM_NEGATIVE_HTTP_PROFILE' and len(d['samples'])==90
+def percentile(v,p):
+ a=sorted(v);x=(len(a)-1)*p;i=int(x);return a[i]+(a[min(i+1,len(a)-1)]-a[i])*(x-i)
+groups={}
+for name in ['unknown','active_wrong','blocked_wrong']:
+ rows=[s for s in d['samples'] if s['group']==name];values=[s['elapsed_ms'] for s in rows];assert len(rows)==30 and all(s['http']==401 and s['code']=='UNAUTHENTICATED' and not s['set_cookie_seen'] for s in rows)
+ groups[name]={'n':len(values),'min_ms':min(values),'p25_ms':percentile(values,.25),'p50_ms':percentile(values,.5),'p95_ms':percentile(values,.95),'p99_ms':percentile(values,.99),'max_ms':max(values),'mean_ms':statistics.mean(values),'stdev_ms':statistics.stdev(values)}
+hashes={s['semantic_SHA256'] for s in d['samples']};assert len(hashes)==1
+medians=[v['p50_ms'] for v in groups.values()];r={'at_utc':now(),'status':'PASS_MEASURED_FINITE_NEGATIVE_PROFILE','groups':groups,'distinct_public_semantic_payloads':len(hashes),'all90_wrong_denials_http':401,'all90_wrong_denials_code':'UNAUTHENTICATED','SetCookie_headers_on_wrong_denials':0,'negative_session_rows_delta':load('probe-runner.json')['negative_session_rows_delta'],'max_group_median_difference_ms':max(medians)-min(medians),'max_min_group_median_ratio':max(medians)/min(medians),'interpolation':'linear at(n-1)*p','profile':{'samples_per_group':30,'synthetic_source_cohorts':12,'concurrency':1,'min_request_interval_ms':1700,'elapsed_seconds':d['elapsed_seconds'],'transport':'Compiled Go client in owned trusted-proxy network namespace directly to actual API; real PostgreSQL; no HTTP/API mocks','native_Nginx_forwarding_path_exercised':False},'limitations':'Local single-host finite profile; no absolute constant latency, remote exploitability, production capacity or statistical absence-of-channel claim','source_observation_SHA256':hashlib.sha256((P/'negative-profile.json').read_bytes()).hexdigest()};save('timing-summary.json',r);print(json.dumps(r))

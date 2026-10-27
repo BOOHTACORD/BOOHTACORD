@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-27T23:23:25.452139+00:00",
+  "at_utc": "2026-10-27T23:42:22.510335+00:00",
   "candidate_evidence": "../../android/physical-share-2026-10-27/result.json",
   "files": {
     "acceptance-methods.json": {
@@ -667,8 +667,8 @@
       "sha256": "7d2ac8691a4dd0bef3ffd7fd6c9ea028ab04c058060810c65c5f27501d34d867"
     },
     "cases.json": {
-      "bytes": 69452,
-      "sha256": "de78ee4604059005303277392d849c529d93ed279d3a83bf2bde6fb54564d6c1"
+      "bytes": 70672,
+      "sha256": "b575f0a6cc6e017474f3661a436692d70e30d36353c2cedf6e739b92b65afa63"
     },
     "controlled-account-integrity.json": {
       "bytes": 640,
@@ -705,6 +705,106 @@
     "github-updates.json": {
       "bytes": 1824,
       "sha256": "57bb3a875edf514ab507a6b1c1100e0d8c2cc3a0ef30520fe3d3497622b6a6f0"
+    },
+    "isolated-auth-denial/cleanup-result.json": {
+      "bytes": 527,
+      "sha256": "5e592479d5b237862d5189c4665aed14ca12a71512565bad9d7e64eec31e808e"
+    },
+    "isolated-auth-denial/environment-after.json": {
+      "bytes": 4488,
+      "sha256": "9223e403cf39627feb1e4773408daf59011ac184d7f0a374c9ce137b5a044ffc"
+    },
+    "isolated-auth-denial/fixture-final-attestation.json": {
+      "bytes": 372,
+      "sha256": "cbb6ea4e9fbabc720cc8ab08c4c53d404dd6de1078fb6e10da4b9a516a758b17"
+    },
+    "isolated-auth-denial/focused-go-events.json": {
+      "bytes": 6366,
+      "sha256": "621419a8f983338cf17f6bf5b68c0e16aa0a4ce1b1139bc62c87763a332983c6"
+    },
+    "isolated-auth-denial/focused-go-result.json": {
+      "bytes": 1115,
+      "sha256": "35dfcd569bc35ea2c482d8b1b7c8f677e4c17be00caa9728deaf71b3f35916d0"
+    },
+    "isolated-auth-denial/negative-profile.json": {
+      "bytes": 24213,
+      "sha256": "7c46f48378ce0fc806e64bd9b8a5b22233ef95eaf5be237a07e7c15274538384"
+    },
+    "isolated-auth-denial/operating-brief.json": {
+      "bytes": 1940,
+      "sha256": "632dd53bea928812c27577b46d9858f07d0df2034653a28e0b5b970a1786e49c"
+    },
+    "isolated-auth-denial/probe-runner.json": {
+      "bytes": 712,
+      "sha256": "2a060c6aecf85dc7f360fde5aa40f06335dacf618136396c83b25eaff724147a"
+    },
+    "isolated-auth-denial/README.md": {
+      "bytes": 6409,
+      "sha256": "e7c994466efd4166dca98e010a5266f1d970b3e1782f436cb4874b9414252135"
+    },
+    "isolated-auth-denial/runner-before-cleanup-analysis.json": {
+      "bytes": 529,
+      "sha256": "057b58b1c693acb2ae862a90bfc016e450bfe39195582b8e47bdabb0b5a53d02"
+    },
+    "isolated-auth-denial/runner-before-profile.json": {
+      "bytes": 424,
+      "sha256": "73e5bc10ffea6859a37b074dcb6e656f93abe5419b0fefca7d0d83c85bac29d2"
+    },
+    "isolated-auth-denial/runner-before-setup.json": {
+      "bytes": 247,
+      "sha256": "005289aee0eaff6c85099a675179f86293cecffdb69e718fe3f50d0f55f43e62"
+    },
+    "isolated-auth-denial/runner-source/analyze_profile.py.txt": {
+      "bytes": 2154,
+      "sha256": "56f7d12a3fe736521b559a897f74707b796805d1cbaec96b3de023a05291cbd3"
+    },
+    "isolated-auth-denial/runner-source/auth_common.py.txt": {
+      "bytes": 2485,
+      "sha256": "d6ec06cab3de306490e6ac5d6d81835ad226c86a0934f3abe1765752a2cb63f6"
+    },
+    "isolated-auth-denial/runner-source/cleanup_auth.py.txt": {
+      "bytes": 2386,
+      "sha256": "d2f8242c0a50501d71d48e0a73f3b8e8afec171125f6fa4de0e9e5a8bae9e930"
+    },
+    "isolated-auth-denial/runner-source/probe_http.go.txt": {
+      "bytes": 2291,
+      "sha256": "2d7553c2e1d805f9b0417b4f5e9ce96e883c617cb6379dcad73833f445cc0852"
+    },
+    "isolated-auth-denial/runner-source/probe_main.go.txt": {
+      "bytes": 2470,
+      "sha256": "1e99d592bec8e8759557b008ceb66d025effd82e783889d8b3ba139c1fa395e2"
+    },
+    "isolated-auth-denial/runner-source/run_probe.py.txt": {
+      "bytes": 2985,
+      "sha256": "06d1d6b15c221d36f7b36b8ad98697b947b464f7b3931675fc5edfbbfba968a2"
+    },
+    "isolated-auth-denial/runner-source/setup_auth.py.txt": {
+      "bytes": 3596,
+      "sha256": "f7ad8e9878298de7a3b290dfb47d3dc914a655e1c2aee4edf0943a7c4b356461"
+    },
+    "isolated-auth-denial/runner-source/verify_environment.py.txt": {
+      "bytes": 2952,
+      "sha256": "0de9099a811944892c74dd679684cd9cf162c74b08130df5208a7c573e9d884b"
+    },
+    "isolated-auth-denial/setup-result.json": {
+      "bytes": 985,
+      "sha256": "d4caa559085d06314dc2daf1bad4150cc3b19c2ce0f25de73eef1027ac53f619"
+    },
+    "isolated-auth-denial/source-binding.json": {
+      "bytes": 5049,
+      "sha256": "c8db3ab4c2b0519e6d209c9ed9418e66e2cecea50ab7bb02765fda0620f459c3"
+    },
+    "isolated-auth-denial/summary.json": {
+      "bytes": 2628,
+      "sha256": "1e39720ee22d88bee587c7754676e42db160d4fe4b929e4e6bbb5df92eb147cc"
+    },
+    "isolated-auth-denial/timing-summary.json": {
+      "bytes": 1972,
+      "sha256": "80bbdedc1b39cdc4bcf377e827c0c32de1b3e11c46b8128db5274e02b6977533"
+    },
+    "isolated-auth-denial/validation.json": {
+      "bytes": 374,
+      "sha256": "c5e86fafc24d6cb0fbd54263f631d58d2904b1dbff2a3e3d2d5e07cd6e0c7fd7"
     },
     "local-staging/bootstrap-receipt.json": {
       "bytes": 184,
@@ -851,8 +951,8 @@
       "sha256": "4b7314f316cc66bb9c1c3e07919f4a2441de12db8ab970d26f9b4308a2cef8a4"
     },
     "matrix.json": {
-      "bytes": 1178254,
-      "sha256": "296f937d53c9f5c2363042847fb930e5478e8566f4fb6214d812dd2da6bc572f"
+      "bytes": 1179060,
+      "sha256": "84aa4f2d4c11b2442b30d8ea60acf30411f73715f111275c485587ccf6d6979b"
     },
     "muted-background-resume.json": {
       "bytes": 250,
@@ -2087,8 +2187,8 @@
       "sha256": "5c8013eb9693e540a771743fa74b10476a3b88dec2acdd1c683e36c8a6f9c391"
     },
     "README.md": {
-      "bytes": 17953,
-      "sha256": "7d805750d0d99eea5bb1b858b1bfef0d7e567caf7811e6da6653f10ec0adfacb"
+      "bytes": 18807,
+      "sha256": "a6e374079433db4d9688d5fbcf159799f2285ae56d6ac455eaa22727d4599002"
     },
     "restored-microphone.json": {
       "bytes": 269,

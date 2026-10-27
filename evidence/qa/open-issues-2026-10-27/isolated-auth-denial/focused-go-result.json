@@ -1,0 +1,28 @@
+{
+  "at_utc": "2026-10-27T23:37:55.339311+00:00",
+  "command_argv": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-run",
+    "^Test(LoginNormalizesLoginAndCreatesServerSideSession|LoginRejectsWrongOrUnknownCredentialsWithoutSession|LoginRejectsBlockedAccount|HandlerSetsSecureOpaqueSessionCookie|HandlerDoesNotIssueCookieForInvalidCredentials|HandlerHidesBlockedAccountUntilPasswordIsVerified)$",
+    "./internal/identity/login_user",
+    "./internal/identity/login_user/api"
+  ],
+  "exit_code": 0,
+  "top_level_passed": 6,
+  "all_test_pass_events": 12,
+  "skips": 0,
+  "fail_events": 0,
+  "names": [
+    "TestLoginNormalizesLoginAndCreatesServerSideSession",
+    "TestLoginRejectsWrongOrUnknownCredentialsWithoutSession",
+    "TestLoginRejectsBlockedAccount",
+    "TestHandlerSetsSecureOpaqueSessionCookie",
+    "TestHandlerDoesNotIssueCookieForInvalidCredentials",
+    "TestHandlerHidesBlockedAccountUntilPasswordIsVerified"
+  ],
+  "scope": "Focused native Windows service/HTTP handler unit checks; actual deployed PostgreSQL/HTTP evidence separate",
+  "status": "PASS_FOCUSED_NATIVE_GO_ZERO_SKIPS"
+}

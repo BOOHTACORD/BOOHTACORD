@@ -1,0 +1,88 @@
+{
+  "at_utc": "2026-10-27T23:41:34.210883+00:00",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "API_image_id": "sha256:b34a09b6eebfb87fea478e7cd440cc7ab9c52dc7dbd3cf4d659b12a9eff98a47",
+  "go_toolchain": "go version go1.26.4 windows/amd64",
+  "files": {
+    "backend/internal/identity/login_user/service.go": {
+      "git_source_bytes": 2776,
+      "git_source_SHA256": "4e75b8f552a8033f9c6296849e53e67ebf0a5dde2bb48732053cc02d06f4dffd",
+      "working_bytes_SHA256": "8a6fb1f85f537940f9945ad8aa9008847460f92a303e464bd1260d8c8c5f9636"
+    },
+    "backend/internal/identity/login_user/api/http_handler.go": {
+      "git_source_bytes": 3157,
+      "git_source_SHA256": "6761987560258182d541cc95aaec9de0e0e97e3529afe9081d12e3ce63ebaefa",
+      "working_bytes_SHA256": "e698a0c64283553d545ebfd3736455036fbf49e210728278551223c733ead1a0"
+    },
+    "backend/internal/identity/login_user/api/admission.go": {
+      "git_source_bytes": 1572,
+      "git_source_SHA256": "b8dc4d53ee75ae30cb514506546ea7c3023512292d2fe2739b8a0546aaed3d95",
+      "working_bytes_SHA256": "909e47d1607ddf1615f16bb37761912e6d033c52f0561877de3b75461fcdb61a"
+    },
+    "backend/internal/identity/login_user/postgres/repository.go": {
+      "git_source_bytes": 1592,
+      "git_source_SHA256": "535042297e3a610cbaf6c04225212c9b9a6adf01add0606b048d62ffae3edf7c",
+      "working_bytes_SHA256": "cfe57e9aa1b7b10e40fb1e5163ff58a351333ae90b0f66d88c8b5181a77d50e1"
+    },
+    "backend/internal/identity/password/password.go": {
+      "git_source_bytes": 3012,
+      "git_source_SHA256": "660d8ad0f7623761bdd0e218b73e04e18681770d3dac4c00c0324599a8f818c6",
+      "working_bytes_SHA256": "c5863dc1ced7c1c70302a22225951022727000def6feb40e9007665329c71ee0"
+    },
+    "backend/internal/identity/admit_login/budget.go": {
+      "git_source_bytes": 3920,
+      "git_source_SHA256": "0013795db3d31a50fc919d1d8ea0ad98b4d56036ff6966d72e4efaef4eb279e9",
+      "working_bytes_SHA256": "0b3150958f09d8660598ea402269df43be5eab6d52571b06a6850af75e024e39"
+    },
+    "backend/internal/app/auth_routes/register.go": {
+      "git_source_bytes": 5142,
+      "git_source_SHA256": "8a78bbc1285e2803c7bb7b9aece91066e66c082d864ba93726dddccc60c11a08",
+      "working_bytes_SHA256": "826239c16cc1228fda03fbbaaf9be1fb616da8efc2e02522d95f9371bbeac13f"
+    },
+    "backend/internal/config/runtime/admission.go": {
+      "git_source_bytes": 2007,
+      "git_source_SHA256": "825f19e38be78367834c7e6bd93d670a2d34ce367172e9fe2e5c9b71c2c19b4c",
+      "working_bytes_SHA256": "bc7bd4722ac9ba6be94c476e4a0e66c352d70955c394db60f0edee65847f8fab"
+    },
+    "backend/internal/identity/register_user/api/http_handler.go": {
+      "git_source_bytes": 3380,
+      "git_source_SHA256": "e87c9882ae47e8f791958b8dac0fe2f6893f9cf1af165b602318683cc2e2e411",
+      "working_bytes_SHA256": "389041d8cd78f929e3f4ea09ba3e719acd4df36898d9dd9edcd166b25e54b4b6"
+    },
+    "backend/internal/identity/admin_account/api/http_handler.go": {
+      "git_source_bytes": 3126,
+      "git_source_SHA256": "68a8168bd7af028eaffa3d3c6b868060d9867961a6a302380f3dc10b9a2e7f85",
+      "working_bytes_SHA256": "f8e09bc6dad553cc2bb13282c2faa8a6ce41383627771efc5290a0a9ec1b7e32"
+    },
+    "backend/internal/identity/logout_user/postgres/repository.go": {
+      "git_source_bytes": 2207,
+      "git_source_SHA256": "aa36ac24085160ef8c221b06cde0e4632fb42855f706bf76f796b6a731753b4a",
+      "working_bytes_SHA256": "3c89c4bc33d2cb54146268238839cefb4c1842ce1a4e09b84a5de5a045cdca21"
+    },
+    "backend/internal/identity/login_user/service_test.go": {
+      "git_source_bytes": 3575,
+      "git_source_SHA256": "9a92f821b9955a398513e7dc69ca56399d6c1c35bd08d0dc6385198ff9e6332d",
+      "working_bytes_SHA256": "1cbf45f249425384cf83316f05bc335ad30e51abed82ff33377d5002dd77765d"
+    },
+    "backend/internal/identity/login_user/api/http_handler_test.go": {
+      "git_source_bytes": 5322,
+      "git_source_SHA256": "17e8b4241ff7eb65cdfabc9412d626b294711fdd874d956a326fd22578497ccb",
+      "working_bytes_SHA256": "cfd5d045a8d297a3cc8e41e015294d682b49687faa0cbfc22392b98a3370f16d"
+    },
+    "backend/go.mod": {
+      "git_source_bytes": 4430,
+      "git_source_SHA256": "2e183e09a0dd4271c7729af009f4c93927f3b36fa5e0aee5f5187ff80c8c6d31",
+      "working_bytes_SHA256": "33cbf13647d246156f0e65379e04fdea093de64db35c83573020f6b4bd3e9603"
+    },
+    "tools/toolchains.json": {
+      "git_source_bytes": 370,
+      "git_source_SHA256": "23eb056f13c993838cad651b0ce52e5cc4ce5f26daad96f8c0876621d7110961",
+      "working_bytes_SHA256": "ae1564530abb2697f24a0e1cff899aeb1fde5fb9266b63e973d71811114fbe28"
+    }
+  },
+  "runner_pre_execution_hashes_verified": true,
+  "dependency_public_source": "../local-staging/runner-source/profile_common.py.txt",
+  "dependency_original_bytes_SHA256": "678ef64af775ff98f1147b7432f78377d2dbdc57501d71849309cbd064df5602",
+  "fingerprint_note": "Pre-execution fingerprints bind original Windows bytes. Public runner exports normalize CRLF to LF; manifest binds published bytes.",
+  "product_source_changed": false
+}

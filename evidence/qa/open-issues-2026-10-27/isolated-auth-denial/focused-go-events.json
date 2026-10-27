@@ -1,0 +1,174 @@
+{
+  "events": [
+    {
+      "Time": "2026-10-28T02:37:54.3832148+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/login_user",
+      "Test": "TestLoginNormalizesLoginAndCreatesServerSideSession"
+    },
+    {
+      "Time": "2026-10-28T02:37:54.4160608+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/login_user",
+      "Test": "TestLoginNormalizesLoginAndCreatesServerSideSession",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-10-28T02:37:54.4160608+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/login_user",
+      "Test": "TestLoginRejectsWrongOrUnknownCredentialsWithoutSession"
+    },
+    {
+      "Time": "2026-10-28T02:37:54.4307574+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/login_user",
+      "Test": "TestLoginRejectsWrongOrUnknownCredentialsWithoutSession/wrong_password"
+    },
+    {
+      "Time": "2026-10-28T02:37:54.4462668+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/login_user",
+      "Test": "TestLoginRejectsWrongOrUnknownCredentialsWithoutSession/wrong_password",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-10-28T02:37:54.4462668+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/login_user",
+      "Test": "TestLoginRejectsWrongOrUnknownCredentialsWithoutSession/unknown_login"
+    },
+    {
+      "Time": "2026-10-28T02:37:54.4617765+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/login_user",
+      "Test": "TestLoginRejectsWrongOrUnknownCredentialsWithoutSession/unknown_login",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-10-28T02:37:54.4617765+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/login_user",
+      "Test": "TestLoginRejectsWrongOrUnknownCredentialsWithoutSession",
+      "Elapsed": 0.05
+    },
+    {
+      "Time": "2026-10-28T02:37:54.4617765+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/login_user",
+      "Test": "TestLoginRejectsBlockedAccount"
+    },
+    {
+      "Time": "2026-10-28T02:37:54.4773118+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/login_user",
+      "Test": "TestLoginRejectsBlockedAccount/wrong_password"
+    },
+    {
+      "Time": "2026-10-28T02:37:54.4928132+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/login_user",
+      "Test": "TestLoginRejectsBlockedAccount/wrong_password",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-10-28T02:37:54.4928132+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/login_user",
+      "Test": "TestLoginRejectsBlockedAccount/correct_password"
+    },
+    {
+      "Time": "2026-10-28T02:37:54.5083177+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/login_user",
+      "Test": "TestLoginRejectsBlockedAccount/correct_password",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-10-28T02:37:54.5083177+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/login_user",
+      "Test": "TestLoginRejectsBlockedAccount",
+      "Elapsed": 0.05
+    },
+    {
+      "Time": "2026-10-28T02:37:54.5116381+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/login_user",
+      "Elapsed": 1.428
+    },
+    {
+      "Time": "2026-10-28T02:37:55.2617834+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/login_user/api",
+      "Test": "TestHandlerSetsSecureOpaqueSessionCookie"
+    },
+    {
+      "Time": "2026-10-28T02:37:55.2867976+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/login_user/api",
+      "Test": "TestHandlerSetsSecureOpaqueSessionCookie",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-10-28T02:37:55.2867976+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/login_user/api",
+      "Test": "TestHandlerDoesNotIssueCookieForInvalidCredentials"
+    },
+    {
+      "Time": "2026-10-28T02:37:55.2867976+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/login_user/api",
+      "Test": "TestHandlerDoesNotIssueCookieForInvalidCredentials",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T02:37:55.2867976+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/login_user/api",
+      "Test": "TestHandlerHidesBlockedAccountUntilPasswordIsVerified"
+    },
+    {
+      "Time": "2026-10-28T02:37:55.2867976+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/login_user/api",
+      "Test": "TestHandlerHidesBlockedAccountUntilPasswordIsVerified/invalid"
+    },
+    {
+      "Time": "2026-10-28T02:37:55.2867976+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/login_user/api",
+      "Test": "TestHandlerHidesBlockedAccountUntilPasswordIsVerified/invalid",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T02:37:55.2867976+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/login_user/api",
+      "Test": "TestHandlerHidesBlockedAccountUntilPasswordIsVerified/blocked_after_verified_password"
+    },
+    {
+      "Time": "2026-10-28T02:37:55.2867976+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/login_user/api",
+      "Test": "TestHandlerHidesBlockedAccountUntilPasswordIsVerified/blocked_after_verified_password",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T02:37:55.2867976+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/login_user/api",
+      "Test": "TestHandlerHidesBlockedAccountUntilPasswordIsVerified",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T02:37:55.289301+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/login_user/api",
+      "Elapsed": 1.762
+    }
+  ],
+  "raw_private_stream_SHA256": "6bb5fc04bb3c04eb2bd33162702bb549ffaf18b9845e169b7fb2b763d2ba86b7",
+  "raw_stderr_bytes": 0
+}

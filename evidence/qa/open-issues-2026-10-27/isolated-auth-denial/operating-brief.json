@@ -1,0 +1,40 @@
+{
+  "workflow_class": "review_gate",
+  "task_size": "medium",
+  "route": "I240.C4 / identity/login_user public denial uniformity",
+  "previous_goal_turn": "PROGRESS: physical search touch target defect586 published;67 cases/480 rows",
+  "mode": "Isolated actual API+PostgreSQL verification; no product edits or production requests",
+  "origin": "http://localhost:18088",
+  "project": "boohtacord-local-qa",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "profile": {
+    "wrong_groups": [
+      "unknown",
+      "active_wrong",
+      "blocked_wrong"
+    ],
+    "samples_per_group": 30,
+    "concurrency": 1,
+    "minimum_interval_ms": 1700,
+    "synthetic_source_cohorts": 12,
+    "hard_timeout_seconds": 360,
+    "response_limit_bytes": 65536
+  },
+  "preservation": "Only newly created local QA accounts may be blocked; restore own blocked fixture and revoke owned active/admin sessions; no Docker reconfiguration/restart, production/router/native-session changes",
+  "requirements": "I240.C4 and closed implementation136: equal invalid public status/semantic payload, no cookie, blocked-correct denial, active login positive control, finite timing distributions",
+  "nearest_tests": [
+    "backend/internal/identity/login_user/service_test.go",
+    "backend/internal/identity/login_user/api/http_handler_test.go"
+  ],
+  "stop_condition": "Actual profile or failure receipt retained, own fixture unblocked and sessions revoked, all nine original local services running and healthy; source rows/manifest/privacy validation",
+  "blocked_audit": {
+    "macOS_hardware_rows": 134,
+    "capacity_rows": 23,
+    "rows_missing_explicit_reason": [
+      "I283.C9",
+      "I554.C14",
+      "I564.C14"
+    ],
+    "note": "Capacity reason combines target/cohort/telemetry; local stand exists. Missing/cohort/profile work is not proof of an external blocker. No reclassification without route-specific evidence this packet."
+  }
+}

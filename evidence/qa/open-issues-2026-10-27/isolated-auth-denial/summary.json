@@ -1,0 +1,56 @@
+{
+  "at_utc": "2026-10-27T23:41:34.268895+00:00",
+  "status": "PASS_I240_C4_ISOLATED_BACKEND_SCOPE",
+  "criterion": "I240.C4",
+  "implementation_issue": 136,
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "platform": "Windows11 amd64 controller/Go1.26.4; owned Linux API image and actual PostgreSQL17.6 on Docker Desktop; loopback-published deployment",
+  "production_touched": false,
+  "protects": "Invalid credentials cannot disclose blocked-account state or mint a session; correct credentials retain active/blocked policy; finite timing distributions are retained safely.",
+  "command": "From source072 local stand: python -X utf8 .out/qa-auth-denial/setup_auth.py; python -X utf8 .out/qa-auth-denial/run_probe.py; python -X utf8 .out/qa-auth-denial/analyze_profile.py; python -X utf8 .out/qa-auth-denial/cleanup_auth.py; python -X utf8 .out/qa-auth-denial/verify_environment.py. Exact native Go argv: focused-go-result.json.",
+  "mandatory_when": "Before accepting I240.C4 / implementation136 runtime denial contract; parent240 and all other platform/security/media gates remain open.",
+  "facets": {
+    "uniform_invalid_pairs": {
+      "status": "PASS",
+      "wrong_groups": 3,
+      "requests": 90,
+      "http": 401,
+      "code": "UNAUTHENTICATED",
+      "semantic_payload_count": 1,
+      "SetCookie": 0,
+      "new_sessions": 0
+    },
+    "correct_password_controls": {
+      "status": "PASS",
+      "active_http": 204,
+      "blocked_http": 403,
+      "blocked_code": "ACCOUNT_BLOCKED",
+      "blocked_no_cookie_or_new_session": true
+    },
+    "finite_timing_report": {
+      "status": "PASS_MEASURED_ONLY",
+      "result": "timing-summary.json"
+    },
+    "bounded_owned_log_marker_scan": {
+      "status": "PASS_SCOPED",
+      "result": "environment-after.json#/bounded_owned_logs_scan"
+    },
+    "focused_native_go": {
+      "status": "PASS",
+      "top_level": 6,
+      "skips": 0
+    },
+    "cleanup": {
+      "status": "PASS",
+      "owned_members_unblocked": 2,
+      "owned_member_active_sessions": 0,
+      "own_admin_session_revoked": true,
+      "original_services_running": 9
+    }
+  },
+  "limits": "90 finite local requests,30/group; direct API through owned trusted-proxy network namespace with12 documentation-network synthetic cohorts; standard limits unchanged. No Nginx forwarding, browser/TLS, native login, production capacity or statistical timing-channel-absence acceptance.",
+  "source_binding": "source-binding.json",
+  "invariants_to_commands": "README.md",
+  "old_failures_and_source480_rows_preserved": true,
+  "original43_consolidation_decisions_changed": false
+}
