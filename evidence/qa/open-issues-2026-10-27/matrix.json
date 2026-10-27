@@ -1494,7 +1494,9 @@
           "id": "I131.C3",
           "status": "NOT_RUN",
           "execution_cases": [],
-          "evidence": [],
+          "evidence": [
+            "prerequisites/web-to-android-cua-stop.json"
+          ],
           "execution": "Manual paired protocol docs/runbooks/media-profiles.md; complete the source row's profiles/repeats/normal-degraded-recovery matrix with simultaneous counters and calibrated observations.",
           "platform": "The row-specified physical publisher/receiver pairs; preserve missing Mac/iOS/Pixel and unknown stages.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
@@ -1515,7 +1517,7 @@
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
             "existing_scoped_witnesses": []
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
+          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets. Web-to-Android prep stopped by Windows Computer Use URL-confidence safety review; no receiver runtime executed, no alternate UI bypass. Android/macOS metrics comparison still NOT_RUN.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
         },
         {
@@ -9459,19 +9461,25 @@
           "requirement": "#197/#188: all seven native admin sections, compact44px targets/SafeArea/IME/back, Tab/ShiftTab/Enter/Space/Escape/focus return, long strings/large text1.0/1.3/2.0, resize draft/selection preservation, live states/contrast/reduced motion, reset URL mouse/touch/copy. Restore the full #198 matrix: Web, Android, macOS, Windows and iOS; actual iOS and interactive Windows remain NOT_RUN until witnessed. A hidden Windows engine uses simulated scale/IME and owned window events, and is separate from physical keyboard/IME/screen-reader acceptance. Actual TalkBack/VoiceOver/NVDA and supported OS runtime; retained source/widget tests do not prove physical IME/screen reader behavior.",
           "source_checkbox": " ",
           "id": "I287.C14",
-          "status": "NOT_RUN",
+          "status": "PARTIAL",
           "execution_cases": [
-            "WINDOWS-native-admin-entry"
+            "WINDOWS-native-admin-entry",
+            "ANDROID-admin-sections-fonts-targets",
+            "ANDROID-admin-1x-IME-Back",
+            "ANDROID-admin-role-popup-root-Back",
+            "ANDROID-admin-2x-IME-Back-unaccepted"
           ],
           "evidence": [
-            "windows-admin-entry-attempt.json"
+            "windows-admin-entry-attempt.json",
+            "native-admin/summary.json"
           ],
-          "execution": "Computer Use node_repl @oai/sky: get_window_state -> observed account Settings element_index click; fresh observation retry; activate_window; paired Tab/ShiftTab; exact tool error retained",
-          "platform": "Physical Windows; installed native1.0.47+82/sourcef5cd7835; supported Windows Computer Use only",
+          "execution": "Computer Use node_repl @oai/sky: get_window_state -> observed account Settings element_index click; fresh observation retry; activate_window; paired Tab/ShiftTab; exact tool error retained | Physical Android: follow native-admin/README.md with preserved exact runner sources and observed ADB/native UI guards.",
+          "platform": "Physical Windows; installed native1.0.47+82/sourcef5cd7835; supported Windows Computer Use only | Physical Samsung SM-A576B Android16 signed1.0.47+2082/source072426d6, real font1.0/1.3/2.0, production HTTPS",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "windows-admin-entry-attempt.json",
+          "result": "native-admin/summary.json",
           "witness_limits": [
-            "WINDOWS-native-admin-entry: Two indexed clicks rejected by the helper cache. No admin panel entered, no data mutation or app defect established; keyboard focus name/restoration not proven."
+            "WINDOWS-native-admin-entry: Two indexed clicks rejected by the helper cache. No admin panel entered, no data mutation or app defect established; keyboard focus name/restoration not proven.",
+            "Native admin: Navigation/static chrome only; no CRUD/API success, whole44dp/SafeArea/AT/contrast/keyboard matrix, acoustic or all-platform claim. Full QA gates remain open.2x input acceptance unproven; controller failures retained."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -9496,10 +9504,15 @@
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
             "existing_scoped_witnesses": [
-              "WINDOWS-native-admin-entry"
+              "WINDOWS-native-admin-entry",
+              "ANDROID-admin-sections-fonts-targets",
+              "ANDROID-admin-1x-IME-Back",
+              "ANDROID-admin-role-popup-root-Back",
+              "ANDROID-admin-2x-IME-Back-unaccepted"
             ]
           },
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
+          "reason": "Physical Android shell/font/navigation and1x IME/Back plus popup/root Back now executed.2x input remains unaccepted; all other original platform/AT/content clauses remain required."
         },
         {
           "section": "Matrix",
@@ -9627,7 +9640,11 @@
         "ISOLATED-traceql-semantic-fixtures",
         "ISOLATED-traceql-dashboard-queries",
         "ANDROID-physical-ptt-release-cancel-home",
-        "ANDROID-wifi-cellular-native-DM-and-restoration"
+        "ANDROID-wifi-cellular-native-DM-and-restoration",
+        "ANDROID-admin-sections-fonts-targets",
+        "ANDROID-admin-1x-IME-Back",
+        "ANDROID-admin-role-popup-root-Back",
+        "ANDROID-admin-2x-IME-Back-unaccepted"
       ],
       "evidence": [
         "privacy-result.json",
@@ -9640,7 +9657,8 @@
         "web-image-formats/summary.json",
         "trace-runtime/summary.json",
         "native-ptt/summary.json",
-        "android-connectivity/summary.json"
+        "android-connectivity/summary.json",
+        "native-admin/summary.json"
       ],
       "defects": [
         581
@@ -11561,7 +11579,11 @@
             "ANDROID-master-landscape-ime-send-voice-dock-overlap",
             "ANDROID-production-resume-outbound",
             "ANDROID-production-resume-manual-history",
-            "ANDROID-production-resume-live-receive"
+            "ANDROID-production-resume-live-receive",
+            "ANDROID-admin-sections-fonts-targets",
+            "ANDROID-admin-1x-IME-Back",
+            "ANDROID-admin-role-popup-root-Back",
+            "ANDROID-admin-2x-IME-Back-unaccepted"
           ],
           "evidence": [
             "native-chat/summary.json",
@@ -11572,7 +11594,8 @@
             "android-orientation/summary.json",
             "android-connectivity/summary.json",
             "android-orientation-master/summary.json",
-            "production-native-resume/summary.json"
+            "production-native-resume/summary.json",
+            "native-admin/summary.json"
           ],
           "execution": "node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs",
           "platform": "Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS; Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
@@ -11584,7 +11607,8 @@
             "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim.",
             "WEB-JPEG-GIF-private-image-lifecycle: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
             "WEB-viewer-download-format-mismatch: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
-            "Production native resume: three scoped DM facets pass; transient WSS recovery root cause unknown; all prior failures and remaining source-row/platform clauses remain required."
+            "Production native resume: three scoped DM facets pass; transient WSS recovery root cause unknown; all prior failures and remaining source-row/platform clauses remain required.",
+            "Native admin: Navigation/static chrome only; no CRUD/API success, whole44dp/SafeArea/AT/contrast/keyboard matrix, acoustic or all-platform claim. Full QA gates remain open.2x input acceptance unproven; controller failures retained."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -11609,7 +11633,11 @@
               "ANDROID-physical-ptt-release-cancel-home",
               "ANDROID-orientation-draft-voice-retention",
               "ANDROID-landscape-ime-send-voice-dock-overlap",
-              "ANDROID-wifi-cellular-native-DM-and-restoration"
+              "ANDROID-wifi-cellular-native-DM-and-restoration",
+              "ANDROID-admin-sections-fonts-targets",
+              "ANDROID-admin-1x-IME-Back",
+              "ANDROID-admin-role-popup-root-Back",
+              "ANDROID-admin-2x-IME-Back-unaccepted"
             ]
           },
           "reason": " Physical Android PTT UP/outside-UP/CANCEL/HOME server-mute and resume facets passed; all other source-row clauses and stated audio/AT/platform limits remain unaccepted. Physical landscape90/IME preserved draft and voice but native voice dock covered Send in2/2 runs; other platform/AT/selection/send variants remain unaccepted. Physical WiFi→cellular native DM/PC render and original-state restoration verified, with retained controller cleanup failures; full SDK/audio/background/platform/revoke matrix remains unaccepted.",
@@ -11629,14 +11657,19 @@
             "ANDROID-physical-ptt-release-cancel-home",
             "ANDROID-orientation-draft-voice-retention",
             "ANDROID-landscape-ime-send-voice-dock-overlap",
-            "ANDROID-master-landscape-ime-send-voice-dock-overlap"
+            "ANDROID-master-landscape-ime-send-voice-dock-overlap",
+            "ANDROID-admin-sections-fonts-targets",
+            "ANDROID-admin-1x-IME-Back",
+            "ANDROID-admin-role-popup-root-Back",
+            "ANDROID-admin-2x-IME-Back-unaccepted"
           ],
           "evidence": [
             "android-text-scale-review.json",
             "web-session-contract/android-filechooser.json",
             "native-ptt/summary.json",
             "android-orientation/summary.json",
-            "android-orientation-master/summary.json"
+            "android-orientation-master/summary.json",
+            "native-admin/summary.json"
           ],
           "execution": "python .out/qa-goal/android_text_scale.py; inspect original-resolution captures; python .out/qa-goal/android_filechooser.py",
           "platform": "Physical Samsung SM-A576B Android16, signed1.0.45+2080; Gboard18.5.4; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI",
@@ -11644,7 +11677,8 @@
           "result": "android-orientation/summary.json",
           "witness_limits": [
             "ANDROID-DM-two-x-text-and-IME: Only DM composer/voice dock and three48dp controls; no TalkBack, text-entry, full catalog or approved baseline claim. System1.0 restored.",
-            "ANDROID-real-filechooser-cancel: No file was selected or uploaded, no personal file listings/captures retained; not browser file chooser or image-viewer acceptance"
+            "ANDROID-real-filechooser-cancel: No file was selected or uploaded, no personal file listings/captures retained; not browser file chooser or image-viewer acceptance",
+            "Native admin: Navigation/static chrome only; no CRUD/API success, whole44dp/SafeArea/AT/contrast/keyboard matrix, acoustic or all-platform claim. Full QA gates remain open.2x input acceptance unproven; controller failures retained."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -11670,7 +11704,11 @@
               "ANDROID-real-filechooser-cancel",
               "ANDROID-physical-ptt-release-cancel-home",
               "ANDROID-orientation-draft-voice-retention",
-              "ANDROID-landscape-ime-send-voice-dock-overlap"
+              "ANDROID-landscape-ime-send-voice-dock-overlap",
+              "ANDROID-admin-sections-fonts-targets",
+              "ANDROID-admin-1x-IME-Back",
+              "ANDROID-admin-role-popup-root-Back",
+              "ANDROID-admin-2x-IME-Back-unaccepted"
             ]
           },
           "reason": " Physical Android PTT UP/outside-UP/CANCEL/HOME server-mute and resume facets passed; all other source-row clauses and stated audio/AT/platform limits remain unaccepted. Physical landscape90/IME preserved draft and voice but native voice dock covered Send in2/2 runs; other platform/AT/selection/send variants remain unaccepted.",
@@ -11943,7 +11981,11 @@
         "ANDROID-orientation-draft-voice-retention",
         "ANDROID-landscape-ime-send-voice-dock-overlap",
         "ANDROID-wifi-cellular-native-DM-and-restoration",
-        "ANDROID-master-landscape-ime-send-voice-dock-overlap"
+        "ANDROID-master-landscape-ime-send-voice-dock-overlap",
+        "ANDROID-admin-sections-fonts-targets",
+        "ANDROID-admin-1x-IME-Back",
+        "ANDROID-admin-role-popup-root-Back",
+        "ANDROID-admin-2x-IME-Back-unaccepted"
       ],
       "evidence": [
         "muted-background-resume.json; muted-stop.json; restored-microphone.json",
@@ -11965,7 +12007,8 @@
         "native-ptt/summary.json",
         "android-orientation/summary.json",
         "android-connectivity/summary.json",
-        "android-orientation-master/summary.json"
+        "android-orientation-master/summary.json",
+        "native-admin/summary.json"
       ],
       "defects": [
         579,
@@ -15933,7 +15976,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-27T21:53:15.885262+00:00",
+  "updated_utc": "2026-10-27T22:34:30.336366+00:00",
   "known_defect_issues": [
     579,
     580,

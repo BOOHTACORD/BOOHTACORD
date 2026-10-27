@@ -1,0 +1,30 @@
+"""Observed horizontal-tab navigation; align first/last tabs to the real scroll extent."""
+import time,io,subprocess
+from PIL import Image
+from admin_common import *
+def viewport(rows):
+ t=tabs(rows);assert t and admin_present(rows) and not any(label(n)=='Закрыть навигацию' for n in rows)
+ y1=min(box(n)[1] for n in t);y2=max(box(n)[3] for n in t)
+ choices=[n for n in rows if n.get('scrollable')=='true' and box(n)[1]<=y1 and box(n)[3]>=y2 and box(n)[3]-box(n)[1]<450 and box(n)[2]-box(n)[0]>600]
+ assert len(choices)==1;return box(choices[0])
+def select(section,align_edge=False):
+ previous=None;index=SECTIONS.index(section)
+ for attempt in range(18):
+  rows=nodes();v=viewport(rows);choices=[n for n in tabs(rows) if label(n)==section]
+  if len(choices)==1:
+   b=box(choices[0]);interior=b[0]>v[0]+1 and b[2]<v[2]-1
+   if (align_edge and previous==b) or (not align_edge and interior and b[2]-b[0]>124):
+    tap(choices);rows=nodes();assert any(label(n)==section and n.get('selected')=='true' for n in tabs(rows));return rows
+   previous=b
+  visible=[SECTIONS.index(label(n)) for n in tabs(rows)]
+  right=index==0 if align_edge else index<min(visible) or bool(choices and box(choices[0])[0]<=v[0]+1)
+  x=(v[0]+v[2])//2;a,c=(x-160,x+160) if right else (x+160,x-160)
+  call('shell','input','swipe',str(a),str((v[1]+v[3])//2),str(c),str((v[1]+v[3])//2),'450')
+ raise RuntimeError('Observed tab did not reach requested position')
+def chrome_capture(rows,name):
+ assert admin_present(rows) and all(n.get('package')==APP for n in rows)
+ v=viewport(rows);close=[n for n in rows if label(n)=='Закрыть администрирование'];assert len(close)==1
+ titles=[box(n) for n in rows if label(n)=='Администрирование' and box(n)[3]-box(n)[1]<400]
+ top=max(0,min([box(close[0])[1]]+[b[1] for b in titles])-8)
+ im=Image.open(io.BytesIO(subprocess.check_output([ADB,'exec-out','screencap','-p'],timeout=20))).convert('RGB');assert im.size==(1080,2340)
+ crop=[0,top,1080,v[3]+1];im.crop(crop).save(WORK/name);return {'crop':crop,'source_size':list(im.size),'static_chrome_only':True}

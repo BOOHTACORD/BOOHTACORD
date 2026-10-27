@@ -1,0 +1,20 @@
+{
+  "workflow_class": "review_gate",
+  "task_size": "medium",
+  "route": "FV2-031 administrator parity -> features/admin/shell/tab_control and accessibility/surface",
+  "mode": "physical Android production verification; no implementation",
+  "preservation": "Original empty own DM, existing unmuted voice/mic80, session/server and exact system font restored; static header crops only; no admin resource mutation",
+  "scope": "All7 native section selectors at real system font1.0/1.3/2.0; observed shell target bounds; local member filter IME/Back; explicit admin closure",
+  "nearest_typed_tests": [
+    "clients/flutter/test/admin_panel_geometry_test.dart",
+    "clients/flutter/test/admin_member_filter_test.dart"
+  ],
+  "checks": [
+    "actual physical navigation and static chrome screenshots",
+    "foreground native role entry and min44dp sampled bounds with1px quantization",
+    "font/voice/session/original-view restoration",
+    "evidence privacy/source-row/manifest validation"
+  ],
+  "stop_condition": "Native remains in original empty own DM with original font and voice preserved; per-case results + exact limits retained",
+  "unresolved": "Windows CUA URL safety blocker; body/CRUD/conflict/full AT/cross-platform acceptance not proven by shell navigation"
+}

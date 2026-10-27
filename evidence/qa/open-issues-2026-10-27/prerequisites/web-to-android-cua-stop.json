@@ -1,0 +1,70 @@
+{
+  "status": "NOT_RUN",
+  "at_utc": "2026-10-27T22:08:50.265384+00:00",
+  "route": "FV2-036 receiver_metrics physical Web-to-Android",
+  "previous_goal_turn": "PROGRESS: dual receivers, issue584, scoped rows and published evidence",
+  "reason": "Computer Use safety review stopped this turn because it could not determine the current browser URL on Windows with sufficient confidence to enforce policy. No retry or alternate Windows UI mechanism was used.",
+  "intended_invariant": "An authorized Web tab source must deliver verifiable frames and honest receiver metrics to the physical native Android client.",
+  "command": "node .out/qa-android-receiver/publisher.mjs; computer-use @oai/sky source selection",
+  "platform": "Physical Samsung SM-A576B Android16 signed2082/source072426d6; Windows11 Chrome155/Web8a2cda38",
+  "mandatory_when": "Before accepting Web-to-Android delivery/receiver diagnostics or closing QA131.C3 and QA173 platform clauses",
+  "result_location": "prerequisites/web-to-android-cua-stop.json",
+  "verified_preparation": {
+    "controlled_MEMBER_listener_joined": true,
+    "getUserMedia_calls": 0,
+    "source_page_secure_context": true,
+    "capture_handle_supported": true,
+    "application_setup_dialog_opened": true,
+    "system_picker_request_issued_by_harness": false,
+    "receiver_runtime_executed": false
+  },
+  "source_revision": "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a",
+  "source_attribution_limit": "Android candidate hash verified in preceding physical packet; no install/update performed this packet. API source UNKNOWN.",
+  "cleanup": {
+    "status": "OWNED_HELPER_AND_BROWSER_EXIT_CONFIRMED",
+    "original_user_Chrome_targeted": false,
+    "publisher_pid": 9784,
+    "browser_absent": true,
+    "browser_pid": 37440,
+    "at_utc": "2026-10-27T22:07:12.3322285Z",
+    "UI_input_used_for_cleanup": false,
+    "publisher_absent": true
+  },
+  "android_after": {
+    "at_utc": "2026-10-27T22:08:47.253409+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": true,
+    "voice_connected": true,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false,
+    "projection_package_present": false,
+    "screen_fgs": false,
+    "mic_fgs": true,
+    "fgs_types": [
+      "0x80"
+    ],
+    "SHARE_TEST_visible": true,
+    "unknown_draft": false
+  },
+  "temporary_browser_voice_lease_removed_on_server": "NOT_VERIFIED; own browser transport closed; no explicit app Leave because UI automation had stopped",
+  "runner_sources": {
+    "publisher.mjs": "553e353252a016ff95f03cd8a6f90564ca260ac51b23a3445f264d91e34e3bc0",
+    "browser_observer.mjs": "c5cd69973ddba9ef901c387b4257d8dd764906b77327bbf39a0ae8780add77de",
+    "pattern.html": "a1b1e35e74ae8ea211b2dabf69b4d8184572193f4cbbefc61db55daa4d5d0ae5"
+  },
+  "public_media_or_identity_logged": false,
+  "new_product_defect_inferred": false,
+  "overall_goal": "ACTIVE; remaining QA work and all mandatory gates retain their original scope",
+  "private_original_sha256": "bff4d1190febafc75dd7224970dd7aaff8091bbeb31adce7921cfb8048b4d001",
+  "sanitization": "Only result_location replaced; original byte digest retained"
+}

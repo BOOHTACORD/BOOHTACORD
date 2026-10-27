@@ -917,6 +917,62 @@
       ],
       "result": "native-sender-two-receivers/summary.json#/facets/stop_and_polling_quiet",
       "limits": "One actual capture cycle, moving Settings scroll only, no acoustic/60FPS/capacity/full-platform claim; missing fields and controller/deadline failures retained."
+    },
+    {
+      "id": "ANDROID-admin-sections-fonts-targets",
+      "status": "PASS",
+      "protects": "All seven native admin selectors remain reachable and selected at real text scales, with sampled compact target sizes",
+      "command": "Follow native-admin/README.md; replay retained admin_entry.py, admin_navigation.py, admin_followup.py, admin_ime_retry.py, admin_ime_attempt3.py, admin_back.py and admin_channel_alignment.py with observed UI guards",
+      "platform": "Physical Samsung SM-A576B Android16,1080x2340,density450; signed1.0.47+2082/source072426d6; production HTTPS",
+      "mandatory_when": "Before corresponding I287.C14 / I303 native admin, Back, IME and large-text acceptance; not sufficient for full gate",
+      "issues": [
+        287,
+        303
+      ],
+      "result": "native-admin/summary.json#/facets/sections_fonts_targets",
+      "limits": "Navigation/static chrome only; no CRUD/API success, whole44dp/SafeArea/AT/contrast/keyboard matrix, acoustic or all-platform claim. Full QA gates remain open. 21/21 selected-section assertions, real system fonts1.0/1.3/2.0; sampled selected tab and Close min44dp with1px integer rounding allowance"
+    },
+    {
+      "id": "ANDROID-admin-1x-IME-Back",
+      "status": "PASS",
+      "protects": "Android Back dismisses actual IME without losing a local admin filter or closing admin",
+      "command": "Follow native-admin/README.md; replay retained admin_entry.py, admin_navigation.py, admin_followup.py, admin_ime_retry.py, admin_ime_attempt3.py, admin_back.py and admin_channel_alignment.py with observed UI guards",
+      "platform": "Physical Samsung SM-A576B Android16,1080x2340,density450; signed1.0.47+2082/source072426d6; production HTTPS",
+      "mandatory_when": "Before corresponding I287.C14 / I303 native admin, Back, IME and large-text acceptance; not sufficient for full gate",
+      "issues": [
+        287,
+        303
+      ],
+      "result": "native-admin/summary.json#/facets/ime_1x_Back",
+      "limits": "Navigation/static chrome only; no CRUD/API success, whole44dp/SafeArea/AT/contrast/keyboard matrix, acoustic or all-platform claim. Full QA gates remain open. Actual IME shown; synthetic ADB ASCII query retained on Back, IME hidden, local filter restored empty; not Gboard composition"
+    },
+    {
+      "id": "ANDROID-admin-role-popup-root-Back",
+      "status": "PASS",
+      "protects": "Android Back cancels an observed role popup without selection mutation and subsequently returns from admin to the original own DM",
+      "command": "Follow native-admin/README.md; replay retained admin_entry.py, admin_navigation.py, admin_followup.py, admin_ime_retry.py, admin_ime_attempt3.py, admin_back.py and admin_channel_alignment.py with observed UI guards",
+      "platform": "Physical Samsung SM-A576B Android16,1080x2340,density450; signed1.0.47+2082/source072426d6; production HTTPS",
+      "mandatory_when": "Before corresponding I287.C14 / I303 native admin, Back, IME and large-text acceptance; not sufficient for full gate",
+      "issues": [
+        287,
+        303
+      ],
+      "result": "native-admin/summary.json#/facets/role_popup_and_admin_Back",
+      "limits": "Navigation/static chrome only; no CRUD/API success, whole44dp/SafeArea/AT/contrast/keyboard matrix, acoustic or all-platform claim. Full QA gates remain open. Observed role popup canceled without selection change; native Back then closed admin into original own DM; exact focus return NOT_PROVEN"
+    },
+    {
+      "id": "ANDROID-admin-2x-IME-Back-unaccepted",
+      "status": "NOT_RUN",
+      "protects": "Large-text admin input and IME/Back must be demonstrated by an exact owned query before acceptance",
+      "command": "Follow native-admin/README.md; replay retained admin_entry.py, admin_navigation.py, admin_followup.py, admin_ime_retry.py, admin_ime_attempt3.py, admin_back.py and admin_channel_alignment.py with observed UI guards",
+      "platform": "Physical Samsung SM-A576B Android16,1080x2340,density450; signed1.0.47+2082/source072426d6; production HTTPS",
+      "mandatory_when": "Before corresponding I287.C14 / I303 native admin, Back, IME and large-text acceptance; not sufficient for full gate",
+      "issues": [
+        287,
+        303
+      ],
+      "result": "native-admin/summary.json#/facets/ime_2x",
+      "limits": "Navigation/static chrome only; no CRUD/API success, whole44dp/SafeArea/AT/contrast/keyboard matrix, acoustic or all-platform claim. Full QA gates remain open. Acceptance unproven. Three retained FAIL_OR_CONTROLLER attempts; last has focus+IME+empty guard but observed length1 versus expected23 and no exact marker. Cause unknown. No unknown text cleared; fresh instance readback resolves earlier local cleanup uncertainty. No product bug inferred"
     }
   ]
 }

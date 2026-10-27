@@ -1,0 +1,25 @@
+"""Independent final readback of original local admin filter, view, font and voice."""
+from admin_common import *
+from admin_ime_retry import ensure_admin,field,ime
+
+if __name__=='__main__':
+ before=json.loads((WORK/'before.json').read_text());r={'at_utc':now(),'server_mutation_issued':False,'status':'RUNNING'}
+ try:
+  assert read_font()==before['font_scale'];rows=ensure_admin()
+  r['fresh_member_filter_empty']=not field(rows).get('text');assert r['fresh_member_filter_empty']
+  r['members_selected']=any(label(n)=='Участники' and n.get('selected')=='true' for n in tabs(rows));assert r['members_selected']
+  tap_named('Закрыть администрирование');rows=nodes()
+  cfg=json.loads((WORK.parent/'qa-prod-resume/dm-fixture.private.json').read_text())
+  r['original_own_DM_confirmed']=any(cfg['peer'] in label(n) and box(n)[1]<700 for n in rows)
+  r['admin_closed']=not admin_present(rows);r['keyboard_hidden']=ime() is False
+  r['native']=snapshot();r['font_scale']=read_font();s=r['native']
+  r['permission_exact']=s['permission']==before['native']['permission']
+  assert r['original_own_DM_confirmed'] and r['admin_closed'] and r['keyboard_hidden'] and r['permission_exact']
+  assert s['voice_connected'] and s['mic_fgs'] and not s['muted_control'] and not s['unknown_draft']
+  assert not s['screen_fgs'] and not s['projection_package_present'];r['status']='PASS_ORIGINAL_STATE_RESTORED'
+ except Exception as error:r['status']='FAIL_OR_CONTROLLER';r['error_type']=type(error).__name__
+ finally:
+  rows=nodes()
+  if admin_present(rows):tap_named('Закрыть администрирование')
+  r['finished_at_utc']=now();save('final-restoration.json',r)
+ print(json.dumps(r))

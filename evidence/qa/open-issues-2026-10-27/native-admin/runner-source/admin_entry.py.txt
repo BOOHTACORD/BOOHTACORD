@@ -1,0 +1,14 @@
+"""Open the actual native administrator menu without extracting any session material."""
+import json,re,hashlib
+from admin_common import *
+before=snapshot();rows=nodes();assert not before['unknown_draft'] and before['voice_connected'] and before['mic_fgs'] and not before['screen_fgs'] and not before['projection_package_present']
+cfg=json.loads((WORK.parent/'qa-prod-resume/dm-fixture.private.json').read_text());assert any(cfg['peer'] in label(n) and box(n)[1]<700 for n in rows),'Original owned QA DM required'
+paths=[s.removeprefix('package:') for s in call('shell','pm','path',APP).splitlines() if s.endswith('/base.apk')];assert len(paths)==1 and re.fullmatch(r'/data/app/[A-Za-z0-9_./+=~-]+/base.apk',paths[0])
+digest=call('shell','sha256sum',paths[0]).split()[0];assert digest=='c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243'
+density=call('shell','wm','density');size=call('shell','wm','size');font=read_font();assert .5<=font<=3
+r={'at_utc':now(),'native':before,'font_scale':font,'density':density.strip(),'physical_size':size.strip(),'installed_APK_sha256':digest,'source_revision':'072426d60b1c0b1f7e5f66722a0da5faa00b50d7','version_name':'1.0.47','version_code':2082,'original_owned_DM_confirmed':True,'server_mutation_issued':False};save('before.json',r)
+tap_named('Открыть навигацию');rows=nodes();r={'at_utc':now(),'native_admin_role_label':any(label(n)=='Администратор' for n in rows),'account_settings_control':any(label(n)=='Настройки аккаунта' for n in rows)};assert r['account_settings_control'];save('navigation-entry.json',r)
+tap_named('Настройки аккаунта');rows=nodes();r={'at_utc':now(),'ADMIN_only_menu_entry_present':any(label(n)=='Администрирование' for n in rows),'logout_action_issued':False};save('account-menu.json',r);assert r['ADMIN_only_menu_entry_present']
+tap_named('Администрирование');rows=nodes()
+if any(label(n)=='Закрыть навигацию' for n in rows):tap_named('Закрыть навигацию');rows=nodes()
+r=admin_summary(rows);assert r['admin_header_present'];save('admin-open.json',r);print(json.dumps(r))

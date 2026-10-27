@@ -1,0 +1,22 @@
+"""Cancel an observed role popup with Android Back, then close admin and restore the original DM."""
+import json
+from admin_common import *
+from admin_ime_retry import ensure_admin,field,ime
+r={'status':'RUNNING','at_utc':now(),'server_mutation_issued':False}
+try:
+ rows=ensure_admin();assert not field(rows).get('text');assert ime() is False
+ controls=[n for n in rows if n.get('package')==APP and n.get('clickable')=='true' and 'Фильтр по роли' in label(n) and box(n)[3]-box(n)[1]<350];r['role_control_candidates']=len(controls)
+ if len(controls)==1:
+  previous=label(controls[0]);tap(controls);rows=nodes();r['role_popup_opened']=any(label(n)=='Все роли' for n in rows);assert r['role_popup_opened']
+  call('shell','input','keyevent','KEYCODE_BACK');rows=nodes();after=[n for n in rows if n.get('package')==APP and n.get('clickable')=='true' and 'Фильтр по роли' in label(n)]
+  r['popup_Back_admin_retained']=admin_present(rows);r['role_selection_preserved']=len(after)==1 and label(after[0])==previous;r['popup_dismissed']=not any(label(n)=='Все роли' for n in rows);assert r['popup_Back_admin_retained'] and r['role_selection_preserved'] and r['popup_dismissed']
+  r['popup_status']='PASS';r['exact_focus_return']='NOT_PROVEN'
+ else:r['popup_status']='NOT_RUN_CONTROL_NOT_UNIQUE'
+ assert admin_present(nodes()) and ime() is False;call('shell','input','keyevent','KEYCODE_BACK');rows=nodes()
+ cfg=json.loads((WORK.parent/'qa-prod-resume/dm-fixture.private.json').read_text());r['admin_Back_closed']=not admin_present(rows);r['original_own_DM_returned']=any(cfg['peer'] in label(n) and box(n)[1]<700 for n in rows);assert r['admin_Back_closed'] and r['original_own_DM_returned'];r['status']='PASS_NATIVE_ADMIN_BACK'
+except Exception as error:r['status']='FAIL_OR_CONTROLLER';r['error_type']=type(error).__name__
+finally:
+ rows=nodes()
+ if admin_present(rows):tap_named('Закрыть администрирование')
+ r['final_native']=snapshot();r['font_scale']=read_font();r['finished_at_utc']=now();save('Back-result.json',r)
+print(json.dumps(r))

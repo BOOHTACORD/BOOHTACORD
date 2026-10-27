@@ -1,0 +1,16 @@
+"""Observe only static admin controls; never retain member names, values or raw hierarchies."""
+import json,re,sys
+from pathlib import Path
+from datetime import datetime,timezone
+WORK=Path(__file__).parent
+sys.path.insert(0,str(WORK.parent/'qa-native-sender'))
+from phone_common import call,nodes,label,box,tap_named,tap,APP,ADB,snapshot
+SECTIONS=['Гильдия','Участники','Роли','Каналы','Аудит','Медиа','Статус']
+def save(name,value):(WORK/name).write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+def now():return datetime.now(timezone.utc).isoformat()
+def read_font():return float(call('shell','settings','get','system','font_scale').strip())
+def admin_present(rows):return any(label(n)=='Закрыть администрирование' for n in rows)
+def tabs(rows):
+ return [n for n in rows if n.get('package')==APP and n.get('clickable')=='true' and label(n) in SECTIONS and 0<box(n)[3]-box(n)[1]<400 and box(n)[1]<1400]
+def admin_summary(rows):
+ choices=tabs(rows);return {'at_utc':now(),'admin_header_present':admin_present(rows),'visible_tabs':[{'section':label(n),'selected':n.get('selected')=='true','bounds':box(n),'enabled':n.get('enabled')=='true'} for n in choices],'close_bounds':[box(n) for n in rows if label(n)=='Закрыть администрирование' and n.get('clickable')=='true'],'edit_field_count':sum(n.get('class')=='android.widget.EditText' for n in rows),'access_denial_visible':any(any(s in label(n).lower() for s in ['доступ запрещён','недостаточно прав','нет прав администратора']) for n in rows),'body_or_identity_logged':False}

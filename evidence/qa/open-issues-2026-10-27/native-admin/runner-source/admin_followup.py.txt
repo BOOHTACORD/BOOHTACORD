@@ -1,0 +1,54 @@
+"""IME Back/local-filter retention, dropdown cancellation and admin Back without server writes."""
+import json,time,secrets,sys
+from admin_common import *
+from admin_tabs import select,chrome_capture
+before=json.loads((WORK/'before.json').read_text());report={'status':'RUNNING','at_utc':now(),'edge_alignment':[],'IME_cases':[],'server_mutation_issued':False};owned_marker=None
+def set_font(value):
+ if abs(read_font()-value)>.01:call('shell','settings','put','system','font_scale',str(value));time.sleep(.7)
+ assert abs(read_font()-value)<.01
+def fields(rows):return [n for n in rows if n.get('class')=='android.widget.EditText' and n.get('package')==APP]
+def keyboard(rows):
+ raw=call('shell','dumpsys','input_method');m=re.search(r'\bmInputShown=(true|false)',raw)
+ return {'input_shown':None if not m else m[1]=='true','keyboard_hierarchy_present':any((n.get('package') or '').startswith('com.google.android.inputmethod') for n in rows)}
+def clear_own():
+ global owned_marker
+ if owned_marker is None:return
+ rows=nodes();f=fields(rows);assert len(f)==1 and f[0].get('text')==owned_marker,'Clear only exact owned local query'
+ if f[0].get('focused')!='true':tap(f);rows=nodes();f=fields(rows)
+ assert len(f)==1 and f[0].get('focused')=='true' and f[0].get('text')==owned_marker
+ call('shell','input','keyevent','KEYCODE_MOVE_END',*(['KEYCODE_DEL']*len(owned_marker)));rows=nodes();assert len(fields(rows))==1 and not fields(rows)[0].get('text');owned_marker=None
+ k=keyboard(rows)
+ if k['keyboard_hierarchy_present'] or k['input_shown']:call('shell','input','keyevent','KEYCODE_BACK')
+try:
+ assert json.loads((WORK/'navigation-result.json').read_text())['status']=='PASS_21_SECTION_FONT_NAVIGATIONS'
+ set_font(1.3)
+ for section in ['Гильдия','Статус']:
+  rows=select(section,True);name='font-1_3-aligned-'+str(SECTIONS.index(section))+'.png';entry=admin_summary(rows);entry['image']=name;entry['crop']=chrome_capture(rows,name);report['edge_alignment'].append(entry);save('followup-result.json',report)
+ for scale in [1.0,2.0]:
+  set_font(scale);rows=select('Участники');f=fields(rows);assert len(f)==1 and not f[0].get('text'),'Unknown existing filter must remain intact'
+  r={'font_scale':scale,'before':admin_summary(rows),'member_count_values':[int(m[1]) for n in rows if (m:=re.fullmatch(r'Участники (\d+)',label(n)))],'original_filter_empty':True};report['IME_cases'].append(r)
+  tap(f);rows=nodes();r['keyboard_before']=keyboard(rows);assert r['keyboard_before']['input_shown'] or r['keyboard_before']['keyboard_hierarchy_present']
+  owned_marker='QAAdminFilter'+secrets.token_hex(5);call('shell','input','text',owned_marker);rows=nodes();f=fields(rows);assert len(f)==1 and f[0].get('text')==owned_marker
+  r['own_filter_entered']=True;r['focused_field_bounds']=box(f[0]);r['local_empty_filter_result_visible']=any(label(n)=='По текущим фильтрам участников нет.' for n in rows)
+  call('shell','input','keyevent','KEYCODE_BACK');rows=nodes();r['keyboard_after_Back']=keyboard(rows);f=fields(rows)
+  r['admin_retained']=admin_present(rows);r['own_filter_retained']=len(f)==1 and f[0].get('text')==owned_marker
+  assert r['admin_retained'] and r['own_filter_retained'] and not r['keyboard_after_Back']['keyboard_hierarchy_present']
+  clear_own();r['original_filter_restored_empty']=True;r['status']='PASS_BACK_RETAINS_ADMIN_FILTER';save('followup-result.json',report)
+ set_font(before['font_scale']);rows=select('Участники');roles=[n for n in rows if n.get('package')==APP and n.get('clickable')=='true' and 'Фильтр по роли' in label(n) and box(n)[3]-box(n)[1]<350]
+ if len(roles)==1:
+  role_before=label(roles[0]);tap(roles);rows=nodes();opened=any(label(n)=='Все роли' for n in rows);assert opened
+  call('shell','input','keyevent','KEYCODE_BACK');rows=nodes();after_roles=[n for n in rows if n.get('package')==APP and n.get('clickable')=='true' and 'Фильтр по роли' in label(n)]
+  report['dropdown_Back']={'status':'PASS','opened':opened,'admin_retained':admin_present(rows),'selection_preserved':len(after_roles)==1 and label(after_roles[0])==role_before,'all_roles_popup_dismissed':not any(label(n)=='Все роли' for n in rows),'focus_return':'NOT_PROVEN'}
+  assert report['dropdown_Back']['admin_retained'] and report['dropdown_Back']['selection_preserved'] and report['dropdown_Back']['all_roles_popup_dismissed']
+ else:report['dropdown_Back']={'status':'NOT_RUN','reason':'Unique role-filter accessibility control unavailable','observed_count':len(roles)}
+ rows=nodes();assert admin_present(rows);call('shell','input','keyevent','KEYCODE_BACK');rows=nodes()
+ cfg=json.loads((WORK.parent/'qa-prod-resume/dm-fixture.private.json').read_text());report['admin_Back_closed']=not admin_present(rows);report['original_DM_returned']=any(cfg['peer'] in label(n) and box(n)[1]<700 for n in rows)
+ assert report['admin_Back_closed'] and report['original_DM_returned'];report['status']='PASS_NATIVE_BACK_AND_LOCAL_FILTER'
+except Exception as error:report['status']='FAIL_OR_CONTROLLER';report['error_type']=type(error).__name__
+finally:
+ try:clear_own();report['own_query_cleanup_complete']=True
+ except Exception as error:report['own_query_cleanup_complete']=False;report['cleanup_error_type']=type(error).__name__
+ set_font(before['font_scale']);rows=nodes()
+ if admin_present(rows):tap_named('Закрыть администрирование')
+ report['final_native']=snapshot();report['original_font_scale_restored']=abs(read_font()-before['font_scale'])<.01;report['finished_at_utc']=now();save('followup-result.json',report)
+print(json.dumps({'status':report['status'],'IME_cases':[{'scale':r['font_scale'],'status':r.get('status')} for r in report['IME_cases']],'dropdown':report.get('dropdown_Back'),'font_restored':report['original_font_scale_restored'],'query_cleanup':report.get('own_query_cleanup_complete')}))

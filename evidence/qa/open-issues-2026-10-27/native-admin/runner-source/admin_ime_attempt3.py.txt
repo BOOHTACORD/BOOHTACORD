@@ -1,0 +1,46 @@
+"""Targeted2x repeat after a fresh admin instance, with explicit focus/empty-field guards."""
+import json,time,secrets,re,sys
+from admin_common import *
+from admin_tabs import select
+def ime():
+ m=re.search(r'\bmInputShown=(true|false)',call('shell','dumpsys','input_method'));return None if not m else m[1]=='true'
+def field(rows):
+ f=[n for n in rows if n.get('package')==APP and n.get('class')=='android.widget.EditText'];assert len(f)==1;return f[0]
+def ensure_admin():
+ rows=nodes()
+ if not admin_present(rows):
+  cfg=json.loads((WORK.parent/'qa-prod-resume/dm-fixture.private.json').read_text());assert any(cfg['peer'] in label(n) and box(n)[1]<700 for n in rows)
+  tap_named('Открыть навигацию');tap_named('Настройки аккаунта');tap_named('Администрирование');rows=nodes()
+  if any(label(n)=='Закрыть навигацию' for n in rows):tap_named('Закрыть навигацию')
+ return select('Участники')
+def clear_exact(value):
+ rows=nodes();f=field(rows);assert f.get('text')==value and ('QAAdminFilter' in value),'Only owned test query may be cleared'
+ if f.get('focused')!='true':tap([f]);rows=nodes();f=field(rows);assert f.get('text')==value and f.get('focused')=='true'
+ call('shell','input','keyevent','KEYCODE_MOVE_END',*(['KEYCODE_DEL']*len(value)));assert not field(nodes()).get('text')
+if __name__=='__main__':
+ original=json.loads((WORK/'before.json').read_text())['font_scale'];r={'status':'RUNNING','at_utc':now(),'phase':'reopen','server_mutation_issued':False};marker=None
+ try:
+  rows=ensure_admin();f=field(rows);value=f.get('text') or '';r['fresh_admin_filter_empty']=not value
+  if value:
+   assert re.fullmatch(r'.{0,2}QAAdminFilter[0-9a-f]{10}.{0,2}',value);clear_exact(value);r['earlier_owned_query_recovered_and_cleared']=True
+  r['prior_failed_cleanup_resolved_by_readback']=not field(nodes()).get('text');save('ime2-attempt3-result.json',r)
+  call('shell','settings','put','system','font_scale','2.0');time.sleep(1);assert abs(read_font()-2)<.01
+  rows=select('Участники');f=field(rows);r['phase']='before_focus';r['keyboard_before_focus']=ime();r['field_bounds_before_focus']=box(f);assert not f.get('text')
+  if r['keyboard_before_focus']:call('shell','input','keyevent','KEYCODE_BACK');rows=nodes();assert admin_present(rows);f=field(rows)
+  tap([f]);rows=nodes();f=field(rows);r['phase']='focused';r['field_focused_before_injection']=f.get('focused')=='true';r['field_empty_before_injection']=not f.get('text');r['keyboard_before_injection']=ime();save('ime2-attempt3-result.json',r)
+  assert r['field_focused_before_injection'] and r['field_empty_before_injection'] and r['keyboard_before_injection']
+  marker='QAAdminFilter'+secrets.token_hex(5);call('shell','input','text',marker);rows=nodes();f=field(rows);value=f.get('text') or ''
+  r['phase']='typed';r['own_query_exact']=value==marker;r['own_query_substring']=marker in value;r['observed_text_length']=len(value);r['expected_length']=len(marker);save('ime2-attempt3-result.json',r);assert value==marker
+  call('shell','input','keyevent','KEYCODE_BACK');rows=nodes();r['phase']='Back';r['keyboard_after_Back']=ime();r['admin_retained']=admin_present(rows);r['own_query_retained']=field(rows).get('text')==marker
+  assert r['keyboard_after_Back'] is False and r['admin_retained'] and r['own_query_retained'];clear_exact(marker);marker=None;r['filter_restored_empty']=True;r['status']='PASS_2X_IME_BACK_FILTER_RETENTION'
+ except Exception as error:r['status']='FAIL_OR_CONTROLLER';r['error_type']=type(error).__name__
+ finally:
+  if marker is not None:
+   try:
+    value=field(nodes()).get('text') or ''
+    if marker in value and len(value)-len(marker)<=2:clear_exact(value);r['own_query_cleanup']=True
+   except Exception as error:r['cleanup_error_type']=type(error).__name__
+  call('shell','settings','put','system','font_scale',str(original));r['font_restored']=abs(read_font()-original)<.01;rows=nodes()
+  if admin_present(rows):tap_named('Закрыть администрирование')
+  r['final_native']=snapshot();r['finished_at_utc']=now();save('ime2-attempt3-result.json',r)
+ print(json.dumps(r))

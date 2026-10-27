@@ -191,3 +191,19 @@ measurements remain separate gates. No test consolidation or deletion occurred.
 [Source-bound numeric results and limitations](native-sender-two-receivers/summary.json): signed2082/source072426d6 published public Settings app-only to two actual Chrome155/Web8a2cda38 listeners. Native counters and HTTP success milestones grew; receivers decoded12→54 and12→56, with presentation callbacks. Initial30s first-frame wait failed before later source scrolling; root cause unknown. Parent bottom dock Stop cleared projection/screen FGS while retaining voice/mic;68s of sender-event quiet and two cleared receiver snapshots followed. Toolbar/guard failures and the missed240s bound are retained. No calibrated QoE/RTT/source-FPS/acoustic/whole-platform acceptance; all parent gates remain open.
 
 Initial-frame finding after approximately150s in the system picker is tracked as [#584](https://github.com/Egkurilov/BOOHTACORD/issues/584). Exact issue/QA body readbacks are retained in native-sender-two-receivers/github-updates.json (packet-local github-updates.json).
+
+## Physical Android admin shell — 2026-10-28 Moscow
+
+[Scoped admin results and limits](native-admin/summary.json): all seven native
+section selectors were reached at real system font1.0/1.3/2.0 (21 transitions).
+Sampled tab/Close targets retain nominal44dp with1px integer rounding allowance;
+all25 static chrome crops reviewed at original resolution. Actual IME/Back at1.0,
+role-popup cancellation and root Back into the original DM passed.2.0 input
+remains unaccepted after retained controller failures; no product defect inferred.
+Font, empty local filters/composer, session and original voice/mic restored.
+I287.C14 is PARTIAL; existing FAILs in I303.C2/C3 remain. Full admin/platform/AT
+gates are open. No product/tests or43 consolidation decisions changed.
+
+Web-to-Android receiver preparation remains NOT_RUN: supported Windows Computer
+Use stopped on insufficient browser-URL confidence. No alternate UI bypass or
+receiver runtime occurred; see [exact prerequisite receipt](prerequisites/web-to-android-cua-stop.json).

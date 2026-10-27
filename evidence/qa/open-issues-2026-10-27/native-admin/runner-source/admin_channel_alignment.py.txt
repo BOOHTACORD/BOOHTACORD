@@ -1,0 +1,26 @@
+"""Reposition the observed clipped Channels tab inside its horizontal viewport."""
+import json,time
+from admin_common import *
+from admin_ime_retry import ensure_admin
+from admin_tabs import select,viewport,chrome_capture
+
+if __name__=='__main__':
+ original=json.loads((WORK/'before.json').read_text())['font_scale']
+ r={'at_utc':now(),'status':'RUNNING','server_mutation_issued':False,'pages':[]}
+ try:
+  ensure_admin()
+  for scale in [1.0,1.3]:
+   call('shell','settings','put','system','font_scale',str(scale));time.sleep(1)
+   rows=select('Каналы');v=viewport(rows)
+   call('shell','input','swipe','700',str((v[1]+v[3])//2),'420',str((v[1]+v[3])//2),'450')
+   rows=nodes();assert any(label(n)=='Каналы' and n.get('selected')=='true' for n in tabs(rows))
+   name='font-'+str(scale).replace('.','_')+'-channels-aligned.png'
+   r['pages'].append({'font_scale':read_font(),'image':name,'chrome':admin_summary(rows),'crop':chrome_capture(rows,name)})
+  r['status']='PASS_SELECTED_CHANNELS_REPOSITIONED'
+ except Exception as error:r['status']='FAIL_OR_CONTROLLER';r['error_type']=type(error).__name__
+ finally:
+  call('shell','settings','put','system','font_scale',str(original));r['font_restored']=abs(read_font()-original)<.01
+  rows=nodes()
+  if admin_present(rows):tap_named('Закрыть администрирование')
+  r['final_native']=snapshot();r['finished_at_utc']=now();save('channel-alignment-result.json',r)
+ print(json.dumps(r))

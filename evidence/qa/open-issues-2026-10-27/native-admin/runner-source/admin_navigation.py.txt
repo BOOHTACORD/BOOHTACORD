@@ -1,0 +1,48 @@
+"""Native read-only admin navigation at three real system font scales; restore the original."""
+import io,subprocess,time,sys,json,hashlib
+from PIL import Image
+from admin_common import *
+before=json.loads((WORK/'before.json').read_text());dpr=int(re.findall(r'(?:Physical|Override) density:\s*(\d+)',before['density'])[-1])/160
+deadline=time.monotonic()+480;report={'status':'RUNNING','at_utc':now(),'pages':[],'server_mutation_issued':False,'images_contain_only_static_admin_chrome':True,'nominal_min_target_dp':44,'integer_bounds_rounding_allowance_px':1}
+def viewport(rows):
+ t=tabs(rows);assert t,'Observed admin tabs required';y1=min(box(n)[1] for n in t);y2=max(box(n)[3] for n in t)
+ choices=[n for n in rows if n.get('scrollable')=='true' and box(n)[1]<=y1 and box(n)[3]>=y2 and box(n)[3]-box(n)[1]<450 and box(n)[2]-box(n)[0]>600]
+ assert len(choices)==1,'Expected one observed horizontal tab viewport';return box(choices[0])
+def choose(section):
+ for attempt in range(15):
+  assert time.monotonic()<deadline,'Bounded navigation packet exceeded time';rows=nodes();assert admin_present(rows);v=viewport(rows)
+  candidates=[n for n in tabs(rows) if label(n)==section];idx=SECTIONS.index(section)
+  if len(candidates)==1:
+   b=box(candidates[0]);interior=(b[0]>v[0]+1 or idx==0) and (b[2]<v[2]-1 or idx==6)
+   if b[2]-b[0]+1>=44*dpr and interior:
+    tap(candidates);rows=nodes();selected=[n for n in tabs(rows) if n.get('selected')=='true'];assert len(selected)==1 and label(selected[0])==section
+    return rows,attempt
+  visible=[SECTIONS.index(label(n)) for n in tabs(rows)]
+  right=idx<min(visible) or bool(candidates and box(candidates[0])[0]<=v[0]+1 and idx!=0)
+  x=(v[0]+v[2])//2;delta=min(330,(v[2]-v[0])//3);a,c=(x-delta//2,x+delta//2) if right else (x+delta//2,x-delta//2)
+  call('shell','input','swipe',str(a),str((v[1]+v[3])//2),str(c),str((v[1]+v[3])//2),'450')
+ raise RuntimeError('Target tab did not become safely visible')
+def capture(rows,name):
+ assert admin_present(rows) and all(n.get('package')==APP for n in rows),'Private or system overlay must not be captured'
+ v=viewport(rows);closes=[n for n in rows if label(n)=='Закрыть администрирование' and n.get('clickable')=='true'];assert len(closes)==1
+ top=max(0,box(closes[0])[1]-12);bottom=v[3]+1
+ raw=subprocess.check_output([ADB,'exec-out','screencap','-p'],timeout=20);im=Image.open(io.BytesIO(raw)).convert('RGB');assert im.size==(1080,2340)
+ im.crop((0,top,im.width,bottom)).save(WORK/name)
+ return {'source_size':list(im.size),'crop':[0,top,im.width,bottom],'contents':'Static admin header + tabs only; all account/content/voice rows excluded'}
+try:
+ for scale in [1.0,1.3,2.0]:
+  if abs(read_font()-scale)>.01:call('shell','settings','put','system','font_scale',str(scale));time.sleep(.8)
+  assert abs(read_font()-scale)<.01
+  for section in SECTIONS:
+   rows,swipes=choose(section);r=admin_summary(rows);r['section']=section;r['requested_system_font_scale']=scale;r['tab_scroll_swipes']=swipes
+   selected=[n for n in tabs(rows) if n.get('selected')=='true'][0];b=box(selected);close=r['close_bounds'][0]
+   r['selected_tab_dp']=[round((b[2]-b[0])/dpr,3),round((b[3]-b[1])/dpr,3)];r['close_dp']=[round((close[2]-close[0])/dpr,3),round((close[3]-close[1])/dpr,3)]
+   r['sampled_nominal_44dp_targets_pass']=all(x+1>=44*dpr for x in [b[2]-b[0],b[3]-b[1],close[2]-close[0],close[3]-close[1]])
+   r['header_title_bounds']=[box(n) for n in rows if label(n)=='Администрирование'];r['content_api_result']='NOT_CAPTURED; this case accepts navigation/static chrome only'
+   image_name='font-'+str(scale).replace('.','_')+'-section-'+str(SECTIONS.index(section))+'.png';r['static_chrome_image']=image_name;r['capture']=capture(rows,image_name)
+   assert r['sampled_nominal_44dp_targets_pass'] and not r['access_denial_visible'];report['pages'].append(r);save('navigation-result.json',report)
+ report['status']='PASS_21_SECTION_FONT_NAVIGATIONS'
+except Exception as error:report['status']='FAIL_OR_CONTROLLER';report['error_type']=type(error).__name__;report['last_section']=locals().get('section');report['last_scale']=locals().get('scale')
+finally:
+ call('shell','settings','put','system','font_scale',str(before['font_scale']));report['original_font_scale_restored']=abs(read_font()-before['font_scale'])<.01;report['native_after']=snapshot();report['finished_at_utc']=now();save('navigation-result.json',report)
+print(json.dumps({'status':report['status'],'completed_pages':len(report['pages']),'last_section':report.get('last_section'),'last_scale':report.get('last_scale'),'original_font_scale_restored':report['original_font_scale_restored'],'native_voice_connected':report['native_after']['voice_connected']}))

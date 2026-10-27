@@ -1,0 +1,118 @@
+{
+  "status": "PARTIAL",
+  "at_utc": "2026-10-27T22:34:30.329867+00:00",
+  "production_url": "https://v.bootybay.ru",
+  "route": "FV2-031 native admin shell/accessibility",
+  "candidate": {
+    "at_utc": "2026-10-27T22:13:16.608263+00:00",
+    "native": {
+      "at_utc": "2026-10-27T22:13:10.173296+00:00",
+      "permission": {
+        "granted": true,
+        "flags": [
+          "USER_SET",
+          "USER_SENSITIVE_WHEN_GRANTED",
+          "USER_SENSITIVE_WHEN_DENIED"
+        ]
+      },
+      "microphone_fgs": true,
+      "voice_connected": true,
+      "muted_control": false,
+      "app_hierarchy_present": true,
+      "system_permission_prompt": false,
+      "navigation_available": true,
+      "login_fields": false,
+      "projection_package_present": false,
+      "screen_fgs": false,
+      "mic_fgs": true,
+      "fgs_types": [
+        "0x80"
+      ],
+      "SHARE_TEST_visible": true,
+      "unknown_draft": false
+    },
+    "font_scale": 1.0,
+    "density": "Physical density: 450",
+    "physical_size": "Physical size: 1080x2340",
+    "installed_APK_sha256": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+    "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+    "version_name": "1.0.47",
+    "version_code": 2082,
+    "original_owned_DM_confirmed": true,
+    "server_mutation_issued": false
+  },
+  "API_source": "UNKNOWN",
+  "role_evidence": "Native admin-only menu and actual panel observed; not server-side ACL acceptance",
+  "facets": {
+    "sections_fonts_targets": {
+      "status": "PASS",
+      "observations": "21/21 selected-section assertions, real system fonts1.0/1.3/2.0; sampled selected tab and Close min44dp with1px integer rounding allowance",
+      "result": "navigation-result.json"
+    },
+    "ime_1x_Back": {
+      "status": "PASS",
+      "observations": "Actual IME shown; synthetic ADB ASCII query retained on Back, IME hidden, local filter restored empty; not Gboard composition",
+      "result": "followup-attempt1.json#/IME_cases/0"
+    },
+    "role_popup_and_admin_Back": {
+      "status": "PASS",
+      "observations": "Observed role popup canceled without selection change; native Back then closed admin into original own DM; exact focus return NOT_PROVEN",
+      "result": "Back-result.json"
+    },
+    "ime_2x": {
+      "status": "NOT_RUN",
+      "observations": "Acceptance unproven. Three retained FAIL_OR_CONTROLLER attempts; last has focus+IME+empty guard but observed length1 versus expected23 and no exact marker. Cause unknown. No unknown text cleared; fresh instance readback resolves earlier local cleanup uncertainty. No product bug inferred",
+      "result": "ime2-attempt3-result.json"
+    }
+  },
+  "visual_review": "visual-review.json",
+  "limits": "Navigation/static chrome only; no CRUD/API success, whole44dp/SafeArea/AT/contrast/keyboard matrix, acoustic or all-platform claim. Full QA gates remain open.",
+  "restoration": {
+    "receipt": "final-restoration.json",
+    "status": "PASS_ORIGINAL_STATE_RESTORED",
+    "final_native": {
+      "at_utc": "2026-10-27T22:35:15.168983+00:00",
+      "permission": {
+        "granted": true,
+        "flags": [
+          "USER_SET",
+          "USER_SENSITIVE_WHEN_GRANTED",
+          "USER_SENSITIVE_WHEN_DENIED"
+        ]
+      },
+      "microphone_fgs": true,
+      "voice_connected": true,
+      "muted_control": false,
+      "app_hierarchy_present": true,
+      "system_permission_prompt": false,
+      "navigation_available": true,
+      "login_fields": false,
+      "projection_package_present": false,
+      "screen_fgs": false,
+      "mic_fgs": true,
+      "fgs_types": [
+        "0x80"
+      ],
+      "SHARE_TEST_visible": true,
+      "unknown_draft": false
+    },
+    "original_font_restored": true,
+    "original_own_DM_returned": true,
+    "original_section_members_selected_before_closure": true,
+    "fresh_filter_empty": true,
+    "keyboard_hidden": true,
+    "permission_exact": true,
+    "server_resource_mutations": false,
+    "session_server_TLS_router_changed": false
+  },
+  "source_fingerprints": "source-fingerprints.json",
+  "runner_dependencies": [
+    "../runner-source/native_sender_phone_common.py.txt",
+    "../runner-source/android_permission_ui.py.txt"
+  ],
+  "mandatory_when": "Before accepting I287.C14 and corresponding native admin/Back/large-text facets of I303.C2/C3",
+  "reproduction": "README.md",
+  "new_product_defect_confirmed": false,
+  "hosted_CI_for_this_evidence_head": "NOT_RUN",
+  "original43_consolidation_decisions_touched": 0
+}
