@@ -61,3 +61,5 @@ requestFocus; physical2.0 Gboard многосимвольный повтор, Ba
 TalkBack, hardware keyboard, человеческая приёмка и акустика остаются отдельными.
 Golden не утверждался; product/tests не менялись, hosted CI NOT_RUN,43 решения
 консолидации не затронуты. Полные QA-gates открыты.
+
+Подтверждённый large-text input defect: [#585](https://github.com/Egkurilov/BOOHTACORD/issues/585). Exact bug/QA body readbacks: `github-updates.json`.

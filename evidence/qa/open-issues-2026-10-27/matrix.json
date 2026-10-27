@@ -9518,7 +9518,10 @@
             ]
           },
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
-          "reason": "Confirmed physical2x Gboard first-character focus/IME loss in2/2 attempts;1x four-key/Back control passed. All original missing platform/AT/body/CRUD requirements remain unaccepted; other existing failures retained."
+          "reason": "Confirmed physical2x Gboard first-character focus/IME loss in2/2 attempts;1x four-key/Back control passed. All original missing platform/AT/body/CRUD requirements remain unaccepted; other existing failures retained.",
+          "defects": [
+            585
+          ]
         },
         {
           "section": "Matrix",
@@ -9670,7 +9673,8 @@
         "native-admin-gboard/summary.json"
       ],
       "defects": [
-        581
+        581,
+        585
       ],
       "blockers": [
         "Windows native admin input: supported Computer Use helper sees account Settings but twice rejects element33780 as unavailable in cached app state; reobserve/activate did not recover. Actual admin traversal NOT_RUN."
@@ -10857,7 +10861,10 @@
               "ANDROID-admin-1x-Gboard-query-Back"
             ]
           },
-          "reason": "Confirmed physical2x Gboard first-character focus/IME loss in2/2 attempts;1x four-key/Back control passed. All original missing platform/AT/body/CRUD requirements remain unaccepted; other existing failures retained."
+          "reason": "Confirmed physical2x Gboard first-character focus/IME loss in2/2 attempts;1x four-key/Back control passed. All original missing platform/AT/body/CRUD requirements remain unaccepted; other existing failures retained.",
+          "defects": [
+            585
+          ]
         },
         {
           "section": "Подзадачи",
@@ -11212,7 +11219,8 @@
         "native-admin-gboard/summary.json"
       ],
       "defects": [
-        580
+        580,
+        585
       ],
       "blockers": [
         "Windows native admin input: supported Computer Use helper sees account Settings but twice rejects element33780 as unavailable in cached app state; reobserve/activate did not recover. Actual admin traversal NOT_RUN."
@@ -11667,7 +11675,8 @@
           },
           "reason": "Confirmed physical2x Gboard first-character focus/IME loss in2/2 attempts;1x four-key/Back control passed. All original missing platform/AT/body/CRUD requirements remain unaccepted; other existing failures retained.",
           "defects": [
-            582
+            582,
+            585
           ]
         },
         {
@@ -11744,7 +11753,8 @@
           },
           "reason": "Confirmed physical2x Gboard first-character focus/IME loss in2/2 attempts;1x four-key/Back control passed. All original missing platform/AT/body/CRUD requirements remain unaccepted; other existing failures retained.",
           "defects": [
-            582
+            582,
+            585
           ]
         },
         {
@@ -12048,7 +12058,8 @@
         579,
         580,
         581,
-        582
+        582,
+        585
       ],
       "blockers": [
         "Windows native admin input: supported Computer Use helper sees account Settings but twice rejects element33780 as unavailable in cached app state; reobserve/activate did not recover. Actual admin traversal NOT_RUN."
@@ -16016,7 +16027,8 @@
     580,
     581,
     582,
-    584
+    584,
+    585
   ],
   "criterion_witness_note": "Exact row links are scoped. PARTIAL/FAIL/BLOCKED never satisfy the complete multi-platform requirement; unlinked PENDING rows still need routing/execution.",
   "acceptance_method_catalog": "acceptance-methods.json",

@@ -218,3 +218,5 @@ keeps admin/query. Observation assertion exits are1/1/0. All8 keyboard/own-field
 crops reviewed at original resolution; source/installed APK fingerprints retained.
 Original DM/font/empty filters/voice restored. I287.C14/I301.C4 now FAIL; all
 480 source requirements and earlier failures preserved. Full gates remain open.
+
+Подтверждённый large-text input defect: [#585](https://github.com/Egkurilov/BOOHTACORD/issues/585). Exact bug/QA body readbacks: `native-admin-gboard/github-updates.json`.
