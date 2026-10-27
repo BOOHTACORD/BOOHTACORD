@@ -55,7 +55,7 @@ function watchesSelectedScreen(participantId: string | undefined): boolean {
 </script>
 
 <template>
-  <section class="voice-viewer-participant-strip" aria-label="Участники голосового канала" data-testid="viewer-participants">
+  <section class="voice-viewer-participant-strip" :style="{ '--viewer-roster-columns': Math.min(participants.length + 1, 2) }" aria-label="Участники голосового канала" data-testid="viewer-participants">
     <div class="voice-viewer-participant-summary">
       <strong>Участники</strong>
       <span>{{ participants.length + 1 }} в комнате</span>
