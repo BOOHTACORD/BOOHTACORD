@@ -1,0 +1,9 @@
+{
+  "workflow_class": "small_direct",
+  "mode": "verification",
+  "route": "public client-update catalog HTTP readback",
+  "source_edge": "Retained B/.out/qa-goal/public_readback.py exact Windows/Android selector URLs",
+  "criterion": "I249.C4",
+  "limits": "Three unauthenticated HTTPS GETs only; default TLS verification; no browser/UI, login, install, deploy, promotion or raw bodies",
+  "stop_condition": "Bounded current endpoint receipts, historical503 remains separately dated; never infer revision29/r52 acceptance from a different release"
+}

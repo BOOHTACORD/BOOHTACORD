@@ -1,0 +1,114 @@
+{
+  "status": "PASS_READ_ONLY_AUDIT_GOAL_IN_PROGRESS",
+  "at_utc": "2026-10-28T23:13:09.447247+00:00",
+  "frozen_data_commit": "e06c9019d7cd3557d7042e234483616e3bddc52f",
+  "B_head_at_seal": "e06c9019d7cd3557d7042e234483616e3bddc52f",
+  "sets_in_frozen_audit": 95,
+  "B_case_count_at_seal_not_audit_scope": 95,
+  "original_QA_open": 37,
+  "original_QA_closed": 0,
+  "source_snapshot_utc": "2026-10-28T23:01:44.051Z",
+  "open_search_snapshot_utc": "2026-10-28 23:04:37 UTC",
+  "open_search_count": 47,
+  "unchanged_literal_criteria": 480,
+  "retained_full_gate_qualifiers": 13,
+  "new_changed_missing_acceptance_texts": 0,
+  "evidence_append_issues": [
+    53,
+    62,
+    131,
+    132,
+    287,
+    301,
+    303,
+    305,
+    332,
+    564
+  ],
+  "whole_gate_false_closures_found": 0,
+  "row_status_counts": {
+    "BLOCKED": 160,
+    "PARTIAL": 54,
+    "NOT_RUN": 239,
+    "FAIL": 19,
+    "PASS": 8
+  },
+  "case_status_counts": {
+    "PASS": 26,
+    "FAIL": 19,
+    "PARTIAL": 2,
+    "NOT_RUN": 2,
+    "PASS_SCOPED": 42,
+    "BLOCKED": 4
+  },
+  "source_statuses_unchanged_since_initial280": true,
+  "valid_evidence_result_references": 359,
+  "orphan_cases": 6,
+  "orphan_FAIL_case_requiring_reviewed_link": "PUBLIC-update-catalog -> I249.C4",
+  "ready_local_candidate_facets": [
+    "I287.C8 desired-state reactions (pins separate family)",
+    "I240.C17 media-report ownership/correlation",
+    "I287.C3 query plans: inspect named currentCI coverage first"
+  ],
+  "conditional_device_facets": [
+    "I303.C3 Android TalkBack/system sharing after current phone owner releases",
+    "I303.C4 Windows resize/focus/full keyboard after a new human lease"
+  ],
+  "native_edge_append": "route-edges.json",
+  "native_product_tests_run_here": 0,
+  "runtime_API_device_CUA_mutations": 0,
+  "source_B_Git_GitHub_writes": 0,
+  "helpers": {
+    "audit.py": {
+      "lines": 93,
+      "sha256": "75ded05a0a991ab4f9d0cd26976532f8d2aab54e9a8aa82e5ddf9c277936fa10"
+    },
+    "review.py": {
+      "lines": 74,
+      "sha256": "e6b2cd2ad0e943fe5db9927839f158d20a81c4bad2661c878c2a5bd9e2ed46d8"
+    },
+    "route_edges.py": {
+      "lines": 58,
+      "sha256": "feb4f0584ed1d3c1c8f91ab1fcfb35384a935d82bf7bdfd98b6d3c2ec852c175"
+    },
+    "route_edges_retry.py": {
+      "lines": 58,
+      "sha256": "359bea171be419c61f7d10291572b99add00b9caa9c2b586899f98fd9b8a2df9"
+    },
+    "seal.py": {
+      "lines": 78,
+      "sha256": "e76a67e1af5e90b5e5be2149b0aef5bbdb09c45eae33cd6599e086d2edee60a0"
+    }
+  },
+  "input_hashes": {
+    "input-matrix.json": {
+      "sha256": "f9467d3878833e4be5968f9fda8c04e53bc3f41b4bff4adb574f9ca6ccd57124",
+      "bytes": 1214103
+    },
+    "input-cases.json": {
+      "sha256": "c3a915c3cae465ec9d57087f6795dcd9121bdf2ed25703d0f6b36c0d73e5099c",
+      "bytes": 105720
+    },
+    "input-source-qualifiers.json": {
+      "sha256": "6c9a8aac399ff9514507786009d986d8b8983b1c02c67e1b44bd7db041315bd3",
+      "bytes": 18294
+    },
+    "input-matrix-at-start-2802362.json": {
+      "sha256": "25db5f2bc86e5ca6dc5175c4345652d9a0ca867df090c6a5d9d6aacd5247f511",
+      "bytes": 1213989
+    }
+  },
+  "current_CI": {
+    "status": "PASS_CURRENT_PR_CI_AND_MERGED_TESTED_TREE",
+    "successful": 27,
+    "total": 27,
+    "merged_tested_tree": true,
+    "merge_sha": "754b5997ad100cb00300373f29ab88bda4ed267d",
+    "summary_sha256": "90aa29b5f18329c24a433714c85b21b4dd68cceae8876017383f0c7209f98b5e",
+    "separate_signing_run": 40784080135,
+    "signing_status": "RUNNING_REPORTED_BY_ROOT_NOT_SIGNING_PASS",
+    "physical_acceptance": "NOT_RUN_BY_THIS_AUDIT"
+  },
+  "consolidation43_untouched": true,
+  "goal_complete": false
+}

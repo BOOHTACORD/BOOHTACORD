@@ -1,0 +1,174 @@
+{
+  "status": "READ_ONLY_AUDIT_COMPLETE_GOAL_REMAINS_IN_PROGRESS",
+  "whole_gate_false_closures_found": 0,
+  "remaining_packets": [
+    {
+      "criterion": "I287.C8",
+      "source_issue_url": "https://github.com/Egkurilov/BOOHTACORD/issues/287",
+      "literal_source_criterion": "#96: six desired-state reactions in TEXT/DM, simultaneous clients and retry/idempotency; only two DM participants see private hints/metadata, including replay after revoke; administrator-only common TEXT pins, pagination, original-message jump, soft-delete cleanup, logout/reconnect. Test Web and each released native target.",
+      "source_criterion_sha256": "537b08d990947914de974e6822eed5487e00111093b2eeb6ae20f1bdb4be5697",
+      "current_status": "PARTIAL",
+      "readiness": "UNRUN_LOCAL_API_FACET_AVAILABLE_SUBJECT_TO_NEW_PACKET_PREFLIGHT",
+      "independent_facet": "Desired-state reaction concurrency/replay and administrator-only TEXT pin lifecycle",
+      "existing_case_links": [
+        "DM-actual_message_actions",
+        "ANDROID-DM-input-actions"
+      ],
+      "concrete_result_gap": "Two linked cases cover ordinary DM action/toggle. They do not witness all six reactions with simultaneous callers, retry keys, TEXT pin paging/cleanup or private hint replay ACL.",
+      "required_guards": "New bounded local-only packet: contract/source route first, existing controlled accounts only, tiny own resources/sessions, before/final selected fingerprints, normal cleanup, no source/restart/clock/production mutation. Two bounded writers; own TEXT/DM fixtures; actual unauthorized caller controls; never infer participant/client UI from HTTP.",
+      "limits": "Full Web/released-native, logout/reconnect and original-message UI jump remain unaccepted.",
+      "executed_in_this_audit": false
+    },
+    {
+      "criterion": "I240.C17",
+      "source_issue_url": "https://github.com/Egkurilov/BOOHTACORD/issues/240",
+      "literal_source_criterion": "[#152 — media report/voice lease correlation](https://github.com/Egkurilov/BOOHTACORD/issues/152): на изолированных voice clients проверить active lease, expired/revoked lease, другой account/session и отсутствие handle; correlation разрешается только для повторно проверенного владельца. Приложить API test output и sanitized trace/counter matrix; media frames, SDP, tokens и participant IDs исключить.",
+      "source_criterion_sha256": "ce64a6a9152021fafbe4d0e3f0d57dc1bf36aa3b284688dd08fdaaa4b10a5c98",
+      "current_status": "NOT_RUN",
+      "readiness": "UNRUN_LOCAL_API_FACET_AVAILABLE_SUBJECT_TO_NEW_PACKET_PREFLIGHT",
+      "independent_facet": "Owner revalidation for media-report correlation versus active/revoked/foreign session lease and absent handle",
+      "existing_case_links": [],
+      "concrete_result_gap": "No case is linked to this exact criterion. Timeout admission/credential409 does not test report-correlation identity enforcement.",
+      "required_guards": "New bounded local-only packet: contract/source route first, existing controlled accounts only, tiny own resources/sessions, before/final selected fingerprints, normal cleanup, no source/restart/clock/production mutation. No RTC join/tracks. Natural expiry only if its normal contract fits a bounded window; otherwise leave expiry NOT_RUN.",
+      "limits": "Backend correlation facet only; no physical media/eviction/old-JWT reconnect acceptance.",
+      "executed_in_this_audit": false
+    },
+    {
+      "criterion": "I287.C3",
+      "source_issue_url": "https://github.com/Egkurilov/BOOHTACORD/issues/287",
+      "literal_source_criterion": "#76: actual PostgreSQL author/date/attachments query, equal timestamps/stable cursor, timezone/DST, deleted and foreign-DM ACL, query plans; Web/native filter persistence and ordinary pointer/keyboard submission. Related #258/#54.",
+      "source_criterion_sha256": "0ebbb71b5d11f0a85f7aab3c8f0c49e17277fc9be1dc0a2ca505f2292f585bcd",
+      "current_status": "PARTIAL",
+      "readiness": "UNRUN_LOCAL_READ_PLAN_FACET_AVAILABLE_SUBJECT_TO_NEW_PACKET_PREFLIGHT",
+      "independent_facet": "Actual PostgreSQL search query-plan receipts bound to caller/filter/cursor SQL",
+      "existing_case_links": [
+        "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
+        "ANDROID-ADMIN-explicit-search-after-owned-delete",
+        "ISOLATED-search-filtered-cursor-ACL"
+      ],
+      "concrete_result_gap": "Existing23 runtime controls already cover equal timestamps, author/attachment filters, UTC offsets and DST fold boundaries. No retained query-plan receipt proves the explicit query-plans clause.",
+      "required_guards": "New bounded local-only packet: contract/source route first, existing controlled accounts only, tiny own resources/sessions, before/final selected fingerprints, normal cleanup, no source/restart/clock/production mutation. Tiny owned dataset and read-only EXPLAIN for the exact query. Preserve actual planner choices; no invented index/performance oracle or load target.",
+      "limits": "Not Web/native filter persistence or submission acceptance; do not repeat already passed DST/ACL controls without cause.",
+      "executed_in_this_audit": false
+    },
+    {
+      "criterion": "I303.C3",
+      "source_issue_url": "https://github.com/Egkurilov/BOOHTACORD/issues/303",
+      "literal_source_criterion": "На iOS/Android проверить системный Back/swipe, keyboard overlays, dynamic text, SafeArea, TalkBack/VoiceOver и system sharing picker.",
+      "source_criterion_sha256": "8f466f3be6219cca5a8ce52bb3a78b5f3d0f28f4fc1af5f53997dd295d50bbdc",
+      "current_status": "FAIL",
+      "readiness": "DEVICE_AVAILABLE_CONDITIONAL_PHONE_OWNER_WINDOW_NOT_PLATFORM_BLOCKED",
+      "independent_facet": "Physical Android TalkBack/SafeArea and system sharing picker supplementary facet",
+      "existing_case_links": [
+        "ANDROID-DM-two-x-text-and-IME",
+        "ANDROID-real-filechooser-cancel",
+        "ANDROID-physical-ptt-release-cancel-home",
+        "ANDROID-orientation-draft-voice-retention",
+        "ANDROID-landscape-ime-send-voice-dock-overlap",
+        "ANDROID-master-landscape-ime-send-voice-dock-overlap",
+        "ANDROID-admin-sections-fonts-targets",
+        "ANDROID-admin-1x-IME-Back",
+        "ANDROID-admin-role-popup-root-Back",
+        "ANDROID-admin-2x-IME-Back-unaccepted",
+        "ANDROID-admin-2x-Gboard-keeps-focus",
+        "ANDROID-admin-1x-Gboard-query-Back",
+        "ANDROID-search-scope-48dp-touch-target",
+        "ANDROID-native-keyboard-SystemBack-draft"
+      ],
+      "concrete_result_gap": "Linked Back/IME/large-text and DocumentsUI file chooser witnesses do not establish actual TalkBack or OS system sharing picker behavior. File chooser is not the sharing picker.",
+      "required_guards": "Only after phone agent releases its current work; own draft/DM only; explicit bounded accessibility-state changes and exact restoration; no voice/media/security changes.",
+      "limits": "No device action authorized by this read-only audit. iOS/VoiceOver remains platform blocked; existing new phone work after the95-set snapshot is outside this audit.",
+      "executed_in_this_audit": false
+    },
+    {
+      "criterion": "I303.C4",
+      "source_issue_url": "https://github.com/Egkurilov/BOOHTACORD/issues/303",
+      "literal_source_criterion": "На macOS/Windows проверить окно 800–1920 px, keyboard/mouse/touchpad, focus, window resize и нативное окно выбора захвата.",
+      "source_criterion_sha256": "f8a2f5879bb5b51635a2ae1d45bcdd4c4fa2e9ee9acd8fce4e7c67a6af0a490a",
+      "current_status": "PARTIAL",
+      "readiness": "DEVICE_AVAILABLE_BUT_NEW_HUMAN_WINDOWS_INPUT_WINDOW_REQUIRED",
+      "independent_facet": "Physical Windows resize/focus and full keyboard traversal supplement",
+      "existing_case_links": [
+        "WINDOWS-dialog",
+        "WINDOWS-native-admin-entry",
+        "WINDOWS-native-account-menu-keyboard-cancel",
+        "WINDOWS-native-admin-seven-readonly-sections"
+      ],
+      "concrete_result_gap": "The seven read-only admin sections and account-menu Tab/ShiftTab/Escape do not prove800–1920px resize, exact focus return, IME or screen-reader accessibility.",
+      "required_guards": "Prior120s human lease has expired. No Windows/CUA action now; a new authorized lease, exact native target and own-resource mapping are required.",
+      "limits": "macOS physical capture/window-choice remains blocked; browser URL-confidence stops remain frozen with no retry.",
+      "executed_in_this_audit": false
+    }
+  ],
+  "stale_admin_blockers": [
+    {
+      "file": "matrix.json",
+      "json_pointer": "/issues/25/blockers/0",
+      "issue": 287,
+      "current_value": "Windows native admin input: supported Computer Use helper sees account Settings but twice rejects element33780 as unavailable in cached app state; reobserve/activate did not recover. Actual admin traversal NOT_RUN.",
+      "proposed_truthful_replacement": "Initial account-menu element-cache attempts were blocked and remain retained. A later authorized120s Windows lease witnessed seven native admin sections read-only at1432x896; the lease has expired. No CRUD/field/settings/security/media actions were accepted. Account-menu Tab/ShiftTab/Escape is a separate scoped witness; complete dialog keyboard/Enter/Space, exact focus return, IME, large text/resize and screen-reader/accessibility acceptance remain NOT_RUN/NOT_PROVEN. New Windows input needs a new human-authorized window.",
+      "status_change_proposed": false
+    },
+    {
+      "file": "matrix.json",
+      "json_pointer": "/issues/27/blockers/0",
+      "issue": 301,
+      "current_value": "Windows native admin input: supported Computer Use helper sees account Settings but twice rejects element33780 as unavailable in cached app state; reobserve/activate did not recover. Actual admin traversal NOT_RUN.",
+      "proposed_truthful_replacement": "Initial account-menu element-cache attempts were blocked and remain retained. A later authorized120s Windows lease witnessed seven native admin sections read-only at1432x896; the lease has expired. No CRUD/field/settings/security/media actions were accepted. Account-menu Tab/ShiftTab/Escape is a separate scoped witness; complete dialog keyboard/Enter/Space, exact focus return, IME, large text/resize and screen-reader/accessibility acceptance remain NOT_RUN/NOT_PROVEN. New Windows input needs a new human-authorized window.",
+      "status_change_proposed": false
+    },
+    {
+      "file": "matrix.json",
+      "json_pointer": "/issues/29/blockers/0",
+      "issue": 303,
+      "current_value": "Windows native admin input: supported Computer Use helper sees account Settings but twice rejects element33780 as unavailable in cached app state; reobserve/activate did not recover. Actual admin traversal NOT_RUN.",
+      "proposed_truthful_replacement": "Initial account-menu element-cache attempts were blocked and remain retained. A later authorized120s Windows lease witnessed seven native admin sections read-only at1432x896; the lease has expired. No CRUD/field/settings/security/media actions were accepted. Account-menu Tab/ShiftTab/Escape is a separate scoped witness; complete dialog keyboard/Enter/Space, exact focus return, IME, large text/resize and screen-reader/accessibility acceptance remain NOT_RUN/NOT_PROVEN. New Windows input needs a new human-authorized window.",
+      "status_change_proposed": false
+    }
+  ],
+  "unlinked_failure": {
+    "case": "PUBLIC-update-catalog",
+    "case_pointer": "/cases/13",
+    "source_criterion": "I249.C4",
+    "row_pointer": "/issues/19/criteria/3",
+    "evidence": "public-readback.json#/rows/windows_catalog",
+    "observed_utc": "2026-10-26T22:12:41.238168+00:00",
+    "finding": "Existing case records503/no-store, while I249.C4 has no execution-case link. QA249 itself is FAIL. Link as dated scoped failure if reviewed; no current endpoint or exact old release identity is inferred.",
+    "automatic_reclassification": false
+  },
+  "other_orphan_case_disposition": "Two baseline/provisioning cases, one narrow shell-geometry witness and one empty-composer witness are supporting evidence; DB592 is outside the original37 intake and should not be forced into a new requirement.",
+  "stale_bug_creation_note": {
+    "file": "cases.json",
+    "json_pointer": "/cases/90/limits",
+    "obsolete_fragment": "Bug creation pending immutable evidence.",
+    "proposed_fragment": "Bug592 is filed/open; product function remains unchanged. Original counterexample and separate teardown receipts are preserved."
+  },
+  "blocker_classes": {
+    "human": [
+      "Audibility needs an available listener; original real-user measurements/named rollback owner remain evidence gaps.",
+      "Windows input lease expired; phone agent owns its device window."
+    ],
+    "platform": [
+      "Physical macOS/iPhone/Pixel not supplied; available Samsung and hosted Apple tests cannot replace those device paths."
+    ],
+    "provider_or_artifact": [
+      "Notification provider/transport approval and configured staging cohort remain prerequisite gaps, not automatable delivery PASS.",
+      "Current PR596 CI27/27 and merged tested tree are proven by retained metadata. Separate signing run40784080135 is reported RUNNING by root, not signing/install/physical PASS."
+    ],
+    "policy": [
+      "Browser production URL-confidence stops remain BLOCKED; no workaround or retry."
+    ],
+    "unrun_not_external_blocked": [
+      "The three local API/SQL facets above have concrete result gaps and no known human/platform prerequisite; each still needs its own contract/ownership preflight."
+    ]
+  },
+  "closed_implementation_bug_rule": "Closed584/585/586/587/589 source issues do not accept a physical/current-deployment gate. Preserve dated failures and require exact new-candidate evidence before status promotion.",
+  "snapshot_boundary": "Fresh37 source bodies observed23:01:44Z; open search47 at23:04:37Z; frozen95-set B datae06c. Later root appends to62/595 and prospective phone sets are outside this snapshot and are not regressions or source-text loss.",
+  "validator_review": {
+    "canonical_B": "Dynamic len(cases); hard480 rows; MUTATES cases/trace result metadata/runner-source. Read only, not executed.",
+    "timeout_publication": "Hard95 sets/first93 against623e and exact I287.C9 delta; WRITES validation/code. Read only, not executed.",
+    "new_validator_need": "Any97-set publication needs a fresh e06-bound preservation check; never weaken or replay the old hard95 validator."
+  },
+  "all_original_statuses_and_43_consolidation_decisions_preserved": true,
+  "runtime_or_device_actions": 0
+}

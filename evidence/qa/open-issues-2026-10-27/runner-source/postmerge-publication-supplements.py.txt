@@ -1,0 +1,55 @@
+"""Publish closed query-plan/coverage metadata, without rerunning their controllers."""
+import sys
+from pathlib import Path
+Q = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Q / '.out/qa-archive-release'))
+from common import *
+
+receipts = []
+def publish(src, name, sub, expected=None):
+    p = src / name
+    raw = p.read_bytes()
+    if expected:
+        assert sha(raw) == expected['sha256'] and len(raw) == expected['bytes']
+    if p.suffix == '.py':
+        code(p, 'intake-754b-')
+        receipts.extend(origins[-1:])
+        return
+    dest = O / sub / Path(name).name
+    if p.suffix == '.json':
+        value = clean(read(p))
+        assert not any(n in json.dumps(value, ensure_ascii=False) for n in needles)
+        write(dest, value)
+    else:
+        assert p.suffix == '.md'
+        value = raw.decode('utf-8-sig')
+        for root in [Q, B]: value = value.replace(root.as_posix(), '[QA_WORKTREE]')
+        assert not any(n in value for n in needles)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(value, encoding='utf-8', newline='\n')
+    assert p.read_bytes() == raw
+    receipts.append({'public': dest.relative_to(O).as_posix(),
+                     'private_original_SHA256': sha(raw), 'private_original_bytes': len(raw)})
+
+src = Q / '.out/qa-agent-search-plans'
+assert sha((src / 'public-allowlist.json').read_bytes()) == '7e1117a30fc1bb22d6d550ea7c87b6ae981d80dcaf8f6424396f7aa187a0eba8'
+assert not (O / 'search-plans-2026-10-29').exists()
+for item in read(src / 'public-allowlist.json')['files']:
+    assert item['path'].startswith('public/') and Path(item['path']).name.endswith('.json')
+    publish(src, item['path'], 'search-plans-2026-10-29', item)
+src = Q / '.out/qa-intake-coverage-754b'
+assert sha((src / 'integrity.json').read_bytes()) == '400c0d5e4d9cc315ab2c9729ebb8c87deb29913d03bb23255360f46f0a9e31d4'
+assert not (O / 'coverage-audit-754b').exists()
+bound = read(src / 'integrity.json')['files']
+for name in read(src / 'public-review.json')['allowlist']:
+    assert Path(name).name == name
+    publish(src, name, 'coverage-audit-754b', bound.get(name))
+publish(Q / '.out/qa-postmerge-publication', 'github-readback.json', 'macos-ci-repair/hosted-current')
+publish(Q / '.out/qa-pr596-merge-final', 'signing-attempt1-check.json', 'macos-ci-repair/hosted-current')
+code(Path(__file__), 'postmerge-publication-')
+receipts.extend(origins[-1:])
+write(O / 'coverage-audit-754b/publication-provenance.json', {
+    'status': 'PASS_METADATA_ONLY', 'artifacts': receipts,
+    'limits': 'Audit snapshot95 sets; new unforced plans separate. Raw bodies/plans/parameters/logs/binaries remain private. Signing attempt1 timed out; no signing PASS.'})
+print(json.dumps({'published': len(receipts), 'runtime_actions': 0,
+                  'native_source_changes': 0, 'whole_gate_closures': 0}))

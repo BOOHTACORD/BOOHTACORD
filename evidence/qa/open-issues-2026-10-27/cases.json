@@ -1421,7 +1421,7 @@
         592
       ],
       "result": "coordinated-agents-2026-10-28/guard/product-verdict.json",
-      "limits": "Six controls validate the counterexample (validator0 is not product PASS): source DELETE returns0/retains normal row; temporary counterfactual deletes1; support remains42501. Public function unchanged. Bug creation pending immutable evidence.",
+      "limits": "Six controls validate the counterexample (validator0 is not product PASS): source DELETE returns0/retains normal row; temporary counterfactual deletes1; support remains42501. Public function unchanged. Bug592 is filed/open; product function remains unchanged. Original counterexample and separate teardown receipts are preserved.",
       "defects": [
         592
       ],
@@ -1482,6 +1482,36 @@
       "result": "voice-timeout-dispatch/summary.json",
       "limits": "35.203s/30samples, actual worker attempt1/completion, pending true->false while timeout remains active; DB latency5.342334s is one sample, not SLO/p95.0RTCparticipants/0credentials. Connected eviction, issuedJWT reconnect and UI NOT_RUN.9selected tables restored, topology45->47 and5own audit metadata receipts retained.",
       "defects": []
+    },
+    {
+      "id": "ISOLATED-search-unforced-query-plans",
+      "status": "PASS_SCOPED",
+      "protects": "The actual parameterized unified search SQL has observed unforced TEXT/DM/date/author/attachment plans and matching HTTP rows",
+      "command": "Follow search-plans-2026-10-29/commands.json: preflight, owned setup, capture_plans.py, exact cleanup; two named current CI tests reused without rerun",
+      "platform": "Owned loopback QA API072/PostgreSQL17.6; exact SQL equals merged754b; default seqscan=on, plan_cache_mode=auto",
+      "mandatory_when": "Before accepting this isolated query-plan facet of I287.C3",
+      "issues": [
+        287
+      ],
+      "result": "search-plans-2026-10-29/summary.json",
+      "limits": "9tiny-fixture plans/9HTTP reads only. SeqScan and both partialGIN observed; no production/performance/cached-plan/positive attached-row/UI claim.17selected tables restored;9services unchanged.",
+      "defects": []
+    },
+    {
+      "id": "PUBLIC-current-update-catalog-2026-10-29",
+      "status": "FAIL",
+      "protects": "Production Windows/direct/stable/x64 and Android/direct/stable/arm64 catalogs are available with HTTP200 and no-store",
+      "command": "python .out/qa-public-catalog-current/probe.py",
+      "platform": "Production public HTTPS from Windows/Python3.12; default TLS verification; no cookies",
+      "mandatory_when": "Before accepting catalog availability and the endpoint facet of QA249",
+      "issues": [
+        249
+      ],
+      "result": "public-catalog-current/result.json",
+      "limits": "Current23:26:10UTC28Oct HTTP503/no-store for both selectors; health200. No revision/release/checksum, rollout, install, restart, downgrade or production source claim. ExistingQA249 already tracks this failure; avoid duplicate.",
+      "defects": [
+        249
+      ]
     }
   ]
 }

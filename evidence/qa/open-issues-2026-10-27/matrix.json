@@ -7640,9 +7640,15 @@
           "requirement": "Выполнить read-only GET для `platform=windows&distribution=direct&channel=stable&arch=x64`; подтвердить HTTP 200, `Cache-Control: no-store`, revision 29, target release ID `windows-direct-stable-r52`, version 1.0.38, build 71, download URL и manifest/checksum consistency.",
           "source_checkbox": null,
           "id": "I249.C4",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
+          "status": "FAIL",
+          "execution_cases": [
+            "PUBLIC-update-catalog",
+            "PUBLIC-current-update-catalog-2026-10-29"
+          ],
+          "evidence": [
+            "public-readback.json#/rows/windows_catalog",
+            "public-catalog-current/result.json"
+          ],
           "execution": "Read-only python .out/qa-goal/public_readback.py; use the approved release process and a separate controlled old-client installation for remaining source row upgrade/restart/promotion cases.",
           "platform": "Intended production public selector plus isolated genuine old Windows client; owner-approved deployment/restart window when required.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
@@ -7660,10 +7666,18 @@
             ],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "PUBLIC-update-catalog",
+              "PUBLIC-current-update-catalog-2026-10-29"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "reason": "Fresh exact Windows selector GET returned503 at2026-10-28T23:26:10Z, contradicting requiredHTTP200. Android selector also503/health200. Revision29/r52/assets/old-client install remain unproved; original requirements unchanged.",
+          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
+          "witness_limits": [
+            "PUBLIC-update-catalog: 503 no-store on Windows and Android selectors; health200. No deploy/restart/promotion performed.",
+            "Historical503 is dated2026-10-26; it is not a fresh endpoint/revision29/r52 observation.",
+            "PUBLIC-current-update-catalog-2026-10-29: Current23:26:10UTC28Oct HTTP503/no-store for both selectors; health200. No revision/release/checksum, rollout, install, restart, downgrade or production source claim. ExistingQA249 already tracks this failure; avoid duplicate."
+          ]
         },
         {
           "section": "Приёмка",
@@ -7755,10 +7769,13 @@
         }
       ],
       "execution_cases": [
-        "PUBLIC-update-catalog"
+        "PUBLIC-update-catalog",
+        "PUBLIC-current-update-catalog-2026-10-29"
       ],
       "evidence": [
-        "public-readback.json"
+        "public-readback.json",
+        "public-readback.json#/rows/windows_catalog",
+        "public-catalog-current/result.json"
       ],
       "defects": [],
       "blockers": [],
@@ -9415,11 +9432,13 @@
           "execution_cases": [
             "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
             "ANDROID-ADMIN-explicit-search-after-owned-delete",
-            "ISOLATED-search-filtered-cursor-ACL"
+            "ISOLATED-search-filtered-cursor-ACL",
+            "ISOLATED-search-unforced-query-plans"
           ],
           "evidence": [
             "native-admin-search-privacy/summary.json",
-            "coordinated-agents-2026-10-28/search/aggregate-result.json"
+            "coordinated-agents-2026-10-28/search/aggregate-result.json",
+            "search-plans-2026-10-29/summary.json"
           ],
           "execution": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental. | Use only the applicable scoped commands in cases.json, including node .out/qa-goal/privacy_run.mjs, node .out/qa-goal/web_logout_run.mjs, node .out/qa-goal/quickjump_run.mjs and node .out/qa-goal/web_image_formats_run.mjs; execute remaining row steps separately. | native-admin-search-privacy/README.md actual ADMIN native all-scope UI with independently searchable owned API fixtures.; Follow search/summary.json native and runtime commands",
           "platform": "Disposable owned PostgreSQL/API/LiveKit target and bounded synthetic accounts/data; never shared production fault/load injection. | Installed headed Windows Chrome and explicitly stated CSS viewport; no physical mobile/other-browser substitution.",
@@ -9443,14 +9462,16 @@
             "existing_scoped_witnesses": [
               "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
               "ANDROID-ADMIN-explicit-search-after-owned-delete",
-              "ISOLATED-search-filtered-cursor-ACL"
+              "ISOLATED-search-filtered-cursor-ACL",
+              "ISOLATED-search-unforced-query-plans"
             ]
           },
           "reason": "Physical ADMIN global-search foreign-DM and explicit post-delete exclusion now scoped PASS; author/date/attachments/DST/cursors/plans and remaining platforms still unaccepted.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
           "witness_limits": [
             "Native rendered search only, with API fixture controls from Windows. No third ADMIN browser, raw native response/socket hints/unread/OS alert/file ACL/block/revoke/other-platform/whole search-filter or acoustic acceptance. Explicit search after delete; no automatic cache-invalidation claim.",
-            "ISOLATED-search-filtered-cursor-ACL: No production/CUA/browser UI/load claim. Three metadata attachments are not upload/download acceptance. Original PARTIAL cleanup retained; separate guarded transaction restores all10baseline fingerprints and four own accounts."
+            "ISOLATED-search-filtered-cursor-ACL: No production/CUA/browser UI/load claim. Three metadata attachments are not upload/download acceptance. Original PARTIAL cleanup retained; separate guarded transaction restores all10baseline fingerprints and four own accounts.",
+            "ISOLATED-search-unforced-query-plans: 9tiny-fixture plans/9HTTP reads only. SeqScan and both partialGIN observed; no production/performance/cached-plan/positive attached-row/UI claim.17selected tables restored;9services unchanged."
           ]
         },
         {
@@ -10024,7 +10045,8 @@
         "ISOLATED-search-filtered-cursor-ACL",
         "ISOLATED-archive-restore-held-upload-and-write-denial",
         "ISOLATED-voice-timeout-lease-session-and-chat-policy",
-        "ISOLATED-voice-timeout-scheduled-dispatch-absent-participant"
+        "ISOLATED-voice-timeout-scheduled-dispatch-absent-participant",
+        "ISOLATED-search-unforced-query-plans"
       ],
       "evidence": [
         "privacy-result.json",
@@ -10045,14 +10067,15 @@
         "coordinated-agents-2026-10-28/search/aggregate-result.json",
         "archive-release-followup/archive/summary.json",
         "voice-timeout-policy/summary.json",
-        "voice-timeout-dispatch/summary.json"
+        "voice-timeout-dispatch/summary.json",
+        "search-plans-2026-10-29/summary.json"
       ],
       "defects": [
         581,
         585
       ],
       "blockers": [
-        "Windows native admin input: supported Computer Use helper sees account Settings but twice rejects element33780 as unavailable in cached app state; reobserve/activate did not recover. Actual admin traversal NOT_RUN."
+        "Initial account-menu element-cache attempts were blocked and remain retained. A later authorized120s Windows lease witnessed seven native admin sections read-only at1432x896; the lease has expired. No CRUD/field/settings/security/media actions were accepted. Account-menu Tab/ShiftTab/Escape is a separate scoped witness; complete dialog keyboard/Enter/Space, exact focus return, IME, large text/resize and screen-reader/accessibility acceptance remain NOT_RUN/NOT_PROVEN. New Windows input needs a new human-authorized window."
       ],
       "source_body_sha256": "a83fef8b8e240dd707238b30627799e13b746c325c03491ceee200011f15c924",
       "source_snapshot": ".out/qa-goal/open-issues-snapshot.json"
@@ -11615,7 +11638,7 @@
         586
       ],
       "blockers": [
-        "Windows native admin input: supported Computer Use helper sees account Settings but twice rejects element33780 as unavailable in cached app state; reobserve/activate did not recover. Actual admin traversal NOT_RUN."
+        "Initial account-menu element-cache attempts were blocked and remain retained. A later authorized120s Windows lease witnessed seven native admin sections read-only at1432x896; the lease has expired. No CRUD/field/settings/security/media actions were accepted. Account-menu Tab/ShiftTab/Escape is a separate scoped witness; complete dialog keyboard/Enter/Space, exact focus return, IME, large text/resize and screen-reader/accessibility acceptance remain NOT_RUN/NOT_PROVEN. New Windows input needs a new human-authorized window."
       ],
       "source_body_sha256": "aaa044c343dc440b945d0ff645f4f1cef853f7ec91ce684c0319ac7a28520ce7",
       "source_snapshot": ".out/qa-goal/open-issues-snapshot.json"
@@ -12520,7 +12543,7 @@
         586
       ],
       "blockers": [
-        "Windows native admin input: supported Computer Use helper sees account Settings but twice rejects element33780 as unavailable in cached app state; reobserve/activate did not recover. Actual admin traversal NOT_RUN."
+        "Initial account-menu element-cache attempts were blocked and remain retained. A later authorized120s Windows lease witnessed seven native admin sections read-only at1432x896; the lease has expired. No CRUD/field/settings/security/media actions were accepted. Account-menu Tab/ShiftTab/Escape is a separate scoped witness; complete dialog keyboard/Enter/Space, exact focus return, IME, large text/resize and screen-reader/accessibility acceptance remain NOT_RUN/NOT_PROVEN. New Windows input needs a new human-authorized window."
       ],
       "source_body_sha256": "5a826c0f9652d9535cbc049e9462da7c8fc9984b7114b9c7797bcdafc33aa8fc",
       "source_snapshot": ".out/qa-goal/open-issues-snapshot.json"
@@ -16497,7 +16520,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-28T21:47:28.035765+00:00",
+  "updated_utc": "2026-10-28T23:28:16.149492+00:00",
   "known_defect_issues": [
     579,
     580,

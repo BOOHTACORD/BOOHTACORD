@@ -1,0 +1,53 @@
+{
+  "utc": "2026-10-28T23:20:51.636590+00:00",
+  "criterion": "I287.C3",
+  "criterion_status": "PARTIAL",
+  "case": "ISOLATED-search-unforced-query-plans",
+  "result": "PASS_SCOPED_OBSERVATION",
+  "PG": "17.6",
+  "CI_plan_capability_tests": {
+    "passed": 2,
+    "skipped": 0,
+    "failed": 0,
+    "forced_seqscan_off": true,
+    "rerun": false
+  },
+  "unforced_plans": 9,
+  "normal_HTTP_readbacks": 9,
+  "rows": [
+    4,
+    4,
+    0,
+    4,
+    4,
+    0,
+    8,
+    4,
+    4
+  ],
+  "default_settings": {
+    "enable_seqscan": "on",
+    "plan_cache_mode": "auto",
+    "transaction_read_only": "on"
+  },
+  "fixture": {
+    "new_users": 0,
+    "sessions": 3,
+    "category": 1,
+    "TEXT": 1,
+    "reused_DM": true,
+    "TEXT_messages": 4,
+    "DM_messages": 4,
+    "attachments": 0
+  },
+  "cleanup": "PASS;17selected table count/hashes restored;3sessions revoked401/removed;9services unchanged",
+  "production_source_platform_writes": 0,
+  "limits": [
+    "Tiny owned dataset; observed plan choices and timings are not capacity/performance evidence",
+    "Fresh prepared statement per case under auto defaults; not a long-lived cached API session plan",
+    "has_attachment=true returns zero; positive attached-row execution is not claimed",
+    "No UI/native/platform/production acceptance; I287.C3 remains PARTIAL"
+  ],
+  "initial_scope_absence_preserved": true,
+  "raw_plans_parameters_logs_private": true
+}

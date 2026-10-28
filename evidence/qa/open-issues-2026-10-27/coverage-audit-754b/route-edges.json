@@ -1,0 +1,322 @@
+{
+  "observed_utc": "2026-10-28T23:12:22.648502+00:00",
+  "runtime_actions": 0,
+  "native_tests_executed": 0,
+  "I287.C3": {
+    "existing_case": "ISOLATED-search-filtered-cursor-ACL",
+    "result": "coordinated-agents-2026-10-28/search/aggregate-result.json",
+    "edges": [
+      {
+        "file": "backend/internal/app/chat_routes/chat_routes.go",
+        "symbol_or_exact_edge": "GET /api/v1/search/messages",
+        "lines": [
+          100
+        ],
+        "sha256": "02b679b970710d9d4f2ec44ddcf01d64803a4e5f8a04a7e63b617ce8017d71c1",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/chat/search_messages/api/http_handler.go",
+        "symbol_or_exact_edge": "func NewHandler",
+        "lines": [
+          21
+        ],
+        "sha256": "e37ac0dc227f4dfefc0816cddd9abebfd17366759933620112ba6d548e2d4cd6",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/chat/search_messages/service.go",
+        "symbol_or_exact_edge": "func (service Service) Search",
+        "lines": [
+          55
+        ],
+        "sha256": "80187af485ae7911909328780b8fda379d1def73a37893e3a16f62aa8c9e5817",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/chat/search_messages/postgres/repository.go",
+        "symbol_or_exact_edge": "repository.database.Query(ctx, searchMessages",
+        "lines": [
+          55
+        ],
+        "sha256": "0502f6579d8f32034925342f06952a64ab0765309689a7a8e0d7ce62b96610b3",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/chat/search_messages/postgres/statements.go",
+        "symbol_or_exact_edge": "searchMessages",
+        "lines": [
+          3
+        ],
+        "sha256": "260198939b93b693a7a725351598df4609b65dcbb4c98844e02dc167816c7596",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/chat/search_messages/postgres/date_range_plan_integration_test.go",
+        "symbol_or_exact_edge": "func TestDateFilteredUnifiedSearchPreservesPartialGINPlans",
+        "lines": [
+          9
+        ],
+        "sha256": "9af3816898fbb88c60ccf90d600966faf04fe6853cdc211260dea7db178bf57b",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/chat/search_messages/postgres/gin_plan_integration_test.go",
+        "symbol_or_exact_edge": "func TestSearchWithPostgresCanUseBothPartialGINIndexes",
+        "lines": [
+          9
+        ],
+        "sha256": "c1da58ab718c163e87c86cbc099eb164afe2b3f4f0429bf75a39a790710dbea7",
+        "source": "Q072"
+      },
+      {
+        "file": ".out/qa-agent-search/native.py",
+        "symbol_or_exact_edge": "names=[",
+        "lines": [
+          8
+        ],
+        "sha256": "4e6dd9e3b9a9212a6ef0d9276a5d3b09eea7b629f008f8fde5c46f7be62f783e",
+        "source": "Q072"
+      },
+      {
+        "file": ".out/qa-agent-search/operating-brief.json",
+        "symbol_or_exact_edge": "Query plans and full UI filter persistence remain NOT_RUN",
+        "lines": [
+          12
+        ],
+        "sha256": "22656b19680ea5cd58400f7ce8d4487d4fd75f4e95f655c3c93b3546f8bbd451",
+        "source": "Q072"
+      }
+    ],
+    "gap_scope": "Prior exact12-name native subset excludes plan tests. Full current CI may contain them; inspect named source-bound CI receipts before rerunning. Forced connection-local enable_seqscan=off proves index capability, not default planner/performance."
+  },
+  "I287.C8": {
+    "existing_cases": [
+      "DM-actual_message_actions",
+      "ANDROID-DM-input-actions"
+    ],
+    "result_pointers": [
+      "privacy-result.json#/checks/actual_message_actions",
+      "native-chat/summary.json"
+    ],
+    "edges": [
+      {
+        "file": "runner-source/privacy_run.mjs.txt",
+        "symbol_or_exact_edge": "from './privacy_actions.mjs'",
+        "lines": [
+          5
+        ],
+        "sha256": "1fc4a69ac5455c9ee30154943738545f051bc7e608f5d2fee24fc969a356ad23",
+        "source": "retained_public_controller"
+      },
+      {
+        "file": "backend/internal/chat/change_message_reaction/api/http_handler.go",
+        "symbol_or_exact_edge": "service.Set(",
+        "lines": [
+          39
+        ],
+        "sha256": "c7e08ca5dcf348b571bb70bd7a29fefcdfc6cb164cbf27015d6f9cc02eb5bf53",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/chat/change_message_reaction/service.go",
+        "symbol_or_exact_edge": "func (s Service) Set",
+        "lines": [
+          33
+        ],
+        "sha256": "3c8b474dca191b711bfe9378bb06e3e684e9d4d9ee1daf5fa06225a2ca02fb28",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/chat/change_message_reaction/postgres/repository.go",
+        "symbol_or_exact_edge": "func (r Repository) Set",
+        "lines": [
+          12
+        ],
+        "sha256": "2b173c11589253a987b368f41c8bb22c454c5c877eecc08b1b31f5ae98612c2d",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/chat/change_message_reaction/postgres/concurrency_integration_test.go",
+        "symbol_or_exact_edge": "func TestConcurrentDuplicateDesiredStateCreatesOneReaction",
+        "lines": [
+          10
+        ],
+        "sha256": "c9036f83edb420d563d9ccf7b75e9c9bb32cf4bcc7282627702e6fbdaddfb37c",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/chat/change_message_reaction/postgres/idempotency_integration_test.go",
+        "symbol_or_exact_edge": "func TestReactionAndPinDesiredStatesAreIdempotentAndCountsDoNotExposeActors",
+        "lines": [
+          14
+        ],
+        "sha256": "ed219194ce129fab62ecebf0bf625157e4f2cb5bcc83736330d359e7e2e355a8",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/chat/change_message_reaction/postgres/privacy_integration_test.go",
+        "symbol_or_exact_edge": "func TestReactionPrivacyBlocksOutsiderAdminBlockedAndWrongConversation",
+        "lines": [
+          15
+        ],
+        "sha256": "2a4f877a521ae087ba2872205710b586a83a33a309975665f4f69fae112f9ad0",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/chat/change_text_pin/api/http_handler.go",
+        "symbol_or_exact_edge": "principal.Role != \"ADMINISTRATOR\"",
+        "lines": [
+          22
+        ],
+        "sha256": "d7003fadcccdad66aa546b086c501fbd34326215b82674f8f14acdfacbb780f0",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/chat/change_text_pin/api/http_handler_test.go",
+        "symbol_or_exact_edge": "func TestPinOnlyAdminWithExplicitDesiredMethod",
+        "lines": [
+          22
+        ],
+        "sha256": "069af247030bcd2b1bea8232939f4a578cac062db6ac000a492fca44c4a34994",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/chat/change_text_pin/postgres/repository.go",
+        "symbol_or_exact_edge": "func (r Repository) Set",
+        "lines": [
+          14
+        ],
+        "sha256": "1833377495d6246703afb9b2c546c7058c0ed71578c38d6c6fde365cee3d0e3d",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/chat/list_text_pins/postgres/repository.go",
+        "symbol_or_exact_edge": "func (r Repository) List",
+        "lines": [
+          12
+        ],
+        "sha256": "40420baf1f84d0d26d3388dcc1200a9fa87c4208865379ef03e191246bd4926f",
+        "source": "Q072"
+      }
+    ],
+    "contract_paths": [
+      "/api/v1/channels/{channelID}/messages/{messageID}/reactions/{emoji}",
+      "/api/v1/direct-messages/{directMessageID}/messages/{messageID}/reactions/{emoji}",
+      "/api/v1/channels/{channelID}/pins",
+      "/api/v1/admin/text-channels/{channelID}/pins/{messageID}"
+    ],
+    "limit": "Existing archive native supplement covers archived denial, not normal concurrency. Two independent leaves, reaction then pin, must be separate runtime families."
+  },
+  "I240.C17": {
+    "existing_case": null,
+    "result_pointer": null,
+    "nearest_supplementary_controller": "runner-source/trace_runtime.py.txt",
+    "edges": [
+      {
+        "file": "backend/internal/app/observability_routes/client_screen_routes.go",
+        "symbol_or_exact_edge": "POST /api/v1/voice/screen-metrics",
+        "lines": [
+          16
+        ],
+        "sha256": "270e276b353746e5a48ac25dcf0a546daf7e804ed2b92bfef4e9d04d9f701722",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/observability/report_client_screen/api/http_handler.go",
+        "symbol_or_exact_edge": "leases.FindActive(",
+        "lines": [
+          58
+        ],
+        "sha256": "236f470070e88e277769f6623ada024088165ef2e64b71e448e9301424b04814",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/observability/report_client_screen/api/record_media_sample.go",
+        "symbol_or_exact_edge": "app.media.session.id",
+        "lines": [
+          29,
+          39
+        ],
+        "sha256": "97bb5f919c23ea76d334de413a3726203c08127750864b11fbc6eb54a20718c4",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/observability/report_client_screen/api/media_session_id.go",
+        "symbol_or_exact_edge": "func canonicalMediaSessionID",
+        "lines": [
+          10
+        ],
+        "sha256": "848f5a1a8477ef2ea6ee59a8032e733e64652faf8f53286ebdad79df87084695",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/media/issue_livekit_credential/postgres/repository.go",
+        "symbol_or_exact_edge": "func (repository Repository) FindActive",
+        "lines": [
+          31
+        ],
+        "sha256": "8302ecfb70054244246268bef546b777e81101fc87ec8eaa08729ebb7bf0ae4a",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/observability/report_client_screen/api/media_lease_binding_test.go",
+        "symbol_or_exact_edge": "func TestVerifiedLeaseBindsServerMediaSampleToMediaSession",
+        "lines": [
+          22
+        ],
+        "sha256": "88c818431fb62bdc337556aa99b4586190620a6632d38060abbf83de763bb924",
+        "source": "Q072"
+      },
+      {
+        "file": "backend/internal/observability/report_client_screen/api/media_lease_binding_test.go",
+        "symbol_or_exact_edge": "func TestInactiveLeaseCannotBindOrRecordMediaSample",
+        "lines": [
+          54
+        ],
+        "sha256": "88c818431fb62bdc337556aa99b4586190620a6632d38060abbf83de763bb924",
+        "source": "Q072"
+      },
+      {
+        "file": "runner-source/trace_runtime.py.txt",
+        "symbol_or_exact_edge": "'worker':",
+        "lines": [
+          43
+        ],
+        "sha256": "8b5cd3fe2001daeef1180cb292948c38fa15c094a4276911a9f52fe652d34cb1",
+        "source": "retained_public_controller"
+      }
+    ],
+    "actual_contract": "Submit optional voice_lease_id: authenticated account/session FindActive ->204 and derived server media-session correlation; unavailable handle409 and no sample. Omitted handle may submit an uncorrelated diagnostic sample. Native tests are fake-finder supplements; actual current-session/foreign/revoked enforcement still needs owned local HTTP/PG controls.",
+    "cleanup_limit": "Successful reports add bounded diagnostic aggregate/trace metadata; no source/config/recorder reset or whole-database equality claim."
+  },
+  "contract_manifest": {
+    "file": "contracts/openapi.yaml",
+    "symbol_or_exact_edge": "\"/api/v1/voice/screen-metrics\"",
+    "lines": [
+      3791
+    ],
+    "sha256": "3c9895b2d9fc4df68948f6811435ac77a948686d62bed93730582ed174db39a1",
+    "source": "Q072"
+  },
+  "orphan_failure_recommendation": {
+    "matrix_case_link_array_pointer": "/issues/19/criteria/3/execution_cases",
+    "matrix_evidence_array_pointer": "/issues/19/criteria/3/evidence",
+    "criterion": "I249.C4",
+    "caseID": "PUBLIC-update-catalog",
+    "result_pointer": "public-readback.json#/rows/windows_catalog",
+    "proposal": "Append the existing case ID and dated result reference if reviewed; preserve criterion status and explicitly retain observation2026-10-26T22:12:41Z, HTTP503/no-store. This audit makes no fresh endpoint claim."
+  },
+  "source_probe_diagnostics": [
+    {
+      "type": "MISSING_READ_ONLY_CANDIDATE_FILE",
+      "files": [
+        "backend/internal/app/observability_routes/observability_routes.go",
+        "backend/internal/observability/report_client_screen/service.go",
+        "backend/internal/observability/report_client_screen/http_handler.go",
+        "backend/internal/media/issue_livekit_credential/postgres/statements.go"
+      ],
+      "resolution": "Used the observed leaf files and exact imports; no runtime tests or mutations preceded these source-only probes."
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+"""Seal the read-only95-set audit and a closed metadata export allowlist."""
+import ast, collections, hashlib, json, re, subprocess
+from datetime import datetime, timezone
+from pathlib import Path
+
+O=Path(__file__).resolve().parent;Q=O.parents[1];B=Q.parents[1]/'android-qa/BOOHTACORD'
+E=B/'evidence/qa/open-issues-2026-10-27';P=O/'private'
+read=lambda p:json.loads(p.read_text(encoding='utf-8-sig'))
+write=lambda p,d:p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+digest=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+a=read(O/'audit.json');review=read(O/'review.json');edges=read(O/'route-edges.json')
+assert a['reference_checks']==359 and not a['reference_errors'] and a['whole_gate_status_PASS_count']==0
+m=read(P/'input-matrix.json');old=read(P/'input-matrix-at-start-2802362.json')
+rows=lambda d:{r['id']:r for i in d['issues'] for r in i['criteria']}
+assert {k:r['status'] for k,r in rows(m).items()}=={k:r['status'] for k,r in rows(old).items()}
+assert {k:r['requirement'] for k,r in rows(m).items()}=={k:r['requirement'] for k,r in rows(old).items()}
+binding=read(O/'preexecution-binding.json')
+for name in ['private/input-matrix.json','private/input-cases.json','private/input-source-qualifiers.json',
+             'private/github-open-current.json','private/known-defect-statuses.json']:
+    assert digest(O/name)==binding['files'][name]['sha256'],name
+helpers={}
+for f in O.glob('*.py'):
+    s=f.read_text(encoding='utf-8');ast.parse(s);assert len(s.splitlines())<=120
+    helpers[f.name]={'lines':len(s.splitlines()),'sha256':digest(f)}
+assert len(helpers)<=8
+ci=read(E/'macos-ci-repair/hosted-current/summary.json')
+assert ci['checks']['successful']==ci['checks']['total']==27 and ci['merge_tree_equal']
+latest=read(E/'cases.json');current_head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=B,text=True).strip()
+inputs={n:{'sha256':digest(P/n),'bytes':(P/n).stat().st_size} for n in
+ ['input-matrix.json','input-cases.json','input-source-qualifiers.json','input-matrix-at-start-2802362.json']}
+summary={'status':'PASS_READ_ONLY_AUDIT_GOAL_IN_PROGRESS','at_utc':datetime.now(timezone.utc).isoformat(),
+ 'frozen_data_commit':a['data_baseline_commit'],'B_head_at_seal':current_head,'sets_in_frozen_audit':95,
+ 'B_case_count_at_seal_not_audit_scope':len(latest['cases']),'original_QA_open':37,'original_QA_closed':0,
+ 'source_snapshot_utc':a['fresh_intake_observed_utc'],'open_search_snapshot_utc':a['open_search_observed_utc'],
+ 'open_search_count':47,'unchanged_literal_criteria':480,'retained_full_gate_qualifiers':13,
+ 'new_changed_missing_acceptance_texts':0,'evidence_append_issues':a['new_evidence_append_issues'],
+ 'whole_gate_false_closures_found':0,'row_status_counts':a['row_status_counts'],
+ 'case_status_counts':a['case_status_counts'],'source_statuses_unchanged_since_initial280':True,
+ 'valid_evidence_result_references':359,'orphan_cases':6,'orphan_FAIL_case_requiring_reviewed_link':'PUBLIC-update-catalog -> I249.C4',
+ 'ready_local_candidate_facets':['I287.C8 desired-state reactions (pins separate family)','I240.C17 media-report ownership/correlation','I287.C3 query plans: inspect named currentCI coverage first'],
+ 'conditional_device_facets':['I303.C3 Android TalkBack/system sharing after current phone owner releases','I303.C4 Windows resize/focus/full keyboard after a new human lease'],
+ 'native_edge_append':'route-edges.json','native_product_tests_run_here':0,'runtime_API_device_CUA_mutations':0,
+ 'source_B_Git_GitHub_writes':0,'helpers':helpers,'input_hashes':inputs,
+ 'current_CI':{'status':ci['status'],'successful':27,'total':27,'merged_tested_tree':ci['merge_tree_equal'],
+ 'merge_sha':ci['merge_sha'],'summary_sha256':digest(E/'macos-ci-repair/hosted-current/summary.json'),
+ 'separate_signing_run':40784080135,'signing_status':'RUNNING_REPORTED_BY_ROOT_NOT_SIGNING_PASS','physical_acceptance':'NOT_RUN_BY_THIS_AUDIT'},
+ 'consolidation43_untouched':True,'goal_complete':False}
+write(O/'summary.json',summary)
+write(O/'controller-review.json',{'read_only_source_probe_misses':edges['source_probe_diagnostics'],
+ 'route_edge_attempt1':{'error':'AssertionError: receiver variable service did not match actual s in change_message_reaction/service.go',
+ 'raw_receipt_excluded_from_public':'route-edges-attempt1.log','original_helper':'route_edges.py','binding':'route-edges-preexecution-binding.json'},
+ 'route_edge_attempt2':{'result':'PASS','correction':'Exact source symbol func (s Service) Set; no product code or runtime change','binding':'route-edges-retry-preexecution-binding.json'},
+ 'prior_projection_error':'diagnostics.json','native_product_failures':0,'runtime_mutations':0})
+names=['summary.json','audit.json','review.json','route-edges.json','controller-review.json','diagnostics.json','README.md',
+ 'preexecution-binding.json','review-preexecution-binding.json','route-edges-preexecution-binding.json',
+ 'route-edges-retry-preexecution-binding.json']+sorted(helpers)
+patterns={'private_host_path':r'(?i)C:[/\\]+Users[/\\]+','uuid_literal':r'\b[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}\b',
+ 'JWT_shape':r'eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+','credentialed_URL':r'https?://[^\s/]+:[^\s/]+@'}
+matches=[]
+for n in names:
+    s=(O/n).read_text(encoding='utf-8')
+    for label,pattern in patterns.items():
+        if re.search(pattern,s):matches.append({'file':n,'pattern':label})
+assert not matches,matches
+write(O/'public-review.json',{'status':'SAFE_METADATA_CLOSED_ALLOWLIST','allowlist':names+['public-review.json','integrity.json'],
+ 'exclude':['private/**','*-attempt*.log','any raw issue bodies/actor objects/logs/new unlisted files'],
+ 'redactions_required':[],'mechanical_pattern_scan_matches':matches,
+ 'scan_limits':'No secret/private credential file was opened. This is metadata/structural review, not a blanket scan of every possible secret value.',
+ 'scope_limits':['Read-only audit, not runtime/device/native gate proof','95 sets frozen; future phone sets outside snapshot','Goal IN_PROGRESS; no whole-gate closure'],
+ 'native_helpers':helpers,'source_controller_failures_preserved':'controller-review.json'})
+names+=['public-review.json']
+write(O/'integrity.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'files':{
+ n:{'sha256':digest(O/n),'bytes':(O/n).stat().st_size} for n in names},'self_hash_not_included':True})
+print(json.dumps({'summary_sha256':digest(O/'summary.json'),'review_sha256':digest(O/'review.json'),
+ 'route_edges_sha256':digest(O/'route-edges.json'),'public_review_sha256':digest(O/'public-review.json'),
+ 'integrity_sha256':digest(O/'integrity.json'),'allowlisted_files':len(names)+1,'helpers':len(helpers),
+ 'max_helper_lines':max(v['lines'] for v in helpers.values()),'B_case_count_at_seal':len(latest['cases']),
+ 'status':'FROZEN_NO_FURTHER_RUNTIME_OR_SOURCE_ACTIONS'}))

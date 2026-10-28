@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-28T23:02:46.221892+00:00",
+  "at_utc": "2026-10-28T23:28:39.041728+00:00",
   "candidate_evidence": "../../android/physical-share-2026-10-27/result.json",
   "files": {
     "acceptance-methods.json": {
@@ -1039,8 +1039,8 @@
       "sha256": "c954b79637f5108190985c712e0f2069006090510df98dad4fd9b93771811e98"
     },
     "cases.json": {
-      "bytes": 105720,
-      "sha256": "c3a915c3cae465ec9d57087f6795dcd9121bdf2ed25703d0f6b36c0d73e5099c"
+      "bytes": 107647,
+      "sha256": "550b536fb8b343fcb1f21ef2caa57d387298474c162622ea64a41dac8f716756"
     },
     "controlled-account-integrity.json": {
       "bytes": 640,
@@ -1541,6 +1541,70 @@
     "coordinated-agents-2026-10-28/windows/summary.json": {
       "bytes": 4927,
       "sha256": "8002262e5c75061a8a5b64ec74ba96303c595ed833e07ec3064e446692b737fc"
+    },
+    "coverage-audit-754b/audit.json": {
+      "bytes": 24836,
+      "sha256": "e6b7a101cd7b9362d02200c75b170b67e504e68b0ff39fadfb06739d179d19ef"
+    },
+    "coverage-audit-754b/controller-review.json": {
+      "bytes": 1212,
+      "sha256": "6d7a5deb6c68f4b621f34360937849b4eb0c831749d7faf56a2ea7f3c3cca24a"
+    },
+    "coverage-audit-754b/diagnostics.json": {
+      "bytes": 854,
+      "sha256": "4c539835b117f0aa8ea6509cb892e3a90e59e1cae74c801360676eb0cc16b741"
+    },
+    "coverage-audit-754b/integrity.json": {
+      "bytes": 2467,
+      "sha256": "ca4c23a0a1e39f048b3d6cd173025c3b24d016e1fd7b871bc8608d6f4c113769"
+    },
+    "coverage-audit-754b/preexecution-binding.json": {
+      "bytes": 2573,
+      "sha256": "23f12c4d03039270e57d7caa798e03f1f70e8c45c6ab14d8fb0f8b50f6ec7621"
+    },
+    "coverage-audit-754b/public-review.json": {
+      "bytes": 1822,
+      "sha256": "e31993c186260563cb98ebe099b5221cbb74783f78c2f356d9e83f2f99afd37b"
+    },
+    "coverage-audit-754b/publication-provenance.json": {
+      "bytes": 6643,
+      "sha256": "baa190831b6a21944b2095d9b45af6cef0a4e07c5a8eac67315a7dbf2fd14923"
+    },
+    "coverage-audit-754b/README.md": {
+      "bytes": 4124,
+      "sha256": "040a7f07f6d3e610137e06a7b363808d6f3da5d202996caad46228158f4e23ff"
+    },
+    "coverage-audit-754b/review-preexecution-binding.json": {
+      "bytes": 394,
+      "sha256": "0b69364958f6fa5676f3f6cb3bf086aad582d9f5fd9a4ff1206850fbbe5dc341"
+    },
+    "coverage-audit-754b/review.json": {
+      "bytes": 14808,
+      "sha256": "3ac3e87cbfff8ccd826f0ae567a86e740f2e9d26c73b8938592a673a67d8411e"
+    },
+    "coverage-audit-754b/root-validation97.json": {
+      "bytes": 613,
+      "sha256": "6489a9007348bfba851268659e0538be6aaf83705a59e34ca06331f1c808c293"
+    },
+    "coverage-audit-754b/route-edges-preexecution-binding.json": {
+      "bytes": 241,
+      "sha256": "12895e76c308758bf51e60b6b129338b0c1036d06a1aeca5b7f790051b3e2f81"
+    },
+    "coverage-audit-754b/route-edges-retry-preexecution-binding.json": {
+      "bytes": 458,
+      "sha256": "d9468adc221c8dad2ab2042c8d2c74d32c38f1568f6bcb39ad3ae1dfcf28a6c6"
+    },
+    "coverage-audit-754b/route-edges.json": {
+      "bytes": 12568,
+      "sha256": "f7cdc03e71a0120f93645ffb5b555811b87af1c04ffe7ac0bc5cbfdab493913d"
+    },
+    "coverage-audit-754b/summary.json": {
+      "bytes": 3624,
+      "sha256": "3af3c1f27b530fca043aaba11779b1c68098f8f89053f024e237296f76748d03"
+    },
+    "current-checkpoint-2026-10-29.json": {
+      "bytes": 1328,
+      "sha256": "5941c4da52319ebda33e11dca0742f56054a988c689dbfa7b04d7ad324b49c0d"
     },
     "github-updates-android-connectivity.json": {
       "bytes": 1365,
@@ -3634,6 +3698,10 @@
       "bytes": 2831,
       "sha256": "0e39bb12d86fa871cf8adc92df1237edbd05bcbde03f2b1ad4611114b964ef61"
     },
+    "macos-ci-repair/hosted-current/github-readback.json": {
+      "bytes": 790,
+      "sha256": "5b08e85f94e546db9cd9953e9251731b57d7e0212f89665ff94b682826154562"
+    },
     "macos-ci-repair/hosted-current/historical-results.json": {
       "bytes": 1089,
       "sha256": "e25f8f72eb1637a45eca4ec5cf113d864735fe5b69d7232104f495815d94483c"
@@ -3649,6 +3717,10 @@
     "macos-ci-repair/hosted-current/publication-provenance.json": {
       "bytes": 2047,
       "sha256": "ca4255f0f4a5ad5c6495b250f610a67d667095b3323dfbad8242c4ab249d5888"
+    },
+    "macos-ci-repair/hosted-current/signing-attempt1-check.json": {
+      "bytes": 1734,
+      "sha256": "d83e4f6bb99680e00bc874984ba04e47122f6efebc8f7e37645cf6829ee0e9ba"
     },
     "macos-ci-repair/hosted-current/source-binding.json": {
       "bytes": 1438,
@@ -3699,8 +3771,8 @@
       "sha256": "0ad10df4f6c330130ddd03cb2bda1c28846f8e8d1bdffb21108a276b7015b108"
     },
     "matrix.json": {
-      "bytes": 1214103,
-      "sha256": "f9467d3878833e4be5968f9fda8c04e53bc3f41b4bff4adb574f9ca6ccd57124"
+      "bytes": 1216669,
+      "sha256": "45c0b8afbbf552d8f1fa98eb566c7088ad7890c6762b9187ab0324536c7d4e73"
     },
     "muted-background-resume.json": {
       "bytes": 250,
@@ -5062,6 +5134,14 @@
       "bytes": 1020,
       "sha256": "fdb6a601df762c7546f8f0f39aa9c7c7758372e885695049e5479e99b3e43ffd"
     },
+    "public-catalog-current/brief.json": {
+      "bytes": 551,
+      "sha256": "780e3284cc1635c15d275152c1509133ca8565a5b638e5d852424d64ad8381ef"
+    },
+    "public-catalog-current/result.json": {
+      "bytes": 2023,
+      "sha256": "6921a2379cc436e76eb1355b944ddb3e66ed99b6c401ff3e2fc7de4254818514"
+    },
     "public-readback.json": {
       "bytes": 4743,
       "sha256": "321443921d2e71072638fb22fcd9a0b568bfbc5ecb266f600bc9c9e3b75cd613"
@@ -5071,8 +5151,8 @@
       "sha256": "5c8013eb9693e540a771743fa74b10476a3b88dec2acdd1c683e36c8a6f9c391"
     },
     "README.md": {
-      "bytes": 30003,
-      "sha256": "5f555d2008d4927776570ecea464ed7967078c593b04a96da3a30217a1e84910"
+      "bytes": 30876,
+      "sha256": "397282b403a13f23fd10bca2477fa631934d181a085e5e8e9bb299a343f6e3ec"
     },
     "restored-microphone.json": {
       "bytes": 269,
@@ -5606,6 +5686,26 @@
       "bytes": 1340,
       "sha256": "c75e50339318760b216790ab189af6aa4782df878bb19b8d6129276cc3194c0b"
     },
+    "runner-source/intake-754b-audit.py.txt": {
+      "bytes": 6847,
+      "sha256": "75ded05a0a991ab4f9d0cd26976532f8d2aab54e9a8aa82e5ddf9c277936fa10"
+    },
+    "runner-source/intake-754b-review.py.txt": {
+      "bytes": 8765,
+      "sha256": "e6b2cd2ad0e943fe5db9927839f158d20a81c4bad2661c878c2a5bd9e2ed46d8"
+    },
+    "runner-source/intake-754b-route_edges.py.txt": {
+      "bytes": 6995,
+      "sha256": "feb4f0584ed1d3c1c8f91ab1fcfb35384a935d82bf7bdfd98b6d3c2ec852c175"
+    },
+    "runner-source/intake-754b-route_edges_retry.py.txt": {
+      "bytes": 6989,
+      "sha256": "a677fa8c9882190f08a8f0f5bdc82107c5caff246e6cf2932910a8c7d09b0119"
+    },
+    "runner-source/intake-754b-seal.py.txt": {
+      "bytes": 6842,
+      "sha256": "e76a67e1af5e90b5e5be2149b0aef5bbdb09c45eae33cd6599e086d2edee60a0"
+    },
     "runner-source/link_trace_acceptance.py.txt": {
       "bytes": 7847,
       "sha256": "e8c54e6f9836eb733649687d5d251e8f9dfbc246c2605ffa884443db56b5390d"
@@ -5846,9 +5946,25 @@
       "bytes": 9478,
       "sha256": "cd3e2d845e87cc9eb99fa1ef69b184145ab443f014eea04ace98e7a0f91ca935"
     },
+    "runner-source/postmerge-publication-checkpoint.py.txt": {
+      "bytes": 3000,
+      "sha256": "c98171a94b35a074efbeb5e6126f52df226fda052f9f3f9a9a9d8c8a2d8e5646"
+    },
     "runner-source/postmerge-publication-collect.py.txt": {
       "bytes": 3024,
       "sha256": "b301ac7ec17e7944de0125af26ac65ce9c0ef22f5f862cec5c58b4b29d8c603b"
+    },
+    "runner-source/postmerge-publication-link_supplements.py.txt": {
+      "bytes": 4998,
+      "sha256": "01a9930d560c9be781cb8f9404f135dff3a5a5e70e4ca6bf037b733f34ecd6d3"
+    },
+    "runner-source/postmerge-publication-supplements.py.txt": {
+      "bytes": 2854,
+      "sha256": "66d61cc05fe4906f6b2f5cb3d35ab3b4b1d9a2d099e3801fb4a55e6dd7273c69"
+    },
+    "runner-source/postmerge-publication-validate.py.txt": {
+      "bytes": 3210,
+      "sha256": "6ad7ceb7a36944562935c03a77fe5440aaca15a37b800e4282b7124e58bf76a5"
     },
     "runner-source/privacy_actions.mjs.txt": {
       "bytes": 5898,
@@ -5937,6 +6053,10 @@
     "runner-source/ptt_candidate_probe.py.txt": {
       "bytes": 1929,
       "sha256": "6f66770ab4e07794a276fe227c30283337654e15101b11d7aa5ec7197297f8c8"
+    },
+    "runner-source/public-catalog-current-probe.py.txt": {
+      "bytes": 3331,
+      "sha256": "55c07f120db56dd44f764278ff9c58f8ed5697a89a0a9562f5f4d516fd3cb375"
     },
     "runner-source/public_readback.py.txt": {
       "bytes": 2402,
@@ -6113,6 +6233,30 @@
     "runner-source/web_runtime.mjs.txt": {
       "bytes": 5396,
       "sha256": "ade99d216b997d63479453c643ecd36f054e06c20c513fab77ef8f825c6e78b4"
+    },
+    "search-plans-2026-10-29/ci-named-tests.json": {
+      "bytes": 3131,
+      "sha256": "a52a356cbed246ba31e0200c65a614c41f2b34c992278ce9725c36bf4f8f25fc"
+    },
+    "search-plans-2026-10-29/cleanup.json": {
+      "bytes": 803,
+      "sha256": "22cd2899c36cefa1d2f236c3e55ebf61307ecb99e323a18c43fb7cd37cc4e44b"
+    },
+    "search-plans-2026-10-29/commands.json": {
+      "bytes": 1941,
+      "sha256": "791532605f914fc75d0b96fbfa648d15013b464d4f47047119d5598aebe0d5d6"
+    },
+    "search-plans-2026-10-29/source-binding.json": {
+      "bytes": 5340,
+      "sha256": "bea68d46b91f72424eecaafae6753d2c467ddafb7703286d77b20b5f2a9d2737"
+    },
+    "search-plans-2026-10-29/summary.json": {
+      "bytes": 1412,
+      "sha256": "f4d63da51de785cb4322c074b53f12b19fcf889f83791bdc4199de651a059b3c"
+    },
+    "search-plans-2026-10-29/unforced-plans.json": {
+      "bytes": 49959,
+      "sha256": "035cbdc4bd549af66dce7bf3e028ba34190cd6278ccb3e445fc54cff252e7455"
     },
     "second-cycle-stop.json": {
       "bytes": 252,

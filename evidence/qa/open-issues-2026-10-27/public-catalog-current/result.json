@@ -1,0 +1,61 @@
+{
+  "at_utc": "2026-10-28T23:26:11.026567+00:00",
+  "origin": "https://v.bootybay.ru",
+  "authenticated": false,
+  "requests": 3,
+  "TLS_verification": "urllib default; no override",
+  "rows": {
+    "health": {
+      "at_utc": "2026-10-28T23:26:10.832842+00:00",
+      "method": "GET",
+      "path": "/api/v1/health",
+      "http": 200,
+      "bounded": true,
+      "content_type": "application/json; charset=utf-8",
+      "cache_control": null,
+      "retry_after": null,
+      "body_prefix_sha256": "6489d6d7a33c5d40e18fc61eeb6c34c341279ee61816394dde5189aa4ad8fae5",
+      "json_keys": [
+        "status"
+      ],
+      "public_release_identity": {},
+      "result": "PASS_SCOPED"
+    },
+    "windows_catalog": {
+      "at_utc": "2026-10-28T23:26:10.833341+00:00",
+      "method": "GET",
+      "path": "/api/v1/client-updates?platform=windows&distribution=direct&channel=stable&arch=x64",
+      "http": 503,
+      "bounded": true,
+      "content_type": "application/json",
+      "cache_control": "no-store",
+      "retry_after": null,
+      "body_prefix_sha256": "69b8d6546cc240f213b1aef294ed2b5f87e0aa967cba9430c5d3c416e101cc85",
+      "json_keys": [
+        "error"
+      ],
+      "public_release_identity": {},
+      "result": "FAIL"
+    },
+    "android_catalog": {
+      "at_utc": "2026-10-28T23:26:10.833341+00:00",
+      "method": "GET",
+      "path": "/api/v1/client-updates?platform=android&distribution=direct&channel=stable&arch=arm64",
+      "http": 503,
+      "bounded": true,
+      "content_type": "application/json",
+      "cache_control": "no-store",
+      "retry_after": null,
+      "body_prefix_sha256": "69b8d6546cc240f213b1aef294ed2b5f87e0aa967cba9430c5d3c416e101cc85",
+      "json_keys": [
+        "error"
+      ],
+      "public_release_identity": {},
+      "result": "FAIL"
+    }
+  },
+  "mutation_count": 0,
+  "raw_bodies_retained": false,
+  "status": "FAIL_OR_BLOCKED",
+  "limits": "Endpoint availability only; no deploy/install/latest-source proof or original revision29/release-r52 acceptance."
+}

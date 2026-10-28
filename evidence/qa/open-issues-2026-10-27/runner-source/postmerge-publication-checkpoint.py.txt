@@ -1,0 +1,36 @@
+"""Describe this frozen metadata checkpoint; no test, deployment or device action."""
+import sys
+from pathlib import Path
+Q = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Q / '.out/qa-archive-release'))
+from common import *
+
+v = read(Path(__file__).parent / 'validation97.json')
+assert v['status'] == 'PASS' and v['current_scopes'] == 97
+write(O / 'coverage-audit-754b/root-validation97.json', v)
+code(Path(__file__).parent / 'validate.py', 'postmerge-publication-')
+m = read(O / 'matrix.json')
+m['updated_utc'] = datetime.now(timezone.utc).isoformat()
+write(O / 'matrix.json', m)
+write(O / 'current-checkpoint-2026-10-29.json', {
+    'at_utc': m['updated_utc'], 'status': 'IN_PROGRESS_SCOPED_EVIDENCE',
+    'original_QA_issues': 37, 'original_criteria': 480, 'whole_gate_qualifiers': 13,
+    'runtime_sets': 97, 'criterion_status_counts': v['status_counts'],
+    'current_CI': 'macos-ci-repair/hosted-current/summary.json',
+    'CI_result': '27/27SUCCESS; merged754b tree exactly tested1677',
+    'signed_candidate': {'run': 40784080135, 'source': '754b5997ad100cb00300373f29ab88bda4ed267d',
+        'attempt1': 'FAIL_TIMEOUT_MACOS; strict faninFAIL/signingSKIPPED/artifact0',
+        'attempt2': 'IN_PROGRESS_FULL_RERUN; no borrowed attempt1 parts',
+        'physical_install_by_this_packet': False},
+    'unforced_plans': 'search-plans-2026-10-29/summary.json',
+    'fresh_catalog_failure': 'public-catalog-current/result.json',
+    'catalog_existing_issue': 249,
+    'metadata_corrections': '3dated Windows admin blocker strings, DB592 already-filed note, historical catalog case link',
+    'source_audit': 'coverage-audit-754b/summary.json',
+    'current_phone_packet': 'IN_PROGRESS; not yet published or accepted here',
+    'whole_gate_closures': 0, 'consolidation43_touched': False,
+    'privacy': 'No raw screenshots/bodies/plans/credentials/binaries in this checkpoint'})
+with (O / 'README.md').open('a', encoding='utf-8', newline='\n') as f:
+    f.write('\n## Checkpoint — 2026-10-29\n\n[Current source-bound index](current-checkpoint-2026-10-29.json):97scoped sets,480unchanged original criteria and13whole-gate qualifiers. [CurrentCI](macos-ci-repair/hosted-current/summary.json)27/27SUCCESS/merged-tested tree; signing attempt1 timed out and full attempt2 is in progress. [9unforced SQL plans/9HTTP reads](search-plans-2026-10-29/summary.json) are tiny-fixture observations, with17selected tables restored; no performance claim. [Fresh public catalogs](public-catalog-current/result.json) both503/no-store while health200; existingQA249 remains open. [Coverage audit](coverage-audit-754b/summary.json) is a frozen95-set snapshot; dated blockers and orphan references were corrected without changing original requirements. New phone lifecycle results are still pending here. No whole gate or43consolidation decision is closed.\n')
+code(Path(__file__), 'postmerge-publication-')
+print(json.dumps({'checkpoint_sets': 97, 'source_criteria': 480, 'all_gates_closed': False}))

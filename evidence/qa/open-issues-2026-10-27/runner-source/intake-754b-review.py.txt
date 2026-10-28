@@ -1,0 +1,74 @@
+"""Write a metadata-only review of already frozen data; no runtime clients."""
+import hashlib, json
+from pathlib import Path
+
+O=Path(__file__).resolve().parent
+read=lambda p:json.loads(p.read_text(encoding='utf-8'))
+write=lambda p,d:p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+sha=lambda v:hashlib.sha256(v.encode()).hexdigest()
+m=read(O/'private/input-matrix.json');cs=read(O/'private/input-cases.json')['cases']
+rows={r['id']:r for i in m['issues'] for r in i['criteria']}
+def packet(identifier, readiness, facet, gap, guards, limits):
+    r=rows[identifier]
+    return {'criterion':identifier,'source_issue_url':'https://github.com/Egkurilov/BOOHTACORD/issues/'+identifier[1:].split('.')[0],
+        'literal_source_criterion':r['requirement'],'source_criterion_sha256':sha(r['requirement']),
+        'current_status':r['status'],'readiness':readiness,'independent_facet':facet,
+        'existing_case_links':r['execution_cases'],'concrete_result_gap':gap,
+        'required_guards':guards,'limits':limits,'executed_in_this_audit':False}
+common='New bounded local-only packet: contract/source route first, existing controlled accounts only, tiny own resources/sessions, before/final selected fingerprints, normal cleanup, no source/restart/clock/production mutation.'
+packets=[
+ packet('I287.C8','UNRUN_LOCAL_API_FACET_AVAILABLE_SUBJECT_TO_NEW_PACKET_PREFLIGHT',
+ 'Desired-state reaction concurrency/replay and administrator-only TEXT pin lifecycle',
+ 'Two linked cases cover ordinary DM action/toggle. They do not witness all six reactions with simultaneous callers, retry keys, TEXT pin paging/cleanup or private hint replay ACL.',
+ common+' Two bounded writers; own TEXT/DM fixtures; actual unauthorized caller controls; never infer participant/client UI from HTTP.',
+ 'Full Web/released-native, logout/reconnect and original-message UI jump remain unaccepted.'),
+ packet('I240.C17','UNRUN_LOCAL_API_FACET_AVAILABLE_SUBJECT_TO_NEW_PACKET_PREFLIGHT',
+ 'Owner revalidation for media-report correlation versus active/revoked/foreign session lease and absent handle',
+ 'No case is linked to this exact criterion. Timeout admission/credential409 does not test report-correlation identity enforcement.',
+ common+' No RTC join/tracks. Natural expiry only if its normal contract fits a bounded window; otherwise leave expiry NOT_RUN.',
+ 'Backend correlation facet only; no physical media/eviction/old-JWT reconnect acceptance.'),
+ packet('I287.C3','UNRUN_LOCAL_READ_PLAN_FACET_AVAILABLE_SUBJECT_TO_NEW_PACKET_PREFLIGHT',
+ 'Actual PostgreSQL search query-plan receipts bound to caller/filter/cursor SQL',
+ 'Existing23 runtime controls already cover equal timestamps, author/attachment filters, UTC offsets and DST fold boundaries. No retained query-plan receipt proves the explicit query-plans clause.',
+ common+' Tiny owned dataset and read-only EXPLAIN for the exact query. Preserve actual planner choices; no invented index/performance oracle or load target.',
+ 'Not Web/native filter persistence or submission acceptance; do not repeat already passed DST/ACL controls without cause.'),
+ packet('I303.C3','DEVICE_AVAILABLE_CONDITIONAL_PHONE_OWNER_WINDOW_NOT_PLATFORM_BLOCKED',
+ 'Physical Android TalkBack/SafeArea and system sharing picker supplementary facet',
+ 'Linked Back/IME/large-text and DocumentsUI file chooser witnesses do not establish actual TalkBack or OS system sharing picker behavior. File chooser is not the sharing picker.',
+ 'Only after phone agent releases its current work; own draft/DM only; explicit bounded accessibility-state changes and exact restoration; no voice/media/security changes.',
+ 'No device action authorized by this read-only audit. iOS/VoiceOver remains platform blocked; existing new phone work after the95-set snapshot is outside this audit.'),
+ packet('I303.C4','DEVICE_AVAILABLE_BUT_NEW_HUMAN_WINDOWS_INPUT_WINDOW_REQUIRED',
+ 'Physical Windows resize/focus and full keyboard traversal supplement',
+ 'The seven read-only admin sections and account-menu Tab/ShiftTab/Escape do not prove800–1920px resize, exact focus return, IME or screen-reader accessibility.',
+ 'Prior120s human lease has expired. No Windows/CUA action now; a new authorized lease, exact native target and own-resource mapping are required.',
+ 'macOS physical capture/window-choice remains blocked; browser URL-confidence stops remain frozen with no retry.')]
+admin_text=('Initial account-menu element-cache attempts were blocked and remain retained. A later authorized120s Windows lease witnessed seven native admin sections read-only at1432x896; the lease has expired. No CRUD/field/settings/security/media actions were accepted. Account-menu Tab/ShiftTab/Escape is a separate scoped witness; complete dialog keyboard/Enter/Space, exact focus return, IME, large text/resize and screen-reader/accessibility acceptance remain NOT_RUN/NOT_PROVEN. New Windows input needs a new human-authorized window.')
+stale=[{'file':'matrix.json','json_pointer':f'/issues/{j}/blockers/0','issue':i['number'],
+ 'current_value':i['blockers'][0],'proposed_truthful_replacement':admin_text,
+ 'status_change_proposed':False} for j,i in enumerate(m['issues']) if i['number'] in [287,301,303]]
+ci=next((j for j,c in enumerate(cs) if c['id']=='PUBLIC-update-catalog'))
+bug=next((j for j,c in enumerate(cs) if c['id']=='DB-support-guard-ordinary-delete-counterexample'))
+review={'status':'READ_ONLY_AUDIT_COMPLETE_GOAL_REMAINS_IN_PROGRESS','whole_gate_false_closures_found':0,
+ 'remaining_packets':packets,'stale_admin_blockers':stale,
+ 'unlinked_failure':{'case':'PUBLIC-update-catalog','case_pointer':f'/cases/{ci}',
+ 'source_criterion':'I249.C4','row_pointer':'/issues/19/criteria/3',
+ 'evidence':'public-readback.json#/rows/windows_catalog','observed_utc':'2026-10-26T22:12:41.238168+00:00',
+ 'finding':'Existing case records503/no-store, while I249.C4 has no execution-case link. QA249 itself is FAIL. Link as dated scoped failure if reviewed; no current endpoint or exact old release identity is inferred.',
+ 'automatic_reclassification':False},
+ 'other_orphan_case_disposition':'Two baseline/provisioning cases, one narrow shell-geometry witness and one empty-composer witness are supporting evidence; DB592 is outside the original37 intake and should not be forced into a new requirement.',
+ 'stale_bug_creation_note':{'file':'cases.json','json_pointer':f'/cases/{bug}/limits',
+ 'obsolete_fragment':'Bug creation pending immutable evidence.',
+ 'proposed_fragment':'Bug592 is filed/open; product function remains unchanged. Original counterexample and separate teardown receipts are preserved.'},
+ 'blocker_classes':{'human':['Audibility needs an available listener; original real-user measurements/named rollback owner remain evidence gaps.','Windows input lease expired; phone agent owns its device window.'],
+ 'platform':['Physical macOS/iPhone/Pixel not supplied; available Samsung and hosted Apple tests cannot replace those device paths.'],
+ 'provider_or_artifact':['Notification provider/transport approval and configured staging cohort remain prerequisite gaps, not automatable delivery PASS.','Current PR596 CI27/27 and merged tested tree are proven by retained metadata. Separate signing run40784080135 is reported RUNNING by root, not signing/install/physical PASS.'],
+ 'policy':['Browser production URL-confidence stops remain BLOCKED; no workaround or retry.'],
+ 'unrun_not_external_blocked':['The three local API/SQL facets above have concrete result gaps and no known human/platform prerequisite; each still needs its own contract/ownership preflight.']},
+ 'closed_implementation_bug_rule':'Closed584/585/586/587/589 source issues do not accept a physical/current-deployment gate. Preserve dated failures and require exact new-candidate evidence before status promotion.',
+ 'snapshot_boundary':'Fresh37 source bodies observed23:01:44Z; open search47 at23:04:37Z; frozen95-set B datae06c. Later root appends to62/595 and prospective phone sets are outside this snapshot and are not regressions or source-text loss.',
+ 'validator_review':{'canonical_B':'Dynamic len(cases); hard480 rows; MUTATES cases/trace result metadata/runner-source. Read only, not executed.',
+ 'timeout_publication':'Hard95 sets/first93 against623e and exact I287.C9 delta; WRITES validation/code. Read only, not executed.',
+ 'new_validator_need':'Any97-set publication needs a fresh e06-bound preservation check; never weaken or replay the old hard95 validator.'},
+ 'all_original_statuses_and_43_consolidation_decisions_preserved':True,'runtime_or_device_actions':0}
+write(O/'review.json',review)
+print(json.dumps({'remaining_packets':len(packets),'stale_admin_pointers':[x['json_pointer'] for x in stale],'unlinked_failure_criterion':'I249.C4'}))

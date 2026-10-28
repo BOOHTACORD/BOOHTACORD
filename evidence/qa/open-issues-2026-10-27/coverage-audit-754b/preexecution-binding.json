@@ -1,0 +1,66 @@
+{
+  "at_utc": "2026-10-28T23:07:34.239238+00:00",
+  "route": "qa/intake-source-completeness",
+  "workflow_class": "review_gate",
+  "mode": "read-only-data-audit",
+  "source_head": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "B_head_at_binding": "e06c9019d7cd3557d7042e234483616e3bddc52f",
+  "helper_lines": 93,
+  "files": {
+    "AGENTS.md": {
+      "sha256": "c2eb9bdb4d9fce83ceb972dacdf89c9bb82a54ac1511e94f5004671f11a64361",
+      "bytes": 3161
+    },
+    "SKILL.md": {
+      "sha256": "8c67eb1e71ed7cf9932bc72c360aac8f94f58ec19736e2acbfe3b288778bb685",
+      "bytes": 1746
+    },
+    "structure.config.yaml": {
+      "sha256": "3ca9f5484516e975a6a325b6920ef37bd6ec69f5ed05b29fa5beb933a3114ebe",
+      "bytes": 845
+    },
+    "tools/toolchains.json": {
+      "sha256": "ae1564530abb2697f24a0e1cff899aeb1fde5fb9266b63e973d71811114fbe28",
+      "bytes": 382
+    },
+    "audit.py": {
+      "sha256": "75ded05a0a991ab4f9d0cd26976532f8d2aab54e9a8aa82e5ddf9c277936fa10",
+      "bytes": 6847
+    },
+    "private/input-matrix.json": {
+      "sha256": "f9467d3878833e4be5968f9fda8c04e53bc3f41b4bff4adb574f9ca6ccd57124",
+      "bytes": 1214103
+    },
+    "private/input-cases.json": {
+      "sha256": "c3a915c3cae465ec9d57087f6795dcd9121bdf2ed25703d0f6b36c0d73e5099c",
+      "bytes": 105720
+    },
+    "private/input-source-qualifiers.json": {
+      "sha256": "6c9a8aac399ff9514507786009d986d8b8983b1c02c67e1b44bd7db041315bd3",
+      "bytes": 18294
+    },
+    "private/github-open-current.json": {
+      "sha256": "88e95489b144f93e39486fe74d83bc0aeeec4353078ecf80ab58e2d2da715be1",
+      "bytes": 735245
+    },
+    "private/known-defect-statuses.json": {
+      "sha256": "81ffa2eca3893fde7050174fc1c15d6543e0ca22fe7827efd2efae3835b6dda1",
+      "bytes": 49808
+    },
+    "fresh-intake-private-input": {
+      "sha256": "067e2c3acab7d56ae63136b6453c2b4859b6784586f48ba88d80e38875828c80",
+      "bytes": 652981
+    },
+    "canonical-B-validator": {
+      "sha256": "9055ba496cd5f2574c13be7294ac821e0256684b4bbf3f3631cb2dc3bd0f4821",
+      "bytes": 3657
+    },
+    "timeout-publication-validator": {
+      "sha256": "f7fa170c950f7163020404a1a0c574a6e6841e819db9de199e7bc9e9df190cf1",
+      "bytes": 3698
+    }
+  },
+  "checks": "Private-input preservation, exact source prefix/text, qualifier binding, row/case/result pointer integrity, scoped/whole-gate claims review",
+  "forbidden": "No runtime API/device/CUA/production/source/B/Git/GitHub mutations; no historical validator execution",
+  "stop": "Freeze this95-set source snapshot and safe metadata projection; no new packet"
+}

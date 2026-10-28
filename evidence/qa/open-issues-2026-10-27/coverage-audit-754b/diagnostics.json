@@ -1,0 +1,15 @@
+{
+  "status": "CONTROLLER_DIAGNOSTIC_PRESERVED_NOT_PRODUCT_FAILURE",
+  "stage": "Exploratory read-only outside-intake metadata projection before the final audit helper",
+  "error": "TypeError: 'NoneType' object is not iterable",
+  "exact_failed_fragment": "[l['name'] for l in x['labels']]",
+  "cause": "GitHub connector returned labels=null for issues without labels",
+  "corrected_fragment": "[l.get('name') for l in (x.get('labels') or [])]",
+  "retry_scope": "Read the same retained local search snapshot, normalize only the optional labels field",
+  "mutation_or_runtime_request_before_or_after_failure": false,
+  "native_product_test_failure": false,
+  "original_tool_diagnostic_retained_in_session": true,
+  "final_audit_helper_attempts": 1,
+  "final_review_helper_attempts": 1,
+  "claim_impact": "No product result or criterion status changed"
+}

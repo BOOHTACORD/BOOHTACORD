@@ -1,0 +1,93 @@
+"""Read frozen QA data only; never import or run historical validators."""
+import collections, hashlib, json
+from datetime import datetime, timezone
+from pathlib import Path
+
+O = Path(__file__).resolve().parent
+Q = O.parents[1]
+B = Q.parents[1] / 'android-qa' / 'BOOHTACORD'
+E = B / 'evidence/qa/open-issues-2026-10-27'
+P = O / 'private'
+read = lambda p: json.loads(p.read_text(encoding='utf-8-sig'))
+sha = lambda b: hashlib.sha256(b).hexdigest()
+count = lambda xs: dict(collections.Counter(xs))
+write = lambda p, d: p.write_text(json.dumps(d, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+
+m, cases = read(P/'input-matrix.json'), read(P/'input-cases.json')['cases']
+qual = read(P/'input-source-qualifiers.json')['clauses']
+original = {i['number']: i for i in read(Q/'.out/qa-agent-browser/private/preserved-intake.json')['issues']}
+prior = {i['issue_number']: i for i in read(Q/'.out/qa-agent-browser/private/github-intake-current.json')['issues']}
+fresh_data = read(Q/'.out/qa-open-intake-754b/issues.private.json')
+fresh = {i['number']: i['issue'] for i in fresh_data['issues']}
+frozen = read(Q/'.out/qa-agent-browser/qa-scope-audit.json')
+rows = {r['id']: r for i in m['issues'] for r in i['criteria']}
+case_by_id = {c['id']: c for c in cases}
+assert len(rows)==480 and len(cases)==95 and len(qual)==13
+assert set(original)==set(prior)==set(fresh)=={i['number'] for i in m['issues']}
+assert {k:r['requirement'] for k,r in rows.items()}=={r['id']:r['requirement'] for r in frozen['original_requirement_texts']}
+assert set(frozen['original_scope_ids']) <= set(case_by_id)
+source = []
+for i in m['issues']:
+    n=i['number']; old=original[n]; new=fresh[n]; a=old['body'].rstrip(); b=prior[n]['body'].rstrip()
+    current=new['body'].rstrip(); prefix=current.startswith(a); last=current.startswith(b)
+    assert all(r['requirement'] in old['body'] for r in i['criteria']), n
+    source.append({'issue':n, 'state':new['state'], 'title_changed':new['title']!=old['title'],
+        'original_core_exact_prefix':prefix, 'prior_audit_exact_prefix':last,
+        'original_body_sha256':sha(old['body'].encode()), 'fresh_body_sha256':sha(new['body'].encode()),
+        'matrix_source_hash_matches_original':i['source_body_sha256']==sha(old['body'].encode()),
+        'new_append_chars_since_prior_audit':len(current)-len(b) if last else None,
+        'append_headings':[s for s in current[len(b):].splitlines() if s.startswith('#')] if last else []})
+assert all(x['original_core_exact_prefix'] and x['prior_audit_exact_prefix'] and
+           x['matrix_source_hash_matches_original'] and not x['title_changed'] for x in source)
+for c in qual:
+    i=next(i for i in m['issues'] if i['number']==c['issue'])
+    assert c['source_text'] in original[c['issue']]['body'] and c['source_text'] in fresh[c['issue']]['body']
+    assert c['id'] in i['mandatory_original_source_qualifiers']
+    assert c['applies_to_full_issue_gate'] and c['runtime_acceptance']!='PASS'
+    assert set(c['criterion_ids'])=={r['id'] for r in i['criteria']}
+    assert c['original_body_SHA256']==sha(original[c['issue']]['body'].encode())
+references=[]; errors=[]
+def reference(ref, owner):
+    for part in ref.split(';'):
+        path, sep, pointer=part.strip().partition('#'); target=E/path
+        try:
+            assert target.resolve().is_relative_to(E.resolve()) and target.is_file()
+            if sep:
+                obj=read(target); assert pointer.startswith('/')
+                for key in pointer[1:].split('/'):
+                    key=key.replace('~1','/').replace('~0','~'); obj=obj[int(key)] if isinstance(obj,list) else obj[key]
+            references.append({'owner':owner,'reference':part.strip(),'file_sha256':sha(target.read_bytes())})
+        except Exception as exc: errors.append({'owner':owner,'reference':part.strip(),'error':type(exc).__name__})
+for r in rows.values():
+    assert set(r['execution_cases']) <= set(case_by_id), r['id']
+    for ref in r['evidence']: reference(ref,r['id'])
+for c in cases:
+    assert all(c.get(k) for k in ['protects','command','platform','mandatory_when','result'])
+    reference(c['result'],c['id'])
+assert not errors, errors
+linked={c for r in rows.values() for c in r['execution_cases']}
+current_open=read(P/'github-open-current.json'); open_issues=current_open['search']['issues']
+closed={i['issue_number']:i for i in read(P/'known-defect-statuses.json')['issues']}
+outside=[{'issue':i['issue_number'],'title':i['title'],'state':i['state'],
+          'body_sha256':sha(i['body'].encode())} for i in open_issues if i['issue_number'] not in fresh]
+assert {i['issue_number'] for i in open_issues} >= set(fresh)
+result={'schema':'qa-intake-coverage-audit-v1','completed_utc':datetime.now(timezone.utc).isoformat(),
+ 'scope':'READ_ONLY_SOURCE_AND_EVIDENCE_LINK_AUDIT_NOT_RUNTIME_ACCEPTANCE',
+ 'fresh_intake_observed_utc':fresh_data['at_utc'],'open_search_observed_utc':current_open['observed_utc'],
+ 'data_baseline_commit':'e06c9019d7cd3557d7042e234483616e3bddc52f',
+ 'source_issues':source,'original_issues':37,'open_original_issues':sum(i['state']=='open' for i in fresh.values()),
+ 'closed_original_issues':sum(i['state']=='closed' for i in fresh.values()),'preserved_literal_source_rows':len(rows),
+ 'whole_gate_qualifiers_preserved_and_bound':len(qual),'scoped_sets':len(cases),'prior81_scope_ids_preserved':True,
+ 'new_evidence_append_issues':[i['issue'] for i in source if i['new_append_chars_since_prior_audit']],
+ 'new_changed_or_missing_acceptance_texts':0,'appended_text_review':'All new suffixes reviewed; evidence/qualifier status append only',
+ 'issue_status_counts':count(i['status'] for i in m['issues']),'row_status_counts':count(r['status'] for r in rows.values()),
+ 'acceptance_row_status_counts':count(r['status'] for r in rows.values() if r['row_kind']=='ACCEPTANCE_REQUIREMENT'),
+ 'case_status_counts':count(c['status'] for c in cases),'unlinked_rows_by_kind':count(r['row_kind'] for r in rows.values() if not r['execution_cases']),
+ 'unlinked_case_ids':[c['id'] for c in cases if c['id'] not in linked],
+ 'reference_checks':len(references),'reference_errors':errors,'whole_gate_status_PASS_count':sum(i['status']=='PASS' for i in m['issues']),
+ 'whole_gate_false_closure_found':False,'open_repository_search_count':len(open_issues),'outside_intake_open_sources':outside,
+ 'closed_implementation_bugs_not_physical_acceptance':[{'issue':n,'state':i['state'],'closed_at':i['closed_at']} for n,i in closed.items()],
+ 'runtime_or_device_actions':0,'source_or_B_or_GitHub_writes':0,'goal_status':'IN_PROGRESS'}
+write(O/'audit.json',result)
+write(P/'reference-validation.json',references)
+print(json.dumps({k:result[k] for k in ['open_original_issues','preserved_literal_source_rows','scoped_sets','reference_checks','new_evidence_append_issues','unlinked_case_ids','whole_gate_status_PASS_count']}))

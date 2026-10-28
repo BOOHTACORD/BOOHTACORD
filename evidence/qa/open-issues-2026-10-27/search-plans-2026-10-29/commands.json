@@ -1,0 +1,49 @@
+{
+  "interpreter": "Python3.12.10",
+  "working_directory": "test-sql-native-gates/BOOHTACORD",
+  "commands": [
+    "python -X utf8 Q/.out/qa-agent-search-plans/preflight.py",
+    "python -X utf8 Q/.out/qa-agent-search-plans/scope_blocker.py",
+    "python -X utf8 Q/.out/qa-agent-search-plans/setup_fixture.py",
+    "python -X utf8 Q/.out/qa-agent-search-plans/capture_plans.py",
+    "python -X utf8 Q/.out/qa-agent-search-plans/cleanup_fixture.py",
+    "python -X utf8 Q/.out/qa-agent-search-plans/seal.py"
+  ],
+  "native_test_command": "Not executed; exact source-bound Go JSON PASS receipts reused",
+  "plan_command": "BEGIN READ ONLY; inspect current settings; PREPARE qa_owned_search AS exact production SQL; EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) EXECUTE qa_owned_search(13 bound parameters); ROLLBACK;",
+  "helpers": {
+    "capture_plans.py": {
+      "lines": 66,
+      "sha256": "874b3d91b4b25ff600f7bd80113ace68f0fc14cea4776d2e80c5a36633bdd808"
+    },
+    "cleanup_fixture.py": {
+      "lines": 67,
+      "sha256": "221c39627c8cde5b9a51c305c56ce8197e19e8401a07a36eb0e33c42663d729a"
+    },
+    "common.py": {
+      "lines": 63,
+      "sha256": "dcd41761017e4b6d345f64bebaa13557393d6f3513263b943e7e6c71b74c0766"
+    },
+    "fixture_common.py": {
+      "lines": 50,
+      "sha256": "1e61df2e196f64695e8992bc0d990806779632f0a2b8154c2191c7b3e682732a"
+    },
+    "preflight.py": {
+      "lines": 83,
+      "sha256": "be4e2e16b711eaae654f7964e61a026ca03296125638ed22f943045cb7cbde45"
+    },
+    "scope_blocker.py": {
+      "lines": 29,
+      "sha256": "2e1c57cf5278be29fea4b21ae2a2b54f4f5d1d32937bef8c45c535894ae9ed1a"
+    },
+    "seal.py": {
+      "lines": 81,
+      "sha256": "c930f21679b5b962e36af73945a6399c8804ccc76958001929fc9a3e898bd267"
+    },
+    "setup_fixture.py": {
+      "lines": 66,
+      "sha256": "dc84086c68158606132294141f06d8e51c3ff09d069fcc3debf8c6e48dab538d"
+    }
+  },
+  "private_inputs_and_plans_published": false
+}

@@ -1,0 +1,69 @@
+"""Link scoped observed results and correct dated metadata, preserving source text."""
+import sys
+from pathlib import Path
+Q = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Q / '.out/qa-archive-release'))
+from common import *
+
+m, cases = read(O / 'matrix.json'), read(O / 'cases.json')
+assert len(cases['cases']) == 95
+rows = {r['id']: r for i in m['issues'] for r in i['criteria']}
+review = read(O / 'coverage-audit-754b/review.json')
+for item in review['stale_admin_blockers']:
+    issue = next(i for i in m['issues'] if i['number'] == item['issue'])
+    assert issue['blockers'][0] == item['current_value']
+    issue['blockers'][0] = item['proposed_truthful_replacement']
+case = next(c for c in cases['cases'] if c['id'] == 'DB-support-guard-ordinary-delete-counterexample')
+assert 'Bug creation pending immutable evidence.' in case['limits']
+case['limits'] = case['limits'].replace('Bug creation pending immutable evidence.',
+    'Bug592 is filed/open; product function remains unchanged. Original counterexample and separate teardown receipts are preserved.')
+
+def link(case, ids, append=False):
+    if append:
+        assert not any(c['id'] == case['id'] for c in cases['cases'])
+        cases['cases'].append(case)
+    for rid in ids:
+        r = rows[rid]
+        if case['id'] not in r['execution_cases']: r['execution_cases'].append(case['id'])
+        if case['result'] not in r['evidence']: r['evidence'].append(case['result'])
+        r.setdefault('witness_limits', []).append(case['id'] + ': ' + case['limits'])
+        if 'execution_plan' in r: r['execution_plan']['existing_scoped_witnesses'] = list(r['execution_cases'])
+    for issue in m['issues']:
+        if issue['number'] in case['issues']:
+            if case['id'] not in issue['execution_cases']: issue['execution_cases'].append(case['id'])
+            if case['result'] not in issue['evidence']: issue['evidence'].append(case['result'])
+
+prior = next(c for c in cases['cases'] if c['id'] == 'PUBLIC-update-catalog')
+link(prior, ['I249.C4'])
+rows['I249.C4']['witness_limits'].append('Historical503 is dated2026-10-26; it is not a fresh endpoint/revision29/r52 observation.')
+link({'id': 'ISOLATED-search-unforced-query-plans', 'status': 'PASS_SCOPED',
+      'protects': 'The actual parameterized unified search SQL has observed unforced TEXT/DM/date/author/attachment plans and matching HTTP rows',
+      'command': 'Follow search-plans-2026-10-29/commands.json: preflight, owned setup, capture_plans.py, exact cleanup; two named current CI tests reused without rerun',
+      'platform': 'Owned loopback QA API072/PostgreSQL17.6; exact SQL equals merged754b; default seqscan=on, plan_cache_mode=auto',
+      'mandatory_when': 'Before accepting this isolated query-plan facet of I287.C3',
+      'issues': [287], 'result': 'search-plans-2026-10-29/summary.json',
+      'limits': '9tiny-fixture plans/9HTTP reads only. SeqScan and both partialGIN observed; no production/performance/cached-plan/positive attached-row/UI claim.17selected tables restored;9services unchanged.',
+      'defects': []}, ['I287.C3'], True)
+src = Q / '.out/qa-public-catalog-current'
+assert not (O / 'public-catalog-current').exists()
+for name in ['brief.json', 'result.json']: write(O / 'public-catalog-current' / name, read(src / name))
+code(src / 'probe.py', 'public-catalog-current-')
+result = read(src / 'result.json')
+assert result['rows']['health']['http'] == 200
+assert all(result['rows'][n]['http'] == 503 for n in ['windows_catalog', 'android_catalog'])
+link({'id': 'PUBLIC-current-update-catalog-2026-10-29', 'status': 'FAIL',
+      'protects': 'Production Windows/direct/stable/x64 and Android/direct/stable/arm64 catalogs are available with HTTP200 and no-store',
+      'command': 'python .out/qa-public-catalog-current/probe.py',
+      'platform': 'Production public HTTPS from Windows/Python3.12; default TLS verification; no cookies',
+      'mandatory_when': 'Before accepting catalog availability and the endpoint facet of QA249',
+      'issues': [249], 'result': 'public-catalog-current/result.json',
+      'limits': 'Current23:26:10UTC28Oct HTTP503/no-store for both selectors; health200. No revision/release/checksum, rollout, install, restart, downgrade or production source claim. ExistingQA249 already tracks this failure; avoid duplicate.',
+      'defects': [249]}, ['I249.C4'], True)
+assert rows['I249.C4']['status'] == 'NOT_RUN'
+rows['I249.C4']['status'] = 'FAIL'
+rows['I249.C4']['reason'] = 'Fresh exact Windows selector GET returned503 at2026-10-28T23:26:10Z, contradicting requiredHTTP200. Android selector also503/health200. Revision29/r52/assets/old-client install remain unproved; original requirements unchanged.'
+write(O / 'matrix.json', m)
+write(O / 'cases.json', cases)
+code(Path(__file__), 'postmerge-publication-')
+print(json.dumps({'scopes': len(cases['cases']), 'status_delta': 'I249.C4 NOT_RUN -> FAIL',
+                  'stale_admin_metadata_fixed': 3, 'DB592_pending_note_corrected': True}))

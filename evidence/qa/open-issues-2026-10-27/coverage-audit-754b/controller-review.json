@@ -1,0 +1,28 @@
+{
+  "read_only_source_probe_misses": [
+    {
+      "type": "MISSING_READ_ONLY_CANDIDATE_FILE",
+      "files": [
+        "backend/internal/app/observability_routes/observability_routes.go",
+        "backend/internal/observability/report_client_screen/service.go",
+        "backend/internal/observability/report_client_screen/http_handler.go",
+        "backend/internal/media/issue_livekit_credential/postgres/statements.go"
+      ],
+      "resolution": "Used the observed leaf files and exact imports; no runtime tests or mutations preceded these source-only probes."
+    }
+  ],
+  "route_edge_attempt1": {
+    "error": "AssertionError: receiver variable service did not match actual s in change_message_reaction/service.go",
+    "raw_receipt_excluded_from_public": "route-edges-attempt1.log",
+    "original_helper": "route_edges.py",
+    "binding": "route-edges-preexecution-binding.json"
+  },
+  "route_edge_attempt2": {
+    "result": "PASS",
+    "correction": "Exact source symbol func (s Service) Set; no product code or runtime change",
+    "binding": "route-edges-retry-preexecution-binding.json"
+  },
+  "prior_projection_error": "diagnostics.json",
+  "native_product_failures": 0,
+  "runtime_mutations": 0
+}

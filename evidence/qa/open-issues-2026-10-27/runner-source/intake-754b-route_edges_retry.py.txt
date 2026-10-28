@@ -1,0 +1,58 @@
+"""Bind exact existing controller/native route edges, without executing them."""
+import hashlib, json
+from datetime import datetime, timezone
+from pathlib import Path
+
+O=Path(__file__).resolve().parent;Q=O.parents[1]
+B=Q.parents[1]/'android-qa/BOOHTACORD';E=B/'evidence/qa/open-issues-2026-10-27'
+def edge(file, symbol, root=Q):
+    raw=(root/file).read_bytes(); text=raw.decode('utf-8-sig')
+    hits=[n for n,s in enumerate(text.splitlines(),1) if symbol in s]
+    assert hits, (file,symbol)
+    return {'file':file,'symbol_or_exact_edge':symbol,'lines':hits,
+            'sha256':hashlib.sha256(raw).hexdigest(),'source':'Q072' if root==Q else 'retained_public_controller'}
+search=[
+ edge('backend/internal/app/chat_routes/chat_routes.go','GET /api/v1/search/messages'),
+ edge('backend/internal/chat/search_messages/api/http_handler.go','func NewHandler'),
+ edge('backend/internal/chat/search_messages/service.go','func (service Service) Search'),
+ edge('backend/internal/chat/search_messages/postgres/repository.go','repository.database.Query(ctx, searchMessages'),
+ edge('backend/internal/chat/search_messages/postgres/statements.go','searchMessages'),
+ edge('backend/internal/chat/search_messages/postgres/date_range_plan_integration_test.go','func TestDateFilteredUnifiedSearchPreservesPartialGINPlans'),
+ edge('backend/internal/chat/search_messages/postgres/gin_plan_integration_test.go','func TestSearchWithPostgresCanUseBothPartialGINIndexes'),
+ edge('.out/qa-agent-search/native.py','names=['),
+ edge('.out/qa-agent-search/operating-brief.json','Query plans and full UI filter persistence remain NOT_RUN')]
+reaction=[
+ edge('runner-source/privacy_run.mjs.txt',"from './privacy_actions.mjs'",E),
+ edge('backend/internal/chat/change_message_reaction/api/http_handler.go','service.Set('),
+ edge('backend/internal/chat/change_message_reaction/service.go','func (s Service) Set'),
+ edge('backend/internal/chat/change_message_reaction/postgres/repository.go','func (r Repository) Set'),
+ edge('backend/internal/chat/change_message_reaction/postgres/concurrency_integration_test.go','func TestConcurrentDuplicateDesiredStateCreatesOneReaction'),
+ edge('backend/internal/chat/change_message_reaction/postgres/idempotency_integration_test.go','func TestReactionAndPinDesiredStatesAreIdempotentAndCountsDoNotExposeActors'),
+ edge('backend/internal/chat/change_message_reaction/postgres/privacy_integration_test.go','func TestReactionPrivacyBlocksOutsiderAdminBlockedAndWrongConversation'),
+ edge('backend/internal/chat/change_text_pin/api/http_handler.go','principal.Role != "ADMINISTRATOR"'),
+ edge('backend/internal/chat/change_text_pin/api/http_handler_test.go','func TestPinOnlyAdminWithExplicitDesiredMethod'),
+ edge('backend/internal/chat/change_text_pin/postgres/repository.go','func (r Repository) Set'),
+ edge('backend/internal/chat/list_text_pins/postgres/repository.go','func (r Repository) List')]
+correlation=[
+ edge('backend/internal/app/observability_routes/client_screen_routes.go','POST /api/v1/voice/screen-metrics'),
+ edge('backend/internal/observability/report_client_screen/api/http_handler.go','leases.FindActive('),
+ edge('backend/internal/observability/report_client_screen/api/record_media_sample.go','app.media.session.id'),
+ edge('backend/internal/observability/report_client_screen/api/media_session_id.go','func canonicalMediaSessionID'),
+ edge('backend/internal/media/issue_livekit_credential/postgres/repository.go','func (repository Repository) FindActive'),
+ edge('backend/internal/observability/report_client_screen/api/media_lease_binding_test.go','func TestVerifiedLeaseBindsServerMediaSampleToMediaSession'),
+ edge('backend/internal/observability/report_client_screen/api/media_lease_binding_test.go','func TestInactiveLeaseCannotBindOrRecordMediaSample'),
+ edge('runner-source/trace_runtime.py.txt',"'worker':",E)]
+r={'observed_utc':datetime.now(timezone.utc).isoformat(),'runtime_actions':0,'native_tests_executed':0,
+ 'I287.C3':{'existing_case':'ISOLATED-search-filtered-cursor-ACL','result':'coordinated-agents-2026-10-28/search/aggregate-result.json','edges':search,
+ 'gap_scope':'Prior exact12-name native subset excludes plan tests. Full current CI may contain them; inspect named source-bound CI receipts before rerunning. Forced connection-local enable_seqscan=off proves index capability, not default planner/performance.'},
+ 'I287.C8':{'existing_cases':['DM-actual_message_actions','ANDROID-DM-input-actions'],'result_pointers':['privacy-result.json#/checks/actual_message_actions','native-chat/summary.json'],'edges':reaction,
+ 'contract_paths':['/api/v1/channels/{channelID}/messages/{messageID}/reactions/{emoji}','/api/v1/direct-messages/{directMessageID}/messages/{messageID}/reactions/{emoji}','/api/v1/channels/{channelID}/pins','/api/v1/admin/text-channels/{channelID}/pins/{messageID}'],
+ 'limit':'Existing archive native supplement covers archived denial, not normal concurrency. Two independent leaves, reaction then pin, must be separate runtime families.'},
+ 'I240.C17':{'existing_case':None,'result_pointer':None,'nearest_supplementary_controller':'runner-source/trace_runtime.py.txt','edges':correlation,
+ 'actual_contract':'Submit optional voice_lease_id: authenticated account/session FindActive ->204 and derived server media-session correlation; unavailable handle409 and no sample. Omitted handle may submit an uncorrelated diagnostic sample. Native tests are fake-finder supplements; actual current-session/foreign/revoked enforcement still needs owned local HTTP/PG controls.',
+ 'cleanup_limit':'Successful reports add bounded diagnostic aggregate/trace metadata; no source/config/recorder reset or whole-database equality claim.'},
+ 'contract_manifest':edge('contracts/openapi.yaml','"/api/v1/voice/screen-metrics"'),
+ 'orphan_failure_recommendation':{'matrix_case_link_array_pointer':'/issues/19/criteria/3/execution_cases','matrix_evidence_array_pointer':'/issues/19/criteria/3/evidence','criterion':'I249.C4','caseID':'PUBLIC-update-catalog','result_pointer':'public-readback.json#/rows/windows_catalog','proposal':'Append the existing case ID and dated result reference if reviewed; preserve criterion status and explicitly retain observation2026-10-26T22:12:41Z, HTTP503/no-store. This audit makes no fresh endpoint claim.'},
+ 'source_probe_diagnostics':[{'type':'MISSING_READ_ONLY_CANDIDATE_FILE','files':['backend/internal/app/observability_routes/observability_routes.go','backend/internal/observability/report_client_screen/service.go','backend/internal/observability/report_client_screen/http_handler.go','backend/internal/media/issue_livekit_credential/postgres/statements.go'],'resolution':'Used the observed leaf files and exact imports; no runtime tests or mutations preceded these source-only probes.'}]}
+(O/'route-edges.json').write_text(json.dumps(r,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+print(json.dumps({'native_edges':len(search)+len(reaction)+len(correlation),'runtime_actions':0}))

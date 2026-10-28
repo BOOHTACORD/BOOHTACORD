@@ -1,0 +1,33 @@
+{
+  "at_utc": "2026-10-28T23:28:16.149492+00:00",
+  "status": "IN_PROGRESS_SCOPED_EVIDENCE",
+  "original_QA_issues": 37,
+  "original_criteria": 480,
+  "whole_gate_qualifiers": 13,
+  "runtime_sets": 97,
+  "criterion_status_counts": {
+    "BLOCKED": 160,
+    "PARTIAL": 54,
+    "NOT_RUN": 238,
+    "FAIL": 20,
+    "PASS": 8
+  },
+  "current_CI": "macos-ci-repair/hosted-current/summary.json",
+  "CI_result": "27/27SUCCESS; merged754b tree exactly tested1677",
+  "signed_candidate": {
+    "run": 40784080135,
+    "source": "754b5997ad100cb00300373f29ab88bda4ed267d",
+    "attempt1": "FAIL_TIMEOUT_MACOS; strict faninFAIL/signingSKIPPED/artifact0",
+    "attempt2": "IN_PROGRESS_FULL_RERUN; no borrowed attempt1 parts",
+    "physical_install_by_this_packet": false
+  },
+  "unforced_plans": "search-plans-2026-10-29/summary.json",
+  "fresh_catalog_failure": "public-catalog-current/result.json",
+  "catalog_existing_issue": 249,
+  "metadata_corrections": "3dated Windows admin blocker strings, DB592 already-filed note, historical catalog case link",
+  "source_audit": "coverage-audit-754b/summary.json",
+  "current_phone_packet": "IN_PROGRESS; not yet published or accepted here",
+  "whole_gate_closures": 0,
+  "consolidation43_touched": false,
+  "privacy": "No raw screenshots/bodies/plans/credentials/binaries in this checkpoint"
+}

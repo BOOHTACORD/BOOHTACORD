@@ -1,0 +1,59 @@
+"""Three read-only production HTTPS observations with closed metadata projection."""
+import hashlib, json, sys, urllib.error, urllib.request
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
+from pathlib import Path
+P = Path(__file__).resolve().parent
+ORIGIN = 'https://v.bootybay.ru'
+PATHS = {
+    'health': '/api/v1/health',
+    'windows_catalog': '/api/v1/client-updates?platform=windows&distribution=direct&channel=stable&arch=x64',
+    'android_catalog': '/api/v1/client-updates?platform=android&distribution=direct&channel=stable&arch=arm64',
+}
+
+def observe(item):
+    key, path = item
+    row = {'at_utc': datetime.now(timezone.utc).isoformat(), 'method': 'GET', 'path': path}
+    try:
+        request = urllib.request.Request(ORIGIN + path, headers={
+            'User-Agent': 'BOOHTACORD-owned-QA-public-readback/1', 'Origin': ORIGIN})
+        try:
+            response = urllib.request.urlopen(request, timeout=20)
+        except urllib.error.HTTPError as error:
+            response = error
+        with response:
+            raw = response.read(131073)
+            row.update(http=response.code, bounded=len(raw) <= 131072,
+                       content_type=response.headers.get('Content-Type'),
+                       cache_control=response.headers.get('Cache-Control'),
+                       retry_after=response.headers.get('Retry-After'),
+                       body_prefix_sha256=hashlib.sha256(raw).hexdigest())
+        try:
+            value = json.loads(raw)
+            row['json_keys'] = sorted(value) if isinstance(value, dict) else []
+            if isinstance(value, dict):
+                if isinstance(value.get('error'), dict):
+                    row['error_code'] = value['error'].get('code')
+                allowed = ['version', 'catalog_revision', 'release_id', 'native_build',
+                           'source_revision', 'source_sha', 'platform', 'arch', 'channel', 'distribution']
+                row['public_release_identity'] = {
+                    k: value[k] for k in allowed if isinstance(value.get(k), (str, int))}
+        except ValueError:
+            row['non_json'] = True
+    except (OSError, ValueError) as error:
+        row.update(status='BLOCKED', error_type=type(error).__name__)
+    row['result'] = ('PASS_SCOPED' if row.get('http') == 200 and row.get('bounded')
+                     and (key == 'health' or row.get('cache_control') == 'no-store')
+                     else 'BLOCKED' if row.get('status') == 'BLOCKED' else 'FAIL')
+    return key, row
+
+with ThreadPoolExecutor(max_workers=3) as executor:
+    rows = dict(executor.map(observe, PATHS.items()))
+result = {'at_utc': datetime.now(timezone.utc).isoformat(), 'origin': ORIGIN,
+          'authenticated': False, 'requests': 3, 'TLS_verification': 'urllib default; no override',
+          'rows': rows, 'mutation_count': 0, 'raw_bodies_retained': False,
+          'status': 'PASS_SCOPED' if all(r['result'] == 'PASS_SCOPED' for r in rows.values()) else 'FAIL_OR_BLOCKED',
+          'limits': 'Endpoint availability only; no deploy/install/latest-source proof or original revision29/release-r52 acceptance.'}
+(P / 'result.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
+print(json.dumps(result))
+sys.exit(0 if result['status'] == 'PASS_SCOPED' else 1)

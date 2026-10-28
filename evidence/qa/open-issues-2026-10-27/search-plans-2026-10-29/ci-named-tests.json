@@ -1,0 +1,82 @@
+{
+  "head": "1a608bfac6f5a177d06f77ba040acc18760e2246",
+  "checkout": "40af8f1a9c353ea9b5c841c6afd66dbaeaeaa692",
+  "run_id": 40781872794,
+  "attempt": 1,
+  "artifact_id": 12856523580,
+  "archive_sha256": "9e3333a8417f3896cbf1cab829fe6a1985f0f3c9a82aa668ff18432f02f98f68",
+  "events_sha256": "6ba0ace9cd25aa14543d68f42e48183ce3763dd7c4ae31564f9672e21621947e",
+  "tests": [
+    {
+      "name": "TestDateFilteredUnifiedSearchPreservesPartialGINPlans",
+      "events": [
+        {
+          "Time": "2026-10-28T22:42:56.620963831Z",
+          "Action": "run",
+          "Package": "voice-platform/backend/internal/chat/search_messages/postgres",
+          "Test": "TestDateFilteredUnifiedSearchPreservesPartialGINPlans"
+        },
+        {
+          "Time": "2026-10-28T22:42:56.620969279Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/search_messages/postgres",
+          "Test": "TestDateFilteredUnifiedSearchPreservesPartialGINPlans"
+        },
+        {
+          "Time": "2026-10-28T22:42:57.210840703Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/search_messages/postgres",
+          "Test": "TestDateFilteredUnifiedSearchPreservesPartialGINPlans"
+        },
+        {
+          "Time": "2026-10-28T22:42:57.628484923Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/search_messages/postgres",
+          "Test": "TestDateFilteredUnifiedSearchPreservesPartialGINPlans"
+        },
+        {
+          "Time": "2026-10-28T22:42:57.628592851Z",
+          "Action": "pass",
+          "Package": "voice-platform/backend/internal/chat/search_messages/postgres",
+          "Test": "TestDateFilteredUnifiedSearchPreservesPartialGINPlans",
+          "Elapsed": 1.01
+        }
+      ]
+    },
+    {
+      "name": "TestSearchWithPostgresCanUseBothPartialGINIndexes",
+      "events": [
+        {
+          "Time": "2026-10-28T22:42:58.778226666Z",
+          "Action": "run",
+          "Package": "voice-platform/backend/internal/chat/search_messages/postgres",
+          "Test": "TestSearchWithPostgresCanUseBothPartialGINIndexes"
+        },
+        {
+          "Time": "2026-10-28T22:42:58.778232134Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/search_messages/postgres",
+          "Test": "TestSearchWithPostgresCanUseBothPartialGINIndexes"
+        },
+        {
+          "Time": "2026-10-28T22:42:59.839897456Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/search_messages/postgres",
+          "Test": "TestSearchWithPostgresCanUseBothPartialGINIndexes"
+        },
+        {
+          "Time": "2026-10-28T22:42:59.8399336Z",
+          "Action": "pass",
+          "Package": "voice-platform/backend/internal/chat/search_messages/postgres",
+          "Test": "TestSearchWithPostgresCanUseBothPartialGINIndexes",
+          "Elapsed": 1.06
+        }
+      ]
+    }
+  ],
+  "passed": 2,
+  "skipped": 0,
+  "failed": 0,
+  "rerun": false,
+  "interpretation": "Both tests force enable_seqscan=off; index capability only"
+}

@@ -1,0 +1,59 @@
+{
+  "status": "SAFE_METADATA_CLOSED_ALLOWLIST",
+  "allowlist": [
+    "summary.json",
+    "audit.json",
+    "review.json",
+    "route-edges.json",
+    "controller-review.json",
+    "diagnostics.json",
+    "README.md",
+    "preexecution-binding.json",
+    "review-preexecution-binding.json",
+    "route-edges-preexecution-binding.json",
+    "route-edges-retry-preexecution-binding.json",
+    "audit.py",
+    "review.py",
+    "route_edges.py",
+    "route_edges_retry.py",
+    "seal.py",
+    "public-review.json",
+    "integrity.json"
+  ],
+  "exclude": [
+    "private/**",
+    "*-attempt*.log",
+    "any raw issue bodies/actor objects/logs/new unlisted files"
+  ],
+  "redactions_required": [],
+  "mechanical_pattern_scan_matches": [],
+  "scan_limits": "No secret/private credential file was opened. This is metadata/structural review, not a blanket scan of every possible secret value.",
+  "scope_limits": [
+    "Read-only audit, not runtime/device/native gate proof",
+    "95 sets frozen; future phone sets outside snapshot",
+    "Goal IN_PROGRESS; no whole-gate closure"
+  ],
+  "native_helpers": {
+    "audit.py": {
+      "lines": 93,
+      "sha256": "75ded05a0a991ab4f9d0cd26976532f8d2aab54e9a8aa82e5ddf9c277936fa10"
+    },
+    "review.py": {
+      "lines": 74,
+      "sha256": "e6b2cd2ad0e943fe5db9927839f158d20a81c4bad2661c878c2a5bd9e2ed46d8"
+    },
+    "route_edges.py": {
+      "lines": 58,
+      "sha256": "feb4f0584ed1d3c1c8f91ab1fcfb35384a935d82bf7bdfd98b6d3c2ec852c175"
+    },
+    "route_edges_retry.py": {
+      "lines": 58,
+      "sha256": "359bea171be419c61f7d10291572b99add00b9caa9c2b586899f98fd9b8a2df9"
+    },
+    "seal.py": {
+      "lines": 78,
+      "sha256": "e76a67e1af5e90b5e5be2149b0aef5bbdb09c45eae33cd6599e086d2edee60a0"
+    }
+  },
+  "source_controller_failures_preserved": "controller-review.json"
+}
