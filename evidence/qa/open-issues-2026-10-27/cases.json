@@ -1211,8 +1211,10 @@
         241
       ],
       "result": "isolated-context-realtime/summary.json",
-      "limits": "No production, Android/native, physical display, media/voice lease or producer UI acceptance; No DM ACL bypass or unauthorized reader established; prior authorized TEXT is stale after explicit deletion; Reopen recovery explicitly reloads; no new return-anchor/focus claim from this packet; Protected images/links and background tabs not exercised here; deletion observation is text-only; Socket object close callback count0 is an incomplete observer;17 opens/reloads and61 frames are diagnostics, not a leak/drain/capacity verdict; Diagnostic attempts preserved separately; earlier mid-run final-preconditions is not a preexecution receipt. Final run-ready is valid and runner/source hashes are unchanged.",
-      "defects": []
+      "limits": "No production, Android/native, physical display, media/voice lease or producer UI acceptance; No DM ACL bypass or unauthorized reader established; prior authorized TEXT is stale after explicit deletion; Reopen recovery explicitly reloads; no new return-anchor/focus claim from this packet; Protected images/links and background tabs not exercised here; deletion observation is text-only; Socket object close callback count0 is an incomplete observer;17 opens/reloads and61 frames are diagnostics, not a leak/drain/capacity verdict; Diagnostic attempts preserved separately; earlier mid-run final-preconditions is not a preexecution receipt. Final run-ready is valid and runner/source hashes are unchanged.; Runtime entrypoint exercised here is TEXT reply only; search uses the shared component by source inspection but separate search-entrypoint and DM runtime were not executed in this packet.",
+      "defects": [
+        587
+      ]
     }
   ]
 }

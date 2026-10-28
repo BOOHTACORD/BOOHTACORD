@@ -1,0 +1,63 @@
+{
+  "at_utc": "2026-10-28T04:31:22.297853+00:00",
+  "status": "PASS_CREATED587_AND_THREE_APPEND_ONLY_PARENT_READBACKS",
+  "canonicalization": "UTF8 LF, trailing LF removed; SHA256",
+  "new_issue": {
+    "number": 587,
+    "title": "[BUG][Web][P1] Открытый reply/search context сохраняет удалённый текст после realtime hint",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/issues/587",
+    "state": "open",
+    "marker": "<!-- qa-open-context-live-freshness-2026-10-28 -->",
+    "body_canonical_SHA256": "c50b513419006438d156af3d5dc8135251bf8bf20ed35b41dad1be0069fd1946",
+    "evidence_commit": "1c6a14b53623f12e744804ff2562a1039b949637",
+    "readback_exact": true,
+    "created_body_canonical_SHA256": "614966d20047350e86c6e260e394bec0b9dfea3014bf19d43d848ff2dfaca116",
+    "scope_clarification_readback_exact": true
+  },
+  "parent_updates": [
+    {
+      "number": 141,
+      "title": "[P2][F09] Web chat: индексировать ответы и ограничить рендеринг и кеш длинной истории",
+      "state_before": "open",
+      "state_after": "open",
+      "marker": "<!-- qa-context-realtime-2026-10-28 -->",
+      "new_defect": 587,
+      "evidence_commit": "1c6a14b53623f12e744804ff2562a1039b949637",
+      "readback_exact": true,
+      "original_prefix_preserved": true,
+      "before_body_canonical_SHA256": "a0e8a56afe7ba40551f3d4c73901abe8ab799f9d968f837f27e7d32826cd2512",
+      "after_body_canonical_SHA256": "c8d11671aab0290c66795cff09e69b614b033f18c8882a071c8c0a3dcdb02d59",
+      "addition_canonical_SHA256": "db1f7018d3b14b48d5f821503b1bb35aaf1b6f813cf401609908201b02549a77"
+    },
+    {
+      "number": 240,
+      "title": "QA — runtime-приёмка реализаций #133–#141, #145–#153, #155, #157",
+      "state_before": "open",
+      "state_after": "open",
+      "marker": "<!-- qa-context-realtime-2026-10-28 -->",
+      "new_defect": 587,
+      "evidence_commit": "1c6a14b53623f12e744804ff2562a1039b949637",
+      "readback_exact": true,
+      "original_prefix_preserved": true,
+      "before_body_canonical_SHA256": "db596b676a5f87aae0b9f4edb8fd520bfd392b41a48a23f45ca26b34c6c8ad8d",
+      "after_body_canonical_SHA256": "46177241cb38bd508c9edccb819ead74b20ed237ef9c09ee53955bb933e1aaa6",
+      "addition_canonical_SHA256": "db1f7018d3b14b48d5f821503b1bb35aaf1b6f813cf401609908201b02549a77"
+    },
+    {
+      "number": 241,
+      "title": "[QA] Acceptance for OpenAPI, observability, media QoE, chat history, accessibility, social preview and on-call map",
+      "state_before": "open",
+      "state_after": "open",
+      "marker": "<!-- qa-context-realtime-2026-10-28 -->",
+      "new_defect": 587,
+      "evidence_commit": "1c6a14b53623f12e744804ff2562a1039b949637",
+      "readback_exact": true,
+      "original_prefix_preserved": true,
+      "before_body_canonical_SHA256": "c93c06995b06109b5cd38fa55830cd44d3e8df30ff7e650bd755861b3aa83ac1",
+      "after_body_canonical_SHA256": "7452d037fd216faa2792c9e88ddf40055fd93bfeb2b2d94c5501588ab8b4c833",
+      "addition_canonical_SHA256": "db1f7018d3b14b48d5f821503b1bb35aaf1b6f813cf401609908201b02549a77"
+    }
+  ],
+  "QA_issues_closed": 0,
+  "raw_bodies_private": true
+}

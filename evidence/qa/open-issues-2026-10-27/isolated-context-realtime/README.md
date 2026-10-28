@@ -1,5 +1,7 @@
 # Already-open context ignores live edit/delete — 2026-10-28
 
+Tracked fix: [#587](https://github.com/Egkurilov/BOOHTACORD/issues/587), created/open with exact readback; parent141/240/241 remain open. Immutable first evidence commit 1c6a14b53623f12e744804ff2562a1039b949637.
+
 Acceptance FAIL in the actual built Web AppShell, real Go API/PostgreSQL17.6 and authorized synthetic TEXT peer. Three distinct outside-window targets retain original text after edit; three retain deleted text after explicit deletion. Each corresponding server API read is correct and the real receiver WebSocket contains the owned message ID. Original text remains throughout the bounded >=5s observation and in private row screenshots. This violates the explicit deleted-original/content-hiding requirements REQ-CHAT-01/REQ-STORAGE-03; this is not an unauthorized-read/DM ACL bypass claim.
 
 Five controls PASS: ordinary main history updates through real hint; three deleted-before-open anchors show tombstones; foreign-scope legacy reference shows only generic unavailable. All six explicitly reloaded fresh contexts recover to the new text/tombstone. Thus the confirmed trigger is a context that was already open, distinct from the existing uncommitted-edit eviction141 bug.12 closest checks pass/0 skips, including2 static source-routing checks; they do not cover this live path.
@@ -11,3 +13,5 @@ For fresh authorized replay reconstruct prefixed runner-source helpers under `.o
 Before removal, all identity/scope/date/reply fields and191 unchanged rows matched seed;10 intended row mutations verified. All201 own rows/2channels/category removed,5 own sessions revoked/live unauthenticated readback. Final counts [516,2086,50,9,3]; nine original services/config/start times unchanged, both private Docker log streams credential/session scanned. Only representative edit20/delete21 captures were visually inspected; all6 remain private. Observed socket close callbacks0 are incomplete diagnostics, not a leak or capacity verdict.
 
 I240.C9/I241.C37 remain FAIL. Protected-image load/anchor, DM variants, background tabs, native/physical/production/media and hosted gates remain separate. No consolidation decision or QA closure.
+
+Runtime entrypoint scope: all6 live failures use TEXT reply. SearchMessageContext is shared by the search route according to source inspection; separate search-entrypoint and DM runtime are not exercised here. Bug587 explicitly records that distinction.
