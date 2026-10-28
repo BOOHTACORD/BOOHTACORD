@@ -5,18 +5,22 @@ import ScreenDiagnosticsPanel from '../../src/voice/ScreenDiagnosticsPanel.vue'
 import ScreenReceiverDiagnosticsPanel from '../../src/voice/ScreenReceiverDiagnosticsPanel.vue'
 import DiagnosisPanel from '../../src/voice/viewer_diagnosis/Panel.vue'
 import ScreenViewer from '../../src/voice/ScreenViewer.vue'
+import VoiceParticipantVolumes from '../../src/voice/VoiceParticipantVolumes.vue'
 import type { ScreenViewerCard } from '../../src/voice/screen_viewer_controller'
 import type { VoiceVolumeParticipant } from '../../src/voice/voice_volume_controls'
 import type { ScreenDiagnostics } from '../../src/voice/screen_diagnostics'
 import { useScreenReceiverDiagnostics } from '../../src/voice/use_screen_receiver_diagnostics'
 import { useAuthorDirectory } from '../../src/identity/author_directory'
+import { replaceScreenPreviewParticipantLeases } from '../../src/voice/screen_preview/participant_leases'
+import { screenPreviewCardVisibility } from '../../src/voice/screen_preview/visibility'
 import '../../src/style.css'
 const params = new URLSearchParams(location.search)
 document.documentElement.style.fontSize = params.get('scale') === '200' ? '200%' : '100%'
 if (params.has('unsupported')) Object.defineProperty(navigator, 'mediaDevices', { value: {}, configurable: true })
 const events: unknown[] = []
 const state = reactive({ open: true, expanded: false, selectedId: params.has('unselected') ? null : (params.has('watching-remote') || params.has('remote-audio') ? 'remote-screen' : 'local-screen') as string | null, profile: params.get('profile') ?? 'P1080_60', source: 'ACTIVE', fps: 1, sampledAt: null as number | null, hasAudio: false, audioMuted: false })
-Object.assign(window, { __screenUI: { events, patch: (value: object) => Object.assign(state, value) } })
+replaceScreenPreviewParticipantLeases([['participant-card-sharing', 'fixture-preview-lease']])
+Object.assign(window, { __screenUI: { events, patch: (value: object) => Object.assign(state, value), isPreviewVisible: () => screenPreviewCardVisibility.isVisible('fixture-preview-lease') } })
 const diagnostics = (): ScreenDiagnostics => ({ source: state.source as ScreenDiagnostics['source'], audioTrack: 'ABSENT', connectionQuality: 'GOOD', measured: { width: 1920, height: 654, framesPerSecond: state.fps }, roundTripTimeMs: 42 })
 const viewerParticipants: VoiceVolumeParticipant[] = [
   { accountId: 'member-speaking', id: 'member-speaking', microphoneMuted: false, name: 'Участник говорит', speaking: true, volume: 100 },
@@ -33,6 +37,29 @@ const authors = useAuthorDirectory(pinia)
 authors.acceptOwnProfile({ account_id: 'local-user', login: 'local', display_name: 'Локальный участник', role: 'MEMBER', avatar_url: '/avatar', profile_revision: 2 })
 authors.acceptOwnProfile({ account_id: 'member-speaking', login: 'speaker', display_name: 'Участник говорит', role: 'MEMBER', avatar_url: '/avatar', profile_revision: 3 })
 authors.acceptOwnProfile({ account_id: 'member-sharing', login: 'sharing', display_name: 'Участник показывает экран', role: 'MEMBER' })
+authors.acceptOwnProfile({ account_id: 'participant-card-sharing', login: 'sharing-card', display_name: 'Pistol121_android', role: 'MEMBER', avatar_url: '/avatar', profile_revision: 4 })
+const participantCardScreens: ScreenViewerCard[] = [
+  { accountId: 'participant-card-sharing', hasAudio: true, id: 'remote-screen', isLocal: false, participantId: 'participant-card-sharing', participantName: 'Pistol121_android', thumbnailUrl: '/synthetic-screen.svg' },
+]
+const listenerParticipantCards = () => h('main', { class: 'voice-room', style: 'box-sizing:border-box;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px' }, [
+  h('header', { style: 'width:min(100%,792px);margin-bottom:24px' }, [
+    h('h1', { style: 'margin:0;font-size:1rem' }, 'Режим слушателя'),
+    h('p', { style: 'margin:4px 0 0;color:var(--gc-text-muted);font-size:var(--gc-text-caption)' }, '2 участника · 1 демонстрация экрана'),
+  ]),
+  h(VoiceParticipantVolumes, {
+    error: null,
+    participants: [{ accountId: 'participant-card-sharing', id: 'participant-card-sharing', microphoneMuted: true, name: 'Pistol121_android', speaking: false, volume: 100 }],
+    screenStreams: participantCardScreens,
+    selectedScreenStreamId: null,
+    selfAccountId: 'local-user',
+    selfName: 'Pistol121',
+    selfDeafened: false,
+    selfMicrophoneMuted: true,
+    selfMicrophoneUnavailable: false,
+    selfSpeaking: false,
+    onWatchScreen: (id: string) => events.push({ watchScreen: id }),
+  }),
+])
 const IntermittentDiagnosis = defineComponent({
   setup() {
     let readCount = 0
@@ -79,7 +106,8 @@ const viewerStrip = () => h('section', { class: ['voice-room', state.expanded &&
     onSelect: (id: string) => { state.selectedId = id },
   }),
 ])
-createApp({ render: () => params.has('viewer-strip') || params.has('viewer-controls') ?
+createApp({ render: () => params.has('participant-cards') ? listenerParticipantCards() :
+  params.has('viewer-strip') || params.has('viewer-controls') ?
   h('main', { style: 'width:100%;padding:0' }, [viewerStrip()]) :
   h('main', { style: 'padding:16px;max-width:720px;margin:auto' }, [
     h('h1', { style: 'font-size:1rem' }, 'Проверка демонстрации'),

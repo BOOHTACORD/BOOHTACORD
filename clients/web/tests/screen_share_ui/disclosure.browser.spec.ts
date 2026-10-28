@@ -128,6 +128,71 @@ test('screen viewer keeps participant cards compact without horizontal scrolling
   }
 })
 
+test('listener room embeds the stream preview in an equal-sized participant card', async ({ page }, info) => {
+  await page.route('**/synthetic-screen.svg', route => route.fulfill({
+    status: 200,
+    contentType: 'image/svg+xml',
+    body: '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360"><rect width="640" height="360" fill="#16283e"/><path d="M0 280 160 170l120 70 150-130 210 100v150H0Z" fill="#315c83"/><circle cx="462" cy="136" r="18" fill="#84c8ff"/></svg>',
+  }))
+  await page.route(/\/api\/v1\/members\/[^/]+\/avatar(?:\?.*)?$/, route => route.fulfill({
+    status: 200,
+    contentType: 'image/svg+xml',
+    body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" fill="#278b82"/><circle cx="20" cy="14" r="7" fill="#f4f5fa"/><path d="M7 39c1-9 6-14 13-14s12 5 13 14" fill="#f4f5fa"/></svg>',
+  }))
+
+  await open(page, 'participant-cards', 876, 100, 656)
+  const cards = page.getByTestId('participant-card')
+  const streamCard = page.locator('.participant--streaming')
+  const voiceOnlyCard = page.locator('.participant--voice-only')
+  const preview = page.getByTestId('participant-screen-preview')
+  await expect(cards).toHaveCount(2)
+  await expect(streamCard).toHaveCount(1)
+  await expect(voiceOnlyCard).toHaveCount(1)
+  await expect(preview).toBeVisible()
+  await expect(preview.locator('img')).toHaveAttribute('src', '/synthetic-screen.svg')
+  await expect.poll(() => preview.locator('img').evaluate(image => (image as HTMLImageElement).naturalWidth)).toBe(640)
+  await expect(page.locator('.screen-rail-section')).toHaveCount(0)
+  await expect(page.getByRole('button', { name: 'Смотреть экран', exact: true })).toHaveCount(0)
+  await expect(voiceOnlyCard.locator('.participant-voice-placeholder')).toBeVisible()
+  await expect(streamCard.locator('.participant-card-info .participant-name')).toHaveCSS('text-align', 'left')
+  await expect(voiceOnlyCard.locator('.participant-card-info .participant-name')).toHaveCSS('text-align', 'left')
+  await expect.poll(() => page.evaluate(() => (window as any).__screenUI.isPreviewVisible())).toBe(true)
+  const desktopGeometry = await cards.evaluateAll(elements => elements.map(element => {
+    const rect = element.getBoundingClientRect()
+    return { width: rect.width, height: rect.height }
+  }))
+  expect(Math.abs(desktopGeometry[0].width - desktopGeometry[1].width)).toBeLessThanOrEqual(1)
+  expect(Math.abs(desktopGeometry[0].height - desktopGeometry[1].height)).toBeLessThanOrEqual(1)
+  const muteScale = await streamCard.locator('.voice-person-state').evaluate(element => ({
+    font: getComputedStyle(element).fontSize,
+    icon: getComputedStyle(element.querySelector('.voice-person-state-icon')!).width,
+  }))
+  expect(muteScale.icon).toBe(muteScale.font)
+  for (const card of [streamCard, voiceOnlyCard]) {
+    const avatar = card.locator('.participant-card-info .avatar img')
+    await expect(avatar).toHaveCount(1)
+    await expect.poll(() => avatar.evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0)
+    await expect(avatar).toHaveCSS('width', '40px')
+    await expect(avatar).toHaveCSS('height', '40px')
+  }
+  await page.screenshot({ path: info.outputPath('listener-participant-cards-876x656.png') })
+  await preview.click()
+  expect(await page.evaluate(() => (window as any).__screenUI.events)).toEqual([{ watchScreen: 'remote-screen' }])
+  await clean(page)
+
+  await open(page, 'participant-cards', 390, 200, 740)
+  const mobileCards = page.getByTestId('participant-card')
+  await expect(page.getByTestId('participant-screen-preview')).toBeVisible()
+  const mobileGeometry = await mobileCards.evaluateAll(elements => elements.map(element => {
+    const rect = element.getBoundingClientRect()
+    return { width: rect.width, height: rect.height }
+  }))
+  expect(Math.abs(mobileGeometry[0].height - mobileGeometry[1].height)).toBeLessThanOrEqual(1)
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  await clean(page)
+  await page.screenshot({ path: info.outputPath('listener-participant-cards-390x200.png') })
+})
+
 test('participant overlay wraps a four-member roster into a compact grid', async ({ page }, info) => {
   await page.route(/\/api\/v1\/members\/[^/]+\/avatar(?:\?.*)?$/, route => route.fulfill({
     status: 200,

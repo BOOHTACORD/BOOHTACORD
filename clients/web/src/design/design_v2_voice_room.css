@@ -21,7 +21,6 @@
 .voice-room .voice-participant-volumes .participant-status:not(.is-muted):not(.is-speaking) { visibility: hidden; }
 .voice-room .voice-participant-volumes .participant-volume { opacity: 0; }
 .voice-room .voice-participant-volumes .participant:hover .participant-volume, .voice-room .voice-participant-volumes .participant:focus-within .participant-volume, .voice-room .voice-participant-volumes .participant-volume[open] { opacity: 1; }
-.voice-room .voice-participant-volumes .participant-watch { position: static; min-height: 40px; margin-top: 8px; }
 .voice-room-controls { display: flex; max-width: 100%; height: auto; flex: none; align-items: center; gap: 8px; margin: 8px 0 0; border: 1px solid var(--gc-border-subtle); border-radius: 12px; padding: 8px; background: var(--gc-sidebar); }
 .voice-room-controls button { display: grid; width: 48px; height: 44px; flex: 0 0 48px; place-items: center; border: 1px solid transparent; border-radius: 8px; color: var(--gc-text-secondary); background: var(--gc-surface-raised); }
 .voice-room-controls button:hover:not(:disabled) { color: var(--gc-text-primary); background: var(--gc-surface-hover); }
