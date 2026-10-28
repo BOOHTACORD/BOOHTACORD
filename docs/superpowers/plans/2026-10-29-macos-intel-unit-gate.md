@@ -18,6 +18,7 @@
 - Modify: `tools/ci/flutter_gates/workflow.py` (only exact macos runner constraint)
 - Test: `tools/ci/flutter_gates/test_workflow.py`
 - Document: `docs/ci/flutter-gates.md` (host and unchanged scope)
+- Document: `docs/ci/test-protection.md` (exact CI unit host in the suite protection map)
 
 - [ ] Run the existing baseline before edits:
 
