@@ -2,7 +2,7 @@
 
 The existing `flutter` selector invokes `ci-flutter.yaml`. Its independent hosted
 Ubuntu jobs are `dart`, `android-kotlin` and `android`, alongside an Apple
-`macos` unit job on `macos-26`; the stable
+`macos` unit job on native Intel/macOS 26 (`macos-26-intel`); the stable
 `flutter / flutter` check always
 waits for all four. `ci-required` still validates the reusable workflow's complete
 result, including the aggregate. No child is optional. Android release
@@ -25,8 +25,10 @@ analyzed LiveKit example lock, and the existing full application analysis flags.
 The local `python3 -m tools.ci.native.flutter` uses the same implementation.
 `android-kotlin` resolves the app lock in its own fresh workspace and runs the
 legacy-KGP and AGP built-in Kotlin checks, now including all 40 plugin JUnit cases
-per mode with mandatory per-class XML evidence. The Apple job executes eight
-named capture-option vendor cases without skipping the two macOS-only cases.
+per mode with mandatory per-class XML evidence. The Apple job executes the same
+eight named Darwin capture-option vendor cases and rejects every skipped case,
+including the two macOS-only cases. ARM/Intel SDK builds and physical Mac
+acceptance remain separate obligations.
 In parallel, `android`
 resolves the same lock independently and builds the actual inspected debug APK.
 `--debug --no-pub` reuses that job's preparation. Release builds cannot use
