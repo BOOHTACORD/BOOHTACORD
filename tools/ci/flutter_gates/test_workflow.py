@@ -37,6 +37,19 @@ class WorkflowTests(unittest.TestCase):
     def test_current_workflow_preserves_parallel_native_gates_and_stable_status(self):
         workflow.validate(self.document())
 
+    def test_reviewed_intel_macos_profile_is_accepted(self):
+        document = self.document()
+        document['jobs']['macos']['runs-on'] = 'macos-26-intel'
+        workflow.validate(document)
+
+    def test_macos_profile_rejects_unreviewed_or_non_apple_hosts(self):
+        for host in ('macos-latest', 'macos-26', 'macos-15-intel',
+                     'ubuntu-24.04', ['self-hosted', 'macos']):
+            document = self.document()
+            document['jobs']['macos']['runs-on'] = host
+            with self.subTest(host=host), self.assertRaises(ValueError):
+                workflow.validate(document)
+
     def test_conditional_ignored_or_missing_native_commands_are_rejected(self):
         for profile in ('dart', 'android', 'android-kotlin', 'macos'):
             for field in ('if', 'continue-on-error', 'remove-command', 'job-if', 'serial-dependency'):

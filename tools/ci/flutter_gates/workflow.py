@@ -32,7 +32,7 @@ def validate(document):
     require(set(jobs) == {'dart', 'android', 'android-kotlin', 'macos', 'flutter'})
     for profile, timeout in (('dart', '20'), ('android', '30'), ('android-kotlin', '30'), ('macos', '15')):
         job = jobs[profile]
-        require(job.get('runs-on') == ('macos-26' if profile == 'macos' else GITHUB_LINUX) and job.get('timeout-minutes') == timeout
+        require(job.get('runs-on') == ('macos-26-intel' if profile == 'macos' else GITHUB_LINUX) and job.get('timeout-minutes') == timeout
                 and not any(job.get(k) for k in ('if', 'needs', 'continue-on-error', 'environment', 'secrets')))
         sdk = [s for s in job.get('steps', []) if s.get('uses') == './.github/actions/flutter-setup']
         require(len(sdk) == 1 and sdk[0].get('with') == {'channel': 'stable', 'flutter-version': '3.47.7', 'cache': 'true'}
