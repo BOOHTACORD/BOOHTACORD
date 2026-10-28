@@ -1,4 +1,4 @@
-import { screenPreviewPollIntervalMs, screenPreviewRetryDelay } from './reader_retry'
+import { screenPreviewInitialRetryIntervalMs, screenPreviewInitialRetryLimit, screenPreviewPollIntervalMs, screenPreviewRetryDelay } from './reader_retry'
 import type { ScreenPreviewHint } from './client'
 import type { ScreenPreviewVisibilitySource } from './visibility'
 
@@ -10,6 +10,7 @@ export interface ScreenPreviewReaderState {
   poll: boolean
   visible: boolean
   failures: number
+  initialRetries: number
   timer?: ReturnType<typeof setTimeout>
 }
 
@@ -43,11 +44,15 @@ export function scheduleScreenPreviewPoll(
   pump: (leaseId: string, state: ScreenPreviewReaderState) => void,
   random: () => number,
 ): void {
-  const delay = state.failures ? screenPreviewRetryDelay(state.failures, random) : screenPreviewPollIntervalMs
+  const initialRetry = state.revision === 0 && state.initialRetries < screenPreviewInitialRetryLimit
+  const delay = state.failures
+    ? screenPreviewRetryDelay(state.failures, random)
+    : initialRetry ? screenPreviewInitialRetryIntervalMs : screenPreviewPollIntervalMs
   state.timer = setTimeout(() => {
     if (states.get(leaseId) !== state) return
     state.timer = undefined
     if (!visibility.isVisible(leaseId)) { state.visible = false; state.poll = true; return }
+    if (initialRetry) state.initialRetries += 1
     state.poll = true
     pump(leaseId, state)
   }, delay)
