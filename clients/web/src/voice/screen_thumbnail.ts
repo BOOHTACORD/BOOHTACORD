@@ -2,7 +2,8 @@ const maxBytes = 14 * 1024
 const maxThumbnailWidth = 480
 const maxThumbnailHeight = 320
 const thumbnailScaleFactors = [1, 2 / 3, 1 / 2, 1 / 3, 1 / 4, 1 / 5] as const
-const jpegQuality = 0.6
+const thumbnailQualities = [0.82, 0.74, 0.66, 0.6] as const
+const compactThumbnailQuality = 0.45
 const initialCaptureRetryIntervalMs = 1_000
 const initialCaptureRetryLimit = 10
 export const screenThumbnailCaptureIntervalMs = 30_000
@@ -76,8 +77,11 @@ async function captureVideoFrame(video: HTMLVideoElement): Promise<Uint8Array | 
     canvas.width = width
     canvas.height = Math.max(1, Math.round(video.videoHeight * width / video.videoWidth))
     context.drawImage(video, 0, 0, canvas.width, canvas.height)
-    const quality = width <= 160 ? 0.45 : jpegQuality
-    blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/jpeg', quality))
+    const qualities = width <= 160 ? [compactThumbnailQuality] : thumbnailQualities
+    for (const quality of qualities) {
+      blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/jpeg', quality))
+      if (blob && blob.size <= maxBytes) break
+    }
     if (blob && blob.size <= maxBytes) break
   }
   if (!blob || blob.size > maxBytes) return null

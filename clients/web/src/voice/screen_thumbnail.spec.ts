@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import { captureLocalScreenThumbnails, validScreenThumbnail } from './screen_thumbnail'
+import { captureLocalScreenThumbnails, screenThumbnailCaptureIntervalMs, validScreenThumbnail } from './screen_thumbnail'
 
 afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals() })
 
@@ -40,7 +40,8 @@ describe('screen thumbnail frames', () => {
     await vi.advanceTimersByTimeAsync(0)
     expect(onThumbnail).toHaveBeenCalledTimes(1)
     expect(context.drawImage).toHaveBeenCalledWith(video, 0, 0, 480, 270)
-    expect(toBlob).toHaveBeenCalledWith(expect.any(Function), 'image/jpeg', 0.6)
+    expect(toBlob).toHaveBeenCalledWith(expect.any(Function), 'image/jpeg', 0.82)
+    expect(screenThumbnailCaptureIntervalMs).toBe(30_000)
     await vi.advanceTimersByTimeAsync(29_999)
     expect(onThumbnail).toHaveBeenCalledTimes(1)
     await vi.advanceTimersByTimeAsync(1)
@@ -49,6 +50,43 @@ describe('screen thumbnail frames', () => {
     stop()
     expect(track.detach).toHaveBeenCalledWith(video)
     expect(video.pause).toHaveBeenCalledOnce()
+  })
+
+  it('raises JPEG quality before reducing the full-size preview', async () => {
+    vi.useFakeTimers()
+    const video = {
+      readyState: 2,
+      videoWidth: 1280,
+      videoHeight: 720,
+      play: vi.fn().mockResolvedValue(undefined),
+      pause: vi.fn(),
+    } as unknown as HTMLVideoElement
+    const context = { drawImage: vi.fn() }
+    const canvas = { width: 0, height: 0, getContext: vi.fn(() => context) } as unknown as HTMLCanvasElement
+    const candidates: Array<{ width: number; quality: number }> = []
+    const toBlob = vi.fn((callback: BlobCallback, _type?: string, quality?: number) => {
+      candidates.push({ width: canvas.width, quality: quality ?? 0 })
+      const length = (quality ?? 0) > 0.7 ? 16 * 1024 : 12 * 1024
+      const bytes = new Uint8Array(length)
+      bytes.set([0xff, 0xd8], 0)
+      bytes.set([0xff, 0xd9], bytes.length - 2)
+      callback(new Blob([bytes], { type: 'image/jpeg' }))
+    })
+    canvas.toBlob = toBlob
+    vi.stubGlobal('document', { createElement: vi.fn((tag: string) => tag === 'video' ? video : canvas) } as unknown as Document)
+    const onThumbnail = vi.fn()
+    const stop = captureLocalScreenThumbnails({ attach: vi.fn(), detach: vi.fn() }, onThumbnail)
+
+    await vi.advanceTimersByTimeAsync(0)
+
+    expect(candidates).toEqual([
+      { width: 480, quality: 0.82 },
+      { width: 480, quality: 0.74 },
+      { width: 480, quality: 0.66 },
+    ])
+    expect(context.drawImage).toHaveBeenCalledOnce()
+    expect(onThumbnail.mock.calls[0][0]).toHaveLength(12 * 1024)
+    stop()
   })
 
   it('retries until the video has its first drawable frame, then waits 30 seconds between updates', async () => {
@@ -132,7 +170,7 @@ describe('screen thumbnail frames', () => {
     const stop = captureLocalScreenThumbnails({ attach: vi.fn(), detach: vi.fn() }, onThumbnail)
 
     await vi.advanceTimersByTimeAsync(0)
-    expect(toBlob).toHaveBeenCalledTimes(2)
+    expect(toBlob).toHaveBeenCalledTimes(5)
     expect(context.drawImage).toHaveBeenNthCalledWith(2, video, 0, 0, 320, 180)
     expect(onThumbnail.mock.calls[0][0]).toHaveLength(8 * 1024)
     stop()
@@ -163,9 +201,9 @@ describe('screen thumbnail frames', () => {
     const stop = captureLocalScreenThumbnails({ attach: vi.fn(), detach: vi.fn() }, onThumbnail)
 
     await vi.advanceTimersByTimeAsync(0)
-    expect(toBlob).toHaveBeenCalledTimes(4)
+    expect(toBlob).toHaveBeenCalledTimes(13)
     expect(context.drawImage).toHaveBeenNthCalledWith(4, video, 0, 0, 160, 90)
-    expect(qualities[3]).toBe(0.45)
+    expect(qualities[12]).toBe(0.45)
     expect(onThumbnail.mock.calls[0][0]).toHaveLength(8 * 1024)
     stop()
   })
