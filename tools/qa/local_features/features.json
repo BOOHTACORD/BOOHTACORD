@@ -397,6 +397,10 @@
   },
   "screen": {
     "paths": [
+      "clients/flutter/packages/flutter_webrtc/android/src/main/java/com/cloudwebrtc/webrtc/OrientationAwareScreenCapturer.java",
+      "clients/flutter/packages/flutter_webrtc/android/src/main/java/com/cloudwebrtc/webrtc/screen/refresh/**",
+      "clients/flutter/packages/flutter_webrtc/android/src/test/java/com/cloudwebrtc/webrtc/screen/refresh/**",
+      "tools/verify/android_unit/inventory.py",
       "backend/internal/app/media_routes/screen_viewer_presence/**",
       "backend/internal/app/media_routes/screen_viewer_presence_routes.go",
       "backend/internal/app/runtime/routes.go",
@@ -556,6 +560,13 @@
       "test/voice_viewer_participants_panel_test.dart"
     ],
     "acceptance": {
+      "android_stationary_first_frame_584": {
+        "focused": [
+          "clients/flutter/packages/flutter_webrtc/android/src/test/java/com/cloudwebrtc/webrtc/screen/refresh/StationaryFrameRefreshTest.java",
+          "clients/flutter/packages/flutter_webrtc/android/src/test/java/com/cloudwebrtc/webrtc/screen/refresh/FrameTimestampTest.java"
+        ],
+        "scope": "Signed physical Samsung Android app-only public Display source: three fast/delayed picker cycles, no scrolling before initial RTP/decode/presentation, source-resolution receiver image review, capture-thread numeric counters, voice-preserving stop/restart and no residual refresh/polling. Java policies and component captures alone do not close #584. Hidden/uninitialized textures must not be refreshed."
+      },
       "window_audio_preference": {
         "focused": [
           "clients/web/src/voice/screen_publisher/window_audio_capture.spec.ts",
