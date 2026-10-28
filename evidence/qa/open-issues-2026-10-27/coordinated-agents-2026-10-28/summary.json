@@ -138,10 +138,14 @@
       "command": "python -B -X utf8 .out/qa-guard-teardown/run.py",
       "platform": "Isolated PostgreSQL17.6; actual0056function/trigger text, no production/UI account deletion",
       "mandatory_when": "Before accepting ordinary-user delete guard semantics and relying on account fixture teardown",
-      "issues": [],
+      "issues": [
+        592
+      ],
       "result": "coordinated-agents-2026-10-28/guard/product-verdict.json",
       "limits": "Six controls validate the counterexample (validator0 is not product PASS): source DELETE returns0/retains normal row; temporary counterfactual deletes1; support remains42501. Public function unchanged. Bug creation pending immutable evidence.",
-      "defects": [],
+      "defects": [
+        592
+      ],
       "command_scope_note": "Historical combined wrapper: six counterexample controls completed before later teardown-helper cast failure. Corrected separately sealed teardown used retry.py; never replay old fixture IDs/cookies. Pure counterexample function is counter.counterexample, not a nonexistent counterexample.py."
     }
   ],
@@ -150,7 +154,8 @@
   "original_source_qualifiers": 13,
   "intake_all37_open_at_audit": true,
   "cleanup": "Original search quarantine/PARTIAL retained, then separate transaction restores all10table fingerprints and four own users; phone6files/6messages+3restartmessages and own sessions cleaned",
-  "new_DB_bug": "PENDING_IMMUTABLE_EVIDENCE",
+  "new_DB_bug": "https://github.com/Egkurilov/BOOHTACORD/issues/592",
   "all_full_gates_closed": false,
-  "consolidation43_touched": false
+  "consolidation43_touched": false,
+  "immutable_first_evidence_commit": "357997cb675384926c316bffd1ef08fa5c54ccb3"
 }

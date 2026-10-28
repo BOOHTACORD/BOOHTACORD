@@ -9,7 +9,7 @@
   "fixture_cleanup": "cleanup-final-after-root-handoff.json",
   "product_fix_applied": false,
   "scope": "Isolated SQL/fixture teardown, not production or user-facing account deletion API",
-  "new_bug": "PENDING_IMMUTABLE_EVIDENCE",
+  "new_bug": "https://github.com/Egkurilov/BOOHTACORD/issues/592",
   "command_scope_note": "Historical combined wrapper: six counterexample controls completed before later teardown-helper cast failure. Corrected separately sealed teardown used retry.py; never replay old fixture IDs/cookies. Pure counterexample function is counter.counterexample, not a nonexistent counterexample.py.",
   "teardown_retry_command": "python -B -X utf8 .out/qa-guard-teardown/retry.py"
 }
