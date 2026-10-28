@@ -1,0 +1,83 @@
+"""Verify actual public APK bytes and exact Git-blob contracts; never install."""
+import hashlib
+import json
+from pathlib import Path
+import re
+import subprocess
+import sys
+import zipfile
+
+OUT = Path(__file__).resolve().parent
+SOURCE = 'b74fce609ad3ddbbfb0dbef81c5efae68195f20f'
+CERT = '394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b'
+SDK = Path(__import__('os').environ['ANDROID_SDK_ROOT'])/'build-tools/36.0.0'
+JAVA = 'C:/Program Files/Eclipse Adoptium/jdk-21.0.11.10-hotspot/bin/java.exe'
+PREFIX = 'BOOHTACORD-android-v1.0.47-'
+CODES = {'arm64-v8a': 2082, 'armeabi-v7a': 1082, 'x86_64': 4082}
+
+
+def output(*command):
+    result = subprocess.run(command, check=True, capture_output=True, timeout=120)
+    return result.stdout.decode('utf-8', errors='replace')
+
+
+def main():
+    archive_path = Path(sys.argv[1]).resolve()
+    assert archive_path.parent == OUT and archive_path.suffix == '.zip'
+    files, checked = {}, {}
+    temporary = OUT / 'verify-temporary.apk'
+    with zipfile.ZipFile(archive_path) as archive:
+        names = archive.namelist()
+        expected = {PREFIX + abi + '.apk' for abi in CODES} | {
+            'artifact-manifest.json', 'SHA256SUMS', 'LICENSE-RNNoise.txt', 'rnnoise-component.cdx.json'}
+        assert len(names) == len(set(names)) and set(names) == expected
+        assert all('/' not in name and '\\' not in name for name in names)
+        for name in names:
+            with archive.open(name) as stream:
+                hashed = hashlib.file_digest(stream, 'sha256').hexdigest()
+            files[name] = {'bytes': archive.getinfo(name).file_size, 'sha256': hashed}
+        manifest = json.loads(archive.read('artifact-manifest.json'))
+        assert manifest['source_revision'] == SOURCE and manifest['source_dirty'] is False
+        assert manifest['application_id'] == 'ru.boohtacord.app'
+        assert manifest['platform'] == 'android' and manifest['version'] == '1.0.47+82'
+        assert manifest['signing']['status'] == 'signed'
+        assert manifest['signing']['certificate_sha256'] == CERT
+        assert manifest['files'] == {k: v for k, v in files.items() if k not in {'artifact-manifest.json', 'SHA256SUMS'}}
+        sums = {value['sha256'] + '  ' + name for name, value in files.items() if name != 'SHA256SUMS'}
+        assert set(archive.read('SHA256SUMS').decode().splitlines()) == sums
+        for name, expected_hash in manifest['contracts'].items():
+            assert re.fullmatch('[A-Za-z0-9_.-]+', name)
+            raw = subprocess.check_output(['git', 'show', SOURCE + ':contracts/' + name])
+            assert hashlib.sha256(raw).hexdigest() == expected_hash
+        for abi, expected_code in CODES.items():
+            name = PREFIX + abi + '.apk'
+            destination = OUT / name if abi == 'arm64-v8a' else temporary
+            destination.write_bytes(archive.read(name))
+            signature = output(JAVA, '-jar', str(SDK / 'lib/apksigner.jar'), 'verify', '--print-certs', str(destination))
+            hashes = re.findall(r'Signer #\d+ certificate SHA-256 digest: ([0-9a-fA-F]{64})', signature)
+            assert len(hashes) == 1 and hashes[0].lower() == CERT
+            badging = output(str(SDK / 'aapt.exe'), 'dump', 'badging', str(destination))
+            identity = re.search(r"package: name='([^']+)' versionCode='(\d+)' versionName='([^']+)'", badging)
+            assert identity and identity[1] == 'ru.boohtacord.app'
+            assert int(identity[2]) == expected_code and identity[3] == '1.0.47'
+            checked[name] = {'sha256': files[name]['sha256'], 'bytes': files[name]['bytes'],
+                             'application_id': identity[1], 'version_code': int(identity[2]),
+                             'version_name': identity[3], 'certificate_sha256': CERT}
+            if destination == temporary:
+                temporary.unlink()
+        (OUT / 'artifact-manifest.json').write_bytes(archive.read('artifact-manifest.json'))
+    result = {'status': 'PASS_ACTUAL_APK_BYTES_NO_INSTALL', 'source_revision': SOURCE,
+              'archive': archive_path.name, 'files': files, 'actual_apks': checked,
+              'contract_hashes': 'PASS exact Git blobs; Windows CRLF excluded',
+              'same_code_QA_candidate': True, 'installed_or_restarted': False}
+    (OUT / 'verified.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
+    print(json.dumps({'status': result['status'], 'source': SOURCE,
+                      'arm64': checked[PREFIX + 'arm64-v8a.apk']}))
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except Exception as error:
+        print(json.dumps({'status': 'FAIL_APK_VALIDATION', 'error_type': type(error).__name__}))
+        raise SystemExit(1)

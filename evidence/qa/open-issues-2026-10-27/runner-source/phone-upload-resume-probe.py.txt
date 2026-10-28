@@ -1,0 +1,25 @@
+import ast,hashlib,json,re,subprocess,xml.etree.ElementTree as ET
+from pathlib import Path
+from datetime import datetime,timezone
+Q=Path.cwd();P=Q/'.out/qa-agent-phone-upload-resume';ADB=str(Path(__import__('os').environ['LOCALAPPDATA'])/'Android/Sdk/platform-tools/adb.exe');APP='ru.boohtacord.app'
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+def write(p,v):p.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+def call(*args):return subprocess.check_output([ADB,*args],timeout=35).decode('utf-8','replace')
+assert not (P/'availability.json').exists();frozen=Q/'.out/qa-agent-phone-upload';manifest=read(frozen/'artifact-hashes.json');assert all(sha(frozen/n)==v['SHA256'] for n,v in manifest['artifacts'].items());assert all(sha(frozen/n)==v['SHA256'] for n,v in manifest['helpers'].items());baseline=read(frozen/'summary-final.json');assert all(sha(Q/n)==v for n,v in baseline['source_SHA256_fresh'].items());assert baseline['APK_SHA256_fresh']=='c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243';review=Q/'.out/qa-agent-phone-upload-public-review.json';review_sha=sha(review)
+write(P/'bindings-before-single-probe.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'workflow_class':'review_gate','route':'attachments/upload/availability','probe.py_SHA256':sha(P/'probe.py'),'source_revision_from_frozen':baseline['source_revision'],'source_hashes_match_frozen':True,'expected_APK_SHA256_from_frozen':baseline['APK_SHA256_fresh'],'fresh_APK_binary_hash_not_requested_by_flags_only_scope':True,'upload_artifacts_match_frozen_manifest':True,'private_review_SHA256':review_sha,'UI_dump_budget':1,'all_native_input_activation_or_upload_budget':0})
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PROBING','single_UI_dump_count':1,'native_input_count':0,'activation_count':0,'force_stop_count':0,'navigation_upload_API_count':0,'raw_labels_screens_hierarchy_retained':False,'native_skips':0}
+try:
+ raw=call('exec-out','uiautomator','dump','/dev/tty');a=raw.find('<hierarchy');b=raw.find('</hierarchy>');r['UI_root_available']=a>=0 and b>a
+ if r['UI_root_available']:
+  rows=list(ET.fromstring(raw[a:b+12]).iter('node'));packages={n.get('package')or'' for n in rows};label=lambda n:n.get('content-desc')or n.get('text')or'';old=read(Q/'.out/qa-agent-phone-restart/private/config.private.json');fields=[n for n in rows if n.get('package')==APP and n.get('class')=='android.widget.EditText']
+  app=APP in packages;protected=any(p=='com.android.settings' or p.endswith('permissioncontroller') or 'credential' in p.casefold() for p in packages);r.update(APP_foreground_surface=app and not protected,current_protected_surface=protected,Settings_surface='com.android.settings' in packages,auth_static_fields_present=any(label(n) in ['Логин','Пароль'] for n in rows),room_is_allowed_SHARE_TEST=any('Голос подключён' in label(n) and 'SHARE_TEST' in label(n) for n in rows),own_DM_header=any(old['peer'] in label(n) and int(re.findall(r'\d+',n.get('bounds'))[1])<700 for n in rows) if app else False,composer_empty=len(fields)==1 and not fields[0].get('text'))
+ else:r.update(APP_foreground_surface=None,current_protected_surface=None,room_is_allowed_SHARE_TEST=None,own_DM_header=None,composer_empty=None)
+ services=call('shell','dumpsys','activity','services',APP);types=set(re.findall(r'types=0x([0-9a-fA-F]+)',services));projection=call('shell','dumpsys','media_projection');r['microphone_FGS']=any(int(x,16)&0x80 for x in types);r['projection_null_guard']=bool(re.search(r'Media Projection:\s*null\s*$',projection))
+ if not r['UI_root_available']:r['status']='BLOCKED_SINGLE_PROBE_UI_ROOT_UNAVAILABLE'
+ elif not r['APP_foreground_surface'] or r['current_protected_surface'] or r['auth_static_fields_present']:r['status']='BLOCKED_CURRENT_NON_APP_OR_PROTECTED_SURFACE_NO_INPUT'
+ elif not r['own_DM_header'] or not r['composer_empty']:r['status']='APP_AVAILABLE_BUT_OWN_DM_OR_COMPOSER_GUARD_UNPROVEN_WAIT_ROOT'
+ else:r['status']='APP_OWN_DM_AVAILABLE_READ_ONLY_WAIT_ROOT_COORDINATION'
+ r['native_exit']=0 if r['status'].startswith('APP_') else 2
+except Exception as e:r.update(status='BLOCKED_SINGLE_READ_ONLY_PROBE_CONTROLLER',error_type=type(e).__name__,native_exit=2)
+r.update(finished_at_utc=datetime.now(timezone.utc).isoformat(),no_probe_retry=True,no_permission_or_Settings_input=True,expected_installed_candidate='OldsignedQA2082/c726, fromfrozen; new590candidate notclaimed',current_phone_APK_bytehash_NOT_RECHECKED=True);assert sha(review)==review_sha;assert all(sha(frozen/n)==v['SHA256'] for n,v in manifest['artifacts'].items());write(P/'availability.json',r);print(r)

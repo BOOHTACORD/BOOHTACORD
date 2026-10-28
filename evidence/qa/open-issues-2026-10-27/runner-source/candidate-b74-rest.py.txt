@@ -1,0 +1,54 @@
+"""Minimal REST transport. Credential-helper output stays in this process only."""
+import json
+import os
+import subprocess
+import urllib.error
+import urllib.request
+
+ROOT = 'https://api.github.com/repos/Egkurilov/BOOHTACORD'
+TOKEN = None
+
+
+def token():
+    global TOKEN
+    if TOKEN is None:
+        env = dict(os.environ, GIT_TERMINAL_PROMPT='0', GCM_INTERACTIVE='never')
+        result = subprocess.run(
+            ['git', '-c', 'credential.interactive=never', 'credential', 'fill'],
+            input='url=https://github.com/Egkurilov/BOOHTACORD.git\n\n',
+            text=True, capture_output=True, timeout=30, env=env)
+        if result.returncode:
+            raise RuntimeError('CREDENTIAL_HELPER_UNAVAILABLE_EXIT_' + str(result.returncode))
+        fields = dict(line.split('=', 1) for line in result.stdout.splitlines() if '=' in line)
+        TOKEN = fields.get('password')
+        if not TOKEN:
+            raise RuntimeError('CREDENTIAL_HELPER_RETURNED_NO_PASSWORD')
+    return TOKEN
+
+
+def api(path, method='GET', payload=None):
+    if not path.startswith('/') or path.startswith('//'):
+        raise ValueError('Repository-relative API path required')
+    request = urllib.request.Request(ROOT + path, method=method, headers={
+        'Accept': 'application/vnd.github+json', 'Authorization': 'Bearer ' + token(),
+        'X-GitHub-Api-Version': '2026-03-10', 'User-Agent': 'boohtacord-owned-candidate-qa'})
+    if payload is not None:
+        request.data = json.dumps(payload).encode()
+        request.add_header('Content-Type', 'application/json')
+    try:
+        with urllib.request.urlopen(request, timeout=45) as response:
+            raw = response.read()
+            return response.status, json.loads(raw) if raw else {}
+    except urllib.error.HTTPError as error:
+        try:
+            message = json.loads(error.read()).get('message', 'HTTP error')
+        except (ValueError, UnicodeError):
+            message = 'HTTP error'
+        return error.code, {'message': message}
+
+
+def required(path):
+    status, value = api(path)
+    if status != 200:
+        raise RuntimeError('GET_HTTP_' + str(status) + ': ' + str(value.get('message')))
+    return value

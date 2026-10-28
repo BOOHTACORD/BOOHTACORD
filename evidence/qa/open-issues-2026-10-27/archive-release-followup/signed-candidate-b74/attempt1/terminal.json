@@ -1,0 +1,682 @@
+{
+  "run_id": 40767012991,
+  "head_sha": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+  "event": "workflow_dispatch",
+  "run_attempt": 1,
+  "status": "completed",
+  "conclusion": "failure",
+  "html_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40767012991",
+  "jobs": [
+    {
+      "id": 123093764473,
+      "name": "quality / macos",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 40767012991,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Verify selected Python interpreter",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Run ./.github/actions/flutter-setup",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Execute Apple-only vendor tests with no skips",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Retain mandatory macOS profile evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Retain named macOS test outcomes",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Post Run ./.github/actions/flutter-setup",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14
+        },
+        {
+          "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17
+        }
+      ]
+    },
+    {
+      "id": 123093764843,
+      "name": "quality / android-kotlin",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 40767012991,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Verify selected Python interpreter",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Run actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Verify selected java SDK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Run ./.github/actions/flutter-setup",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Verify both Kotlin compatibility modes",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Retain mandatory Kotlin profile evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Retain per-class Android unit results for both Kotlin modes",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Post Run ./.github/actions/flutter-setup",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17
+        },
+        {
+          "name": "Post Run actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18
+        },
+        {
+          "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21
+        }
+      ]
+    },
+    {
+      "id": 123093764968,
+      "name": "quality / dart",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 40767012991,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Verify selected Python interpreter",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Run ./.github/actions/flutter-setup",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Require fresh synthetic Flutter capture outputs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Test and analyze app and vendor packages",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Retain mandatory Dart profile evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Package verified synthetic Flutter captures",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Retain Flutter UI/UX screenshot review set",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Post Run ./.github/actions/flutter-setup",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18
+        },
+        {
+          "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21
+        }
+      ]
+    },
+    {
+      "id": 123093765008,
+      "name": "quality / android",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_id": 40767012991,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Verify selected Python interpreter",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Run actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Verify selected java SDK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Run ./.github/actions/flutter-setup",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Build the inspected debug APK",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 8
+        },
+        {
+          "name": "Upload Android debug APK",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9
+        },
+        {
+          "name": "Retain mandatory Android profile evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Post Run ./.github/actions/flutter-setup",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17
+        },
+        {
+          "name": "Post Run actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18
+        },
+        {
+          "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21
+        }
+      ]
+    },
+    {
+      "id": 123098844804,
+      "name": "quality / flutter",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_id": 40767012991,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Verify selected Python interpreter",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Run actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Require complete current Dart, Kotlin and APK evidence",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 6
+        },
+        {
+          "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11
+        },
+        {
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13
+        }
+      ]
+    },
+    {
+      "id": 123098935681,
+      "name": "android-release",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_id": 40767012991,
+      "logs_url": null,
+      "steps": null
+    }
+  ],
+  "observations": [
+    {
+      "observed_utc": "2026-10-28T20:52:28.133Z",
+      "id": 40767012991,
+      "status": "queued",
+      "conclusion": null,
+      "head_sha": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f"
+    },
+    {
+      "observed_utc": "2026-10-28T20:54:56.114Z",
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+      "jobs": [
+        {
+          "id": 123093764473,
+          "name": "quality / macos",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Execute Apple-only vendor tests with no skips"
+        },
+        {
+          "id": 123093764843,
+          "name": "quality / android-kotlin",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Verify both Kotlin compatibility modes"
+        },
+        {
+          "id": 123093764968,
+          "name": "quality / dart",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Test and analyze app and vendor packages"
+        },
+        {
+          "id": 123093765008,
+          "name": "quality / android",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Build the inspected debug APK"
+        }
+      ]
+    },
+    {
+      "observed_utc": "2026-10-28T20:56:09.687Z",
+      "jobs": [
+        {
+          "id": 123093764473,
+          "name": "quality / macos",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 123093764843,
+          "name": "quality / android-kotlin",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Verify both Kotlin compatibility modes"
+        },
+        {
+          "id": 123093764968,
+          "name": "quality / dart",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Test and analyze app and vendor packages"
+        },
+        {
+          "id": 123093765008,
+          "name": "quality / android",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Build the inspected debug APK"
+        }
+      ]
+    },
+    {
+      "observed_utc": "2026-10-28T20:57:12.550Z",
+      "jobs": [
+        {
+          "id": 123093764473,
+          "name": "quality / macos",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 123093764843,
+          "name": "quality / android-kotlin",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Verify both Kotlin compatibility modes"
+        },
+        {
+          "id": 123093764968,
+          "name": "quality / dart",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Test and analyze app and vendor packages"
+        },
+        {
+          "id": 123093765008,
+          "name": "quality / android",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "observed_utc": "2026-10-28T21:00:48.990Z",
+      "status": "in_progress",
+      "conclusion": null,
+      "attempt": 1,
+      "head": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+      "jobs": [
+        {
+          "id": 123093764473,
+          "name": "quality / macos",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 123093764843,
+          "name": "quality / android-kotlin",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Verify both Kotlin compatibility modes"
+        },
+        {
+          "id": 123093764968,
+          "name": "quality / dart",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Test and analyze app and vendor packages"
+        },
+        {
+          "id": 123093765008,
+          "name": "quality / android",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "observed_utc": "2026-10-28T21:01:33.942Z",
+      "status": "in_progress",
+      "conclusion": null,
+      "attempt": 1,
+      "head": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+      "jobs": [
+        {
+          "id": 123093764473,
+          "name": "quality / macos",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 123093764843,
+          "name": "quality / android-kotlin",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 123093764968,
+          "name": "quality / dart",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Test and analyze app and vendor packages"
+        },
+        {
+          "id": 123093765008,
+          "name": "quality / android",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "observed_utc": "2026-10-28T21:02:32.248Z",
+      "status": "completed",
+      "conclusion": "failure",
+      "attempt": 1,
+      "head": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+      "jobs": [
+        {
+          "id": 123093764473,
+          "name": "quality / macos",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 123093764843,
+          "name": "quality / android-kotlin",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 123093764968,
+          "name": "quality / dart",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 123093765008,
+          "name": "quality / android",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "id": 123098844804,
+          "name": "quality / flutter",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "id": 123098935681,
+          "name": "android-release",
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      ]
+    }
+  ]
+}

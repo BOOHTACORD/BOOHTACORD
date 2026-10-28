@@ -1,0 +1,62 @@
+"""Exactly one candidate dispatch; a persistent journal prevents replay."""
+import datetime
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+from rest import api, required
+
+OUT = Path(__file__).resolve().parent
+SHA = 'b74fce609ad3ddbbfb0dbef81c5efae68195f20f'
+WORKFLOW = 'android-release.yaml'
+
+
+def now():
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+
+def main():
+    journal = OUT / 'dispatch-attempt.json'
+    if journal.exists():
+        raise RuntimeError('DISPATCH_ALREADY_JOURNALED_NEVER_REPEAT')
+    master = required('/branches/master')['commit']['sha']
+    if master != SHA:
+        (OUT / 'master-changed.json').write_text(json.dumps({'master': master, 'expected': SHA}))
+        raise RuntimeError('MASTER_CHANGED_NO_DISPATCH')
+    workflow = subprocess.check_output(['git', 'show', SHA + ':.github/workflows/android-release.yaml'], text=True)
+    source = subprocess.check_output(['git', 'show', SHA + ':tools/release/native_contract/source.py'], text=True)
+    assert "default: false" in workflow and "type: boolean" in workflow
+    assert "environment: production" in workflow and "needs: quality" in workflow
+    assert "github.ref == 'refs/heads/master'" in workflow
+    assert "if: github.event_name != 'workflow_dispatch' || !inputs.dry_run" in workflow
+    assert "inputs.dry_run && 'true' || 'false'" in workflow
+    assert 'Upload signed APKs as workflow artifacts' in workflow
+    assert "candidate=mode=='true'" in source and 'if verified_tag:require' in source
+    recent = required('/actions/workflows/' + WORKFLOW + '/runs?event=workflow_dispatch&branch=master&per_page=20')
+    record = {'started_utc': now(), 'expected_source': SHA, 'ref': 'master',
+              'inputs': {'dry_run': True}, 'post_count': 1,
+              'workflow_sha256': hashlib.sha256(workflow.encode()).hexdigest(),
+              'source_guard_sha256': hashlib.sha256(source.encode()).hexdigest(),
+              'prior_run_ids': [run['id'] for run in recent['workflow_runs']],
+              'state': 'POST_OUTCOME_UNKNOWN_UNTIL_RESPONSE', 'credential_logged': False}
+    with journal.open('x', encoding='utf-8') as stream:
+        json.dump(record, stream, indent=2)
+    try:
+        status, value = api('/actions/workflows/' + WORKFLOW + '/dispatches', 'POST',
+                            {'ref': 'master', 'inputs': {'dry_run': True}})
+        record.update(http_status=status, response=value, finished_utc=now(),
+                      state='DISPATCH_ACCEPTED' if status in (200, 204) else 'DISPATCH_REJECTED')
+    except Exception as error:
+        record.update(state='POST_OUTCOME_UNKNOWN_DO_NOT_REPEAT', error_type=type(error).__name__)
+    journal.write_text(json.dumps(record, indent=2), encoding='utf-8')
+    print(json.dumps({key: record[key] for key in ('state', 'started_utc', 'post_count')} |
+                     {key: record[key] for key in ('http_status', 'response') if key in record}))
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except Exception as error:
+        print(json.dumps({'status': 'BLOCKED_BEFORE_DISPATCH_OR_ALREADY_JOURNALED',
+                          'reason': str(error) if isinstance(error, RuntimeError) else type(error).__name__}))
+        raise SystemExit(1)

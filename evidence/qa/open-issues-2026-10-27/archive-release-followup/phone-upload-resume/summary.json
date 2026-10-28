@@ -1,0 +1,53 @@
+{
+  "id": "ANDROID-native-upload-single-read-only-resume-availability",
+  "status": "BLOCKED_NATIVE_SETTINGS_AVAILABILITY_ONLY",
+  "probe_started_at_utc": "2026-10-28T20:58:58.094011+00:00",
+  "probe_finished_at_utc": "2026-10-28T20:59:00.973140+00:00",
+  "sealed_at_utc": "2026-10-28T21:00:52.398786+00:00",
+  "workflow_class": "review_gate",
+  "route": "attachments/upload/availability",
+  "protects": "Do not navigate/upload or contendwitha currentexternal protectedSettingssurface; one boundedclassflagsprobe only",
+  "command": "python -X utf8 .out/qa-agent-phone-upload-resume/probe.py (ONE completedinvocation, no retry)",
+  "platform": "PhysicalSamsungSM-A576BAndroid16 approvedAPPru.boohtacord.app; expectedoldQA2082/c726fromfrozenidentityonly",
+  "mandatory_when": "Before consideringnativeuploadresumption; availabilityonly, nofeature/media/identityacceptance",
+  "result": "availability.json;bindings-before-single-probe.json;summary.json",
+  "flags": {
+    "APP_foreground_surface": false,
+    "current_protected_surface": true,
+    "Settings_surface": true,
+    "allowed_SHARE_TEST_status_label_observed": false,
+    "current_room_binding_observable": false,
+    "current_room_unknown": true,
+    "microphone_FGS": true,
+    "projection_null_guard": false
+  },
+  "raw_false_room_flag_interpretation": "Noapprovedconnected-roomlabel observedoutsideAPP; notproofthat currentroomdiffersfromSHARE_TEST",
+  "no_native_profile_DM_guard_possible": true,
+  "single_probe_count": 1,
+  "single_UI_dump_count": 1,
+  "actual_probe_process_exit_code": 0,
+  "reported_raw_native_exit_field": 2,
+  "raw_exit_field_correction": "Rawreceipt native_exit=2 representsBLOCKED outcome, notactualPythonprocess exit; scriptreturned0afterwritingmetadata. Preserveoriginalreceipt, useactualprocess0andlogicalBLOCKEDseparately.",
+  "native_skips": 0,
+  "input_activation_force_stop_install_navigation_upload_API_counts": 0,
+  "rawlabels_screens_hierarchies_or_projectiongrant_saved": false,
+  "source_guard": {
+    "source_revision_from_frozen": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+    "source_hashes_match_frozen": true,
+    "upload_artifacts_match_frozen_manifest": true,
+    "expected_APK_SHA256_from_frozen": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+    "phone_APK_binary_NOT_read_this_probe": true,
+    "no_new590candidate_claim": true
+  },
+  "privacy_review_report_SHA256_unchanged": "f7a5bc4b1905b8019471dd4f679dee3d901a69071db9d736beca3dcc73e07cae",
+  "external_owner_or_cause": "UNKNOWN; no causal assertion, no unrelatedchat names/identifiers retained",
+  "future_device_actions_authorized_by_this_packet": 0,
+  "limits": [
+    "Onlypackage/surface/media classflags; noauthenticatedread,picker,upload,Send ornativeidentityproof",
+    "FGS doesnotproveaudibility orvoicequality; projectionnullguardfalse doesnotproveusefulcapture",
+    "SHARE_TEST binding notobservablewhileSettingssurfacepresent",
+    "APP/APK identitybinding isfrozenexpectedvalue, notfreshinstalledbinaryattestation",
+    "No repeatedprobe/input/activation/install; packetfrozenforcoordinatorpublicationonly",
+    "probe.py absolutehostADBpath needsportableLOCALAPPDATA/envprojection ifhelperpublished"
+  ]
+}

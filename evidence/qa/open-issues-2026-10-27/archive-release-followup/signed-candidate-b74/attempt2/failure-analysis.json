@@ -1,0 +1,16 @@
+{
+  "status": "FAIL_CURRENT_ATTEMPT_EVIDENCE_INCOMPLETE",
+  "run_id": 40767012991,
+  "attempt": 2,
+  "head_sha": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+  "job_id": 123103686327,
+  "step": "Require complete current Dart,Kotlin and APK evidence",
+  "error": "ValueError: Every current native profile result is mandatory",
+  "actual_profile_result_count": 1,
+  "required_profile_result_count": 4,
+  "artifact_pattern": "flutter-part-flutter-b74fce609ad3ddbbfb0dbef81c5efae68195f20f-40767012991-2-*",
+  "not_accepted": "Do not mix old attempt1 metadata or relax source/attempt checks",
+  "next_boundary": "Requires a separately authorized full-run retry or a repository change to supported retry semantics; neither executed in this packet",
+  "signed_APKs": "Not produced; signing/release job skipped",
+  "product_bug_589_status": "Not retested; no physical/device claim"
+}

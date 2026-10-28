@@ -1,0 +1,27 @@
+{
+  "workflow_class": "review_gate",
+  "route": "tools/release/native_contract; Android Release signed candidate build only",
+  "expected_source": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+  "actual_run": 40767012991,
+  "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40767012991",
+  "event": "workflow_dispatch",
+  "head_sha": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+  "dry_run": true,
+  "publish_guard": "github.event_name != 'workflow_dispatch' || !inputs.dry_run",
+  "candidate_guard": "trusted manual master, exact trigger revision, clean source, master ancestry; matching tag not required for candidate",
+  "scope": [
+    "ONE POST workflow_dispatch",
+    "read-only observation of returned actual run",
+    "download and validate own signed candidate artifacts when available"
+  ],
+  "forbidden": [
+    "release/tag/source edits",
+    "workflow rerun or repeated dispatch",
+    "UI/app installation/restart/voice changes",
+    "credential logging/private key download"
+  ],
+  "stop_condition": "Actual completed run+publication skipped+exact signed artifact verified, or concrete API/approval/build blocker",
+  "credential_transport": "Configured normal Git credential helper; prompt disabled; token only subprocess/process memory; no connector secrets",
+  "prior_reports": "Frozen; new data only .out/qa-pr590-candidate",
+  "docs": "https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event"
+}

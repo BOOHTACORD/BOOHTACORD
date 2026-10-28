@@ -1,0 +1,15 @@
+{
+  "status": "EXPECTED_CURRENT_ATTEMPT_GATE_REJECTION_OPERATOR_RETRY_CORRECTED",
+  "source_revision": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+  "documentation": "https://github.com/Egkurilov/BOOHTACORD/blob/b74fce609ad3ddbbfb0dbef81c5efae68195f20f/docs/ci/flutter-gates.md",
+  "rule": "A full workflow rerun is required; a new attempt cannot borrow results from an older attempt.",
+  "attempt1": "NDK archive setup failure before app compilation; underlying cause unproven, original retained",
+  "attempt2": "Android actually passed. Partial failed-jobs rerun produced one current-attempt profile; documented strict fan-in correctly rejected missing three profiles.",
+  "operator_correction": "Root selected an unsupported partial retry before reading the documented full-run requirement. This was a controller/operator error, not a newly established repository or image-viewer defect.",
+  "next_packet": "One full rerun of all jobs in the same run/event/source/dry_run; attempt3 result remains separate and must be measured",
+  "source_or_gate_weakened": false,
+  "new_bug_issue_created": false,
+  "physical_or_signed_APK_acceptance_from_attempts1_2": "NOT_RUN_NO_SIGNED_ARTIFACT",
+  "closed_QA": [],
+  "consolidation43_touched": false
+}

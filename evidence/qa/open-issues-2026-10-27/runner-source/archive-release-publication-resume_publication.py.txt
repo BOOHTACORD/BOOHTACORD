@@ -1,0 +1,19 @@
+"""Append frozen read-only availability; this executes no device command."""
+from common import *
+folder=Q/'.out/qa-agent-phone-upload-resume'
+for name in ['summary.json','availability.json','bindings-before-single-probe.json','artifact-hashes.json']:copy(folder/name,'phone-upload-resume/'+name)
+source=folder/'probe.py';raw=source.read_bytes();s=raw.decode('utf-8-sig')
+s=s.replace(repr(Path.home().as_posix()+'/AppData/Local/Android/Sdk/platform-tools/adb.exe'),"str(Path(__import__('os').environ['LOCALAPPDATA'])/'Android/Sdk/platform-tools/adb.exe')")
+ast.parse(s);assert len(s.splitlines())<=120 and not any(n in s for n in needles)
+dest=O/'runner-source/phone-upload-resume-probe.py.txt';dest.write_text(s,encoding='utf-8',newline='\n')
+origins.append({'public_relative_to_root':dest.relative_to(O).as_posix(),'private_original_SHA256':sha(raw),'sanitized':'Host ADB path replaced with LOCALAPPDATA; archival source only'})
+write(D/'phone-upload-resume/publication-provenance.json',{'status':'PASS_SANITIZED_METADATA_ONLY','artifacts':origins})
+latest=read(D/'phone-upload-resume/summary.json');assert latest['single_probe_count']==1 and latest['input_activation_force_stop_install_navigation_upload_API_counts']==0
+s=read(D/'summary.json');s['latest_phone_availability']='phone-upload-resume/summary.json';s['latest_phone_availability_limit']='One read-only observation, no retry/input. Room/owner/cause not observable. No new candidate or feature PASS.';write(D/'summary.json',s)
+m=read(O/'matrix.json');rel=D.relative_to(O).as_posix()+'/phone-upload-resume/summary.json'
+for i in m['issues']:
+ if i['number']==62:i['evidence'].append(rel)
+ for r in i['criteria']:
+  if r['id']=='I62.C1':r['evidence'].append(rel)
+write(O/'matrix.json',m);code(Path(__file__),'archive-release-publication-')
+print(json.dumps({'single_probe_count':1,'new_runtime_set':False,'input_API_actions':0,'status':'BLOCKED'}))

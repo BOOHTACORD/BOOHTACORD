@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "status": "FAIL_SIGNED_CANDIDATE_NOT_PRODUCED_CURRENT_ATTEMPT_EVIDENCE_INCOMPLETE",
+  "frozen_after_this_packet": true,
+  "source_revision": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+  "installed_or_restarted": false,
+  "workflow_class": "review_gate",
+  "packet": "PR590-hosted-signed-Android-candidate-only",
+  "protects": "A signed exact-source QA APK is accepted only after complete same-attempt native gates and actual artifact identity/signature checks; no old attempt evidence is substituted",
+  "command": "ONE documented POST workflow_dispatch android-release.yaml ref=master inputs.dry_run=true; ONE connected GitHub rerun_failed_workflow_run_jobs after attempt1 terminal; read-only returned run/job/artifact evidence",
+  "platform": "Hosted GitHub Actions; local Windows controller only; no device/UI action",
+  "mandatory_when": "Before accepting this requested signed QA candidate as available or scheduling physical regression acceptance",
+  "run": {
+    "id": 40767012991,
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40767012991",
+    "event": "workflow_dispatch",
+    "ref": "master",
+    "initial_head": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+    "final_head": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+    "run_number": 31,
+    "run_attempt": 2,
+    "status": "completed",
+    "conclusion": "failure",
+    "dry_run": true
+  },
+  "mutations": {
+    "dispatches": 1,
+    "failed_jobs_reruns": 1,
+    "additional_dispatches": 0,
+    "additional_reruns": 0,
+    "release_or_tag_publications": 0,
+    "source_or_workflow_changes": 0,
+    "cache_or_security_changes": 0,
+    "UI_ADB_or_install_actions": 0,
+    "credential_logged_or_written": false,
+    "credential_source": "Configured normal Git credential helper in subprocess memory; noninteractive; no connector secret access"
+  },
+  "attempt1": {
+    "status": "failure",
+    "android_job": 123093765008,
+    "cause": "NDK28.2.13676358 SDK archive preparation: unknown ZIP at Unzipping; sdkmanager exit1 before app compilation",
+    "triage": "No source compiler error, explicit disk-full/permission or pinned-version mismatch in available log. The underlying invalid-archive cause was not proven.",
+    "other_profiles": "Dart/Kotlin/macOS success",
+    "android_release": "skipped",
+    "result": "attempt1/terminal.json",
+    "logs": "[PRIVATE_ARTIFACT_RETAINED_LOCALLY]",
+    "original_failure": "android-quality-failure.json (preserved)"
+  },
+  "attempt2": {
+    "status": "failure",
+    "android_job": 123099371557,
+    "android_result": "SUCCESS; actual app-debug.apk built, complete Android profile PASS; first SDK failure did not recur",
+    "fan_in_job": 123103686327,
+    "fan_in_result": "FAIL at Require complete current Dart,Kotlin and APK evidence",
+    "exact_error": "ValueError: Every current native profile result is mandatory",
+    "required_profiles": 4,
+    "current_attempt_profiles_downloaded": 1,
+    "pattern": "flutter-part-flutter-b74fce609ad3ddbbfb0dbef81c5efae68195f20f-40767012991-2-*",
+    "root_cause_scope": "Failed-jobs rerun retains successful Dart/Kotlin/macOS artifacts from attempt1; strict aggregator downloads only attempt2 Android evidence and refuses the partial set. This is a delivery/evidence retry-semantics blocker, not an image-viewer product failure.",
+    "android_release": "skipped",
+    "result": "attempt2/terminal.json",
+    "analysis": "attempt2/failure-analysis.json",
+    "raw_logs": [
+      "[PRIVATE_ARTIFACT_RETAINED_LOCALLY]",
+      "[PRIVATE_ARTIFACT_RETAINED_LOCALLY]"
+    ]
+  },
+  "artifact": {
+    "signed_artifact_count": 0,
+    "signed_APK_downloaded": false,
+    "actual_signed_APK_checks": "NOT_RUN_NO_SIGNED_ARTIFACT",
+    "installability_or_replacement": "NOT_ASSESSED",
+    "expected_appID_and_cert": "Expectation only; no signed artifact produced to measure",
+    "debug_artifact": {
+      "id": 12851817974,
+      "digest": "sha256:80771e1d1b1afb25acc542524f34aa110d3e2452e5fd55ca1764161afddd69cd",
+      "kind": "Actions ZIP containing universal debug APK; not a signed release-mode QA replacement; not downloaded"
+    },
+    "publication": "No signing/release job entered; publish step did not execute"
+  },
+  "source_binding": {
+    "pre_dispatch_master_verified": true,
+    "preflight": "Exact b74 workflow+source guards read; source/trigger equality, clean ancestry, candidate mode; dry_run publish exclusion",
+    "rerun": "Same GitHub run retains original GITHUB_SHA/GITHUB_REF and event inputs; actual attempt2 head/event read back",
+    "helper_preexecution": [
+      "preexecution.json",
+      "artifact-helper-preexecution.json",
+      "attempt2/helper-preexecution.json"
+    ],
+    "download_helper": "Attempt2 helper pins actual run_attempt2/head/run/name; never executed because signed artifact absent"
+  },
+  "limits": [
+    "No signed package availability, source/build/cert verification PASS, installability, app-updater or physical acceptance claimed",
+    "QA590/sourceb74 only; later master/features are not included implicitly",
+    "Historical2082/c726 is not a current-device identity claim. Current device was not inspected; installation is forbidden.",
+    "No source/cache/security modification or evidence-gate weakening to force completion",
+    "All APK/ZIP/raw logs remain private in Q .out; this packet downloaded no binary artifact",
+    "Attempt1 original failure and attempt2 results are separate"
+  ],
+  "next_required": "Separately authorized supported full-run retry or a repository change to retry semantics that preserves exact source/attempt completeness; no third attempt in this packet",
+  "report": "Slavik Gym report: route=tools/release/native_contract; packet=PR590-hosted-candidate-review_gate; tokens=estimated:9000; method=manual_estimate; driver=one-dispatch-one-rerun-closed-quality-gate; next_split=supported-complete-attempt-native-evidence"
+}

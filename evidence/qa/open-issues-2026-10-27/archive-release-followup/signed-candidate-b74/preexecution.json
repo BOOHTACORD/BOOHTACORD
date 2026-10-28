@@ -1,0 +1,30 @@
+{
+  "recorded_utc": "2026-10-28T20:51:31.8685900Z",
+  "route": "review_gate;hosted-Android-signed-candidate-only",
+  "source": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+  "working_head": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "baseline_status": [
+    " M clients/flutter/macos/Flutter/GeneratedPluginRegistrant.swift",
+    " M clients/flutter/windows/flutter/generated_plugin_registrant.cc",
+    " M clients/flutter/windows/flutter/generated_plugin_registrant.h",
+    " M clients/flutter/windows/flutter/generated_plugins.cmake"
+  ],
+  "helpers": [
+    {
+      "path": ".out\\qa-pr590-candidate\\rest.py",
+      "lines": 54,
+      "sha256": "06435d052d23c1d6b040b29be6366de1993611425d0b69957e2341804b3a50f5"
+    },
+    {
+      "path": ".out\\qa-pr590-candidate\\dispatch_once.py",
+      "lines": 62,
+      "sha256": "617a1c62f5a1b7b5a5955a257e8d3127346e78f7ed835c94bb93f08693a60228"
+    }
+  ],
+  "guards": [
+    "one POST only;journal created before POST",
+    "dry_run boolean true;master exact-source guard",
+    "no publish/tag/source/UI/install",
+    "normal Git credential helper in memory;no tokens logged"
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "run_id": 40767012991,
+  "head_sha": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+  "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40767012991",
+  "observations": [
+    {
+      "observed_utc": "2026-10-28T20:52:28.133Z",
+      "id": 40767012991,
+      "status": "queued",
+      "conclusion": null,
+      "head_sha": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f"
+    },
+    {
+      "observed_utc": "2026-10-28T20:54:56.114Z",
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+      "jobs": [
+        {
+          "id": 123093764473,
+          "name": "quality / macos",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Execute Apple-only vendor tests with no skips"
+        },
+        {
+          "id": 123093764843,
+          "name": "quality / android-kotlin",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Verify both Kotlin compatibility modes"
+        },
+        {
+          "id": 123093764968,
+          "name": "quality / dart",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Test and analyze app and vendor packages"
+        },
+        {
+          "id": 123093765008,
+          "name": "quality / android",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Build the inspected debug APK"
+        }
+      ]
+    },
+    {
+      "observed_utc": "2026-10-28T20:56:09.687Z",
+      "jobs": [
+        {
+          "id": 123093764473,
+          "name": "quality / macos",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 123093764843,
+          "name": "quality / android-kotlin",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Verify both Kotlin compatibility modes"
+        },
+        {
+          "id": 123093764968,
+          "name": "quality / dart",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Test and analyze app and vendor packages"
+        },
+        {
+          "id": 123093765008,
+          "name": "quality / android",
+          "status": "in_progress",
+          "conclusion": null,
+          "current_step": "Build the inspected debug APK"
+        }
+      ]
+    }
+  ],
+  "current_attempt": 2,
+  "current_attempt_metadata": "attempt2/progress.json",
+  "latest_observation": {
+    "observed_utc": "2026-10-28T21:13:50.482Z",
+    "status": "completed",
+    "conclusion": "failure",
+    "attempt": 2
+  },
+  "initial_terminal": "attempt1/terminal.json",
+  "dispatch_count": 1,
+  "rerun_failed_jobs_count": 1,
+  "final_summary": "summary.json"
+}

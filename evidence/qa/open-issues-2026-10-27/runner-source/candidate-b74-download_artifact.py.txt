@@ -1,0 +1,71 @@
+"""Download one returned signed-artifact ID without forwarding API authorization."""
+import hashlib
+import json
+from pathlib import Path
+import sys
+import urllib.error
+import urllib.parse
+import urllib.request
+from rest import ROOT, required, token
+
+OUT = Path(__file__).resolve().parent
+SHA = 'b74fce609ad3ddbbfb0dbef81c5efae68195f20f'
+RUN = 40767012991
+
+
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, request, fp, code, message, headers, newurl):
+        return None
+
+
+def main():
+    artifact_id = int(sys.argv[1])
+    meta = required('/actions/artifacts/' + str(artifact_id))
+    expected_name = f'BOOHTACORD-master-signed-apks-{SHA}-{RUN}-1'
+    assert meta['name'] == expected_name and not meta['expired']
+    assert meta['workflow_run']['id'] == RUN
+    assert meta['workflow_run']['head_sha'] == SHA
+    assert 0 < meta['size_in_bytes'] < 300_000_000
+    expected = meta['digest'].removeprefix('sha256:')
+    assert len(expected) == 64
+    (OUT / 'artifact.json').write_text(json.dumps(meta, indent=2), encoding='utf-8')
+    destination = OUT / ('signed-artifact-' + str(artifact_id) + '.zip')
+    if destination.exists():
+        with destination.open('rb') as stream:
+            assert hashlib.file_digest(stream, 'sha256').hexdigest() == expected
+        print(json.dumps({'reused_verified_archive': str(destination), 'sha256': expected}))
+        return
+    request = urllib.request.Request(ROOT + '/actions/artifacts/' + str(artifact_id) + '/zip', headers={
+        'Authorization': 'Bearer ' + token(), 'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2026-03-10', 'User-Agent': 'boohtacord-owned-candidate-qa'})
+    try:
+        response = urllib.request.build_opener(NoRedirect).open(request, timeout=45)
+    except urllib.error.HTTPError as error:
+        if error.code != 302:
+            raise RuntimeError('ARTIFACT_DOWNLOAD_HTTP_' + str(error.code))
+        location = error.headers['Location']
+        parsed = urllib.parse.urlparse(location)
+        assert parsed.scheme == 'https'
+        assert parsed.hostname.endswith(('.blob.core.windows.net', '.githubusercontent.com'))
+        response = urllib.request.urlopen(location, timeout=60)
+    partial = destination.with_suffix('.partial')
+    digest = hashlib.sha256()
+    size = 0
+    with response, partial.open('xb') as stream:
+        while block := response.read(2 ** 20):
+            size += len(block)
+            assert size < 300_000_000
+            digest.update(block)
+            stream.write(block)
+    assert digest.hexdigest() == expected and size == meta['size_in_bytes']
+    partial.rename(destination)
+    print(json.dumps({'archive': str(destination), 'bytes': size, 'sha256': expected}))
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except Exception as error:
+        print(json.dumps({'status': 'DOWNLOAD_BLOCKED', 'error_type': type(error).__name__,
+                          'reason': str(error) if isinstance(error, RuntimeError) else 'validation/network failure'}))
+        raise SystemExit(1)

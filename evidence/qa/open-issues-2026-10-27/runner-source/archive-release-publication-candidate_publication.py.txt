@@ -1,0 +1,26 @@
+"""Publish a frozen hosted candidate result, without APKs, logs, secrets or device actions."""
+from common import *
+folder=Q/'.out/qa-pr590-candidate';final=read(folder/'summary.json')
+assert final.get('frozen_after_this_packet') is True,'Wait for agent freeze'
+assert final['source_revision']=='b74fce609ad3ddbbfb0dbef81c5efae68195f20f'
+assert final.get('installed_or_restarted') is False
+sub='signed-candidate-b74';dest=D/sub;assert not dest.exists()
+denied=['device-boundary-update.json']
+for f in sorted(folder.rglob('*.json')):
+ if f.name not in denied and '.private.' not in f.name and 'private' not in f.parts:copy(f,sub+'/'+f.relative_to(folder).as_posix())
+for f in sorted(folder.rglob('*.py')):
+ if 'private' in f.parts:continue
+ raw=f.read_bytes();s=raw.decode('utf-8-sig');ast.parse(s);assert len(s.splitlines())<=120
+ assert not any(n in s for n in needles),f.name
+ s=s.replace("Path("+repr(Path.home().as_posix()+'/AppData/Local/Android/Sdk/build-tools/36.0.0')+")","Path(__import__('os').environ['ANDROID_SDK_ROOT'])/'build-tools/36.0.0'")
+ ast.parse(s);label='candidate-b74-'+f.relative_to(folder).as_posix().replace('/','-')+'.txt';out=O/'runner-source'/label;out.write_text(s,encoding='utf-8',newline='\n')
+ origins.append({'public_relative_to_root':out.relative_to(O).as_posix(),'private_original_SHA256':sha(raw),'sanitized':s!=raw.decode('utf-8-sig'),'purpose':'Archival source, no replay/dispatch/install authorization'})
+write(dest/'publication-provenance.json',{'meaning':'Original hashes bind private frozen inputs; root manifest binds sanitized public bytes. APK/ZIP/raw logs/private key material excluded.','artifacts':origins})
+s=read(D/'summary.json');s['signed_candidate_review']=sub+'/summary.json';s['candidate_result_scope']='Exact source b74/PR590 only; not current device, newer593/594 source, installability or physical acceptance. One dispatch and one failed-jobs rerun, original failure retained.';write(D/'summary.json',s)
+rel=D.relative_to(O).as_posix()+'/'+sub+'/summary.json';m=read(O/'matrix.json')
+for issue in m['issues']:
+ if issue['number']==62:issue['evidence'].append(rel)
+ for r in issue['criteria']:
+  if r['id']=='I62.C1':r['evidence'].append(rel)
+write(O/'matrix.json',m);code(Path(__file__),'archive-release-publication-')
+print(json.dumps({'metadata_projections':len(origins),'binary_artifacts_published':0,'device_actions':0,'status':final['status']}))
