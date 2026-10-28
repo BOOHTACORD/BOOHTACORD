@@ -1,0 +1,55 @@
+"""Seed/resume the finite20-dataset matrix without replacing completed fixture data."""
+import csv,hashlib,io,json,secrets,sys,uuid
+from datetime import datetime,timedelta,timezone
+from http.cookies import SimpleCookie
+from common import P,SOURCE,ORIGIN,credentials,read,write,sql,valid,request
+path=P/'private/config.private.json';resume='--resume' in sys.argv
+assert read(P/'environment-before.json')['status'].startswith('PASS')
+if resume:
+    cfg=read(path);assert len(cfg['owner_token'])==24 and all(x in '0123456789abcdef' for x in cfg['owner_token'])
+    assert sql("SELECT name FROM categories WHERE id='"+valid(cfg['category'])+"';").strip()=='qa_perf_'+cfg['owner_token']
+    status,_,session=request('/api/v1/auth/session',cookie=cfg['cookie']);assert status==200 and session['authenticated'] and session['account_id']==cfg['account']
+else:
+    assert not path.exists(),'Use explicit guarded resume; preserve existing fixture'
+    cfg={'owner_token':secrets.token_hex(12),'origin':ORIGIN,'source_revision':SOURCE,'category':None,'sentinel_channel':None,'empty_channel':None,'sentinel_id':str(uuid.uuid4()),'datasets':[]};write(path,cfg)
+    c=credentials();status,headers,_=request('/api/v1/auth/login','POST',{'login':c['admin_login'],'password':c['admin_password']});assert status==204
+    cookies=SimpleCookie()
+    for k,v in headers:
+        if k.lower()=='set-cookie':cookies.load(v)
+    assert len(cookies)==1;cfg['cookie']='; '.join(k+'='+v.value for k,v in cookies.items());write(path,cfg)
+    status,_,session=request('/api/v1/auth/session',cookie=cfg['cookie']);assert status==200 and session['authenticated'] and session['role']=='ADMINISTRATOR'
+    cfg['account']=valid(session['account_id']);write(path,cfg)
+    status,_,body=request('/api/v1/admin/categories','POST',{'name':'qa_perf_'+cfg['owner_token']},cfg['cookie']);assert status==201
+    cfg['category']=valid(body['id']);write(path,cfg)
+def save():write(path,cfg)
+def channel(name):
+    status,_,body=request('/api/v1/admin/categories/'+cfg['category']+'/channels','POST',{'name':name,'kind':'TEXT'},cfg['cookie']);assert status==201
+    return valid(body['id'])
+if not resume:
+    for key in ['sentinel_channel','empty_channel']:cfg[key]=channel(key);save()
+    sql("INSERT INTO messages(id,channel_id,author_id,client_message_id,body,created_at) VALUES ('"+cfg['sentinel_id']+"','"+cfg['sentinel_channel']+"','"+cfg['account']+"','"+str(uuid.uuid4())+"','Synthetic unavailable-context sentinel','2026-01-01T00:00:00Z');")
+epoch=datetime(2026,1,1,tzinfo=timezone.utc);receipts=[];existing={d['alias']:d for d in cfg['datasets']}
+expected=[(n,r,m,f'N{n}-R{r}-'+('missing' if m else 'normal')) for n in [50,500,5000,10000] for r,m in [(0,False),(50,False),(100,False),(50,True),(100,True)]]
+assert [d['alias'] for d in cfg['datasets']]==[x[3] for x in expected[:len(cfg['datasets'])]] and len(existing)==len(cfg['datasets'])
+for count,ratio,missing,alias in expected:
+    d=existing.get(alias)
+    if d is None:
+        d={'alias':alias,'count':count,'reply_ratio_percent':ratio,'missing_targets':missing,'channel':channel(alias),'ids':[str(uuid.uuid4()) for _ in range(count)]};cfg['datasets'].append(d);save()
+    csv_path=P/'private'/(alias+'.private.csv');present=int(sql("SELECT count(*) FROM messages WHERE channel_id='"+valid(d['channel'])+"';").strip());assert present in [0,count]
+    if csv_path.exists():
+        raw=csv_path.read_text(encoding='utf-8');assert hashlib.sha256(raw.encode()).hexdigest()==d['seed_CSV_SHA256'];replies=d['reply_count']
+    else:
+        assert present==0;out=io.StringIO(newline='');writer=csv.writer(out,lineterminator='\n');replies=0
+        for i,identifier in enumerate(d['ids']):
+            is_reply=ratio==100 or ratio==50 and i%2==1;replies+=is_reply;target=cfg['sentinel_id'] if missing else d['ids'][(i-1)%count]
+            writer.writerow([valid(identifier),d['channel'],cfg['account'],str(uuid.uuid4()),'Synthetic profile row '+str(i)+('\nvariable-height synthetic line'*(i%4)),(epoch+timedelta(seconds=i)).isoformat(),target if is_reply else None])
+        raw=out.getvalue();d.update(seed_CSV_SHA256=hashlib.sha256(raw.encode()).hexdigest(),seed_CSV_bytes=len(raw.encode()),reply_count=replies);save();csv_path.write_text(raw,encoding='utf-8',newline='\n')
+    if present==0:sql('BEGIN;\nCOPY messages(id,channel_id,author_id,client_message_id,body,created_at,reply_to_id) FROM STDIN CSV;\n'+raw+'\\.\nCOMMIT;\n')
+    values=sql("SELECT count(*),count(reply_to_id),count(DISTINCT id) FROM messages WHERE channel_id='"+d['channel']+"';").strip().split('|');assert list(map(int,values))==[count,replies,count]
+    status,_,page=request('/api/v1/channels/'+d['channel']+'/messages',cookie=cfg['cookie']);assert status==200 and len(page['messages'])==50 and page['messages'][0]['id']==d['ids'][-1]
+    if missing:
+        status,_,page=request('/api/v1/channels/'+d['channel']+'/messages?at='+cfg['sentinel_id']+'&limit=20',cookie=cfg['cookie']);assert status==200 and page['messages']==[]
+    d['preparation_verified']=True;save();receipts.append({k:v for k,v in d.items() if k not in ['channel','ids']})
+    print(json.dumps({'verified':alias,'count':count,'replies':replies,'missing_context_HTTP200_empty':missing}),flush=True)
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS20_OWNED_DATASETS_REAL_API_AND_MISSING_CONTEXT_CONTROLS','source_revision':SOURCE,'datasets':receipts,'dataset_count':len(receipts),'total_seeded_profile_messages':sum(d['count'] for d in receipts),'control_sentinel_rows':1,'missing_target_limit':'FK-valid intentional legacy cross-scope reference injected by owned SQL fixture. Normal creation-path admission was not tested. Actual scoped context GET200/empty verified; controller maps missing anchor to unavailable. Initial404 assumption was a setup error, preserved before guarded resume','normal_creation_admission_tested':False,'production_touched':False,'IDs_CSV_bodies_cookie_stay_private':True}
+assert r['dataset_count']==20 and r['total_seeded_profile_messages']==77750;write(P/'fixture-ready.json',r);print(json.dumps({k:v for k,v in r.items() if k!='datasets'}))

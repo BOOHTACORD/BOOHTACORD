@@ -1,0 +1,81 @@
+{
+  "at_utc": "2026-10-28T02:58:33.473886+00:00",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "production_touched": false,
+  "services": [
+    {
+      "service": "api",
+      "image_id": "sha256:b34a09b6eebfb87fea478e7cd440cc7ab9c52dc7dbd3cf4d659b12a9eff98a47",
+      "running": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "web",
+      "image_id": "sha256:414cc79b7ff85cfca81252bd12eb8a9525f2fb5727932a88b02ccf63ebb42d20",
+      "running": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "proxy",
+      "image_id": "sha256:f43d8810c944e27e6f7ea80b165de11dbdab16cff15c8a80d83ae3e1a109a35d",
+      "running": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "postgres",
+      "image_id": "sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94",
+      "running": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "livekit",
+      "image_id": "sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3",
+      "running": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "collector",
+      "image_id": "sha256:b6d2b9a85b1029d05b5ad913150c1f014eed4ae99be81a1813ca5ade4a191913",
+      "running": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "tempo",
+      "image_id": "sha256:cac9de2ac9f6da8efca5b64b690a7cb8c786a0c49cac7b4517dd1b0089a6c703",
+      "running": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "prometheus",
+      "image_id": "sha256:5550dc63da361dc30f6fe02ac0e4dfc736ededfef3c8d12a634db04a67824d78",
+      "running": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "grafana",
+      "image_id": "sha256:6e5d306338670f381a942f1c50d3c266bf71531e5ddd9ee4fc1a133dac5ce63d",
+      "running": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    }
+  ],
+  "database_counts": [
+    516,
+    2066,
+    50,
+    9,
+    3
+  ],
+  "PostgreSQL_version": "17.6",
+  "API_health_http": 200,
+  "message_schema_SHA256": "475d2532c0997db2dc7ef5cd5f07dd5945708a8551c16405b5a04fb9a5b480fb",
+  "status": "PASS_NINE_PRIVATE_SERVICES_SOURCE_AND_FRESH_SQL_BASELINE"
+}

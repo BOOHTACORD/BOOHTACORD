@@ -1,0 +1,34 @@
+import{createApp,h,nextTick}from'vue'
+import{createPinia,setActivePinia}from'pinia'
+import TextHistoryList from'@qa-source/conversation/TextHistoryList.vue'
+import{useMessageStore}from'@qa-source/conversation/message_store'
+import{useAuthorDirectory}from'@qa-source/identity/author_directory'
+import'@qa-source/style.css'
+import{metrics}from'./metrics'
+declare const __QA_SOURCE_MODE__:string
+const cfg=(window as any).__historyProfileConfig,pinia=createPinia();setActivePinia(pinia)
+const store:any=useMessageStore(pinia),authors=useAuthorDirectory(pinia),indices=new Map<string,number>(cfg.ids.map((v:string,i:number)=>[v,i])),meter=metrics(indices)
+const response=await fetch('/api/v1/auth/session'),session=await response.json()
+if(response.status!==200||!session.authenticated||session.account_id!==cfg.account)throw Error('OWN_FIXTURE_SESSION_REQUIRED')
+authors.acceptOwnProfile({account_id:cfg.account,login:'fixture',display_name:'QA owner',role:session.role})
+let app:ReturnType<typeof createApp>|undefined,progress={stage:'ready',older_calls:0,newer_calls:0,sampled_max_cache_count:0},lastReply:number|null=null
+const twoFrames=()=>new Promise<void>(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r())))
+const settle=async()=>{await nextTick();await twoFrames()}
+const browserTask=<T>(callback:()=>T|Promise<T>)=>new Promise<T>((resolve,reject)=>setTimeout(()=>{Promise.resolve().then(callback).then(resolve,reject)},0))
+function state(){return{source_mode:__QA_SOURCE_MODE__,stage:progress.stage,cache_count:store.messages.length,cache_min_index:Math.min(...store.messages.map((m:any)=>indices.get(m.id)??-1)),cache_max_index:Math.max(...store.messages.map((m:any)=>indices.get(m.id)??-1)),older_cursor:Boolean(store.nextCursor),newer_cursor:Boolean(store.newerCursor),...progress}}
+function sample(){progress.sampled_max_cache_count=Math.max(progress.sampled_max_cache_count,store.messages.length)}
+async function prepare(latestOnly=false){
+ const start=performance.now();progress.stage='prepare';await store.open(cfg.channel);if(!store.historyLoaded||store.error)throw Error('INITIAL_HISTORY_REFUSED');sample()
+ while(store.nextCursor&&(!latestOnly||store.messages.length<Math.min(cfg.count,500))){if(++progress.older_calls>250)throw Error('OLDER_CALL_BOUND');store.setHistoryAnchor?.(store.messages.at(-1)?.id);if(!await store.loadOlder())throw Error('OLDER_HISTORY_REFUSED');sample()}
+ if(__QA_SOURCE_MODE__==='current'&&!latestOnly)while(store.newerCursor){if(++progress.newer_calls>600)throw Error('NEWER_CALL_BOUND');store.setHistoryAnchor(store.messages[0]?.id);if(!await store.loadNewer())throw Error('NEWER_HISTORY_REFUSED');sample()}
+ progress.stage='prepared';return{duration_ms:performance.now()-start,...state()}
+}
+function mount(){return browserTask(async()=>{
+ progress.stage='mount';const start=performance.now()
+ app=createApp({render:()=>h('main',{style:{height:'900px',width:'1100px',margin:'40px auto',display:'flex',flexDirection:'column'}},[h(TextHistoryList,{channelId:cfg.channel,session:{accountId:cfg.account,role:session.role},onReplyContext:(id:string)=>{lastReply=indices.get(id)??-1}})])}).use(pinia)
+ app.mount('#app');const syncEnd=performance.now();await settle();const end=performance.now();progress.stage='mounted';return{start,end,synchronous_mount_ms:syncEnd-start,two_frame_mount_ms:end-start}
+})}
+function scroll(ratio:number){return browserTask(async()=>{const root=document.querySelector<HTMLElement>('.message-list')!;const start=performance.now();root.scrollTop=(root.scrollHeight-root.clientHeight)*ratio;root.dispatchEvent(new Event('scroll'));await settle();const end=performance.now();return{ratio,start,end,event_to_two_frames_ms:end-start}})}
+function calibrate(){return browserTask(()=>{const start=performance.now();while(performance.now()-start<120){}return{start,end:performance.now()}})}
+async function reset(){progress.stage='reset';app?.unmount();app=undefined;await store.open(cfg.empty_channel);await settle();progress.stage='reset_done';if(store.messages.length)throw Error('EMPTY_CHANNEL_RESET_FAILED');return{cache_count:store.messages.length,DOM_message_rows:document.querySelectorAll('[data-message-id]').length}}
+Object.assign(window,{historyPerf:{ready:true,prepare,mount,scroll,reset,calibrate,state,dom:meter.dom,visible:meter.visible,position:meter.position,longTasks:meter.longTasks,pagingSettled:()=>!store.olderLoading&&!store.newerLoading,lastReply:()=>lastReply,settle}})

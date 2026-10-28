@@ -1,0 +1,6 @@
+"""Record the actual missing-context control without exposing payloads or identifiers."""
+from common import P,read,write,request
+c=read(P/'private/config.private.json');d=c['datasets'][-1]
+s,_,v=request('/api/v1/channels/'+d['channel']+'/messages?at='+c['sentinel_id']+'&limit=20',cookie=c['cookie'])
+r={'status':s,'error_code':(v or {}).get('error',{}).get('code'),'response_keys':list(v or {}),'returned_messages':len((v or {}).get('messages',[])),'sentinel_returned':any(m.get('id')==c['sentinel_id'] for m in (v or {}).get('messages',[]))}
+write(P/'missing-context-control.json',r);print(__import__('json').dumps(r))

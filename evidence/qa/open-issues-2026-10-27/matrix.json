@@ -5408,11 +5408,15 @@
           "id": "I240.C9",
           "status": "FAIL",
           "execution_cases": [
-            "ISOLATED-history-edit-draft-cache-eviction"
+            "ISOLATED-history-edit-draft-cache-eviction",
+            "ISOLATED-history20-source-performance-and-window-matrix"
           ],
           "evidence": [
             "isolated-history-edit-eviction/summary.json",
-            "isolated-history-edit-eviction/semantic-result.json"
+            "isolated-history-edit-eviction/semantic-result.json",
+            "isolated-history-profile-matrix/summary.json",
+            "isolated-history-profile-matrix/semantic-result.json",
+            "isolated-history-profile-matrix/comparison.json"
           ],
           "execution": "python -X utf8 .out/qa-history-window/preflight.py; python -X utf8 .out/qa-history-window/prepare.py; node .out/qa-history-window/run_browser.mjs; python -X utf8 .out/qa-history-window/verify_browser.py; python -X utf8 .out/qa-history-window/cleanup.py; python -X utf8 .out/qa-history-window/audit_bind.py",
           "platform": "Windows11/Node24.18.0/headlessChromium153.0.8010.12/Vue3.5.43/Pinia4.0.3/current source components; own actual Go API/PostgreSQL17.6",
@@ -5435,10 +5439,16 @@
                 "status": "FAIL",
                 "scope": "Uncommitted editor draft lost after real cache eviction/restoration only",
                 "result": "isolated-history-edit-eviction/summary.json"
+              },
+              {
+                "case": "ISOLATED-history20-source-performance-and-window-matrix",
+                "status": "PASS_SCOPED",
+                "scope": "20-dataset calibrated source-component measurements, cache/DOM/paging, scroll focus and same-row anchor only; edit bug remains",
+                "result": "isolated-history-profile-matrix/summary.json"
               }
             ]
           },
-          "reason": "Confirmed loss of uncommitted edit on real500-cache older/newer roundtrip,3 reproductions/2 controls. Canonical141 requires a fix; remaining full-row facets retain NOT_RUN scope.",
+          "reason": "Confirmed loss of uncommitted edit on real500-cache older/newer roundtrip,3 reproductions/2 controls. Canonical141 requires a fix; remaining full-row facets retain NOT_RUN scope. Additional20-dataset performance/window measurements PASS_SCOPED; original uncommitted edit-draft defect141 and other functional clauses remain unresolved.",
           "remaining_work_state": "CONFIRMED_DEFECT_141_AND_FULL_PROFILE_REMAINS_QUEUED"
         },
         {
@@ -6979,29 +6989,42 @@
           "requirement": "On the same browser/device/dataset profile histories of 50, 500, 5,000 and 10,000 messages with 0/50/100% reply references including missing targets; verify rendered row count follows viewport/overscan and cache stays bounded at 500 with reversible older/newer paging.",
           "source_checkbox": null,
           "id": "I241.C36",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental. | Use only the applicable scoped commands in cases.json, including node .out/qa-goal/privacy_run.mjs, node .out/qa-goal/web_logout_run.mjs, node .out/qa-goal/quickjump_run.mjs and node .out/qa-goal/web_image_formats_run.mjs; execute remaining row steps separately.",
-          "platform": "Disposable owned PostgreSQL/API/LiveKit target and bounded synthetic accounts/data; never shared production fault/load injection. | Installed headed Windows Chrome and explicitly stated CSS viewport; no physical mobile/other-browser substitution.",
-          "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "status": "PASS",
+          "execution_cases": [
+            "ISOLATED-history20-source-performance-and-window-matrix"
+          ],
+          "evidence": [
+            "isolated-history-profile-matrix/summary.json",
+            "isolated-history-profile-matrix/semantic-result.json",
+            "isolated-history-profile-matrix/comparison.json"
+          ],
+          "execution": "python -X utf8 .out/qa-history-performance/preflight.py; python -X utf8 .out/qa-history-performance/archive_before.py; python -X utf8 .out/qa-history-performance/prepare.py --resume; node .out/qa-history-performance/run_matrix.mjs --smoke; node .out/qa-history-performance/run_matrix.mjs; python -X utf8 .out/qa-history-performance/verify.py; python -X utf8 .out/qa-history-performance/cleanup.py; python -X utf8 .out/qa-history-performance/audit_bind.py",
+          "platform": "Windows11/i7-12700/headless Chromium153.0.8010.12/Node24.18.0/Vue3.5.43/Pinia4.0.3/Vite8.3.0; same real own Go API/PostgreSQL17.6, history viewport900px",
+          "mandatory_when": "Before accepting exact I241.C36/C38/C39 measurements and cache/DOM scope, or relying on141 history-performance claims; preserve remaining full-row/physical gates",
+          "result": "isolated-history-profile-matrix/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_api_faults",
             "browser_workflow"
           ],
           "execution_plan": {
-            "status": "PLAN_ONLY_NOT_RUNTIME_PROOF",
+            "status": "EXECUTED_EXACT_SOURCE_FIXTURE_SCOPE",
             "source_scenario": "I241.C36 requirement text retained verbatim",
             "method_scope": "Each method is supplemental; execute every remaining source-row clause and required platform variant separately",
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              {
+                "case": "ISOLATED-history20-source-performance-and-window-matrix",
+                "status": "PASS_SCOPED",
+                "scope": "20-dataset calibrated source-component measurements, cache/DOM/paging, scroll focus and same-row anchor only; edit bug remains",
+                "result": "isolated-history-profile-matrix/summary.json"
+              }
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "reason": "All20 datasets x both source variants x3 calibrated browser profiles executed; exact source/owned API measurement and window-bound scope only. No INP/SLO, pure141 causal, deployed/physical/platform/security/media acceptance inferred.",
+          "remaining_work_state": "EXACT_ROW_SOURCE_FIXTURE_SCOPE_COMPLETE; FULL_QA_AND_OTHER_CLAUSES_REMAIN"
         },
         {
           "section": "141 — Long TEXT history browser profiling",
@@ -7010,11 +7033,15 @@
           "id": "I241.C37",
           "status": "FAIL",
           "execution_cases": [
-            "ISOLATED-history-edit-draft-cache-eviction"
+            "ISOLATED-history-edit-draft-cache-eviction",
+            "ISOLATED-history20-source-performance-and-window-matrix"
           ],
           "evidence": [
             "isolated-history-edit-eviction/summary.json",
-            "isolated-history-edit-eviction/semantic-result.json"
+            "isolated-history-edit-eviction/semantic-result.json",
+            "isolated-history-profile-matrix/summary.json",
+            "isolated-history-profile-matrix/semantic-result.json",
+            "isolated-history-profile-matrix/comparison.json"
           ],
           "execution": "python -X utf8 .out/qa-history-window/preflight.py; python -X utf8 .out/qa-history-window/prepare.py; node .out/qa-history-window/run_browser.mjs; python -X utf8 .out/qa-history-window/verify_browser.py; python -X utf8 .out/qa-history-window/cleanup.py; python -X utf8 .out/qa-history-window/audit_bind.py",
           "platform": "Windows11/Node24.18.0/headlessChromium153.0.8010.12/Vue3.5.43/Pinia4.0.3/current source components; own actual Go API/PostgreSQL17.6",
@@ -7038,10 +7065,16 @@
                 "status": "FAIL",
                 "scope": "Uncommitted editor draft lost after real cache eviction/restoration only",
                 "result": "isolated-history-edit-eviction/summary.json"
+              },
+              {
+                "case": "ISOLATED-history20-source-performance-and-window-matrix",
+                "status": "PASS_SCOPED",
+                "scope": "20-dataset calibrated source-component measurements, cache/DOM/paging, scroll focus and same-row anchor only; edit bug remains",
+                "result": "isolated-history-profile-matrix/summary.json"
               }
             ]
           },
-          "reason": "Confirmed loss of uncommitted edit on real500-cache older/newer roundtrip,3 reproductions/2 controls. Canonical141 requires a fix; remaining full-row facets retain NOT_RUN scope.",
+          "reason": "Confirmed loss of uncommitted edit on real500-cache older/newer roundtrip,3 reproductions/2 controls. Canonical141 requires a fix; remaining full-row facets retain NOT_RUN scope. Additional20-dataset performance/window measurements PASS_SCOPED; original uncommitted edit-draft defect141 and other functional clauses remain unresolved.",
           "remaining_work_state": "CONFIRMED_DEFECT_141_AND_FULL_PROFILE_REMAINS_QUEUED"
         },
         {
@@ -7049,48 +7082,67 @@
           "requirement": "Capture before/after long tasks, interaction latency, heap and DOM nodes on the same device/dataset; report observed measurements rather than theoretical complexity.",
           "source_checkbox": null,
           "id": "I241.C38",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental. | Use only the applicable scoped commands in cases.json, including node .out/qa-goal/privacy_run.mjs, node .out/qa-goal/web_logout_run.mjs, node .out/qa-goal/quickjump_run.mjs and node .out/qa-goal/web_image_formats_run.mjs; execute remaining row steps separately.",
-          "platform": "Disposable owned PostgreSQL/API/LiveKit target and bounded synthetic accounts/data; never shared production fault/load injection. | Installed headed Windows Chrome and explicitly stated CSS viewport; no physical mobile/other-browser substitution.",
-          "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "status": "PASS",
+          "execution_cases": [
+            "ISOLATED-history20-source-performance-and-window-matrix"
+          ],
+          "evidence": [
+            "isolated-history-profile-matrix/summary.json",
+            "isolated-history-profile-matrix/semantic-result.json",
+            "isolated-history-profile-matrix/comparison.json"
+          ],
+          "execution": "python -X utf8 .out/qa-history-performance/preflight.py; python -X utf8 .out/qa-history-performance/archive_before.py; python -X utf8 .out/qa-history-performance/prepare.py --resume; node .out/qa-history-performance/run_matrix.mjs --smoke; node .out/qa-history-performance/run_matrix.mjs; python -X utf8 .out/qa-history-performance/verify.py; python -X utf8 .out/qa-history-performance/cleanup.py; python -X utf8 .out/qa-history-performance/audit_bind.py",
+          "platform": "Windows11/i7-12700/headless Chromium153.0.8010.12/Node24.18.0/Vue3.5.43/Pinia4.0.3/Vite8.3.0; same real own Go API/PostgreSQL17.6, history viewport900px",
+          "mandatory_when": "Before accepting exact I241.C36/C38/C39 measurements and cache/DOM scope, or relying on141 history-performance claims; preserve remaining full-row/physical gates",
+          "result": "isolated-history-profile-matrix/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_api_faults",
             "browser_workflow"
           ],
           "execution_plan": {
-            "status": "PLAN_ONLY_NOT_RUNTIME_PROOF",
+            "status": "EXECUTED_EXACT_SOURCE_FIXTURE_SCOPE",
             "source_scenario": "I241.C38 requirement text retained verbatim",
             "method_scope": "Each method is supplemental; execute every remaining source-row clause and required platform variant separately",
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              {
+                "case": "ISOLATED-history20-source-performance-and-window-matrix",
+                "status": "PASS_SCOPED",
+                "scope": "20-dataset calibrated source-component measurements, cache/DOM/paging, scroll focus and same-row anchor only; edit bug remains",
+                "result": "isolated-history-profile-matrix/summary.json"
+              }
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "reason": "All20 datasets x both source variants x3 calibrated browser profiles executed; exact source/owned API measurement and window-bound scope only. No INP/SLO, pure141 causal, deployed/physical/platform/security/media acceptance inferred.",
+          "remaining_work_state": "EXACT_ROW_SOURCE_FIXTURE_SCOPE_COMPLETE; FULL_QA_AND_OTHER_CLAUSES_REMAIN"
         },
         {
           "section": "141 — Long TEXT history browser profiling",
           "requirement": "Evidence: client commit/SHA, browser/OS/device, dataset recipe/count/reply ratio, performance trace/summary, DOM/cache size, cursor/anchor assertions, scenarios PASS/FAIL/NOT_RUN. Do not include private message bodies or real IDs.",
           "source_checkbox": null,
           "id": "I241.C39",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "python .out/qa-goal/seal_evidence.py working; then manually inspect every required runtime receipt, visual observation, skip/platform limit and source identity.",
-          "platform": "Evidence files plus the actual platform stated in each receipt.",
-          "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "status": "PASS",
+          "execution_cases": [
+            "ISOLATED-history20-source-performance-and-window-matrix"
+          ],
+          "evidence": [
+            "isolated-history-profile-matrix/summary.json",
+            "isolated-history-profile-matrix/semantic-result.json",
+            "isolated-history-profile-matrix/comparison.json"
+          ],
+          "execution": "python -X utf8 .out/qa-history-performance/preflight.py; python -X utf8 .out/qa-history-performance/archive_before.py; python -X utf8 .out/qa-history-performance/prepare.py --resume; node .out/qa-history-performance/run_matrix.mjs --smoke; node .out/qa-history-performance/run_matrix.mjs; python -X utf8 .out/qa-history-performance/verify.py; python -X utf8 .out/qa-history-performance/cleanup.py; python -X utf8 .out/qa-history-performance/audit_bind.py",
+          "platform": "Windows11/i7-12700/headless Chromium153.0.8010.12/Node24.18.0/Vue3.5.43/Pinia4.0.3/Vite8.3.0; same real own Go API/PostgreSQL17.6, history viewport900px",
+          "mandatory_when": "Before accepting exact I241.C36/C38/C39 measurements and cache/DOM scope, or relying on141 history-performance claims; preserve remaining full-row/physical gates",
+          "result": "isolated-history-profile-matrix/summary.json",
           "row_kind": "EVIDENCE_REQUIREMENT",
           "acceptance_methods": [
             "evidence_integrity"
           ],
           "execution_plan": {
-            "status": "PLAN_ONLY_NOT_RUNTIME_PROOF",
+            "status": "EXECUTED_EXACT_SOURCE_FIXTURE_SCOPE",
             "source_scenario": "I241.C39 requirement text retained verbatim",
             "method_scope": "Each method is supplemental; execute every remaining source-row clause and required platform variant separately",
             "mentioned_platforms": [
@@ -7098,10 +7150,17 @@
             ],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              {
+                "case": "ISOLATED-history20-source-performance-and-window-matrix",
+                "status": "PASS_SCOPED",
+                "scope": "20-dataset calibrated source-component measurements, cache/DOM/paging, scroll focus and same-row anchor only; edit bug remains",
+                "result": "isolated-history-profile-matrix/summary.json"
+              }
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "reason": "All20 datasets x both source variants x3 calibrated browser profiles executed; exact source/owned API measurement and window-bound scope only. No INP/SLO, pure141 causal, deployed/physical/platform/security/media acceptance inferred.",
+          "remaining_work_state": "EXACT_ROW_SOURCE_FIXTURE_SCOPE_COMPLETE; FULL_QA_AND_OTHER_CLAUSES_REMAIN"
         },
         {
           "section": "141 — Long TEXT history browser profiling",
@@ -16206,7 +16265,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-28T02:45:17.609916+00:00",
+  "updated_utc": "2026-10-28T03:34:09.536350+00:00",
   "known_defect_issues": [
     579,
     580,

@@ -1,0 +1,49 @@
+import assert from'node:assert/strict'
+import{createHash}from'node:crypto'
+import{writeFile}from'node:fs/promises'
+const hash=s=>createHash('sha256').update(s).digest('hex')
+export async function profile(browser,base,cfg,d,mode,repetition,P,expect){
+ const r={dataset:d.alias,count:d.count,reply_ratio_percent:d.reply_ratio_percent,missing_targets:d.missing_targets,seed_CSV_SHA256:d.seed_CSV_SHA256,mode,repetition,status:'RUNNING',at_utc:new Date().toISOString(),API_statuses:{},message_requests:{initial:0,older:0,newer:0},page_errors:[],foreign_request_origins:[],scrolls:[]}
+ let context,page,timer;const consoles=[],pending=[];r.served_source_modules=[]
+ async function heap(cdp){const before=await cdp.send('Runtime.getHeapUsage');await cdp.send('HeapProfiler.collectGarbage');const after=await cdp.send('Runtime.getHeapUsage');return{without_explicit_GC:before,after_explicit_GC:after}}
+ try{
+  context=await browser.newContext({viewport:{width:1440,height:1000},timezoneId:'UTC'});const split=cfg.cookie.indexOf('=')
+  timer=setTimeout(()=>{r.profile_deadline_reached=true;void context.close()},180000);timer.unref()
+  await context.addCookies([{name:cfg.cookie.slice(0,split),value:cfg.cookie.slice(split+1),url:base,httpOnly:true,secure:true,sameSite:'Lax'}])
+  await context.addInitScript(v=>{window.__historyProfileConfig=v},{...d,account:cfg.account,empty_channel:cfg.empty_channel})
+  page=await context.newPage();page.setDefaultTimeout(25000)
+  page.on('pageerror',e=>{r.page_errors.push({name:e.name,stack_SHA256:hash(e.stack??e.message)});consoles.push(e.stack??e.message)})
+  page.on('console',m=>{if(['warning','error'].includes(m.type()))consoles.push(m.text())})
+  page.on('request',request=>{const u=new URL(request.url());if(!['http:','https:'].includes(u.protocol))return;if(u.origin!==base){if(!r.foreign_request_origins.includes(u.origin))r.foreign_request_origins.push(u.origin)}if(u.pathname.endsWith('/messages')){r.message_requests[u.searchParams.has('before')?'older':u.searchParams.has('after')?'newer':'initial']++}})
+  page.on('response',response=>{const u=new URL(response.url());if(u.pathname.startsWith('/api/v1/'))r.API_statuses[response.status()]=(r.API_statuses[response.status()]??0)+1;if(u.origin===base&&/(TextHistoryList\.vue|text_history\.ts|message_store\.ts|\/style\.css)$/.test(u.pathname)){pending.push(response.body().then(b=>r.served_source_modules.push({module:u.pathname.split('/').at(-1),status:response.status(),bytes:b.length,SHA256:hash(b)})).catch(()=>{r.served_module_capture_incomplete=true}))}})
+  const cdp=await context.newCDPSession(page);await cdp.send('Performance.enable')
+  await page.goto(base+'/@fs/'+P.replaceAll('\\','/')+'fixture.html');await page.waitForFunction(()=>window.historyPerf?.ready)
+  r.browser_platform=await page.evaluate(()=>({hardwareConcurrency:navigator.hardwareConcurrency,deviceMemory:navigator.deviceMemory,language:navigator.language,viewport:{width:innerWidth,height:innerHeight},devicePixelRatio}))
+  r.long_task_observer_selftest=await page.evaluate(()=>window.historyPerf.calibrate());await page.waitForTimeout(200);r.long_task_observer_selftest.observed=await page.evaluate(v=>window.historyPerf.longTasks(v.start,v.end),r.long_task_observer_selftest);assert.ok(r.long_task_observer_selftest.observed.count>=1,'LONGTASK_OBSERVER_SELFTEST_FAILED')
+  r.preparation_latest_only=mode==='current';r.heap_empty=await heap(cdp);r.preparation=await page.evaluate(v=>window.historyPerf.prepare(v),r.preparation_latest_only);r.heap_prepared=await heap(cdp)
+  assert.equal(r.preparation.cache_count,mode==='current'?Math.min(d.count,500):d.count);assert.equal(r.preparation.cache_max_index,d.count-1)
+  r.mount=await page.evaluate(()=>window.historyPerf.mount());await page.waitForTimeout(250)
+  r.mount.long_tasks=await page.evaluate(v=>window.historyPerf.longTasks(v.start,v.end),r.mount);r.after_mount=await page.evaluate(()=>window.historyPerf.dom());r.heap_mounted=await heap(cdp)
+  assert.ok(r.after_mount.list_client_height>=800&&r.after_mount.list_client_height<=950,'ACTUAL_VIEWPORT_NOT_FIXED_HOST')
+  for(const ratio of [.25,.5,.75,0,1]){const one=await page.evaluate(v=>window.historyPerf.scroll(v),ratio);await page.waitForTimeout(50);one.long_tasks=await page.evaluate(v=>window.historyPerf.longTasks(v.start,v.end),one);one.DOM=await page.evaluate(()=>window.historyPerf.dom());r.scrolls.push(one)}
+  const newest=page.locator('[data-message-id="'+d.ids.at(-1)+'"] .message-item');await expect(newest).toBeVisible();await newest.focus()
+  r.focus_before=await page.evaluate(()=>window.historyPerf.dom());await page.evaluate(()=>window.historyPerf.scroll(0));r.focus_after_scroll=await page.evaluate(()=>window.historyPerf.dom());r.focus_preserved=r.focus_after_scroll.focused_index===d.count-1&&r.focus_after_scroll.focus_connected
+  r.UI_paging={applicable:mode==='current'&&d.count>500}
+  if(r.UI_paging.applicable){
+   await page.evaluate(()=>window.historyPerf.scroll(0));r.UI_paging.before=await page.evaluate(()=>({state:window.historyPerf.state(),DOM:window.historyPerf.dom()}))
+   await page.getByRole('button',{name:'Показать предыдущие сообщения',exact:true}).click();await page.waitForFunction(()=>window.historyPerf.pagingSettled());await page.evaluate(()=>window.historyPerf.settle());await page.waitForTimeout(200)
+   r.UI_paging.after_older=await page.evaluate(()=>({state:window.historyPerf.state(),DOM:window.historyPerf.dom()}));const a=r.UI_paging.before.DOM.first_visible,b=r.UI_paging.after_older.DOM.first_visible
+   r.UI_paging.diagnostic_first_visible_match=Boolean(a&&b&&a.index===b.index&&Math.abs(a.y-b.y)<=2)
+   r.UI_paging.original_anchor_after=a?await page.evaluate(index=>window.historyPerf.position(index),a.index):null;const same=r.UI_paging.original_anchor_after
+   r.UI_paging.anchor_preserved=Boolean(a&&same&&Math.abs(a.y-same.y)<=2);r.UI_paging.anchor_delta_px=a&&same?same.y-a.y:null
+   r.UI_paging.restore=[]
+   while((await page.evaluate(()=>window.historyPerf.state())).cache_max_index<d.count-1&&r.UI_paging.restore.length<4){await page.getByRole('button',{name:'Показать следующие сообщения',exact:true}).click();await page.waitForFunction(()=>window.historyPerf.pagingSettled());await page.evaluate(()=>window.historyPerf.settle());await page.waitForTimeout(100);r.UI_paging.restore.push(await page.evaluate(()=>window.historyPerf.state()))}
+   r.UI_paging.after_restore=await page.evaluate(()=>window.historyPerf.state());r.UI_paging.reversible=r.UI_paging.after_restore.cache_max_index===d.count-1&&r.UI_paging.after_restore.cache_count===500
+  }
+  r.before_reset=await page.evaluate(()=>({state:window.historyPerf.state(),DOM:window.historyPerf.dom()}));r.reset=await page.evaluate(()=>window.historyPerf.reset());r.heap_after_reset=await heap(cdp)
+  r.source_guard={DOM_rows_bounded:[r.after_mount,...r.scrolls.map(v=>v.DOM),r.focus_after_scroll].every(v=>v.message_rows<=64),settled_cache_bounded:r.preparation.sampled_max_cache_count<=500,focus_preserved:r.focus_preserved,paging_reversible:!r.UI_paging.applicable||r.UI_paging.reversible,anchor_preserved:!r.UI_paging.applicable||r.UI_paging.anchor_preserved}
+  r.status='PROFILE_COMPLETE'
+ }catch(error){r.status='PROFILE_FAILED_OR_INCOMPLETE';r.error_name=error.name;r.error_SHA256=hash(error.stack??error.message);await writeFile(P+'private/'+d.alias+'-'+mode+'-'+repetition+'-error.private.log',error.stack??error.message);if(page){try{r.failure_surface=await page.evaluate(()=>({fixture_ready:Boolean(window.historyPerf?.ready),state:window.historyPerf?.state?.()}));await page.screenshot({path:P+'private/'+d.alias+'-'+mode+'-'+repetition+'-failure.private.png'})}catch{}}}
+ finally{clearTimeout(timer);await Promise.allSettled(pending);await context?.close();r.finished_at_utc=new Date().toISOString();await writeFile(P+'private/'+d.alias+'-'+mode+'-'+repetition+'-console.private.log',consoles.join('\n'))}
+ return r
+}

@@ -1,0 +1,22 @@
+"""Prepare immutable historical Web source inputs inside this ignored private packet."""
+import hashlib,io,json,subprocess,zipfile
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];OLD='ce8c3e0ad848a879d4d60ef08df74b85661c19da';out=P/'baseline-src'
+assert not out.exists(),'Preserve existing baseline inputs';out.mkdir()
+paths=['clients/web/src','clients/web/public','clients/web/package.json','clients/web/package-lock.json']
+raw=subprocess.check_output(['git','archive','--format=zip',OLD,*paths],cwd=Q)
+(P/'baseline-source.private.zip').write_bytes(raw)
+with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+    for info in archive.infolist():
+        target=(out/info.filename).resolve();assert target.is_relative_to(out.resolve())
+        if info.is_dir():target.mkdir(parents=True,exist_ok=True)
+        else:target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(archive.read(info))
+    count=len([v for v in archive.infolist() if not v.is_dir()])
+old=json.loads((out/'clients/web/package.json').read_text(encoding='utf-8'));versions={}
+for group in ['dependencies','devDependencies']:
+    for package,declared in old[group].items():
+        actual=json.loads((Q/'clients/web/node_modules'/package/'package.json').read_text(encoding='utf-8'))['version']
+        if not declared.startswith('^'):assert actual==declared,(package,declared,actual)
+        versions[package]={'historical_declared':declared,'actual_shared_runtime':actual}
+receipt={'source_before':OLD,'archive_SHA256':hashlib.sha256(raw).hexdigest(),'archived_native_package_paths':paths,'archived_file_count':count,'baseline_source_modified':False,'runtime_packages':versions,'limit':'Historical source compiled with the same installed current toolchain; all exact historical direct pins match, caret declarations are recorded rather than treated as an exact lock restore'}
+(P/'baseline-inputs.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps({'before_source':OLD,'archive_SHA256':receipt['archive_SHA256'],'files':count,'direct_runtime_pins_match':True}))

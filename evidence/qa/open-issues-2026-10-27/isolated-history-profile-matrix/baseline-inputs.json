@@ -1,0 +1,95 @@
+{
+  "source_before": "ce8c3e0ad848a879d4d60ef08df74b85661c19da",
+  "archive_SHA256": "221d1936a1fabef7b6c7b342bc4d72ccca7cc8bc21c2217af3c0c16e01d71af7",
+  "archived_native_package_paths": [
+    "clients/web/src",
+    "clients/web/public",
+    "clients/web/package.json",
+    "clients/web/package-lock.json"
+  ],
+  "archived_file_count": 892,
+  "baseline_source_modified": false,
+  "runtime_packages": {
+    "@opentelemetry/api": {
+      "historical_declared": "1.9.1",
+      "actual_shared_runtime": "1.9.1"
+    },
+    "@opentelemetry/context-zone": {
+      "historical_declared": "2.11.0",
+      "actual_shared_runtime": "2.11.0"
+    },
+    "@opentelemetry/exporter-trace-otlp-proto": {
+      "historical_declared": "0.222.0",
+      "actual_shared_runtime": "0.222.0"
+    },
+    "@opentelemetry/resources": {
+      "historical_declared": "2.11.0",
+      "actual_shared_runtime": "2.11.0"
+    },
+    "@opentelemetry/sdk-trace-base": {
+      "historical_declared": "2.11.0",
+      "actual_shared_runtime": "2.11.0"
+    },
+    "@opentelemetry/sdk-trace-web": {
+      "historical_declared": "2.11.0",
+      "actual_shared_runtime": "2.11.0"
+    },
+    "livekit-client": {
+      "historical_declared": "2.22.3",
+      "actual_shared_runtime": "2.22.3"
+    },
+    "pinia": {
+      "historical_declared": "4.0.3",
+      "actual_shared_runtime": "4.0.3"
+    },
+    "vue": {
+      "historical_declared": "3.5.43",
+      "actual_shared_runtime": "3.5.43"
+    },
+    "@livekit/throws-transformer": {
+      "historical_declared": "^0.1.3",
+      "actual_shared_runtime": "0.1.3"
+    },
+    "@playwright/test": {
+      "historical_declared": "1.63.0",
+      "actual_shared_runtime": "1.63.0"
+    },
+    "@types/node": {
+      "historical_declared": "24.13.6",
+      "actual_shared_runtime": "24.13.6"
+    },
+    "@types/sdp-transform": {
+      "historical_declared": "^2.15.0",
+      "actual_shared_runtime": "2.15.0"
+    },
+    "@vitejs/plugin-vue": {
+      "historical_declared": "6.0.9",
+      "actual_shared_runtime": "6.0.9"
+    },
+    "livekit-server-sdk": {
+      "historical_declared": "2.19.1",
+      "actual_shared_runtime": "2.19.1"
+    },
+    "postcss": {
+      "historical_declared": "8.5.28",
+      "actual_shared_runtime": "8.5.28"
+    },
+    "typescript": {
+      "historical_declared": "5.9.3",
+      "actual_shared_runtime": "5.9.3"
+    },
+    "vite": {
+      "historical_declared": "8.3.0",
+      "actual_shared_runtime": "8.3.0"
+    },
+    "vitest": {
+      "historical_declared": "5.0.1",
+      "actual_shared_runtime": "5.0.1"
+    },
+    "vue-tsc": {
+      "historical_declared": "3.3.11",
+      "actual_shared_runtime": "3.3.11"
+    }
+  },
+  "limit": "Historical source compiled with the same installed current toolchain; all exact historical direct pins match, caret declarations are recorded rather than treated as an exact lock restore"
+}

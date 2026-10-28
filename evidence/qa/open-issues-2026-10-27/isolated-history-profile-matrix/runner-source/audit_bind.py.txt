@@ -1,0 +1,42 @@
+"""Bind exact measured inputs, actual data preservation and both log streams."""
+import hashlib,json,platform,subprocess,zipfile
+from datetime import datetime,timezone
+from pathlib import Path
+from common import P,Q,SOURCE,credentials,read,write
+from profile_common import CONTEXT
+B=Path(r'C:\Users\egkur\.codex\worktrees\android-qa\BOOHTACORD')
+def sha(value):return hashlib.sha256(value).hexdigest()
+assert read(P/'browser-result.json')['status']=='ALL120_PROFILES_COMPLETE' and read(P/'environment-after.json')['status'].startswith('PASS')
+run=read(P/'runner-before-browser.json');diagnostic=read(P/'diagnostic-inspector/runner-before-browser.json')
+for name,expected in run['runner_inputs'].items():assert sha((P/name).read_bytes())==expected
+for name,expected in diagnostic['runner_inputs'].items():assert sha((P/'diagnostic-inspector'/name).read_bytes())==expected
+archive=read(P/'baseline-inputs.json');raw=(P/'baseline-source.private.zip').read_bytes();assert sha(raw)==archive['archive_SHA256'];count=0
+with zipfile.ZipFile(P/'baseline-source.private.zip') as z:
+    for info in z.infolist():
+        if not info.is_dir():assert (P/'baseline-src'/info.filename).read_bytes()==z.read(info);count+=1
+assert count==archive['archived_file_count']
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=Q,text=True).strip()==SOURCE and not subprocess.check_output(['git','-c','core.autocrlf=false','status','--porcelain'],cwd=Q,text=True).strip()
+master=subprocess.check_output(['git','ls-remote','origin','refs/heads/master'],cwd=B,text=True).split()[0]
+names=['clients/web/src/conversation/'+f for f in ['TextHistoryList.vue','text_history.ts','message_store.ts','MessageItem.vue','message_edit_controller.ts','message_client.ts']]
+names+=['clients/web/src/conversation/history_window/'+f for f in ['use.ts','use_text_history_list.ts','window.ts','timeline.ts','eviction.ts','merge.ts','paging.ts']]
+names+=['clients/web/src/conversation/message_index/index.ts','clients/web/src/design/conversation.css','clients/web/src/config/runtime.ts','clients/web/package.json','clients/web/package-lock.json','clients/web/vite.config.ts','contracts/client-build.json']
+files={}
+for name in names:
+    value=(Q/name).read_bytes();canonical=value.replace(b'\r\n',b'\n');reference=subprocess.check_output(['git','show',master+':'+name],cwd=B);assert canonical==reference,name
+    files[name]={'working_SHA256':sha(value),'LF_SHA256':sha(canonical),'current_master_match':True}
+for key,value in run['source_inputs'].items():
+    mode,name=key.split('/');root=P/'baseline-src/clients/web/src' if mode=='before' else Q/'clients/web/src';assert sha((root/'conversation'/name).read_bytes())==value
+cfg=read(P/'private/config.private.json');before=read(P/'environment-before.json');markers=[cfg['cookie'].split('=',1)[1].encode()]+[v.encode() for k,v in credentials().items() if isinstance(v,str) and (any(x in k for x in ['password','secret','ingest_auth']) or k=='livekit_key')]
+logs=[]
+for service in read(P/'environment-after.json')['services']:
+    name=service['service'];identifier=read(P/'private'/(name+'-inspect-before.private.json'))['Id'];r=subprocess.run(['docker','--context',CONTEXT,'logs','--since',before['at_utc'],identifier],capture_output=True);assert r.returncode==0
+    raw=r.stdout+b'\n'+r.stderr;(P/'private'/(name+'-logs-both.private.log')).write_bytes(raw);assert all(v not in raw for v in markers)
+    logs.append({'service':name,'stdout_bytes':len(r.stdout),'stderr_bytes':len(r.stderr),'joined_SHA256':sha(raw),'credential_or_own_session_markers_found':False,'raw_remains_private':True})
+write(P/'log-audit.json',{'status':'PASS_BOTH_DOCKER_LOG_STREAMS_PRIVATE_CREDENTIAL_SCAN','services':logs})
+versions={package:read(Q/'clients/web/node_modules'/package/'package.json')['version'] for package in ['vue','pinia','vite','@playwright/test']}
+profiles=read(P/'browser-result.json')['profiles'];served={}
+for p in profiles:
+    for module in p['served_source_modules']:
+        key=p['mode']+'/'+module['module'];served.setdefault(key,set()).add(module['SHA256'])
+binding={'at_utc':datetime.now(timezone.utc).isoformat(),'source_before':run['source_before'],'source_current':SOURCE,'master_checked':master,'matched_current_files':len(files),'files':files,'baseline_archive_SHA256':archive['archive_SHA256'],'all892_archived_native_files_unchanged':count==892,'primary_runner_preexecution_hashes_unchanged':True,'diagnostic_original_runner_inputs_retained_exactly':True,'actual_served_compiled_module_SHA256_sets':{k:sorted(v) for k,v in served.items()},'node':run['node'],'packages':versions,'browser':read(P/'browser-result.json')['browser'],'OS':{'system':platform.system(),'release':platform.release(),'version':platform.version(),'architecture':platform.machine()},'host_at_start':read(P/'host-runtime.json'),'current_build_definition':read(Q/'contracts/client-build.json')['builds']['web'],'mode':'Actual old/current history source modules compiled by fixed installed Vite/core runtime; same current owned Go API/PostgreSQL17.6 and datasets. Not original shipped old build, cold deployed-app launch, physical/native, media or Origin-policy acceptance','limits':['Current and historical full source/UI variants contain unrelated differences; no pure141 causal attribution','Per-profile heap probes force GC outside measured mount/scroll windows; retained JS heap is not total browser/OS memory or leak proof','Scroll timing is normal browser-task callback to two animation frames, not INP or physical display latency','One local context at a time; no CPU affinity/thermal/OS-work isolation or performance SLO claim']}
+write(P/'source-binding.json',binding);print(json.dumps({'source_binding':'PASS','current_master':master,'matched_files':len(files),'archived_files':count,'actual_compiled_modules':len(served),'both_stream_log_scan':'PASS'}))

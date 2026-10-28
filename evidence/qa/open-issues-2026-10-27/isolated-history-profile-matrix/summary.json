@@ -1,0 +1,57 @@
+{
+  "at_utc": "2026-10-28T03:34:09.536350+00:00",
+  "status": "PASS_SCOPED_HISTORY_MATRIX_MEASUREMENTS",
+  "source_before": "ce8c3e0ad848a879d4d60ef08df74b85661c19da",
+  "source_current": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "master_checked": "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a",
+  "matched_current_files": 20,
+  "actual_compiled_module_digests": 8,
+  "dataset_count": 20,
+  "profile_count": 120,
+  "repetitions_per_source": 3,
+  "current_DOM_cache_reversible_paging": "PASS",
+  "current_scroll_focus_checks_passed": 60,
+  "same_original_row_anchor_checks_passed": 30,
+  "observer_calibrations_passed_excluded_from_metrics": 120,
+  "historical_DOM_bound_counterexamples_rejected": 45,
+  "seeded_profile_messages": 77750,
+  "all20_server_data_hashes_match_seed": true,
+  "protects": "Measured before/current long TEXT history source behavior on identical available datasets; bounded current settled cache/DOM, reversible actual API paging, retained focus/anchor, live LongTask observation and honest heap/timing provenance",
+  "command": "python -X utf8 .out/qa-history-performance/preflight.py; python -X utf8 .out/qa-history-performance/archive_before.py; python -X utf8 .out/qa-history-performance/prepare.py --resume; node .out/qa-history-performance/run_matrix.mjs --smoke; node .out/qa-history-performance/run_matrix.mjs; python -X utf8 .out/qa-history-performance/verify.py; python -X utf8 .out/qa-history-performance/cleanup.py; python -X utf8 .out/qa-history-performance/audit_bind.py",
+  "platform": "Windows11/i7-12700/headless Chromium153.0.8010.12/Node24.18.0/Vue3.5.43/Pinia4.0.3/Vite8.3.0; same real own Go API/PostgreSQL17.6, history viewport900px",
+  "mandatory_when": "Before accepting exact I241.C36/C38/C39 measurements and cache/DOM scope, or relying on141 history-performance claims; preserve remaining full-row/physical gates",
+  "accepted_exact_rows": [
+    "I241.C36",
+    "I241.C38",
+    "I241.C39"
+  ],
+  "supplemental_rows_still_FAIL": [
+    "I240.C9",
+    "I241.C37"
+  ],
+  "controller_exit": 0,
+  "semantic_exit": 0,
+  "diagnostic_history": "71 completed direct-inspector profiles retained, including20 datasets x both sources once. Controller intentionally stopped/exit1 for10 unreported long mounts, not treated as product failure. Their LongTask zeros excluded. First-visible-row comparator superseded by same-original-row measurements.120 ordinary-task profiles completed after repair",
+  "metrics_limit": [
+    "Current and historical full source/UI variants contain unrelated differences; no pure141 causal attribution",
+    "Per-profile heap probes force GC outside measured mount/scroll windows; retained JS heap is not total browser/OS memory or leak proof",
+    "Scroll timing is normal browser-task callback to two animation frames, not INP or physical display latency",
+    "One local context at a time; no CPU affinity/thermal/OS-work isolation or performance SLO claim"
+  ],
+  "scope_limit": "Actual old/current history source modules compiled by fixed installed Vite/core runtime; same current owned Go API/PostgreSQL17.6 and datasets. Not original shipped old build, cold deployed-app launch, physical/native, media or Origin-policy acceptance",
+  "missing_target_limit": "FK-valid intentional legacy cross-scope reference injected only by owned SQL fixture. Normal creation-path admission was not tested or claimed. Actual channel-scoped context GET200/empty verified; controller maps missing anchor to unavailable. Initial404 assumption was a preserved setup error.",
+  "cleanup": "20 server hashes match seed;77751 own rows/22 channels/category/read cursors removed, API topology absence and revoked session readback verified. Temporary FK cleanup index dropped; index definitions restored exactly.9 original services/images/config/starts/restarts0/private/health200. One revoked session audit row retained",
+  "known_edit_draft_defect141_remains_FAIL": true,
+  "production_touched": false,
+  "physical_native_hosted_media_gate_claimed": false,
+  "original43_consolidation_decisions_applied": false,
+  "resize_observer_observation": {
+    "current_profiles_with_events": 60,
+    "total_events": 393,
+    "per_profile_range": [
+      2,
+      10
+    ],
+    "scope": "Actual dev-fixture Window ResizeObserver-loop events; per-profile counters retained. Production impact/cause not established; append to canonical141 for triage. No warning-free UI acceptance claimed"
+  }
+}

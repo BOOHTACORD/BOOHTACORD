@@ -1168,6 +1168,21 @@
       "defects": [
         141
       ]
+    },
+    {
+      "id": "ISOLATED-history20-source-performance-and-window-matrix",
+      "status": "PASS_SCOPED",
+      "protects": "Measured before/current long TEXT history source behavior on identical available datasets; bounded current settled cache/DOM, reversible actual API paging, retained focus/anchor, live LongTask observation and honest heap/timing provenance",
+      "command": "python -X utf8 .out/qa-history-performance/preflight.py; python -X utf8 .out/qa-history-performance/archive_before.py; python -X utf8 .out/qa-history-performance/prepare.py --resume; node .out/qa-history-performance/run_matrix.mjs --smoke; node .out/qa-history-performance/run_matrix.mjs; python -X utf8 .out/qa-history-performance/verify.py; python -X utf8 .out/qa-history-performance/cleanup.py; python -X utf8 .out/qa-history-performance/audit_bind.py",
+      "platform": "Windows11/i7-12700/headless Chromium153.0.8010.12/Node24.18.0/Vue3.5.43/Pinia4.0.3/Vite8.3.0; same real own Go API/PostgreSQL17.6, history viewport900px",
+      "mandatory_when": "Before accepting exact I241.C36/C38/C39 measurements and cache/DOM scope, or relying on141 history-performance claims; preserve remaining full-row/physical gates",
+      "issues": [
+        240,
+        241
+      ],
+      "result": "isolated-history-profile-matrix/summary.json",
+      "limits": "Actual old/current history source modules compiled by fixed installed Vite/core runtime; same current owned Go API/PostgreSQL17.6 and datasets. Not original shipped old build, cold deployed-app launch, physical/native, media or Origin-policy acceptance; Current and historical full source/UI variants contain unrelated differences; no pure141 causal attribution; Per-profile heap probes force GC outside measured mount/scroll windows; retained JS heap is not total browser/OS memory or leak proof; Scroll timing is normal browser-task callback to two animation frames, not INP or physical display latency; One local context at a time; no CPU affinity/thermal/OS-work isolation or performance SLO claim; Known edit-draft loss141 remains FAIL; no full QA closure",
+      "defects": []
     }
   ]
 }

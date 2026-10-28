@@ -310,3 +310,10 @@ The requested [production URL readiness](production-origin-readiness/result.json
 [Source-bound counterexample and exact commands](isolated-history-edit-eviction/README.md): I240.C9/I241.C37 FAIL. Actual source components plus own Go API/PostgreSQL17.6 lose the uncommitted edit in3/3 primary repetitions;2 controls pass.13 closest tests PASS/0 skips. Canonical141 is reused; its fresh state/readback is recorded after publication. Full profile/physical/platform/hosted gates remain separate,43 consolidation decisions untouched.
 
 75 scoped cases;480 original criterion texts preserved. Status counts: BLOCKED160, PARTIAL52, NOT_RUN244, FAIL19, PASS5. QA240/241 remain open/FAIL.
+
+
+## History source performance matrix — 2026-10-28
+
+[Measured20-dataset before/current comparison](isolated-history-profile-matrix/README.md):120 calibrated browser profiles,3 repetitions/source,60 focus and30 same-row anchor checks; current settled cache<=500, historical DOM guard rejects45 actual old-source counterexamples. Exact I241.C36/C38/C39 PASS in the declared source/owned-API scope. I240.C9/I241.C37 and canonical141 remain FAIL on lost uncommitted edits. No physical/native/hosted/media gate or43 consolidation decision is closed.
+
+76 scoped cases;480 original criterion texts preserved. Counts: BLOCKED160, PARTIAL52, NOT_RUN241, FAIL19, PASS8. QA240/241 remain open/FAIL.

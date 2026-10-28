@@ -1,0 +1,41 @@
+{
+  "workflow_class": "review_gate",
+  "task_size": "large",
+  "structure_mode": "structure_no_rg",
+  "search_stage": "structure_no_rg",
+  "route": "clients/web/src/conversation/history_window",
+  "packet": "history-performance-matrix",
+  "criteria": [
+    "I241.C36",
+    "I241.C38",
+    "I241.C39",
+    "supplemental I240.C9; existing I241.C37 remains FAIL"
+  ],
+  "backlog_context": "T-040 common TEXT history; dependencies T-010/T-020; T-003 isolated runtime. No backlog/contract/product changes",
+  "previous_goal_turn": "PROGRESS: ec1860df1bef9bccf0d0fb29f55354c3a4cadaa0 published actual API/Chromium edit-eviction3/3 failures and2 controls;141 reopened and240/241 exact readbacks; own fixtures removed/session revoked/original9 healthy",
+  "mode": "Isolated native source/browser verification; no implementation/branch sync/deploy/production CUA",
+  "source_before": "ce8c3e0ad848a879d4d60ef08df74b85661c19da",
+  "source_current": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "native_edges": "Actual TextHistoryList/message_store/createTextHistory and old/current relative import graphs; current history_window/message_index; actual own cookie-authenticated API/PostgreSQL",
+  "scoped_search": "Only exact141 sources, history_window/message_index leaves and exact imports/config/manifests; historical native Web archive is an immutable compile input, not broad source discovery",
+  "ratchet": "Private focused runner files<=120 lines, hard16 direct helpers per trigger family; no product edits/test deletions",
+  "protocol": "20 deterministic datasets50/500/5000/10000 x replies0/50/100 normal plus50/100 unavailable-target. Diagnostic traversal retained71 completed profiles including all20 x both sources once; its direct-inspector LongTask zeros are not accepted. Primary120 measurement profiles use ordinary browser-task mount/scroll and an excluded120ms observer selftest per profile.3 repetitions/source with balanced order. Actual store/API prefill while unmounted: old all rows, current latest min(N,500); same available dataset/latest target. Preparation time separate from mount/long tasks/interaction/heap/DOM/reset. Current UI older/newer roundtrip protects the same original anchor row; raw first-visible comparison is diagnostic only. Historical unbounded renderer is a negative bound witness",
+  "missing_target_contract": "Controlled SQL-seeded legacy cross-scope reference points to an owned sentinel outside the channel: FK-valid but intentionally not producible through normal reply admission. Actual context API200/empty and controller unavailable are the supported negative result; initial404 setup assumption retained in attempt1. Public export contains no identifiers or bodies",
+  "preservation": "Production/phone/sessions/router/OS security unchanged. Browser is a separate project-owned headless local fixture, not a workaround for stopped production CUA. No permission/security flags. Preserve original9 IDs/images/config/restarts/loopback ports. Own fixtures/session removed; raw data/IDs/logs remain private",
+  "comparison_limits": "Same current installed pinned core runtime; full old/current source variants can contain unrelated presentation differences, so timings are not pure causal estimates for141. Warm source-module view profile, not cold deployed-app/physical/native/media capacity or security-Origin acceptance. No agreed performance SLO inferred",
+  "checks": [
+    "Fresh isolated preflight and baseline code archive provenance",
+    "Dataset count/reply/missing integrity and protected API controls",
+    "Smoke both exact source variants before full matrix",
+    "Durable per-profile actual receipts, explicit timeouts/errors and same live handle waits",
+    "Negative historical bound witness plus current cache/DOM/paging/focus/anchor assertions",
+    "Cleanup, both-stream log/privacy audit, exact source binding, original480 rows/75 old cases preserved, sealed Git/GitHub publication"
+  ],
+  "resource_stop": "One browser/context profile at a time; max10000 messages/dataset, finite20 datasets/120 profiles; bounded per-profile and whole-run deadlines; original stand services not restarted",
+  "stop_condition": "Complete available matrix with actual numerical/visual outcomes or preserve exact runtime failure/blocker; keep141/whole QA FAIL until full acceptance; no43 consolidation decisions",
+  "unresolved": [
+    "Old/current compiled component compatibility under fixed runtime",
+    "Potential existing ResizeObserver-loop warnings and anchor behavior",
+    "Physical HTTPS-origin/audibility/other-platform/provider blockers remain separate"
+  ]
+}

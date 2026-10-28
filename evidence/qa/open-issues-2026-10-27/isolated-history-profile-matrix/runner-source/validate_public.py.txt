@@ -1,0 +1,34 @@
+"""Verify public scope/fidelity and scan current fixture identifiers in linear time."""
+import ast,csv,hashlib,json,re,subprocess
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];B=Path(r'C:\Users\egkur\.codex\worktrees\android-qa\BOOHTACORD');E=B/'evidence/qa/open-issues-2026-10-27';O=E/'isolated-history-profile-matrix';BASE='ec1860df1bef9bccf0d0fb29f55354c3a4cadaa0'
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+def old(n):return json.loads(subprocess.check_output(['git','show',BASE+':evidence/qa/open-issues-2026-10-27/'+n],cwd=B))
+def rows(m):return{r['id']:r for i in m['issues'] for r in i['criteria']}
+before=rows(old('matrix.json'));matrix=read(E/'matrix.json');after=rows(matrix);selected=['I240.C9','I241.C36','I241.C37','I241.C38','I241.C39']
+assert len(before)==len(after)==480 and sorted(k for k in before if before[k]!=after[k])==selected and all(before[k]['requirement']==after[k]['requirement'] for k in before)
+assert all(after[k]['status']=='PASS' for k in ['I241.C36','I241.C38','I241.C39']) and all(after[k]['status']=='FAIL' and after[k]['result']==before[k]['result'] for k in ['I240.C9','I241.C37'])
+cases=read(E/'cases.json')['cases'];assert len(cases)==76 and cases[:-1]==old('cases.json')['cases'] and cases[-1]['status']=='PASS_SCOPED'
+for issue in matrix['issues']:
+    if issue['number'] in [240,241]:assert issue['status']=='FAIL' and 141 in issue['defects']
+cfg=read(P/'private/config.private.json');private_ids={cfg[x] for x in ['account','category','sentinel_channel','empty_channel','sentinel_id']};UUID=re.compile(r'\b[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}\b',re.I)
+for d in cfg['datasets']:
+    private_ids.update(d['ids']);private_ids.add(d['channel']);private_ids.update(UUID.findall((P/'private'/(d['alias']+'.private.csv')).read_text(encoding='utf-8')))
+secret_markers={cfg['cookie'],cfg['cookie'].split('=',1)[1],cfg['owner_token']}
+for k,v in read(P.parent/'local-qa/credentials.private.json').items():
+    if isinstance(v,str) and len(v)>8 and (any(x in k for x in ['password','secret','ingest_auth']) or k=='livekit_key'):secret_markers.add(v)
+scanned=0
+for f in E.rglob('*'):
+    if f.is_file() and f.suffix in ['.json','.md','.txt','.log']:
+        text=f.read_text(encoding='utf-8');assert not private_ids.intersection(UUID.findall(text)),'Private fixture identifier: '+str(f.relative_to(E));assert all(v not in text for v in secret_markers),'Private credential/nonce: '+str(f.relative_to(E));assert not re.search(r'Synthetic profile row \d',text),'Actual seeded body: '+str(f.relative_to(E));scanned+=1
+for f in O.rglob('*.txt'):
+    text=f.read_text(encoding='utf-8');assert len(text.splitlines())<=120,f.name
+    if f.name.endswith('.py.txt'):ast.parse(text)
+assert all(f.suffix in ['.json','.md','.txt'] for f in O.rglob('*') if f.is_file())
+assert read(O/'semantic-result.json')['status']=='PASS_SCOPED_MATRIX_AND_MEASUREMENTS' and len(read(O/'browser-result.json')['profiles'])==120
+assert len(read(O/'environment-after.json')['dataset_preservation'])==20 and read(O/'log-audit.json')['status'].startswith('PASS')
+assert not subprocess.check_output(['git','-c','core.autocrlf=false','diff','HEAD','--','backend','clients','tools','contracts'],cwd=B)
+assert not subprocess.check_output(['git','-c','core.autocrlf=false','status','--porcelain'],cwd=Q,text=True).strip()
+result={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_SCOPE_PRIVACY_AND480_ROW_FIDELITY','case_count':76,'all75_old_cases_exact':True,'original_requirement_texts_preserved':480,'only_changed_rows':selected,'private_fixture_ID_values_scanned':len(private_ids),'public_text_files_scanned':scanned,'IDs_CSV_bodies_cookies_credentials_absent':True,'known_synthetic_recipe_literals_allowed':True,'runner_hard120_and_Python_syntax':'PASS','native_source_unchanged':True,'parents240_241_and_edit_defect141_remain_FAIL':True,'physical_or_full_QA_acceptance_claimed':False}
+(O/'validation.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(result))

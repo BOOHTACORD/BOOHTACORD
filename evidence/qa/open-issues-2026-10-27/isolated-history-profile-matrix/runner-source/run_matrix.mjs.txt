@@ -1,0 +1,37 @@
+import assert from'node:assert/strict'
+import{createRequire}from'node:module'
+import{readFile,writeFile}from'node:fs/promises'
+import{createHash}from'node:crypto'
+import{execFileSync}from'node:child_process'
+import{fileURLToPath,pathToFileURL}from'node:url'
+import{profile}from'./run_profile.mjs'
+const P=fileURLToPath(new URL('./',import.meta.url)),Q=fileURLToPath(new URL('../../',import.meta.url)),WEB=Q+'clients/web/',require=createRequire(WEB+'package.json')
+const{chromium,expect}=require('@playwright/test'),{createServer}=await import(pathToFileURL(require.resolve('vite')).href),cfg=JSON.parse(await readFile(P+'private/config.private.json','utf8')),smoke=process.argv.includes('--smoke')
+const out=P+(smoke?'smoke-result.json':'browser-result.json'),before='ce8c3e0ad848a879d4d60ef08df74b85661c19da',ports={before:4810,current:4811},canonical='http://localhost:18088'
+assert.equal(cfg.origin,canonical);assert.equal(cfg.datasets.length,20);assert.ok(cfg.datasets.every(d=>d.preparation_verified));assert.equal(await readFile(out).then(()=>true,()=>false),false,'Preserve existing result')
+const report={at_utc:new Date().toISOString(),status:'RUNNING',mode:smoke?'SMOKE':'FULL20x2x3',source_before:before,source_current:cfg.source_revision,viewport:{width:1440,height:1000},fixed_history_host:{width:1100,height:900},profiles:[],permissions_granted:[],browser_security_flags:[],production_touched:false,business_API_mocks:false,API_proxy_canonical_Host_own_fixture_Origin_translation:true,performance_SLO_claimed:false}
+const servers=[];let browser,deadline;const roots={before:P+'baseline-src/clients/web/src',current:WEB+'src'},bases=Object.fromEntries(Object.entries(ports).map(([m,p])=>[m,'http://localhost:'+p]))
+const sha=b=>createHash('sha256').update(b).digest('hex')
+try{
+ assert.equal(execFileSync('git',['rev-parse','HEAD'],{cwd:Q,encoding:'utf8'}).trim(),cfg.source_revision);assert.equal(execFileSync('git',['-c','core.autocrlf=false','status','--porcelain'],{cwd:Q,encoding:'utf8'}).trim(),'')
+ const names=['fixture.ts','fixture.html','metrics.ts','run_profile.mjs','run_matrix.mjs'];const inputs={};for(const name of names)inputs[name]=sha(await readFile(P+name))
+ const files=['TextHistoryList.vue','text_history.ts','message_store.ts'];const source_inputs={};for(const mode of ['before','current'])for(const file of files)source_inputs[mode+'/'+file]=sha(await readFile(roots[mode]+'/conversation/'+file))
+ const runInput={at_utc:new Date().toISOString(),command_argv:['node','.out/qa-history-performance/run_matrix.mjs',...(smoke?['--smoke']:[])],source_before:before,source_current:cfg.source_revision,node:process.version,runner_inputs:inputs,source_inputs,baseline_archive_SHA256:JSON.parse(await readFile(P+'baseline-inputs.json','utf8')).archive_SHA256}
+ await writeFile(P+(smoke?'runner-before-smoke.json':'runner-before-browser.json'),JSON.stringify(runInput,null,2)+'\n')
+ for(const mode of ['before','current']){
+  const base=bases[mode],server=await createServer({root:WEB,configFile:WEB+'vite.config.ts',publicDir:mode==='before'?P+'baseline-src/clients/web/public':WEB+'public',cacheDir:P+'vite-cache-'+mode,resolve:{alias:{'@qa-source':roots[mode]},dedupe:['vue','pinia']},define:{__QA_SOURCE_MODE__:JSON.stringify(mode)},server:{host:'127.0.0.1',port:ports[mode],strictPort:true,cors:false,fs:{allow:[Q]},proxy:{'/api':{target:canonical,changeOrigin:true,configure:proxy=>proxy.on('proxyReq',(outgoing,incoming)=>{if(incoming.headers.origin===base)outgoing.setHeader('Origin',canonical)})}}},logLevel:'error'});await server.listen();servers.push(server)
+ }
+ browser=await chromium.launch({headless:true});report.browser=browser.version();deadline=setTimeout(()=>{report.whole_run_deadline_reached=true;void browser.close()},1800000);deadline.unref()
+ const datasets=smoke?cfg.datasets.slice(0,1):cfg.datasets;const repetitions=smoke?1:3
+ for(let repetition=0;repetition<repetitions;repetition++)for(let ordinal=0;ordinal<datasets.length;ordinal++){
+  const modes=(ordinal+repetition)%2===0?['before','current']:['current','before']
+  for(const mode of modes){
+   const result=await profile(browser,bases[mode],cfg,datasets[ordinal],mode,repetition+(smoke?0:1),P,expect);report.profiles.push(result)
+   await writeFile(out,JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({completed_profiles:report.profiles.length,dataset:result.dataset,mode,status:result.status,mount_ms:result.mount?.synchronous_mount_ms??null,DOM_rows:result.after_mount?.message_rows??null,cache:result.preparation?.cache_count??null,guards:result.source_guard??null}))
+   if(result.status!=='PROFILE_COMPLETE')throw Error('PROFILE_INCOMPLETE_STOP_AND_INSPECT')
+  }
+ }
+ report.status=smoke?'SMOKE_COMPLETE':'ALL120_PROFILES_COMPLETE'
+}catch(error){report.status='INCOMPLETE';report.error_name=error.name;report.error_SHA256=sha(error.stack??error.message);await writeFile(P+(smoke?'smoke-error.private.log':'controller-error.private.log'),error.stack??error.message)}
+finally{clearTimeout(deadline);await browser?.close();for(const server of servers)await server.close();report.finished_at_utc=new Date().toISOString();await writeFile(out,JSON.stringify(report,null,2)+'\n')}
+console.log(JSON.stringify({status:report.status,profiles:report.profiles.length,browser:report.browser}));process.exitCode=['SMOKE_COMPLETE','ALL120_PROFILES_COMPLETE'].includes(report.status)?0:1

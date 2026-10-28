@@ -1,0 +1,13 @@
+export function metrics(indices:Map<string,number>){
+ const tasks:{start:number;duration:number}[]=[];let resizeErrors=0
+ if(PerformanceObserver.supportedEntryTypes.includes('longtask'))new PerformanceObserver(list=>{for(const e of list.getEntries())tasks.push({start:e.startTime,duration:e.duration})}).observe({type:'longtask',buffered:true})
+ window.addEventListener('error',e=>{if(e.message.includes('ResizeObserver loop'))resizeErrors++})
+ function visible(){const root=document.querySelector<HTMLElement>('.message-list');if(!root)return[];const box=root.getBoundingClientRect();return[...root.querySelectorAll<HTMLElement>('[data-message-id]')].flatMap(el=>{const b=el.getBoundingClientRect();return b.bottom>box.top&&b.top<box.bottom?[{index:indices.get(el.dataset.messageId??'')??-1,y:b.top-box.top,height:b.height}]:[]})}
+ function dom(){const root=document.querySelector<HTMLElement>('.message-list'),shown=visible();const focus=document.activeElement?.closest<HTMLElement>('[data-message-id]');return{
+  message_rows:document.querySelectorAll('[data-message-id]').length,total_nodes:document.querySelectorAll('*').length,list_client_height:root?.clientHeight??0,list_scroll_height:root?.scrollHeight??0,list_scroll_top:root?.scrollTop??0,
+  visible_rows:shown.length,first_visible:shown[0]??null,last_visible:shown.at(-1)??null,focused_index:indices.get(focus?.dataset.messageId??'')??null,focus_connected:document.activeElement?.isConnected??false,
+  reply_buttons:document.querySelectorAll('.reply-preview').length,missing_reply_previews:[...document.querySelectorAll('.reply-preview')].filter(el=>el.textContent?.includes('Исходное сообщение недоступно')).length,resize_observer_error_events:resizeErrors,
+ }}
+ function longTasks(start:number,end:number){const selected=tasks.filter(t=>t.start<end&&t.start+t.duration>start);return{count:selected.length,full_task_durations_ms:selected.map(t=>t.duration),overlap_durations_ms:selected.map(t=>Math.max(0,Math.min(t.start+t.duration,end)-Math.max(t.start,start))),window_start_ms:start,window_end_ms:end}}
+ return{dom,visible,longTasks}
+}

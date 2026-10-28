@@ -1,0 +1,77 @@
+{
+  "status": "PASS_BOTH_DOCKER_LOG_STREAMS_PRIVATE_CREDENTIAL_SCAN",
+  "services": [
+    {
+      "service": "api",
+      "stdout_bytes": 5343447,
+      "stderr_bytes": 0,
+      "joined_SHA256": "d4c643af18d5cb507969591bb7d0d70ccda2b63b83105d2ae4c686885d2172d0",
+      "credential_or_own_session_markers_found": false,
+      "raw_remains_private": true
+    },
+    {
+      "service": "web",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "joined_SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "credential_or_own_session_markers_found": false,
+      "raw_remains_private": true
+    },
+    {
+      "service": "proxy",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "joined_SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "credential_or_own_session_markers_found": false,
+      "raw_remains_private": true
+    },
+    {
+      "service": "postgres",
+      "stdout_bytes": 0,
+      "stderr_bytes": 2143,
+      "joined_SHA256": "036fe3a49eac839bd03a671f6806ba936739ff938aeb73725bff0b1ae61d230b",
+      "credential_or_own_session_markers_found": false,
+      "raw_remains_private": true
+    },
+    {
+      "service": "livekit",
+      "stdout_bytes": 0,
+      "stderr_bytes": 24297,
+      "joined_SHA256": "f80d19856510beb9bef20d812687ef4f29d4703a1964df7565d4c5502d91a706",
+      "credential_or_own_session_markers_found": false,
+      "raw_remains_private": true
+    },
+    {
+      "service": "collector",
+      "stdout_bytes": 0,
+      "stderr_bytes": 121968,
+      "joined_SHA256": "f0ceb8cb36059c02f70635b7deee50062bb15ba65c0a4f6c86eaea1bc625abc9",
+      "credential_or_own_session_markers_found": false,
+      "raw_remains_private": true
+    },
+    {
+      "service": "tempo",
+      "stdout_bytes": 0,
+      "stderr_bytes": 78002,
+      "joined_SHA256": "752431b773b34081533dc6667276bb11f2302a3db5066a94c25c430def44693e",
+      "credential_or_own_session_markers_found": false,
+      "raw_remains_private": true
+    },
+    {
+      "service": "prometheus",
+      "stdout_bytes": 0,
+      "stderr_bytes": 642,
+      "joined_SHA256": "1c4ffecf40b92e5a4a66ee13014ff1d3aa8dd072f8088db9ee0cda9801239400",
+      "credential_or_own_session_markers_found": false,
+      "raw_remains_private": true
+    },
+    {
+      "service": "grafana",
+      "stdout_bytes": 15608,
+      "stderr_bytes": 0,
+      "joined_SHA256": "787a336e115f43aaa059c7b37cce270d04f802a3818badd6f0c4718ab61fa621",
+      "credential_or_own_session_markers_found": false,
+      "raw_remains_private": true
+    }
+  ]
+}

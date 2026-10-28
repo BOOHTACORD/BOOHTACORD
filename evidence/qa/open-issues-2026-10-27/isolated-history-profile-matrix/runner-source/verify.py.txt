@@ -1,0 +1,46 @@
+"""Validate actual120-profile coverage, instrument sensitivity and behavioral bounds."""
+import collections,json,statistics,sys
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent
+def read(name):return json.loads((P/name).read_text(encoding='utf-8'))
+def write(name,value):(P/name).write_text(json.dumps(value,indent=2)+'\n',encoding='utf-8',newline='\n')
+d=read('browser-result.json');fixture=read('fixture-ready.json');original=read('diagnostic-inspector/browser-result.json');stopped=read('diagnostic-inspector/interruption.json')
+assert d['status']=='ALL120_PROFILES_COMPLETE' and len(d['profiles'])==120 and not d['permissions_granted'] and not d['browser_security_flags']
+assert stopped['native_controller_exit']==1 and len(original['profiles'])==stopped['retained_completed_profiles']==71
+assert len({(p['dataset'],p['mode']) for p in original['profiles']})==40
+expected={x['alias']:x for x in fixture['datasets']};groups=collections.defaultdict(list);current=[];negative=[]
+for p in d['profiles']:
+    assert p['status']=='PROFILE_COMPLETE' and not p.get('profile_deadline_reached') and not p['page_errors'] and not p['foreign_request_origins']
+    assert not p.get('served_module_capture_incomplete') and {x['module'] for x in p['served_source_modules']}=={'TextHistoryList.vue','text_history.ts','message_store.ts','style.css'}
+    assert all(x['status']==200 for x in p['served_source_modules']) and all(code=='200' for code in p['API_statuses'])
+    info=expected[p['dataset']];assert p['count']==info['count'] and p['seed_CSV_SHA256']==info['seed_CSV_SHA256'] and p['reply_ratio_percent']==info['reply_ratio_percent'] and p['missing_targets']==info['missing_targets']
+    assert p['browser_platform']['viewport']=={'width':1440,'height':1000} and p['after_mount']['list_client_height']==900
+    assert p['preparation']['cache_count']==(min(p['count'],500) if p['mode']=='current' else p['count']) and p['preparation']['cache_max_index']==p['count']-1
+    assert p['long_task_observer_selftest']['observed']['count']>=1 and p['long_task_observer_selftest']['end']-p['long_task_observer_selftest']['start']>=120
+    assert p['mount']['synchronous_mount_ms']>=0 and p['mount']['two_frame_mount_ms']>=p['mount']['synchronous_mount_ms'] and len(p['scrolls'])==5
+    if p['mount']['synchronous_mount_ms']>=100:assert p['mount']['long_tasks']['count']>=1,'Long mount missing calibrated ordinary-task observer event'
+    for h in ['heap_empty','heap_prepared','heap_mounted','heap_after_reset']:
+        for phase in ['without_explicit_GC','after_explicit_GC']:assert p[h][phase]['totalSize']>=p[h][phase]['usedSize']>0
+    assert p['reset']=={'cache_count':0,'DOM_message_rows':0}
+    if p['reply_ratio_percent']==0:assert p['after_mount']['reply_buttons']==0
+    else:assert p['after_mount']['reply_buttons']>0
+    if p['missing_targets']:assert p['after_mount']['missing_reply_previews']==p['after_mount']['reply_buttons']>0
+    groups[p['dataset'],p['mode']].append(p)
+    if p['mode']=='current':current.append(p)
+    elif p['count']>=500:negative.append(not p['source_guard']['DOM_rows_bounded'])
+assert len(groups)==40 and all(len(v)==3 and {p['repetition'] for p in v}=={1,2,3} for v in groups.values())
+assert len(current)==60 and len(negative)==45 and all(negative)
+bound=all(p['source_guard']['DOM_rows_bounded'] and p['source_guard']['settled_cache_bounded'] and p['source_guard']['paging_reversible'] for p in current)
+focus=all(p['source_guard']['focus_preserved'] for p in current);anchors=[p for p in current if p['UI_paging']['applicable']];assert len(anchors)==30
+anchor=all(p['source_guard']['anchor_preserved'] for p in anchors)
+table=[]
+for alias,info in expected.items():
+    row={k:info[k] for k in ['alias','count','reply_ratio_percent','missing_targets','seed_CSV_SHA256']}
+    for mode in ['before','current']:
+        profiles=groups[alias,mode];row[mode]={'repetitions':3,'median_synchronous_mount_ms':statistics.median(p['mount']['synchronous_mount_ms'] for p in profiles),'median_two_frame_mount_ms':statistics.median(p['mount']['two_frame_mount_ms'] for p in profiles),'median_retained_heap_delta_bytes':statistics.median(p['heap_mounted']['after_explicit_GC']['usedSize']-p['heap_empty']['after_explicit_GC']['usedSize'] for p in profiles),'median_mount_long_tasks':statistics.median(p['mount']['long_tasks']['count'] for p in profiles),'DOM_rows':[min(p['after_mount']['message_rows'] for p in profiles),max(p['after_mount']['message_rows'] for p in profiles)],'cache_count':profiles[0]['preparation']['cache_count'],'median_scroll_to_two_frames_ms':statistics.median(s['event_to_two_frames_ms'] for p in profiles for s in p['scrolls'])}
+    table.append(row)
+write('comparison.json',{'status':'COMPLETE20_PAIRED_DATASETS_THREE_REPETITIONS','same_available_datasets_and_latest_target':True,'performance_SLO_claimed':False,'pure141_causal_effect_claimed':False,'profiles':table})
+failures=[{'dataset':p['dataset'],'repetition':p['repetition'],'guards':p['source_guard'],'same_original_anchor':p.get('UI_paging')} for p in current if not all(p['source_guard'].values())]
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_SCOPED_MATRIX_AND_MEASUREMENTS' if bound and focus and anchor else 'FAIL_CURRENT_HISTORY_BEHAVIOR','profile_count':120,'source_pairs':20,'repetitions_per_source':3,'observer_selftests_passed':120,'measurement_completeness':'PASS','current_DOM_cache_reversible_paging':'PASS' if bound else 'FAIL','current_scroll_focus':'PASS' if focus else 'FAIL','same_original_row_anchor':'PASS' if anchor else 'FAIL','same_row_anchor_cases':30,'historical_DOM_counterexamples_rejected':45,'diagnostic_profiles_retained_not_used_for_LongTask_acceptance':71,'raw_diagnostic_first_visible_flags_superseded':True,'failures':failures,'known_edit_eviction141_remains_FAIL':True,'physical_and_hosted_gate_claimed':False}
+write('semantic-result.json',r);print(json.dumps({k:v for k,v in r.items() if k!='failures'}));sys.exit(0 if r['status'].startswith('PASS') else 1)

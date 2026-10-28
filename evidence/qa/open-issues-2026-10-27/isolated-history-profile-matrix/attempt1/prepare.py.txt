@@ -1,0 +1,45 @@
+"""Seed the finite20-dataset matrix in the guarded own QA database only."""
+import csv,hashlib,io,json,secrets,uuid
+from datetime import datetime,timedelta,timezone
+from http.cookies import SimpleCookie
+from common import P,PROJECT,SOURCE,ORIGIN,credentials,docker,read,write,sql,valid,request
+assert not (P/'private/config.private.json').exists(),'Preserve existing fixture'
+assert read(P/'environment-before.json')['status'].startswith('PASS')
+cfg={'owner_token':secrets.token_hex(12),'origin':ORIGIN,'source_revision':SOURCE,'category':None,'sentinel_channel':None,'empty_channel':None,'sentinel_id':str(uuid.uuid4()),'datasets':[]}
+def save():write(P/'private/config.private.json',cfg)
+save();c=credentials();status,headers,_=request('/api/v1/auth/login','POST',{'login':c['admin_login'],'password':c['admin_password']});assert status==204
+cookies=SimpleCookie()
+for k,v in headers:
+    if k.lower()=='set-cookie':cookies.load(v)
+assert len(cookies)==1;cfg['cookie']='; '.join(k+'='+v.value for k,v in cookies.items());save()
+status,_,session=request('/api/v1/auth/session',cookie=cfg['cookie']);assert status==200 and session['authenticated']
+cfg['account']=valid(session['account_id']);assert session['role']=='ADMINISTRATOR';save()
+status,_,body=request('/api/v1/admin/categories','POST',{'name':'qa_perf_'+cfg['owner_token']},cfg['cookie']);assert status==201
+cfg['category']=valid(body['id']);save()
+def channel(name):
+    status,_,body=request('/api/v1/admin/categories/'+cfg['category']+'/channels','POST',{'name':name,'kind':'TEXT'},cfg['cookie']);assert status==201
+    return valid(body['id'])
+for key in ['sentinel_channel','empty_channel']:cfg[key]=channel(key);save()
+sql("INSERT INTO messages(id,channel_id,author_id,client_message_id,body,created_at) VALUES ('"+cfg['sentinel_id']+"','"+cfg['sentinel_channel']+"','"+cfg['account']+"','"+str(uuid.uuid4())+"','Synthetic unavailable-context sentinel','2026-01-01T00:00:00Z');")
+epoch=datetime(2026,1,1,tzinfo=timezone.utc);receipts=[]
+for count in [50,500,5000,10000]:
+    for ratio,missing in [(0,False),(50,False),(100,False),(50,True),(100,True)]:
+        alias=f'N{count}-R{ratio}-'+('missing' if missing else 'normal')
+        d={'alias':alias,'count':count,'reply_ratio_percent':ratio,'missing_targets':missing,'channel':channel(alias),'ids':[str(uuid.uuid4()) for _ in range(count)]};cfg['datasets'].append(d);save()
+        out=io.StringIO(newline='');writer=csv.writer(out,lineterminator='\n');replies=0
+        for i,identifier in enumerate(d['ids']):
+            is_reply=ratio==100 or ratio==50 and i%2==1;replies+=is_reply
+            target=cfg['sentinel_id'] if missing else d['ids'][(i-1)%count]
+            writer.writerow([identifier,d['channel'],cfg['account'],str(uuid.uuid4()),'Synthetic profile row '+str(i)+('\nvariable-height synthetic line'*(i%4)),(epoch+timedelta(seconds=i)).isoformat(),target if is_reply else None])
+        raw=out.getvalue();d.update(seed_CSV_SHA256=hashlib.sha256(raw.encode()).hexdigest(),seed_CSV_bytes=len(raw.encode()),reply_count=replies);save()
+        (P/'private'/(alias+'.private.csv')).write_text(raw,encoding='utf-8',newline='\n')
+        sql('BEGIN;\nCOPY messages(id,channel_id,author_id,client_message_id,body,created_at,reply_to_id) FROM STDIN CSV;\n'+raw+'\\.\nCOMMIT;\n')
+        values=sql("SELECT count(*),count(reply_to_id),count(DISTINCT id) FROM messages WHERE channel_id='"+d['channel']+"';").strip().split('|');assert list(map(int,values))==[count,replies,count]
+        status,_,page=request('/api/v1/channels/'+d['channel']+'/messages',cookie=cfg['cookie']);assert status==200 and len(page['messages'])==50 and page['messages'][0]['id']==d['ids'][-1]
+        if missing:
+            status,_,_=request('/api/v1/channels/'+d['channel']+'/messages?at='+cfg['sentinel_id']+'&limit=20',cookie=cfg['cookie']);assert status==404
+        receipts.append({k:v for k,v in d.items() if k not in ['channel','ids']})
+        print(json.dumps({'prepared':alias,'count':count,'replies':replies,'unavailable_context_404':missing}))
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS20_OWNED_DATASETS_REAL_API_AND_MISSING_CONTEXT_CONTROLS','source_revision':SOURCE,'datasets':receipts,'dataset_count':len(receipts),'total_seeded_profile_messages':sum(d['count'] for d in receipts),'control_sentinel_rows':1,'missing_target_limit':'FK-valid intentional legacy cross-scope reference; not a normal reply admitted by creation API. Actual channel-scoped context GET404 verified','production_touched':False,'IDs_CSV_bodies_cookie_stay_private':True}
+assert r['dataset_count']==20 and r['total_seeded_profile_messages']==77750
+write(P/'fixture-ready.json',r);print(json.dumps({k:v for k,v in r.items() if k!='datasets'}))
