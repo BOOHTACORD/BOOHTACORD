@@ -39,7 +39,7 @@ authors.acceptOwnProfile({ account_id: 'member-speaking', login: 'speaker', disp
 authors.acceptOwnProfile({ account_id: 'member-sharing', login: 'sharing', display_name: 'Участник показывает экран', role: 'MEMBER' })
 authors.acceptOwnProfile({ account_id: 'participant-card-sharing', login: 'sharing-card', display_name: 'Pistol121_android', role: 'MEMBER', avatar_url: '/avatar', profile_revision: 4 })
 const participantCardScreens: ScreenViewerCard[] = [
-  { accountId: 'participant-card-sharing', hasAudio: true, id: 'remote-screen', isLocal: false, participantId: 'participant-card-sharing', participantName: 'Pistol121_android', thumbnailUrl: '/synthetic-screen.svg' },
+  { accountId: 'participant-card-sharing', hasAudio: true, id: 'remote-screen', isLocal: false, participantId: 'participant-card-sharing', participantName: 'Pistol121_android', ...(params.has('no-profile') ? {} : { targetProfile: '1080p · 60 FPS' }), thumbnailUrl: '/synthetic-screen.svg' },
 ]
 const listenerParticipantCards = () => h('main', { class: 'voice-room', style: 'box-sizing:border-box;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px' }, [
   h('header', { style: 'width:min(100%,792px);margin-bottom:24px' }, [
