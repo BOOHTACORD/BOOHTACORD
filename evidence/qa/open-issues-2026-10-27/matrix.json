@@ -5215,28 +5215,42 @@
           "requirement": "[#137 — бюджеты rate limit](https://github.com/Egkurilov/BOOHTACORD/issues/137): проверить несколько synthetic accounts за одним NAT, отдельные account/IP/deployment budgets, burst и восстановление после окна; подтвердить Retry-After и отсутствие вытеснения чужого активного бюджета. Приложить таблицу сценарий/outcome/aggregate counter без IP, login и лимитерных ключей.",
           "source_checkbox": " ",
           "id": "I240.C5",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental.",
-          "platform": "Disposable owned PostgreSQL/API/LiveKit target and bounded synthetic accounts/data; never shared production fault/load injection.",
+          "status": "FAIL",
+          "execution_cases": [
+            "ISOLATED-login-NAT20-account-IP-KDF-runtime"
+          ],
+          "evidence": [
+            "isolated-login-budgets/summary.json",
+            "isolated-login-budgets/run-result.json",
+            "isolated-login-budgets/environment-after.json",
+            "isolated-login-budgets/metric-label-audit.json",
+            "isolated-login-budgets/source-binding.json",
+            "isolated-login-budgets/focused-go-result.json"
+          ],
+          "execution": "python -X utf8 .out/qa-login-budgets/run_profile.py run",
+          "platform": "Actual source072 Linux API/PostgreSQL17.6 on this Windows11 PC; unchanged network10/5min, account8/30s, processKDF4",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "isolated-login-budgets/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_api_faults"
           ],
           "execution_plan": {
-            "status": "PLAN_ONLY_NOT_RUNTIME_PROOF",
+            "status": "EXECUTED_FAILING_NAT_WITNESS_AND_PASSING_LOGIN_CONTROLS",
             "source_scenario": "I240.C5 requirement text retained verbatim",
             "method_scope": "Each method is supplemental; execute every remaining source-row clause and required platform variant separately",
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-login-NAT20-account-IP-KDF-runtime"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "reason": "Referenced137 NAT20 criterion fails2/2: ten valid users succeed, ten neighbors get429. Account/IP real-window recovery and bounded KDF controls pass; remaining upload budgets and live store-capacity saturation are queued independently.",
+          "remaining_work_state": "FAIL_FIX_REQUIRED_NAT_POLICY; UPLOAD_MULTILEVEL_BUDGETS_AND_LIVE_SATURATION_QUEUED",
+          "defects": [
+            137
+          ]
         },
         {
           "section": "Сессия, backend admission и security",
@@ -5761,7 +5775,8 @@
         "UPLOAD-real-deployed-15min-absolute",
         "UPLOAD-real-global16-cap",
         "ISOLATED-auth-denial-real-http-postgres",
-        "ISOLATED-websocket-default-quotas-real-http"
+        "ISOLATED-websocket-default-quotas-real-http",
+        "ISOLATED-login-NAT20-account-IP-KDF-runtime"
       ],
       "evidence": [
         "notification-readiness/summary.json",
@@ -5772,10 +5787,12 @@
         "upload-timeout/summary.json",
         "upload-extended/summary.json",
         "isolated-auth-denial/summary.json",
-        "isolated-websocket-quotas/summary.json"
+        "isolated-websocket-quotas/summary.json",
+        "isolated-login-budgets/summary.json"
       ],
       "defects": [
-        134
+        134,
+        137
       ],
       "blockers": [],
       "source_body_sha256": "7cca703010a69ef8a373315fc6e27adac88f81ff7c8be3a80976e06bfdaba9d3",
@@ -16090,7 +16107,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-27T23:57:16.061041+00:00",
+  "updated_utc": "2026-10-28T00:18:27.936040+00:00",
   "known_defect_issues": [
     579,
     580,
@@ -16098,7 +16115,8 @@
     582,
     584,
     585,
-    586
+    586,
+    137
   ],
   "criterion_witness_note": "Exact row links are scoped. PARTIAL/FAIL/BLOCKED never satisfy the complete multi-platform requirement; unlinked PENDING rows still need routing/execution.",
   "acceptance_method_catalog": "acceptance-methods.json",

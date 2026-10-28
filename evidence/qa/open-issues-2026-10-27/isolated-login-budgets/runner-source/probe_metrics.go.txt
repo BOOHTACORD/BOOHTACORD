@@ -1,0 +1,35 @@
+package main
+
+import (
+ "bufio"
+ "io"
+ "net/http"
+ "os"
+ "strconv"
+ "strings"
+ "sync"
+ "time"
+)
+
+var samples=[]map[string]any{}
+var samplesMu sync.Mutex
+var metricNames=map[string]string{
+ "process_resident_memory_bytes":"RSS_bytes","process_open_fds":"FD","process_cpu_seconds_total":"CPU_seconds","go_goroutines":"goroutines",
+ "voice_platform_auth_kdf_active":"KDF_active","voice_platform_auth_kdf_capacity":"KDF_capacity","voice_platform_auth_kdf_waiting":"KDF_waiting","voice_platform_auth_kdf_rejected_total":"KDF_rejected","voice_platform_auth_kdf_work_seconds_count":"KDF_work_count",
+ "voice_platform_login_reservations_active":"login_active","voice_platform_login_budgets_capacity":"login_capacity","voice_platform_login_budgets_active":"login_entries",
+ "voice_platform_login_admission_total{decision=\"admitted\"}":"login_admitted","voice_platform_login_admission_total{decision=\"limited\"}":"login_limited","voice_platform_login_admission_total{decision=\"saturated\"}":"login_saturated",
+ "voice_platform_login_completion_total{outcome=\"success\"}":"login_success","voice_platform_login_completion_total{outcome=\"invalid\"}":"login_invalid","voice_platform_login_completion_total{outcome=\"not_started\"}":"login_not_started",
+}
+func measure(label string)map[string]float64{
+ r,e:=http.NewRequestWithContext(ctx,"GET",base+"/metrics",nil);require(e==nil,"metrics request");response,e:=client.Do(r);require(e==nil,"metrics transport");defer response.Body.Close();require(response.StatusCode==200,"metrics HTTP")
+ raw,e:=io.ReadAll(io.LimitReader(response.Body,4*1024*1024+1));require(e==nil&&len(raw)<=4*1024*1024,"metrics bound")
+ m:=map[string]float64{};scanner:=bufio.NewScanner(strings.NewReader(string(raw)));for scanner.Scan(){parts:=strings.Fields(scanner.Text());if len(parts)!=2{continue};if name,ok:=metricNames[parts[0]];ok{v,e:=strconv.ParseFloat(parts[1],64);require(e==nil,"metrics number");m[name]=v}}
+ for _,name:=range []string{"RSS_bytes","FD","CPU_seconds","KDF_active","KDF_capacity","KDF_waiting","login_active","login_capacity","login_entries"}{_,ok:=m[name];require(ok,"required private metric absent")}
+ require(m["RSS_bytes"]<512*1024*1024&&m["FD"]<2048&&m["goroutines"]<8000,"API resource stop")
+ require(m["KDF_active"]<=4&&m["KDF_capacity"]==4&&m["KDF_waiting"]==0,"actual KDF bounded policy")
+ _,stop:=os.Stat("/work/STOP");require(os.IsNotExist(stop),"external owned resource stop")
+ samplesMu.Lock();samples=append(samples,map[string]any{"label":label,"at_utc":time.Now().UTC().Format(time.RFC3339Nano),"metrics":m});samplesMu.Unlock();return m
+}
+func waitUntil(start time.Time,seconds float64,label string){
+ for time.Since(start).Seconds()<seconds{remaining:=seconds-time.Since(start).Seconds();delay:=10*time.Second;if remaining<10{delay=time.Duration(remaining*float64(time.Second))};select{case <-time.After(delay):case <-ctx.Done():panic("profile deadline")};measure(label);emit("progress",map[string]any{"phase":label,"elapsed_seconds":time.Since(start).Seconds(),"target_seconds":seconds})}
+}

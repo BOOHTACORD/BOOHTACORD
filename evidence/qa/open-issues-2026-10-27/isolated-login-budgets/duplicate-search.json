@@ -1,0 +1,29 @@
+{
+  "at_utc": "2026-10-28 00:18:25 UTC",
+  "repository": "Egkurilov/BOOHTACORD",
+  "queries": [
+    {
+      "query": "is:issue is:open NAT",
+      "matches": [
+        {
+          "number": 240,
+          "title": "QA — runtime-приёмка реализаций #133–#141, #145–#153, #155, #157"
+        },
+        {
+          "number": 287,
+          "title": "[QA] Приёмка завершённого пакета roster, client features и native hardening"
+        }
+      ]
+    },
+    {
+      "query": "is:issue is:open \"LoginLimiter\"",
+      "matches": []
+    }
+  ],
+  "canonical_issue": 137,
+  "canonical_issue_before_state": "closed",
+  "related_issue533_state": "closed",
+  "decision": "Reuse/reopen137 for its original unmet NAT20 availability acceptance. No separate duplicate issue.533 protects verifier ordering and remains a distinct resolved scope.",
+  "acceptance_comment": "https://github.com/Egkurilov/BOOHTACORD/issues/137#issuecomment-6052483714",
+  "reopen_after_evidence_publication": true
+}

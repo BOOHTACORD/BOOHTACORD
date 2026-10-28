@@ -1,0 +1,23 @@
+package main
+
+import (
+ "sync"
+ "time"
+)
+
+var asyncWorkers sync.WaitGroup
+func burstProfile(){
+ before:=measure("KDF_burst_before");results:=make([]outcome,64);start:=make(chan struct{});finished:=make(chan struct{})
+ for i:=0;i<64;i++{asyncWorkers.Add(1);go func(i int){defer asyncWorkers.Done();<-start;results[i]=correct(20+i,cfg.Sources.Burst[i])}(i)}
+ close(start);go func(){asyncWorkers.Wait();close(finished)}()
+ sampling:=true
+ for sampling{select{case <-finished:sampling=false;case <-time.After(5*time.Millisecond):measure("KDF_burst_inflight")}}
+ after:=measure("KDF_burst_after");success,busy:=0,0;retry:=-1
+ for i,r:=range results{valid(r);if r.HTTP==204{success++}else if r.HTTP==503{busy++;retry=i}else{panic("unexpected independent-account burst outcome")}}
+ require(after["KDF_rejected"]-before["KDF_rejected"]==float64(busy),"KDF rejection counter mismatch")
+ require(after["login_not_started"]-before["login_not_started"]==float64(busy),"unstarted budget refund metric mismatch")
+ require(after["KDF_active"]==0&&after["login_active"]==0,"burst leaked reservation")
+ status:="PASS";if busy==0{status="NOT_EXERCISED_KDF_SATURATION"}
+ record("independent_account_KDF_burst",map[string]any{"status":status,"attempts":64,"concurrency":64,"observed204":success,"observed503_AUTH_BUSY":busy,"outcomes":results,"KDF_capacity_gauge":after["KDF_capacity"],"waiting_gauge":after["KDF_waiting"],"unstarted_refund_metric_delta":after["login_not_started"]-before["login_not_started"],"scope":"Process KDF concurrency guard, not upload deployment rate budget or general capacity"})
+ if retry>=0{time.Sleep(time.Second);r:=correct(20+retry,cfg.Sources.Control);valid(r);require(r.HTTP==204,"manual retry after KDF busy");record("manual_KDF_busy_retry",map[string]any{"status":"PASS","wait_seconds":1,"outcome":r})}
+}

@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-28T00:01:47.235774+00:00",
+  "at_utc": "2026-10-28T00:22:07.054522+00:00",
   "candidate_evidence": "../../android/physical-share-2026-10-27/result.json",
   "files": {
     "acceptance-methods.json": {
@@ -667,8 +667,8 @@
       "sha256": "7d2ac8691a4dd0bef3ffd7fd6c9ea028ab04c058060810c65c5f27501d34d867"
     },
     "cases.json": {
-      "bytes": 71816,
-      "sha256": "d7a6e5bbe6df3703d226590e41c3a92278af508f6052decb7b1a74c6e3b52bc5"
+      "bytes": 72959,
+      "sha256": "596e751c395355283382f5a4c1a1911bec7359e0fe96daa495a1f9aec7f67ec2"
     },
     "controlled-account-integrity.json": {
       "bytes": 640,
@@ -813,6 +813,146 @@
     "isolated-auth-denial/validation.json": {
       "bytes": 374,
       "sha256": "c5e86fafc24d6cb0fbd54263f631d58d2904b1dbff2a3e3d2d5e07cd6e0c7fd7"
+    },
+    "isolated-login-budgets/baseline-owned-counts.json": {
+      "bytes": 147,
+      "sha256": "48afd219a2b55bfc03e756bf5a735eec9a1b46a61d38a6437f96e5ec6fe75fd2"
+    },
+    "isolated-login-budgets/duplicate-search.json": {
+      "bytes": 1028,
+      "sha256": "49e129f9488d4d5eebebac21e141109f71543b2d9953dfdf9ea9774d545e8134"
+    },
+    "isolated-login-budgets/environment-after.json": {
+      "bytes": 5059,
+      "sha256": "a071584c5501f9c52c65dccc962be6de95dc17acd5cdf209b7f130d851df3b87"
+    },
+    "isolated-login-budgets/focused-go-events.json": {
+      "bytes": 9179,
+      "sha256": "8210bfbb06cdc93fa00c4153de24cbe94574c37f4d926198c49b6e7aef33ed1a"
+    },
+    "isolated-login-budgets/focused-go-result.json": {
+      "bytes": 1900,
+      "sha256": "241d9e30c0c472087f9b04cf6e0370c92d10fc1737777616200dd86f58856b67"
+    },
+    "isolated-login-budgets/initial-observe/observe-database-samples.json": {
+      "bytes": 181,
+      "sha256": "2dc2a94991d681a7fba64620c977edfc2cd3bbb6af766367aa830aeed3cd4032"
+    },
+    "isolated-login-budgets/initial-observe/observe-result.json": {
+      "bytes": 989,
+      "sha256": "5a9c8b455cfc9951b98b5af3bc0d31088dc20c8e6d5a0ff54bc3431eb08770fc"
+    },
+    "isolated-login-budgets/initial-observe/observe-runner.json": {
+      "bytes": 514,
+      "sha256": "00fc22bd529a35c635f5ee9cd9298fcd77003360388615d2cf7171ab73f91a62"
+    },
+    "isolated-login-budgets/initial-observe/runner-before-observe.json": {
+      "bytes": 1001,
+      "sha256": "d2edcdea844f075b8ec92e3250d65e8dea02d00fda144b26b918e884eb5a8638"
+    },
+    "isolated-login-budgets/metric-label-audit.json": {
+      "bytes": 618,
+      "sha256": "c9fa48c2c009311a7e82c1e77608b2b977ba100007ccc5ead78bf6c752c06c3e"
+    },
+    "isolated-login-budgets/observe-result.json": {
+      "bytes": 1051,
+      "sha256": "f8fd9752653b048ef5aac19e8252039a7d35f9b268aa464f4bce778429cbef55"
+    },
+    "isolated-login-budgets/observe-runner.json": {
+      "bytes": 513,
+      "sha256": "9cc051f789637aa21393b47bd6f2bda3ea2d0087245aa3fb025805cd995f4574"
+    },
+    "isolated-login-budgets/operating-brief.json": {
+      "bytes": 1836,
+      "sha256": "407863735b6aed3cbf4e46706c235af6d565b3599a5fb495ba1e87f521885d5c"
+    },
+    "isolated-login-budgets/README.md": {
+      "bytes": 8507,
+      "sha256": "a3792f383c6b7e7ad931fc6cd7ee5a9c3b4f127773d8945ffd556fcb05716af7"
+    },
+    "isolated-login-budgets/run-database-samples.json": {
+      "bytes": 9063,
+      "sha256": "f14e2cceccb22816d557980ad81349aba8ee5d6e5e62c62829a3b4d538f9b5a0"
+    },
+    "isolated-login-budgets/run-result.json": {
+      "bytes": 56850,
+      "sha256": "c47d24d183480d44ac60b07dc0eda1499d935dd2755a31b25b233ca3fe7f7377"
+    },
+    "isolated-login-budgets/run-runner.json": {
+      "bytes": 518,
+      "sha256": "23634a536c36dec5890e4f0dda0fcbe6a15c84fdadaeff057d36bf343f4fb1fa"
+    },
+    "isolated-login-budgets/runner-before-metric-audit.json": {
+      "bytes": 420,
+      "sha256": "92f56dede96eb8b329052e229654c7073bc81a79d36f74567176ce1f306a49d0"
+    },
+    "isolated-login-budgets/runner-before-observe.json": {
+      "bytes": 1001,
+      "sha256": "12dd68e74ff365968dd07f3b097777a58e7b6b5a8c404009aa1ce4007bd7832d"
+    },
+    "isolated-login-budgets/runner-before-postcheck.json": {
+      "bytes": 166,
+      "sha256": "f2de574f9bf1213159a10f46e30519aedc3b141ea6716e48b80bb8c5e1117792"
+    },
+    "isolated-login-budgets/runner-before-run.json": {
+      "bytes": 1001,
+      "sha256": "1c7a74d3072a70a70f617384add60dd47116e46293d91f1d80ef66c8c6969f4a"
+    },
+    "isolated-login-budgets/runner-source/audit_metrics.go.txt": {
+      "bytes": 2743,
+      "sha256": "e6c1d6ba111355209d5a8f81c3dbb888a717adcc9078394e2ee3742a66083e0b"
+    },
+    "isolated-login-budgets/runner-source/probe_account.go.txt": {
+      "bytes": 2302,
+      "sha256": "1bfeee42ea45aebe0b098545fa21321daedcdabeb194ad4b7ca8d7bcb178ab89"
+    },
+    "isolated-login-budgets/runner-source/probe_burst.go.txt": {
+      "bytes": 1821,
+      "sha256": "57738582d92a7a620b0b1f653f75fb4890f6cd42433c297ce87a687849c8399f"
+    },
+    "isolated-login-budgets/runner-source/probe_common.go.txt": {
+      "bytes": 4676,
+      "sha256": "2a22cf40ee1a1f40c2d28b938aaebca0db2e8c10943d36fb86baeeccc0240f9a"
+    },
+    "isolated-login-budgets/runner-source/probe_main.go.txt": {
+      "bytes": 2544,
+      "sha256": "05a56e13daf28d14bcc8b78af445cadd64bede43bd51c50751a5adac8e2206bb"
+    },
+    "isolated-login-budgets/runner-source/probe_metrics.go.txt": {
+      "bytes": 3048,
+      "sha256": "2be414da6922ab72ad7ca7f0eb5d606e01f98d36a4b9f96809098ec9c2ce053d"
+    },
+    "isolated-login-budgets/runner-source/probe_nat.go.txt": {
+      "bytes": 2154,
+      "sha256": "44db034adb4b5ad3d901b18ea60bbb001e7a6f08ec3d0b1775ca561026568dff"
+    },
+    "isolated-login-budgets/runner-source/run_metric_audit.py.txt": {
+      "bytes": 2436,
+      "sha256": "8f20c150e75d9d67086603746f89e3d0b12a6cebe14f797601cf29f8586c306c"
+    },
+    "isolated-login-budgets/runner-source/run_profile.py.txt": {
+      "bytes": 6476,
+      "sha256": "ab8d6a29f235a449a6812abae24d4e01daf3428ffbeff30eaf9e593dbf89ae4c"
+    },
+    "isolated-login-budgets/runner-source/validate_public.py.txt": {
+      "bytes": 3911,
+      "sha256": "7600110c31b8006036ee9c069764f247adcf0d41cf274e359af5a6d343714d62"
+    },
+    "isolated-login-budgets/runner-source/verify_after.py.txt": {
+      "bytes": 4600,
+      "sha256": "71bda474bcf6352d39448f9215f433991dc110c348622b3fb20387ffcdbf16d2"
+    },
+    "isolated-login-budgets/source-binding.json": {
+      "bytes": 7154,
+      "sha256": "19b1618e581d3918f4f36f89b8c91ae3adbc0174656d9560ce58fc7a82e8172a"
+    },
+    "isolated-login-budgets/summary.json": {
+      "bytes": 26601,
+      "sha256": "d4924e7103b8768305bb3f7f0acfc7ace91c3e520fb28b3f24e7ee86a217083f"
+    },
+    "isolated-login-budgets/validation.json": {
+      "bytes": 640,
+      "sha256": "66c716b10f186444446e3047b50081a65216fe685ab367a0dd05356302c98ccc"
     },
     "isolated-websocket-quotas/controller-attempts/attempt1/cleanup-attestation.json": {
       "bytes": 383,
@@ -1215,8 +1355,8 @@
       "sha256": "4b7314f316cc66bb9c1c3e07919f4a2441de12db8ab970d26f9b4308a2cef8a4"
     },
     "matrix.json": {
-      "bytes": 1179709,
-      "sha256": "40432faf07949e40181b2323f9994149fdb44a1af3d7acf7f1f287a0a87b6d2f"
+      "bytes": 1180376,
+      "sha256": "ffc3f3d674ae2ef5d70b46c904b12d16bc3d9e1e421dfcfa64ba5c8011c6f6dd"
     },
     "muted-background-resume.json": {
       "bytes": 250,
@@ -2451,8 +2591,8 @@
       "sha256": "5c8013eb9693e540a771743fa74b10476a3b88dec2acdd1c683e36c8a6f9c391"
     },
     "README.md": {
-      "bytes": 19750,
-      "sha256": "3695bb960fd4f6fa8b8f77dbbe0caf8aeef8c94fa748b31838cf96f11a29d3c9"
+      "bytes": 20652,
+      "sha256": "0cd332f33f140ed35e37a3f848c994a03c3f77ebf24de1f076806691d236efa2"
     },
     "restored-microphone.json": {
       "bytes": 269,

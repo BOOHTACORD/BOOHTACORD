@@ -1,0 +1,25 @@
+package main
+
+import "time"
+
+func natProfile()time.Time{
+ started:=time.Now()
+ for cohort:=0;cohort<2;cohort++{
+  before:=measure("nat_before");results:=[]outcome{};success,limited:=0,0
+  for attempt:=0;attempt<20;attempt++{i:=attempt;if cohort==1{i=19-attempt};r:=correct(i,cfg.Sources.Nat[cohort]);valid(r);results=append(results,r);if r.HTTP==204{success++}else if r.HTTP==429{limited++}else{panic("unexpected NAT status")}}
+  after:=measure("nat_after");status:="PASS";if success!=20{natFailed=true;status="FAIL"}
+  require(after["login_admitted"]-before["login_admitted"]==float64(success),"NAT admission counter delta")
+  record("NAT20_cohort_"+string(rune('A'+cohort)),map[string]any{"status":status,"expected_successful_distinct_accounts":20,"observed204":success,"observed429":limited,"attempts":results,"login_admitted_delta":after["login_admitted"]-before["login_admitted"],"login_success_delta":after["login_success"]-before["login_success"],"KDF_work_delta":after["KDF_work_count"]-before["KDF_work_count"],"same_client_source_for_all20":true,"second_cohort_reverses_order":cohort==1})
+ }
+ r:=correct(0,cfg.Sources.Control);valid(r);require(r.HTTP==204,"fresh source credential control");record("same_credentials_fresh_source",map[string]any{"http":r.HTTP,"identity_matches":true})
+ return started
+}
+
+func natRecovery(started time.Time){
+ waitUntil(started,150,"NAT_window_midpoint");outcomes:=[]outcome{}
+ for i:=0;i<2;i++{r:=correct(0,cfg.Sources.Nat[i]);valid(r);require(r.HTTP==429&&r.Retry<=155&&r.Retry>=140,"midwindow source budget");outcomes=append(outcomes,r)}
+ record("NAT_window_midpoint_denials",map[string]any{"outcomes":outcomes,"elapsed_seconds":time.Since(started).Seconds()})
+ waitUntil(started,302,"NAT_original_window_recovery");outcomes=nil
+ for i:=0;i<2;i++{r:=correct(0,cfg.Sources.Nat[i]);valid(r);require(r.HTTP==204,"real source window did not recover");outcomes=append(outcomes,r)}
+ record("NAT_original_window_recovery",map[string]any{"status":"PASS","outcomes":outcomes,"elapsed_seconds":time.Since(started).Seconds(),"denials_did_not_extend_original_window":true,"server_restarted_or_clock_overridden":false})
+}

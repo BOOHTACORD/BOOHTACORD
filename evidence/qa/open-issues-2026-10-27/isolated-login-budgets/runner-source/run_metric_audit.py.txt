@@ -1,0 +1,14 @@
+"""Read-only finite-label audit after terminal profile; never export private metric lines."""
+import hashlib,json,os,subprocess,sys
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,SOURCE,CONTEXT
+r=json.loads((P/'run-runner.json').read_text(encoding='utf-8'));assert r['status'] in ['OBSERVED_RUNTIME_ACCEPTANCE_FAIL','PASS_OWNED_PROFILE']
+api=json.loads(docker('inspect',PROJECT+'-api-1'))[0];proxy=json.loads(docker('inspect',PROJECT+'-proxy-1'))[0]
+for v in [api,proxy]:assert v['State']['Running'] and v['Config']['Labels']['com.docker.compose.project']==PROJECT
+image=json.loads(docker('image','inspect',api['Image']))[0];assert image['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+source=P/'audit_metrics.go';before={'at_utc':datetime.now(timezone.utc).isoformat(),'source_revision':SOURCE,'API_image_id':api['Image'],'files_SHA256':{f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in [source,Path(__file__)]}};(P/'runner-before-metric-audit.json').write_text(json.dumps(before,indent=2)+'\n',encoding='utf-8',newline='\n')
+built=subprocess.run(['go','build','-o',str(P/'metric_audit'),str(source)],cwd=Q/'backend',env={**os.environ,'GOOS':'linux','GOARCH':'amd64','CGO_ENABLED':'0','GOTOOLCHAIN':'local'},capture_output=True);(P/'metric-audit-build.private.log').write_bytes(built.stdout+built.stderr);assert built.returncode==0
+argv=['docker','--context',CONTEXT,'run','--rm','--name','boohtacord-login-metric-audit','--label','com.docker.compose.project='+PROJECT,'--network','container:'+proxy['Id'],'--cpus','.5','--memory','128m','--pids-limit','64','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges','--mount','type=bind,source='+str(P/'metric_audit')+',target=/qa-audit,readonly','--entrypoint','/qa-audit',api['Image']]
+result=subprocess.run(argv,capture_output=True,timeout=30);(P/'metric-audit-stderr.private.log').write_bytes(result.stderr);d=json.loads(result.stdout);d['client_exit_code']=result.returncode;d['binary_SHA256']=hashlib.sha256((P/'metric_audit').read_bytes()).hexdigest();d['at_utc']=datetime.now(timezone.utc).isoformat();(P/'metric-label-audit.json').write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(d));assert result.returncode==0 and d['status'].startswith('PASS')

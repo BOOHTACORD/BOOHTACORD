@@ -1,0 +1,57 @@
+package main
+
+import (
+ "bytes"
+ "context"
+ "encoding/json"
+ "fmt"
+ "io"
+ "net/http"
+ "os"
+ "strconv"
+ "sync"
+ "time"
+)
+
+const base="http://api:8080"
+const origin="http://localhost:18088"
+type account struct{ID string `json:"id"`;Login string `json:"login"`;Password string `json:"password"`}
+type sources struct{Nat []string `json:"nat"`;Account []string `json:"account"`;Burst []string `json:"burst"`;Control string `json:"control"`;Churn string `json:"churn"`}
+type config struct{Source string `json:"source_revision"`;Accounts []account `json:"accounts"`;Sources sources `json:"sources"`;Wrong string `json:"wrong_password"`}
+type issuance struct{AccountSlot int `json:"account_slot"`;Cookie string `json:"cookie"`}
+type outcome struct{HTTP int `json:"http"`;Code string `json:"code"`;Retry int `json:"retry_after_s"`;Cookie bool `json:"cookie_seen"`;MS float64 `json:"elapsed_ms"`;Problem string `json:"problem,omitempty"`}
+var cfg config
+var ctx context.Context
+var issued=[]issuance{}
+var issuedMu sync.Mutex
+var client=&http.Client{Timeout:10*time.Second,Transport:&http.Transport{Proxy:nil,MaxIdleConns:128,MaxIdleConnsPerHost:64},CheckRedirect:func(*http.Request,[]*http.Request)error{return http.ErrUseLastResponse}}
+var records=[]map[string]any{}
+var natFailed bool
+func require(ok bool,label string){if !ok{panic(label)}}
+func emit(event string,d map[string]any){d["event"]=event;d["at_utc"]=time.Now().UTC().Format(time.RFC3339Nano);_ =json.NewEncoder(os.Stdout).Encode(d)}
+func record(label string,d map[string]any){d["label"]=label;records=append(records,d);emit("observation",d)}
+func request(c context.Context,method,path string,body any,cookie,source string)(int,map[string]any,http.Header,error){
+ if c==ctx{if _,e:=os.Stat("/work/STOP");e==nil{return 0,nil,nil,fmt.Errorf("owned resource stop")}}
+ raw,_:=json.Marshal(body);if body==nil{raw=nil};r,e:=http.NewRequestWithContext(c,method,base+path,bytes.NewReader(raw));if e!=nil{return 0,nil,nil,e}
+ r.Host="localhost:18088";r.Header.Set("Origin",origin);r.Header.Set("Content-Type","application/json");if cookie!=""{r.Header.Set("Cookie",cookie)};if source!=""{r.Header.Set("X-Forwarded-For",source)}
+ response,e:=client.Do(r);if e!=nil{return 0,nil,nil,e};defer response.Body.Close();raw,e=io.ReadAll(io.LimitReader(response.Body,65537));if e!=nil||len(raw)>65536{return 0,nil,nil,fmt.Errorf("bounded read")}
+ var d map[string]any;if len(raw)>0&&json.Unmarshal(raw,&d)!=nil{return response.StatusCode,nil,response.Header,fmt.Errorf("JSON response")};return response.StatusCode,d,response.Header,nil
+}
+func login(index int,loginName,password,source string)outcome{
+ started:=time.Now();status,d,h,e:=request(ctx,"POST","/api/v1/auth/login",map[string]string{"login":loginName,"password":password},"",source);r:=outcome{HTTP:status,MS:float64(time.Since(started).Microseconds())/1000};if e!=nil{r.Problem="bounded local request";return r}
+ r.Retry,_=strconv.Atoi(h.Get("Retry-After"));r.Cookie=len(h.Values("Set-Cookie"))>0
+ if er,ok:=d["error"].(map[string]any);ok{r.Code,_=er["code"].(string)}
+ if status==204{
+  response:=http.Response{Header:h};cookies:=response.Cookies();if len(cookies)!=1||cookies[0].Name!="vp_session"||!cookies[0].Secure||!cookies[0].HttpOnly||cookies[0].SameSite!=http.SameSiteLaxMode{r.Problem="positive cookie flags";return r};cookie:="vp_session="+cookies[0].Value
+  issuedMu.Lock();issued=append(issued,issuance{index,cookie});raw,_:=json.MarshalIndent(issued,"","  ");e=os.WriteFile("/work/issued.private.json",raw,0600);issuedMu.Unlock();if e!=nil{r.Problem="private issuance persistence";return r}
+  s,identity,_,e:=request(ctx,"GET","/api/v1/auth/session",nil,cookie,"");if e!=nil||s!=200||identity["account_id"]!=cfg.Accounts[index].ID||identity["authenticated"]!=true{r.Problem="positive identity control"}
+ }
+ return r
+}
+func correct(i int,source string)outcome{return login(i,cfg.Accounts[i].Login,cfg.Accounts[i].Password,source)}
+func valid(r outcome){require(r.Problem=="","actual request/control failure");if r.HTTP!=204{require(!r.Cookie,"denial minted a cookie")};if r.HTTP==429{require(r.Code=="RATE_LIMITED"&&r.Retry>=1&&r.Retry<=300,"rate denial contract")};if r.HTTP==503{require(r.Code=="AUTH_BUSY"&&r.Retry==1,"KDF busy contract")}}
+func cleanup()map[string]any{
+ c,cancel:=context.WithTimeout(context.Background(),2*time.Minute);defer cancel();ok,failed:=0,0
+ for _,v:=range issued{s,_,_,e:=request(c,"POST","/api/v1/auth/logout",nil,v.Cookie,"");if e==nil&&(s==204||s==401){ok++}else{failed++}}
+ return map[string]any{"owned_issued_sessions":len(issued),"logout_successes":ok,"logout_failures":failed,"no_members_created":true,"status_ok":failed==0}
+}

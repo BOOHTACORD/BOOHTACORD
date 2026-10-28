@@ -1,0 +1,36 @@
+{
+  "at_utc": "2026-10-28T00:11:30.987774+00:00",
+  "command_argv": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-run",
+    "^Test(AtomicReservationCannotSpendOneSlotTwice|WindowRecoveryCannotBeExtendedByRejectedTraffic|SaturationNeverEvictsActiveBudget|MetricsHaveOnlyFiniteDecisionAndOutcomeLabels|AdmissionRecoversWithoutPersistentLockAndKeepsNATBudgetsIndependent|NetworkAdmissionStillRejectsEleventhRequestBeforeAccountWork|AccountBudgetPrecedesEveryVerifierIncludingCorrectPassword|MiddlewareLimitsOneForwardedSourceAndResetsWindow|LimiterKeepsActiveExhaustedBudgetAtCapacity|AllPasswordHTTPPathsRejectCapacityWithoutKDFOrMutation|RealKDFConcurrencyCancellationAndSaturation)$",
+    "./internal/identity/admit_login",
+    "./internal/identity/login_user/api",
+    "./internal/security/rate_limit",
+    "./internal/identity/password"
+  ],
+  "exit_code": 0,
+  "top_level_passed": 11,
+  "all_pass_events": 17,
+  "skips": 0,
+  "fail_events": 0,
+  "names": [
+    "TestAtomicReservationCannotSpendOneSlotTwice",
+    "TestWindowRecoveryCannotBeExtendedByRejectedTraffic",
+    "TestSaturationNeverEvictsActiveBudget",
+    "TestMetricsHaveOnlyFiniteDecisionAndOutcomeLabels",
+    "TestMiddlewareLimitsOneForwardedSourceAndResetsWindow",
+    "TestLimiterKeepsActiveExhaustedBudgetAtCapacity",
+    "TestAdmissionRecoversWithoutPersistentLockAndKeepsNATBudgetsIndependent",
+    "TestNetworkAdmissionStillRejectsEleventhRequestBeforeAccountWork",
+    "TestAccountBudgetPrecedesEveryVerifierIncludingCorrectPassword",
+    "TestRealKDFConcurrencyCancellationAndSaturation",
+    "TestAllPasswordHTTPPathsRejectCapacityWithoutKDFOrMutation"
+  ],
+  "scope": "Native Go unit/protocol tests; NAT20 real API counterexample separate; existing11th-IP rejection test retained",
+  "raw_SHA256": "dd05189f2ee74571c419ea271e1886f60a3ee649fca2c8119a2543e323ed6867",
+  "status": "PASS_FOCUSED_GO_ZERO_SKIPS"
+}

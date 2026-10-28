@@ -1,0 +1,41 @@
+{
+  "at_utc": "2026-10-28T00:16:29.186523203Z",
+  "cleanup": {
+    "logout_failures": 0,
+    "logout_successes": 0,
+    "no_members_created": true,
+    "owned_issued_sessions": 0,
+    "status_ok": true
+  },
+  "elapsed_seconds": 0.016084967,
+  "event": "final",
+  "metric_samples": [
+    {
+      "at_utc": "2026-10-28T00:16:29.186284624Z",
+      "label": "initial_baseline",
+      "metrics": {
+        "CPU_seconds": 98.79,
+        "FD": 33,
+        "KDF_active": 0,
+        "KDF_capacity": 4,
+        "KDF_rejected": 46,
+        "KDF_waiting": 0,
+        "KDF_work_count": 1253,
+        "RSS_bytes": 97705984,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 1186,
+        "login_capacity": 50000,
+        "login_entries": 1,
+        "login_invalid": 98,
+        "login_limited": 4,
+        "login_not_started": 46,
+        "login_success": 1041
+      }
+    }
+  ],
+  "production_touched": false,
+  "records": [],
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "status": "PASS_PRIVATE_LOGIN_METRICS"
+}

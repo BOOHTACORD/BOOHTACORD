@@ -1,0 +1,23 @@
+package main
+
+import (
+ "strings"
+ "time"
+)
+
+func accountProfile(){
+ started:=time.Now();before:=measure("account_before");outcomes:=[]outcome{}
+ for i:=0;i<8;i++{name:=cfg.Accounts[84].Login;if i%2==1{name=strings.ToUpper(name)};r:=login(84,name,cfg.Wrong,cfg.Sources.Account[i]);valid(r);require(r.HTTP==401&&r.Code=="UNAUTHENTICATED","distributed invalid-pair response");outcomes=append(outcomes,r)}
+ after:=measure("account_eight_invalid");require(after["KDF_work_count"]-before["KDF_work_count"]==8,"eight wrong pairs KDF count")
+ deniedBefore:=after
+ for _,i:=range []int{8,9}{r:=correct(84,cfg.Sources.Account[i]);valid(r);require(r.HTTP==429&&r.Retry<=30,"correct password bypassed account budget");outcomes=append(outcomes,r)}
+ after=measure("account_correct_denied");require(after["KDF_work_count"]==deniedBefore["KDF_work_count"]&&after["login_limited"]-deniedBefore["login_limited"]==2,"account denial reached verifier")
+ neighbor:=correct(85,cfg.Sources.Account[9]);valid(neighbor);require(neighbor.HTTP==204,"neighbor account shares account budget")
+ for i:=0;i<20;i++{r:=correct(i,cfg.Sources.Burst[i]);valid(r);require(r.HTTP==204,"finite foreign-account churn control")}
+ r:=correct(84,cfg.Sources.Account[10]);valid(r);require(r.HTTP==429,"finite foreign churn reset protected budget")
+ record("account_budget_distributed_sources",map[string]any{"status":"PASS","first_eight_wrong_pairs":outcomes,"correct_pair_denials_skip_KDF":true,"neighbor_same_source_http":neighbor.HTTP,"foreign_account_churn":20,"protected_budget_still429":true,"normalization_case_variants":true,"store_capacity_saturation_exercised":false})
+ waitUntil(started,20,"account_denial_window");r=correct(84,cfg.Sources.Account[11]);valid(r);require(r.HTTP==429&&r.Retry<=11,"account denial extended window before expiry")
+ record("account_before_original_expiry",map[string]any{"outcome":r,"elapsed_seconds":time.Since(started).Seconds()})
+ waitUntil(started,32,"account_original_window_recovery");r=correct(84,cfg.Sources.Account[12]);valid(r);require(r.HTTP==204,"actual account window did not recover")
+ record("account_original_window_recovery",map[string]any{"status":"PASS","outcome":r,"elapsed_seconds":time.Since(started).Seconds(),"no_persistent_account_lock":true,"denials_do_not_extend_window":true})
+}

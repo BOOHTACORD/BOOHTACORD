@@ -1,0 +1,40 @@
+"""Preserve original rows/cases and scan public bytes for private identities/quota keys."""
+import ast,collections,json,re,subprocess
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];B=Path(r'C:\Users\egkur\.codex\worktrees\android-qa\BOOHTACORD');E=B/'evidence/qa/open-issues-2026-10-27';O=E/'isolated-login-budgets';BASE='b9692b89a2b16d32cf475af9b2789b0c425c4a55'
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+def previous(name):return json.loads(subprocess.check_output(['git','show',BASE+':evidence/qa/open-issues-2026-10-27/'+name],cwd=B))
+def rows(m):return {r['id']:r for i in m['issues'] for r in i['criteria']}
+old=rows(previous('matrix.json'));new=rows(read(E/'matrix.json'));assert len(new)==len(old)==480 and set(new)==set(old)
+assert [k for k in old if old[k]!=new[k]]==['I240.C5'];assert old['I240.C5']['requirement']==new['I240.C5']['requirement']
+cases=read(E/'cases.json')['cases'];assert cases[:-1]==previous('cases.json')['cases'] and len(cases)==70
+assert new['I240.C5']['status']=='FAIL' and 137 in new['I240.C5']['defects']
+files=[P/'private/config.private.json',P/'private/issued.private.json',Q/'.out/qa-ws-quota/private/fixture.private.json',Q/'.out/qa-ws-quota/attempt1/private/fixture.private.json',Q/'.out/qa-ws-quota/attempt2/private/fixture.private.json',Q/'.out/qa-auth-denial/fixture.private.json',Q/'.out/local-qa/credentials.private.json',B/'.out/qa-goal/private-fixture.json',B/'.out/qa-goal/private-upgrade-identity.json',Q/'.out/qa-prod-resume/dm-fixture.private.json',Q/'.out/qa-prod-resume/dm-fixture-attempt1.private.json'];markers=set()
+def collect(value,key=''):
+ if isinstance(value,dict):
+  for k,v in value.items():collect(v,k.lower())
+ elif isinstance(value,list):
+  for v in value:collect(v,key)
+ elif isinstance(value,str) and len(value)>8:
+  secret=any(s in key for s in ['password','secret','cookie','token','ingest_auth']) or key in ['login','email','livekit_key']
+  if secret or ((key=='id' or key.endswith('_id')) and re.fullmatch('[0-9a-f-]{36}',value)):
+   markers.add(value)
+   if 'cookie' in key and '=' in value:markers.add(value.split('=',1)[1])
+for file in files:
+ if file.exists():
+  d=read(file)
+  if file.name=='credentials.private.json':d={k:v for k,v in d.items() if any(s in k for s in ['password','secret','ingest_auth']) or k=='livekit_key'}
+  collect(d)
+for v in read(P/'private/config.private.json')['sources'].values():markers.update(v if isinstance(v,list) else [v])
+scanned=0
+for file in E.rglob('*'):
+ if file.is_file() and file.suffix in ['.json','.md','.txt','.log']:
+  text=file.read_text(encoding='utf-8');assert all(n not in text for n in markers),'Private marker in '+str(file.relative_to(E));scanned+=1
+for file in O.rglob('*.txt'):
+ text=file.read_text(encoding='utf-8');assert len(text.splitlines())<=120,file.name
+ if file.name.endswith('.py.txt'):ast.parse(text)
+assert read(O/'run-result.json')['status']=='FAIL_NAT20_ACCEPTANCE' and read(O/'run-runner.json')['client_exit_code']==1
+assert read(O/'environment-after.json')['owned_active_sessions']==0 and read(O/'metric-label-audit.json')['status'].startswith('PASS')
+assert not subprocess.check_output(['git','diff','HEAD','--','backend','clients','tools'],cwd=B)
+d={'status':'PASS_PUBLIC_PRIVACY_AND_FAILED_CASE_FIDELITY','base_evidence_commit':BASE,'original_requirement_texts_preserved':480,'only_changed_row':'I240.C5','all_old_cases_preserved':True,'total_cases':len(cases),'row_status_counts':dict(collections.Counter(r['status'] for r in new.values())),'public_text_files_scanned':scanned,'private_config_sources_scanned':sum(f.exists() for f in files),'actual_source_IPs_and_limiter_keys_absent':True,'native_product_unchanged':True,'runner_hard120_and_Python_syntax':'PASS','acceptance_verdict_stays_FAIL':True}
+(O/'validation.json').write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(d))

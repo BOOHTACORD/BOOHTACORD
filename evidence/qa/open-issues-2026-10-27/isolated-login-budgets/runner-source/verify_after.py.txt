@@ -1,0 +1,36 @@
+"""Verify only owned fixture rows, bounded logs, source and original local services."""
+import hashlib,http.client,ipaddress,json,subprocess,sys,uuid
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,SOURCE,CONTEXT,credentials
+def now():return datetime.now(timezone.utc).isoformat()
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+r={'at_utc':now(),'status':'RUNNING','project':PROJECT,'source_revision':SOURCE,'production_touched':False}
+try:
+ runner=read(P/'run-runner.json');assert runner['status'] in ['OBSERVED_RUNTIME_ACCEPTANCE_FAIL','PASS_OWNED_PROFILE'] and runner['client_exit_code'] in [0,1]
+ assert not docker('ps','-a','--filter','name=^boohtacord-login-budget-probe$','--format','{{.Names}}').decode().strip()
+ cfg=read(P/'private/config.private.json');tokens=read(P/'private/issued.private.json');ids=[str(uuid.UUID(a['id'])) for a in cfg['accounts']];assert len(ids)==104 and len(set(ids))==104
+ literals=','.join("'"+x+"'::uuid" for x in ids);query='SELECT count(*),count(*) FILTER(WHERE revoked_at IS NULL) FROM sessions WHERE user_id IN ('+literals+');\nSELECT count(*) FROM users WHERE id IN ('+literals+') AND blocked_at IS NULL;\nSHOW server_version;\n'
+ values=docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-At',input=query.encode()).decode().splitlines();rows,active=map(int,values[0].split('|'));baseline=read(P/'baseline-owned-counts.json')
+ assert rows==baseline['session_rows']+len(tokens) and active==0 and int(values[1])==104 and values[2].startswith('17.6')
+ r.update(owned_prior_session_rows=baseline['session_rows'],owned_issued_sessions=len(tokens),owned_final_session_rows=rows,owned_active_sessions=active,owned_members_retained_unblocked=104,new_members_created=0,PostgreSQL_version=values[2])
+ markers=[cfg['wrong_password']]
+ for a in cfg['accounts']:markers.extend([a['login'],a['password']])
+ markers.extend(v['cookie'].split('=',1)[1] for v in tokens);markers.extend(v for k,v in credentials().items() if any(s in k for s in ['password','secret','ingest_auth']) and isinstance(v,str))
+ r['services']=[];r['bounded_owned_logs_scan']=[];r['log_scan_since_utc']=runner['at_utc']
+ for name in ['api','web','proxy','postgres','livekit','collector','tempo','prometheus','grafana']:
+  v=json.loads(docker('inspect',PROJECT+'-'+name+'-1'))[0];assert v['State']['Running'] and v['Config']['Labels']['com.docker.compose.project']==PROJECT and v['RestartCount']==0
+  for bindings in v['NetworkSettings']['Ports'].values():
+   for b in bindings or []:assert ipaddress.ip_address(b['HostIp']).is_loopback
+  if name in ['api','web']:
+   image=json.loads(docker('image','inspect',v['Image']))[0];assert image['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+  output=subprocess.run(['docker','--context',CONTEXT,'logs','--since',runner['at_utc'],PROJECT+'-'+name+'-1'],capture_output=True);assert output.returncode==0
+  raw=output.stdout+b'\n'+output.stderr;(P/(name+'-logs.private.log')).write_bytes(raw);assert all(n.encode() not in raw for n in markers),'Owned marker in '+name
+  r['services'].append({'service':name,'running':True,'image_id':v['Image'],'restart_count':v['RestartCount']});r['bounded_owned_logs_scan'].append({'service':name,'bytes':len(raw),'stdout_bytes':len(output.stdout),'stderr_bytes':len(output.stderr),'SHA256':hashlib.sha256(raw).hexdigest(),'owned_login_password_token_markers_found':False})
+ c=http.client.HTTPConnection('localhost',18088,timeout=8);c.request('GET','/api/v1/health',headers={'Host':'localhost:18088'});response=c.getresponse();assert response.status==200;response.read(65536);c.close();r['API_health_http']=200
+ final=read(P/'observe-result.json')['metric_samples'][-1]['metrics'];assert final['KDF_active']==0 and final['login_active']==0 and final['KDF_waiting']==0;r['fresh_private_API_metrics']=final
+ r['status']='PASS_OWNED_SESSIONS_CLEANUP_PRIVATE_SERVICES_AND_BOUNDED_LOG_SCAN'
+except Exception as e:r['status']='FAIL_POSTCHECK';r['error_type']=type(e).__name__;r['failed_label']=str(e) if isinstance(e,AssertionError) and str(e).startswith('Owned marker') else 'private postcheck'
+finally:r['finished_at_utc']=now();(P/'environment-after.json').write_text(json.dumps(r,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps({k:v for k,v in r.items() if k not in ['services','bounded_owned_logs_scan','fresh_private_API_metrics']}));sys.exit(0 if r['status'].startswith('PASS') else 1)

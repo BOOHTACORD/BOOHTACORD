@@ -1,0 +1,16 @@
+{
+  "workflow_class": "review_gate",
+  "task_size": "medium",
+  "structure_mode": "structure_no_rg",
+  "route": "backend/internal/identity/admit_login",
+  "edges": "auth_routes.Register -> LoginLimiter.Middleware -> login_user/api.admittedLogin -> admit_login.Reserve -> password.derive process gate",
+  "previous_goal_turn": "PROGRESS: actual500/5/2 WS quota profile,6 native units,cleanup936sessions, commits94085f997/b9692b89a, issue240 updated",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "requirement": "I240.C5/#137: NAT20, account/IP limits, burst/window/Retry-After/non-eviction; full upload/deployment rate facets separate",
+  "profile": "Two20-account same-source cohorts with reverse order; distributed8/30 account attempts, correct denied-before-KDF, neighbor/churn controls, real32s account and302s source recovery;64 independent-account KDF burst",
+  "scope_limits": "Trusted-proxy namespace/directAPI, logical NAT source model; no physical20devices/router/WSS/native UI or full upload deployment rate/capacity-map saturation claim",
+  "native_policy_conflict": "Existing native test intentionally rejects11th IP request; issue137 explicitly expects20 NAT users. Preserve both and record actual runtime; do not silently widen security limits.",
+  "preservation": "Only new sessions for104 previously owned local fixture members; revoke issued sessions; no new members, block mutations, server config/restarts, production/router/native-session changes",
+  "stop_condition": "8min hard deadline, API RSS512MiB/FD2048/goroutines8000/KDFactive4/waiting0, DB80/64; own helper removed, sessions revoked,9 original services healthy; no credentials/source keys public",
+  "unresolved": "Whether NAT20 fails under deployed defaults; upload account/IP/global budgets remain queued, not externally blocked"
+}

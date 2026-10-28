@@ -1,0 +1,31 @@
+package main
+
+import (
+ "context"
+ "encoding/json"
+ "net"
+ "os"
+ "time"
+)
+
+func main(){
+ started:=time.Now();var cancel context.CancelFunc;ctx,cancel=context.WithTimeout(context.Background(),8*time.Minute)
+ mode:="run";if len(os.Args)>1{mode=os.Args[1]}
+ report:=map[string]any{"source_revision":"072426d60b1c0b1f7e5f66722a0da5faa00b50d7","production_touched":false}
+ defer func(){
+  failure:=recover();cancel();asyncWorkers.Wait();cleanupResult:=cleanup();report["cleanup"]=cleanupResult;report["records"]=records;report["metric_samples"]=samples;report["elapsed_seconds"]=time.Since(started).Seconds();exit:=0;report["status"]="PASS_NAT20_AND_LOGIN_CONTROLS"
+  if natFailed{report["status"]="FAIL_NAT20_ACCEPTANCE";exit=1}
+  if mode=="observe"{report["status"]="PASS_PRIVATE_LOGIN_METRICS"}
+  if failure!=nil||cleanupResult["status_ok"]!=true{report["status"]="ERROR_PROFILE_INCOMPLETE";exit=2;if s,ok:=failure.(string);ok{report["failed_check"]=s}else{report["failed_check"]="private runtime error type"}}
+  emit("final",report);os.Exit(exit)
+ }()
+ require(mode=="run"||mode=="observe","invalid owned profile mode")
+ raw,e:=os.ReadFile("/work/config.private.json");require(e==nil&&json.Unmarshal(raw,&cfg)==nil,"private config unavailable")
+ require(cfg.Source==report["source_revision"]&&len(cfg.Accounts)==104&&len(cfg.Sources.Nat)==2&&len(cfg.Sources.Account)>=13&&len(cfg.Sources.Burst)==64,"owned profile shape")
+ if mode=="run"{_,e=os.Stat("/work/issued.private.json");require(os.IsNotExist(e),"completed fixture must not be rerun")}
+ addresses,e:=net.LookupIP("api");require(e==nil&&len(addresses)>0,"private API DNS");for _,a:=range addresses{require(a.IsPrivate(),"nonprivate API rejected")}
+ before:=measure("initial_baseline");require(before["KDF_active"]==0&&before["login_active"]==0,"target already has auth work")
+ if mode=="observe"{return}
+ report["profile"]=map[string]any{"source_limit":10,"source_window_s":300,"account_limit":8,"account_window_s":30,"KDF_process_capacity":4,"NAT_cohorts":2,"distinct_accounts_per_NAT":20,"burst_accounts":64,"whole_profile_timeout_s":480,"source_model":"Logical shared-source cohorts at owned trusted-proxy boundary; not20 physical devices/router NAT","server_configuration_changed":false,"privateIPs_and_limiter_keys_exported":false,"permanent_account_mutation":false}
+ natStarted:=natProfile();accountProfile();burstProfile();natRecovery(natStarted);after:=measure("final_profile_baseline");require(after["KDF_active"]==0&&after["login_active"]==0,"final auth reservations leaked")
+}

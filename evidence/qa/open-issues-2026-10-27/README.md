@@ -272,3 +272,16 @@ rows revoked; original9 services healthy/private. I240.C3 is PASS for its exact
 backend scope; QA240 remains FAIL/open. No full implementation135, WSS/browser/native
 retry, prompt-revocation SLO, platform/media or capacity gate claim. All480 source
 requirements and43 consolidation decisions preserved.
+
+## Actual login budgets / NAT20 counterexample — 2026-10-28 Moscow
+
+[I240.C5 runtime failure, passing controls and source-bound commands](isolated-login-budgets/README.md):
+two20-account same-source cohorts each produce10 successful valid logins and10×429;
+reversed order/fresh-source controls isolate the unchanged10/5min network budget.
+Referenced137 NAT20 acceptance remains unmet. Exact counterexample exits1;
+account8/30s before KDF, real32s/302s window recovery,64-account KDF burst/manual
+retry and finite-label audit pass in their stated scopes.11 native units PASS,
+zero skips; the intentional11th-IP rejection regression is preserved.64 new
+sessions revoked, all1000 historical own sessions inactive,104 own members reused,
+9 services healthy/private. I240.C5 now FAIL; canonical fix137 is reused. Other
+upload/platform/media facets remain queued;480 source texts and43 decisions intact.

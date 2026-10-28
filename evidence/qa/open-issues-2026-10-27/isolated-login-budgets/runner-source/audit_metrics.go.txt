@@ -1,0 +1,39 @@
+package main
+
+import (
+ "context"
+ "crypto/sha256"
+ "encoding/hex"
+ "encoding/json"
+ "io"
+ "net"
+ "net/http"
+ "os"
+ "regexp"
+ "strconv"
+ "strings"
+ "time"
+)
+
+func main(){
+ r:=map[string]any{"status":"RUNNING","scope":"Actual private API login/KDF metric families; bounded finite-label audit, not all telemetry/data privacy"};exit:=0
+ defer func(){if recover()!=nil{r["status"]="FAIL_METRIC_LABEL_CONTRACT";exit=1};_ =json.NewEncoder(os.Stdout).Encode(r);os.Exit(exit)}()
+ check:=func(ok bool){if !ok{panic("bounded read/label contract")}}
+ addresses,e:=net.LookupIP("api");check(e==nil&&len(addresses)>0);for _,a:=range addresses{check(a.IsPrivate())}
+ ctx,cancel:=context.WithTimeout(context.Background(),12*time.Second);defer cancel();request,e:=http.NewRequestWithContext(ctx,"GET","http://api:8080/metrics",nil);check(e==nil)
+ client:=http.Client{Timeout:10*time.Second,Transport:&http.Transport{Proxy:nil},CheckRedirect:func(*http.Request,[]*http.Request)error{return http.ErrUseLastResponse}}
+ response,e:=client.Do(request);check(e==nil);defer response.Body.Close();check(response.StatusCode==200);raw,e:=io.ReadAll(io.LimitReader(response.Body,4*1024*1024+1));check(e==nil&&len(raw)<=4*1024*1024)
+ pairs:=regexp.MustCompile(`([a-zA-Z_][a-zA-Z0-9_]*)="([^"]*)"`);selected:=[]string{};names:=map[string]bool{};decisions:=map[string]bool{"admitted":true,"limited":true,"saturated":true,"cancelled":true};outcomes:=map[string]bool{"success":true,"invalid":true,"blocked":true,"infrastructure":true,"cancelled":true,"not_started":true}
+ for _,line:=range strings.Split(string(raw),"\n"){
+  if !strings.HasPrefix(line,"voice_platform_login_")&&!strings.HasPrefix(line,"voice_platform_auth_kdf_"){continue}
+  fields:=strings.Fields(line);check(len(fields)==2);_,e=strconv.ParseFloat(fields[1],64);check(e==nil);name:=fields[0]
+  if i:=strings.IndexByte(name,'{');i>=0{
+   check(strings.HasSuffix(name,"}"));labels:=name[i+1:len(name)-1];matches:=pairs.FindAllStringSubmatch(labels,-1);parts:=[]string{}
+   for _,m:=range matches{parts=append(parts,m[0]);switch m[1]{case "decision":check(decisions[m[2]]);case "outcome":check(outcomes[m[2]]);case "le":_,e=strconv.ParseFloat(m[2],64);check(e==nil);default:check(false)}}
+   check(strings.Join(parts,",")==labels);name=name[:i]
+  }
+  names[name]=true;selected=append(selected,line)
+ }
+ check(len(selected)>10&&len(selected)<256);digest:=sha256.Sum256([]byte(strings.Join(selected,"\n")))
+ r["status"]="PASS_FINITE_LOGIN_KDF_METRIC_LABELS";r["series_checked"]=len(selected);r["metric_names_checked"]=len(names);r["selected_private_lines_SHA256"]=hex.EncodeToString(digest[:]);r["allowed_label_names"]=[]string{"decision","outcome","le"};r["source_login_account_session_labels_present"]=false
+}

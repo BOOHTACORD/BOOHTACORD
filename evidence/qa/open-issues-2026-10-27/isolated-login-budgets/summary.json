@@ -1,0 +1,1012 @@
+{
+  "at_utc": "2026-10-28T00:18:27.929521+00:00",
+  "status": "FAIL_I240_C5_NAT20_DEFAULT_POLICY",
+  "criterion": "I240.C5",
+  "canonical_fix_issue": 137,
+  "related_resolved_security_issue": 533,
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "production_touched": false,
+  "protects": "Independent valid users sharing one trusted source meet referenced137 NAT20 availability criterion while retaining early account and bounded KDF protections",
+  "command": "python -X utf8 .out/qa-login-budgets/run_profile.py run",
+  "platform": "Windows11 controller/Go1.26.4; actual source072 Linux API and PostgreSQL17.6; unchanged defaults10/300s,8/30s,KDF4",
+  "mandatory_when": "Before accepting I240.C5/#137 NAT availability; full upload/platform/security/media gates require separate evidence",
+  "facets": {
+    "NAT20_cohort_A": {
+      "KDF_work_delta": 10,
+      "at_utc": "2026-10-28T00:10:56.873634531Z",
+      "attempts": [
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 24.065
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 39.16
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 39.741
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 19.141
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 18.711
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 17.994
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 18.868
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 18.092
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 21.399
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 20.533
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 1.567
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 0.692
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 1.223
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 2.489
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 0.98
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 1.919
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 1.967
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 1.834
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 1.936
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 2.195
+        }
+      ],
+      "event": "observation",
+      "expected_successful_distinct_accounts": 20,
+      "label": "NAT20_cohort_A",
+      "login_admitted_delta": 10,
+      "login_success_delta": 10,
+      "observed204": 10,
+      "observed429": 10,
+      "same_client_source_for_all20": true,
+      "second_cohort_reverses_order": false,
+      "status": "FAIL"
+    },
+    "NAT20_cohort_B": {
+      "KDF_work_delta": 10,
+      "at_utc": "2026-10-28T00:10:57.235317966Z",
+      "attempts": [
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 22.314
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 17.923
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 19.541
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 18.136
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 19.453
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 18.067
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 18.081
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 17.654
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 19.996
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 17.857
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 0.698
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 0.573
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 0.491
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 0.533
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 0.524
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 0.532
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 0.603
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 0.595
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 0.57
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 300,
+          "cookie_seen": false,
+          "elapsed_ms": 0.933
+        }
+      ],
+      "event": "observation",
+      "expected_successful_distinct_accounts": 20,
+      "label": "NAT20_cohort_B",
+      "login_admitted_delta": 10,
+      "login_success_delta": 10,
+      "observed204": 10,
+      "observed429": 10,
+      "same_client_source_for_all20": true,
+      "second_cohort_reverses_order": true,
+      "status": "FAIL"
+    },
+    "same_credentials_fresh_source": {
+      "at_utc": "2026-10-28T00:10:57.257412533Z",
+      "event": "observation",
+      "http": 204,
+      "identity_matches": true,
+      "label": "same_credentials_fresh_source"
+    },
+    "account_budget_distributed_sources": {
+      "at_utc": "2026-10-28T00:10:58.115345886Z",
+      "correct_pair_denials_skip_KDF": true,
+      "event": "observation",
+      "first_eight_wrong_pairs": [
+        {
+          "http": 401,
+          "code": "UNAUTHENTICATED",
+          "retry_after_s": 0,
+          "cookie_seen": false,
+          "elapsed_ms": 16.757
+        },
+        {
+          "http": 401,
+          "code": "UNAUTHENTICATED",
+          "retry_after_s": 0,
+          "cookie_seen": false,
+          "elapsed_ms": 17.073
+        },
+        {
+          "http": 401,
+          "code": "UNAUTHENTICATED",
+          "retry_after_s": 0,
+          "cookie_seen": false,
+          "elapsed_ms": 16.563
+        },
+        {
+          "http": 401,
+          "code": "UNAUTHENTICATED",
+          "retry_after_s": 0,
+          "cookie_seen": false,
+          "elapsed_ms": 16.797
+        },
+        {
+          "http": 401,
+          "code": "UNAUTHENTICATED",
+          "retry_after_s": 0,
+          "cookie_seen": false,
+          "elapsed_ms": 16.839
+        },
+        {
+          "http": 401,
+          "code": "UNAUTHENTICATED",
+          "retry_after_s": 0,
+          "cookie_seen": false,
+          "elapsed_ms": 16.88
+        },
+        {
+          "http": 401,
+          "code": "UNAUTHENTICATED",
+          "retry_after_s": 0,
+          "cookie_seen": false,
+          "elapsed_ms": 16.776
+        },
+        {
+          "http": 401,
+          "code": "UNAUTHENTICATED",
+          "retry_after_s": 0,
+          "cookie_seen": false,
+          "elapsed_ms": 16.956
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 30,
+          "cookie_seen": false,
+          "elapsed_ms": 2.315
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 30,
+          "cookie_seen": false,
+          "elapsed_ms": 2.814
+        }
+      ],
+      "foreign_account_churn": 20,
+      "label": "account_budget_distributed_sources",
+      "neighbor_same_source_http": 204,
+      "normalization_case_variants": true,
+      "protected_budget_still429": true,
+      "status": "PASS",
+      "store_capacity_saturation_exercised": false
+    },
+    "account_before_original_expiry": {
+      "at_utc": "2026-10-28T00:11:18.364175459Z",
+      "elapsed_seconds": 20.013842681,
+      "event": "observation",
+      "label": "account_before_original_expiry",
+      "outcome": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 10,
+        "cookie_seen": false,
+        "elapsed_ms": 0.879
+      }
+    },
+    "account_original_window_recovery": {
+      "at_utc": "2026-10-28T00:11:30.379649097Z",
+      "denials_do_not_extend_window": true,
+      "elapsed_seconds": 32.029316144,
+      "event": "observation",
+      "label": "account_original_window_recovery",
+      "no_persistent_account_lock": true,
+      "outcome": {
+        "http": 204,
+        "code": "",
+        "retry_after_s": 0,
+        "cookie_seen": true,
+        "elapsed_ms": 20.003
+      },
+      "status": "PASS"
+    },
+    "independent_account_KDF_burst": {
+      "KDF_capacity_gauge": 4,
+      "at_utc": "2026-10-28T00:11:30.775307783Z",
+      "attempts": 64,
+      "concurrency": 64,
+      "event": "observation",
+      "label": "independent_account_KDF_burst",
+      "observed204": 18,
+      "observed503_AUTH_BUSY": 46,
+      "outcomes": [
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 80.095
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 47.661
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 176.072
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 120.561
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 79.621
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 266.694
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 137.779
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 138.708
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 231.155
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 249.965
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 275.671
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 178.976
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 62.818
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 269.157
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 177.844
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 291.186
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 140.59
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 82.202
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 49.991
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 121.902
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 81.454
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 271.964
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 139.622
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 176.944
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 176.105
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 80.147
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 138.176
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 79.944
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 80.108
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 175.409
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 262.678
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 175.009
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 262.522
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 120.362
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 174.779
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 229.88
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 119.362
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 174.796
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 289.858
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 288.477
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 52.067
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 83.443
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 83.585
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 266.849
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 245.281
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 141.838
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 233.615
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 275.055
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 269.334
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 244.293
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 140.555
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 122.478
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 157.042
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 140.116
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 121.943
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 139.059
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 139.509
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 176.377
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 230.772
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 80.313
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 176.463
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 137.869
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 80.121
+        },
+        {
+          "http": 503,
+          "code": "AUTH_BUSY",
+          "retry_after_s": 1,
+          "cookie_seen": false,
+          "elapsed_ms": 81.064
+        }
+      ],
+      "scope": "Process KDF concurrency guard, not upload deployment rate budget or general capacity",
+      "status": "PASS",
+      "unstarted_refund_metric_delta": 46,
+      "waiting_gauge": 0
+    },
+    "manual_KDF_busy_retry": {
+      "at_utc": "2026-10-28T00:11:31.805830346Z",
+      "event": "observation",
+      "label": "manual_KDF_busy_retry",
+      "outcome": {
+        "http": 204,
+        "code": "",
+        "retry_after_s": 0,
+        "cookie_seen": true,
+        "elapsed_ms": 18.876
+      },
+      "status": "PASS",
+      "wait_seconds": 1
+    },
+    "NAT_window_midpoint_denials": {
+      "at_utc": "2026-10-28T00:13:32.079204863Z",
+      "elapsed_seconds": 150.012568178,
+      "event": "observation",
+      "label": "NAT_window_midpoint_denials",
+      "outcomes": [
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 150,
+          "cookie_seen": false,
+          "elapsed_ms": 1.181
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 151,
+          "cookie_seen": false,
+          "elapsed_ms": 1.895
+        }
+      ]
+    },
+    "NAT_original_window_recovery": {
+      "at_utc": "2026-10-28T00:16:09.764075818Z",
+      "denials_did_not_extend_original_window": true,
+      "elapsed_seconds": 302.093106262,
+      "event": "observation",
+      "label": "NAT_original_window_recovery",
+      "outcomes": [
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 37.596
+        },
+        {
+          "http": 204,
+          "code": "",
+          "retry_after_s": 0,
+          "cookie_seen": true,
+          "elapsed_ms": 34.958
+        }
+      ],
+      "server_restarted_or_clock_overridden": false,
+      "status": "PASS"
+    }
+  },
+  "numeric_observations": {
+    "client_elapsed_seconds": 302.204147724,
+    "API_metric_samples": 54,
+    "periodic_DB_samples": 74,
+    "API_RSS_sampled_max_bytes": 221081600,
+    "API_FD_sampled_max": 97,
+    "KDF_active_sampled_max": 2,
+    "KDF_capacity_gauge": 4,
+    "KDF_waiting_sampled_max": 0,
+    "DB_connections_sampled_max": 21,
+    "API_CPU_counter_delta_seconds_before_cleanup": 3.1799999999999926,
+    "KDF_work_counter_delta": 72
+  },
+  "metric_label_audit": "metric-label-audit.json",
+  "native_tests": {
+    "status": "PASS",
+    "top_level": 11,
+    "skips": 0,
+    "reason_not_NAT20_proof": "NAT independence unit bypasses outer network limiter; separate network unit intentionally rejects11th at10/5min. Both retained."
+  },
+  "cleanup": {
+    "new_owned_sessions": 64,
+    "owned_session_rows_before": 936,
+    "owned_session_rows_after": 1000,
+    "owned_active_sessions": 0,
+    "owned_members_reused": 104,
+    "new_members": 0,
+    "original_services_running": 9
+  },
+  "interpretation": "Confirmed original NAT20 acceptance gap on documented default policy, not a credential bypass or permanent account ban. Do not silently disable/widen security gates to make test green; coordinate policy and regression.533 verifier-ordering invariant remains protected.",
+  "limits": "Two logical trusted-client-source cohorts, direct actual API through own proxy namespace; no20 physical devices/router/Nginx/browser/native retry proof. Actual32s/302s windows, finite20 foreign-account churn and64-account burst. Upload account/IP/deployment rate budgets and live capacity-store saturation remain queued, not blocked by missing stand. Native reduced-capacity eviction tests are supplemental.",
+  "source_binding": "source-binding.json",
+  "original480_requirement_texts_preserved": true,
+  "original43_consolidation_decisions_applied": false,
+  "observed_exit_code": 1,
+  "postcheck_commands": [
+    "python -X utf8 .out/qa-login-budgets/run_profile.py observe",
+    "python -X utf8 .out/qa-login-budgets/run_metric_audit.py",
+    "python -X utf8 .out/qa-login-budgets/verify_after.py"
+  ]
+}

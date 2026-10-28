@@ -1077,6 +1077,22 @@
       ],
       "result": "isolated-websocket-quotas/summary.json",
       "limits": "Actual isolated direct Go API/PG17.6 and standard500/5/2 quotas; no Nginx/WSS/browser/native-client retry/media-capacity proof.1/10/100 held6s,500 held20s, two100-connection reconnect cycles held4s.3s DB and phase/1s API metric samples can miss peaks. Own logout closure~15s is an observation, not full revocation/delivery SLO acceptance."
+    },
+    {
+      "id": "ISOLATED-login-NAT20-account-IP-KDF-runtime",
+      "status": "FAIL",
+      "protects": "Referenced137 NAT20 availability on default policy, independent account/source windows and KDF admission; preserve account/verifier security",
+      "command": "python -X utf8 .out/qa-login-budgets/run_profile.py run",
+      "platform": "Windows11 controller; actual source072 Linux API/PostgreSQL17.6, unchanged defaults; logical synthetic source cohorts",
+      "mandatory_when": "Before accepting exact I240.C5/#137 NAT availability; other facets remain explicit",
+      "issues": [
+        240
+      ],
+      "result": "isolated-login-budgets/summary.json",
+      "limits": "Two logical trusted-client-source cohorts, direct actual API through own proxy namespace; no20 physical devices/router/Nginx/browser/native retry proof. Actual32s/302s windows, finite20 foreign-account churn and64-account burst. Upload account/IP/deployment rate budgets and live capacity-store saturation remain queued, not blocked by missing stand. Native reduced-capacity eviction tests are supplemental.",
+      "defects": [
+        137
+      ]
     }
   ]
 }

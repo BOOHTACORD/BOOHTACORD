@@ -1,0 +1,251 @@
+{
+  "events": [
+    {
+      "Time": "2026-10-28T03:11:29.6528799+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/admit_login",
+      "Test": "TestAtomicReservationCannotSpendOneSlotTwice"
+    },
+    {
+      "Time": "2026-10-28T03:11:29.6528799+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/admit_login",
+      "Test": "TestAtomicReservationCannotSpendOneSlotTwice",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:11:29.6528799+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/admit_login",
+      "Test": "TestWindowRecoveryCannotBeExtendedByRejectedTraffic"
+    },
+    {
+      "Time": "2026-10-28T03:11:29.6528799+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/admit_login",
+      "Test": "TestWindowRecoveryCannotBeExtendedByRejectedTraffic",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:11:29.6528799+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/admit_login",
+      "Test": "TestSaturationNeverEvictsActiveBudget"
+    },
+    {
+      "Time": "2026-10-28T03:11:29.6528799+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/admit_login",
+      "Test": "TestSaturationNeverEvictsActiveBudget",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:11:29.6528799+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/admit_login",
+      "Test": "TestMetricsHaveOnlyFiniteDecisionAndOutcomeLabels"
+    },
+    {
+      "Time": "2026-10-28T03:11:29.6533802+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/admit_login",
+      "Test": "TestMetricsHaveOnlyFiniteDecisionAndOutcomeLabels",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:11:29.654883+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/admit_login",
+      "Elapsed": 1.514
+    },
+    {
+      "Time": "2026-10-28T03:11:29.6583802+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareLimitsOneForwardedSourceAndResetsWindow"
+    },
+    {
+      "Time": "2026-10-28T03:11:29.6588799+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareLimitsOneForwardedSourceAndResetsWindow",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:11:29.6588799+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterKeepsActiveExhaustedBudgetAtCapacity"
+    },
+    {
+      "Time": "2026-10-28T03:11:29.6588799+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterKeepsActiveExhaustedBudgetAtCapacity",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:11:29.6603798+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Elapsed": 1.308
+    },
+    {
+      "Time": "2026-10-28T03:11:30.4915612+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/login_user/api",
+      "Test": "TestAdmissionRecoversWithoutPersistentLockAndKeepsNATBudgetsIndependent"
+    },
+    {
+      "Time": "2026-10-28T03:11:30.5195992+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/login_user/api",
+      "Test": "TestAdmissionRecoversWithoutPersistentLockAndKeepsNATBudgetsIndependent",
+      "Elapsed": 0.03
+    },
+    {
+      "Time": "2026-10-28T03:11:30.5195992+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/login_user/api",
+      "Test": "TestNetworkAdmissionStillRejectsEleventhRequestBeforeAccountWork"
+    },
+    {
+      "Time": "2026-10-28T03:11:30.5195992+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/login_user/api",
+      "Test": "TestNetworkAdmissionStillRejectsEleventhRequestBeforeAccountWork",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:11:30.5195992+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/login_user/api",
+      "Test": "TestAccountBudgetPrecedesEveryVerifierIncludingCorrectPassword"
+    },
+    {
+      "Time": "2026-10-28T03:11:30.5195992+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/login_user/api",
+      "Test": "TestAccountBudgetPrecedesEveryVerifierIncludingCorrectPassword",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:11:30.5230014+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/login_user/api",
+      "Elapsed": 2.171
+    },
+    {
+      "Time": "2026-10-28T03:11:30.8916698+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/password",
+      "Test": "TestRealKDFConcurrencyCancellationAndSaturation"
+    },
+    {
+      "Time": "2026-10-28T03:11:30.9147206+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/password",
+      "Test": "TestRealKDFConcurrencyCancellationAndSaturation",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-10-28T03:11:30.9147206+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/password",
+      "Test": "TestAllPasswordHTTPPathsRejectCapacityWithoutKDFOrMutation"
+    },
+    {
+      "Time": "2026-10-28T03:11:30.9297236+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/password",
+      "Test": "TestAllPasswordHTTPPathsRejectCapacityWithoutKDFOrMutation/known"
+    },
+    {
+      "Time": "2026-10-28T03:11:30.9302235+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/password",
+      "Test": "TestAllPasswordHTTPPathsRejectCapacityWithoutKDFOrMutation/known",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:11:30.9302235+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/password",
+      "Test": "TestAllPasswordHTTPPathsRejectCapacityWithoutKDFOrMutation/unknown"
+    },
+    {
+      "Time": "2026-10-28T03:11:30.9302235+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/password",
+      "Test": "TestAllPasswordHTTPPathsRejectCapacityWithoutKDFOrMutation/unknown",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:11:30.9302235+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/password",
+      "Test": "TestAllPasswordHTTPPathsRejectCapacityWithoutKDFOrMutation/blocked"
+    },
+    {
+      "Time": "2026-10-28T03:11:30.9302235+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/password",
+      "Test": "TestAllPasswordHTTPPathsRejectCapacityWithoutKDFOrMutation/blocked",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:11:30.9302235+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/password",
+      "Test": "TestAllPasswordHTTPPathsRejectCapacityWithoutKDFOrMutation/register"
+    },
+    {
+      "Time": "2026-10-28T03:11:30.9302235+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/password",
+      "Test": "TestAllPasswordHTTPPathsRejectCapacityWithoutKDFOrMutation/register",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:11:30.9302235+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/password",
+      "Test": "TestAllPasswordHTTPPathsRejectCapacityWithoutKDFOrMutation/reset"
+    },
+    {
+      "Time": "2026-10-28T03:11:30.9302235+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/password",
+      "Test": "TestAllPasswordHTTPPathsRejectCapacityWithoutKDFOrMutation/reset",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:11:30.9302235+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/identity/password",
+      "Test": "TestAllPasswordHTTPPathsRejectCapacityWithoutKDFOrMutation/change"
+    },
+    {
+      "Time": "2026-10-28T03:11:30.9302235+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/password",
+      "Test": "TestAllPasswordHTTPPathsRejectCapacityWithoutKDFOrMutation/change",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:11:30.9302235+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/password",
+      "Test": "TestAllPasswordHTTPPathsRejectCapacityWithoutKDFOrMutation",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-10-28T03:11:30.9352342+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/identity/password",
+      "Elapsed": 2.143
+    }
+  ],
+  "raw_private_stream_SHA256": "dd05189f2ee74571c419ea271e1886f60a3ee649fca2c8119a2543e323ed6867",
+  "raw_stderr_bytes": 0
+}
