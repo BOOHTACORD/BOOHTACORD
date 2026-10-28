@@ -8,7 +8,7 @@ import '../app_state.dart';
 import '../models.dart';
 import '../services/api_client.dart';
 import '../theme.dart';
-import '../features/attachments/revocation/view.dart';
+import 'attachment_revocation/view.dart';
 
 class MessageAttachmentList extends StatefulWidget {
   const MessageAttachmentList({

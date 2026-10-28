@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../app_state.dart';
-import '../../../core/session/scope.dart';
-import '../../../models.dart';
+import '../../app_state.dart';
+import '../../core/session/scope.dart';
+import '../../models.dart';
 
 /// Owns the lifetime of already loaded bytes, independently of the source row
 /// and its dialog route. Eviction alone is not evidence of message deletion.
