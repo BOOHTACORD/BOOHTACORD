@@ -1,0 +1,22 @@
+import {chromium,expect,assert,cfg,root,report,tasks,save,attach,login,api} from './browser.mjs'
+import {baseline,lifecycle,deletedBeforeOpen,unavailable} from './cases.mjs'
+import {writeFile} from 'node:fs/promises'
+const browser=await chromium.launch({channel:'chrome',headless:true}),context=await browser.newContext({viewport:{width:1440,height:1000}}),page=await context.newPage();page.setDefaultTimeout(12000);attach(page);report.browser=browser.version()
+async function run(name,fn){
+ const row={name,status:'RUNNING',at_utc:new Date().toISOString()};report.cases.push(row);await save('browser-result.json',report)
+ try{Object.assign(row,await fn())}catch(e){row.status='BLOCKED_INVALID_PRECONDITION';row.error_type=e.name;await writeFile(new URL('private/'+name+'-error.private.txt',root),String(e.stack));report.invalid_case=name}
+ row.finished_at_utc=new Date().toISOString();await save('browser-result.json',report);process.stdout.write(JSON.stringify({case:name,status:row.status})+'\n')
+}
+try{
+ await login(page,context);await run('main_history_realtime_control',()=>baseline(page))
+ if(!report.invalid_case)for(const [pos,i] of cfg.targets.entries()){
+  const mode=pos<3?'edit':pos<6?'delete':'deleted_before_open';await run(mode+'_'+i,()=>pos<6?lifecycle(page,i,191+pos,mode):deletedBeforeOpen(page,i,191+pos));if(report.invalid_case)break
+ }
+ if(!report.invalid_case)await run('unavailable_context_control',()=>unavailable(page))
+ report.status=report.invalid_case?'BLOCKED_PRECONDITION':report.cases.some(c=>c.status.startsWith('FAIL'))?'FAIL_CONFIRMED_LIVE_CONTEXT_WITH_PASSING_CONTROLS':'PASS_ALL_CONTEXT_LIFECYCLE_CASES'
+}catch(e){report.status='HARNESS_BLOCKED';report.error_type=e.name;await writeFile(new URL('private/controller-error.private.txt',root),String(e.stack))}
+finally{
+ try{const r=await api(page,'/auth/logout','POST',{});assert.equal(r.status,204);const s=await api(page,'/auth/session');assert.equal(s.status,200);assert.equal(s.body.authenticated,false);report.own_receiver_logout204_unauthenticated_readback=true}catch(e){report.logout_error_type=e.name}
+ await Promise.allSettled(tasks);await context.close();await browser.close();report.finished_at_utc=new Date().toISOString();report.acceptance_gate_exit=report.status==='PASS_ALL_CONTEXT_LIFECYCLE_CASES'?0:1;await save('browser-result.json',report);process.stdout.write(JSON.stringify({status:report.status,cases:report.cases.length,websocket:report.websocket,acceptance_gate_exit:report.acceptance_gate_exit})+'\n')
+}
+process.exitCode=report.acceptance_gate_exit

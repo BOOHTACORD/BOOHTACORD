@@ -1,0 +1,60 @@
+{
+  "at_utc": "2026-10-28T04:21:35.670Z",
+  "status": "BLOCKED_PRECONDITION",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "origin": "http://localhost:18088",
+  "cases": [
+    {
+      "name": "main_history_realtime_control",
+      "status": "PASS",
+      "at_utc": "2026-10-28T04:21:36.814Z",
+      "protected_latest_HTTP": 200,
+      "initial_page": 50,
+      "all_targets_outside_latest50": true,
+      "control_index": 189,
+      "actor_PATCH_HTTP": 200,
+      "receiver_main_history_updates_without_reload": true,
+      "matched_target_hint_delta": 1,
+      "finished_at_utc": "2026-10-28T04:21:37.202Z"
+    },
+    {
+      "name": "edit_20",
+      "status": "BLOCKED_INVALID_PRECONDITION",
+      "at_utc": "2026-10-28T04:21:37.203Z",
+      "error_type": "ReferenceError",
+      "finished_at_utc": "2026-10-28T04:21:37.204Z"
+    }
+  ],
+  "assets": [
+    {
+      "path": "/assets/index-oVuvOmtd.css",
+      "bytes": 304863,
+      "sha256": "13f835eea3005040a379a29e560791a81d6480d30872b7c14a51eb0fcbe9b096"
+    },
+    {
+      "path": "/assets/index-D5vIjeLQ.js",
+      "bytes": 1634581,
+      "sha256": "934de08b6fae1d2efd715830757750f6511c18e8edc12f5da7fff723666d08f8"
+    }
+  ],
+  "websocket": {
+    "opened": 1,
+    "closed": 0,
+    "frames": 4,
+    "known_target_hints": {
+      "189": 1
+    }
+  },
+  "page_errors": [],
+  "production_touched": false,
+  "full_built_AppShell": true,
+  "transport_or_response_mocks": false,
+  "permission_grants": false,
+  "security_flags": false,
+  "physical_or_native_acceptance": false,
+  "browser": "155.0.8059.85",
+  "invalid_case": "edit_20",
+  "own_receiver_logout204_unauthenticated_readback": true,
+  "finished_at_utc": "2026-10-28T04:21:37.334Z",
+  "acceptance_gate_exit": 1
+}

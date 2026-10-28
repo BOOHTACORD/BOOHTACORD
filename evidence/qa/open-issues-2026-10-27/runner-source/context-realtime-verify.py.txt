@@ -1,0 +1,23 @@
+"""Validate genuine stale-content witnesses separately from setup/control outcomes."""
+import hashlib,json
+from datetime import datetime,timezone
+from pathlib import Path
+from common import P,Q,SOURCE,read,write
+r=read(P/'browser-result.json');ready=read(P/'run-ready.json');native=read(P/'native-tests.private.json');sha=lambda b:hashlib.sha256(b).hexdigest()
+assert r['status']=='FAIL_CONFIRMED_LIVE_CONTEXT_WITH_PASSING_CONTROLS' and r['acceptance_gate_exit']==1 and len(r['cases'])==11
+assert not r.get('invalid_case') and not r['page_errors'] and r['own_receiver_logout204_unauthenticated_readback']
+assert r['at_utc']>ready['at_utc'] and r['source_revision']==SOURCE
+for n,d in ready['runner_SHA256'].items():assert sha((P/n).read_bytes())==d
+for n,d in ready['source_SHA256'].items():assert sha((Q/n).read_bytes())==d
+failed=[x for x in r['cases'] if x['status']=='FAIL_LIVE_CONTEXT_STALE'];controls=[x for x in r['cases'] if x['status']=='PASS'];assert len(failed)==6 and len(controls)==5
+assert [x['target_index'] for x in failed if x['mode']=='edit']==[20,30,40] and [x['target_index'] for x in failed if x['mode']=='delete']==[21,31,41]
+for row in failed:
+    assert row['actor_HTTP']==(200 if row['mode']=='edit' else 204) and row['server_at_HTTP']==200 and row['matched_target_hint_delta']>=1
+    assert row['server_revision']==row['initial_server_revision']+1 and row['reopen_control']=='PASS_AFTER_EXPLICIT_RELOAD' and row['observed']['window_ms']>=5000
+    assert len(row['observed']['samples'])>=18
+    assert all(s['index']==row['target_index'] and s['contains_original'] and not s['contains_changed'] and not s['tombstone'] for s in row['observed']['samples'])
+    if row['mode']=='delete':assert row['server_deleted'] and row['server_attachments_empty'] and row['reopen_fresh_control']['tombstone']
+    else:assert row['reopen_fresh_control']['contains_changed']
+assert native['success'] and native['numTotalTests']==native['numPassedTests']==12 and native['numFailedTests']==native['numPendingTests']==0 and len(native['testResults'])==3
+write(P/'native-check.json',{'status':'PASS12_EXISTING_FOCUSED_CHECKS_ZERO_SKIP','source_revision':SOURCE,'command':'node node_modules/vitest/vitest.mjs run src/search/search_context_controller.spec.ts src/search/context_timeline/local_search.spec.ts src/conversation/message_store.spec.ts --reporter=json --outputFile=../../.out/qa-context-realtime/native-tests.private.json','working_directory':'clients/web','checks':12,'skipped':0,'failed':0,'static_source_routing_checks':2,'native_report_SHA256':sha((P/'native-tests.private.json').read_bytes()),'files':[{'file':Path(f['name']).relative_to(Q).as_posix(),'checks':[{'name':a['fullName'],'status':a['status']} for a in f['assertionResults']]} for f in native['testResults']],'limit':'Existing units/static routing checks do not cover live already-open context freshness; real browser negative witnesses are independent.'})
+write(P/'semantic-result.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'status':'FAIL_ACCEPTANCE_CONTEXT_RETAINS_OLD_TEXT_AFTER_REAL_HINT','source_revision':SOURCE,'browser':r['browser'],'controller_verification_exit':0,'acceptance_gate_exit':1,'live_edit_failures':3,'live_delete_failures':3,'positive_controls':5,'fresh_after_reload_recovery_controls':6,'minimum_stale_observation_ms':min(x['observed']['window_ms'] for x in failed),'all_six_matching_target_hints_observed':True,'native_checks_passed':12,'native_skips':0,'final_page_errors':0,'primary_scope':'Actual built Web AppShell, own authorized TEXT peer receiver, protected actor HTTP mutation and real WebSocket hint; targets outside latest50/200','limits':['No production, Android/native, physical display, media/voice lease or producer UI acceptance','No DM ACL bypass or unauthorized reader established; prior authorized TEXT is stale after explicit deletion','Reopen recovery explicitly reloads; no new return-anchor/focus claim from this packet','Protected images/links and background tabs not exercised here; deletion observation is text-only','Socket object close callback count0 is an incomplete observer;17 opens/reloads and61 frames are diagnostics, not a leak/drain/capacity verdict','Diagnostic attempts preserved separately; earlier mid-run final-preconditions is not a preexecution receipt. Final run-ready is valid and runner/source hashes are unchanged.']});print('PASS_WITNESS_INTEGRITY_EXPECTED_ACCEPTANCE_EXIT1_SIX_FAILURES_FIVE_CONTROLS')

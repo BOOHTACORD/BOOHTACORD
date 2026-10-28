@@ -1198,6 +1198,21 @@
       "result": "isolated-history-context-navigation/summary.json",
       "limits": "Headless installed Chrome on Windows, not physical/native/production/voice/media acceptance; No DM ACL/privacy claim from channel account reset; Background tab, deleted anchors, edit/delete/tombstones, protected images and voice lease retention not covered in this packet; Known draft-edit loss remains FAIL in I240.C9/I241.C37; no issue closure or consolidation authorization; Primary wrapper uses navigation before login; separate same-document SPA witness strengthens reset proof with8 lifecycle stages and0 acceptance navigations.",
       "defects": []
+    },
+    {
+      "id": "ISOLATED-built-open-context-realtime-edit-delete",
+      "status": "FAIL",
+      "protects": "Already-open reply/search context must reflect authorized message edit and hide deleted text after real hints; preserve fresh tombstone/unavailable and ordinary-history controls",
+      "command": "python -X utf8 .out/qa-context-realtime/preflight.py; python -X utf8 .out/qa-context-realtime/prepare.py; python -X utf8 .out/qa-context-realtime/stamp.py; node .out/qa-context-realtime/run.mjs; python -X utf8 .out/qa-context-realtime/verify.py; python -X utf8 .out/qa-context-realtime/cleanup.py; python -X utf8 .out/qa-context-realtime/audit_bind.py",
+      "platform": "Windows11 / installed headless Chrome155.0.8059.85 / actual built Vue AppShell / own Go API and PostgreSQL17.6 canonical localhost:18088",
+      "mandatory_when": "Before accepting live context edit/delete/tombstone clause of I240.C9/I241.C37 and fixing the new distinct snapshot-freshness defect",
+      "issues": [
+        240,
+        241
+      ],
+      "result": "isolated-context-realtime/summary.json",
+      "limits": "No production, Android/native, physical display, media/voice lease or producer UI acceptance; No DM ACL bypass or unauthorized reader established; prior authorized TEXT is stale after explicit deletion; Reopen recovery explicitly reloads; no new return-anchor/focus claim from this packet; Protected images/links and background tabs not exercised here; deletion observation is text-only; Socket object close callback count0 is an incomplete observer;17 opens/reloads and61 frames are diagnostics, not a leak/drain/capacity verdict; Diagnostic attempts preserved separately; earlier mid-run final-preconditions is not a preexecution receipt. Final run-ready is valid and runner/source hashes are unchanged.",
+      "defects": []
     }
   ]
 }

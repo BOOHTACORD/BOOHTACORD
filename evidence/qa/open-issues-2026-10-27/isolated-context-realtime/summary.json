@@ -1,0 +1,32 @@
+{
+  "at_utc": "2026-10-28T04:27:44.220011+00:00",
+  "status": "FAIL_CONFIRMED_OPEN_CONTEXT_LIVE_FRESHNESS",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "master_checked": "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a",
+  "live_edit_failures": 3,
+  "live_delete_failures": 3,
+  "positive_controls": 5,
+  "fresh_after_reload_controls": 6,
+  "native_checks_passed": 12,
+  "native_skips": 0,
+  "controller_verification_exit": 0,
+  "acceptance_gate_exit": 1,
+  "own_rows_removed": 201,
+  "own_sessions_revoked": 5,
+  "nine_original_services_unchanged": true,
+  "protects": "Already-open reply/search context must reflect authorized message edit and hide deleted text after real hints; preserve fresh tombstone/unavailable and ordinary-history controls",
+  "command": "python -X utf8 .out/qa-context-realtime/preflight.py; python -X utf8 .out/qa-context-realtime/prepare.py; python -X utf8 .out/qa-context-realtime/stamp.py; node .out/qa-context-realtime/run.mjs; python -X utf8 .out/qa-context-realtime/verify.py; python -X utf8 .out/qa-context-realtime/cleanup.py; python -X utf8 .out/qa-context-realtime/audit_bind.py",
+  "platform": "Windows11 / installed headless Chrome155.0.8059.85 / actual built Vue AppShell / own Go API and PostgreSQL17.6 canonical localhost:18088",
+  "mandatory_when": "Before accepting live context edit/delete/tombstone clause of I240.C9/I241.C37 and fixing the new distinct snapshot-freshness defect",
+  "result": "browser-result.json; semantic-result.json; source-binding.json; environment-after.json",
+  "limits": [
+    "No production, Android/native, physical display, media/voice lease or producer UI acceptance",
+    "No DM ACL bypass or unauthorized reader established; prior authorized TEXT is stale after explicit deletion",
+    "Reopen recovery explicitly reloads; no new return-anchor/focus claim from this packet",
+    "Protected images/links and background tabs not exercised here; deletion observation is text-only",
+    "Socket object close callback count0 is an incomplete observer;17 opens/reloads and61 frames are diagnostics, not a leak/drain/capacity verdict",
+    "Diagnostic attempts preserved separately; earlier mid-run final-preconditions is not a preexecution receipt. Final run-ready is valid and runner/source hashes are unchanged."
+  ],
+  "new_defect_state": "CONFIRMED_NOT_YET_FILED",
+  "consolidation_decisions_applied": 0
+}

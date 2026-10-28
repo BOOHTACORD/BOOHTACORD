@@ -5410,7 +5410,8 @@
           "execution_cases": [
             "ISOLATED-history-edit-draft-cache-eviction",
             "ISOLATED-history20-source-performance-and-window-matrix",
-            "ISOLATED-built-history-context-navigation-lifecycle"
+            "ISOLATED-built-history-context-navigation-lifecycle",
+            "ISOLATED-built-open-context-realtime-edit-delete"
           ],
           "evidence": [
             "isolated-history-edit-eviction/summary.json",
@@ -5418,7 +5419,8 @@
             "isolated-history-profile-matrix/summary.json",
             "isolated-history-profile-matrix/semantic-result.json",
             "isolated-history-profile-matrix/comparison.json",
-            "isolated-history-context-navigation/summary.json"
+            "isolated-history-context-navigation/summary.json",
+            "isolated-context-realtime/summary.json"
           ],
           "execution": "python -X utf8 .out/qa-history-window/preflight.py; python -X utf8 .out/qa-history-window/prepare.py; node .out/qa-history-window/run_browser.mjs; python -X utf8 .out/qa-history-window/verify_browser.py; python -X utf8 .out/qa-history-window/cleanup.py; python -X utf8 .out/qa-history-window/audit_bind.py",
           "platform": "Windows11/Node24.18.0/headlessChromium153.0.8010.12/Vue3.5.43/Pinia4.0.3/current source components; own actual Go API/PostgreSQL17.6",
@@ -5450,7 +5452,7 @@
               }
             ]
           },
-          "reason": "Confirmed loss of uncommitted edit on real500-cache older/newer roundtrip,3 reproductions/2 controls. Canonical141 requires a fix; remaining full-row facets retain NOT_RUN scope. Additional20-dataset performance/window measurements PASS_SCOPED; original uncommitted edit-draft defect141 and other functional clauses remain unresolved. Actual built localhost AppShell now passes5 context-navigation/lifecycle scenarios plus2 reply/search repeats with real protected API/PG17.6,6 nearest units/0 skips; retained source/bundle/cleanup proof. Full row stays FAIL on known uncommitted edit eviction141; images/tombstones/native/media facets remain separate. Additional actual same-document SPA journey passes8 lifecycle assertions with no acceptance reload/goto; both account draft directions clear. Total14 own sessions revoked and1321 owned rows removed across primary/additional phases.",
+          "reason": "Confirmed loss of uncommitted edit on real500-cache older/newer roundtrip,3 reproductions/2 controls. Canonical141 requires a fix; remaining full-row facets retain NOT_RUN scope. Additional20-dataset performance/window measurements PASS_SCOPED; original uncommitted edit-draft defect141 and other functional clauses remain unresolved. Actual built localhost AppShell now passes5 context-navigation/lifecycle scenarios plus2 reply/search repeats with real protected API/PG17.6,6 nearest units/0 skips; retained source/bundle/cleanup proof. Full row stays FAIL on known uncommitted edit eviction141; images/tombstones/native/media facets remain separate. Additional actual same-document SPA journey passes8 lifecycle assertions with no acceptance reload/goto; both account draft directions clear. Total14 own sessions revoked and1321 owned rows removed across primary/additional phases. Additional distinct live-context defect: actual built receiver retains original text for at least5s after matching real edit/delete hint and correct protected API state,3 edit and3 delete targets. Five controls and six fresh-after-reload controls PASS;12 existing focused checks/0 skips. New defect filing/evidence binding pending; known edit-draft eviction141 remains independent.",
           "remaining_work_state": "CONFIRMED_DEFECT_141_AND_FULL_PROFILE_REMAINS_QUEUED"
         },
         {
@@ -7037,7 +7039,8 @@
           "execution_cases": [
             "ISOLATED-history-edit-draft-cache-eviction",
             "ISOLATED-history20-source-performance-and-window-matrix",
-            "ISOLATED-built-history-context-navigation-lifecycle"
+            "ISOLATED-built-history-context-navigation-lifecycle",
+            "ISOLATED-built-open-context-realtime-edit-delete"
           ],
           "evidence": [
             "isolated-history-edit-eviction/summary.json",
@@ -7045,7 +7048,8 @@
             "isolated-history-profile-matrix/summary.json",
             "isolated-history-profile-matrix/semantic-result.json",
             "isolated-history-profile-matrix/comparison.json",
-            "isolated-history-context-navigation/summary.json"
+            "isolated-history-context-navigation/summary.json",
+            "isolated-context-realtime/summary.json"
           ],
           "execution": "python -X utf8 .out/qa-history-window/preflight.py; python -X utf8 .out/qa-history-window/prepare.py; node .out/qa-history-window/run_browser.mjs; python -X utf8 .out/qa-history-window/verify_browser.py; python -X utf8 .out/qa-history-window/cleanup.py; python -X utf8 .out/qa-history-window/audit_bind.py",
           "platform": "Windows11/Node24.18.0/headlessChromium153.0.8010.12/Vue3.5.43/Pinia4.0.3/current source components; own actual Go API/PostgreSQL17.6",
@@ -7078,7 +7082,7 @@
               }
             ]
           },
-          "reason": "Confirmed loss of uncommitted edit on real500-cache older/newer roundtrip,3 reproductions/2 controls. Canonical141 requires a fix; remaining full-row facets retain NOT_RUN scope. Additional20-dataset performance/window measurements PASS_SCOPED; original uncommitted edit-draft defect141 and other functional clauses remain unresolved. Actual built localhost AppShell now passes5 context-navigation/lifecycle scenarios plus2 reply/search repeats with real protected API/PG17.6,6 nearest units/0 skips; retained source/bundle/cleanup proof. Full row stays FAIL on known uncommitted edit eviction141; images/tombstones/native/media facets remain separate. Additional actual same-document SPA journey passes8 lifecycle assertions with no acceptance reload/goto; both account draft directions clear. Total14 own sessions revoked and1321 owned rows removed across primary/additional phases.",
+          "reason": "Confirmed loss of uncommitted edit on real500-cache older/newer roundtrip,3 reproductions/2 controls. Canonical141 requires a fix; remaining full-row facets retain NOT_RUN scope. Additional20-dataset performance/window measurements PASS_SCOPED; original uncommitted edit-draft defect141 and other functional clauses remain unresolved. Actual built localhost AppShell now passes5 context-navigation/lifecycle scenarios plus2 reply/search repeats with real protected API/PG17.6,6 nearest units/0 skips; retained source/bundle/cleanup proof. Full row stays FAIL on known uncommitted edit eviction141; images/tombstones/native/media facets remain separate. Additional actual same-document SPA journey passes8 lifecycle assertions with no acceptance reload/goto; both account draft directions clear. Total14 own sessions revoked and1321 owned rows removed across primary/additional phases. Additional distinct live-context defect: actual built receiver retains original text for at least5s after matching real edit/delete hint and correct protected API state,3 edit and3 delete targets. Five controls and six fresh-after-reload controls PASS;12 existing focused checks/0 skips. New defect filing/evidence binding pending; known edit-draft eviction141 remains independent.",
           "remaining_work_state": "CONFIRMED_DEFECT_141_AND_FULL_PROFILE_REMAINS_QUEUED"
         },
         {

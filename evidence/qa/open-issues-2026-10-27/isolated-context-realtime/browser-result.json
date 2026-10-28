@@ -1,0 +1,1390 @@
+{
+  "at_utc": "2026-10-28T04:22:27.384Z",
+  "status": "FAIL_CONFIRMED_LIVE_CONTEXT_WITH_PASSING_CONTROLS",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "origin": "http://localhost:18088",
+  "cases": [
+    {
+      "name": "main_history_realtime_control",
+      "status": "PASS",
+      "at_utc": "2026-10-28T04:22:28.533Z",
+      "protected_latest_HTTP": 200,
+      "initial_page": 50,
+      "all_targets_outside_latest50": true,
+      "control_index": 189,
+      "actor_PATCH_HTTP": 200,
+      "receiver_main_history_updates_without_reload": true,
+      "matched_target_hint_delta": 1,
+      "finished_at_utc": "2026-10-28T04:22:28.907Z"
+    },
+    {
+      "name": "edit_20",
+      "status": "FAIL_LIVE_CONTEXT_STALE",
+      "at_utc": "2026-10-28T04:22:28.907Z",
+      "mode": "edit",
+      "target_index": 20,
+      "reply_index": 191,
+      "before": {
+        "index": 20,
+        "contains_original": true,
+        "contains_changed": false,
+        "tombstone": false,
+        "focus": true,
+        "attachment_cards": 0
+      },
+      "actor_HTTP": 200,
+      "server_at_HTTP": 200,
+      "initial_server_revision": 5,
+      "server_revision": 6,
+      "server_deleted": false,
+      "server_attachments_empty": true,
+      "matched_target_hint_delta": 1,
+      "observed": {
+        "window_ms": 5027,
+        "samples": [
+          {
+            "elapsed_ms": 0,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 268,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 533,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 797,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1062,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1326,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1590,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1855,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2119,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2383,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2648,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2912,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3177,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3441,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3705,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3969,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 4233,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 4498,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 4762,
+            "index": 20,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          }
+        ]
+      },
+      "expected_live_update": false,
+      "scope": "Owned TEXT authorized peer, actual protected API actor mutation and real receiver WebSocket. Not producer-UI, DM ACL or media acceptance.",
+      "reopen_fresh_control": {
+        "index": 20,
+        "contains_original": false,
+        "contains_changed": true,
+        "tombstone": false,
+        "focus": true,
+        "attachment_cards": 0
+      },
+      "reopen_control": "PASS_AFTER_EXPLICIT_RELOAD",
+      "navigation_focus_scope": "No return/focus claim here: separate already published navigation packet. This positive recovery control explicitly reloads before a fresh context GET.",
+      "finished_at_utc": "2026-10-28T04:22:35.301Z"
+    },
+    {
+      "name": "edit_30",
+      "status": "FAIL_LIVE_CONTEXT_STALE",
+      "at_utc": "2026-10-28T04:22:35.301Z",
+      "mode": "edit",
+      "target_index": 30,
+      "reply_index": 192,
+      "before": {
+        "index": 30,
+        "contains_original": true,
+        "contains_changed": false,
+        "tombstone": false,
+        "focus": true,
+        "attachment_cards": 0
+      },
+      "actor_HTTP": 200,
+      "server_at_HTTP": 200,
+      "initial_server_revision": 1,
+      "server_revision": 2,
+      "server_deleted": false,
+      "server_attachments_empty": true,
+      "matched_target_hint_delta": 1,
+      "observed": {
+        "window_ms": 5026,
+        "samples": [
+          {
+            "elapsed_ms": 0,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 264,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 529,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 793,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1058,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1322,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1587,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1851,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2116,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2381,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2646,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2910,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3175,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3439,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3703,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3968,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 4232,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 4497,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 4761,
+            "index": 30,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          }
+        ]
+      },
+      "expected_live_update": false,
+      "scope": "Owned TEXT authorized peer, actual protected API actor mutation and real receiver WebSocket. Not producer-UI, DM ACL or media acceptance.",
+      "reopen_fresh_control": {
+        "index": 30,
+        "contains_original": false,
+        "contains_changed": true,
+        "tombstone": false,
+        "focus": true,
+        "attachment_cards": 0
+      },
+      "reopen_control": "PASS_AFTER_EXPLICIT_RELOAD",
+      "navigation_focus_scope": "No return/focus claim here: separate already published navigation packet. This positive recovery control explicitly reloads before a fresh context GET.",
+      "finished_at_utc": "2026-10-28T04:22:41.682Z"
+    },
+    {
+      "name": "edit_40",
+      "status": "FAIL_LIVE_CONTEXT_STALE",
+      "at_utc": "2026-10-28T04:22:41.683Z",
+      "mode": "edit",
+      "target_index": 40,
+      "reply_index": 193,
+      "before": {
+        "index": 40,
+        "contains_original": true,
+        "contains_changed": false,
+        "tombstone": false,
+        "focus": true,
+        "attachment_cards": 0
+      },
+      "actor_HTTP": 200,
+      "server_at_HTTP": 200,
+      "initial_server_revision": 1,
+      "server_revision": 2,
+      "server_deleted": false,
+      "server_attachments_empty": true,
+      "matched_target_hint_delta": 1,
+      "observed": {
+        "window_ms": 5024,
+        "samples": [
+          {
+            "elapsed_ms": 0,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 268,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 532,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 795,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1060,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1324,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1589,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1853,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2117,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2382,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2647,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2911,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3176,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3440,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3704,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3968,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 4233,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 4496,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 4761,
+            "index": 40,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          }
+        ]
+      },
+      "expected_live_update": false,
+      "scope": "Owned TEXT authorized peer, actual protected API actor mutation and real receiver WebSocket. Not producer-UI, DM ACL or media acceptance.",
+      "reopen_fresh_control": {
+        "index": 40,
+        "contains_original": false,
+        "contains_changed": true,
+        "tombstone": false,
+        "focus": true,
+        "attachment_cards": 0
+      },
+      "reopen_control": "PASS_AFTER_EXPLICIT_RELOAD",
+      "navigation_focus_scope": "No return/focus claim here: separate already published navigation packet. This positive recovery control explicitly reloads before a fresh context GET.",
+      "finished_at_utc": "2026-10-28T04:22:48.041Z"
+    },
+    {
+      "name": "delete_21",
+      "status": "FAIL_LIVE_CONTEXT_STALE",
+      "at_utc": "2026-10-28T04:22:48.041Z",
+      "mode": "delete",
+      "target_index": 21,
+      "reply_index": 194,
+      "before": {
+        "index": 21,
+        "contains_original": true,
+        "contains_changed": false,
+        "tombstone": false,
+        "focus": true,
+        "attachment_cards": 0
+      },
+      "actor_HTTP": 204,
+      "server_at_HTTP": 200,
+      "initial_server_revision": 1,
+      "server_revision": 2,
+      "server_deleted": true,
+      "server_attachments_empty": true,
+      "matched_target_hint_delta": 1,
+      "observed": {
+        "window_ms": 5023,
+        "samples": [
+          {
+            "elapsed_ms": 0,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 266,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 531,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 794,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1057,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1322,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1585,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1851,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2115,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2380,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2644,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2909,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3172,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3436,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3701,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3965,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 4231,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 4494,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 4759,
+            "index": 21,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          }
+        ]
+      },
+      "expected_live_update": false,
+      "scope": "Owned TEXT authorized peer, actual protected API actor mutation and real receiver WebSocket. Not producer-UI, DM ACL or media acceptance.",
+      "reopen_fresh_control": {
+        "index": 21,
+        "contains_original": false,
+        "contains_changed": false,
+        "tombstone": true,
+        "focus": true,
+        "attachment_cards": 0
+      },
+      "reopen_control": "PASS_AFTER_EXPLICIT_RELOAD",
+      "navigation_focus_scope": "No return/focus claim here: separate already published navigation packet. This positive recovery control explicitly reloads before a fresh context GET.",
+      "finished_at_utc": "2026-10-28T04:22:54.384Z"
+    },
+    {
+      "name": "delete_31",
+      "status": "FAIL_LIVE_CONTEXT_STALE",
+      "at_utc": "2026-10-28T04:22:54.385Z",
+      "mode": "delete",
+      "target_index": 31,
+      "reply_index": 195,
+      "before": {
+        "index": 31,
+        "contains_original": true,
+        "contains_changed": false,
+        "tombstone": false,
+        "focus": true,
+        "attachment_cards": 0
+      },
+      "actor_HTTP": 204,
+      "server_at_HTTP": 200,
+      "initial_server_revision": 1,
+      "server_revision": 2,
+      "server_deleted": true,
+      "server_attachments_empty": true,
+      "matched_target_hint_delta": 1,
+      "observed": {
+        "window_ms": 5024,
+        "samples": [
+          {
+            "elapsed_ms": 0,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 267,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 531,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 796,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1060,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1324,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1589,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1853,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2118,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2381,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2646,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2910,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3174,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3439,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3703,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3968,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 4232,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 4496,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 4760,
+            "index": 31,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          }
+        ]
+      },
+      "expected_live_update": false,
+      "scope": "Owned TEXT authorized peer, actual protected API actor mutation and real receiver WebSocket. Not producer-UI, DM ACL or media acceptance.",
+      "reopen_fresh_control": {
+        "index": 31,
+        "contains_original": false,
+        "contains_changed": false,
+        "tombstone": true,
+        "focus": true,
+        "attachment_cards": 0
+      },
+      "reopen_control": "PASS_AFTER_EXPLICIT_RELOAD",
+      "navigation_focus_scope": "No return/focus claim here: separate already published navigation packet. This positive recovery control explicitly reloads before a fresh context GET.",
+      "finished_at_utc": "2026-10-28T04:23:00.735Z"
+    },
+    {
+      "name": "delete_41",
+      "status": "FAIL_LIVE_CONTEXT_STALE",
+      "at_utc": "2026-10-28T04:23:00.735Z",
+      "mode": "delete",
+      "target_index": 41,
+      "reply_index": 196,
+      "before": {
+        "index": 41,
+        "contains_original": true,
+        "contains_changed": false,
+        "tombstone": false,
+        "focus": true,
+        "attachment_cards": 0
+      },
+      "actor_HTTP": 204,
+      "server_at_HTTP": 200,
+      "initial_server_revision": 1,
+      "server_revision": 2,
+      "server_deleted": true,
+      "server_attachments_empty": true,
+      "matched_target_hint_delta": 1,
+      "observed": {
+        "window_ms": 5027,
+        "samples": [
+          {
+            "elapsed_ms": 0,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 267,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 531,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 795,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1059,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1323,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1588,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 1852,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2117,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2381,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2646,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 2910,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3174,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3439,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3704,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 3969,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 4233,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 4498,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          },
+          {
+            "elapsed_ms": 4762,
+            "index": 41,
+            "contains_original": true,
+            "contains_changed": false,
+            "tombstone": false,
+            "focus": true,
+            "attachment_cards": 0
+          }
+        ]
+      },
+      "expected_live_update": false,
+      "scope": "Owned TEXT authorized peer, actual protected API actor mutation and real receiver WebSocket. Not producer-UI, DM ACL or media acceptance.",
+      "reopen_fresh_control": {
+        "index": 41,
+        "contains_original": false,
+        "contains_changed": false,
+        "tombstone": true,
+        "focus": true,
+        "attachment_cards": 0
+      },
+      "reopen_control": "PASS_AFTER_EXPLICIT_RELOAD",
+      "navigation_focus_scope": "No return/focus claim here: separate already published navigation packet. This positive recovery control explicitly reloads before a fresh context GET.",
+      "finished_at_utc": "2026-10-28T04:23:07.085Z"
+    },
+    {
+      "name": "deleted_before_open_22",
+      "status": "PASS",
+      "at_utc": "2026-10-28T04:23:07.086Z",
+      "target_index": 22,
+      "delete_before_open_HTTP": 204,
+      "fresh_tombstone": {
+        "index": 22,
+        "contains_original": false,
+        "contains_changed": false,
+        "tombstone": true,
+        "focus": true,
+        "attachment_cards": 0
+      },
+      "finished_at_utc": "2026-10-28T04:23:07.713Z"
+    },
+    {
+      "name": "deleted_before_open_32",
+      "status": "PASS",
+      "at_utc": "2026-10-28T04:23:07.714Z",
+      "target_index": 32,
+      "delete_before_open_HTTP": 204,
+      "fresh_tombstone": {
+        "index": 32,
+        "contains_original": false,
+        "contains_changed": false,
+        "tombstone": true,
+        "focus": true,
+        "attachment_cards": 0
+      },
+      "finished_at_utc": "2026-10-28T04:23:08.337Z"
+    },
+    {
+      "name": "deleted_before_open_42",
+      "status": "PASS",
+      "at_utc": "2026-10-28T04:23:08.338Z",
+      "target_index": 42,
+      "delete_before_open_HTTP": 204,
+      "fresh_tombstone": {
+        "index": 42,
+        "contains_original": false,
+        "contains_changed": false,
+        "tombstone": true,
+        "focus": true,
+        "attachment_cards": 0
+      },
+      "finished_at_utc": "2026-10-28T04:23:08.986Z"
+    },
+    {
+      "name": "unavailable_context_control",
+      "status": "PASS",
+      "at_utc": "2026-10-28T04:23:08.987Z",
+      "no_cross_scope_sentinel_or_anchor_rendered": true,
+      "unavailable_alert_generic": true,
+      "source_limit": "FK-valid own legacy SQL reference, not normal reply admission test or DM privacy acceptance",
+      "finished_at_utc": "2026-10-28T04:23:09.632Z"
+    }
+  ],
+  "assets": [
+    {
+      "path": "/assets/index-oVuvOmtd.css",
+      "bytes": 304863,
+      "sha256": "13f835eea3005040a379a29e560791a81d6480d30872b7c14a51eb0fcbe9b096"
+    },
+    {
+      "path": "/assets/index-D5vIjeLQ.js",
+      "bytes": 1634581,
+      "sha256": "934de08b6fae1d2efd715830757750f6511c18e8edc12f5da7fff723666d08f8"
+    }
+  ],
+  "websocket": {
+    "opened": 17,
+    "closed": 0,
+    "frames": 61,
+    "known_target_hints": {
+      "20": 1,
+      "21": 1,
+      "22": 1,
+      "30": 1,
+      "31": 1,
+      "32": 1,
+      "40": 1,
+      "41": 1,
+      "42": 1,
+      "189": 1
+    }
+  },
+  "page_errors": [],
+  "production_touched": false,
+  "full_built_AppShell": true,
+  "transport_or_response_mocks": false,
+  "permission_grants": false,
+  "security_flags": false,
+  "physical_or_native_acceptance": false,
+  "browser": "155.0.8059.85",
+  "own_receiver_logout204_unauthenticated_readback": true,
+  "finished_at_utc": "2026-10-28T04:23:09.764Z",
+  "acceptance_gate_exit": 1
+}

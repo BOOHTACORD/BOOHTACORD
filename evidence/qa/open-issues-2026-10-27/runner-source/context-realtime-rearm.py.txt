@@ -1,0 +1,14 @@
+"""Complete own protected fixture restore before final run; no concurrent test start."""
+import hashlib,subprocess
+from datetime import datetime,timezone
+from common import P,Q,SOURCE,read,write,valid,sql,request
+assert not (P/'final-ready.json').exists()
+c=read(P/'private/config.private.json');assert sql("SELECT name FROM categories WHERE id='"+valid(c['category'])+"';").strip()=='qa_ctx_'+c['owner'];changes=[]
+for i in [20,189]:
+    status,_,page=request('/api/v1/channels/'+c['main']['channel']+'/messages?at='+c['ids'][i]+'&limit=20',cookie=c['cookie']);assert status==200;row=page['messages'][0];assert row['id']==c['ids'][i] and not row['deleted'] and row['revision']==4
+    status,_,updated=request('/api/v1/channels/'+c['main']['channel']+'/messages/'+c['ids'][i],'PATCH',{'body':c['originals'][str(i)],'expected_revision':row['revision']},c['cookie']);assert status==200 and updated['body']==c['originals'][str(i)] and updated['revision']==5;changes.append({'index':i,'protected_restore_HTTP':200,'revision_after':5})
+for i in c['targets']:
+    status,_,page=request('/api/v1/channels/'+c['main']['channel']+'/messages?at='+c['ids'][i]+'&limit=20',cookie=c['cookie']);assert status==200;row=page['messages'][0];assert row['id']==c['ids'][i] and not row['deleted'] and row['body']==c['originals'][str(i)]
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=Q,text=True).strip()==SOURCE and not subprocess.check_output(['git','-c','core.autocrlf=false','status','--porcelain'],cwd=Q,text=True).strip()
+names=['browser.mjs','cases.mjs','run.mjs','common.py'];sources=read(P/'final-preconditions.json')['source_SHA256']
+write(P/'final-ready.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_FINAL_RESTORED_FIXTURE_AND_PREEXEC_FINGERPRINTS','source_revision':SOURCE,'guarded_restores':changes,'earlier_checkpoint_limit':'Earlier final-preconditions receipt was written while attempt2 was already running. It is diagnostic, not a valid preexecution stamp. This final-ready step completes before the final browser process starts in the same guarded command chain.','runner_SHA256':{n:hashlib.sha256((P/n).read_bytes()).hexdigest() for n in names},'source_SHA256':{n:hashlib.sha256((Q/n).read_bytes()).hexdigest() for n in sources}});print('PASS_FINAL_RESTORED_FIXTURE_AND_PREEXEC_FINGERPRINTS')

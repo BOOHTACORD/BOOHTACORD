@@ -1,0 +1,41 @@
+{
+  "at_utc": "2026-10-28T04:20:09.135566+00:00",
+  "status": "PASS_OWN_FIXTURE_PROTECTED_RESTORE_AND_FINAL_FINGERPRINTS",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "guarded_restores": [
+    {
+      "index": 20,
+      "protected_restore_HTTP": 200,
+      "revision_after": 3
+    },
+    {
+      "index": 189,
+      "protected_restore_HTTP": 200,
+      "revision_after": 3
+    }
+  ],
+  "diagnostic_limit": "Initial run reached one target edit and then stopped on strict original-button-focus return assertion, before completing reopen control. Its result/screenshot remain private/raw. Focus is now observed separately from content freshness; no loss is reclassified as a focus PASS.",
+  "runner_SHA256": {
+    "browser.mjs": "2b452c8dd4264f9271cbfa270e719698e063972a8d4b5bc9e85af6e6e719d118",
+    "cases.mjs": "ca43ae013b90a2330667dfb7bbf17ab51725afbd99f81f3f4b76aadae9498d13",
+    "run.mjs": "8cec37cf2c9f55a529b0cf98e10317b9ea0e842186515a0e4ff4881be9d6a356",
+    "common.py": "cafa326d52cf679ebce1bf9f864f4a588818165b9dfb9cf2ea4756358e16fc81"
+  },
+  "source_SHA256": {
+    "clients/web/src/search/SearchMessageContext.vue": "5d78ae93cb8d6eae1eba7a09347a1e4c4ea8710b6b3514cc6566fc3dbedbc140",
+    "clients/web/src/search/search_context_controller.ts": "b5af5afc9cabb3ce20863b0fe04392350348f1ee85676d35b7051a6f16288ae7",
+    "clients/web/src/search/search_context_controller.spec.ts": "f1dbb44a773f128f9055d226f67b544ffa8eb1180bd74de2bf59f87150f4b451",
+    "clients/web/src/search/context_timeline/local_search.spec.ts": "e45cf801f30848d074daa3b3deabbc5b6870919c2b4d48c28d8eca1008449942",
+    "clients/web/src/conversation/TextConversation.vue": "9091e4af62894ad8d0c1aa85794c6e7eef168157371193fc58b0d4b215de4956",
+    "clients/web/src/conversation/TextMessageSearch.vue": "32f59f36038eaf13d2e893b679aa7630d4d582844f5634e72d220d7bd544649e",
+    "clients/web/src/conversation/message_store.ts": "e577057a095747411f827a5841ad6e10dd8ad879df0d37adb30adb19dc0a1019",
+    "clients/web/src/conversation/message_store.spec.ts": "3f567bbd4812d6b2c76b1466b4b48156954afd654a3b28965155e5102873b57f",
+    "clients/web/src/conversation/message_client.ts": "4984db70f37738f2781c79d4668e87a139c9fc0084c1a3b84402d61605869f51",
+    "contracts/realtime.schema.json": "5cd1002db32f6dd470a79d3abe125eb596cf9890fb740b98cb0ba63d991dca16",
+    "clients/web/src/conversation/text_history.ts": "8c8c2e8b503cc23536edf6a7656b264af0716abcc85cf683585d2501b0a38e58",
+    "clients/web/src/conversation/revision_refresh/loaded.ts": "d58ae0f3d7af0b952c5f623755c405578e8aeb84b1f477cc8bbaefb6b4186054",
+    "clients/web/package.json": "38b58afba0b1819abe3bac47df7673786ccd4611b2449714a5565b50e8cb496d",
+    "clients/web/package-lock.json": "1363987ad55f000d9bce83808b76721aa157745f7708383e170c1e221d8b756b",
+    "contracts/client-build.json": "3b10f56dc64726de3b53e7508d946770d57be03029efb4494d34766bfaf944f1"
+  }
+}

@@ -1,0 +1,30 @@
+"""Create own outside-window targets and valid reply/tombstone controls."""
+import csv,hashlib,io,secrets,uuid
+from datetime import datetime,timedelta,timezone
+from http.cookies import SimpleCookie
+from common import P,SOURCE,ORIGIN,read,write,credentials,request,sql,valid
+path=P/'private/config.private.json';assert not path.exists()
+assert read(P/'environment-before.json')['source_revision']==SOURCE
+c=credentials();cfg={'owner':secrets.token_hex(12),'origin':ORIGIN,'source_revision':SOURCE,'sessions':[],'targets':[20,30,40,21,31,41,22,32,42]};write(path,cfg)
+status,headers,_=request('/api/v1/auth/login','POST',{'login':c['admin_login'],'password':c['admin_password']});assert status==204
+cookies=SimpleCookie()
+for k,v in headers:
+    if k.lower()=='set-cookie':cookies.load(v)
+assert len(cookies)==1;cfg['cookie']='; '.join(k+'='+v.value for k,v in cookies.items());cfg['sessions'].append(cfg['cookie']);write(path,cfg)
+status,_,s=request('/api/v1/auth/session',cookie=cfg['cookie']);assert status==200 and s['authenticated'] and s['role']=='ADMINISTRATOR';cfg['account']=valid(s['account_id']);write(path,cfg)
+status,_,cat=request('/api/v1/admin/categories','POST',{'name':'qa_ctx_'+cfg['owner']},cfg['cookie']);assert status==201;cfg['category']=valid(cat['id']);write(path,cfg)
+for alias in ['main','sentinel']:
+    name='qa_ctx_'+alias+'_'+cfg['owner'];status,_,ch=request('/api/v1/admin/categories/'+cfg['category']+'/channels','POST',{'name':name,'kind':'TEXT'},cfg['cookie']);assert status==201;cfg[alias]={'channel':valid(ch['id']),'name':name};write(path,cfg)
+cfg['ids']=[str(uuid.uuid4()) for _ in range(200)];cfg['sentinel_id']=str(uuid.uuid4());cfg['originals']={str(i):'Synthetic context row '+str(i)+' '+cfg['owner'] for i in range(200)};write(path,cfg)
+epoch=datetime(2026,1,1,tzinfo=timezone.utc);out=io.StringIO(newline='');writer=csv.writer(out,lineterminator='\n')
+writer.writerow([cfg['sentinel_id'],cfg['sentinel']['channel'],cfg['account'],str(uuid.uuid4()),'Synthetic other-scope sentinel',(epoch-timedelta(seconds=1)).isoformat(),None])
+for i,identifier in enumerate(cfg['ids']):
+    target=cfg['sentinel_id'] if i==190 else cfg['ids'][cfg['targets'][i-191]] if i>=191 else None
+    writer.writerow([identifier,cfg['main']['channel'],cfg['account'],str(uuid.uuid4()),cfg['originals'][str(i)],(epoch+timedelta(seconds=i)).isoformat(),target])
+raw=out.getvalue();cfg['seed_SHA256']=hashlib.sha256(raw.encode()).hexdigest();write(path,cfg);(P/'private/seed.private.csv').write_text(raw,encoding='utf-8',newline='\n')
+sql('BEGIN;\nCOPY messages(id,channel_id,author_id,client_message_id,body,created_at,reply_to_id) FROM STDIN CSV;\n'+raw+'\\.\nCOMMIT;\n')
+assert int(sql("SELECT count(*) FROM messages WHERE channel_id='"+cfg['main']['channel']+"';").strip())==200
+status,_,page=request('/api/v1/channels/'+cfg['main']['channel']+'/messages',cookie=cfg['cookie']);assert status==200 and len(page['messages'])==50 and page['messages'][0]['id']==cfg['ids'][199]
+assert not {m['id'] for m in page['messages']} & {cfg['ids'][i] for i in cfg['targets']}
+status,_,page=request('/api/v1/channels/'+cfg['main']['channel']+'/messages?at='+cfg['sentinel_id']+'&limit=20',cookie=cfg['cookie']);assert status==200 and page['messages']==[]
+write(P/'fixture-ready.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_OWNED200_PLUS_SENTINEL_REAL_API','source_revision':SOURCE,'main_rows':200,'control_rows':1,'initial_page_rows':50,'outside_window_target_indices':cfg['targets'],'cross_scope_control_HTTP200_empty':True,'cross_scope_control_limit':'Owned SQL-injected legacy FK-valid reply; normal creation admission not tested','CSV_SHA256':cfg['seed_SHA256'],'production_touched':False,'identities_rows_CSV_and_cookies_private':True});print('PASS_OWNED200_PLUS_SENTINEL_REAL_API')

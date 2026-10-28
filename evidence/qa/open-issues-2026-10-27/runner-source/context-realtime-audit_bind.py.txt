@@ -1,0 +1,24 @@
+"""Bind exact source/bundle evidence, unchanged stand and both private log streams."""
+import hashlib,json,platform,struct,subprocess
+from datetime import datetime,timezone
+from pathlib import Path
+from common import P,Q,SOURCE,read,write,credentials
+from profile_common import CONTEXT
+B=Path('C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD');sha=lambda b:hashlib.sha256(b).hexdigest();r=read(P/'browser-result.json');ready=read(P/'run-ready.json');cfg=read(P/'private/config.private.json');before=read(P/'environment-before.json')
+assert read(P/'environment-after.json')['status'].startswith('PASS') and r['status']=='FAIL_CONFIRMED_LIVE_CONTEXT_WITH_PASSING_CONTROLS'
+for n,d in ready['runner_SHA256'].items():assert sha((P/n).read_bytes())==d
+master=subprocess.check_output(['git','ls-remote','origin','refs/heads/master'],cwd=B,text=True).split()[0];files={}
+for n,d in ready['source_SHA256'].items():
+    raw=(Q/n).read_bytes();assert sha(raw)==d;canonical=raw.replace(b'\r\n',b'\n');reference=subprocess.check_output(['git','show',master+':'+n],cwd=B);assert canonical==reference,n;files[n]={'working_SHA256':d,'LF_SHA256':sha(canonical),'current_master_match':True}
+assert not subprocess.check_output(['git','-c','core.autocrlf=false','status','--porcelain'],cwd=Q,text=True).strip();markers=[v.split('=',1)[1].encode() for v in cfg['sessions']]+[v.encode() for k,v in credentials().items() if isinstance(v,str) and (any(x in k for x in ['password','secret','ingest_auth']) or k=='livekit_key')];logs=[]
+for service in read(P/'environment-after.json')['services']:
+    n=service['service'];identifier=read(P/'private'/(n+'-inspect-before.private.json'))['Id'];s=subprocess.run(['docker','--context',CONTEXT,'logs','--since',before['at_utc'],identifier],capture_output=True);assert s.returncode==0;raw=s.stdout+b'\n'+s.stderr;(P/'private'/(n+'-logs-both.private.log')).write_bytes(raw);assert all(x not in raw for x in markers)
+    logs.append({'service':n,'stdout_bytes':len(s.stdout),'stderr_bytes':len(s.stderr),'SHA256':sha(raw),'credential_session_markers_absent':True,'raw_private':True})
+write(P/'log-audit.json',{'status':'PASS_BOTH_STREAMS_ALL5_SESSION_CREDENTIAL_SCAN','services':logs})
+previous=read(B/'evidence/qa/open-issues-2026-10-27/isolated-history-context-navigation/source-binding.json');assert {(x['path'],x['sha256']) for x in r['assets']}=={(x['path'],x['sha256']) for x in previous['actual_served_built_assets']}
+write(P/'source-binding.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'source_current':SOURCE,'master_checked':master,'matched_files':len(files),'files':files,'final_runner_preexecution_hashes_unchanged':True,'runner_SHA256':ready['runner_SHA256'],'actual_served_built_assets':r['assets'],'assets_match_previous_built_navigation_packet':True,'OS':{'system':platform.system(),'release':platform.release(),'version':platform.version(),'architecture':platform.machine()},'browser':r['browser'],'Node':subprocess.check_output(['node','--version'],text=True).strip(),'images':[s for s in before['services'] if s['service'] in ['api','web','postgres']],'build_definition':read(Q/'contracts/client-build.json')['builds']['web'],'binding_limit':'Exact source hashes, source-labelled OCI images and actual runtime bundle digests, not an independent bit-reproducible build. Actor changes use authorized protected HTTP, not sender UI. Actual receiver uses built app and real WebSocket. No Vite, mocks, Origin translation, permission grants or security flags.'})
+captures=[]
+for f in sorted((P/'private').glob('*-*.private.png')):
+    raw=f.read_bytes();width,height=struct.unpack('>II',raw[16:24]);captures.append({'file':f.name,'SHA256':sha(raw),'bytes':len(raw),'source_resolution':[width,height],'representative_viewed_at_source_resolution':f.name in ['edit-20.private.png','delete-21.private.png'],'exported':False})
+write(P/'visual-record.json',{'captures':captures,'observations':'Inspected representative actual built target-row captures edit20/delete21 at source resolution: original synthetic text remains rendered after the matching real hint and at least5s observation; deleted row has no tombstone in that already-open view. Fresh-load controls then show updated text/tombstone. Row captures do not prove full visual/native/physical acceptance.','public_image_or_message_payloads_exported':False})
+print(json.dumps({'source_binding':'PASS','master_checked':master,'matched_files':len(files),'actual_built_assets':len(r['assets']),'both_stream_log_scan':'PASS','captures':len(captures)}))

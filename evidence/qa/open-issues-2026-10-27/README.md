@@ -324,3 +324,8 @@ The requested [production URL readiness](production-origin-readiness/result.json
 [Five-scenario real-stack evidence](isolated-history-context-navigation/README.md) passes reply/search/unread outside the loaded window, same-row/focus return, bidirectional context, channel restore and actual UI logout/account reset.6 units/0 skips;2 reply/search repeats. All1320 fixture rows/3channels removed,10 own sessions revoked,9 original services unchanged. I240.C9/I241.C37/141 retain FAIL for known edit-draft loss.77 scoped cases;480 original texts and43 consolidation decisions preserved. No native/physical/production/media/hosted gate is promoted.
 
 The additional same-document account journey passes8 lifecycle assertions without acceptance reload/goto, strengthening the primary wrapper. Across both phases:1321 own rows/4channels/2categories removed,14 own sessions revoked and final nine-service/source/privacy checks PASS. See the linked history context evidence; no full QA/physical/hosted gate is promoted.
+
+
+## Already-open context realtime freshness — 2026-10-28
+
+[Distinct source-bound failure](isolated-context-realtime/README.md):3 edit +3 delete targets remain stale after real matching hints/correct protected API state.5 controls and6 fresh-after-explicit-reload controls PASS;12 closest checks/0 skips do not cover the live path.201 own rows/2channels/category removed,5 own sessions revoked;9 original services/source unchanged. I240.C9/I241.C37 remain FAIL; a distinct defect will be filed after duplicate review and linked to immutable evidence.78 scoped cases/480 original texts and43 decisions preserved.

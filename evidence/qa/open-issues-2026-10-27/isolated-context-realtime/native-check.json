@@ -1,0 +1,77 @@
+{
+  "status": "PASS12_EXISTING_FOCUSED_CHECKS_ZERO_SKIP",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "command": "node node_modules/vitest/vitest.mjs run src/search/search_context_controller.spec.ts src/search/context_timeline/local_search.spec.ts src/conversation/message_store.spec.ts --reporter=json --outputFile=../../.out/qa-context-realtime/native-tests.private.json",
+  "working_directory": "clients/web",
+  "checks": 12,
+  "skipped": 0,
+  "failed": 0,
+  "static_source_routing_checks": 2,
+  "native_report_SHA256": "23447bb0c51febd34b72cf912d5d5e10ef1b6362220e3fe744590e0a0dc1e9b2",
+  "files": [
+    {
+      "file": "clients/web/src/conversation/message_store.spec.ts",
+      "checks": [
+        {
+          "name": "message store loads a channel then prepends a server-created message",
+          "status": "passed"
+        },
+        {
+          "name": "message store sends an attachment-only message but still rejects an empty draft without files",
+          "status": "passed"
+        },
+        {
+          "name": "message store shows an optimistic message and retains it as failed when acknowledgement is lost",
+          "status": "passed"
+        },
+        {
+          "name": "message store retries an uncertain send with the same id and replaces its optimistic row",
+          "status": "passed"
+        },
+        {
+          "name": "message store retries with the original mention IDs even after an uncertain response",
+          "status": "passed"
+        },
+        {
+          "name": "message store uses a new id when the failed draft changes",
+          "status": "passed"
+        },
+        {
+          "name": "message store reconciles a lost acknowledgement with server history after returning to the channel",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "file": "clients/web/src/search/search_context_controller.spec.ts",
+      "checks": [
+        {
+          "name": "addressed search context opens a bounded page only when its first row is the requested anchor",
+          "status": "passed"
+        },
+        {
+          "name": "addressed search context explains a removed or deleted anchor without showing the stale search excerpt",
+          "status": "passed"
+        },
+        {
+          "name": "addressed search context discards an old request after a different result opens",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "file": "clients/web/src/search/context_timeline/local_search.spec.ts",
+      "checks": [
+        {
+          "name": "routes local result IDs through the protected shared context: ../../conversation/TextMessageSearch.vue",
+          "status": "passed"
+        },
+        {
+          "name": "routes local result IDs through the protected shared context: ../../direct_message/DirectMessageSearch.vue",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "limit": "Existing units/static routing checks do not cover live already-open context freshness; real browser negative witnesses are independent."
+}

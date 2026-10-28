@@ -1,0 +1,40 @@
+"""Validate all intended row changes then delete only this owned fixture and sessions."""
+import csv,hashlib,io,ipaddress,json,subprocess
+from datetime import datetime,timezone
+from common import P,Q,PROJECT,read,write,sql,valid,request,docker
+assert not (P/'environment-after.json').exists();assert read(P/'semantic-result.json')['acceptance_gate_exit']==1
+c=read(P/'private/config.private.json');before=read(P/'environment-before.json');category=valid(c['category']);channels=[valid(c[n]['channel']) for n in ['main','sentinel']];scopes=','.join("'"+x+"'" for x in channels)
+assert len(c['owner'])==24 and all(x in '0123456789abcdef' for x in c['owner'])
+assert sql("SELECT name FROM categories WHERE id='"+category+"';").strip()=='qa_ctx_'+c['owner'] and set(sql("SELECT id FROM channels WHERE category_id='"+category+"';").splitlines())==set(channels)
+seed=(P/'private/seed.private.csv').read_text();assert hashlib.sha256(seed.encode()).hexdigest()==c['seed_SHA256'];original=list(csv.reader(io.StringIO(seed)));expected={row[0]:row for row in original};assert len(expected)==201
+command='COPY (SELECT id,channel_id,author_id,client_message_id,body,created_at,reply_to_id,revision,deleted_at FROM messages WHERE channel_id IN ('+scopes+') ORDER BY created_at,id) TO STDOUT WITH CSV;'
+raw=docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-qAt','-v','ON_ERROR_STOP=1',input=command.encode()).decode();rows=list(csv.reader(io.StringIO(raw)));assert {row[0] for row in rows}==set(expected)
+edits={c['ids'][i] for i in [20,30,40,189]};deletes={c['ids'][i] for i in [21,31,41,22,32,42]};retained=[];desired=[]
+for row in rows:
+    row[5]=datetime.fromisoformat(row[5]).astimezone(timezone.utc).isoformat();old=expected[row[0]]
+    assert [row[i] for i in [0,1,2,3,5,6]]==[old[i] for i in [0,1,2,3,5,6]]
+    if row[0] in edits:
+        i=c['ids'].index(row[0]);assert not row[8];assert int(row[7])==({20:6,189:7}.get(i,2));assert row[4]==('Synthetic realtime main control '+c['owner']+' r7' if i==189 else 'Synthetic changed row '+str(i)+' '+c['owner'])
+    elif row[0] in deletes:assert row[8] and int(row[7])==2
+    else:assert row[:7]==old and row[7]=='1' and not row[8];retained.append(row[:7]);desired.append(old)
+assert len(retained)==191
+out=io.StringIO(newline='');csv.writer(out,lineterminator='\n').writerows(retained);preserved=hashlib.sha256(out.getvalue().encode()).hexdigest()
+assert int(sql('SELECT count(*) FROM attachments WHERE channel_id IN ('+scopes+');').strip())==0 and int(sql('SELECT count(*) FROM guild_settings WHERE welcome_channel_id IN ('+scopes+');').strip())==0
+sql('BEGIN; SET LOCAL statement_timeout=\'90s\'; DELETE FROM channel_read_cursors WHERE channel_id IN ('+scopes+'); DELETE FROM messages WHERE channel_id IN ('+scopes+'); DELETE FROM channels WHERE category_id=\''+category+'\'; DELETE FROM categories WHERE id=\''+category+"' AND name='qa_ctx_"+c['owner']+"'; COMMIT;")
+assert sql('SELECT count(*) FROM messages WHERE channel_id IN ('+scopes+'); SELECT count(*) FROM channels WHERE category_id=\''+category+'\'; SELECT count(*) FROM categories WHERE id=\''+category+'\';').splitlines()==['0','0','0']
+status,_,t=request('/api/v1/channels',cookie=c['cookie']);assert status==200 and not {x['id'] for cat in t['categories'] for x in cat['channels']}&set(channels) and all(cat['id']!=category for cat in t['categories'])
+assert len(c['sessions'])==len(set(c['sessions']))==5;already=0;revoked=0
+for cookie in c['sessions']:
+    status,_,s=request('/api/v1/auth/session',cookie=cookie);assert status==200
+    if s['authenticated']:status,_,_=request('/api/v1/auth/logout','POST',{},cookie);assert status==204;revoked+=1
+    else:already+=1
+    status,_,s=request('/api/v1/auth/session',cookie=cookie);assert status==200 and not s['authenticated']
+counts=list(map(int,sql('SELECT (SELECT count(*) FROM users),(SELECT count(*) FROM sessions),(SELECT count(*) FROM sessions WHERE revoked_at IS NULL),(SELECT count(*) FROM attachments),(SELECT count(*) FROM messages);').strip().split('|')));wanted=list(before['database_counts']);wanted[1]+=len(c['sessions']);assert counts==wanted
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS201_OWN_ROWS_SCOPES_REMOVED_ALL5_SESSIONS_REVOKED','production_touched':False,'own_messages_removed':201,'own_channels_removed':2,'own_categories_removed':1,'own_sessions_revoked':5,'own_sessions_already_revoked_by_runner':already,'own_sessions_revoked_at_cleanup':revoked,'all_own_sessions_live_unauthenticated_readback':True,'API_topology_own_scopes_absent':True,'unmodified191_rows_and_all_identity_scope_dates_reply_fields_verified':True,'unmodified_rows_CSV_SHA256':preserved,'intended_mutated_rows':10,'database_count_order':['users','all_sessions','unrevoked_rows_not_validity','attachments','messages'],'database_counts_before':before['database_counts'],'database_counts_after':counts,'services':[]}
+for name in ['api','web','proxy','postgres','livekit','collector','tempo','prometheus','grafana']:
+    old=read(P/'private'/(name+'-inspect-before.private.json'));v=json.loads(docker('inspect',old['Id']))[0];assert v['State']['Running'] and v['RestartCount']==old['RestartCount']==0 and v['Image']==old['Image'] and v['Config']==old['Config'] and v['HostConfig']==old['HostConfig'] and v['State']['StartedAt']==old['State']['StartedAt']
+    for bindings in v['NetworkSettings']['Ports'].values():
+        for b in bindings or []:assert ipaddress.ip_address(b['HostIp']).is_loopback
+    r['services'].append({'service':name,'same_ID_image_Config_HostConfig_StartTime':True,'restart_count':0,'published_ports_loopback':True})
+status,_,_=request('/api/v1/health');assert status==200;r['API_health_HTTP']=status;assert not subprocess.check_output(['git','-c','core.autocrlf=false','status','--porcelain'],cwd=Q,text=True).strip();r['source_worktree_clean']=True
+write(P/'environment-after.json',r);print(json.dumps({k:v for k,v in r.items() if k!='services'}))

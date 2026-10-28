@@ -1,0 +1,9 @@
+"""Stamp corrected final runner after diagnostic name collision; no fixture reset."""
+import hashlib
+from datetime import datetime,timezone
+from common import P,Q,SOURCE,read,write,request
+assert not (P/'run-ready.json').exists();c=read(P/'private/config.private.json')
+for i in c['targets']:
+    status,_,p=request('/api/v1/channels/'+c['main']['channel']+'/messages?at='+c['ids'][i]+'&limit=20',cookie=c['cookie']);assert status==200;row=p['messages'][0];assert row['id']==c['ids'][i] and not row['deleted'] and row['body']==c['originals'][str(i)]
+sources=read(P/'operating-brief.json')['source_boundary']+['clients/web/src/conversation/text_history.ts','clients/web/src/conversation/revision_refresh/loaded.ts','clients/web/package.json','clients/web/package-lock.json','contracts/client-build.json'];names=['browser.mjs','cases.mjs','run.mjs','common.py']
+write(P/'run-ready.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_CORRECTED_FINAL_RUNNER_PREEXEC_FINGERPRINTS','source_revision':SOURCE,'all_targets_original_and_not_deleted':True,'diagnostic_limit':'Recorded attempt3 stopped before context mutation because local variable fresh shadowed the imported navigation helper. Corrected runner; no product failure attributed to that ReferenceError. Replay stamp reads source names directly from the brief; original executed stamp used the same names from the earlier diagnostic receipt, retained privately.','runner_SHA256':{n:hashlib.sha256((P/n).read_bytes()).hexdigest() for n in names},'source_SHA256':{n:hashlib.sha256((Q/n).read_bytes()).hexdigest() for n in sources}});print('PASS_CORRECTED_FINAL_RUNNER_PREEXEC_FINGERPRINTS')

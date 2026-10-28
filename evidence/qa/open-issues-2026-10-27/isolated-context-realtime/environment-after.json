@@ -1,0 +1,95 @@
+{
+  "at_utc": "2026-10-28T04:25:20.074580+00:00",
+  "status": "PASS201_OWN_ROWS_SCOPES_REMOVED_ALL5_SESSIONS_REVOKED",
+  "production_touched": false,
+  "own_messages_removed": 201,
+  "own_channels_removed": 2,
+  "own_categories_removed": 1,
+  "own_sessions_revoked": 5,
+  "own_sessions_already_revoked_by_runner": 4,
+  "own_sessions_revoked_at_cleanup": 1,
+  "all_own_sessions_live_unauthenticated_readback": true,
+  "API_topology_own_scopes_absent": true,
+  "unmodified191_rows_and_all_identity_scope_dates_reply_fields_verified": true,
+  "unmodified_rows_CSV_SHA256": "06ad7605ceeb585a3abb687848156db0e58dc5573ca94c93cc4d2f49b47a39fc",
+  "intended_mutated_rows": 10,
+  "database_count_order": [
+    "users",
+    "all_sessions",
+    "unrevoked_rows_not_validity",
+    "attachments",
+    "messages"
+  ],
+  "database_counts_before": [
+    516,
+    2081,
+    50,
+    9,
+    3
+  ],
+  "database_counts_after": [
+    516,
+    2086,
+    50,
+    9,
+    3
+  ],
+  "services": [
+    {
+      "service": "api",
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "web",
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "proxy",
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "postgres",
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "livekit",
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "collector",
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "tempo",
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "prometheus",
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "grafana",
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    }
+  ],
+  "API_health_HTTP": 200,
+  "source_worktree_clean": true
+}

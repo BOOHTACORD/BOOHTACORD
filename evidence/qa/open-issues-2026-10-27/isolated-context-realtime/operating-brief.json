@@ -1,0 +1,51 @@
+{
+  "workflow_class": "review_gate",
+  "task_size": "large",
+  "route": "web/search/search_context_controller",
+  "packet": "open-context-realtime-content-lifecycle",
+  "mode": "isolated integration verification; no implementation",
+  "trigger_family": "real server edit/delete hint while an existing context page is open",
+  "task_dependencies": [
+    "T-040",
+    "T-041",
+    "T-010",
+    "T-020"
+  ],
+  "source_boundary": [
+    "clients/web/src/search/SearchMessageContext.vue",
+    "clients/web/src/search/search_context_controller.ts",
+    "clients/web/src/search/search_context_controller.spec.ts",
+    "clients/web/src/search/context_timeline/local_search.spec.ts",
+    "clients/web/src/conversation/TextConversation.vue",
+    "clients/web/src/conversation/TextMessageSearch.vue",
+    "clients/web/src/conversation/message_store.ts",
+    "clients/web/src/conversation/message_store.spec.ts",
+    "clients/web/src/conversation/message_client.ts",
+    "contracts/realtime.schema.json"
+  ],
+  "requirements": [
+    "REQ-CHAT-01: deleted originals leave tombstone without hidden copied text",
+    "REQ-STORAGE-03: explicit delete hides message content/links immediately"
+  ],
+  "ratchet": {
+    "helper_target_lines": 100,
+    "helper_hard_lines": 120,
+    "helper_hard_files": 16
+  },
+  "preservation": "No production, device, router, media, TLS/permission, product/contract/backlog mutations. Own synthetic local TEXT scopes only, protected API actor mutations; real built client/WebSocket receiver. Remove own fixtures and revoke sessions.",
+  "checks": [
+    "fresh nine-service/source/PG baseline",
+    "nearest context/store typed tests",
+    "actual built receiver: live edit/delete outside latest50 of200, three independent target repetitions",
+    "positive main-history realtime and reopen/fresh tombstone/unavailable controls",
+    "source/bundle/privacy/cleanup binding",
+    "duplicate search, file a confirmed distinct bug, append parent QA evidence without closure"
+  ],
+  "stop_condition": "Classify each precondition and behavioral witness honestly; publish reproducible source-bound evidence and any confirmed distinct defect; keep broad QA criteria FAIL and43 consolidation decisions untouched",
+  "unresolved": [
+    "Protected-image load/anchor is an independent next packet",
+    "Windows production Computer Use URL-confidence block remains; no alternate production UI bypass",
+    "Human audibility and trusted isolated Android HTTPS origin unavailable",
+    "No native/physical/media acceptance from headless local browser"
+  ]
+}

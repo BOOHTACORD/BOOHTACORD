@@ -1,0 +1,52 @@
+import {createRequire} from 'node:module'
+import {readFile,writeFile} from 'node:fs/promises'
+import {createHash} from 'node:crypto'
+import assert from 'node:assert/strict'
+export {assert}
+export const {chromium,expect}=createRequire('C:/Users/egkur/.codex/worktrees/test-sql-native-gates/BOOHTACORD/clients/web/package.json')('@playwright/test')
+export const root=new URL('./',import.meta.url),origin='http://localhost:18088',cfg=JSON.parse(await readFile(new URL('private/config.private.json',root),'utf8')),cred=JSON.parse(await readFile(new URL('../local-qa/credentials.private.json',root),'utf8'))
+assert.equal(cfg.origin,origin);assert.equal(cred.origin,origin)
+export const save=(n,v)=>writeFile(new URL(n,root),JSON.stringify(v,null,2)+'\n')
+export const report={at_utc:new Date().toISOString(),status:'RUNNING',source_revision:cfg.source_revision,origin,cases:[],assets:[],websocket:{opened:0,closed:0,frames:0,known_target_hints:{}},page_errors:[],production_touched:false,full_built_AppShell:true,transport_or_response_mocks:false,permission_grants:false,security_flags:false,physical_or_native_acceptance:false}
+export const tasks=[]
+export function attach(page){
+ page.on('websocket',ws=>{report.websocket.opened++;ws.on('close',()=>report.websocket.closed++);ws.on('framereceived',e=>{
+  report.websocket.frames++;if(typeof e.payload!=='string')return
+  for(const i of [189,...cfg.targets])if(e.payload.includes(cfg.ids[i]))report.websocket.known_target_hints[i]=(report.websocket.known_target_hints[i]??0)+1
+ })})
+ page.on('pageerror',e=>report.page_errors.push({name:e.name,resize_loop:/ResizeObserver loop/.test(e.message)}))
+ page.on('response',r=>tasks.push((async()=>{const u=new URL(r.url());assert.equal(u.origin,origin);if(/\.(js|css)$/.test(u.pathname)&&r.status()===200){const raw=await r.body();if(!report.assets.some(a=>a.path===u.pathname))report.assets.push({path:u.pathname,bytes:raw.length,sha256:createHash('sha256').update(raw).digest('hex')})}})()))
+}
+export async function actor(path,method='GET',body){
+ assert(path.startsWith('/channels/'+cfg.main.channel+'/'));const r=await fetch(origin+'/api/v1'+path,{method,headers:{Origin:origin,Cookie:cfg.cookie,'Content-Type':'application/json'},...(body===undefined?{}:{body:JSON.stringify(body)})});assert.equal(new URL(r.url).origin,origin)
+ return {status:r.status,body:r.status===204?null:await r.json()}
+}
+export const api=(page,path,method='GET',body)=>page.evaluate(async a=>{const r=await fetch('/api/v1'+a.path,{method:a.method,credentials:'same-origin',headers:{'Content-Type':'application/json'},...(a.body===undefined?{}:{body:JSON.stringify(a.body)})});return {status:r.status,body:r.status===204?null:await r.json()}},{path,method,body})
+export async function login(page,context){
+ await page.goto(origin);await page.getByLabel('Логин',{exact:true}).fill(cred.member_a_login);await page.getByLabel('Пароль',{exact:true}).fill(cred.member_a_password)
+ const pending=page.waitForResponse(r=>new URL(r.url()).pathname==='/api/v1/auth/login'&&r.request().method()==='POST');await page.getByRole('button',{name:'Войти',exact:true}).click();assert.equal((await pending).status(),204)
+ await expect(page.getByTestId('app-shell')).toBeVisible();const s=await api(page,'/auth/session');assert.equal(s.status,200);assert.equal(s.body.role,'MEMBER');assert.notEqual(s.body.account_id,cfg.account)
+ const cookies=await context.cookies(origin);assert.equal(cookies.length,1);cfg.sessions.push(cookies.map(c=>c.name+'='+c.value).join('; '));cfg.receiver=s.body.account_id;await save('private/config.private.json',cfg)
+ await selectMain(page)
+}
+export async function selectMain(page){
+ await page.locator('.channel-button').filter({hasText:cfg.main.name}).click();await expect(page.locator('#conversation-title')).toHaveText(cfg.main.name)
+ const remain=page.getByRole('button',{name:'Остаться у последних',exact:true});if(await remain.isVisible())await remain.click();await expect(main(page)).toBeVisible();await main(page).evaluate(v=>{v.scrollTop=v.scrollHeight});await page.waitForTimeout(300)
+}
+export async function fresh(page){await page.reload();await expect(page.getByTestId('app-shell')).toBeVisible();await selectMain(page)}
+export const main=page=>page.locator('.text-conversation .message-history-wrap .message-list')
+export const target=page=>page.locator('[data-search-anchor]')
+export const bodyOriginal=i=>cfg.originals[String(i)]
+export const hintCount=i=>report.websocket.known_target_hints[i]??0
+export async function open(page,i,replyIndex){
+ const original=main(page).locator('[data-message-id="'+cfg.ids[replyIndex]+'"]');const trigger=original.getByRole('button',{name:'Открыть контекст ответа',exact:true});await trigger.click();await expect(target(page)).toBeFocused();await expect(target(page)).toHaveAttribute('data-message-id',cfg.ids[i]);return trigger
+}
+export async function close(page,trigger){await page.getByRole('button',{name:'Вернуться к исходной позиции',exact:true}).click();await expect(main(page)).toBeVisible();await page.waitForTimeout(200);const originalConnected=await trigger.count()===1,originalFocused=originalConnected&&await trigger.evaluate(el=>document.activeElement===el),composerFocused=await page.getByRole('textbox',{name:'Сообщение',exact:true}).evaluate(el=>document.activeElement===el);await main(page).evaluate(v=>{v.scrollTop=v.scrollHeight});await page.waitForTimeout(150);return {original_button_connected:originalConnected,original_button_focused:originalFocused,composer_focused:composerFocused,explicit_scroll_to_latest_for_next_case:true}}
+export async function rowState(page,i){
+ return target(page).evaluate((v,a)=>({index:a.ids.indexOf(v.dataset.messageId),contains_original:v.textContent.includes(a.original),contains_changed:v.textContent.includes(a.changed),tombstone:v.textContent.includes('Сообщение удалено.'),focus:document.activeElement===v,attachment_cards:v.querySelectorAll('.attachment-card').length}),{ids:cfg.ids,original:bodyOriginal(i),changed:'Synthetic changed row '+i+' '+cfg.owner})
+}
+export async function observe(page,i,ms=5000){
+ const started=Date.now(),samples=[]
+ do{samples.push({elapsed_ms:Date.now()-started,...await rowState(page,i)});await page.waitForTimeout(250)}while(Date.now()-started<ms)
+ return {window_ms:Date.now()-started,samples}
+}

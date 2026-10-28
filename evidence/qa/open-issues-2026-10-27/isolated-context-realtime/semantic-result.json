@@ -1,0 +1,26 @@
+{
+  "at_utc": "2026-10-28T04:24:53.283843+00:00",
+  "status": "FAIL_ACCEPTANCE_CONTEXT_RETAINS_OLD_TEXT_AFTER_REAL_HINT",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "browser": "155.0.8059.85",
+  "controller_verification_exit": 0,
+  "acceptance_gate_exit": 1,
+  "live_edit_failures": 3,
+  "live_delete_failures": 3,
+  "positive_controls": 5,
+  "fresh_after_reload_recovery_controls": 6,
+  "minimum_stale_observation_ms": 5023,
+  "all_six_matching_target_hints_observed": true,
+  "native_checks_passed": 12,
+  "native_skips": 0,
+  "final_page_errors": 0,
+  "primary_scope": "Actual built Web AppShell, own authorized TEXT peer receiver, protected actor HTTP mutation and real WebSocket hint; targets outside latest50/200",
+  "limits": [
+    "No production, Android/native, physical display, media/voice lease or producer UI acceptance",
+    "No DM ACL bypass or unauthorized reader established; prior authorized TEXT is stale after explicit deletion",
+    "Reopen recovery explicitly reloads; no new return-anchor/focus claim from this packet",
+    "Protected images/links and background tabs not exercised here; deletion observation is text-only",
+    "Socket object close callback count0 is an incomplete observer;17 opens/reloads and61 frames are diagnostics, not a leak/drain/capacity verdict",
+    "Diagnostic attempts preserved separately; earlier mid-run final-preconditions is not a preexecution receipt. Final run-ready is valid and runner/source hashes are unchanged."
+  ]
+}

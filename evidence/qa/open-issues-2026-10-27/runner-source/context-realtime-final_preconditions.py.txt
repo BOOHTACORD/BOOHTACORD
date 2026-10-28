@@ -1,0 +1,13 @@
+"""Guarded own-fixture restoration after diagnostic setup, then final input hashes."""
+import hashlib
+from datetime import datetime,timezone
+from common import P,Q,SOURCE,read,write,valid,sql,request
+assert not (P/'final-preconditions.json').exists()
+c=read(P/'private/config.private.json');assert sql("SELECT name FROM categories WHERE id='"+valid(c['category'])+"';").strip()=='qa_ctx_'+c['owner'];changes=[]
+for i in [20,189]:
+    status,_,page=request('/api/v1/channels/'+c['main']['channel']+'/messages?at='+c['ids'][i]+'&limit=20',cookie=c['cookie']);assert status==200;row=page['messages'][0];assert row['id']==c['ids'][i] and not row['deleted'] and row['revision']==2
+    status,_,updated=request('/api/v1/channels/'+c['main']['channel']+'/messages/'+c['ids'][i],'PATCH',{'body':c['originals'][str(i)],'expected_revision':row['revision']},c['cookie']);assert status==200 and updated['body']==c['originals'][str(i)] and updated['revision']==3;changes.append({'index':i,'protected_restore_HTTP':200,'revision_after':3})
+for i in c['targets']:
+    status,_,page=request('/api/v1/channels/'+c['main']['channel']+'/messages?at='+c['ids'][i]+'&limit=20',cookie=c['cookie']);assert status==200;row=page['messages'][0];assert row['id']==c['ids'][i] and not row['deleted'] and row['body']==c['originals'][str(i)]
+names=['browser.mjs','cases.mjs','run.mjs','common.py'];sources=read(P/'operating-brief.json')['source_boundary']+['clients/web/src/conversation/text_history.ts','clients/web/src/conversation/revision_refresh/loaded.ts','clients/web/package.json','clients/web/package-lock.json','contracts/client-build.json']
+write(P/'final-preconditions.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_OWN_FIXTURE_PROTECTED_RESTORE_AND_FINAL_FINGERPRINTS','source_revision':SOURCE,'guarded_restores':changes,'diagnostic_limit':'Initial run reached one target edit and then stopped on strict original-button-focus return assertion, before completing reopen control. Its result/screenshot remain private/raw. Focus is now observed separately from content freshness; no loss is reclassified as a focus PASS.','runner_SHA256':{n:hashlib.sha256((P/n).read_bytes()).hexdigest() for n in names},'source_SHA256':{n:hashlib.sha256((Q/n).read_bytes()).hexdigest() for n in sources}});print('PASS_OWN_FIXTURE_PROTECTED_RESTORE_AND_FINAL_FINGERPRINTS')
