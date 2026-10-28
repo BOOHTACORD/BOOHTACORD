@@ -1,0 +1,36 @@
+import ast,ipaddress,re,subprocess
+from common import P,Q,WORK,SOURCE,read,write,sha,quote,sql,request,state,services,frozen,now,docker
+assert not (P/'before.json').exists();(P/'private').mkdir(exist_ok=True)
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=Q,text=True).strip()==SOURCE
+cred=read(WORK/'credentials.private.json');accounts={}
+for alias,prefix in [('admin','admin'),('a','member_a'),('b','member_b')]:
+    row=sql('SELECT id,role,blocked_at IS NULL FROM users WHERE login='+quote(cred[prefix+'_login'])+';').strip().split('|');assert len(row)==3 and row[1]==('ADMINISTRATOR' if alias=='admin' else 'MEMBER') and row[2]=='t';accounts[alias]=row[0]
+for alias in ['a','b']:
+    uid=quote(accounts[alias]);assert sql('SELECT count(*) FROM voice_timeouts WHERE user_id='+uid+';').strip()=='0'
+    assert sql('SELECT count(*) FROM voice_leases WHERE user_id='+uid+' AND revoked_at IS NULL;').strip()=='0'
+    assert sql('SELECT count(*) FROM voice_sfu_revocations w JOIN voice_leases l ON l.id=w.lease_id WHERE l.user_id='+uid+' AND w.completed_at IS NULL;').strip()=='0'
+write(P/'private/accounts.json',accounts)
+mod=(Q/'backend/go.mod').read_text('utf-8');lock=(Q/'backend/go.sum').read_text('utf-8');refs=re.findall(r'(github.com/(?:livekit/[^\s]+|pion/webrtc/v4))\s+(v[^\s]+)',mod)
+assert 'github.com/livekit/server-sdk-go' not in mod and 'github.com/livekit/server-sdk-go' not in lock
+write(P/'dependency-assessment.json',{'status':'NO_DECLARED_PINNED_LIVEKIT_RTC_CLIENT_SDK','go_mod_SHA256':sha((Q/'backend/go.mod').read_bytes()),'go_sum_SHA256':sha((Q/'backend/go.sum').read_bytes()),'declared_module_refs':[{'module':m,'version':v} for m,v in refs],'server_sdk_go_declared_or_locked':False,'selected_branch':'No-participant API lease/oneintent/35–40s observation','limits':'protocol supplies RoomService management/protobuf; Pion alone is not a pinned LiveKit Room.Connect client. No extra dependency/cache-only module/custom signaling used.'})
+paths=list((Q/'backend/internal/media/dispatch_voice_sfu_revocation').rglob('*.go'))+list((Q/'backend/internal/media/remove_livekit_participant').glob('*.go'))
+paths += [Q/x for x in ['backend/go.mod','backend/go.sum','contracts/openapi.yaml','backend/internal/app/worker_runtime/start.go','backend/internal/app/runtime/run.go','backend/internal/config/runtime/load.go','backend/internal/lifecycle/periodic/worker.go','backend/internal/voice/manage_voice_timeout/postgres/set.go','backend/internal/voice/manage_voice_timeout/postgres/clear.go']]
+hashes={}
+for p in paths:
+    raw=p.read_bytes();rel=p.relative_to(Q).as_posix();head=subprocess.check_output(['git','show','HEAD:'+rel],cwd=Q);assert raw.replace(b'\r\n',b'\n')==head.replace(b'\r\n',b'\n');hashes[rel]=sha(raw)
+helpers={}
+for p in P.glob('*.py'):
+    ast.parse(p.read_text('utf-8'));assert len(p.read_text('utf-8').splitlines())<=120;helpers[p.name]=sha(p.read_bytes())
+assert len(helpers)<=8;s=services()
+for n,v in s.items():
+    assert v['State']['Running'] and v['RestartCount']==0 and v['Config']['Labels']['com.docker.compose.project']=='boohtacord-local-qa'
+    for bs in v['NetworkSettings']['Ports'].values():
+        for binding in bs or []:assert ipaddress.ip_address(binding['HostIp']).is_loopback
+    if n in ['api','web']:assert __import__('json').loads(docker('image','inspect',v['Image']))[0]['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+write(P/'private/services-before.json',s);env=dict(x.split('=',1) for x in s['api']['Config']['Env'] if '=' in x)
+flags={k:bool(env.get(k)) for k in ['DATABASE_URL','LIVEKIT_PRIVATE_HTTP_URL','LIVEKIT_API_KEY','LIVEKIT_API_SECRET']};assert all(flags.values())
+assert request('/api/v1/health')[0]==200 and sql('SHOW server_version;').strip()=='17.6'
+pending=int(sql('SELECT count(*) FROM voice_sfu_revocations WHERE completed_at IS NULL;').strip());assert pending<100
+write(P/'before.json',{'utc':now(),'source':SOURCE,'PostgreSQL':'17.6','health_HTTP':200,'database':state(),'source_hashes':hashes,'helper_hashes':helpers,'frozen_files':frozen(),'config_presence_flags_only':flags,'controlled_A_B_initial_none_leases0_pending0':True,'global_pending_work_count':pending,'poll_interval_seconds':15,'dispatch_deadline_seconds':5,'observation_min_seconds':35,'observation_hard_max_seconds':40,'topology_revision':int(sql('SELECT revision FROM channel_topology_state WHERE singleton;').strip()),'audit_count':int(sql('SELECT count(*) FROM audit_events;').strip())})
+write(P/'operating-brief.json',{'workflow_class':'review_gate','route':'media/dispatch_voice_sfu_revocation','packet':'actual-dispatch-absent-participant','branch':'No RTCclient pinned; no participant joined','guards':'ControlledA/B initialno timeout/lease/pending; one ownlease/oneintent; existingadmin/A2own sessions; normalLift and exactcleanup','checks':'Nearest newdispatchworker tests once;35–40s realworkerDB/GETpending sample; previous19timeouttests not repeated','NOT_RUN':'Actual eviction/alreadyissuedJWTdirectreconnect/native/UI/physical/production','stop':'Owncleanup,selectedfingerprints and9services/source/frozen packets preserved','diagnostics':'Optional service.go probe absent; exact remove_livekit_participant/client.go identified and read; no product outcome.'})
+print('PASS readonly dependency/9services/config/source/A-B ownership preflight; fallback no-participant selected')

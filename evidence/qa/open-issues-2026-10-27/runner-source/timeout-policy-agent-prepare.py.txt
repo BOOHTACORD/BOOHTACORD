@@ -1,0 +1,23 @@
+import secrets,uuid
+from http.cookies import SimpleCookie
+from common import P,WORK,read,write,save,quote,valid,sql,request,now
+def prepare():
+    assert not (P/'private/fixture.json').exists();cred=read(WORK/'credentials.private.json');accounts=read(P/'private/accounts.json')
+    c={'owner':secrets.token_hex(12),'accounts':accounts,'sessions':{},'leases':{},'TEXT_messages':[],'DM_messages':[]};c['body']='timeout'+c['owner'];save(c)
+    for alias,prefix,actor in [('admin','admin','admin'),('admin_stale','admin','admin'),('a_old','member_a','a'),('a_current','member_a','a'),('b','member_b','b')]:
+        old=set(sql('SELECT public_id FROM sessions;').splitlines());code,headers,_=request('/api/v1/auth/login','POST',{'login':cred[prefix+'_login'],'password':cred[prefix+'_password']});assert code==204
+        cookies=SimpleCookie()
+        for k,v in headers.items():
+            if k.lower()=='set-cookie':cookies.load(v)
+        assert len(cookies)==1;cookie='; '.join(k+'='+v.value for k,v in cookies.items());new=set(sql('SELECT public_id FROM sessions;').splitlines())-old;assert len(new)==1
+        sid=valid(new.pop());c['sessions'][alias]={'id':sid,'account':accounts[actor],'cookie':cookie};save(c)
+        code,_,s=request('/api/v1/auth/session',cookie=cookie);assert code==200 and s['authenticated'] and s['account_id']==accounts[actor]
+    for actor in ['a','b']:
+        assert sql('SELECT count(*) FROM voice_timeouts WHERE user_id='+quote(accounts[actor])+';').strip()=='0' and sql('SELECT count(*) FROM voice_leases WHERE user_id='+quote(accounts[actor])+' AND revoked_at IS NULL;').strip()=='0'
+    admin=c['sessions']['admin']['cookie'];code,_,cat=request('/api/v1/admin/categories','POST',{'name':'qa_timeout_'+c['owner']},admin);assert code==201;c['category']=valid(cat['id']);save(c)
+    for alias,kind in [('text','TEXT'),('voice','VOICE')]:
+        code,_,ch=request('/api/v1/admin/categories/'+c['category']+'/channels','POST',{'name':'qa_timeout_'+alias+'_'+c['owner'],'kind':kind},admin);assert code==201;c[alias]=valid(ch['id']);save(c)
+    a,b=sorted([accounts['a'],accounts['b']]);old=sql('SELECT id FROM direct_messages WHERE participant_one_id='+quote(a)+' AND participant_two_id='+quote(b)+';').strip();c['DM_preexisting']=bool(old)
+    code,_,dm=request('/api/v1/direct-messages','POST',{'participant_id':accounts['b']},c['sessions']['a_old']['cookie']);assert code in [200,201];c['dm']=valid(dm['id']);assert not old or c['dm']==old;save(c)
+    write(P/'fixture-ready.json',{'utc':now(),'new_users':0,'own_sessions':5,'own_category':1,'own_TEXT':1,'own_VOICE':1,'DM_pair_reused':bool(old),'logical_leases_before_scenario':0,'media_or_SFU_participants_joined':0})
+    return c

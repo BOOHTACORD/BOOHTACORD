@@ -1,0 +1,119 @@
+{
+  "meaning": "Private original hashes and public root manifest have distinct roles; no raw payloads/logs copied.",
+  "sources": [
+    {
+      "file": "README.md",
+      "private_original_SHA256": "d8c8d081518ee136ad5e2f81884f233fed612540030eb8ed0ff8c7583a17d032",
+      "projection": true
+    },
+    {
+      "file": "before.json",
+      "private_original_SHA256": "cabb931d117ebfb0a2982dddd2d0481704ef9e31633e3c19231f7df61ed14b34",
+      "projection": true
+    },
+    {
+      "file": "cleanup.json",
+      "private_original_SHA256": "66a7c1a8e43ad989941d74e674117b6b2a90e7332482d44767aa2e12ff24bdbe",
+      "projection": true
+    },
+    {
+      "file": "dependency-assessment.json",
+      "private_original_SHA256": "7b0ec8f8489732ce5ef1ee7f820da999da3ef86e4247da0766b93f1c95a8f71a",
+      "projection": true
+    },
+    {
+      "file": "dispatch-result.json",
+      "private_original_SHA256": "a3d24efd66d725f53da47790e9f500ce068173306d80a828081ad29a3f9278cd",
+      "projection": true
+    },
+    {
+      "file": "fixture-ready.json",
+      "private_original_SHA256": "5f46cf08b3d8d42e0c4858c26355f888d1fa3c7f202fcd4fcde1355e54897ef0",
+      "projection": true
+    },
+    {
+      "file": "intent.json",
+      "private_original_SHA256": "06eb144bb77ab7a808bf6225b1a2200963eb3a76f44608408001f8c11ea2072d",
+      "projection": true
+    },
+    {
+      "file": "native-result.json",
+      "private_original_SHA256": "4faf6b475f8efff202b943622aa047ec9b59a2029d81d68016b13acc9769cb05",
+      "projection": true
+    },
+    {
+      "file": "normal-lift.json",
+      "private_original_SHA256": "e2fa7e874597bba7506174aaf77227d460652a3c37c3fd3f5c4f21a87491d7a8",
+      "projection": true
+    },
+    {
+      "file": "observations.json",
+      "private_original_SHA256": "8fc725f00d2ba61e8683e3ad38693aee04011b8c3ee57e057c29ff8a21ca789e",
+      "projection": true
+    },
+    {
+      "file": "operating-brief.json",
+      "private_original_SHA256": "4242a9d1a5dd2104a39f2c7511256a81f57ec492c27c64b5bfc51d7f33fa0270",
+      "projection": true
+    },
+    {
+      "file": "summary.json",
+      "private_original_SHA256": "88710d609d031cad7a21862777cad079b30a5340f8c67cf903d71cb9b894482e",
+      "projection": true
+    },
+    {
+      "file": "public-review.json",
+      "private_original_SHA256": "eee2e478b43581cb852edf2f688532720b4ca29145c2659b048bc13ee90acf3c",
+      "projection": true
+    },
+    {
+      "file": "integrity.json",
+      "private_original_SHA256": "98f08e67b6f80092575f7ab012c8b6d68a31b77ddd900eb86be40d4ed8b2d7c8",
+      "projection": true
+    }
+  ],
+  "helper_sources": [
+    {
+      "public_relative_to_root": "runner-source/timeout-dispatch-agent-cleanup.py.txt",
+      "private_original_SHA256": "0a94aaf4642c1692424b15d8110af15d65678b372de50b3b5b03f86fa34bceb6",
+      "sanitized": false,
+      "purpose": "Archival source; only absolute host path made portable, not an executed public replay"
+    },
+    {
+      "public_relative_to_root": "runner-source/timeout-dispatch-agent-common.py.txt",
+      "private_original_SHA256": "62c35384bc24d4c9ff39a36acb5b3f47a6c409631f9be944fe4ceccbbc373389",
+      "sanitized": false,
+      "purpose": "Archival source; only absolute host path made portable, not an executed public replay"
+    },
+    {
+      "public_relative_to_root": "runner-source/timeout-dispatch-agent-native.py.txt",
+      "private_original_SHA256": "b67e106466e96d2ffee1e814c6b376f4768058a73bbe70c5f657f877bab1cb3b",
+      "sanitized": false,
+      "purpose": "Archival source; only absolute host path made portable, not an executed public replay"
+    },
+    {
+      "public_relative_to_root": "runner-source/timeout-dispatch-agent-observe.py.txt",
+      "private_original_SHA256": "5b44f2280e6a6c48e0ac0bffa7416f3ce307cbf60091cf6861596d5c87ec5264",
+      "sanitized": false,
+      "purpose": "Archival source; only absolute host path made portable, not an executed public replay"
+    },
+    {
+      "public_relative_to_root": "runner-source/timeout-dispatch-agent-preflight.py.txt",
+      "private_original_SHA256": "31c9c64278cc2b0392435fc626c966f9d8033e387c6657d6dab50aa54711306d",
+      "sanitized": false,
+      "purpose": "Archival source; only absolute host path made portable, not an executed public replay"
+    },
+    {
+      "public_relative_to_root": "runner-source/timeout-dispatch-agent-prepare.py.txt",
+      "private_original_SHA256": "d08b4bc93bbcc588a89e9a33b0ab863393cf006db04678de43318ea72e487b29",
+      "sanitized": false,
+      "purpose": "Archival source; only absolute host path made portable, not an executed public replay"
+    },
+    {
+      "public_relative_to_root": "runner-source/timeout-dispatch-agent-run.py.txt",
+      "private_original_SHA256": "3ad5ff7670bdcacc59c45f96e76d5e449a373bfb5182fbdcd40d9b0c3db53be1",
+      "sanitized": false,
+      "purpose": "Archival source; only absolute host path made portable, not an executed public replay"
+    }
+  ]
+}

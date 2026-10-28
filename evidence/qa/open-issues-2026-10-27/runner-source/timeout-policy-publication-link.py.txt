@@ -1,0 +1,21 @@
+"""Add the actual timeout-policy facet; preserve all original wording and prior cases."""
+import sys,json,subprocess,collections
+from pathlib import Path
+Q=Path(__file__).resolve().parents[2];sys.path.insert(0,str(Q/'.out/qa-archive-release'))
+from common import read,write,code,O,D,B
+T=O/'voice-timeout-policy';m=read(O/'matrix.json');cases=read(O/'cases.json');assert len(cases['cases'])==93
+r=next(r for i in m['issues'] for r in i['criteria'] if r['id']=='I287.C9');assert r['status']=='NOT_RUN'
+s=read(T/'summary.json');case={'id':'ISOLATED-voice-timeout-lease-session-and-chat-policy','status':'PASS_SCOPED',**{k:s[k] for k in ['protects','command','platform','mandatory_when']},'issues':[287],'result':'voice-timeout-policy/summary.json','limits':'55HTTP/19native PASS,0skips; logical lease/credential denial and target-only policy; HTTP sessions/TEXT/DM survive; explicit lift never restores lease. Initial8.53s pending window below15s worker interval; actual dispatch, connected SFU eviction, issuedJWT direct reconnect and Web/native UI NOT_RUN.11selected tables restored; topology42->45 and13own audit metadata receipts retained.','defects':[]}
+cases['cases'].append(case);r['status']='PARTIAL';r['execution_cases'].append(case['id']);r['evidence']+=['voice-timeout-policy/summary.json','voice-timeout-policy/pending-limit.json','voice-timeout-policy/worker-wiring-review.json'];r['execution']+='; '+case['command'];r.setdefault('witness_limits',[]).append(case['id']+': '+case['limits'])
+if 'execution_plan' in r:r['execution_plan']['existing_scoped_witnesses']=list(r['execution_cases'])
+for i in m['issues']:
+ if i['number']==287:i['execution_cases'].append(case['id']);i['evidence'].append(case['result'])
+rel=D.relative_to(O).as_posix()+'/signed-candidate-b74-full-rerun/summary.json'
+for i in m['issues']:
+ if i['number']==62:i['evidence'].append(rel)
+ for row in i['criteria']:
+  if row['id']=='I62.C1':row['evidence'].append(rel)
+write(O/'matrix.json',m);write(O/'cases.json',cases)
+write(T/'catalog-entry.json',{'case':case,'source_requirement_verbatim':r['requirement'],'full_gate':'PARTIAL','all_full_QA_closed':False,'consolidation43_touched':False})
+with (O/'README.md').open('a',encoding='utf-8',newline='\n') as f:f.write('\n## Voice timeout policy — isolated API\n\n[55API controls and19nearest native tests](voice-timeout-policy/README.md) pass with0skips; I287.C9 isPARTIAL. Target-only voice restriction preserves HTTPsessions/TEXT/DM and normal lift never recreates lease. Connected SFU eviction/issuedJWT reconnect/UI remain separate;8.53s window did not cover15sworker poll.94scoped sets,480original requirement texts,13sourcequalifiers;43consolidation decisions untouched. Full signed-candidate attempt3 isBLOCKED: GitHub failed to allocate mandatorymacOS runner; strictfanin retained, signing skipped.\n')
+code(Path(__file__),'timeout-policy-publication-');print({'scoped_sets':94,'row_statuses':dict(collections.Counter(r['status'] for i in m['issues'] for r in i['criteria']))})

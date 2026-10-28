@@ -1,0 +1,57 @@
+{
+  "at_utc": "2026-10-28T21:42:24.616016+00:00",
+  "workflow_class": "review_gate",
+  "route": "tools/verify/macos_unit with exactnativeCI/setup/resultedges",
+  "source_revision": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+  "run": {
+    "id": 40767012991,
+    "attempt": 3,
+    "head_sha": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+    "status": "completed",
+    "conclusion": "failure",
+    "workflow_path": ".github/workflows/android-release.yaml",
+    "created_at": "2026-10-28T21:16:07Z",
+    "updated_at": "2026-10-28T21:31:26Z"
+  },
+  "observed_failed_job": {
+    "id": 123106128265,
+    "name": "quality / macos",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "labels": [
+      "macos-26"
+    ],
+    "runner_id": 0,
+    "steps": [],
+    "started_at": "2026-10-28T21:16:08Z",
+    "completed_at": "2026-10-28T21:31:09Z"
+  },
+  "failure_class": "HOSTED_APPLE_ARM64_ALLOCATION_CAPACITY_BEFORE_ANY_STEP",
+  "primary_annotations_receipt": "cancelled_annotations.json",
+  "exact_cause_inference_limit": "Primaryannotations reporthostedrunnernotacquiredandarm64capacity; noSDK/testcode execution occurredinthisjob. Intelcapacitystillunobserved.",
+  "assessment": "macos-26-intel issupportedrealApple/x64candidate fortheunchanged8unit tests. Currentb74literalworkflowpolicy blockslabel-onlysubstitution, sofuturepolicy-testedsourcechangeandactualsame-rungate qualificationarerequired.",
+  "supported_option": "prospective-option.json",
+  "source_findings": "findings.json",
+  "source_bindings": "source-binding.json",
+  "primary_sources": "primary-sources.json",
+  "original_attempt3_remains_failure": true,
+  "macos_unit_scope": "Unitcapture-optionmappingonly; noSDKcompilation/fullapp/signing/physicalmediaacceptance",
+  "SDK_URL_review_correction": "EarlierguessedlegacyURLs404 wereareviewerpatherror, notSDKavailabilityproblem; exactpinnedinstallerbase verifiedmanifest/bundleHEAD200. Earlierreceiptsretainedwiththiscorrection.",
+  "no_mutations": {
+    "repo_source_edits": 0,
+    "branch_PR_dispatch_rerun": 0,
+    "security_or_cache_config": 0,
+    "device_UI_ADB": 0,
+    "external_chat_messages": 0
+  },
+  "runtime_tests_executed": 0,
+  "runtime_qualification": "NOT_RUN",
+  "gate_relaxation_authorized_or_performed": false,
+  "source_hashes_unchanged": true,
+  "scope_limits": [
+    "Providerdocumentationdoesnotguarantee immediateIntelrunnerallocation",
+    "PinnedFlutterx64currentlydocumentedbutfuturedeprecationrequiresnewreviewonSDKupgrade",
+    "NoactualAppleCIjobwasrunorpassedbythispacket",
+    "Existing#400runbookiscontextandreviewedmatrix, notproof/currentjobpolicyoverride; noissuemutation"
+  ]
+}

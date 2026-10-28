@@ -1,0 +1,18 @@
+import secrets
+from http.cookies import SimpleCookie
+from common import P,WORK,read,save,write,quote,valid,sql,request,now
+def prepare():
+    assert not (P/'private/fixture.json').exists();cred=read(WORK/'credentials.private.json');accounts=read(P/'private/accounts.json');c={'owner':secrets.token_hex(12),'accounts':accounts,'sessions':{}};save(c)
+    for alias,prefix in [('admin','admin'),('a','member_a')]:
+        prior=set(sql('SELECT public_id FROM sessions;').splitlines());code,h,_=request('/api/v1/auth/login','POST',{'login':cred[prefix+'_login'],'password':cred[prefix+'_password']});assert code==204
+        cookie=SimpleCookie()
+        for k,v in h.items():
+            if k.lower()=='set-cookie':cookie.load(v)
+        assert len(cookie)==1;value='; '.join(k+'='+v.value for k,v in cookie.items());new=set(sql('SELECT public_id FROM sessions;').splitlines())-prior;assert len(new)==1
+        c['sessions'][alias]={'cookie':value,'id':valid(new.pop()),'account':accounts[alias]};save(c)
+        code,_,session=request('/api/v1/auth/session',cookie=value);assert code==200 and session['authenticated'] and session['account_id']==accounts[alias]
+    target=quote(accounts['a']);assert sql('SELECT count(*) FROM voice_timeouts WHERE user_id='+target+';').strip()=='0' and sql('SELECT count(*) FROM voice_leases WHERE user_id='+target+' AND revoked_at IS NULL;').strip()=='0'
+    admin=c['sessions']['admin']['cookie'];code,_,cat=request('/api/v1/admin/categories','POST',{'name':'qa_dispatch_'+c['owner']},admin);assert code==201;c['category']=valid(cat['id']);save(c)
+    code,_,ch=request('/api/v1/admin/categories/'+c['category']+'/channels','POST',{'name':'qa_dispatch_'+c['owner'],'kind':'VOICE'},admin);assert code==201;c['channel']=valid(ch['id']);save(c)
+    code,_,lease=request('/api/v1/voice/channels/'+c['channel']+'/leases','POST',{'transfer':False},c['sessions']['a']['cookie']);assert code==201;c['lease']=valid(lease['id']);save(c)
+    write(P/'fixture-ready.json',{'utc':now(),'new_users':0,'own_sessions':2,'own_category':1,'own_VOICE':1,'own_logical_lease':1,'credential_or_RTC_calls':0,'SFU_participants_joined':0});return c

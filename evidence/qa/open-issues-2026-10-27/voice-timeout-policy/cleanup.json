@@ -1,0 +1,34 @@
+{
+  "utc": "2026-10-28T21:27:56.794224+00:00",
+  "status": "PASS",
+  "normal_lift_target_none": true,
+  "own_sessions_revoked_live401_removed": [
+    "admin",
+    "admin_stale",
+    "a_old",
+    "a_current",
+    "b"
+  ],
+  "own_leases_work_channels_messages_removed": true,
+  "existing_DM_pair_preserved": true,
+  "selected_baseline_tables_restored": 11,
+  "nine_services_unchanged": [
+    "api",
+    "web",
+    "proxy",
+    "postgres",
+    "livekit",
+    "collector",
+    "tempo",
+    "prometheus",
+    "grafana"
+  ],
+  "source_helpers_frozen_packets_unchanged": true,
+  "health_HTTP": 200,
+  "API_log_SHA256": "b1e07a759191e5782c7f7537b70561dc2bf8746a9f0b0269ebbecfab24da6962",
+  "privatevalue_log_matches": 0,
+  "topology_revision_before": 42,
+  "topology_revision_after": 45,
+  "audit_metadata_delta": 13,
+  "limit": "Expected monotonic topology and owned timeout/audit metadata retained; not entire database equality; own work deletion occurs only in fixture teardown after policy receipt, never by runtime lift."
+}

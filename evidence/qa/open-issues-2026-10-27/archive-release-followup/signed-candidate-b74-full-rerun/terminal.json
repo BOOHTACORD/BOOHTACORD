@@ -1,0 +1,53 @@
+{
+  "observed_utc": "2026-10-28T21:33:03.290Z",
+  "source_revision": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+  "run_id": 40767012991,
+  "attempt": 3,
+  "event": "workflow_dispatch",
+  "status": "completed",
+  "conclusion": "failure",
+  "jobs": [
+    {
+      "id": 123106127902,
+      "name": "quality / android",
+      "status": "completed",
+      "conclusion": "success",
+      "current_steps": []
+    },
+    {
+      "id": 123106128265,
+      "name": "quality / macos",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "current_steps": []
+    },
+    {
+      "id": 123106128305,
+      "name": "quality / android-kotlin",
+      "status": "completed",
+      "conclusion": "success",
+      "current_steps": []
+    },
+    {
+      "id": 123106128346,
+      "name": "quality / dart",
+      "status": "completed",
+      "conclusion": "success",
+      "current_steps": []
+    },
+    {
+      "id": 123113487927,
+      "name": "quality / flutter",
+      "status": "completed",
+      "conclusion": "failure",
+      "current_steps": []
+    },
+    {
+      "id": 123113617832,
+      "name": "android-release",
+      "status": "completed",
+      "conclusion": "skipped",
+      "current_steps": []
+    }
+  ]
+}

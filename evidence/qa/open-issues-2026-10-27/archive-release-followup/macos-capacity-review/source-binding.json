@@ -1,0 +1,196 @@
+{
+  "at_utc": "2026-10-28T21:38:11.533885+00:00",
+  "source_revision": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+  "workflow_class": "review_gate",
+  "route": "tools/verify/macos_unit plus exactCI/setup/resultedges",
+  "source_files": {
+    "AGENTS.md": {
+      "SHA256": "98efc229521bdfef9e1b18df6ae61eb37edf9493de8d0aa1c74797bc3ee45ea9",
+      "bytes": 3131,
+      "lines": 30,
+      "source_blob": "3b7ded3d209b7074c94bd95b8ad7451a491c67ba"
+    },
+    "SKILL.md": {
+      "SHA256": "b300a197c22909ac62652ca157f6696a0e226f024a36a5ef4f819a1a3959bab6",
+      "bytes": 1717,
+      "lines": 29,
+      "source_blob": "8003f2a73d160ed4c3f12fc9510c7b76b6f0e924"
+    },
+    "structure.config.yaml": {
+      "SHA256": "9d3efa0cf957eeaf9e1a53f2dd368b3feca1d8435df79f6d30e7975adf85514b",
+      "bytes": 820,
+      "lines": 25,
+      "source_blob": "57d17d2c6f82a2c8bf9ab4b4e49207d4b140e749"
+    },
+    ".github/workflows/ci-flutter.yaml": {
+      "SHA256": "358188ca02917b97eee21c644788ff430767ca79c5ed5bcfa844d3c41bd4d777",
+      "bytes": 9097,
+      "lines": 210,
+      "source_blob": "f3c9322330281f5ca45b429477b27e197195fea6"
+    },
+    ".github/workflows/android-release.yaml": {
+      "SHA256": "85fcb98495f77fe45c918aef5b92626cd8bfaa75eab8df7f2cbb36d366cd1e92",
+      "bytes": 4149,
+      "lines": 99,
+      "source_blob": "4a8f375d09c0f89820fc2d9bde8b78aa7c7f73ea"
+    },
+    ".github/actions/flutter-setup/action.yaml": {
+      "SHA256": "824065038a36b1389329a15505e544db53be184d597613ea464d8f2223f35031",
+      "bytes": 2682,
+      "lines": 60,
+      "source_blob": "53e173ef58b8abeed929b8b3a4cf1429845f2efc"
+    },
+    "tools/toolchains.json": {
+      "SHA256": "23eb056f13c993838cad651b0ce52e5cc4ce5f26daad96f8c0876621d7110961",
+      "bytes": 370,
+      "lines": 12,
+      "source_blob": "1deefcb62ed712fe7024a38bb9d3b349bcd48433"
+    },
+    "clients/flutter/pubspec.yaml": {
+      "SHA256": "80c62dce2175e12d825d14aa079bf578fc08527c90fab0b5c86e1b14cf3054ca",
+      "bytes": 5106,
+      "lines": 138,
+      "source_blob": "e9e7570f20504cc88b21ca8c9421b175a43c3fa4"
+    },
+    "clients/flutter/packages/livekit_client/pubspec.yaml": {
+      "SHA256": "b63f52fcf7701dd76b64f2cb2a5d6efe7782c65dd44a500453f5051ffa181463",
+      "bytes": 2766,
+      "lines": 105,
+      "source_blob": "ff26550f37e89a719ea07a231dfc6c8b88e8a4aa"
+    },
+    "tools/ci/native/process.py": {
+      "SHA256": "141f6f4f607daf99d62f9dc0a278788a50da511528d36e1101dc979c8afd0169",
+      "bytes": 1231,
+      "lines": 35,
+      "source_blob": "9a7b34fb9c22ebd1d9c784dc668fe8321784a854"
+    },
+    "tools/ci/flutter_setup/source.json": {
+      "SHA256": "8a4495435ab63c30d14497e98b6b4cc489d38c312a69194d98c025321957b631",
+      "bytes": 238,
+      "lines": 7,
+      "source_blob": "62c01e64d5e605e80706c8092f114fc239032671"
+    },
+    "tools/ci/flutter_setup/run.py": {
+      "SHA256": "37a13d31db81b7ffbfb901d2e90669fc691f6ea5d6f809171a81215d3b21f450",
+      "bytes": 5084,
+      "lines": 102,
+      "source_blob": "db841acd759d656a1e880386aa8df41cda5a99a7"
+    },
+    "tools/ci/flutter_setup/metadata.py": {
+      "SHA256": "ac604ad3fab7efede314f8604a20c90caf9a157411b6fe798b3e1a586bff6d79",
+      "bytes": 3084,
+      "lines": 50,
+      "source_blob": "da7c1b396c9614f4ecc7784967953ac1e4b46af6"
+    },
+    "tools/ci/flutter_setup/test_metadata.py": {
+      "SHA256": "8a39d4d55580c4eb86ecf2dbe831789fc00ff9ac7c50ea14c5d68c68eae5d6f8",
+      "bytes": 3561,
+      "lines": 58,
+      "source_blob": "8b666939f80a30a1aa82dbb14a8d10b3935c2164"
+    },
+    "tools/ci/flutter_setup/workflow.py": {
+      "SHA256": "70f9a5f64cc1f658fb52bd2ced7901536fe7f1fd32055d0d91074e62a3c56e00",
+      "bytes": 2330,
+      "lines": 33,
+      "source_blob": "aa9ca23e7a9ca393d65437ac3558bae44bc63a07"
+    },
+    "tools/ci/flutter_gates/run.py": {
+      "SHA256": "aef24a549c06c127f2de9efee26d25c9e5416e6709f75d68407b4d808dfd2063",
+      "bytes": 2170,
+      "lines": 44,
+      "source_blob": "85a49aa7b17561c9481130c1290007a807f64268"
+    },
+    "tools/ci/flutter_gates/profiles.py": {
+      "SHA256": "4258785cc27c150a8b538ed839111288e2150d1999ae7c6e99d061253beee488",
+      "bytes": 2984,
+      "lines": 60,
+      "source_blob": "de92842477ccd0a7bdd538b0e246696928acf184"
+    },
+    "tools/ci/flutter_gates/results.py": {
+      "SHA256": "19f6f4e36ce5ca2c9139e115237569455ec9cf9446c0b97ab2c4c1d6b14c40f7",
+      "bytes": 2965,
+      "lines": 52,
+      "source_blob": "d700610667ba6ff9e2e7e643f4772e083e018029"
+    },
+    "tools/ci/flutter_gates/aggregate.py": {
+      "SHA256": "fdede1e7901e906533a3e90bf9f845b4c55a587802cfe90e3a816e16f5d5c440",
+      "bytes": 1424,
+      "lines": 30,
+      "source_blob": "8da445666ab6a4cca2a8833d6ae268545023700d"
+    },
+    "tools/ci/flutter_gates/source.py": {
+      "SHA256": "6cd09685b85aae507d7efbe46573c6f3c8270a76b448830c00d3ce6989bd583f",
+      "bytes": 1079,
+      "lines": 20,
+      "source_blob": "653c227a9106574400f0cb25995715545f83983c"
+    },
+    "tools/ci/flutter_gates/workflow.py": {
+      "SHA256": "8fa635da7cfa4c95d420da001f5ce00cbf0317a2245549ca38e51b23a9953968",
+      "bytes": 3709,
+      "lines": 56,
+      "source_blob": "78dc45e16def7c9569b3a2d83d95e0c713871425"
+    },
+    "tools/ci/flutter_gates/test_workflow.py": {
+      "SHA256": "8fc91ad8e8f7bde1a1326e5b346df88ea9f479206eeee86a3c07cd2b346e8f47",
+      "bytes": 4126,
+      "lines": 73,
+      "source_blob": "2da01d96bbbd35b1af3f1fbaf5f5aa62ab51c987"
+    },
+    "tools/verify/macos_unit/run.py": {
+      "SHA256": "5fb50ff71d0c6da20d54bfa3e5c1306d8c0456fcc978d60c6595d776197b0165",
+      "bytes": 1434,
+      "lines": 32,
+      "source_blob": "527ced8bedb7563de93ca5566d83a536a1ac6f21"
+    },
+    "tools/verify/macos_unit/events.py": {
+      "SHA256": "3ba6295dc229571b37038e3d30247aa6790be821b36c521b550e464992dc0724",
+      "bytes": 2147,
+      "lines": 46,
+      "source_blob": "2312a7f0c9e66c95de4560d1137b97bdfaadbf62"
+    },
+    "tools/verify/macos_unit/test_run.py": {
+      "SHA256": "9cbcf81d8df64785d17f4c0f2c40430695b61b0c695b263371406b89f5bd70cb",
+      "bytes": 1736,
+      "lines": 34,
+      "source_blob": "b60684e2d057131fa536e7420ec62c3e36052e34"
+    },
+    "tools/verify/macos_unit/test_events.py": {
+      "SHA256": "a3883671ecde5f6631e12f1eae9c94562534d14b2da315e247264cfbadec4cca",
+      "bytes": 1922,
+      "lines": 40,
+      "source_blob": "86ac62aafab450bcfd20c6d8bd12e26d6f5a5ed4"
+    },
+    "clients/flutter/packages/livekit_client/test/options/screen_capture_engine_test.dart": {
+      "SHA256": "0b9c27894b24fcd6502fd10309bc670a01531f998acd91415c745949a1a579ec",
+      "bytes": 4042,
+      "lines": 88,
+      "source_blob": "9d496b6f4f2196f9d4892911bf0251075a2c11ec"
+    },
+    "clients/flutter/packages/livekit_client/lib/src/track/options.dart": {
+      "SHA256": "3dfa67562e828ce7b4c175ad25f2835d9a80a41f5b4ae305cd7c3e8912a6361a",
+      "bytes": 22617,
+      "lines": 598,
+      "source_blob": "3a82196d33e7e5e5afed94ce9bacc9d8b7e446b1"
+    },
+    "tools/ci/macos/host-v1.json": {
+      "SHA256": "84add3a4daefd6f69322d8285d71edd3d42b9b62a4cbae16b9800351c16bf6b0",
+      "bytes": 299,
+      "lines": 10,
+      "source_blob": "786404bcead7f8fae72385d867fe63b0045200ca"
+    },
+    "docs/ci/macos-sdk.md": {
+      "SHA256": "6e0df0423494bf04bb842065531282f05d841b73d21e7bcd7e3a7f4aa213c78e",
+      "bytes": 7955,
+      "lines": 112,
+      "source_blob": "644cd6b0dee1d864288dc788dbcd9d6339998afb"
+    },
+    "docs/adr/ADR-011-github-delivery.md": {
+      "SHA256": "2606bbf9509b05ed4ed0852767faf2d29be7b2e71c9b7da04b4525c670410371",
+      "bytes": 3997,
+      "lines": 22,
+      "source_blob": "7d38a4db2df91d1caa2fd0d596586ae4881ec3f7"
+    }
+  },
+  "device_UI_ADB_mutations": 0,
+  "git_branch_PR_dispatch_rerun_security_cache_changes": 0
+}

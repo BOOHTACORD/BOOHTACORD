@@ -1,0 +1,27 @@
+"""Publish closed allowlists for timeout policy and the blocked full native rerun."""
+import sys
+from pathlib import Path
+Q=Path(__file__).resolve().parents[2];sys.path.insert(0,str(Q/'.out/qa-archive-release'))
+from common import clean,code,collect,needles,read,write,sha,O,D,origins
+T=O/'voice-timeout-policy';F=Q/'.out/qa-agent-timeout';assert not T.exists()
+for f in (F/'private').glob('*.json'):collect(read(f))
+review=read(F/'public-review.json');assert review['status']=='PASS_CLOSED_PUBLIC_ALLOWLIST' and not review['redactions_required']
+allowed=review['allowlist']+read(F/'worker-wiring-append-integrity.json')['public_allowlist_addendum']
+sources=[]
+for name in allowed:
+ assert Path(name).name==name;f=F/name;raw=f.read_bytes();target=T/name
+ if f.suffix=='.py':code(f,'timeout-policy-agent-');continue
+ value=read(f) if f.suffix=='.json' else f.read_text(encoding='utf-8')
+ if isinstance(value,dict) and name=='summary.json':value['scope_description']=value.pop('literal_criterion');value['source_wording_note']='Condensed agent scope; matrix I287.C9 retains full original requirement unchanged.'
+ value=clean(value)
+ if f.suffix=='.json':write(target,value)
+ else:target.parent.mkdir(parents=True,exist_ok=True);target.write_text(value,encoding='utf-8',newline='\n')
+ sources.append({'file':name,'private_original_SHA256':sha(raw),'projection':True})
+write(T/'publication-provenance.json',{'meaning':'Root manifest binds public bytes; these hashes bind private originals. No raw logs/payloads/IDs copied.','sources':sources,'helper_sources':origins})
+folder=Q/'.out/qa-pr590-candidate-full-rerun';allow=read(Q/'.out/qa-pr590-candidate-full-rerun.public-allowlist.json')
+for item in allow['allowed']:
+ f=folder/item['path'];assert sha(f.read_bytes())==item['sha256'] and f.stat().st_size==item['bytes'];write(D/'signed-candidate-b74-full-rerun'/item['path'],clean(read(f)))
+write(D/'signed-candidate-b74-full-rerun/public-allowlist.json',allow)
+s=read(D/'summary.json');s['latest_signed_candidate_result']='signed-candidate-b74-full-rerun/summary.json';s['signed_candidate_result_scope']='Attempt3 full rerun:3native profiles succeed; macOS runner never acquired; strict fan-in fails, signing skipped, no signed artifact/no installation.';write(D/'summary.json',s)
+code(Path(__file__),'timeout-policy-publication-')
+print({'timeout_public_metadata':len(sources),'native_hosted_final':'BLOCKED_CAPACITY','binary_artifacts':0})

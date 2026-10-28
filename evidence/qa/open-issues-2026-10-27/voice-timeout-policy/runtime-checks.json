@@ -1,0 +1,469 @@
+{
+  "utc": "2026-10-28T21:27:47.841105+00:00",
+  "checks": [
+    {
+      "name": "initial-none-admin",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "c12b1b4de0aad6ea755b95c2f2692380362d47d62f340311d4cc0dfdb467bd5c",
+      "timeout_state": {
+        "active": false,
+        "revoked_leases": 0,
+        "revocation_pending": false
+      }
+    },
+    {
+      "name": "initial-none-old",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "c12b1b4de0aad6ea755b95c2f2692380362d47d62f340311d4cc0dfdb467bd5c",
+      "timeout_state": {
+        "active": false,
+        "revoked_leases": 0,
+        "revocation_pending": false
+      }
+    },
+    {
+      "name": "initial-none-current",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "c12b1b4de0aad6ea755b95c2f2692380362d47d62f340311d4cc0dfdb467bd5c",
+      "timeout_state": {
+        "active": false,
+        "revoked_leases": 0,
+        "revocation_pending": false
+      }
+    },
+    {
+      "name": "peer-state-private",
+      "expected_HTTP": 403,
+      "actual_HTTP": 403,
+      "result": "PASS",
+      "response_SHA256": "0310e499ac2f69ab02f93b3364110f7cbb389436350c8e72484cd462daacee23"
+    },
+    {
+      "name": "anonymous-read",
+      "expected_HTTP": 401,
+      "actual_HTTP": 401,
+      "result": "PASS",
+      "response_SHA256": "65cfc52456ea12bc02b36bce54a1a13ac7d55664cb0027c1e8978eef4e7ca3d8"
+    },
+    {
+      "name": "member-cannot-set",
+      "expected_HTTP": 403,
+      "actual_HTTP": 403,
+      "result": "PASS",
+      "response_SHA256": "86ae7b2ff3ad4ec7b14f5a1acc534b7f313c33b62fa92f11155c34539894ef45"
+    },
+    {
+      "name": "member-cannot-lift",
+      "expected_HTTP": 403,
+      "actual_HTTP": 403,
+      "result": "PASS",
+      "response_SHA256": "ec8884351bfa89e0fe7ae44331257285f575e36dd75eb458851039380ac90a38"
+    },
+    {
+      "name": "anonymous-set",
+      "expected_HTTP": 401,
+      "actual_HTTP": 401,
+      "result": "PASS",
+      "response_SHA256": "2286fd7696ae920b64fced890cbead2c0900b757599249357299e0ea25d0d149"
+    },
+    {
+      "name": "validation-past",
+      "expected_HTTP": 400,
+      "actual_HTTP": 400,
+      "result": "PASS",
+      "response_SHA256": "69a7c334be836398ebbc87d5a0ae6f6d91ee6a322bf4b9cc1e30f053a9e573c6"
+    },
+    {
+      "name": "validation-over24h",
+      "expected_HTTP": 400,
+      "actual_HTTP": 400,
+      "result": "PASS",
+      "response_SHA256": "e0e2614bfffe48c7c4dc111aa9ccb3cef01f690087e37a3e6f5268c2701fc36b"
+    },
+    {
+      "name": "validation-reason-not-allowlisted",
+      "expected_HTTP": 400,
+      "actual_HTTP": 400,
+      "result": "PASS",
+      "response_SHA256": "d118f38af583e326263d5a7fc36fc7a72c146a2106b1902d912155210b092a9f"
+    },
+    {
+      "name": "validation-bad-date",
+      "expected_HTTP": 400,
+      "actual_HTTP": 400,
+      "result": "PASS",
+      "response_SHA256": "c893ce021603235387f5f104040208ce2d5f3fc79389e3c1811ceefc52444da8"
+    },
+    {
+      "name": "validation-missing-expiry",
+      "expected_HTTP": 400,
+      "actual_HTTP": 400,
+      "result": "PASS",
+      "response_SHA256": "534fa2276c57c6ad261fd3439f3d8f8d17dc5b45e01d167010f680e604e65e37"
+    },
+    {
+      "name": "validation-unknown-field",
+      "expected_HTTP": 400,
+      "actual_HTTP": 400,
+      "result": "PASS",
+      "response_SHA256": "936064cbc117d666b0fd02053e17d7859a834c92e7488e39417de10ee6d87b6e"
+    },
+    {
+      "name": "revoke-own-stale-admin",
+      "expected_HTTP": 204,
+      "actual_HTTP": 204,
+      "result": "PASS",
+      "response_SHA256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "name": "stale-admin-cannot-set",
+      "expected_HTTP": 401,
+      "actual_HTTP": 401,
+      "result": "PASS",
+      "response_SHA256": "d5918b96e263ad68a3383516bdbbc8d7575b1e790359b727a9fbd5938556a52e"
+    },
+    {
+      "name": "before-TEXT-send",
+      "expected_HTTP": 201,
+      "actual_HTTP": 201,
+      "result": "PASS",
+      "response_SHA256": "50c0e2f6d736bbbfddb03e6c18baf3f7abd89ae19179459e5738b9ec735dae76"
+    },
+    {
+      "name": "before-TEXT-peer-read",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "906f488face7a10b8d6d79e7ad413c0846d3e83411ff3e9d9016489ebaece2de"
+    },
+    {
+      "name": "before-DM-send",
+      "expected_HTTP": 201,
+      "actual_HTTP": 201,
+      "result": "PASS",
+      "response_SHA256": "24ba71210b4b1355bc45f217fe047436520bdac03677011fc398446948c32ef6"
+    },
+    {
+      "name": "before-DM-peer-read",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "dbd6b4c15fca7232cf6984ccfa941a8860e7a8524b6e32dba333d987272a8a0f"
+    },
+    {
+      "name": "target_old-explicit-join",
+      "expected_HTTP": 201,
+      "actual_HTTP": 201,
+      "result": "PASS",
+      "response_SHA256": "8cebb2defbff9b2dc62c81a423dbf2cd90312e76e6baa2588fd39a66dc53eb10"
+    },
+    {
+      "name": "old-lease-credential-positive",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "9d2554ff330ede0ac69dee9cdb55261254dc451cd9f5955f98524495d86cdd75"
+    },
+    {
+      "name": "sibling-session-cannot-reuse-lease",
+      "expected_HTTP": 409,
+      "actual_HTTP": 409,
+      "result": "PASS",
+      "response_SHA256": "6a6361038c4ab234614dc551cdfcf218f4c50b7726615093a71c29feab356b74"
+    },
+    {
+      "name": "set-DISRUPTION",
+      "expected_HTTP": 202,
+      "actual_HTTP": 202,
+      "result": "PASS",
+      "response_SHA256": "42c61fc377c9fef6c62e6466a9e3d5708e892fc6c6b7f10f219586e6d8997883",
+      "timeout_state": {
+        "active": true,
+        "expires_at": "2026-10-28T21:37:39.387937Z",
+        "reason_code": "DISRUPTION",
+        "revoked_leases": 1,
+        "revocation_pending": true
+      }
+    },
+    {
+      "name": "timeout-keeps-HTTP-session-old",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "f1a63bda290d783ec0751278e119b7a4155c03e3c591319d45d51ab020ffe883"
+    },
+    {
+      "name": "timeout-self-state-old",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "8d540ce334e8da476f7a74916b758971fa8e9169d72cda45ec6f30c35e4bf6fc",
+      "timeout_state": {
+        "active": true,
+        "expires_at": "2026-10-28T21:37:39.387937Z",
+        "reason_code": "DISRUPTION",
+        "revoked_leases": 0,
+        "revocation_pending": true
+      }
+    },
+    {
+      "name": "timeout-join-denied-old-False",
+      "expected_HTTP": 409,
+      "actual_HTTP": 409,
+      "result": "PASS",
+      "response_SHA256": "e12cab05affa3a541bea6df07856328f4aeed357e6274bdab27a7333727eb90b"
+    },
+    {
+      "name": "timeout-join-denied-old-True",
+      "expected_HTTP": 409,
+      "actual_HTTP": 409,
+      "result": "PASS",
+      "response_SHA256": "8a6f4f978e75044bd563ccffc8101d0e7322a60f20ab06708a066bec75c3eb59"
+    },
+    {
+      "name": "revoked-old-lease-credential-old",
+      "expected_HTTP": 409,
+      "actual_HTTP": 409,
+      "result": "PASS",
+      "response_SHA256": "be0a7d7e6f097850fda700a748e257b7c984e617690230374d2e180ef40bd3f9"
+    },
+    {
+      "name": "timeout-keeps-HTTP-session-current",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "f1a63bda290d783ec0751278e119b7a4155c03e3c591319d45d51ab020ffe883"
+    },
+    {
+      "name": "timeout-self-state-current",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "8d540ce334e8da476f7a74916b758971fa8e9169d72cda45ec6f30c35e4bf6fc",
+      "timeout_state": {
+        "active": true,
+        "expires_at": "2026-10-28T21:37:39.387937Z",
+        "reason_code": "DISRUPTION",
+        "revoked_leases": 0,
+        "revocation_pending": true
+      }
+    },
+    {
+      "name": "timeout-join-denied-current-False",
+      "expected_HTTP": 409,
+      "actual_HTTP": 409,
+      "result": "PASS",
+      "response_SHA256": "02ca107d795743e6c21eb88fce9180a6d9fe909120217e6264cb0bf5675ac0a6"
+    },
+    {
+      "name": "timeout-join-denied-current-True",
+      "expected_HTTP": 409,
+      "actual_HTTP": 409,
+      "result": "PASS",
+      "response_SHA256": "ea98b32c1090ed11ad4cb97d9c891790e1f4c4b98317e667497c44fdd1d63343"
+    },
+    {
+      "name": "revoked-old-lease-credential-current",
+      "expected_HTTP": 409,
+      "actual_HTTP": 409,
+      "result": "PASS",
+      "response_SHA256": "9a330a48948bb292399628480506522b538361cf1839a562a36d017e8a2510b4"
+    },
+    {
+      "name": "control_b-explicit-join",
+      "expected_HTTP": 201,
+      "actual_HTTP": 201,
+      "result": "PASS",
+      "response_SHA256": "f604d0d6f048b74b4a0557df89e72e67acad986852b6b12a5024c81946262b4b"
+    },
+    {
+      "name": "control-B-release",
+      "expected_HTTP": 204,
+      "actual_HTTP": 204,
+      "result": "PASS",
+      "response_SHA256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "name": "during-TEXT-send",
+      "expected_HTTP": 201,
+      "actual_HTTP": 201,
+      "result": "PASS",
+      "response_SHA256": "fb6f1762429fe5ce7c89c3d26568391e0f7669f4ce6e8d2a53559399bf095d8f"
+    },
+    {
+      "name": "during-TEXT-peer-read",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "1c0bd04c45669a304ea1a7e87955d9275abf582af03143047981a44a9efd7c3c"
+    },
+    {
+      "name": "during-DM-send",
+      "expected_HTTP": 201,
+      "actual_HTTP": 201,
+      "result": "PASS",
+      "response_SHA256": "fd7e775609ab5e92bada58a9fbbbf9c22303a6662db20a40a3dc2c745a9cc0f2"
+    },
+    {
+      "name": "during-DM-peer-read",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "1d92d15a63bf407c0c33e9899c78c72031670e8df9e9c0bcc07deabab97c8899"
+    },
+    {
+      "name": "change-HARASSMENT",
+      "expected_HTTP": 202,
+      "actual_HTTP": 202,
+      "result": "PASS",
+      "response_SHA256": "71ed7ed3e96cb3235ffdcefc940530a3a1f3fbb15cc9798410b9f4c6fc347b6f",
+      "timeout_state": {
+        "active": true,
+        "expires_at": "2026-10-28T21:47:40.219704Z",
+        "reason_code": "HARASSMENT",
+        "revoked_leases": 0,
+        "revocation_pending": true
+      }
+    },
+    {
+      "name": "same-set-idempotent",
+      "expected_HTTP": 202,
+      "actual_HTTP": 202,
+      "result": "PASS",
+      "response_SHA256": "71ed7ed3e96cb3235ffdcefc940530a3a1f3fbb15cc9798410b9f4c6fc347b6f",
+      "timeout_state": {
+        "active": true,
+        "expires_at": "2026-10-28T21:47:40.219704Z",
+        "reason_code": "HARASSMENT",
+        "revoked_leases": 0,
+        "revocation_pending": true
+      }
+    },
+    {
+      "name": "change-SPAM",
+      "expected_HTTP": 202,
+      "actual_HTTP": 202,
+      "result": "PASS",
+      "response_SHA256": "00664c726c65753a377e123ccc70c5e332293756fa212207c3f02dbdc2185036",
+      "timeout_state": {
+        "active": true,
+        "expires_at": "2026-10-28T21:57:40.87189Z",
+        "reason_code": "SPAM",
+        "revoked_leases": 0,
+        "revocation_pending": true
+      }
+    },
+    {
+      "name": "change-OTHER",
+      "expected_HTTP": 202,
+      "actual_HTTP": 202,
+      "result": "PASS",
+      "response_SHA256": "13d6ec35e918e2b81ea342f1a78c87fa3b1aba53ae592d21e52822d002772142",
+      "timeout_state": {
+        "active": true,
+        "expires_at": "2026-10-29T21:27:39.103518Z",
+        "reason_code": "OTHER",
+        "revoked_leases": 0,
+        "revocation_pending": true
+      }
+    },
+    {
+      "name": "normal-lift",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "998458014d41376921fc3513d4c293dcfac5ca6cf6663838041e852514d40bcd",
+      "timeout_state": {
+        "active": false,
+        "revoked_leases": 0,
+        "revocation_pending": true
+      }
+    },
+    {
+      "name": "lift-idempotent",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "998458014d41376921fc3513d4c293dcfac5ca6cf6663838041e852514d40bcd",
+      "timeout_state": {
+        "active": false,
+        "revoked_leases": 0,
+        "revocation_pending": true
+      }
+    },
+    {
+      "name": "lift-does-not-restore-old-credential",
+      "expected_HTTP": 409,
+      "actual_HTTP": 409,
+      "result": "PASS",
+      "response_SHA256": "a717e12ccb083dc4d7d616cc8c7379f53e2e03cbe1081fcc669f384a0d73b543"
+    },
+    {
+      "name": "after-TEXT-send",
+      "expected_HTTP": 201,
+      "actual_HTTP": 201,
+      "result": "PASS",
+      "response_SHA256": "72fa59635bcdc5149cfdb71f79ba98b766eaad141c794ecf08962777004f9df3"
+    },
+    {
+      "name": "after-TEXT-peer-read",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "8cfe650a70acb6986cd3821795819dcbfda90fba6301312b890ba3a402c52b29"
+    },
+    {
+      "name": "after-DM-send",
+      "expected_HTTP": 201,
+      "actual_HTTP": 201,
+      "result": "PASS",
+      "response_SHA256": "9b2c5dcb06cc51a5a98aecf98ae3f6ffc2b228530626e63c0eae72ba0d8f079e"
+    },
+    {
+      "name": "after-DM-peer-read",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "72f4bc18818487eb9eed7f8d2c2837c87d51b2737b2f12632cd5fc9dcc222a7b"
+    },
+    {
+      "name": "target_new-explicit-join",
+      "expected_HTTP": 201,
+      "actual_HTTP": 201,
+      "result": "PASS",
+      "response_SHA256": "78254b3b163b3a398690fa0f1e8997dddb414476a042882eea8625cb10df8b71"
+    },
+    {
+      "name": "explicit-new-lease-credential",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "21edd2e6b91dcd3e060a8d78cbc0536d9439922d95c7da3dfa31217ddb473170"
+    },
+    {
+      "name": "new-explicit-lease-release",
+      "expected_HTTP": 204,
+      "actual_HTTP": 204,
+      "result": "PASS",
+      "response_SHA256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "name": "final-self-state-no-timeout",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "998458014d41376921fc3513d4c293dcfac5ca6cf6663838041e852514d40bcd",
+      "timeout_state": {
+        "active": false,
+        "revoked_leases": 0,
+        "revocation_pending": true
+      }
+    }
+  ]
+}

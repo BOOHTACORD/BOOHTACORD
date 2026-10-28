@@ -1,0 +1,18 @@
+{
+  "case": {
+    "id": "ISOLATED-voice-timeout-scheduled-dispatch-absent-participant",
+    "status": "PASS_SCOPED",
+    "protects": "Actual15s scheduled dispatcher attempts owned revocation and GETpending tracks terminal RoomService receipt during35–40s window",
+    "command": "python -B -X utf8 .out/qa-agent-timeout-dispatch/run.py",
+    "platform": "Existing isolated localAPI source072426d6/PG17.6/LiveKitRoomService; no RTCclient or participant",
+    "mandatory_when": "Before accepting actual dispatcher backend facet; full I287.C9/media gate remains PARTIAL",
+    "issues": [
+      287
+    ],
+    "result": "voice-timeout-dispatch/summary.json",
+    "limits": "35.203s/30samples, actual worker attempt1/completion, pending true->false while timeout remains active; DB latency5.342334s is one sample, not SLO/p95.0RTCparticipants/0credentials. Connected eviction, issuedJWT reconnect and UI NOT_RUN.9selected tables restored, topology45->47 and5own audit metadata receipts retained.",
+    "defects": []
+  },
+  "full_I287_C9": "PARTIAL",
+  "consolidation43_touched": false
+}

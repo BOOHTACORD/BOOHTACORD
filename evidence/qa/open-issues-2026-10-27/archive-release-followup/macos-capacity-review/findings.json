@@ -1,0 +1,75 @@
+{
+  "runner_binding": {
+    "file": ".github/workflows/ci-flutter.yaml",
+    "line": 150,
+    "fact": "macosjobrunsonmacos-26,15min; samepinnedSDK/composite andunitcommand/mandatoryartifactuploads",
+    "source_SHA256": "358188ca02917b97eee21c644788ff430767ca79c5ed5bcfa844d3c41bd4d777",
+    "blob_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/b74fce609ad3ddbbfb0dbef81c5efae68195f20f/.github/workflows/ci-flutter.yaml"
+  },
+  "hard_policy_blocker": {
+    "file": "tools/ci/flutter_gates/workflow.py",
+    "line": 35,
+    "fact": "validate hard-requires exactmacos-26 label for macosprofile; label-onlyYAMLedittoIntel isrejected",
+    "source_SHA256": "8fa635da7cfa4c95d420da001f5ce00cbf0317a2245549ca38e51b23a9953968",
+    "blob_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/b74fce609ad3ddbbfb0dbef81c5efae68195f20f/tools/ci/flutter_gates/workflow.py"
+  },
+  "x64_setup": {
+    "file": "tools/ci/flutter_setup/metadata.py",
+    "line": 10,
+    "fact": "ExplicitX64/ARM64accepted; cacheidentityincludesOS,arch,version,framework; noarchcachecollision/newcachepermissionneeded",
+    "source_SHA256": "ac604ad3fab7efede314f8604a20c90caf9a157411b6fe798b3e1a586bff6d79",
+    "blob_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/b74fce609ad3ddbbfb0dbef81c5efae68195f20f/tools/ci/flutter_setup/metadata.py"
+  },
+  "native_arch_guard": {
+    "file": "tools/ci/flutter_setup/run.py",
+    "line": 16,
+    "fact": "ActualDarwin/x86_64 mapsmacOS/X64 andmustmatchRUNNER_OS/ARCH; installedFlutter/Dart/framework identitycheckedwithoutspoofing",
+    "source_SHA256": "37a13d31db81b7ffbfb901d2e90669fc691f6ea5d6f809171a81215d3b21f450",
+    "blob_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/b74fce609ad3ddbbfb0dbef81c5efae68195f20f/tools/ci/flutter_setup/run.py"
+  },
+  "Apple_only_no_arm64_restriction": {
+    "file": "tools/verify/macos_unit/run.py",
+    "line": 17,
+    "fact": "Requires sys.platform=darwin; noCPUrestriction; sameexactFluttertestmachinecommand onactualApplehost",
+    "source_SHA256": "5fb50ff71d0c6da20d54bfa3e5c1306d8c0456fcc978d60c6595d776197b0165",
+    "blob_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/b74fce609ad3ddbbfb0dbef81c5efae68195f20f/tools/verify/macos_unit/run.py"
+  },
+  "same_eight_zero_skip": {
+    "file": "tools/verify/macos_unit/events.py",
+    "line": 39,
+    "fact": "All8exacttestnames required, everytestDonemustsuccess/non-skipped, complete done=true stream; unchangedIntelgatecannotpassskips",
+    "source_SHA256": "3ba6295dc229571b37038e3d30247aa6790be821b36c521b550e464992dc0724",
+    "blob_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/b74fce609ad3ddbbfb0dbef81c5efae68195f20f/tools/verify/macos_unit/events.py"
+  },
+  "two_Apple_only_cases": {
+    "file": "clients/flutter/packages/livekit_client/test/options/screen_capture_engine_test.dart",
+    "lines": [
+      34,
+      70
+    ],
+    "fact": "BothskipguardsdependonlyonPlatform.isMacOS; testscheckcaptureoptionmaps, notnativearm64media/SDK behavior",
+    "source_SHA256": "0b9c27894b24fcd6502fd10309bc670a01531f998acd91415c745949a1a579ec",
+    "blob_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/b74fce609ad3ddbbfb0dbef81c5efae68195f20f/clients/flutter/packages/livekit_client/test/options/screen_capture_engine_test.dart"
+  },
+  "result_strictness": {
+    "file": "tools/ci/flutter_gates/results.py",
+    "line": 34,
+    "fact": "Allfourjobs mustsuccess; source/run/attempt/namespace/SDK/completedinventory mustmatch. Anotherstandalonerun cannotrepairattempt3.",
+    "source_SHA256": "19f6f4e36ce5ca2c9139e115237569455ec9cf9446c0b97ab2c4c1d6b14c40f7",
+    "blob_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/b74fce609ad3ddbbfb0dbef81c5efae68195f20f/tools/ci/flutter_gates/results.py"
+  },
+  "approved_Intel_policy_elsewhere": {
+    "file": "tools/ci/macos/host-v1.json",
+    "line": 7,
+    "fact": "ReviewednativeSDKmatrixhasarm64macos-26 andx64macos-26-intel; doclimits expensiveSDK/fullapp andfasttestsseparately",
+    "source_SHA256": "84add3a4daefd6f69322d8285d71edd3d42b9b62a4cbae16b9800351c16bf6b0",
+    "blob_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/b74fce609ad3ddbbfb0dbef81c5efae68195f20f/tools/ci/macos/host-v1.json"
+  },
+  "ADR_provider_not_CPU": {
+    "file": "docs/adr/ADR-011-github-delivery.md",
+    "line": 13,
+    "fact": "GitHubprovider/sourceauthority; no blanketIntelApplehostban inselectedADR/rootinstructions. Exactunitworkflowlabelpolicy stillapplies.",
+    "source_SHA256": "2606bbf9509b05ed4ed0852767faf2d29be7b2e71c9b7da04b4525c670410371",
+    "blob_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/b74fce609ad3ddbbfb0dbef81c5efae68195f20f/docs/adr/ADR-011-github-delivery.md"
+  }
+}

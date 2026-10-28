@@ -1,0 +1,13 @@
+import time
+from common import P,quote,sql,write,now
+def work(c,phase):
+    lease_ids=[v['id'] for v in c['leases'].values()]
+    if not lease_ids:return []
+    ids=','.join(map(quote,lease_ids));raw=sql('SELECT COALESCE(json_agg(x),\'[]\'::json) FROM (SELECT completed_at IS NOT NULL AS completed,attempt_count,last_error_code,claim_token IS NOT NULL AS claimed FROM voice_sfu_revocations WHERE lease_id IN ('+ids+') ORDER BY requested_at) x;')
+    import json
+    rows=json.loads(raw);p=P/'dispatch-observations.json';history=json.loads(p.read_text('utf-8')) if p.exists() else {'observations':[]};history['observations'].append({'utc':now(),'phase':phase,'work':rows,'limit':'No connected SFU participant exists; completion is a backend queue/RPC receipt, not eviction or audio/media proof.'});write(p,history);return rows
+def poll(c):
+    for _ in range(12):
+        rows=work(c,'bounded-worker-observation')
+        if rows and all(r['completed'] for r in rows):return
+        time.sleep(.25)

@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "status": "BLOCKED_HOSTED_MACOS_RUNNER_CAPACITY_NO_SIGNED_ARTIFACT",
+  "frozen_after_this_packet": true,
+  "source_revision": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+  "installed_or_restarted": false,
+  "workflow_class": "review_gate",
+  "packet": "PR590-candidate-full-rerun-attempt3",
+  "protects": "All four native profiles must pass in the same exact-source run attempt before signing",
+  "command": "ONE documented REST POST /actions/runs/40767012991/rerun; no new dispatch",
+  "platform": "GitHub hosted Actions; Windows controller metadata only; no device action",
+  "mandatory_when": "Before accepting an available signed QA590 candidate or physical regression result",
+  "run": {
+    "observed_utc": "2026-10-28T21:33:03.290Z",
+    "source_revision": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+    "run_id": 40767012991,
+    "attempt": 3,
+    "event": "workflow_dispatch",
+    "status": "completed",
+    "conclusion": "failure",
+    "jobs": [
+      {
+        "id": 123106127902,
+        "name": "quality / android",
+        "status": "completed",
+        "conclusion": "success",
+        "current_steps": []
+      },
+      {
+        "id": 123106128265,
+        "name": "quality / macos",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "current_steps": []
+      },
+      {
+        "id": 123106128305,
+        "name": "quality / android-kotlin",
+        "status": "completed",
+        "conclusion": "success",
+        "current_steps": []
+      },
+      {
+        "id": 123106128346,
+        "name": "quality / dart",
+        "status": "completed",
+        "conclusion": "success",
+        "current_steps": []
+      },
+      {
+        "id": 123113487927,
+        "name": "quality / flutter",
+        "status": "completed",
+        "conclusion": "failure",
+        "current_steps": []
+      },
+      {
+        "id": 123113617832,
+        "name": "android-release",
+        "status": "completed",
+        "conclusion": "skipped",
+        "current_steps": []
+      }
+    ]
+  },
+  "dry_run": true,
+  "macos": {
+    "job_id": 123106128265,
+    "status": "cancelled",
+    "runner_id": 0,
+    "executed_steps": 0,
+    "started_at": "2026-10-28T21:16:08Z",
+    "completed_at": "2026-10-28T21:31:09Z",
+    "reason": "The job was not acquired by Runner of type hosted even after multiple attempts",
+    "notice": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times.",
+    "classification": "hosted runner capacity; no source/compiler/product failure executed",
+    "evidence": "macos-terminal-detail.json; log endpoint returned BlobNotFound404"
+  },
+  "fan_in": {
+    "job_id": 123113487927,
+    "status": "failure",
+    "current_parts": 3,
+    "required_parts": 4,
+    "macos_need_result": "abandoned",
+    "error": "ValueError: Every current native profile result is mandatory",
+    "assessment": "Expected strict rejection; no cross-attempt evidence substituted"
+  },
+  "current_attempt_suites": {
+    "dart_app": "1656 pass /3 skip",
+    "livekit_vendor": "449 pass /3 skip",
+    "webrtc_vendor": "34 pass",
+    "android": "SUCCESS; actual app-debug.apk built",
+    "kotlin": "SUCCESS; both compatibility modes",
+    "macos": "NOT_RUN; no runner acquired"
+  },
+  "artifact": {
+    "signed_count": 0,
+    "signed_downloaded": false,
+    "actual_signed_byte_checks": "NOT_RUN_NO_SIGNED_ARTIFACT",
+    "android_release_job": 123113617832,
+    "android_release_status": "skipped",
+    "signer_execution": "NOT_RUN",
+    "publish_execution": "NOT_RUN_JOB_SKIPPED",
+    "publish_exclusion_source_guard": "VERIFIED; original dry_run=true; no signed job entered",
+    "installability_or_replacement": "NOT_ASSESSED",
+    "device_or_media_acceptance": "NOT_RUN"
+  },
+  "mutations": {
+    "full_reruns": 1,
+    "new_dispatches": 0,
+    "other_reruns": 0,
+    "release_tag_source_security_changes": 0,
+    "UI_ADB_install_restart_actions": 0,
+    "credentials_logged_or_written": false
+  },
+  "prior_attempt_qualification": "Frozen attempts1/2 unchanged; partial attempt2 rerun was controller misuse under documented full-rerun requirement, not a repository defect",
+  "limits": [
+    "QA590/b74 only; not current phone or later source identity",
+    "Expected signer/appID not measured because no signed APK was produced",
+    "No actual Android base/split revision or device compatibility assessment",
+    "Widget/tests/debug packaging do not prove physical Windows/Android or production fixes",
+    "All raw logs stay private in Q .out; no GitHub issue/review/public evidence edited"
+  ],
+  "next_required": "Complete same-attempt four-profile hosted execution, then signed artifact byte verification; no additional rerun in this packet",
+  "report": "Slavik Gym report: route=tools/release/native_contract; packet=PR590-full-rerun-review_gate; tokens=estimated:11500; method=manual_estimate; driver=one-full-rerun-same-attempt-evidence; next_split=hosted-capacity-complete-candidate"
+}

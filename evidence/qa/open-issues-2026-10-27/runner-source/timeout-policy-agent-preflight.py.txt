@@ -1,0 +1,34 @@
+import ast,ipaddress,subprocess
+from common import P,Q,WORK,SOURCE,read,write,sha,quote,sql,request,state,services,frozen,now
+assert not (P/'before.json').exists();(P/'private').mkdir(exist_ok=True)
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=Q,text=True).strip()==SOURCE
+cred=read(WORK/'credentials.private.json');accounts={}
+for alias,prefix in [('admin','admin'),('a','member_a'),('b','member_b')]:
+    rows=sql('SELECT id,role,blocked_at IS NULL FROM users WHERE login='+quote(cred[prefix+'_login'])+';').strip().split('|')
+    assert len(rows)==3 and rows[1]==('ADMINISTRATOR' if alias=='admin' else 'MEMBER') and rows[2]=='t';accounts[alias]=rows[0]
+for alias in ['a','b']:
+    target=quote(accounts[alias]);assert sql('SELECT count(*) FROM voice_timeouts WHERE user_id='+target+';').strip()=='0'
+    assert sql('SELECT count(*) FROM voice_leases WHERE user_id='+target+' AND revoked_at IS NULL;').strip()=='0'
+    assert sql('SELECT count(*) FROM voice_sfu_revocations w JOIN voice_leases l ON l.id=w.lease_id WHERE l.user_id='+target+' AND w.completed_at IS NULL;').strip()=='0'
+write(P/'private/accounts.json',accounts)
+roots=['voice/manage_voice_timeout','voice/acquire_voice_lease','voice/release_voice_lease','media/issue_livekit_credential','media/authorize_livekit_signal','media/dispatch_voice_sfu_revocation']
+paths=[p for x in roots for p in (Q/'backend/internal'/x).rglob('*.go')]
+paths += [Q/x for x in ['backend/go.mod','contracts/openapi.yaml','backend/internal/app/media_routes/voice_timeout_routes.go','backend/internal/app/media_routes/voice_lease_routes.go','backend/internal/app/media_routes/media_credential_routes.go','backend/internal/testsupport/guild_lifecycle/fixture.go','backend/internal/testsupport/postgres/config.go','backend/internal/testsupport/postgres/schema.go']]
+hashes={}
+for p in paths:
+    raw=p.read_bytes();rel=p.relative_to(Q).as_posix();head=subprocess.check_output(['git','show','HEAD:'+rel],cwd=Q);assert raw.replace(b'\r\n',b'\n')==head.replace(b'\r\n',b'\n');hashes[rel]=sha(raw)
+helpers={}
+for p in P.glob('*.py'):
+    ast.parse(p.read_text('utf-8'));assert len(p.read_text('utf-8').splitlines())<=120;helpers[p.name]=sha(p.read_bytes())
+assert len(helpers)<=8
+s=services()
+for n,v in s.items():
+    assert v['State']['Running'] and v['RestartCount']==0 and v['Config']['Labels']['com.docker.compose.project']=='boohtacord-local-qa'
+    for bs in v['NetworkSettings']['Ports'].values():
+        for b in bs or []:assert ipaddress.ip_address(b['HostIp']).is_loopback
+write(P/'private/services-before.json',s)
+assert request('/api/v1/health')[0]==200 and sql('SHOW server_version;').strip()=='17.6'
+schema=sql("SELECT table_name,column_name,data_type FROM information_schema.columns WHERE table_schema='public' AND table_name IN ('voice_timeouts','voice_leases','voice_sfu_revocations','sessions') ORDER BY table_name,ordinal_position;");(P/'private/schema.txt').write_text(schema,'utf-8')
+write(P/'before.json',{'utc':now(),'source':SOURCE,'PostgreSQL':'17.6','health_HTTP':200,'database':state(),'source_hashes':hashes,'helper_hashes':helpers,'frozen_files':frozen(),'ownership_guards':{'existing_controlled_roles_verified':True,'target_and_control_initial_timeout_rows':0,'target_and_control_initial_active_leases':0,'target_and_control_initial_pending_SFU_work':0},'schemas':sql("SELECT count(*) FROM pg_namespace WHERE nspname LIKE 'voice_it_%';").strip(),'topology_revision':int(sql('SELECT revision FROM channel_topology_state WHERE singleton;').strip()),'audit_count':int(sql('SELECT count(*) FROM audit_events;').strip())})
+write(P/'operating-brief.json',{'workflow_class':'review_gate','route':'voice/manage_voice_timeout','packet':'I287.C9 isolated timeout API policy','literal_criterion':'#97: explicit authorized timeout set/change/lift, expires<=24h/reason allowlist, target/current-session changes, old credentials denied and eventual SFU revocation; pending truthful; TEXT/DM unaffected, no auto-unmute/rejoin; native dialog/Web separate.','guard_plan':'Existing controlled target MEMBER, initially no restriction/activelease/pendingwork; only own new sessions/VOICE/TEXT/messages; normal lift in finally; no role/clock/globalconfig/source changes','runtime_scope':'Lease/Acquire/credential admission, API sessions/TEXT/DM, durable intent state; no issued-JWT LiveKit reconnect or connected participant/media','limits':'Physical eviction,issued oldJWT direct reconnect,actual SFU participant join,native/Web/UI NOT_RUN','checks':'Nearest native Go once0testskips, real local API/PG, own teardown with exactcounts/fingerprints','stop':'All own resources/sessions/timeout removed, olddata/services/source/frozen receipts preserved'})
+print('PASS local9services/PG17.6/source/helper/controlled-account initial-none baseline')

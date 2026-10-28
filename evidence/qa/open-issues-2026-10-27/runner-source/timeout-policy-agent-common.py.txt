@@ -1,0 +1,36 @@
+import hashlib,http.client,json,subprocess,sys,uuid
+from datetime import datetime,timezone,timedelta
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(Q/'.out/local-qa'))
+from profile_common import CONTEXT,PROJECT,SOURCE,WORK,ORIGIN
+TABLES=['users','sessions','categories','channels','messages','direct_messages','direct_message_messages','voice_timeouts','voice_leases','voice_sfu_revocations','attachments']
+def read(p):return json.loads(p.read_text('utf-8-sig'))
+def write(p,v):p.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n','utf-8')
+def now():return datetime.now(timezone.utc).isoformat()
+def sha(b):return hashlib.sha256(b).hexdigest()
+def valid(v):assert str(uuid.UUID(v))==v;return v
+def quote(v):return "'"+str(v).replace("'","''")+"'"
+def docker(*args,input=None):
+    r=subprocess.run(['docker','--context',CONTEXT,*args],cwd=Q,input=input,capture_output=True,timeout=25)
+    if r.returncode:(P/'private/last-error.log').write_bytes(r.stderr);raise RuntimeError('Local command failed; private error retained')
+    return r.stdout
+def sql(s):return docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-qAt','-v','ON_ERROR_STOP=1',input=s.encode()).decode()
+def request(path,method='GET',body=None,cookie=None):
+    assert ORIGIN=='http://localhost:18088' and path.startswith('/api/v1/')
+    c=http.client.HTTPConnection('127.0.0.1',18088,timeout=10);h={'Host':'localhost:18088','Origin':ORIGIN,'Accept':'application/json'}
+    if cookie:h['Cookie']=cookie
+    if body is not None:h['Content-Type']='application/json'
+    c.request(method,path,json.dumps(body) if body is not None else None,h);r=c.getresponse();code=r.status;headers=dict(r.getheaders());raw=r.read(2_000_000);c.close()
+    return code,headers,json.loads(raw) if raw else None
+def state():return {t:sql("SELECT count(*),COALESCE(md5(string_agg(h,'' ORDER BY h)),'empty') FROM (SELECT md5(row_to_json(x)::text) h FROM "+t+' x) s;').strip() for t in TABLES}
+def services():return {n:json.loads(docker('inspect',PROJECT+'-'+n+'-1'))[0] for n in ['api','web','proxy','postgres','livekit','collector','tempo','prometheus','grafana']}
+def expiry(seconds):return (datetime.fromisoformat(sql('SELECT clock_timestamp();').strip())+timedelta(seconds=seconds)).isoformat(timespec='microseconds')
+def fixture():return read(P/'private/fixture.json')
+def save(c):write(P/'private/fixture.json',c)
+def frozen():
+    paths=[]
+    for folder in ['qa-agent-search','qa-guard-teardown','qa-agent-archive']:
+        base=Q/'.out'/folder;paths += [Path(x['path']) for x in read(base/'integrity.json')['artifacts']]+[base/'integrity.json']
+    base=Q/'.out/qa-agent-browser';paths += [base/n for n in ['qa-scope-audit.json','qa-scope-review.md','audit-integrity.json']]
+    paths += [Q/'.out/qa-agent-archive-public-review.json']
+    return {p.relative_to(Q).as_posix():sha(p.read_bytes()) for p in paths}

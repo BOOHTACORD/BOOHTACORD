@@ -1,0 +1,39 @@
+{
+  "utc": "2026-10-28T21:27:10.198188+00:00",
+  "command": [
+    "C:\\Program Files\\Go\\bin\\go.exe",
+    "test",
+    "-json",
+    "-count=1",
+    "./internal/voice/manage_voice_timeout/..."
+  ],
+  "exit": 0,
+  "PASS": 19,
+  "passed_tests": [
+    "TestValidationRejectsUnboundedReasonsBeforeStore",
+    "TestTimeoutServicePreservesACLAndSessionDenial",
+    "TestOnlyAbsoluteExpiryAndAuthenticatedIdentityReachStore",
+    "TestCommittedIntentNeverClaimsPhysicalRemoval",
+    "TestTimeoutErrorsAreSanitized",
+    "TestDecoderRejectsFreeTextAndTrailingJSON",
+    "TestStoreRechecksRoleSessionAndSelfOnlyRead",
+    "TestAdminDemotionAndBlockingCannotReuseCachedPrivilege/UPDATE_users_SET_role='MEMBER'_WHERE_id=$1",
+    "TestAdminDemotionAndBlockingCannotReuseCachedPrivilege/UPDATE_users_SET_blocked_at=now()_WHERE_id=$1",
+    "TestAdminDemotionAndBlockingCannotReuseCachedPrivilege",
+    "TestConcurrentJoinAndTimeoutCannotLeaveAdmissibleLease",
+    "TestLegacyLeaseInsertWaitsForTimeoutAndFailsClosed",
+    "TestCredentialAndSignalWaitForModerationLock",
+    "TestTimeoutRevokesAndDeniesEveryVoiceAdmission",
+    "TestManualClearNeverRestoresLeaseOrCancelsRemoval",
+    "TestExpiryUsesDatabaseClockAndNeverReactivatesMedia",
+    "TestExpiryBoundsAndAuditFailureRollbackEverything",
+    "TestTimeoutRemovalSurvivesFailureClearAndWorkerRetry",
+    "TestCanceledModerationCannotCommitRestriction"
+  ],
+  "test_skips": 0,
+  "package_skip_events": [],
+  "fail_events": 0,
+  "stdout_SHA256": "a76b7b52fe243b4c6b1d374dbc9e560ef8f7d529533e295e47850a8e9d6df06a",
+  "public_tables_unchanged": true,
+  "schemas_after": "0"
+}

@@ -1,0 +1,17 @@
+import traceback
+from common import P,read,write,now
+from prepare import prepare
+from checks import run
+from cleanup import cleanup
+rows=[];error=None;clean=False
+try:
+    n=read(P/'native-result.json');assert n['exit']==0 and n['test_skips']==0
+    c=prepare();rows=run(c)
+except Exception as e:error=type(e).__name__;(P/'private/runtime-error.txt').write_text(traceback.format_exc(),'utf-8')
+finally:
+    if (P/'private/fixture.json').exists():
+        try:cleanup();clean=True
+        except Exception as e:error=error or 'cleanup-'+type(e).__name__;(P/'private/cleanup-error.txt').write_text(traceback.format_exc(),'utf-8')
+    write(P/'summary.json',{'utc':now(),'status':'PASS_SCOPED' if error is None and clean else 'FAIL_OR_CONTROLLER_REQUIRES_REVIEW','criterion':'I287.C9','literal_criterion':read(P/'operating-brief.json')['literal_criterion'],'protects':'Authorized bounded timeout state/lease policy; sessions and TEXT/DM remain valid; normal lift does not reactivate old lease; pending intent remains truthful without physical claims','command':'python -B -X utf8 .out/qa-agent-timeout/run.py','platform':'Windows HTTP producer/existing isolated localQA API source072426d6/real PostgreSQL17.6; no media client','mandatory_when':'Before accepting isolated API/backend timeout facet; fullI287.C9 remainsPARTIAL','runtime_controls':len(rows),'cleanup_PASS':clean,'error_class':error,'new_users':0,'NOT_RUN':['Already-issued JWT direct LiveKit reconnect denial','Connected SFU participant eviction/audio','Native/Web dialog and real auto-unmute/rejoin behavior','Physical/device/production acceptance'],'production_touched':False})
+print('Timeout runtime '+read(P/'summary.json')['status']+';controls='+str(len(rows))+';cleanup='+str(clean)+';diagnostic='+str(error))
+if error:raise SystemExit(1)

@@ -349,3 +349,9 @@ Confirmed DB-trigger defect: [#592](https://github.com/Egkurilov/BOOHTACORD/issu
 ## Archive and release follow-up
 
 [Current-source archive lifecycle and native availability/release review](archive-release-followup/README.md):93scoped sets; I287.C6 advances only to PARTIAL. JPEG/GIF native upload remains BLOCKED/NOT_RUN. PR590 tested-tree CI is recorded with skips; physical acceptance remains separate. All480source texts/13qualifiers retained;43consolidation decisions untouched.
+
+## Voice timeout policy — isolated API
+
+[55API controls and19nearest native tests](voice-timeout-policy/README.md) pass with0skips; I287.C9 isPARTIAL. Target-only voice restriction preserves HTTPsessions/TEXT/DM and normal lift never recreates lease. Connected SFU eviction/issuedJWT reconnect/UI remain separate;8.53s window did not cover15sworker poll.94scoped sets,480original requirement texts,13sourcequalifiers;43consolidation decisions untouched. Full signed-candidate attempt3 isBLOCKED: GitHub failed to allocate mandatorymacOS runner; strictfanin retained, signing skipped.
+
+[Scheduled dispatcher follow-up](voice-timeout-dispatch/README.md):35.203s covers two15s ticks plus5s dispatch budget. One real terminal receipt and pending true->false observed;8nearest native events PASS/0skips. No connected participant/JWT-reconnect/UI proof.95scoped sets; I287.C9 remainsPARTIAL.

@@ -1,0 +1,30 @@
+{
+  "utc": "2026-10-28T21:38:13.979910+00:00",
+  "status": "PASS",
+  "target_timeout_none_by_normal_lift": true,
+  "one_owned_lease_and_intent_removed_after_capture": true,
+  "own_sessions_revoked_live401_removed": [
+    "admin",
+    "a"
+  ],
+  "selected_table_baselines_restored": 9,
+  "nine_services_unchanged": [
+    "api",
+    "web",
+    "proxy",
+    "postgres",
+    "livekit",
+    "collector",
+    "tempo",
+    "prometheus",
+    "grafana"
+  ],
+  "source_helpers_frozen_previous_packets_unchanged": true,
+  "health_HTTP": 200,
+  "topology_revision_before": 45,
+  "topology_revision_after": 47,
+  "audit_metadata_delta": 5,
+  "API_log_SHA256": "c10861e72d29820b26c71aff2bc0b683c8e2ecd50f5cec7f76f5556721b8cb00",
+  "known_privatevalue_log_matches": 0,
+  "limit": "Expected monotonic topology/owned audit retained; selected baselines only, no entireDB equality. No participant/SFU room was created."
+}

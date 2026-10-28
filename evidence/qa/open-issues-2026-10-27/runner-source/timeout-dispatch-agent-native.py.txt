@@ -1,0 +1,8 @@
+import json,subprocess
+from common import P,Q,read,write,sha,state,now
+b=read(P/'before.json');assert all(sha((P/f).read_bytes())==h for f,h in b['helper_hashes'].items())
+cmd=[r'C:\Program Files\Go\bin\go.exe','test','-json','-count=1','./internal/media/dispatch_voice_sfu_revocation'];r=subprocess.run(cmd,cwd=Q/'backend',capture_output=True,timeout=90)
+(P/'private/native.jsonl').write_bytes(r.stdout);(P/'private/native.stderr').write_bytes(r.stderr);events=[json.loads(l) for l in r.stdout.splitlines() if l.startswith(b'{')]
+passed=[e['Test'] for e in events if e['Action']=='pass' and e.get('Test')];skips=[e for e in events if e['Action']=='skip'];fails=[e for e in events if e['Action']=='fail']
+write(P/'native-result.json',{'utc':now(),'command':cmd,'exit':r.returncode,'PASS':len(passed),'passed_tests':passed,'skip_events':len(skips),'fail_events':len(fails),'stdout_SHA256':sha(r.stdout),'selected_tables_unchanged':state()==b['database'],'prior19_timeout_tests_rerun':False,'scope':'Worker repository/service/deadline/causal privacy unit tests; no actual RTC proof'})
+assert r.returncode==0 and passed and not skips and not fails and state()==b['database'];print('PASS nearestdifferentworker tests='+str(len(passed))+';0skips;no prior19repeat')

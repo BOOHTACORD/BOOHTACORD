@@ -1,0 +1,51 @@
+import json,uuid
+from common import P,write,save,request,quote,sql,expiry,now,sha
+from observe import work,poll
+def run(c):
+    rows=[];admin=c['sessions']['admin']['cookie'];old=c['sessions']['a_old']['cookie'];current=c['sessions']['a_current']['cookie'];b=c['sessions']['b']['cookie'];target=c['accounts']['a'];manage='/api/v1/admin/accounts/'+target+'/voice-timeout';view='/api/v1/accounts/'+target+'/voice-timeout';join='/api/v1/voice/channels/'+c['voice']+'/leases';text='/api/v1/channels/'+c['text']+'/messages';dm='/api/v1/direct-messages/'+c['dm']+'/messages'
+    def check(name,status,path,method='GET',body=None,cookie=admin):
+        code,headers,value=request(path,method,body,cookie);item={'name':name,'expected_HTTP':status,'actual_HTTP':code,'result':'PASS' if code==status else 'FAIL','response_SHA256':sha(json.dumps(value,sort_keys=True).encode())}
+        if path.endswith('/voice-timeout') and code in [200,202]:item['timeout_state']=value;assert headers.get('Cache-Control')=='no-store'
+        rows.append(item);write(P/'runtime-checks.json',{'utc':now(),'checks':rows});assert code==status,name+' HTTP'+str(code)
+        return value
+    def send(phase,cookie):
+        for kind,path in [('TEXT',text),('DM',dm)]:
+            value=check(phase+'-'+kind+'-send',201,path,'POST',{'client_message_id':str(uuid.uuid4()),'body':c['body']+' '+phase+' '+kind},cookie);c[kind+'_messages'].append(value['id']);save(c)
+            received=check(phase+'-'+kind+'-peer-read',200,path,cookie=b);assert any(m['id']==value['id'] and m['body']==c['body']+' '+phase+' '+kind for m in received['messages'])
+    def lease(alias,cookie,session_alias):
+        value=check(alias+'-explicit-join',201,join,'POST',{'transfer':False},cookie);c['leases'][alias]={'id':value['id'],'session':session_alias};save(c);return value['id']
+    for label,cookie in [('admin',admin),('old',old),('current',current)]:
+        state=check('initial-none-'+label,200,view,cookie=cookie);assert not state['active'] and not state['revocation_pending'] and 'expires_at' not in state and 'reason_code' not in state
+    check('peer-state-private',403,view,cookie=b);check('anonymous-read',401,view,cookie=None)
+    sample={'expires_at':expiry(600),'reason_code':'DISRUPTION'}
+    check('member-cannot-set',403,manage,'PUT',sample,old);check('member-cannot-lift',403,manage,'DELETE',cookie=old);check('anonymous-set',401,manage,'PUT',sample,None)
+    for name,body in [('past',{'expires_at':expiry(-60),'reason_code':'OTHER'}),('over24h',{'expires_at':expiry(90000),'reason_code':'OTHER'}),('reason-not-allowlisted',{'expires_at':expiry(600),'reason_code':'BAD'}),('bad-date',{'expires_at':'not-date','reason_code':'OTHER'}),('missing-expiry',{'reason_code':'OTHER'}),('unknown-field',{**sample,'extra':True})]:check('validation-'+name,400,manage,'PUT',body)
+    assert sql('SELECT count(*) FROM voice_timeouts WHERE user_id='+quote(target)+';').strip()=='0'
+    stale=c['sessions']['admin_stale']['cookie'];check('revoke-own-stale-admin',204,'/api/v1/auth/logout','POST',{},stale);check('stale-admin-cannot-set',401,manage,'PUT',sample,stale)
+    send('before',old);oldlease=lease('target_old',old,'a_old');credential_path='/api/v1/voice/leases/'+oldlease+'/credential'
+    credential=check('old-lease-credential-positive',200,credential_path,'POST',cookie=old);c['issued_credentials']=[credential['token']];save(c)
+    check('sibling-session-cannot-reuse-lease',409,credential_path,'POST',cookie=current)
+    c['last_set']={'expires_at':expiry(600),'reason_code':'DISRUPTION'};save(c);restricted=check('set-DISRUPTION',202,manage,'PUT',c['last_set']);assert restricted['active'] and restricted['revoked_leases']==1
+    assert sql('SELECT count(*) FROM voice_leases WHERE id='+quote(oldlease)+" AND revoked_at IS NOT NULL AND revocation_reason='KICK';").strip()=='1';work(c,'after-set-commit')
+    for label,cookie in [('old',old),('current',current)]:
+        session=check('timeout-keeps-HTTP-session-'+label,200,'/api/v1/auth/session',cookie=cookie);assert session['authenticated'] and session['account_id']==target
+        state=check('timeout-self-state-'+label,200,view,cookie=cookie);assert state['active'] and state['reason_code']=='DISRUPTION'
+        for transfer in [False,True]:
+            denied=check('timeout-join-denied-'+label+'-'+str(transfer),409,join,'POST',{'transfer':transfer},cookie);assert denied['error']['code']=='VOICE_TIMEOUT'
+        denied=check('revoked-old-lease-credential-'+label,409,credential_path,'POST',cookie=cookie);assert denied['error']['code']=='VOICE_LEASE_UNAVAILABLE'
+    control=lease('control_b',b,'b');check('control-B-release',204,'/api/v1/voice/leases/'+control,'DELETE',cookie=b)
+    send('during',current)
+    for reason,seconds in [('HARASSMENT',1200),('SPAM',1800),('OTHER',86398)]:
+        c['last_set']={'expires_at':expiry(seconds),'reason_code':reason};save(c);value=check('change-'+reason,202,manage,'PUT',c['last_set']);assert value['active'] and value['reason_code']==reason and value['revoked_leases']==0
+        if reason=='HARASSMENT':
+            before=sql("SELECT count(*) FROM audit_events WHERE target_user_id="+quote(target)+" AND event_type='VOICE_TIMEOUT_SET';").strip();check('same-set-idempotent',202,manage,'PUT',c['last_set']);assert sql("SELECT count(*) FROM audit_events WHERE target_user_id="+quote(target)+" AND event_type='VOICE_TIMEOUT_SET';").strip()==before
+    work(c,'before-normal-lift');lift=check('normal-lift',200,manage,'DELETE');assert not lift['active'] and 'expires_at' not in lift and 'reason_code' not in lift
+    check('lift-idempotent',200,manage,'DELETE');work(c,'after-normal-lift')
+    assert sql('SELECT count(*) FROM voice_sfu_revocations WHERE lease_id='+quote(oldlease)+';').strip()=='1'
+    assert sql('SELECT count(*) FROM voice_leases WHERE user_id='+quote(target)+' AND revoked_at IS NULL;').strip()=='0'
+    check('lift-does-not-restore-old-credential',409,credential_path,'POST',cookie=old)
+    send('after',old);newlease=lease('target_new',current,'a_current');newcredential=check('explicit-new-lease-credential',200,'/api/v1/voice/leases/'+newlease+'/credential','POST',cookie=current);c['issued_credentials'].append(newcredential['token']);save(c)
+    check('new-explicit-lease-release',204,'/api/v1/voice/leases/'+newlease,'DELETE',cookie=current);poll(c)
+    final=check('final-self-state-no-timeout',200,view,cookie=current);assert not final['active']
+    write(P/'policy-result.json',{'utc':now(),'status':'PASS_SCOPED','reason_allowlist_accepted':['DISRUPTION','HARASSMENT','SPAM','OTHER'],'past_and_over24h_rejected':True,'near24h_future_accepted':True,'old_and_current_HTTP_sessions_remained_valid':True,'old_lease_revoked_and_credential_refresh409':True,'timeout_Acquire_transfer_false_true409':True,'control_account_join201':True,'TEXT_DM_before_during_after201_and_peer200':True,'lift_keeps_old_lease_revoked_and_requires_new_explicit_Join':True,'durable_work_survives_lift':True,'actual_issued_JWT_direct_LiveKit_reconnect':'NOT_RUN','SFU_connected_participant_eviction':'NOT_RUN','native_Web_UI_and_auto_unmute_rejoin':'NOT_RUN; backend no lease resurrection proved only'})
+    return rows

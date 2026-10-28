@@ -1144,7 +1144,8 @@
             "archive-release-followup/phone-upload/summary-final.json",
             "archive-release-followup/audio-availability.json",
             "archive-release-followup/phone-upload-resume/summary.json",
-            "archive-release-followup/signed-candidate-b74/summary.json"
+            "archive-release-followup/signed-candidate-b74/summary.json",
+            "archive-release-followup/signed-candidate-b74-full-rerun/summary.json"
           ],
           "execution": "node .out/qa-goal/native_realtime_run.mjs; node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback; node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py; python .out/qa-goal/android_filechooser.py; Physical listening at PC and phone; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python -X utf8 .out/qa-goal/verify_android_candidate.py; node .out/qa-goal/native_upgrade_peer.mjs before; python -X utf8 .out/qa-goal/android_candidate_install.py; python -X utf8 .out/qa-goal/upgrade_restore_owned_dm.py; node .out/qa-goal/native_upgrade_peer.mjs after; python -X utf8 .out/qa-goal/android_candidate_after.py; node .out/qa-goal/native_ptt_peer.mjs upgrade-final; python -X utf8 .out/qa-native-image-formats/critical_checks.py; python -X utf8 .out/qa-native-image-formats/denial_review.py; python -X utf8 .out/qa-native-image-formats/denied_payloads.py; python -X utf8 .out/qa-native-image-formats/revocation.py; python -X utf8 .out/qa-agent-phone/preflight.py; use phone/summary.json actual_commands for prepare/send/reveal/native download/save/verify; cleanup_batch.py; Follow restart/summary.json exact commands and cleanup; Fresh native existing DM list/private expected-peer comparison; see windows/attempt2/summary.json; Read-onlysource/APKpreflight; ONEauthorized amstart -n ru.boohtacord.app/.MainActivity; freshUI/room/media availabilityguards only. No picker/upload/send/nativeDelete/peerAPIcommand executed",
           "platform": "Physical Samsung SM-A576B Android16; signed 1.0.45+2080 paired with Chrome; Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Physical Samsung SM-A576B Android16, signed1.0.45+2080; actual Android permission controller; headed Chrome peer; Physical Samsung SM-A576B Android16; signed1.0.45+2080; protected production roster read by controlled peer; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Physical Windows + Samsung; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS",
@@ -1345,7 +1346,8 @@
         "archive-release-followup/phone-upload/summary-final.json",
         "archive-release-followup/audio-availability.json",
         "archive-release-followup/phone-upload-resume/summary.json",
-        "archive-release-followup/signed-candidate-b74/summary.json"
+        "archive-release-followup/signed-candidate-b74/summary.json",
+        "archive-release-followup/signed-candidate-b74-full-rerun/summary.json"
       ],
       "defects": [
         582,
@@ -9625,10 +9627,18 @@
           "requirement": "#97: explicit authorized timeout set/change/lift, expires<=24h/reason allowlist, target/current-session changes, old credentials denied and eventual SFU revocation; pending status remains truthful. TEXT/DM unaffected; no local auto-unmute/rejoin. Actual native dialog and Web controls; #59/#63 acceptance as applicable.",
           "source_checkbox": " ",
           "id": "I287.C9",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental. | Supported Computer Use node_repl @oai/sky: select returned native window, observe, perform one actual UI action and refresh; follow the exact source row task script. Preserve windows-admin-entry-attempt.json for the current input-cache blocker. | Use applicable cases.json ADB/native helper commands and native-image/reproduce.md; run the remaining row's actual UI/OS steps on the physical approved candidate and verify the paired result.",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-voice-timeout-lease-session-and-chat-policy",
+            "ISOLATED-voice-timeout-scheduled-dispatch-absent-participant"
+          ],
+          "evidence": [
+            "voice-timeout-policy/summary.json",
+            "voice-timeout-policy/pending-limit.json",
+            "voice-timeout-policy/worker-wiring-review.json",
+            "voice-timeout-dispatch/summary.json"
+          ],
+          "execution": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental. | Supported Computer Use node_repl @oai/sky: select returned native window, observe, perform one actual UI action and refresh; follow the exact source row task script. Preserve windows-admin-entry-attempt.json for the current input-cache blocker. | Use applicable cases.json ADB/native helper commands and native-image/reproduce.md; run the remaining row's actual UI/OS steps on the physical approved candidate and verify the paired result.; python -B -X utf8 .out/qa-agent-timeout/run.py; python -B -X utf8 .out/qa-agent-timeout-dispatch/run.py",
           "platform": "Disposable owned PostgreSQL/API/LiveKit target and bounded synthetic accounts/data; never shared production fault/load injection. | Physical installed Windows native candidate; no hidden-engine or source/widget substitution. | Physical Samsung Android16 now available; Pixel/iOS/emulator or other OS versions remain distinct variants.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
           "result": null,
@@ -9647,10 +9657,17 @@
             ],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-voice-timeout-lease-session-and-chat-policy",
+              "ISOLATED-voice-timeout-scheduled-dispatch-absent-participant"
+            ]
           },
           "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
+          "witness_limits": [
+            "ISOLATED-voice-timeout-lease-session-and-chat-policy: 55HTTP/19native PASS,0skips; logical lease/credential denial and target-only policy; HTTP sessions/TEXT/DM survive; explicit lift never restores lease. Initial8.53s pending window below15s worker interval; actual dispatch, connected SFU eviction, issuedJWT direct reconnect and Web/native UI NOT_RUN.11selected tables restored; topology42->45 and13own audit metadata receipts retained.",
+            "ISOLATED-voice-timeout-scheduled-dispatch-absent-participant: 35.203s/30samples, actual worker attempt1/completion, pending true->false while timeout remains active; DB latency5.342334s is one sample, not SLO/p95.0RTCparticipants/0credentials. Connected eviction, issuedJWT reconnect and UI NOT_RUN.9selected tables restored, topology45->47 and5own audit metadata receipts retained."
+          ]
         },
         {
           "section": "Matrix",
@@ -10003,7 +10020,9 @@
         "ANDROID-ADMIN-explicit-search-after-owned-delete",
         "WINDOWS-native-admin-seven-readonly-sections",
         "ISOLATED-search-filtered-cursor-ACL",
-        "ISOLATED-archive-restore-held-upload-and-write-denial"
+        "ISOLATED-archive-restore-held-upload-and-write-denial",
+        "ISOLATED-voice-timeout-lease-session-and-chat-policy",
+        "ISOLATED-voice-timeout-scheduled-dispatch-absent-participant"
       ],
       "evidence": [
         "privacy-result.json",
@@ -10022,7 +10041,9 @@
         "native-admin-search-privacy/summary.json",
         "coordinated-agents-2026-10-28/windows/admin/summary.json",
         "coordinated-agents-2026-10-28/search/aggregate-result.json",
-        "archive-release-followup/archive/summary.json"
+        "archive-release-followup/archive/summary.json",
+        "voice-timeout-policy/summary.json",
+        "voice-timeout-dispatch/summary.json"
       ],
       "defects": [
         581,
@@ -16474,7 +16495,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-28T20:53:25.607853+00:00",
+  "updated_utc": "2026-10-28T21:47:28.035765+00:00",
   "known_defect_issues": [
     579,
     580,

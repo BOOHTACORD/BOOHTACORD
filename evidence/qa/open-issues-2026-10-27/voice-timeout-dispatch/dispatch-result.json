@@ -1,0 +1,30 @@
+{
+  "utc": "2026-10-28T21:38:07.728397+00:00",
+  "status": "PASS_BACKEND_DISPATCH_ABSENT_PARTICIPANT_SCOPED",
+  "observation_seconds": 35.20299999997951,
+  "samples": 30,
+  "source_interval_seconds": 15,
+  "dispatch_budget_seconds": 5,
+  "worker_attempt_observed": true,
+  "completion_observed": true,
+  "first_attempt_observed_seconds": 6.264999999984866,
+  "first_completion_observed_seconds": 6.264999999984866,
+  "final_work": {
+    "completed": true,
+    "attempt_count": 1,
+    "last_error_code": null,
+    "claimed": false,
+    "completion_latency_seconds": 5.342334
+  },
+  "final_timeout_state": {
+    "active": true,
+    "expires_at": "2026-10-28T21:47:32.443655Z",
+    "reason_code": "OTHER",
+    "revoked_leases": 0,
+    "revocation_pending": false
+  },
+  "connected_participants": 0,
+  "actual_eviction": "NOT_RUN",
+  "old_JWT_reconnect": "NOT_RUN",
+  "scope": "Real scheduled worker queue/RoomService terminal receipt for absent participant; no physical or connected-media proof"
+}

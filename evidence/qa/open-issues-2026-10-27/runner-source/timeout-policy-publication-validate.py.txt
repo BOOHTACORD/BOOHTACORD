@@ -1,0 +1,33 @@
+"""Preserve source criteria and prior cases; validate both new timeout facets."""
+import sys,json,subprocess,collections,ast,re
+from pathlib import Path
+Q=Path(__file__).resolve().parents[2];sys.path.insert(0,str(Q/'.out/qa-archive-release'))
+from common import read,write,code,collect,O,D,B,needles
+for folder in [Q/'.out/qa-agent-timeout/private',Q/'.out/qa-agent-timeout-dispatch/private']:
+ for f in folder.glob('*.json'):collect(read(f))
+BASE='623e3a9a46fff1638a3e865e6f817b17bf13ca89'
+def old(name):return json.loads(subprocess.check_output(['git','show',BASE+':'+(O/name).relative_to(B).as_posix()],cwd=B))
+m=read(O/'matrix.json');cs=read(O/'cases.json');before=old('matrix.json');prior=old('cases.json');rows={r['id']:r for i in m['issues'] for r in i['criteria']};br={r['id']:r for i in before['issues'] for r in i['criteria']}
+assert len(rows)==480 and len(cs['cases'])==95 and cs['cases'][:93]==prior['cases']
+assert {k:r['requirement'] for k,r in rows.items()}=={k:r['requirement'] for k,r in br.items()}
+assert {k:(br[k]['status'],r['status']) for k,r in rows.items() if br[k]['status']!=r['status']}=={'I287.C9':('NOT_RUN','PARTIAL')}
+assert m['source_qualifier_count']==13 and m['source_qualifier_catalog']==before['source_qualifier_catalog']
+for i in m['issues']:
+ b=next(x for x in before['issues'] if x['number']==i['number']);assert i.get('mandatory_original_source_qualifiers')==b.get('mandatory_original_source_qualifiers')
+ids={c['id'] for c in cs['cases']}
+for r in rows.values():assert set(r['execution_cases'])<=ids
+p=read(O/'voice-timeout-policy/runtime-checks.json');assert len(p['checks'])==55 and all(c['result']=='PASS' for c in p['checks'])
+n=read(O/'voice-timeout-policy/native-result.json');assert n['PASS']==19 and n['exit']==0 and n['test_skips']==0 and not n['package_skip_events']
+d=read(O/'voice-timeout-dispatch/dispatch-result.json');assert d['observation_seconds']>=35 and d['observation_seconds']<40 and d['samples']==30 and d['final_work']['completed'] and d['final_work']['attempt_count']==1 and not d['final_timeout_state']['revocation_pending'] and d['final_timeout_state']['active'] and d['connected_participants']==0
+ci=read(D/'signed-candidate-b74-full-rerun/summary.json');assert ci['status'].startswith('BLOCKED_HOSTED_MACOS') and ci['macos']['runner_id']==0 and ci['macos']['executed_steps']==0 and ci['artifact']['signed_count']==0
+for c in cs['cases']:
+ for k in ['protects','command','platform','mandatory_when','result']:assert c.get(k),[c['id'],k]
+for folder in [O/'voice-timeout-policy',O/'voice-timeout-dispatch',D/'signed-candidate-b74-full-rerun']:
+ for f in folder.rglob('*'):
+  if not f.is_file():continue
+  s=f.read_text(encoding='utf-8');assert f.suffix in ['.json','.md'] and not any(n in s for n in needles) and not re.search(r'C:[/\\]+Users[/\\]+egkur',s),f.name
+  if f.suffix=='.json':json.loads(s)
+for f in Path(__file__).parent.glob('*.py'):s=f.read_text(encoding='utf-8');ast.parse(s);assert len(s.splitlines())<=120
+assert not subprocess.check_output(['git','diff',BASE,'--','backend','clients','tools','backlog'],cwd=B)
+result={'status':'PASS','source_texts_preserved':480,'previous_sets_preserved':93,'current_scopes':95,'qualifiers_preserved':13,'only_status_change_since_base':'I287.C9 NOT_RUN -> PARTIAL','status_counts':dict(collections.Counter(r['status'] for r in rows.values())),'runtime_controls':55,'native_timeout':19,'native_dispatch_events':8,'hosted_candidate':'BLOCKED_MACOS_CAPACITY','new_binary_or_private_payloads':0,'whole_gate_closures':0,'consolidation43_touched':False}
+write(O/'voice-timeout-policy/validation.json',result);code(Path(__file__),'timeout-policy-publication-');print(json.dumps(result))

@@ -1454,6 +1454,34 @@
       "result": "archive-release-followup/phone-upload/summary-final.json",
       "limits": "One normal authorized app activation. Settings returned before own profile/DM/navigation guard;0picker/upload/Send/peerGET/delete/logins/sessions/pushes/messages. JPEG/GIF runtime NOT_RUN. Active microphoneFGS and changing projection guard are observations without cause/outcome inference. Not browser paste or system-share acceptance.",
       "defects": []
+    },
+    {
+      "id": "ISOLATED-voice-timeout-lease-session-and-chat-policy",
+      "status": "PASS_SCOPED",
+      "protects": "Authorized bounded timeout state/lease policy; sessions and TEXT/DM remain valid; normal lift does not reactivate old lease; pending intent remains truthful without physical claims",
+      "command": "python -B -X utf8 .out/qa-agent-timeout/run.py",
+      "platform": "Windows HTTP producer/existing isolated localQA API source072426d6/real PostgreSQL17.6; no media client",
+      "mandatory_when": "Before accepting isolated API/backend timeout facet; fullI287.C9 remainsPARTIAL",
+      "issues": [
+        287
+      ],
+      "result": "voice-timeout-policy/summary.json",
+      "limits": "55HTTP/19native PASS,0skips; logical lease/credential denial and target-only policy; HTTP sessions/TEXT/DM survive; explicit lift never restores lease. Initial8.53s pending window below15s worker interval; actual dispatch, connected SFU eviction, issuedJWT direct reconnect and Web/native UI NOT_RUN.11selected tables restored; topology42->45 and13own audit metadata receipts retained.",
+      "defects": []
+    },
+    {
+      "id": "ISOLATED-voice-timeout-scheduled-dispatch-absent-participant",
+      "status": "PASS_SCOPED",
+      "protects": "Actual15s scheduled dispatcher attempts owned revocation and GETpending tracks terminal RoomService receipt during35–40s window",
+      "command": "python -B -X utf8 .out/qa-agent-timeout-dispatch/run.py",
+      "platform": "Existing isolated localAPI source072426d6/PG17.6/LiveKitRoomService; no RTCclient or participant",
+      "mandatory_when": "Before accepting actual dispatcher backend facet; full I287.C9/media gate remains PARTIAL",
+      "issues": [
+        287
+      ],
+      "result": "voice-timeout-dispatch/summary.json",
+      "limits": "35.203s/30samples, actual worker attempt1/completion, pending true->false while timeout remains active; DB latency5.342334s is one sample, not SLO/p95.0RTCparticipants/0credentials. Connected eviction, issuedJWT reconnect and UI NOT_RUN.9selected tables restored, topology45->47 and5own audit metadata receipts retained.",
+      "defects": []
     }
   ]
 }

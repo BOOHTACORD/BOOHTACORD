@@ -1,0 +1,61 @@
+{
+  "status": "SUPPORTED_ALTERNATE_APPLE_POOL_CANDIDATE_REQUIRES_REVIEWED_SOURCE_CHANGE_AND_REAL_QUALIFICATION",
+  "runner_label": "macos-26-intel",
+  "host_OS_family": "macOS26",
+  "host_CPU": "nativeIntel/x86_64",
+  "VM_provider": "GitHubhosteddisposableApplepool",
+  "runner_arch_context": "RUNNER_OS=macOS,RUNNER_ARCH=X64 asactualprovider values; neveroverride/spoof",
+  "same_unit_entrypoint": "python3 -m tools.ci.flutter_gates.run macos",
+  "same_eight_tests_and_zero_skips": true,
+  "same_SDK": "Flutter3.47.7/Dart3.13.5/frameworkabaf9c523780a608bd46686fd5e53740a07077f8",
+  "SDK_x64_release": {
+    "hash": "abaf9c523780a608bd46686fd5e53740a07077f8",
+    "channel": "stable",
+    "version": "3.47.7",
+    "dart_sdk_version": "3.13.5",
+    "dart_sdk_arch": "x64",
+    "release_date": "2026-10-08T23:29:26.843370Z",
+    "archive": "stable/macos/flutter_macos_3.47.7-stable.zip",
+    "sha256": "17d39b000a5d0681e3f7b61a105a36f6f31dd41ab9073f625fd466f38035f901"
+  },
+  "SDK_public_endpoint_status": "ExactmanifestGET200 andx64bundleHEAD200; fullbinarynotdownloaded",
+  "provider_catalog_supported": true,
+  "current_Intel_capacity_observed": false,
+  "actual_Intel_install_and_eight_tests": "NOT_RUN",
+  "existing_b74_workflow_can_target_Intel_unchanged": false,
+  "minimal_future_review_boundary": [
+    {
+      "file": ".github/workflows/ci-flutter.yaml",
+      "change": "Pinmacos jobonly tomacos-26-intel; retain15min/allsteps/pins/mandatoryuploads/needs/outputnames"
+    },
+    {
+      "file": "tools/ci/flutter_gates/workflow.py",
+      "change": "Updateexactreviewedmacos runnerconstraint consistently; do notacceptLinux,unknown,selfhosted,latest labels oroptionaljobs"
+    },
+    {
+      "file": "tools/ci/flutter_gates/test_workflow.py",
+      "change": "Focusedtestfirst: reviewedIntelpinaccepted; unsupported/nonApple/unpinnedhostsrejected. Preserveexistingnegativecoverage/nooptionalsteps/strictaggregate tests."
+    }
+  ],
+  "untouched_contracts": [
+    "tools/verify/macos_unit/events.py eightnamesandno-skips",
+    "tools/verify/macos_unit/run.py Darwinonly/noemulation",
+    "Flutter/Dart/framework/actionpins andSDK-onlyarchscopedcache/public/privatepubseparation",
+    "allfourprofiles andsame-source/run/attempt/namespace strictfanin",
+    "release signer remainsdependentonsuccessfulfullgate",
+    "fullSDKARM+x64matrix andphysicalmediaacceptance remainseparate"
+  ],
+  "future_native_qualification": [
+    "RunfocusedPythonpolicy/setup/macos_unitnegativecontroltestsonfutureexactsource",
+    "Runactualunchangedmacosprofile commandonnativeGitHubmacos-26-intel; retain macos-unit result8success/0skip andtestmachineJSONL",
+    "Retain profilepart macos.json boundtofutureexactsource/run/attempt/namespace andverifiedSDK",
+    "Require other3profilepartsfromsamefutureexecution andstrictaggregatePASS beforeanysigning"
+  ],
+  "not_allowed_workarounds": [
+    "No remapstandardmacos-26 toIntel",
+    "NoLinuxPlatformmock/cross-emulatedreplacementforactualApplehost",
+    "No importedmacospart fromanother run/attempt/source",
+    "No skipped/optionalunitjob orchanged8testinventory",
+    "No paidlargerpool/security/cacheconfiguration change inferredfromthisreview"
+  ]
+}

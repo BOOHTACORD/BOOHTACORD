@@ -1,0 +1,51 @@
+{
+  "at_utc": "2026-10-28T21:40:54.272189+00:00",
+  "URL": "https://storage.googleapis.com/flutter_infra_release/releases/releases_macos.json",
+  "source": "ExactMANIFEST_BASE_URL pinnedinstaller1a449444c387b1966244ae4d4f8c696479add0b2:15-17",
+  "TLS_default_validation": true,
+  "credential_or_token_used": false,
+  "prior404_interpretation": "EarlierguessedlegacyURLincludedextra/flutter/pathcomponent; those404arenotSDKavailabilityfailures",
+  "HTTP": 200,
+  "manifest_SHA256": "24b326850806cc75c81371cfb73f071d3154fd877b8a7fb29484c5248be13b7b",
+  "matching_release_rows": [
+    {
+      "hash": "abaf9c523780a608bd46686fd5e53740a07077f8",
+      "channel": "stable",
+      "version": "3.47.7",
+      "dart_sdk_version": "3.13.5",
+      "dart_sdk_arch": "x64",
+      "release_date": "2026-10-08T23:29:26.843370Z",
+      "archive": "stable/macos/flutter_macos_3.47.7-stable.zip",
+      "sha256": "17d39b000a5d0681e3f7b61a105a36f6f31dd41ab9073f625fd466f38035f901"
+    },
+    {
+      "hash": "abaf9c523780a608bd46686fd5e53740a07077f8",
+      "channel": "stable",
+      "version": "3.47.7",
+      "dart_sdk_version": "3.13.5",
+      "dart_sdk_arch": "arm64",
+      "release_date": "2026-10-08T23:21:43.136712Z",
+      "archive": "stable/macos/flutter_macos_arm64_3.47.7-stable.zip",
+      "sha256": "dd9da574c3168460550117eb0e8dd0313ae934fabf64a82a6d557fff5fd1422e"
+    }
+  ],
+  "bundle_HEAD": [
+    {
+      "URL": "https://storage.googleapis.com/flutter_infra_release/releases/stable/macos/flutter_macos_3.47.7-stable.zip",
+      "method": "HEAD",
+      "binary_downloaded": false,
+      "architecture": "x64",
+      "HTTP": 200,
+      "content_length": "2262633352"
+    },
+    {
+      "URL": "https://storage.googleapis.com/flutter_infra_release/releases/stable/macos/flutter_macos_arm64_3.47.7-stable.zip",
+      "method": "HEAD",
+      "binary_downloaded": false,
+      "architecture": "arm64",
+      "HTTP": 200,
+      "content_length": "2263893135"
+    }
+  ],
+  "status": "PASS_PRIMARY_PINNED_MANIFEST_X64_ARM64_FLUTTER_DART_IDENTITY"
+}

@@ -1,0 +1,22 @@
+{
+  "utc": "2026-10-28T21:27:57.236177+00:00",
+  "status": "PASS_SCOPED",
+  "criterion": "I287.C9",
+  "protects": "Authorized bounded timeout state/lease policy; sessions and TEXT/DM remain valid; normal lift does not reactivate old lease; pending intent remains truthful without physical claims",
+  "command": "python -B -X utf8 .out/qa-agent-timeout/run.py",
+  "platform": "Windows HTTP producer/existing isolated localQA API source072426d6/real PostgreSQL17.6; no media client",
+  "mandatory_when": "Before accepting isolated API/backend timeout facet; fullI287.C9 remainsPARTIAL",
+  "runtime_controls": 55,
+  "cleanup_PASS": true,
+  "error_class": null,
+  "new_users": 0,
+  "NOT_RUN": [
+    "Already-issued JWT direct LiveKit reconnect denial",
+    "Connected SFU participant eviction/audio",
+    "Native/Web dialog and real auto-unmute/rejoin behavior",
+    "Physical/device/production acceptance"
+  ],
+  "production_touched": false,
+  "scope_description": "#97: explicit authorized timeout set/change/lift, expires<=24h/reason allowlist, target/current-session changes, old credentials denied and eventual SFU revocation; pending truthful; TEXT/DM unaffected, no auto-unmute/rejoin; native dialog/Web separate.",
+  "source_wording_note": "Condensed agent scope; matrix I287.C9 retains full original requirement unchanged."
+}

@@ -1,0 +1,11 @@
+{
+  "workflow_class": "review_gate",
+  "route": "media/dispatch_voice_sfu_revocation",
+  "packet": "actual-dispatch-absent-participant",
+  "branch": "No RTCclient pinned; no participant joined",
+  "guards": "ControlledA/B initialno timeout/lease/pending; one ownlease/oneintent; existingadmin/A2own sessions; normalLift and exactcleanup",
+  "checks": "Nearest newdispatchworker tests once;35–40s realworkerDB/GETpending sample; previous19timeouttests not repeated",
+  "NOT_RUN": "Actual eviction/alreadyissuedJWTdirectreconnect/native/UI/physical/production",
+  "stop": "Owncleanup,selectedfingerprints and9services/source/frozen packets preserved",
+  "diagnostics": "Optional service.go probe absent; exact remove_livekit_participant/client.go identified and read; no product outcome."
+}

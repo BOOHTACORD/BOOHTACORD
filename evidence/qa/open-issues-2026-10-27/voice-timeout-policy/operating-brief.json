@@ -1,0 +1,11 @@
+{
+  "workflow_class": "review_gate",
+  "route": "voice/manage_voice_timeout",
+  "packet": "I287.C9 isolated timeout API policy",
+  "literal_criterion": "#97: explicit authorized timeout set/change/lift, expires<=24h/reason allowlist, target/current-session changes, old credentials denied and eventual SFU revocation; pending truthful; TEXT/DM unaffected, no auto-unmute/rejoin; native dialog/Web separate.",
+  "guard_plan": "Existing controlled target MEMBER, initially no restriction/activelease/pendingwork; only own new sessions/VOICE/TEXT/messages; normal lift in finally; no role/clock/globalconfig/source changes",
+  "runtime_scope": "Lease/Acquire/credential admission, API sessions/TEXT/DM, durable intent state; no issued-JWT LiveKit reconnect or connected participant/media",
+  "limits": "Physical eviction,issued oldJWT direct reconnect,actual SFU participant join,native/Web/UI NOT_RUN",
+  "checks": "Nearest native Go once0testskips, real local API/PG, own teardown with exactcounts/fingerprints",
+  "stop": "All own resources/sessions/timeout removed, olddata/services/source/frozen receipts preserved"
+}

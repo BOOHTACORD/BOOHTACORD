@@ -1,0 +1,111 @@
+{
+  "utc": "2026-10-28T21:31:02.458410+00:00",
+  "status": "READ_ONLY_SOURCE_WIRING_ADDENDUM_NOT_NEW_RUNTIME_PROOF",
+  "consumer_leaf": "backend/internal/media/dispatch_voice_sfu_revocation/worker",
+  "source_poll_interval_seconds": 15,
+  "source_initial_attempt_at_worker_start": true,
+  "source_sequential_periodic_loop": true,
+  "source_dispatch_timeout_seconds": 5,
+  "source_batch_limit": 100,
+  "observed_pending_window_seconds": 8.527146,
+  "window_guarantees_poll": false,
+  "analysis": "8.527146 seconds is shorter than the15-second poll interval. Periodic.Start attempts immediately at worker startup, then follows its ticker; jobs were created later and ticker phase was not observed. This window does not guarantee a poll after new intents, even when wiring/preconditions are present. An observed attempt count0 is not evidence of a disabled worker or a product defect.",
+  "source_wiring_preconditions": [
+    "Successful runtime configuration/database/routes startup and uncancelled context",
+    "RoomRemover constructor succeeds from configured room service endpoint and API key/secret",
+    "StartVoice is called on the normal API startup path without a dedicated feature flag",
+    "DispatchPending uses bounded5-second context and batch100; actual scheduling/queue depth/RPC outcome were not measured here"
+  ],
+  "local_configuration_flags_only": {
+    "api_running_at_packet_baseline": true,
+    "livekit_running_at_packet_baseline": true,
+    "same_API_config_verified_at_cleanup": true,
+    "database_setting_present": true,
+    "room_service_endpoint_present": true,
+    "API_key_present": true,
+    "API_secret_present": true,
+    "public_WS_endpoint_present": true,
+    "attachment_directory_present": true,
+    "worker_feature_toggle_required_by_read_source": false,
+    "worker_goroutine_or_dispatch_actual_execution_observed": false
+  },
+  "local_config_provenance": "Private pre-packet Docker snapshot, verified unchanged at cleanup; only presence/running booleans emitted, no env values/endpoints/credentials.",
+  "source_edges": [
+    {
+      "path": "backend/internal/media/dispatch_voice_sfu_revocation/worker/worker.go",
+      "raw_SHA256": "e7c205089f4e3124f1e17d85a2309990baf34b66b1c25335d7cef28792a23b7d",
+      "HEAD_LF_SHA256": "0314caca3380b3333ee6313e940940dd00aefffb3efe31d1a2aaf9e09a3560b4",
+      "matches": {
+        "consumer_interval": [
+          21
+        ]
+      },
+      "already_in_preexecution_source_binding": true
+    },
+    {
+      "path": "backend/internal/media/dispatch_voice_sfu_revocation/worker.go",
+      "raw_SHA256": "835b19eeb0cdd30e20bdea9b780e9a0a44c4e8fce41699a2f4c131758958688c",
+      "HEAD_LF_SHA256": "a445d594e563e072e29940be385044ee1b1f9690c8391004aff034f41fd5b26a",
+      "matches": {
+        "dispatch_timeout": [
+          10
+        ]
+      },
+      "already_in_preexecution_source_binding": true
+    },
+    {
+      "path": "backend/internal/lifecycle/periodic/worker.go",
+      "raw_SHA256": "e7e39a1b40adee7454e8c492d51b7e10253295d6ff45143ed7de43fe500ff225",
+      "HEAD_LF_SHA256": "f9262be5ea2170aa23cb8a396fae8c0ddc15071f10297166da6b75fc3c013587",
+      "matches": {
+        "initial_and_periodic_callback": [
+          25
+        ]
+      },
+      "already_in_preexecution_source_binding": false
+    },
+    {
+      "path": "backend/internal/app/worker_runtime/start.go",
+      "raw_SHA256": "78848fa8ddda0c2a1140e0bc385c1cc79c02005c7091260867012533c8e219b9",
+      "HEAD_LF_SHA256": "e0c80ade2068aae9e5e1e0655b0ccc5787aed8f4365b5689e977ba8d9ff5223b",
+      "matches": {
+        "worker_construction": [
+          29
+        ]
+      },
+      "already_in_preexecution_source_binding": false
+    },
+    {
+      "path": "backend/internal/app/runtime/run.go",
+      "raw_SHA256": "fce8aea5d6dd817477070cacb92cf0029f35056340d2b844f490ffbe4d120d01",
+      "HEAD_LF_SHA256": "b271a455a235df1b78802b4cc24e344e0c43d380d3264990a78d10a8d46655b8",
+      "matches": {
+        "unconditional_runtime_wiring": [
+          129
+        ]
+      },
+      "already_in_preexecution_source_binding": false
+    },
+    {
+      "path": "backend/internal/config/runtime/load.go",
+      "raw_SHA256": "d75d21fb265a8fd2c934c326590267fda281fe3800e28518762f1ca857571f14",
+      "HEAD_LF_SHA256": "8bbcdbec01eaa7303e8c8f6f284cf15eec51cfeacd3c2caef72205549e2016c3",
+      "matches": {
+        "remover_configuration": [
+          67
+        ]
+      },
+      "already_in_preexecution_source_binding": false
+    }
+  ],
+  "new_runtime_or_mutating_actions": false,
+  "new_intents_leases_sessions": 0,
+  "existing_frozen_artifacts_unchanged": true,
+  "NOT_RUN": [
+    "Actual dispatcher attempt/completion with an adequately scheduled window",
+    "Already-issued JWT direct LiveKit reconnect denial",
+    "Connected participant eviction",
+    "Native/Web/physical acceptance"
+  ],
+  "public_review": "Allow this metadata addendum and its hash manifest; no private identifiers,values,URLs,env dumps or host paths. Original public-review/integrity remain frozen."
+}

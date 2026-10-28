@@ -1,0 +1,85 @@
+{
+  "id": 123106128265,
+  "run_id": 40767012991,
+  "run_attempt": 3,
+  "name": "quality / macos",
+  "status": "completed",
+  "conclusion": "cancelled",
+  "started_at": "2026-10-28T21:16:08Z",
+  "completed_at": "2026-10-28T21:31:09Z",
+  "runner_id": 0,
+  "runner_name": "",
+  "runner_group_id": 0,
+  "labels": [
+    "macos-26"
+  ],
+  "check_run_url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/check-runs/123106128265",
+  "steps": [],
+  "check": {
+    "id": 123106128265,
+    "name": "quality / macos",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "started_at": "2026-10-28T21:16:08Z",
+    "completed_at": "2026-10-28T21:31:09Z",
+    "output": {
+      "title": null,
+      "summary": null,
+      "text": null,
+      "annotations_count": 4,
+      "annotations_url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/check-runs/123106128265/annotations"
+    },
+    "details_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40767012991/job/123106128265"
+  },
+  "annotations": [
+    {
+      "path": ".github",
+      "blob_href": "https://github.com/Egkurilov/BOOHTACORD/blob/b74fce609ad3ddbbfb0dbef81c5efae68195f20f/.github",
+      "start_line": 1,
+      "start_column": null,
+      "end_line": 1,
+      "end_column": null,
+      "annotation_level": "failure",
+      "title": "",
+      "message": "The job was not acquired by Runner of type hosted even after multiple attempts",
+      "raw_details": ""
+    },
+    {
+      "path": ".github",
+      "blob_href": "https://github.com/Egkurilov/BOOHTACORD/blob/b74fce609ad3ddbbfb0dbef81c5efae68195f20f/.github",
+      "start_line": 1,
+      "start_column": null,
+      "end_line": 1,
+      "end_column": null,
+      "annotation_level": "notice",
+      "title": "",
+      "message": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times.",
+      "raw_details": ""
+    },
+    {
+      "path": ".github",
+      "blob_href": "https://github.com/Egkurilov/BOOHTACORD/blob/b74fce609ad3ddbbfb0dbef81c5efae68195f20f/.github",
+      "start_line": 1,
+      "start_column": null,
+      "end_line": 1,
+      "end_column": null,
+      "annotation_level": "notice",
+      "title": "",
+      "message": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times.",
+      "raw_details": ""
+    },
+    {
+      "path": ".github",
+      "blob_href": "https://github.com/Egkurilov/BOOHTACORD/blob/b74fce609ad3ddbbfb0dbef81c5efae68195f20f/.github",
+      "start_line": 1,
+      "start_column": null,
+      "end_line": 1,
+      "end_column": null,
+      "annotation_level": "notice",
+      "title": "",
+      "message": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times.",
+      "raw_details": ""
+    }
+  ],
+  "observed_utc": "2026-10-28T21:33:20.520013+00:00"
+}

@@ -1,0 +1,25 @@
+import json,time
+from datetime import datetime,timedelta
+from common import P,sql,quote,request,write,save,now
+def observe(c):
+    admin=c['sessions']['admin']['cookie'];a=c['sessions']['a']['cookie'];target=c['accounts']['a'];manage='/api/v1/admin/accounts/'+target+'/voice-timeout';view='/api/v1/accounts/'+target+'/voice-timeout'
+    code,_,initial=request(view,cookie=a);assert code==200 and not initial['active'] and not initial['revocation_pending']
+    expiry=(datetime.fromisoformat(sql('SELECT clock_timestamp();').strip())+timedelta(minutes=10)).isoformat(timespec='microseconds');c['set_body']={'expires_at':expiry,'reason_code':'OTHER'};save(c)
+    code,_,value=request(manage,'PUT',c['set_body'],admin);assert code==202 and value['active'] and value['revoked_leases']==1
+    start=time.monotonic();deadline=start+40;goal=start+35;rows=[]
+    write(P/'intent.json',{'utc':now(),'HTTP':code,'state':value,'one_intent':True,'participants_joined':0})
+    while True:
+        remaining=deadline-time.monotonic();assert remaining>0,'Observation harddeadline exceeded'
+        raw=sql("SELECT row_to_json(x) FROM (SELECT completed_at IS NOT NULL AS completed,attempt_count,last_error_code,claim_token IS NOT NULL AS claimed,extract(epoch FROM completed_at-requested_at) AS completion_latency_seconds FROM voice_sfu_revocations WHERE lease_id="+quote(c['lease'])+") x;",timeout=min(3,remaining));db=json.loads(raw)
+        code,_,state=request(view,cookie=a,timeout=min(3,max(.1,deadline-time.monotonic())));assert code==200 and state['active']
+        if db['completed']:assert db['attempt_count']>=1 and not state['revocation_pending']
+        elif not state['revocation_pending']:
+            assert sql('SELECT count(*) FROM voice_sfu_revocations WHERE lease_id='+quote(c['lease'])+' AND completed_at IS NOT NULL;',timeout=2).strip()=='1'
+        elapsed=time.monotonic()-start;rows.append({'utc':now(),'elapsed_seconds':elapsed,'HTTP':code,'timeout_state':state,'work':db});write(P/'observations.json',{'observations':rows})
+        if time.monotonic()>=goal:break
+        time.sleep(min(1,max(0,goal-time.monotonic())))
+    elapsed=time.monotonic()-start;assert 35<=elapsed<=40
+    completed=any(r['work']['completed'] for r in rows);attempted=any(r['work']['attempt_count']>=1 for r in rows)
+    first_attempt=next((r['elapsed_seconds'] for r in rows if r['work']['attempt_count']>=1),None);first_done=next((r['elapsed_seconds'] for r in rows if r['work']['completed']),None)
+    result={'utc':now(),'status':'PASS_BACKEND_DISPATCH_ABSENT_PARTICIPANT_SCOPED' if completed and attempted else 'PENDING_OR_FAILED_WITHIN_BOUND_REQUIRES_REVIEW','observation_seconds':elapsed,'samples':len(rows),'source_interval_seconds':15,'dispatch_budget_seconds':5,'worker_attempt_observed':attempted,'completion_observed':completed,'first_attempt_observed_seconds':first_attempt,'first_completion_observed_seconds':first_done,'final_work':rows[-1]['work'],'final_timeout_state':rows[-1]['timeout_state'],'connected_participants':0,'actual_eviction':'NOT_RUN','old_JWT_reconnect':'NOT_RUN','scope':'Real scheduled worker queue/RoomService terminal receipt for absent participant; no physical or connected-media proof'}
+    write(P/'dispatch-result.json',result);return result

@@ -1,0 +1,61 @@
+{
+  "status": "PASS_CLOSED_PUBLIC_ALLOWLIST",
+  "review": "Filesystem/JSON/AST/hash review; no new runtime test from this review.",
+  "allowlist": [
+    "README.md",
+    "before.json",
+    "checks.py",
+    "cleanup.json",
+    "cleanup.py",
+    "common.py",
+    "dispatch-observations.json",
+    "fixture-ready.json",
+    "image-binding.json",
+    "native-result.json",
+    "native.py",
+    "observe.py",
+    "operating-brief.json",
+    "pending-limit.json",
+    "policy-result.json",
+    "preflight.py",
+    "prepare.py",
+    "run.py",
+    "runtime-checks.json",
+    "summary.json",
+    "public-review.json",
+    "integrity.json"
+  ],
+  "exclusions": [
+    "private/**",
+    "raw SQL/config/JWT/cookies/bodies/IDs/logs/native JSONL/stderr",
+    "files not explicitly allowlisted"
+  ],
+  "redactions_required": [],
+  "known_fixture_credential_value_matches": 0,
+  "private_UUID_literals": 0,
+  "absolute_personal_host_paths": 0,
+  "generic_ProgramFiles_Go_path_allowed": true,
+  "required_pairing": [
+    "summary.json",
+    "README.md",
+    "pending-limit.json",
+    "dispatch-observations.json",
+    "cleanup.json"
+  ],
+  "preserve": {
+    "actual_HTTP_controls": 55,
+    "native_PASS": 19,
+    "test_skips": 0,
+    "package_skips": 0,
+    "selected_table_baselines": 11,
+    "topology_revision": [
+      42,
+      45
+    ],
+    "audit_metadata_delta": 13,
+    "full_I287_C9": "PARTIAL",
+    "actual_SFU_and_issuedJWT_reconnect": "NOT_RUN"
+  },
+  "helper_count": 8,
+  "helper_max_lines": 51
+}

@@ -1,0 +1,48 @@
+import time,subprocess
+from common import P,Q,WORK,CONTEXT,PROJECT,read,write,fixture,quote,valid,sql,request,state,services,frozen,sha,now
+from observe import work
+def cleanup():
+    c=fixture();before=read(P/'before.json');target=c['accounts']['a'];admin=c['sessions'].get('admin',{}).get('cookie');owner=c['owner'];assert len(owner)==24 and all(x in '0123456789abcdef' for x in owner)
+    if sql('SELECT count(*) FROM voice_timeouts WHERE user_id='+quote(target)+';').strip()!='0':
+        assert admin and request('/api/v1/admin/accounts/'+target+'/voice-timeout','DELETE',cookie=admin)[0]==200
+    assert sql('SELECT count(*) FROM voice_timeouts WHERE user_id='+quote(target)+';').strip()=='0'
+    for alias,l in c['leases'].items():
+        cookie=c['sessions'][l['session']]['cookie'];assert request('/api/v1/voice/leases/'+valid(l['id']),'DELETE',cookie=cookie)[0]==204
+    work(c,'fixture-teardown-before-own-work-removal')
+    if c['leases']:
+        ids=','.join(quote(valid(l['id'])) for l in c['leases'].values())
+        for _ in range(12):
+            busy=int(sql('SELECT count(*) FROM voice_sfu_revocations WHERE lease_id IN ('+ids+') AND claim_token IS NOT NULL;').strip())
+            if not busy:break
+            time.sleep(.15)
+        assert not busy,'Own work remains claimed; stop rather than racing worker'
+        allowed=','.join(map(quote,[c['accounts']['a'],c['accounts']['b']]));assert sql('SELECT count(*) FROM voice_leases WHERE id IN ('+ids+') AND user_id NOT IN ('+allowed+');').strip()=='0'
+        sql('BEGIN; DELETE FROM voice_sfu_revocations WHERE lease_id IN ('+ids+'); DELETE FROM voice_leases WHERE id IN ('+ids+') AND revoked_at IS NOT NULL; COMMIT;')
+    if c.get('text'):
+        cid=valid(c['text']);voice=valid(c['voice']);cat=valid(c['category'])
+        assert sql('SELECT name FROM categories WHERE id='+quote(cat)+';').strip()=='qa_timeout_'+owner and set(sql('SELECT id FROM channels WHERE category_id='+quote(cat)+';').splitlines())=={cid,voice}
+        assert set(sql('SELECT id FROM messages WHERE channel_id='+quote(cid)+';').splitlines())==set(c['TEXT_messages'])
+        assert sql('SELECT count(*) FROM attachments WHERE channel_id IN ('+quote(cid)+','+quote(voice)+');').strip()=='0'
+        sql('BEGIN; DELETE FROM channel_read_cursors WHERE channel_id IN ('+quote(cid)+','+quote(voice)+'); DELETE FROM messages WHERE channel_id='+quote(cid)+'; DELETE FROM channels WHERE category_id='+quote(cat)+'; DELETE FROM categories WHERE id='+quote(cat)+' AND name='+quote('qa_timeout_'+owner)+'; COMMIT;')
+    if c.get('dm'):
+        mids=','.join(quote(valid(x)) for x in c['DM_messages'])
+        if mids:
+            assert sql('SELECT count(*) FROM direct_message_messages WHERE id IN ('+mids+') AND direct_message_id<>'+quote(c['dm'])+';').strip()=='0';sql('DELETE FROM direct_message_messages WHERE id IN ('+mids+') AND direct_message_id='+quote(c['dm'])+';')
+        if not c['DM_preexisting']:
+            assert sql('SELECT count(*) FROM direct_message_messages WHERE direct_message_id='+quote(c['dm'])+';').strip()=='0';sql('DELETE FROM direct_messages WHERE id='+quote(c['dm'])+';')
+    revoked=[]
+    for alias,s in c['sessions'].items():
+        code,_,v=request('/api/v1/auth/session',cookie=s['cookie']);assert code==200
+        if v['authenticated']:assert request('/api/v1/auth/logout','POST',{},s['cookie'])[0]==204
+        assert request('/api/v1/channels',cookie=s['cookie'])[0]==401
+        assert sql('SELECT count(*) FROM sessions WHERE public_id='+quote(s['id'])+' AND user_id='+quote(s['account'])+' AND revoked_at IS NOT NULL;').strip()=='1'
+        sql('DELETE FROM sessions WHERE public_id='+quote(s['id'])+' AND user_id='+quote(s['account'])+' AND revoked_at IS NOT NULL;');revoked.append(alias)
+    after=state();assert after==before['database'],'Selected baseline mismatch'
+    old=read(P/'private/services-before.json');current=services();assert all(v['State']['Running'] and all(v[k]==old[n][k] for k in ['Id','Image','Config','HostConfig','RestartCount']) and v['State']['StartedAt']==old[n]['State']['StartedAt'] for n,v in current.items())
+    assert request('/api/v1/health')[0]==200 and frozen()==before['frozen_files']
+    assert all(sha((Q/f).read_bytes())==h for f,h in before['source_hashes'].items()) and all(sha((P/f).read_bytes())==h for f,h in before['helper_hashes'].items())
+    r=subprocess.run(['docker','--context',CONTEXT,'logs','--since',before['utc'],PROJECT+'-api-1'],capture_output=True,timeout=15);raw=r.stdout+r.stderr;(P/'private/api.log').write_bytes(raw)
+    cred=read(WORK/'credentials.private.json');needles=[owner,c['body'],*c.get('issued_credentials',[]),*c['accounts'].values(),*c['TEXT_messages'],*c['DM_messages']]+[cred[k] for k in ['admin_login','admin_password','member_a_login','member_a_password','member_b_login','member_b_password','database_password']]
+    for s in c['sessions'].values():needles += [s['cookie'],s['cookie'].split('=',1)[1],s['id']]
+    assert not any(v.encode() in raw for v in needles if v)
+    write(P/'cleanup.json',{'utc':now(),'status':'PASS','normal_lift_target_none':True,'own_sessions_revoked_live401_removed':revoked,'own_leases_work_channels_messages_removed':True,'existing_DM_pair_preserved':c.get('DM_preexisting'),'selected_baseline_tables_restored':len(after),'nine_services_unchanged':list(current),'source_helpers_frozen_packets_unchanged':True,'health_HTTP':200,'API_log_SHA256':sha(raw),'privatevalue_log_matches':0,'topology_revision_before':before['topology_revision'],'topology_revision_after':int(sql('SELECT revision FROM channel_topology_state WHERE singleton;').strip()),'audit_metadata_delta':int(sql('SELECT count(*) FROM audit_events;').strip())-before['audit_count'],'limit':'Expected monotonic topology and owned timeout/audit metadata retained; not entire database equality; own work deletion occurs only in fixture teardown after policy receipt, never by runtime lift.'})

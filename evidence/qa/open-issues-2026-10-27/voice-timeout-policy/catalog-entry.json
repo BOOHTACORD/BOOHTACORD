@@ -1,0 +1,20 @@
+{
+  "case": {
+    "id": "ISOLATED-voice-timeout-lease-session-and-chat-policy",
+    "status": "PASS_SCOPED",
+    "protects": "Authorized bounded timeout state/lease policy; sessions and TEXT/DM remain valid; normal lift does not reactivate old lease; pending intent remains truthful without physical claims",
+    "command": "python -B -X utf8 .out/qa-agent-timeout/run.py",
+    "platform": "Windows HTTP producer/existing isolated localQA API source072426d6/real PostgreSQL17.6; no media client",
+    "mandatory_when": "Before accepting isolated API/backend timeout facet; fullI287.C9 remainsPARTIAL",
+    "issues": [
+      287
+    ],
+    "result": "voice-timeout-policy/summary.json",
+    "limits": "55HTTP/19native PASS,0skips; logical lease/credential denial and target-only policy; HTTP sessions/TEXT/DM survive; explicit lift never restores lease. Initial8.53s pending window below15s worker interval; actual dispatch, connected SFU eviction, issuedJWT direct reconnect and Web/native UI NOT_RUN.11selected tables restored; topology42->45 and13own audit metadata receipts retained.",
+    "defects": []
+  },
+  "source_requirement_verbatim": "#97: explicit authorized timeout set/change/lift, expires<=24h/reason allowlist, target/current-session changes, old credentials denied and eventual SFU revocation; pending status remains truthful. TEXT/DM unaffected; no local auto-unmute/rejoin. Actual native dialog and Web controls; #59/#63 acceptance as applicable.",
+  "full_gate": "PARTIAL",
+  "all_full_QA_closed": false,
+  "consolidation43_touched": false
+}

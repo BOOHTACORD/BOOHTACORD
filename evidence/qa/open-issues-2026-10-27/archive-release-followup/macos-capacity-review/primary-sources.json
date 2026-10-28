@@ -1,0 +1,40 @@
+{
+  "checked_at_utc": "2026-10-28T21:42:24.614508+00:00",
+  "sources": [
+    {
+      "URL": "https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job",
+      "kind": "OfficialGitHubdocumentation",
+      "claim": "macos-26-intel isstandardIntelhostedrunnerforpublic/private repositories;4CPU14GBRAM. Label pinsmacOS26family, notimmutableimage build. Catalogsupport isnotcurrentqueuecapacityproof."
+    },
+    {
+      "URL": "https://github.blog/changelog/2026-02-26-macos-26-is-now-generally-available-for-github-hosted-runners/",
+      "kind": "OfficialGitHubGAannouncement",
+      "claim": "macOS26 GA includesstandardx64macos-26-intel andstandardarm64macos-26; largerlabelsareseparate offerings."
+    },
+    {
+      "URL": "https://github.com/actions/runner-images/blob/main/images/macos/macos-26-Readme.md",
+      "kind": "OfficialGitHubIntelimageinventory",
+      "claim": "ActualmacOS26IntelimagehasreviewedXcode26.x/SDKs; currentinventorydoesnotqualifyanactualBOOHTACORDunitrun."
+    },
+    {
+      "URL": "https://docs.flutter.dev/reference/supported-platforms",
+      "kind": "OfficialFlutterdocumentation",
+      "claim": "CurrentFlutter3.47support includesmacOSx64andarm64; x64deprecationisdocumented, notareason tosilentlyupgradeordropcurrentpinnedSDKchecks."
+    },
+    {
+      "URL": "https://docs.flutter.dev/install/archive",
+      "kind": "OfficialFlutterarchive documentation",
+      "claim": "Releasearchive identifiesframework,Dartversionandarchitecture; exactrecord separatelyverifiedfromsource-derivedmanifest."
+    },
+    {
+      "URL": "https://storage.googleapis.com/flutter_infra_release/releases/releases_macos.json",
+      "kind": "OfficialGoogle-hostedFlutterreleaseJSON",
+      "claim": "Exactstable3.47.7 x64/arm64 records pairDart3.13.5 withframeworkabaf9c523780a608bd46686fd5e53740a07077f8; HTTP200 andbundleHEAD200, noSDKbinarydownload/testexecution."
+    },
+    {
+      "URL": "https://github.com/subosito/flutter-action/blob/1a449444c387b1966244ae4d4f8c696479add0b2/setup.sh",
+      "kind": "Immutableupstreaminstallersource",
+      "claim": "ReviewedinstalleracceptsRUNNER_ARCH-derivedx64 andselectsexactreleasearchitecture; itsmanifestbasepathresolvedearlierreviewURLmistake."
+    }
+  ]
+}
