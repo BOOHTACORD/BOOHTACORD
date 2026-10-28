@@ -1,0 +1,18 @@
+import time,xml.etree.ElementTree as ET
+from common import *
+from android_permission_ui import permission
+DOCS={'com.google.android.documentsui','com.android.documentsui'}
+def fresh():
+ for attempt in range(3):
+  raw=call('exec-out','uiautomator','dump','/dev/tty');a=raw.find('<hierarchy');b=raw.find('</hierarchy>')
+  if a>=0 and b>a:return list(ET.fromstring(raw[a:b+12]).iter('node'))
+  p=P/('read-controller-no-root-'+uuid.uuid4().hex[:8]+'.json');write(p,{'at_utc':datetime.now(timezone.utc).isoformat(),'query_attempt':attempt+1,'terminal_bytes':len(raw.encode()),'terminal_SHA256':digest(raw.encode()),'no_UI_action_retried':True,'no_personal_labels_retained':True});time.sleep(.2)
+ raise RuntimeError('ThreeboundedUIquerieshadnohierarchy')
+def tap(rows,label_text,package=APP,require_click=True,limit=300):
+ matches=[n for n in rows if n.get('package')==package and label(n)==label_text and n.get('enabled')=='true' and (not require_click or n.get('clickable')=='true')];assert len(matches)==1;b=bounds(matches[0]);assert 0<b[3]-b[1]<=limit and 0<=b[0]<b[2]<=1080 and 0<=b[1]<b[3]<=2340;call('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2));return b
+def media():
+ services=call('shell','dumpsys','activity','services',APP);types=set(re.findall(r'types=0x([0-9a-fA-F]+)',services));return {'microphone_fgs':any(int(v,16)&0x80 for v in types),'projection_null':bool(re.search(r'Media Projection:\s*null\s*$',call('shell','dumpsys','media_projection'))),'permission':permission()}
+def surface(c,rows=None):
+ rows=fresh() if rows is None else rows;fields=[n for n in rows if n.get('package')==APP and n.get('class')=='android.widget.EditText'];return {'approved_APP_present':any(n.get('package')==APP for n in rows),'Settings_present':any(n.get('package')=='com.android.settings' for n in rows),'auth_or_permission_prompt':any(label(n) in ['Логин','Пароль'] or (n.get('package')or'').endswith('permissioncontroller') for n in rows),'own_peer_header':any(c['peer'] in label(n) and bounds(n)[1]<700 for n in rows),'composer_empty':len(fields)==1 and not fields[0].get('text'),'voice_connected':any('Голос подключён' in label(n) for n in rows),'room_is_allowed_SHARE_TEST':any('Голос подключён' in label(n) and 'SHARE_TEST' in label(n) for n in rows)}
+def guard(c):
+ s=surface(c);assert s['approved_APP_present'] and not s['Settings_present'] and not s['auth_or_permission_prompt'] and s['own_peer_header'] and s['composer_empty'] and s['voice_connected'] and s['room_is_allowed_SHARE_TEST'];m=media();assert m['microphone_fgs'] and m['projection_null'];return {**s,**m}

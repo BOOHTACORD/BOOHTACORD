@@ -1,0 +1,472 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-10-28T20:51:48.695037+00:00",
+  "status": "PASS_SCOPED_PRIVACY_REVIEW_WITH_REQUIRED_PUBLIC_REDACTIONS",
+  "workflow_class": "review_gate",
+  "source_root_relative": ".out/qa-agent-phone-upload",
+  "review_only_no_device_UI_ADB_API": true,
+  "frozen_source_files_modified": false,
+  "public_B_modified": false,
+  "verified_immutable_SHA256": {
+    "summary-final.json": "329a240123fa96d284e29a9ec8949f661634ee2ddfcc91da3ea7447b5bf76855",
+    "artifact-hashes.json": "17ad66bcce82aedea9a178618c763a036069f0fc390c11b34c145086172da93a"
+  },
+  "frozen_integrity": {
+    "all20_manifest_metadata_JSON_hashes_match": true,
+    "all10_manifest_helper_hashes_match": true,
+    "artifact_count_in_original_manifest": 20,
+    "helper_count": 10
+  },
+  "verified_actual_scope": {
+    "native_JPEG_upload": "NOT_RUN",
+    "native_GIF_upload": "NOT_RUN",
+    "native_upload_actions": 0,
+    "native_Send_actions": 0,
+    "new_API_login_attempts": 0,
+    "new_API_sessions": 0,
+    "new_API_messages": 0,
+    "device_file_pushes": 0,
+    "new_device_Download_files": 0,
+    "ordinary_approved_APP_activation": 1,
+    "ordinary_activation_native_exit": 0,
+    "Settings_inputs": 0,
+    "voice_mic_projection_commands": 0,
+    "force_stop_count": 0,
+    "count_sources": [
+      "summary-final.json:normal_approved_package_activation_count/activation_native_exit/navigation_picker_Send_inputs/new_API_sessions/new_device_Download_files_or_pushes/new_messages/native_runtime_results",
+      "attempt2-readonly-activation.json:ordinary_am_start_executed_count/am_start_native_exit",
+      "attempt2-final-availability-diagnostic.json:normal_activation_total/UI_navigation_inputs_total/new_API_logins_pushes_messages_total"
+    ]
+  },
+  "safe_metadata_JSON": [
+    {
+      "file": "artifact-hashes-attempt1.json",
+      "source_SHA256": "8e26e20323b78b024325bf325424cd5fcce5f9e11759aa6cdbeb49f3c67ab0d3",
+      "bytes": 1874,
+      "publication_mode": "SAFE_METADATA_DIRECT_COPY",
+      "required_redactions": [],
+      "notes": [
+        "Originalsource provenance manifest only; sanitizedcopy hasheswilldiffer. Regenerateaseparatepublicintegritymanifest afterprojection; donotclaimthismanifestcoversredactedbytes."
+      ]
+    },
+    {
+      "file": "artifact-hashes.json",
+      "source_SHA256": "17ad66bcce82aedea9a178618c763a036069f0fc390c11b34c145086172da93a",
+      "bytes": 4658,
+      "publication_mode": "SAFE_METADATA_DIRECT_COPY",
+      "required_redactions": [],
+      "notes": [
+        "Originalsource provenance manifest only; sanitizedcopy hasheswilldiffer. Regenerateaseparatepublicintegritymanifest afterprojection; donotclaimthismanifestcoversredactedbytes."
+      ]
+    },
+    {
+      "file": "attempt2-activation-precheck.json",
+      "source_SHA256": "81bebf50e0201179885bc79ed4e9d90bedb85f14006e4d33e6ed00bc62c927f8",
+      "bytes": 602,
+      "publication_mode": "SAFE_METADATA_DIRECT_COPY",
+      "required_redactions": [],
+      "notes": []
+    },
+    {
+      "file": "attempt2-final-availability-diagnostic.json",
+      "source_SHA256": "f9202fa5c4a7dca45e4b351622e60875879b38e92442296ce34485ad071bda54",
+      "bytes": 1206,
+      "publication_mode": "SAFE_METADATA_DIRECT_COPY",
+      "required_redactions": [],
+      "notes": [
+        "UIvoice/room false valueswhen approvedAPPisabsent are guardfailures, notproofthat nativevoice isdisconnected."
+      ]
+    },
+    {
+      "file": "attempt2-post-activation-fresh-binding.json",
+      "source_SHA256": "ddea14c7275b95a01ac86ce11ea3cf705b914b24d26fcc45e63666dbcbcbf648",
+      "bytes": 706,
+      "publication_mode": "SAFE_METADATA_DIRECT_COPY",
+      "required_redactions": [],
+      "notes": []
+    },
+    {
+      "file": "attempt2-readonly-activation.json",
+      "source_SHA256": "167d665a0873615259f54e73dff9bf12c5021bf2dea7ba8d916e396221f1e325",
+      "bytes": 577,
+      "publication_mode": "SAFE_METADATA_DIRECT_COPY",
+      "required_redactions": [],
+      "notes": []
+    },
+    {
+      "file": "attempt2-room-guard-diagnostic.json",
+      "source_SHA256": "8ee28b5362da1204d42788438c530c2736603f468ee7e2d960692c1b94cd8af6",
+      "bytes": 1024,
+      "publication_mode": "SAFE_METADATA_DIRECT_COPY",
+      "required_redactions": [],
+      "notes": []
+    },
+    {
+      "file": "bindings-before-attempt2-activation.json",
+      "source_SHA256": "91662a7837fb0bafc6eb45986caa059c9b31bfbbac3f576e645dc89a495d50da",
+      "bytes": 268,
+      "publication_mode": "SAFE_METADATA_DIRECT_COPY",
+      "required_redactions": [],
+      "notes": []
+    },
+    {
+      "file": "bindings-before-attempt2-profile-DM.json",
+      "source_SHA256": "05b1966787091926b6523590e9ad1fe24083a272bc9b80a7cbadf8e3d1a3c66b",
+      "bytes": 394,
+      "publication_mode": "SAFE_METADATA_DIRECT_COPY",
+      "required_redactions": [],
+      "notes": []
+    },
+    {
+      "file": "bindings-before-attempt2-readonly-activation.json",
+      "source_SHA256": "b70c4715d871cafc6b6a87caa4a216742dbee494ace7ba322160ebde18015d50",
+      "bytes": 318,
+      "publication_mode": "SAFE_METADATA_DIRECT_COPY",
+      "required_redactions": [],
+      "notes": []
+    },
+    {
+      "file": "bindings-before-blocked-seal.json",
+      "source_SHA256": "2bbe9821368c66d4a939becef9ad1d5d4451495b8adb5f69169a653686e802d1",
+      "bytes": 185,
+      "publication_mode": "SAFE_METADATA_DIRECT_COPY",
+      "required_redactions": [],
+      "notes": []
+    },
+    {
+      "file": "bindings-before-final-seal.json",
+      "source_SHA256": "be9777960431543023af8b05737b9d422cd0b6d40d3cc08d40fc08f9d43b06f0",
+      "bytes": 283,
+      "publication_mode": "SAFE_METADATA_DIRECT_COPY",
+      "required_redactions": [],
+      "notes": []
+    },
+    {
+      "file": "bindings-before-preflight.json",
+      "source_SHA256": "0c8620bec53a0e9e0d84586b5631df404e5601719f670ef0d84169c6cc610015",
+      "bytes": 279,
+      "publication_mode": "SAFE_METADATA_DIRECT_COPY",
+      "required_redactions": [],
+      "notes": []
+    },
+    {
+      "file": "current-surface-static-diagnostic.json",
+      "source_SHA256": "23b93e85e4b37360410e6af069ceae7a9da3f89b1088599adc3f824dd0bc7777",
+      "bytes": 174,
+      "publication_mode": "SAFE_METADATA_DIRECT_COPY",
+      "required_redactions": [],
+      "notes": []
+    },
+    {
+      "file": "foreground-package-guard.json",
+      "source_SHA256": "a7534f46cbcd7ad5aa52fff690321ecbfdccd0d399d81312dba50da9187a29d5",
+      "bytes": 464,
+      "publication_mode": "SAFE_METADATA_DIRECT_COPY",
+      "required_redactions": [],
+      "notes": []
+    },
+    {
+      "file": "fresh-ui-binding-diagnostic.json",
+      "source_SHA256": "ffbd2091642f274290ea87d63a22383c843ccf78840436f431cba7b960c69df3",
+      "bytes": 301,
+      "publication_mode": "SAFE_METADATA_DIRECT_COPY",
+      "required_redactions": [],
+      "notes": []
+    },
+    {
+      "file": "initial-screen-diagnostic.json",
+      "source_SHA256": "83119df55687971dc59aea334ac01efd063839e8eb45316159d2194fade527f5",
+      "bytes": 306,
+      "publication_mode": "SAFE_METADATA_DIRECT_COPY",
+      "required_redactions": [],
+      "notes": []
+    },
+    {
+      "file": "preflight-attempt1.json",
+      "source_SHA256": "cf9e7618114588cd35986bc546cd69771d978b1d81d75e918da8d69061098762",
+      "bytes": 362,
+      "publication_mode": "SAFE_METADATA_DIRECT_COPY",
+      "required_redactions": [],
+      "notes": []
+    },
+    {
+      "file": "summary-final.json",
+      "source_SHA256": "329a240123fa96d284e29a9ec8949f661634ee2ddfcc91da3ea7447b5bf76855",
+      "bytes": 24278,
+      "publication_mode": "SAFE_ONLY_AS_SANITIZED_PUBLIC_PROJECTION",
+      "required_redactions": [
+        {
+          "json_path": "$.source_criteria",
+          "action": "OMIT_ENTIRE_FIELD",
+          "reason": "Large historical source rows with unrelated execution/source context; publicprojection onlyneeds criterionIDs/issue/sourcebodySHA256"
+        },
+        {
+          "json_path": "$.fixtures_verified_locally_only[*].owned_private_fixture_path",
+          "action": "REMOVE_FIELD",
+          "reason": "Absoluteprivate fixturepath reveals localusername/worktree; keepformat,mime,bytes,pixels,frames,SHA256 only"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "file": "summary.json",
+      "source_SHA256": "8556fa31354f4e403a05005b3d364287368b636e2d801753f75ead41e54e41a9",
+      "bytes": 20783,
+      "publication_mode": "SAFE_ONLY_AS_SANITIZED_PUBLIC_PROJECTION",
+      "required_redactions": [
+        {
+          "json_path": "$.source_criteria",
+          "action": "OMIT_ENTIRE_FIELD",
+          "reason": "Large historical source rows with unrelated execution/source context; publicprojection onlyneeds criterionIDs/issue/sourcebodySHA256"
+        },
+        {
+          "json_path": "$.fixtures_verified_locally_only[*].owned_private_fixture_path",
+          "action": "REMOVE_FIELD",
+          "reason": "Absoluteprivate fixturepath reveals localusername/worktree; keepformat,mime,bytes,pixels,frames,SHA256 only"
+        }
+      ],
+      "notes": [
+        "Historicalblockedattempt1 only; authoritativefinalavailability is summary-final.json."
+      ]
+    }
+  ],
+  "safe_README_files": [],
+  "README_note": "NoREADMEexists in frozenpacket; do notcopyunrelatedREADME. PublishermaycreateashortsanitizedREADME separately ifneeded.",
+  "safe_helper_sources": [
+    {
+      "file": "activate.py",
+      "source_SHA256": "e47776a2793d8fb0a6c97bb56784bf6fedab0f26820b52d6439fb40deb5ea758",
+      "lines": 10,
+      "hard_line_limit": 120,
+      "publication_mode": "SAFE_SOURCE_DIRECT_COPY",
+      "required_redactions": [],
+      "symbolic_private_input_reference_lines": [
+        4,
+        7
+      ],
+      "notes": [
+        "Relativeprivateinputreferences are genericcode contracts, notcredentialvalues; nevercopyreferencedprivatepayloads.",
+        "Sourcepublication doesnotauthorizeexecution againstdevice/API."
+      ]
+    },
+    {
+      "file": "activate_observe.py",
+      "source_SHA256": "dde428ac9caecefd9fdaf2343750f4955c2f582c7d570f5cf5c9bbea6162d6e9",
+      "lines": 13,
+      "hard_line_limit": 120,
+      "publication_mode": "SAFE_SOURCE_DIRECT_COPY",
+      "required_redactions": [],
+      "symbolic_private_input_reference_lines": [
+        4,
+        7
+      ],
+      "notes": [
+        "Relativeprivateinputreferences are genericcode contracts, notcredentialvalues; nevercopyreferencedprivatepayloads.",
+        "Sourcepublication doesnotauthorizeexecution againstdevice/API."
+      ]
+    },
+    {
+      "file": "common.py",
+      "source_SHA256": "d3ba142554fd7b4ad083463bf9da096958c6d75c03ec5d4e48ca907378296e61",
+      "lines": 24,
+      "hard_line_limit": 120,
+      "publication_mode": "SAFE_SOURCE_AFTER_LITERAL_PATH_REDACTION",
+      "required_redactions": [
+        {
+          "line": 4,
+          "action": "REPLACE_ABSOLUTE_USER_WORKTREE_CONSTANT_WITH_PORTABLE_CONFIG",
+          "target": "B constant only",
+          "public_replacement_pattern": "B=Path(os.environ[\"BOOHTACORD_QA_OBSERVER_WORKTREE\"]) with import os, or another non-user-specific explicitfixture-root argument",
+          "reason": "Do not publishlocalusername orabsolute workstationpath"
+        }
+      ],
+      "symbolic_private_input_reference_lines": [
+        24
+      ],
+      "notes": [
+        "Relativeprivateinputreferences are genericcode contracts, notcredentialvalues; nevercopyreferencedprivatepayloads.",
+        "Sourcepublication doesnotauthorizeexecution againstdevice/API."
+      ]
+    },
+    {
+      "file": "final_availability.py",
+      "source_SHA256": "2774b12c7be1f5a715d29cd005db72c2804d75d413361bc40616ceab7746bb5b",
+      "lines": 2,
+      "hard_line_limit": 120,
+      "publication_mode": "SAFE_SOURCE_DIRECT_COPY",
+      "required_redactions": [],
+      "symbolic_private_input_reference_lines": [
+        2
+      ],
+      "notes": [
+        "Relativeprivateinputreferences are genericcode contracts, notcredentialvalues; nevercopyreferencedprivatepayloads.",
+        "Sourcepublication doesnotauthorizeexecution againstdevice/API."
+      ]
+    },
+    {
+      "file": "freeze_attempt1.py",
+      "source_SHA256": "f19b691f704e72ebdd180282bc085b3b3b82cbbadc665445c1ba7846ca00a480",
+      "lines": 2,
+      "hard_line_limit": 120,
+      "publication_mode": "SAFE_SOURCE_DIRECT_COPY",
+      "required_redactions": [],
+      "symbolic_private_input_reference_lines": [],
+      "notes": [
+        "Relativeprivateinputreferences are genericcode contracts, notcredentialvalues; nevercopyreferencedprivatepayloads.",
+        "Sourcepublication doesnotauthorizeexecution againstdevice/API."
+      ]
+    },
+    {
+      "file": "native_common.py",
+      "source_SHA256": "ff4ea15ec9845891e41f1f787161722f1b800c39df59ee0be5c8d3ecaf817e53",
+      "lines": 18,
+      "hard_line_limit": 120,
+      "publication_mode": "SAFE_SOURCE_DIRECT_COPY",
+      "required_redactions": [],
+      "symbolic_private_input_reference_lines": [],
+      "notes": [
+        "Relativeprivateinputreferences are genericcode contracts, notcredentialvalues; nevercopyreferencedprivatepayloads.",
+        "Sourcepublication doesnotauthorizeexecution againstdevice/API."
+      ]
+    },
+    {
+      "file": "preflight.py",
+      "source_SHA256": "b919bfc46ef8b3e365e91817e745dd7e6f7b0321fcbd2cee4729a0674ee80e98",
+      "lines": 12,
+      "hard_line_limit": 120,
+      "publication_mode": "SAFE_SOURCE_DIRECT_COPY",
+      "required_redactions": [],
+      "symbolic_private_input_reference_lines": [
+        11
+      ],
+      "notes": [
+        "Relativeprivateinputreferences are genericcode contracts, notcredentialvalues; nevercopyreferencedprivatepayloads.",
+        "Sourcepublication doesnotauthorizeexecution againstdevice/API."
+      ]
+    },
+    {
+      "file": "profile_dm_guard.py",
+      "source_SHA256": "3568281eb01526629bbf480bb6bb13a0625eba9645a7451e939e1429e8879a56",
+      "lines": 3,
+      "hard_line_limit": 120,
+      "publication_mode": "SAFE_SOURCE_DIRECT_COPY",
+      "required_redactions": [],
+      "symbolic_private_input_reference_lines": [
+        2
+      ],
+      "notes": [
+        "Relativeprivateinputreferences are genericcode contracts, notcredentialvalues; nevercopyreferencedprivatepayloads.",
+        "Sourcepublication doesnotauthorizeexecution againstdevice/API."
+      ]
+    },
+    {
+      "file": "seal_blocked.py",
+      "source_SHA256": "cb2c39111b206b5a7969350995d390c9c11492fd9e989caa445456358c7e559b",
+      "lines": 15,
+      "hard_line_limit": 120,
+      "publication_mode": "SAFE_SOURCE_DIRECT_COPY",
+      "required_redactions": [],
+      "symbolic_private_input_reference_lines": [],
+      "notes": [
+        "Relativeprivateinputreferences are genericcode contracts, notcredentialvalues; nevercopyreferencedprivatepayloads.",
+        "Sourcepublication doesnotauthorizeexecution againstdevice/API.",
+        "Thesealhelper can emitprivatefixturepaths/source_criteria; itsoutputstillrequirespublicprojection."
+      ]
+    },
+    {
+      "file": "seal_final.py",
+      "source_SHA256": "b88bd957cefc792ce4c04086729ba484967371b8f5355e0325149115cc0fbe16",
+      "lines": 13,
+      "hard_line_limit": 120,
+      "publication_mode": "SAFE_SOURCE_DIRECT_COPY",
+      "required_redactions": [],
+      "symbolic_private_input_reference_lines": [],
+      "notes": [
+        "Relativeprivateinputreferences are genericcode contracts, notcredentialvalues; nevercopyreferencedprivatepayloads.",
+        "Sourcepublication doesnotauthorizeexecution againstdevice/API.",
+        "Thesealhelper can emitprivatefixturepaths/source_criteria; itsoutputstillrequirespublicprojection."
+      ]
+    }
+  ],
+  "exclude_entirely": [
+    {
+      "path": "private/**",
+      "reason": "Allprivate/rawcaptures,SettingsorUIrawhierarchy,terminalrawdiagnostics/privateconfigs/payloads; subtreewasnotreadforthisreview"
+    },
+    {
+      "path": "source-criteria.json",
+      "reason": "Omitentirelargehistoricalcriteria export; retainportablecriterionrefs only"
+    },
+    {
+      "path": "[PRIVATE_ARTIFACT_RETAINED_LOCALLY]",
+      "reason": "Neverpublisha rawprivateartifact"
+    },
+    {
+      "path": "**/*.{png,jpg,jpeg,gif,xml,log,bin}",
+      "reason": "Rawimages/screens/hierarchies/logs/payloads areexcluded; fileexistence/contentisnotneededforthis metadatareview"
+    },
+    {
+      "path": "__pycache__/**",
+      "reason": "Generatedbytecode, notsourceevidence"
+    }
+  ],
+  "public_projection_contract": {
+    "criterion_refs_only": [
+      {
+        "id": "I62.C1",
+        "issue": 62,
+        "source_body_SHA256": "587d2de3b7ebec5f3b764e992e717698dcdbdd8d477ab9b97be27fd2d28ce86a"
+      },
+      {
+        "id": "I303.C7",
+        "issue": 303,
+        "source_body_SHA256": "5a826c0f9652d9535cbc049e9462da7c8fc9984b7114b9c7797bcdafc33aa8fc"
+      }
+    ],
+    "fixture_fields_allowlist": [
+      "format",
+      "mime",
+      "bytes",
+      "pixels",
+      "frames",
+      "SHA256",
+      "native_picker_upload_send_status"
+    ],
+    "never_copy_values": [
+      "localusername",
+      "absoluteprivate/workstationpath",
+      "profile/account/DMidentifiers ornames",
+      "cookies/passwords/session/reset/media tokens",
+      "uniqueownedrun/sessionmarkers",
+      "rawSettingslabels orpersonalfilelists",
+      "rawscreens/hierarchies/payloadcontents"
+    ],
+    "safe_metadata_values": [
+      "relativegeneric source/receipt filenames",
+      "SHA256digests",
+      "UTCtimestamps",
+      "source/APKrevisionhashes",
+      "genericproduct/app/OS/modelversion",
+      "numericbounds/booleanavailabilityguards",
+      "NOT_RUN/BLOCKED outcomes andactualzero-actioncounts"
+    ],
+    "original_hashes_are_provenance_only_for_redacted_files": true,
+    "regenerate_public_integrity_manifest_after_all_redactions": true,
+    "source_or_metadata_sanitization_does_not_prove_native_runtime": true
+  },
+  "static_scan": {
+    "top_level_metadata_JSON_reviewed": 21,
+    "private_subtree_read": false,
+    "rawscreens_orhierarchies_read": false,
+    "actual_unique_session_marker_literals_found": 0,
+    "actual_credential_like_literals_found": 0,
+    "UUID_identifier_literals_found": 0,
+    "absolute_user_paths_found_only_in_summary_fixture_fields_and_common_py_B_constant": true,
+    "scan_limit": "Staticliteral/structureaudit oftop-levelmetadata/helper source; noclaimaboutunreadprivatecontent orlive/device/APIstate"
+  },
+  "limits": [
+    "Privacyreviewonly; JPEG/GIFnativeupload remainsNOT_RUN andavailabilityBLOCKED.",
+    "CurrentSettings/mediaavailabilityfacts copiedfromfrozenreceipts only; not refreshedlive.",
+    "SHARE_TEST isapreapprovedstatic testroomlabel, notarun/sessiontoken; publicprojection maykeeponlyallowed-roomboolean."
+  ]
+}

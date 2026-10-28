@@ -1,0 +1,35 @@
+"""Bounded metadata publication; raw device and account artifacts stay local."""
+import ast,hashlib,importlib.util,json,re
+from pathlib import Path
+from datetime import datetime,timezone
+P=Path(__file__).resolve().parent;Q=P.parents[1]
+spec=importlib.util.spec_from_file_location('prior_publication',Q/'.out/qa-coordinated/common.py')
+prior=importlib.util.module_from_spec(spec);spec.loader.exec_module(prior)
+previous_clean=prior.clean;needles=prior.needles;collect=prior.collect
+B=Path(__import__('os').environ['BOOHTACORD_EVIDENCE_WORKTREE'])
+O=B/'evidence/qa/open-issues-2026-10-27';D=O/'archive-release-followup'
+BASE='51537ef180634e64af5194a5df948cec55aceb3d';origins=[]
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+def write(p,v):
+ p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+def sha(b):return hashlib.sha256(b).hexdigest()
+def clean(v):
+ if isinstance(v,dict):return {k:clean(x) for k,x in v.items() if k not in ['source_criteria','owned_private_fixture_path','private_patches']}
+ if isinstance(v,list):return [clean(x) for x in v]
+ if isinstance(v,str) and ('.private.' in v or 'selected-patches.private' in v):return '[PRIVATE_ARTIFACT_RETAINED_LOCALLY]'
+ if isinstance(v,str):
+  norm=re.sub('/+','/',v.replace('\\','/'))
+  for root in [Q,B]:
+   if norm.startswith(root.as_posix()+'/'):return './'+norm[len(root.as_posix())+1:]
+  if re.match(r'^[A-Za-z]:/Users/',norm):return re.sub(r'^[A-Za-z]:/Users/[^/]+','[LOCAL_HOME]',norm)
+ return previous_clean(v)
+def copy(source,target,extra=None):
+ raw=source.read_bytes();value=clean(read(source))
+ if extra:value.update(extra)
+ write(D/target,value);origins.append({'public':target,'private_original_SHA256':sha(raw),'private_original_bytes':len(raw),'sanitized':value!=read(source)})
+def code(source,prefix):
+ s=source.read_text(encoding='utf-8-sig');ast.parse(s);assert len(s.splitlines())<=120
+ assert not any(n in s for n in needles),source.name
+ s=s.replace("Path(__import__('os').environ['BOOHTACORD_EVIDENCE_WORKTREE'])","Path(__import__('os').environ['BOOHTACORD_EVIDENCE_WORKTREE'])")
+ ast.parse(s);dest=O/'runner-source'/(prefix+source.name+'.txt');dest.write_text(s,encoding='utf-8',newline='\n')
+ origins.append({'public_relative_to_root':dest.relative_to(O).as_posix(),'private_original_SHA256':sha(source.read_bytes()),'sanitized':s!=source.read_text(encoding='utf-8-sig'),'purpose':'Archival source; only absolute host path made portable, not an executed public replay'})

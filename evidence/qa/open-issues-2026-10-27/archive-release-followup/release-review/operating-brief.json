@@ -1,0 +1,20 @@
+{
+  "workflow_class": "review_gate",
+  "route": "widgets/attachment_revocation current PR590 source/CI provenance review",
+  "primary_leaf": "clients/flutter/lib/src/widgets/attachment_revocation",
+  "secondary_bounded_edges": "Exact Web context and admin/search corrections named in PR inventory; no root source discovery",
+  "manifest": [
+    "clients/flutter/pubspec.yaml",
+    "clients/web/package.json"
+  ],
+  "source_checks": "Connected GitHub PR metadata/list/file patches; app checks pinned headRevision; returned run/job IDs; full selected logs; merge-tree equality; release metadata",
+  "preservation": "Q HEAD072 and four generated-file hashes unchanged; all old evidence frozen",
+  "limits": "Read-only source/release review; no CUA, dispatch, merge, review comment, checkout, build, deploy, install or public/Git write",
+  "file_budget": "16 primary patch paths; exact additional skip/build/session-source reads authorized by root follow-up; output <=16files, no new helper file",
+  "stop_condition": "Concrete merged-head/CI/package/physical-next-test and origin findings, sealed then frozen",
+  "unresolved": [
+    "Physical fixed-candidate acceptance pending",
+    "Signed newer QA versionCode requires source identity increment",
+    "Windows configured/live server origin UNVERIFIED"
+  ]
+}

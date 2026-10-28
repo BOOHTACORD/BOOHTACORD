@@ -1,0 +1,52 @@
+{
+  "prior_candidate": {
+    "workflow": "Android Release",
+    "workflow_path": ".github/workflows/android-release.yaml",
+    "run_id": 40447079903,
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40447079903",
+    "event": "workflow_dispatch",
+    "source": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+    "mode": "candidate; dry_run; published_release=false",
+    "signed_artifact_id": 12709935119,
+    "signed_archive_digest": "sha256:eb2d37bfcdc01c9350aa78e6b3475eca471f2b4d500e41edc8d9083b4e4048da",
+    "application_id": "ru.boohtacord.app",
+    "arm64_version_code": 2082,
+    "arm64_APK_sha256": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+    "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+    "evidence": [
+      "B/evidence/qa/open-issues-2026-10-27/android-upgrade/verified.json",
+      "B/evidence/qa/open-issues-2026-10-27/android-upgrade/summary.json"
+    ],
+    "certificate_evidence_kind": "Existing public evidence actual APK apksigner/aapt proof, not new extraction in this review"
+  },
+  "current_source_path": {
+    "source": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+    "workflow_exists": true,
+    "input": "dry_run:boolean only",
+    "guard": "trusted master or matching android-v tag; production environment; existing signing secrets remain in hosted job",
+    "build_command": "python3 -m tools.build.android.run",
+    "publisher_skipped_when": "workflow_dispatch && inputs.dry_run",
+    "asset_contract_checks": true,
+    "signed_artifacts_uploaded": true,
+    "hardcoded_cert": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+    "application_id": "ru.boohtacord.app",
+    "version": "1.0.47",
+    "native_build": 82,
+    "arm64_formula": "native_build +2000",
+    "arm64_result": 2082
+  },
+  "newer_than_2082": {
+    "status": "BLOCKED_SOURCE_IDENTITY_INCREMENT_REQUIRED",
+    "reason": "Untouched b74 pubspec/client-build still bind82, so existing workflow would produce2082, not >2082. No workflow build-number override exists; build helper enforces source contract identity.",
+    "required_before_future_dispatch": "Owner-approved source release identity increment with pubspec/contract consistency, followed by exact-source validation and dry-run signing; newly built actual APK cert/appID/versionCode/hash must be checked against installed2082 before any upgrade.",
+    "not_executed": [
+      "workflow dispatch",
+      "build",
+      "signing or secret access",
+      "download keys",
+      "install/uninstall/restart",
+      "voice leave/join"
+    ]
+  },
+  "debug_CI_not_equivalent": true
+}

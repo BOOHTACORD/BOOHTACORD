@@ -1,0 +1,12 @@
+{
+  "workflow_class": "review_gate",
+  "route": "channel/archive_readonly_text->restore_readonly_text",
+  "packet": "I287.C6 isolated archive lifecycle",
+  "literal_criterion": "#92: archive/restore keeps channel ID, topology/history/search/download and privacy; archived sends/edits/uploads/reactions/pins denied including held upload and idempotency replay. Upgrade from previous deployed schema, legacy archive compatibility and released-client UI.",
+  "doctrine": "Read exact readonly/archive contract; positive+negative controls; one held tiny upload with stage-file witness",
+  "limits": "Current-source API only; no upgrade/legacy/released UI/production/physical/browser acceptance",
+  "checks": "Nearest native Go tests0skips once; actual local HTTP/PG/storage; finally own cleanup",
+  "stop": "No outstanding own resources/sessions/files;9services and frozen packets preserved",
+  "ratchet": "8helpers <=120lines; no source mutation",
+  "diagnostic": "Initial guessed file_store.go path absent; actual files.go edge read before execution"
+}

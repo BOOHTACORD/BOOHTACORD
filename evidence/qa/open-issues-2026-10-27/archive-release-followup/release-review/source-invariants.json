@@ -1,0 +1,71 @@
+[
+  {
+    "bug": 589,
+    "state": "implementation issue closed; physical/release acceptance pending",
+    "route": "clients/flutter/lib/src/widgets/attachment_revocation/view.dart",
+    "invariant": "Loaded or pending image child is replaced irreversibly after an applied matching-source row deletion/attachment removal, disposed state, inactive SessionTicket or changed serverRevision, on AppState notification",
+    "wiring": "MessageAttachmentList now wraps preview with RevocableAttachmentView; explicit messageId passed by TEXT, DM and search-context callers",
+    "tests": [
+      "DM deletion after already loaded preview, pending=false",
+      "Deletion before pending preview read finishes; late response cannot redraw Image",
+      "Unrelated change preserves viewer; session replacement removes Download"
+    ],
+    "ci_proof": "Exact new tests pass on hosted Linux and Windows engine logs at head994b8e3/synthetic tree5df9864",
+    "counterexamples_required": [
+      "Eviction alone should preserve content; new suite has unrelated-change control but no explicit eviction-row-removal test",
+      "TEXT source-row deletion and attachment-list removal without deleted flag are code paths without a dedicated new case",
+      "Actual server-origin switch/disposal paths beyond explicit SessionScope.begin test",
+      "Open from context while source row absent from both active history collections; do not assume missing row means deletion",
+      "Save already in progress before deletion/native OS save outcome; existing download path unchanged",
+      "Actual signed Android and approved Windows candidate: positive PNG raster -> owner delete -> fresh underlying tombstone/control -> no bitmap or Download; Escape/focus"
+    ],
+    "limits": "Source observer depends on applied matching row or actual session boundary; no new backend ACL/deploy change is present in this PR; no Windows or public-APK reproduction claimed"
+  },
+  {
+    "bug": 587,
+    "state": "implementation issue closed; original six real-stack counterexamples still require rerun",
+    "route": "clients/web/src/search/context_timeline/hints.ts + search_context_controller.ts",
+    "invariant": "Scoped realtime edit/delete hints reach open TEXT/DM context; protected reloads merge monotonic revisions; deletion blanks body/attachments/mentions immediately and survives late edit/page reads; sequence fences context/session replacement",
+    "tests": [
+      "Matching kind/conversation and reset/recovery binding",
+      "Separate Pinia applications/unmounted observer isolation",
+      "Late edit/page reads cannot resurrect deleted rows",
+      "Initial read pending deletion/edit ordering",
+      "Highest protected revision wins out-of-order edits",
+      "Unknown IDs ignored; prior context read dropped"
+    ],
+    "counterexamples_required": [
+      "Original isolated actual API+WebSocket six cases:3edits+3deletes on200row fixture, normal-history and fresh-after-reload controls",
+      "Deployed frontend must be fingerprinted; merge state is not deployment",
+      "DM/files/browser pointer/keyboard variants need separately scoped acceptance"
+    ],
+    "limits": "Different trigger from #141 eviction/edit-draft loss; no production or full browser gate claim"
+  },
+  {
+    "bug": 585,
+    "state": "source fixed; physical Gboard pending",
+    "invariant": "Stable PageStorageKey admin-member-form prevents query-dependent ListView replacement when large text or keyboard inset selects the editor/results layout",
+    "tests": [
+      "Six widget cases: scales1.0/1.3/2.0 × keyboard inset0/300, four successive prefixes, same focus node/client visibility, done/reset"
+    ],
+    "limits": "Synthetic text input and Android target theme in engines; actual physical Gboard first-character/focus acceptance NOT_RUN"
+  },
+  {
+    "bug": 586,
+    "state": "source fixed; physical touch pending",
+    "invariant": "Android/iOS scope field minimum48dp; other desktop platforms retain32px",
+    "tests": [
+      "Android theme390×844; taps at top+1, center, bottom-1 open menu; Escape cancels, query/selection unchanged"
+    ],
+    "limits": "Dedicated new Android widget case only; not physical touch/iOS or global target-size acceptance"
+  },
+  {
+    "bug": 141,
+    "state": "OPEN; outside intended fix scope",
+    "invariant": "PR590 does not implement the separately required edit-draft/cache-eviction preservation",
+    "evidence": "No main history-eviction/edit-draft implementation patch in exact31file inventory; PR body fixes585/586/587/589 and current issue141 remains open",
+    "counterexamples_required": [
+      "Rerun owned edit-draft eviction/restore scenario under a separate bounded packet; context live updates cannot substitute"
+    ]
+  }
+]

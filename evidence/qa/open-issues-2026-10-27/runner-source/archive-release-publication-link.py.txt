@@ -1,0 +1,43 @@
+"""Link bounded runtime facets while preserving all original acceptance wording."""
+import collections,subprocess
+from common import *
+prefix=D.relative_to(O).as_posix();m=read(O/'matrix.json');cases=read(O/'cases.json')
+old=json.loads(subprocess.check_output(['git','show',BASE+':'+(O/'matrix.json').relative_to(B).as_posix()],cwd=B))
+oldcases=json.loads(subprocess.check_output(['git','show',BASE+':'+(O/'cases.json').relative_to(B).as_posix()],cwd=B))
+assert cases==oldcases and len(cases['cases'])==91
+rows={r['id']:r for i in m['issues'] for r in i['criteria']};added=[]
+def add(cid,status,record,rel,rid,limits):
+ c={'id':cid,'status':status,**{k:record[k] for k in ['protects','command','platform','mandatory_when']},'issues':[int(rid.split('.')[0][1:])],'result':prefix+'/'+rel,'limits':limits,'defects':[]}
+ assert cid not in {x['id'] for x in cases['cases']};cases['cases'].append(c);added.append(c)
+ r=rows[rid];r['execution_cases'].append(cid);r['evidence'].append(c['result']);r.setdefault('witness_limits',[]).append(cid+': '+limits);r['execution']+='; '+c['command']
+ if 'execution_plan' in r:r['execution_plan']['existing_scoped_witnesses']=list(r['execution_cases'])
+ for i in m['issues']:
+  if i['number'] in c['issues']:i['execution_cases'].append(cid);i['evidence'].append(c['result'])
+a=read(D/'archive/summary.json');p=read(D/'phone-upload/summary-final.json')
+add('ISOLATED-archive-restore-held-upload-and-write-denial','PASS_SCOPED',a,'archive/summary.json','I287.C6','43actual HTTP controls plus held220B request;8native PASS/0test skips/1package without tests. All10 selected table fingerprints/file inventory restored, topology38->42 and6own metadata audit rows intentionally retained. Previous-deployed-schema upgrade, provenance-backed legacy compatibility and released UI NOT_RUN; full row PARTIAL.')
+assert rows['I287.C6']['status']=='NOT_RUN';rows['I287.C6']['status']='PARTIAL'
+add('ANDROID-native-JPEG-GIF-picker-upload-availability','BLOCKED',p,'phone-upload/summary-final.json','I62.C1','One normal authorized app activation. Settings returned before own profile/DM/navigation guard;0picker/upload/Send/peerGET/delete/logins/sessions/pushes/messages. JPEG/GIF runtime NOT_RUN. Active microphoneFGS and changing projection guard are observations without cause/outcome inference. Not browser paste or system-share acceptance.')
+oldrows={r['id']:r for i in old['issues'] for r in i['criteria']}
+assert len(rows)==480 and {k:r['requirement'] for k,r in rows.items()}=={k:r['requirement'] for k,r in oldrows.items()}
+assert {k:(oldrows[k]['status'],r['status']) for k,r in rows.items() if oldrows[k]['status']!=r['status']}=={'I287.C6':('NOT_RUN','PARTIAL')}
+assert m['source_qualifier_count']==13 and cases['cases'][:91]==oldcases['cases']
+m['updated_utc']=datetime.now(timezone.utc).isoformat();write(O/'matrix.json',m);write(O/'cases.json',cases)
+write(D/'summary.json',{'status':'SCOPED_ARCHIVE_PROGRESS_PHONE_BLOCKED_CI_REVIEW_ONLY','at_utc':m['updated_utc'],'new_runtime_sets':added,'total_sets':93,'source_rows':480,'source_qualifiers':13,'row_status_change':{'I287.C6':'NOT_RUN -> PARTIAL'},'row_status_counts':dict(collections.Counter(r['status'] for r in rows.values())),'supporting_reviews':{'PR590':'release-review/summary.json','CI':'release-review/ci-provenance.json','correction_same_code_QA_and_origin_limits':'release-followup/summary.json'},'release_review_correction':'Same-code2082 QA replacement may retain data if appID/signature/revision/compatibility checks pass; source increment and >2082 are not necessary solely for physical fix590 QA. No installation/monotonic updater acceptance yet. Historical review next-step >2082 wording is qualified by followup.','Windows_runtime_origin':'UNVERIFIED; one process-network class snapshot does not prove exact URL','all_full_gates_closed':False,'new_product_defects':[],'consolidation43_touched':False})
+doc='''# Archive and native release follow-up
+
+I287.C6 is PARTIAL:43 real isolated API controls plus a staged220-byte held upload pass. Eight native tests pass; zero test-level skips, one package without tests. Previous deployed schema upgrade, provenance-backed legacy archive compatibility and released-client UI remain NOT_RUN. Commands, source/candidate binding and cleanup are in [archive/README.md](archive/README.md).
+
+Ten selected table fingerprints and the pre-existing file inventory were restored. The monotonic topology revision38->42 and six metadata-only audit receipts remain intentionally. This is not an entire-database equality claim.
+
+Android JPEG/GIF picker upload is BLOCKED: one normal authorized activation, then Settings returned before identity/DM/navigation. No picker, upload, Send, peer read, deletion, login, new session, file push or message was performed. Native results remain NOT_RUN; no defect or media outcome follows from the changing surface/guards. No browser paste acceptance is inferred.
+
+PR590 merged at b74fce60. Its checked synthetic merge db26489d and final merge have tree5df9864444dd5dd407c22cc06535fb161644705d. CI run40759210732 has27 successful checks: PostgreSQL17.6 logs1673passed/0skips; application Flutter Linux and Windows logs1656passed/3skips per engine. Exact skip names/guards and separate vendor skips are retained. This supports the tested tree, not current installed native bits or physical acceptance.
+
+Read release-followup/android-same-code-decision.json together with the frozen release review: equal2082 data-preserving QA replacement is allowed by the Android platform under identity/revision/compatibility conditions. The earlier >2082 requirement was too broad for this QA use. Monotonic updater acceptance remains separate. No candidate was installed by this packet. Windows exact runtime origin remains UNVERIFIED.
+
+Summary.json maps each new runtime set as invariant -> command -> platform -> mandatory trigger -> result. All480 original texts,91 prior sets and13 whole-gate source qualifiers are retained. No whole QA issue is closed and43 consolidation decisions remain untouched. Raw captures/hierarchies, private payloads, credentials and selected source patches remain local; private-original hashes differ deliberately from public-projection hashes in the root manifest. Replays require fresh authorized owned fixtures and original source/platform guards.
+'''
+(D/'README.md').write_text(doc,encoding='utf-8',newline='\n')
+with (O/'README.md').open('a',encoding='utf-8',newline='\n') as f:f.write('\n## Archive and release follow-up\n\n[Current-source archive lifecycle and native availability/release review](archive-release-followup/README.md):93scoped sets; I287.C6 advances only to PARTIAL. JPEG/GIF native upload remains BLOCKED/NOT_RUN. PR590 tested-tree CI is recorded with skips; physical acceptance remains separate. All480source texts/13qualifiers retained;43consolidation decisions untouched.\n')
+for f in P.glob('*.py'):code(f,'archive-release-publication-')
+print(json.dumps({'total_scopes':len(cases['cases']),'original_rows':len(rows),'status_counts':dict(collections.Counter(r['status'] for r in rows.values()))}))

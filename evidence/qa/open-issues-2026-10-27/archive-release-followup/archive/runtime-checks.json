@@ -1,0 +1,306 @@
+{
+  "utc": "2026-10-28T20:36:27.481930+00:00",
+  "checks": [
+    {
+      "name": "active-topology",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "519b7df4c284188d89a7fda4a51acde5844669676ae5a7b69741e29d61035430"
+    },
+    {
+      "name": "active-history",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "667ccb161181cb88b08ee7c00fa2f44472d2c527a9caeadbf7840761fb8c29ab"
+    },
+    {
+      "name": "active-search",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "2f384dd48bf554e79b6ad6c90c13d606e26517f0571d3508faabd9f4b8cb12fa"
+    },
+    {
+      "name": "active-file",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "dd4b239e2fc3144377eac916ed0d3ff290cb84ecd83eeea25d1af9397a045cf2"
+    },
+    {
+      "name": "anonymous-active-file",
+      "expected_HTTP": 401,
+      "actual_HTTP": 401,
+      "result": "PASS",
+      "response_SHA256": "ed6e4e468aa99874e27bf55be820b096ed04e0319d85f0436938b55347ac2327"
+    },
+    {
+      "name": "wrong-channel-file",
+      "expected_HTTP": 404,
+      "actual_HTTP": 404,
+      "result": "PASS",
+      "response_SHA256": "9095b5286fd8af0fed5d8c2152b14da882749c570201725db586ab2aa923f37c"
+    },
+    {
+      "name": "active-client-replay",
+      "expected_HTTP": 201,
+      "actual_HTTP": 201,
+      "result": "PASS",
+      "response_SHA256": "e0f397bd3b725e74246d1c9abb16eabacf736ab3fe66199711d7bab74fa4e9f7"
+    },
+    {
+      "name": "active-reaction-positive",
+      "expected_HTTP": 204,
+      "actual_HTTP": 204,
+      "result": "PASS",
+      "response_SHA256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "name": "active-pin-positive",
+      "expected_HTTP": 204,
+      "actual_HTTP": 204,
+      "result": "PASS",
+      "response_SHA256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "name": "member-cannot-archive",
+      "expected_HTTP": 403,
+      "actual_HTTP": 403,
+      "result": "PASS",
+      "response_SHA256": "904a4b26facd708c1285779a160794679c6abf898f860a4697f10b477ef71548"
+    },
+    {
+      "name": "stale-archive-revision",
+      "expected_HTTP": 409,
+      "actual_HTTP": 409,
+      "result": "PASS",
+      "response_SHA256": "ee25538f682cd338bda55c29b47e414325b6991c2ef39f4d1c977147599af1bd"
+    },
+    {
+      "name": "archive-commit",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "52256644e165134863cc936085778915bd475cd8925922cc3270a7f1628b8b1c"
+    },
+    {
+      "name": "active-topology",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "f10c94004c8ae79b3938dd058d03057a415dace580a4dcde648e8e7e62dc0b56"
+    },
+    {
+      "name": "archive-list",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "198d0d0592cc48defc546875c5b7bd095283ef17bd14dc1340e15306e9357de0"
+    },
+    {
+      "name": "archive-history",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "667ccb161181cb88b08ee7c00fa2f44472d2c527a9caeadbf7840761fb8c29ab"
+    },
+    {
+      "name": "archive-search",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "725aed0694e2492ac28c9c81f13007d1e21787fe63de0e9afcd61ec230536382"
+    },
+    {
+      "name": "archive-file",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "dd4b239e2fc3144377eac916ed0d3ff290cb84ecd83eeea25d1af9397a045cf2"
+    },
+    {
+      "name": "anonymous-archive-file",
+      "expected_HTTP": 401,
+      "actual_HTTP": 401,
+      "result": "PASS",
+      "response_SHA256": "5c87a59c19efd4d7a0b4e32b24a81f08f5798ceab212d023950a5c3cc4bb4d00"
+    },
+    {
+      "name": "normal-file-unavailable",
+      "expected_HTTP": 404,
+      "actual_HTTP": 404,
+      "result": "PASS",
+      "response_SHA256": "33bb3badd215aabb5d5f94df81a7d116e720828bdae7a348ec1efad77c31e77b"
+    },
+    {
+      "name": "normal-history-unavailable",
+      "expected_HTTP": 404,
+      "actual_HTTP": 404,
+      "result": "PASS",
+      "response_SHA256": "3b1a354efb562c99d6226056b0715c923adc1693face4d5af7e6f015499a0a8f"
+    },
+    {
+      "name": "normal-search-unavailable",
+      "expected_HTTP": 404,
+      "actual_HTTP": 404,
+      "result": "PASS",
+      "response_SHA256": "504b1583310030f0540165e7606bad1666c7d37699fee111f9d0dae99b611c93"
+    },
+    {
+      "name": "global-search-excludes-archive",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "d10f2d0e3138ea8af8797d6730f03f2016e1857beae33132ac16b3ce446853ea"
+    },
+    {
+      "name": "archive-fresh-send",
+      "expected_HTTP": 404,
+      "actual_HTTP": 404,
+      "result": "PASS",
+      "response_SHA256": "798a49e4067d24d7d4b6be64aff09b121a9b9ecf3cfeca205ef62ad4e5320e01"
+    },
+    {
+      "name": "archive-accepted-client-replay",
+      "expected_HTTP": 404,
+      "actual_HTTP": 404,
+      "result": "PASS",
+      "response_SHA256": "1f2ba072a1dc793e276467a1ebe98f82de219a3e67a0279cabef0fc54e0a0d18"
+    },
+    {
+      "name": "archive-edit",
+      "expected_HTTP": 409,
+      "actual_HTTP": 409,
+      "result": "PASS",
+      "response_SHA256": "ac02402acb895e164973930a0614a8e590ea84355e10a14d5a01a2eea7c7f829"
+    },
+    {
+      "name": "archive-new-upload",
+      "expected_HTTP": 404,
+      "actual_HTTP": 404,
+      "result": "PASS",
+      "response_SHA256": "c241b8efbdabccde12c10808117cd28216e2d99f637e8a7e4c171f51f65b4b38"
+    },
+    {
+      "name": "archive-reaction-put",
+      "expected_HTTP": 404,
+      "actual_HTTP": 404,
+      "result": "PASS",
+      "response_SHA256": "0e897f8aadbf1697ecce2ea745a95c0f4e3f5c351f2762e49c2b5260d7cebbb9"
+    },
+    {
+      "name": "archive-reaction-delete",
+      "expected_HTTP": 404,
+      "actual_HTTP": 404,
+      "result": "PASS",
+      "response_SHA256": "0d8a4a376f5638610525ed3da7e393e12017a135faf63c8c59c8edfb6627a682"
+    },
+    {
+      "name": "archive-pin-put",
+      "expected_HTTP": 404,
+      "actual_HTTP": 404,
+      "result": "PASS",
+      "response_SHA256": "ccc427f0e0c4bd996a71b303f931704581156cddca5f26ec4c28e04798d94125"
+    },
+    {
+      "name": "archive-pin-delete",
+      "expected_HTTP": 404,
+      "actual_HTTP": 404,
+      "result": "PASS",
+      "response_SHA256": "74e8437cd4dfd9c3949e39c00bb03f05294a188bbde4637ad993ed09f5090c89"
+    },
+    {
+      "name": "archive-admin-message-delete",
+      "expected_HTTP": 404,
+      "actual_HTTP": 404,
+      "result": "PASS",
+      "response_SHA256": "b02d62ccf844ddf5d7044b73b912bcd3efcd80d69dcee0f45973342e8e219323"
+    },
+    {
+      "name": "member-cannot-restore",
+      "expected_HTTP": 403,
+      "actual_HTTP": 403,
+      "result": "PASS",
+      "response_SHA256": "11e512e90bdf78f9c48642084991e70056c7d935e7d2da9e4f2751c4d4dc8081"
+    },
+    {
+      "name": "stale-restore-revision",
+      "expected_HTTP": 409,
+      "actual_HTTP": 409,
+      "result": "PASS",
+      "response_SHA256": "65ca26d1cd722450b3c0a977857a5579b387d6d741dedd5a02c3d58997f3c15a"
+    },
+    {
+      "name": "restore-commit",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "54b5956d20d17954a111dd27016446c97ff120beda6c07c1d633504294fa7bf4"
+    },
+    {
+      "name": "active-topology",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "40428e8297c846cfede187c49aafa062e1441f18a3dadaa26075c8ebcc6d0ef9"
+    },
+    {
+      "name": "restored-archive-list-excludes",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "1030a4763a14313fc2ac674c7af2403643860b20f365a8d8fbc198d30d586fab"
+    },
+    {
+      "name": "restored-history",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "667ccb161181cb88b08ee7c00fa2f44472d2c527a9caeadbf7840761fb8c29ab"
+    },
+    {
+      "name": "restored-search",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "2f384dd48bf554e79b6ad6c90c13d606e26517f0571d3508faabd9f4b8cb12fa"
+    },
+    {
+      "name": "restored-file",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "dd4b239e2fc3144377eac916ed0d3ff290cb84ecd83eeea25d1af9397a045cf2"
+    },
+    {
+      "name": "restored-edit-positive",
+      "expected_HTTP": 200,
+      "actual_HTTP": 200,
+      "result": "PASS",
+      "response_SHA256": "b79d02f61a8893326767f7cbd96c812a6f1559baf0322408b6d628d51d34a613"
+    },
+    {
+      "name": "restored-send-positive",
+      "expected_HTTP": 201,
+      "actual_HTTP": 201,
+      "result": "PASS",
+      "response_SHA256": "5f74048cb361c8b31df03b59e8714daabf4b0f43a078b288083ede752f526e60"
+    },
+    {
+      "name": "restored-reaction-delete-positive",
+      "expected_HTTP": 204,
+      "actual_HTTP": 204,
+      "result": "PASS",
+      "response_SHA256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "name": "restored-pin-delete-positive",
+      "expected_HTTP": 204,
+      "actual_HTTP": 204,
+      "result": "PASS",
+      "response_SHA256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    }
+  ]
+}

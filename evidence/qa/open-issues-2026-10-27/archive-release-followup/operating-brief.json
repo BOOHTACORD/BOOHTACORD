@@ -1,0 +1,24 @@
+{
+  "classification": "review_gate",
+  "route": "channel/archive_readonly_text -> restore_readonly_text; attachments/upload availability; native PR590 provenance",
+  "mode": "verification evidence publication; no source implementation",
+  "source": "Q072426d6; installed Android c7262608/source072; PR590 b74fce60 tree5df98644",
+  "doctrine": "Preserve480 original texts/91 prior sets/13 qualifiers; only I287.C6 NOT_RUN -> PARTIAL, never full acceptance",
+  "ratchet": "Each helper <=120 lines; each independent helper family <=16 files",
+  "search_boundary": "Exact frozen agent metadata and existing evidence files; no aggregate source discovery",
+  "exact_inputs": [
+    ".out/qa-agent-archive",
+    ".out/qa-agent-phone-upload",
+    ".out/qa-agent-windows-release-review",
+    ".out/qa-agent-windows-followup"
+  ],
+  "checks": "Agent terminal runtime/native results; privacy projection; original-row comparison; JSON pointers; public staged-byte seal",
+  "stop_condition": "Immutable evidence pushed; selected QA bodies append-only readback verified; candidate build result retained separately",
+  "limits": "No new desktop/phone input, browser policy retries, production faults, full physical589 acceptance, QA closures or43 consolidation decisions",
+  "unresolved": [
+    "Stable Android surface and media state for later installation",
+    "New human desktop availability",
+    "Deployed frontend/runtime origin",
+    "Missing hardware/provider/upgrade provenance gates"
+  ]
+}

@@ -1,0 +1,316 @@
+{
+  "schema": "archive-publication-privacy-review-v1",
+  "utc": "2026-10-28T20:52:10.111110+00:00",
+  "workflow_class": "review_gate",
+  "route": "qa-agent-archive/publication-privacy",
+  "status": "APPROVED_ALLOWLIST_WITH_REQUIRED_COPY_REDACTIONS",
+  "source_packet": ".out/qa-agent-archive",
+  "review_mode": "Filesystem/JSON/AST/hash inspection only; no imported runner, native tests, Docker, stack, SQL, API, UI or publication actions.",
+  "frozen_originals_unchanged": true,
+  "allowlist": [
+    {
+      "file": "README.md",
+      "source_SHA256": "08aae01034102d4aa37cd00ba9bf218fc70538588da246b43cbab3622b96ec96",
+      "source_bytes": 6402,
+      "kind": "README",
+      "disposition": "ALLOW_AS_IS"
+    },
+    {
+      "file": "archive-immutability.json",
+      "source_SHA256": "48362fdb3e483b86fc9e526c8339001cac9e58156d8255bf918dc93d02435227",
+      "source_bytes": 259,
+      "kind": "metadata_JSON",
+      "disposition": "ALLOW_AS_IS"
+    },
+    {
+      "file": "before.json",
+      "source_SHA256": "c1d69d5209dfcf63043a60c25572c77147dcbd584bc377b169a2068a107d1daa",
+      "source_bytes": 33532,
+      "kind": "metadata_JSON",
+      "disposition": "ALLOW_AFTER_COPY_REDACTION_ONLY"
+    },
+    {
+      "file": "checks.py",
+      "source_SHA256": "fe540f1a6f7582b91ede9d5d32acb99dfe171827e12d7eedf17a5cccb2155a24",
+      "source_bytes": 6662,
+      "kind": "helper_source",
+      "disposition": "ALLOW_AS_IS",
+      "lines": 58,
+      "executed_during_review": false
+    },
+    {
+      "file": "cleanup.json",
+      "source_SHA256": "beedeeaf08e632a6006c19855c2bbd3c4bc05651069e9f6d1f14a84615a16632",
+      "source_bytes": 1113,
+      "kind": "metadata_JSON",
+      "disposition": "ALLOW_AS_IS"
+    },
+    {
+      "file": "cleanup.py",
+      "source_SHA256": "d646b071917e268f2e64e2b6c7dacbc03ff5ade35b9e868a4aa91394bfa979fb",
+      "source_bytes": 5566,
+      "kind": "helper_source",
+      "disposition": "ALLOW_AS_IS",
+      "lines": 41,
+      "executed_during_review": false
+    },
+    {
+      "file": "common.py",
+      "source_SHA256": "3decf41f108866090f6688b37736d5a0cfa32f12b2fe58a3fdd78ebf69a26ae4",
+      "source_bytes": 4354,
+      "kind": "helper_source",
+      "disposition": "ALLOW_AS_IS",
+      "lines": 49,
+      "executed_during_review": false
+    },
+    {
+      "file": "fixture-ready.json",
+      "source_SHA256": "6a6c2cd3d28d30047af45656914cc0d3f394eadfaaf71a84482eaae23b735067",
+      "source_bytes": 322,
+      "kind": "metadata_JSON",
+      "disposition": "ALLOW_AS_IS"
+    },
+    {
+      "file": "held-result.json",
+      "source_SHA256": "b87fe74a0adfe2f86c8bdf5a8a1760f121945313c7efe05e5a5f1979c5a5e54e",
+      "source_bytes": 323,
+      "kind": "metadata_JSON",
+      "disposition": "ALLOW_AS_IS"
+    },
+    {
+      "file": "held-start.json",
+      "source_SHA256": "0f233ce961f4bc602c90b977a9dcc3971c5d5dbac499814fb03a52b0aadceeca",
+      "source_bytes": 314,
+      "kind": "metadata_JSON",
+      "disposition": "ALLOW_AS_IS"
+    },
+    {
+      "file": "held.py",
+      "source_SHA256": "7dd2d77adcf44341a0f51d6d7b0ed2de9ae3b10acaed5d92a3567f94a3411696",
+      "source_bytes": 2069,
+      "kind": "helper_source",
+      "disposition": "ALLOW_AS_IS",
+      "lines": 26,
+      "executed_during_review": false
+    },
+    {
+      "file": "integrity.json",
+      "source_SHA256": "22419f96a84b8f00ef299c644ae7aa91ebf0ee82ac2d956cd77c4b698231736f",
+      "source_bytes": 5846,
+      "kind": "metadata_JSON",
+      "disposition": "ALLOW_AFTER_COPY_REDACTION_ONLY"
+    },
+    {
+      "file": "native-result.json",
+      "source_SHA256": "31a922cda156ae5b6541a387cfb8f8ac61f39b5e544e49259ca3b898774a8bb5",
+      "source_bytes": 1005,
+      "kind": "metadata_JSON",
+      "disposition": "ALLOW_AS_IS"
+    },
+    {
+      "file": "native-review.json",
+      "source_SHA256": "c2af254e10f5291f39e02c1bcf82e7c440bc9dfb74bb7697f83a3058bebaf002",
+      "source_bytes": 666,
+      "kind": "metadata_JSON",
+      "disposition": "ALLOW_AS_IS"
+    },
+    {
+      "file": "native.py",
+      "source_SHA256": "531d645a5ff5158ab86868be88dc97245ac7b9c609819752c53f72a5ab4d1f4d",
+      "source_bytes": 1601,
+      "kind": "helper_source",
+      "disposition": "ALLOW_AS_IS",
+      "lines": 11,
+      "executed_during_review": false
+    },
+    {
+      "file": "operating-brief.json",
+      "source_SHA256": "7411b65118301a804c86280c86a02f86e239746a24b42dd72843356fb8653840",
+      "source_bytes": 1062,
+      "kind": "metadata_JSON",
+      "disposition": "ALLOW_AS_IS"
+    },
+    {
+      "file": "preflight.py",
+      "source_SHA256": "eae6521bf0bc53891efa2a299755ee842913bbd0bf7f7bcc94d2667232620f9c",
+      "source_bytes": 4105,
+      "kind": "helper_source",
+      "disposition": "ALLOW_AS_IS",
+      "lines": 30,
+      "executed_during_review": false
+    },
+    {
+      "file": "prepare.py",
+      "source_SHA256": "af978b2e89791619dfcb6a5db8aaa72ab5681b2106bb2529258563faae1ff4d4",
+      "source_bytes": 2910,
+      "kind": "helper_source",
+      "disposition": "ALLOW_AS_IS",
+      "lines": 23,
+      "executed_during_review": false
+    },
+    {
+      "file": "privacy-review.json",
+      "source_SHA256": "2b6feccbb1e90742772463b2c9b8ed6a93ef58959ee13cf96f838293d3edba08",
+      "source_bytes": 944,
+      "kind": "metadata_JSON",
+      "disposition": "ALLOW_AS_IS"
+    },
+    {
+      "file": "run.py",
+      "source_SHA256": "16a7a7804c548b92717effdbb2ddc208a488529e7d1e55a3280dec02ff958e19",
+      "source_bytes": 2113,
+      "kind": "helper_source",
+      "disposition": "ALLOW_AS_IS",
+      "lines": 18,
+      "executed_during_review": false
+    },
+    {
+      "file": "runtime-checks.json",
+      "source_SHA256": "ed1a82fdf9be80703bde20a3fe757ea72e4cfadbc9327258691e31c95f0a312a",
+      "source_bytes": 9854,
+      "kind": "metadata_JSON",
+      "disposition": "ALLOW_AS_IS"
+    },
+    {
+      "file": "summary.json",
+      "source_SHA256": "990bcd19368e858570ffb073806e39d3b85924cd5e6721327aa26d3d87532d6f",
+      "source_bytes": 1520,
+      "kind": "metadata_JSON",
+      "disposition": "ALLOW_AS_IS"
+    }
+  ],
+  "raw_copy_denied_until_sanitized": [
+    "before.json",
+    "integrity.json"
+  ],
+  "required_redactions": [
+    {
+      "file": "before.json",
+      "selector": "/files",
+      "reason": "Nine preexisting attachment storage UUID paths are private resource identifiers. The original known-fixture scan did not cover these unrelated baseline storage keys.",
+      "operation": "Remove files array; add count and canonical sorted-array SHA256; retain original full paths only in frozen private source.",
+      "replacement_metadata": {
+        "file_inventory_count": 9,
+        "file_inventory_paths_SHA256": "786218e7883e5dfe284e99010077aebf06a92347461a9939741a84bbfbe042e4",
+        "file_inventory_redacted": true
+      }
+    },
+    {
+      "file": "before.json",
+      "selector": "/frozen_files object keys",
+      "reason": "45 absolute host paths expose the local account/worktree layout.",
+      "operation": "Convert each key to repository-relative POSIX path; preserve each hash value. All45 are inside the repository; do not publish the absolute prefix."
+    },
+    {
+      "file": "integrity.json",
+      "selector": "/artifacts/*/path",
+      "reason": "21 absolute host paths expose the local account/worktree layout.",
+      "operation": "Use allowlisted artifact basename or publication-relative path; no absolute host prefix."
+    },
+    {
+      "file": "integrity.json",
+      "selector": "/artifacts plus public privacy fields",
+      "reason": "Redacted copies have different bytes. Original hashes must not be presented as hashes of redacted published files. public_privatevalue_matches=0 originally covered known fixture/credential needles only.",
+      "operation": "Generate a new public integrity manifest from sanitized copies; retain original source_SHA256 separately and add public_SHA256/bytes per published artifact. State scan scope explicitly and rerun only the publisher data privacy scan after copying."
+    }
+  ],
+  "exclusions": [
+    "private/**",
+    "raw JSONL/stdout/stderr/log/SQL/schema/config/cookie/fixture/payload files",
+    "all files not explicitly listed in allowlist",
+    "original absolute paths and preexisting attachment storage-key paths"
+  ],
+  "checked_target_files": {
+    "summary.json": "No private identifiers/tokens/actual fixture bodies/private resource paths detected.",
+    "runtime-checks.json": "43 status/hash-only control records; no private values or UUID literals.",
+    "cleanup.json": "Aliases and path SHA256 only; selected10-table/file restoration scoped; topology/audit exceptions explicit.",
+    "held-start.json": "208/12bytes,0.578s and hashed staging path only; actual path absent.",
+    "held-result.json": "404,1.656s,stage/final removal; no private values.",
+    "native-result.json": "Test names/argv/hash only; skip1 is retained raw package event. Generic ProgramFiles Go installation path is nonpersonal and can remain.",
+    "native-review.json": "Required paired explanation:8actual PASS,0test skips,1package-no-tests event. Do not relabel/remove raw event."
+  },
+  "required_publication_pairing": [
+    [
+      "native-result.json",
+      "native-review.json",
+      "README.md"
+    ],
+    [
+      "summary.json",
+      "cleanup.json",
+      "held-start.json",
+      "held-result.json",
+      "README.md"
+    ]
+  ],
+  "claims_to_preserve": {
+    "full_I287_C6": "PARTIAL only",
+    "runtime_status": "PASS_SCOPED current-source isolated API facet",
+    "actual_HTTP_controls": 43,
+    "held_upload": {
+      "multipart_total_bytes": 220,
+      "prefix_bytes": 208,
+      "held_remaining_bytes": 12,
+      "staging_witness_seconds": 0.5780000000086147,
+      "final_404_seconds": 1.6559999999881256,
+      "stage_and_new_final_file_absent": true
+    },
+    "native": {
+      "PASS_tests": 8,
+      "test_skips": 0,
+      "test_failures": 0,
+      "package_no_test_events": 1,
+      "native_reruns": 0
+    },
+    "cleanup": {
+      "selected_table_count_hash_baselines_restored": 10,
+      "selected_tables": [
+        "users",
+        "sessions",
+        "categories",
+        "channels",
+        "messages",
+        "attachments",
+        "message_attachments",
+        "text_message_reactions",
+        "text_message_pins",
+        "channel_read_cursors"
+      ],
+      "preexisting_file_inventory_restored": true,
+      "file_inventory_count": 9,
+      "own_sessions_revoked_and_removed": 3,
+      "new_users": 0,
+      "topology_revision": [
+        38,
+        42
+      ],
+      "own_audit_metadata_rows_kept": 6,
+      "entire_database_equality_claim_allowed": false
+    },
+    "NOT_RUN": [
+      "previous-deployed-schema upgrade",
+      "provenance-backed legacy archive compatibility",
+      "released-client UI",
+      "browser/physical/production acceptance"
+    ]
+  },
+  "scanner_results": {
+    "allowlisted_file_count": 22,
+    "helper_count": 8,
+    "helper_max_lines": 58,
+    "known_credential_fixture_value_matches": 0,
+    "UUID_storage_paths_in_original_before_json": 9,
+    "absolute_personal_host_path_occurrences_in_original_metadata": 66,
+    "simulated_copy_after_recommended_redactions_private_UUIDs": 0,
+    "simulated_copy_after_recommended_redactions_personal_host_paths": 0,
+    "published_copy_created": false,
+    "root_must_recompute_public_manifest_after_copy": true
+  },
+  "scope_limits": [
+    "Read-only review of frozen artifacts; no new runtime result.",
+    "Private configuration was read only to compare known values; no values are copied into this review.",
+    "Generic code references to relative private fixture filenames and constructed credentials are runner instructions, not private payload; referenced private files remain excluded.",
+    "Source input hashes are provenance for frozen originals; do not confuse them with hashes of redacted public copies."
+  ],
+  "slavik_gym_report": "route=qa-agent-archive/publication-privacy; packet=read-only-publication-review; tokens=estimated:4500; method=manual_estimate; driver=private-baseline-path-redaction; next_split=root-sanitized-copy-and-manifest"
+}

@@ -1,0 +1,41 @@
+import json,time,subprocess
+from common import P,Q,WORK,CONTEXT,ROOT,PROJECT,read,write,fixture,valid,quote,sql,request,files,fs,state,services,revision,frozen,sha,now,docker
+def cleanup():
+    c=fixture();before=read(P/'before.json');owner=c['owner'];assert len(owner)==24 and all(x in '0123456789abcdef' for x in owner)
+    removed_files=[]
+    if c.get('channel'):
+        cid=valid(c['channel']);cat=valid(c['category']);assert sql('SELECT name FROM channels WHERE id='+quote(cid)+';').strip()=='qa_archive_'+owner
+        assert sql('SELECT name FROM categories WHERE id='+quote(cat)+';').strip()=='qa_archive_'+owner and sql('SELECT count(*) FROM channels WHERE category_id='+quote(cat)+';').strip()=='1'
+        assert set(sql('SELECT id FROM messages WHERE channel_id='+quote(cid)+';').splitlines())==set(c['messages'])
+        keys=sql('SELECT storage_key FROM attachments WHERE channel_id='+quote(cid)+';').splitlines()
+        assert all(valid(k) for k in keys)
+        for _ in range(10):
+            extra=files()-set(before['files']);parts=[x for x in extra if '/staging/' in x]
+            if not parts:break
+            time.sleep(.15)
+        assert not parts,'Held stage not cleaned; retain owned-state evidence'
+        assert files()-set(before['files'])=={ROOT+'/unattached/'+k for k in keys}
+        for k in keys:
+            path=ROOT+'/unattached/'+valid(k);assert path.startswith(ROOT+'/unattached/');fs('/bin/rm',['--','/qa/unattached/'+k],readonly=False);removed_files.append(sha(path.encode()))
+        sql('BEGIN; DELETE FROM text_message_reactions WHERE message_id IN (SELECT id FROM messages WHERE channel_id='+quote(cid)+'); DELETE FROM text_message_pins WHERE message_id IN (SELECT id FROM messages WHERE channel_id='+quote(cid)+'); DELETE FROM message_attachments WHERE message_id IN (SELECT id FROM messages WHERE channel_id='+quote(cid)+'); DELETE FROM channel_read_cursors WHERE channel_id='+quote(cid)+'; DELETE FROM attachments WHERE channel_id='+quote(cid)+'; DELETE FROM messages WHERE channel_id='+quote(cid)+'; DELETE FROM channels WHERE id='+quote(cid)+'; DELETE FROM categories WHERE id='+quote(cat)+' AND name='+quote('qa_archive_'+owner)+'; COMMIT;')
+        admin=c['sessions']['admin']['cookie'];status,_,tree=request('/api/v1/channels',cookie=admin);assert status==200 and cid not in [x['id'] for t in tree['categories'] for x in t['channels']] and cat not in [t['id'] for t in tree['categories']]
+        assert request('/api/v1/archives/text-channels/'+cid+'/attachments/'+c['attachment'],cookie=admin)[0]==404
+    revoked=[]
+    for alias,s in c['sessions'].items():
+        status,_,session=request('/api/v1/auth/session',cookie=s['cookie']);assert status==200
+        if session['authenticated']:assert request('/api/v1/auth/logout','POST',{},s['cookie'])[0]==204
+        status,_,session=request('/api/v1/auth/session',cookie=s['cookie']);assert status==200 and not session['authenticated'];assert request('/api/v1/channels',cookie=s['cookie'])[0]==401
+        assert sql('SELECT count(*) FROM sessions WHERE public_id='+quote(valid(s['id']))+' AND user_id='+quote(valid(s['account']))+' AND revoked_at IS NOT NULL;').strip()=='1'
+        sql('DELETE FROM sessions WHERE public_id='+quote(s['id'])+' AND user_id='+quote(s['account'])+' AND revoked_at IS NOT NULL;');revoked.append(alias)
+    after=state();assert after==before['database'] and files()==set(before['files'])
+    old=read(P/'private/services-before.json');current=services()
+    assert all(v['State']['Running'] and all(v[k]==old[n][k] for k in ['Id','Image','Config','HostConfig','RestartCount']) and v['State']['StartedAt']==old[n]['State']['StartedAt'] for n,v in current.items())
+    assert request('/api/v1/health')[0]==200 and frozen()==before['frozen_files']
+    assert all(sha((Q/f).read_bytes())==h['raw_sha256'] for f,h in before['source_hashes'].items())
+    seal=read(P/'runtime-binding.json') if (P/'runtime-binding.json').exists() else before
+    assert all(sha((P/f).read_bytes())==h for f,h in seal['helper_hashes'].items())
+    log=subprocess.run(['docker','--context',CONTEXT,'logs','--since',before['utc'],PROJECT+'-api-1'],capture_output=True,timeout=15);raw=log.stdout+log.stderr;(P/'private/api.log').write_bytes(raw)
+    cred=read(WORK/'credentials.private.json');needles=[owner,c.get('text',''),c.get('file',''),*[x['cookie'] for x in c['sessions'].values()],c.get('channel',''),c.get('attachment','')]+[cred[k] for k in ['admin_password','member_a_password','member_b_password','database_password']]
+    assert not any(v.encode() in raw for v in needles if v)
+    public=list(P.glob('*.json'));assert not any(v.encode() in f.read_bytes() for f in public for v in needles if v)
+    write(P/'cleanup.json',{'utc':now(),'status':'PASS','own_sessions_revoked_removed_with_live401':revoked,'all10_selected_table_fingerprints_restored':True,'preexisting_file_path_inventory_restored':True,'owned_files_removed_path_hashes':removed_files,'nine_services_unchanged':list(current),'health_HTTP':200,'source_helpers_frozen_packets_unchanged':True,'topology_revision_before':before['revision'],'topology_revision_after':revision(),'revision_limit':'Legitimate monotonic archive/restore topology revision is not reset; only owned topology resources removed.','audit_metadata_added':int(sql('SELECT count(*) FROM audit_events;').strip())-before['audit_count'],'audit_limit':'Bounded metadata-only create/archive/restore/pin audit records are retained; no private bodies or files.','API_log_SHA256':sha(raw),'privatevalue_matches':0})

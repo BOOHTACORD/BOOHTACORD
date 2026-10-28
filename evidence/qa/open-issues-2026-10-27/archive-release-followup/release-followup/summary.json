@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "packet": "Windows-native-followup-same-code-and-network",
+  "status": "READ_ONLY_COMPLETE",
+  "frozen_after_seal": true,
+  "main_findings": [
+    "Same versionCode2082 is a legitimate possible data-preserving ADB QA replacement path under identity/revision/compatibility conditions; no mandatory source-version increment inferred solely for physical fix590 testing",
+    "One targeted installed-BOOHTACORD TCP snapshot: established loopbackAPI18088=false; any established loopback=false; established nonloopback remote443=true. Exact configured/live URL and production binding remain UNVERIFIED."
+  ],
+  "Android": "android-same-code-decision.json",
+  "Windows": "windows-network-classification.json",
+  "Windows_inference_limits": "Absence of loopback in one instant does not rule out all local QA paths; remote443 classification alone does not identify remote host/origin or contents. No attempt to infer from default URL.",
+  "preservation": {
+    "ui_actions": 0,
+    "focus_or_activation": 0,
+    "network_observations": 1,
+    "UDP_queries": 0,
+    "packet_or_cookie_reads": 0,
+    "other_process_inspection": 0,
+    "private_preferences_reads": 0,
+    "dispatch_build_install_or_secrets": 0,
+    "source_public_or_old_report_changes": 0
+  },
+  "report": "Slavik Gym report: route=no-source-change/native-readiness-followup; packet=same-code-and-targeted-network-review_gate; tokens=estimated:2300; method=manual_estimate; driver=official-platform-rule-and-single-process-classflags; next_split=verified-signed590-candidate-and-coordinated-physical-QA"
+}

@@ -1,0 +1,34 @@
+{
+  "utc": "2026-10-28T20:36:36.302587+00:00",
+  "status": "PASS",
+  "own_sessions_revoked_removed_with_live401": [
+    "admin",
+    "a",
+    "b"
+  ],
+  "all10_selected_table_fingerprints_restored": true,
+  "preexisting_file_path_inventory_restored": true,
+  "owned_files_removed_path_hashes": [
+    "b3235d0dfa8dccf05c520d564434e1d02055f21cda1214050de7cc8e21a7268e"
+  ],
+  "nine_services_unchanged": [
+    "api",
+    "web",
+    "proxy",
+    "postgres",
+    "livekit",
+    "collector",
+    "tempo",
+    "prometheus",
+    "grafana"
+  ],
+  "health_HTTP": 200,
+  "source_helpers_frozen_packets_unchanged": true,
+  "topology_revision_before": 38,
+  "topology_revision_after": 42,
+  "revision_limit": "Legitimate monotonic archive/restore topology revision is not reset; only owned topology resources removed.",
+  "audit_metadata_added": 6,
+  "audit_limit": "Bounded metadata-only create/archive/restore/pin audit records are retained; no private bodies or files.",
+  "API_log_SHA256": "e915e70078411ed6b409688aa37b0b86da34acf3cb160abe0c8624af73e2f61c",
+  "privatevalue_matches": 0
+}

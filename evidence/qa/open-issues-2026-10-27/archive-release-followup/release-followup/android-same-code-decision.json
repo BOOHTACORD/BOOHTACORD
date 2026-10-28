@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "status": "SAME_VERSION_CODE_QA_REPLACEMENT_SUPPORTED_NOT_EXECUTED",
+  "workflow_class": "review_gate",
+  "correction": "The earlier release-review statement requiring a source identity increment for QA was overbroad. A strictly newer version is necessary for the separate requested monotonic-upgrade gate, not intrinsically for normal data-preserving ADB replacement.",
+  "android_rule": {
+    "application_id": "same installed application ID",
+    "signer": "same signing certificate or valid Android signing lineage",
+    "version_code": "new code may equal installed code",
+    "revision_codes": "For equal versionCode, base and matching split revision codes must not decrease",
+    "other_compatibility": "Actual APK/device compatibility and installer policy checks still apply"
+  },
+  "possible_QA_path": {
+    "existing_build": "Existing trusted-master Android Release workflow_dispatch dry_run can build a release-mode signed artifact from fix590 source while native_build stays82/code2082",
+    "install_command_plan_only": "adb install -r <verified-current-source-arm64.apk>",
+    "unnecessary_for_same_code": [
+      "-d",
+      "uninstall",
+      "pm clear",
+      "source version increment solely to permit ADB replacement"
+    ],
+    "required_before_any_future_install": [
+      "Actual new APK source/build/hash and expected platform ABI proof",
+      "Actual appID ru.boohtacord.app and signer SHA256 match installed QA candidate",
+      "Actual versionCode2082 plus nondecreasing base/split revisions",
+      "Separate root/user authorization and coordinated phone state; no install in this packet"
+    ],
+    "distinction": "This does not accept app updater/catalog monotonic-version behavior, real update restoration, auth/session/media continuity or physical fix590 behavior"
+  },
+  "observed_installations": 0,
+  "workflow_dispatches": 0,
+  "builds": 0,
+  "private_key_access": false,
+  "old_reports_edited": false,
+  "sources": [
+    {
+      "title": "How app updates work — Android platform conditions",
+      "url": "https://developer.android.com/google/play/app-updates",
+      "supports": "Same appID/signer and version code equal-or-higher can be accepted by Android platform",
+      "lines": "103–108 as read2026-10-28"
+    },
+    {
+      "title": "Android Debug Bridge — install options",
+      "url": "https://developer.android.com/tools/adb",
+      "supports": "-r replaces existing installation retaining its data; -d is specifically version-code downgrade",
+      "lines": "570–580 as read2026-10-28"
+    },
+    {
+      "title": "AOSP PackageManagerServiceUtils.checkDowngrade",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/master/services/core/java/com/android/server/pm/PackageManagerServiceUtils.java",
+      "blob": "7af39f74d0d6ec98dfce33c72b5fc72f0f62e737",
+      "supports": "VersionCode lower is rejected; equal code checks base and split revision decreases",
+      "lines": "1444–1479 as read2026-10-28"
+    }
+  ],
+  "source_limits": "AOSP main source corroborates current platform rule; Android16 branch URL was not accessible through web tool. Official Android platform documentation explicitly states equal-code allowance. No claim of an actual Samsung installation result.",
+  "commands": "Read-only primary-doc browsing only; adb plan not executed"
+}

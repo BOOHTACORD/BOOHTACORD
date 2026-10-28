@@ -1,0 +1,28 @@
+{
+  "utc": "2026-10-28T20:35:46.804269+00:00",
+  "command": [
+    "C:\\Program Files\\Go\\bin\\go.exe",
+    "test",
+    "-json",
+    "-count=1",
+    "./internal/channel/archive_readonly_text/...",
+    "./internal/channel/restore_readonly_text/..."
+  ],
+  "exit": 0,
+  "passed_tests": [
+    "TestArchiveRequiresConfirmationAndValidRevisionBeforePersistence",
+    "TestMutationAdminRoleStrictBodyAndRevisionConflict",
+    "TestRestoreValidatesIdentityAndRevision",
+    "TestMutationAdminRoleStrictBodyAndRevisionConflict",
+    "TestReadonlyArchiveLifecycleKeepsIDAndExcludesDeletedVoiceAndBlocked",
+    "TestArchiveHistorySearchAndFilesRequireExplicitModeAndActiveReader",
+    "TestArchiveReadRechecksBlockAfterAvailabilityProbe",
+    "TestArchiveRejectsFreshSendIdempotentReplayAndEdit"
+  ],
+  "PASS": 8,
+  "skip": 1,
+  "fail": 0,
+  "public_tables_unchanged": true,
+  "schemas_after": "0",
+  "stdout_SHA256": "995455c96043c477564b64bd0535d3282dd0376f0d473622903ba3eb4e08a78c"
+}

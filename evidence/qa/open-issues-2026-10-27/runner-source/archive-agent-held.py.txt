@@ -1,0 +1,26 @@
+import http.client,json,time
+from common import P,ORIGIN,files,multipart,write,now,sha
+class Held:
+    def __init__(self,cfg):
+        self.before=files();self.body,ctype=multipart(('held '+cfg['owner']).encode());self.conn=http.client.HTTPConnection('127.0.0.1',18088,timeout=8);self.start=time.monotonic();self.closed=False
+        self.conn.putrequest('POST','/api/v1/channels/'+cfg['channel']+'/attachments',skip_host=True)
+        for k,v in {'Host':'localhost:18088','Origin':ORIGIN,'Cookie':cfg['sessions']['a']['cookie'],'Content-Type':ctype,'Content-Length':str(len(self.body))}.items():self.conn.putheader(k,v)
+        self.conn.endheaders();self.cut=len(self.body)-12;self.conn.send(self.body[:self.cut]);self.part=None
+        try:
+            for _ in range(10):
+                candidates=files()-self.before
+                if len(candidates)==1:
+                    item=next(iter(candidates));assert '/staging/upload-' in item and item.endswith('.part');self.part=item;break
+                assert not candidates;time.sleep(.1)
+            assert self.part and time.monotonic()-self.start<8,'No bounded real staging witness'
+            write(P/'held-start.json',{'utc':now(),'stage_file_created_after_authorization':True,'prefix_sent_bytes':self.cut,'remaining_bytes':len(self.body)-self.cut,'elapsed_seconds':time.monotonic()-self.start,'part_path_SHA256':sha(self.part.encode()),'one_request':True})
+        except Exception:self.close();raise
+    def release(self):
+        try:
+            self.conn.send(self.body[self.cut:]);r=self.conn.getresponse();code=r.status;raw=r.read(65536)
+            assert code==404 and self.part not in files() and files()==self.before
+            write(P/'held-result.json',{'utc':now(),'status':'PASS','HTTP':code,'elapsed_seconds':time.monotonic()-self.start,'stage_removed':True,'no_new_final_file':True,'response_SHA256':sha(raw),'released_only_after_archive_commit':True})
+            return code
+        finally:self.close()
+    def close(self):
+        if not self.closed:self.conn.close();self.closed=True

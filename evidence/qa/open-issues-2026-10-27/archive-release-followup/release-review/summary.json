@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "packet": "Windows-native-PR590-source-release-readiness",
+  "status": "SOURCE_MERGED_HOSTED_CI_PASS_PHYSICAL_AND_PACKAGE_PENDING",
+  "workflow_class": "review_gate",
+  "frozen_after_this_packet": true,
+  "source": {
+    "pr": "https://github.com/Egkurilov/BOOHTACORD/pull/590",
+    "title": "fix: preserve search focus and revoke stale message views",
+    "state": "MERGED",
+    "merged_at_utc": "2026-10-28T20:17:10Z",
+    "head": "994b8e3a3ded6a7521308b9b4bf03ecc234353f1",
+    "base": "4511c532743e209529db3dd8984f7542e0baa866",
+    "merge_and_observed_master": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+    "checked_synthetic_merge": "db26489db9b9fef0ec6c3872eca2567498d24fb5",
+    "checked_and_final_tree": "5df9864444dd5dd407c22cc06535fb161644705d",
+    "changed_files": 31,
+    "primary_patches_reviewed": 16,
+    "inventory": "pr-provenance.json"
+  },
+  "protects": "Do not claim that merged source, hosted test engines, debug ZIPs or old installed native candidates are physical acceptance of image revocation/focus corrections",
+  "command": "Read-only connected GitHub PR info/list/file patch and exact-ref source; read_pull_request_check_diagnostics with retained headRevision and returned run/job IDs; GitHub full job logs; git commit-tree and releases APIs; exact local candidate/hash/prefs-key readback",
+  "platform": "Read-only Windows controller; no Windows UI/CUA, no browser, no application state mutation",
+  "mandatory_when": "Before selecting a new exact-source native package and attempting physical PR590 regression acceptance",
+  "fixes": {
+    "141": "Still OPEN and outside intended PR590 fix; draft eviction not accepted",
+    "585": "Stable editor/results ListView identity; six focus/IME widget variants PASS; physical Gboard pending",
+    "586": "Mobile minimum48dp search scope, desktop32px; widget edge taps PASS; physical/iOS pending",
+    "587": "Open Web TEXT/DM context now receives scoped hints and protects deletion/revision/generation ordering; six original actual-stack cases still require rerun",
+    "589": "Native dialog now observes applied source-row deletion/attachment removal and session/server boundaries, replacing image and Download irreversibly; loaded/pending/session widget tests explicitly PASS on hosted Linux and Windows engines"
+  },
+  "ci": {
+    "run": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40759210732",
+    "checks": "27completed/success on head994b8e3; actual checkout synthetic merge db26489d has same tree as final b74",
+    "go_postgres": "Actual PG17.6;1673passed/0skipped/0failed",
+    "flutter_application": "1656passed/3skipped on hosted Linux+Windows engine logs; skip names and exact guards in ci-provenance.json",
+    "android": "Hosted debug APK build/profile success; not signed QA release equivalence",
+    "macos": "Hosted macOS profile success; capacity notice is nonblocking; no physical Mac acceptance",
+    "windows": "Native-unit/build/GUI-SFU profiles success; no manual owner-delete viewer result",
+    "limits": "Hosted CI is not full physical acceptance; three application skips and three separate LiveKit vendor skips retained",
+    "result": "ci-provenance.json"
+  },
+  "release": {
+    "public_windows": "windows-v1.0.47 at declared f5cd7835; local manifest digest matches its public asset metadata; no new590 public Windows package observed",
+    "public_android": "android-v1.0.45 at9c221897; old viewer blob matches oldQ/Windows and lacks new wrapper; no publicAPK reproduction claimed",
+    "ci_artifacts": "Exact-head Actions Windows bundle/installer and Android debug archives available with digests in release-availability.json; not downloaded/installed",
+    "production_deployed_source": "UNVERIFIED; merge state does not prove deployment"
+  },
+  "signed_QA_path": {
+    "existing": "Android Release workflow_dispatch dry_run on trusted master, existing production-environment signer, artifact-only before publish condition",
+    "prior": "Run40447079903 -> signed artifact12709935119 -> QA2082/source072; appIDru.boohtacord.app; cert394e369d…1212b; APKc7262608…6243",
+    "current_constraint": "b74pubspec/client-build still82, arm64code82+2000=2082. Strictly newer-than2082 build requires approved source identity increment; workflow has no build-number override input.",
+    "result": "android-candidate-path.json",
+    "nothing_dispatched_built_installed_or_signed": true
+  },
+  "windows_origin": {
+    "status": "UNVERIFIED",
+    "fact": "Installed f5 and Q SessionStore exact blob72c2340 are identical. BaseURL uses documented plaintext SharedPreferences flutter.server_url. That exact key is absent in documented app-data file. No live in-memory origin was inspected; no default inference.",
+    "cookie_or_credential_access": false,
+    "whole_preferences_output": false,
+    "result": "windows-origin-finding.json",
+    "new_qualification": "All prior Windows native observations remain candidate-specific. Production-server binding was never established by those runs; frozen reports were not edited."
+  },
+  "next_physical_acceptance": [
+    "Select an approved package whose actual source manifest/blob binding contains590 and verify archive+installed bytes; for Android verify actual appID/cert and versionCode>2082 without removing app/session.",
+    "Obtain a new human desktop availability interval and root native-only grant; no current UI lease remains.",
+    "Confirm a preexisting owned Windows receiver DM by unique controlled marker; do not equate phone receiver with Windows account or infer origin from default.",
+    "On exact new Android/Windows candidate: accepted own PNG visibly renders; owner deletes only that message; fresh underlying tombstone/post-delete control proves applied deletion; verify bitmap and Download gone; pending-read/late-response, unavailable close and Escape/focus remain explicit facets.",
+    "Repeat actual Gboard sequential first-character/focus scenario at applicable text scales; synthetic testTextInput is not Gboard.",
+    "For Web587, identify deployed frontend SHA and rerun original3edit+3delete actual API/WebSocket context counterexamples and controls; preserve #240/#241 gates.",
+    "Run #141 draft-eviction behavior separately; none of this accepts it."
+  ],
+  "review_limits": [
+    "No new product defect reported from source-only counterexamples; additional native gaps enumerated in source-invariants.json",
+    "Historical local results.json is source9121 and pre-relocation; not final994 hash attestation",
+    "No source/index/GitHub/public/B mutations, checkout/rebase/merge/deploy/CI rerun/workflow dispatch/install/UI or secret access",
+    "Q remains072 and four preexisting generated-file hashes byte-identical"
+  ],
+  "artifacts": [
+    "pr-provenance.json",
+    "ci-provenance.json",
+    "release-availability.json",
+    "source-invariants.json",
+    "android-candidate-path.json",
+    "windows-origin-finding.json",
+    "final-state.json",
+    "artifact-hashes.json"
+  ],
+  "report": "Slavik Gym report: route=widgets/attachment_revocation; packet=PR590-read-only-release-review_gate; tokens=estimated:11000; method=manual_estimate; driver=exact-head-CI-tree-package-origin-provenance; next_split=approved-newer-native-candidate-and-physical589"
+}

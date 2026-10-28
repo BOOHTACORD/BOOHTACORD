@@ -1,0 +1,201 @@
+{
+  "id": "ANDROID-native-JPEG-GIF-file-picker-upload-send-peer-read",
+  "status": "BLOCKED_CURRENT_NATIVE_SETTINGS_RETURNED_BEFORE_IDENTITY_GUARD",
+  "at_utc": "2026-10-28T20:40:29.051692+00:00",
+  "workflow_class": "review_gate",
+  "route": "clients/flutter/features/attachments/upload",
+  "protects": "Actual nativeJPEG/GIF localDocumentsUI selection creates onlypendingownedattachment until explicitSend, authorizedpeerGET retains originalbytes, nativeauthorDelete revokes original/preview; thisruntimefacet is NOTEXECUTED",
+  "command": "Read-onlysource/APKpreflight; ONEauthorized amstart -n ru.boohtacord.app/.MainActivity; freshUI/room/media availabilityguards only. No picker/upload/send/nativeDelete/peerAPIcommand executed",
+  "platform": "PhysicalSamsungSM-A576BAndroid16 signedQA1.0.47+2082 installedru.boohtacord.app; currentlyvisibleUIcom.android.settings",
+  "mandatory_when": "Before acceptingthisexactnativepickerJPEG/GIFuploadscope; no I131 browserPASTE/clipboard/systemsharing orwholeQAclaim",
+  "result": "summary-final.json; summary.json is immutableattempt1; attempt2-readonly-activation.json; attempt2-post-activation-fresh-binding.json; attempt2-room-guard-diagnostic.json; attempt2-final-availability-diagnostic.json",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "source_SHA256_fresh": {
+    "AGENTS.md": "c2eb9bdb4d9fce83ceb972dacdf89c9bb82a54ac1511e94f5004671f11a64361",
+    "SKILL.md": "8c67eb1e71ed7cf9932bc72c360aac8f94f58ec19736e2acbfe3b288778bb685",
+    "structure.config.yaml": "3ca9f5484516e975a6a325b6920ef37bd6ec69f5ed05b29fa5beb933a3114ebe",
+    "clients/flutter/pubspec.yaml": "de0377a63ab77456df14f211b498b8f2b7b12cf1773f65ff9abf4975626a76de",
+    "clients/flutter/lib/src/features/attachments/upload/api.dart": "441ba1edc89490d85b625e38cc974b9291068cef4df2a106a17e07c26f68da8c",
+    "clients/flutter/lib/src/features/attachments/upload/facade.dart": "a838136f6403e8032e24080448b1dd35e9d3ce8baf611276f86481c664a607c5",
+    "clients/flutter/lib/src/widgets/message_attachment_composer.dart": "89882727747d3c328058c3eb48675832c0f3fb672bacefe65ec33af447c3b044",
+    "clients/flutter/lib/src/features/direct/send_state/send.dart": "8940722bea478ae5904d3b56d5127c083e941f1307909b7ca2732f2ee0915e0e",
+    "clients/flutter/lib/src/features/attachments/download/api.dart": "eae3bb4de6eb805a8b6563f1e326b9a54c71e1ab6f48c56519fe2a81553a5973",
+    "clients/flutter/test/message_attachment_composer_test.dart": "b0e9c4e77f024f9c351e28e6fb42204e52933cbeb391e7e8f84b3ed0e7f13602"
+  },
+  "APK_SHA256_fresh": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+  "deployed_backend_source": "UNKNOWN",
+  "fixtures_verified_locally_only": [
+    {
+      "format": "JPEG",
+      "mime": "image/jpeg",
+      "bytes": 774,
+      "pixels": [
+        64,
+        48
+      ],
+      "frames": 1,
+      "SHA256": "cc2a68f90df1e554d644f61c67ae12f96aa2c8a042477110d6d2e3ab089df15c",
+      "native_picker_upload_send_status": "NOT_RUN"
+    },
+    {
+      "format": "GIF",
+      "mime": "image/gif",
+      "bytes": 205,
+      "pixels": [
+        32,
+        32
+      ],
+      "frames": 2,
+      "SHA256": "307057a156b56cdc8042d2ecee09b258a204769ede03f3c0f2f2a01d585c594b",
+      "native_picker_upload_send_status": "NOT_RUN"
+    }
+  ],
+  "native_runtime_results": {
+    "JPEG": "NOT_RUN",
+    "GIF": "NOT_RUN",
+    "native_explicit_Send": "NOT_RUN",
+    "peer_original_preview_GET": "NOT_RUN",
+    "native_author_Delete": "NOT_RUN"
+  },
+  "normal_approved_package_activation_count": 1,
+  "activation_native_exit": 0,
+  "Settings_actions": 0,
+  "navigation_picker_Send_inputs": 0,
+  "new_API_login_attempts": 0,
+  "new_API_sessions": 0,
+  "new_device_Download_files_or_pushes": 0,
+  "new_messages": 0,
+  "force_stop_Join_Leave_mic_share_retry_commands": 0,
+  "observed_approved_room_guard_before_external_surface_return": {
+    "room_is_allowed_SHARE_TEST": true,
+    "binding": "Same lowernative statuslabel contained connectedvoiceandSHARE_TEST,20:37:51UTC; notmereRoomlistpresence",
+    "result": "attempt2-room-guard-diagnostic.json"
+  },
+  "last_current_availability": {
+    "at_utc": "2026-10-28T20:39:27.126771+00:00",
+    "status": "BLOCKED_ATTEMPT2_CURRENT_NATIVE_AVAILABILITY_CHANGED_BEFORE_ANY_NAVIGATION",
+    "visible_UI_packages_only": [
+      "com.android.settings"
+    ],
+    "surface_guards": {
+      "approved_APP_present": false,
+      "Settings_present": true,
+      "auth_or_permission_prompt": false,
+      "own_peer_header": false,
+      "composer_empty": false,
+      "voice_connected": false,
+      "room_is_allowed_SHARE_TEST": false
+    },
+    "media_observation": {
+      "microphone_fgs": true,
+      "projection_null": false,
+      "permission": {
+        "granted": true,
+        "flags": [
+          "USER_SET",
+          "USER_SENSITIVE_WHEN_GRANTED",
+          "USER_SENSITIVE_WHEN_DENIED"
+        ]
+      }
+    },
+    "room_binding_valid_only_if_APP_and_connected_status_present": true,
+    "normal_activation_total": 1,
+    "UI_navigation_inputs_total": 0,
+    "new_API_logins_pushes_messages_total": 0,
+    "force_stop_count": 0,
+    "no_Settings_labels_other_room_names_or_personal_content_retained": true,
+    "failed_guard_native_exit": 1,
+    "native_skips": 0,
+    "no_further_activation_or_fight_allowed": true,
+    "failed_runner_SHA256": "3568281eb01526629bbf480bb6bb13a0625eba9645a7451e939e1429e8879a56"
+  },
+  "current_room_and_owned_DM_profile_guard": "NOT_OBSERVABLE_ON_SETTINGS, nootherroomnameinferred",
+  "projection_null_guard_changed": "Initiallytrue, lastfalse. No rawgrant retained, no cause/owner/mediaoutcome inferred, no agentcaptureaction",
+  "controller_attempts": [
+    {
+      "result": "preflight-attempt1.json",
+      "exit": 1,
+      "reason": "NoUIrootParseError; sourcepreserved",
+      "product_bug": false
+    },
+    {
+      "result": "attempt2-activation-precheck.json",
+      "exit": 1,
+      "reason": "Conservativeidleprecheckbeforeauthorizedactivation, didnotexecuteamstart",
+      "product_bug": false
+    },
+    {
+      "result": "attempt2-readonly-activation.json",
+      "exit": 2,
+      "amstart_exit": 0,
+      "reason": "TemporaryUIrootParseError; subsequentfreshAPPbinding obtained",
+      "product_bug": false
+    },
+    {
+      "result": "attempt2-final-availability-diagnostic.json",
+      "exit": 1,
+      "reason": "Settingsreturnedbeforeanynavigation action; nofurtheractivation/input",
+      "product_bug": false
+    }
+  ],
+  "cleanup": "NO_NEW_FILES_MESSAGES_SESSIONS_TO_CLEAN",
+  "agent_preservation": "Agentdidnotchangevoice/mic/room/projection/permissions/font/orientation/session/baseURL; nofinalnativeidentity/mediabaselinerestorationclaimduringexternalSettingsavailability",
+  "attempt1_records_frozen_SHA_match": true,
+  "previous_packets_frozen_SHA_match": {
+    "qa-agent-phone": true,
+    "qa-agent-phone-restart": true
+  },
+  "helpers": {
+    "activate.py": {
+      "SHA256": "e47776a2793d8fb0a6c97bb56784bf6fedab0f26820b52d6439fb40deb5ea758",
+      "lines": 10
+    },
+    "activate_observe.py": {
+      "SHA256": "dde428ac9caecefd9fdaf2343750f4955c2f582c7d570f5cf5c9bbea6162d6e9",
+      "lines": 13
+    },
+    "common.py": {
+      "SHA256": "d3ba142554fd7b4ad083463bf9da096958c6d75c03ec5d4e48ca907378296e61",
+      "lines": 24
+    },
+    "final_availability.py": {
+      "SHA256": "2774b12c7be1f5a715d29cd005db72c2804d75d413361bc40616ceab7746bb5b",
+      "lines": 2
+    },
+    "freeze_attempt1.py": {
+      "SHA256": "f19b691f704e72ebdd180282bc085b3b3b82cbbadc665445c1ba7846ca00a480",
+      "lines": 2
+    },
+    "native_common.py": {
+      "SHA256": "ff4ea15ec9845891e41f1f787161722f1b800c39df59ee0be5c8d3ecaf817e53",
+      "lines": 18
+    },
+    "preflight.py": {
+      "SHA256": "b919bfc46ef8b3e365e91817e745dd7e6f7b0321fcbd2cee4729a0674ee80e98",
+      "lines": 12
+    },
+    "profile_dm_guard.py": {
+      "SHA256": "3568281eb01526629bbf480bb6bb13a0625eba9645a7451e939e1429e8879a56",
+      "lines": 3
+    },
+    "seal_blocked.py": {
+      "SHA256": "cb2c39111b206b5a7969350995d390c9c11492fd9e989caa445456358c7e559b",
+      "lines": 15
+    },
+    "seal_final.py": {
+      "SHA256": "b88bd957cefc792ce4c04086729ba484967371b8f5355e0325149115cc0fbe16",
+      "lines": 13
+    }
+  },
+  "native_skips": 0,
+  "native_format_cases_NOT_RUN": 2,
+  "new_confirmed_product_bugs": [],
+  "limits": [
+    "No nativeJPEG/GIFfilepicker/upload/send/peerread/deletionacceptance performed",
+    "No maintenance/authavailabilityfailureclaim; one Blogin remainedNOT_RUN",
+    "No I131browserPASTE/clipboard/systemshare orfullQA/media/acousticgate claim",
+    "No autogeneratednativeprofileproof fromactivitymetadata orcachedpriorrun",
+    "No Settingslabels/personalfilelists/rawscreens/otherroomnames/rawprojectiongrant retained",
+    "Scopecanresumeonlyafterstableauthorizednativecontextguard; nofightinguser/systemsurface"
+  ]
+}

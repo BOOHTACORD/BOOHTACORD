@@ -1,0 +1,30 @@
+"""Publish only reviewed metadata; originals are bound by separate private hashes."""
+from common import *
+assert not D.exists(),'One-shot publication already exists'
+archive=Q/'.out/qa-agent-archive';phone=Q/'.out/qa-agent-phone-upload'
+ar=read(Q/'.out/qa-agent-archive-public-review.json')
+pr=read(Q/'.out/qa-agent-phone-upload-public-review.json')
+assert ar['status']=='APPROVED_ALLOWLIST_WITH_REQUIRED_COPY_REDACTIONS' and pr['status'].startswith('PASS_SCOPED')
+write(P/'preexecution.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'helpers':{f.name:sha(f.read_bytes()) for f in P.glob('*.py')},'baseline':BASE})
+archive_files=['summary.json','runtime-checks.json','held-start.json','held-result.json','cleanup.json','native-result.json','native-review.json','privacy-review.json','archive-immutability.json','integrity.json','operating-brief.json']
+phone_files=['summary-final.json','summary.json','artifact-hashes.json','artifact-hashes-attempt1.json','preflight-attempt1.json','initial-screen-diagnostic.json','current-surface-static-diagnostic.json','foreground-package-guard.json','fresh-ui-binding-diagnostic.json','attempt2-activation-precheck.json','attempt2-readonly-activation.json','attempt2-post-activation-fresh-binding.json','attempt2-room-guard-diagnostic.json','attempt2-final-availability-diagnostic.json']
+for f in archive_files:copy(archive/f,'archive/'+f)
+v=read(archive/'before.json');keep=['utc','source','PostgreSQL','health_HTTP','database','revision','source_hashes','helper_hashes','schemas']
+origins.append({'public':'archive/preexecution-provenance.json','private_original_SHA256':sha((archive/'before.json').read_bytes()),'private_original_bytes':(archive/'before.json').stat().st_size,'sanitized':True})
+write(D/'archive/preexecution-provenance.json',{'projection':clean({k:v[k] for k in keep}),'preexisting_files_count':len(v['files']),'private_file_inventory_canonical_SHA256':sha(json.dumps(v['files'],sort_keys=True,separators=(',',':')).encode()),'private_original_SHA256':sha((archive/'before.json').read_bytes()),'omitted':'File/frozen private path inventories and audit identifiers'})
+for f in phone_files:copy(phone/f,'phone-upload/'+f)
+copy(Q/'.out/qa-agent-archive-public-review.json','archive/publication-review.json')
+copy(Q/'.out/qa-agent-phone-upload-public-review.json','phone-upload/publication-review.json')
+release=Q/'.out/qa-agent-windows-release-review'
+for f in release.glob('*.json'):
+ if '.private.' not in f.name:copy(f,'release-review/'+f.name)
+follow=Q/'.out/qa-agent-windows-followup'
+for f in follow.glob('*.json'):copy(f,'release-followup/'+f.name)
+for folder,prefix in [(archive,'archive-agent-'),(phone,'phone-upload-agent-')]:
+ helpers=list(folder.glob('*.py'));assert len(helpers)<=16
+ for f in helpers:code(f,prefix)
+text=(archive/'README.md').read_text(encoding='utf-8');assert not any(n in text for n in needles)
+(D/'archive/README.md').write_text(text,encoding='utf-8',newline='\n')
+write(D/'private-origins.json',{'meaning':'Hashes bind frozen private originals, not sanitized public bytes. Root manifest binds actual public bytes. source_criteria/private paths/patches omitted.','artifacts':origins})
+write(D/'operating-brief.json',read(P/'operating-brief.json'))
+print(json.dumps({'metadata_files':len(origins),'privacy_review_inputs_read':True,'no_raw_capture_copied':True}))

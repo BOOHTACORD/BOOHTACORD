@@ -1,0 +1,48 @@
+"""Validate scoped results, unchanged originals and publication privacy before staging."""
+import collections,subprocess
+from common import *
+m=read(O/'matrix.json');cases=read(O/'cases.json');rows={r['id']:r for i in m['issues'] for r in i['criteria']}
+old=json.loads(subprocess.check_output(['git','show',BASE+':'+(O/'matrix.json').relative_to(B).as_posix()],cwd=B))
+oldrows={r['id']:r for i in old['issues'] for r in i['criteria']}
+oldcases=json.loads(subprocess.check_output(['git','show',BASE+':'+(O/'cases.json').relative_to(B).as_posix()],cwd=B))
+assert len(rows)==480 and len(cases['cases'])==93
+audio=next(c for c in oldcases['cases'] if c['id']=='AUDIO-audibility');assert audio['result'] is None
+audio['result']=D.relative_to(O).as_posix()+'/audio-availability.json'
+assert cases['cases'][:91]==oldcases['cases']
+assert {k:r['requirement'] for k,r in rows.items()}=={k:r['requirement'] for k,r in oldrows.items()}
+assert {k:(oldrows[k]['status'],r['status']) for k,r in rows.items() if r['status']!=oldrows[k]['status']}=={'I287.C6':('NOT_RUN','PARTIAL')}
+assert m['source_qualifier_count']==13 and m['source_qualifier_catalog']==old['source_qualifier_catalog']
+for i in m['issues']:
+ previous=next(x for x in old['issues'] if x['number']==i['number'])
+ assert i.get('mandatory_original_source_qualifiers')==previous.get('mandatory_original_source_qualifiers')
+ids={c['id'] for c in cases['cases']}
+def ref(reference):
+ for part in reference.split(';'):
+  path,sep,pointer=part.strip().partition('#');f=O/path;assert f.is_file(),path
+  if sep:
+   v=read(f);assert pointer.startswith('/')
+   for key in pointer[1:].split('/'):
+    key=key.replace('~1','/').replace('~0','~');v=v[int(key)] if isinstance(v,list) else v[key]
+for r in rows.values():
+ assert set(r['execution_cases'])<=ids,r['id']
+ for p in r['evidence']:ref(p)
+for c in cases['cases']:
+ for k in ['protects','command','platform','mandatory_when','result']:assert c.get(k),[c['id'],k]
+ ref(c['result'])
+checks=read(D/'archive/runtime-checks.json')['checks'];assert len(checks)==43 and all(c['result']=='PASS' for c in checks)
+n=read(D/'archive/native-review.json');assert n['PASS']==8 and n['test_skip_count']==n['test_fail_count']==0 and len(n['raw_package_skip_events'])==1
+cl=read(D/'archive/cleanup.json');assert cl['status']=='PASS' and cl['all10_selected_table_fingerprints_restored'] and cl['preexisting_file_path_inventory_restored'] and cl['audit_metadata_added']==6 and cl['topology_revision_after']==42
+ci=read(D/'release-review/ci-provenance.json');assert ci['success_count']==27 and ci['postgres']['version']=='17.6' and ci['postgres']['passed']==1673 and ci['application_flutter']['skipped']==3 and len(ci['application_flutter']['skips'])==3
+p=read(D/'phone-upload/summary-final.json');assert p['normal_approved_package_activation_count']==1
+for k in ['navigation_picker_Send_inputs','new_API_login_attempts','new_API_sessions','new_device_Download_files_or_pushes','new_messages','force_stop_Join_Leave_mic_share_retry_commands']:assert p[k]==0,k
+assert all(v=='NOT_RUN' for v in p['native_runtime_results'].values())
+for f in D.rglob('*'):
+ if f.is_file():
+  t=f.read_text(encoding='utf-8');assert not any(x in t for x in needles),f.name
+  assert f.suffix in ['.json','.md'] and 'private' not in f.parts
+  if f.suffix=='.json':json.loads(t)
+for f in P.glob('*.py'):ast.parse(f.read_text(encoding='utf-8'));assert len(f.read_text(encoding='utf-8').splitlines())<=120
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=Q,text=True).strip()=='072426d60b1c0b1f7e5f66722a0da5faa00b50d7'
+assert not subprocess.check_output(['git','diff',BASE,'--','backend','clients','tools','backlog'],cwd=B)
+result={'status':'PASS','source_rows_preserved':480,'old_sets_preserved':91,'total_scoped_sets':93,'source_qualifiers_preserved':13,'only_row_status_change':'I287.C6 NOT_RUN -> PARTIAL','row_status_counts':dict(collections.Counter(r['status'] for r in rows.values())),'private_value_scan':'PASS','source_behavior_unchanged':True,'raw_device_captures_published':0,'consolidation43_touched':False}
+write(D/'validation.json',result);print(json.dumps(result))

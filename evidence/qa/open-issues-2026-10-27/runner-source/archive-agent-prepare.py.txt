@@ -1,0 +1,23 @@
+import secrets,uuid
+from http.cookies import SimpleCookie
+from common import P,WORK,read,write,save,request,sql,valid,quote,multipart,now,sha
+def prepare():
+    assert not (P/'private/fixture.json').exists();cred=read(WORK/'credentials.private.json')
+    cfg={'owner':secrets.token_hex(12),'sessions':{},'attachments':[],'messages':[],'client_id':str(uuid.uuid4())};cfg['text']='archive'+cfg['owner'];cfg['file']='file '+cfg['owner'];save(cfg)
+    for alias,prefix in [('admin','admin'),('a','member_a'),('b','member_b')]:
+        prior=set(sql('SELECT public_id FROM sessions;').splitlines())
+        code,headers,_=request('/api/v1/auth/login','POST',{'login':cred[prefix+'_login'],'password':cred[prefix+'_password']});assert code==204
+        cookies=SimpleCookie()
+        for k,v in headers.items():
+            if k.lower()=='set-cookie':cookies.load(v)
+        assert len(cookies)==1;cookie='; '.join(k+'='+v.value for k,v in cookies.items());new=set(sql('SELECT public_id FROM sessions;').splitlines())-prior;assert len(new)==1
+        public_id=valid(new.pop());account=valid(sql('SELECT user_id FROM sessions WHERE public_id='+quote(public_id)+';').strip());cfg['sessions'][alias]={'cookie':cookie,'id':public_id,'account':account};save(cfg)
+        code,_,session=request('/api/v1/auth/session',cookie=cookie);assert code==200 and session['authenticated'] and session['account_id']==account and session['role']==('ADMINISTRATOR' if alias=='admin' else 'MEMBER')
+    admin=cfg['sessions']['admin']['cookie'];a=cfg['sessions']['a']['cookie']
+    code,_,cat=request('/api/v1/admin/categories','POST',{'name':'qa_archive_'+cfg['owner']},admin);assert code==201;cfg['category']=valid(cat['id']);save(cfg)
+    code,_,ch=request('/api/v1/admin/categories/'+cfg['category']+'/channels','POST',{'name':'qa_archive_'+cfg['owner'],'kind':'TEXT'},admin);assert code==201;cfg['channel']=valid(ch['id']);save(cfg)
+    data,ctype=multipart(cfg['file'].encode());code,_,file=request('/api/v1/channels/'+cfg['channel']+'/attachments','POST',data,a,content_type=ctype);assert code==201;cfg['attachment']=valid(file['id']);cfg['attachments'].append(cfg['attachment']);save(cfg)
+    code,_,m=request('/api/v1/channels/'+cfg['channel']+'/messages','POST',{'client_message_id':cfg['client_id'],'body':cfg['text'],'attachment_ids':[cfg['attachment']]},a);assert code==201;cfg['message']=valid(m['id']);cfg['messages'].append(cfg['message']);save(cfg)
+    cfg['storage_keys']=sql('SELECT storage_key FROM attachments WHERE channel_id='+quote(cfg['channel'])+';').splitlines();assert len(cfg['storage_keys'])==1;valid(cfg['storage_keys'][0]);save(cfg)
+    write(P/'fixture-ready.json',{'utc':now(),'existing_accounts_used':3,'new_users':0,'new_sessions':3,'own_categories':1,'own_TEXT':1,'own_messages':1,'real_tiny_uploads':1,'file_SHA256':sha(cfg['file'].encode()),'file_bytes':len(cfg['file'].encode())})
+    return cfg

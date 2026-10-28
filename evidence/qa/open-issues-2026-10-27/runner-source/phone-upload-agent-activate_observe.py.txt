@@ -1,0 +1,13 @@
+import subprocess,time
+from common import *
+assert read(P/'attempt2-activation-precheck.json')['ordinary_am_start_executed_count']==0 and not (P/'attempt2-readonly-activation.json').exists();r={'at_utc':datetime.now(timezone.utc).isoformat(),'normal_activation_scope':'PreviouslyauthorizedONEapprovedapp launch; activeFGS blocksSend, notread-onlyactivation','ordinary_am_start_executed_count':1,'force_stop_count':0,'Settings_UI_actions':0,'native_skips':0}
+p=subprocess.run([ADB,'shell','am','start','-n',APP+'/.MainActivity'],stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=35);(P/'private/attempt2-readonly-activation-terminal.private.log').write_bytes(p.stdout);r['am_start_native_exit']=p.returncode;assert p.returncode==0;time.sleep(.5)
+try:
+ rows=nodes();packages=sorted(set(n.get('package') for n in rows if n.get('package')));r['visible_UI_packages']=packages;assert APP in packages and 'com.android.settings' not in packages;assert not any(label(n) in ['Логин','Пароль'] for n in rows) and not any((n.get('package')or'').endswith('permissioncontroller') for n in rows)
+ s=state();old=read(Q/'.out/qa-agent-phone-restart/private/config.private.json');r['phone_state']=s;r['owned_DM_empty_composer']=own(old);r['projection_null']=bool(re.search(r'Media Projection:\s*null\s*$',call('shell','dumpsys','media_projection')));r['voice_controls_only']=[label(n) for n in rows if label(n) in ['Голос подключён','Голос не подключён','Включить микрофон','Выключить микрофон','Отключиться от голоса','Выйти из голоса']]
+ if s['voice_connected'] or s['microphone_fgs'] or not r['projection_null']:
+  r.update(status='BLOCKED_ATTEMPT2_NATIVE_MEDIA_NOT_IDLE_NO_SEND',native_exit=2,no_voice_mic_or_projection_actions=True)
+ else:
+  assert r['owned_DM_empty_composer'];r.update(status='PASS_ATTEMPT2_NATIVE_OWN_DM_IDLE_NEEDS_PROFILE_GUARD',native_exit=0)
+except Exception as e:r.update(status='BLOCKED_ATTEMPT2_NATIVE_OVERLAY_OR_IDENTITY_PREREQUISITE',error_type=type(e).__name__,native_exit=2,no_additional_activation_or_input=True)
+r['finished_at_utc']=datetime.now(timezone.utc).isoformat();r['new_API_logins_files_messages']=0;write(P/'attempt2-readonly-activation.json',r);print({k:v for k,v in r.items() if k not in ['phone_state']});raise SystemExit(r['native_exit'])

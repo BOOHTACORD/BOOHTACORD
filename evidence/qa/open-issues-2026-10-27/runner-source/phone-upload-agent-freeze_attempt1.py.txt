@@ -1,0 +1,2 @@
+from common import *
+assert not (P/'artifact-hashes-attempt1.json').exists();write(P/'artifact-hashes-attempt1.json',{'frozen_at_utc':datetime.now(timezone.utc).isoformat(),'status':'ATTEMPT1_BLOCKED_RECORD_FROZEN_BEFORE_ROOT_AUTHORIZED_NORMAL_ACTIVATION','artifacts':{f.name:{'SHA256':digest(f.read_bytes()),'bytes':f.stat().st_size} for f in sorted(P.glob('*.json'))},'helpers':{f.name:digest(f.read_bytes()) for f in sorted(P.glob('*.py'))}})

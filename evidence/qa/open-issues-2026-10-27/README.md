@@ -345,3 +345,7 @@ Tracked Android defect: [#589](https://github.com/Egkurilov/BOOHTACORD/issues/58
 [Device/API outcomes and original source qualifiers](coordinated-agents-2026-10-28/README.md):91scoped sets,480unchanged source rows plus13whole-gate qualifiers. Android6downloads and scoped lifecycle/keyboard; Windows7read-onlysections and menu keyboard; browser policyBLOCKED.23isolated search controls pass, separate DBguard defect confirmed. All full gates remain open;43consolidation decisions untouched.
 
 Confirmed DB-trigger defect: [#592](https://github.com/Egkurilov/BOOHTACORD/issues/592), exact readback/open; product function remains unchanged. Ten parent QA issues were append-only updated with exact readback/state/title preservation and remain open. Immutable first coordinated evidence: 357997cb675384926c316bffd1ef08fa5c54ccb3.
+
+## Archive and release follow-up
+
+[Current-source archive lifecycle and native availability/release review](archive-release-followup/README.md):93scoped sets; I287.C6 advances only to PARTIAL. JPEG/GIF native upload remains BLOCKED/NOT_RUN. PR590 tested-tree CI is recorded with skips; physical acceptance remains separate. All480source texts/13qualifiers retained;43consolidation decisions untouched.

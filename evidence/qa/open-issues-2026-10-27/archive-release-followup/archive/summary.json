@@ -1,0 +1,22 @@
+{
+  "utc": "2026-10-28T20:36:36.721929+00:00",
+  "status": "PASS_SCOPED",
+  "criterion": "I287.C6",
+  "literal_criterion": "#92: archive/restore keeps channel ID, topology/history/search/download and privacy; archived sends/edits/uploads/reactions/pins denied including held upload and idempotency replay. Upgrade from previous deployed schema, legacy archive compatibility and released-client UI.",
+  "protects": "Readonly archive retains current channel ID/history/search/file and privacy; all selected archived writes/accepted-client replay/held upload deny unchanged; sameID restore recovers real operations",
+  "command": "python -B -X utf8 .out/qa-agent-archive/run.py",
+  "platform": "Existing isolated local API image declaredsource072426d6 / real PostgreSQL17.6 / private storage; Windows HTTP producer",
+  "mandatory_when": "Before accepting current-source isolated API archive lifecycle facet of I287.C6; not full gate",
+  "runtime_checks_completed": 43,
+  "cleanup_PASS": true,
+  "error_class": null,
+  "held_upload_result": "held-result.json",
+  "limits": [
+    "Previous deployed schema upgrade,legacy archive compatibility with provenance,released-client UI NOT_RUN",
+    "No CUA/browser/physical/production acceptance",
+    "Native current-source blocked/legacy-shape fixtures are a separate supplement, not upgrade provenance",
+    "Monotonic topology revisions and metadata-only own audit receipts retained,not global reset"
+  ],
+  "new_users": 0,
+  "production_touched": false
+}

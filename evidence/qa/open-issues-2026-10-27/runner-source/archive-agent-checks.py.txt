@@ -1,0 +1,58 @@
+import json,uuid
+from urllib.parse import quote as urlquote
+from common import P,write,save,request,sql,quote,revision,multipart,now,sha
+from held import Held
+def run(c):
+    rows=[];cid=c['channel'];mid=c['message'];aid=c['attachment'];a=c['sessions']['a']['cookie'];b=c['sessions']['b']['cookie'];admin=c['sessions']['admin']['cookie'];base='/api/v1/channels/'+cid;arc='/api/v1/archives/text-channels/'+cid;file=base+'/attachments/'+aid;af=arc+'/attachments/'+aid;mp=base+'/messages';msg=mp+'/'+mid;pin='/api/v1/admin/text-channels/'+cid+'/pins/'+mid;reaction=msg+'/reactions/';original={'client_message_id':c['client_id'],'body':c['text'],'attachment_ids':[aid]}
+    def check(name,status,path,method='GET',body=None,cookie=b,raw=False,ctype=None):
+        code,headers,value=request(path,method,body,cookie,raw=raw,content_type=ctype)
+        rows.append({'name':name,'expected_HTTP':status,'actual_HTTP':code,'result':'PASS' if code==status else 'FAIL','response_SHA256':sha(value if isinstance(value,bytes) else json.dumps(value,sort_keys=True).encode())});write(P/'runtime-checks.json',{'utc':now(),'checks':rows})
+        assert code==status,name+' unexpected HTTP '+str(code)
+        return value
+    def topology():
+        t=check('active-topology',200,'/api/v1/channels');return {x['id'] for cat in t['categories'] for x in cat['channels']}
+    def fingerprint():
+        return sql("SELECT md5(row_to_json(m)::text) FROM messages m WHERE channel_id="+quote(cid)+" ORDER BY id; SELECT md5(row_to_json(a)::text) FROM attachments a WHERE channel_id="+quote(cid)+" ORDER BY id; SELECT md5(row_to_json(r)::text) FROM text_message_reactions r WHERE message_id="+quote(mid)+" ORDER BY account_id,emoji; SELECT md5(row_to_json(p)::text) FROM text_message_pins p WHERE message_id="+quote(mid)+";")
+    assert cid in topology()
+    history=check('active-history',200,mp);assert [m['id'] for m in history['messages']]==[mid]
+    assert len(check('active-search',200,base+'/search?query='+urlquote(c['text']))['messages'])==1
+    assert check('active-file',200,file,raw=True)==c['file'].encode()
+    check('anonymous-active-file',401,file,cookie=None);check('wrong-channel-file',404,'/api/v1/channels/'+str(uuid.uuid4())+'/attachments/'+aid)
+    replay=check('active-client-replay',201,mp,'POST',original,a);assert replay['id']==mid
+    check('active-reaction-positive',204,reaction+urlquote('👍'),'PUT',cookie=a)
+    check('active-pin-positive',204,pin,'PUT',cookie=admin)
+    stable=fingerprint();rev=revision();topology_fields=sql('SELECT id,category_id,position,name FROM channels WHERE id='+quote(cid)+';')
+    check('member-cannot-archive',403,'/api/v1/admin/text-channels/'+cid+'/readonly-archive','POST',{'expected_revision':rev,'confirm':True},b)
+    check('stale-archive-revision',409,'/api/v1/admin/text-channels/'+cid+'/readonly-archive','POST',{'expected_revision':rev+1,'confirm':True},admin)
+    held=Held(c)
+    try:
+        archived=check('archive-commit',200,'/api/v1/admin/text-channels/'+cid+'/readonly-archive','POST',{'expected_revision':rev,'confirm':True},admin);assert archived['id']==cid and archived['revision']==rev+1
+        c['archive_revision']=archived['revision'];save(c);held.release()
+    finally:held.close()
+    assert cid not in topology()
+    listed=check('archive-list',200,'/api/v1/archives/text-channels');assert cid in [x['id'] for x in listed['channels']] and listed['can_manage'] is False
+    h=check('archive-history',200,arc+'/messages');assert [x['id'] for x in h['messages']]==[mid] and h['messages'][0]['body']==c['text']
+    assert len(check('archive-search',200,arc+'/search?query='+urlquote(c['text']))['messages'])==1
+    assert check('archive-file',200,af,raw=True)==c['file'].encode()
+    check('anonymous-archive-file',401,af,cookie=None);check('normal-file-unavailable',404,file);check('normal-history-unavailable',404,mp);check('normal-search-unavailable',404,base+'/search?query='+urlquote(c['text']))
+    assert check('global-search-excludes-archive',200,'/api/v1/search/messages?query='+urlquote(c['text']))['messages']==[]
+    check('archive-fresh-send',404,mp,'POST',{'client_message_id':str(uuid.uuid4()),'body':c['text']},a)
+    check('archive-accepted-client-replay',404,mp,'POST',original,a)
+    check('archive-edit',409,msg,'PATCH',{'body':c['text']+' changed','expected_revision':1},a)
+    data,ct=multipart(('denied '+c['owner']).encode());check('archive-new-upload',404,base+'/attachments','POST',data,a,ctype=ct)
+    check('archive-reaction-put',404,reaction+urlquote('👀'),'PUT',cookie=a);check('archive-reaction-delete',404,reaction+urlquote('👍'),'DELETE',cookie=a)
+    check('archive-pin-put',404,pin,'PUT',cookie=admin);check('archive-pin-delete',404,pin,'DELETE',cookie=admin)
+    check('archive-admin-message-delete',404,msg,'DELETE',cookie=admin)
+    check('member-cannot-restore',403,'/api/v1/admin/archives/text-channels/'+cid+'/restore','POST',{'expected_revision':c['archive_revision']},b)
+    check('stale-restore-revision',409,'/api/v1/admin/archives/text-channels/'+cid+'/restore','POST',{'expected_revision':c['archive_revision']+1},admin)
+    assert fingerprint()==stable and sql('SELECT id,category_id,position,name FROM channels WHERE id='+quote(cid)+';')==topology_fields
+    write(P/'archive-immutability.json',{'utc':now(),'all_denied_writes_message_attachment_reaction_pin_fingerprints_unchanged':True,'channel_ID_category_position_name_preserved':True,'held_metadata_count':int(sql('SELECT count(*) FROM attachments WHERE channel_id='+quote(cid)+';').strip()),'held_upload':'held-result.json'})
+    restored=check('restore-commit',200,'/api/v1/admin/archives/text-channels/'+cid+'/restore','POST',{'expected_revision':c['archive_revision']},admin);assert restored['id']==cid and restored['revision']==rev+2
+    assert cid in topology();assert cid not in [x['id'] for x in check('restored-archive-list-excludes',200,'/api/v1/archives/text-channels')['channels']]
+    assert check('restored-history',200,mp)['messages'][0]['id']==mid
+    assert len(check('restored-search',200,base+'/search?query='+urlquote(c['text']))['messages'])==1
+    assert check('restored-file',200,file,raw=True)==c['file'].encode()
+    check('restored-edit-positive',200,msg,'PATCH',{'body':c['text']+' changed','expected_revision':1},a)
+    sent=check('restored-send-positive',201,mp,'POST',{'client_message_id':str(uuid.uuid4()),'body':c['text']+' restored'},a);c['messages'].append(sent['id']);save(c)
+    check('restored-reaction-delete-positive',204,reaction+urlquote('👍'),'DELETE',cookie=a);check('restored-pin-delete-positive',204,pin,'DELETE',cookie=admin)
+    return rows

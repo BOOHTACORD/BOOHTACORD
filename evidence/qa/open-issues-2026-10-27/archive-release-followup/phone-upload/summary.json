@@ -1,0 +1,111 @@
+{
+  "id": "ANDROID-native-JPEG-GIF-file-picker-upload-send-peer-read",
+  "status": "BLOCKED_NATIVE_OWN_DM_FOREGROUND_PREREQUISITE",
+  "at_utc": "2026-10-28T20:32:50.254783+00:00",
+  "workflow_class": "review_gate",
+  "route": "clients/flutter/features/attachments/upload",
+  "protects": "Actual nativeJPEG/GIF localDocumentsUI selection creates onlypendingownedattachment until explicitSend, authorizedpeerGET retains originalbytes, nativeauthorDelete revokes original/preview; thisruntimefacet is NOTEXECUTED",
+  "command": "python -X utf8 .out/qa-agent-phone-upload/preflight.py; read-only diagnostic and seal_blocked.py. No picker/upload/send/delete command executed",
+  "platform": "PhysicalSamsungSM-A576BAndroid16 signedQA1.0.47+2082 installedru.boohtacord.app; currentlyvisibleUIcom.android.settings",
+  "mandatory_when": "Before acceptingthisexactnativepickerJPEG/GIFuploadscope; no I131 browserPASTE/clipboard/systemsharing orwholeQAclaim",
+  "result": "summary.json;foreground-package-guard.json;preflight-attempt1.json;fresh-ui-binding-diagnostic.json;current-surface-static-diagnostic.json",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "APK_SHA256_fresh": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+  "source_SHA256": {
+    "AGENTS.md": "c2eb9bdb4d9fce83ceb972dacdf89c9bb82a54ac1511e94f5004671f11a64361",
+    "SKILL.md": "8c67eb1e71ed7cf9932bc72c360aac8f94f58ec19736e2acbfe3b288778bb685",
+    "structure.config.yaml": "3ca9f5484516e975a6a325b6920ef37bd6ec69f5ed05b29fa5beb933a3114ebe",
+    "clients/flutter/pubspec.yaml": "de0377a63ab77456df14f211b498b8f2b7b12cf1773f65ff9abf4975626a76de",
+    "clients/flutter/lib/src/features/attachments/upload/api.dart": "441ba1edc89490d85b625e38cc974b9291068cef4df2a106a17e07c26f68da8c",
+    "clients/flutter/lib/src/features/attachments/upload/facade.dart": "a838136f6403e8032e24080448b1dd35e9d3ce8baf611276f86481c664a607c5",
+    "clients/flutter/lib/src/widgets/message_attachment_composer.dart": "89882727747d3c328058c3eb48675832c0f3fb672bacefe65ec33af447c3b044",
+    "clients/flutter/lib/src/features/direct/send_state/send.dart": "8940722bea478ae5904d3b56d5127c083e941f1307909b7ca2732f2ee0915e0e",
+    "clients/flutter/lib/src/features/attachments/download/api.dart": "eae3bb4de6eb805a8b6563f1e326b9a54c71e1ab6f48c56519fe2a81553a5973",
+    "clients/flutter/test/message_attachment_composer_test.dart": "b0e9c4e77f024f9c351e28e6fb42204e52933cbeb391e7e8f84b3ed0e7f13602"
+  },
+  "deployed_backend_source": "UNKNOWN",
+  "fixtures_verified_locally_only": [
+    {
+      "format": "JPEG",
+      "mime": "image/jpeg",
+      "bytes": 774,
+      "pixels": [
+        64,
+        48
+      ],
+      "frames": 1,
+      "SHA256": "cc2a68f90df1e554d644f61c67ae12f96aa2c8a042477110d6d2e3ab089df15c",
+      "native_picker_upload_send_status": "NOT_RUN"
+    },
+    {
+      "format": "GIF",
+      "mime": "image/gif",
+      "bytes": 205,
+      "pixels": [
+        32,
+        32
+      ],
+      "frames": 2,
+      "SHA256": "307057a156b56cdc8042d2ecee09b258a204769ede03f3c0f2f2a01d585c594b",
+      "native_picker_upload_send_status": "NOT_RUN"
+    }
+  ],
+  "native_runtime_results": {
+    "JPEG": "NOT_RUN",
+    "GIF": "NOT_RUN",
+    "native_explicit_Send": "NOT_RUN",
+    "peer_original_preview_GET": "NOT_RUN",
+    "native_author_Delete": "NOT_RUN"
+  },
+  "blocking_observation": {
+    "at_utc": "2026-10-28T20:31:57.890002+00:00",
+    "visible_UI_packages_only": [
+      "com.android.settings"
+    ],
+    "approved_APP_present": false,
+    "power_fields": [
+      "mWakefulness=Awake",
+      "mWakefulness=1"
+    ],
+    "keyguard_fields": [
+      "showing=false",
+      "inputRestricted=false",
+      "secure=true"
+    ],
+    "no_labels_personal_notifications_or_screen_capture_retained": true,
+    "native_input_actions_this_packet": 0,
+    "new_files_sessions_messages": 0
+  },
+  "no_reason_or_owner_of_Settings_inferred": true,
+  "security_boundary": "Stop on foreign/system Settings surface; no permissionAllow/passwordentry/navigationbypass/amstart tooverrideunknowncurrentcontext",
+  "controller_attempts": [
+    {
+      "result": "preflight-attempt1.json",
+      "native_exit": 1,
+      "reason": "uiautomator returnednohierarchy, parserfailed; laterdiagnostics bound actualdifferentnativeSettingssurface",
+      "product_bug": false
+    }
+  ],
+  "new_native_input_actions": 0,
+  "new_adb_pushes_or_Download_files": 0,
+  "new_API_login_attempts": 0,
+  "new_API_sessions": 0,
+  "new_messages": 0,
+  "force_stop_count": 0,
+  "cleanup": "NO_NEW_REMOTE_OR_DEVICE_STATE_TO_CLEAN; nooldrecords/files/sessionsmutated",
+  "old_phone_packets_frozen_SHA_match": {
+    "qa-agent-phone": true,
+    "qa-agent-phone-restart": true
+  },
+  "no_personal_Settings_labels_notifications_lists_or_screenshots_retained": true,
+  "native_skips": 0,
+  "native_coverage_not_run": 2,
+  "nearest_typed_test": "clients/flutter/test/message_attachment_composer_test.dart read; notexecuted, no sourcechange",
+  "new_confirmed_product_bugs": [],
+  "limits": [
+    "No claim ofmaintenance/admission/authfailure; normal Blogin NOT_RUN",
+    "CachedMainActivityactivitymetadata isnot foreground/ownprofileproof",
+    "Source/nativefixture/APK checks are NOTpicker/upload/deviceacceptance",
+    "Runtime available onlyafter authorizedsafe restoration ofownnativeDMforeground; no livephoneinput performed"
+  ]
+}

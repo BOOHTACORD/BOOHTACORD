@@ -1,0 +1,49 @@
+import hashlib,http.client,io,json,subprocess,sys,tarfile,uuid
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(Q/'.out/local-qa'))
+from profile_common import CONTEXT,PROJECT,SOURCE,ORIGIN,WORK
+ROOT='/var/lib/voice-platform/attachments'
+TABLES=['users','sessions','categories','channels','messages','attachments','message_attachments','text_message_reactions','text_message_pins','channel_read_cursors']
+def read(p):return json.loads(p.read_text('utf-8-sig'))
+def write(p,v):p.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n','utf-8')
+def now():return datetime.now(timezone.utc).isoformat()
+def sha(v):return hashlib.sha256(v).hexdigest()
+def valid(v):assert str(uuid.UUID(v))==v;return v
+def quote(v):return "'"+str(v).replace("'","''")+"'"
+def docker(*args,input=None):
+    r=subprocess.run(['docker','--context',CONTEXT,*args],cwd=Q,input=input,capture_output=True,timeout=25)
+    if r.returncode:(P/'private/last-error.log').write_bytes(r.stderr);raise RuntimeError('Local command failed; private stderr retained')
+    return r.stdout
+def sql(s):return docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-qAt','-v','ON_ERROR_STOP=1',input=s.encode()).decode()
+def request(path,method='GET',body=None,cookie=None,raw=False,content_type=None):
+    assert ORIGIN=='http://localhost:18088' and path.startswith('/api/v1/')
+    conn=http.client.HTTPConnection('127.0.0.1',18088,timeout=10);headers={'Host':'localhost:18088','Origin':ORIGIN,'Accept':'application/json'}
+    if cookie:headers['Cookie']=cookie
+    if body is not None:headers['Content-Type']=content_type or 'application/json'
+    payload=body if isinstance(body,bytes) else json.dumps(body) if body is not None else None
+    conn.request(method,path,payload,headers);r=conn.getresponse();status=r.status;h=dict(r.getheaders());b=r.read(2_000_000);conn.close()
+    return status,h,b if raw else json.loads(b) if b else None
+def fs(command,args,readonly=True):
+    snapshots=read(P/'private/services-before.json');api=snapshots['api'];mount=next(x for x in api['Mounts'] if x['Destination']==ROOT)
+    assert mount['Type']=='volume' and mount['Name'].startswith(PROJECT+'_')
+    archive=docker('cp',PROJECT+'-api-1:/etc/passwd','-')
+    with tarfile.open(fileobj=io.BytesIO(archive)) as tar:passwd=tar.extractfile(tar.getmembers()[0]).read().decode()
+    user=api['Config']['User'].split(':')[0];line=next(x.split(':') for x in passwd.splitlines() if x.split(':')[0]==user);uid=line[2]+':'+line[3]
+    assert all(x.isdigit() for x in uid.split(':'))
+    return docker('run','--rm','--network','none','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges','--user',uid,'--mount','type=volume,source='+mount['Name']+',target=/qa'+(',readonly' if readonly else ''),'--entrypoint',command,snapshots['postgres']['Image'],*args)
+def files():return {x.replace('/qa/',ROOT+'/',1) for x in fs('/usr/bin/find',['/qa/staging','/qa/unattached','-maxdepth','1','-type','f']).decode().splitlines()}
+def state():return {t:sql("SELECT count(*),COALESCE(md5(string_agg(h,'' ORDER BY h)),'empty') FROM (SELECT md5(row_to_json(x)::text) h FROM "+t+' x) s;').strip() for t in TABLES}
+def services():return {n:json.loads(docker('inspect',PROJECT+'-'+n+'-1'))[0] for n in ['api','web','proxy','postgres','livekit','collector','tempo','prometheus','grafana']}
+def revision():return int(sql('SELECT revision FROM channel_topology_state WHERE singleton;').strip())
+def fixture():return read(P/'private/fixture.json')
+def save(c):write(P/'private/fixture.json',c)
+def frozen():
+    paths=[]
+    for folder in ['qa-agent-search','qa-guard-teardown']:
+        base=Q/'.out'/folder;paths += [Path(x['path']) for x in read(base/'integrity.json')['artifacts']]+[base/'integrity.json']
+    base=Q/'.out/qa-agent-browser';paths += [base/x for x in ['qa-scope-audit.json','qa-scope-review.md','audit-integrity.json']]
+    return {str(p):sha(p.read_bytes()) for p in paths}
+def multipart(data):
+    boundary='qaarchive'+uuid.uuid4().hex;body=('--'+boundary+'\r\nContent-Disposition: form-data; name="file"; filename="fixture.txt"\r\nContent-Type: text/plain\r\n\r\n').encode()+data+('\r\n--'+boundary+'--\r\n').encode()
+    return body,'multipart/form-data; boundary='+boundary

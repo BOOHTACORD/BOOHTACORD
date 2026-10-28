@@ -1,0 +1,11 @@
+import json,os,subprocess
+from urllib.parse import quote
+from common import P,Q,WORK,read,write,sha,sql,state,now
+b=read(P/'before.json');assert all(sha((P/f).read_bytes())==h for f,h in b['helper_hashes'].items())
+c=read(WORK/'credentials.private.json');env=dict(os.environ);env['VOICE_PLATFORM_TEST_DATABASE_URL']='postgres://boohtacord_qa:'+quote(c['database_password'],safe='')+'@127.0.0.1:15436/boohtacord_qa?sslmode=disable'
+cmd=[r'C:\Program Files\Go\bin\go.exe','test','-json','-count=1','./internal/channel/archive_readonly_text/...','./internal/channel/restore_readonly_text/...']
+r=subprocess.run(cmd,cwd=Q/'backend',env=env,capture_output=True,timeout=150);(P/'private/native.jsonl').write_bytes(r.stdout);(P/'private/native.stderr').write_bytes(r.stderr)
+events=[json.loads(l) for l in r.stdout.splitlines() if l.startswith(b'{')];passed=[e['Test'] for e in events if e['Action']=='pass' and e.get('Test')];skips=[e for e in events if e['Action']=='skip'];fails=[e for e in events if e['Action']=='fail']
+result={'utc':now(),'command':cmd,'exit':r.returncode,'passed_tests':passed,'PASS':len(passed),'skip':len(skips),'fail':len(fails),'public_tables_unchanged':state()==b['database'],'schemas_after':sql("SELECT count(*) FROM pg_namespace WHERE nspname LIKE 'voice_it_%';").strip(),'stdout_SHA256':sha(r.stdout)};write(P/'native-result.json',result)
+assert r.returncode==0 and passed and not skips and not fails and result['public_tables_unchanged'] and result['schemas_after']==b['schemas']
+print('PASS closest native archive/restore tests='+str(len(passed))+';0skips;schemas cleaned')

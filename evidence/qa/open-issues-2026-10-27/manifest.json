@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-28T20:23:48.245499+00:00",
+  "at_utc": "2026-10-28T20:55:00.200084+00:00",
   "candidate_evidence": "../../android/physical-share-2026-10-27/result.json",
   "files": {
     "acceptance-methods.json": {
@@ -666,9 +666,209 @@
       "bytes": 206,
       "sha256": "7d2ac8691a4dd0bef3ffd7fd6c9ea028ab04c058060810c65c5f27501d34d867"
     },
+    "archive-release-followup/archive/archive-immutability.json": {
+      "bytes": 252,
+      "sha256": "81982b05b1e405b8aab975e4adf3543a41ab3b0eb348e9e5847e531b2f6302b8"
+    },
+    "archive-release-followup/archive/cleanup.json": {
+      "bytes": 1079,
+      "sha256": "718ab525a0087740dbd89449d8685aa7c991bf0901a27bf3779e0221192034b0"
+    },
+    "archive-release-followup/archive/held-result.json": {
+      "bytes": 313,
+      "sha256": "d8cff39fba68f09fe06dbb65de4256c3ad222f3da19e6c0222aad971af7f910d"
+    },
+    "archive-release-followup/archive/held-start.json": {
+      "bytes": 305,
+      "sha256": "f9d3217bc1af9d938183203b1d6517eccbe13b3ce421e9d5511b81fd9a291ee2"
+    },
+    "archive-release-followup/archive/integrity.json": {
+      "bytes": 4351,
+      "sha256": "ef6ac403ea7e1d5459f45d6eb2fcda95cd276a0098d98a9f1c0e39248350d233"
+    },
+    "archive-release-followup/archive/native-result.json": {
+      "bytes": 977,
+      "sha256": "29cf3a313d56a9924916b11dc49b6b81ef820825a059309494816ad4c73fed68"
+    },
+    "archive-release-followup/archive/native-review.json": {
+      "bytes": 648,
+      "sha256": "40fc1bb4028b90df4f67cd316b7039cede0428fa905b809cc41153c2ed40981d"
+    },
+    "archive-release-followup/archive/operating-brief.json": {
+      "bytes": 1050,
+      "sha256": "6792938a5b6920dfac6b31d9508a8874a31edb8d500cd3948767a30f2d432536"
+    },
+    "archive-release-followup/archive/preexecution-provenance.json": {
+      "bytes": 25237,
+      "sha256": "36d550b25527f6b4ed5043c19273ad4e271be35aa3a5b8de2d217c2f63442c68"
+    },
+    "archive-release-followup/archive/privacy-review.json": {
+      "bytes": 924,
+      "sha256": "91eb01c3388e2d8e55c918cf47dc47645fd14ed41c53d10856a9977d56f497bf"
+    },
+    "archive-release-followup/archive/publication-review.json": {
+      "bytes": 12084,
+      "sha256": "a87dea248f79057efe3d9daeccd170fad67c0ece959680bf1ccf587f21f083df"
+    },
+    "archive-release-followup/archive/README.md": {
+      "bytes": 6402,
+      "sha256": "08aae01034102d4aa37cd00ba9bf218fc70538588da246b43cbab3622b96ec96"
+    },
+    "archive-release-followup/archive/runtime-checks.json": {
+      "bytes": 9548,
+      "sha256": "1b6f7a5f39afc1f1e7102c885410e9f8a0eed1f2d51b6fe6737d5e6bacc4aba9"
+    },
+    "archive-release-followup/archive/summary.json": {
+      "bytes": 1498,
+      "sha256": "f6a6a2f59f7bb931081c8522eecafcc1e3695737cc048ef788053b8899297a6a"
+    },
+    "archive-release-followup/audio-availability.json": {
+      "bytes": 813,
+      "sha256": "38a3e3a2fbb0b3824b205c974c099ea4d34cb0eda47c074cb1a42db02ef7d2bd"
+    },
+    "archive-release-followup/operating-brief.json": {
+      "bytes": 1485,
+      "sha256": "5ddbd8332188674681c750b97e37186bbee419c7f7c1759e567faef0058e6db4"
+    },
+    "archive-release-followup/phone-upload/artifact-hashes-attempt1.json": {
+      "bytes": 1874,
+      "sha256": "8e26e20323b78b024325bf325424cd5fcce5f9e11759aa6cdbeb49f3c67ab0d3"
+    },
+    "archive-release-followup/phone-upload/artifact-hashes.json": {
+      "bytes": 4658,
+      "sha256": "17ad66bcce82aedea9a178618c763a036069f0fc390c11b34c145086172da93a"
+    },
+    "archive-release-followup/phone-upload/attempt2-activation-precheck.json": {
+      "bytes": 602,
+      "sha256": "81bebf50e0201179885bc79ed4e9d90bedb85f14006e4d33e6ed00bc62c927f8"
+    },
+    "archive-release-followup/phone-upload/attempt2-final-availability-diagnostic.json": {
+      "bytes": 1206,
+      "sha256": "f9202fa5c4a7dca45e4b351622e60875879b38e92442296ce34485ad071bda54"
+    },
+    "archive-release-followup/phone-upload/attempt2-post-activation-fresh-binding.json": {
+      "bytes": 706,
+      "sha256": "ddea14c7275b95a01ac86ce11ea3cf705b914b24d26fcc45e63666dbcbcbf648"
+    },
+    "archive-release-followup/phone-upload/attempt2-readonly-activation.json": {
+      "bytes": 577,
+      "sha256": "167d665a0873615259f54e73dff9bf12c5021bf2dea7ba8d916e396221f1e325"
+    },
+    "archive-release-followup/phone-upload/attempt2-room-guard-diagnostic.json": {
+      "bytes": 1024,
+      "sha256": "8ee28b5362da1204d42788438c530c2736603f468ee7e2d960692c1b94cd8af6"
+    },
+    "archive-release-followup/phone-upload/current-surface-static-diagnostic.json": {
+      "bytes": 174,
+      "sha256": "23b93e85e4b37360410e6af069ceae7a9da3f89b1088599adc3f824dd0bc7777"
+    },
+    "archive-release-followup/phone-upload/foreground-package-guard.json": {
+      "bytes": 464,
+      "sha256": "a7534f46cbcd7ad5aa52fff690321ecbfdccd0d399d81312dba50da9187a29d5"
+    },
+    "archive-release-followup/phone-upload/fresh-ui-binding-diagnostic.json": {
+      "bytes": 301,
+      "sha256": "ffbd2091642f274290ea87d63a22383c843ccf78840436f431cba7b960c69df3"
+    },
+    "archive-release-followup/phone-upload/initial-screen-diagnostic.json": {
+      "bytes": 306,
+      "sha256": "83119df55687971dc59aea334ac01efd063839e8eb45316159d2194fade527f5"
+    },
+    "archive-release-followup/phone-upload/preflight-attempt1.json": {
+      "bytes": 362,
+      "sha256": "cf9e7618114588cd35986bc546cd69771d978b1d81d75e918da8d69061098762"
+    },
+    "archive-release-followup/phone-upload/publication-review.json": {
+      "bytes": 18656,
+      "sha256": "30217bf4ec2a3a4883fbbcc974b0c8091d1aa2aba4a3b4ccef12f55507cd28c5"
+    },
+    "archive-release-followup/phone-upload/summary-final.json": {
+      "bytes": 8863,
+      "sha256": "ce57ba47250752b29aa7d3e5dc9d6a9d2e4487b11f5c4ed173d22bec0f717b0b"
+    },
+    "archive-release-followup/phone-upload/summary.json": {
+      "bytes": 5368,
+      "sha256": "9a9b57202091fb8bebac2eb272bdfddad48d7435f457102e7c273cc0b168d2f1"
+    },
+    "archive-release-followup/private-origins.json": {
+      "bytes": 16104,
+      "sha256": "4697b66b72ca888bb2232b6ad9346545eefb67699fa434879341bd2f053c4488"
+    },
+    "archive-release-followup/README.md": {
+      "bytes": 2428,
+      "sha256": "f47020edda212792a4717fe9c17fff2ce35dac29d20a3380e8754efd666f0bcc"
+    },
+    "archive-release-followup/release-followup/android-same-code-decision.json": {
+      "bytes": 3365,
+      "sha256": "1a9f7a8bfbefe32f8b0d2049592578f0403cc09339f0d5d6d835c2813dbe5000"
+    },
+    "archive-release-followup/release-followup/artifact-hashes.json": {
+      "bytes": 455,
+      "sha256": "3aa9cb3aa0361a24306649c81de16ca052985a5167320f46578c12f4d74ecea5"
+    },
+    "archive-release-followup/release-followup/summary.json": {
+      "bytes": 1589,
+      "sha256": "cb629fd904aaad30d60d251c3b11c43920bc86e2b3632598fee388743098a977"
+    },
+    "archive-release-followup/release-followup/windows-network-classification.json": {
+      "bytes": 681,
+      "sha256": "2b326bc2f4d2dc691cbcaaf049043992f273f64cdf5bb62235f4b01c1b723ae2"
+    },
+    "archive-release-followup/release-review/android-candidate-path.json": {
+      "bytes": 2637,
+      "sha256": "92fe0309049ca83da62d0d51d871ac358bcba08971176fb55ee74cf86042d303"
+    },
+    "archive-release-followup/release-review/artifact-hashes.json": {
+      "bytes": 2006,
+      "sha256": "19ca47b3e38d9fcb35473f70abe2848729940ec4795b520d8694bfeda35c2042"
+    },
+    "archive-release-followup/release-review/ci-provenance.json": {
+      "bytes": 27270,
+      "sha256": "728171604dbe1da004115c67b3c94fd043c254e196e3f29298222bf4b09b4f97"
+    },
+    "archive-release-followup/release-review/final-state.json": {
+      "bytes": 2401,
+      "sha256": "9a58ea3e10dce2a80ba16cfb56b46bba02a0fadea88f4efe6815efa594a37ada"
+    },
+    "archive-release-followup/release-review/operating-brief.json": {
+      "bytes": 1308,
+      "sha256": "dd1f960d3b73881e6a73c170a8e312b2d07500e3edc878b1bdd734f47a656adf"
+    },
+    "archive-release-followup/release-review/pr-provenance.json": {
+      "bytes": 5515,
+      "sha256": "b5b64718b80695de03545188b74ef525c341dfcbf1a40f6d1a3093f581e8d14d"
+    },
+    "archive-release-followup/release-review/preexecution.json": {
+      "bytes": 1226,
+      "sha256": "a2ddf8d7904b03cdd966530a44b6e6e9940ddc74e50e6f4ad4d4b4afc8d08672"
+    },
+    "archive-release-followup/release-review/release-availability.json": {
+      "bytes": 9593,
+      "sha256": "8bebefdb621487255de169277d06a451eb553b794dfac378c53a2cb2964f822f"
+    },
+    "archive-release-followup/release-review/source-invariants.json": {
+      "bytes": 4754,
+      "sha256": "0b3e198291eed889714ff11ac4ce29a879fdb16f1d6ddafbcc929d36e437e1da"
+    },
+    "archive-release-followup/release-review/summary.json": {
+      "bytes": 7282,
+      "sha256": "3b878b6d7b0bbefc3748b6fcbc517e8f26c704caa432989b8380b18daea7e42e"
+    },
+    "archive-release-followup/release-review/windows-origin-finding.json": {
+      "bytes": 758,
+      "sha256": "c88568c4d0100dbaaf371740eae177eb6287832d0f250a59376c8a9d925111c9"
+    },
+    "archive-release-followup/summary.json": {
+      "bytes": 3798,
+      "sha256": "629b84632fc5a24c9d815a14060eb7a41196fd915330b9bdb364451893e2b0fb"
+    },
+    "archive-release-followup/validation.json": {
+      "bytes": 467,
+      "sha256": "c954b79637f5108190985c712e0f2069006090510df98dad4fd9b93771811e98"
+    },
     "cases.json": {
-      "bytes": 101033,
-      "sha256": "df3f9b68bc790aca6d63c420cb3c1977242acd7739bd30141da8d4a71f29ba43"
+      "bytes": 103554,
+      "sha256": "db51afd338fdfd48beb8013e773edb656b15eed63ddee0a99ac4afd30f4fc362"
     },
     "controlled-account-integrity.json": {
       "bytes": 640,
@@ -3251,8 +3451,8 @@
       "sha256": "4b7314f316cc66bb9c1c3e07919f4a2441de12db8ab970d26f9b4308a2cef8a4"
     },
     "matrix.json": {
-      "bytes": 1209220,
-      "sha256": "4b4f441f46a379f4d86156583f885fe9e298bef11aae21fb92a9d3c5c3a6adaf"
+      "bytes": 1211768,
+      "sha256": "5abc2809a9731ab06acabdf1a3eb9dfee04e005fc374c281e5f06eb37113ba82"
     },
     "muted-background-resume.json": {
       "bytes": 250,
@@ -4623,8 +4823,8 @@
       "sha256": "5c8013eb9693e540a771743fa74b10476a3b88dec2acdd1c683e36c8a6f9c391"
     },
     "README.md": {
-      "bytes": 28711,
-      "sha256": "98df56b389e2db063f0631053ca9901bdd371c4722a00f959e1ca3664e745824"
+      "bytes": 29114,
+      "sha256": "9634b01f02d413c80befe39c588accb4939dab60f27cd3faff5d41a9cf5b58c1"
     },
     "restored-microphone.json": {
       "bytes": 269,
@@ -4877,6 +5077,58 @@
     "runner-source/android_wifi_guard.py.txt": {
       "bytes": 890,
       "sha256": "9729c5d0b515e9ab96effdea686c7a05a9b504d7b469b0968ffe3199e0c12d79"
+    },
+    "runner-source/archive-agent-checks.py.txt": {
+      "bytes": 6662,
+      "sha256": "fe540f1a6f7582b91ede9d5d32acb99dfe171827e12d7eedf17a5cccb2155a24"
+    },
+    "runner-source/archive-agent-cleanup.py.txt": {
+      "bytes": 5566,
+      "sha256": "d646b071917e268f2e64e2b6c7dacbc03ff5ade35b9e868a4aa91394bfa979fb"
+    },
+    "runner-source/archive-agent-common.py.txt": {
+      "bytes": 4354,
+      "sha256": "3decf41f108866090f6688b37736d5a0cfa32f12b2fe58a3fdd78ebf69a26ae4"
+    },
+    "runner-source/archive-agent-held.py.txt": {
+      "bytes": 2069,
+      "sha256": "7dd2d77adcf44341a0f51d6d7b0ed2de9ae3b10acaed5d92a3567f94a3411696"
+    },
+    "runner-source/archive-agent-native.py.txt": {
+      "bytes": 1601,
+      "sha256": "531d645a5ff5158ab86868be88dc97245ac7b9c609819752c53f72a5ab4d1f4d"
+    },
+    "runner-source/archive-agent-preflight.py.txt": {
+      "bytes": 4105,
+      "sha256": "eae6521bf0bc53891efa2a299755ee842913bbd0bf7f7bcc94d2667232620f9c"
+    },
+    "runner-source/archive-agent-prepare.py.txt": {
+      "bytes": 2910,
+      "sha256": "af978b2e89791619dfcb6a5db8aaa72ab5681b2106bb2529258563faae1ff4d4"
+    },
+    "runner-source/archive-agent-run.py.txt": {
+      "bytes": 2113,
+      "sha256": "16a7a7804c548b92717effdbb2ddc208a488529e7d1e55a3280dec02ff958e19"
+    },
+    "runner-source/archive-release-publication-audio_result_link.py.txt": {
+      "bytes": 1519,
+      "sha256": "705b12bafc01035dbfd75e48b21f24230f074b4d3ba405f81d6536598cec3527"
+    },
+    "runner-source/archive-release-publication-collect.py.txt": {
+      "bytes": 3359,
+      "sha256": "0fe7b6f24fbb8afc3832aa6c0fe45b1d670607b9a0a0387425187f6d409408ef"
+    },
+    "runner-source/archive-release-publication-common.py.txt": {
+      "bytes": 2549,
+      "sha256": "0f5cbfd9f0db0eb4af219912e1a9e9ade75daa84e2d28de66d83fe90f0e26103"
+    },
+    "runner-source/archive-release-publication-link.py.txt": {
+      "bytes": 7111,
+      "sha256": "3a4744961f1a25d44cf46b9b0ded18d2baf07479ba6283d17802ae75f3eaf42b"
+    },
+    "runner-source/archive-release-publication-validate.py.txt": {
+      "bytes": 4143,
+      "sha256": "85fb73f6702d7a0dd7e2b3d903878995f6a0d13fddb0e27765f5378a539f7540"
     },
     "runner-source/attachment_preview_read.mjs.txt": {
       "bytes": 1865,
@@ -5265,6 +5517,46 @@
     "runner-source/package_unittest_log.py.txt": {
       "bytes": 2376,
       "sha256": "fdb0744d4c5fba6c9d429d1eeda8bad9fa72554cea453bc7c5a168fd12567dad"
+    },
+    "runner-source/phone-upload-agent-activate.py.txt": {
+      "bytes": 2606,
+      "sha256": "f59c8a9e7efb80e74c73440ec52dc789afdd9e6c0ca11972ded6cb36bca71d35"
+    },
+    "runner-source/phone-upload-agent-activate_observe.py.txt": {
+      "bytes": 2383,
+      "sha256": "5321f11648d3a3d298cc2faf029a12e448a1c21980ab301d2c93d249b8220842"
+    },
+    "runner-source/phone-upload-agent-common.py.txt": {
+      "bytes": 2046,
+      "sha256": "6343cc2d16b71b08b60080c09c17ab4bcd37c179088b6b0be86fcf4ae1224d6f"
+    },
+    "runner-source/phone-upload-agent-final_availability.py.txt": {
+      "bytes": 1027,
+      "sha256": "95516834e0cd6d52c655ad6aa78ab92475a2c9b59f93130421cb0626375c6654"
+    },
+    "runner-source/phone-upload-agent-freeze_attempt1.py.txt": {
+      "bytes": 446,
+      "sha256": "f2ace6c302e8fba9df4ea58e9b0b74a2280896609cf19d3e7fce33671935fab4"
+    },
+    "runner-source/phone-upload-agent-native_common.py.txt": {
+      "bytes": 2626,
+      "sha256": "86ba613a1d1bf3ab5ec53ffeb893bb226c646c5bce6778465dbe980f868f12ee"
+    },
+    "runner-source/phone-upload-agent-preflight.py.txt": {
+      "bytes": 3794,
+      "sha256": "d003ce7b1960fdf455962a5bcdfe5c001d754cbd4004b3a4baeb8fae0ac6ec46"
+    },
+    "runner-source/phone-upload-agent-profile_dm_guard.py.txt": {
+      "bytes": 1944,
+      "sha256": "d0ad1dfe06a2576b0a6c80fa1a7ac4df0bd7d681b808177635dadf57148112ab"
+    },
+    "runner-source/phone-upload-agent-seal_blocked.py.txt": {
+      "bytes": 5149,
+      "sha256": "35f5468edaf362adb1d51aa57fc0d29bd49d143ccaf115dd1d0e77d6b6a6fdab"
+    },
+    "runner-source/phone-upload-agent-seal_final.py.txt": {
+      "bytes": 5677,
+      "sha256": "8de23ae3196bd842b0d46cd172c420a94f064d75eabded2452755cbb504df928"
     },
     "runner-source/plan_acceptance_rows.py.txt": {
       "bytes": 9478,

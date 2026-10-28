@@ -1,0 +1,15 @@
+"""Fill the single pre-existing missing result pointer with an honest NOT_RUN receipt."""
+from common import *
+cases=read(O/'cases.json');case=next(c for c in cases['cases'] if c['id']=='AUDIO-audibility')
+assert case['status']=='NOT_RUN' and case['result'] is None
+rel=D.relative_to(O).as_posix()+'/audio-availability.json'
+write(D/'audio-availability.json',{'case':'AUDIO-audibility','status':'NOT_RUN','protects':case['protects'],'command':case['command'],'platform':case['platform'],'mandatory_when':case['mandatory_when'],'result':'No listening test performed; direct human answer says unavailable','human_reply':'Сейчас не могу','question_scope':'Listen to control sound/voice at PC; counters do not prove audibility','observed_in_prior_checkpoint':'2026-10-27; unchanged availability, not a new physical attempt','new_device_or_audio_actions':0,'limits':case['limits']})
+case['result']=rel;write(O/'cases.json',cases)
+m=read(O/'matrix.json')
+for issue in m['issues']:
+ if issue['number'] in case['issues']:issue['evidence'].append(rel)
+ for row in issue['criteria']:
+  if case['id'] in row['execution_cases']:row['evidence'].append(rel)
+write(O/'matrix.json',m);s=read(D/'summary.json');s['prior_case_result_link_completed']={'id':case['id'],'old':None,'new':rel,'status_unchanged':'NOT_RUN'};write(D/'summary.json',s)
+for f in P.glob('*.py'):code(f,'archive-release-publication-')
+print(json.dumps({'single_missing_result_pointer_completed':True,'new_audibility_attempt':False,'status':'NOT_RUN'}))

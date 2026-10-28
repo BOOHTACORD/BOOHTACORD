@@ -1,0 +1,14 @@
+{
+  "case": "AUDIO-audibility",
+  "status": "NOT_RUN",
+  "protects": "Peer actually hears microphone/system audio and mute removes audible output",
+  "command": "Physical listening at PC and phone",
+  "platform": "Physical Windows + Samsung",
+  "mandatory_when": "Before closing the corresponding runtime/platform/security QA criterion",
+  "result": "No listening test performed; direct human answer says unavailable",
+  "human_reply": "Сейчас не могу",
+  "question_scope": "Listen to control sound/voice at PC; counters do not prove audibility",
+  "observed_in_prior_checkpoint": "2026-10-27; unchanged availability, not a new physical attempt",
+  "new_device_or_audio_actions": 0,
+  "limits": "User answered 2026-10-27 that they cannot listen now. Packet counters never substitute for listening."
+}

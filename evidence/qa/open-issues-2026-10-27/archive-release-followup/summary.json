@@ -1,0 +1,63 @@
+{
+  "status": "SCOPED_ARCHIVE_PROGRESS_PHONE_BLOCKED_CI_REVIEW_ONLY",
+  "at_utc": "2026-10-28T20:53:25.607853+00:00",
+  "new_runtime_sets": [
+    {
+      "id": "ISOLATED-archive-restore-held-upload-and-write-denial",
+      "status": "PASS_SCOPED",
+      "protects": "Readonly archive retains current channel ID/history/search/file and privacy; all selected archived writes/accepted-client replay/held upload deny unchanged; sameID restore recovers real operations",
+      "command": "python -B -X utf8 .out/qa-agent-archive/run.py",
+      "platform": "Existing isolated local API image declaredsource072426d6 / real PostgreSQL17.6 / private storage; Windows HTTP producer",
+      "mandatory_when": "Before accepting current-source isolated API archive lifecycle facet of I287.C6; not full gate",
+      "issues": [
+        287
+      ],
+      "result": "archive-release-followup/archive/summary.json",
+      "limits": "43actual HTTP controls plus held220B request;8native PASS/0test skips/1package without tests. All10 selected table fingerprints/file inventory restored, topology38->42 and6own metadata audit rows intentionally retained. Previous-deployed-schema upgrade, provenance-backed legacy compatibility and released UI NOT_RUN; full row PARTIAL.",
+      "defects": []
+    },
+    {
+      "id": "ANDROID-native-JPEG-GIF-picker-upload-availability",
+      "status": "BLOCKED",
+      "protects": "Actual nativeJPEG/GIF localDocumentsUI selection creates onlypendingownedattachment until explicitSend, authorizedpeerGET retains originalbytes, nativeauthorDelete revokes original/preview; thisruntimefacet is NOTEXECUTED",
+      "command": "Read-onlysource/APKpreflight; ONEauthorized amstart -n ru.boohtacord.app/.MainActivity; freshUI/room/media availabilityguards only. No picker/upload/send/nativeDelete/peerAPIcommand executed",
+      "platform": "PhysicalSamsungSM-A576BAndroid16 signedQA1.0.47+2082 installedru.boohtacord.app; currentlyvisibleUIcom.android.settings",
+      "mandatory_when": "Before acceptingthisexactnativepickerJPEG/GIFuploadscope; no I131 browserPASTE/clipboard/systemsharing orwholeQAclaim",
+      "issues": [
+        62
+      ],
+      "result": "archive-release-followup/phone-upload/summary-final.json",
+      "limits": "One normal authorized app activation. Settings returned before own profile/DM/navigation guard;0picker/upload/Send/peerGET/delete/logins/sessions/pushes/messages. JPEG/GIF runtime NOT_RUN. Active microphoneFGS and changing projection guard are observations without cause/outcome inference. Not browser paste or system-share acceptance.",
+      "defects": []
+    }
+  ],
+  "total_sets": 93,
+  "source_rows": 480,
+  "source_qualifiers": 13,
+  "row_status_change": {
+    "I287.C6": "NOT_RUN -> PARTIAL"
+  },
+  "row_status_counts": {
+    "BLOCKED": 160,
+    "PARTIAL": 53,
+    "NOT_RUN": 240,
+    "FAIL": 19,
+    "PASS": 8
+  },
+  "supporting_reviews": {
+    "PR590": "release-review/summary.json",
+    "CI": "release-review/ci-provenance.json",
+    "correction_same_code_QA_and_origin_limits": "release-followup/summary.json"
+  },
+  "release_review_correction": "Same-code2082 QA replacement may retain data if appID/signature/revision/compatibility checks pass; source increment and >2082 are not necessary solely for physical fix590 QA. No installation/monotonic updater acceptance yet. Historical review next-step >2082 wording is qualified by followup.",
+  "Windows_runtime_origin": "UNVERIFIED; one process-network class snapshot does not prove exact URL",
+  "all_full_gates_closed": false,
+  "new_product_defects": [],
+  "consolidation43_touched": false,
+  "prior_case_result_link_completed": {
+    "id": "AUDIO-audibility",
+    "old": null,
+    "new": "archive-release-followup/audio-availability.json",
+    "status_unchanged": "NOT_RUN"
+  }
+}

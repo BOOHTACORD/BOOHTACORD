@@ -582,7 +582,9 @@
           "execution_cases": [
             "AUDIO-audibility"
           ],
-          "evidence": [],
+          "evidence": [
+            "archive-release-followup/audio-availability.json"
+          ],
           "execution": "Physical listening at PC and phone",
           "platform": "Physical Windows + Samsung",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
@@ -698,7 +700,9 @@
       "execution_cases": [
         "AUDIO-audibility"
       ],
-      "evidence": [],
+      "evidence": [
+        "archive-release-followup/audio-availability.json"
+      ],
       "defects": [],
       "blockers": [],
       "source_body_sha256": "33ed2671d7b715cf241a7424c845453497ffe7afd1639052c57042f42bd42a25",
@@ -1117,7 +1121,8 @@
             "ANDROID-image-viewer-delete-invalidation",
             "ANDROID-original-image-download-viewer-and-card-six",
             "ANDROID-cold-start-auth-explicit-refresh",
-            "WINDOWS-owned-image-lifecycle-handshake"
+            "WINDOWS-owned-image-lifecycle-handshake",
+            "ANDROID-native-JPEG-GIF-picker-upload-availability"
           ],
           "evidence": [
             "native-realtime-result.json",
@@ -1135,9 +1140,11 @@
             "production-dm-image-revocation/revocation-result.json",
             "coordinated-agents-2026-10-28/phone/summary.json",
             "coordinated-agents-2026-10-28/restart/summary.json",
-            "coordinated-agents-2026-10-28/windows/attempt2/summary.json"
+            "coordinated-agents-2026-10-28/windows/attempt2/summary.json",
+            "archive-release-followup/phone-upload/summary-final.json",
+            "archive-release-followup/audio-availability.json"
           ],
-          "execution": "node .out/qa-goal/native_realtime_run.mjs; node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback; node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py; python .out/qa-goal/android_filechooser.py; Physical listening at PC and phone; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python -X utf8 .out/qa-goal/verify_android_candidate.py; node .out/qa-goal/native_upgrade_peer.mjs before; python -X utf8 .out/qa-goal/android_candidate_install.py; python -X utf8 .out/qa-goal/upgrade_restore_owned_dm.py; node .out/qa-goal/native_upgrade_peer.mjs after; python -X utf8 .out/qa-goal/android_candidate_after.py; node .out/qa-goal/native_ptt_peer.mjs upgrade-final; python -X utf8 .out/qa-native-image-formats/critical_checks.py; python -X utf8 .out/qa-native-image-formats/denial_review.py; python -X utf8 .out/qa-native-image-formats/denied_payloads.py; python -X utf8 .out/qa-native-image-formats/revocation.py; python -X utf8 .out/qa-agent-phone/preflight.py; use phone/summary.json actual_commands for prepare/send/reveal/native download/save/verify; cleanup_batch.py; Follow restart/summary.json exact commands and cleanup; Fresh native existing DM list/private expected-peer comparison; see windows/attempt2/summary.json",
+          "execution": "node .out/qa-goal/native_realtime_run.mjs; node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback; node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py; python .out/qa-goal/android_filechooser.py; Physical listening at PC and phone; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python -X utf8 .out/qa-goal/verify_android_candidate.py; node .out/qa-goal/native_upgrade_peer.mjs before; python -X utf8 .out/qa-goal/android_candidate_install.py; python -X utf8 .out/qa-goal/upgrade_restore_owned_dm.py; node .out/qa-goal/native_upgrade_peer.mjs after; python -X utf8 .out/qa-goal/android_candidate_after.py; node .out/qa-goal/native_ptt_peer.mjs upgrade-final; python -X utf8 .out/qa-native-image-formats/critical_checks.py; python -X utf8 .out/qa-native-image-formats/denial_review.py; python -X utf8 .out/qa-native-image-formats/denied_payloads.py; python -X utf8 .out/qa-native-image-formats/revocation.py; python -X utf8 .out/qa-agent-phone/preflight.py; use phone/summary.json actual_commands for prepare/send/reveal/native download/save/verify; cleanup_batch.py; Follow restart/summary.json exact commands and cleanup; Fresh native existing DM list/private expected-peer comparison; see windows/attempt2/summary.json; Read-onlysource/APKpreflight; ONEauthorized amstart -n ru.boohtacord.app/.MainActivity; freshUI/room/media availabilityguards only. No picker/upload/send/nativeDelete/peerAPIcommand executed",
           "platform": "Physical Samsung SM-A576B Android16; signed 1.0.45+2080 paired with Chrome; Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Physical Samsung SM-A576B Android16, signed1.0.45+2080; actual Android permission controller; headed Chrome peer; Physical Samsung SM-A576B Android16; signed1.0.45+2080; protected production roster read by controlled peer; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Physical Windows + Samsung; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
           "result": "android-connectivity/summary.json",
@@ -1153,7 +1160,8 @@
             "ANDROID-image-viewer-delete-invalidation: One physical PNG reproduction, viewer remains through a24,766ms post-control observer window; exact known bitmap is probed inside that window. Not a backend ACL bypass. Native save after deletion is observation only without positive save control; no full media/other-platform acceptance.",
             "ANDROID-original-image-download-viewer-and-card-six: Six native controls, SHAoriginal != preview, six files/messages cleaned and own session revoked. No native upload/TEXT/ADMIN/revoke-while-open/GIF animation or whole browser gate. Existing589 remains open.",
             "ANDROID-cold-start-auth-explicit-refresh: One restart. Explicit refresh required for auth-positive; pre/post passive windows NOT_PROVEN. Third semantic payload clipped5px until explicit scroll: no full passive visibility/p95 or causal restart regression. Three own messages/session cleaned.",
-            "WINDOWS-owned-image-lifecycle-handshake: Expected peer absent from currently rendered list; authoritative server absence not proven. No new DM/fixture/session; no Windows image verdict or Android589 extension."
+            "WINDOWS-owned-image-lifecycle-handshake: Expected peer absent from currently rendered list; authoritative server absence not proven. No new DM/fixture/session; no Windows image verdict or Android589 extension.",
+            "ANDROID-native-JPEG-GIF-picker-upload-availability: One normal authorized app activation. Settings returned before own profile/DM/navigation guard;0picker/upload/Send/peerGET/delete/logins/sessions/pushes/messages. JPEG/GIF runtime NOT_RUN. Active microphoneFGS and changing projection guard are observations without cause/outcome inference. Not browser paste or system-share acceptance."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -1195,7 +1203,8 @@
               "ANDROID-image-viewer-delete-invalidation",
               "ANDROID-original-image-download-viewer-and-card-six",
               "ANDROID-cold-start-auth-explicit-refresh",
-              "WINDOWS-owned-image-lifecycle-handshake"
+              "WINDOWS-owned-image-lifecycle-handshake",
+              "ANDROID-native-JPEG-GIF-picker-upload-availability"
             ]
           },
           "reason": " Physical Android PTT UP/outside-UP/CANCEL/HOME server-mute and resume facets passed; all other source-row clauses and stated audio/AT/platform limits remain unaccepted. Physical landscape90/IME preserved draft and voice but native voice dock covered Send in2/2 runs; other platform/AT/selection/send variants remain unaccepted. Physical WiFi→cellular native DM/PC render and original-state restoration verified, with retained controller cleanup failures; full SDK/audio/background/platform/revoke matrix remains unaccepted. Physical already-open PNG viewer retains deleted cached content despite fresh underlying tombstone/control and server404: bug589. API MEMBER/anonymous/revoked/Origin facet passes; full native gate remains FAIL.",
@@ -1311,7 +1320,8 @@
         "ANDROID-image-viewer-delete-invalidation",
         "ANDROID-original-image-download-viewer-and-card-six",
         "ANDROID-cold-start-auth-explicit-refresh",
-        "WINDOWS-owned-image-lifecycle-handshake"
+        "WINDOWS-owned-image-lifecycle-handshake",
+        "ANDROID-native-JPEG-GIF-picker-upload-availability"
       ],
       "evidence": [
         "native-realtime-result.json",
@@ -1329,7 +1339,9 @@
         "production-dm-image-revocation/revocation-result.json",
         "coordinated-agents-2026-10-28/phone/summary.json",
         "coordinated-agents-2026-10-28/restart/summary.json",
-        "coordinated-agents-2026-10-28/windows/attempt2/summary.json"
+        "coordinated-agents-2026-10-28/windows/attempt2/summary.json",
+        "archive-release-followup/phone-upload/summary-final.json",
+        "archive-release-followup/audio-availability.json"
       ],
       "defects": [
         582,
@@ -1806,7 +1818,9 @@
           "execution_cases": [
             "AUDIO-audibility"
           ],
-          "evidence": [],
+          "evidence": [
+            "archive-release-followup/audio-availability.json"
+          ],
           "execution": "Physical listening at PC and phone",
           "platform": "Physical Windows + Samsung",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
@@ -1968,7 +1982,8 @@
         "web-image-formats/summary.json",
         "native-ptt/summary.json",
         "production-dm-image-revocation/semantic-result.json",
-        "coordinated-agents-2026-10-28/browser/browser-ui-policy-blocker-user-selected.json"
+        "coordinated-agents-2026-10-28/browser/browser-ui-policy-blocker-user-selected.json",
+        "archive-release-followup/audio-availability.json"
       ],
       "defects": [
         581
@@ -2098,7 +2113,8 @@
           "evidence": [
             "muted-background-resume.json; muted-stop.json; restored-microphone.json",
             "second-cycle-stop.json",
-            "native-sender-two-receivers/summary.json"
+            "native-sender-two-receivers/summary.json",
+            "archive-release-followup/audio-availability.json"
           ],
           "execution": "python .out/qa-goal/android_controls.py resume; python .out/qa-goal/android_controls.py stop; python .out/qa-goal/android_controls.py stop; Physical listening at PC and phone",
           "platform": "Physical Samsung Android16, app-only projection; Physical Samsung Android16; Physical Windows + Samsung",
@@ -2147,7 +2163,8 @@
           "evidence": [
             "muted-background-resume.json; muted-stop.json; restored-microphone.json",
             "voice-permission/summary.json",
-            "native-ptt/summary.json"
+            "native-ptt/summary.json",
+            "archive-release-followup/audio-availability.json"
           ],
           "execution": "python .out/qa-goal/android_controls.py resume; python .out/qa-goal/android_controls.py stop; python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback; Physical listening at PC and phone",
           "platform": "Physical Samsung Android16, app-only projection; Physical Samsung SM-A576B Android16, signed1.0.45+2080; actual Android permission controller; headed Chrome peer; Physical Windows + Samsung",
@@ -2222,7 +2239,8 @@
         "muted-background-resume.json; muted-stop.json; restored-microphone.json",
         "second-cycle-stop.json",
         "voice-permission/summary.json",
-        "native-ptt/summary.json"
+        "native-ptt/summary.json",
+        "archive-release-followup/audio-availability.json"
       ],
       "defects": [
         579
@@ -3381,7 +3399,8 @@
         "AUDIO-audibility"
       ],
       "evidence": [
-        "muted-background-resume.json; muted-stop.json; restored-microphone.json"
+        "muted-background-resume.json; muted-stop.json; restored-microphone.json",
+        "archive-release-followup/audio-availability.json"
       ],
       "defects": [
         579
@@ -5083,7 +5102,8 @@
       "evidence": [
         "muted-background-resume.json; muted-stop.json; restored-microphone.json",
         "second-cycle-stop.json",
-        "windows-dialog.json"
+        "windows-dialog.json",
+        "archive-release-followup/audio-availability.json"
       ],
       "defects": [
         579
@@ -9494,10 +9514,14 @@
           "requirement": "#92: archive/restore keeps channel ID, topology/history/search/download and privacy; archived sends/edits/uploads/reactions/pins denied including held upload and idempotency replay. Upgrade from previous deployed schema, legacy archive compatibility and released-client UI.",
           "source_checkbox": " ",
           "id": "I287.C6",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental.",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-archive-restore-held-upload-and-write-denial"
+          ],
+          "evidence": [
+            "archive-release-followup/archive/summary.json"
+          ],
+          "execution": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental.; python -B -X utf8 .out/qa-agent-archive/run.py",
           "platform": "Disposable owned PostgreSQL/API/LiveKit target and bounded synthetic accounts/data; never shared production fault/load injection.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
           "result": null,
@@ -9512,10 +9536,15 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-archive-restore-held-upload-and-write-denial"
+            ]
           },
           "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
+          "witness_limits": [
+            "ISOLATED-archive-restore-held-upload-and-write-denial: 43actual HTTP controls plus held220B request;8native PASS/0test skips/1package without tests. All10 selected table fingerprints/file inventory restored, topology38->42 and6own metadata audit rows intentionally retained. Previous-deployed-schema upgrade, provenance-backed legacy compatibility and released UI NOT_RUN; full row PARTIAL."
+          ]
         },
         {
           "section": "Matrix",
@@ -9969,7 +9998,8 @@
         "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
         "ANDROID-ADMIN-explicit-search-after-owned-delete",
         "WINDOWS-native-admin-seven-readonly-sections",
-        "ISOLATED-search-filtered-cursor-ACL"
+        "ISOLATED-search-filtered-cursor-ACL",
+        "ISOLATED-archive-restore-held-upload-and-write-denial"
       ],
       "evidence": [
         "privacy-result.json",
@@ -9987,7 +10017,8 @@
         "native-admin-gboard/summary.json",
         "native-admin-search-privacy/summary.json",
         "coordinated-agents-2026-10-28/windows/admin/summary.json",
-        "coordinated-agents-2026-10-28/search/aggregate-result.json"
+        "coordinated-agents-2026-10-28/search/aggregate-result.json",
+        "archive-release-followup/archive/summary.json"
       ],
       "defects": [
         581,
@@ -12450,7 +12481,8 @@
         "coordinated-agents-2026-10-28/phone/keyboard-summary.json",
         "coordinated-agents-2026-10-28/phone/reconnect-summary.json",
         "coordinated-agents-2026-10-28/windows/attempt2/summary.json",
-        "coordinated-agents-2026-10-28/windows/admin/summary.json"
+        "coordinated-agents-2026-10-28/windows/admin/summary.json",
+        "archive-release-followup/audio-availability.json"
       ],
       "defects": [
         579,
@@ -16438,7 +16470,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-28T20:00:25.403309+00:00",
+  "updated_utc": "2026-10-28T20:53:25.607853+00:00",
   "known_defect_issues": [
     579,
     580,

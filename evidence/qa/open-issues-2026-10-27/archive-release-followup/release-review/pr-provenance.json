@@ -1,0 +1,113 @@
+{
+  "observed_utc": "2026-10-28T20:36:47Z",
+  "pr": {
+    "url": "https://github.com/Egkurilov/BOOHTACORD/pull/590",
+    "title": "fix: preserve search focus and revoke stale message views",
+    "state": "closed",
+    "merged": true,
+    "head": "994b8e3a3ded6a7521308b9b4bf03ecc234353f1",
+    "base": "4511c532743e209529db3dd8984f7542e0baa866",
+    "base_ref": "master",
+    "merged_at": "2026-10-28T20:17:10Z",
+    "merge_commit": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+    "changed_files": 31
+  },
+  "filenames": [
+    "clients/flutter/lib/src/features/admin/members/layout/presentation.dart",
+    "clients/flutter/lib/src/screens/workspace_ui/direct_conversation/build/message_bubble/handler.dart",
+    "clients/flutter/lib/src/screens/workspace_ui/header/conversation_actions.dart",
+    "clients/flutter/lib/src/screens/workspace_ui/message_row/build/handler.dart",
+    "clients/flutter/lib/src/screens/workspace_ui/search_message_context/build/context_messages/handler.dart",
+    "clients/flutter/lib/src/screens/workspace_ui/workspace_search_panel/build/scope_field/handler.dart",
+    "clients/flutter/lib/src/widgets/attachment_revocation/view.dart",
+    "clients/flutter/lib/src/widgets/message_attachment_list.dart",
+    "clients/flutter/test/admin_accessibility/search_focus_test.dart",
+    "clients/flutter/test/attachment_revocation/fixture.dart",
+    "clients/flutter/test/attachment_revocation_test.dart",
+    "clients/flutter/test/search_scope_touch_test.dart",
+    "clients/flutter/test/workspace_screen_test.dart",
+    "clients/web/src/search/SearchMessageContext.vue",
+    "clients/web/src/search/context_timeline/hints.spec.ts",
+    "clients/web/src/search/context_timeline/hints.ts",
+    "clients/web/src/search/context_timeline/live_revision.spec.ts",
+    "clients/web/src/search/search_context_controller.ts",
+    "clients/web/src/workspace/protected_refresh/types.ts",
+    "clients/web/src/workspace/workspace_realtime.ts",
+    "clients/web/tests/search_sessions/live-context.browser.spec.ts",
+    "clients/web/tests/search_sessions/live-context.html",
+    "docs/superpowers/plans/2026-10-28-recent-bugs.md",
+    "evidence/qa/recent-bugs-2026-10-28/README.md",
+    "evidence/qa/recent-bugs-2026-10-28/merge-readiness.md",
+    "evidence/qa/recent-bugs-2026-10-28/results.json",
+    "tools/ci/flutter_gates/artifacts.py",
+    "tools/ci/flutter_gates/recent_bug_visuals.py",
+    "tools/ci/flutter_gates/test_artifacts.py",
+    "tools/ci/flutter_gates/test_recent_bug_artifacts.py",
+    "tools/qa/local_features/features.json"
+  ],
+  "selected_code_patch_paths": [
+    "clients/flutter/lib/src/widgets/attachment_revocation/view.dart",
+    "clients/flutter/lib/src/widgets/message_attachment_list.dart",
+    "clients/flutter/test/attachment_revocation_test.dart",
+    "clients/flutter/lib/src/screens/workspace_ui/direct_conversation/build/message_bubble/handler.dart",
+    "clients/flutter/lib/src/screens/workspace_ui/message_row/build/handler.dart",
+    "clients/flutter/lib/src/screens/workspace_ui/search_message_context/build/context_messages/handler.dart",
+    "clients/web/src/search/SearchMessageContext.vue",
+    "clients/web/src/search/search_context_controller.ts",
+    "clients/web/src/search/context_timeline/hints.ts",
+    "clients/web/src/search/context_timeline/hints.spec.ts",
+    "clients/web/src/search/context_timeline/live_revision.spec.ts",
+    "clients/web/src/workspace/workspace_realtime.ts",
+    "clients/flutter/lib/src/features/admin/members/layout/presentation.dart",
+    "clients/flutter/test/admin_accessibility/search_focus_test.dart",
+    "clients/flutter/lib/src/screens/workspace_ui/workspace_search_panel/build/scope_field/handler.dart",
+    "clients/flutter/test/search_scope_touch_test.dart"
+  ],
+  "selected_code_patch_count": 16,
+  "current_master": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+  "checked_synthetic_merge": "db26489db9b9fef0ec6c3872eca2567498d24fb5",
+  "tree_proof": [
+    {
+      "sha": "db26489db9b9fef0ec6c3872eca2567498d24fb5",
+      "tree": "5df9864444dd5dd407c22cc06535fb161644705d",
+      "parents": [
+        "4511c532743e209529db3dd8984f7542e0baa866",
+        "994b8e3a3ded6a7521308b9b4bf03ecc234353f1"
+      ]
+    },
+    {
+      "sha": "b74fce609ad3ddbbfb0dbef81c5efae68195f20f",
+      "tree": "5df9864444dd5dd407c22cc06535fb161644705d",
+      "parents": [
+        "4511c532743e209529db3dd8984f7542e0baa866"
+      ]
+    }
+  ],
+  "current_issue_states": [
+    {
+      "number": 587,
+      "state": "closed",
+      "title": "[BUG][Web][P1] Открытый reply/search context сохраняет удалённый текст после realtime hint"
+    },
+    {
+      "number": 589,
+      "state": "closed",
+      "title": "[BUG][Android] Открытый viewer сохраняет PNG после удаления сообщения"
+    },
+    {
+      "number": 141,
+      "state": "open",
+      "title": "[P2][F09] Web chat: индексировать ответы и ограничить рендеринг и кеш длинной истории"
+    }
+  ],
+  "historical_local_record": {
+    "source_commit": "9121f8302d4147aa2c9040bf5609325dc1268d4f",
+    "not_final_head": true,
+    "results_statuses": {
+      "physical_candidate": "NOT_RUN",
+      "production_deployment": "NOT_RUN",
+      "search_geometry_precondition_failures": 4
+    },
+    "relocated_adapter_path": "features/attachments/revocation -> widgets/attachment_revocation; do not use older results.json file hashes as final-head attestation"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "frozen_at_utc": "2026-10-28T20:34:17.107510+00:00",
+  "status": "ATTEMPT1_BLOCKED_RECORD_FROZEN_BEFORE_ROOT_AUTHORIZED_NORMAL_ACTIVATION",
+  "artifacts": {
+    "bindings-before-blocked-seal.json": {
+      "SHA256": "2bbe9821368c66d4a939becef9ad1d5d4451495b8adb5f69169a653686e802d1",
+      "bytes": 185
+    },
+    "bindings-before-preflight.json": {
+      "SHA256": "0c8620bec53a0e9e0d84586b5631df404e5601719f670ef0d84169c6cc610015",
+      "bytes": 279
+    },
+    "current-surface-static-diagnostic.json": {
+      "SHA256": "23b93e85e4b37360410e6af069ceae7a9da3f89b1088599adc3f824dd0bc7777",
+      "bytes": 174
+    },
+    "foreground-package-guard.json": {
+      "SHA256": "a7534f46cbcd7ad5aa52fff690321ecbfdccd0d399d81312dba50da9187a29d5",
+      "bytes": 464
+    },
+    "fresh-ui-binding-diagnostic.json": {
+      "SHA256": "ffbd2091642f274290ea87d63a22383c843ccf78840436f431cba7b960c69df3",
+      "bytes": 301
+    },
+    "initial-screen-diagnostic.json": {
+      "SHA256": "83119df55687971dc59aea334ac01efd063839e8eb45316159d2194fade527f5",
+      "bytes": 306
+    },
+    "preflight-attempt1.json": {
+      "SHA256": "cf9e7618114588cd35986bc546cd69771d978b1d81d75e918da8d69061098762",
+      "bytes": 362
+    },
+    "source-criteria.json": {
+      "SHA256": "2d20e806aa6244c2e8358fbef859fbf3b8d4147623cfad9adfc9e74e7e3b8049",
+      "bytes": 14807
+    },
+    "summary.json": {
+      "SHA256": "8556fa31354f4e403a05005b3d364287368b636e2d801753f75ead41e54e41a9",
+      "bytes": 20783
+    }
+  },
+  "helpers": {
+    "common.py": "d3ba142554fd7b4ad083463bf9da096958c6d75c03ec5d4e48ca907378296e61",
+    "freeze_attempt1.py": "f19b691f704e72ebdd180282bc085b3b3b82cbbadc665445c1ba7846ca00a480",
+    "preflight.py": "b919bfc46ef8b3e365e91817e745dd7e6f7b0321fcbd2cee4729a0674ee80e98",
+    "seal_blocked.py": "cb2c39111b206b5a7969350995d390c9c11492fd9e989caa445456358c7e559b"
+  }
+}

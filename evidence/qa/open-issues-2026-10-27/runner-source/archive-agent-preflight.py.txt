@@ -1,0 +1,30 @@
+import ast,ipaddress,subprocess
+from common import P,Q,SOURCE,read,write,now,sha,sql,services,state,files,request,revision,frozen
+assert not (P/'before.json').exists();(P/'private').mkdir(exist_ok=True)
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=Q,text=True).strip()==SOURCE
+roots=['channel/archive_readonly_text','channel/restore_readonly_text','channel/list_archived_text','storage/upload_text_attachment','storage/authorize_text_attachment','storage/finalize_staged_text_attachment','storage/stage_upload','storage/write_upload','storage/download_text_attachment','chat/change_message_reaction','chat/change_text_pin']
+paths=[p for root in roots for p in (Q/'backend/internal'/root).rglob('*.go')]
+paths += [Q/x for x in ['backend/go.mod','contracts/openapi.yaml','backend/internal/app/archive_text_routes/routes.go','backend/internal/app/storage_routes/storage_routes.go','deploy/caddy/Caddyfile','backend/internal/chat/search_messages/api/archive_handler.go','backend/internal/chat/search_messages/postgres/statements.go','backend/internal/chat/list_text_messages/postgres/repository.go','backend/internal/testsupport/postgres/config.go','backend/internal/testsupport/postgres/schema.go']]
+hashes={}
+for p in paths:
+    rel=p.relative_to(Q).as_posix();raw=p.read_bytes();head=subprocess.check_output(['git','show','HEAD:'+rel],cwd=Q)
+    assert raw.replace(b'\r\n',b'\n')==head.replace(b'\r\n',b'\n');hashes[rel]={'raw_sha256':sha(raw),'LF_HEAD_sha256':sha(head.replace(b'\r\n',b'\n'))}
+helpers={}
+for p in P.glob('*.py'):
+    ast.parse(p.read_text('utf-8'));assert len(p.read_text('utf-8').splitlines())<=120;helpers[p.name]=sha(p.read_bytes())
+assert len(helpers)<=8
+s=services()
+for n,v in s.items():
+    assert v['State']['Running'] and v['RestartCount']==0
+    for bs in v['NetworkSettings']['Ports'].values():
+        for b in bs or []:assert ipaddress.ip_address(b['HostIp']).is_loopback
+    if n in ['api','web']:
+        from common import docker
+        assert __import__('json').loads(docker('image','inspect',v['Image']))[0]['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+write(P/'private/services-before.json',s)
+assert request('/api/v1/health')[0]==200 and sql('SHOW server_version;').strip()=='17.6'
+schema=sql("SELECT table_name,column_name,data_type FROM information_schema.columns WHERE table_schema='public' AND table_name IN ('attachments','sessions','audit_events','channel_topology_state','text_message_reactions','text_message_pins') ORDER BY table_name,ordinal_position;")
+(P/'private/schema.txt').write_text(schema,'utf-8')
+write(P/'before.json',{'utc':now(),'source':SOURCE,'PostgreSQL':'17.6','health_HTTP':200,'database':state(),'files':sorted(files()),'revision':revision(),'source_hashes':hashes,'helper_hashes':helpers,'frozen_files':frozen(),'schemas':sql("SELECT count(*) FROM pg_namespace WHERE nspname LIKE 'voice_it_%';").strip(),'audit_count':int(sql('SELECT count(*) FROM audit_events;').strip())})
+write(P/'operating-brief.json',{'workflow_class':'review_gate','route':'channel/archive_readonly_text->restore_readonly_text','packet':'I287.C6 isolated archive lifecycle','literal_criterion':'#92: archive/restore keeps channel ID, topology/history/search/download and privacy; archived sends/edits/uploads/reactions/pins denied including held upload and idempotency replay. Upgrade from previous deployed schema, legacy archive compatibility and released-client UI.','doctrine':'Read exact readonly/archive contract; positive+negative controls; one held tiny upload with stage-file witness','limits':'Current-source API only; no upgrade/legacy/released UI/production/physical/browser acceptance','checks':'Nearest native Go tests0skips once; actual local HTTP/PG/storage; finally own cleanup','stop':'No outstanding own resources/sessions/files;9services and frozen packets preserved','ratchet':'8helpers <=120lines; no source mutation','diagnostic':'Initial guessed file_store.go path absent; actual files.go edge read before execution'})
+print('PASS fresh health/nine services/PG17.6/source/helper/frozen baseline sealed')
