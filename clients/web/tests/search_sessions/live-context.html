@@ -1,0 +1,14 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><div id="app"></div>
+<script type="module">
+import { createApp, h } from 'vue'
+import { createPinia } from 'pinia'
+import SearchMessageContext from '../../src/search/SearchMessageContext.vue'
+import { useContextHints } from '../../src/search/context_timeline/hints'
+import '../../src/style.css'
+const kind = new URLSearchParams(location.search).get('kind') ?? 'CHANNEL'
+const pinia = createPinia()
+window.contextHints = useContextHints(pinia)
+createApp({ render: () => h(SearchMessageContext, {
+  kind, conversationId: 'own', messageId: 'target',
+}) }).use(pinia).mount('#app')
+</script><style>.search-message-context{height:100vh}</style></html>
