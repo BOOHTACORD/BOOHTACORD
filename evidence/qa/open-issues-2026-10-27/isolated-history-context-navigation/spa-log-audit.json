@@ -1,0 +1,77 @@
+{
+  "status": "PASS_BOTH_STREAMS_ALL14_SESSION_CREDENTIAL_SCAN",
+  "services": [
+    {
+      "service": "api",
+      "stdout_bytes": 166423,
+      "stderr_bytes": 0,
+      "SHA256": "cb1debf737d75291ebbcf232fe824d5f4bf743066e48f27099500fe08a97241c",
+      "credential_session_markers_absent": true,
+      "raw_private": true
+    },
+    {
+      "service": "web",
+      "stdout_bytes": 21019,
+      "stderr_bytes": 0,
+      "SHA256": "931ba246f95388996d54913567d90e7bb51aa563f9333671b462095accfd58ed",
+      "credential_session_markers_absent": true,
+      "raw_private": true
+    },
+    {
+      "service": "proxy",
+      "stdout_bytes": 0,
+      "stderr_bytes": 30758,
+      "SHA256": "2a77f9954e3baa264f89d1c1d8a6563c8d82ef37fd75e352be16d1d10355172e",
+      "credential_session_markers_absent": true,
+      "raw_private": true
+    },
+    {
+      "service": "postgres",
+      "stdout_bytes": 0,
+      "stderr_bytes": 2510,
+      "SHA256": "ff856c13e409204574c4399acdaf040faa8df28e3de1f33bc4cf7b0e0f397efd",
+      "credential_session_markers_absent": true,
+      "raw_private": true
+    },
+    {
+      "service": "livekit",
+      "stdout_bytes": 0,
+      "stderr_bytes": 13587,
+      "SHA256": "a99db96f8773cd28e4479ea3623f6f7346d0272e4cb91559fea2a690103823f2",
+      "credential_session_markers_absent": true,
+      "raw_private": true
+    },
+    {
+      "service": "collector",
+      "stdout_bytes": 0,
+      "stderr_bytes": 50336,
+      "SHA256": "9a7c2518f97a301605b7f93027735025e65e1a895e19b2c667bc65c94cb0cda0",
+      "credential_session_markers_absent": true,
+      "raw_private": true
+    },
+    {
+      "service": "tempo",
+      "stdout_bytes": 0,
+      "stderr_bytes": 30291,
+      "SHA256": "6e48248caa94b9b7b4e14ce7c21d1df9531a787d54c9eacaa8dfc6e2df2e8f4a",
+      "credential_session_markers_absent": true,
+      "raw_private": true
+    },
+    {
+      "service": "prometheus",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "credential_session_markers_absent": true,
+      "raw_private": true
+    },
+    {
+      "service": "grafana",
+      "stdout_bytes": 5284,
+      "stderr_bytes": 0,
+      "SHA256": "d88f847ca589fb5b4e3cf4140f9f1c0aa0d640556e67dfbc788213a859435eb2",
+      "credential_session_markers_absent": true,
+      "raw_private": true
+    }
+  ]
+}

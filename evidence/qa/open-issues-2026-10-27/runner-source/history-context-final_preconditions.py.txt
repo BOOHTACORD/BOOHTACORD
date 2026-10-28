@@ -1,0 +1,20 @@
+"""Re-establish only the owned unread fixture and fingerprint the final runner."""
+import hashlib,subprocess
+from datetime import datetime,timezone
+from common import P,Q,SOURCE,read,write,request,sql,valid
+assert not (P/'final-preconditions.json').exists()
+c=read(P/'private/config.private.json');d=c['channels']['unread'];category=valid(c['category']);channel=valid(d['channel'])
+assert sql("SELECT name FROM categories WHERE id='"+category+"';").strip()=='qa_context_'+c['owner_token']
+assert sql("SELECT category_id FROM channels WHERE id='"+channel+"';").strip()==category
+assert int(sql("SELECT count(*) FROM messages WHERE channel_id='"+channel+"';").strip())==120
+assert int(sql("SELECT count(*) FROM channel_read_cursors WHERE channel_id='"+channel+"';").strip())==1
+sql("DELETE FROM channel_read_cursors WHERE channel_id='"+channel+"';")
+status,_,cursor=request('/api/v1/channels/'+channel+'/read-cursor','PUT',{'message_id':d['ids'][49]},c['cookie']);assert status==200 and cursor['message_id']==d['ids'][49]
+status,_,t=request('/api/v1/channels',cookie=c['cookie']);assert status==200
+row=next(x for cat in t['categories'] for x in cat['channels'] if x['id']==channel);assert row['unread_count']==70 and row['first_unread_message_id']==d['ids'][50]
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=Q,text=True).strip()==SOURCE
+assert not subprocess.check_output(['git','-c','core.autocrlf=false','status','--porcelain'],cwd=Q,text=True).strip()
+names=['common.py','browser_common.mjs','context_cases.mjs','run.mjs']
+source_names=read(P/'operating-brief.json')['source_boundary']+['clients/web/src/conversation/use_visible_read.ts','clients/web/src/conversation/text_read_gate.ts','clients/web/src/channel/topology_client.ts','clients/web/package.json','clients/web/package-lock.json','clients/web/vite.config.ts','contracts/client-build.json']
+write(P/'final-preconditions.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_FINAL_OWNED_UNREAD70_AND_SOURCE_RUNNER_FINGERPRINTS','unread_fixture_only_SQL_reset':True,'owned_cursor_rows_replaced':1,'protected_PUT_readback_HTTP':200,'first_unread_index':50,'unread_count':70,'source_revision':SOURCE,'runner_SHA256':{n:hashlib.sha256((P/n).read_bytes()).hexdigest() for n in names},'source_SHA256':{n:hashlib.sha256((Q/n).read_bytes()).hexdigest() for n in source_names},'production_touched':False})
+print('PASS_FINAL_OWNED_UNREAD70_AND_SOURCE_RUNNER_FINGERPRINTS')

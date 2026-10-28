@@ -1,0 +1,36 @@
+"""Add the stronger same-document lifecycle witness without erasing weaker attempts."""
+import ast,json,re
+from pathlib import Path
+from common import P,read,write,credentials
+B=Path('C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD');OUT=B/'evidence/qa/open-issues-2026-10-27';E=OUT/'isolated-history-context-navigation'
+after=read(P/'spa-environment-after.json');assert after['status'].startswith('PASS')
+assert not (E/'spa-environment-after.json').exists()
+def public(p,d):p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+for n in ['spa-lifecycle-result','spa-environment-after','spa-log-audit','spa-visual-record','spa-attempt1-result']:public(E/(n+'.json'),read(P/(n+'.json')))
+helpers=sorted([*P.glob('*.py'),*P.glob('*.mjs')]);assert len(helpers)<=16
+for f in helpers:
+    if f.name not in ['spa_lifecycle.mjs','audit_spa.py','amend_spa.py']:continue
+    raw=f.read_text(encoding='utf-8');assert len(raw.splitlines())<=120
+    if f.suffix=='.py':ast.parse(raw)
+    (OUT/'runner-source'/('history-context-'+f.name+'.txt')).write_text(raw,encoding='utf-8',newline='\n')
+s=read(E/'summary.json');old_command=s['command'];s['command']+='; node .out/qa-history-context/spa_lifecycle.mjs; python -X utf8 .out/qa-history-context/audit_spa.py'
+s.update(additional_same_document_journey='PASS_8_LIFECYCLE_STAGES_THREE_ACTUAL_UI_LOGOUTS_NO_RELOAD_OR_GOTO_DURING_ACCEPTANCE',primary_sessions_revoked=10,additional_sessions_revoked=after['additional_own_sessions'],own_created_sessions_revoked=after['total_packet_own_sessions_revoked'],additional_seeded_message=1,total_own_messages_removed=1321,total_own_channels_removed=4,total_own_categories_removed=2,final_environment_result='spa-environment-after.json',primary_account_wrapper_limit='Primary whole-run login helper navigates before a new login, so it alone cannot prove in-memory account reset. Additional same-document journey excludes navigation during all8 lifecycle stages, and proves that facet separately.')
+public(E/'summary.json',s)
+d=read(E/'diagnostics.json');d['primary_lifecycle_wrapper_limit']=s['primary_account_wrapper_limit'];d['SPA_setup_attempt1']='New scope created; actual send was optimistically visible but immediate history read still empty. Controller closed. Its one row subsequently committed; preserved failed precondition, no delivery bug claimed. Guarded --resume reused exact own category/channel and committed row, with no duplicate send. Four additional sessions include this failed setup session.';d['SPA_final']='Eight lifecycle timeOrigin assertions pass in one document. Fixture topology navigation is completed before lifecycle epoch capture; no reload/goto during acceptance. Both actor draft directions, context absence and three actual UI logout confirmations pass. All four extra sessions revoked, extra scope removed.';public(E/'diagnostics.json',d)
+sem=read(E/'semantic-result.json');sem['primary_account_wrapper_limit']=s['primary_account_wrapper_limit'];sem['stronger_same_document_result']='spa-lifecycle-result.json';sem['stronger_cleanup_result']='spa-environment-after.json';sem['same_document_lifecycle_stages']=8;sem['total_own_sessions_revoked']=14;public(E/'semantic-result.json',sem)
+cases=read(OUT/'cases.json');case=next(c for c in cases['cases'] if c['id']=='ISOLATED-built-history-context-navigation-lifecycle');case['command']=s['command'];case['limits']+='; Primary wrapper uses navigation before login; separate same-document SPA witness strengthens reset proof with8 lifecycle stages and0 acceptance navigations.';public(OUT/'cases.json',cases)
+matrix=read(OUT/'matrix.json')
+for i in matrix['issues']:
+    for row in i['criteria']:
+        if row['id'] in ['I240.C9','I241.C37']:row['reason']+=' Additional actual same-document SPA journey passes8 lifecycle assertions with no acceptance reload/goto; both account draft directions clear. Total14 own sessions revoked and1321 owned rows removed across primary/additional phases.'
+public(OUT/'matrix.json',matrix)
+with (E/'README.md').open('a',encoding='utf-8',newline='\n') as f:f.write('\nThe primary account wrapper above navigates before login, so by itself it cannot prove in-memory account reset. A separate **same-document** journey now proves that facet: after fixture preparation, all8 lifecycle stages retain the same performance.timeOrigin. Actual search context and unsent admin draft → UI logout → member login with no stale context/draft → unsent member draft → UI logout → admin login with both drafts/context empty → final UI logout, with no reload/goto during acceptance. See spa-lifecycle-result.json and exact spa_lifecycle.mjs helper. Fixture preparation may navigate before the lifecycle epoch begins.\n\nThe SPA setup attempt raced an optimistic message render against immediate API persistence; it is preserved as a failed precondition, not a product failure. Guarded --resume reused the existing committed row. Additional cleanup removes1 row/channel/category and revokes4 sessions (including the setup attempt), with live unauthenticated readback. Primary+additional total1321 rows,4channels,2categories and14 sessions; final DB counts [516,2081,50,9,3], preserving users/unrevoked rows/attachments/messages. Nine original services/source/config remain unchanged, all14 session markers checked in both private Docker log streams. For a fresh fixture use spa_lifecycle.mjs without --resume.\n')
+with (OUT/'README.md').open('a',encoding='utf-8',newline='\n') as f:f.write('\nThe additional same-document account journey passes8 lifecycle assertions without acceptance reload/goto, strengthening the primary wrapper. Across both phases:1321 own rows/4channels/2categories removed,14 own sessions revoked and final nine-service/source/privacy checks PASS. See the linked history context evidence; no full QA/physical/hosted gate is promoted.\n')
+for f in [P/'retain.py',OUT/'runner-source/history-context-retain.py.txt']:
+    raw=f.read_text(encoding='utf-8');assert "command='"+old_command+"'" in raw;f.write_text(raw.replace("command='"+old_command+"'","command='"+s['command']+"'"),encoding='utf-8',newline='\n')
+c=read(P/'private/spa-extra-config.private.json');ids={v for k,v in c.items() if k in ['category','channel','message','admin']};markers=[c['owner']]+c['sessions']+[v for k,v in credentials().items() if isinstance(v,str) and any(p in k for p in ['password','secret','ingest_auth'])];pattern=re.compile(r'\b[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}\b',re.I)
+for f in [*E.iterdir(),*(OUT/'runner-source').glob('history-context-*.txt')]:
+    if f.is_file():
+        raw=f.read_text(encoding='utf-8');assert not set(pattern.findall(raw))&ids,f.name;assert all(v not in raw for v in markers),f.name
+write(P/'spa-publication-check.json',{'status':'PASS_SAME_DOCUMENT_EVIDENCE14_SESSION_PRIVACY_AND_HELPER_HARD16','retained_helpers':len(helpers),'criterion_texts_changed':0,'primary_raw_attempts_preserved':True})
+print('PASS_SAME_DOCUMENT_EVIDENCE14_SESSION_PRIVACY_AND_HELPER_HARD16')

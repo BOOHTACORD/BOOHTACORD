@@ -1,0 +1,49 @@
+{
+  "workflow_class": "review_gate",
+  "task_size": "large",
+  "route": "web/conversation/context_position/return",
+  "packet": "history-functional-navigation",
+  "mode": "isolated integration verification only",
+  "task_dependencies": [
+    "T-040",
+    "T-041",
+    "T-010",
+    "T-020"
+  ],
+  "source_boundary": [
+    "clients/web/src/conversation/context_position/return.ts",
+    "clients/web/src/conversation/context_position/dom.ts",
+    "clients/web/src/conversation/context_position/memory.ts",
+    "clients/web/src/conversation/context_position/position.spec.ts",
+    "clients/web/src/conversation/TextConversation.vue",
+    "clients/web/src/conversation/TextMessageSearch.vue",
+    "clients/web/src/conversation/use_unread_boundary.ts",
+    "clients/web/src/conversation/text_read_cursor_client.ts",
+    "clients/web/src/search/SearchMessageContext.vue",
+    "clients/web/src/search/search_context_controller.ts",
+    "clients/web/src/search/search_context_controller.spec.ts",
+    "clients/web/src/search/context_timeline/read.ts"
+  ],
+  "ratchet": {
+    "helper_target_lines": 100,
+    "helper_hard_lines": 120,
+    "helper_hard_files": 16
+  },
+  "preservation": "No production, router, TLS trust, permission, media, product, contract or backlog changes. Own synthetic scopes in existing local stand only; revoke all own test sessions and remove only own fixture scopes.",
+  "checks": [
+    "fresh nine-service/source/DB attestation",
+    "nearest native context/position tests",
+    "actual built AppShell on canonical localhost:18088 with real API/PostgreSQL/WebSocket",
+    "reply/search/unread outside current window then focus/anchor return",
+    "channel/account context lifecycle",
+    "owned cleanup and unchanged stand",
+    "public source/privacy/criterion/manifests"
+  ],
+  "stop_condition": "Publish precise per-scenario evidence and defects after duplicate check. Keep I240.C9/I241.C37 FAIL for already confirmed edit loss; do not close physical, media, hosted or full issue gates.",
+  "unresolved": [
+    "Windows production Computer Use stopped on URL-confidence safety review; no alternate production UI engine",
+    "native isolated HTTPS acceptance blocked without trusted QA origin",
+    "human audibility unavailable",
+    "this headless desktop browser cannot prove physical display, Android or media acceptance"
+  ]
+}

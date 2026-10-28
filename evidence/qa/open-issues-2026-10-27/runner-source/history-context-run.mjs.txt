@@ -1,0 +1,31 @@
+import {chromium,expect,assert,cfg,cred,root,report,tasks,save,attach,login,logout,api,select,main,snapshot,runCase} from './browser_common.mjs'
+import {reply,search,unread,latest} from './context_cases.mjs'
+const browser=await chromium.launch({channel:'chrome',headless:true});report.browser=browser.version();const context=await browser.newContext({viewport:{width:1440,height:1000}}),page=await context.newPage();page.setDefaultTimeout(12000);attach(page)
+report.selection=process.env.QA_CONTEXT_CASES??'all'
+try{
+ await login(page,context,'admin');await save('browser-result.json',report)
+ for(const [name,fn] of (report.selection==='lifecycle'?[]:[['reply_outside_window',reply],['search_outside_window_and_bidirectional_context',search],['unread_outside_window',unread]])){
+  if(!await runCase(page,name,()=>fn(page)))break
+ }
+ if(!report.failure_case)await runCase(page,'channel_context_reset',async()=>{
+  await latest(page);await main(page).getByRole('button',{name:'Открыть контекст ответа',exact:true}).click();await expect(page.locator('[data-search-anchor]')).toBeFocused();const opened=await snapshot(page,'long',true)
+  await select(page,'control');await expect(page.locator('.search-message-context')).toHaveCount(0);await expect(main(page).locator('[data-message-id]')).toHaveCount(0);await expect(page.getByText('Сообщений пока нет.',{exact:true})).toBeVisible()
+  await select(page,'long');const contextReturned=await page.locator('.search-message-context').isVisible();const returned=await snapshot(page,'long',contextReturned)
+  report.cases.at(-1).observations={opened,other_channel_context_absent:true,contextReturned,returned};assert.equal(returned.anchor.index,opened.anchor.index);assert(Math.abs(returned.anchor.offset-opened.anchor.offset)<=1)
+  return {opened,other_channel_context_absent:true,contextReturned,returned,same_saved_context_anchor_within_1px:true}
+ })
+ if(!report.failure_case)await runCase(page,'logout_account_context_and_draft_reset',async()=>{
+  await latest(page);await page.getByRole('textbox',{name:'Сообщение',exact:true}).fill('Own synthetic unsent account-switch marker');await main(page).getByRole('button',{name:'Открыть контекст ответа',exact:true}).click();await expect(page.locator('[data-search-anchor]')).toBeFocused()
+  const firstLogout=await logout(page);const member=await login(page,context,'member_a');assert.notEqual(member.account_id,cfg.account);await select(page,'long')
+  await expect(page.locator('.search-message-context')).toHaveCount(0);await expect(page.getByRole('textbox',{name:'Сообщение',exact:true})).toHaveValue('');const memberContextAbsent=true
+  const secondLogout=await logout(page);const admin=await login(page,context,'admin');assert.equal(admin.account_id,cfg.account);await select(page,'long');await expect(page.locator('.search-message-context')).toHaveCount(0);await expect(page.getByRole('textbox',{name:'Сообщение',exact:true})).toHaveValue('')
+  return {firstLogout,secondLogout,member_context_absent:memberContextAbsent,member_draft_empty:true,relogin_admin_context_absent:true,relogin_admin_draft_empty:true,scope:'Lifecycle reset in a TEXT channel both actors can read; not a DM ACL/privacy proof'}
+ })
+ report.status=report.failure_case?'FAIL_SCENARIO_RETAINED':'ALL_SELECTED_SCENARIOS_PASS'
+}catch(e){report.status='HARNESS_OR_PRECONDITION_BLOCKED';report.error_type=e.name;report.login_HTTP=e.status_code;report.retry_after=e.retry_after;await (await import('node:fs/promises')).writeFile(new URL('private/controller-error.private.txt',root),String(e.stack))}
+finally{
+ try{const s=await api(page,'/auth/session');if(s.body?.authenticated)report.final_logout=await logout(page)}catch(e){report.final_logout_error_type=e.name}
+ await Promise.allSettled(tasks);await context.close();await browser.close();report.finished_at_utc=new Date().toISOString();await save('browser-result.json',report)
+ process.stdout.write(JSON.stringify({status:report.status,cases:report.cases.map(c=>({name:c.name,status:c.status})),assets:report.assets.length,websocket:report.websocket})+'\n')
+}
+process.exitCode=report.status==='ALL_SELECTED_SCENARIOS_PASS'?0:1

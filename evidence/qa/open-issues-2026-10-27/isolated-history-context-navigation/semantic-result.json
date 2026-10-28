@@ -1,0 +1,50 @@
+{
+  "at_utc": "2026-10-28T04:01:40.566249+00:00",
+  "status": "PASS_FIVE_FINAL_BUILT_APP_CONTEXT_SCENARIOS_AND_TWO_REPEATS",
+  "final_scenarios": 5,
+  "additional_reply_search_repeats": 2,
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "browser": "155.0.8059.85",
+  "real_protected_API_PostgreSQL": true,
+  "full_built_AppShell": true,
+  "asset_fingerprints": [
+    {
+      "path": "/assets/index-oVuvOmtd.css",
+      "bytes": 304863,
+      "sha256": "13f835eea3005040a379a29e560791a81d6480d30872b7c14a51eb0fcbe9b096"
+    },
+    {
+      "path": "/assets/index-D5vIjeLQ.js",
+      "bytes": 1634581,
+      "sha256": "934de08b6fae1d2efd715830757750f6511c18e8edc12f5da7fff723666d08f8"
+    }
+  ],
+  "real_WebSocket_lifecycle": {
+    "opened": 3,
+    "received": 9,
+    "sent": 0,
+    "closed": 3
+  },
+  "expected_UI_and_API_scope": [
+    "reply_outside_window",
+    "search_outside_window_and_bidirectional_context",
+    "unread_outside_window",
+    "channel_context_reset",
+    "logout_account_context_and_draft_reset"
+  ],
+  "native_tests": 6,
+  "native_skips": 0,
+  "page_errors_final": 0,
+  "earlier_attempts": "Preserved attempt1/attempt2 diagnostic failures are harness preconditions, not product defects: automatic scroll into view before click; expected latest after saved-position restoration. Final whole run repeated with all five cases passing and fresh owned unread precondition. Initial self-authored unread setup also corrected; no failure discarded as a PASS.",
+  "limits": [
+    "Headless installed Chrome on Windows, not physical/native/production/voice/media acceptance",
+    "No DM ACL/privacy claim from channel account reset",
+    "Background tab, deleted anchors, edit/delete/tombstones, protected images and voice lease retention not covered in this packet",
+    "Known draft-edit loss remains FAIL in I240.C9/I241.C37; no issue closure or consolidation authorization"
+  ],
+  "primary_account_wrapper_limit": "Primary whole-run login helper navigates before a new login, so it alone cannot prove in-memory account reset. Additional same-document journey excludes navigation during all8 lifecycle stages, and proves that facet separately.",
+  "stronger_same_document_result": "spa-lifecycle-result.json",
+  "stronger_cleanup_result": "spa-environment-after.json",
+  "same_document_lifecycle_stages": 8,
+  "total_own_sessions_revoked": 14
+}

@@ -1183,6 +1183,21 @@
       "result": "isolated-history-profile-matrix/summary.json",
       "limits": "Actual old/current history source modules compiled by fixed installed Vite/core runtime; same current owned Go API/PostgreSQL17.6 and datasets. Not original shipped old build, cold deployed-app launch, physical/native, media or Origin-policy acceptance; Current and historical full source/UI variants contain unrelated differences; no pure141 causal attribution; Per-profile heap probes force GC outside measured mount/scroll windows; retained JS heap is not total browser/OS memory or leak proof; Scroll timing is normal browser-task callback to two animation frames, not INP or physical display latency; One local context at a time; no CPU affinity/thermal/OS-work isolation or performance SLO claim; Known edit-draft loss141 remains FAIL; no full QA closure",
       "defects": []
+    },
+    {
+      "id": "ISOLATED-built-history-context-navigation-lifecycle",
+      "status": "PASS_SCOPED",
+      "protects": "Actual built-client reply/search/unread navigation outside loaded window, same-row offset and keyboard-focus return, context paging, channel restore and UI logout/account draft/context reset",
+      "command": "python -X utf8 .out/qa-history-context/preflight.py; python -X utf8 .out/qa-history-context/prepare.py; python -X utf8 .out/qa-history-context/final_preconditions.py; node .out/qa-history-context/run.mjs; node .out/qa-history-context/capture.mjs; python -X utf8 .out/qa-history-context/verify.py; python -X utf8 .out/qa-history-context/cleanup.py; python -X utf8 .out/qa-history-context/audit_bind.py; node .out/qa-history-context/spa_lifecycle.mjs; python -X utf8 .out/qa-history-context/audit_spa.py",
+      "platform": "Windows11 / installed headless Chrome155.0.8059.85 / actual built Vue AppShell / own unchanged Go API and PostgreSQL17.6 on canonical localhost:18088",
+      "mandatory_when": "Before accepting the navigation/lifecycle facet of141/I240.C9/I241.C37, independently of remaining edit/image/native/media gates",
+      "issues": [
+        240,
+        241
+      ],
+      "result": "isolated-history-context-navigation/summary.json",
+      "limits": "Headless installed Chrome on Windows, not physical/native/production/voice/media acceptance; No DM ACL/privacy claim from channel account reset; Background tab, deleted anchors, edit/delete/tombstones, protected images and voice lease retention not covered in this packet; Known draft-edit loss remains FAIL in I240.C9/I241.C37; no issue closure or consolidation authorization; Primary wrapper uses navigation before login; separate same-document SPA witness strengthens reset proof with8 lifecycle stages and0 acceptance navigations.",
+      "defects": []
     }
   ]
 }

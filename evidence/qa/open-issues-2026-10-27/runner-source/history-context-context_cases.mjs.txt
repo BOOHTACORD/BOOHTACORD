@@ -1,0 +1,38 @@
+import {assert,expect,cfg,report,api,select,main,snapshot} from './browser_common.mjs'
+async function activatePreservingScroll(page,name){
+ const button=page.getByRole('button',{name,exact:true});await button.evaluate(el=>el.focus({preventScroll:true}));await page.keyboard.press('Enter')
+}
+export async function latest(page){
+ await select(page,'long');const remain=page.getByRole('button',{name:'Остаться у последних',exact:true});if(await remain.isVisible())await remain.click()
+ const back=page.getByRole('button',{name:'Вернуться к исходной позиции',exact:true});if(await back.isVisible())await back.click()
+ await expect(main(page)).toBeVisible();await main(page).evaluate(v=>{v.scrollTop=v.scrollHeight});await page.waitForTimeout(250);await expect(main(page).locator('[data-message-id="'+cfg.channels.long.ids[1199]+'"]')).toBeVisible()
+}
+export async function reply(page){
+ await latest(page);const d=cfg.channels.long,history=await api(page,'/channels/'+d.channel+'/messages');assert.equal(history.status,200);assert.equal(history.body.messages.length,50);assert(!history.body.messages.some(m=>m.id===d.ids[300]))
+ const trigger=main(page).getByRole('button',{name:'Открыть контекст ответа',exact:true});await expect(trigger).toHaveCount(1);await trigger.focus();const before=await snapshot(page,'long');assert(!before.indices.includes(300));await trigger.click()
+ await expect(page.locator('[data-search-anchor]')).toBeFocused();const opened=await snapshot(page,'long',true);assert.equal(opened.focus.row_index,300);assert(opened.visible_indices.includes(300));assert.equal(await main(page).isVisible(),false)
+ await page.getByRole('button',{name:'Вернуться к исходной позиции',exact:true}).click();await expect(trigger).toBeFocused();const after=await snapshot(page,'long');assert.equal(after.anchor.index,before.anchor.index);assert(Math.abs(after.anchor.offset-before.anchor.offset)<=1)
+ return {protected_latest_HTTP:200,initial_server_page:50,target_outside_latest_page:true,before,opened,after,same_anchor_offset_within_1px:true,original_reply_button_focus_restored:true}
+}
+export async function search(page){
+ await latest(page);await page.getByRole('button',{name:'Найти сообщение',exact:true}).click();await page.getByRole('searchbox',{name:'Запрос',exact:true}).fill('qa_context_search_'+cfg.owner_token)
+ await page.getByRole('button',{name:'Найти',exact:true}).click();const trigger=page.getByRole('button',{name:'Открыть сообщение',exact:true});await expect(trigger).toHaveCount(1);await trigger.focus();const before=await snapshot(page,'long');await trigger.click()
+ await expect(page.locator('[data-search-anchor]')).toBeFocused();const opened=await snapshot(page,'long',true);assert.equal(opened.focus.row_index,300);assert(opened.visible_indices.includes(300))
+ const contextList=page.locator('.search-context-list');const a=await snapshot(page,'long',true);report.cases.at(-1).observations={before,opened}
+ await activatePreservingScroll(page,'Показать предыдущие сообщения');await expect(contextList.locator('[data-message-id]')).toHaveCount(70);const older=await snapshot(page,'long',true);report.cases.at(-1).observations.older=older;assert.equal(older.anchor.index,a.anchor.index);assert(Math.abs(older.anchor.offset-a.anchor.offset)<=1)
+ await activatePreservingScroll(page,'Показать следующие сообщения');await expect(contextList.locator('[data-message-id]')).toHaveCount(90);const newer=await snapshot(page,'long',true);report.cases.at(-1).observations.newer=newer;assert.equal(newer.anchor.index,older.anchor.index);assert(Math.abs(newer.anchor.offset-older.anchor.offset)<=1)
+ await page.getByRole('button',{name:'Вернуться к исходной позиции',exact:true}).click();await expect(trigger).toBeFocused();const after=await snapshot(page,'long');assert.equal(after.anchor.index,before.anchor.index);assert(Math.abs(after.anchor.offset-before.anchor.offset)<=1)
+ await page.getByRole('button',{name:'Закрыть поиск в канале',exact:true}).click();await expect(page.getByRole('button',{name:'Найти сообщение',exact:true})).toBeFocused()
+ return {before,opened,older,newer,after,same_anchor_offset_within_1px:true,search_result_focus_and_header_trigger_restored:true,context_rows_after_older_newer:[70,90]}
+}
+export async function unread(page){
+ const d=cfg.channels.unread;const topology=await api(page,'/channels');let row=topology.body.categories.flatMap(c=>c.channels).find(c=>c.id===d.channel);assert.equal(row.unread_count,70);assert.equal(row.first_unread_message_id,d.ids[50])
+ await select(page,'unread');await expect(page.getByRole('button',{name:'К первому непрочитанному',exact:true})).toBeVisible();const initial=await snapshot(page,'unread');assert(!initial.indices.includes(50))
+ row=(await api(page,'/channels')).body.categories.flatMap(c=>c.channels).find(c=>c.id===d.channel);assert.equal(row.unread_count,70)
+ await page.getByRole('button',{name:'К первому непрочитанному',exact:true}).click();await expect(page.locator('[data-search-anchor]')).toBeFocused();const opened=await snapshot(page,'unread',true);assert.equal(opened.focus.row_index,50);assert(opened.visible_indices.includes(50))
+ await expect(page.getByRole('separator',{name:'Новые сообщения',exact:true})).toBeVisible();await page.waitForTimeout(600)
+ row=(await api(page,'/channels')).body.categories.flatMap(c=>c.channels).find(c=>c.id===d.channel);assert(row.unread_count>0);const readAfterContext={unread_count:row.unread_count,first_unread_index:d.ids.indexOf(row.first_unread_message_id)};assert(readAfterContext.first_unread_index<=Math.max(...opened.visible_indices)+1)
+ await activatePreservingScroll(page,'Показать следующие сообщения');await expect(page.locator('.search-context-list [data-message-id]')).toHaveCount(40);const newer=await snapshot(page,'unread',true);report.cases.at(-1).observations={initial,opened,newer,readAfterContext};assert.equal(newer.anchor.index,opened.anchor.index);assert(Math.abs(newer.anchor.offset-opened.anchor.offset)<=1)
+ await page.getByRole('button',{name:'К последним сообщениям',exact:true}).click();await expect(page.locator('.search-message-context')).toHaveCount(0);await expect(main(page).locator('[data-message-id="'+d.ids[119]+'"]')).toBeVisible();await expect.poll(async()=>{const t=await api(page,'/channels');return t.body.categories.flatMap(c=>c.channels).find(c=>c.id===d.channel).unread_count}).toBe(0)
+ return {initial,opened,newer,readAfterContext,initial_latest_did_not_mark_unseen_tail:true,context_read_not_past_visible_rows:true,explicit_latest_clears_remaining_unread:true}
+}

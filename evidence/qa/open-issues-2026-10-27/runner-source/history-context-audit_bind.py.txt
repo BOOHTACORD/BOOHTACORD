@@ -1,0 +1,31 @@
+"""Bind tested source/served bundle, device availability and private log audit."""
+import hashlib,json,platform,re,struct,subprocess
+from datetime import datetime,timezone
+from pathlib import Path
+from common import P,Q,SOURCE,read,write,credentials
+from profile_common import CONTEXT
+B=Path('C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD');sha=lambda b:hashlib.sha256(b).hexdigest()
+assert read(P/'environment-after.json')['status'].startswith('PASS')
+pre=read(P/'final-preconditions.json');cfg=read(P/'private/config.private.json');before=read(P/'environment-before.json')
+for n,d in pre['runner_SHA256'].items():assert sha((P/n).read_bytes())==d
+master=subprocess.check_output(['git','ls-remote','origin','refs/heads/master'],cwd=B,text=True).split()[0];files={}
+for n,d in pre['source_SHA256'].items():
+    raw=(Q/n).read_bytes();assert sha(raw)==d;reference=subprocess.check_output(['git','show',master+':'+n],cwd=B);assert raw.replace(b'\r\n',b'\n')==reference,n
+    files[n]={'working_SHA256':d,'LF_SHA256':sha(reference),'current_master_match':True}
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=Q,text=True).strip()==SOURCE and not subprocess.check_output(['git','-c','core.autocrlf=false','status','--porcelain'],cwd=Q,text=True).strip()
+markers=[s.split('=',1)[1].encode() for s in cfg['sessions']]+[v.encode() for k,v in credentials().items() if isinstance(v,str) and (any(x in k for x in ['password','secret','ingest_auth']) or k=='livekit_key')]
+logs=[]
+for service in read(P/'environment-after.json')['services']:
+    n=service['service'];identifier=read(P/'private'/(n+'-inspect-before.private.json'))['Id'];r=subprocess.run(['docker','--context',CONTEXT,'logs','--since',before['at_utc'],identifier],capture_output=True);assert r.returncode==0
+    raw=r.stdout+b'\n'+r.stderr;(P/'private'/(n+'-logs-both.private.log')).write_bytes(raw);assert all(v not in raw for v in markers)
+    logs.append({'service':n,'stdout_bytes':len(r.stdout),'stderr_bytes':len(r.stderr),'joined_SHA256':sha(raw),'credential_or_own_session_markers_found':False,'raw_remains_private':True})
+write(P/'log-audit.json',{'status':'PASS_BOTH_DOCKER_LOG_STREAMS_PRIVATE_CREDENTIAL_SCAN','services':logs})
+r=read(P/'browser-result.json');write(P/'source-binding.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'source_current':SOURCE,'master_checked':master,'matched_current_files':len(files),'files':files,'final_runner_preexecution_fingerprints_unchanged':True,'runner_SHA256':pre['runner_SHA256'],'actual_served_built_assets':r['assets'],'images':[x for x in before['services'] if x['service'] in ['api','web','postgres']],'OS':{'system':platform.system(),'release':platform.release(),'version':platform.version(),'architecture':platform.machine()},'browser':r['browser'],'Node':subprocess.check_output(['node','--version'],text=True).strip(),'build_definition':read(Q/'contracts/client-build.json')['builds']['web'],'binding_limit':'OCI image revision declarations plus exact runtime asset hashes and tested native source fingerprints. No claim of independently reproducing the bundle binary from source in this packet. No Vite, response/transport mocks, Host/Origin translation, security flags or permission grants in this packet.'})
+png=P/'private/actual-built-reply-context.private.png';raw=png.read_bytes();width,height=struct.unpack('>II',raw[16:24]);write(P/'visual-record.json',{'file':png.name,'bytes':len(raw),'SHA256':sha(raw),'source_resolution':[width,height],'viewed_at_source_resolution':True,'observations':'Actual built conversation pane: target synthetic row300 visible with focus outline; reply-context heading, return and newer-page controls and empty composer visible; no clipping observed in this capture. This is one desktop element capture, not a full visual/accessibility/mobile acceptance.','exported':False,'public_message_or_image_payloads_exported':False})
+adb='C:/Users/egkur/AppData/Local/Android/Sdk/platform-tools/adb.exe';device={'at_utc':datetime.now(timezone.utc).isoformat(),'readonly_only':True,'UI_session_server_permissions_changed':False,'physical_acceptance_proven':False}
+result=subprocess.run([adb,'get-state'],capture_output=True,text=True,timeout=20);device['authorized_device_visible']=result.returncode==0 and result.stdout.strip()=='device'
+if device['authorized_device_visible']:
+    device['model']=subprocess.check_output([adb,'shell','getprop','ro.product.model'],text=True,timeout=20).strip();device['Android']=subprocess.check_output([adb,'shell','getprop','ro.build.version.release'],text=True,timeout=20).strip()
+    package=subprocess.check_output([adb,'shell','dumpsys','package','ru.boohtacord.app'],text=True,timeout=20);device['version_name']=re.search(r'versionName=([^\s]+)',package)[1];device['version_code']=int(re.search(r'versionCode=(\d+)',package)[1])
+write(P/'device-availability.json',device)
+print(json.dumps({'source_binding':'PASS','current_master':master,'matched_files':len(files),'actual_built_assets':len(r['assets']),'both_stream_log_scan':'PASS','authorized_Android_visible':device['authorized_device_visible'],'source_resolution':[width,height]}))

@@ -1,0 +1,51 @@
+{
+  "status": "PASS6_NATIVE_TESTS_ZERO_SKIP",
+  "command": "node node_modules/vitest/vitest.mjs run src/conversation/context_position/position.spec.ts src/conversation/use_unread_boundary.spec.ts src/search/search_context_controller.spec.ts --reporter=json --outputFile=../../.out/qa-history-context/native-tests.private.json",
+  "working_directory": "clients/web",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "tests": 6,
+  "failed": 0,
+  "skipped": 0,
+  "native_report_SHA256": "8f56103aa7d12bc57d70e41a91416253b3b047846b5f0a651a993a9e96d5b5d7",
+  "files": [
+    {
+      "file": "clients/web/src/conversation/use_unread_boundary.spec.ts",
+      "tests": [
+        {
+          "name": "first unread boundary keeps the initial anchor while counts refresh, then unlocks the latest view",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "file": "clients/web/src/search/search_context_controller.spec.ts",
+      "tests": [
+        {
+          "name": "addressed search context opens a bounded page only when its first row is the requested anchor",
+          "status": "passed"
+        },
+        {
+          "name": "addressed search context explains a removed or deleted anchor without showing the stale search excerpt",
+          "status": "passed"
+        },
+        {
+          "name": "addressed search context discards an old request after a different result opens",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "file": "clients/web/src/conversation/context_position/position.spec.ts",
+      "tests": [
+        {
+          "name": "preserves the first visible row offset, even after rows are prepended",
+          "status": "passed"
+        },
+        {
+          "name": "isolates account/conversation positions and clears them on session epoch change",
+          "status": "passed"
+        }
+      ]
+    }
+  ]
+}

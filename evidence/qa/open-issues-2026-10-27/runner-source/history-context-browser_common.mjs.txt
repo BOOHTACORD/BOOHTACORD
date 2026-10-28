@@ -1,0 +1,64 @@
+import {createRequire} from 'node:module'
+import {readFile,writeFile} from 'node:fs/promises'
+import {createHash} from 'node:crypto'
+import assert from 'node:assert/strict'
+export {assert}
+export const {chromium,expect}=createRequire('C:/Users/egkur/.codex/worktrees/test-sql-native-gates/BOOHTACORD/clients/web/package.json')('@playwright/test')
+export const root=new URL('./',import.meta.url),origin='http://localhost:18088'
+export const cfg=JSON.parse(await readFile(new URL('private/config.private.json',root),'utf8'))
+export const cred=JSON.parse(await readFile(new URL('../local-qa/credentials.private.json',root),'utf8'))
+assert.equal(cfg.origin,origin);assert.equal(cred.origin,origin)
+export const save=(name,value)=>writeFile(new URL(name,root),JSON.stringify(value,null,2)+'\n')
+export const report={at_utc:new Date().toISOString(),status:'RUNNING',origin,source_revision:cfg.source_revision,cases:[],network:[],assets:[],websocket:{opened:0,received:0,sent:0,closed:0},page_errors:[],production_touched:false,full_built_AppShell:true,transport_or_response_mocks:false,permission_grants:false,security_flags:false,physical_display_or_native_acceptance:false}
+export const tasks=[]
+const alias=id=>Object.entries(cfg.channels).find(([,d])=>d.channel===id)?.[0]
+export function attach(page){
+ page.on('websocket',ws=>{report.websocket.opened++;ws.on('framereceived',()=>report.websocket.received++);ws.on('framesent',()=>report.websocket.sent++);ws.on('close',()=>report.websocket.closed++)})
+ page.on('pageerror',e=>report.page_errors.push({name:e.name,resize_loop:/ResizeObserver loop/.test(e.message)}))
+ page.on('response',response=>tasks.push((async()=>{
+  const u=new URL(response.url());assert.equal(u.origin,origin)
+  if(/\.(js|css)$/.test(u.pathname)&&response.status()===200){const raw=await response.body();const entry={path:u.pathname,bytes:raw.length,sha256:createHash('sha256').update(raw).digest('hex')};if(!report.assets.some(a=>a.path===entry.path))report.assets.push(entry)}
+  const m=u.pathname.match(/^\/api\/v1\/channels\/([^/]+)\/(messages|read-cursor|messages\/search)$/);if(!m||!alias(m[1]))return
+  const d=cfg.channels[alias(m[1])],entry={scope:alias(m[1]),operation:m[2],method:response.request().method(),HTTP:response.status(),at_utc:new Date().toISOString()}
+  for(const key of ['at','before','after'])if(u.searchParams.has(key))entry[key+'_index']=d.ids.indexOf(u.searchParams.get(key))
+  if(m[2]==='read-cursor'){const b=response.request().postDataJSON();entry.requested_index=d.ids.indexOf(b.message_id)}
+  if(response.status()===200){const b=await response.json();if(Array.isArray(b.messages)){entry.row_count=b.messages.length;entry.indices=b.messages.map(v=>d.ids.indexOf(v.id))}if(m[2]==='read-cursor')entry.ack_index=d.ids.indexOf(b.message_id)}
+  report.network.push(entry)
+ })().catch(e=>{report.network_observer_errors=(report.network_observer_errors??[]).concat(e.name)})))
+}
+export const api=(page,path,method='GET',body)=>page.evaluate(async a=>{
+ const r=await fetch('/api/v1'+a.path,{method:a.method,credentials:'same-origin',headers:{'Content-Type':'application/json'},...(a.body===undefined?{}:{body:JSON.stringify(a.body)})})
+ return {status:r.status,body:r.status===204?null:await r.json()}
+},{path,method,body})
+export async function login(page,context,key){
+ await page.goto(origin);await page.getByLabel('Логин',{exact:true}).fill(cred[key+'_login']);await page.getByLabel('Пароль',{exact:true}).fill(cred[key+'_password'])
+ const pending=page.waitForResponse(r=>new URL(r.url()).pathname==='/api/v1/auth/login'&&r.request().method()==='POST')
+ await page.getByRole('button',{name:'Войти',exact:true}).click();const response=await pending
+ if(response.status()!==204){const e=new Error('QA_LOGIN_REFUSED');e.status_code=response.status();e.retry_after=response.headers()['retry-after'];throw e}
+ await expect(page.getByTestId('app-shell')).toBeVisible();const session=await api(page,'/auth/session');assert.equal(session.status,200);assert.equal(session.body.authenticated,true)
+ const cookies=await context.cookies(origin);assert.equal(cookies.length,1);const cookie=cookies.map(c=>c.name+'='+c.value).join('; ')
+ cfg.sessions.push(cookie);await save('private/config.private.json',cfg);return session.body
+}
+export async function logout(page){
+ await page.getByRole('button',{name:'Открыть настройки профиля',exact:true}).click();await page.getByRole('tab',{name:'Безопасность',exact:true}).click();await page.getByRole('button',{name:'Выйти из аккаунта',exact:true}).click()
+ const dialog=page.getByRole('dialog',{name:'Подтвердите выход из аккаунта',exact:true});await expect(dialog).toBeVisible();const pending=page.waitForResponse(r=>new URL(r.url()).pathname==='/api/v1/auth/logout'&&r.request().method()==='POST')
+ await dialog.getByRole('button',{name:'Выйти',exact:true}).click();const response=await pending;assert.equal(response.status(),204);await expect(page.getByLabel('Логин',{exact:true})).toBeVisible();await expect(page.getByTestId('app-shell')).toBeHidden()
+ const s=await api(page,'/auth/session');assert.equal(s.body.authenticated,false)
+ return {actual_profile_confirm_UI:true,logout_HTTP:204,session_HTTP:s.status,authenticated:s.body.authenticated,login_UI_visible:true,forced_reload:false}
+}
+export async function select(page,key){
+ const button=page.locator('.channel-button').filter({hasText:cfg.channels[key].name});await expect(button).toHaveCount(1);await button.click();await expect(page.locator('#conversation-title')).toHaveText(cfg.channels[key].name)
+ await expect(page.getByRole('textbox',{name:'Сообщение',exact:true})).toBeVisible();await page.waitForTimeout(350)
+}
+export const main=page=>page.locator('.text-conversation .message-history-wrap .message-list')
+export async function snapshot(page,key,context=false){
+ return page.locator(context?'.search-context-list':'.text-conversation .message-history-wrap .message-list').evaluate((v,ids)=>{
+  const b=v.getBoundingClientRect(),rows=[...v.querySelectorAll('[data-message-id]')],visible=rows.filter(r=>{const x=r.getBoundingClientRect();return x.bottom>b.top&&x.top<b.bottom}),f=document.activeElement
+  return {clientHeight:v.clientHeight,scrollTop:v.scrollTop,scrollHeight:v.scrollHeight,indices:rows.map(r=>ids.indexOf(r.dataset.messageId)),visible_indices:visible.map(r=>ids.indexOf(r.dataset.messageId)),anchor:visible[0]?{index:ids.indexOf(visible[0].dataset.messageId),offset:visible[0].getBoundingClientRect().top-b.top}:null,focus:{tag:f?.tagName,aria:f?.getAttribute('aria-label'),search_anchor:f?.hasAttribute('data-search-anchor'),row_index:ids.indexOf(f?.closest('[data-message-id]')?.dataset.messageId)}}
+ },cfg.channels[key].ids)
+}
+export async function runCase(page,name,fn){
+ const row={name,at_utc:new Date().toISOString(),status:'RUNNING'};report.cases.push(row);await save('browser-result.json',report)
+ try{row.observations=await fn();row.status='PASS'}catch(e){row.status='FAIL';row.error_type=e.name;await writeFile(new URL('private/'+name+'-error.private.txt',root),String(e.stack));await page.screenshot({path:new URL('private/'+name+'.private.png',root).pathname.replace(/^\/([A-Z]:)/,'$1')});report.failure_case=name}
+ row.finished_at_utc=new Date().toISOString();await save('browser-result.json',report);process.stdout.write(JSON.stringify({case:name,status:row.status})+'\n');return row.status==='PASS'
+}

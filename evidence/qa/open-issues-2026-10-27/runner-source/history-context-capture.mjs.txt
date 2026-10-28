@@ -1,0 +1,17 @@
+import {chromium,expect,assert,cfg,root,report,tasks,save,attach,login,logout,main,snapshot,runCase} from './browser_common.mjs'
+import {reply,search,latest} from './context_cases.mjs'
+import {fileURLToPath} from 'node:url'
+const browser=await chromium.launch({channel:'chrome',headless:true}),context=await browser.newContext({viewport:{width:1440,height:1000}}),page=await context.newPage();page.setDefaultTimeout(12000);attach(page);report.browser=browser.version();report.selection='capture_reply_search_repeat'
+try{
+ await login(page,context,'admin')
+ for(const [name,fn] of [['reply_repeat',reply],['search_repeat',search]])if(!await runCase(page,name,()=>fn(page)))break
+ if(!report.failure_case){
+  await latest(page);await main(page).getByRole('button',{name:'Открыть контекст ответа',exact:true}).click();await expect(page.locator('[data-search-anchor]')).toBeFocused()
+  report.capture_snapshot=await snapshot(page,'long',true);assert.equal(report.capture_snapshot.focus.row_index,300)
+  await page.locator('.text-conversation').screenshot({path:fileURLToPath(new URL('private/actual-built-reply-context.private.png',root))})
+  report.actual_built_context_screenshot_private=true;report.final_logout=await logout(page)
+ }
+ report.status=report.failure_case?'FAIL_SCENARIO_RETAINED':'PASS_REPLY_SEARCH_REPEAT_AND_BUILT_UI_CAPTURE'
+}catch(e){report.status='BLOCKED';report.error_type=e.name;await (await import('node:fs/promises')).writeFile(new URL('private/capture-error.private.txt',root),String(e.stack))}
+finally{await Promise.allSettled(tasks);await context.close();await browser.close();report.finished_at_utc=new Date().toISOString();await save('capture-result.json',report);process.stdout.write(JSON.stringify({status:report.status,cases:report.cases.map(c=>({name:c.name,status:c.status}))})+'\n')}
+process.exitCode=report.status==='PASS_REPLY_SEARCH_REPEAT_AND_BUILT_UI_CAPTURE'?0:1

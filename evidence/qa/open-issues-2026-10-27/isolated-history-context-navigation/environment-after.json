@@ -1,0 +1,114 @@
+{
+  "at_utc": "2026-10-28T04:01:46.732671+00:00",
+  "status": "PASS_1320_ROWS_THREE_SCOPES_ALL_OWN_SESSIONS_REMOVED_NINE_SERVICES_UNCHANGED",
+  "production_touched": false,
+  "dataset_preservation": [
+    {
+      "alias": "long",
+      "count": 1200,
+      "seed_CSV_SHA256": "3c75a7ec95a69b22faa8443e33a1cded2e958730b96608365c7117558d88f2a3",
+      "server_data_matches_seed": true
+    },
+    {
+      "alias": "control",
+      "count": 0,
+      "seed_CSV_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "server_data_matches_seed": true
+    },
+    {
+      "alias": "unread",
+      "count": 120,
+      "seed_CSV_SHA256": "f73db85d24cb47aaa04149b2fa8f04e47f6d6a54d88a5c628ea80828bee1c3f5",
+      "server_data_matches_seed": true
+    }
+  ],
+  "actual_API_topology_own_scopes_absent": true,
+  "database_counts_before": [
+    516,
+    2067,
+    50,
+    9,
+    3
+  ],
+  "database_counts_after": [
+    516,
+    2077,
+    50,
+    9,
+    3
+  ],
+  "database_count_order": [
+    "users",
+    "all_sessions",
+    "unrevoked_rows_not_validity",
+    "attachments",
+    "messages"
+  ],
+  "PostgreSQL_version": "17.6",
+  "own_fixture_messages_removed": 1320,
+  "own_channels_removed": 3,
+  "own_category_removed": 1,
+  "own_revoked_session_audit_rows_retained": 10,
+  "own_sessions_already_revoked_by_runner": 9,
+  "own_sessions_revoked_at_cleanup": 1,
+  "all_own_sessions_live_unauthenticated_readback": true,
+  "services": [
+    {
+      "service": "api",
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "web",
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "proxy",
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "postgres",
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "livekit",
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "collector",
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "tempo",
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "prometheus",
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "grafana",
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "restart_count": 0,
+      "published_ports_loopback": true
+    }
+  ],
+  "API_health_http": 200,
+  "source_worktree_clean": true,
+  "finished_at_utc": "2026-10-28T04:02:37.592427+00:00"
+}

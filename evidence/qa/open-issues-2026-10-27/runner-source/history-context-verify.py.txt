@@ -1,0 +1,36 @@
+"""Validate scope/semantics of the actual built-client observations before cleanup."""
+import hashlib,json,subprocess
+from datetime import datetime,timezone
+from common import P,Q,SOURCE,read,write
+sha=lambda b:hashlib.sha256(b).hexdigest()
+r=read(P/'browser-result.json');pre=read(P/'final-preconditions.json');native=read(P/'native-tests.private.json')
+assert r['status']=='ALL_SELECTED_SCENARIOS_PASS' and r['selection']=='all' and len(r['cases'])==5
+assert all(c['status']=='PASS' for c in r['cases']) and not r.get('network_observer_errors') and not r['page_errors']
+assert r['full_built_AppShell'] and not r['transport_or_response_mocks'] and not r['permission_grants'] and not r['security_flags']
+assert r['source_revision']==SOURCE and len(r['assets'])==2 and all(x['bytes']>100_000 for x in r['assets'])
+assert r['websocket']['opened']==r['websocket']['closed']==3 and r['websocket']['received']==9
+for n,d in pre['runner_SHA256'].items():assert sha((P/n).read_bytes())==d,n
+for n,d in pre['source_SHA256'].items():assert sha((Q/n).read_bytes())==d,n
+assert native['success'] and native['numTotalTests']==native['numPassedTests']==6 and native['numFailedTests']==native['numPendingTests']==0
+assert len(native['testResults'])==3
+for f in native['testResults']:assert all(a['status']=='passed' for a in f['assertionResults'])
+network=r['network'];assert any(x.get('at_index')==300 and x['HTTP']==200 and x['row_count']==20 and x['indices'][0]==300 for x in network)
+assert any(x.get('after_index')==300 and x['HTTP']==200 and x['row_count']==20 for x in network)
+assert any(x.get('before_index')==281 and x['HTTP']==200 and x['row_count']==50 for x in network)
+assert any(x.get('at_index')==50 and x['scope']=='unread' and x['indices'][0]==50 for x in network)
+assert any(x['operation']=='read-cursor' and x['scope']=='unread' and x['ack_index']==119 for x in network)
+cases={x['name']:x['observations'] for x in r['cases']}
+for n in ['reply_outside_window','search_outside_window_and_bidirectional_context']:
+    o=cases[n];assert o['opened']['focus']['row_index']==300 and 300 not in o['before']['indices']
+    assert o['after']['anchor']['index']==o['before']['anchor']['index'] and abs(o['after']['anchor']['offset']-o['before']['anchor']['offset'])<=1
+o=cases['search_outside_window_and_bidirectional_context'];assert o['context_rows_after_older_newer']==[70,90]
+for stage in ['older','newer']:assert o[stage]['anchor']==o['opened']['anchor']
+u=cases['unread_outside_window'];assert u['readAfterContext']['unread_count']>0 and u['context_read_not_past_visible_rows'] and u['explicit_latest_clears_remaining_unread']
+o=cases['channel_context_reset'];assert o['other_channel_context_absent'] and o['same_saved_context_anchor_within_1px']
+o=cases['logout_account_context_and_draft_reset'];assert o['member_context_absent'] and o['member_draft_empty'] and o['relogin_admin_context_absent'] and o['relogin_admin_draft_empty']
+for k in ['firstLogout','secondLogout']:assert o[k]['actual_profile_confirm_UI'] and o[k]['logout_HTTP']==204 and not o[k]['forced_reload']
+repeat=read(P/'capture-result.json');assert repeat['status']=='PASS_REPLY_SEARCH_REPEAT_AND_BUILT_UI_CAPTURE' and all(c['status']=='PASS' for c in repeat['cases'])
+assert r['assets']==repeat['assets']
+write(P/'native-check.json',{'status':'PASS6_NATIVE_TESTS_ZERO_SKIP','command':'node node_modules/vitest/vitest.mjs run src/conversation/context_position/position.spec.ts src/conversation/use_unread_boundary.spec.ts src/search/search_context_controller.spec.ts --reporter=json --outputFile=../../.out/qa-history-context/native-tests.private.json','working_directory':'clients/web','source_revision':SOURCE,'tests':6,'failed':0,'skipped':0,'native_report_SHA256':sha((P/'native-tests.private.json').read_bytes()),'files':[{'file':str(__import__('pathlib').Path(f['name']).relative_to(Q)).replace('\\','/'),'tests':[{'name':a['fullName'],'status':a['status']} for a in f['assertionResults']]} for f in native['testResults']]})
+write(P/'semantic-result.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_FIVE_FINAL_BUILT_APP_CONTEXT_SCENARIOS_AND_TWO_REPEATS','final_scenarios':5,'additional_reply_search_repeats':2,'source_revision':SOURCE,'browser':r['browser'],'real_protected_API_PostgreSQL':True,'full_built_AppShell':True,'asset_fingerprints':r['assets'],'real_WebSocket_lifecycle':r['websocket'],'expected_UI_and_API_scope':list(cases),'native_tests':6,'native_skips':0,'page_errors_final':0,'earlier_attempts':'Preserved attempt1/attempt2 diagnostic failures are harness preconditions, not product defects: automatic scroll into view before click; expected latest after saved-position restoration. Final whole run repeated with all five cases passing and fresh owned unread precondition. Initial self-authored unread setup also corrected; no failure discarded as a PASS.','limits':['Headless installed Chrome on Windows, not physical/native/production/voice/media acceptance','No DM ACL/privacy claim from channel account reset','Background tab, deleted anchors, edit/delete/tombstones, protected images and voice lease retention not covered in this packet','Known draft-edit loss remains FAIL in I240.C9/I241.C37; no issue closure or consolidation authorization']})
+print('PASS_FIVE_FINAL_BUILT_APP_CONTEXT_SCENARIOS_AND_TWO_REPEATS')

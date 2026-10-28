@@ -317,3 +317,10 @@ The requested [production URL readiness](production-origin-readiness/result.json
 [Measured20-dataset before/current comparison](isolated-history-profile-matrix/README.md):120 calibrated browser profiles,3 repetitions/source,60 focus and30 same-row anchor checks; current settled cache<=500, historical DOM guard rejects45 actual old-source counterexamples. Exact I241.C36/C38/C39 PASS in the declared source/owned-API scope. I240.C9/I241.C37 and canonical141 remain FAIL on lost uncommitted edits. No physical/native/hosted/media gate or43 consolidation decision is closed.
 
 76 scoped cases;480 original criterion texts preserved. Counts: BLOCKED160, PARTIAL52, NOT_RUN241, FAIL19, PASS8. QA240/241 remain open/FAIL.
+
+
+## Built Web history context navigation — 2026-10-28
+
+[Five-scenario real-stack evidence](isolated-history-context-navigation/README.md) passes reply/search/unread outside the loaded window, same-row/focus return, bidirectional context, channel restore and actual UI logout/account reset.6 units/0 skips;2 reply/search repeats. All1320 fixture rows/3channels removed,10 own sessions revoked,9 original services unchanged. I240.C9/I241.C37/141 retain FAIL for known edit-draft loss.77 scoped cases;480 original texts and43 consolidation decisions preserved. No native/physical/production/media/hosted gate is promoted.
+
+The additional same-document account journey passes8 lifecycle assertions without acceptance reload/goto, strengthening the primary wrapper. Across both phases:1321 own rows/4channels/2categories removed,14 own sessions revoked and final nine-service/source/privacy checks PASS. See the linked history context evidence; no full QA/physical/hosted gate is promoted.

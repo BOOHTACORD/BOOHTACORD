@@ -1,0 +1,25 @@
+"""Guarded correction of own unread fixture: self-authored messages are not unread."""
+import csv,hashlib,io
+from datetime import datetime,timezone
+from common import P,SOURCE,read,write,credentials,request,sql,valid
+assert not (P/'fixture-ready.json').exists()
+cfg=read(P/'private/config.private.json');c=credentials();assert len(cfg['owner_token'])==24
+assert sql("SELECT name FROM categories WHERE id='"+valid(cfg['category'])+"';").strip()=='qa_context_'+cfg['owner_token']
+d=cfg['channels']['unread'];assert d['count']==120
+actual=sql("SELECT id FROM messages WHERE channel_id='"+valid(d['channel'])+"' ORDER BY created_at,id;").splitlines();assert actual==d['ids']
+assert int(sql("SELECT count(*) FROM messages WHERE channel_id='"+d['channel']+"' AND author_id='"+valid(cfg['account'])+"';").strip())==120
+cfg['peer_account']=valid(sql("SELECT id FROM users WHERE login='"+c['member_a_login'].replace("'","''")+"';").strip());assert cfg['peer_account']!=cfg['account']
+raw=(P/'private/unread.private.csv').read_text();assert hashlib.sha256(raw.encode()).hexdigest()==d['seed_CSV_SHA256']
+(P/'private/unread-attempt1.private.csv').write_text(raw,encoding='utf-8',newline='\n')
+data=list(csv.reader(io.StringIO(raw)))
+for row in data:assert row[2]==cfg['account'];row[2]=cfg['peer_account']
+out=io.StringIO(newline='');csv.writer(out,lineterminator='\n').writerows(data);raw=out.getvalue()
+sql("UPDATE messages SET author_id='"+cfg['peer_account']+"' WHERE channel_id='"+d['channel']+"' AND author_id='"+cfg['account']+"';")
+(P/'private/unread.private.csv').write_text(raw,encoding='utf-8',newline='\n');d['seed_CSV_SHA256']=hashlib.sha256(raw.encode()).hexdigest();write(P/'private/config.private.json',cfg)
+status,_,cursor=request('/api/v1/channels/'+d['channel']+'/read-cursor','PUT',{'message_id':d['ids'][49]},cfg['cookie']);assert status==200 and cursor['message_id']==d['ids'][49]
+status,_,topology=request('/api/v1/channels',cookie=cfg['cookie']);assert status==200
+row=next(x for cat in topology['categories'] for x in cat['channels'] if x['id']==d['channel'])
+assert row['first_unread_message_id']==d['ids'][50] and row['unread_count']==70
+write(P/'private/unread-topology-ready.private.json',row)
+write(P/'fixture-ready.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_OWNED_THREE_CHANNELS_1320_ROWS_REAL_PROTECTED_API','source_revision':SOURCE,'datasets':[{'alias':a,'count':v['count'],'seed_CSV_SHA256':v['seed_CSV_SHA256']} for a,v in cfg['channels'].items()],'search_and_reply_target_index':300,'target_outside_latest_50':True,'unread_precondition':{'last_read_index':49,'first_unread_index':50,'unread_count':70,'rows_by_other_actor':True},'setup_attempt1':'Own authored messages correctly yielded no unread; test fixture assumption corrected with guarded author update, no product failure claimed','production_touched':False,'IDs_CSV_bodies_cookies_private':True})
+print('PASS_OWNED_THREE_CHANNELS_1320_ROWS_REAL_PROTECTED_API')

@@ -1,0 +1,43 @@
+"""Verify same-document proof, clean only the additional owned scope and sessions."""
+import hashlib,ipaddress,json,struct,subprocess
+from datetime import datetime,timezone
+from common import P,Q,SOURCE,read,write,sql,valid,request,docker,credentials
+from profile_common import CONTEXT
+assert not (P/'spa-environment-after.json').exists()
+c=read(P/'private/spa-extra-config.private.json');r=read(P/'spa-lifecycle-result.json');before=read(P/'environment-before.json');primary=read(P/'environment-after.json')
+assert r['status']=='PASS_SAME_DOCUMENT_UI_LOGOUT_ACCOUNT_CONTEXT_AND_DRAFT_RESET' and r['lifecycle_reload_or_goto_count']==0
+assert len([v for v in r['cases'] if v.get('phase')=='lifecycle' and v['same_document_time_origin']])==8
+for key in ['first_logout','second_logout','final_logout']:assert r[key]['actual_profile_confirm_UI'] and r[key]['logout_HTTP']==204 and not r[key]['forced_reload']
+old=read(P/'browser-result.json');assert {(a['path'],a['sha256']) for a in r['bundle_assets']}=={(a['path'],a['sha256']) for a in old['assets']}
+assert len(c['sessions']) in [3,4] and len(c['sessions'])==len(set(c['sessions']))
+category=valid(c['category']);channel=valid(c['channel']);message=valid(c['message']);assert len(c['owner'])==32 and all(v in '0123456789abcdef' for v in c['owner'])
+assert sql("SELECT name FROM categories WHERE id='"+category+"';").strip()=='qa_spa_'+c['owner']
+assert sql("SELECT id FROM channels WHERE category_id='"+category+"';").splitlines()==[channel]
+assert sql("SELECT id FROM messages WHERE channel_id='"+channel+"';").splitlines()==[message]
+assert int(sql("SELECT count(*) FROM attachments WHERE channel_id='"+channel+"';").strip())==0
+assert int(sql("SELECT count(*) FROM guild_settings WHERE welcome_channel_id='"+channel+"';").strip())==0
+sql("BEGIN; DELETE FROM channel_read_cursors WHERE channel_id='"+channel+"'; DELETE FROM messages WHERE channel_id='"+channel+"'; DELETE FROM channels WHERE id='"+channel+"' AND category_id='"+category+"'; DELETE FROM categories WHERE id='"+category+"' AND name='qa_spa_"+c['owner']+"'; COMMIT;")
+assert sql("SELECT count(*) FROM messages WHERE channel_id='"+channel+"'; SELECT count(*) FROM channels WHERE id='"+channel+"'; SELECT count(*) FROM categories WHERE id='"+category+"';").splitlines()==['0','0','0']
+revoked=0;already=0
+for cookie in c['sessions']:
+    status,_,s=request('/api/v1/auth/session',cookie=cookie);assert status==200
+    if s['authenticated']:status,_,_=request('/api/v1/auth/logout','POST',{},cookie);assert status==204;revoked+=1
+    else:already+=1
+    status,_,s=request('/api/v1/auth/session',cookie=cookie);assert status==200 and not s['authenticated']
+values=sql('SELECT (SELECT count(*) FROM users),(SELECT count(*) FROM sessions),(SELECT count(*) FROM sessions WHERE revoked_at IS NULL),(SELECT count(*) FROM attachments),(SELECT count(*) FROM messages);').strip();counts=list(map(int,values.split('|')));expected=list(primary['database_counts_after']);expected[1]+=len(c['sessions']);assert counts==expected
+result={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_ADDITIONAL_SPA_FIXTURE_REMOVED_ALL_PACKET_SESSIONS_REVOKED','same_document_lifecycle_checks':8,'actual_UI_logout_confirmations':3,'additional_own_messages_removed':1,'additional_own_channels_removed':1,'additional_own_category_removed':1,'additional_own_sessions':len(c['sessions']),'additional_sessions_revoked_by_UI':already,'additional_sessions_revoked_at_cleanup':revoked,'additional_sessions_live_unauthenticated_readback':True,'total_packet_own_sessions_revoked':primary['own_revoked_session_audit_rows_retained']+len(c['sessions']),'database_count_order':primary['database_count_order'],'database_counts_before':before['database_counts'],'database_counts_final':counts,'production_touched':False,'services':[]}
+markers=[v.split('=',1)[1].encode() for v in c['sessions']+read(P/'private/config.private.json')['sessions']]+[v.encode() for k,v in credentials().items() if isinstance(v,str) and any(x in k for x in ['password','secret','ingest_auth'])]
+logs=[]
+for name in ['api','web','proxy','postgres','livekit','collector','tempo','prometheus','grafana']:
+    old=read(P/'private'/(name+'-inspect-before.private.json'));v=json.loads(docker('inspect',old['Id']))[0]
+    assert v['State']['Running'] and v['RestartCount']==old['RestartCount']==0 and v['Image']==old['Image'] and v['Config']==old['Config'] and v['HostConfig']==old['HostConfig'] and v['State']['StartedAt']==old['State']['StartedAt']
+    for bindings in v['NetworkSettings']['Ports'].values():
+        for b in bindings or []:assert ipaddress.ip_address(b['HostIp']).is_loopback
+    result['services'].append({'service':name,'same_ID_image_Config_HostConfig_StartTime':True,'restart_count':0,'published_ports_loopback':True})
+    log=subprocess.run(['docker','--context',CONTEXT,'logs','--since',before['at_utc'],old['Id']],capture_output=True);assert log.returncode==0;raw=log.stdout+b'\n'+log.stderr;assert all(marker not in raw for marker in markers);(P/'private'/(name+'-spa-logs-both.private.log')).write_bytes(raw)
+    logs.append({'service':name,'stdout_bytes':len(log.stdout),'stderr_bytes':len(log.stderr),'SHA256':hashlib.sha256(raw).hexdigest(),'credential_session_markers_absent':True,'raw_private':True})
+for name,digest in read(P/'final-preconditions.json')['source_SHA256'].items():assert hashlib.sha256((Q/name).read_bytes()).hexdigest()==digest
+assert not subprocess.check_output(['git','-c','core.autocrlf=false','status','--porcelain'],cwd=Q,text=True).strip()
+status,_,_=request('/api/v1/health');assert status==200;result['API_health_HTTP']=status;result['source_unchanged']=True;write(P/'spa-environment-after.json',result);write(P/'spa-log-audit.json',{'status':'PASS_BOTH_STREAMS_ALL14_SESSION_CREDENTIAL_SCAN','services':logs})
+png=P/'private/spa-admin-after.private.png';raw=png.read_bytes();width,height=struct.unpack('>II',raw[16:24]);write(P/'spa-visual-record.json',{'file':png.name,'bytes':len(raw),'SHA256':hashlib.sha256(raw).hexdigest(),'source_resolution':[width,height],'exported':False,'review_scope':'Additional actual built conversation capture after same-document account return; inspected privately at source resolution. No image/message payload export or full visual/physical acceptance.'})
+print(json.dumps({k:v for k,v in result.items() if k!='services'}))

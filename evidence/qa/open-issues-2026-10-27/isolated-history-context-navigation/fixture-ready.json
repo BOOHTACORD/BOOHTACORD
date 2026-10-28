@@ -1,0 +1,33 @@
+{
+  "at_utc": "2026-10-28T03:56:52.830397+00:00",
+  "status": "PASS_OWNED_THREE_CHANNELS_1320_ROWS_REAL_PROTECTED_API",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "datasets": [
+    {
+      "alias": "long",
+      "count": 1200,
+      "seed_CSV_SHA256": "3c75a7ec95a69b22faa8443e33a1cded2e958730b96608365c7117558d88f2a3"
+    },
+    {
+      "alias": "control",
+      "count": 0,
+      "seed_CSV_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "alias": "unread",
+      "count": 120,
+      "seed_CSV_SHA256": "f73db85d24cb47aaa04149b2fa8f04e47f6d6a54d88a5c628ea80828bee1c3f5"
+    }
+  ],
+  "search_and_reply_target_index": 300,
+  "target_outside_latest_50": true,
+  "unread_precondition": {
+    "last_read_index": 49,
+    "first_unread_index": 50,
+    "unread_count": 70,
+    "rows_by_other_actor": true
+  },
+  "setup_attempt1": "Own authored messages correctly yielded no unread; test fixture assumption corrected with guarded author update, no product failure claimed",
+  "production_touched": false,
+  "IDs_CSV_bodies_cookies_private": true
+}
