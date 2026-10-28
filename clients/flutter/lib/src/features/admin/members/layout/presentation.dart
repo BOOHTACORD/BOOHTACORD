@@ -74,7 +74,9 @@ extension AdminMembersLayout on AdminMembersPanel {
     if (MediaQuery.textScalerOf(context).scale(14) > 21 ||
         MediaQuery.viewInsetsOf(context).bottom > 0) {
       return ListView(
-        key: key,
+        // This scroll view owns the editor as well as the results. Changing
+        // its key for each query disposes the focused input and its IME.
+        key: const PageStorageKey('admin-member-form'),
         padding: listPadding.copyWith(top: 0),
         children: [
           renderMembersHeading(context),

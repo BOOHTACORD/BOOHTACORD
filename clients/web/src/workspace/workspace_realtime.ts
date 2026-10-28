@@ -23,20 +23,10 @@ import { parseScreenPreviewHint } from '../voice/screen_preview/client'
 import { screenPreviewCardVisibility } from '../voice/screen_preview/visibility'
 import { createMemberProfileRefresh } from './member_profile_realtime'
 import { acceptNotificationHint } from '../notification/remote_push/hints'
+import { useContextHints } from '../search/context_timeline/hints'
+import type { WorkspaceRealtimeStores } from './protected_refresh/types'
+export type { WorkspaceRealtimeStores } from './protected_refresh/types'
 
-interface Refreshable { error: string | null; refresh(): Promise<void> }
-interface TextHistory extends Refreshable { channelId: string | null; applyDeletedHint?(channelId: string, messageId: string): void; refreshMessages?(ids: string[]): Promise<unknown> }
-interface DirectHistory {
-  directMessageId: string | null
-  error: string | null
-  refreshNavigation(): Promise<void>; refreshHistory(): Promise<void>
-  applyDeletedHint?(directMessageId: string, messageId: string): void; refreshMessages?(ids: string[]): Promise<unknown>
-}
-export interface WorkspaceRealtimeStores {
-  topology: Refreshable
-  messages: TextHistory
-  directMessages: DirectHistory
-}
 async function checked(refresh: () => Promise<void>, getError: () => string | null): Promise<void> {
   await refresh()
   if (getError()) throw new Error(getError()!)
@@ -68,6 +58,9 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
   }, undefined, undefined, { visibility: screenPreviewCardVisibility })
   let active = false
   let lifecycle = 0
+  const contextHints = useContextHints()
+  const deliver = (event: RealtimeEvent, notify = true) =>
+    active ? Promise.all([onEvent(event, notify), contextHints.apply(event)]).then(() => undefined) : Promise.resolve()
   function onEvent(event: RealtimeEvent, notify = true): void | Promise<void> {
     if (!active) return
     const eventLifecycle = lifecycle
@@ -77,7 +70,7 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
     if (event.kind === 'member.profile.updated') return refreshMemberProfile(event, stores.directMessages).then(() => undefined)
     if (event.kind === 'session.state_changed') { notifyOwnSessionsChanged(); return }
     if (event.kind === 'guild.profile.updated') return guildProfile.refresh(event.payload.revision as number)
-    if (event.kind === 'connection.resync_required') return refreshProtectedState(stores)
+    if (event.kind === 'connection.resync_required') return Promise.all([refreshProtectedState(stores), contextHints.recover()]).then(() => undefined)
     if (event.kind === 'direct_message.message_created' || event.kind === 'direct_message.message_updated' || event.kind === 'direct_message.message_deleted') {
       const directMessageId = event.payload.direct_message_id as string
       const previousUnread = notify ? notifications.capture(event) : null
@@ -111,13 +104,13 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
       gate = createProtectedRefreshGate(); stores = coalesceStores(original, gate)
       lifecycle += 1
       notifications.start(accountID)
-      realtime.connect(event => processRealtime([event],()=>onEvent(event)), undefined, undefined, {
-        onHintBatch: events => processRealtime(events,()=>deliverProtectedHintBatch(events, onEvent).then(() => refreshEditedHints(original, events))),
-        onRecovery: () => processRealtime([],()=>Promise.all([refreshProtectedState(stores), permissions.refresh(), guildProfile.refresh(), voice.refreshScreenWatchers()]).then(() => undefined)),
+      realtime.connect(event => processRealtime([event],()=>deliver(event)), undefined, undefined, {
+        onHintBatch: events => processRealtime(events,()=>deliverProtectedHintBatch(events, deliver).then(() => refreshEditedHints(original, events))),
+        onRecovery: () => processRealtime([],()=>Promise.all([refreshProtectedState(stores), permissions.refresh(), guildProfile.refresh(), voice.refreshScreenWatchers(), contextHints.recover()]).then(() => undefined)),
         checkSession: async () => (await loadCurrentSession())?.accountId === accountID,
         onSessionExpired,
       })
     },
-    stop(): void { active = false; lifecycle += 1; previews.clear(); gate.close(); realtime.disconnect(); notifications.stop() },
+    stop(): void { active = false; lifecycle += 1; contextHints.reset(); previews.clear(); gate.close(); realtime.disconnect(); notifications.stop() },
   }
 }

@@ -64,6 +64,7 @@ extension SearchMessageContextContextMessagesRenderer
                     : FormattedMessageBody(body: body, color: GcColors.text),
                 if (attachments.isNotEmpty && conversationId != null)
                   MessageAttachmentList(
+                    messageId: message.id,
                     state: widget.state,
                     parentPath: isDirect
                         ? '/direct-messages/${Uri.encodeComponent(conversationId)}'

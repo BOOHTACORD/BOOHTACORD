@@ -4999,7 +4999,7 @@ void main() {
 
       final scope = find.byKey(const ValueKey('workspace-search-scope'));
       expect(tester.getSize(scope).width, greaterThan(120));
-      expect(tester.getSize(scope).height, 32);
+      expect(tester.getSize(scope).height, greaterThanOrEqualTo(48));
       expect(
         find.byKey(const ValueKey('workspace-search-query-icon')),
         findsOneWidget,

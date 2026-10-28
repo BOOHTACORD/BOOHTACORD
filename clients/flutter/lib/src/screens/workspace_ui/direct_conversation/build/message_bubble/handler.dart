@@ -74,6 +74,7 @@ extension DirectConversationMessageBubbleRenderer
               message.sendStatus == null &&
               message.attachments.isNotEmpty)
             MessageAttachmentList(
+              messageId: message.id,
               state: widget.state,
               parentPath:
                   '/direct-messages/${Uri.encodeComponent(message.directMessageId)}',

@@ -1,0 +1,279 @@
+{
+  "at_utc": "2026-10-28T19:24:23.345758+00:00",
+  "source_commit": "9121f8302d4147aa2c9040bf5609325dc1268d4f",
+  "base_commit": "68b6e01b069618c7a79ac5d4cce905081347cfb2",
+  "issues": {
+    "584": "UNRESOLVED_RUNTIME_LOCALIZATION",
+    "585": "SOURCE_FIXED_DEVICE_PENDING",
+    "586": "SOURCE_FIXED_DEVICE_PENDING",
+    "587": "SOURCE_FIXED_REAL_STACK_PENDING",
+    "589": "SOURCE_FIXED_DEVICE_PENDING"
+  },
+  "checks": {
+    "web_unit": {
+      "status": "PASS",
+      "passed": 1699
+    },
+    "web_build": "PASS",
+    "flutter_unit": {
+      "status": "PASS_WITH_SKIPS",
+      "passed": 1656,
+      "skipped": 3
+    },
+    "flutter_changed_analysis": "PASS",
+    "search_browser": {
+      "passed": 24,
+      "failed_geometry_precondition": 4
+    },
+    "local_feature_runner": "BLOCKED",
+    "physical_candidate": "NOT_RUN",
+    "production_deployment": "NOT_RUN"
+  },
+  "source_files": {
+    "clients/flutter/lib/src/features/admin/members/layout/presentation.dart": {
+      "git_blob": "10ef81d81555f82756cc1e14dacb3561789b65b8",
+      "sha256_lf": "78bc88ea46d0fb1c2a77846f8f83aef0b0a3e4c19dcaf76ec39ba7a2eee0ec8d"
+    },
+    "clients/flutter/lib/src/features/attachments/revocation/view.dart": {
+      "git_blob": "3d9e8f191a691ab526b17da764f5752a7e69eeaf",
+      "sha256_lf": "852e44b9ce22fc2725131ae3fd58eeb14d50b031e2f7d83ce73ca901450ee8c7"
+    },
+    "clients/flutter/lib/src/screens/workspace_ui/direct_conversation/build/message_bubble/handler.dart": {
+      "git_blob": "5d669cffb7c4c2a49e720d3270c5fbe3f2087087",
+      "sha256_lf": "f9330991ffcbe3652209e8ae1503f1eba7078e2144ac7bd4006beb2e83791c93"
+    },
+    "clients/flutter/lib/src/screens/workspace_ui/header/conversation_actions.dart": {
+      "git_blob": "bf64b6c4b9ffe3741e4939d8f1bf6978870b1c1f",
+      "sha256_lf": "456f7ff9570f77e89e56b8b55208b5c93c7a87409b4061b78d09ace0610b53f1"
+    },
+    "clients/flutter/lib/src/screens/workspace_ui/message_row/build/handler.dart": {
+      "git_blob": "8e7edf82cb6936c77d1dc41f4e5239e7376cac48",
+      "sha256_lf": "e1abe4e814a8d39c7affdbbd3a709bcb41839a6f922cd12c22f0a650041174c2"
+    },
+    "clients/flutter/lib/src/screens/workspace_ui/search_message_context/build/context_messages/handler.dart": {
+      "git_blob": "6fdba43e5b40ea8d38a0e5d249222998d0feb633",
+      "sha256_lf": "62a14d51d233a732d7af916c352016bcd72f3b2206b3ac1bc13dd3739eabf360"
+    },
+    "clients/flutter/lib/src/screens/workspace_ui/workspace_search_panel/build/scope_field/handler.dart": {
+      "git_blob": "dc823d00ea0c0d4781f2bed3b61a63548ab5c497",
+      "sha256_lf": "1893d3b49bf069fc304bca2df546beedea64b58de45ace1bcf61849dba21a09e"
+    },
+    "clients/flutter/lib/src/widgets/message_attachment_list.dart": {
+      "git_blob": "18966c1aebae77d86926422378c7bd9e20d41669",
+      "sha256_lf": "1a19ae6cb82e20bbbfbd1868566e48677259b5c8ce61fa2c34d7b833553f446a"
+    },
+    "clients/flutter/test/admin_accessibility/search_focus_test.dart": {
+      "git_blob": "152d6e17f6f6f847263800034417bd6f24c8c517",
+      "sha256_lf": "325a8337bd5dcffe6eacdeac0a1685cad5c46991ce1f2741c5b5269db9f011a7"
+    },
+    "clients/flutter/test/attachment_revocation/fixture.dart": {
+      "git_blob": "97745ebb5a8e8e3e2f19ede9ffd3babf89855be8",
+      "sha256_lf": "bdc69594ccaa64573487b8e0968ffecb9b4676e9d871c87987fe750a7f1387a3"
+    },
+    "clients/flutter/test/attachment_revocation_test.dart": {
+      "git_blob": "1fb9e7efbf49fd1ffac8560a391ef4390a9b4169",
+      "sha256_lf": "408b5d65ac236b10673e3ec5c9f7b44620b1d62f74e90028ce233907c086acfd"
+    },
+    "clients/flutter/test/search_scope_touch_test.dart": {
+      "git_blob": "add66954e075ce8e24d64d3303eeb5e75fbfab8b",
+      "sha256_lf": "4e1c97b54022311bb410fee8c24608c2c1713fbb30682e0cb02c05abfb259a3b"
+    },
+    "clients/flutter/test/workspace_screen_test.dart": {
+      "git_blob": "31be29916f568184d68d323566b786437454c689",
+      "sha256_lf": "e6413122fe5336aea3542b4b19133a3897044f7a83b0eca652399c882ed188d0"
+    },
+    "clients/web/src/search/SearchMessageContext.vue": {
+      "git_blob": "bc45d78cad3c9276654ba3691000d6a7cf0c8784",
+      "sha256_lf": "33425c44e657b596f5a79e2d667a9784b65b2a858e47c539ca84fa1b24b85729"
+    },
+    "clients/web/src/search/context_timeline/hints.spec.ts": {
+      "git_blob": "b00a67960cea74947f6307c61a3236b80b6f7c20",
+      "sha256_lf": "de37379ef0f9d8db62cc71cfa1f4c5de016152b9018cb132c6de424fc46f3def"
+    },
+    "clients/web/src/search/context_timeline/hints.ts": {
+      "git_blob": "66246b2d21f65466e15cdddc9337e78ebe9e8352",
+      "sha256_lf": "01fbe03ab98fc361ac3c7e34152db69d90075bc9a875e0924a38fcefdb73d23f"
+    },
+    "clients/web/src/search/context_timeline/live_revision.spec.ts": {
+      "git_blob": "60ce0fc792397971df906a67704ba1234dc2aa11",
+      "sha256_lf": "009de8506dd7837094f983da4227bb87669e7bd032ff258a26ce384507bdad22"
+    },
+    "clients/web/src/search/search_context_controller.ts": {
+      "git_blob": "c185d6ef9c41b2689a08494315429000b98e588a",
+      "sha256_lf": "651ff2250bb89c5f770db9f3c2cd4f01dc1c57d606a2c5d2fa65cc9435daaa8e"
+    },
+    "clients/web/src/workspace/protected_refresh/types.ts": {
+      "git_blob": "26c0eeb9045811830b1acc23a8f63e0a87c9ca17",
+      "sha256_lf": "2843647748bd864ca1e027df64832b10817ee0f23818aca3a197ce7baef9fecd"
+    },
+    "clients/web/src/workspace/workspace_realtime.ts": {
+      "git_blob": "d47c1c09f606901709f49afceae3e66390b5a0e2",
+      "sha256_lf": "9aebf6048a877d9f2aa4c59cee8ab0cf869cd3e6c19f87dd9db9d46f2997aa73"
+    },
+    "clients/web/tests/search_sessions/live-context.browser.spec.ts": {
+      "git_blob": "edde00d9e0a37fe90be841bd01ebb5053b87f00c",
+      "sha256_lf": "b2abc463840d83f59eae68e25834636d775b0f3e63c03fc9201f0ce50e91eeee"
+    },
+    "clients/web/tests/search_sessions/live-context.html": {
+      "git_blob": "261d845d7f9a2df7e6b1ea4d3fd66bbac43336a6",
+      "sha256_lf": "6d3d9c66178a02068334bd4c1c0bb662ec1d5e9c3c72f8df27e731af52004bff"
+    },
+    "tools/qa/local_features/features.json": {
+      "git_blob": "3513af382e9b29b94cc99983d9853e26f471dc27",
+      "sha256_lf": "5b41ba579803ba85c9588c244131d6adb31a1aecc3a94db293e9afe81d523ce8"
+    }
+  },
+  "local_receipts": {
+    ".out/validation/flutter-final.log": "220f92bfe6cc082f6273ad8fa9a9d58d53e4b2707993cc896a5043e0c7faa1c3",
+    ".out/validation/web-final.log": "e3f9695998451a7811ffd29babcc02d15b4f593c3ec288756eb84251f7399755",
+    ".out/validation/web-build-final.log": "283563a9608eaecb01fc6e9e7825d3ae7e31bc92c8b249b0e39d5fa7648d3a42",
+    ".out/validation/zoom-blank-control.json": "153652063beacf7a5c35f6ac911f89e843c1cf0d8e379f3b0f150828df40593c",
+    ".out/local-features/20261028-222052/report.json": "a7a135be2960dca6730caf20a9010ed116a50f4333fc861b503ee42682baf17e"
+  },
+  "reviewed_images": [
+    {
+      "path": ".out/recent-bugs-browser-final/live-context.browser-CHANN-76c1e-xt-files-and-retains-anchor/deleted-CHANNEL.png",
+      "sha256": "b88cbc5d9573b6b623558b30ad20b6de2171b6b81479742051b72f2a13e55d7d",
+      "raster": [
+        393,
+        852
+      ],
+      "kind": "synthetic_component",
+      "visual_review": "REVIEWED_NO_BASELINE_APPROVAL"
+    },
+    {
+      "path": ".out/recent-bugs-browser-final/live-context.browser-DIREC-e6551-xt-files-and-retains-anchor/deleted-DIRECT_MESSAGE.png",
+      "sha256": "b88cbc5d9573b6b623558b30ad20b6de2171b6b81479742051b72f2a13e55d7d",
+      "raster": [
+        393,
+        852
+      ],
+      "kind": "synthetic_component",
+      "visual_review": "REVIEWED_NO_BASELINE_APPROVAL"
+    },
+    {
+      "path": ".out/recent-bugs-native-captures/admin-search-1.0-0.0.png",
+      "sha256": "c6c36ca869225959236087987a90075d80f887737327c808da35742647f6ccf4",
+      "raster": [
+        390,
+        844
+      ],
+      "kind": "synthetic_component",
+      "visual_review": "REVIEWED_NO_BASELINE_APPROVAL"
+    },
+    {
+      "path": ".out/recent-bugs-native-captures/admin-search-1.0-300.0.png",
+      "sha256": "2848c464acea8b1bd4b6ac865dc57318912d43a7e909232e42304d7e5c3fcc33",
+      "raster": [
+        390,
+        844
+      ],
+      "kind": "synthetic_component",
+      "visual_review": "REVIEWED_NO_BASELINE_APPROVAL"
+    },
+    {
+      "path": ".out/recent-bugs-native-captures/admin-search-1.3-0.0.png",
+      "sha256": "9b5e1ebb5228496604e2fbb89feb1350a9b5a19436022d4cb78070419d3b66cb",
+      "raster": [
+        390,
+        844
+      ],
+      "kind": "synthetic_component",
+      "visual_review": "REVIEWED_NO_BASELINE_APPROVAL"
+    },
+    {
+      "path": ".out/recent-bugs-native-captures/admin-search-1.3-300.0.png",
+      "sha256": "6304217bb5c98e6961fa171aef9b96b3a7eb3c7f75454088d50d4da3473d748c",
+      "raster": [
+        390,
+        844
+      ],
+      "kind": "synthetic_component",
+      "visual_review": "REVIEWED_NO_BASELINE_APPROVAL"
+    },
+    {
+      "path": ".out/recent-bugs-native-captures/admin-search-2.0-0.0.png",
+      "sha256": "e0ffbab11b84f55c2a6a5bec5e54cdc030d519d27dac62339201691fa735d1fa",
+      "raster": [
+        390,
+        844
+      ],
+      "kind": "synthetic_component",
+      "visual_review": "REVIEWED_NO_BASELINE_APPROVAL"
+    },
+    {
+      "path": ".out/recent-bugs-native-captures/admin-search-2.0-300.0.png",
+      "sha256": "2dd3804e99aada2f6e0c088022dbc276d3241d017677b76185b72a97ad6a1aca",
+      "raster": [
+        390,
+        844
+      ],
+      "kind": "synthetic_component",
+      "visual_review": "REVIEWED_NO_BASELINE_APPROVAL"
+    },
+    {
+      "path": ".out/recent-bugs-native-captures-v2/search-scope-48dp.png",
+      "sha256": "90ce350a0b3569894a5d159128f5ca67defed4e2def4f35044163534c4f4081d",
+      "raster": [
+        390,
+        844
+      ],
+      "kind": "synthetic_component",
+      "visual_review": "REVIEWED_NO_BASELINE_APPROVAL"
+    },
+    {
+      "path": ".out/recent-bugs-revoked-dialog/revoked-image-pending-false.png",
+      "sha256": "e89a8ae697572ba54622fdf1d0ce1215faaf7913db48743eacc528c933f4736c",
+      "raster": [
+        800,
+        600
+      ],
+      "kind": "synthetic_component",
+      "visual_review": "REVIEWED_NO_BASELINE_APPROVAL"
+    },
+    {
+      "path": ".out/recent-bugs-revoked-dialog/revoked-image-pending-true.png",
+      "sha256": "e89a8ae697572ba54622fdf1d0ce1215faaf7913db48743eacc528c933f4736c",
+      "raster": [
+        800,
+        600
+      ],
+      "kind": "synthetic_component",
+      "visual_review": "REVIEWED_NO_BASELINE_APPROVAL"
+    }
+  ],
+  "zoom_blank_control": {
+    "app_loaded": false,
+    "results": [
+      {
+        "outerWidth": 640,
+        "innerWidth": 309,
+        "dpr": 2,
+        "cssZoom": "1",
+        "pinch": 1
+      },
+      {
+        "outerWidth": 780,
+        "innerWidth": 379,
+        "dpr": 2,
+        "cssZoom": "1",
+        "pinch": 1
+      },
+      {
+        "outerWidth": 2048,
+        "innerWidth": 1013,
+        "dpr": 2,
+        "cssZoom": "1",
+        "pinch": 1
+      },
+      {
+        "outerWidth": 2880,
+        "innerWidth": 1429,
+        "dpr": 2,
+        "cssZoom": "1",
+        "pinch": 1
+      }
+    ]
+  },
+  "secrets_or_generated_media_committed": false
+}

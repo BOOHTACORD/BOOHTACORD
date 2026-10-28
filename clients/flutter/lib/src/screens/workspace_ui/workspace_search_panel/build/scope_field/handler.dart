@@ -30,7 +30,11 @@ extension WorkspaceSearchPanelScopeFieldRenderer
         filled: true,
         fillColor: GcColors.raised,
         contentPadding: const EdgeInsetsDirectional.fromSTEB(10, 0, 8, 0),
-        constraints: const BoxConstraints.tightFor(height: 32),
+        constraints: switch (Theme.of(context).platform) {
+          TargetPlatform.android ||
+          TargetPlatform.iOS => const BoxConstraints(minHeight: 48),
+          _ => const BoxConstraints.tightFor(height: 32),
+        },
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(GcRadii.md),
           borderSide: const BorderSide(color: GcColors.borderSubtle),

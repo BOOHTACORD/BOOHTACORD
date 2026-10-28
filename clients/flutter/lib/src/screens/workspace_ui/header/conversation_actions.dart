@@ -51,8 +51,9 @@ class _ConversationHeaderActionsState extends State<ConversationHeaderActions> {
   void _changed() {
     if (!_searchOpen ||
         state.workspacePanel == WorkspacePanel.search ||
-        state.workspacePanel == WorkspacePanel.searchContext)
+        state.workspacePanel == WorkspacePanel.searchContext) {
       return;
+    }
     _searchOpen = false;
     if (state.workspacePanel == WorkspacePanel.none && _origin == _context) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -83,6 +84,7 @@ class _ConversationHeaderActionsState extends State<ConversationHeaderActions> {
                   path:
                       '/direct-messages/${Uri.encodeComponent(m.directMessageId)}',
                   files: m.attachments,
+                  messageId: m.id,
                 ),
               )
               .toList()
@@ -97,6 +99,7 @@ class _ConversationHeaderActionsState extends State<ConversationHeaderActions> {
                 (m) => (
                   path: '/channels/${Uri.encodeComponent(m.channelId)}',
                   files: m.attachments,
+                  messageId: m.id,
                 ),
               )
               .toList();
@@ -143,6 +146,7 @@ class _ConversationHeaderActionsState extends State<ConversationHeaderActions> {
                           MessageAttachmentList(
                             state: state,
                             parentPath: row.path,
+                            messageId: row.messageId,
                             attachments: row.files,
                           ),
                       ],

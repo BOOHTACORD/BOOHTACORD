@@ -10,6 +10,7 @@ import { useAuthorDirectory } from '../identity/author_directory'
 import { createSearchContextController } from './search_context_controller'
 import { useContextRead } from './context_timeline/read'
 import { capture, restore } from '../conversation/context_position/dom'
+import { bindContextHints, useContextHints } from './context_timeline/hints'
 
 const props = defineProps<{ kind: 'CHANNEL' | 'DIRECT_MESSAGE'; conversationId: string; messageId: string; heading?: string; unread?: boolean; active?: boolean; offset?: number }>()
 const emit = defineEmits<{ close: []; read: []; viewportChange: [] }>()
@@ -21,6 +22,7 @@ const context = createSearchContextController<TextMessage | DirectMessageHistory
   older: id => page(id), newer: id => page(undefined, undefined, id),
 })
 const { messages, status, hasNewer, olderCursor, pagingPending, pagingError } = context
+const stopHints = bindContextHints(useContextHints(), props, context)
 const chronological = computed(() => [...messages.value].reverse())
 const { readRoot: root, queueVisibleRead } = useContextRead(props, () => messages.value, () => status.value === 'ready' || status.value === 'deleted', () => emit('read'))
 function onScroll(): void { queueVisibleRead(); emit('viewportChange') }
@@ -32,7 +34,7 @@ async function load(direction: 'older' | 'newer'): Promise<void> {
   onScroll()
 }
 
-watch(() => [props.kind, props.conversationId, props.messageId], () => { void context.open(props.messageId) }, { immediate: true })
+watch(() => [props.kind, props.conversationId, props.messageId], () => { void context.open(props.messageId) }, { immediate: true, flush: 'sync' })
 watch(messages, (items) => { for (const item of items) void authors.ensure(item.authorId) })
 watch(status, (value) => { if (value === 'ready' || value === 'deleted') void nextTick(async () => {
   const messageId = props.messageId
@@ -43,7 +45,7 @@ watch(status, (value) => { if (value === 'ready' || value === 'deleted') void ne
   if (props.offset !== undefined) restore(root.value?.querySelector<HTMLElement>('.search-context-list') ?? null, { id: props.messageId, offset: props.offset })
   onScroll()
 }) })
-onBeforeUnmount(context.clear)
+onBeforeUnmount(() => { stopHints(); context.clear() })
 </script>
 
 <template>
