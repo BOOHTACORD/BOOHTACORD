@@ -1,0 +1,41 @@
+"""Validate exact scope, old-row fidelity, no product edits and public privacy."""
+import ast,csv,hashlib,json,re,subprocess
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];B=Path(r'C:\Users\egkur\.codex\worktrees\android-qa\BOOHTACORD');E=B/'evidence/qa/open-issues-2026-10-27';O=E/'isolated-history-edit-eviction';BASE='f2c288c209f47df728adb0099ee4fff4389b77f7'
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+def old(n):return json.loads(subprocess.check_output(['git','show',BASE+':evidence/qa/open-issues-2026-10-27/'+n],cwd=B))
+def rows(m):return {r['id']:r for i in m['issues'] for r in i['criteria']}
+a=rows(old('matrix.json'));m=read(E/'matrix.json');b=rows(m);assert len(a)==len(b)==480
+assert sorted(k for k in a if a[k]!=b[k])==['I240.C9','I241.C37'] and all(a[k]['requirement']==b[k]['requirement'] for k in a)
+cases=read(E/'cases.json')['cases'];assert len(cases)==75 and cases[:-1]==old('cases.json')['cases'] and cases[-1]['status']=='FAIL'
+assert all(b[k]['status']=='FAIL' and 141 in next(i for i in m['issues'] if k.startswith('I'+str(i['number'])+'.'))['defects'] for k in ['I240.C9','I241.C37'])
+cfg=read(P/'private/config.private.json');markers=set(cfg['ids']+[cfg[x] for x in ['account','category','channel','other_channel']]+[cfg['cookie'],cfg['cookie'].split('=',1)[1],cfg['owner_token']])
+markers.update('Uncommitted synthetic edit '+c['name'] for c in read(P/'browser-result.json')['cases'])
+credentials=read(P.parent/'local-qa/credentials.private.json');markers.update(v for k,v in credentials.items() if isinstance(v,str) and len(v)>8 and (any(x in k for x in ['password','secret','ingest_auth']) or k=='livekit_key'))
+with (P/'private/dataset.private.csv').open(encoding='utf-8',newline='') as f:
+    for row in csv.reader(f):markers.add(row[4]);markers.add(row[3])
+for path in [B/'.out/qa-goal/private-fixture.json',B/'.out/qa-goal/private-upgrade-identity.json']:
+    if path.exists():
+        def collect(v,k=''):
+            if isinstance(v,dict):
+                for key,value in v.items():collect(value,key.lower())
+            elif isinstance(v,list):
+                for value in v:collect(value,k)
+            elif isinstance(v,str) and len(v)>8 and (any(x in k for x in ['password','secret','cookie','token']) or k in ['id','login','account','conversation']):markers.add(v)
+        collect(read(path))
+scanned=0
+for f in E.rglob('*'):
+    if f.is_file() and f.suffix in ['.json','.md','.txt','.log']:
+        text=f.read_text(encoding='utf-8');assert all(v not in text for v in markers),'Private marker in '+str(f.relative_to(E));scanned+=1
+for f in O.rglob('*.txt'):
+    t=f.read_text(encoding='utf-8');assert len(t.splitlines())<=120,f.name
+    if f.name.endswith('.py.txt'):ast.parse(t)
+assert all(f.suffix in ['.json','.md','.txt'] for f in O.rglob('*') if f.is_file())
+s=read(O/'semantic-result.json');r=read(O/'browser-result.json');assert s['acceptance_gate_exit']==1 and len(r['cases'])==5
+assert sum(c['draft_retained_or_restored'] for c in r['cases'])==2 and sum(not c['draft_retained_or_restored'] for c in r['cases'])==3
+assert read(O/'environment-after.json')['remaining_owned_rows']==0 and read(O/'log-audit.json')['status'].startswith('PASS')
+assert not subprocess.check_output(['git','-c','core.autocrlf=false','diff','HEAD','--','backend','clients','tools'],cwd=B)
+assert not subprocess.check_output(['git','-c','core.autocrlf=false','status','--porcelain'],cwd=Q,text=True).strip()
+d={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_PUBLIC_SCOPE_AND_PRIVACY_VALIDATION','product_verdict':'FAIL_UNCOMMITTED_DRAFT_LOST','original_criterion_texts_preserved':480,'only_changed_rows':['I240.C9','I241.C37'],'all74_old_cases_exact':True,'case_count':75,'private_IDs_seed_bodies_cookies_credentials_absent':True,'public_text_files_scanned':scanned,'runner_hard120_and_Python_syntax':'PASS','source_worktree_clean':True,'native_product_unchanged':True,'full_QA_gate_claimed':False}
+(O/'validation.json').write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(d))

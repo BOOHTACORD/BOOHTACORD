@@ -1,0 +1,91 @@
+{
+  "status": "PASS",
+  "tests": 13,
+  "skips": 0,
+  "files": 5,
+  "results": [
+    {
+      "path": "clients/web/src/conversation/history_window/component.spec.ts",
+      "status": "passed",
+      "cases": [
+        {
+          "name": "virtual history component renders only a viewport-sized slice when the loaded history has ten thousand messages",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "clients/web/src/conversation/history_window/eviction.spec.ts",
+      "status": "passed",
+      "cases": [
+        {
+          "name": "reversible history window keeps the visible anchor and exposes cursors for both evicted edges",
+          "status": "passed"
+        },
+        {
+          "name": "reversible history window preserves server paging availability when no rows need eviction",
+          "status": "passed"
+        },
+        {
+          "name": "reversible history window falls back to the newest contiguous range if the anchor was removed",
+          "status": "passed"
+        },
+        {
+          "name": "reversible history window rejects a zero or negative cache bound",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "clients/web/src/conversation/history_window/pagination.spec.ts",
+      "status": "passed",
+      "cases": [
+        {
+          "name": "bounded history paging integration keeps the visible anchor and pages reversibly across evicted edges",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "clients/web/src/conversation/history_window/window.spec.ts",
+      "status": "passed",
+      "cases": [
+        {
+          "name": "variable-height message history window keeps the rendered range bounded for 50 timeline rows",
+          "status": "passed"
+        },
+        {
+          "name": "variable-height message history window keeps the rendered range bounded for 500 timeline rows",
+          "status": "passed"
+        },
+        {
+          "name": "variable-height message history window keeps the rendered range bounded for 5000 timeline rows",
+          "status": "passed"
+        },
+        {
+          "name": "variable-height message history window keeps the rendered range bounded for 10000 timeline rows",
+          "status": "passed"
+        },
+        {
+          "name": "variable-height message history window keeps compact spacing distinct at group and day boundaries",
+          "status": "passed"
+        },
+        {
+          "name": "variable-height message history window finds measured variable-height boundaries and preserves spacing classes",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "clients/web/src/conversation/message_index/index.spec.ts",
+      "status": "passed",
+      "cases": [
+        {
+          "name": "message lookup index indexes loaded replies and follows edit, tombstone and channel reset mutations",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "raw_report_SHA256": "d126217c7aba4d86f8988488067acf9c64b8a1a474319a81ccf4d4e7606c9326"
+}

@@ -1,0 +1,42 @@
+{
+  "at_utc": "2026-10-28T02:28:42.616Z",
+  "status": "FAIL_CONTROLLER_OR_PRECONDITION",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "origin": "http://localhost:18088",
+  "dataset_count": 1000,
+  "reply_count": 500,
+  "dataset_SHA256": "3631e7fe0dfb2c686f5202ae40f16674718968400675bc33f7d82fdd9d844e0c",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "cases": [
+    {
+      "name": "no_eviction",
+      "target_index": 999,
+      "requested_cache": 450,
+      "phases": [],
+      "API_counts": {
+        "GET": 0,
+        "PATCH": 0,
+        "DELETE": 0,
+        "older_GET": 0,
+        "newer_GET": 0
+      },
+      "API_response_statuses": {},
+      "page_errors": []
+    }
+  ],
+  "production_touched": false,
+  "permissions_granted": [],
+  "no_mock_business_API": true,
+  "source_component_not_built_bundle": true,
+  "browser": "153.0.8010.12",
+  "error_name": "TimeoutError",
+  "error_SHA256": "7e76824115305d0795300f668144611f6d7addb30feb60e01857fae9655ddfb1",
+  "failure_surface": {
+    "fixture_present": false,
+    "app_children": 0
+  },
+  "finished_at_utc": "2026-10-28T02:29:04.871Z"
+}

@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-28T02:17:06.329809+00:00",
+  "at_utc": "2026-10-28T02:47:25.875318+00:00",
   "candidate_evidence": "../../android/physical-share-2026-10-27/result.json",
   "files": {
     "acceptance-methods.json": {
@@ -667,8 +667,8 @@
       "sha256": "7d2ac8691a4dd0bef3ffd7fd6c9ea028ab04c058060810c65c5f27501d34d867"
     },
     "cases.json": {
-      "bytes": 78325,
-      "sha256": "bd3f30989cd13d09d50d61e86c79ce35740a2f823d45b5e575338718c91b3433"
+      "bytes": 79962,
+      "sha256": "b5aa237202438082919192834c99d95dbb15548e658d90fbfdf079624a748d35"
     },
     "controlled-account-integrity.json": {
       "bytes": 640,
@@ -813,6 +813,186 @@
     "isolated-auth-denial/validation.json": {
       "bytes": 374,
       "sha256": "c5e86fafc24d6cb0fbd54263f631d58d2904b1dbff2a3e3d2d5e07cd6e0c7fd7"
+    },
+    "isolated-history-edit-eviction/attempt1/browser-result.json": {
+      "bytes": 1028,
+      "sha256": "a616d39feafd4bd58b85c805992986ca2ea048cf3d23eddf8a95c60c1b146067"
+    },
+    "isolated-history-edit-eviction/attempt1/runner-source/fixture.ts.txt": {
+      "bytes": 3799,
+      "sha256": "9c8d2f99fea587f9a10cb754415a4330d69bf33e55c21d7add480cf83ed4cbc1"
+    },
+    "isolated-history-edit-eviction/attempt1/runner-source/run_browser.mjs.txt": {
+      "bytes": 7594,
+      "sha256": "b9ae09e2404f8fecc038a93771865f5cb4a851e9c5936f53d8a6b90b9e42e72b"
+    },
+    "isolated-history-edit-eviction/attempt2/browser-result.json": {
+      "bytes": 1133,
+      "sha256": "c7b6c6bf4c69604dba083b9584287a2a8ea513a2fc51bc3bf7b526559a014b35"
+    },
+    "isolated-history-edit-eviction/attempt2/runner-before-browser.json": {
+      "bytes": 1782,
+      "sha256": "a11ed8374a4042b3a02c5b8b229487021ffd83f8f86fc391885d578f7ff867b5"
+    },
+    "isolated-history-edit-eviction/attempt2/runner-source/fixture.ts.txt": {
+      "bytes": 3799,
+      "sha256": "9c8d2f99fea587f9a10cb754415a4330d69bf33e55c21d7add480cf83ed4cbc1"
+    },
+    "isolated-history-edit-eviction/attempt2/runner-source/run_browser.mjs.txt": {
+      "bytes": 9317,
+      "sha256": "6be90eb7244e09efd4c186725be36f6d5fea45a86ec8f5f48bd91bad18a12fa1"
+    },
+    "isolated-history-edit-eviction/attempt3/browser-result.json": {
+      "bytes": 1392,
+      "sha256": "3a939f8628aa75828b718b2b96bd34c1b3bb7232c647cc48af7f5d4f38c4dec4"
+    },
+    "isolated-history-edit-eviction/attempt3/runner-before-browser.json": {
+      "bytes": 1893,
+      "sha256": "e3da829d2e0b36c56eec4e0cc15eb10d4de0f45d3670ff0ed64332c10738f573"
+    },
+    "isolated-history-edit-eviction/attempt3/runner-source/fixture.html.txt": {
+      "bytes": 204,
+      "sha256": "b942f45ea43c41ad1aca3b7e040b1760273bc0fe640ef1d57769f9ba51d0a5a5"
+    },
+    "isolated-history-edit-eviction/attempt3/runner-source/fixture.ts.txt": {
+      "bytes": 3860,
+      "sha256": "a643e15b09896a4c962db7b19a5818ba303fcff4dcfa65c03efa7cdff50ad771"
+    },
+    "isolated-history-edit-eviction/attempt3/runner-source/run_browser.mjs.txt": {
+      "bytes": 9634,
+      "sha256": "b089eb1affade12a9b4ebcbda3cf5b84ac37ba54a496e65d29ee09fb136db20b"
+    },
+    "isolated-history-edit-eviction/browser-result.json": {
+      "bytes": 21991,
+      "sha256": "d5df70c2313f21a5886f6eb495a5f075e00452f94752133bcf019c97ee60a7a9"
+    },
+    "isolated-history-edit-eviction/duplicate-search.json": {
+      "bytes": 6202,
+      "sha256": "30f176ff92fc95c3da0019cbe8f76ccbbe0b317429849cb894270dacb2a0d2bf"
+    },
+    "isolated-history-edit-eviction/environment-after.json": {
+      "bytes": 4754,
+      "sha256": "4087982b08fc4b3a41fa28701bbd52a4a752fe61a43b138ab97d99a8809ee164"
+    },
+    "isolated-history-edit-eviction/environment-before.json": {
+      "bytes": 2452,
+      "sha256": "d43781982a454415be0cef214d76d5919cc0b9c0f2b78cdbe93dffb98ba87b17"
+    },
+    "isolated-history-edit-eviction/first-complete/browser-result.json": {
+      "bytes": 21754,
+      "sha256": "431fd4ecb9d31057b010447a499ab2f611c5b684577d3b411ac82992053daa49"
+    },
+    "isolated-history-edit-eviction/first-complete/runner-before-browser.json": {
+      "bytes": 1893,
+      "sha256": "3531c0232a59a549302b00c42b57ebeac6c2433d09e7ff387f8fa8dd2d8647d1"
+    },
+    "isolated-history-edit-eviction/first-complete/runner-source/fixture.html.txt": {
+      "bytes": 204,
+      "sha256": "b942f45ea43c41ad1aca3b7e040b1760273bc0fe640ef1d57769f9ba51d0a5a5"
+    },
+    "isolated-history-edit-eviction/first-complete/runner-source/fixture.ts.txt": {
+      "bytes": 3860,
+      "sha256": "a643e15b09896a4c962db7b19a5818ba303fcff4dcfa65c03efa7cdff50ad771"
+    },
+    "isolated-history-edit-eviction/first-complete/runner-source/run_browser.mjs.txt": {
+      "bytes": 9559,
+      "sha256": "e97153c2014cbeb94920caa752ea994903b992d2ffaaf1bd86b3c0c856609855"
+    },
+    "isolated-history-edit-eviction/fixture-ready.json": {
+      "bytes": 512,
+      "sha256": "9afad444a0b153f0f99c767f1c334feeaece9f377b07c39ede005eeb7b71de1c"
+    },
+    "isolated-history-edit-eviction/focused-native-result.json": {
+      "bytes": 3045,
+      "sha256": "931a9381252973db4943d38fe28676e99c109a807a26b2cbea20b8e646b79220"
+    },
+    "isolated-history-edit-eviction/log-audit.json": {
+      "bytes": 2762,
+      "sha256": "eb221b8abdd3ba6c3abf913b15cad8141bbdedfcf57bad55d79a9166eedcccd5"
+    },
+    "isolated-history-edit-eviction/native-runner.json": {
+      "bytes": 871,
+      "sha256": "0b17134d7d0d39b16f0183ca59b5d38c77cd840125a4370aac42ae5fb418f5a1"
+    },
+    "isolated-history-edit-eviction/operating-brief.json": {
+      "bytes": 2904,
+      "sha256": "fd504050699419283881241eccce5229160bf8cf151382e9c5463871ef7f6110"
+    },
+    "isolated-history-edit-eviction/README.md": {
+      "bytes": 7630,
+      "sha256": "dacc0728b225a21c6fdb9cd59392679b6bb1eabe53552168e4be55a0ecd40676"
+    },
+    "isolated-history-edit-eviction/runner-before-browser.json": {
+      "bytes": 1893,
+      "sha256": "01b66f172d84215ed920c7801be60faf78bdcb27735201dcf799d3fca150e7bd"
+    },
+    "isolated-history-edit-eviction/runner-source/audit_bind.py.txt": {
+      "bytes": 6072,
+      "sha256": "588ad5538d26f190fb0ba631ea3e0cc77c2f215ae72dc1b751263454fba73c90"
+    },
+    "isolated-history-edit-eviction/runner-source/build_public.py.txt": {
+      "bytes": 8265,
+      "sha256": "14df9c53e92602694dbc02caf51f6698f08c8ea0cb81b813b9a1cb071c37e66b"
+    },
+    "isolated-history-edit-eviction/runner-source/cleanup.py.txt": {
+      "bytes": 5368,
+      "sha256": "a02fda00806d2e672de601131e4566b1a8bc7b0257a4c6f7842592f96ba21366"
+    },
+    "isolated-history-edit-eviction/runner-source/common.py.txt": {
+      "bytes": 1344,
+      "sha256": "cafa326d52cf679ebce1bf9f864f4a588818165b9dfb9cf2ea4756358e16fc81"
+    },
+    "isolated-history-edit-eviction/runner-source/fixture.html.txt": {
+      "bytes": 204,
+      "sha256": "b942f45ea43c41ad1aca3b7e040b1760273bc0fe640ef1d57769f9ba51d0a5a5"
+    },
+    "isolated-history-edit-eviction/runner-source/fixture.ts.txt": {
+      "bytes": 3860,
+      "sha256": "a643e15b09896a4c962db7b19a5818ba303fcff4dcfa65c03efa7cdff50ad771"
+    },
+    "isolated-history-edit-eviction/runner-source/inspect_schema.py.txt": {
+      "bytes": 408,
+      "sha256": "143686ba83e45c3c5c6e579acba2fd8e52cbfd6b5a449a36ab8c7a7bd7f41285"
+    },
+    "isolated-history-edit-eviction/runner-source/preflight.py.txt": {
+      "bytes": 2994,
+      "sha256": "1ea62b887dbd6bca14b4c4eed90b7c123d77a17e9bbaf78b72776449900d7bc9"
+    },
+    "isolated-history-edit-eviction/runner-source/prepare.py.txt": {
+      "bytes": 3656,
+      "sha256": "00da84c826f12f9ee5d858084cd18f6e60cda99b6d9cfa0eef5e08066b2e62d7"
+    },
+    "isolated-history-edit-eviction/runner-source/run_browser.mjs.txt": {
+      "bytes": 9666,
+      "sha256": "96f9a22e80c80c3e698e15ecfec82c9e2e9b750ceaf48c9f0dd2aeaf777a337a"
+    },
+    "isolated-history-edit-eviction/runner-source/validate_public.py.txt": {
+      "bytes": 4138,
+      "sha256": "d76394f8b8c0b091de1d92ad72477182a48265d534f29ccb28854587329ed4c1"
+    },
+    "isolated-history-edit-eviction/runner-source/verify_browser.py.txt": {
+      "bytes": 2245,
+      "sha256": "bd08cac42e50c742f8de77e7f1488b29a792bf36c1688051662a3bbef31b3887"
+    },
+    "isolated-history-edit-eviction/semantic-result.json": {
+      "bytes": 1785,
+      "sha256": "b59bf2209022f8e65220da66207b50f38a198b094957f2b8c96a15e7cd34052f"
+    },
+    "isolated-history-edit-eviction/source-binding.json": {
+      "bytes": 7347,
+      "sha256": "34b51edda0165ebcd3063dfd3d5382cf47c3b611d98dfe99f97765df37626b92"
+    },
+    "isolated-history-edit-eviction/summary.json": {
+      "bytes": 3352,
+      "sha256": "fba8260d44d42191efca0fc5f69c511ca4c165116721036ce0f2401e8618a175"
+    },
+    "isolated-history-edit-eviction/validation.json": {
+      "bytes": 563,
+      "sha256": "662311e8d768544db2a55032c0334d77c9d32ac261e1ef29d1e4e9b134d9f981"
+    },
+    "isolated-history-edit-eviction/visual-record.json": {
+      "bytes": 1684,
+      "sha256": "e1386e497afb31a94add265cde3755b2dfb1038c4c5e876b4e9ad48af48dd6b1"
     },
     "isolated-login-budgets/baseline-owned-counts.json": {
       "bytes": 147,
@@ -2183,8 +2363,8 @@
       "sha256": "4b7314f316cc66bb9c1c3e07919f4a2441de12db8ab970d26f9b4308a2cef8a4"
     },
     "matrix.json": {
-      "bytes": 1184667,
-      "sha256": "f908115ef5dc739eed533566c9f9757bd569ea169367fa39770351d8b4d7f1a0"
+      "bytes": 1185757,
+      "sha256": "b2a6aaa72182393df7044a4468df3791cd8b6dbabb47c40ef2ea1e750e6bcf90"
     },
     "muted-background-resume.json": {
       "bytes": 250,
@@ -3423,8 +3603,8 @@
       "sha256": "5c8013eb9693e540a771743fa74b10476a3b88dec2acdd1c683e36c8a6f9c391"
     },
     "README.md": {
-      "bytes": 23512,
-      "sha256": "f79ae1af1bd0df3c529d0033e847abb36bb0282eb1eeea6bdd522554c4e05e3d"
+      "bytes": 24159,
+      "sha256": "1c019b4020458f7470e77236d68f764311abea5955dfec3b67b38ba325a6bacd"
     },
     "restored-microphone.json": {
       "bytes": 269,

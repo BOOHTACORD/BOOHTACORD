@@ -303,3 +303,10 @@ The requested [production URL readiness](production-origin-readiness/result.json
 ## Production screen binding / actual SDK-SFU lifecycle, 2026-10-28
 
 [I240.C8 evidence](isolated-screen-preview/README.md) passes27 real production-factory/SDK/SFU stages: unselected0/selected1 subscription and renderer, selected/unselected unpublish, signal reconnect, new factory and delayed actual old callbacks.36 nearest native tests pass with zero skips. A served registry mutation produces2 unselected SFU subscriptions and is killed; original source stays unchanged. Own rooms/bridge are removed, original9 services remain healthy/private. This source-module headless integration does not close physical/native/production UI or Go lease/auth gates. QA240 remains FAIL on134/137/138;43 consolidation decisions stay untouched.
+
+
+## Isolated TEXT edit eviction — 2026-10-28
+
+[Source-bound counterexample and exact commands](isolated-history-edit-eviction/README.md): I240.C9/I241.C37 FAIL. Actual source components plus own Go API/PostgreSQL17.6 lose the uncommitted edit in3/3 primary repetitions;2 controls pass.13 closest tests PASS/0 skips. Canonical141 is reused; its fresh state/readback is recorded after publication. Full profile/physical/platform/hosted gates remain separate,43 consolidation decisions untouched.
+
+75 scoped cases;480 original criterion texts preserved. Status counts: BLOCKED160, PARTIAL52, NOT_RUN244, FAIL19, PASS5. QA240/241 remain open/FAIL.

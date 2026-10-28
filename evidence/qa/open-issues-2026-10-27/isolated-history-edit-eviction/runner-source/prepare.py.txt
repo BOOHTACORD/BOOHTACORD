@@ -1,0 +1,38 @@
+"""Create one isolated 1,000-row paging fixture; preserve ownership before every effect."""
+import csv,hashlib,io,secrets,uuid
+from datetime import datetime,timedelta,timezone
+from http.cookies import SimpleCookie
+from common import P,PROJECT,SOURCE,ORIGIN,credentials,docker,read,write,sql,valid,request
+assert not (P/'private/config.private.json').exists(),'Retain existing attempt'
+assert read(P/'environment-before.json')['status'].startswith('PASS')
+for service in ['api','postgres']:
+    before=read(P/'private'/(service+'-inspect-before.private.json'));now=__import__('json').loads(docker('inspect',before['Id']))[0]
+    assert now['Id']==before['Id'] and now['State']['Running'] and now['RestartCount']==before['RestartCount']
+cfg={'owner_token':secrets.token_hex(12),'origin':ORIGIN,'source_revision':SOURCE,'category':None,'channel':None,'other_channel':None,'ids':[]}
+def save():write(P/'private/config.private.json',cfg)
+save();c=credentials();status,headers,_=request('/api/v1/auth/login','POST',{'login':c['admin_login'],'password':c['admin_password']});assert status==204
+cookies=SimpleCookie()
+for k,v in headers:
+    if k.lower()=='set-cookie':cookies.load(v)
+assert len(cookies)==1
+cfg['cookie']='; '.join(k+'='+v.value for k,v in cookies.items());save()
+status,_,session=request('/api/v1/auth/session',cookie=cfg['cookie']);assert status==200 and session['authenticated']
+login=c['admin_login'].replace("'","''");cfg['account']=valid(sql("SELECT id FROM users WHERE login='"+login+"';").strip());save()
+status,_,body=request('/api/v1/admin/categories','POST',{'name':'qa_history_'+cfg['owner_token']},cfg['cookie']);assert status==201
+cfg['category']=valid(body['id']);save()
+for key in ['channel','other_channel']:
+    status,_,body=request('/api/v1/admin/categories/'+cfg['category']+'/channels','POST',{'name':'history_'+key,'kind':'TEXT'},cfg['cookie']);assert status==201
+    cfg[key]=valid(body['id']);save()
+cfg['ids']=[str(uuid.uuid4()) for _ in range(1000)];save();rows=[];epoch=datetime(2026,1,1,tzinfo=timezone.utc)
+for i,identifier in enumerate(cfg['ids']):
+    body='Synthetic history line '+str(i)+('\nadditional synthetic line'*(i%4))
+    rows.append([identifier,cfg['channel'],cfg['account'],str(uuid.uuid4()),body,(epoch+timedelta(seconds=i)).isoformat(),cfg['ids'][(i-1)%1000] if i%2 else None])
+out=io.StringIO(newline='');writer=csv.writer(out,lineterminator='\n');writer.writerows(rows);csv_data=out.getvalue()
+cfg['dataset_SHA256']=hashlib.sha256(csv_data.encode()).hexdigest();cfg['dataset_bytes']=len(csv_data.encode());cfg['reply_count']=500;save()
+command='BEGIN;\nCOPY messages(id,channel_id,author_id,client_message_id,body,created_at,reply_to_id) FROM STDIN CSV;\n'+csv_data+'\\.\nCOMMIT;\n'
+sql(command);(P/'private/dataset.private.csv').write_text(csv_data,encoding='utf-8',newline='\n')
+count=int(sql("SELECT count(*) FROM messages WHERE channel_id='"+cfg['channel']+"';").strip());assert count==1000
+status,_,page=request('/api/v1/channels/'+cfg['channel']+'/messages',cookie=cfg['cookie']);assert status==200 and len(page['messages'])>0
+assert page['messages'][0]['id']==cfg['ids'][-1] and page.get('next_cursor')
+r={'status':'PASS_OWNED_REAL_API_DATASET','at_utc':datetime.now(timezone.utc).isoformat(),'source_revision':SOURCE,'dataset_count':count,'reply_count':500,'dataset_SHA256':cfg['dataset_SHA256'],'dataset_bytes':cfg['dataset_bytes'],'initial_page_count':len(page['messages']),'initial_page_has_older_cursor':True,'own_cookie_session_authenticated':True,'production_touched':False,'IDs_bodies_credentials_stay_private':True}
+write(P/'fixture-ready.json',r);print(__import__('json').dumps(r))

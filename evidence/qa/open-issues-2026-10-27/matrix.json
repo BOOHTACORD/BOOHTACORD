@@ -5406,13 +5406,18 @@
           "requirement": "[#141 — индекс ответов и виртуализация чата](https://github.com/Egkurilov/BOOHTACORD/issues/141): сначала включить implementation commit/PR в master. В одинаковом настоящем браузере проверить dataset 50/500/5k/10k, доли replies 0/50/100%, missing reply targets, edit/delete, older-page load, jump/search/unread и focus/scroll anchor. Приложить build/browser/device SHA, dataset generator, DOM row counts, long-task/interaction latency и heap before/after. Кеш eviction за пределами обратимой pagination window не считать реализованным без отдельного доказательства.",
           "source_checkbox": " ",
           "id": "I240.C9",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental.",
-          "platform": "Disposable owned PostgreSQL/API/LiveKit target and bounded synthetic accounts/data; never shared production fault/load injection.",
-          "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "status": "FAIL",
+          "execution_cases": [
+            "ISOLATED-history-edit-draft-cache-eviction"
+          ],
+          "evidence": [
+            "isolated-history-edit-eviction/summary.json",
+            "isolated-history-edit-eviction/semantic-result.json"
+          ],
+          "execution": "python -X utf8 .out/qa-history-window/preflight.py; python -X utf8 .out/qa-history-window/prepare.py; node .out/qa-history-window/run_browser.mjs; python -X utf8 .out/qa-history-window/verify_browser.py; python -X utf8 .out/qa-history-window/cleanup.py; python -X utf8 .out/qa-history-window/audit_bind.py",
+          "platform": "Windows11/Node24.18.0/headlessChromium153.0.8010.12/Vue3.5.43/Pinia4.0.3/current source components; own actual Go API/PostgreSQL17.6",
+          "mandatory_when": "Before accepting141 cache-window/edit preservation or I240.C9/I241.C37; after fixing this bug",
+          "result": "isolated-history-edit-eviction/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_api_faults"
@@ -5424,10 +5429,17 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              {
+                "case": "ISOLATED-history-edit-draft-cache-eviction",
+                "status": "FAIL",
+                "scope": "Uncommitted editor draft lost after real cache eviction/restoration only",
+                "result": "isolated-history-edit-eviction/summary.json"
+              }
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "reason": "Confirmed loss of uncommitted edit on real500-cache older/newer roundtrip,3 reproductions/2 controls. Canonical141 requires a fix; remaining full-row facets retain NOT_RUN scope.",
+          "remaining_work_state": "CONFIRMED_DEFECT_141_AND_FULL_PROFILE_REMAINS_QUEUED"
         },
         {
           "section": "Сквозная трассировка",
@@ -5864,7 +5876,8 @@
       "defects": [
         134,
         137,
-        138
+        138,
+        141
       ],
       "blockers": [],
       "source_body_sha256": "7cca703010a69ef8a373315fc6e27adac88f81ff7c8be3a80976e06bfdaba9d3",
@@ -5881,7 +5894,7 @@
       "title": "[QA] Acceptance for OpenAPI, observability, media QoE, chat history, accessibility, social preview and on-call map",
       "url": "https://github.com/Egkurilov/BOOHTACORD/issues/241",
       "packet": "cross_domain_runtime",
-      "status": "PARTIAL",
+      "status": "FAIL",
       "criteria": [
         {
           "section": "4 — OpenAPI / Swagger",
@@ -6995,13 +7008,18 @@
           "requirement": "Exercise reply/search/unread navigation outside the current window, edit/delete/tombstone, protected image loading, channel/account changes, and older/newer page round trips while retaining visible scroll anchor and keyboard focus.",
           "source_checkbox": null,
           "id": "I241.C37",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental. | Use only the applicable scoped commands in cases.json, including node .out/qa-goal/privacy_run.mjs, node .out/qa-goal/web_logout_run.mjs, node .out/qa-goal/quickjump_run.mjs and node .out/qa-goal/web_image_formats_run.mjs; execute remaining row steps separately.",
-          "platform": "Disposable owned PostgreSQL/API/LiveKit target and bounded synthetic accounts/data; never shared production fault/load injection. | Installed headed Windows Chrome and explicitly stated CSS viewport; no physical mobile/other-browser substitution.",
-          "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "status": "FAIL",
+          "execution_cases": [
+            "ISOLATED-history-edit-draft-cache-eviction"
+          ],
+          "evidence": [
+            "isolated-history-edit-eviction/summary.json",
+            "isolated-history-edit-eviction/semantic-result.json"
+          ],
+          "execution": "python -X utf8 .out/qa-history-window/preflight.py; python -X utf8 .out/qa-history-window/prepare.py; node .out/qa-history-window/run_browser.mjs; python -X utf8 .out/qa-history-window/verify_browser.py; python -X utf8 .out/qa-history-window/cleanup.py; python -X utf8 .out/qa-history-window/audit_bind.py",
+          "platform": "Windows11/Node24.18.0/headlessChromium153.0.8010.12/Vue3.5.43/Pinia4.0.3/current source components; own actual Go API/PostgreSQL17.6",
+          "mandatory_when": "Before accepting141 cache-window/edit preservation or I240.C9/I241.C37; after fixing this bug",
+          "result": "isolated-history-edit-eviction/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_api_faults",
@@ -7014,10 +7032,17 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              {
+                "case": "ISOLATED-history-edit-draft-cache-eviction",
+                "status": "FAIL",
+                "scope": "Uncommitted editor draft lost after real cache eviction/restoration only",
+                "result": "isolated-history-edit-eviction/summary.json"
+              }
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "reason": "Confirmed loss of uncommitted edit on real500-cache older/newer roundtrip,3 reproductions/2 controls. Canonical141 requires a fix; remaining full-row facets retain NOT_RUN scope.",
+          "remaining_work_state": "CONFIRMED_DEFECT_141_AND_FULL_PROFILE_REMAINS_QUEUED"
         },
         {
           "section": "141 — Long TEXT history browser profiling",
@@ -7121,7 +7146,9 @@
         "trace-runtime/summary.json",
         "local-staging/summary.json"
       ],
-      "defects": [],
+      "defects": [
+        141
+      ],
       "blockers": [],
       "source_body_sha256": "c7015703e8c3646b54715e7fa253e04637f73666844cd5ab58d90aca55487f92",
       "source_snapshot": ".out/qa-goal/open-issues-snapshot.json",
@@ -16179,7 +16206,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-28T02:08:05.974731+00:00",
+  "updated_utc": "2026-10-28T02:45:17.609916+00:00",
   "known_defect_issues": [
     579,
     580,
@@ -16189,7 +16216,8 @@
     585,
     586,
     137,
-    138
+    138,
+    141
   ],
   "criterion_witness_note": "Exact row links are scoped. PARTIAL/FAIL/BLOCKED never satisfy the complete multi-platform requirement; unlinked PENDING rows still need routing/execution.",
   "acceptance_method_catalog": "acceptance-methods.json",

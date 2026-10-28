@@ -1,0 +1,29 @@
+"""Attest the existing local stand and inspect only the exact message schema."""
+import hashlib,http.client,ipaddress,json,subprocess,sys
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,SOURCE,CONTEXT
+def write(p,d):p.write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8',newline='\n')
+def sql(s):return docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-At','-v','ON_ERROR_STOP=1',input=s.encode()).decode()
+assert not (P/'environment-before.json').exists(),'Existing receipt must not be overwritten'
+(P/'private').mkdir(exist_ok=True)
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'source_revision':SOURCE,'production_touched':False,'services':[]}
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=Q,text=True).strip()==SOURCE
+assert not subprocess.check_output(['git','-c','core.autocrlf=false','status','--porcelain'],cwd=Q,text=True).strip()
+for name in ['api','web','proxy','postgres','livekit','collector','tempo','prometheus','grafana']:
+    v=json.loads(docker('inspect',PROJECT+'-'+name+'-1'))[0]
+    assert v['State']['Running'] and v['RestartCount']==0 and v['Config']['Labels']['com.docker.compose.project']==PROJECT
+    for bindings in v['NetworkSettings']['Ports'].values():
+        for b in bindings or []:assert ipaddress.ip_address(b['HostIp']).is_loopback
+    if name in ['api','web']:assert json.loads(docker('image','inspect',v['Image']))[0]['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+    write(P/'private'/(name+'-inspect-before.private.json'),v)
+    r['services'].append({'service':name,'image_id':v['Image'],'running':True,'restart_count':0,'published_ports_loopback':True})
+rows=sql('SELECT (SELECT count(*) FROM users),(SELECT count(*) FROM sessions),(SELECT count(*) FROM sessions WHERE revoked_at IS NULL),(SELECT count(*) FROM attachments),(SELECT count(*) FROM messages);\nSHOW server_version;\n').splitlines()
+r['database_counts']=list(map(int,rows[0].split('|')));r['PostgreSQL_version']=rows[1]
+c=http.client.HTTPConnection('localhost',18088,timeout=8);c.request('GET','/api/v1/health',headers={'Host':'localhost:18088'});response=c.getresponse();assert response.status==200;response.read(65536);c.close();r['API_health_http']=200
+schema=sql("SELECT column_name,data_type,is_nullable,column_default FROM information_schema.columns WHERE table_schema='public' AND table_name IN ('messages','channels','categories') ORDER BY table_name,ordinal_position;\nSELECT conname,pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid='messages'::regclass;\n")
+(P/'schema.private.txt').write_text(schema,encoding='utf-8',newline='\n')
+r['message_schema_SHA256']=hashlib.sha256(schema.encode()).hexdigest();r['status']='PASS_NINE_PRIVATE_SERVICES_SOURCE_AND_FRESH_SQL_BASELINE'
+write(P/'environment-before.json',r)
+print(json.dumps(r))

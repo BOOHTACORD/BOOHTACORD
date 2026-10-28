@@ -1,0 +1,4 @@
+"""Read exact cleanup dependency metadata, without row values."""
+from common import P,sql
+s="SELECT c.relname,pg_get_constraintdef(con.oid) FROM pg_constraint con JOIN pg_class c ON con.conrelid=c.oid WHERE con.confrelid IN ('messages'::regclass,'channels'::regclass,'categories'::regclass) ORDER BY c.relname;"
+r=sql(s);(P/'cleanup-schema.private.txt').write_text(r,encoding='utf-8',newline='\n');print(r)

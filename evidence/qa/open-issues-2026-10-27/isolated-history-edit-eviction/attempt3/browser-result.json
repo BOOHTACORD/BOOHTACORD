@@ -1,0 +1,49 @@
+{
+  "at_utc": "2026-10-28T02:35:24.137Z",
+  "status": "FAIL_CONTROLLER_OR_PRECONDITION",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "origin": "http://localhost:18088",
+  "fixture_origin": "http://localhost:4808",
+  "canonical_Host_and_own_fixture_Origin_translation": true,
+  "API_Origin_security_gate_claimed": false,
+  "dataset_count": 1000,
+  "reply_count": 500,
+  "dataset_SHA256": "3631e7fe0dfb2c686f5202ae40f16674718968400675bc33f7d82fdd9d844e0c",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "cases": [
+    {
+      "name": "no_eviction",
+      "target_index": 999,
+      "requested_cache": 450,
+      "phases": [],
+      "API_counts": {
+        "GET": 9,
+        "PATCH": 0,
+        "DELETE": 0,
+        "older_GET": 8,
+        "newer_GET": 0
+      },
+      "API_response_statuses": {
+        "200": 42
+      },
+      "page_errors": [],
+      "real_API_cookie_authenticated": true,
+      "preparation_older_requests": 8
+    }
+  ],
+  "production_touched": false,
+  "permissions_granted": [],
+  "no_mock_business_API": true,
+  "source_component_not_built_bundle": true,
+  "browser": "153.0.8010.12",
+  "error_name": "TimeoutError",
+  "error_SHA256": "fec6d03da458b17b68a695bc0d8cc18ec1199c8c04555428d380a233ac133f2e",
+  "failure_surface": {
+    "fixture_present": true,
+    "app_children": 1
+  },
+  "finished_at_utc": "2026-10-28T02:35:47.835Z"
+}

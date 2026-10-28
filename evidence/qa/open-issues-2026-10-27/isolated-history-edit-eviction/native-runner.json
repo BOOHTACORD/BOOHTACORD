@@ -1,0 +1,21 @@
+{
+  "command_argv": [
+    "node",
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "src/conversation/history_window/component.spec.ts",
+    "src/conversation/history_window/eviction.spec.ts",
+    "src/conversation/history_window/pagination.spec.ts",
+    "src/conversation/history_window/window.spec.ts",
+    "src/conversation/message_index/index.spec.ts",
+    "--reporter=json",
+    "--outputFile=../../.out/qa-history-window/focused-vitest.private.json"
+  ],
+  "cwd": "clients/web",
+  "exit_code": 0,
+  "Vitest_startTime": 1793154109424,
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "source_binding_collected_after_native_run": true,
+  "tracked_source_no_intervening_changes": true,
+  "note": "13 existing focused tests stay green while three browser editor-eviction counterexamples fail; not the full historical conversation suite or build"
+}

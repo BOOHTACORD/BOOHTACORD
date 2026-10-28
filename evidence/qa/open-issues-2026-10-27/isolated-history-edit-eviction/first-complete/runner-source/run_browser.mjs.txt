@@ -1,0 +1,64 @@
+import assert from 'node:assert/strict'
+import {createRequire} from 'node:module'
+import {readFile,writeFile,mkdir} from 'node:fs/promises'
+import {createHash} from 'node:crypto'
+import {execFileSync} from 'node:child_process'
+import {fileURLToPath,pathToFileURL} from 'node:url'
+const P=fileURLToPath(new URL('./',import.meta.url)),Q=fileURLToPath(new URL('../../',import.meta.url)),WEB=Q+'clients/web/'
+const require=createRequire(WEB+'package.json'),{chromium,expect}=require('@playwright/test'),{createServer}=await import(pathToFileURL(require.resolve('vite')).href)
+const cfg=JSON.parse(await readFile(P+'private/config.private.json','utf8')),origin='http://localhost:18088',port=4808,fixtureOrigin='http://localhost:'+port
+assert.equal(cfg.origin,origin);assert.equal(cfg.ids.length,1000)
+const output=P+'browser-result.json';assert.equal(await readFile(output).then(()=>true,()=>false),false,'Preserve existing receipt')
+let server,browser,activeContext,currentPage;const consoleLines=[];const started=new Date().toISOString(),report={at_utc:started,status:'RUNNING',source_revision:cfg.source_revision,origin,fixture_origin:fixtureOrigin,canonical_Host_and_own_fixture_Origin_translation:true,API_Origin_security_gate_claimed:false,dataset_count:1000,reply_count:500,dataset_SHA256:cfg.dataset_SHA256,viewport:{width:1440,height:1000},cases:[],production_touched:false,permissions_granted:[],no_mock_business_API:true,source_component_not_built_bundle:true}
+const digest=s=>createHash('sha256').update(s).digest('hex')
+try{
+ const files=['.out/qa-history-window/run_browser.mjs','.out/qa-history-window/fixture.ts','.out/qa-history-window/fixture.html','clients/web/package.json','clients/web/package-lock.json','clients/web/src/conversation/TextConversation.vue','clients/web/src/conversation/TextHistoryList.vue','clients/web/src/conversation/history_window/use.ts','clients/web/src/conversation/history_window/use_text_history_list.ts','clients/web/src/conversation/history_window/eviction.ts','clients/web/src/conversation/history_window/paging.ts','clients/web/src/conversation/text_history.ts','clients/web/src/conversation/message_store.ts','clients/web/src/conversation/message_index/index.ts']
+ const hashes={};for(const name of files)hashes[name]=digest(await readFile(Q+name))
+ assert.equal(execFileSync('git',['rev-parse','HEAD'],{cwd:Q,encoding:'utf8'}).trim(),cfg.source_revision);assert.equal(execFileSync('git',['-c','core.autocrlf=false','status','--porcelain'],{cwd:Q,encoding:'utf8'}).trim(),'')
+ await writeFile(P+'runner-before-browser.json',JSON.stringify({at_utc:new Date().toISOString(),command:'node .out/qa-history-window/run_browser.mjs',source_revision:cfg.source_revision,node:process.version,files:hashes},null,2)+'\n')
+ server=await createServer({root:WEB,configFile:WEB+'vite.config.ts',cacheDir:P+'vite-cache',resolve:{dedupe:['vue','pinia']},server:{host:'127.0.0.1',port,strictPort:true,cors:false,fs:{allow:[Q]},proxy:{'/api':{target:origin,changeOrigin:true,configure:proxy=>proxy.on('proxyReq',(outgoing,incoming)=>{if(incoming.headers.origin===fixtureOrigin)outgoing.setHeader('Origin',origin)})}}},logLevel:'error'});await server.listen()
+ browser=await chromium.launch({headless:true});report.browser=browser.version()
+ const deadline=setTimeout(()=>{void browser.close()},600000);deadline.unref()
+ const definitions=[{name:'no_eviction',cache:450,index:999},{name:'retained_editor_row',cache:500,index:500},...Array.from({length:3},(_,i)=>({name:'evicted_editor_'+(i+1),cache:500,index:999}))]
+ for(const definition of definitions){
+  const one={name:definition.name,target_index:definition.index,requested_cache:definition.cache,phases:[],API_counts:{GET:0,PATCH:0,DELETE:0,older_GET:0,newer_GET:0},API_response_statuses:{}};report.cases.push(one)
+  activeContext=await browser.newContext({viewport:report.viewport,timezoneId:'UTC'})
+  const split=cfg.cookie.indexOf('=');await activeContext.addCookies([{name:cfg.cookie.slice(0,split),value:cfg.cookie.slice(split+1),url:fixtureOrigin,httpOnly:true,secure:true,sameSite:'Lax'}])
+  await activeContext.addInitScript(c=>{window.__qaHistoryConfig=c},{...cfg,cookie:undefined,owner_token:undefined})
+  const page=currentPage=await activeContext.newPage();page.setDefaultTimeout(20000)
+  const errors=[];one.page_errors=errors;page.on('pageerror',e=>{errors.push({name:e.name,stack_SHA256:digest(e.stack??e.message)});consoleLines.push(e.stack??e.message)});page.on('console',m=>{if(['error','warning'].includes(m.type()))consoleLines.push(m.text())})
+  page.on('request',request=>{const u=new URL(request.url());if(u.origin===fixtureOrigin&&u.pathname.startsWith('/api/v1/channels/')&&u.pathname.endsWith('/messages')){one.API_counts[request.method()]=(one.API_counts[request.method()]??0)+1;if(u.searchParams.has('before'))one.API_counts.older_GET++;if(u.searchParams.has('after'))one.API_counts.newer_GET++}})
+  page.on('response',response=>{const u=new URL(response.url());if(u.origin===fixtureOrigin&&u.pathname.startsWith('/api/v1/'))one.API_response_statuses[response.status()]=(one.API_response_statuses[response.status()]??0)+1})
+  await page.goto(fixtureOrigin+'/@fs/'+P.replaceAll('\\','/')+'fixture.html');await page.waitForFunction(()=>window.historyQA?.ready())
+  one.real_API_cookie_authenticated=await page.evaluate(async()=>{const r=await fetch('/api/v1/auth/session');return r.status===200&&(await r.json()).authenticated===true});assert.equal(one.real_API_cookie_authenticated,true)
+  one.preparation_older_requests=await page.evaluate(target=>window.historyQA.fillCache(target),definition.cache)
+  await page.evaluate(top=>window.historyQA.scroll(top),definition.index===500)
+  const row=page.locator('[data-message-id="'+cfg.ids[definition.index]+'"]'),editor=page.getByRole('textbox',{name:'Изменённый текст сообщения',exact:true})
+  await expect(row).toBeVisible();await row.locator('.message-row').hover();await row.getByRole('button',{name:'Изменить',exact:true}).click()
+  const draft='Uncommitted synthetic edit '+definition.name;await editor.fill(draft);await expect(editor).toBeFocused()
+  const state=()=>page.evaluate(()=>window.historyQA.state())
+  one.phases.push({phase:'editing_before_scroll',...await state()});assert.equal(one.phases.at(-1).cache_count,definition.cache)
+  await page.evaluate(()=>window.historyQA.scroll(true));await expect(editor).toHaveValue(draft);await expect(editor).toBeFocused()
+  one.phases.push({phase:'after_scroll_before_paging',...await state()})
+  const oldRequests=one.API_counts.older_GET,start=performance.now();await page.getByRole('button',{name:'Показать предыдущие сообщения',exact:true}).click()
+  await expect.poll(()=>one.API_counts.older_GET).toBe(oldRequests+1);await page.waitForFunction(()=>window.historyQA.pagingSettled())
+  await page.evaluate(()=>window.historyQA.settle());await page.waitForTimeout(150)
+  one.older_interaction_ms=performance.now()-start;one.phases.push({phase:'after_real_older_UI_click',...await state()})
+  const count=await editor.count();one.draft_retained_after_older=count===1&&(await editor.inputValue())===draft
+  one.outcome=one.draft_retained_after_older?'PASS_EDITOR_RETAINED':'FAIL_UNCOMMITTED_EDITOR_LOST'
+  one.newer_restore_clicks=0
+  if(!one.draft_retained_after_older){
+   while(one.phases.at(-1).cache_max_index<definition.index&&one.newer_restore_clicks<5){
+    await page.getByRole('button',{name:'Показать следующие сообщения',exact:true}).click();await page.waitForFunction(()=>window.historyQA.pagingSettled());await page.waitForTimeout(150);await page.evaluate(()=>window.historyQA.settle());one.newer_restore_clicks++;one.phases.push({phase:'after_newer_restore_'+one.newer_restore_clicks,...await state()})
+   }
+   await page.evaluate(()=>window.historyQA.scroll(false));await expect(row).toBeVisible();one.editor_count_after_target_restore=await editor.count()
+  }
+  assert.equal(one.API_counts.PATCH,0);assert.equal(one.API_counts.DELETE,0);one.unsaved_edit_not_submitted_or_deleted=true;one.page_errors=errors
+  await page.screenshot({path:P+'private/'+definition.name+'-after.private.png',fullPage:false})
+  await activeContext.close();activeContext=undefined
+ }
+ report.status='COMPLETED_SCOPED_ACCEPTANCE';report.product_failure_cases=report.cases.filter(c=>c.outcome.startsWith('FAIL')).length
+ report.limit='This1000-row actual API source-component profile does not satisfy full50/500/5k/10k, missing targets, before/after, image, search/unread, logout or physical/native acceptance'
+}catch(error){report.status='FAIL_CONTROLLER_OR_PRECONDITION';report.error_name=error.name;report.error_SHA256=digest(error.stack??error.message);await writeFile(P+'controller-error.private.log',error.stack??error.message);if(currentPage){try{report.failure_surface=await currentPage.evaluate(()=>({fixture_present:typeof window.historyQA!=='undefined',app_children:document.querySelector('#app')?.childElementCount??null}))}catch{}}}
+finally{await writeFile(P+'browser-console.private.log',consoleLines.join('\n'));await activeContext?.close();await browser?.close();await server?.close();report.finished_at_utc=new Date().toISOString();await writeFile(output,JSON.stringify(report,null,2)+'\n')}
+console.log(JSON.stringify({status:report.status,browser:report.browser,completed_cases:report.cases.filter(c=>c.outcome).length,product_failure_cases:report.product_failure_cases??null}));process.exitCode=report.status==='COMPLETED_SCOPED_ACCEPTANCE'?0:1

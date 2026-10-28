@@ -1,0 +1,23 @@
+"""An executable product verdict, distinct from a completed browser-controller exit."""
+import hashlib,json,sys
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+d=read(P/'browser-result.json');assert d['status']=='COMPLETED_SCOPED_ACCEPTANCE' and len(d['cases'])==5
+assert d['dataset_count']==1000 and d['reply_count']==500 and not d['permissions_granted'] and not d['production_touched']
+results=[]
+for c in d['cases']:
+    a,b,e=c['phases'][:3]
+    assert a['editor_count']==b['editor_count']==1 and a['focused_editor'] and b['focused_editor']
+    assert a['cache_count']==b['cache_count']==c['requested_cache'] and e['cache_count']==500
+    assert c['real_API_cookie_authenticated'] and not c['API_counts']['PATCH'] and not c['API_counts']['DELETE']
+    assert all(code=='200' for code in c['API_response_statuses']) and not c['page_errors']
+    if not c['draft_retained_after_older']:
+        assert c['target_index']>e['cache_max_index'] and c['phases'][-1]['cache_max_index']==c['target_index'] and c['newer_restore_clicks']==3
+    passed=c['draft_retained_or_restored']
+    results.append({'case':c['name'],'expected':'Uncommitted edit is retained or restored exactly after valid older/newer paging','actual':c['outcome'],'pass':passed})
+raw=(P/'browser-run.private.log').read_bytes()
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS' if all(c['pass'] for c in results) else 'FAIL_UNCOMMITTED_EDIT_DRAFT_EVICTED','controller_exit':0,'acceptance_gate_exit':0 if all(c['pass'] for c in results) else 1,'source_revision':d['source_revision'],'browser':d['browser'],'dataset_SHA256':d['dataset_SHA256'],'cases':results,'fixture_integrity':'PASS','Vite_ResizeObserver_warning_occurrences':raw.count(b'ResizeObserver loop completed'),'raw_controller_log_SHA256':hashlib.sha256(raw).hexdigest(),'limit':'Controlled source-component/actual owned API profile only, canonical Host/Origin proxy translation; not full dataset/performance/physical/security acceptance'}
+(P/'semantic-result.json').write_text(json.dumps(r,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps(r));sys.exit(r['acceptance_gate_exit'])

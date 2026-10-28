@@ -1,0 +1,43 @@
+"""Bind exact source/native/runtime receipts and audit both Docker log streams."""
+import hashlib,json,platform,subprocess
+from datetime import datetime,timezone
+from common import P,Q,SOURCE,credentials,read,write
+from profile_common import CONTEXT,PROJECT
+B=__import__('pathlib').Path(r'C:\Users\egkur\.codex\worktrees\android-qa\BOOHTACORD')
+def sha(b):return hashlib.sha256(b).hexdigest()
+before=read(P/'environment-before.json');after=read(P/'environment-after.json');cfg=read(P/'private/config.private.json');run=read(P/'runner-before-browser.json')
+assert after['status'].startswith('PASS') and read(P/'semantic-result.json')['acceptance_gate_exit']==1
+markers=[cfg['cookie'].split('=',1)[1].encode()]+[v.encode() for k,v in credentials().items() if isinstance(v,str) and (any(x in k for x in ['password','secret','ingest_auth']) or k=='livekit_key')]
+audit={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'RUNNING','scope':'Both stdout and stderr of docker logs since fresh packet preflight; original cleanup.py scans covered stdout only','services':[]}
+for service in after['services']:
+    name=service['service'];identifier=read(P/'private'/(name+'-inspect-before.private.json'))['Id']
+    r=subprocess.run(['docker','--context',CONTEXT,'logs','--since',before['at_utc'],identifier],capture_output=True);assert r.returncode==0
+    raw=r.stdout+b'\n'+r.stderr;(P/'private'/(name+'-logs-both.private.log')).write_bytes(raw);assert all(v not in raw for v in markers)
+    audit['services'].append({'service':name,'stdout_bytes':len(r.stdout),'stderr_bytes':len(r.stderr),'joined_SHA256':sha(raw),'credential_or_own_session_markers_found':False,'raw_logs_remain_private':True})
+audit['status']='PASS_BOTH_LOG_STREAMS_PRIVATE_CREDENTIAL_SCAN';write(P/'log-audit.json',audit)
+for relative,expected in run['files'].items():assert sha((Q/relative).read_bytes())==expected
+assert not subprocess.check_output(['git','-c','core.autocrlf=false','status','--porcelain'],cwd=Q,text=True).strip()
+remote=subprocess.check_output(['git','ls-remote','origin','refs/heads/master'],cwd=B,text=True).split()[0]
+names={n for n in run['files'] if n.startswith('clients/')}
+names.update(['clients/web/src/conversation/MessageItem.vue','clients/web/src/conversation/message_edit_controller.ts','clients/web/src/conversation/message_actions/disclosure.ts','clients/web/src/design/conversation.css','clients/web/src/config/runtime.ts','clients/web/vite.config.ts'])
+native=read(P/'focused-vitest.private.json');results=[]
+for file in native['testResults']:
+    relative=__import__('pathlib').Path(file['name']).relative_to(Q).as_posix();names.add(relative)
+    results.append({'path':relative,'status':file['status'],'cases':[{'name':a['fullName'],'status':a['status']} for a in file['assertionResults']]})
+assert native['success'] and native['numPassedTests']==13 and native['numFailedTests']==native['numPendingTests']==native.get('numTodoTests',0)==0 and len(results)==5
+files={}
+for relative in sorted(names):
+    raw=(Q/relative).read_bytes();canonical=raw.replace(b'\r\n',b'\n');master=subprocess.check_output(['git','show',remote+':'+relative],cwd=B)
+    assert canonical==master,relative
+    files[relative]={'working_bytes_SHA256':sha(raw),'LF_SHA256':sha(canonical),'master_matches_LF':True}
+versions={}
+for package in ['vue','pinia','vite','vitest','@playwright/test']:
+    versions[package]=read(Q/'clients/web/node_modules'/package/'package.json')['version']
+binding={'at_utc':datetime.now(timezone.utc).isoformat(),'source_revision':SOURCE,'master_checked':remote,'exact_source_test_config_fingerprints':files,'matched_files':len(files),'runner_before_browser_hashes_unchanged':True,'source_worktree_clean':True,'OS':{'system':platform.system(),'release':platform.release(),'version':platform.version(),'architecture':platform.machine()},'node':run['node'],'packages':versions,'browser':read(P/'browser-result.json')['browser'],'source_mode':'Vite-served actual TextConversation/TextHistoryList/Pinia stores and actual owned API/PostgreSQL; not a packaged or deployed-bundle/physical acceptance','API_origin_proxy_limit':'Source fixture uses real loopback origin4808 and canonical Host/own-fixture Origin translation to18088. No API business response mocks; no Origin-policy acceptance claimed','before_after_performance_comparison':'NOT_RUN','no_permission_grants_or_browser_security_flags':True}
+write(P/'source-binding.json',binding)
+write(P/'focused-native-result.json',{'status':'PASS','tests':13,'skips':0,'files':5,'results':results,'raw_report_SHA256':sha((P/'focused-vitest.private.json').read_bytes())})
+write(P/'native-runner.json',{'command_argv':['node','node_modules/vitest/vitest.mjs','run',*[x['path'].removeprefix('clients/web/') for x in results],'--reporter=json','--outputFile=../../.out/qa-history-window/focused-vitest.private.json'],'cwd':'clients/web','exit_code':0,'Vitest_startTime':native['startTime'],'source_revision':SOURCE,'source_binding_collected_after_native_run':True,'tracked_source_no_intervening_changes':True,'note':'13 existing focused tests stay green while three browser editor-eviction counterexamples fail; not the full historical conversation suite or build'})
+visual=[]
+for f in sorted((P/'private').glob('*-after.private.png')):visual.append({'name':f.name,'SHA256':sha(f.read_bytes()),'bytes':f.stat().st_size,'resolution':[1440,1000],'exported':False})
+write(P/'visual-record.json',{'captures':visual,'review_scope':'Inspect final source-resolution screenshots privately. Failed restored newest row displays normal message/actions with no editor; controls may pin editor outside viewport, so their retention is proved by actual textarea value/focus assertions, not screenshot visibility','contains_only_owned_synthetic_fixture':True,'public_message_or_image_payloads_exported':False})
+print(json.dumps({'source_binding':'PASS','master_checked':remote,'matched_files':len(files),'native_tests':13,'native_skips':0,'both_stream_log_scan':audit['status'],'cleanup':after['status'],'visual_capture_count':len(visual)}))

@@ -1,0 +1,79 @@
+{
+  "at_utc": "2026-10-28T02:43:45.041229+00:00",
+  "status": "PASS_BOTH_LOG_STREAMS_PRIVATE_CREDENTIAL_SCAN",
+  "scope": "Both stdout and stderr of docker logs since fresh packet preflight; original cleanup.py scans covered stdout only",
+  "services": [
+    {
+      "service": "api",
+      "stdout_bytes": 240856,
+      "stderr_bytes": 0,
+      "joined_SHA256": "759aa8da34d874032071f74a0704caab9fbda576b6a607ba327fe3fae0418a1d",
+      "credential_or_own_session_markers_found": false,
+      "raw_logs_remain_private": true
+    },
+    {
+      "service": "web",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "joined_SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "credential_or_own_session_markers_found": false,
+      "raw_logs_remain_private": true
+    },
+    {
+      "service": "proxy",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "joined_SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "credential_or_own_session_markers_found": false,
+      "raw_logs_remain_private": true
+    },
+    {
+      "service": "postgres",
+      "stdout_bytes": 0,
+      "stderr_bytes": 1424,
+      "joined_SHA256": "3302718233294e6b00b36cfcc993b848674eaf6f4e1471e1f7cbed8636ea5a59",
+      "credential_or_own_session_markers_found": false,
+      "raw_logs_remain_private": true
+    },
+    {
+      "service": "livekit",
+      "stdout_bytes": 0,
+      "stderr_bytes": 15054,
+      "joined_SHA256": "305dfe859bb80d0588ccb857a3a074226a292e819d30e63ceeb2a98aa6accc61",
+      "credential_or_own_session_markers_found": false,
+      "raw_logs_remain_private": true
+    },
+    {
+      "service": "collector",
+      "stdout_bytes": 0,
+      "stderr_bytes": 76472,
+      "joined_SHA256": "a42e400114828dcd27dab1060cbf36c99090a3f93e49a66cbd3f7965f8674c71",
+      "credential_or_own_session_markers_found": false,
+      "raw_logs_remain_private": true
+    },
+    {
+      "service": "tempo",
+      "stdout_bytes": 0,
+      "stderr_bytes": 48875,
+      "joined_SHA256": "ada57202bcf295752365861ffbf13e2bee361b7277501b54a53aa57aa2a987f6",
+      "credential_or_own_session_markers_found": false,
+      "raw_logs_remain_private": true
+    },
+    {
+      "service": "prometheus",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "joined_SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "credential_or_own_session_markers_found": false,
+      "raw_logs_remain_private": true
+    },
+    {
+      "service": "grafana",
+      "stdout_bytes": 10909,
+      "stderr_bytes": 0,
+      "joined_SHA256": "c9beeda3b4e6ffae0337d967cdbcd3093abe313ecd7cfe66ed3691c2453cc1a7",
+      "credential_or_own_session_markers_found": false,
+      "raw_logs_remain_private": true
+    }
+  ]
+}

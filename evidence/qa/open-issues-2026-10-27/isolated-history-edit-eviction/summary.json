@@ -1,0 +1,43 @@
+{
+  "at_utc": "2026-10-28T02:45:17.609916+00:00",
+  "status": "FAIL_UNCOMMITTED_EDIT_DRAFT_EVICTED",
+  "criteria": [
+    "I240.C9",
+    "I241.C37"
+  ],
+  "canonical_fix_issue": 141,
+  "GitHub_handoff": "Recorded separately after first evidence commit; canonical fix is reused, not duplicated",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "master_fingerprint_matches": 22,
+  "master_checked": "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a",
+  "protects": "A valid cache-window paging update must retain an uncommitted edit or restore its exact draft when the target returns",
+  "command": "python -X utf8 .out/qa-history-window/preflight.py; python -X utf8 .out/qa-history-window/prepare.py; node .out/qa-history-window/run_browser.mjs; python -X utf8 .out/qa-history-window/verify_browser.py; python -X utf8 .out/qa-history-window/cleanup.py; python -X utf8 .out/qa-history-window/audit_bind.py",
+  "platform": "Windows11/Node24.18.0/headlessChromium153.0.8010.12/Vue3.5.43/Pinia4.0.3/current source components; own actual Go API/PostgreSQL17.6",
+  "mandatory_when": "Before accepting141 cache-window/edit preservation or I240.C9/I241.C37; after fixing this bug",
+  "controller_exit": 0,
+  "acceptance_verdict_exit": 1,
+  "primary_executed_cases": 5,
+  "primary_controls_passed": 2,
+  "primary_loss_reproductions": 3,
+  "first_completed_profile": "Independent earlier same-dataset profile also retained2 controls and lost3 edits; archived separately, before roundtrip oracle refinement",
+  "native_tests": 13,
+  "native_test_files": 5,
+  "native_skips": 0,
+  "dataset_count": 1000,
+  "reply_count": 500,
+  "dataset_seed_CSV_SHA256": "3631e7fe0dfb2c686f5202ae40f16674718968400675bc33f7d82fdd9d844e0c",
+  "DOM_row_range_observed": [
+    14,
+    24
+  ],
+  "counterexample": "Edit newest row with500 cached; scrolling alone retains exact draft/focus. Actual older UI click yields500 rows with target evicted, editor0. Three protected newer API pages restore target, editor remains0. No edit submit/cancel/delete; message revisions remain1",
+  "warning_observation": {
+    "Vite_ResizeObserver_occurrences": 65,
+    "triage": "Observed development-fixture diagnostic, not silently discarded; cause and production impact NOT_ESTABLISHED. Not a warning-free/full-UX PASS"
+  },
+  "limits": "Isolated Vite-served actual TextConversation/TextHistoryList and real cookie-authenticated own API data through canonical Host/Origin translation. No business response mocks, permission grants or security flags. Not production, built bundle, physical Android/native or API Origin-policy acceptance. Full50/500/5k/10k x0/50/100%, missing targets, before/after performance, protected images, search/unread, logout/account change remain NOT_RUN for this packet; existing prior witnesses keep their own limits. Timings include fixed settling/observer overhead; one-sided heap/long-task values are diagnostics, not INP/SLO/leak proof",
+  "cleanup": "environment-after.json and log-audit.json: own1000 messages/2 channels/category/read cursors removed; session revoked with live unauthenticated readback;9 original services IDs/images/config/starts unchanged, restart0/private/health200; one revoked session audit row retained",
+  "production_touched": false,
+  "physical_acceptance_claimed": false,
+  "original43_consolidation_decisions_applied": false
+}

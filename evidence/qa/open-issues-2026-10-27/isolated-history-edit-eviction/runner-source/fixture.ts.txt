@@ -1,0 +1,32 @@
+import { createApp, h, ref, nextTick } from 'vue'
+import { createPinia, setActivePinia } from 'pinia'
+import TextConversation from '../../clients/web/src/conversation/TextConversation.vue'
+import { useMessageStore } from '../../clients/web/src/conversation/message_store'
+import { useTopologyStore } from '../../clients/web/src/channel/topology_store'
+import { useAuthorDirectory } from '../../clients/web/src/identity/author_directory'
+import '../../clients/web/src/style.css'
+const cfg=(window as any).__qaHistoryConfig
+const pinia=createPinia();setActivePinia(pinia)
+const store=useMessageStore(pinia),topology=useTopologyStore(pinia),authors=useAuthorDirectory(pinia),channel=ref(cfg.channel)
+authors.acceptOwnProfile({account_id:cfg.account,login:'fixture',display_name:'QA owner',role:'ADMINISTRATOR'})
+topology.topology={revision:1,categories:[{id:cfg.category,name:'QA',position:0,channels:[{id:cfg.channel,name:'History fixture',kind:'TEXT',position:0,admissionClosed:false,unreadCount:0,mentionCount:0}]}]}
+const indices=new Map<string,number>(cfg.ids.map((id:string,index:number)=>[id,index]))
+const tasks:number[]=[]
+if(PerformanceObserver.supportedEntryTypes.includes('longtask'))new PerformanceObserver(list=>{for(const e of list.getEntries())tasks.push(e.duration)}).observe({type:'longtask',buffered:true})
+createApp({render:()=>h('div',{class:'app-frame'},[h('div',{class:'gc-shell no-aside'},[
+  h('aside',{class:'sidebar'},'Owned isolated history fixture'),
+  h('main',{class:'main'},[h(TextConversation,{accountId:cfg.account,active:true,channelId:channel.value,channelName:'History fixture',navOpen:false,membersOpen:false,showMembers:false})]),
+])])}).use(pinia).mount('#app')
+async function settle(){await nextTick();await new Promise<void>(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r())))}
+Object.assign(window,{historyQA:{
+ ready:()=>store.historyLoaded&&store.channelId===cfg.channel&&!store.loading,
+ pagingSettled:()=>!store.olderLoading&&!store.newerLoading,
+ async fillCache(target:number){let calls=0;while(store.messages.length<target&&store.nextCursor){store.setHistoryAnchor(store.messages.at(-1)?.id);if(!await store.loadOlder())throw Error('FIXTURE_PAGING_REFUSED');if(++calls>25)throw Error('FIXTURE_PAGING_BOUND');await settle()}await settle();return calls},
+ async scroll(top:boolean){const list=document.querySelector<HTMLElement>('.message-list')!;list.scrollTop=top?0:list.scrollHeight;list.dispatchEvent(new Event('scroll'));await settle()},
+ settle,
+ state(){const list=document.querySelector<HTMLElement>('.message-list');const inputs=[...document.querySelectorAll<HTMLTextAreaElement>('textarea[aria-label="Изменённый текст сообщения"]')];const focus=document.activeElement?.closest<HTMLElement>('[data-message-id]');return{
+   cache_count:store.messages.length,cache_min_index:Math.min(...store.messages.map(m=>indices.get(m.id)??-1)),cache_max_index:Math.max(...store.messages.map(m=>indices.get(m.id)??-1)),older_cursor:Boolean(store.nextCursor),newer_cursor:Boolean(store.newerCursor),
+   DOM_message_rows:document.querySelectorAll('[data-message-id]').length,DOM_nodes:document.querySelectorAll('*').length,editor_count:inputs.length,editor_indices:inputs.map(e=>indices.get(e.closest<HTMLElement>('[data-message-id]')?.dataset.messageId??'')??-1),editor_lengths:inputs.map(e=>e.value.length),focused_message_index:indices.get(focus?.dataset.messageId??'')??null,focused_editor:document.activeElement?.getAttribute('aria-label')==='Изменённый текст сообщения',
+   scroll_top:list?.scrollTop,scroll_height:list?.scrollHeight,viewport_height:list?.clientHeight,heap_used_bytes:(performance as any).memory?.usedJSHeapSize??null,long_task_count:tasks.length,long_task_total_ms:tasks.reduce((a,b)=>a+b,0),long_task_max_ms:Math.max(0,...tasks),
+ }},
+}})

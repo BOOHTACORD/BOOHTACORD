@@ -1,0 +1,45 @@
+{
+  "at_utc": "2026-10-28T02:40:27.181272+00:00",
+  "status": "FAIL_UNCOMMITTED_EDIT_DRAFT_EVICTED",
+  "controller_exit": 0,
+  "acceptance_gate_exit": 1,
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "browser": "153.0.8010.12",
+  "dataset_SHA256": "3631e7fe0dfb2c686f5202ae40f16674718968400675bc33f7d82fdd9d844e0c",
+  "cases": [
+    {
+      "case": "no_eviction",
+      "expected": "Uncommitted edit is retained or restored exactly after valid older/newer paging",
+      "actual": "PASS_DRAFT_RETAINED_OR_RESTORED",
+      "pass": true
+    },
+    {
+      "case": "retained_editor_row",
+      "expected": "Uncommitted edit is retained or restored exactly after valid older/newer paging",
+      "actual": "PASS_DRAFT_RETAINED_OR_RESTORED",
+      "pass": true
+    },
+    {
+      "case": "evicted_editor_1",
+      "expected": "Uncommitted edit is retained or restored exactly after valid older/newer paging",
+      "actual": "FAIL_UNCOMMITTED_DRAFT_LOST",
+      "pass": false
+    },
+    {
+      "case": "evicted_editor_2",
+      "expected": "Uncommitted edit is retained or restored exactly after valid older/newer paging",
+      "actual": "FAIL_UNCOMMITTED_DRAFT_LOST",
+      "pass": false
+    },
+    {
+      "case": "evicted_editor_3",
+      "expected": "Uncommitted edit is retained or restored exactly after valid older/newer paging",
+      "actual": "FAIL_UNCOMMITTED_DRAFT_LOST",
+      "pass": false
+    }
+  ],
+  "fixture_integrity": "PASS",
+  "Vite_ResizeObserver_warning_occurrences": 65,
+  "raw_controller_log_SHA256": "ef7e096fde09e4a375657c131d1b746a60f8addddc5a8e74ce9f52b876ff9b06",
+  "limit": "Controlled source-component/actual owned API profile only, canonical Host/Origin proxy translation; not full dataset/performance/physical/security acceptance"
+}

@@ -1,0 +1,171 @@
+{
+  "at_utc": "2026-10-28T02:41:45.631202+00:00",
+  "status": "PASS_OWN_FIXTURE_REMOVAL_SESSION_REVOCATION_AND_NINE_PRIVATE_SERVICES",
+  "production_touched": false,
+  "owned_message_rows_unchanged_revision1_before_cleanup": 1000,
+  "own_session_logout204_and_live_unauthenticated_readback": true,
+  "owned_messages_removed": 1000,
+  "owned_channels_removed": 2,
+  "owned_category_removed": 1,
+  "owned_read_cursors_removed": true,
+  "remaining_owned_rows": 0,
+  "database_counts_before": [
+    516,
+    2065,
+    50,
+    9,
+    3
+  ],
+  "database_counts_after": [
+    516,
+    2066,
+    50,
+    9,
+    3
+  ],
+  "database_count_order": [
+    "users",
+    "all_sessions",
+    "unrevoked_session_rows_not_validity",
+    "attachments",
+    "messages"
+  ],
+  "PostgreSQL_version": "17.6",
+  "users_created": 0,
+  "attachments_created": 0,
+  "own_historical_session_rows_retained_revoked": 1,
+  "own_Vite_port_closed": 4808,
+  "services": [
+    {
+      "service": "api",
+      "running": true,
+      "restart_count": 0,
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "web",
+      "running": true,
+      "restart_count": 0,
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "proxy",
+      "running": true,
+      "restart_count": 0,
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "postgres",
+      "running": true,
+      "restart_count": 0,
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "livekit",
+      "running": true,
+      "restart_count": 0,
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "collector",
+      "running": true,
+      "restart_count": 0,
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "tempo",
+      "running": true,
+      "restart_count": 0,
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "prometheus",
+      "running": true,
+      "restart_count": 0,
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "published_ports_loopback": true
+    },
+    {
+      "service": "grafana",
+      "running": true,
+      "restart_count": 0,
+      "same_ID_image_Config_HostConfig_StartTime": true,
+      "published_ports_loopback": true
+    }
+  ],
+  "private_log_scans": [
+    {
+      "service": "api",
+      "bytes": 238450,
+      "SHA256": "e796d3054af856bf20cda768b65bcfd1778b4d94685836d80af23f60c6afa138",
+      "credential_markers_found": false,
+      "raw_logs_remain_private": true
+    },
+    {
+      "service": "web",
+      "bytes": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "credential_markers_found": false,
+      "raw_logs_remain_private": true
+    },
+    {
+      "service": "proxy",
+      "bytes": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "credential_markers_found": false,
+      "raw_logs_remain_private": true
+    },
+    {
+      "service": "postgres",
+      "bytes": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "credential_markers_found": false,
+      "raw_logs_remain_private": true
+    },
+    {
+      "service": "livekit",
+      "bytes": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "credential_markers_found": false,
+      "raw_logs_remain_private": true
+    },
+    {
+      "service": "collector",
+      "bytes": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "credential_markers_found": false,
+      "raw_logs_remain_private": true
+    },
+    {
+      "service": "tempo",
+      "bytes": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "credential_markers_found": false,
+      "raw_logs_remain_private": true
+    },
+    {
+      "service": "prometheus",
+      "bytes": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "credential_markers_found": false,
+      "raw_logs_remain_private": true
+    },
+    {
+      "service": "grafana",
+      "bytes": 6632,
+      "SHA256": "a55011301940aff015b69ab014d6745989a2497976316ea90e032183b1195c31",
+      "credential_markers_found": false,
+      "raw_logs_remain_private": true
+    }
+  ],
+  "API_health_http": 200,
+  "source_worktree_clean": true,
+  "finished_at_utc": "2026-10-28T02:41:55.576909+00:00"
+}

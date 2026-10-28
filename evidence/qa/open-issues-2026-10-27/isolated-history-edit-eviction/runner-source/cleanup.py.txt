@@ -1,0 +1,42 @@
+"""Remove only the recorded owned history fixture and revoke its isolated session."""
+import hashlib,ipaddress,json,socket,subprocess
+from datetime import datetime,timezone
+from common import P,Q,PROJECT,SOURCE,credentials,docker,read,write,sql,valid,request
+assert not (P/'environment-after.json').exists(),'Retain existing cleanup receipt'
+c=read(P/'private/config.private.json');before=read(P/'environment-before.json');semantic=read(P/'semantic-result.json')
+assert semantic['fixture_integrity']=='PASS' and semantic['acceptance_gate_exit']==1
+category=valid(c['category']);channel=valid(c['channel']);other=valid(c['other_channel']);ids=set(map(valid,c['ids']))
+assert len(ids)==1000 and len(c['owner_token'])==24 and all(x in '0123456789abcdef' for x in c['owner_token'])
+assert sql("SELECT name FROM categories WHERE id='"+category+"';").strip()=='qa_history_'+c['owner_token']
+assert set(sql("SELECT id FROM channels WHERE category_id='"+category+"';").splitlines())=={channel,other}
+assert set(sql("SELECT id FROM messages WHERE channel_id='"+channel+"';").splitlines())==ids
+assert int(sql("SELECT count(*) FROM messages WHERE channel_id='"+channel+"' AND (revision<>1 OR deleted_at IS NOT NULL);").strip())==0
+assert int(sql("SELECT count(*) FROM messages WHERE channel_id='"+other+"';").strip())==0
+assert int(sql("SELECT count(*) FROM attachments WHERE channel_id IN ('"+channel+"','"+other+"');").strip())==0
+assert int(sql("SELECT count(*) FROM guild_settings WHERE welcome_channel_id IN ('"+channel+"','"+other+"');").strip())==0
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'RUNNING','production_touched':False,'owned_message_rows_unchanged_revision1_before_cleanup':1000}
+status,_,_=request('/api/v1/auth/logout','POST',{},c['cookie']);assert status==204
+status,_,session=request('/api/v1/auth/session',cookie=c['cookie']);assert status==200 and session['authenticated'] is False;r['own_session_logout204_and_live_unauthenticated_readback']=True
+statement="BEGIN;\nDELETE FROM channel_read_cursors WHERE channel_id IN ('"+channel+"','"+other+"');\nDELETE FROM messages WHERE channel_id='"+channel+"';\nDELETE FROM channels WHERE category_id='"+category+"' AND id IN ('"+channel+"','"+other+"');\nDELETE FROM categories WHERE id='"+category+"' AND name='qa_history_"+c['owner_token']+"';\nCOMMIT;\n"
+sql(statement)
+assert sql("SELECT count(*) FROM messages WHERE channel_id IN ('"+channel+"','"+other+"');\nSELECT count(*) FROM channels WHERE id IN ('"+channel+"','"+other+"');\nSELECT count(*) FROM categories WHERE id='"+category+"';\n").splitlines()==['0','0','0']
+r.update(owned_messages_removed=1000,owned_channels_removed=2,owned_category_removed=1,owned_read_cursors_removed=True,remaining_owned_rows=0)
+rows=sql('SELECT (SELECT count(*) FROM users),(SELECT count(*) FROM sessions),(SELECT count(*) FROM sessions WHERE revoked_at IS NULL),(SELECT count(*) FROM attachments),(SELECT count(*) FROM messages);\nSHOW server_version;\n').splitlines();counts=list(map(int,rows[0].split('|')))
+expected=list(before['database_counts']);expected[1]+=1;assert counts==expected
+r.update(database_counts_before=before['database_counts'],database_counts_after=counts,database_count_order=['users','all_sessions','unrevoked_session_rows_not_validity','attachments','messages'],PostgreSQL_version=rows[1],users_created=0,attachments_created=0,own_historical_session_rows_retained_revoked=1)
+with socket.socket() as s:s.bind(('127.0.0.1',4808))
+r['own_Vite_port_closed']=4808;r['services']=[];r['private_log_scans']=[]
+markers=[c['cookie'].split('=',1)[1].encode()]+[v.encode() for k,v in credentials().items() if isinstance(v,str) and (any(x in k for x in ['password','secret','ingest_auth']) or k=='livekit_key')]
+for name in ['api','web','proxy','postgres','livekit','collector','tempo','prometheus','grafana']:
+    old=read(P/'private'/(name+'-inspect-before.private.json'));v=json.loads(docker('inspect',old['Id']))[0]
+    assert v['Id']==old['Id'] and v['State']['Running'] and v['RestartCount']==old['RestartCount']==0
+    assert v['Config']==old['Config'] and v['HostConfig']==old['HostConfig'] and v['Image']==old['Image'] and v['State']['StartedAt']==old['State']['StartedAt']
+    for bindings in v['NetworkSettings']['Ports'].values():
+        for binding in bindings or []:assert ipaddress.ip_address(binding['HostIp']).is_loopback
+    logs=docker('logs','--since',before['at_utc'],old['Id']);(P/'private'/(name+'-logs.private.log')).write_bytes(logs);assert all(m not in logs for m in markers)
+    r['services'].append({'service':name,'running':True,'restart_count':0,'same_ID_image_Config_HostConfig_StartTime':True,'published_ports_loopback':True})
+    r['private_log_scans'].append({'service':name,'bytes':len(logs),'SHA256':hashlib.sha256(logs).hexdigest(),'credential_markers_found':False,'raw_logs_remain_private':True})
+status,_,_=request('/api/v1/health');assert status==200;r['API_health_http']=status
+assert not subprocess.check_output(['git','-c','core.autocrlf=false','status','--porcelain'],cwd=Q,text=True).strip();r['source_worktree_clean']=True
+r['status']='PASS_OWN_FIXTURE_REMOVAL_SESSION_REVOCATION_AND_NINE_PRIVATE_SERVICES';r['finished_at_utc']=datetime.now(timezone.utc).isoformat();write(P/'environment-after.json',r)
+print(json.dumps({k:v for k,v in r.items() if k not in ['services','private_log_scans']}))

@@ -1,0 +1,34 @@
+{
+  "workflow_class": "review_gate",
+  "task_size": "large",
+  "structure_mode": "structure_no_rg",
+  "search_stage": "structure_no_rg",
+  "route": "clients/web/src/conversation/history_window",
+  "criteria": [
+    "I240.C9",
+    "I241 long TEXT history / implementation141"
+  ],
+  "backlog_context": "T-040 depends T-010/T-020; T-051 browser acceptance; T-003 owned runtime. No requirement, backlog, contract or product edits",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "previous_goal_turn": "PROGRESS: C8 27 stages +36 tests + killed subscription mutant published at f2c288c209f47df728adb0099ee4fff4389b77f7; GitHub140/240 readbacks exact. Production Chrome URL-confidence block remains separate",
+  "mode": "Isolated source/runtime verification; no implementation, merge, deploy or physical acceptance substitution",
+  "native_edges": "TextConversation -> TextHistoryList -> useTextHistoryList -> useHistoryWindow/timeline/window; actual message_store/createTextHistory -> merge/eviction/paging -> protected same-origin message API; message_index for replies",
+  "scoped_search": "Exact cited141 files, history_window/message_index leaves, imported conversation/identity/context edges and closest typed tests only",
+  "ratchet": "Ignored runner files <=120 lines; target8/hard16 focused helpers per independent trigger family; no product behavior change",
+  "preservation": "Production/phone/session/base URL/router/OS privacy untouched; no capture picker or workaround for stopped production CUA. Own isolated synthetic fixtures only; preserve9 original services/config/restarts/private ports. No message bodies/real IDs/cookies/tokens in public output",
+  "checks": [
+    "Closest focused native tests with exit and skip counts",
+    "Fresh guarded existing isolated runtime preflight and source binding",
+    "Real headless Chromium source-component profile; deterministic datasets50/500/5000/10000, replies0/50/100 and missing targets",
+    "Actual API older/newer paging and cache/DOM/anchor/focus controls",
+    "Record explicit remaining navigation/image/baseline-profile limits; counterexample or mutation for any asserted protection",
+    "Cleanup own fixtures, private log/privacy checks, original480 rows/cases retained, source-bound publication and fresh GitHub readback"
+  ],
+  "stop_condition": "Publish actual available C9 runtime outcomes and confirmed failures with duplicate search, preserve NOT_RUN/BLOCKED for missing clauses; do not close full141 acceptance or parent QA without every criterion",
+  "unresolved": [
+    "Full before/after snapshot compatibility under fixed toolchain",
+    "Actual focused component dependencies and API fixture preparation",
+    "Physical Android HTTPS origin remains blocked separately; human audibility unavailable",
+    "Hosted PostgreSQL17.6/Android/macOS gates and original43 consolidation decisions unchanged"
+  ]
+}

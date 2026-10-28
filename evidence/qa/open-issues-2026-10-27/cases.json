@@ -1151,6 +1151,23 @@
       "result": "isolated-screen-preview/summary.json",
       "limits": "Headless Chromium153/real pinned SDK and existing owned SFU;2 synthetic640x360 sources at requested15fps, no physical FPS/acoustic/capacity/native/UI-picker/production acceptance. Direct SDK grants with supported generic identities; Go-auth/voice-lease presence paths separate. Actual SDK events held/replayed at consumer boundary, not naturally delayed network packets. No screenshots, video, frame payloads, SDP, candidate data, IDs or credentials exported.",
       "defects": []
+    },
+    {
+      "id": "ISOLATED-history-edit-draft-cache-eviction",
+      "status": "FAIL",
+      "protects": "A valid cache-window paging update must retain an uncommitted edit or restore its exact draft when the target returns",
+      "command": "python -X utf8 .out/qa-history-window/preflight.py; python -X utf8 .out/qa-history-window/prepare.py; node .out/qa-history-window/run_browser.mjs; python -X utf8 .out/qa-history-window/verify_browser.py; python -X utf8 .out/qa-history-window/cleanup.py; python -X utf8 .out/qa-history-window/audit_bind.py",
+      "platform": "Windows11/Node24.18.0/headlessChromium153.0.8010.12/Vue3.5.43/Pinia4.0.3/current source components; own actual Go API/PostgreSQL17.6",
+      "mandatory_when": "Before accepting141 cache-window/edit preservation or I240.C9/I241.C37; after fixing this bug",
+      "issues": [
+        240,
+        241
+      ],
+      "result": "isolated-history-edit-eviction/summary.json",
+      "limits": "Isolated Vite-served actual TextConversation/TextHistoryList and real cookie-authenticated own API data through canonical Host/Origin translation. No business response mocks, permission grants or security flags. Not production, built bundle, physical Android/native or API Origin-policy acceptance. Full50/500/5k/10k x0/50/100%, missing targets, before/after performance, protected images, search/unread, logout/account change remain NOT_RUN for this packet; existing prior witnesses keep their own limits. Timings include fixed settling/observer overhead; one-sided heap/long-task values are diagnostics, not INP/SLO/leak proof",
+      "defects": [
+        141
+      ]
     }
   ]
 }
