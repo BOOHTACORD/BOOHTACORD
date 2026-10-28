@@ -33,6 +33,12 @@ watch([preview, leaseId], observePreview, { flush: 'post' })
 onBeforeUnmount(stopObserving)
 
 const initials = computed(() => props.screen.participantName.trim().slice(0, 2).toLocaleUpperCase('ru-RU') || 'У')
+const caption = computed(() => {
+  const mode = props.screen.descriptor?.mode
+  const profile = props.screen.targetProfile
+  if (mode) return `${mode === 'motion' ? 'Плавность' : 'Текст'}${profile ? ` · ${profile}` : ''}`
+  return profile ? `Экран · ${profile}` : 'Демонстрация экрана'
+})
 </script>
 
 <template>
@@ -54,9 +60,10 @@ const initials = computed(() => props.screen.participantName.trim().slice(0, 2).
       :style="{ backgroundColor: avatarBackground(screen.accountId ?? screen.participantId), color: avatarForeground(screen.accountId ?? screen.participantId) }"
       aria-hidden="true"
     >{{ initials }}</span>
+    <span class="participant-screen-preview__caption">{{ caption }}</span>
     <span class="participant-screen-preview__live"><span aria-hidden="true"></span>ЭФИР</span>
-    <span class="participant-screen-preview__open" aria-hidden="true">
-      <svg viewBox="0 0 24 24"><path d="M4 5h16v11H4zM9 20h6m-3-4v4" /></svg>
+    <span class="participant-screen-preview__play" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="m9 6 10 6-10 6z" /></svg>
     </span>
   </button>
 </template>
