@@ -4,5 +4,10 @@
   "expiry_min_utc": "2026-10-28T02:11:31+00:00",
   "expiry_max_utc": "2026-10-28T02:11:45+00:00",
   "all_expired_at_check": false,
-  "cleanup": "Private stateless grants expire naturally; own rooms deleted and loopback bridge removed; no claim of explicit JWT revocation"
+  "cleanup": "Private stateless grants expire naturally; own rooms deleted and loopback bridge removed; no claim of explicit JWT revocation",
+  "later_encoded_expiry_observation": {
+    "at_utc": "2026-10-28T02:15:58.141556+00:00",
+    "all_encoded_exp_before_observation_utc": true,
+    "limit": "Encoded exp cutoff only; no live rejection test, JWT revocation or server leeway assertion"
+  }
 }
