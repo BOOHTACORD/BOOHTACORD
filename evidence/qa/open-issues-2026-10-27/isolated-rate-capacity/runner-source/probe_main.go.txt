@@ -1,0 +1,7 @@
+package main
+import("context";"encoding/json";"os";"time")
+func main(){
+ started:=time.Now();status:="FAIL_OR_PROFILE";failed:="";defer func(){if r:=recover();r!=nil{failed,_=r.(string)};d:=map[string]any{"status":status,"source_revision":cfg.SourceRevision,"production_touched":false,"elapsed_seconds":time.Since(started).Seconds(),"records":records,"metric_samples":samples,"new_users_or_sessions":0,"profile":map[string]any{"actual_capacity":10000,"source_limit":10,"window_s":300,"fill_workers":4,"fill_min_start_interval_ms":10,"concurrent_boundary":16,"native_router_or_physical_NAT_proven":false}};if failed!=""{d["failed_check"]=failed};emit("final",d);if status=="FAIL_OR_PROFILE"{os.Exit(1)}}()
+ raw,e:=os.ReadFile("/work/config.private.json");require(e==nil&&json.Unmarshal(raw,&cfg)==nil,"private owned config");validateConfig();var cancel context.CancelFunc;ctx,cancel=context.WithTimeout(context.Background(),14*time.Minute);defer cancel()
+ if len(os.Args)>1&&os.Args[1]=="observe"{measure("fresh_read_only_snapshot");metricAudit();status="PASS_PRIVATE_RATE_CAPACITY_OBSERVATION";return};profile();metricAudit();measure("final_actual_API_snapshot");status="PASS_ACTUAL_RATE_LIMIT_STORE_CAPACITY"
+}

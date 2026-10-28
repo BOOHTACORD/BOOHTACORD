@@ -1,0 +1,21 @@
+{
+  "at_utc": "2026-10-28T01:08:58.574873+00:00",
+  "tested_source": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "historical_source": "ce8c3e0ad848a879d4d60ef08df74b85661c19da",
+  "historical_limiter_SHA256": "27175bccc30acb818130e17e2c9e1c4309451e9ed645affa73f4384ea1e89dfa",
+  "files_SHA256": {
+    "backend/internal/security/rate_limit/expiration.go": "d268839a392626b8e848aac3912e954e8a723ec1dfcf038c0856d7d4e0fb25f1",
+    "backend/internal/security/rate_limit/limiter.go": "11fa8d040fce656af4ce3cf643bb1d7e86f122345f2799bde60bed5bbdd42d9b",
+    "backend/internal/security/rate_limit/limiter_test.go": "a68fad003887f1074e469b2d206d346d09730242cd62a7d65c6076ba28910805",
+    "backend/internal/security/rate_limit/metrics.go": "8c57755234aa82bf24425837d42d50dbe41775199b3bcb80c9559e34d7e47053",
+    "backend/internal/security/rate_limit/middleware.go": "615531b53c583f8e2fa694bab2b2ac730b2a9810ab47cc0e8766cf7cfa5573c9",
+    "backend/internal/security/rate_limit/middleware_test.go": "afe02e93b99d8acd0616fd59a50ac06007f8826beddbd5dcbcf988f4d8f73267",
+    "backend/internal/security/rate_limit/source.go": "f2acf749674bab5f5d67588c877573dd6b65c44d919481c944c7b5ba8a87006c",
+    "backend/internal/security/rate_limit/source_test.go": "6ae86e41ccabdbbdb04606dd15a598a9b2356a0d47c0e02f6ceee3ef53e4afa3",
+    ".out/qa-rate-capacity/capacity_regression_test.go": "1bdcb4acd021a1e22b78f793acfcaa4270c387401e7729a49337d86ae5eebc78",
+    ".out/qa-rate-capacity/capacity_extra_test.go": "3591ed77a47a26368d5799425d8473e48037021451f2896b4f7f1597fb286a46",
+    ".out/qa-rate-capacity/run_native.py": "9fd3a60c32657a73d2ec3080e7808feae1d0d4ab48e2a224fe83c29627806b3a"
+  },
+  "toolchain_image": "golang@sha256:5a94593d87a066df5abb02969be911524963f53908292aa5a1a6096fc019012a",
+  "current_original_leaf_tests_unchanged": true
+}

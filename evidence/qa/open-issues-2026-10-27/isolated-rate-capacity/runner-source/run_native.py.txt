@@ -1,0 +1,31 @@
+"""Exact native race and identical fixed-load historical/current benchmark; no product edits."""
+import hashlib,json,os,subprocess,sys,time
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,SOURCE,CONTEXT
+IMAGE='golang@sha256:5a94593d87a066df5abb02969be911524963f53908292aa5a1a6096fc019012a';OLD='ce8c3e0ad848a879d4d60ef08df74b85661c19da'
+def now():return datetime.now(timezone.utc).isoformat()
+def save(n,d):(P/n).write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8',newline='\n')
+def sha(b):return hashlib.sha256(b).hexdigest()
+assert not (P/'native-result.json').exists();assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=Q,text=True).strip()==SOURCE
+native=P/'native';baseline=native/'baseline';baseline.mkdir(exist_ok=True,parents=True);raw=subprocess.check_output(['git','show',OLD+':backend/internal/security/rate_limit/limiter.go'],cwd=Q);(baseline/'limiter.go').write_bytes(raw);(baseline/'go.mod').write_text('module qa-historical-rate-limit\n\ngo 1.26.0\n',encoding='utf-8')
+(baseline/'adapter.go').write_text('package ratelimit\nimport "time"\nfunc(l *Limiter) Allow(s string)(time.Duration,bool){return l.allow(s)}\n',encoding='utf-8')
+for name in ['capacity_regression_test.go']:(baseline/name).write_bytes((P/name).read_bytes())
+(baseline/'limiter_test.go').write_bytes((Q/'backend/internal/security/rate_limit/limiter_test.go').read_bytes())
+overlay={'Replace':{'/src/internal/security/rate_limit/'+n:'/work/'+n for n in ['capacity_regression_test.go','capacity_extra_test.go']}};(P/'native-overlay.json').write_text(json.dumps(overlay),encoding='utf-8')
+files={str(f.relative_to(Q)).replace('\\','/'):sha(f.read_bytes()) for f in [* (Q/'backend/internal/security/rate_limit').glob('*.go'),P/'capacity_regression_test.go',P/'capacity_extra_test.go',Path(__file__)]};save('runner-before-native.json',{'at_utc':now(),'tested_source':SOURCE,'historical_source':OLD,'historical_limiter_SHA256':sha(raw),'files_SHA256':files,'toolchain_image':IMAGE,'current_original_leaf_tests_unchanged':True})
+module_cache=subprocess.check_output(['go','env','GOMODCACHE'],text=True).strip();results=[]
+def run(label,cwd,args,expected=0):
+ name='boohtacord-rate-native-'+label;assert not docker('ps','-a','--filter','name=^'+name+'$','--format','{{.Names}}').decode().strip();argv=['docker','--context',CONTEXT,'run','--rm','--name',name,'--label','com.docker.compose.project='+PROJECT,'--label','qa.packet=rate-capacity-native','--network','none','--cpus','2','--memory','2g','--pids-limit','512','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges','--tmpfs','/tmp:rw,exec,nosuid,nodev,size=2147483648','--mount','type=bind,source='+str(Q/'backend')+',target=/src,readonly','--mount','type=bind,source='+str(P)+',target=/work','--mount','type=bind,source='+module_cache+',target=/gomod,readonly','-e','GOMODCACHE=/gomod','-e','GOCACHE=/work/native-cache','-e','GOTOOLCHAIN=local','-e','GOWORK=off','-e','GOPROXY=off','-e','GOSUMDB=off','-e','CGO_ENABLED=1','-e','GOMAXPROCS=2','-w',cwd,IMAGE,*args]
+ started=now();t=time.monotonic()
+ with (P/(label+'.private.stdout')).open('wb') as out,(P/(label+'.private.stderr')).open('wb') as err:
+  process=subprocess.Popen(argv,stdout=out,stderr=err);save('native-live.json',{'status':'RUNNING','label':label,'controller_PID':os.getpid(),'docker_client_PID':process.pid,'at_utc':started});code=process.wait(timeout=900)
+ d={'label':label,'at_utc':started,'finished_at_utc':now(),'elapsed_s':time.monotonic()-t,'exit_code':code,'expected_exit_code':expected,'command_argv':args,'container_workdir':cwd,'stdout_SHA256':sha((P/(label+'.private.stdout')).read_bytes()),'stderr_SHA256':sha((P/(label+'.private.stderr')).read_bytes())};results.append(d);print(json.dumps(d),flush=True);assert code==expected,'Inspect private native output for '+label
+run('toolchain','/src',['go','version'])
+run('race','/src',['go','test','-json','-p=2','-race','-count=3','-timeout=3m','-overlay=/work/native-overlay.json','./internal/security/rate_limit'])
+run('historical-counterexample','/work/native/baseline',['go','test','-json','-count=1','-run','^Test(NoActiveBudgetResetAtCapacity|NewSourceFailsClosedAtCapacity)$','.'],1)
+for label,cwd,path in [('historical-bench','/work/native/baseline','.'),('current-bench','/src','./internal/security/rate_limit')]:run(label,cwd,['go','test','-run','^$','-bench','^BenchmarkLimiterLookupAndAdmission$','-benchtime=2000x','-count=3','-cpu=1,4','-benchmem',path])
+events=[json.loads(line) for line in (P/'race.private.stdout').read_text(encoding='utf-8').splitlines() if line];passes=[x for x in events if x.get('Action')=='pass' and x.get('Test')];assert len(passes)==36 and not any(x.get('Action') in ['fail','skip'] for x in events)
+save('native-result.json',{'status':'PASS_RACE_AND_PAIRED_NATIVE_BENCHMARK','at_utc':now(),'source_revision':SOURCE,'historical_source':OLD,'toolchain_image':IMAGE,'race_test_pass_events':len(passes),'race_repetitions':3,'unique_tests':len({x['Test'] for x in passes}),'skips':0,'runs':results,'historical_safety_regression_expected_failures':2,'source_or_production_changes':False})
+save('native-live.json',{'status':'TERMINAL_PASS','finished_at_utc':now()});print('NATIVE_TERMINAL_PASS',flush=True)

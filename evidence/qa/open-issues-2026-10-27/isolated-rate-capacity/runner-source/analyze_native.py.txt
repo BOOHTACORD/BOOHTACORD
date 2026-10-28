@@ -1,0 +1,27 @@
+"""Parse actual native outcomes and paired fixed-load timings without source keys."""
+import collections,hashlib,json,re,statistics
+from pathlib import Path
+P=Path(__file__).resolve().parent
+def read(n):return json.loads((P/n).read_text(encoding='utf-8'))
+def events(n):return [json.loads(v) for v in (P/n).read_text(encoding='utf-8').splitlines() if v]
+race=events('race.private.stdout');old=events('historical-counterexample.private.stdout');passed=[x for x in race if x.get('Action')=='pass' and x.get('Test')];assert len(passed)==36 and len({x['Test'] for x in passed})==12 and not any(x.get('Action') in ['skip','fail'] for x in race)
+expected={'TestNoActiveBudgetResetAtCapacity','TestNewSourceFailsClosedAtCapacity'};assert {x['Test'] for x in old if x.get('Action')=='fail' and x.get('Test')}==expected
+assert read('native-result.json')['status'].startswith('PASS') and read('hold-result.json')['status'].startswith('PASS')
+parsed={};summaries={}
+pattern=re.compile(r'^(Benchmark\S+)\s+(\d+)\s+([\d.]+)\s+ns/op\s+(\d+)\s+B/op\s+([\d.]+)\s+allocs/op$')
+for label in ['historical-bench','current-bench','historical-contention','current-contention']:
+ values=[]
+ for line in (P/(label+'.private.stdout')).read_text(encoding='utf-8').splitlines():
+  m=pattern.match(line.strip())
+  if m:values.append({'name':m[1],'iterations':int(m[2]),'ns_per_op':float(m[3]),'bytes_per_op':int(m[4]),'allocs_per_op':float(m[5])})
+ expected_n=36 if label.endswith('-bench') else 18;assert len(values)==expected_n,(label,len(values));assert all(v['iterations']==(2000 if label.endswith('-bench') else 10000) for v in values)
+ groups=collections.defaultdict(list)
+ for v in values:groups[v['name']].append(v)
+ assert all(len(v)==3 for v in groups.values());summaries[label]={k:{'repetitions':3,'median_ns_per_op':statistics.median(x['ns_per_op'] for x in v),'min_ns_per_op':min(x['ns_per_op'] for x in v),'max_ns_per_op':max(x['ns_per_op'] for x in v),'median_bytes_per_op':statistics.median(x['bytes_per_op'] for x in v),'median_allocs_per_op':statistics.median(x['allocs_per_op'] for x in v)} for k,v in groups.items()};parsed[label]=values
+comparisons=[]
+for historical,current in [('historical-bench','current-bench'),('historical-contention','current-contention')]:
+ assert set(summaries[historical])==set(summaries[current])
+ for name in summaries[historical]:
+  before=summaries[historical][name]['median_ns_per_op'];after=summaries[current][name]['median_ns_per_op'];comparisons.append({'benchmark':name,'historical_median_ns_per_op':before,'current_median_ns_per_op':after,'historical_div_current_ratio':round(before/after,3),'scope':'Matched fixed-count microbenchmark in same pinned2CPU container limits, not productionSLO'})
+d={'status':'PASS_NATIVE_RACE_COUNTEREXAMPLE_AND_MATCHED_MEASUREMENTS','source_revision':read('native-result.json')['source_revision'],'historical_source':read('native-result.json')['historical_source'],'race':{'unique_tests':12,'repetitions':3,'pass_events':36,'skips':0,'race_reports':0},'historical_expected_failures':sorted(expected),'unmodified_benchmarks':summaries,'raw_benchmark_values':parsed,'matched_comparisons':comparisons,'instrumented_hold_diagnostic':read('hold-result.json')['observations'],'instrumentation_limits':read('hold-result.json')['limits'],'raw_output_SHA256':{n:hashlib.sha256((P/n).read_bytes()).hexdigest() for n in ['race.private.stdout','historical-counterexample.private.stdout','historical-bench.private.stdout','current-bench.private.stdout','historical-contention.private.stdout','current-contention.private.stdout','historical-hold.private.stdout','current-hold.private.stdout']}}
+(P/'native-analysis.json').write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps({'status':d['status'],'race':d['race'],'paired_benchmarks':len(comparisons),'instrumented_hold_profiles':12}))

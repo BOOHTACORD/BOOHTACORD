@@ -1,0 +1,30 @@
+{
+  "events": [
+    {
+      "Time": "2026-10-28T01:14:56.338305144Z",
+      "Action": "start",
+      "Package": "voice-platform/backend/internal/security/rate_limit"
+    },
+    {
+      "Time": "2026-10-28T01:14:56.344121525Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMeasuredMutexHoldMatchedWorkload"
+    },
+    {
+      "Time": "2026-10-28T01:14:56.360934343Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMeasuredMutexHoldMatchedWorkload",
+      "Elapsed": 0.02
+    },
+    {
+      "Time": "2026-10-28T01:14:56.361999195Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Elapsed": 0.024
+    }
+  ],
+  "raw_private_stream_SHA256": "232a34e2f641bce2237dab69309dcd15f78e5ea28eff2cbad995a45f24e2a7c9",
+  "stderr_bytes": 0
+}

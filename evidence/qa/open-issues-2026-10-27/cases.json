@@ -1107,6 +1107,20 @@
       "result": "isolated-upload-budgets/summary.json",
       "limits": "Ingress window accounting with4997 malformed400 and3 real201 in first5000 admissions, not5000 successful file transfers. Logical trusted source cohorts, direct actual API in own proxy namespace; no physical NAT/router, native retry, media/capacity, load SLO or live store-capacity saturation claim. Full I240.C5 remains FAIL due NAT20/#137.",
       "defects": []
+    },
+    {
+      "id": "ISOLATED-rate-limit-capacity-race-benchmark",
+      "status": "PASS_SCOPED",
+      "protects": "Actual10000 generic source-store saturation, preserved active quota, bounded expiry, concurrent race safety and matched benchmark/hold diagnostic",
+      "command": "python -X utf8 .out/qa-rate-capacity/run_profile.py run; python -X utf8 .out/qa-rate-capacity/run_native.py; python -X utf8 .out/qa-rate-capacity/run_hold.py; python -X utf8 .out/qa-rate-capacity/analyze_native.py; python -X utf8 .out/qa-rate-capacity/run_profile.py observe; python -X utf8 .out/qa-rate-capacity/verify_after.py",
+      "platform": "Windows11 controller; actual source072 API/PostgreSQL17.6; pinned Go1.26.4 Linux amd64 toolchain container",
+      "mandatory_when": "Before accepting exact I240.C7/#139 referenced criterion",
+      "issues": [
+        240
+      ],
+      "result": "isolated-rate-capacity/summary.json",
+      "limits": "Actual generic source store through trusted own proxy namespace and malformed login parser; default10000/10/300s. Not physical NAT/router/native retry,50000-account-store saturation or production capacity. Matched bounded microbenchmarks and explicitly instrumented private-copy hold timings, not productionSLO.139 historical implementation used only as counterexample; no issue reopening is implied.",
+      "defects": []
     }
   ]
 }

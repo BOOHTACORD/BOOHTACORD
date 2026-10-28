@@ -1,0 +1,106 @@
+package ratelimit
+
+import (
+	"container/heap"
+	"errors"
+	"net"
+	"net/http"
+	"sync"
+	"time"
+)
+
+var ErrInvalidConfig = errors.New("invalid rate limit configuration")
+
+type Config struct {
+	Limit             int
+	Window            time.Duration
+	MaxSources        int
+	TrustedProxyCIDRs []string
+	Now               func() time.Time
+}
+
+type entry struct {
+	count int
+	reset time.Time
+}
+
+type Limiter struct {
+	mutex      sync.Mutex
+	limit      int
+	window     time.Duration
+	maxSources int
+	now        func() time.Time
+	entries    map[string]entry
+	expires    expirations
+	trusted    []*net.IPNet
+	saturated  uint64
+}
+
+func New(config Config) (*Limiter, error) {
+	if config.Limit < 1 || config.Window <= 0 || config.MaxSources < 1 {
+		return nil, ErrInvalidConfig
+	}
+	if config.Now == nil {
+		config.Now = time.Now
+	}
+	trusted, err := parseTrustedProxies(config.TrustedProxyCIDRs)
+	if err != nil {
+		return nil, err
+	}
+	return &Limiter{
+		limit: config.Limit, window: config.Window, maxSources: config.MaxSources,
+		now: config.Now, entries: make(map[string]entry), trusted: trusted,
+	}, nil
+}
+
+// Allow consumes one unit for source. Unknown sources fail closed when the
+// bounded active-window store is full, so saturation cannot reset an active
+// source's budget.
+func (limiter *Limiter) Allow(source string) (time.Duration, bool) {
+	limiter.mutex.Lock()
+	measuredStart := time.Now()
+	defer func(){ measuredHeld := time.Since(measuredStart); limiter.mutex.Unlock(); recordMeasuredHold(measuredHeld) }()
+
+	now := limiter.now()
+	current, found := limiter.entries[source]
+	if found && now.Before(current.reset) {
+		if current.count >= limiter.limit {
+			return current.reset.Sub(now), false
+		}
+		current.count++
+		limiter.entries[source] = current
+		return 0, true
+	}
+	if found {
+		delete(limiter.entries, source)
+	}
+	limiter.pruneExpired(now, 64)
+	if len(limiter.entries) >= limiter.maxSources {
+		limiter.saturated++
+		if len(limiter.expires) > 0 {
+			return maxDuration(time.Second, limiter.expires[0].reset.Sub(now)), false
+		}
+		return time.Second, false
+	}
+	current = entry{count: 1, reset: now.Add(limiter.window)}
+	limiter.entries[source] = current
+	heap.Push(&limiter.expires, expiry{source: source, reset: current.reset})
+	return 0, true
+}
+
+func (limiter *Limiter) Middleware(next http.Handler) http.Handler {
+	return limiter.MiddlewareFor(next, func(request *http.Request) string {
+		return sourceKey(request, limiter.trusted)
+	})
+}
+
+func (limiter *Limiter) MiddlewareFor(next http.Handler, key func(*http.Request) string) http.Handler {
+	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		retryAfter, allowed := limiter.Allow(key(request))
+		if !allowed {
+			writeRateLimit(writer, request, retryAfter)
+			return
+		}
+		next.ServeHTTP(writer, request)
+	})
+}

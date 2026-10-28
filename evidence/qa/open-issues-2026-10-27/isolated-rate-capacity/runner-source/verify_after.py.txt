@@ -1,0 +1,37 @@
+"""Terminal-process, unchanged DB, private topology and bounded sensitive-log checks."""
+import hashlib,http.client,ipaddress,json,subprocess,sys
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,SOURCE,CONTEXT,credentials
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+def now():return datetime.now(timezone.utc).isoformat()
+r={'at_utc':now(),'status':'RUNNING','source_revision':SOURCE,'project':PROJECT,'production_touched':False}
+try:
+ run=read(P/'run-runner.json');assert run['client_exit_code']==0 and run['status'].startswith('PASS')
+ assert read(P/'native-live.json')['status']=='TERMINAL_PASS' and read(P/'hold-live.json')['status']=='TERMINAL_PASS'
+ helpers=docker('ps','-a','--filter','label=qa.packet=rate-capacity','--format','{{.Names}}').decode().strip();native=docker('ps','-a','--filter','label=qa.packet=rate-capacity-native','--format','{{.Names}}').decode().strip();assert not helpers and not native
+ sql=b"SELECT (SELECT count(*) FROM users),(SELECT count(*) FROM sessions),(SELECT count(*) FROM sessions WHERE revoked_at IS NULL),(SELECT count(*) FROM attachments);\nSHOW server_version;\n";values=docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-At',input=sql).decode().splitlines();counts=list(map(int,values[0].split('|')));assert counts==read(P/'baseline-database.json')['users_sessions_active_attachments'] and values[1].startswith('17.6')
+ r.update(database_counts_unchanged=True,users_sessions_active_attachments=counts,new_users=0,new_sessions=0,new_attachments=0,PostgreSQL_version=values[1])
+ cfg=read(P/'private/config.private.json');prefix=cfg['sources'][0].rsplit(':',1)[0];assert all(v.startswith(prefix) for v in cfg['sources']);markers=[prefix.encode()]
+ markers.extend(v.encode() for k,v in credentials().items() if isinstance(v,str) and any(s in k for s in ['password','secret','ingest_auth']))
+ for f in [P.parent/'qa-upload-budgets/private/owned.private.json',P.parent/'qa-upload-budgets/attempt1/private/owned.private.json']:
+  d=read(f)
+  for a in d['accounts']:
+   markers.extend(v.encode() for k,v in a.items() if k in ['login','password'] and isinstance(v,str))
+   if a.get('cookie'):markers.append(a['cookie'].split('=',1)[1].encode())
+  if d.get('spare_cookie'):markers.append(d['spare_cookie'].split('=',1)[1].encode())
+ r['services']=[];r['bounded_owned_logs_scan']=[]
+ for service in ['api','web','proxy','postgres','livekit','collector','tempo','prometheus','grafana']:
+  name=PROJECT+'-'+service+'-1';v=json.loads(docker('inspect',name))[0];assert v['State']['Running'] and v['RestartCount']==0 and v['Config']['Labels']['com.docker.compose.project']==PROJECT
+  for bindings in v['NetworkSettings']['Ports'].values():
+   for b in bindings or []:assert ipaddress.ip_address(b['HostIp']).is_loopback
+  if service in ['api','web']:assert json.loads(docker('image','inspect',v['Image']))[0]['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+  log=subprocess.run(['docker','--context',CONTEXT,'logs','--since',run['at_utc'],name],capture_output=True);assert log.returncode==0;raw=log.stdout+b'\n'+log.stderr;(P/(service+'-logs.private.log')).write_bytes(raw);assert all(m not in raw for m in markers),'Own sensitive marker in '+service
+  r['services'].append({'service':service,'running':True,'image_id':v['Image'],'restart_count':v['RestartCount']});r['bounded_owned_logs_scan'].append({'service':service,'stdout_bytes':len(log.stdout),'stderr_bytes':len(log.stderr),'SHA256':hashlib.sha256(raw).hexdigest(),'own_source_prefix_login_password_cookie_markers_found':False})
+ observed=read(P/'observe-result.json');assert observed['status']=='PASS_PRIVATE_RATE_CAPACITY_OBSERVATION';audit=next(x for x in observed['records'] if x['label']=='finite_rate_metric_labels');assert audit['series_checked']==21;r['fresh_private_metrics']=observed['metric_samples'][-1]['metrics'];r['metric_label_audit']=audit
+ c=http.client.HTTPConnection('localhost',18088,timeout=8);c.request('GET','/api/v1/health',headers={'Host':'localhost:18088'});response=c.getresponse();assert response.status==200;response.read(65536);c.close();r['API_health_http']=200
+ assert not subprocess.check_output(['git','status','--porcelain'],cwd=Q,text=True).strip();r['source_worktree_clean']=True;r['status']='PASS_UNCHANGED_DATABASE_NINE_PRIVATE_SERVICES_AND_TERMINAL_HELPERS'
+except Exception as e:r['status']='FAIL_POSTCHECK';r['error_type']=type(e).__name__;r['failed_label']=str(e) if isinstance(e,AssertionError) and str(e).startswith('Own sensitive') else 'Inspect private bounded postcheck'
+finally:r['finished_at_utc']=now();(P/'environment-after.json').write_text(json.dumps(r,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps({k:v for k,v in r.items() if k not in ['services','bounded_owned_logs_scan','fresh_private_metrics','metric_label_audit']}));sys.exit(0 if r['status'].startswith('PASS') else 1)

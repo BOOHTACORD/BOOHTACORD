@@ -1,0 +1,42 @@
+goos: linux
+goarch: amd64
+pkg: qa-historical-rate-limit
+cpu: 12th Gen Intel(R) Core(TM) i7-12700
+BenchmarkLimiterLookupAndAdmission/existing/100           	    2000	        62.48 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/existing/100           	    2000	        59.20 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/existing/100           	    2000	        59.26 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/existing/100-4         	    2000	        58.96 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/existing/100-4         	    2000	        59.95 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/existing/100-4         	    2000	        72.12 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/new/100                	    2000	      8149 ns/op	     221 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/new/100                	    2000	      8212 ns/op	     221 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/new/100                	    2000	      8413 ns/op	     221 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/new/100-4              	    2000	      8280 ns/op	     221 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/new/100-4              	    2000	      8053 ns/op	     221 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/new/100-4              	    2000	      8248 ns/op	     221 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/existing/1000          	    2000	        61.77 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/existing/1000          	    2000	        61.86 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/existing/1000          	    2000	        62.04 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/existing/1000-4        	    2000	        62.09 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/existing/1000-4        	    2000	        61.66 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/existing/1000-4        	    2000	        62.44 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/new/1000               	    2000	     16302 ns/op	     114 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/new/1000               	    2000	     15802 ns/op	     114 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/new/1000               	    2000	     15265 ns/op	     114 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/new/1000-4             	    2000	     15246 ns/op	     114 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/new/1000-4             	    2000	     15285 ns/op	     114 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/new/1000-4             	    2000	     14456 ns/op	     114 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/existing/10000         	    2000	        64.22 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/existing/10000         	    2000	        61.93 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/existing/10000         	    2000	        62.38 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/existing/10000-4       	    2000	        61.03 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/existing/10000-4       	    2000	        68.59 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/existing/10000-4       	    2000	        66.87 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/new/10000              	    2000	     81499 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/new/10000              	    2000	     81202 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/new/10000              	    2000	     82728 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/new/10000-4            	    2000	     81273 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/new/10000-4            	    2000	     80988 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLimiterLookupAndAdmission/new/10000-4            	    2000	     81717 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	qa-historical-rate-limit	10.513s

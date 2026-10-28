@@ -1,0 +1,93 @@
+{
+  "at_utc": "2026-10-28T01:16:05.838870+00:00",
+  "tested_source": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "API_image_id": "sha256:b34a09b6eebfb87fea478e7cd440cc7ab9c52dc7dbd3cf4d659b12a9eff98a47",
+  "files": {
+    "backend/internal/security/rate_limit/expiration.go": {
+      "git_source_SHA256": "aab2f53fec5306862dfddda4409c7972ef540fa1aa1f362e4bcc0d884dd2ef02",
+      "working_bytes_SHA256": "d268839a392626b8e848aac3912e954e8a723ec1dfcf038c0856d7d4e0fb25f1",
+      "bytes": 1101
+    },
+    "backend/internal/security/rate_limit/limiter.go": {
+      "git_source_SHA256": "bc414dcc9ba7f78d60d104b20cef1b5efc4020256797d1ab63c988e5143033ce",
+      "working_bytes_SHA256": "11fa8d040fce656af4ce3cf643bb1d7e86f122345f2799bde60bed5bbdd42d9b",
+      "bytes": 2682
+    },
+    "backend/internal/security/rate_limit/limiter_test.go": {
+      "git_source_SHA256": "a867db7da621f45dfec3bf59ba15f1100a13c897fb93d1b1bdb26083d7d91ad2",
+      "working_bytes_SHA256": "a68fad003887f1074e469b2d206d346d09730242cd62a7d65c6076ba28910805",
+      "bytes": 959
+    },
+    "backend/internal/security/rate_limit/metrics.go": {
+      "git_source_SHA256": "31bec8fd8207002f0992378d854b4ae3cabc9b03ed352920a2b8b50cc8a3c213",
+      "working_bytes_SHA256": "8c57755234aa82bf24425837d42d50dbe41775199b3bcb80c9559e34d7e47053",
+      "bytes": 1791
+    },
+    "backend/internal/security/rate_limit/middleware.go": {
+      "git_source_SHA256": "abd74d2feb17d1261bae31eeaa78bea27a10d70b30195ffd152d8f333ef35102",
+      "working_bytes_SHA256": "615531b53c583f8e2fa694bab2b2ac730b2a9810ab47cc0e8766cf7cfa5573c9",
+      "bytes": 1041
+    },
+    "backend/internal/security/rate_limit/middleware_test.go": {
+      "git_source_SHA256": "1dfa5816dcd14204a6997f7e01f28002fea9c48f2d3b9d4c5af3bcc29d8f67bf",
+      "working_bytes_SHA256": "afe02e93b99d8acd0616fd59a50ac06007f8826beddbd5dcbcf988f4d8f73267",
+      "bytes": 2786
+    },
+    "backend/internal/security/rate_limit/source.go": {
+      "git_source_SHA256": "9a0d02d4e9c7b5eb015c9357d3f959fb6a8853f92cafff6d4411e97c410ae813",
+      "working_bytes_SHA256": "f2acf749674bab5f5d67588c877573dd6b65c44d919481c944c7b5ba8a87006c",
+      "bytes": 1567
+    },
+    "backend/internal/security/rate_limit/source_test.go": {
+      "git_source_SHA256": "ee9e1256fa432531facdb111be109de38c7fc3f2339ef6fea66020e3e7629811",
+      "working_bytes_SHA256": "6ae86e41ccabdbbdb04606dd15a598a9b2356a0d47c0e02f6ceee3ef53e4afa3",
+      "bytes": 2514
+    },
+    "backend/internal/config/runtime/admission.go": {
+      "git_source_SHA256": "825f19e38be78367834c7e6bd93d670a2d34ce367172e9fe2e5c9b71c2c19b4c",
+      "working_bytes_SHA256": "bc7bd4722ac9ba6be94c476e4a0e66c352d70955c394db60f0edee65847f8fab",
+      "bytes": 2007
+    },
+    "backend/internal/app/auth_routes/register.go": {
+      "git_source_SHA256": "8a78bbc1285e2803c7bb7b9aece91066e66c082d864ba93726dddccc60c11a08",
+      "working_bytes_SHA256": "826239c16cc1228fda03fbbaaf9be1fb616da8efc2e02522d95f9371bbeac13f",
+      "bytes": 5142
+    },
+    "backend/internal/app/runtime/run.go": {
+      "git_source_SHA256": "b271a455a235df1b78802b4cc24e344e0c43d380d3264990a78d10a8d46655b8",
+      "working_bytes_SHA256": "fce8aea5d6dd817477070cacb92cf0029f35056340d2b844f490ffbe4d120d01",
+      "bytes": 6677
+    },
+    "backend/internal/identity/login_user/api/http_handler.go": {
+      "git_source_SHA256": "6761987560258182d541cc95aaec9de0e0e97e3529afe9081d12e3ce63ebaefa",
+      "working_bytes_SHA256": "e698a0c64283553d545ebfd3736455036fbf49e210728278551223c733ead1a0",
+      "bytes": 3157
+    },
+    "backend/go.mod": {
+      "git_source_SHA256": "2e183e09a0dd4271c7729af009f4c93927f3b36fa5e0aee5f5187ff80c8c6d31",
+      "working_bytes_SHA256": "33cbf13647d246156f0e65379e04fdea093de64db35c83573020f6b4bd3e9603",
+      "bytes": 4430
+    },
+    "backend/go.sum": {
+      "git_source_SHA256": "25ff164719521fd4a9985757270b64489174e363fabad30b15ee5463a53eaec7",
+      "working_bytes_SHA256": "fa8aede6ebd700290411e15aa43dba8e793300dbcee5c583eb367169ad1d2d08",
+      "bytes": 29219
+    },
+    "tools/toolchains.json": {
+      "git_source_SHA256": "23eb056f13c993838cad651b0ce52e5cc4ce5f26daad96f8c0876621d7110961",
+      "working_bytes_SHA256": "ae1564530abb2697f24a0e1cff899aeb1fde5fb9266b63e973d71811114fbe28",
+      "bytes": 370
+    }
+  },
+  "remote_master": "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a",
+  "selected_files_changed_from_master": [],
+  "selected_master_files_unavailable": [],
+  "pre_execution_runner_hashes_verified": true,
+  "test_toolchain_image": "golang@sha256:5a94593d87a066df5abb02969be911524963f53908292aa5a1a6096fc019012a",
+  "Windows_toolchain": "go version go1.26.4 windows/amd64",
+  "historical_source": "ce8c3e0ad848a879d4d60ef08df74b85661c19da",
+  "historical_limiter_SHA256": "27175bccc30acb818130e17e2c9e1c4309451e9ed645affa73f4384ea1e89dfa",
+  "limits": "Selected exact source fingerprints only; private instrumentation copies distinct from unchanged runtime source. No full-master/hosted/native media acceptance.",
+  "unchanged_dependency": "../local-staging/runner-source/profile_common.py.txt",
+  "public_export_hashes": "LF copies in manifest; original pre-execution Windows-byte hashes retained separately"
+}

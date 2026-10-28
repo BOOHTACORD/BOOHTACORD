@@ -1,0 +1,33 @@
+"""Matched contention benchmark and explicitly instrumented-copy critical-section timings."""
+import hashlib,json,os,subprocess,sys,time
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,SOURCE,CONTEXT
+IMAGE='golang@sha256:5a94593d87a066df5abb02969be911524963f53908292aa5a1a6096fc019012a';OLD='ce8c3e0ad848a879d4d60ef08df74b85661c19da'
+def now():return datetime.now(timezone.utc).isoformat()
+def save(n,d):(P/n).write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8',newline='\n')
+def sha(b):return hashlib.sha256(b).hexdigest()
+assert json.loads((P/'native-live.json').read_text())['status']=='TERMINAL_PASS' and not (P/'hold-result.json').exists()
+original=(Q/'backend/internal/security/rate_limit/limiter.go').read_text(encoding='utf-8');oldraw=subprocess.check_output(['git','show',OLD+':backend/internal/security/rate_limit/limiter.go'],cwd=Q).decode();marker='limiter.mutex.Lock()\n\tdefer limiter.mutex.Unlock()';injected='limiter.mutex.Lock()\n\tmeasuredStart := time.Now()\n\tdefer func(){ measuredHeld := time.Since(measuredStart); limiter.mutex.Unlock(); recordMeasuredHold(measuredHeld) }()'
+assert original.count(marker)==oldraw.count(marker)==1
+base=P/'native/hold-baseline';base.mkdir(exist_ok=True);(base/'go.mod').write_text('module qa-historical-rate-hold\n\ngo 1.26.0\n',encoding='utf-8');(base/'adapter.go').write_bytes((P/'native/baseline/adapter.go').read_bytes());(base/'limiter.go').write_text(oldraw,encoding='utf-8');(base/'contention_benchmark_test.go').write_bytes((P/'contention_benchmark_test.go').read_bytes())
+(P/'instrumented-current-limiter.go').write_text(original.replace(marker,injected),encoding='utf-8');(P/'instrumented-historical-limiter.go').write_text(oldraw.replace(marker,injected),encoding='utf-8')
+overlays={'contention':{'/src/internal/security/rate_limit/contention_benchmark_test.go':'/work/contention_benchmark_test.go'},'current-hold':{'/src/internal/security/rate_limit/limiter.go':'/work/instrumented-current-limiter.go','/src/internal/security/rate_limit/hold_profile_test.go':'/work/hold_profile_test.go'},'historical-hold':{'/work/native/hold-baseline/limiter.go':'/work/instrumented-historical-limiter.go','/work/native/hold-baseline/hold_profile_test.go':'/work/hold_profile_test.go'}}
+for name,value in overlays.items():(P/(name+'-overlay.json')).write_text(json.dumps({'Replace':value}),encoding='utf-8')
+save('runner-before-hold.json',{'at_utc':now(),'source_revision':SOURCE,'historical_source':OLD,'toolchain_image':IMAGE,'unchanged_source_SHA256':sha(original.encode()),'historical_original_SHA256':sha(oldraw.encode()),'exact_instrumentation_original':marker,'exact_instrumentation_replacement':injected,'files_SHA256':{f.name:sha(f.read_bytes()) for f in [P/'instrumented-current-limiter.go',P/'instrumented-historical-limiter.go',P/'contention_benchmark_test.go',P/'hold_profile_test.go',Path(__file__)]},'instrumentation_limits':'Two clock reads/defer observer around acquired mutex in private source copies only; sequentialGOMAXPROCS1, timing overhead included. Unmodified native benchmarks retained separately.'})
+cache=subprocess.check_output(['go','env','GOMODCACHE'],text=True).strip();runs=[]
+def run(label,cwd,args):
+ name='boohtacord-rate-'+label;assert not docker('ps','-a','--filter','name=^'+name+'$','--format','{{.Names}}').decode().strip();argv=['docker','--context',CONTEXT,'run','--rm','--name',name,'--label','com.docker.compose.project='+PROJECT,'--label','qa.packet=rate-capacity-native','--network','none','--cpus','2','--memory','2g','--pids-limit','512','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges','--tmpfs','/tmp:rw,exec,nosuid,nodev,size=2147483648','--mount','type=bind,source='+str(Q/'backend')+',target=/src,readonly','--mount','type=bind,source='+str(P)+',target=/work','--mount','type=bind,source='+cache+',target=/gomod,readonly','-e','GOMODCACHE=/gomod','-e','GOCACHE=/work/native-cache','-e','GOTOOLCHAIN=local','-e','GOWORK=off','-e','GOPROXY=off','-e','GOSUMDB=off','-e','CGO_ENABLED=1','-e','GOMAXPROCS=2','-w',cwd,IMAGE,*args];t=time.monotonic();started=now()
+ with (P/(label+'.private.stdout')).open('wb') as out,(P/(label+'.private.stderr')).open('wb') as err:process=subprocess.Popen(argv,stdout=out,stderr=err);save('hold-live.json',{'status':'RUNNING','label':label,'controller_PID':os.getpid(),'docker_client_PID':process.pid});code=process.wait(timeout=900)
+ d={'label':label,'at_utc':started,'finished_at_utc':now(),'elapsed_s':time.monotonic()-t,'exit_code':code,'command_argv':args,'container_workdir':cwd,'stdout_SHA256':sha((P/(label+'.private.stdout')).read_bytes()),'stderr_SHA256':sha((P/(label+'.private.stderr')).read_bytes())};runs.append(d);print(json.dumps(d),flush=True);assert code==0,'Inspect private native timing output'
+for label,cwd,path,extra in [('historical-contention','/work/native/hold-baseline','.',[]),('current-contention','/src','./internal/security/rate_limit',['-overlay=/work/contention-overlay.json'])]:run(label,cwd,['go','test','-run','^$','-bench','^BenchmarkMatchedContendedExisting$','-benchtime=10000x','-count=3','-cpu=1,4','-benchmem',*extra,path])
+for kind,cwd,path in [('historical','/work/native/hold-baseline','.'),('current','/src','./internal/security/rate_limit')]:run(kind+'-hold',cwd,['go','test','-json','-count=1','-run','^TestMeasuredMutexHoldMatchedWorkload$','-overlay=/work/'+kind+'-hold-overlay.json',path])
+observations={}
+for kind in ['historical','current']:
+ values=[]
+ for line in (P/(kind+'-hold.private.stdout')).read_text(encoding='utf-8').splitlines():
+  event=json.loads(line);output=event.get('Output','')
+  if 'HOLD_JSON ' in output:values.append(json.loads(output.split('HOLD_JSON ',1)[1]))
+ assert len(values)==6;observations[kind]=values
+save('hold-result.json',{'status':'PASS_MATCHED_CONTENTION_AND_INSTRUMENTED_HOLD_TIMINGS','at_utc':now(),'toolchain_image':IMAGE,'runs':runs,'observations':observations,'limits':'Instrumentation modifies private copies only and includes clock/defer observer overhead; sequential held-time samples are not direct production instrumentation or worst-case contention SLO. Unmodified paired throughput benchmarks and concurrent race evidence are separate.'});save('hold-live.json',{'status':'TERMINAL_PASS','finished_at_utc':now()});print('HOLD_TERMINAL_PASS')

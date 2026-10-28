@@ -1,0 +1,43 @@
+{
+  "events": [
+    {
+      "Time": "2026-10-28T01:12:59.166519254Z",
+      "Action": "start",
+      "Package": "qa-historical-rate-limit"
+    },
+    {
+      "Time": "2026-10-28T01:12:59.168126101Z",
+      "Action": "run",
+      "Package": "qa-historical-rate-limit",
+      "Test": "TestNoActiveBudgetResetAtCapacity"
+    },
+    {
+      "Time": "2026-10-28T01:12:59.168168489Z",
+      "Action": "fail",
+      "Package": "qa-historical-rate-limit",
+      "Test": "TestNoActiveBudgetResetAtCapacity",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:12:59.1681715Z",
+      "Action": "run",
+      "Package": "qa-historical-rate-limit",
+      "Test": "TestNewSourceFailsClosedAtCapacity"
+    },
+    {
+      "Time": "2026-10-28T01:12:59.16817658Z",
+      "Action": "fail",
+      "Package": "qa-historical-rate-limit",
+      "Test": "TestNewSourceFailsClosedAtCapacity",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:12:59.168551223Z",
+      "Action": "fail",
+      "Package": "qa-historical-rate-limit",
+      "Elapsed": 0.002
+    }
+  ],
+  "raw_private_stream_SHA256": "6e64cbcde9f5ca98575f38e42b9a05bc236cd77ad4ecbc379083138142fd05ea",
+  "stderr_bytes": 0
+}

@@ -1,0 +1,17 @@
+package main
+import("bytes";"context";"encoding/json";"errors";"io";"net";"net/http";"os";"strconv";"sync";"time")
+type Config struct{SourceRevision string `json:"source_revision"`;Sources []string `json:"sources"`;NotBefore time.Time `json:"not_before"`}
+type Outcome struct{HTTP int `json:"http"`;Code string `json:"code"`;Retry int `json:"retry_after_s"`;Cookie bool `json:"cookie_seen"`}
+var cfg Config;var ctx context.Context;var client=&http.Client{Timeout:8*time.Second,Transport:&http.Transport{Proxy:nil,MaxConnsPerHost:24},CheckRedirect:func(*http.Request,[]*http.Request)error{return errors.New("redirect forbidden")}}
+var emitMu sync.Mutex;var records=[]map[string]any{};var encoder=json.NewEncoder(os.Stdout)
+const base="http://api:8080";const origin="http://localhost:18088"
+func require(ok bool,label string){if !ok{panic(label)}}
+func emit(event string,d map[string]any){d["event"]=event;d["at_utc"]=time.Now().UTC().Format(time.RFC3339Nano);emitMu.Lock();defer emitMu.Unlock();if event=="observation"{records=append(records,d)};encoder.Encode(d)}
+func call(index int)(Outcome,error){
+ var o Outcome;if index<0||index>=len(cfg.Sources){return o,errors.New("source index bound")};r,e:=http.NewRequestWithContext(ctx,"POST",base+"/api/v1/auth/login",bytes.NewReader([]byte("{")));if e!=nil{return o,errors.New("request")}
+ r.Host="localhost:18088";r.Header.Set("Origin",origin);r.Header.Set("Content-Type","application/json");r.Header.Set("X-Forwarded-For",cfg.Sources[index]);response,e:=client.Do(r);if e!=nil{return o,errors.New("transport")};defer response.Body.Close()
+ raw,e:=io.ReadAll(io.LimitReader(response.Body,65537));if e!=nil||len(raw)>65536{return o,errors.New("response bound")};var d struct{Error struct{Code string `json:"code"`} `json:"error"`};if json.Unmarshal(raw,&d)!=nil{return o,errors.New("problem JSON")}
+ o=Outcome{HTTP:response.StatusCode,Code:d.Error.Code,Cookie:len(response.Cookies())>0};o.Retry,_=strconv.Atoi(response.Header.Get("Retry-After"));return o,nil
+}
+func checked(index,expected int)Outcome{o,e:=call(index);require(e==nil,"bounded login probe transport/contract");require(o.HTTP==expected&&!o.Cookie,"login status/cookie contract");if expected==400{require(o.Code=="VALIDATION_FAILED"&&o.Retry==0,"malformed parser control")}else{require(o.Code=="RATE_LIMITED"&&o.Retry>0&&o.Retry<=300,"failclosed429 RetryAfter contract")};return o}
+func validateConfig(){require(cfg.SourceRevision=="072426d60b1c0b1f7e5f66722a0da5faa00b50d7"&&len(cfg.Sources)==10300,"source fixture shape");seen:=map[string]bool{};for _,s:=range cfg.Sources{ip:=net.ParseIP(s);require(ip!=nil&&ip.IsPrivate()&&!ip.IsLoopback()&&!seen[s],"private unique source fixture");seen[s]=true};require(time.Now().After(cfg.NotBefore),"prior login windows must expire naturally")}

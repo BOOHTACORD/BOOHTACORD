@@ -1,0 +1,5 @@
+package ratelimit
+import("fmt";"testing";"time")
+func BenchmarkMatchedContendedExisting(b *testing.B){for _,size:=range []int{100,1000,10000}{b.Run(fmt.Sprint(size),func(b *testing.B){
+ l,e:=New(Config{Limit:b.N+size+1,Window:time.Hour,MaxSources:size+1});if e!=nil{b.Fatal(e)};for i:=0;i<size;i++{l.Allow(fmt.Sprint("seed-",i))};b.ResetTimer();b.RunParallel(func(p *testing.PB){for p.Next(){l.Allow("seed-0")}})
+})}}

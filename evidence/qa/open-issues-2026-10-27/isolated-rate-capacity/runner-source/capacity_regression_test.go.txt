@@ -1,0 +1,11 @@
+package ratelimit
+import("testing";"time")
+func TestNoActiveBudgetResetAtCapacity(t *testing.T){
+ now:=time.Unix(1000,0);l,e:=New(Config{Limit:1,Window:time.Minute,MaxSources:2,Now:func()time.Time{return now}});if e!=nil{t.Fatal(e)}
+ l.Allow("protected");l.Allow("protected");now=now.Add(time.Millisecond);l.Allow("neighbor");now=now.Add(time.Millisecond);l.Allow("newcomer")
+ if _,ok:=l.Allow("protected");ok{t.Fatal("protected active exhausted budget renewed before original reset")}
+}
+func TestNewSourceFailsClosedAtCapacity(t *testing.T){
+ now:=time.Unix(1000,0);l,e:=New(Config{Limit:1,Window:time.Minute,MaxSources:2,Now:func()time.Time{return now}});if e!=nil{t.Fatal(e)};l.Allow("a");l.Allow("b")
+ if retry,ok:=l.Allow("c");ok||retry<=0{t.Fatal("unknown key must fail closed at active capacity with retry")}
+}

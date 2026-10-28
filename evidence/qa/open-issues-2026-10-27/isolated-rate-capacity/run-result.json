@@ -1,0 +1,4249 @@
+{
+  "at_utc": "2026-10-28T01:15:00.421903381Z",
+  "elapsed_seconds": 402.674370625,
+  "event": "final",
+  "metric_samples": [
+    {
+      "at_utc": "2026-10-28T01:07:57.239273828Z",
+      "label": "initial_baseline",
+      "metrics": {
+        "CPU_seconds": 141.58,
+        "FD": 18,
+        "HTTP429": 28,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 52441088,
+        "active": 129,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 0
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:07:57.253352808Z",
+      "label": "expired_prior_windows_warmup",
+      "metrics": {
+        "CPU_seconds": 141.59,
+        "FD": 18,
+        "HTTP400": 16,
+        "HTTP429": 28,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 53096448,
+        "active": 16,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 0
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:07:57.264272771Z",
+      "label": "protected_exhausted_before_fill",
+      "metrics": {
+        "CPU_seconds": 141.6,
+        "FD": 18,
+        "HTTP400": 25,
+        "HTTP429": 29,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 53751808,
+        "active": 16,
+        "capacity": 10000,
+        "goroutines": 35,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 0
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:08:08.533451144Z",
+      "label": "store_fill",
+      "metrics": {
+        "CPU_seconds": 142.11,
+        "FD": 19,
+        "HTTP400": 1009,
+        "HTTP429": 29,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 51781632,
+        "active": 1000,
+        "capacity": 10000,
+        "goroutines": 32,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 0
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:08:18.527784855Z",
+      "label": "store_fill",
+      "metrics": {
+        "CPU_seconds": 142.61,
+        "FD": 19,
+        "HTTP400": 2008,
+        "HTTP429": 29,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 52068352,
+        "active": 1999,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 0
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:08:28.528205794Z",
+      "label": "store_fill",
+      "metrics": {
+        "CPU_seconds": 143.11,
+        "FD": 19,
+        "HTTP400": 3008,
+        "HTTP429": 29,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 51838976,
+        "active": 2999,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 0
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:08:39.971836894Z",
+      "label": "store_fill",
+      "metrics": {
+        "CPU_seconds": 143.61,
+        "FD": 19,
+        "HTTP400": 4008,
+        "HTTP429": 29,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 51765248,
+        "active": 3999,
+        "capacity": 10000,
+        "goroutines": 32,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 0
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:08:49.972692863Z",
+      "label": "store_fill",
+      "metrics": {
+        "CPU_seconds": 144.11,
+        "FD": 19,
+        "HTTP400": 5009,
+        "HTTP429": 29,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 52015104,
+        "active": 4999,
+        "capacity": 10000,
+        "goroutines": 33,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 0
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:08:59.973166831Z",
+      "label": "store_fill",
+      "metrics": {
+        "CPU_seconds": 144.64,
+        "FD": 19,
+        "HTTP400": 6008,
+        "HTTP429": 29,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 53436416,
+        "active": 5999,
+        "capacity": 10000,
+        "goroutines": 33,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 0
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:09:11.377167544Z",
+      "label": "store_fill",
+      "metrics": {
+        "CPU_seconds": 145.16,
+        "FD": 19,
+        "HTTP400": 7008,
+        "HTTP429": 29,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 53506048,
+        "active": 6999,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 0
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:09:21.375083864Z",
+      "label": "store_fill",
+      "metrics": {
+        "CPU_seconds": 145.69,
+        "FD": 19,
+        "HTTP400": 8009,
+        "HTTP429": 29,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 54140928,
+        "active": 7999,
+        "capacity": 10000,
+        "goroutines": 32,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 0
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:09:31.378110135Z",
+      "label": "store_fill",
+      "metrics": {
+        "CPU_seconds": 146.22,
+        "FD": 19,
+        "HTTP400": 9008,
+        "HTTP429": 29,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 54226944,
+        "active": 8999,
+        "capacity": 10000,
+        "goroutines": 32,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 0
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:09:42.81660077Z",
+      "label": "prefill9992",
+      "metrics": {
+        "CPU_seconds": 146.74,
+        "FD": 19,
+        "HTTP400": 10001,
+        "HTTP429": 29,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 54415360,
+        "active": 9992,
+        "capacity": 10000,
+        "goroutines": 32,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 0
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:09:42.821289698Z",
+      "label": "protected_before_full",
+      "metrics": {
+        "CPU_seconds": 146.74,
+        "FD": 19,
+        "HTTP400": 10001,
+        "HTTP429": 30,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 55070720,
+        "active": 9992,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 0
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:09:42.840064265Z",
+      "label": "actual_capacity10000",
+      "metrics": {
+        "CPU_seconds": 146.75,
+        "FD": 24,
+        "HTTP400": 10009,
+        "HTTP429": 38,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 54693888,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 8
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:09:42.84711902Z",
+      "label": "existing_keys_at_capacity",
+      "metrics": {
+        "CPU_seconds": 146.75,
+        "FD": 24,
+        "HTTP400": 10010,
+        "HTTP429": 39,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 54693888,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 8
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:09:42.854757642Z",
+      "label": "new_keys_failclosed_at_capacity",
+      "metrics": {
+        "CPU_seconds": 146.77,
+        "FD": 24,
+        "HTTP400": 10010,
+        "HTTP429": 41,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 54693888,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 10
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:09:52.862770403Z",
+      "label": "midpoint_original_window",
+      "metrics": {
+        "CPU_seconds": 146.81,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 41,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 55513088,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 10
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:10:02.869525409Z",
+      "label": "midpoint_original_window",
+      "metrics": {
+        "CPU_seconds": 146.86,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 41,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 55676928,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 10
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:10:14.296318578Z",
+      "label": "midpoint_original_window",
+      "metrics": {
+        "CPU_seconds": 146.9,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 41,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56168448,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 10
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:10:24.304845762Z",
+      "label": "midpoint_original_window",
+      "metrics": {
+        "CPU_seconds": 146.94,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 41,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56168448,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 10
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:10:34.309233651Z",
+      "label": "midpoint_original_window",
+      "metrics": {
+        "CPU_seconds": 146.99,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 41,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56168448,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 10
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:10:34.453200355Z",
+      "label": "midpoint_original_window",
+      "metrics": {
+        "CPU_seconds": 146.99,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 41,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56168448,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 10
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:10:34.461184605Z",
+      "label": "midpoint_still_full",
+      "metrics": {
+        "CPU_seconds": 147,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56168448,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:10:45.882056121Z",
+      "label": "first_original_window_recovery",
+      "metrics": {
+        "CPU_seconds": 147.04,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56659968,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:10:55.888781218Z",
+      "label": "first_original_window_recovery",
+      "metrics": {
+        "CPU_seconds": 147.08,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56659968,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:11:05.895039261Z",
+      "label": "first_original_window_recovery",
+      "metrics": {
+        "CPU_seconds": 147.13,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56659968,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:11:17.471049905Z",
+      "label": "first_original_window_recovery",
+      "metrics": {
+        "CPU_seconds": 147.17,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56659968,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:11:27.476440016Z",
+      "label": "first_original_window_recovery",
+      "metrics": {
+        "CPU_seconds": 147.22,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57315328,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:11:37.487507712Z",
+      "label": "first_original_window_recovery",
+      "metrics": {
+        "CPU_seconds": 147.26,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57479168,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:11:48.990588432Z",
+      "label": "first_original_window_recovery",
+      "metrics": {
+        "CPU_seconds": 147.29,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58134528,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:11:58.998112256Z",
+      "label": "first_original_window_recovery",
+      "metrics": {
+        "CPU_seconds": 147.35,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57008128,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:12:09.006612417Z",
+      "label": "first_original_window_recovery",
+      "metrics": {
+        "CPU_seconds": 147.4,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57008128,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:12:20.427603295Z",
+      "label": "first_original_window_recovery",
+      "metrics": {
+        "CPU_seconds": 147.44,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56442880,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:12:30.433912592Z",
+      "label": "first_original_window_recovery",
+      "metrics": {
+        "CPU_seconds": 147.5,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56442880,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:12:40.442559754Z",
+      "label": "first_original_window_recovery",
+      "metrics": {
+        "CPU_seconds": 147.53,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56442880,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:12:51.884831496Z",
+      "label": "first_original_window_recovery",
+      "metrics": {
+        "CPU_seconds": 147.58,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57262080,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:13:01.889431461Z",
+      "label": "first_original_window_recovery",
+      "metrics": {
+        "CPU_seconds": 147.63,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57262080,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:13:11.896537167Z",
+      "label": "first_original_window_recovery",
+      "metrics": {
+        "CPU_seconds": 147.67,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 54775808,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:13:17.331264938Z",
+      "label": "first_original_window_recovery",
+      "metrics": {
+        "CPU_seconds": 147.69,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 55267328,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:13:17.336695971Z",
+      "label": "before_first_expired_prune",
+      "metrics": {
+        "CPU_seconds": 147.7,
+        "FD": 23,
+        "HTTP400": 10010,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 55267328,
+        "active": 10000,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:13:17.34165053Z",
+      "label": "after_one_64_expired_prune",
+      "metrics": {
+        "CPU_seconds": 147.7,
+        "FD": 23,
+        "HTTP400": 10011,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 55267328,
+        "active": 9937,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:13:17.345896748Z",
+      "label": "protected_original_reset_recovered",
+      "metrics": {
+        "CPU_seconds": 147.7,
+        "FD": 23,
+        "HTTP400": 10012,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 55922688,
+        "active": 9874,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:13:27.352960457Z",
+      "label": "all_original_cohort_windows_expired",
+      "metrics": {
+        "CPU_seconds": 147.76,
+        "FD": 23,
+        "HTTP400": 10012,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 55537664,
+        "active": 9874,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:13:37.358580212Z",
+      "label": "all_original_cohort_windows_expired",
+      "metrics": {
+        "CPU_seconds": 147.8,
+        "FD": 23,
+        "HTTP400": 10012,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 55537664,
+        "active": 9874,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:13:48.930094806Z",
+      "label": "all_original_cohort_windows_expired",
+      "metrics": {
+        "CPU_seconds": 147.84,
+        "FD": 23,
+        "HTTP400": 10012,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 55701504,
+        "active": 9874,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:13:58.936508784Z",
+      "label": "all_original_cohort_windows_expired",
+      "metrics": {
+        "CPU_seconds": 147.88,
+        "FD": 23,
+        "HTTP400": 10012,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57503744,
+        "active": 9874,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:08.944419116Z",
+      "label": "all_original_cohort_windows_expired",
+      "metrics": {
+        "CPU_seconds": 147.92,
+        "FD": 23,
+        "HTTP400": 10012,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56152064,
+        "active": 9874,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:20.372651627Z",
+      "label": "all_original_cohort_windows_expired",
+      "metrics": {
+        "CPU_seconds": 147.97,
+        "FD": 23,
+        "HTTP400": 10012,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57135104,
+        "active": 9874,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:30.380509934Z",
+      "label": "all_original_cohort_windows_expired",
+      "metrics": {
+        "CPU_seconds": 148.02,
+        "FD": 23,
+        "HTTP400": 10012,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57135104,
+        "active": 9874,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:40.387534539Z",
+      "label": "all_original_cohort_windows_expired",
+      "metrics": {
+        "CPU_seconds": 148.05,
+        "FD": 23,
+        "HTTP400": 10012,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57790464,
+        "active": 9874,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:51.865429115Z",
+      "label": "all_original_cohort_windows_expired",
+      "metrics": {
+        "CPU_seconds": 148.1,
+        "FD": 23,
+        "HTTP400": 10012,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57790464,
+        "active": 9874,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.596644759Z",
+      "label": "all_original_cohort_windows_expired",
+      "metrics": {
+        "CPU_seconds": 148.13,
+        "FD": 23,
+        "HTTP400": 10012,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57790464,
+        "active": 9874,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.602694522Z",
+      "label": "before_amortized_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.14,
+        "FD": 23,
+        "HTTP400": 10012,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 9874,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.608164934Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.14,
+        "FD": 23,
+        "HTTP400": 10013,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 9811,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.612724426Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.15,
+        "FD": 23,
+        "HTTP400": 10014,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 9748,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.618829426Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.16,
+        "FD": 23,
+        "HTTP400": 10015,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 9685,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.624326398Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.16,
+        "FD": 23,
+        "HTTP400": 10016,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 9622,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.628786787Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.16,
+        "FD": 23,
+        "HTTP400": 10017,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 9559,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.634363138Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.17,
+        "FD": 23,
+        "HTTP400": 10018,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 9496,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.640209298Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.17,
+        "FD": 23,
+        "HTTP400": 10019,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 9433,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.644684145Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.17,
+        "FD": 23,
+        "HTTP400": 10020,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 9370,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.651880716Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.17,
+        "FD": 23,
+        "HTTP400": 10021,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 9307,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.656701452Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.18,
+        "FD": 23,
+        "HTTP400": 10022,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 9244,
+        "capacity": 10000,
+        "goroutines": 35,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.662007775Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.18,
+        "FD": 23,
+        "HTTP400": 10023,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 9181,
+        "capacity": 10000,
+        "goroutines": 32,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.66746347Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.19,
+        "FD": 23,
+        "HTTP400": 10024,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 9118,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.672589048Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.2,
+        "FD": 23,
+        "HTTP400": 10025,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 9055,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.678008438Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.2,
+        "FD": 23,
+        "HTTP400": 10026,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 8992,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.683171613Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.2,
+        "FD": 23,
+        "HTTP400": 10027,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 8929,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.68832203Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.21,
+        "FD": 23,
+        "HTTP400": 10028,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 8866,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.692684668Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.21,
+        "FD": 23,
+        "HTTP400": 10029,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 8803,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.697027802Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.21,
+        "FD": 23,
+        "HTTP400": 10030,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 8740,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.702265265Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.22,
+        "FD": 23,
+        "HTTP400": 10031,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 8677,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.708330083Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.22,
+        "FD": 23,
+        "HTTP400": 10032,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 8614,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.714391946Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.23,
+        "FD": 23,
+        "HTTP400": 10033,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 8551,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.720272476Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.23,
+        "FD": 23,
+        "HTTP400": 10034,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 8488,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.724734632Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.24,
+        "FD": 23,
+        "HTTP400": 10035,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 8425,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.730173518Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.24,
+        "FD": 23,
+        "HTTP400": 10036,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 8362,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.736307911Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.24,
+        "FD": 23,
+        "HTTP400": 10037,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 8299,
+        "capacity": 10000,
+        "goroutines": 34,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.741021581Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.25,
+        "FD": 23,
+        "HTTP400": 10038,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 8236,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.747505523Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.25,
+        "FD": 23,
+        "HTTP400": 10039,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 8173,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.752532417Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.25,
+        "FD": 23,
+        "HTTP400": 10040,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 8110,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.758404431Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.26,
+        "FD": 23,
+        "HTTP400": 10041,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 8047,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.764268753Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.26,
+        "FD": 23,
+        "HTTP400": 10042,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 7984,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.768689559Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.27,
+        "FD": 23,
+        "HTTP400": 10043,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 7921,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.774381221Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.27,
+        "FD": 23,
+        "HTTP400": 10044,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 7858,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.779897025Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.27,
+        "FD": 23,
+        "HTTP400": 10045,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 7795,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.78469475Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.27,
+        "FD": 23,
+        "HTTP400": 10046,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 7732,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.789625471Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.28,
+        "FD": 23,
+        "HTTP400": 10047,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 7669,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.794362801Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.29,
+        "FD": 23,
+        "HTTP400": 10048,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 7606,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.799968676Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.29,
+        "FD": 23,
+        "HTTP400": 10049,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 7543,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.806377116Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.3,
+        "FD": 23,
+        "HTTP400": 10050,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 7480,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.811116046Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.3,
+        "FD": 23,
+        "HTTP400": 10051,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 7417,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.816042415Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.31,
+        "FD": 23,
+        "HTTP400": 10052,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 56897536,
+        "active": 7354,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.820724701Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.31,
+        "FD": 23,
+        "HTTP400": 10053,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 7291,
+        "capacity": 10000,
+        "goroutines": 35,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.82636683Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.31,
+        "FD": 23,
+        "HTTP400": 10054,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 7228,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.831217677Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.32,
+        "FD": 23,
+        "HTTP400": 10055,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 7165,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.836700358Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.32,
+        "FD": 23,
+        "HTTP400": 10056,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 7102,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.844129928Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.32,
+        "FD": 23,
+        "HTTP400": 10057,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 7039,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.848705119Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.32,
+        "FD": 23,
+        "HTTP400": 10058,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 6976,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.853588314Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.34,
+        "FD": 23,
+        "HTTP400": 10059,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 6913,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.858297524Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.34,
+        "FD": 23,
+        "HTTP400": 10060,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 6850,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.863090542Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.34,
+        "FD": 23,
+        "HTTP400": 10061,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 6787,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.869877525Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.35,
+        "FD": 23,
+        "HTTP400": 10062,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 6724,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.874694905Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.35,
+        "FD": 23,
+        "HTTP400": 10063,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 6661,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.880297201Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.36,
+        "FD": 23,
+        "HTTP400": 10064,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 6598,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.884628887Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.36,
+        "FD": 23,
+        "HTTP400": 10065,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 6535,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.889479468Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.36,
+        "FD": 23,
+        "HTTP400": 10066,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 6472,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.894466498Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.36,
+        "FD": 23,
+        "HTTP400": 10067,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 6409,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.899991276Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.37,
+        "FD": 23,
+        "HTTP400": 10068,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 6346,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.904192202Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.37,
+        "FD": 23,
+        "HTTP400": 10069,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 6283,
+        "capacity": 10000,
+        "goroutines": 35,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.908686718Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.37,
+        "FD": 23,
+        "HTTP400": 10070,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 6220,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.914166215Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.38,
+        "FD": 23,
+        "HTTP400": 10071,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 6157,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.919057132Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.39,
+        "FD": 23,
+        "HTTP400": 10072,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 6094,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.924264878Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.39,
+        "FD": 23,
+        "HTTP400": 10073,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 6031,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.932635182Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.39,
+        "FD": 23,
+        "HTTP400": 10074,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 5968,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.938286153Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.4,
+        "FD": 23,
+        "HTTP400": 10075,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 5905,
+        "capacity": 10000,
+        "goroutines": 32,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.943879307Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.4,
+        "FD": 23,
+        "HTTP400": 10076,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57552896,
+        "active": 5842,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.94869161Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.4,
+        "FD": 23,
+        "HTTP400": 10077,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 57716736,
+        "active": 5779,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.954414049Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.4,
+        "FD": 23,
+        "HTTP400": 10078,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58044416,
+        "active": 5716,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.960129768Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.41,
+        "FD": 23,
+        "HTTP400": 10079,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 5653,
+        "capacity": 10000,
+        "goroutines": 33,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.964332382Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.42,
+        "FD": 23,
+        "HTTP400": 10080,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 5590,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.968614249Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.42,
+        "FD": 23,
+        "HTTP400": 10081,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 5527,
+        "capacity": 10000,
+        "goroutines": 32,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.972687693Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.42,
+        "FD": 23,
+        "HTTP400": 10082,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 5464,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.978176595Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.44,
+        "FD": 23,
+        "HTTP400": 10083,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 5401,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.983754021Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.44,
+        "FD": 23,
+        "HTTP400": 10084,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 5338,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.988513723Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.44,
+        "FD": 23,
+        "HTTP400": 10085,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 5275,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.993276174Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.45,
+        "FD": 23,
+        "HTTP400": 10086,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 5212,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:14:59.998984837Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.45,
+        "FD": 23,
+        "HTTP400": 10087,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 5149,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.004242133Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.45,
+        "FD": 23,
+        "HTTP400": 10088,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 5086,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.008721065Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.46,
+        "FD": 23,
+        "HTTP400": 10089,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 5023,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.014926766Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.46,
+        "FD": 23,
+        "HTTP400": 10090,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 4960,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.020726554Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.47,
+        "FD": 23,
+        "HTTP400": 10091,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 4897,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.026323416Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.47,
+        "FD": 23,
+        "HTTP400": 10092,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 4834,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.03223297Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.48,
+        "FD": 23,
+        "HTTP400": 10093,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 4771,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.036695643Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.48,
+        "FD": 23,
+        "HTTP400": 10094,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 4708,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.043056435Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.48,
+        "FD": 23,
+        "HTTP400": 10095,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 4645,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.048290767Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.49,
+        "FD": 23,
+        "HTTP400": 10096,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 4582,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.052613009Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.49,
+        "FD": 23,
+        "HTTP400": 10097,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 4519,
+        "capacity": 10000,
+        "goroutines": 33,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.057893214Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.49,
+        "FD": 23,
+        "HTTP400": 10098,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 4456,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.063076993Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.5,
+        "FD": 23,
+        "HTTP400": 10099,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 4393,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.067209734Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.5,
+        "FD": 23,
+        "HTTP400": 10100,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 4330,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.072090602Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.5,
+        "FD": 23,
+        "HTTP400": 10101,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 4267,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.076683385Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.51,
+        "FD": 23,
+        "HTTP400": 10102,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 4204,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.081925009Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.51,
+        "FD": 23,
+        "HTTP400": 10103,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 4141,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.088213965Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.52,
+        "FD": 23,
+        "HTTP400": 10104,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 4078,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.092693005Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.52,
+        "FD": 23,
+        "HTTP400": 10105,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 4015,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.098404455Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.52,
+        "FD": 23,
+        "HTTP400": 10106,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58372096,
+        "active": 3952,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.104119047Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.53,
+        "FD": 23,
+        "HTTP400": 10107,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58535936,
+        "active": 3889,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.10860164Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.53,
+        "FD": 23,
+        "HTTP400": 10108,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58535936,
+        "active": 3826,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.112729881Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.54,
+        "FD": 23,
+        "HTTP400": 10109,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58535936,
+        "active": 3763,
+        "capacity": 10000,
+        "goroutines": 32,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.118270935Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.54,
+        "FD": 23,
+        "HTTP400": 10110,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58699776,
+        "active": 3700,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.124003225Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.55,
+        "FD": 23,
+        "HTTP400": 10111,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58699776,
+        "active": 3637,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.128699731Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.55,
+        "FD": 23,
+        "HTTP400": 10112,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58699776,
+        "active": 3574,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.13437556Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.56,
+        "FD": 23,
+        "HTTP400": 10113,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58863616,
+        "active": 3511,
+        "capacity": 10000,
+        "goroutines": 33,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.139890991Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.56,
+        "FD": 23,
+        "HTTP400": 10114,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 58863616,
+        "active": 3448,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.144716083Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.56,
+        "FD": 23,
+        "HTTP400": 10115,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59027456,
+        "active": 3385,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.149300043Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.57,
+        "FD": 23,
+        "HTTP400": 10116,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59027456,
+        "active": 3322,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.154378328Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.57,
+        "FD": 23,
+        "HTTP400": 10117,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59027456,
+        "active": 3259,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.160293137Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.57,
+        "FD": 23,
+        "HTTP400": 10118,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59027456,
+        "active": 3196,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.165792Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.57,
+        "FD": 23,
+        "HTTP400": 10119,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59027456,
+        "active": 3133,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.170859884Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.58,
+        "FD": 23,
+        "HTTP400": 10120,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59027456,
+        "active": 3070,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.175911457Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.58,
+        "FD": 23,
+        "HTTP400": 10121,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59027456,
+        "active": 3007,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.180709026Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.59,
+        "FD": 23,
+        "HTTP400": 10122,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59027456,
+        "active": 2944,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.186190157Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.59,
+        "FD": 23,
+        "HTTP400": 10123,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59027456,
+        "active": 2881,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.190365746Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.6,
+        "FD": 23,
+        "HTTP400": 10124,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59027456,
+        "active": 2818,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.19488398Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.61,
+        "FD": 23,
+        "HTTP400": 10125,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59027456,
+        "active": 2755,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.199223132Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.61,
+        "FD": 23,
+        "HTTP400": 10126,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 2692,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.204657297Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.61,
+        "FD": 23,
+        "HTTP400": 10127,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 2629,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.209323821Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.62,
+        "FD": 23,
+        "HTTP400": 10128,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 2566,
+        "capacity": 10000,
+        "goroutines": 32,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.214004722Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.62,
+        "FD": 23,
+        "HTTP400": 10129,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 2503,
+        "capacity": 10000,
+        "goroutines": 35,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.218758678Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.62,
+        "FD": 23,
+        "HTTP400": 10130,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 2440,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.223233721Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.63,
+        "FD": 23,
+        "HTTP400": 10131,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 2377,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.22790871Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.63,
+        "FD": 23,
+        "HTTP400": 10132,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 2314,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.23276933Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.64,
+        "FD": 23,
+        "HTTP400": 10133,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 2251,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.237205664Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.64,
+        "FD": 23,
+        "HTTP400": 10134,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 2188,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.241554396Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.65,
+        "FD": 23,
+        "HTTP400": 10135,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 2125,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.245620458Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.65,
+        "FD": 23,
+        "HTTP400": 10136,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 2062,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.250001752Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.65,
+        "FD": 23,
+        "HTTP400": 10137,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 1999,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.254374662Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.66,
+        "FD": 23,
+        "HTTP400": 10138,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 1936,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.259258885Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.66,
+        "FD": 23,
+        "HTTP400": 10139,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 1873,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.264866525Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.66,
+        "FD": 23,
+        "HTTP400": 10140,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 1810,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.270422625Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.67,
+        "FD": 23,
+        "HTTP400": 10141,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 1747,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.277722151Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.68,
+        "FD": 23,
+        "HTTP400": 10142,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 1684,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.282366274Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.68,
+        "FD": 23,
+        "HTTP400": 10143,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 1621,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.28825589Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.69,
+        "FD": 23,
+        "HTTP400": 10144,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 1558,
+        "capacity": 10000,
+        "goroutines": 35,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.294362191Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.69,
+        "FD": 23,
+        "HTTP400": 10145,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 1495,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.300321525Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.69,
+        "FD": 23,
+        "HTTP400": 10146,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 1432,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.305035306Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.7,
+        "FD": 23,
+        "HTTP400": 10147,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 1369,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.312888314Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.7,
+        "FD": 23,
+        "HTTP400": 10148,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 1306,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.317806384Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.71,
+        "FD": 23,
+        "HTTP400": 10149,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 1243,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.321996303Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.71,
+        "FD": 23,
+        "HTTP400": 10150,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 1180,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.326496047Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.71,
+        "FD": 23,
+        "HTTP400": 10151,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 1117,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.333467378Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.72,
+        "FD": 23,
+        "HTTP400": 10152,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 1054,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.339488984Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.72,
+        "FD": 23,
+        "HTTP400": 10153,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 991,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.344110049Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.73,
+        "FD": 23,
+        "HTTP400": 10154,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 928,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.348699992Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.73,
+        "FD": 23,
+        "HTTP400": 10155,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 865,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.354365597Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.73,
+        "FD": 23,
+        "HTTP400": 10156,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 802,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.360098564Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.74,
+        "FD": 23,
+        "HTTP400": 10157,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 739,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.364813791Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.75,
+        "FD": 23,
+        "HTTP400": 10158,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 676,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.37182235Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.75,
+        "FD": 23,
+        "HTTP400": 10159,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 613,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.376848395Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.75,
+        "FD": 23,
+        "HTTP400": 10160,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 550,
+        "capacity": 10000,
+        "goroutines": 33,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.381984901Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.76,
+        "FD": 23,
+        "HTTP400": 10161,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 487,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.388122156Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.76,
+        "FD": 23,
+        "HTTP400": 10162,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 424,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.392639402Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.76,
+        "FD": 23,
+        "HTTP400": 10163,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 361,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.396697348Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.76,
+        "FD": 23,
+        "HTTP400": 10164,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 298,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.402342452Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.77,
+        "FD": 23,
+        "HTTP400": 10165,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 235,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.407340543Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.78,
+        "FD": 23,
+        "HTTP400": 10166,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 172,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.411875638Z",
+      "label": "bounded_expiry_cleanup",
+      "metrics": {
+        "CPU_seconds": 148.78,
+        "FD": 23,
+        "HTTP400": 10167,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 157,
+        "capacity": 10000,
+        "goroutines": 31,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    },
+    {
+      "at_utc": "2026-10-28T01:15:00.421892937Z",
+      "label": "final_actual_API_snapshot",
+      "metrics": {
+        "CPU_seconds": 148.79,
+        "FD": 23,
+        "HTTP400": 10167,
+        "HTTP429": 43,
+        "KDF_active": 0,
+        "KDF_work_count": 2664,
+        "RSS_bytes": 59191296,
+        "active": 157,
+        "capacity": 10000,
+        "goroutines": 30,
+        "login_active": 0,
+        "login_admitted": 2197,
+        "saturated": 11
+      }
+    }
+  ],
+  "new_users_or_sessions": 0,
+  "production_touched": false,
+  "profile": {
+    "actual_capacity": 10000,
+    "concurrent_boundary": 16,
+    "fill_min_start_interval_ms": 10,
+    "fill_workers": 4,
+    "native_router_or_physical_NAT_proven": false,
+    "source_limit": 10,
+    "window_s": 300
+  },
+  "records": [
+    {
+      "at_utc": "2026-10-28T01:07:57.26428466Z",
+      "event": "observation",
+      "label": "protected_source_exhausted",
+      "prior_windows_expired_without_reset": true,
+      "protected11th": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 300,
+        "cookie_seen": false
+      },
+      "protected_admitted400": 10,
+      "status": "PASS",
+      "warmup_unique": 16
+    },
+    {
+      "active": 10000,
+      "admitted400": 8,
+      "at_utc": "2026-10-28T01:09:42.840077362Z",
+      "attempts": 16,
+      "before_active": 9992,
+      "capacity": 10000,
+      "elapsed_s": 99.815364338,
+      "event": "observation",
+      "failclosed429": 8,
+      "fill_start_interval_ms": 10,
+      "fill_workers": 4,
+      "label": "actual10000_store_concurrent_boundary",
+      "outcomes": [
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "cookie_seen": false
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "cookie_seen": false
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "cookie_seen": false
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "cookie_seen": false
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "cookie_seen": false
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "cookie_seen": false
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "cookie_seen": false
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "cookie_seen": false
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        }
+      ],
+      "protected_before": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 201,
+        "cookie_seen": false
+      },
+      "saturation_delta": 8,
+      "status": "PASS"
+    },
+    {
+      "active": 10000,
+      "at_utc": "2026-10-28T01:09:42.854766737Z",
+      "event": "observation",
+      "fresh_denials": [
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        }
+      ],
+      "known_spare_budget400": {
+        "http": 400,
+        "code": "VALIDATION_FAILED",
+        "retry_after_s": 0,
+        "cookie_seen": false
+      },
+      "label": "preservation_and_failclosed",
+      "new_denials_increment_saturation_only": true,
+      "protected_still429": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 201,
+        "cookie_seen": false
+      },
+      "status": "PASS"
+    },
+    {
+      "active": 10000,
+      "at_utc": "2026-10-28T01:10:34.461191906Z",
+      "elapsed_s": 150.01407521,
+      "event": "observation",
+      "label": "midpoint_denials",
+      "new": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 150,
+        "cookie_seen": false
+      },
+      "protected": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 150,
+        "cookie_seen": false
+      }
+    },
+    {
+      "active_after_first_new": 9937,
+      "active_before": 10000,
+      "at_utc": "2026-10-28T01:13:17.345903251Z",
+      "elapsed_s": 304.020854654,
+      "event": "observation",
+      "expired_removed_by_one_new_call": 64,
+      "label": "original_window_and_bounded_prune",
+      "new400": {
+        "http": 400,
+        "code": "VALIDATION_FAILED",
+        "retry_after_s": 0,
+        "cookie_seen": false
+      },
+      "no_restart_clock_injection_or_limit_change": true,
+      "protected400": {
+        "http": 400,
+        "code": "VALIDATION_FAILED",
+        "retry_after_s": 0,
+        "cookie_seen": false
+      },
+      "status": "PASS"
+    },
+    {
+      "KDF_work_delta": 0,
+      "account_admission_delta": 0,
+      "active_remaining_new_windows": 157,
+      "at_utc": "2026-10-28T01:15:00.411905735Z",
+      "cleanup_new_calls": 155,
+      "event": "observation",
+      "expired_removed_per_call_max": 64,
+      "expired_removed_per_call_min": 16,
+      "label": "amortized_full_cohort_cleanup",
+      "last_boundary_elapsed_s": 302.829411872,
+      "new_users_or_sessions": 0,
+      "status": "PASS"
+    },
+    {
+      "allowed_label_names": [
+        "operation"
+      ],
+      "at_utc": "2026-10-28T01:15:00.416678884Z",
+      "event": "observation",
+      "finite_operations": 7,
+      "label": "finite_rate_metric_labels",
+      "metric_families": 3,
+      "series_checked": 21,
+      "source_or_identity_labels_present": false,
+      "status": "PASS"
+    }
+  ],
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "status": "PASS_ACTUAL_RATE_LIMIT_STORE_CAPACITY"
+}

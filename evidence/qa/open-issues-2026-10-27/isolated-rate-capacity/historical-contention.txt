@@ -1,0 +1,24 @@
+goos: linux
+goarch: amd64
+pkg: qa-historical-rate-hold
+cpu: 12th Gen Intel(R) Core(TM) i7-12700
+BenchmarkMatchedContendedExisting/100           	   10000	        62.95 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/100           	   10000	        61.44 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/100           	   10000	        60.13 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/100-4         	   10000	        83.93 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/100-4         	   10000	        79.51 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/100-4         	   10000	        80.58 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/1000          	   10000	        62.99 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/1000          	   10000	        63.88 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/1000          	   10000	        62.29 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/1000-4        	   10000	        77.90 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/1000-4        	   10000	        83.68 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/1000-4        	   10000	        85.53 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/10000         	   10000	        69.45 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/10000         	   10000	        64.31 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/10000         	   10000	        63.86 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/10000-4       	   10000	        84.35 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/10000-4       	   10000	       103.7 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/10000-4       	   10000	        80.77 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	qa-historical-rate-hold	4.720s

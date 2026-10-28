@@ -1,0 +1,96 @@
+{
+  "raw_private_stream_SHA256": "6e64cbcde9f5ca98575f38e42b9a05bc236cd77ad4ecbc379083138142fd05ea",
+  "events": [
+    {
+      "Time": "2026-10-28T01:12:59.166519254Z",
+      "Action": "start",
+      "Package": "qa-historical-rate-limit"
+    },
+    {
+      "Time": "2026-10-28T01:12:59.168126101Z",
+      "Action": "run",
+      "Package": "qa-historical-rate-limit",
+      "Test": "TestNoActiveBudgetResetAtCapacity"
+    },
+    {
+      "Time": "2026-10-28T01:12:59.16814767Z",
+      "Action": "output",
+      "Package": "qa-historical-rate-limit",
+      "Test": "TestNoActiveBudgetResetAtCapacity",
+      "Output": "=== RUN   TestNoActiveBudgetResetAtCapacity\n"
+    },
+    {
+      "Time": "2026-10-28T01:12:59.168163254Z",
+      "Action": "output",
+      "Package": "qa-historical-rate-limit",
+      "Test": "TestNoActiveBudgetResetAtCapacity",
+      "Output": "    capacity_regression_test.go:6: protected active exhausted budget renewed before original reset\n"
+    },
+    {
+      "Time": "2026-10-28T01:12:59.168166899Z",
+      "Action": "output",
+      "Package": "qa-historical-rate-limit",
+      "Test": "TestNoActiveBudgetResetAtCapacity",
+      "Output": "--- FAIL: TestNoActiveBudgetResetAtCapacity (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:12:59.168168489Z",
+      "Action": "fail",
+      "Package": "qa-historical-rate-limit",
+      "Test": "TestNoActiveBudgetResetAtCapacity",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:12:59.1681715Z",
+      "Action": "run",
+      "Package": "qa-historical-rate-limit",
+      "Test": "TestNewSourceFailsClosedAtCapacity"
+    },
+    {
+      "Time": "2026-10-28T01:12:59.16817258Z",
+      "Action": "output",
+      "Package": "qa-historical-rate-limit",
+      "Test": "TestNewSourceFailsClosedAtCapacity",
+      "Output": "=== RUN   TestNewSourceFailsClosedAtCapacity\n"
+    },
+    {
+      "Time": "2026-10-28T01:12:59.168173797Z",
+      "Action": "output",
+      "Package": "qa-historical-rate-limit",
+      "Test": "TestNewSourceFailsClosedAtCapacity",
+      "Output": "    capacity_regression_test.go:10: unknown key must fail closed at active capacity with retry\n"
+    },
+    {
+      "Time": "2026-10-28T01:12:59.168175331Z",
+      "Action": "output",
+      "Package": "qa-historical-rate-limit",
+      "Test": "TestNewSourceFailsClosedAtCapacity",
+      "Output": "--- FAIL: TestNewSourceFailsClosedAtCapacity (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:12:59.16817658Z",
+      "Action": "fail",
+      "Package": "qa-historical-rate-limit",
+      "Test": "TestNewSourceFailsClosedAtCapacity",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:12:59.168179097Z",
+      "Action": "output",
+      "Package": "qa-historical-rate-limit",
+      "Output": "FAIL\n"
+    },
+    {
+      "Time": "2026-10-28T01:12:59.168515564Z",
+      "Action": "output",
+      "Package": "qa-historical-rate-limit",
+      "Output": "FAIL\tqa-historical-rate-limit\t0.002s\n"
+    },
+    {
+      "Time": "2026-10-28T01:12:59.168551223Z",
+      "Action": "fail",
+      "Package": "qa-historical-rate-limit",
+      "Elapsed": 0.002
+    }
+  ]
+}

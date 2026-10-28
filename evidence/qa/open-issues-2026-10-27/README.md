@@ -291,3 +291,7 @@ upload/platform/media facets remain queued;480 source texts and43 decisions inta
 [Scoped upload evidence](isolated-upload-budgets/README.md) passes actual unchanged account10/source200/deployment5000 windows,16-way global boundary and real302s recovery. Seven focused native checks pass with zero skips. I240.C5 and QA240 remain FAIL/open because the earlier NAT20/#137 counterexample remains. Six own32B files are intentionally retained; all2011 historical owned sessions are inactive. No original consolidation decision is applied.
 
 The requested [production URL readiness](production-origin-readiness/result.json) separately observed trusted HTTPS and root HTTP200 from this PC without credentials. `/healthz` returned the same HTML SPA fallback; it is not an API health result or access to the isolated local stand.
+
+## Actual limiter-store saturation and matched measurements, 2026-10-28
+
+[I240.C7 evidence](isolated-rate-capacity/README.md) now passes the exact source-store/race/benchmark criterion: real10000-key boundary, preserved active budget, failclosed unknown keys, real304s recovery and bounded64 expiry batches.12 native race tests repeat3 times with zero skips. Historical/current matched timings retain both improvements and regressions, and distinguish instrumented-copy hold diagnostics. Database counts and nine private services remain unchanged. QA240 remains FAIL on134/137; no43 consolidation decision is applied.

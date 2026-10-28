@@ -1,0 +1,7 @@
+package main
+import("bufio";"io";"net/http";"regexp";"strings")
+func metricAudit(){
+ r,e:=http.NewRequestWithContext(ctx,"GET",base+"/metrics",nil);require(e==nil,"audit request");response,e:=client.Do(r);require(e==nil,"audit transport");defer response.Body.Close();require(response.StatusCode==200,"audit metrics HTTP");raw,e:=io.ReadAll(io.LimitReader(response.Body,4194305));require(e==nil&&len(raw)<=4194304,"audit response bound")
+ pattern:=regexp.MustCompile(`^(voice_platform_rate_limit_(?:sources_active|sources_capacity|saturation_total))\{operation="([a-z_]+)"\} [0-9.e+\-]+$`);allowed:=map[string]bool{"registration":true,"login_source":true,"password_reset":true,"upload_source":true,"upload_account":true,"upload_deployment":true,"telemetry":true};series:=0;names:=map[string]bool{};scanner:=bufio.NewScanner(strings.NewReader(string(raw)))
+ for scanner.Scan(){line:=scanner.Text();if !strings.HasPrefix(line,"voice_platform_rate_limit_"){continue};m:=pattern.FindStringSubmatch(line);require(len(m)==3&&allowed[m[2]],"rate metrics have unexpected labels or identifier value");series++;names[m[1]]=true};require(series==21&&len(names)==3,"rate family series contract");emit("observation",map[string]any{"label":"finite_rate_metric_labels","status":"PASS","series_checked":series,"metric_families":len(names),"allowed_label_names":[]string{"operation"},"finite_operations":7,"source_or_identity_labels_present":false})
+}

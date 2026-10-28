@@ -1,0 +1,88 @@
+package ratelimit
+
+import (
+	"errors"
+	"sync"
+	"time"
+)
+
+var ErrInvalidConfig = errors.New("invalid rate limit configuration")
+
+type Config struct {
+	Limit      int
+	Window     time.Duration
+	MaxSources int
+	Now        func() time.Time
+}
+
+type entry struct {
+	count int
+	reset time.Time
+}
+
+type Limiter struct {
+	mutex      sync.Mutex
+	limit      int
+	window     time.Duration
+	maxSources int
+	now        func() time.Time
+	entries    map[string]entry
+}
+
+func New(config Config) (*Limiter, error) {
+	if config.Limit < 1 || config.Window <= 0 || config.MaxSources < 1 {
+		return nil, ErrInvalidConfig
+	}
+	if config.Now == nil {
+		config.Now = time.Now
+	}
+	return &Limiter{
+		limit:      config.Limit,
+		window:     config.Window,
+		maxSources: config.MaxSources,
+		now:        config.Now,
+		entries:    make(map[string]entry),
+	}, nil
+}
+
+func (limiter *Limiter) allow(source string) (time.Duration, bool) {
+	limiter.mutex.Lock()
+	measuredStart := time.Now()
+	defer func(){ measuredHeld := time.Since(measuredStart); limiter.mutex.Unlock(); recordMeasuredHold(measuredHeld) }()
+
+	now := limiter.now()
+	current, found := limiter.entries[source]
+	if found && now.Before(current.reset) {
+		if current.count >= limiter.limit {
+			return current.reset.Sub(now), false
+		}
+		current.count++
+		limiter.entries[source] = current
+		return 0, true
+	}
+	limiter.prune(now)
+	if len(limiter.entries) >= limiter.maxSources {
+		limiter.dropOldest()
+	}
+	limiter.entries[source] = entry{count: 1, reset: now.Add(limiter.window)}
+	return 0, true
+}
+
+func (limiter *Limiter) prune(now time.Time) {
+	for source, current := range limiter.entries {
+		if !now.Before(current.reset) {
+			delete(limiter.entries, source)
+		}
+	}
+}
+
+func (limiter *Limiter) dropOldest() {
+	var oldestSource string
+	var oldest time.Time
+	for source, current := range limiter.entries {
+		if oldestSource == "" || current.reset.Before(oldest) {
+			oldestSource, oldest = source, current.reset
+		}
+	}
+	delete(limiter.entries, oldestSource)
+}

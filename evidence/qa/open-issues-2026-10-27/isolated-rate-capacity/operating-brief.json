@@ -1,0 +1,17 @@
+{
+  "at_utc": "2026-10-28T01:05:38.171059+00:00",
+  "workflow_class": "review_gate",
+  "task_size": "large",
+  "structure_mode": "structure_no_rg",
+  "route": "backend/internal/security/rate_limit",
+  "criterion": "I240.C7 / referenced139",
+  "previous_goal_turn": "PROGRESS: actual upload10/200/5000 windows, real302s recovery, retained controller mistake, source-bound evidence220ed33cb/8dfc9d0ce;137/240 stayopenFAIL",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "native_edges": "runtime admission login_source10000 / auth_routes register -> maintenance -> LoginLimiter -> malformed login parser; unchanged generic Limiter and expiration heap",
+  "preservation": "No production/router/device/session/source/configuration changes; no new users or sessions; malformed short login bodies before account/KDF work; trusted own proxy namespace only",
+  "profile": "Actual default10000-entry source store; protected exhausted source, spare existing source, bounded prefill and concurrent boundary, new-key failclosed, unchanged budgets, real300s expiry,64-step aggregate cleanup; nearest race tests, historical/current paired fixed benchmark and explicit instrumented-copy hold-time diagnostic",
+  "resource_stop": "Own helper1CPU/512MiB/128PIDs,4fillworkers at most100 request starts/s; API512MiB/FD2048/goroutines8000, DB80total/64active;14min deadline",
+  "native_toolchain": "Pinned official Linux amd64 Go1.26.4 bookworm image, isolated test container; no Windows C compiler available",
+  "scope_limits": "Generic source store through real login ingress; not50000 account store saturation or physical NAT/router/media/capacity; CPU/time statistics are bounded observations, not productionSLO",
+  "stop_condition": "Retain actual verdicts, original480texts and all priorcases, no session/data mutations, service health/private topology/logscan, privacy/source/manifest verification and fresh QA240 update;139 staysclosed unless actual defect found"
+}

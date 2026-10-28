@@ -1,0 +1,18 @@
+{
+  "at_utc": "2026-10-28T01:14:03.012645+00:00",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "historical_source": "ce8c3e0ad848a879d4d60ef08df74b85661c19da",
+  "toolchain_image": "golang@sha256:5a94593d87a066df5abb02969be911524963f53908292aa5a1a6096fc019012a",
+  "unchanged_source_SHA256": "bc414dcc9ba7f78d60d104b20cef1b5efc4020256797d1ab63c988e5143033ce",
+  "historical_original_SHA256": "27175bccc30acb818130e17e2c9e1c4309451e9ed645affa73f4384ea1e89dfa",
+  "exact_instrumentation_original": "limiter.mutex.Lock()\n\tdefer limiter.mutex.Unlock()",
+  "exact_instrumentation_replacement": "limiter.mutex.Lock()\n\tmeasuredStart := time.Now()\n\tdefer func(){ measuredHeld := time.Since(measuredStart); limiter.mutex.Unlock(); recordMeasuredHold(measuredHeld) }()",
+  "files_SHA256": {
+    "instrumented-current-limiter.go": "d8256c042a887a3433c499c4a04a9819facafce6c17be6eeb223ed1a1a33ec90",
+    "instrumented-historical-limiter.go": "3b21e156423e4afdf0674b66e8f8be8b2aea59aa65e6ff386d730307816c4334",
+    "contention_benchmark_test.go": "0b23388f34ab524e1f7f2070a787e074895686dd19b9f72511d9197d153fa1b2",
+    "hold_profile_test.go": "218c764ef656e840b287483a9ccc9d56e9332a5266493e8a1db1a539ede70b36",
+    "run_hold.py": "bb582a07a121f2052cfa0dc3065e570e227eb8ef99b3c296a1456f89bef1cd9c"
+  },
+  "instrumentation_limits": "Two clock reads/defer observer around acquired mutex in private source copies only; sequentialGOMAXPROCS1, timing overhead included. Unmodified native benchmarks retained separately."
+}

@@ -1,0 +1,29 @@
+{
+  "events": [
+    {
+      "Time": "2026-10-28T01:10:14.806997053Z",
+      "Action": "start",
+      "Package": "voice-platform/backend/internal/security/rate_limit"
+    },
+    {
+      "Time": "2026-10-28T01:10:14.821256956Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Output": "fork/exec /tmp/go-build620945340/b001/rate_limit.test: permission denied\n"
+    },
+    {
+      "Time": "2026-10-28T01:10:14.8212885Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Output": "FAIL\tvoice-platform/backend/internal/security/rate_limit\t0.014s\n"
+    },
+    {
+      "Time": "2026-10-28T01:10:14.821295455Z",
+      "Action": "fail",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Elapsed": 0.014
+    }
+  ],
+  "tests_executed": 0,
+  "reason": "tmpfs noexec prevented test binary startup, retained infrastructure failure"
+}

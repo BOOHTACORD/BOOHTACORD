@@ -1,0 +1,46 @@
+"""Bounded real10000 source-store verification on the existing own local deployment."""
+import hashlib,ipaddress,json,os,secrets,subprocess,sys,threading
+from datetime import datetime,timedelta,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,SOURCE,CONTEXT
+mode=sys.argv[1];assert mode in ['run','observe'] and not (P/'private/STOP').exists()
+def now():return datetime.now(timezone.utc).isoformat()
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+def save(n,d):(P/n).write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8',newline='\n')
+def db():
+ sql=b"SELECT (SELECT count(*) FROM users),(SELECT count(*) FROM sessions),(SELECT count(*) FROM sessions WHERE revoked_at IS NULL),(SELECT count(*) FROM attachments);\n"
+ return list(map(int,docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-At',input=sql).decode().strip().split('|')))
+proxy=json.loads(docker('inspect',PROJECT+'-proxy-1'))[0];api=json.loads(docker('inspect',PROJECT+'-api-1'))[0]
+for v in [proxy,api]:assert v['State']['Running'] and v['RestartCount']==0 and v['Config']['Labels']['com.docker.compose.project']==PROJECT
+assert json.loads(docker('image','inspect',api['Image']))[0]['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+trusted=[ipaddress.ip_network(v.split('=',1)[1]) for v in api['Config']['Env'] if v.startswith('TRUSTED_PROXY_CIDRS=')];assert any(ipaddress.ip_address(n['IPAddress']) in c for n in proxy['NetworkSettings']['Networks'].values() for c in trusted)
+assert not docker('ps','-a','--filter','name=^boohtacord-rate-capacity-probe$','--format','{{.Names}}').decode().strip()
+config=P/'private/config.private.json'
+if not config.exists():
+ prefix=int(ipaddress.ip_address('fd00::'))|(secrets.randbits(56)<<64);sources=[str(ipaddress.ip_address(prefix+i+1)) for i in range(10300)];prior=read(P.parent/'qa-upload-budgets/resume-result.json');last=next(x['at_utc'] for x in prior['records'] if x['label']=='owned_fixtures_ready');not_before=datetime.fromisoformat(last.replace('Z','+00:00'))+timedelta(seconds=330)
+ config.write_text(json.dumps({'source_revision':SOURCE,'sources':sources,'not_before':not_before.isoformat()},indent=2)+'\n',encoding='utf-8');save('baseline-database.json',{'at_utc':now(),'users_sessions_active_attachments':db(),'new_users_or_sessions_planned':0})
+if mode=='run':assert not (P/'run-result.json').exists()
+files=sorted(P.glob('probe_*.go'));assert len(files)==6
+save('runner-before-'+mode+'.json',{'at_utc':now(),'source_revision':SOURCE,'API_image_id':api['Image'],'owned_trusted_proxy_namespace':True,'private_config_SHA256':hashlib.sha256(config.read_bytes()).hexdigest(),'files_SHA256':{f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in [*files,Path(__file__)]}})
+build=subprocess.run(['go','build','-o',str(P/'capacity_probe'),*[str(f) for f in files]],cwd=Q/'backend',env={**os.environ,'GOOS':'linux','GOARCH':'amd64','CGO_ENABLED':'0','GOTOOLCHAIN':'local'},capture_output=True);(P/'build.private.log').write_bytes(build.stdout+build.stderr);assert build.returncode==0,'Inspect private build log'
+argv=['docker','--context',CONTEXT,'run','--rm','--name','boohtacord-rate-capacity-probe','--label','com.docker.compose.project='+PROJECT,'--label','qa.packet=rate-capacity','--network','container:'+proxy['Id'],'--cpus','1','--memory','512m','--pids-limit','128','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges','--mount','type=bind,source='+str(P/'capacity_probe')+',target=/qa-probe,readonly','--mount','type=bind,source='+str(P/'private')+',target=/work','--entrypoint','/qa-probe',api['Image'],mode]
+r={'at_utc':now(),'status':'RUNNING','mode':mode,'source_revision':SOURCE,'project':PROJECT,'production_touched':False,'binary_SHA256':hashlib.sha256((P/'capacity_probe').read_bytes()).hexdigest()};done=threading.Event();db_samples=[]
+def monitor():
+ while not done.wait(4):
+  try:
+   values=docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-At',input=b"SELECT count(*),count(*) FILTER(WHERE state='active') FROM pg_stat_activity WHERE datname=current_database();\n");total,active=map(int,values.decode().strip().split('|'));db_samples.append({'at_utc':now(),'connections':total,'active_connections':active})
+   if total>=80 or active>=64:(P/'private/STOP').write_text('DB resource stop',encoding='utf-8')
+  except Exception as e:db_samples.append({'at_utc':now(),'error_type':type(e).__name__});(P/'private/STOP').write_text('DB observer failure',encoding='utf-8')
+try:
+ with (P/(mode+'-stderr.private.log')).open('wb') as errors,(P/(mode+'-stream.private.jsonl')).open('w',encoding='utf-8',newline='\n') as stream:
+  process=subprocess.Popen(argv,stdout=subprocess.PIPE,stderr=errors,text=True,encoding='utf-8');r.update(controller_PID=os.getpid(),docker_client_PID=process.pid);save(mode+'-runner.json',r);threading.Thread(target=monitor,daemon=True).start()
+  for line in process.stdout:
+   d=json.loads(line);stream.write(line);stream.flush()
+   if d['event'] in ['observation','progress']:print(json.dumps({k:v for k,v in d.items() if k!='outcomes'}),flush=True)
+   if d['event']=='final':save(mode+'-result.json',d);r['profile_status']=d['status']
+  r['client_exit_code']=process.wait(timeout=20);assert r['client_exit_code']==0 and r['profile_status'].startswith('PASS')
+ r['status']='PASS_OWNED_RATE_CAPACITY_PROFILE'
+except Exception as e:r['status']='FAIL_OR_CONTROLLER';r['error_type']=type(e).__name__
+finally:done.set();save(mode+'-database-samples.json',{'samples':db_samples,'limits':{'connections':80,'active_connections':64}});r['finished_at_utc']=now();r['database_counts_after']=db();save(mode+'-runner.json',r)
+print(json.dumps(r));sys.exit(0 if r['status'].startswith('PASS') else 1)

@@ -1,0 +1,24 @@
+goos: linux
+goarch: amd64
+pkg: voice-platform/backend/internal/security/rate_limit
+cpu: 12th Gen Intel(R) Core(TM) i7-12700
+BenchmarkMatchedContendedExisting/100           	   10000	        60.42 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/100           	   10000	        63.05 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/100           	   10000	        60.12 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/100-4         	   10000	        81.25 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/100-4         	   10000	        87.98 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/100-4         	   10000	        80.42 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/1000          	   10000	        64.12 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/1000          	   10000	        64.51 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/1000          	   10000	        63.00 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/1000-4        	   10000	        83.88 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/1000-4        	   10000	        80.18 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/1000-4        	   10000	        91.10 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/10000         	   10000	        67.70 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/10000         	   10000	        86.47 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/10000         	   10000	        89.14 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/10000-4       	   10000	        93.31 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/10000-4       	   10000	        92.82 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMatchedContendedExisting/10000-4       	   10000	        85.40 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	voice-platform/backend/internal/security/rate_limit	0.085s

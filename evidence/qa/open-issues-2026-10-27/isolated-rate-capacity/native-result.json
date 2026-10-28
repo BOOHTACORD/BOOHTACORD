@@ -1,0 +1,120 @@
+{
+  "status": "PASS_RACE_AND_PAIRED_NATIVE_BENCHMARK",
+  "at_utc": "2026-10-28T01:13:47.711412+00:00",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "historical_source": "ce8c3e0ad848a879d4d60ef08df74b85661c19da",
+  "toolchain_image": "golang@sha256:5a94593d87a066df5abb02969be911524963f53908292aa5a1a6096fc019012a",
+  "race_test_pass_events": 36,
+  "race_repetitions": 3,
+  "unique_tests": 12,
+  "skips": 0,
+  "runs": [
+    {
+      "label": "toolchain",
+      "at_utc": "2026-10-28T01:11:22.606767+00:00",
+      "finished_at_utc": "2026-10-28T01:11:22.972731+00:00",
+      "elapsed_s": 0.3590000000258442,
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "command_argv": [
+        "go",
+        "version"
+      ],
+      "container_workdir": "/src",
+      "stdout_SHA256": "7ae85ca579b70c29982baf7def7120e7be497122076f66e3b30a0db90ca7f93a",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "race",
+      "at_utc": "2026-10-28T01:11:23.111830+00:00",
+      "finished_at_utc": "2026-10-28T01:12:46.439206+00:00",
+      "elapsed_s": 83.32800000000861,
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "command_argv": [
+        "go",
+        "test",
+        "-json",
+        "-p=2",
+        "-race",
+        "-count=3",
+        "-timeout=3m",
+        "-overlay=/work/native-overlay.json",
+        "./internal/security/rate_limit"
+      ],
+      "container_workdir": "/src",
+      "stdout_SHA256": "94bfc815ea359621088508805606dcd7452734c7ea4935a4443a97ca6f7eafeb",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "historical-counterexample",
+      "at_utc": "2026-10-28T01:12:46.584392+00:00",
+      "finished_at_utc": "2026-10-28T01:12:59.510685+00:00",
+      "elapsed_s": 12.921000000002095,
+      "exit_code": 1,
+      "expected_exit_code": 1,
+      "command_argv": [
+        "go",
+        "test",
+        "-json",
+        "-count=1",
+        "-run",
+        "^Test(NoActiveBudgetResetAtCapacity|NewSourceFailsClosedAtCapacity)$",
+        "."
+      ],
+      "container_workdir": "/work/native/baseline",
+      "stdout_SHA256": "6e64cbcde9f5ca98575f38e42b9a05bc236cd77ad4ecbc379083138142fd05ea",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "historical-bench",
+      "at_utc": "2026-10-28T01:12:59.660368+00:00",
+      "finished_at_utc": "2026-10-28T01:13:16.090743+00:00",
+      "elapsed_s": 16.437000000005355,
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "command_argv": [
+        "go",
+        "test",
+        "-run",
+        "^$",
+        "-bench",
+        "^BenchmarkLimiterLookupAndAdmission$",
+        "-benchtime=2000x",
+        "-count=3",
+        "-cpu=1,4",
+        "-benchmem",
+        "."
+      ],
+      "container_workdir": "/work/native/baseline",
+      "stdout_SHA256": "6f2d38eaae22c5d2bf29a4130e6f8919185a885e84844517cbc410fcd2be0acc",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "current-bench",
+      "at_utc": "2026-10-28T01:13:16.241039+00:00",
+      "finished_at_utc": "2026-10-28T01:13:47.701392+00:00",
+      "elapsed_s": 31.469000000011874,
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "command_argv": [
+        "go",
+        "test",
+        "-run",
+        "^$",
+        "-bench",
+        "^BenchmarkLimiterLookupAndAdmission$",
+        "-benchtime=2000x",
+        "-count=3",
+        "-cpu=1,4",
+        "-benchmem",
+        "./internal/security/rate_limit"
+      ],
+      "container_workdir": "/src",
+      "stdout_SHA256": "a3519e62b832d723e55f7659416f80c9e72c9e22e00bfb31fbd2c6079a5793e5",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "historical_safety_regression_expected_failures": 2,
+  "source_or_production_changes": false
+}

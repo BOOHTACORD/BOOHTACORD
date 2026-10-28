@@ -1,0 +1,257 @@
+{
+  "status": "PASS_MATCHED_CONTENTION_AND_INSTRUMENTED_HOLD_TIMINGS",
+  "at_utc": "2026-10-28T01:14:56.085343+00:00",
+  "toolchain_image": "golang@sha256:5a94593d87a066df5abb02969be911524963f53908292aa5a1a6096fc019012a",
+  "runs": [
+    {
+      "label": "historical-contention",
+      "at_utc": "2026-10-28T01:14:03.220556+00:00",
+      "finished_at_utc": "2026-10-28T01:14:14.277575+00:00",
+      "elapsed_s": 11.062999999994645,
+      "exit_code": 0,
+      "command_argv": [
+        "go",
+        "test",
+        "-run",
+        "^$",
+        "-bench",
+        "^BenchmarkMatchedContendedExisting$",
+        "-benchtime=10000x",
+        "-count=3",
+        "-cpu=1,4",
+        "-benchmem",
+        "."
+      ],
+      "container_workdir": "/work/native/hold-baseline",
+      "stdout_SHA256": "00b907a4004209d0e2e7c2aa414119041725b632dc529450d67ee2842cd4c988",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "current-contention",
+      "at_utc": "2026-10-28T01:14:14.422889+00:00",
+      "finished_at_utc": "2026-10-28T01:14:32.755474+00:00",
+      "elapsed_s": 18.328000000008615,
+      "exit_code": 0,
+      "command_argv": [
+        "go",
+        "test",
+        "-run",
+        "^$",
+        "-bench",
+        "^BenchmarkMatchedContendedExisting$",
+        "-benchtime=10000x",
+        "-count=3",
+        "-cpu=1,4",
+        "-benchmem",
+        "-overlay=/work/contention-overlay.json",
+        "./internal/security/rate_limit"
+      ],
+      "container_workdir": "/src",
+      "stdout_SHA256": "e5cdbbdaf151413693265247582b83af3024590bd3446e888f05f6bc7908e7b1",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "historical-hold",
+      "at_utc": "2026-10-28T01:14:32.918258+00:00",
+      "finished_at_utc": "2026-10-28T01:14:42.254673+00:00",
+      "elapsed_s": 9.328000000008615,
+      "exit_code": 0,
+      "command_argv": [
+        "go",
+        "test",
+        "-json",
+        "-count=1",
+        "-run",
+        "^TestMeasuredMutexHoldMatchedWorkload$",
+        "-overlay=/work/historical-hold-overlay.json",
+        "."
+      ],
+      "container_workdir": "/work/native/hold-baseline",
+      "stdout_SHA256": "920b200897e8047c479e8631b366e10d593cbb72149d304f398e902ce94dbe94",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "current-hold",
+      "at_utc": "2026-10-28T01:14:42.401415+00:00",
+      "finished_at_utc": "2026-10-28T01:14:56.073333+00:00",
+      "elapsed_s": 13.671999999991385,
+      "exit_code": 0,
+      "command_argv": [
+        "go",
+        "test",
+        "-json",
+        "-count=1",
+        "-run",
+        "^TestMeasuredMutexHoldMatchedWorkload$",
+        "-overlay=/work/current-hold-overlay.json",
+        "./internal/security/rate_limit"
+      ],
+      "container_workdir": "/src",
+      "stdout_SHA256": "232a34e2f641bce2237dab69309dcd15f78e5ea28eff2cbad995a45f24e2a7c9",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "observations": {
+    "historical": [
+      {
+        "GOMAXPROCS": 1,
+        "call_latency_p50_ns": 125,
+        "call_latency_p95_ns": 128,
+        "call_latency_p99_ns": 139,
+        "calls": 2000,
+        "critical_hold_p50_ns": 68,
+        "critical_hold_p95_ns": 69,
+        "critical_hold_p99_ns": 70,
+        "initial_entries": 100,
+        "kind": "existing",
+        "source_copy_instrumented": true
+      },
+      {
+        "GOMAXPROCS": 1,
+        "call_latency_p50_ns": 8253,
+        "call_latency_p95_ns": 15724,
+        "call_latency_p99_ns": 17775,
+        "calls": 2000,
+        "critical_hold_p50_ns": 8184,
+        "critical_hold_p95_ns": 15648,
+        "critical_hold_p99_ns": 17691,
+        "initial_entries": 100,
+        "kind": "new",
+        "source_copy_instrumented": true
+      },
+      {
+        "GOMAXPROCS": 1,
+        "call_latency_p50_ns": 125,
+        "call_latency_p95_ns": 131,
+        "call_latency_p99_ns": 175,
+        "calls": 2000,
+        "critical_hold_p50_ns": 70,
+        "critical_hold_p95_ns": 71,
+        "critical_hold_p99_ns": 98,
+        "initial_entries": 1000,
+        "kind": "existing",
+        "source_copy_instrumented": true
+      },
+      {
+        "GOMAXPROCS": 1,
+        "call_latency_p50_ns": 15829,
+        "call_latency_p95_ns": 20778,
+        "call_latency_p99_ns": 24488,
+        "calls": 2000,
+        "critical_hold_p50_ns": 15754,
+        "critical_hold_p95_ns": 20712,
+        "critical_hold_p99_ns": 24404,
+        "initial_entries": 1000,
+        "kind": "new",
+        "source_copy_instrumented": true
+      },
+      {
+        "GOMAXPROCS": 1,
+        "call_latency_p50_ns": 122,
+        "call_latency_p95_ns": 124,
+        "call_latency_p99_ns": 135,
+        "calls": 2000,
+        "critical_hold_p50_ns": 68,
+        "critical_hold_p95_ns": 69,
+        "critical_hold_p99_ns": 69,
+        "initial_entries": 10000,
+        "kind": "existing",
+        "source_copy_instrumented": true
+      },
+      {
+        "GOMAXPROCS": 1,
+        "call_latency_p50_ns": 84886,
+        "call_latency_p95_ns": 103289,
+        "call_latency_p99_ns": 139543,
+        "calls": 2000,
+        "critical_hold_p50_ns": 84798,
+        "critical_hold_p95_ns": 102868,
+        "critical_hold_p99_ns": 139288,
+        "initial_entries": 10000,
+        "kind": "new",
+        "source_copy_instrumented": true
+      }
+    ],
+    "current": [
+      {
+        "GOMAXPROCS": 1,
+        "call_latency_p50_ns": 126,
+        "call_latency_p95_ns": 138,
+        "call_latency_p99_ns": 156,
+        "calls": 2000,
+        "critical_hold_p50_ns": 69,
+        "critical_hold_p95_ns": 71,
+        "critical_hold_p99_ns": 88,
+        "initial_entries": 100,
+        "kind": "existing",
+        "source_copy_instrumented": true
+      },
+      {
+        "GOMAXPROCS": 1,
+        "call_latency_p50_ns": 159,
+        "call_latency_p95_ns": 229,
+        "call_latency_p99_ns": 2154,
+        "calls": 2000,
+        "critical_hold_p50_ns": 102,
+        "critical_hold_p95_ns": 166,
+        "critical_hold_p99_ns": 2081,
+        "initial_entries": 100,
+        "kind": "new",
+        "source_copy_instrumented": true
+      },
+      {
+        "GOMAXPROCS": 1,
+        "call_latency_p50_ns": 128,
+        "call_latency_p95_ns": 131,
+        "call_latency_p99_ns": 175,
+        "calls": 2000,
+        "critical_hold_p50_ns": 72,
+        "critical_hold_p95_ns": 73,
+        "critical_hold_p99_ns": 98,
+        "initial_entries": 1000,
+        "kind": "existing",
+        "source_copy_instrumented": true
+      },
+      {
+        "GOMAXPROCS": 1,
+        "call_latency_p50_ns": 160,
+        "call_latency_p95_ns": 240,
+        "call_latency_p99_ns": 1479,
+        "calls": 2000,
+        "critical_hold_p50_ns": 103,
+        "critical_hold_p95_ns": 170,
+        "critical_hold_p99_ns": 1312,
+        "initial_entries": 1000,
+        "kind": "new",
+        "source_copy_instrumented": true
+      },
+      {
+        "GOMAXPROCS": 1,
+        "call_latency_p50_ns": 130,
+        "call_latency_p95_ns": 141,
+        "call_latency_p99_ns": 197,
+        "calls": 2000,
+        "critical_hold_p50_ns": 73,
+        "critical_hold_p95_ns": 74,
+        "critical_hold_p99_ns": 123,
+        "initial_entries": 10000,
+        "kind": "existing",
+        "source_copy_instrumented": true
+      },
+      {
+        "GOMAXPROCS": 1,
+        "call_latency_p50_ns": 175,
+        "call_latency_p95_ns": 250,
+        "call_latency_p99_ns": 1240,
+        "calls": 2000,
+        "critical_hold_p50_ns": 118,
+        "critical_hold_p95_ns": 193,
+        "critical_hold_p99_ns": 1182,
+        "initial_entries": 10000,
+        "kind": "new",
+        "source_copy_instrumented": true
+      }
+    ]
+  },
+  "limits": "Instrumentation modifies private copies only and includes clock/defer observer overhead; sequential held-time samples are not direct production instrumentation or worst-case contention SLO. Unmodified paired throughput benchmarks and concurrent race evidence are separate."
+}

@@ -1,0 +1,14 @@
+package main
+import("sync";"time")
+type Result struct{O Outcome;Err error}
+func fill(from,to int){
+ jobs:=make(chan int);results:=make(chan Result,to-from);var workers sync.WaitGroup
+ for w:=0;w<4;w++{workers.Add(1);go func(){defer workers.Done();for i:=range jobs{o,e:=call(i);results<-Result{o,e}}}()}
+ tick:=time.NewTicker(10*time.Millisecond);defer tick.Stop();for i:=from;i<to;i++{select{case <-tick.C:case <-ctx.Done():panic("fill deadline")};jobs<-i;if (i+1)%1000==0{measure("store_fill");emit("progress",map[string]any{"phase":"store_fill","attempted_unique_sources":i+1,"capacity":10000})}};close(jobs);workers.Wait();close(results)
+ n:=0;for r:=range results{require(r.Err==nil&&r.O.HTTP==400&&r.O.Code=="VALIDATION_FAILED"&&!r.O.Cookie&&r.O.Retry==0,"fill unexpected outcome");n++};require(n==to-from,"fill outcome count")
+}
+func boundary()([]Outcome,int,int){
+ outcomes:=make(chan Result,16);start:=make(chan struct{});for i:=9992;i<10008;i++{go func(index int){<-start;o,e:=call(index);outcomes<-Result{o,e}}(i)};close(start);all:=[]Outcome{};admitted,limited:=0,0
+ for i:=0;i<16;i++{r:=<-outcomes;require(r.Err==nil&&!r.O.Cookie,"boundary transport/cookie");all=append(all,r.O);if r.O.HTTP==400{require(r.O.Code=="VALIDATION_FAILED","boundary400code");admitted++}else{require(r.O.HTTP==429&&r.O.Code=="RATE_LIMITED"&&r.O.Retry>0&&r.O.Retry<=300,"boundary429contract");limited++}}
+ return all,admitted,limited
+}

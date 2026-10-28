@@ -1,0 +1,270 @@
+{
+  "at_utc": "2026-10-28T01:16:05.899010+00:00",
+  "status": "PASS_I240_C7_DEFAULT_SOURCE_STORE_RACE_AND_MATCHED_BENCHMARK",
+  "criterion": "I240.C7",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "production_touched": false,
+  "protects": "Full source-store preserves active budgets, unknown keys failclosed, bounded expiry cleanup recovers, concurrent boundary/race safety and measured matched latency/critical-section cost",
+  "command": "python -X utf8 .out/qa-rate-capacity/run_profile.py run",
+  "native_commands": "python -X utf8 .out/qa-rate-capacity/run_native.py; python -X utf8 .out/qa-rate-capacity/run_hold.py; python -X utf8 .out/qa-rate-capacity/analyze_native.py",
+  "post_commands": "python -X utf8 .out/qa-rate-capacity/run_profile.py observe; python -X utf8 .out/qa-rate-capacity/verify_after.py",
+  "platform": "Windows11 controller; actual source072 Linux API/PostgreSQL17.6; pinned official Go1.26.4 Linux amd64/Cgo race container,2CPU2GiB/networknone",
+  "mandatory_when": "Before accepting exact I240.C7/#139 referenced saturation/race/benchmark criterion",
+  "facets": {
+    "protected_source_exhausted": {
+      "at_utc": "2026-10-28T01:07:57.26428466Z",
+      "event": "observation",
+      "label": "protected_source_exhausted",
+      "prior_windows_expired_without_reset": true,
+      "protected11th": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 300,
+        "cookie_seen": false
+      },
+      "protected_admitted400": 10,
+      "status": "PASS",
+      "warmup_unique": 16
+    },
+    "actual10000_store_concurrent_boundary": {
+      "active": 10000,
+      "admitted400": 8,
+      "at_utc": "2026-10-28T01:09:42.840077362Z",
+      "attempts": 16,
+      "before_active": 9992,
+      "capacity": 10000,
+      "elapsed_s": 99.815364338,
+      "event": "observation",
+      "failclosed429": 8,
+      "fill_start_interval_ms": 10,
+      "fill_workers": 4,
+      "label": "actual10000_store_concurrent_boundary",
+      "outcomes": [
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "cookie_seen": false
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "cookie_seen": false
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "cookie_seen": false
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "cookie_seen": false
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "cookie_seen": false
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "cookie_seen": false
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "cookie_seen": false
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "cookie_seen": false
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        }
+      ],
+      "protected_before": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 201,
+        "cookie_seen": false
+      },
+      "saturation_delta": 8,
+      "status": "PASS"
+    },
+    "preservation_and_failclosed": {
+      "active": 10000,
+      "at_utc": "2026-10-28T01:09:42.854766737Z",
+      "event": "observation",
+      "fresh_denials": [
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 201,
+          "cookie_seen": false
+        }
+      ],
+      "known_spare_budget400": {
+        "http": 400,
+        "code": "VALIDATION_FAILED",
+        "retry_after_s": 0,
+        "cookie_seen": false
+      },
+      "label": "preservation_and_failclosed",
+      "new_denials_increment_saturation_only": true,
+      "protected_still429": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 201,
+        "cookie_seen": false
+      },
+      "status": "PASS"
+    },
+    "midpoint_denials": {
+      "active": 10000,
+      "at_utc": "2026-10-28T01:10:34.461191906Z",
+      "elapsed_s": 150.01407521,
+      "event": "observation",
+      "label": "midpoint_denials",
+      "new": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 150,
+        "cookie_seen": false
+      },
+      "protected": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 150,
+        "cookie_seen": false
+      }
+    },
+    "original_window_and_bounded_prune": {
+      "active_after_first_new": 9937,
+      "active_before": 10000,
+      "at_utc": "2026-10-28T01:13:17.345903251Z",
+      "elapsed_s": 304.020854654,
+      "event": "observation",
+      "expired_removed_by_one_new_call": 64,
+      "label": "original_window_and_bounded_prune",
+      "new400": {
+        "http": 400,
+        "code": "VALIDATION_FAILED",
+        "retry_after_s": 0,
+        "cookie_seen": false
+      },
+      "no_restart_clock_injection_or_limit_change": true,
+      "protected400": {
+        "http": 400,
+        "code": "VALIDATION_FAILED",
+        "retry_after_s": 0,
+        "cookie_seen": false
+      },
+      "status": "PASS"
+    },
+    "amortized_full_cohort_cleanup": {
+      "KDF_work_delta": 0,
+      "account_admission_delta": 0,
+      "active_remaining_new_windows": 157,
+      "at_utc": "2026-10-28T01:15:00.411905735Z",
+      "cleanup_new_calls": 155,
+      "event": "observation",
+      "expired_removed_per_call_max": 64,
+      "expired_removed_per_call_min": 16,
+      "label": "amortized_full_cohort_cleanup",
+      "last_boundary_elapsed_s": 302.829411872,
+      "new_users_or_sessions": 0,
+      "status": "PASS"
+    },
+    "finite_rate_metric_labels": {
+      "allowed_label_names": [
+        "operation"
+      ],
+      "at_utc": "2026-10-28T01:15:00.416678884Z",
+      "event": "observation",
+      "finite_operations": 7,
+      "label": "finite_rate_metric_labels",
+      "metric_families": 3,
+      "series_checked": 21,
+      "source_or_identity_labels_present": false,
+      "status": "PASS"
+    }
+  },
+  "numeric_observations": {
+    "client_elapsed_s": 402.674370625,
+    "API_samples": 210,
+    "DB_samples": 100,
+    "API_RSS_sampled_max_bytes": 59191296,
+    "API_FD_sampled_max": 24,
+    "API_goroutines_sampled_max": 35,
+    "DB_connections_sampled_max": 11,
+    "DB_active_connections_sampled_max": 2,
+    "API_CPU_counter_delta_s": 7.21
+  },
+  "native_analysis": "native-analysis.json",
+  "cleanup": "environment-after.json",
+  "retained_infrastructure_attempt": "native-attempt1/: exit1,0 tests due tmpfs noexec. Corrected only test mount, full race rerun36PASS/0skips.",
+  "limits": "Actual generic source store through trusted own proxy namespace and malformed login parser; default10000/10/300s. Not physical NAT/router/native retry,50000-account-store saturation or production capacity. Matched bounded microbenchmarks and explicitly instrumented private-copy hold timings, not productionSLO.139 historical implementation used only as counterexample; no issue reopening is implied.",
+  "parent240_remains_FAIL": true,
+  "original43_consolidation_decisions_applied": false
+}

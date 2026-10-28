@@ -1,0 +1,13 @@
+package ratelimit
+import("encoding/json";"fmt";"runtime";"sort";"testing";"time")
+var holdEnabled bool;var heldDurations []int64
+func recordMeasuredHold(d time.Duration){if holdEnabled{heldDurations=append(heldDurations,int64(d))}}
+func quantile(values []int64,q int)int64{v:=append([]int64(nil),values...);sort.Slice(v,func(i,j int)bool{return v[i]<v[j]});return v[(len(v)-1)*q/100]}
+func TestMeasuredMutexHoldMatchedWorkload(t *testing.T){
+ prior:=runtime.GOMAXPROCS(1);defer runtime.GOMAXPROCS(prior)
+ for _,size:=range []int{100,1000,10000}{for _,kind:=range []string{"existing","new"}{
+  l,e:=New(Config{Limit:100000,Window:time.Hour,MaxSources:size+2001});if e!=nil{t.Fatal(e)};for i:=0;i<size;i++{l.Allow(fmt.Sprint("seed-",i))};keys:=make([]string,2000);for i:=range keys{keys[i]="seed-0";if kind=="new"{keys[i]=fmt.Sprint("new-",i)}}
+  heldDurations=make([]int64,0,2000);latency:=make([]int64,0,2000);holdEnabled=true;for _,key:=range keys{start:=time.Now();_,ok:=l.Allow(key);latency=append(latency,int64(time.Since(start)));if !ok{t.Fatal("unexpected diagnostic admission refusal")}};holdEnabled=false
+  if len(heldDurations)!=2000{t.Fatal("instrumented held-time count")};d:=map[string]any{"initial_entries":size,"kind":kind,"calls":2000,"GOMAXPROCS":1,"source_copy_instrumented":true,"critical_hold_p50_ns":quantile(heldDurations,50),"critical_hold_p95_ns":quantile(heldDurations,95),"critical_hold_p99_ns":quantile(heldDurations,99),"call_latency_p50_ns":quantile(latency,50),"call_latency_p95_ns":quantile(latency,95),"call_latency_p99_ns":quantile(latency,99)};raw,_:=json.Marshal(d);t.Logf("HOLD_JSON %s",raw)
+ }}
+}
