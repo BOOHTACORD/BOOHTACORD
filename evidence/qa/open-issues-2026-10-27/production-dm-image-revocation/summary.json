@@ -43,7 +43,7 @@
   "native_tests": "native-check.json",
   "cleanup": "critical-cleanup.json",
   "visual": "visual-record.json",
-  "bug": "PENDING_CREATION_AFTER_IMMUTABLE_EVIDENCE",
+  "bug": "https://github.com/Egkurilov/BOOHTACORD/issues/589",
   "limits": [
     "Only owned production DM/PNG and controlled MEMBER roles; ADMIN, blocking-account, Windows/macOS/iOS/native logout and other image formats remain unexecuted",
     "Server ACL/source differ from UI renderer; observed cached bitmap is not a fresh unauthorized server read or backend ACL bypass",
@@ -64,5 +64,7 @@
     "python -X utf8 .out/qa-native-image-formats/denied_payloads.py",
     "python -X utf8 .out/qa-native-image-formats/cleanup.py",
     "python -X utf8 .out/qa-native-image-formats/verify.py"
-  ]
+  ],
+  "issue_number": 589,
+  "immutable_first_evidence_commit": "36b360bb8aa7663dceeb6e272c085826020b4c69"
 }

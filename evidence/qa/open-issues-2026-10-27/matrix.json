@@ -220,7 +220,8 @@
               "ANDROID-native-PNG-picker-send-view-delete",
               "WEB-JPEG-GIF-private-image-lifecycle",
               "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
-              "ANDROID-ADMIN-explicit-search-after-owned-delete"
+              "ANDROID-ADMIN-explicit-search-after-owned-delete",
+              "PRODUCTION-DM-protected-image-access-revocation"
             ]
           }
         },
@@ -1163,12 +1164,17 @@
               "ANDROID-physical-ptt-release-cancel-home",
               "ANDROID-orientation-draft-voice-retention",
               "ANDROID-landscape-ime-send-voice-dock-overlap",
-              "ANDROID-wifi-cellular-native-DM-and-restoration"
+              "ANDROID-wifi-cellular-native-DM-and-restoration",
+              "ANDROID-signed-master-candidate-in-place-upgrade",
+              "ANDROID-master-landscape-ime-send-voice-dock-overlap",
+              "PRODUCTION-DM-protected-image-access-revocation",
+              "ANDROID-image-viewer-delete-invalidation"
             ]
           },
-          "reason": " Physical Android PTT UP/outside-UP/CANCEL/HOME server-mute and resume facets passed; all other source-row clauses and stated audio/AT/platform limits remain unaccepted. Physical landscape90/IME preserved draft and voice but native voice dock covered Send in2/2 runs; other platform/AT/selection/send variants remain unaccepted. Physical WiFi→cellular native DM/PC render and original-state restoration verified, with retained controller cleanup failures; full SDK/audio/background/platform/revoke matrix remains unaccepted.",
+          "reason": " Physical Android PTT UP/outside-UP/CANCEL/HOME server-mute and resume facets passed; all other source-row clauses and stated audio/AT/platform limits remain unaccepted. Physical landscape90/IME preserved draft and voice but native voice dock covered Send in2/2 runs; other platform/AT/selection/send variants remain unaccepted. Physical WiFi→cellular native DM/PC render and original-state restoration verified, with retained controller cleanup failures; full SDK/audio/background/platform/revoke matrix remains unaccepted. Physical already-open PNG viewer retains deleted cached content despite fresh underlying tombstone/control and server404: bug589. API MEMBER/anonymous/revoked/Origin facet passes; full native gate remains FAIL.",
           "defects": [
-            582
+            582,
+            589
           ]
         },
         {
@@ -1293,7 +1299,8 @@
         "production-dm-image-revocation/revocation-result.json"
       ],
       "defects": [
-        582
+        582,
+        589
       ],
       "blockers": [],
       "source_body_sha256": "587d2de3b7ebec5f3b764e992e717698dcdbdd8d477ab9b97be27fd2d28ce86a",
@@ -1628,7 +1635,8 @@
               "DM-actual_image_upload_and_protected_download",
               "ANDROID-native-PNG-picker-send-view-delete",
               "WEB-JPEG-GIF-private-image-lifecycle",
-              "WEB-viewer-download-format-mismatch"
+              "WEB-viewer-download-format-mismatch",
+              "PRODUCTION-DM-protected-image-access-revocation"
             ]
           }
         },
@@ -16307,7 +16315,8 @@
     137,
     138,
     141,
-    587
+    587,
+    589
   ],
   "criterion_witness_note": "Exact row links are scoped. PARTIAL/FAIL/BLOCKED never satisfy the complete multi-platform requirement; unlinked PENDING rows still need routing/execution.",
   "acceptance_method_catalog": "acceptance-methods.json",
