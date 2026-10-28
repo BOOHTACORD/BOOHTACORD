@@ -1,6 +1,6 @@
 # Android stationary first frame implementation plan
 
-> **For agentic workers:** Execute this bounded plan task by task in this chat.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this bounded plan task by task.
 
 **Goal:** Reproduce #584 on the signed Samsung candidate and deliver a first image from a stationary app-only source without scrolling.
 
@@ -21,10 +21,12 @@
 
 ## Tasks
 
-- [ ] Repeat baseline fast and delayed source selection; retain safe milestones and receiver counters, including failures.
-- [ ] Inspect the concrete native capture/encoder boundary; choose a fix only from observations and upstream API semantics.
-- [ ] Add failing tests for stationary first-image recovery, visibility, bounded scheduling and cancellation before implementation.
-- [ ] Implement a focused native leaf and wire its exact capture lifecycle edges. Register the screen feature scenario and native test inventory.
-- [ ] Run focused checks and the registered real-stack command; record unavailable targets explicitly.
-- [ ] Build a signed source-bound candidate through the existing trusted delivery path, preserve installed session, and repeat physical scenarios.
-- [ ] Record sanitized evidence, review changed files/status/sizes, deliver through PR and verified CI. Merge is already authorized by the owner; close #584 only after its acceptance criteria pass.
+- [x] Repeat baseline fast and delayed source selection; retain safe milestones and receiver counters, including failures.
+- [x] Inspect the concrete native capture/encoder boundary; choose a fix only from observations and upstream API semantics.
+- [x] Add failing tests for stationary first-image recovery, visibility, bounded scheduling and cancellation before implementation.
+- [x] Implement a focused native leaf and wire its exact capture lifecycle edges. Register the screen feature scenario and native test inventory.
+- [x] Run focused checks and the registered real-stack command; record unavailable targets explicitly.
+- [x] Build a signed source-bound candidate through the existing trusted delivery path, preserve installed session, and repeat physical scenarios.
+- [x] Record sanitized evidence, review changed files/status/sizes, deliver through PR and verified CI. Merge is already authorized by the owner; close #584 only after its acceptance criteria pass.
+
+Final physical evidence: `evidence/qa/android-first-frame-584-2026-10-28/README.md`. Generic Windows local-feature runner stays BLOCKED; the separate signed Samsung scenario passed.
