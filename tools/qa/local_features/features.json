@@ -1089,7 +1089,8 @@
       "test/guild_settings_widgets_test.dart",
       "test/admin_telemetry/api_test.dart",
       "test/admin_telemetry/controller_test.dart",
-      "test/admin_telemetry/panel_test.dart"
+      "test/admin_telemetry/panel_test.dart",
+      "test/admin_accessibility/search_focus_test.dart"
     ],
     "acceptance": {
       "issue295": {
@@ -1128,6 +1129,13 @@
           "clients/flutter/test/admin_telemetry/api_test.dart"
         ],
         "scope": "Owned real Go/PostgreSQL/TLS runtime: durable TEXT/DM replay after socket closure, edits/deletes/social state, ordinary second account, reachable administrator telemetry; Android and iOS have separate runs. Physical media remains NOT_RUN."
+      },
+      "member_query_focus_585": {
+        "issue": 585,
+        "focused": [
+          "clients/flutter/test/admin_accessibility/search_focus_test.dart"
+        ],
+        "scope": "Sequential editing updates retain focus and IME at scales 1/1.3/2 with and without keyboard insets. Physical Gboard/Back acceptance remains required."
       }
     },
     "parity": [
@@ -1203,7 +1211,10 @@
       "clients/flutter/lib/src/screens/workspace_ui/workspace_search_panel/**",
       "clients/flutter/lib/src/widgets/message_timestamp.dart",
       "clients/flutter/lib/src/services/message_presentation.dart",
-      "clients/flutter/lib/src/features/text/history_state/**"
+      "clients/flutter/lib/src/features/text/history_state/**",
+      "clients/flutter/lib/src/widgets/message_attachment_list.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/search_message_context/**",
+      "clients/flutter/lib/src/screens/workspace_ui/header/conversation_actions.dart"
     ],
     "web": [
       "tests/conversation_action_disclosure/playwright.config.ts",
@@ -1224,7 +1235,10 @@
       "test/clipboard_paste_edit_generation_test.dart",
       "test/message_attachment_composer_test.dart",
       "test/workspace_screen_test.dart",
-      "test/web_parity/message_policy_test.dart"
+      "test/web_parity/message_policy_test.dart",
+      "test/search_scope_touch_test.dart",
+      "test/attachment_revocation_test.dart",
+      "test/message_attachment_list_test.dart"
     ],
     "acceptance": {
       "composer_text_scale": {
@@ -1292,6 +1306,31 @@
           "clients/flutter/test/workspace_screen_test.dart"
         ],
         "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
+      },
+      "scope_touch_target_586": {
+        "issue": 586,
+        "focused": [
+          "clients/flutter/test/search_scope_touch_test.dart"
+        ],
+        "scope": "Enabled mobile dropdown >=48dp with top/center/bottom activation and cancellation preserving scope and query. Physical center/edge taps remain required."
+      },
+      "open_context_realtime_587": {
+        "issue": 587,
+        "browser": "clients/web/tests/search_sessions/playwright.config.ts",
+        "focused": [
+          "clients/web/src/search/context_timeline/live_revision.spec.ts",
+          "clients/web/src/search/context_timeline/hints.spec.ts",
+          "clients/web/tests/search_sessions/live-context.browser.spec.ts"
+        ],
+        "scope": "Shared TEXT/DM context refreshes protected revisions and immediately redacts delete hints; session/conversation/generation guards prevent stale responses. Component HTTP fixtures are separate from real-stack/live acceptance."
+      },
+      "image_viewer_revocation_589": {
+        "issue": 589,
+        "focused": [
+          "clients/flutter/test/attachment_revocation_test.dart",
+          "clients/flutter/test/message_attachment_list_test.dart"
+        ],
+        "scope": "Already open and loading viewer drops image/actions when its source message deletion is applied or session/server changes; late bytes cannot remount it. Physical signed Android acceptance remains required."
       }
     },
     "parity": [
