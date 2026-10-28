@@ -1,0 +1,34 @@
+"""Ordinary own-fixture ACL, session revocation and Origin boundaries; no load/faults."""
+import hashlib,http.client,json
+from datetime import datetime,timezone
+from common import P,ORIGIN,read,write,request,api,valid
+assert not (P/'critical-api-result.json').exists();c=read(P/'private/config.private.json');assert read(P/'critical-ready.json')['status'].startswith('PASS');f=c['fixtures'][0];prefix='/api/v1/direct-messages/'+valid(c['conversation']);file=prefix+'/attachments/'+valid(f['attachment']);history=prefix+'/messages?at='+valid(f['message'])+'&limit=20';roles=c['critical_roles'];r={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'RUNNING','cases':[],'production_mutations':'Only normal protected own-fixture requests; two owned sessions, denied mutations and own logout. No load or infrastructure faults.','payload_names_IDs_cookies_private':True}
+def snap():
+    status,_,p=api(history,cookie=roles['participant']);assert status==200;v=p['messages'][0];assert v['id']==f['message'];return {'revision':v['revision'],'deleted':v['deleted'],'body':v['body'],'attachments':[a['id'] for a in v['attachments']]}
+def add(name,passed,**v):r['cases'].append({'name':name,'status':'PASS' if passed else 'FAIL',**v});write(P/'critical-api-result.json',r)
+def denied_GETs(role,cookie,expected):
+    for alias,path in [('history',history),('original',file),('preview',file+'/preview')]:
+        status,_,_=request(path,cookie=cookie);add(role+'_'+alias,status==expected,HTTP=status,expected_HTTP=expected)
+for role in ['participant','sibling']:
+    for alias,path in [('history',history),('original',file),('preview',file+'/preview')]:
+        status,_,raw=request(path,cookie=roles[role]);passed=status==200
+        if alias=='original':passed=passed and hashlib.sha256(raw).hexdigest()==f['SHA256']
+        add(role+'_'+alias,passed,HTTP=status,expected_HTTP=200,original_SHA256_match=hashlib.sha256(raw).hexdigest()==f['SHA256'] if alias=='original' else None)
+denied_GETs('outsider_MEMBER',roles['outsider'],404);denied_GETs('anonymous',None,401)
+if c['critical_other_DM']:
+    for suffix,alias in [('', 'original'),('/preview','preview')]:
+        status,_,_=request('/api/v1/direct-messages/'+valid(c['critical_other_DM'])+'/attachments/'+f['attachment']+suffix,cookie=roles['participant']);add('attachment_wrong_owned_DM_'+alias,status==404,HTTP=status,expected_HTTP=404)
+else:r['cases'].append({'name':'attachment_wrong_owned_DM','status':'NOT_RUN','reason':'No pre-existing controlled B-C DM; no new conversation created for this check'})
+before=snap();assert before==c['critical_before'];patch={'body':'QA_CRITICAL_DENIED_'+c['owner'],'expected_revision':before['revision']}
+status,_,_=api(prefix+'/messages/'+f['message'],'PATCH',patch,roles['outsider']);unchanged=snap()==before;add('outsider_MEMBER_edit_denied',status==404 and unchanged,HTTP=status,expected_HTTP=404,owned_message_unchanged=unchanged)
+for alias,origin in [('missing',None),('foreign','https://example.invalid'),('null','null')]:
+    connection=http.client.HTTPSConnection('v.bootybay.ru',443,timeout=20);headers={'Cookie':roles['participant'],'Content-Type':'application/json','Accept':'application/json'}
+    if origin is not None:headers['Origin']=origin
+    connection.request('PATCH',prefix+'/messages/'+f['message'],body=json.dumps(patch),headers=headers);response=connection.getresponse();status=response.status;response.read(65536);connection.close();unchanged=snap()==before
+    add('Origin_'+alias+'_mutation_denied',status==403 and unchanged,HTTP=status,expected_HTTP=403,owned_message_unchanged=unchanged,foreign_value_header_only_no_external_request=True)
+status,_,_=api('/api/v1/auth/logout','POST',{},roles['sibling']);add('sibling_logout',status==204,HTTP=status,expected_HTTP=204)
+status,_,s=api('/api/v1/auth/session',cookie=roles['sibling']);add('sibling_live_session_readback',status==200 and s.get('authenticated') is False,HTTP=status,authenticated=s.get('authenticated'))
+denied_GETs('revoked_same_account_session',roles['sibling'],401)
+status,_,_=api(prefix+'/messages/'+f['message'],'PATCH',patch,roles['sibling']);unchanged=snap()==before;add('revoked_session_edit_denied',status==401 and unchanged,HTTP=status,expected_HTTP=401,owned_message_unchanged=unchanged)
+status,_,raw=request(file,cookie=roles['participant']);add('other_same_account_session_preserved',status==200 and hashlib.sha256(raw).hexdigest()==f['SHA256'],HTTP=status,expected_HTTP=200)
+r['ADMIN_variant']={'status':'NOT_RUN','reason':'No controlled production ADMIN session; no role or account changes requested'};r['status']='PASS_SCOPED_CRITICAL_API_BOUNDARIES' if all(x['status'] in ['PASS','NOT_RUN'] for x in r['cases']) else 'FAIL_CRITICAL_BOUNDARY';r['finished_at_utc']=datetime.now(timezone.utc).isoformat();write(P/'critical-api-result.json',r);print(json.dumps({'status':r['status'],'cases':len(r['cases']),'failed':[x['name'] for x in r['cases'] if x['status']=='FAIL']}));raise SystemExit(0 if r['status'].startswith('PASS') else 1)

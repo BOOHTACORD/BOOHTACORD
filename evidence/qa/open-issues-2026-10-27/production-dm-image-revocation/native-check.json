@@ -1,0 +1,29 @@
+{
+  "status": "PASS15_WIDGET_CHECKS_ZERO_SKIP",
+  "command": "flutter pub get --offline --enforce-lockfile; flutter test --no-pub --reporter json test/message_attachment_list_test.dart",
+  "working_directory": "clients/flutter",
+  "toolchain_declared": "Flutter3.47.7/Dart3.13.5",
+  "native_command_exit_observed": 0,
+  "tests": 15,
+  "skipped": 0,
+  "error_events": 0,
+  "machine_report_SHA256": "a41600b3ca5231dcdfb6187cefac017fee28a3c77d46fabdb29784dbddac3658",
+  "names": [
+    "opens a protected image preview and presents deleted state",
+    "announces the image viewer route and image alt text",
+    "Escape closes the image viewer and restores opener focus",
+    "announces image preview loading and unavailable states",
+    "offers retry for transient protected preview failures",
+    "keeps the image viewer inside a narrow mobile viewport",
+    "matches the web full-screen protected image viewer on desktop",
+    "uses the web compact protected image viewer controls",
+    "keeps compact viewer controls clear of system insets",
+    "hides download and offers retry when image decoding fails",
+    "uses the web file-card fallback when thumbnail loading fails",
+    "uses the web file-card fallback when thumbnail bytes are invalid",
+    "matches web image attachment geometry on desktop",
+    "matches web image attachment geometry on compact layouts",
+    "keeps generic file cards at the web desktop width"
+  ],
+  "scope": "Windows Flutter widget engine/MockClient, not physical runtime or live invalidation acceptance. Physical Android is separately measured below."
+}

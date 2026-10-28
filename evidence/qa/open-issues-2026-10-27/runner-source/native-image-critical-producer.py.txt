@@ -1,0 +1,28 @@
+"""Normal protected API actions, only six newly owned tiny attachment messages."""
+import hashlib,io,json,re,sys,uuid
+from datetime import datetime,timezone
+from PIL import Image
+from common import P,read,write,valid,request,api
+c=read(P/'private/config.private.json');action=sys.argv[1];index=int(sys.argv[2]);assert 0<=index<len(c['fixtures']);f=c['fixtures'][index];prefix='/api/v1/direct-messages/'+valid(c['conversation'])
+assert re.fullmatch(r'BOOHTACORD-QA-20261028-(png|jpeg|gif)-(viewer|card)-[a-f0-9]{12}\.(png|jpg|gif)',f['filename'])
+raw=(P/'private'/f['private_file']).read_bytes();assert len(raw)==f['bytes'] and hashlib.sha256(raw).hexdigest()==f['SHA256']
+result={'at_utc':datetime.now(timezone.utc).isoformat(),'action':action,'index':index,'alias':f['alias'],'payload_or_identity_logged':False}
+def persist():write(P/'private/config.private.json',c)
+def file_get(suffix):
+    status,headers,raw=request(prefix+'/attachments/'+valid(f['attachment'])+suffix,cookie=c['cookie']);return status,dict((k.lower(),v) for k,v in headers),raw
+if action=='send':
+    assert not f.get('message'),'No duplicate message send'
+    boundary='QA'+uuid.uuid4().hex;body=('--'+boundary+'\r\nContent-Disposition: form-data; name="file"; filename="'+f['filename']+'"\r\nContent-Type: '+f['mime']+'\r\n\r\n').encode()+raw+('\r\n--'+boundary+'--\r\n').encode()
+    status,_,response=request(prefix+'/attachments','POST',body,c['cookie'],'multipart/form-data; boundary='+boundary);assert status==201;attachment=json.loads(response);assert attachment['original_name']==f['filename'] and attachment['byte_size']==len(raw);f['attachment']=valid(attachment['id']);c['attachments'].append(f['attachment']);f['client_message_id']=str(uuid.uuid4());persist()
+    status,_,message=api(prefix+'/messages','POST',{'client_message_id':f['client_message_id'],'body':'','attachment_ids':[f['attachment']]},c['cookie']);assert status==201 and message['author_id']==c['sender_account'];f['message']=valid(message['id']);c['messages'].append(f['message']);persist();result.update(upload_HTTP=201,message_HTTP=201)
+    status,headers,download=file_get('');assert status==200 and hashlib.sha256(download).hexdigest()==f['SHA256'];result['original']={'HTTP':status,'bytes':len(download),'SHA256':hashlib.sha256(download).hexdigest(),'content_type':headers.get('content-type')}
+    status,headers,preview=file_get('/preview');assert status==200;image=Image.open(io.BytesIO(preview));assert image.format=='PNG' and list(image.size)==f['pixels'];result['preview']={'HTTP':status,'bytes':len(preview),'SHA256':hashlib.sha256(preview).hexdigest(),'content_type':headers.get('content-type'),'decoded_pixels':list(image.size),'format':image.format};f['server_preview_SHA256']=result['preview']['SHA256'];persist()
+elif action=='delete':
+    assert f['message'] in c['messages'] and f['attachment'] in c['attachments'];status,_,_=api(prefix+'/messages/'+valid(f['message']),'DELETE',{},c['cookie']);assert status==204
+    status,_,page=api(prefix+'/messages?at='+f['message']+'&limit=20',cookie=c['cookie']);assert status==200 and page['messages'][0]['id']==f['message'] and page['messages'][0]['deleted'] and page['messages'][0]['body']=='' and page['messages'][0]['attachments']==[]
+    denied=[]
+    for suffix in ['', '/preview']:
+        status,_,_=file_get(suffix);assert status==404;denied.append(status)
+    f['deleted']=True;persist();result.update(delete_HTTP=204,tombstone_at_HTTP=200,content_blank_and_attachments_empty=True,original_preview_after_delete=denied)
+else:raise ValueError('Unknown owned fixture action')
+write(P/(action+'-'+str(index)+'.json'),result);print(json.dumps(result))

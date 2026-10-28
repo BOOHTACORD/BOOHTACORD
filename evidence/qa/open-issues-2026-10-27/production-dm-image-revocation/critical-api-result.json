@@ -1,0 +1,177 @@
+{
+  "at_utc": "2026-10-28T18:24:39.970891+00:00",
+  "status": "FAIL_CRITICAL_BOUNDARY",
+  "cases": [
+    {
+      "name": "participant_history",
+      "status": "PASS",
+      "HTTP": 200,
+      "expected_HTTP": 200,
+      "original_SHA256_match": null
+    },
+    {
+      "name": "participant_original",
+      "status": "PASS",
+      "HTTP": 200,
+      "expected_HTTP": 200,
+      "original_SHA256_match": true
+    },
+    {
+      "name": "participant_preview",
+      "status": "PASS",
+      "HTTP": 200,
+      "expected_HTTP": 200,
+      "original_SHA256_match": null
+    },
+    {
+      "name": "sibling_history",
+      "status": "PASS",
+      "HTTP": 200,
+      "expected_HTTP": 200,
+      "original_SHA256_match": null
+    },
+    {
+      "name": "sibling_original",
+      "status": "PASS",
+      "HTTP": 200,
+      "expected_HTTP": 200,
+      "original_SHA256_match": true
+    },
+    {
+      "name": "sibling_preview",
+      "status": "PASS",
+      "HTTP": 200,
+      "expected_HTTP": 200,
+      "original_SHA256_match": null
+    },
+    {
+      "name": "outsider_MEMBER_history",
+      "status": "PASS",
+      "HTTP": 404,
+      "expected_HTTP": 404
+    },
+    {
+      "name": "outsider_MEMBER_original",
+      "status": "PASS",
+      "HTTP": 404,
+      "expected_HTTP": 404
+    },
+    {
+      "name": "outsider_MEMBER_preview",
+      "status": "PASS",
+      "HTTP": 404,
+      "expected_HTTP": 404
+    },
+    {
+      "name": "anonymous_history",
+      "status": "PASS",
+      "HTTP": 401,
+      "expected_HTTP": 401
+    },
+    {
+      "name": "anonymous_original",
+      "status": "PASS",
+      "HTTP": 401,
+      "expected_HTTP": 401
+    },
+    {
+      "name": "anonymous_preview",
+      "status": "PASS",
+      "HTTP": 401,
+      "expected_HTTP": 401
+    },
+    {
+      "name": "attachment_wrong_owned_DM_original",
+      "status": "PASS",
+      "HTTP": 404,
+      "expected_HTTP": 404
+    },
+    {
+      "name": "attachment_wrong_owned_DM_preview",
+      "status": "PASS",
+      "HTTP": 404,
+      "expected_HTTP": 404
+    },
+    {
+      "name": "outsider_MEMBER_edit_denied",
+      "status": "FAIL",
+      "HTTP": 409,
+      "expected_HTTP": 404,
+      "owned_message_unchanged": true
+    },
+    {
+      "name": "Origin_missing_mutation_denied",
+      "status": "PASS",
+      "HTTP": 403,
+      "expected_HTTP": 403,
+      "owned_message_unchanged": true,
+      "foreign_value_header_only_no_external_request": true
+    },
+    {
+      "name": "Origin_foreign_mutation_denied",
+      "status": "PASS",
+      "HTTP": 403,
+      "expected_HTTP": 403,
+      "owned_message_unchanged": true,
+      "foreign_value_header_only_no_external_request": true
+    },
+    {
+      "name": "Origin_null_mutation_denied",
+      "status": "PASS",
+      "HTTP": 403,
+      "expected_HTTP": 403,
+      "owned_message_unchanged": true,
+      "foreign_value_header_only_no_external_request": true
+    },
+    {
+      "name": "sibling_logout",
+      "status": "PASS",
+      "HTTP": 204,
+      "expected_HTTP": 204
+    },
+    {
+      "name": "sibling_live_session_readback",
+      "status": "PASS",
+      "HTTP": 200,
+      "authenticated": false
+    },
+    {
+      "name": "revoked_same_account_session_history",
+      "status": "PASS",
+      "HTTP": 401,
+      "expected_HTTP": 401
+    },
+    {
+      "name": "revoked_same_account_session_original",
+      "status": "PASS",
+      "HTTP": 401,
+      "expected_HTTP": 401
+    },
+    {
+      "name": "revoked_same_account_session_preview",
+      "status": "PASS",
+      "HTTP": 401,
+      "expected_HTTP": 401
+    },
+    {
+      "name": "revoked_session_edit_denied",
+      "status": "PASS",
+      "HTTP": 401,
+      "expected_HTTP": 401,
+      "owned_message_unchanged": true
+    },
+    {
+      "name": "other_same_account_session_preserved",
+      "status": "PASS",
+      "HTTP": 200,
+      "expected_HTTP": 200
+    }
+  ],
+  "production_mutations": "Only normal protected own-fixture requests; two owned sessions, denied mutations and own logout. No load or infrastructure faults.",
+  "payload_names_IDs_cookies_private": true,
+  "ADMIN_variant": {
+    "status": "NOT_RUN",
+    "reason": "No controlled production ADMIN session; no role or account changes requested"
+  },
+  "finished_at_utc": "2026-10-28T18:24:42.572061+00:00"
+}

@@ -1,0 +1,20 @@
+"""Read-only fresh APK/phone/known-DM guards; create no session or message."""
+import hashlib,json,re,subprocess
+from datetime import datetime,timezone
+from common import P,Q,B,G,ADB,APP,call,nodes,label,state,read,write,api
+assert not (P/'preflight.json').exists()
+expected=read(B/'evidence/qa/open-issues-2026-10-27/android-upgrade/verified.json');known=read(G/'private-upgrade-identity.json');old=read(P.parent/'qa-prod-resume/dm-fixture.private.json');fixture=read(G/'private-fixture.json')
+assert old['peer']==fixture['b']['login']
+assert call('get-state').strip()=='device';raw=call('shell','dumpsys','media_projection');null=bool(re.search(r'Media Projection:\s*null\s*$',raw,re.S));assert null,'Preserve active/unknown projection; no document-picker input'
+rows=nodes();assert any(old['peer'] in label(n) and int(re.findall(r'\d+',n.get('bounds'))[1])<700 for n in rows)
+fields=[n for n in rows if n.get('class')=='android.widget.EditText'];assert len(fields)==1 and not fields[0].get('text');s=state();assert s['app_hierarchy_present'] and not s['system_permission_prompt'] and not s['login_fields']
+package=call('shell','dumpsys','package',APP);version=re.search(r'versionName=([^\s]+)',package)[1];code=int(re.search(r'versionCode=(\d+)',package)[1]);assert version=='1.0.47' and code==2082
+path=call('shell','pm','path',APP).strip().splitlines();assert len(path)==1 and path[0].startswith('package:/data/app/') and path[0].endswith('/base.apk');apk=path[0][8:];assert re.fullmatch(r'/data/app/[A-Za-z0-9_~+/=.-]+/base\.apk',apk)
+child=subprocess.Popen([ADB,'exec-out','cat',apk],stdout=subprocess.PIPE,stderr=subprocess.PIPE);digest=hashlib.sha256();size=0
+for block in iter(lambda:child.stdout.read(1024*1024),b''):digest.update(block);size+=len(block)
+assert child.wait(timeout=30)==0;sha=digest.hexdigest();assert sha==read(B/'evidence/qa/open-issues-2026-10-27/android-upgrade/install.json')['installed_APK_sha256']
+status,_,health=api('/api/v1/health');assert status==200
+status,_,web=api('/release-receipt.json');assert status==200
+sources=read(P/'operating-brief.json')['source_boundary'];fingerprints={name:hashlib.sha256((Q/name).read_bytes()).hexdigest() for name in sources}
+write(P/'private/known.private.json',{'conversation':known['conversation'],'phone_account':known['account'],'sender_account':fixture['b']['id'],'peer':old['peer']})
+write(P/'preflight.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_FRESH_APK_OWN_DM_EMPTY_COMPOSER_MEDIA_GUARDS','origin':'https://v.bootybay.ru','model':call('shell','getprop','ro.product.model').strip(),'Android':call('shell','getprop','ro.build.version.release').strip(),'version_name':version,'version_code':code,'installed_APK_SHA256':sha,'installed_APK_bytes':size,'source_revision':expected['source_revision'],'signature_provenance':'Byte-identical to previously apksigner-verified signed candidate; no new APK installed','original_voice':s,'active_media_projection':False,'projection_null_raw_SHA256':hashlib.sha256(raw.encode()).hexdigest(),'projection_parser_correction':'Android16 dumpsys prints Media Projection:null, not mProjectionGrant=null. Legacy initial boolean was inconclusive, not proof of active capture.','API_health_HTTP':200,'web_source_observed':web.get('source_revision'),'backend_source':'UNKNOWN','default_TLS_validation':True,'source_SHA256':fingerprints,'UI_session_server_permissions_changed':False});print('PASS_FRESH_APK_OWN_DM_EMPTY_COMPOSER_MEDIA_GUARDS')

@@ -1215,6 +1215,38 @@
       "defects": [
         587
       ]
+    },
+    {
+      "id": "PRODUCTION-DM-protected-image-access-revocation",
+      "status": "PASS_SCOPED",
+      "protects": "DM pair/privacy and scoped protected original/preview access; Origin mutation denial; revoked same-account cookie loses access without revoking sibling",
+      "command": "python -X utf8 .out/qa-native-image-formats/critical_checks.py; python -X utf8 .out/qa-native-image-formats/denial_review.py; python -X utf8 .out/qa-native-image-formats/denied_payloads.py",
+      "platform": "Windows11 HTTPS protocol producer, actual physical Samsung SM-A576B Android16 signed QA 1.0.47+2082, trusted production v.bootybay.ru; not Windows browser UI",
+      "mandatory_when": "Before accepting the MEMBER/anonymous/revoked-cookie API facet of DM/image privacy; ADMIN and full browser/native criteria remain separate",
+      "issues": [
+        53,
+        62,
+        131
+      ],
+      "result": "production-dm-image-revocation/semantic-result.json",
+      "limits": "API facet only.25 reviewed boundaries,2 opaque409 controls and9 denied-body controls. No ADMIN, account-block, native logout, browser UI or cross-DM attachment admission acceptance. Physical viewer failure is a separate case.",
+      "defects": [],
+      "prerequisites": "Fresh guarded own fixture, physical own viewer and critical setup; shared sequential replay/cleanup in summary.json and README.md"
+    },
+    {
+      "id": "ANDROID-image-viewer-delete-invalidation",
+      "status": "FAIL",
+      "protects": "An already-open protected image viewer must hide deleted content when its own DM history has processed deletion; server404 alone is insufficient",
+      "command": "python -X utf8 .out/qa-native-image-formats/revocation.py",
+      "platform": "Windows11 HTTPS protocol producer, actual physical Samsung SM-A576B Android16 signed QA 1.0.47+2082, trusted production v.bootybay.ru; not Windows browser UI",
+      "mandatory_when": "Before accepting Android image-viewer deletion/privacy lifecycle and closing QA62 native parity",
+      "issues": [
+        62
+      ],
+      "result": "production-dm-image-revocation/revocation-result.json",
+      "limits": "One physical PNG reproduction, viewer remains through a24,766ms post-control observer window; exact known bitmap is probed inside that window. Not a backend ACL bypass. Native save after deletion is observation only without positive save control; no full media/other-platform acceptance.",
+      "defects": [],
+      "prerequisites": "Fresh guarded own fixture, physical own viewer and critical setup; shared sequential replay/cleanup in summary.json and README.md"
     }
   ]
 }

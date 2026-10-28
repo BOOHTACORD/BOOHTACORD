@@ -1,0 +1,25 @@
+"""Bound critical production checks to the existing own PNG and two QA accounts."""
+import hashlib,json,re,subprocess,uuid
+from datetime import datetime,timezone
+from http.cookies import SimpleCookie
+from common import P,Q,B,G,ADB,APP,read,write,api,request,valid,state,call
+assert not (P/'critical-ready.json').exists();c=read(P/'private/config.private.json');f=c['fixtures'][0];assert f['alias']=='PNG-viewer' and f['message'] in c['messages'] and not f.get('deleted');users=read(G/'private-fixture.json')
+status,_,s=api('/api/v1/auth/session',cookie=c['cookie']);assert status==200 and s['authenticated'] and s['account_id']==c['sender_account'] and s['role']=='MEMBER'
+status,_,page=api('/api/v1/direct-messages/'+c['conversation']+'/messages?at='+f['message']+'&limit=20',cookie=c['cookie']);assert status==200;message=page['messages'][0];assert message['id']==f['message'] and message['author_id']==c['sender_account'] and not message['deleted'] and message['body']=='' and [v['id'] for v in message['attachments']]==[f['attachment']]
+c['critical_roles']={'participant':c['cookie']};c['critical_before']={'revision':message['revision'],'deleted':message['deleted'],'body':message['body'],'attachments':[v['id'] for v in message['attachments']]};c['critical_control_text']='QA_CRITICAL_'+uuid.uuid4().hex;c['critical_control_client_id']=str(uuid.uuid4());write(P/'private/config.private.json',c)
+identities={};cookie_flags={}
+for alias,role in [('outsider','c'),('sibling','b')]:
+    u=users[role];assert u.get('registered') and (role=='b' or u['id'] not in [c['sender_account'],c['phone_account']])
+    status,h,_=request('/api/v1/auth/login','POST',{'login':u['login'],'password':u['password']});assert status==204;jar=SimpleCookie()
+    for k,v in h:
+        if k.lower()=='set-cookie':jar.load(v)
+    assert len(jar)==1;cookie='; '.join(k+'='+v.value for k,v in jar.items());c['critical_roles'][alias]=cookie;c['sessions'].append(cookie);write(P/'private/config.private.json',c)
+    status,_,s=api('/api/v1/auth/session',cookie=cookie);assert status==200 and s['authenticated'] and s['role']=='MEMBER' and s['account_id']==u['id'];identities[alias]=s['account_id'];m=next(iter(jar.values()));cookie_flags[alias]={'Secure':bool(m['secure']),'HttpOnly':bool(m['httponly']),'SameSite':m['samesite']};assert m['secure'] and m['httponly'] and m['samesite'].lower()=='lax'
+assert identities['sibling']==c['sender_account'] and identities['outsider'] not in [c['sender_account'],c['phone_account']]
+status,_,dms=api('/api/v1/direct-messages',cookie=c['cookie']);assert status==200;other=[d for d in dms['direct_messages'] if d['other_participant_id']==identities['outsider'] and d['id']!=c['conversation']];c['critical_other_DM']=valid(other[0]['id']) if len(other)==1 else None;write(P/'private/config.private.json',c)
+package=call('shell','dumpsys','package',APP);assert 'versionName=1.0.47' in package and re.search(r'versionCode=2082\b',package);p=call('shell','pm','path',APP).strip()[8:];assert re.fullmatch(r'/data/app/[A-Za-z0-9_~+/=.-]+/base\.apk',p)
+child=subprocess.Popen([ADB,'exec-out','cat',p],stdout=subprocess.PIPE,stderr=subprocess.PIPE);digest=hashlib.sha256()
+for block in iter(lambda:child.stdout.read(1024*1024),b''):digest.update(block)
+assert child.wait(timeout=30)==0;apk=digest.hexdigest();verified=read(B/'evidence/qa/open-issues-2026-10-27/android-upgrade/verified.json');assert apk==verified['arm64_APK_sha256']
+status,_,release=api('/release-receipt.json');assert status==200
+sources=read(P/'operating-brief.json')['source_boundary'];write(P/'critical-ready.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_CURRENT_OWN_PNG_THREE_COOKIE_ROLES_FRESH_APK','origin':'https://v.bootybay.ru','physical_Android':True,'installed_APK_SHA256':apk,'source_revision':verified['source_revision'],'observed_Web_source':release.get('source_revision'),'backend_source':'UNKNOWN','physical_state_at_resume':state(),'new_critical_sessions':2,'imported_owned_sender_sessions':1,'cookie_flags':cookie_flags,'roles_verified':['participant MEMBER','sibling MEMBER same account separate session','outsider MEMBER nonparticipant'],'known_other_controlled_DM_available':bool(c['critical_other_DM']),'ADMIN_variant':'NOT_RUN_NO_CONTROLLED_ADMIN_SESSION','default_TLS_validation':True,'source_SHA256':{n:hashlib.sha256((Q/n).read_bytes()).hexdigest() for n in sources}});print('PASS_CURRENT_OWN_PNG_THREE_COOKIE_ROLES_FRESH_APK')

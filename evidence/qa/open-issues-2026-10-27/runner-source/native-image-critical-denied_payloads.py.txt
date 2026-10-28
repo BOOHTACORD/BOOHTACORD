@@ -1,0 +1,11 @@
+"""Check denied bodies expose neither original bytes nor known fixture identifiers."""
+import hashlib,json,re
+from datetime import datetime,timezone
+from common import P,read,write,request
+assert not (P/'denied-payloads.json').exists();c=read(P/'private/config.private.json');f=c['fixtures'][0];assert f['deleted'];prefix='/api/v1/direct-messages/'+c['conversation'];paths=[('history',prefix+'/messages?at='+f['message']+'&limit=20'),('original',prefix+'/attachments/'+f['attachment']),('preview',prefix+'/attachments/'+f['attachment']+'/preview')]
+forbidden=[f['filename'],f['message'],f['attachment'],c['conversation'],c['sender_account'],c['phone_account']];rows=[]
+for role,cookie,expected in [('outsider_MEMBER',c['critical_roles']['outsider'],404),('anonymous',None,401),('revoked_same_account',c['critical_roles']['sibling'],401)]:
+    for label,path in paths:
+        status,_,raw=request(path,cookie=cookie);assert status==expected;assert all(v.encode() not in raw for v in forbidden);assert not raw.startswith(b'\x89PNG');value=json.loads(raw);assert set(value)=={'error'} and set(value['error'])=={'code','message','request_id'} and re.fullmatch('[A-Z_]+',value['error']['code'])
+        rows.append({'role':role,'resource':label,'HTTP':status,'expected_HTTP':expected,'error_code':value['error']['code'],'fixture_identifiers_filename_and_PNG_payload_absent':True,'response_SHA256':hashlib.sha256(raw).hexdigest()})
+write(P/'denied-payloads.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS9_DENIED_RESOURCE_BODIES_NO_FIXTURE_DISCLOSURE','phase':'After owned deletion; original pre-delete status matrix is recorded independently','checks':rows,'raw_payloads_not_exported':True});print('PASS9_DENIED_RESOURCE_BODIES_NO_FIXTURE_DISCLOSURE')

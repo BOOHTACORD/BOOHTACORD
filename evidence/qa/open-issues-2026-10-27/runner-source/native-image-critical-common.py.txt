@@ -1,0 +1,19 @@
+"""Single trusted production origin, existing QA identities, private fixture state."""
+import http.client,json,sys,uuid
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];B=Path('C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD');G=B/'.out/qa-goal';ORIGIN='https://v.bootybay.ru'
+sys.path.insert(0,str(G))
+from android_permission_ui import ADB,APP,call,nodes,label,state,tap_named
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+def write(p,v):p.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+def valid(s):assert str(uuid.UUID(s))==s;return s
+def request(path,method='GET',body=None,cookie=None,content_type='application/json'):
+    assert path.startswith('/api/v1/') or path=='/release-receipt.json'
+    assert ORIGIN=='https://v.bootybay.ru';connection=http.client.HTTPSConnection('v.bootybay.ru',443,timeout=20);headers={'Origin':ORIGIN,'Accept':'*/*' if '/attachments/' in path else 'application/json'}
+    if cookie:headers['Cookie']=cookie
+    if body is not None:headers['Content-Type']=content_type
+    raw=body if isinstance(body,bytes) else json.dumps(body).encode() if body is not None else None
+    connection.request(method,path,body=raw,headers=headers);response=connection.getresponse();status=response.status;result_headers=response.getheaders();result=response.read(2_000_000);connection.close()
+    return status,result_headers,result
+def api(path,method='GET',body=None,cookie=None):
+    status,headers,raw=request(path,method,body,cookie);return status,headers,json.loads(raw) if raw else None

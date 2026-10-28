@@ -1,0 +1,29 @@
+"""Create only a new QA sender session and tiny deterministic own images, no sends."""
+import hashlib,io,secrets
+from http.cookies import SimpleCookie
+from PIL import Image,ImageDraw
+from common import P,Q,G,ORIGIN,read,write,valid,request,api
+assert read(P/'preflight.json')['status'].startswith('PASS') and not (P/'private/config.private.json').exists()
+known=read(P/'private/known.private.json');f=read(G/'private-fixture.json')['b'];assert f['id']==known['sender_account'] and f['login']==known['peer'] and f.get('registered')
+c={'owner':secrets.token_hex(6),'origin':ORIGIN,'sessions':[],'messages':[],'attachments':[],'saved_files':[],'fixtures':[],'conversation':valid(known['conversation']),'phone_account':valid(known['phone_account']),'sender_account':valid(f['id']),'peer':f['login']};write(P/'private/config.private.json',c)
+status,headers,_=request('/api/v1/auth/login','POST',{'login':f['login'],'password':f['password']});assert status==204
+cookies=SimpleCookie()
+for k,v in headers:
+    if k.lower()=='set-cookie':cookies.load(v)
+assert len(cookies)==1;c['cookie']='; '.join(k+'='+v.value for k,v in cookies.items());c['sessions'].append(c['cookie']);write(P/'private/config.private.json',c)
+status,_,s=api('/api/v1/auth/session',cookie=c['cookie']);assert status==200 and s['authenticated'] and s['role']=='MEMBER' and s['account_id']==f['id']
+status,_,dms=api('/api/v1/direct-messages',cookie=c['cookie']);assert status==200;matches=[d for d in dms['direct_messages'] if d['id']==c['conversation'] and d['other_participant_id']==c['phone_account']];assert len(matches)==1
+status,_,history=api('/api/v1/direct-messages/'+c['conversation']+'/messages',cookie=c['cookie']);assert status==200
+c['preexisting_latest']=[{'id':m['id'],'revision':m['revision'],'deleted':m['deleted'],'attachment_ids':[a['id'] for a in m['attachments']]} for m in history['messages']];write(P/'private/config.private.json',c)
+image=Image.new('RGB',(64,64));draw=ImageDraw.Draw(image)
+for box,color in [((0,0,31,31),(255,0,34)),((32,0,63,31),(0,238,68)),((0,32,31,63),(17,68,255)),((32,32,63,63),(255,238,0))]:draw.rectangle(box,fill=color)
+buf=io.BytesIO();image.save(buf,format='PNG');png=buf.getvalue();metadata=read(G/'image-format-fixtures.json')
+inputs={'PNG':(png,'png','image/png',[64,64]),'JPEG':((G/metadata[0]['filename']).read_bytes(),'jpg','image/jpeg',[64,48]),'GIF':((G/metadata[1]['filename']).read_bytes(),'gif','image/gif',[32,32])}
+for key,expected in [('JPEG',metadata[0]),('GIF',metadata[1])]:assert hashlib.sha256(inputs[key][0]).hexdigest()==expected['sha256']
+for kind,(raw,ext,mime,pixels) in inputs.items():
+    for control in ['viewer','card']:
+        name='BOOHTACORD-QA-20261028-'+kind.lower()+'-'+control+'-'+c['owner']+'.'+ext;assert len(name)<90
+        path=P/'private'/name;path.write_bytes(raw);assert __import__('subprocess').run([__import__('common').ADB,'shell','test','-e','/sdcard/Download/'+name],stdout=__import__('subprocess').DEVNULL,stderr=__import__('subprocess').DEVNULL).returncode!=0
+        c['fixtures'].append({'alias':kind+'-'+control,'format':kind,'control':control,'filename':name,'mime':mime,'pixels':pixels,'bytes':len(raw),'SHA256':hashlib.sha256(raw).hexdigest(),'private_file':path.name})
+write(P/'private/config.private.json',c)
+write(P/'fixture-ready.json',{'status':'PASS_SIX_TINY_OWN_INPUTS_EXISTING_QA_DM_NEW_MEMBER_SESSION','origin':ORIGIN,'sender_role':'MEMBER','receiver':'Existing authorized physical Android own QA DM','new_accounts_registered':0,'new_sender_sessions':1,'preexisting_latest_record_count':len(c['preexisting_latest']),'existing_phone_session_or_base_URL_changed':False,'fixtures':[{k:v for k,v in x.items() if k not in ['filename','private_file']} for x in c['fixtures']],'DM_ID_names_cookies_and_payloads_private':True,'production_mutations_so_far':'one new owned sender session only; no message or attachment sent yet'});print('PASS_SIX_TINY_OWN_INPUTS_EXISTING_QA_DM_NEW_MEMBER_SESSION')

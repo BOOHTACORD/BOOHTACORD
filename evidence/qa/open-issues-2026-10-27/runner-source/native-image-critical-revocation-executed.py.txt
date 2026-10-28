@@ -1,0 +1,37 @@
+"""Actual native viewer across own deletion; API and render evidence stay separate."""
+import hashlib,json,subprocess,sys,time
+from datetime import datetime,timezone
+from common import P,read,write,api,request,valid,call,APP,state
+assert not (P/'revocation-result.json').exists();c=read(P/'private/config.private.json');f=c['fixtures'][0];assert not f.get('deleted') and read(P/'denial-review.json')['status'].startswith('PASS')
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'RUNNING','physical_Android':True,'origin':'https://v.bootybay.ru','actions':[],'no_voice_join_leave_or_permission_actions':True,'no_native_session_cookie_extraction':True}
+def native(action):
+    q=subprocess.run([sys.executable,'-X','utf8',str(P/'native_ui.py'),action,'0'],capture_output=True,text=True,encoding='utf-8',timeout=50)
+    if q.returncode:
+        (P/'private'/('revocation-'+action+'-error.private.txt')).write_text(q.stderr,encoding='utf-8');raise RuntimeError('Scoped native action failed')
+    v=json.loads(q.stdout);r['actions'].append(v);write(P/'revocation-result.json',r);return v
+try:
+    start=native('critical-inspect');assert start['surface']['own_image_view'] and start['surface']['viewer_close'] and not start['surface']['system_permission_prompt']
+    r['fresh_preview_before_delete']=native('probe')['probe'];assert r['fresh_preview_before_delete']['known_pattern_rendered']
+    q=subprocess.run([sys.executable,'-X','utf8',str(P/'producer.py'),'delete','0'],capture_output=True,text=True,encoding='utf-8',timeout=45);assert q.returncode==0;r['owner_delete']=json.loads(q.stdout);assert r['owner_delete']['delete_HTTP']==204 and r['owner_delete']['original_preview_after_delete']==[404,404]
+    c=read(P/'private/config.private.json');prefix='/api/v1/direct-messages/'+valid(c['conversation']);status,_,m=api(prefix+'/messages','POST',{'client_message_id':c['critical_control_client_id'],'body':c['critical_control_text']},c['cookie']);assert status==201 and m['author_id']==c['sender_account'];c['critical_control_message']=valid(m['id']);c['messages'].append(m['id']);write(P/'private/config.private.json',c);r['post_delete_control_message_HTTP']=201
+    start_clock=time.monotonic();time.sleep(2);after=native('critical-inspect');r['post_delete_surface']=after
+    if after['surface']['own_image_view'] and after['surface']['viewer_close']:
+        r['post_delete_pixels']=native('probe')['probe'];remaining=max(0,5-(time.monotonic()-start_clock));time.sleep(remaining);after=native('critical-inspect');r['stale_observation_ms']=round((time.monotonic()-start_clock)*1000);r['old_pattern_still_visible_after_delete']=after['surface']['own_image_view'] and r['post_delete_pixels']['known_pattern_rendered']
+        r['native_download_action_after_delete']=native('download-viewer');time.sleep(.5);download=native('critical-inspect');r['native_download_followup']=download
+        r['document_provider_after_deleted_download']=download['document_provider_visible'];r['expected_Downloads_file_exists']=subprocess.run([__import__('common').ADB,'shell','test','-e','/sdcard/Download/'+f['filename']],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode==0
+        assert not download['document_provider_visible'],'Unexpected native save provider after server deletion; preserve and inspect before further actions'
+    else:r['old_pattern_still_visible_after_delete']=False;r['native_viewer_invalidation_precondition']='No own ImageView; require current app/own-context observation before interpreting as PASS'
+    current=native('critical-inspect')
+    if current['surface']['viewer_close']:r['own_viewer_closed']=native('close')
+    observations=[]
+    for attempt in range(4):
+        v=native('critical-inspect');observations.append(v)
+        if v['critical_control_rendered'] and v['surface']['owned_DM_header'] and not v['surface']['preview_open_control']:break
+        if attempt==0:native('latest')
+        time.sleep(.4)
+    r['underlying_history_observations']=observations;r['underlying_history_fresh_without_manual_refresh']=any(v['critical_control_rendered'] and v['surface']['owned_DM_header'] and not v['surface']['preview_open_control'] for v in observations);r['no_native_history_refresh_after_delete']=True
+    if r['old_pattern_still_visible_after_delete'] and r['underlying_history_fresh_without_manual_refresh']:r['status']='FAIL_NATIVE_VIEWER_CACHED_IMAGE_AFTER_DELETE_WITH_FRESH_HISTORY_CONTROL'
+    elif not r['old_pattern_still_visible_after_delete'] and r['underlying_history_fresh_without_manual_refresh']:r['status']='PASS_SCOPED_NATIVE_DELETE_INVALIDATION'
+    else:r['status']='PARTIAL_NATIVE_INVALIDATION_SIGNAL_CONTROL_UNPROVEN'
+except Exception as e:r['status']='BLOCKED_OR_CONTROLLER_FAILURE';r['error_type']=type(e).__name__
+finally:r['finished_at_utc']=datetime.now(timezone.utc).isoformat();write(P/'revocation-result.json',r);print(json.dumps({k:v for k,v in r.items() if k in ['status','old_pattern_still_visible_after_delete','underlying_history_fresh_without_manual_refresh','stale_observation_ms','document_provider_after_deleted_download','expected_Downloads_file_exists','error_type']}))

@@ -1,0 +1,31 @@
+{
+  "at_utc": "2026-10-28T18:27:08.258086+00:00",
+  "status": "PASS_DOCUMENTED_OPAQUE409_DENIAL_UNCHANGED_AND_INDISCERNIBLE",
+  "contract_file": "contracts/openapi.yaml",
+  "contract_SHA256": "3c9895b2d9fc4df68948f6811435ac77a948686d62bed93730582ed174db39a1",
+  "operation_id": "editDirectMessage",
+  "contract_description": "Authenticated DM author only. Pair membership, author ID, non-deleted state, and expected revision are checked atomically; administrator role grants no exception. A conflict intentionally does not disclose which guard failed.",
+  "existing_and_nonexistent_semantic_errors_identical": true,
+  "normalization_limit": "Only documented error.request_id differs per request; code/message and all other fields compared. Initial exact-object equality was an overly strict diagnostic oracle.",
+  "owned_message_unchanged": true,
+  "checks": [
+    {
+      "case": "existing_owned_fixture",
+      "HTTP": 409,
+      "error_code": "CONFLICT",
+      "response_SHA256": "934d0f8c7195be9882d5087497d674b7c8a01ab39acc9592ffee6318f5ff3f2c",
+      "fixture_name_and_resource_account_identifiers_absent": true,
+      "only_documented_per_request_correlation_id_excluded": true
+    },
+    {
+      "case": "nonexistent_message",
+      "HTTP": 409,
+      "error_code": "CONFLICT",
+      "response_SHA256": "8d9df913cbb9e71c7258fe1870a0c31c0cbc154bac3d442155903eea3f1ca0cd",
+      "fixture_name_and_resource_account_identifiers_absent": true,
+      "only_documented_per_request_correlation_id_excluded": true
+    }
+  ],
+  "original_oracle_error": "critical_checks.py expected404 for DM PATCH. Contract explicitly specifies opaque409 for failed pair/author/deleted/revision guards. Original FAIL retained as diagnostic oracle mismatch, not product security failure.24 other initial checks PASS.",
+  "physical_or_full_ADMIN_gate_proven": false
+}

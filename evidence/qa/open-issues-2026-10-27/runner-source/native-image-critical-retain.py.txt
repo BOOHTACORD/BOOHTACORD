@@ -1,0 +1,64 @@
+"""Publish captured critical protocol/native observations without private payloads."""
+import ast,collections,hashlib,json,re,subprocess
+from datetime import datetime,timezone
+from common import P,B,read,write
+O=B/'evidence/qa/open-issues-2026-10-27';name='production-dm-image-revocation';D=O/name;D.mkdir(exist_ok=False)
+sha=lambda b:hashlib.sha256(b).hexdigest();now=datetime.now(timezone.utc).isoformat()
+copies=['operating-brief','fixture-ready','critical-ready','critical-api-result','denial-review','denied-payloads','revocation-result','critical-cleanup','native-check','source-binding','visual-record','semantic-result']
+for n in copies:write(D/(n+'.json'),read(P/(n+'.json')))
+helpers=list(sorted(P.glob('*.py')));executed=['critical_checks','denial_review','revocation'];assert len(helpers)+len(executed)<=16
+for f in helpers:
+    text=f.read_text(encoding='utf-8');assert len(text.splitlines())<=120;ast.parse(text);(O/'runner-source'/('native-image-critical-'+f.name+'.txt')).write_text(text,encoding='utf-8',newline='\n')
+for n in executed:
+    f=P/'private'/(n+'-executed.py.txt');text=f.read_text(encoding='utf-8');assert len(text.splitlines())<=120;ast.parse(text);(O/'runner-source'/('native-image-critical-'+n+'-executed.py.txt')).write_text(text,encoding='utf-8',newline='\n')
+commands=['python -X utf8 .out/qa-native-image-formats/'+n+'.py' for n in ['preflight','prepare']]+['python -X utf8 .out/qa-native-image-formats/producer.py send 0','python -X utf8 .out/qa-native-image-formats/native_ui.py open 0','python -X utf8 .out/qa-native-image-formats/native_ui.py probe 0']+['python -X utf8 .out/qa-native-image-formats/'+n+'.py' for n in ['critical_setup','critical_checks','denial_review','revocation','denied_payloads','cleanup','verify']]
+limits=read(D/'semantic-result.json')['limits'];platform='Windows11 HTTPS protocol producer, actual physical Samsung SM-A576B Android16 signed QA 1.0.47+2082, trusted production v.bootybay.ru; not Windows browser UI'
+api={'id':'PRODUCTION-DM-protected-image-access-revocation','status':'PASS_SCOPED','protects':'DM pair/privacy and scoped protected original/preview access; Origin mutation denial; revoked same-account cookie loses access without revoking sibling','command':'; '.join('python -X utf8 .out/qa-native-image-formats/'+n+'.py' for n in ['critical_checks','denial_review','denied_payloads']),'platform':platform,'mandatory_when':'Before accepting the MEMBER/anonymous/revoked-cookie API facet of DM/image privacy; ADMIN and full browser/native criteria remain separate','issues':[53,62,131],'result':name+'/semantic-result.json','limits':'API facet only.25 reviewed boundaries,2 opaque409 controls and9 denied-body controls. No ADMIN, account-block, native logout, browser UI or cross-DM attachment admission acceptance. Physical viewer failure is a separate case.','defects':[]}
+native={'id':'ANDROID-image-viewer-delete-invalidation','status':'FAIL','protects':'An already-open protected image viewer must hide deleted content when its own DM history has processed deletion; server404 alone is insufficient','command':'python -X utf8 .out/qa-native-image-formats/revocation.py','platform':platform,'mandatory_when':'Before accepting Android image-viewer deletion/privacy lifecycle and closing QA62 native parity','issues':[62],'result':name+'/revocation-result.json','limits':'One physical PNG reproduction, viewer remains through a24,766ms post-control observer window; exact known bitmap is probed inside that window. Not a backend ACL bypass. Native save after deletion is observation only without positive save control; no full media/other-platform acceptance.','defects':[]}
+summary={'at_utc':now,'status':'FAIL_NATIVE_CACHE_INVALIDATION_API_PASS_SCOPED','invariant_command_platform_trigger_result':[api,native],'sequential_replay_commands':commands,'source_and_candidate':'source-binding.json','protocol':'critical-api-result.json','oracle_review':'denial-review.json','negative_payloads':'denied-payloads.json','physical':'revocation-result.json','native_tests':'native-check.json','cleanup':'critical-cleanup.json','visual':'visual-record.json','bug':'PENDING_CREATION_AFTER_IMMUTABLE_EVIDENCE','limits':limits}
+write(D/'summary.json',summary)
+doc='''# Critical DM/image access and physical deletion — 2026-10-28
+
+API protection PASS_SCOPED; already-open physical Android viewer FAIL. No QA issue or platform/security/media gate closes from this packet.
+
+The owned PNG was readable by its participant and another session of the same account (200), denied to outsider MEMBER (404), anonymous/revoked cookie (401), and mismatched existing owned DM path (404). Missing/foreign/null Origin denied PATCH403 without mutation. Logout204 makes that cookie unauthenticated while another same-account session retains200.25 reviewed boundary checks,2 opaque409 controls and9 denied-body controls are recorded separately; these counts overlap and are not independent full acceptance cases. ADMIN is NOT_RUN.
+
+The raw initial report retains24 PASS and one wrong404 PATCH oracle. The documented editDirectMessage contract deliberately returns opaque409 for failed pair/author/deleted/revision guards. Existing/nonexistent IDs return identical semantic errors after excluding only documented error.request_id; own content was unchanged. This is an oracle correction, not a discovered authorization bug.
+
+Physical counterexample: open the actual known PNG viewer in the owned DM, then owner DELETE204 and post a fresh own control. Server reports deleted/body blank/attachments empty and original+preview404. The foreground retains the viewer throughout a24,766ms post-control observer window, including ADB polling; an exact4-region ICC-corrected pixel probe inside that window still matches the deleted PNG; the same source-sized private capture shows the underlying tombstone. After closing and one explicit scroll, the post-delete control is visible with no manual history refresh and the old image card is absent. This is stale cached UI content, not a fresh unauthorized download. One reproduction; no p95 or transport guarantee.
+
+The visible Download action after deletion opened no provider and produced no expected file. With no pre-delete positive native save control or native HTTP trace this remains OBSERVATION_ONLY.15 nearest Windows Flutter widget checks pass/0skip; they do not cover already-open live invalidation.
+
+Source binding: installed APK freshly byte-hashed and equal to prior signed QA candidate2082/source072426d6; all8 native edges match observed master8a2cda38. Backend source UNKNOWN. No whole-packet independent preexecution helper snapshot is claimed. Exact original executed variants and corrected replay variants are retained. Original native controller exited0 while JSON carried FAIL; replay CLI now exits1 for FAIL. Historical product acceptance remains FAIL, not exit0 PASS.
+
+All2 owned messages tombstoned/blank with no attachments,25 prior records unchanged; all3 owned API sessions revoked with live readback. Phone account/base URL/permission flags preserved, viewer closed/composer empty, no Downloads file. Morning voice state predates an interrupted phase; at resumed baseline voice/mic were already idle and remained idle. Android16 Media Projection:null means no capture; the old parser was corrected, not evidence of active capture. No voice audibility acceptance.
+
+Raw screenshots/hierarchy/payloads/identities/cookies stay private. Source1080x2340 captures were visually inspected at original resolution; exact SHA and4-region positive/wrong-palette negative probes are retained in visual-record.json. Existing voice recovery text behind the modal is not a new voice-defect claim.
+
+For authorized fresh replay, reconstruct native-image-critical-*.py.txt under .out/qa-native-image-formats with the existing private QA profiles and android_permission_ui.py helper. Reconstruct filenames without prefix/.txt. Use a fresh private/ directory, exact owned-DM/phone identity preflight and the commands in summary.json sequentially. Run native-check.json widget command first from clients/flutter. Own PNG must be explicitly revealed/opened before critical_setup; history refresh is allowed before this experiment only. revocation.py is the intentional negative gate (exit1), so execute denial-body controls and cleanup separately even after failure. Never replay old cookie/IDs or overwrite receipts; observer metadata verification exits0 when a negative witness is internally consistent, not when product acceptance passes. Other5 prepared format/card cases remain NOT_RUN after the user's critical-security reprioritization.
+'''
+(D/'README.md').write_text(doc,encoding='utf-8',newline='\n')
+cases=read(O/'cases.json');oldcases=json.loads(subprocess.check_output(['git','show','HEAD:evidence/qa/open-issues-2026-10-27/cases.json'],cwd=B));assert cases==oldcases and len(cases['cases'])==78;cases['cases'] += [api,native];write(O/'cases.json',cases)
+m=read(O/'matrix.json');old=json.loads(subprocess.check_output(['git','show','HEAD:evidence/qa/open-issues-2026-10-27/matrix.json'],cwd=B));rows={r['id']:r for i in m['issues'] for r in i['criteria']}
+for case,ids in [(api,['I53.C1','I62.C1','I131.C5']),(native,['I62.C1'])]:
+    for rid in ids:
+        r=rows[rid];r['execution_cases'].append(case['id']);r['evidence'].append(case['result']);r['witness_limits'].append(case['id']+': '+case['limits']);r['execution']+='; '+case['command']
+    for i in m['issues']:
+        if i['number'] in case['issues']:i['execution_cases'].append(case['id']);i['evidence'].append(case['result'])
+assert {r['id']:r['requirement'] for i in m['issues'] for r in i['criteria']}=={r['id']:r['requirement'] for i in old['issues'] for r in i['criteria']}
+assert {r['id']:r['status'] for i in m['issues'] for r in i['criteria']}=={r['id']:r['status'] for i in old['issues'] for r in i['criteria']};m['updated_utc']=now;write(O/'matrix.json',m)
+with (O/'README.md').open('a',encoding='utf-8',newline='\n') as f:f.write('\n## Critical DM/image deletion checkpoint — 2026-10-28\n\n[Protocol privacy and physical viewer evidence](production-dm-image-revocation/README.md):25 reviewed API boundaries PASS_SCOPED, plus separate opaque409/denied-body controls; already-open Android viewer FAIL in a24,766ms post-control observation window despite fresh underlying history and server404; exact pixel probe is inside that window, not continuous sampling.15 widget tests pass/0skip. Both own messages/all3 owned API sessions cleaned; source/candidate and visual hashes retained.80 scoped cases; all480 source texts and existing row statuses preserved. ADMIN/other formats/platform/media/hosted gates and43 consolidation decisions remain unaccepted.\n')
+private=read(P/'private/config.private.json');blob='\n'.join(f.read_text(encoding='utf-8') for f in list(D.glob('*'))+list((O/'runner-source').glob('native-image-critical-*')) if f.is_file());needles=set()
+def sensitive(v,k=''):
+    if isinstance(v,dict):
+        for key,item in v.items():sensitive(item,key)
+    elif isinstance(v,list):
+        for item in v:sensitive(item,k)
+    elif isinstance(v,str) and (re.fullmatch(r'[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}',v) or k in ['cookie','owner','filename','private_file','critical_control_text','peer'] or k=='sessions'):needles.add(v)
+sensitive(private);sensitive(read(P/'private/known.private.json'))
+for role in ['b','c']:
+    u=read(B/'.out/qa-goal/private-fixture.json')[role]
+    for k in ['password','login','id']:needles.add(u[k])
+assert all(n not in blob for n in needles if n), 'Private value in proposed evidence'
+write(D/'retention-check.json',{'at_utc':now,'status':'PASS_PUBLIC_NO_PRIVATE_FIXTURE_VALUES','helper_files':len(helpers)+len(executed),'helper_hard_lines':120,'all78_prior_cases_preserved':cases['cases'][:78]==oldcases['cases'],'source_rows_preserved':480,'row_statuses_unchanged':True,'raw_screenshots_or_payloads_exported':False,'new_cases':2})
+print(json.dumps({'retained':name,'scoped_cases':len(cases['cases']),'row_status_counts':dict(collections.Counter(r['status'] for r in rows.values())),'helper_files':len(helpers)+len(executed),'privacy':'PASS'}))

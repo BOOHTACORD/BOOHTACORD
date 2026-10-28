@@ -1,0 +1,31 @@
+{
+  "at_utc": "2026-10-28T18:47:28.783079+00:00",
+  "API_scope": "PASS25_CRITICAL_BOUNDARIES_AFTER_DOCUMENTED409_ORACLE_REVIEW",
+  "initial_case_PASS": 24,
+  "initial_wrong404_oracle_preserved": 1,
+  "opaque409_denial_controls_PASS": 2,
+  "denied_payload_controls_PASS": 9,
+  "ADMIN_variant": "NOT_RUN_NO_CONTROLLED_ADMIN_SESSION",
+  "native_scope": "FAIL_CACHED_IMAGE_RETAINS_DELETED_CONTENT",
+  "physical_native_reproductions": 1,
+  "post_control_observation_window_ms": 24766,
+  "timing_note": "24,766ms is an observer window after post-delete control creation, including ADB polling. The exact four-region bitmap probe occurs inside that window; the final hierarchy still has the own viewer/ImageView. This is not continuous pixel sampling or an exact final-frame pixel timestamp.",
+  "underlying_deleted_tombstone_and_control_verified": true,
+  "controller_exit_observed": 0,
+  "native_acceptance_exit": 1,
+  "replay_revocation_CLI_exit": 1,
+  "replay_limit": "Executed controller originally exited0 while JSON carried FAIL; preserved executed source and corrected replay CLI to1. This is not a claim of a historically observed exit1.",
+  "native_after_delete_save": "OBSERVATION_ONLY_NO_POSITIVE_NATIVE_SAVE_CONTROL: no save provider and no expected Downloads file; no direct native HTTP trace",
+  "native_widget_checks": 15,
+  "native_widget_skips": 0,
+  "cleanup": "PASS_TWO_OWN_MESSAGES_THREE_OWN_API_SESSIONS_CLEANED_PHONE_SESSION_PRESERVED",
+  "source_binding": "source-binding.json",
+  "five_other_image_format_cases": "NOT_RUN_USER_REPRIORITIZED_CRITICAL_SECURITY",
+  "limits": [
+    "Only owned production DM/PNG and controlled MEMBER roles; ADMIN, blocking-account, Windows/macOS/iOS/native logout and other image formats remain unexecuted",
+    "Server ACL/source differ from UI renderer; observed cached bitmap is not a fresh unauthorized server read or backend ACL bypass",
+    "Morning/interrupted phase and resumed idle voice state are separate; no continuous voice/audibility acceptance",
+    "No Windows browser UI, load, server faults, router, OS permission/security, native base URL or phone-session changes",
+    "No full QA/platform/media/hosted gate closure or test consolidation decision"
+  ]
+}

@@ -329,3 +329,7 @@ The additional same-document account journey passes8 lifecycle assertions withou
 ## Already-open context realtime freshness — 2026-10-28
 
 [Distinct source-bound failure](isolated-context-realtime/README.md):3 edit +3 delete targets remain stale after real matching hints/correct protected API state.5 controls and6 fresh-after-explicit-reload controls PASS;12 closest checks/0 skips do not cover the live path.201 own rows/2channels/category removed,5 own sessions revoked;9 original services/source unchanged. I240.C9/I241.C37 remain FAIL; distinct fix [#587](https://github.com/Egkurilov/BOOHTACORD/issues/587) is filed/open after duplicate review, linked to immutable evidence with exact readback.78 scoped cases/480 original texts and43 decisions preserved.
+
+## Critical DM/image deletion checkpoint — 2026-10-28
+
+[Protocol privacy and physical viewer evidence](production-dm-image-revocation/README.md):25 reviewed API boundaries PASS_SCOPED, plus separate opaque409/denied-body controls; already-open Android viewer FAIL in a24,766ms post-control observation window despite fresh underlying history and server404; exact pixel probe is inside that window, not continuous sampling.15 widget tests pass/0skip. Both own messages/all3 owned API sessions cleaned; source/candidate and visual hashes retained.80 scoped cases; all480 source texts and existing row statuses preserved. ADMIN/other formats/platform/media/hosted gates and43 consolidation decisions remain unaccepted.

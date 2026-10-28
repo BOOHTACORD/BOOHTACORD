@@ -170,7 +170,8 @@
             "ANDROID-native-PNG-picker-send-view-delete",
             "WEB-JPEG-GIF-private-image-lifecycle",
             "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
-            "ANDROID-ADMIN-explicit-search-after-owned-delete"
+            "ANDROID-ADMIN-explicit-search-after-owned-delete",
+            "PRODUCTION-DM-protected-image-access-revocation"
           ],
           "evidence": [
             "privacy-result.json#/checks/two_participants_and_third_member_acl",
@@ -179,9 +180,10 @@
             "web-session-contract/logout.json",
             "native-image/summary.json",
             "web-image-formats/summary.json",
-            "native-admin-search-privacy/summary.json"
+            "native-admin-search-privacy/summary.json",
+            "production-dm-image-revocation/semantic-result.json"
           ],
-          "execution": "node .out/qa-goal/privacy_run.mjs; node .out/qa-goal/notification_readiness.mjs; node .out/qa-goal/notification_settings_ui.mjs; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs | native-admin-search-privacy/README.md actual ADMIN native all-scope UI with independently searchable owned API fixtures.",
+          "execution": "node .out/qa-goal/privacy_run.mjs; node .out/qa-goal/notification_readiness.mjs; node .out/qa-goal/notification_settings_ui.mjs; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs | native-admin-search-privacy/README.md actual ADMIN native all-scope UI with independently searchable owned API fixtures.; python -X utf8 .out/qa-native-image-formats/critical_checks.py; python -X utf8 .out/qa-native-image-formats/denial_review.py; python -X utf8 .out/qa-native-image-formats/denied_payloads.py",
           "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts; Actual production HTTPS and installed headed Windows Chrome155; controlled MEMBER only; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS; Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
           "result": "native-admin-search-privacy/summary.json",
@@ -192,7 +194,8 @@
             "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance",
             "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim.",
             "WEB-JPEG-GIF-private-image-lifecycle: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
-            "Native rendered search only, with API fixture controls from Windows. No third ADMIN browser, raw native response/socket hints/unread/OS alert/file ACL/block/revoke/other-platform/whole search-filter or acoustic acceptance. Explicit search after delete; no automatic cache-invalidation claim."
+            "Native rendered search only, with API fixture controls from Windows. No third ADMIN browser, raw native response/socket hints/unread/OS alert/file ACL/block/revoke/other-platform/whole search-filter or acoustic acceptance. Explicit search after delete; no automatic cache-invalidation claim.",
+            "PRODUCTION-DM-protected-image-access-revocation: API facet only.25 reviewed boundaries,2 opaque409 controls and9 denied-body controls. No ADMIN, account-block, native logout, browser UI or cross-DM attachment admission acceptance. Physical viewer failure is a separate case."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -322,7 +325,8 @@
         "ANDROID-native-PNG-picker-send-view-delete",
         "WEB-JPEG-GIF-private-image-lifecycle",
         "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
-        "ANDROID-ADMIN-explicit-search-after-owned-delete"
+        "ANDROID-ADMIN-explicit-search-after-owned-delete",
+        "PRODUCTION-DM-protected-image-access-revocation"
       ],
       "evidence": [
         "privacy-result.json",
@@ -330,7 +334,8 @@
         "web-session-contract/logout.json",
         "native-image/summary.json",
         "web-image-formats/summary.json",
-        "native-admin-search-privacy/summary.json"
+        "native-admin-search-privacy/summary.json",
+        "production-dm-image-revocation/semantic-result.json"
       ],
       "defects": [],
       "blockers": [],
@@ -1091,7 +1096,9 @@
             "ANDROID-landscape-ime-send-voice-dock-overlap",
             "ANDROID-wifi-cellular-native-DM-and-restoration",
             "ANDROID-signed-master-candidate-in-place-upgrade",
-            "ANDROID-master-landscape-ime-send-voice-dock-overlap"
+            "ANDROID-master-landscape-ime-send-voice-dock-overlap",
+            "PRODUCTION-DM-protected-image-access-revocation",
+            "ANDROID-image-viewer-delete-invalidation"
           ],
           "evidence": [
             "native-realtime-result.json",
@@ -1104,9 +1111,11 @@
             "android-orientation/summary.json",
             "android-connectivity/summary.json",
             "android-upgrade/summary.json",
-            "android-orientation-master/summary.json"
+            "android-orientation-master/summary.json",
+            "production-dm-image-revocation/semantic-result.json",
+            "production-dm-image-revocation/revocation-result.json"
           ],
-          "execution": "node .out/qa-goal/native_realtime_run.mjs; node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback; node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py; python .out/qa-goal/android_filechooser.py; Physical listening at PC and phone; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python -X utf8 .out/qa-goal/verify_android_candidate.py; node .out/qa-goal/native_upgrade_peer.mjs before; python -X utf8 .out/qa-goal/android_candidate_install.py; python -X utf8 .out/qa-goal/upgrade_restore_owned_dm.py; node .out/qa-goal/native_upgrade_peer.mjs after; python -X utf8 .out/qa-goal/android_candidate_after.py; node .out/qa-goal/native_ptt_peer.mjs upgrade-final",
+          "execution": "node .out/qa-goal/native_realtime_run.mjs; node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback; node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py; python .out/qa-goal/android_filechooser.py; Physical listening at PC and phone; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python -X utf8 .out/qa-goal/verify_android_candidate.py; node .out/qa-goal/native_upgrade_peer.mjs before; python -X utf8 .out/qa-goal/android_candidate_install.py; python -X utf8 .out/qa-goal/upgrade_restore_owned_dm.py; node .out/qa-goal/native_upgrade_peer.mjs after; python -X utf8 .out/qa-goal/android_candidate_after.py; node .out/qa-goal/native_ptt_peer.mjs upgrade-final; python -X utf8 .out/qa-native-image-formats/critical_checks.py; python -X utf8 .out/qa-native-image-formats/denial_review.py; python -X utf8 .out/qa-native-image-formats/denied_payloads.py; python -X utf8 .out/qa-native-image-formats/revocation.py",
           "platform": "Physical Samsung SM-A576B Android16; signed 1.0.45+2080 paired with Chrome; Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Physical Samsung SM-A576B Android16, signed1.0.45+2080; actual Android permission controller; headed Chrome peer; Physical Samsung SM-A576B Android16; signed1.0.45+2080; protected production roster read by controlled peer; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Physical Windows + Samsung; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
           "result": "android-connectivity/summary.json",
@@ -1117,7 +1126,9 @@
             "ANDROID-populated-prejoin-no-permission: No injected503/recovery, all ACL roles, other native platforms, capacity or audibility. Original state restored.",
             "ANDROID-real-filechooser-cancel: No file was selected or uploaded, no personal file listings/captures retained; not browser file chooser or image-viewer acceptance",
             "AUDIO-audibility: User answered 2026-10-27 that they cannot listen now. Packet counters never substitute for listening.",
-            "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim."
+            "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim.",
+            "PRODUCTION-DM-protected-image-access-revocation: API facet only.25 reviewed boundaries,2 opaque409 controls and9 denied-body controls. No ADMIN, account-block, native logout, browser UI or cross-DM attachment admission acceptance. Physical viewer failure is a separate case.",
+            "ANDROID-image-viewer-delete-invalidation: One physical PNG reproduction, viewer remains through a24,766ms post-control observer window; exact known bitmap is probed inside that window. Not a backend ACL bypass. Native save after deletion is observation only without positive save control; no full media/other-platform acceptance."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -1262,7 +1273,9 @@
         "ANDROID-landscape-ime-send-voice-dock-overlap",
         "ANDROID-wifi-cellular-native-DM-and-restoration",
         "ANDROID-signed-master-candidate-in-place-upgrade",
-        "ANDROID-master-landscape-ime-send-voice-dock-overlap"
+        "ANDROID-master-landscape-ime-send-voice-dock-overlap",
+        "PRODUCTION-DM-protected-image-access-revocation",
+        "ANDROID-image-viewer-delete-invalidation"
       ],
       "evidence": [
         "native-realtime-result.json",
@@ -1275,7 +1288,9 @@
         "android-orientation/summary.json",
         "android-connectivity/summary.json",
         "android-upgrade/summary.json",
-        "android-orientation-master/summary.json"
+        "android-orientation-master/summary.json",
+        "production-dm-image-revocation/semantic-result.json",
+        "production-dm-image-revocation/revocation-result.json"
       ],
       "defects": [
         582
@@ -1578,14 +1593,16 @@
             "DM-actual_image_upload_and_protected_download",
             "ANDROID-native-PNG-picker-send-view-delete",
             "WEB-JPEG-GIF-private-image-lifecycle",
-            "WEB-viewer-download-format-mismatch"
+            "WEB-viewer-download-format-mismatch",
+            "PRODUCTION-DM-protected-image-access-revocation"
           ],
           "evidence": [
             "privacy-result.json#/checks/actual_image_upload_and_protected_download",
             "native-image/summary.json",
-            "web-image-formats/summary.json"
+            "web-image-formats/summary.json",
+            "production-dm-image-revocation/semantic-result.json"
           ],
-          "execution": "node .out/qa-goal/privacy_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs",
+          "execution": "node .out/qa-goal/privacy_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs; python -X utf8 .out/qa-native-image-formats/critical_checks.py; python -X utf8 .out/qa-native-image-formats/denial_review.py; python -X utf8 .out/qa-native-image-formats/denied_payloads.py",
           "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS; Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
           "result": "privacy-result.json#/checks/actual_image_upload_and_protected_download; native-image/summary.json; web-image-formats/summary.json",
@@ -1593,7 +1610,8 @@
             "DM-actual_image_upload_and_protected_download: No third ADMIN, native touch/IME, OS notification or 507/outage claim",
             "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim.",
             "WEB-JPEG-GIF-private-image-lifecycle: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
-            "WEB-viewer-download-format-mismatch: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance"
+            "WEB-viewer-download-format-mismatch: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
+            "PRODUCTION-DM-protected-image-access-revocation: API facet only.25 reviewed boundaries,2 opaque409 controls and9 denied-body controls. No ADMIN, account-block, native logout, browser UI or cross-DM attachment admission acceptance. Physical viewer failure is a separate case."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -1890,7 +1908,8 @@
         "ANDROID-native-PNG-picker-send-view-delete",
         "WEB-JPEG-GIF-private-image-lifecycle",
         "WEB-viewer-download-format-mismatch",
-        "ANDROID-physical-ptt-release-cancel-home"
+        "ANDROID-physical-ptt-release-cancel-home",
+        "PRODUCTION-DM-protected-image-access-revocation"
       ],
       "evidence": [
         "native-realtime-result.json",
@@ -1901,7 +1920,8 @@
         "web-session-contract/logout.json",
         "native-image/summary.json",
         "web-image-formats/summary.json",
-        "native-ptt/summary.json"
+        "native-ptt/summary.json",
+        "production-dm-image-revocation/semantic-result.json"
       ],
       "defects": [
         581
@@ -16275,7 +16295,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-28T04:31:22.306362+00:00",
+  "updated_utc": "2026-10-28T18:44:31.161504+00:00",
   "known_defect_issues": [
     579,
     580,

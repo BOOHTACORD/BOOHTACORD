@@ -1,0 +1,45 @@
+{
+  "captures": [
+    {
+      "file": "viewer-0-capture2.private.png",
+      "SHA256": "cc9423a82dbbfd71519d8ac15273d0b1b6c24b5ae5fda0c42dbfb516057f9d9f",
+      "source_resolution": [
+        1080,
+        2340
+      ],
+      "exported": false
+    },
+    {
+      "file": "viewer-0-capture3.private.png",
+      "SHA256": "42e2fa125b9186a7ce1b41733e77a989b9fe0eee42cc2f671afd45f708979e05",
+      "source_resolution": [
+        1080,
+        2340
+      ],
+      "exported": false
+    },
+    {
+      "file": "viewer-0-capture4.private.png",
+      "SHA256": "a465040b0f298ee5de186402e33e67297edcda8ad18e47420ebc1d7979272001",
+      "source_resolution": [
+        1080,
+        2340
+      ],
+      "exported": false
+    },
+    {
+      "file": "viewer-0.private.png",
+      "SHA256": "f958b0a097859c5f171b68309d48c75b0693d3b6b42e1436aa44bc66f918507c",
+      "source_resolution": [
+        1080,
+        2340
+      ],
+      "exported": false
+    }
+  ],
+  "representative_after_delete_capture_SHA256": "a465040b0f298ee5de186402e33e67297edcda8ad18e47420ebc1d7979272001",
+  "source_resolution_reviewed": true,
+  "observations": "After actual owner deletion/API404 the known four-region PNG remains in foreground viewer. The underlying original message already shows its tombstone in the same screenshot; closing and one scroll exposes post-delete control with no history refresh. Background voice-recovery error predates this viewer acceptance; no new voice failure is inferred.",
+  "pixel_oracle": "ICC→sRGB, four observed ImageView/FitContain regions withRGB tolerance14 and wrong-palette negative; not generic nonblank or screenshot hash",
+  "private_payloads_exported": false
+}

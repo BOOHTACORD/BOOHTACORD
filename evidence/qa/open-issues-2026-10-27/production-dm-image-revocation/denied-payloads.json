@@ -1,0 +1,89 @@
+{
+  "at_utc": "2026-10-28T18:33:57.463698+00:00",
+  "status": "PASS9_DENIED_RESOURCE_BODIES_NO_FIXTURE_DISCLOSURE",
+  "phase": "After owned deletion; original pre-delete status matrix is recorded independently",
+  "checks": [
+    {
+      "role": "outsider_MEMBER",
+      "resource": "history",
+      "HTTP": 404,
+      "expected_HTTP": 404,
+      "error_code": "NOT_FOUND",
+      "fixture_identifiers_filename_and_PNG_payload_absent": true,
+      "response_SHA256": "44a09ad484b8dfc69891e5d957045600bbf03838555ebea1c9b0b15c9d7db74b"
+    },
+    {
+      "role": "outsider_MEMBER",
+      "resource": "original",
+      "HTTP": 404,
+      "expected_HTTP": 404,
+      "error_code": "NOT_FOUND",
+      "fixture_identifiers_filename_and_PNG_payload_absent": true,
+      "response_SHA256": "1bc442cb727169cdfbdaab4948143c75083aa923c64293a82fa283cd752b8073"
+    },
+    {
+      "role": "outsider_MEMBER",
+      "resource": "preview",
+      "HTTP": 404,
+      "expected_HTTP": 404,
+      "error_code": "NOT_FOUND",
+      "fixture_identifiers_filename_and_PNG_payload_absent": true,
+      "response_SHA256": "9e79bc5132934af02885ea4d7d50d2c379c474f13c86cd4bb0834db5c0aba6f0"
+    },
+    {
+      "role": "anonymous",
+      "resource": "history",
+      "HTTP": 401,
+      "expected_HTTP": 401,
+      "error_code": "UNAUTHENTICATED",
+      "fixture_identifiers_filename_and_PNG_payload_absent": true,
+      "response_SHA256": "5a1e281c0409049e6517288098dc309593a378e2dffd1ce739f6389caf15a812"
+    },
+    {
+      "role": "anonymous",
+      "resource": "original",
+      "HTTP": 401,
+      "expected_HTTP": 401,
+      "error_code": "UNAUTHENTICATED",
+      "fixture_identifiers_filename_and_PNG_payload_absent": true,
+      "response_SHA256": "196bb9fd71cb7109a6a8305a729e5ebe1b69807f911c3dc3cd7ac82e18839aea"
+    },
+    {
+      "role": "anonymous",
+      "resource": "preview",
+      "HTTP": 401,
+      "expected_HTTP": 401,
+      "error_code": "UNAUTHENTICATED",
+      "fixture_identifiers_filename_and_PNG_payload_absent": true,
+      "response_SHA256": "1596212530b77279a45a492cb9c028cfd31b403dfa019b51eb8ca1b4a1b02680"
+    },
+    {
+      "role": "revoked_same_account",
+      "resource": "history",
+      "HTTP": 401,
+      "expected_HTTP": 401,
+      "error_code": "UNAUTHENTICATED",
+      "fixture_identifiers_filename_and_PNG_payload_absent": true,
+      "response_SHA256": "88b5be05fa56600695324e25d80dab4ca29e2eec66806fbe6c3369ab363c80dd"
+    },
+    {
+      "role": "revoked_same_account",
+      "resource": "original",
+      "HTTP": 401,
+      "expected_HTTP": 401,
+      "error_code": "UNAUTHENTICATED",
+      "fixture_identifiers_filename_and_PNG_payload_absent": true,
+      "response_SHA256": "c9bd4c1bcd7aa56aa3726f7ff37a2829e20c8a2fde5f1f7d158827ef45d2e34c"
+    },
+    {
+      "role": "revoked_same_account",
+      "resource": "preview",
+      "HTTP": 401,
+      "expected_HTTP": 401,
+      "error_code": "UNAUTHENTICATED",
+      "fixture_identifiers_filename_and_PNG_payload_absent": true,
+      "response_SHA256": "81e37eb1c8a2d1d916d568c7fa8ec8bdf52f76252fd5412bef2559e2a79a5e2f"
+    }
+  ],
+  "raw_payloads_not_exported": true
+}

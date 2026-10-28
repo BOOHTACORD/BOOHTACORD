@@ -1,0 +1,68 @@
+{
+  "at_utc": "2026-10-28T18:44:31.161504+00:00",
+  "status": "FAIL_NATIVE_CACHE_INVALIDATION_API_PASS_SCOPED",
+  "invariant_command_platform_trigger_result": [
+    {
+      "id": "PRODUCTION-DM-protected-image-access-revocation",
+      "status": "PASS_SCOPED",
+      "protects": "DM pair/privacy and scoped protected original/preview access; Origin mutation denial; revoked same-account cookie loses access without revoking sibling",
+      "command": "python -X utf8 .out/qa-native-image-formats/critical_checks.py; python -X utf8 .out/qa-native-image-formats/denial_review.py; python -X utf8 .out/qa-native-image-formats/denied_payloads.py",
+      "platform": "Windows11 HTTPS protocol producer, actual physical Samsung SM-A576B Android16 signed QA 1.0.47+2082, trusted production v.bootybay.ru; not Windows browser UI",
+      "mandatory_when": "Before accepting the MEMBER/anonymous/revoked-cookie API facet of DM/image privacy; ADMIN and full browser/native criteria remain separate",
+      "issues": [
+        53,
+        62,
+        131
+      ],
+      "result": "production-dm-image-revocation/semantic-result.json",
+      "limits": "API facet only.25 reviewed boundaries,2 opaque409 controls and9 denied-body controls. No ADMIN, account-block, native logout, browser UI or cross-DM attachment admission acceptance. Physical viewer failure is a separate case.",
+      "defects": [],
+      "prerequisites": "Fresh guarded own fixture, physical own viewer and critical setup; shared sequential replay/cleanup in summary.json and README.md"
+    },
+    {
+      "id": "ANDROID-image-viewer-delete-invalidation",
+      "status": "FAIL",
+      "protects": "An already-open protected image viewer must hide deleted content when its own DM history has processed deletion; server404 alone is insufficient",
+      "command": "python -X utf8 .out/qa-native-image-formats/revocation.py",
+      "platform": "Windows11 HTTPS protocol producer, actual physical Samsung SM-A576B Android16 signed QA 1.0.47+2082, trusted production v.bootybay.ru; not Windows browser UI",
+      "mandatory_when": "Before accepting Android image-viewer deletion/privacy lifecycle and closing QA62 native parity",
+      "issues": [
+        62
+      ],
+      "result": "production-dm-image-revocation/revocation-result.json",
+      "limits": "One physical PNG reproduction, viewer remains through a24,766ms post-control observer window; exact known bitmap is probed inside that window. Not a backend ACL bypass. Native save after deletion is observation only without positive save control; no full media/other-platform acceptance.",
+      "defects": [],
+      "prerequisites": "Fresh guarded own fixture, physical own viewer and critical setup; shared sequential replay/cleanup in summary.json and README.md"
+    }
+  ],
+  "source_and_candidate": "source-binding.json",
+  "protocol": "critical-api-result.json",
+  "oracle_review": "denial-review.json",
+  "negative_payloads": "denied-payloads.json",
+  "physical": "revocation-result.json",
+  "native_tests": "native-check.json",
+  "cleanup": "critical-cleanup.json",
+  "visual": "visual-record.json",
+  "bug": "PENDING_CREATION_AFTER_IMMUTABLE_EVIDENCE",
+  "limits": [
+    "Only owned production DM/PNG and controlled MEMBER roles; ADMIN, blocking-account, Windows/macOS/iOS/native logout and other image formats remain unexecuted",
+    "Server ACL/source differ from UI renderer; observed cached bitmap is not a fresh unauthorized server read or backend ACL bypass",
+    "Morning/interrupted phase and resumed idle voice state are separate; no continuous voice/audibility acceptance",
+    "No Windows browser UI, load, server faults, router, OS permission/security, native base URL or phone-session changes",
+    "No full QA/platform/media/hosted gate closure or test consolidation decision"
+  ],
+  "sequential_replay_commands": [
+    "python -X utf8 .out/qa-native-image-formats/preflight.py",
+    "python -X utf8 .out/qa-native-image-formats/prepare.py",
+    "python -X utf8 .out/qa-native-image-formats/producer.py send 0",
+    "python -X utf8 .out/qa-native-image-formats/native_ui.py open 0",
+    "python -X utf8 .out/qa-native-image-formats/native_ui.py probe 0",
+    "python -X utf8 .out/qa-native-image-formats/critical_setup.py",
+    "python -X utf8 .out/qa-native-image-formats/critical_checks.py",
+    "python -X utf8 .out/qa-native-image-formats/denial_review.py",
+    "python -X utf8 .out/qa-native-image-formats/revocation.py",
+    "python -X utf8 .out/qa-native-image-formats/denied_payloads.py",
+    "python -X utf8 .out/qa-native-image-formats/cleanup.py",
+    "python -X utf8 .out/qa-native-image-formats/verify.py"
+  ]
+}

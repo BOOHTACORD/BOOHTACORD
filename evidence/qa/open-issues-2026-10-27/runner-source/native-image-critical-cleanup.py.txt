@@ -1,0 +1,37 @@
+"""Remove only two owned messages and revoke only three owned API sessions."""
+import hashlib,json,re,subprocess
+from datetime import datetime,timezone
+from common import P,Q,G,ADB,APP,read,write,request,api,valid,state,call,nodes,label
+assert not (P/'critical-cleanup.json').exists();c=read(P/'private/config.private.json');assert len(c['messages'])==len(set(c['messages']))==2 and len(c['sessions'])==len(set(c['sessions']))==3;prefix='/api/v1/direct-messages/'+valid(c['conversation']);removed=[]
+for identifier in c['messages']:
+    status,_,page=api(prefix+'/messages?at='+valid(identifier)+'&limit=20',cookie=c['cookie']);assert status==200 and page['messages'][0]['id']==identifier and page['messages'][0]['author_id']==c['sender_account']
+    if not page['messages'][0]['deleted']:
+        assert identifier==c['critical_control_message'] and page['messages'][0]['body']==c['critical_control_text'];status,_,_=api(prefix+'/messages/'+identifier,'DELETE',{},c['cookie']);assert status==204
+    status,_,page=api(prefix+'/messages?at='+identifier+'&limit=20',cookie=c['cookie']);assert status==200;row=page['messages'][0];assert row['id']==identifier and row['deleted'] and row['body']=='' and row['attachments']==[];removed.append({'own_message_tombstone_at_HTTP':200,'body_blank_attachments_empty':True})
+expected={v['id']:v for v in c['preexisting_latest']};found={};before_cursor=None
+for n in range(3):
+    status,_,page=api(prefix+'/messages'+('?before='+before_cursor if before_cursor else ''),cookie=c['cookie']);assert status==200
+    for v in page['messages']:
+        if v['id'] in expected:found[v['id']]={'id':v['id'],'revision':v['revision'],'deleted':v['deleted'],'attachment_ids':[a['id'] for a in v['attachments']]}
+    if len(found)==len(expected):break
+    before_cursor=page.get('next_cursor');assert before_cursor
+assert found==expected
+f=c['fixtures'][0];denied=[]
+for suffix in ['', '/preview']:
+    status,_,_=request(prefix+'/attachments/'+valid(f['attachment'])+suffix,cookie=c['cookie']);assert status==404;denied.append(status)
+created_on_phone=[]
+for fixture in c['fixtures']:
+    name=fixture['filename'];assert re.fullmatch(r'BOOHTACORD-QA-20261028-(png|jpeg|gif)-(viewer|card)-[a-f0-9]{12}\.(png|jpg|gif)',name)
+    exists=subprocess.run([ADB,'shell','test','-e','/sdcard/Download/'+name],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode==0;assert not exists,'No owned native save was completed; preserve any unexpected file'
+    created_on_phone.append({'fixture_alias':fixture['alias'],'expected_Downloads_file_absent':True})
+revoked=0;already=0
+for cookie in c['sessions']:
+    status,_,s=api('/api/v1/auth/session',cookie=cookie);assert status==200
+    if s['authenticated']:status,_,_=api('/api/v1/auth/logout','POST',{},cookie);assert status==204;revoked+=1
+    else:already+=1
+    status,_,s=api('/api/v1/auth/session',cookie=cookie);assert status==200 and not s['authenticated']
+original=read(P/'critical-ready.json')['physical_state_at_resume'];current=state();assert current['permission']==original['permission'] and current['voice_connected']==original['voice_connected']==False and current['microphone_fgs']==original['microphone_fgs']==False and current['app_hierarchy_present'] and not current['system_permission_prompt'] and not current['login_fields']
+rows=nodes();assert any(c['peer'] in label(n) for n in rows);fields=[n for n in rows if n.get('class')=='android.widget.EditText'];assert len(fields)==1 and not fields[0].get('text');assert not any(c['critical_control_text'] in label(n) for n in rows);assert not any(label(n)=='Закрыть просмотр изображения' for n in rows)
+projection=call('shell','dumpsys','media_projection');assert re.search(r'Media Projection:\s*null\s*$',projection,re.S)
+source=read(P/'critical-ready.json')['source_SHA256'];assert all(hashlib.sha256((Q/n).read_bytes()).hexdigest()==v for n,v in source.items())
+write(P/'critical-cleanup.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_TWO_OWN_MESSAGES_THREE_OWN_API_SESSIONS_CLEANED_PHONE_SESSION_PRESERVED','owned_message_count':2,'tombstone_checks':removed,'original_preview_after_delete':denied,'preexisting_latest_records_unchanged':len(expected),'owned_api_sessions_revoked':3,'already_revoked_by_test':already,'revoked_at_cleanup':revoked,'all_owned_api_sessions_live_unauthenticated_readback':True,'saved_file_checks':created_on_phone,'phone_account_and_base_URL_changed':False,'permission_flags_unchanged':True,'native_voice_and_microphone_still_idle_as_at_resume':True,'active_projection':False,'own_viewer_closed_composer_empty_control_marker_absent':True,'source_inputs_unchanged':True,'formats_not_executed':'Five remaining JPEG/GIF/card format cases remain NOT_RUN after user critical-security reprioritization','media_limit':'Original morning voice state belongs to interrupted phase, not continuous acceptance. At resumed critical phase voice/FGS were already idle; no explicit Join/Leave or projection actions issued.'});print('PASS_TWO_OWN_MESSAGES_THREE_OWN_API_SESSIONS_CLEANED_PHONE_SESSION_PRESERVED')

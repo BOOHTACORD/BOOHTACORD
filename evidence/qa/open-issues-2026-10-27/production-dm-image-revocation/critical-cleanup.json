@@ -1,0 +1,58 @@
+{
+  "at_utc": "2026-10-28T18:34:08.983700+00:00",
+  "status": "PASS_TWO_OWN_MESSAGES_THREE_OWN_API_SESSIONS_CLEANED_PHONE_SESSION_PRESERVED",
+  "owned_message_count": 2,
+  "tombstone_checks": [
+    {
+      "own_message_tombstone_at_HTTP": 200,
+      "body_blank_attachments_empty": true
+    },
+    {
+      "own_message_tombstone_at_HTTP": 200,
+      "body_blank_attachments_empty": true
+    }
+  ],
+  "original_preview_after_delete": [
+    404,
+    404
+  ],
+  "preexisting_latest_records_unchanged": 25,
+  "owned_api_sessions_revoked": 3,
+  "already_revoked_by_test": 1,
+  "revoked_at_cleanup": 2,
+  "all_owned_api_sessions_live_unauthenticated_readback": true,
+  "saved_file_checks": [
+    {
+      "fixture_alias": "PNG-viewer",
+      "expected_Downloads_file_absent": true
+    },
+    {
+      "fixture_alias": "PNG-card",
+      "expected_Downloads_file_absent": true
+    },
+    {
+      "fixture_alias": "JPEG-viewer",
+      "expected_Downloads_file_absent": true
+    },
+    {
+      "fixture_alias": "JPEG-card",
+      "expected_Downloads_file_absent": true
+    },
+    {
+      "fixture_alias": "GIF-viewer",
+      "expected_Downloads_file_absent": true
+    },
+    {
+      "fixture_alias": "GIF-card",
+      "expected_Downloads_file_absent": true
+    }
+  ],
+  "phone_account_and_base_URL_changed": false,
+  "permission_flags_unchanged": true,
+  "native_voice_and_microphone_still_idle_as_at_resume": true,
+  "active_projection": false,
+  "own_viewer_closed_composer_empty_control_marker_absent": true,
+  "source_inputs_unchanged": true,
+  "formats_not_executed": "Five remaining JPEG/GIF/card format cases remain NOT_RUN after user critical-security reprioritization",
+  "media_limit": "Original morning voice state belongs to interrupted phase, not continuous acceptance. At resumed critical phase voice/FGS were already idle; no explicit Join/Leave or projection actions issued."
+}

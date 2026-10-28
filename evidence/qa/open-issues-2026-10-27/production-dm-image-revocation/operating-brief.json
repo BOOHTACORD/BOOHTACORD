@@ -1,0 +1,43 @@
+{
+  "workflow_class": "review_gate",
+  "task_size": "large",
+  "route": "flutter/features/attachments/download/api",
+  "packet": "physical-dm-attachment-authorization-revocation",
+  "mode": "physical production functional verification; no implementation, load or fault injection",
+  "trigger_family": "Deny unauthorized/revoked protected image access, including a physical already-open native viewer",
+  "source_boundary": [
+    "clients/flutter/lib/src/features/attachments/download/api.dart",
+    "clients/flutter/lib/src/features/attachments/download/facade.dart",
+    "clients/flutter/lib/src/widgets/message_attachment_list.dart",
+    "clients/flutter/test/message_attachment_list_test.dart",
+    "clients/flutter/android/app/src/main/kotlin/ru/boohtacord/app/MainActivity.kt",
+    "clients/flutter/android/app/build.gradle.kts",
+    "clients/flutter/pubspec.yaml",
+    "clients/flutter/pubspec.lock"
+  ],
+  "legacy_edge_limit": "Existing oversized widget/MainActivity are read-only native entry edges. No mixed-source conversion or source refactor is claimed.",
+  "ratchet": {
+    "helper_target_lines": 100,
+    "helper_hard_lines": 120,
+    "helper_hard_files": 16
+  },
+  "preservation": "Use existing own QA DM visible on physical phone and existing synthetic MEMBER sender. Never register accounts, change server/session/permission/OS security/orientation, restart phone/app or issue voice/projection start/stop. Normal trusted HTTPS only. Delete only newly owned messages and exact SHA-verified own saved files; revoke only the new sender session.",
+  "checks": [
+    "Fresh pending fixture/participant/session/APK guards",
+    "Real participant200, outsider MEMBER404, anonymous401 and mismatched DM scope404",
+    "Own session logout204 followed by actual protected resource401",
+    "Origin/CSRF and outsider mutation denial with unchanged own message state",
+    "Physical PNG rendering then own deletion, API404 and native stale-view/save denial observations",
+    "Delete only own created fixture/control records and revoke only owned test sessions; preserve phone account/media state"
+  ],
+  "stop_condition": "Publish per-format/per-control actual observations with explicit missing/failed prerequisites. File or reuse confirmed defects after duplicate review; leave broad QA/native/media gates open.",
+  "unresolved": [
+    "Human audibility unavailable",
+    "Backend deployed source UNKNOWN; shipping APK source must be verified by known candidate hash",
+    "Windows production Computer Use stopped on URL confidence; no alternate production browser UI used",
+    "Web long-history protected-image scroll-anchor is a separate next packet",
+    "Legacy projection parser was wrong for Android16 Media Projection:null output; correct/read raw before media decisions",
+    "Five remaining JPEG/GIF/card format cases deferred after explicit user security prioritization; not PASS. Native phone state changed while turn was interrupted: no voice service active at resume; no Join issued."
+  ],
+  "user_priority": "2026-10-28 user resumed and requested most critical scenarios"
+}

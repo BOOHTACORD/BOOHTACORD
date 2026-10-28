@@ -1,0 +1,60 @@
+{
+  "at_utc": "2026-10-28T18:24:37.094144+00:00",
+  "status": "PASS_CURRENT_OWN_PNG_THREE_COOKIE_ROLES_FRESH_APK",
+  "origin": "https://v.bootybay.ru",
+  "physical_Android": true,
+  "installed_APK_SHA256": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "observed_Web_source": "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a",
+  "backend_source": "UNKNOWN",
+  "physical_state_at_resume": {
+    "at_utc": "2026-10-28T18:24:39.568270+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": false,
+    "voice_connected": false,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": false,
+    "login_fields": false
+  },
+  "new_critical_sessions": 2,
+  "imported_owned_sender_sessions": 1,
+  "cookie_flags": {
+    "outsider": {
+      "Secure": true,
+      "HttpOnly": true,
+      "SameSite": "Lax"
+    },
+    "sibling": {
+      "Secure": true,
+      "HttpOnly": true,
+      "SameSite": "Lax"
+    }
+  },
+  "roles_verified": [
+    "participant MEMBER",
+    "sibling MEMBER same account separate session",
+    "outsider MEMBER nonparticipant"
+  ],
+  "known_other_controlled_DM_available": true,
+  "ADMIN_variant": "NOT_RUN_NO_CONTROLLED_ADMIN_SESSION",
+  "default_TLS_validation": true,
+  "source_SHA256": {
+    "clients/flutter/lib/src/features/attachments/download/api.dart": "eae3bb4de6eb805a8b6563f1e326b9a54c71e1ab6f48c56519fe2a81553a5973",
+    "clients/flutter/lib/src/features/attachments/download/facade.dart": "faf50517aae3c1500c6a077a85fcfdb7a1d0bb391c3fafa6b370b395a68fa885",
+    "clients/flutter/lib/src/widgets/message_attachment_list.dart": "983899704bdfce80b4128fa787e3198985a388579e986ab488328e10474f1a44",
+    "clients/flutter/test/message_attachment_list_test.dart": "6257f8ea4722dbcc0efa1f270da21dab7ef09bfcd619be1e295ea52d31c6bc0b",
+    "clients/flutter/android/app/src/main/kotlin/ru/boohtacord/app/MainActivity.kt": "1c3e42366a82045b7a052ffcf82668e60df9a720d6adcfe24b128e5343711cdb",
+    "clients/flutter/android/app/build.gradle.kts": "b38fbc43f56b82e656ae67dcad1b56c00b8b0e4d14c1d079bd33cce20c817797",
+    "clients/flutter/pubspec.yaml": "de0377a63ab77456df14f211b498b8f2b7b12cf1773f65ff9abf4975626a76de",
+    "clients/flutter/pubspec.lock": "5c41b8ac67522789b065c6ef344c83ba2d15fb83d14f335e781c29c67ed69435"
+  }
+}
