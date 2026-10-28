@@ -107,7 +107,7 @@ public class OrientationAwareScreenCapturer implements VideoCapturer, VideoSink 
         // stopCapture() no longer holds the monitor (synchronized removed), so guard explicitly here.
         if (isDisposed || isStopped) return;
         numCapturedFrames++;
-        frameRefresh.frameArrived(frame.getTimestampNs());
+        if (!frameRefresh.frameArrived(frame.getTimestampNs())) return;
         if (!frameRateGate.shouldForward(System.nanoTime())) return;
         this.isPortrait = isDeviceOrientationPortrait();
         final int[] outputDimensions = ScreenCaptureDimensions.forOutput(

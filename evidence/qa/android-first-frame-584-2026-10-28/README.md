@@ -29,7 +29,7 @@ Upstream reference: [SurfaceTextureHelper](https://webrtc.googlesource.com/src/+
 
 ## Checks and remaining acceptance
 
-`focused-validation.json` records 34/34 Android plugin JUnit tests, including ten new refresh/timestamp regressions, and four focused Flutter contract tests. Local SDK is Flutter 3.47.5/Java 21; pinned CI must independently validate Flutter 3.47.7/Java 17.
+`focused-validation.json` records 35/35 Android plugin JUnit tests, including eleven new refresh/timestamp regressions, and four focused Flutter contract tests. Local SDK is Flutter 3.47.5/Java 21; pinned CI must independently validate Flutter 3.47.7/Java 17.
 
 The required `check.sh --feature screen --base origin/master --real-stack --platform android` first rejected registry-overlap coverage. Repeating with the additionally required auth/connection_status/voice features produced `.out/local-features/20261028-234534/report.json`: BLOCKED. The generic runner cannot launch its Flutter subprocesses or find an owned QA emulator on this Windows host; physical Samsung is intentionally excluded by that runner. This is not a media PASS.
 

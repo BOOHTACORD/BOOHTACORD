@@ -80,4 +80,13 @@ public class StationaryFrameRefreshTest {
         assertNull(h.pending);
         h.refresh.frameArrived(); h.tick(); assertEquals(1, h.requests);
     }
+
+    @Test public void alreadyQueuedTextureCannotBeRepeatedAfterVisibilityLoss() {
+        Harness h = new Harness(); h.refresh.start(); h.refresh.frameArrived();
+        h.tick(); assertEquals(1, h.requests); assertTrue(h.refresh.canRepeat());
+        h.refresh.setVisible(false); assertFalse(h.refresh.canRepeat());
+        h.refresh.setVisible(true); assertFalse(h.refresh.canRepeat());
+        h.refresh.frameArrived(); assertTrue(h.refresh.canRepeat());
+        h.refresh.stop(); assertFalse(h.refresh.canRepeat());
+    }
 }

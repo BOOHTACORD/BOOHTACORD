@@ -46,13 +46,15 @@ public final class TextureFrameRefresh {
 
     public void setVisible(boolean visible) { refresh.setVisible(visible); }
 
-    public void frameArrived(long timestamp) {
+    public boolean frameArrived(long timestamp) {
         captured++;
-        if (timestamp == sourceTimestamp) return; // A forced delivery is not a new source frame.
+        // forceFrame posts a second runnable; visibility may change before it delivers.
+        if (timestamp == sourceTimestamp) return refresh.canRepeat();
         sourceTimestamp = timestamp;
         sources++;
         refresh.frameArrived();
         if (sources == 1) log("source_first");
+        return true;
     }
 
     public void forward(VideoFrame frame) {

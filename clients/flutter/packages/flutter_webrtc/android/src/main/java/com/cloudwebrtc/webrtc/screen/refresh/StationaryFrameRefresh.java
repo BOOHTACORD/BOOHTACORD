@@ -57,16 +57,18 @@ final class StationaryFrameRefresh {
     }
 
     private void arm() {
-        if (scheduled != null || !running || visibility != Visibility.VISIBLE || !hasFrame) return;
+        if (scheduled != null || !canRepeat()) return;
         scheduled = new Runnable() {
             @Override public void run() {
                 if (scheduled != this) return; // Includes a stopped/restarted generation.
                 scheduled = null;
-                if (!running || visibility != Visibility.VISIBLE || !hasFrame) return;
+                if (!canRepeat()) return;
                 if (clock.millis() - lastSourceFrameAt >= 1000) requestFrame.run();
                 arm();
             }
         };
         scheduler.postDelayed(scheduled, 1000);
     }
+
+    boolean canRepeat() { return running && visibility == Visibility.VISIBLE && hasFrame; }
 }
