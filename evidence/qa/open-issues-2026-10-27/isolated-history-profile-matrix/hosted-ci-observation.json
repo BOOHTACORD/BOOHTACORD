@@ -1,0 +1,19 @@
+{
+  "at_utc": "2026-10-28 03:45:22 UTC",
+  "commit_sha": "78e670d6df850dae77182290bb207dc4453f74ce",
+  "status": "NO_HOSTED_PASS_OBSERVED",
+  "observed_workflow_runs": [],
+  "observed_legacy_statuses": [],
+  "limits": [
+    "Workflow wrapper filters to pull-request events/first page only",
+    "Legacy statuses do not enumerate all check-runs",
+    "Empty arrays do not prove any required hosted/platform gate passed"
+  ],
+  "mandatory_gates": [
+    "PostgreSQL17.6",
+    "Android",
+    "macOS",
+    "security",
+    "media"
+  ]
+}
