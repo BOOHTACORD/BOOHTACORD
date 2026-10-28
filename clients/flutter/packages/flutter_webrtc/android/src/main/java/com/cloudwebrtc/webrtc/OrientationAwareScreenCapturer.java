@@ -21,6 +21,7 @@ import android.util.DisplayMetrics;
 import android.hardware.display.VirtualDisplay;
 import android.media.projection.MediaProjectionManager;
 import android.view.Display;
+import com.cloudwebrtc.webrtc.screen.refresh.TextureFrameRefresh;
 
 /**
  * An copy of ScreenCapturerAndroid to capture the screen content while being aware of device orientation
@@ -54,6 +55,7 @@ public class OrientationAwareScreenCapturer implements VideoCapturer, VideoSink 
     private final int maximumDimension;
     private final ScreenCaptureFrameRateGate frameRateGate;
     private final ScreenAudioCapture screenAudioCapture;
+    private TextureFrameRefresh frameRefresh;
 
     /**
      * Constructs a new Screen Capturer.
@@ -83,6 +85,7 @@ public class OrientationAwareScreenCapturer implements VideoCapturer, VideoSink 
             @TargetApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
             @Override
             public void onCapturedContentVisibilityChanged(boolean isVisible) {
+                if (frameRefresh != null) frameRefresh.setVisible(isVisible);
                 Log.i(TAG, "projection_content_visibility=" + (isVisible ? "visible" : "hidden"));
                 FlutterWebRTCPlugin.notifyMediaProjectionVisibilityChanged(trackId, isVisible);
             }
@@ -102,7 +105,10 @@ public class OrientationAwareScreenCapturer implements VideoCapturer, VideoSink 
     public void onFrame(VideoFrame frame) {
         // Silently drop in-flight frames that arrive after stop/dispose.
         // stopCapture() no longer holds the monitor (synchronized removed), so guard explicitly here.
-        if (isDisposed || isStopped || !frameRateGate.shouldForward(System.nanoTime())) return;
+        if (isDisposed || isStopped) return;
+        numCapturedFrames++;
+        if (!frameRefresh.frameArrived(frame.getTimestampNs())) return;
+        if (!frameRateGate.shouldForward(System.nanoTime())) return;
         this.isPortrait = isDeviceOrientationPortrait();
         final int[] outputDimensions = ScreenCaptureDimensions.forOutput(
                 this.width,
@@ -117,7 +123,7 @@ public class OrientationAwareScreenCapturer implements VideoCapturer, VideoSink 
         if (newW != this.oldWidth || newH != this.oldHeight) {
             changeCaptureFormat(newW, newH, 15);
         }
-        capturerObserver.onFrameCaptured(frame);
+        frameRefresh.forward(frame);
     }
 
     private boolean isDeviceOrientationPortrait() {
@@ -146,6 +152,8 @@ public class OrientationAwareScreenCapturer implements VideoCapturer, VideoSink 
             throw new RuntimeException("surfaceTextureHelper not set.");
         }
         this.surfaceTextureHelper = surfaceTextureHelper;
+        frameRefresh = new TextureFrameRefresh(surfaceTextureHelper, capturerObserver,
+                () -> !isDisposed && !isStopped);
 
         this.windowManager = (WindowManager) applicationContext.getSystemService(
                 Context.WINDOW_SERVICE);
@@ -166,6 +174,7 @@ public class OrientationAwareScreenCapturer implements VideoCapturer, VideoSink 
         this.oldWidth = this.width;
         this.oldHeight = this.height;
         frameRateGate.reset();
+        frameRefresh.start();
 
         mediaProjection = mediaProjectionManager.getMediaProjection(
                 Activity.RESULT_OK, mediaProjectionPermissionResultData);
@@ -173,13 +182,15 @@ public class OrientationAwareScreenCapturer implements VideoCapturer, VideoSink 
         // Let MediaProjection callback use the SurfaceTextureHelper thread.
         mediaProjection.registerCallback(mediaProjectionCallback, surfaceTextureHelper.getHandler());
 
+        // SurfaceTextureHelper discards a pending texture when attaching its listener.
+        // Attach before the producer can draw its only stationary source frame.
+        surfaceTextureHelper.startListening(this);
         createVirtualDisplay();
         if (screenAudioCapture != null && !screenAudioCapture.start(mediaProjection)) {
             Log.i(TAG, "screen_audio_capture_unavailable");
         }
         Log.i(TAG, "projection_capture_started display=" + (virtualDisplay != null ? "ready" : "unavailable"));
         capturerObserver.onCapturerStarted(true);
-        surfaceTextureHelper.startListening(this);
     }
 
     @Override
@@ -194,6 +205,7 @@ public class OrientationAwareScreenCapturer implements VideoCapturer, VideoSink 
         ThreadUtils.invokeAtFrontUninterruptibly(surfaceTextureHelper.getHandler(), new Runnable() {
             @Override
             public void run() {
+                frameRefresh.stop();
                 surfaceTextureHelper.stopListening();
                 capturerObserver.onCapturerStopped();
                 if (screenAudioCapture != null) screenAudioCapture.stop();
@@ -217,6 +229,7 @@ public class OrientationAwareScreenCapturer implements VideoCapturer, VideoSink 
         if (isDisposed || isStopped) return;
         Log.i(TAG, "projection_capture_ended_by_system");
         isStopped = true;
+        frameRefresh.stop();
         surfaceTextureHelper.stopListening();
         capturerObserver.onCapturerStopped();
         if (screenAudioCapture != null) screenAudioCapture.stop();
@@ -232,6 +245,7 @@ public class OrientationAwareScreenCapturer implements VideoCapturer, VideoSink 
     @Override
     public synchronized void dispose() {
         isDisposed = true;
+        if (frameRefresh != null) frameRefresh.dispose();
         if (screenAudioCapture != null) screenAudioCapture.dispose();
     }
 
