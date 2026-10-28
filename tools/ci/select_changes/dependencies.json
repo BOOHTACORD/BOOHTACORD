@@ -39,6 +39,19 @@
     },
     {
       "paths": [
+        "tools/qa/critical_client_acceptance/screen_share_ui.mjs",
+        "tools/qa/critical_client_acceptance/select_stream.mjs",
+        "tools/qa/critical_client_acceptance/select_stream.test.mjs"
+      ],
+      "gates": [
+        "contracts",
+        "web"
+      ],
+      "server": false,
+      "native": false
+    },
+    {
+      "paths": [
         "tools/qa/local_features/features.json"
       ],
       "gates": [

@@ -9,7 +9,7 @@ it('real VoiceScreenSession diagnostic ingress applies classified decisions and 
   vi.useFakeTimers()
   const f = setup(), metadata = vi.fn(async () => {})
   const room = { screenPublisher: f.port, readScreenDiagnostics: () => f.port.diagnostics(), publishScreenProfileMetadata: metadata } as unknown as VoiceRoom
-  const current: ScreenVoiceSession = { room, screenProfile: null }
+  const current: ScreenVoiceSession = { leaseId: 'lease-test', room, screenProfile: null }
   let at = 1000
   const session = new VoiceScreenSession(() => current, { enabled: true, calibration, now: () => at,
     readWindow: (_diagnostics, context) => window(at, context.publicationGeneration) })
@@ -25,7 +25,7 @@ it('default session reads diagnostics without running a classifier or changing m
   vi.useFakeTimers()
   const f = setup(), classifier = vi.fn()
   const room = { screenPublisher: f.port, readScreenDiagnostics: () => f.port.diagnostics() } as unknown as VoiceRoom
-  const current: ScreenVoiceSession = { room, screenProfile: null }
+  const current: ScreenVoiceSession = { leaseId: 'lease-test', room, screenProfile: null }
   const session = new VoiceScreenSession(() => current, { calibration, readWindow: classifier })
   await session.startScreen('P1080_60')
   await session.readScreenDiagnostics(); await session.readScreenDiagnostics()

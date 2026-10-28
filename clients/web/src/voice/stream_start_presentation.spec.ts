@@ -23,7 +23,8 @@ describe('new screen presentation', () => {
     }))
 
     expect(participants).toContain('ЭФИР')
-    expect(participants).toContain('Участник показывает экран')
+    expect(participants).toContain('Открыть трансляцию Алиса')
+    expect(participants).toContain('participant--streaming')
     const soundSetting = await renderToString(createSSRApp(StreamStartSoundSetting))
     expect(dock).not.toContain('Звук начала трансляций включён')
     expect(soundSetting).toContain('Звук начала трансляций включён')

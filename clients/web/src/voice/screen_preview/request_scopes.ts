@@ -10,7 +10,7 @@ export class ScreenPreviewRequestScopes {
     this.active.add(controller)
     let released = false
     return {
-      request: (input: string, init: RequestInit) => this.send(input, { ...init, signal: controller.signal }),
+      request: (input: string, init: RequestInit) => this.send.call(globalThis, input, { ...init, signal: controller.signal }),
       abort: () => controller.abort(),
       release: () => { if (!released) { released = true; this.active.delete(controller) } },
     }

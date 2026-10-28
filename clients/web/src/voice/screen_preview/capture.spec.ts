@@ -3,6 +3,48 @@ import { describe, expect, it, vi } from 'vitest'
 import { bindLiveKitScreenPreview } from './capture'
 
 describe('LiveKit private screen preview lifecycle', () => {
+  it('starts private uploading when the voice lease arrives after screen capture began', async () => {
+    const lease = '11111111-1111-4111-8111-111111111111'
+    const generation = '22222222-2222-4222-8222-222222222222'
+    const track = { attach: vi.fn(), detach: vi.fn() }
+    const video = {
+      readyState: 0, videoWidth: 0, videoHeight: 0,
+      play: vi.fn().mockResolvedValue(undefined), pause: vi.fn(),
+    } as unknown as HTMLVideoElement
+    const publication = { source: 'screen', videoTrack: track }
+    const listeners = new Map<string, (publication?: unknown) => void>()
+    const request = vi.fn(async (_input: string, init: RequestInit) => init.method === 'POST'
+      ? Response.json({ schema_version: 1, generation_id: generation })
+      : new Response(null, { status: 204 }))
+    vi.stubGlobal('document', { createElement: vi.fn(() => video) })
+    vi.stubGlobal('fetch', request)
+    const room = {
+      on: vi.fn((event: string, listener: (publication?: unknown) => void) => listeners.set(event, listener)),
+      localParticipant: {
+        identity: 'local-lease', metadata: '',
+        getTrackPublication: vi.fn(() => publication),
+      },
+      remoteParticipants: new Map(),
+    }
+    const preview = bindLiveKitScreenPreview(room, { viewer: { setThumbnail: vi.fn(), removeThumbnail: vi.fn() } }, {
+      trackPublished: 'published', trackUnpublished: 'unpublished', disconnected: 'disconnected',
+    }, 'screen')
+
+    try {
+      listeners.get('published')!(publication)
+      await vi.waitFor(() => expect(track.attach).toHaveBeenCalledOnce())
+      await preview.bindLease(lease)
+
+      await vi.waitFor(() => expect(request).toHaveBeenCalledWith(
+        expect.stringContaining(`/voice/leases/${lease}/screen-previews/v1`),
+        expect.objectContaining({ method: 'POST' }),
+      ))
+    } finally {
+      await preview.stop()
+      vi.unstubAllGlobals()
+    }
+  })
+
   it('waits for old generation deletion before binding a changed lease', async () => {
     const leaseA = '11111111-1111-4111-8111-111111111111'
     const leaseB = '33333333-3333-4333-8333-333333333333'

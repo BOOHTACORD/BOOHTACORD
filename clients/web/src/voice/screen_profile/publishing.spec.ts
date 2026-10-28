@@ -20,17 +20,32 @@ function setup() {
     diagnostics: vi.fn(async () => diagnostics), repair: vi.fn(async () => true),
     onEnded: vi.fn(listener => { ended = listener; return () => {} }),
   }
+  const bindScreenPreviewLease = vi.fn(async () => undefined)
   const room = {
     screenPublisher: port, readScreenDiagnostics: vi.fn(async () => diagnostics), adoptScreenProfile: vi.fn(),
+    bindScreenPreviewLease,
     publishScreenProfileMetadata: vi.fn(async () => undefined), clearScreenProfileMetadata: vi.fn(async () => undefined),
     stopScreenProfileChecks: vi.fn(),
   } as unknown as VoiceRoom
-  const active = { room, screenProfile: null as import('../screen_profile/policy').ScreenProfile | null }
+  const active = { room, leaseId: 'lease-test', screenProfile: null as import('../screen_profile/policy').ScreenProfile | null }
   const session = new VoiceScreenSession(() => active)
   return { session, room, port, calls, active, track, diagnostics, end: () => { published = undefined; generation++; ended() } }
 }
 
 describe('screen session uses the operation adapter', () => {
+  it('rebinds private previews without delaying the browser screen-picker gesture', async () => {
+    const f = setup()
+    let finishBinding!: () => void
+    vi.mocked(f.room.bindScreenPreviewLease!).mockImplementation(() => new Promise<void>(resolve => { finishBinding = resolve }))
+
+    const starting = f.session.startScreen('P1080_30')
+    await vi.waitFor(() => expect(f.port.start).toHaveBeenCalledOnce())
+    expect(f.room.bindScreenPreviewLease).toHaveBeenCalledWith('lease-test')
+    expect(f.calls[0]).toBe('start')
+    finishBinding()
+    await starting
+  })
+
   it('routes start, profile update and stop through one publisher boundary', async () => {
     const f = setup(); await f.session.startScreen('P1080_30'); await f.session.updateScreenProfile('P720_30'); await f.session.stopScreen()
     expect(f.calls).toEqual(['start', 'capture', 'unpublish:false', 'publish', 'stop'])

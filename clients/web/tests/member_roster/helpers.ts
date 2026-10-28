@@ -11,7 +11,7 @@ export async function routes(page:Page) {
 export async function mount(page:Page,width=1440,scale=100,height=900) {
  await page.setViewportSize({width,height});await routes(page)
  await page.goto(`/tests/member_roster/fixture.html?scale=${scale}`)
- await page.locator('[data-testid=stream-select]:visible').first().click()
+ await page.locator('[data-testid=participant-screen-preview]:visible').first().click()
  await expect(page.getByRole('button',{name:/закрепить просмотр|открепить просмотр/i})).toHaveCount(0)
  await page.evaluate(()=>(window as any).__membersFixture.navigate('text'))
  await expect(page.locator('.voice-room--mini')).toBeVisible()

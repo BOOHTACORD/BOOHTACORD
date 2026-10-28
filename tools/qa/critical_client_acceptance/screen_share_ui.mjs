@@ -71,6 +71,14 @@ export async function screenShareInterface(sender, receiver, input, report, subs
     await expect.poll(() => sender.locator('video.screen-player').evaluate(video => video.getVideoPlaybackQuality().totalVideoFrames), { timeout: 5000 }).toBeGreaterThan(framesBeforeShortViewport)
     await sender.screenshot({ path: input.directory + '/screen-share-owner-preview-short-height.png' })
     await sender.setViewportSize(ownerViewport)
+    await receiver.bringToFront()
+    const participantPreview = receiver.getByTestId('participant-screen-preview')
+    await expect(participantPreview).toBeVisible({ timeout: 30000 })
+    await participantPreview.scrollIntoViewIfNeeded()
+    await expect(participantPreview.locator('img')).toBeVisible({ timeout: 30000 })
+    await expect.poll(() => participantPreview.locator('img').evaluate(image => image.naturalWidth > 0), { timeout: 30000 }).toBe(true)
+    await receiver.screenshot({ path: input.directory + '/screen-share-listener-participant-cards.png' })
+    console.log('stage=screen-share-inline-participant-preview:decoded-thumbnail')
     await openViewerPanel(sender, 'participants')
     await expect(sender.getByRole('status', { name: 'Зрители трансляции: 0' })).toBeVisible()
     await selectVisibleStream(receiver)
@@ -110,7 +118,7 @@ export async function screenShareInterface(sender, receiver, input, report, subs
     const observation = await sender.evaluate(() => ({ captures: window.__qaShareUI.captures, activated: window.__qaShareUI.activated }))
     assert.equal(observation.captures, 3); assert.deepEqual(observation.activated, [true, true, true])
     for (const page of [sender, receiver]) await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён')
-    report.screen_share_interface = { boundary: 'synthetic canvas and quiet oscillator; OS picker NOT_RUN', actual_api_sfu: true, cancel_without_publication: true, permission_denied_visible: true, owner_preview_decoded: true, owner_stopped_from_viewer: true, receiver_view_decoded: true, owner_and_viewer_audience_visible: true, ended_source_track: true, voice_retained: true, selected_configuration_measured_separate: true, configuration_observed: confirmation, diagnostics_optional: true, ...observation, media_quality: 'NOT_RUN' }
+    report.screen_share_interface = { boundary: 'synthetic canvas and quiet oscillator; OS picker NOT_RUN', actual_api_sfu: true, cancel_without_publication: true, permission_denied_visible: true, owner_preview_decoded: true, listener_participant_card_thumbnail_visible: true, owner_stopped_from_viewer: true, receiver_view_decoded: true, owner_and_viewer_audience_visible: true, ended_source_track: true, voice_retained: true, selected_configuration_measured_separate: true, configuration_observed: confirmation, diagnostics_optional: true, ...observation, media_quality: 'NOT_RUN' }
   } finally {
     await sender.evaluate(() => {
       const state = window.__qaShareUI

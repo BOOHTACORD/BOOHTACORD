@@ -13,6 +13,11 @@ export async function openViewerPanel(page, name) {
 }
 
 export async function selectVisibleStream(page, index = 0) {
+  const participantPreviews = page.locator('[data-testid=participant-screen-preview]:visible')
+  if (await participantPreviews.count() > index) {
+    await participantPreviews.nth(index).click()
+    return
+  }
   await openViewerPanel(page, 'streams')
   await page.locator(SELECTOR).nth(index).click()
 }

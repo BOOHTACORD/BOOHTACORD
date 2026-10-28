@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "issue": 348,
+  "leaf": "DW-009",
+  "status": "PASS",
+  "scope": "Web listener participant-card stream preview; no Flutter change or native/media-quality claim",
+  "base": "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a",
+  "tested_source": "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a diff-sha256=9379de02e370902c00fb6ebb5570250f201947af7853fe2afeff09c80a0e6f53",
+  "timestamp_utc": "2026-10-28T18:31:12Z",
+  "environment": {
+    "host": "macOS 26.6.1, arm64",
+    "browser": "pinned Playwright Chromium",
+    "stack": "isolated Go API, PostgreSQL and LiveKit; synthetic screen source",
+    "platforms": ["Web desktop", "Web mobile layout"]
+  },
+  "checks": [
+    {
+      "name": "web_unit_suite",
+      "result": "PASS",
+      "command": "npm test -- --run",
+      "observation": "498 files and 1,688 tests passed, including the fetch receiver regression."
+    },
+    {
+      "name": "web_typecheck_and_production_build",
+      "result": "PASS",
+      "command": "VITE_PUBLIC_ORIGIN=https://boohtacord.example npm run build",
+      "observation": "vue-tsc and Vite production build passed. Existing LiveKit import and large-chunk warnings remain."
+    },
+    {
+      "name": "screen_share_browser_suite",
+      "result": "PASS",
+      "observation": "40 browser cases passed, including equal-sized cards at desktop and 200% mobile text, avatar loading, left-aligned names, mute icon sizing, inline preview selection and no horizontal page overflow."
+    },
+    {
+      "name": "critical_acceptance_driver",
+      "result": "PASS",
+      "command": "node --test tools/qa/critical_client_acceptance/requests.test.mjs tools/qa/critical_client_acceptance/roster_observer.test.mjs tools/qa/critical_client_acceptance/roster_diagnostics.test.mjs tools/qa/critical_client_acceptance/sfu_control.test.mjs tools/qa/critical_client_acceptance/roster_network.test.mjs tools/qa/critical_client_acceptance/select_stream.test.mjs tools/qa/client_lifecycle/login_diagnostics.test.mjs",
+      "observation": "All 29 cases pass. Added coverage for selecting an inline participant-card preview before falling back to the stream panel; this fixes the CI lifecycle test harness after the UI moved previews into cards."
+    },
+    {
+      "name": "ci_gate_routing",
+      "result": "PASS",
+      "command": "python3 -m unittest tools.ci.select_changes.test_routing",
+      "observation": "The three Web-specific critical screen-share driver paths route to contracts and Web rather than the uncertain all-platform fallback. Actual lifecycle selection remains covered by the separate risk plan."
+    },
+    {
+      "name": "authenticated_real_stack",
+      "result": "PASS",
+      "command": "./tools/qa/local_features/check.sh --feature screen --feature voice --feature shell --feature auth --feature connection_status --platform web --base origin/master --real-stack",
+      "observation": "All 24 reported stages passed, including API/SFU lifecycle and decoded inline thumbnail at 1440px and 393px. The full report remains REVIEW_REQUIRED because only the four feature-relevant screenshots listed below received manual visual review."
+    },
+    {
+      "name": "scoped_visual_review",
+      "result": "PASS",
+      "observation": "All four participant-card captures were inspected at original resolution. Layout and responsive observations are recorded in the local visual-review note."
+    }
+  ],
+  "full_gate_report": {
+    "path": ".out/local-features/20261028-211734/report.json",
+    "sha256": "05d74fa718dc6466f9fe0586443338f0db908b96dac2de52553fe14dcc1e8324",
+    "bytes": 167400,
+    "raw_status": "REVIEW_REQUIRED",
+    "all_reported_stages_passed": true
+  },
+  "artifacts": [
+    {
+      "path": ".out/local-features/20261028-211734/images/web-screen_share_ui/disclosure.browser-listene-ccc82-qual-sized-participant-card/listener-participant-cards-876x656.png",
+      "sha256": "40d7277c2f75eff8790023ecd43f01f7b3a67e28ba09c64f5000fd50412d51a3",
+      "resolution_px": [876, 656],
+      "visual_observation": "Stream image occupies the card's 16:9 header; the voice-only card has the same dimensions and a calm status placeholder. Names align to the left edge of the avatar/text row; avatars load at 40px and the mute icon box matches the status font size."
+    },
+    {
+      "path": ".out/local-features/20261028-211734/images/web-screen_share_ui/disclosure.browser-listene-ccc82-qual-sized-participant-card/listener-participant-cards-390x200.png",
+      "sha256": "111bf7c378871daca83c24f64c20ea79a2217f6b86126b2abcc9b4a079ebee88",
+      "resolution_px": [390, 740],
+      "visual_observation": "At 200% root text, cards stack without horizontal page overflow and retain equal height. Long labels wrap within the participant information area."
+    },
+    {
+      "path": ".out/local-features/20261028-211734/images/web-real-stack/1440/screen-share-listener-participant-cards.png",
+      "sha256": "f249c6bafdc015d62fb0e36239250c760acabb5e2e94154930e90fe6481f90ca",
+      "resolution_px": [2880, 1800],
+      "visual_observation": "An API/SFU-published screen preview appears inside the sharing participant's card beside an equal-sized voice-only card. Participant name and microphone state remain in the card footer."
+    },
+    {
+      "path": ".out/local-features/20261028-211734/images/web-real-stack/393/screen-share-listener-participant-cards.png",
+      "sha256": "8ce8e1f0f679a71ef03638c2e71d62d45ad2f3ae2c611039cd6db7cd4c820499",
+      "resolution_px": [1179, 2556],
+      "visual_observation": "Mobile real-stack capture keeps the stream preview and voice-only placeholder in matching cards, with the room controls remaining visible below."
+    }
+  ],
+  "limitations": [
+    "Real-stack uses synthetic screen pixels; physical browser capture and media quality are NOT_RUN.",
+    "The full local-feature report remains REVIEW_REQUIRED for screenshots outside this feature-specific visual review.",
+    "Flutter is the supplied visual reference; Flutter source and runtime were not changed or retested."
+  ]
+}

@@ -8,7 +8,7 @@ import type { ScreenPublisherScope } from './screen_publisher/types'
 import { ScreenAdaptationBinding } from './screen_adaptation/runtime_apply/binding'
 import type { AdaptationRuntimeOptions } from './screen_adaptation/runtime_apply/types'
 
-export interface ScreenVoiceSession { room: VoiceRoom; screenProfile: ScreenProfile | null }
+export interface ScreenVoiceSession { leaseId: string; room: VoiceRoom; screenProfile: ScreenProfile | null }
 export class VoiceScreenSession {
   private stopEnded?: () => void
   private watchedRoom?: VoiceRoom
@@ -30,6 +30,10 @@ export class VoiceScreenSession {
   async startScreen(profile: ScreenProfile, mode: 'motion' | 'text' = 'motion'): Promise<ScreenDiagnostics> {
     return tracedOperation('screen.share.start', async (within) => {
       const current = this.requireCurrent(); this.watch(current.room)
+      try {
+        const bindPreview = current.room.bindScreenPreviewLease
+        if (bindPreview) void Promise.resolve(bindPreview.call(current.room, current.leaseId)).catch(() => undefined)
+      } catch { /* Preview binding must not delay the user's screen-picker gesture. */ }
       activeAction()?.step('publish')
       const diagnostics = await within(() => this.publisher.start(profile))
       if (this.current() !== current) throw new Error('Голосовое подключение закрыто.')

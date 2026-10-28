@@ -19,16 +19,19 @@ describe('voice participant screen actions', () => {
     expect(pane).toContain('dismissLocalPreview()')
   })
 
-  it('shows screen share and watch affordances only on participants with a real stream', () => {
+  it('embeds screen previews in stream cards and gives voice-only cards the same preview area', () => {
     const participants = source('./VoiceParticipantVolumes.vue')
+    const preview = source('./ParticipantScreenPreview.vue')
     const styles = source('../design/voice_participant_screens.css')
 
     expect(participants).toContain('screenForParticipant')
-    expect(participants).toContain('participant-share-badge')
-    expect(participants).toContain('Смотреть экран')
-    expect(participants).toContain('aria-pressed')
-    expect(styles).toContain('.participant-share-badge')
-    expect(styles).toContain('.participant-watch')
+    expect(participants).toContain('<ParticipantScreenPreview')
+    expect(participants).toContain('participant-voice-placeholder')
+    expect(participants).toContain('participant--voice-only')
+    expect(participants).not.toContain('Смотреть экран')
+    expect(preview).toContain(':aria-pressed="selected === true"')
+    expect(styles).toContain('.participant-screen-preview')
+    expect(styles).toContain('aspect-ratio: 16 / 9')
   })
 
   it('resolves a watch action by the verified LiveKit participant identity', async () => {

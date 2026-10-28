@@ -134,7 +134,7 @@ test('reconnect remains actionable; leaving immediately removes stale streams an
   await expect(page.getByTestId('voice-dock').getByRole('button', { name: 'Начать демонстрацию экрана', exact: true })).toBeDisabled()
   await expect(page.getByTestId('voice-dock').getByRole('button', { name: 'Выйти из голосового канала' })).toBeEnabled()
   await patch(page, { state: 'CONNECTED', screen: 'SHARING' })
-  await expect(page.getByRole('button', { name: 'Смотреть экран', exact: true })).toBeVisible()
+  await expect(page.getByTestId('participant-screen-preview')).toBeVisible()
   await page.getByTestId('voice-dock').getByRole('button', { name: 'Выйти из голосового канала' }).click()
   await expect(page.locator('.participant-watch, .participant-volume, .screen-viewer')).toHaveCount(0)
   await patch(page, { active: false, state: 'IDLE', selected: 'screen-peer' })

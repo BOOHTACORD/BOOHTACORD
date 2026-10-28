@@ -62,19 +62,30 @@ describe('voice-room visual status and screen presentation', () => {
     expect(members).toContain('Говорит')
   })
 
-  it('shows screen thumbnails in the room screen rail, not in participant cards', () => {
+  it('embeds screen thumbnails in participant cards and keeps the switcher in the active viewer', () => {
     const connected = source('./VoiceRoomConnected.vue')
     const rail = source('./ScreenViewerRail.vue')
     const participants = source('./VoiceParticipantVolumes.vue')
+    const preview = source('./ParticipantScreenPreview.vue')
+    const viewer = source('./ScreenViewer.vue')
+    const styles = source('../design/voice_participant_screens.css')
 
-    expect(connected).toContain('<ScreenViewerRail')
-    expect(connected).toContain(':cards="screenViewerCards"')
+    expect(connected).not.toContain('<ScreenViewerRail')
     expect(connected).not.toContain('show-return-to-voice')
     expect(connected).not.toContain('room-watch-primary')
+    expect(participants).toContain('<ParticipantScreenPreview')
+    expect(participants).toContain('participant-voice-placeholder')
+    expect(participants).toContain('participant--voice-only')
+    expect(preview).toContain('screen.thumbnailUrl')
+    expect(preview).toContain('screenPreviewCardVisibility.setCardVisible')
+    expect(preview).toContain(':data-screen-preview-lease="leaseId"')
+    expect(participants).not.toContain('Смотреть экран')
+    expect(styles).toContain('.participant-screen-preview')
+    expect(styles).toContain('aspect-ratio: 16 / 9')
+    expect(styles).toContain('height: .75rem')
     expect(rail).toContain('<h3>Демонстрации в канале</h3>')
     expect(rail).toContain('stream.thumbnailUrl')
-    expect(participants).not.toContain('stream-thumbnail')
-    expect(participants).not.toContain('thumbnailUrl')
+    expect(viewer).toContain('<ScreenViewerRail')
   })
 
   it('distinguishes an unselected view from a selected but not joined voice room', () => {
