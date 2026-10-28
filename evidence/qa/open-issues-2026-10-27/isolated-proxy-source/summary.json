@@ -1,0 +1,169 @@
+{
+  "at_utc": "2026-10-28T01:34:01.301412+00:00",
+  "status": "FAIL_I240_C6_REPEATED_XFF_FIELDS",
+  "criterion": "I240.C6",
+  "canonical_fix_issue": 138,
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "production_touched": false,
+  "protects": "Immediate-peer trust, nearest untrusted boundary, ordered repeated XFF fields, aggregate4096byte/32hop limits and defaultCaddy client identity",
+  "command": "python -X utf8 .out/qa-proxy-source/run_profile.py run",
+  "additional_commands": "python -X utf8 .out/qa-proxy-source/run_wire.py; python -X utf8 .out/qa-proxy-source/run_native.py; python -X utf8 .out/qa-proxy-source/verify_after.py",
+  "platform": "Windows11 controller; actual source072 Linux API/PostgreSQL17.6, Caddy2.10.0; Linux Go1.26.4 Cgo race and Windows runtime-config test",
+  "mandatory_when": "Before accepting I240.C6/#138 source-boundary and forwarding-header criteria",
+  "primary_HTTP_cases": 100,
+  "primary_passed": 95,
+  "primary_failed": 5,
+  "primary_failed_records": [
+    {
+      "XFF_field_lines": 2,
+      "XFF_value_bytes_before_wire_trimming": 60,
+      "at_utc": "2026-10-28T01:29:33.365931405Z",
+      "event": "case",
+      "expected_HTTP": 429,
+      "front_Caddy": false,
+      "label": "repeated_fields_boundary_1",
+      "mode": "trusted",
+      "other_forwarding_headers": false,
+      "outcome": {
+        "http": 400,
+        "code": "VALIDATION_FAILED",
+        "retry_after_s": 0,
+        "cookie_seen": false
+      },
+      "status": "FAIL"
+    },
+    {
+      "XFF_field_lines": 2,
+      "XFF_value_bytes_before_wire_trimming": 60,
+      "at_utc": "2026-10-28T01:29:33.366815027Z",
+      "event": "case",
+      "expected_HTTP": 429,
+      "front_Caddy": false,
+      "label": "repeated_fields_boundary_2",
+      "mode": "trusted",
+      "other_forwarding_headers": false,
+      "outcome": {
+        "http": 400,
+        "code": "VALIDATION_FAILED",
+        "retry_after_s": 0,
+        "cookie_seen": false
+      },
+      "status": "FAIL"
+    },
+    {
+      "XFF_field_lines": 2,
+      "XFF_value_bytes_before_wire_trimming": 60,
+      "at_utc": "2026-10-28T01:29:33.367689737Z",
+      "event": "case",
+      "expected_HTTP": 429,
+      "front_Caddy": false,
+      "label": "repeated_fields_boundary_3",
+      "mode": "trusted",
+      "other_forwarding_headers": false,
+      "outcome": {
+        "http": 400,
+        "code": "VALIDATION_FAILED",
+        "retry_after_s": 0,
+        "cookie_seen": false
+      },
+      "status": "FAIL"
+    },
+    {
+      "XFF_field_lines": 2,
+      "XFF_value_bytes_before_wire_trimming": 4152,
+      "at_utc": "2026-10-28T01:29:33.373392316Z",
+      "event": "case",
+      "expected_HTTP": 429,
+      "front_Caddy": false,
+      "label": "repeated_fields_aggregate_bytes",
+      "mode": "trusted",
+      "other_forwarding_headers": false,
+      "outcome": {
+        "http": 400,
+        "code": "VALIDATION_FAILED",
+        "retry_after_s": 0,
+        "cookie_seen": false
+      },
+      "status": "FAIL"
+    },
+    {
+      "XFF_field_lines": 2,
+      "XFF_value_bytes_before_wire_trimming": 502,
+      "at_utc": "2026-10-28T01:29:33.374327811Z",
+      "event": "case",
+      "expected_HTTP": 429,
+      "front_Caddy": false,
+      "label": "repeated_fields_aggregate_hops",
+      "mode": "trusted",
+      "other_forwarding_headers": false,
+      "outcome": {
+        "http": 400,
+        "code": "VALIDATION_FAILED",
+        "retry_after_s": 0,
+        "cookie_seen": false
+      },
+      "status": "FAIL"
+    }
+  ],
+  "phase_outcomes": {
+    "untrustedA": {
+      "cases": 13,
+      "failed": 0,
+      "status": "PASS_SCOPED"
+    },
+    "frontA": {
+      "cases": 5,
+      "failed": 0,
+      "status": "PASS_SCOPED"
+    },
+    "frontB": {
+      "cases": 11,
+      "failed": 0,
+      "status": "PASS_SCOPED"
+    },
+    "directB": {
+      "cases": 1,
+      "failed": 0,
+      "status": "PASS_SCOPED"
+    },
+    "trusted": {
+      "cases": 70,
+      "failed": 5,
+      "status": "FAIL_ACCEPTANCE"
+    }
+  },
+  "independent_literal_wire_cases": 18,
+  "literal_wire_failed": 3,
+  "literal_combined_controls": "3/3 combined429 vs3/3 separate400 after10/300s boundary exhaustion; protected boundary remains429",
+  "combined_actual_HTTP_ledger": {
+    "requests": 118,
+    "HTTP400": 84,
+    "HTTP429": 34,
+    "KDF_work_delta": 0,
+    "account_admission_delta": 0,
+    "store_saturation_delta": 0
+  },
+  "native_controls": {
+    "original_race_passes": 18,
+    "invalid_CIDR_passes": 1,
+    "candidate_pass_events_including_subtests": 39,
+    "candidate_failed_events": 9,
+    "candidate_failing_tests": [
+      "TestAuditProxyRepeatedFieldsRespectAggregateByteLimit",
+      "TestAuditProxyRepeatedFieldsRespectAggregateHopLimit",
+      "TestAuditProxyRepeatedFieldsRespectNearestBoundary"
+    ],
+    "repetitions": 3,
+    "skips": 0,
+    "data_race_reports": 0
+  },
+  "cause": "sourceKey uses request.Header.Get and checks only first field value; later XFF fields and their nearest-boundary/aggregate-limit contribution are ignored.",
+  "expected_fix": "Use all ordered Header.Values with aggregate bounds before parsing, or documented failclosed handling of repeated fields; preserve immediate-peer trust and default Caddy isolation. Retained regression witnesses must pass after fix.",
+  "reference": "https://www.rfc-editor.org/rfc/rfc9110.html#section-5.2",
+  "interpretation": "Repeated-field equivalence requirement inferred from original138 multivalued-header acceptance and HTTP combined-list semantics; actual differential behavior is measured independently.",
+  "cleanup": "environment-after.json",
+  "limits": "Confirmed conditional trusted-forwarder handling of separate ordered XFF fields. Default Caddy/ordinary untrusted-peer controls pass; no public standard-Caddy authentication bypass or real attack is established. Malformed one-byte login bodies stop before account/KDF, no credentials. Native logical multi-trusted CIDRs and API header chains are not physical multi-hop network acceptance. Unique own QA bridge allows outbound traffic; API/admin unpublished, all original host bindings loopback. No production/router/device/source/configuration changes.",
+  "retained_preflight": "preflight1: controller exit1/0 HTTP due incorrect Internal=true assumption; actual topology audited and kept unchanged",
+  "parent240_remains_FAIL": true,
+  "original43_consolidation_decisions_applied": false
+}

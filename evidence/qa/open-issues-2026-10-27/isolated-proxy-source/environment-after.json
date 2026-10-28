@@ -1,0 +1,176 @@
+{
+  "at_utc": "2026-10-28T01:32:54.616903+00:00",
+  "status": "PASS_FAILED_WITNESS_FIDELITY_UNCHANGED_DATA_CONFIG_AND_PRIVATE_SERVICES",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "project": "boohtacord-local-qa",
+  "production_touched": false,
+  "fresh_metrics": {
+    "CPU_seconds": 152.85,
+    "FD": 23,
+    "HTTP400": 10251,
+    "HTTP429": 77,
+    "KDF_active": 0,
+    "KDF_work_count": 2664,
+    "RSS_bytes": 58630144,
+    "goroutines": 31,
+    "login_active": 0,
+    "login_admitted": 2197,
+    "source_active": 21,
+    "source_capacity": 10000,
+    "source_saturated": 11
+  },
+  "metric_label_audit": {
+    "at_utc": "2026-10-28T01:32:55.707228618Z",
+    "event": "observation",
+    "families": 3,
+    "finite_values": 7,
+    "label": "rate_metric_labels",
+    "mode": "observe",
+    "only_label": "operation",
+    "series": 21,
+    "status": "PASS"
+  },
+  "running_Caddy_and_mounted_config_unchanged": true,
+  "database_counts_unchanged": true,
+  "users_sessions_active_attachments": [
+    516,
+    2065,
+    50,
+    9
+  ],
+  "new_users_sessions_files": 0,
+  "PostgreSQL_version": "17.6",
+  "combined_HTTP_ledger": {
+    "requests": 118,
+    "HTTP400": 84,
+    "HTTP429": 34,
+    "KDF_work_delta": 0,
+    "account_admission_delta": 0,
+    "store_saturation_delta": 0
+  },
+  "services": [
+    {
+      "service": "api",
+      "running": true,
+      "image_id": "sha256:b34a09b6eebfb87fea478e7cd440cc7ab9c52dc7dbd3cf4d659b12a9eff98a47",
+      "restart_count": 0
+    },
+    {
+      "service": "web",
+      "running": true,
+      "image_id": "sha256:414cc79b7ff85cfca81252bd12eb8a9525f2fb5727932a88b02ccf63ebb42d20",
+      "restart_count": 0
+    },
+    {
+      "service": "proxy",
+      "running": true,
+      "image_id": "sha256:f43d8810c944e27e6f7ea80b165de11dbdab16cff15c8a80d83ae3e1a109a35d",
+      "restart_count": 0
+    },
+    {
+      "service": "postgres",
+      "running": true,
+      "image_id": "sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94",
+      "restart_count": 0
+    },
+    {
+      "service": "livekit",
+      "running": true,
+      "image_id": "sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3",
+      "restart_count": 0
+    },
+    {
+      "service": "collector",
+      "running": true,
+      "image_id": "sha256:b6d2b9a85b1029d05b5ad913150c1f014eed4ae99be81a1813ca5ade4a191913",
+      "restart_count": 0
+    },
+    {
+      "service": "tempo",
+      "running": true,
+      "image_id": "sha256:cac9de2ac9f6da8efca5b64b690a7cb8c786a0c49cac7b4517dd1b0089a6c703",
+      "restart_count": 0
+    },
+    {
+      "service": "prometheus",
+      "running": true,
+      "image_id": "sha256:5550dc63da361dc30f6fe02ac0e4dfc736ededfef3c8d12a634db04a67824d78",
+      "restart_count": 0
+    },
+    {
+      "service": "grafana",
+      "running": true,
+      "image_id": "sha256:6e5d306338670f381a942f1c50d3c266bf71531e5ddd9ee4fc1a133dac5ce63d",
+      "restart_count": 0
+    }
+  ],
+  "bounded_logs_scan": [
+    {
+      "service": "api",
+      "stdout_bytes": 39895,
+      "stderr_bytes": 0,
+      "SHA256": "eb1f1602fed29c3ea99ac4fc62c8e71d6a3840e82212055f86ec84e369473ba2",
+      "actual_source_values_login_password_cookie_markers_found": false
+    },
+    {
+      "service": "web",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "actual_source_values_login_password_cookie_markers_found": false
+    },
+    {
+      "service": "proxy",
+      "stdout_bytes": 0,
+      "stderr_bytes": 528,
+      "SHA256": "06695c70a8d9826547addf21016cc8d3ff626179f31852c7341d5f80e1c051f8",
+      "actual_source_values_login_password_cookie_markers_found": false
+    },
+    {
+      "service": "postgres",
+      "stdout_bytes": 0,
+      "stderr_bytes": 353,
+      "SHA256": "f38939e58715bc1f1414eef39e996ef927972081d7197f2594a490f5d02e7238",
+      "actual_source_values_login_password_cookie_markers_found": false
+    },
+    {
+      "service": "livekit",
+      "stdout_bytes": 0,
+      "stderr_bytes": 6365,
+      "SHA256": "44df71644cafb219a48f8583f04920c74800a719251209c695c0464140bc58da",
+      "actual_source_values_login_password_cookie_markers_found": false
+    },
+    {
+      "service": "collector",
+      "stdout_bytes": 0,
+      "stderr_bytes": 12584,
+      "SHA256": "6d4bac595352831cc70c4d6190f7c2fa077e06df1814923c3df0b85262955747",
+      "actual_source_values_login_password_cookie_markers_found": false
+    },
+    {
+      "service": "tempo",
+      "stdout_bytes": 0,
+      "stderr_bytes": 9654,
+      "SHA256": "6c87e1995f0a6c6a26bc08af9b30a6a57b728b59a6c9f10e9fdcbd072eeac4f9",
+      "actual_source_values_login_password_cookie_markers_found": false
+    },
+    {
+      "service": "prometheus",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "actual_source_values_login_password_cookie_markers_found": false
+    },
+    {
+      "service": "grafana",
+      "stdout_bytes": 1460,
+      "stderr_bytes": 0,
+      "SHA256": "61bcd35900f597bef0eb55a57e18f3ba6c5907001217302f6ccb10c6cd530fb6",
+      "actual_source_values_login_password_cookie_markers_found": false
+    }
+  ],
+  "API_health_http": 200,
+  "source_worktree_clean": true,
+  "owned_helper_containers_remaining": 0,
+  "finished_at_utc": "2026-10-28T01:33:01.729077+00:00"
+}

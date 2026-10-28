@@ -1,0 +1,93 @@
+{
+  "at_utc": "2026-10-28T01:29:29.011667+00:00",
+  "status": "MEASURED_FAIL_ACCEPTANCE",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "project": "boohtacord-local-qa",
+  "production_touched": false,
+  "controller_PID": 25312,
+  "binary_SHA256": "93586f5126ef9e3452eaabd57dbba95e11efef5caae1deedfc1122a123482a45",
+  "current_mode": "observe",
+  "docker_client_PID": 42632,
+  "finished_at_utc": "2026-10-28T01:29:33.978903+00:00",
+  "phases": [
+    {
+      "mode": "audit-config",
+      "exit_code": 0,
+      "status": "PASS_SCOPED",
+      "failed_cases": 0,
+      "cases": 0,
+      "stdout_SHA256": "fcb0aa5d7462ae412c4dc563474d8cee11a55e267aca49b764073c959dbd80a9",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": "untrustedA",
+      "exit_code": 0,
+      "status": "PASS_SCOPED",
+      "failed_cases": 0,
+      "cases": 13,
+      "stdout_SHA256": "d26cc97dae777786342a2f13618372f9de05f25c3eb4f612199ece53af6a7d08",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": "frontA",
+      "exit_code": 0,
+      "status": "PASS_SCOPED",
+      "failed_cases": 0,
+      "cases": 5,
+      "stdout_SHA256": "6b30e9c736a69c04db7561ce2d9aa1279c8957533ee46403ac3bb4341b439fb7",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": "frontB",
+      "exit_code": 0,
+      "status": "PASS_SCOPED",
+      "failed_cases": 0,
+      "cases": 11,
+      "stdout_SHA256": "7185462f02c6579a27720442bd37e0e0655f71871458bc9cc53d9c5745030cab",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": "directB",
+      "exit_code": 0,
+      "status": "PASS_SCOPED",
+      "failed_cases": 0,
+      "cases": 1,
+      "stdout_SHA256": "e478da4f1d11c575971ee0c599bb21bf166c1c24f1dab1c2abf201b0215e9b70",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": "trusted",
+      "exit_code": 1,
+      "status": "FAIL_ACCEPTANCE",
+      "failed_cases": 5,
+      "cases": 70,
+      "stdout_SHA256": "c0c078ab7e4f0d256bfb97b524b2e9cee6290e36edebdaa524dfd7e983f4aa1e",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": "observe",
+      "exit_code": 0,
+      "status": "PASS_SCOPED",
+      "failed_cases": 0,
+      "cases": 0,
+      "stdout_SHA256": "c65a17a809153f493e7d0df606504365eededfdbfdfe10a94214a7caaefcc4cc",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "owned_peer_cleanup": [
+    {
+      "role": "A",
+      "removed": true
+    },
+    {
+      "role": "B",
+      "removed": true
+    }
+  ],
+  "database_counts_after": [
+    516,
+    2065,
+    50,
+    9
+  ]
+}

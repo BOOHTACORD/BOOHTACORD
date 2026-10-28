@@ -1,0 +1,16 @@
+"""Independent literal-HTTP differential witness in the existing trusted proxy namespace."""
+import hashlib,ipaddress,json,os,subprocess,sys
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,SOURCE,CONTEXT
+def sha(b):return hashlib.sha256(b).hexdigest()
+assert not (P/'wire-result.json').exists();proxy=json.loads(docker('inspect',PROJECT+'-proxy-1'))[0];api=json.loads(docker('inspect',PROJECT+'-api-1'))[0]
+for v in [proxy,api]:assert v['State']['Running'] and v['RestartCount']==0 and v['Config']['Labels']['com.docker.compose.project']==PROJECT
+assert json.loads(docker('image','inspect',api['Image']))[0]['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+cfg=json.loads((P/'private/config.private.json').read_text());trusted=[ipaddress.ip_network(v.split('=',1)[1]) for v in api['Config']['Env'] if v.startswith('TRUSTED_PROXY_CIDRS=')];assert any(n['IPAddress']==cfg['proxy'] and ipaddress.ip_address(n['IPAddress']) in c for n in proxy['NetworkSettings']['Networks'].values() for c in trusted)
+receipt={'at_utc':datetime.now(timezone.utc).isoformat(),'source_revision':SOURCE,'API_image_id':api['Image'],'private_config_SHA256':sha((P/'private/config.private.json').read_bytes()),'files_SHA256':{f.name:sha(f.read_bytes()) for f in [P/'wire_witness.go',Path(__file__)]},'owned_trusted_namespace':True};(P/'runner-before-wire.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')
+build=subprocess.run(['go','build','-o',str(P/'wire_probe'),str(P/'wire_witness.go')],cwd=Q/'backend',env={**os.environ,'GOOS':'linux','GOARCH':'amd64','CGO_ENABLED':'0','GOTOOLCHAIN':'local'},capture_output=True);(P/'wire-build.private.log').write_bytes(build.stdout+build.stderr);assert build.returncode==0
+argv=['docker','--context',CONTEXT,'run','--rm','--name','boohtacord-proxy-source-wire','--label','com.docker.compose.project='+PROJECT,'--label','qa.packet=proxy-source','--network','container:'+proxy['Id'],'--cpus','0.5','--memory','256m','--pids-limit','64','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges','--mount','type=bind,source='+str(P/'wire_probe')+',target=/qa-wire,readonly','--mount','type=bind,source='+str(P/'private')+',target=/work','--entrypoint','/qa-wire',api['Image']]
+with (P/'wire.private.stdout').open('wb') as out,(P/'wire.private.stderr').open('wb') as err:process=subprocess.Popen(argv,stdout=out,stderr=err);code=process.wait(timeout=120)
+d=json.loads((P/'wire.private.stdout').read_text());assert d['status']=='MEASURED_FAIL_LITERAL_REPEATED_XFF' and d['failed_cases']==3 and len(d['records'])==18 and code==1;d.update(client_exit_code=code,controller_PID=os.getpid(),docker_client_PID=process.pid,binary_SHA256=sha((P/'wire_probe').read_bytes()),raw_stdout_SHA256=sha((P/'wire.private.stdout').read_bytes()));(P/'wire-result.json').write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8');print(json.dumps({k:v for k,v in d.items() if k!='records'}));sys.exit(1)

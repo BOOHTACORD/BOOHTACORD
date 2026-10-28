@@ -1,0 +1,15 @@
+package main
+import("bytes";"context";"encoding/json";"errors";"io";"net/http";"os";"strconv";"time")
+type Config struct{Source string `json:"source_revision"`;Proxy string `json:"proxy"`;FrontPort int `json:"front_port"`;V4,V6 []string;Peers map[string]string}
+type Outcome struct{HTTP int `json:"http"`;Code string `json:"code"`;Retry int `json:"retry_after_s"`;Cookie bool `json:"cookie_seen"`}
+var cfg Config;var ctx context.Context;var mode string;var records=[]map[string]any{};var failures=0;var encoder=json.NewEncoder(os.Stdout)
+var client=&http.Client{Timeout:8*time.Second,Transport:&http.Transport{Proxy:nil,MaxConnsPerHost:4},CheckRedirect:func(*http.Request,[]*http.Request)error{return errors.New("redirect forbidden")}}
+const base="http://api:8080";const origin="http://localhost:18088"
+func require(ok bool,label string){if !ok{panic(label)}}
+func emit(event string,d map[string]any){d["at_utc"]=time.Now().UTC().Format(time.RFC3339Nano);d["event"]=event;d["mode"]=mode;if event=="case"{records=append(records,d)};encoder.Encode(d)}
+func probe(label string,fields []string,expected int,front bool,extra bool)Outcome{
+ target:=base;if front{target="http://proxy:"+strconv.Itoa(cfg.FrontPort)};r,e:=http.NewRequestWithContext(ctx,"POST",target+"/api/v1/auth/login",bytes.NewReader([]byte("{")));require(e==nil,"request creation");r.Host="localhost:18088";r.Header.Set("Origin",origin);r.Header.Set("Content-Type","application/json")
+ for _,value:=range fields{r.Header.Add("X-Forwarded-For",value)};if extra{r.Header.Set("X-Real-IP",cfg.V6[120]);r.Header.Set("Forwarded","for=\"["+cfg.V6[121]+"]\"")};response,e:=client.Do(r);require(e==nil,"bounded owned HTTP transport");defer response.Body.Close();raw,e:=io.ReadAll(io.LimitReader(response.Body,65537));require(e==nil&&len(raw)<=65536,"response bound");var d struct{Error struct{Code string `json:"code"`} `json:"error"`};require(json.Unmarshal(raw,&d)==nil,"expected backend problem JSON")
+ o:=Outcome{HTTP:response.StatusCode,Code:d.Error.Code,Cookie:len(response.Cookies())>0};o.Retry,_=strconv.Atoi(response.Header.Get("Retry-After"));ok:=o.HTTP==expected&&!o.Cookie;if expected==400{ok=ok&&o.Code=="VALIDATION_FAILED"&&o.Retry==0}else{ok=ok&&o.Code=="RATE_LIMITED"&&o.Retry>0&&o.Retry<=300};if !ok{failures++};n:=0;for _,s:=range fields{n+=len(s)}
+ status:="PASS";if !ok{status="FAIL"};emit("case",map[string]any{"label":label,"status":status,"expected_HTTP":expected,"outcome":o,"XFF_field_lines":len(fields),"XFF_value_bytes_before_wire_trimming":n,"front_Caddy":front,"other_forwarding_headers":extra});return o
+}

@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-28T01:20:23.335860+00:00",
+  "at_utc": "2026-10-28T01:36:48.708733+00:00",
   "candidate_evidence": "../../android/physical-share-2026-10-27/result.json",
   "files": {
     "acceptance-methods.json": {
@@ -667,8 +667,8 @@
       "sha256": "7d2ac8691a4dd0bef3ffd7fd6c9ea028ab04c058060810c65c5f27501d34d867"
     },
     "cases.json": {
-      "bytes": 75579,
-      "sha256": "391b3100513dd1e64b745caf6224f50689bcfe8b5f55e1ed990d1fdc7d98e24c"
+      "bytes": 76995,
+      "sha256": "035e581dfad7ebddf54f04150d847016cf3a8b7a94b2dd0cf0e07285026c7b4f"
     },
     "controlled-account-integrity.json": {
       "bytes": 640,
@@ -961,6 +961,178 @@
     "isolated-login-budgets/validation.json": {
       "bytes": 640,
       "sha256": "4db1dcb09f764ff753e2e16f57c37d12e2b159565db20dfbdba8c4081fd284f4"
+    },
+    "isolated-proxy-source/audit-config-result.json": {
+      "bytes": 936,
+      "sha256": "21cb42dd0d86eda8cee511b4fec686b25e58ea637974cbbd07b82c281cbe3820"
+    },
+    "isolated-proxy-source/baseline-database.json": {
+      "bytes": 130,
+      "sha256": "2fb4849ee04faa103b31bcdf0076db0509c9f768ec0ef354d99c4d7e72f242fc"
+    },
+    "isolated-proxy-source/candidate-race-output.json": {
+      "bytes": 54873,
+      "sha256": "175e88cc5cd6511d79b153166b7b3fe03f73be3a37eac3bcde2939eb15d9e9e9"
+    },
+    "isolated-proxy-source/config-audit.json": {
+      "bytes": 1132,
+      "sha256": "5fb8e697f964257bee329a9a2b5d366d475dc7db3ba351d42b5d06f611bfba20"
+    },
+    "isolated-proxy-source/directB-result.json": {
+      "bytes": 1434,
+      "sha256": "142384725ef625bf609e1803d6921ab2ca0ed75ac6be33051bef05dcf630148f"
+    },
+    "isolated-proxy-source/duplicate-search.json": {
+      "bytes": 1313,
+      "sha256": "6b40ef5b7ad795d8dd313801a159bd1807360a5f87fbd758e5d9ca8c103519e2"
+    },
+    "isolated-proxy-source/environment-after.json": {
+      "bytes": 5382,
+      "sha256": "a0a9a139096deaaea2027a099abcbe0321fbc7f450e2a09bc4d52ef9d1f6dc55"
+    },
+    "isolated-proxy-source/frontA-result.json": {
+      "bytes": 3366,
+      "sha256": "bcb2f2c248b3a19587acde74de36569879c2a321a043398c27bd1b60e7864765"
+    },
+    "isolated-proxy-source/frontB-result.json": {
+      "bytes": 6360,
+      "sha256": "dc00f26a6031b325ac5f791d41b657cbbdb114d4a0b97fde7e7d6a4f657e5320"
+    },
+    "isolated-proxy-source/invalid-config-output.json": {
+      "bytes": 1902,
+      "sha256": "4a3ed14d5416a024022b095b73d35663221dca38bcb44fdb6a112007add0050f"
+    },
+    "isolated-proxy-source/native-result.json": {
+      "bytes": 2719,
+      "sha256": "c7032d0ebbf002a299d4a34e760e293a43da918a543cc7f4588b1a921dc7ae49"
+    },
+    "isolated-proxy-source/observe-result.json": {
+      "bytes": 929,
+      "sha256": "a95b3e0b62714f070c90834fd8aca493df6d17e3ea210ba9df65bcaaeb5d474e"
+    },
+    "isolated-proxy-source/operating-brief.json": {
+      "bytes": 2624,
+      "sha256": "d8e5eeb521e1ce6673f920324adf767090f629634a04995732cde3f5beffd2c4"
+    },
+    "isolated-proxy-source/original-race-output.json": {
+      "bytes": 20789,
+      "sha256": "4c21236283f02cd9d325a53d9f5a8f3b929e1b3f2ab345dfd35bf71fb1312f3b"
+    },
+    "isolated-proxy-source/preflight1/result.json": {
+      "bytes": 645,
+      "sha256": "95cdbaddbbae4f524c02b7db9bede9294c65080a7ae3b59b768ad0cf2c2c994e"
+    },
+    "isolated-proxy-source/preflight1/runner-source/run_profile.py.txt": {
+      "bytes": 8384,
+      "sha256": "8f983f404d42a6cc986081a2128926b2af178afda71537277b4866e66caf1beb"
+    },
+    "isolated-proxy-source/private-input-receipt.json": {
+      "bytes": 216,
+      "sha256": "b26fdb9cb8ccb3a6fb7a24cdd8302ac7300213465b12134816a421de3dde1993"
+    },
+    "isolated-proxy-source/README.md": {
+      "bytes": 7530,
+      "sha256": "01bf5c0d4f541b755cd4501dccdde687d9d46d043de2e129c1b7fbc7cc6c7f7f"
+    },
+    "isolated-proxy-source/run-result.json": {
+      "bytes": 2592,
+      "sha256": "91f7f09ec9d462039e3567d9455bd0ab2e6e0579bcc74ada603806bca872615c"
+    },
+    "isolated-proxy-source/run-runner.json": {
+      "bytes": 2894,
+      "sha256": "9a4b7bed56780d6260e7e8fc3bf5f5e8970fda9b4ff7cc4c0db9d64493cef1ab"
+    },
+    "isolated-proxy-source/runner-before-native.json": {
+      "bytes": 1838,
+      "sha256": "0bf706827097e24db014a71b7ead6d8ba2dd587d364433d8733fdfd85d86720e"
+    },
+    "isolated-proxy-source/runner-before-postcheck.json": {
+      "bytes": 166,
+      "sha256": "4c16716c7023ede5f70f22fd68ccf0b4389f4579b7f33b611ebad719eddf19ad"
+    },
+    "isolated-proxy-source/runner-before-run.json": {
+      "bytes": 778,
+      "sha256": "50991c3c8fd4b730236a80e1268a2bb0df3d2d8c2c8389b6dca8e2d0ee09d261"
+    },
+    "isolated-proxy-source/runner-before-wire.json": {
+      "bytes": 541,
+      "sha256": "f50cc00e1758eec8ec7ea2e9a617fbe02d9e06ec9babc19570f9a50d26bbf866"
+    },
+    "isolated-proxy-source/runner-source/build_public.py.txt": {
+      "bytes": 11016,
+      "sha256": "067567345631b420e3842e7e7f7315ec22574b217a629f23d1a0241be9405beb"
+    },
+    "isolated-proxy-source/runner-source/probe_cases.go.txt": {
+      "bytes": 4095,
+      "sha256": "91b0c07d62364469340de75f2b4edf566be1e7c6c5869562c9eb1ad6ea462c6f"
+    },
+    "isolated-proxy-source/runner-source/probe_http.go.txt": {
+      "bytes": 2590,
+      "sha256": "cd414bdd13d43b4f111cc5f48e760c06275046a12e7bde57b55d6ca9e104937b"
+    },
+    "isolated-proxy-source/runner-source/probe_main.go.txt": {
+      "bytes": 1592,
+      "sha256": "a444dc445ba45b90942c6c138fcd76c842afd5d755b86c4740baecc1d1fcf4ec"
+    },
+    "isolated-proxy-source/runner-source/probe_metrics.go.txt": {
+      "bytes": 3060,
+      "sha256": "2df0bdd565b9baf9cb603646e070a1f5220fea7f64923c20c408895c039df823"
+    },
+    "isolated-proxy-source/runner-source/resolver_repeated_test.go.txt": {
+      "bytes": 1674,
+      "sha256": "456a7719c422f9ae7bd211583eb33db3f051b71c97ace0c095b1d570796b74c2"
+    },
+    "isolated-proxy-source/runner-source/resolver_variants_test.go.txt": {
+      "bytes": 1427,
+      "sha256": "663fb825a8b53cffbf4ec91d1772ad7197f00670ec2a725b11bd18b4d389b96e"
+    },
+    "isolated-proxy-source/runner-source/run_native.py.txt": {
+      "bytes": 5162,
+      "sha256": "32bae64f07336312094b1e5f6b00ae3c3f38930df05c62a11309cca76860ea01"
+    },
+    "isolated-proxy-source/runner-source/run_profile.py.txt": {
+      "bytes": 8854,
+      "sha256": "204430e0cd858ec4d0cee42ddb0a990c53adb86865e3702ddc25eae32159806b"
+    },
+    "isolated-proxy-source/runner-source/run_wire.py.txt": {
+      "bytes": 3090,
+      "sha256": "cb71916f8e72c4514f5744731701a6557520db95a7bee11748afc457b3c11ed5"
+    },
+    "isolated-proxy-source/runner-source/validate_public.py.txt": {
+      "bytes": 5634,
+      "sha256": "48aee4c7db21e9537bb77eeb2bf41f6f05779bae04a2f6fe81da77289a344fc4"
+    },
+    "isolated-proxy-source/runner-source/verify_after.py.txt": {
+      "bytes": 7051,
+      "sha256": "cb433dcdf5c7ae3a55cced9cfeeeb02a280cf38c9647c1ff8cef7dd42c7bddd5"
+    },
+    "isolated-proxy-source/runner-source/wire_witness.go.txt": {
+      "bytes": 3543,
+      "sha256": "53c2863566dc7b38bf28ff274e02493d0693df9ebea0c7fd73ea8fbebf75d480"
+    },
+    "isolated-proxy-source/source-binding.json": {
+      "bytes": 5924,
+      "sha256": "c8014cf3cbf096ce552162e259007916e815b3f62fe01911262cfd355caa0b54"
+    },
+    "isolated-proxy-source/summary.json": {
+      "bytes": 6410,
+      "sha256": "4ba95c11f82630cd9a09c008f1f32cd9fed29769611356895d16883ae24e39af"
+    },
+    "isolated-proxy-source/trusted-result.json": {
+      "bytes": 35576,
+      "sha256": "e497c5718840274f499950efb9678f88c74aaf59261d4f5b7cefbbdc61e22a32"
+    },
+    "isolated-proxy-source/untrustedA-result.json": {
+      "bytes": 7428,
+      "sha256": "2e148f856e4a96116567e423a6614ec4224d2d16a8df4d47cc1aed864b572ec8"
+    },
+    "isolated-proxy-source/validation.json": {
+      "bytes": 843,
+      "sha256": "53e05d68e8bafe759550e72d501c2967e820f8793c66313c00c633fb319076ae"
+    },
+    "isolated-proxy-source/wire-result.json": {
+      "bytes": 7744,
+      "sha256": "bfb7f03e8a77d876a8c47f107046d4b5db213d6a12f682463db939be139a8c69"
     },
     "isolated-rate-capacity/baseline-database.json": {
       "bytes": 168,
@@ -1795,8 +1967,8 @@
       "sha256": "4b7314f316cc66bb9c1c3e07919f4a2441de12db8ab970d26f9b4308a2cef8a4"
     },
     "matrix.json": {
-      "bytes": 1182505,
-      "sha256": "0ead5f0ebf7e99f2925f18321654360c8687d247f1880a5939414bd3837afe4f"
+      "bytes": 1183609,
+      "sha256": "853d2812a2dbea91e5234af22e87f0b9e7f18fcaf14c872c27c6f6d0a61758af"
     },
     "muted-background-resume.json": {
       "bytes": 250,
@@ -3035,8 +3207,8 @@
       "sha256": "5c8013eb9693e540a771743fa74b10476a3b88dec2acdd1c683e36c8a6f9c391"
     },
     "README.md": {
-      "bytes": 22054,
-      "sha256": "1d25aff13e377995a5f16c560ea1605e01d3ee3c0794b3b5d4529f18753b8529"
+      "bytes": 22778,
+      "sha256": "f2fdbf3331ef9fbcb9dad5bc2eae8f54ebc97bfde43971214ff351296010fc7a"
     },
     "restored-microphone.json": {
       "bytes": 269,

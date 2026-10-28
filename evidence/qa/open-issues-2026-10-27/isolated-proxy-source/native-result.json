@@ -1,0 +1,82 @@
+{
+  "status": "MEASURED_FAIL_REPEATED_XFF_CURRENT_SOURCE",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "at_utc": "2026-10-28T01:31:41.723373+00:00",
+  "runs": [
+    {
+      "label": "original-race",
+      "at_utc": "2026-10-28T01:30:49.076520+00:00",
+      "finished_at_utc": "2026-10-28T01:31:07.735811+00:00",
+      "elapsed_s": 18.655999999988126,
+      "exit_code": 0,
+      "command_argv": [
+        "go",
+        "test",
+        "-json",
+        "-p=2",
+        "-race",
+        "-count=3",
+        "-timeout=3m",
+        "./internal/security/rate_limit"
+      ],
+      "platform": "Linuxamd64Go1.26.4Cgo2CPU2GiBnetworknone",
+      "stdout_SHA256": "38eeed9b3ec7cb8c52169d3ce0bd3a978d4cdf1cde9ea1ddfe54817c6473b43f",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "invalid-config",
+      "at_utc": "2026-10-28T01:31:07.745319+00:00",
+      "finished_at_utc": "2026-10-28T01:31:25.637953+00:00",
+      "elapsed_s": 17.90600000001723,
+      "exit_code": 0,
+      "command_argv": [
+        "go",
+        "test",
+        "-json",
+        "-count=1",
+        "-run",
+        "^TestLoadRejectsInvalidTrustedProxyCIDR$",
+        "./internal/config/runtime"
+      ],
+      "platform": "Windows11Go1.26.4",
+      "stdout_SHA256": "21a3c66d35f24556b792291608c8451951f23214e11a1fda91cd80d2b76117cc",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "candidate-race",
+      "at_utc": "2026-10-28T01:31:25.787602+00:00",
+      "finished_at_utc": "2026-10-28T01:31:41.709843+00:00",
+      "elapsed_s": 15.921999999991385,
+      "exit_code": 1,
+      "command_argv": [
+        "go",
+        "test",
+        "-json",
+        "-p=2",
+        "-race",
+        "-count=3",
+        "-timeout=3m",
+        "-overlay=/work/native-overlay.json",
+        "-run",
+        "^TestAuditProxy",
+        "./internal/security/rate_limit"
+      ],
+      "platform": "Linuxamd64Go1.26.4Cgo2CPU2GiBnetworknone",
+      "stdout_SHA256": "3cfc6d41d07be056a3dabf5e07855fc5da3a7b0a8e594a5748b1eda6ec2b9619",
+      "stderr_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "original_race_top_level_pass_events": 18,
+  "invalid_CIDR_pass_events": 1,
+  "candidate_failure_names": [
+    "TestAuditProxyRepeatedFieldsRespectAggregateByteLimit",
+    "TestAuditProxyRepeatedFieldsRespectAggregateHopLimit",
+    "TestAuditProxyRepeatedFieldsRespectNearestBoundary"
+  ],
+  "candidate_failed_events": 9,
+  "candidate_repetitions": 3,
+  "candidate_pass_events_including_subtests": 39,
+  "skips": 0,
+  "data_race_reports": 0,
+  "no_product_source_edits": true
+}

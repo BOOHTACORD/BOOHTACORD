@@ -1,0 +1,11 @@
+{
+  "at_utc": "2026-10-28T01:29:25.790858+00:00",
+  "status": "ENVIRONMENT_GUARD_REJECTED_BEFORE_HTTP",
+  "controller_exit_code": 1,
+  "HTTP_cases_executed": 0,
+  "peer_helpers_created": 0,
+  "private_config_created": false,
+  "cause": "Initial controller assumed Docker internal network; actual pre-existing private QA runtime bridge allows egress",
+  "post_failure_source_snapshot_SHA256": "8f983f404d42a6cc986081a2128926b2af178afda71537277b4866e66caf1beb",
+  "followup": "Audit existing unique-project membership, no published API/admin, loopback host bindings and exactproxy32 identity; keep explicit egress limit without network changes"
+}

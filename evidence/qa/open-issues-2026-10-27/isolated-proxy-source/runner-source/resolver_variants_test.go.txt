@@ -1,0 +1,11 @@
+package ratelimit
+import("net/http";"strings";"testing")
+func TestAuditProxyResolverVariants(t *testing.T){
+ trusted,e:=parseTrustedProxies([]string{"10.0.0.0/8","2001:db8:1::/48"});if e!=nil{t.Fatal(e)};peer:="10.0.0.5";client:="192.0.2.9";pad:=func(n int)string{return client+","+strings.Repeat(" ",n-len(client)-len(peer)-1)+peer}
+ cases:=[]struct{name,header,want string}{
+  {"empty","",peer},{"trusted_chain",client+",10.0.0.4",client},{"untrusted_boundary","203.0.113.1,"+client+",10.0.0.4",client},{"malformed_at_boundary",client+",bad-ip,10.0.0.4",peer},{"malformed_before_untrusted_boundary","bad-ip,"+client,client},
+  {"hops32",client+strings.Repeat(",10.0.0.4",31),client},{"hops33",client+strings.Repeat(",10.0.0.4",32),peer},{"bytes4096",pad(4096),client},{"bytes4097",pad(4097),peer},{"IPv6_normalization","2001:0db8:abcd:0000:0000:0000:0000:0001","2001:db8:abcd::1"},{"IPv4_mapped_IPv6","::ffff:"+client,client},
+ }
+ for _,c:=range cases{t.Run(c.name,func(t *testing.T){r:=&http.Request{RemoteAddr:peer+":443",Header:make(http.Header)};r.Header.Set("X-Forwarded-For",c.header);if sourceKey(r,trusted)!=c.want{t.Fatal("resolver role/boundary mismatch")}})}
+}
+func TestAuditProxyNoConfiguredTrust(t *testing.T){r:=&http.Request{RemoteAddr:"192.0.2.9:443",Header:http.Header{"X-Forwarded-For":[]string{"203.0.113.9"}}};if sourceKey(r,nil)!="192.0.2.9"{t.Fatal("empty trust configuration must ignore forwarding")}}

@@ -1,0 +1,12 @@
+package ratelimit
+import("net/http";"strings";"testing")
+func repeatedRequest(values []string)*http.Request{return &http.Request{RemoteAddr:"10.0.0.5:443",Header:http.Header{"X-Forwarded-For":values}}}
+func TestAuditProxyRepeatedFieldsRespectNearestBoundary(t *testing.T){
+ trusted,_:=parseTrustedProxies([]string{"10.0.0.0/8"});fields:=[]string{"203.0.113.9","192.0.2.9"};combined:=sourceKey(repeatedRequest([]string{strings.Join(fields,",")}),trusted);if combined!="192.0.2.9"{t.Fatal("single-field control failed")};if sourceKey(repeatedRequest(fields),trusted)!=combined{t.Fatal("separate XFF field lines ignore nearest untrusted boundary compared with same ordered combined chain")}
+}
+func TestAuditProxyRepeatedFieldsRespectAggregateByteLimit(t *testing.T){
+ trusted,_:=parseTrustedProxies([]string{"10.0.0.0/8"});fields:=[]string{"203.0.113.9","10.0.0.4,"+strings.Repeat(" ",4100)+"10.0.0.4"};combined:=sourceKey(repeatedRequest([]string{strings.Join(fields,",")}),trusted);if combined!="10.0.0.5"{t.Fatal("combined over-limit control failed")};if sourceKey(repeatedRequest(fields),trusted)!=combined{t.Fatal("aggregate XFF byte limit bypassed by separate field lines")}
+}
+func TestAuditProxyRepeatedFieldsRespectAggregateHopLimit(t *testing.T){
+ trusted,_:=parseTrustedProxies([]string{"10.0.0.0/8"});fields:=[]string{"203.0.113.9",strings.TrimSuffix(strings.Repeat("10.0.0.4,",32),",")};combined:=sourceKey(repeatedRequest([]string{strings.Join(fields,",")}),trusted);if combined!="10.0.0.5"{t.Fatal("combined hop-limit control failed")};if sourceKey(repeatedRequest(fields),trusted)!=combined{t.Fatal("aggregate XFF hop limit bypassed by separate field lines")}
+}

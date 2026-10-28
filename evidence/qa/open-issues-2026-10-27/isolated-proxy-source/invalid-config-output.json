@@ -1,0 +1,56 @@
+{
+  "events": [
+    {
+      "Time": "2026-10-28T04:31:23.0635836+03:00",
+      "Action": "start",
+      "Package": "voice-platform/backend/internal/config/runtime"
+    },
+    {
+      "Time": "2026-10-28T04:31:25.5513899+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/config/runtime",
+      "Test": "TestLoadRejectsInvalidTrustedProxyCIDR"
+    },
+    {
+      "Time": "2026-10-28T04:31:25.5513899+03:00",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/config/runtime",
+      "Test": "TestLoadRejectsInvalidTrustedProxyCIDR",
+      "Output": "=== RUN   TestLoadRejectsInvalidTrustedProxyCIDR\n"
+    },
+    {
+      "Time": "2026-10-28T04:31:25.5513899+03:00",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/config/runtime",
+      "Test": "TestLoadRejectsInvalidTrustedProxyCIDR",
+      "Output": "--- PASS: TestLoadRejectsInvalidTrustedProxyCIDR (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T04:31:25.5518891+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/config/runtime",
+      "Test": "TestLoadRejectsInvalidTrustedProxyCIDR",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T04:31:25.5518891+03:00",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/config/runtime",
+      "Output": "PASS\n"
+    },
+    {
+      "Time": "2026-10-28T04:31:25.553889+03:00",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/config/runtime",
+      "Output": "ok  \tvoice-platform/backend/internal/config/runtime\t2.490s\n"
+    },
+    {
+      "Time": "2026-10-28T04:31:25.553889+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/config/runtime",
+      "Elapsed": 2.49
+    }
+  ],
+  "raw_private_stream_SHA256": "21a3c66d35f24556b792291608c8451951f23214e11a1fda91cd80d2b76117cc",
+  "stderr_bytes": 0
+}

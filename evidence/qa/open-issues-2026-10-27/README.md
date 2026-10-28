@@ -295,3 +295,7 @@ The requested [production URL readiness](production-origin-readiness/result.json
 ## Actual limiter-store saturation and matched measurements, 2026-10-28
 
 [I240.C7 evidence](isolated-rate-capacity/README.md) now passes the exact source-store/race/benchmark criterion: real10000-key boundary, preserved active budget, failclosed unknown keys, real304s recovery and bounded64 expiry batches.12 native race tests repeat3 times with zero skips. Historical/current matched timings retain both improvements and regressions, and distinguish instrumented-copy hold diagnostics. Database counts and nine private services remain unchanged. QA240 remains FAIL on134/137; no43 consolidation decision is applied.
+
+## Trusted-source header differential, 2026-10-28
+
+[I240.C6 evidence](isolated-proxy-source/README.md) records a conditional repeated-XFF defect for canonical138:5/100 primary case failures and3/18 literal-wire failures, while default Caddy/untrusted-peer controls pass30/30. Equivalent combined field chains retain429; separate fields reach malformed-parser400. Three focused native regressions fail3 repeats each;19 original/config controls pass with zero skips. All DB/config/source and nine services remain unchanged; two own peers were removed. QA240 stays FAIL with134/137/138. Actual runtime bridge permits outbound access; API/admin remain unpublished and host ports loopback. No consolidation decision is applied.

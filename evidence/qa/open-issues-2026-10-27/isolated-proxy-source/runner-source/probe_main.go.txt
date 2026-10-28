@@ -1,0 +1,8 @@
+package main
+import("context";"encoding/json";"os";"time")
+func main(){
+ require(len(os.Args)==2,"explicit mode required");mode=os.Args[1];if mode=="idle"{time.Sleep(10*time.Minute);return};status:="ERROR_PROFILE";failed:="";var initial,final map[string]float64
+ defer func(){if r:=recover();r!=nil{failed,_=r.(string)};d:=map[string]any{"status":status,"source_revision":cfg.Source,"production_touched":false,"cases":records,"failed_cases":failures,"initial_metrics":initial,"final_metrics":final};if failed!=""{d["failed_check"]=failed};emit("final",d);if status!="PASS_SCOPED"{os.Exit(1)}}()
+ raw,e:=os.ReadFile("/work/config.private.json");require(e==nil&&json.Unmarshal(raw,&cfg)==nil,"private fixture config");require(cfg.Source=="072426d60b1c0b1f7e5f66722a0da5faa00b50d7"&&len(cfg.V4)==16&&len(cfg.V6)==128&&cfg.FrontPort==18088,"fixed source/config shape");var cancel context.CancelFunc;ctx,cancel=context.WithTimeout(context.Background(),4*time.Minute);defer cancel();initial=metrics()
+ switch mode{case "trusted":trustedCases();case "untrustedA":untrustedA();case "frontA":frontA();case "frontB":frontB();case "directB":probe("direct_peer_B_after_Caddy_exhaustion",nil,429,false,false);case "observe":audit();case "audit-config":caddyConfig();default:panic("unknown probe mode")};final=metrics();require(final["source_saturated"]==initial["source_saturated"]&&final["KDF_work_count"]==initial["KDF_work_count"]&&final["login_admitted"]==initial["login_admitted"],"source probes touched KDF/account or saturated store");status="PASS_SCOPED";if failures>0{status="FAIL_ACCEPTANCE"}
+}

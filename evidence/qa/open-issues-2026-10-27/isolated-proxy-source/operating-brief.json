@@ -1,0 +1,20 @@
+{
+  "at_utc": "2026-10-28T01:25:41.562748+00:00",
+  "workflow_class": "review_gate",
+  "task_size": "large",
+  "structure_mode": "structure_no_rg",
+  "route": "backend/internal/security/rate_limit source resolver; deploy/caddy exact entry",
+  "criterion": "I240.C6 / referenced138",
+  "backlog_context": "T-010 auth/session ingress dependsT-003; no backlog/contract/product edits",
+  "previous_goal_turn": "PROGRESS: I240.C7PASS with actual10000/race/matched benchmark, evidencea0b739113/8d1bf5265;134/137 stillFAIL",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "native_edges": "Compose private proxy identity -> TRUSTED_PROXY_CIDRS -> sourceKey -> LoginLimiter -> malformed login parser; actual Caddy reverse_proxy entry unchanged",
+  "preservation": "No production/router/hostnetwork/native session/server restart/configuration/source changes; short malformed login probes create no users/sessions/files; two disposable private-network peer helpers removed after all cases",
+  "profile": "Actual direct API untrusted peers, actual default Caddy clients, trusted proxy namespace logical chains, IPv4/IPv6 canonicalization, missing/malformed/4096-4097byte/32-33hop fallback, repeated-field equivalence counterexamples, safe topology/trust audit, nearest native tests and extra source-bound witness",
+  "resource_limits": "At most400 sequential login probes,8s request timeout,2idle peers bounded10min/128MiB each, worker1CPU256MiB/128PIDs; actual API RSS512MiB/FD2048/goroutines8000; no capacity/load claim",
+  "pending_hypothesis": "Header.Get reads one field value: test multiple ordered XFF lines against combined-chain semantics and aggregate bounds; conditional trusted-forwarder scope, no defaultCaddy public bypass assumed",
+  "reference_semantics": "https://www.rfc-editor.org/rfc/rfc9110.html#section-5.2 and section5.3; interpretation applied to ordered XFF list, no long quotes",
+  "stop_condition": "Complete all available cases even after product mismatch; retain exact verdict, unchanged DB/services/private ports, remove own helpers, preserve480requirements and all earliercases, source/privacy/manifest and GitHub readbacks; reopen canonical138 only after runtime confirmation and duplicate search",
+  "observed_topology": "Existing unique-project runtime bridge has Internal=false and outbound access; all9 members owned, API/admin unpublished and host services loopback only. Not a full default Compose topology assertion.",
+  "retained_preflight": "preflight1/: controller exit1 before any HTTP/config/helper, incorrect assumption Internal=true; no network configuration changes"
+}

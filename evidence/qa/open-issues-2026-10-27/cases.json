@@ -1121,6 +1121,22 @@
       "result": "isolated-rate-capacity/summary.json",
       "limits": "Actual generic source store through trusted own proxy namespace and malformed login parser; default10000/10/300s. Not physical NAT/router/native retry,50000-account-store saturation or production capacity. Matched bounded microbenchmarks and explicitly instrumented private-copy hold timings, not productionSLO.139 historical implementation used only as counterexample; no issue reopening is implied.",
       "defects": []
+    },
+    {
+      "id": "ISOLATED-trusted-proxy-source-repeated-fields",
+      "status": "FAIL",
+      "protects": "Trusted peer source boundary and repeated XFF combined semantics/bounds, with passing real untrusted-peer/defaultCaddy controls",
+      "command": "python -X utf8 .out/qa-proxy-source/run_profile.py run; python -X utf8 .out/qa-proxy-source/run_wire.py; python -X utf8 .out/qa-proxy-source/run_native.py; python -X utf8 .out/qa-proxy-source/verify_after.py",
+      "platform": "Windows11 controller; unchanged source072 API/PostgreSQL17.6/Caddy2.10.0, two owned temporary peer namespaces and trusted proxy namespace",
+      "mandatory_when": "Before exact I240.C6/#138 source-header acceptance",
+      "issues": [
+        240
+      ],
+      "result": "isolated-proxy-source/summary.json",
+      "limits": "Confirmed conditional trusted-forwarder handling of separate ordered XFF fields. Default Caddy/ordinary untrusted-peer controls pass; no public standard-Caddy authentication bypass or real attack is established. Malformed one-byte login bodies stop before account/KDF, no credentials. Native logical multi-trusted CIDRs and API header chains are not physical multi-hop network acceptance. Unique own QA bridge allows outbound traffic; API/admin unpublished, all original host bindings loopback. No production/router/device/source/configuration changes.",
+      "defects": [
+        138
+      ]
     }
   ]
 }

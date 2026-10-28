@@ -1,0 +1,515 @@
+{
+  "events": [
+    {
+      "Time": "2026-10-28T01:31:05.266174474Z",
+      "Action": "start",
+      "Package": "voice-platform/backend/internal/security/rate_limit"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288304726Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareLimitsOneForwardedSourceAndResetsWindow"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.28832884Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareLimitsOneForwardedSourceAndResetsWindow",
+      "Output": "=== RUN   TestMiddlewareLimitsOneForwardedSourceAndResetsWindow\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288569965Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareLimitsOneForwardedSourceAndResetsWindow",
+      "Output": "--- PASS: TestMiddlewareLimitsOneForwardedSourceAndResetsWindow (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288587446Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareLimitsOneForwardedSourceAndResetsWindow",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288592844Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterKeepsActiveExhaustedBudgetAtCapacity"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288601624Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterKeepsActiveExhaustedBudgetAtCapacity",
+      "Output": "=== RUN   TestLimiterKeepsActiveExhaustedBudgetAtCapacity\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288680118Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterKeepsActiveExhaustedBudgetAtCapacity",
+      "Output": "--- PASS: TestLimiterKeepsActiveExhaustedBudgetAtCapacity (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288710785Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterKeepsActiveExhaustedBudgetAtCapacity",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288713862Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareDoesNotTrustMalformedForwardedSource"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.28871534Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareDoesNotTrustMalformedForwardedSource",
+      "Output": "=== RUN   TestMiddlewareDoesNotTrustMalformedForwardedSource\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288825723Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareDoesNotTrustMalformedForwardedSource",
+      "Output": "--- PASS: TestMiddlewareDoesNotTrustMalformedForwardedSource (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288840601Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareDoesNotTrustMalformedForwardedSource",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288843353Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyIgnoresForwardingFromUntrustedPeer"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288844603Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyIgnoresForwardingFromUntrustedPeer",
+      "Output": "=== RUN   TestSourceKeyIgnoresForwardingFromUntrustedPeer\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288884236Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyIgnoresForwardingFromUntrustedPeer",
+      "Output": "--- PASS: TestSourceKeyIgnoresForwardingFromUntrustedPeer (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288902856Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyIgnoresForwardingFromUntrustedPeer",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288905727Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyWalksTrustedProxyChainFromNearestPeer"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288906924Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyWalksTrustedProxyChainFromNearestPeer",
+      "Output": "=== RUN   TestSourceKeyWalksTrustedProxyChainFromNearestPeer\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288940888Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyWalksTrustedProxyChainFromNearestPeer",
+      "Output": "--- PASS: TestSourceKeyWalksTrustedProxyChainFromNearestPeer (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288958037Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyWalksTrustedProxyChainFromNearestPeer",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288961056Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterMiddlewareUsesTrustedClientAndIgnoresUntrustedForwarding"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.288962238Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterMiddlewareUsesTrustedClientAndIgnoresUntrustedForwarding",
+      "Output": "=== RUN   TestLimiterMiddlewareUsesTrustedClientAndIgnoresUntrustedForwarding\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.28916941Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterMiddlewareUsesTrustedClientAndIgnoresUntrustedForwarding",
+      "Output": "--- PASS: TestLimiterMiddlewareUsesTrustedClientAndIgnoresUntrustedForwarding (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289186727Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterMiddlewareUsesTrustedClientAndIgnoresUntrustedForwarding",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289201436Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareLimitsOneForwardedSourceAndResetsWindow"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.28920332Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareLimitsOneForwardedSourceAndResetsWindow",
+      "Output": "=== RUN   TestMiddlewareLimitsOneForwardedSourceAndResetsWindow\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.28932346Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareLimitsOneForwardedSourceAndResetsWindow",
+      "Output": "--- PASS: TestMiddlewareLimitsOneForwardedSourceAndResetsWindow (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289335774Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareLimitsOneForwardedSourceAndResetsWindow",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289337972Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterKeepsActiveExhaustedBudgetAtCapacity"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289339315Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterKeepsActiveExhaustedBudgetAtCapacity",
+      "Output": "=== RUN   TestLimiterKeepsActiveExhaustedBudgetAtCapacity\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.28939449Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterKeepsActiveExhaustedBudgetAtCapacity",
+      "Output": "--- PASS: TestLimiterKeepsActiveExhaustedBudgetAtCapacity (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289411659Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterKeepsActiveExhaustedBudgetAtCapacity",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289414132Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareDoesNotTrustMalformedForwardedSource"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289415513Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareDoesNotTrustMalformedForwardedSource",
+      "Output": "=== RUN   TestMiddlewareDoesNotTrustMalformedForwardedSource\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289458129Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareDoesNotTrustMalformedForwardedSource",
+      "Output": "--- PASS: TestMiddlewareDoesNotTrustMalformedForwardedSource (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289471749Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareDoesNotTrustMalformedForwardedSource",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289473727Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyIgnoresForwardingFromUntrustedPeer"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289475011Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyIgnoresForwardingFromUntrustedPeer",
+      "Output": "=== RUN   TestSourceKeyIgnoresForwardingFromUntrustedPeer\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289508924Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyIgnoresForwardingFromUntrustedPeer",
+      "Output": "--- PASS: TestSourceKeyIgnoresForwardingFromUntrustedPeer (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289520683Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyIgnoresForwardingFromUntrustedPeer",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289539145Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyWalksTrustedProxyChainFromNearestPeer"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289548346Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyWalksTrustedProxyChainFromNearestPeer",
+      "Output": "=== RUN   TestSourceKeyWalksTrustedProxyChainFromNearestPeer\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289582355Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyWalksTrustedProxyChainFromNearestPeer",
+      "Output": "--- PASS: TestSourceKeyWalksTrustedProxyChainFromNearestPeer (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289593138Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyWalksTrustedProxyChainFromNearestPeer",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289626231Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterMiddlewareUsesTrustedClientAndIgnoresUntrustedForwarding"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289629117Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterMiddlewareUsesTrustedClientAndIgnoresUntrustedForwarding",
+      "Output": "=== RUN   TestLimiterMiddlewareUsesTrustedClientAndIgnoresUntrustedForwarding\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289776209Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterMiddlewareUsesTrustedClientAndIgnoresUntrustedForwarding",
+      "Output": "--- PASS: TestLimiterMiddlewareUsesTrustedClientAndIgnoresUntrustedForwarding (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289789461Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterMiddlewareUsesTrustedClientAndIgnoresUntrustedForwarding",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289817935Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareLimitsOneForwardedSourceAndResetsWindow"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289819593Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareLimitsOneForwardedSourceAndResetsWindow",
+      "Output": "=== RUN   TestMiddlewareLimitsOneForwardedSourceAndResetsWindow\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.289996678Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareLimitsOneForwardedSourceAndResetsWindow",
+      "Output": "--- PASS: TestMiddlewareLimitsOneForwardedSourceAndResetsWindow (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290011116Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareLimitsOneForwardedSourceAndResetsWindow",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290013637Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterKeepsActiveExhaustedBudgetAtCapacity"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290014977Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterKeepsActiveExhaustedBudgetAtCapacity",
+      "Output": "=== RUN   TestLimiterKeepsActiveExhaustedBudgetAtCapacity\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290017815Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterKeepsActiveExhaustedBudgetAtCapacity",
+      "Output": "--- PASS: TestLimiterKeepsActiveExhaustedBudgetAtCapacity (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290019176Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterKeepsActiveExhaustedBudgetAtCapacity",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290020364Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareDoesNotTrustMalformedForwardedSource"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290021511Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareDoesNotTrustMalformedForwardedSource",
+      "Output": "=== RUN   TestMiddlewareDoesNotTrustMalformedForwardedSource\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290072518Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareDoesNotTrustMalformedForwardedSource",
+      "Output": "--- PASS: TestMiddlewareDoesNotTrustMalformedForwardedSource (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290081907Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareDoesNotTrustMalformedForwardedSource",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290107064Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyIgnoresForwardingFromUntrustedPeer"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290120947Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyIgnoresForwardingFromUntrustedPeer",
+      "Output": "=== RUN   TestSourceKeyIgnoresForwardingFromUntrustedPeer\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290150846Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyIgnoresForwardingFromUntrustedPeer",
+      "Output": "--- PASS: TestSourceKeyIgnoresForwardingFromUntrustedPeer (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290157169Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyIgnoresForwardingFromUntrustedPeer",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290191402Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyWalksTrustedProxyChainFromNearestPeer"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290202329Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyWalksTrustedProxyChainFromNearestPeer",
+      "Output": "=== RUN   TestSourceKeyWalksTrustedProxyChainFromNearestPeer\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290228363Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyWalksTrustedProxyChainFromNearestPeer",
+      "Output": "--- PASS: TestSourceKeyWalksTrustedProxyChainFromNearestPeer (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290241417Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestSourceKeyWalksTrustedProxyChainFromNearestPeer",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290243949Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterMiddlewareUsesTrustedClientAndIgnoresUntrustedForwarding"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290245069Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterMiddlewareUsesTrustedClientAndIgnoresUntrustedForwarding",
+      "Output": "=== RUN   TestLimiterMiddlewareUsesTrustedClientAndIgnoresUntrustedForwarding\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290418156Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterMiddlewareUsesTrustedClientAndIgnoresUntrustedForwarding",
+      "Output": "--- PASS: TestLimiterMiddlewareUsesTrustedClientAndIgnoresUntrustedForwarding (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:05.29043101Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterMiddlewareUsesTrustedClientAndIgnoresUntrustedForwarding",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:05.290433655Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Output": "PASS\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:07.863184789Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Output": "ok  \tvoice-platform/backend/internal/security/rate_limit\t1.029s\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:07.863216112Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Elapsed": 1.03
+    }
+  ],
+  "raw_private_stream_SHA256": "38eeed9b3ec7cb8c52169d3ce0bd3a978d4cdf1cde9ea1ddfe54817c6473b43f",
+  "stderr_bytes": 0
+}

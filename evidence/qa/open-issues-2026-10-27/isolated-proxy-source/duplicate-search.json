@@ -1,0 +1,37 @@
+{
+  "at_utc": "2026-10-28T01:32:53.871Z",
+  "queries": [
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue is:open \"X-Forwarded-For\"",
+      "returned": [
+        {
+          "number": 240,
+          "title": "QA — runtime-приёмка реализаций #133–#141, #145–#153, #155, #157",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/240"
+        }
+      ],
+      "limit": 50
+    },
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue \"Header.Get\"",
+      "returned": [],
+      "limit": 30
+    },
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue XFF",
+      "returned": [
+        {
+          "number": 138,
+          "title": "[P2][F06] Security hardening: учитывать X-Forwarded-For только от доверенных прокси",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/138"
+        }
+      ],
+      "limit": 50
+    }
+  ],
+  "decision": "Reuse/reopen canonical138: explicit original multivalued-XFF scope, no matching open fix found in these bounded queries. QA240 remains the acceptance tracker.",
+  "canonical_fix_issue": 138,
+  "canonical_state_before": "closed",
+  "new_issue_to_create": false,
+  "limits": "Repository search terms and returned limits retained; not an assertion of every possible search term."
+}

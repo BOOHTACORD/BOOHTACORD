@@ -1,0 +1,1388 @@
+{
+  "events": [
+    {
+      "Time": "2026-10-28T01:31:42.214974518Z",
+      "Action": "start",
+      "Package": "voice-platform/backend/internal/security/rate_limit"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.243788543Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectNearestBoundary"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.243814507Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectNearestBoundary",
+      "Output": "=== RUN   TestAuditProxyRepeatedFieldsRespectNearestBoundary\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.243833148Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectNearestBoundary",
+      "Output": "    resolver_repeated_test.go:5: separate XFF field lines ignore nearest untrusted boundary compared with same ordered combined chain\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.243871812Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectNearestBoundary",
+      "Output": "--- FAIL: TestAuditProxyRepeatedFieldsRespectNearestBoundary (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.243883545Z",
+      "Action": "fail",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectNearestBoundary",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.243907273Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateByteLimit"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.243916982Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateByteLimit",
+      "Output": "=== RUN   TestAuditProxyRepeatedFieldsRespectAggregateByteLimit\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.243977188Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateByteLimit",
+      "Output": "    resolver_repeated_test.go:8: aggregate XFF byte limit bypassed by separate field lines\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.2439909Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateByteLimit",
+      "Output": "--- FAIL: TestAuditProxyRepeatedFieldsRespectAggregateByteLimit (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244030551Z",
+      "Action": "fail",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateByteLimit",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244062315Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateHopLimit"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244065684Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateHopLimit",
+      "Output": "=== RUN   TestAuditProxyRepeatedFieldsRespectAggregateHopLimit\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244142191Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateHopLimit",
+      "Output": "    resolver_repeated_test.go:11: aggregate XFF hop limit bypassed by separate field lines\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244156933Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateHopLimit",
+      "Output": "--- FAIL: TestAuditProxyRepeatedFieldsRespectAggregateHopLimit (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244187081Z",
+      "Action": "fail",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateHopLimit",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244243994Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244288376Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants",
+      "Output": "=== RUN   TestAuditProxyResolverVariants\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244331846Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/empty"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244339395Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/empty",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/empty\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244374607Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/empty",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/empty (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244406883Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/empty",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244476368Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/trusted_chain"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244482271Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/trusted_chain",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/trusted_chain\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244512856Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/trusted_chain",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/trusted_chain (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244560204Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/trusted_chain",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.24456657Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/untrusted_boundary"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244569325Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/untrusted_boundary",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/untrusted_boundary\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244572886Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/untrusted_boundary",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/untrusted_boundary (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244575966Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/untrusted_boundary",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244621848Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_at_boundary"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244651317Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_at_boundary",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/malformed_at_boundary\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.24465963Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_at_boundary",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/malformed_at_boundary (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.24468872Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_at_boundary",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244697461Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_before_untrusted_boundary"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244700694Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_before_untrusted_boundary",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/malformed_before_untrusted_boundary\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244731084Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_before_untrusted_boundary",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/malformed_before_untrusted_boundary (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244776287Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_before_untrusted_boundary",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244783068Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops32"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244786247Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops32",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/hops32\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244790027Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops32",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/hops32 (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244818105Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops32",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244847077Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops33"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244860864Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops33",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/hops33\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244900334Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops33",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/hops33 (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244907149Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops33",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244910776Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4096"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244913107Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4096",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/bytes4096\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244957074Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4096",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/bytes4096 (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244972849Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4096",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244975519Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4097"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.244976955Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4097",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/bytes4097\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245121773Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4097",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/bytes4097 (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.24516923Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4097",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245180889Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv6_normalization"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.24518414Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv6_normalization",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/IPv6_normalization\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245208726Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv6_normalization",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/IPv6_normalization (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245246164Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv6_normalization",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245286576Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv4_mapped_IPv6"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.24531818Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv4_mapped_IPv6",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/IPv4_mapped_IPv6\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245326532Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv4_mapped_IPv6",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/IPv4_mapped_IPv6 (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245330349Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv4_mapped_IPv6",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245333807Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants",
+      "Output": "--- PASS: TestAuditProxyResolverVariants (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245336785Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245340148Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyNoConfiguredTrust"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245342676Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyNoConfiguredTrust",
+      "Output": "=== RUN   TestAuditProxyNoConfiguredTrust\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245371609Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyNoConfiguredTrust",
+      "Output": "--- PASS: TestAuditProxyNoConfiguredTrust (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245403669Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyNoConfiguredTrust",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245409983Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectNearestBoundary"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.24541299Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectNearestBoundary",
+      "Output": "=== RUN   TestAuditProxyRepeatedFieldsRespectNearestBoundary\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245443683Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectNearestBoundary",
+      "Output": "    resolver_repeated_test.go:5: separate XFF field lines ignore nearest untrusted boundary compared with same ordered combined chain\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245477203Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectNearestBoundary",
+      "Output": "--- FAIL: TestAuditProxyRepeatedFieldsRespectNearestBoundary (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.24550994Z",
+      "Action": "fail",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectNearestBoundary",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245541294Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateByteLimit"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245547053Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateByteLimit",
+      "Output": "=== RUN   TestAuditProxyRepeatedFieldsRespectAggregateByteLimit\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245550722Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateByteLimit",
+      "Output": "    resolver_repeated_test.go:8: aggregate XFF byte limit bypassed by separate field lines\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245579814Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateByteLimit",
+      "Output": "--- FAIL: TestAuditProxyRepeatedFieldsRespectAggregateByteLimit (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245614183Z",
+      "Action": "fail",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateByteLimit",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245620069Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateHopLimit"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.24562256Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateHopLimit",
+      "Output": "=== RUN   TestAuditProxyRepeatedFieldsRespectAggregateHopLimit\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245649297Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateHopLimit",
+      "Output": "    resolver_repeated_test.go:11: aggregate XFF hop limit bypassed by separate field lines\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245657588Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateHopLimit",
+      "Output": "--- FAIL: TestAuditProxyRepeatedFieldsRespectAggregateHopLimit (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245686829Z",
+      "Action": "fail",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateHopLimit",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245693924Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245697227Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants",
+      "Output": "=== RUN   TestAuditProxyResolverVariants\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245700109Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/empty"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245702411Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/empty",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/empty\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245707706Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/empty",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/empty (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245740118Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/empty",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245791421Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/trusted_chain"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245796956Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/trusted_chain",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/trusted_chain\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245801567Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/trusted_chain",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/trusted_chain (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245804967Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/trusted_chain",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245833767Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/untrusted_boundary"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245864322Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/untrusted_boundary",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/untrusted_boundary\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245875406Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/untrusted_boundary",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/untrusted_boundary (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245878988Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/untrusted_boundary",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245882514Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_at_boundary"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.24588495Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_at_boundary",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/malformed_at_boundary\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245888278Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_at_boundary",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/malformed_at_boundary (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245967532Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_at_boundary",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245984206Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_before_untrusted_boundary"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.245986191Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_before_untrusted_boundary",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/malformed_before_untrusted_boundary\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246068904Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_before_untrusted_boundary",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/malformed_before_untrusted_boundary (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246090493Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_before_untrusted_boundary",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246143562Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops32"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246184503Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops32",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/hops32\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246364428Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops32",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/hops32 (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246402513Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops32",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246408901Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops33"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246411749Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops33",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/hops33\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246479789Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops33",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/hops33 (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246495558Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops33",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246501344Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4096"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246504801Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4096",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/bytes4096\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246605691Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4096",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/bytes4096 (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246622662Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4096",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246625577Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4097"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246626876Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4097",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/bytes4097\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246703834Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4097",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/bytes4097 (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246745513Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4097",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.24675301Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv6_normalization"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246756264Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv6_normalization",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/IPv6_normalization\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246761999Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv6_normalization",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/IPv6_normalization (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246764937Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv6_normalization",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246793288Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv4_mapped_IPv6"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246799303Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv4_mapped_IPv6",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/IPv4_mapped_IPv6\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246805212Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv4_mapped_IPv6",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/IPv4_mapped_IPv6 (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246808146Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv4_mapped_IPv6",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246811271Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants",
+      "Output": "--- PASS: TestAuditProxyResolverVariants (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246823928Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246838394Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyNoConfiguredTrust"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.24684121Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyNoConfiguredTrust",
+      "Output": "=== RUN   TestAuditProxyNoConfiguredTrust\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246924899Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyNoConfiguredTrust",
+      "Output": "--- PASS: TestAuditProxyNoConfiguredTrust (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246964622Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyNoConfiguredTrust",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246974066Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectNearestBoundary"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.246977254Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectNearestBoundary",
+      "Output": "=== RUN   TestAuditProxyRepeatedFieldsRespectNearestBoundary\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247013295Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectNearestBoundary",
+      "Output": "    resolver_repeated_test.go:5: separate XFF field lines ignore nearest untrusted boundary compared with same ordered combined chain\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247037047Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectNearestBoundary",
+      "Output": "--- FAIL: TestAuditProxyRepeatedFieldsRespectNearestBoundary (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247041094Z",
+      "Action": "fail",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectNearestBoundary",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247043512Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateByteLimit"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247044658Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateByteLimit",
+      "Output": "=== RUN   TestAuditProxyRepeatedFieldsRespectAggregateByteLimit\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247132231Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateByteLimit",
+      "Output": "    resolver_repeated_test.go:8: aggregate XFF byte limit bypassed by separate field lines\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247174587Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateByteLimit",
+      "Output": "--- FAIL: TestAuditProxyRepeatedFieldsRespectAggregateByteLimit (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247187047Z",
+      "Action": "fail",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateByteLimit",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247191477Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateHopLimit"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247194084Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateHopLimit",
+      "Output": "=== RUN   TestAuditProxyRepeatedFieldsRespectAggregateHopLimit\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247197218Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateHopLimit",
+      "Output": "    resolver_repeated_test.go:11: aggregate XFF hop limit bypassed by separate field lines\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247229805Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateHopLimit",
+      "Output": "--- FAIL: TestAuditProxyRepeatedFieldsRespectAggregateHopLimit (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247283152Z",
+      "Action": "fail",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyRepeatedFieldsRespectAggregateHopLimit",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.24728922Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247292102Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants",
+      "Output": "=== RUN   TestAuditProxyResolverVariants\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247296481Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/empty"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247322048Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/empty",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/empty\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247367527Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/empty",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/empty (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247389243Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/empty",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247394061Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/trusted_chain"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247395387Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/trusted_chain",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/trusted_chain\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247397829Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/trusted_chain",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/trusted_chain (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247399281Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/trusted_chain",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247400969Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/untrusted_boundary"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247402107Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/untrusted_boundary",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/untrusted_boundary\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247484442Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/untrusted_boundary",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/untrusted_boundary (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247502364Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/untrusted_boundary",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247505924Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_at_boundary"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247507203Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_at_boundary",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/malformed_at_boundary\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.24755245Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_at_boundary",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/malformed_at_boundary (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247568181Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_at_boundary",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247571412Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_before_untrusted_boundary"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247572748Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_before_untrusted_boundary",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/malformed_before_untrusted_boundary\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247620606Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_before_untrusted_boundary",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/malformed_before_untrusted_boundary (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247632064Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/malformed_before_untrusted_boundary",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247655714Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops32"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247659821Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops32",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/hops32\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247712982Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops32",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/hops32 (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247728684Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops32",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.24775547Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops33"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.24775724Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops33",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/hops33\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247759718Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops33",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/hops33 (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247811482Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/hops33",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.2478508Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4096"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247857291Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4096",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/bytes4096\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247867934Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4096",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/bytes4096 (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247919534Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4096",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247956382Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4097"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247962387Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4097",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/bytes4097\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247968847Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4097",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/bytes4097 (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247971972Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/bytes4097",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247974709Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv6_normalization"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.247983665Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv6_normalization",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/IPv6_normalization\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.248015954Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv6_normalization",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/IPv6_normalization (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.248050059Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv6_normalization",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.248055772Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv4_mapped_IPv6"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.248058222Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv4_mapped_IPv6",
+      "Output": "=== RUN   TestAuditProxyResolverVariants/IPv4_mapped_IPv6\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.248079121Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv4_mapped_IPv6",
+      "Output": "--- PASS: TestAuditProxyResolverVariants/IPv4_mapped_IPv6 (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.248095833Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants/IPv4_mapped_IPv6",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.248126718Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants",
+      "Output": "--- PASS: TestAuditProxyResolverVariants (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.24813312Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyResolverVariants",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.248141902Z",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyNoConfiguredTrust"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.248176295Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyNoConfiguredTrust",
+      "Output": "=== RUN   TestAuditProxyNoConfiguredTrust\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.248187369Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyNoConfiguredTrust",
+      "Output": "--- PASS: TestAuditProxyNoConfiguredTrust (0.00s)\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.248192319Z",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestAuditProxyNoConfiguredTrust",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T01:31:42.24826113Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Output": "FAIL\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.249581564Z",
+      "Action": "output",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Output": "FAIL\tvoice-platform/backend/internal/security/rate_limit\t0.034s\n"
+    },
+    {
+      "Time": "2026-10-28T01:31:42.249609558Z",
+      "Action": "fail",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Elapsed": 0.035
+    }
+  ],
+  "raw_private_stream_SHA256": "3cfc6d41d07be056a3dabf5e07855fc5da3a7b0a8e594a5748b1eda6ec2b9619",
+  "stderr_bytes": 0
+}

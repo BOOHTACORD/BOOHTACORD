@@ -1,0 +1,27 @@
+"""Original native controls and failing repeated-field regression witnesses on exact source."""
+import hashlib,json,os,subprocess,sys,time
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,SOURCE,CONTEXT
+IMAGE='golang@sha256:5a94593d87a066df5abb02969be911524963f53908292aa5a1a6096fc019012a'
+def now():return datetime.now(timezone.utc).isoformat()
+def save(n,d):(P/n).write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8',newline='\n')
+def sha(b):return hashlib.sha256(b).hexdigest()
+assert not (P/'native-result.json').exists();files=[* (Q/'backend/internal/security/rate_limit').glob('*.go'),Q/'backend/internal/config/runtime/load.go',Q/'backend/internal/config/runtime/load_test.go',P/'resolver_variants_test.go',P/'resolver_repeated_test.go',Path(__file__)]
+save('runner-before-native.json',{'at_utc':now(),'source_revision':SOURCE,'toolchain_image':IMAGE,'files_SHA256':{f.relative_to(Q).as_posix():sha(f.read_bytes()) for f in files}})
+overlay={'Replace':{'/src/internal/security/rate_limit/'+n:'/work/'+n for n in ['resolver_variants_test.go','resolver_repeated_test.go']}};(P/'native-overlay.json').write_text(json.dumps(overlay),encoding='utf-8');cache=subprocess.check_output(['go','env','GOMODCACHE'],text=True).strip();runs=[]
+def run(label,args,expected,local=False):
+ if local:argv=args;env={**os.environ,'GOTOOLCHAIN':'local','DATABASE_URL':''};cwd=Q/'backend'
+ else:
+  name='boohtacord-proxy-source-'+label;assert not docker('ps','-a','--filter','name=^'+name+'$','--format','{{.Names}}').decode().strip();argv=['docker','--context',CONTEXT,'run','--rm','--name',name,'--label','com.docker.compose.project='+PROJECT,'--label','qa.packet=proxy-source-native','--network','none','--cpus','2','--memory','2g','--pids-limit','512','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges','--tmpfs','/tmp:rw,exec,nosuid,nodev,size=2147483648','--mount','type=bind,source='+str(Q/'backend')+',target=/src,readonly','--mount','type=bind,source='+str(P)+',target=/work','--mount','type=bind,source='+cache+',target=/gomod,readonly','--mount','type=bind,source='+str(P.parent/'qa-rate-capacity/native-cache')+',target=/cache','-e','GOMODCACHE=/gomod','-e','GOCACHE=/cache','-e','GOTOOLCHAIN=local','-e','GOPROXY=off','-e','GOSUMDB=off','-e','GOWORK=off','-e','CGO_ENABLED=1','-e','GOMAXPROCS=2','-w','/src',IMAGE,*args];env=None;cwd=Q
+ t=time.monotonic();started=now()
+ with (P/(label+'.private.stdout')).open('wb') as out,(P/(label+'.private.stderr')).open('wb') as err:process=subprocess.Popen(argv,cwd=cwd,env=env,stdout=out,stderr=err);save('native-live.json',{'status':'RUNNING','label':label,'controller_PID':os.getpid(),'child_PID':process.pid});code=process.wait(timeout=600)
+ d={'label':label,'at_utc':started,'finished_at_utc':now(),'elapsed_s':time.monotonic()-t,'exit_code':code,'command_argv':args,'platform':'Windows11Go1.26.4' if local else 'Linuxamd64Go1.26.4Cgo2CPU2GiBnetworknone','stdout_SHA256':sha((P/(label+'.private.stdout')).read_bytes()),'stderr_SHA256':sha((P/(label+'.private.stderr')).read_bytes())};runs.append(d);print(json.dumps(d),flush=True);assert code==expected,'Inspect private native result'
+run('original-race',['go','test','-json','-p=2','-race','-count=3','-timeout=3m','./internal/security/rate_limit'],0)
+run('invalid-config',['go','test','-json','-count=1','-run','^TestLoadRejectsInvalidTrustedProxyCIDR$','./internal/config/runtime'],0,True)
+run('candidate-race',['go','test','-json','-p=2','-race','-count=3','-timeout=3m','-overlay=/work/native-overlay.json','-run','^TestAuditProxy','./internal/security/rate_limit'],1)
+def events(n):return [json.loads(v) for v in (P/(n+'.private.stdout')).read_text(encoding='utf-8').splitlines() if v]
+original=events('original-race');invalid=events('invalid-config');candidate=events('candidate-race');expected={'TestAuditProxyRepeatedFieldsRespectNearestBoundary','TestAuditProxyRepeatedFieldsRespectAggregateByteLimit','TestAuditProxyRepeatedFieldsRespectAggregateHopLimit'}
+assert not any(x['Action'] in ['fail','skip'] for x in original+invalid);bad=[x for x in candidate if x['Action']=='fail' and x.get('Test')];assert len(bad)==9 and {x['Test'] for x in bad}==expected and not any(x['Action']=='skip' or 'WARNING: DATA RACE' in x.get('Output','') for x in candidate)
+d={'status':'MEASURED_FAIL_REPEATED_XFF_CURRENT_SOURCE','source_revision':SOURCE,'at_utc':now(),'runs':runs,'original_race_top_level_pass_events':sum(x['Action']=='pass' and bool(x.get('Test')) for x in original),'invalid_CIDR_pass_events':sum(x['Action']=='pass' and bool(x.get('Test')) for x in invalid),'candidate_failure_names':sorted(expected),'candidate_failed_events':len(bad),'candidate_repetitions':3,'candidate_pass_events_including_subtests':sum(x['Action']=='pass' and bool(x.get('Test')) for x in candidate),'skips':0,'data_race_reports':0,'no_product_source_edits':True};save('native-result.json',d);save('native-live.json',{'status':'TERMINAL_MEASURED_FAIL','finished_at_utc':now()});print(json.dumps(d));sys.exit(1)

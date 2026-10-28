@@ -5270,28 +5270,47 @@
           "requirement": "[#138 — доверенные proxy headers](https://github.com/Egkurilov/BOOHTACORD/issues/138): на изолированном Compose проверить прямой peer, доверенный proxy, недоверенный spoofed X-Forwarded-For, цепочки, malformed/oversized header и fallback к peer. Приложить безопасный config audit и HTTP/outcome matrix; реальные IP и сетевые credentials не прикладывать.",
           "source_checkbox": " ",
           "id": "I240.C6",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental.",
-          "platform": "Disposable owned PostgreSQL/API/LiveKit target and bounded synthetic accounts/data; never shared production fault/load injection.",
+          "status": "FAIL",
+          "execution_cases": [
+            "ISOLATED-trusted-proxy-source-repeated-fields"
+          ],
+          "evidence": [
+            "isolated-proxy-source/summary.json",
+            "isolated-proxy-source/trusted-result.json",
+            "isolated-proxy-source/wire-result.json",
+            "isolated-proxy-source/native-result.json",
+            "isolated-proxy-source/config-audit.json",
+            "isolated-proxy-source/environment-after.json",
+            "isolated-proxy-source/source-binding.json",
+            "isolated-proxy-source/duplicate-search.json"
+          ],
+          "execution": "python -X utf8 .out/qa-proxy-source/run_profile.py run",
+          "platform": "Actual source072 Linux API/PostgreSQL17.6/Caddy2.10.0 on this Windows11 PC; private Compose runtime bridge with outbound access, unpublishedAPI/admin, loopback host bindings",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "isolated-proxy-source/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_api_faults"
           ],
           "execution_plan": {
-            "status": "PLAN_ONLY_NOT_RUNTIME_PROOF",
+            "status": "EXECUTED_FAILING_WITNESS_WITH_PASSING_DEFAULT_CADDY_CONTROLS",
             "source_scenario": "I240.C6 requirement text retained verbatim",
             "method_scope": "Each method is supplemental; execute every remaining source-row clause and required platform variant separately",
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-trusted-proxy-source-repeated-fields"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "reason": "Separate XFF field lines from a trusted peer bypass nearest-untrusted boundary and aggregate limits:5/100 primary failures plus3/18 literal TCP differential failures; same combined chains failclosed429. Ordinary untrusted peer/defaultCaddy controls pass. Canonical138 fix required.",
+          "remaining_work_state": "FAIL_FIX_REQUIRED_REPEATED_XFF_FIELDS; default_Caddy_public_bypass_NOT_ESTABLISHED",
+          "additional_execution_commands": [
+            "python -X utf8 .out/qa-proxy-source/run_wire.py; python -X utf8 .out/qa-proxy-source/run_native.py; python -X utf8 .out/qa-proxy-source/verify_after.py"
+          ],
+          "defects": [
+            138
+          ]
         },
         {
           "section": "Сессия, backend admission и security",
@@ -5807,7 +5826,8 @@
         "ISOLATED-websocket-default-quotas-real-http",
         "ISOLATED-login-NAT20-account-IP-KDF-runtime",
         "ISOLATED-upload-account-source-deployment-windows",
-        "ISOLATED-rate-limit-capacity-race-benchmark"
+        "ISOLATED-rate-limit-capacity-race-benchmark",
+        "ISOLATED-trusted-proxy-source-repeated-fields"
       ],
       "evidence": [
         "notification-readiness/summary.json",
@@ -5821,11 +5841,13 @@
         "isolated-websocket-quotas/summary.json",
         "isolated-login-budgets/summary.json",
         "isolated-upload-budgets/summary.json",
-        "isolated-rate-capacity/summary.json"
+        "isolated-rate-capacity/summary.json",
+        "isolated-proxy-source/summary.json"
       ],
       "defects": [
         134,
-        137
+        137,
+        138
       ],
       "blockers": [],
       "source_body_sha256": "7cca703010a69ef8a373315fc6e27adac88f81ff7c8be3a80976e06bfdaba9d3",
@@ -16140,7 +16162,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-28T01:16:05.905520+00:00",
+  "updated_utc": "2026-10-28T01:34:01.307922+00:00",
   "known_defect_issues": [
     579,
     580,
@@ -16149,7 +16171,8 @@
     584,
     585,
     586,
-    137
+    137,
+    138
   ],
   "criterion_witness_note": "Exact row links are scoped. PARTIAL/FAIL/BLOCKED never satisfy the complete multi-platform requirement; unlinked PENDING rows still need routing/execution.",
   "acceptance_method_catalog": "acceptance-methods.json",

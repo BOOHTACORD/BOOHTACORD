@@ -1,0 +1,47 @@
+"""Actual private Compose forwarding matrix; retain mismatches and remove own peers."""
+import hashlib,ipaddress,json,os,secrets,subprocess,sys
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,SOURCE,CONTEXT
+assert sys.argv[1:] == ['run'] and not (P/'run-result.json').exists()
+def now():return datetime.now(timezone.utc).isoformat()
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+def save(n,d):(P/n).write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8',newline='\n')
+def sha(b):return hashlib.sha256(b).hexdigest()
+def db():return list(map(int,docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-At',input=b"SELECT (SELECT count(*) FROM users),(SELECT count(*) FROM sessions),(SELECT count(*) FROM sessions WHERE revoked_at IS NULL),(SELECT count(*) FROM attachments);\n").decode().strip().split('|')))
+proxy=json.loads(docker('inspect',PROJECT+'-proxy-1'))[0];api=json.loads(docker('inspect',PROJECT+'-api-1'))[0]
+for v in [proxy,api]:assert v['State']['Running'] and v['RestartCount']==0 and v['Config']['Labels']['com.docker.compose.project']==PROJECT
+assert json.loads(docker('image','inspect',api['Image']))[0]['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+trusted=[ipaddress.ip_network(v.split('=',1)[1]) for v in api['Config']['Env'] if v.startswith('TRUSTED_PROXY_CIDRS=')];assert len(trusted)==1 and trusted[0].prefixlen==32
+network=next(k for k,n in proxy['NetworkSettings']['Networks'].items() if n['IPAddress'] and ipaddress.ip_address(n['IPAddress']) in trusted[0]);assert network in api['NetworkSettings']['Networks'];network_meta=json.loads(docker('network','inspect',network))[0];assert network_meta['Driver']=='bridge' and network_meta['Labels'].get('com.docker.compose.project')==PROJECT;assert all(json.loads(docker('inspect',i))[0]['Config']['Labels'].get('com.docker.compose.project')==PROJECT for i in network_meta['Containers']);proxy_ip=proxy['NetworkSettings']['Networks'][network]['IPAddress']
+assert not any(api['NetworkSettings']['Ports'].values()) and not any(b for port,bindings in proxy['NetworkSettings']['Ports'].items() if port=='2019/tcp' for b in bindings or [])
+assert '18088/tcp' in proxy['NetworkSettings']['Ports'];config=P/'private/config.private.json';assert not config.exists()
+prefix=int(ipaddress.ip_address('fd00::'))|(secrets.randbits(56)<<64);v4prefix='172.'+str(16+secrets.randbelow(14))+'.'+str(secrets.randbelow(256))+'.';cfg={'source_revision':SOURCE,'proxy':proxy_ip,'front_port':18088,'V4':[v4prefix+str(32+i) for i in range(16)],'V6':[str(ipaddress.ip_address(prefix+i+1)) for i in range(128)],'Peers':{}};config.write_text(json.dumps(cfg,indent=2)+'\n',encoding='utf-8');save('baseline-database.json',{'at_utc':now(),'users_sessions_active_attachments':db()})
+files=sorted(P.glob('probe_*.go'));assert len(files)==4;save('runner-before-run.json',{'at_utc':now(),'source_revision':SOURCE,'API_image_id':api['Image'],'proxy_image_id':proxy['Image'],'files_SHA256':{f.name:sha(f.read_bytes()) for f in [*files,Path(__file__)]}})
+build=subprocess.run(['go','build','-o',str(P/'proxy_probe'),*[str(f) for f in files]],cwd=Q/'backend',env={**os.environ,'GOOS':'linux','GOARCH':'amd64','CGO_ENABLED':'0','GOTOOLCHAIN':'local'},capture_output=True);(P/'build.private.log').write_bytes(build.stdout+build.stderr);assert build.returncode==0,'Inspect private build log'
+owned={};phases=[];r={'at_utc':now(),'status':'RUNNING','source_revision':SOURCE,'project':PROJECT,'production_touched':False,'controller_PID':os.getpid(),'binary_SHA256':sha((P/'proxy_probe').read_bytes())};save('run-runner.json',r)
+common=['--label','com.docker.compose.project='+PROJECT,'--label','qa.packet=proxy-source','--cpus','0.5','--memory','256m','--pids-limit','64','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges','--mount','type=bind,source='+str(P/'proxy_probe')+',target=/qa-probe,readonly']
+def phase(mode,peer=None):
+ if peer:argv=['docker','--context',CONTEXT,'exec',owned[peer],'/qa-probe',mode]
+ else:argv=['docker','--context',CONTEXT,'run','--rm','--name','boohtacord-proxy-source-worker',*common,'--network','container:'+proxy['Id'],'--mount','type=bind,source='+str(P/'private')+',target=/work','--entrypoint','/qa-probe',api['Image'],mode]
+ with (P/(mode+'.private.stdout')).open('wb') as out,(P/(mode+'.private.stderr')).open('wb') as err:process=subprocess.Popen(argv,stdout=out,stderr=err);r.update(current_mode=mode,docker_client_PID=process.pid);save('run-runner.json',r);code=process.wait(timeout=250)
+ events=[json.loads(v) for v in (P/(mode+'.private.stdout')).read_text(encoding='utf-8').splitlines() if v];final=next(x for x in events if x['event']=='final');save(mode+'-result.json',final);assert final['status'] in ['PASS_SCOPED','FAIL_ACCEPTANCE'] and code==(0 if final['status']=='PASS_SCOPED' else 1),'Inspect private controller/profile failure'
+ phases.append({'mode':mode,'exit_code':code,'status':final['status'],'failed_cases':final['failed_cases'],'cases':len(final['cases']),'stdout_SHA256':sha((P/(mode+'.private.stdout')).read_bytes()),'stderr_SHA256':sha((P/(mode+'.private.stderr')).read_bytes())});print(json.dumps(phases[-1]),flush=True)
+ for c in final['cases']:
+  if c['status']=='FAIL':print(json.dumps(c),flush=True)
+ return final
+try:
+ for peer in ['A','B']:
+  name='boohtacord-proxy-source-peer-'+peer.lower();assert not docker('ps','-a','--filter','name=^'+name+'$','--format','{{.Names}}').decode().strip();identifier=docker('run','-d','--name',name,*common,'--network',network,'--mount','type=bind,source='+str(P/'private')+',target=/work,readonly','--entrypoint','/qa-probe',api['Image'],'idle').decode().strip();owned[peer]=identifier;v=json.loads(docker('inspect',identifier))[0];ip=v['NetworkSettings']['Networks'][network]['IPAddress'];assert ipaddress.ip_address(ip).is_private and ipaddress.ip_address(ip) not in trusted[0];cfg['Peers'][peer]=ip
+ assert cfg['Peers']['A']!=cfg['Peers']['B'];config.write_text(json.dumps(cfg,indent=2)+'\n',encoding='utf-8');save('private-input-receipt.json',{'at_utc':now(),'private_config_SHA256':sha(config.read_bytes()),'owned_peer_count':2,'peer_roles_distinct_and_untrusted':True})
+ phase('audit-config');adapted=docker('exec',PROJECT+'-proxy-1','caddy','adapt','--config','/etc/caddy/Caddyfile','--adapter','caddyfile');running=(P/'private/caddy-running.private.json').read_bytes();assert json.loads(adapted)==json.loads(running),'Mounted and actual Caddy configs differ'
+ save('config-audit.json',{'at_utc':now(),'status':'PASS_ACTUAL_PRIVATE_TOPOLOGY_AND_CONFIG','API_host_ports_published':0,'Caddy_admin_published':False,'trusted_CIDR_count':1,'trusted_prefix_length':32,'trusted_identity_matches_only_actual_private_proxy':True,'test_peer_roles_distinct_and_untrusted':True,'test_network_internal':network_meta['Internal'],'test_network_members_all_owned_project':True,'runtime_Caddy_matches_mounted_file':True,'mounted_Caddyfile_SHA256':sha((Q/'deploy/caddy/Caddyfile').read_bytes()),'runtime_Caddy_private_bytes_SHA256':sha(running),'adapted_Caddy_SHA256':sha(adapted),'Caddy_version':docker('exec',PROJECT+'-proxy-1','caddy','version').decode().strip(),'limits':'Actual unique QA runtime bridge permits outbound traffic; API/admin have no host publications, all current members belong to this QA project. Default Caddyfile path only, not full default Compose topology or production audit. Real IP/CIDR/credential values excluded'})
+ phase('untrustedA','A');phase('frontA','A');phase('frontB','B');phase('directB','B');phase('trusted');phase('observe');r['status']='MEASURED_FAIL_ACCEPTANCE' if any(p['failed_cases'] for p in phases) else 'PASS_ACTUAL_PROXY_SOURCE_MATRIX'
+except Exception as e:r['status']='ERROR_CONTROLLER_OR_PROFILE';r['error_type']=type(e).__name__
+finally:
+ cleanup=[]
+ for role,identifier in owned.items():
+  v=json.loads(docker('inspect',identifier))[0];assert v['Id']==identifier and v['Config']['Labels'].get('qa.packet')=='proxy-source' and v['Config']['Labels'].get('com.docker.compose.project')==PROJECT;docker('rm','-f',identifier);cleanup.append({'role':role,'removed':True})
+ r.update(finished_at_utc=now(),phases=phases,owned_peer_cleanup=cleanup,database_counts_after=db());save('run-runner.json',r);save('run-result.json',{'status':r['status'],'source_revision':SOURCE,'production_touched':False,'phases':phases,'failed_cases':sum(p['failed_cases'] for p in phases),'case_count':sum(p['cases'] for p in phases),'owned_peer_cleanup':cleanup,'database_counts_unchanged':r['database_counts_after']==read(P/'baseline-database.json')['users_sessions_active_attachments']})
+print(json.dumps(r));sys.exit(0 if r['status'].startswith('PASS') else 1)
