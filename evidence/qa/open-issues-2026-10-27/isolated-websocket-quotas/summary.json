@@ -1,0 +1,191 @@
+{
+  "at_utc": "2026-10-27T23:57:16.055023+00:00",
+  "status": "PASS_I240_C3_EXACT_BACKEND_SCOPE",
+  "criterion": "I240.C3",
+  "implementation_issue": 135,
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "production_touched": false,
+  "protects": "Atomic account/session/deployment admission before upgrade; strict429 contract; release after close/error; bounded reconnect and owned revocation control",
+  "command": "python -X utf8 .out/qa-ws-quota/run_ws.py resume2; python -X utf8 .out/qa-ws-quota/run_ws.py observe; python -X utf8 .out/qa-ws-quota/verify_after.py",
+  "platform": "Windows11 controller/Go1.26.4; actual source072 Linux API and PostgreSQL17.6 in private local Docker deployment",
+  "mandatory_when": "Before accepting I240.C3; parent240 and unrelated platform/security/media gates stay open",
+  "numeric_observations": {
+    "client_elapsed_seconds": 73.977561347,
+    "private_API_metric_samples": 85,
+    "DB_samples": 23,
+    "API_RSS_sampled_max_bytes": 104833024,
+    "API_FD_sampled_max": 553,
+    "API_goroutines_sampled_max": 1051,
+    "API_CPU_counter_delta_seconds_before_cleanup": 7.769999999999996,
+    "DB_connections_sampled_max": 21,
+    "active_DB_connections_sampled_max": 1,
+    "accepted_connection_counter_delta": 828,
+    "rejected_connection_counter_delta": 47,
+    "final_active_connections": 0,
+    "actual_full_tier_held_seconds": 20
+  },
+  "facets": {
+    "owned_fixture_setup": {
+      "at_utc": "2026-10-27T23:53:50.289217185Z",
+      "event": "observation",
+      "label": "owned_fixture_setup",
+      "limits_unchanged": true,
+      "members": 104,
+      "reused_owned_members": true,
+      "sessions": 312,
+      "source_cohorts": 48
+    },
+    "session_concurrent_quota_and_reconnect": {
+      "RetryAfter": "1",
+      "accepted": 2,
+      "at_utc": "2026-10-27T23:53:50.331951827Z",
+      "attempts": 20,
+      "cookie_refresh_same_token_validated": true,
+      "event": "observation",
+      "graceful_release_and_reconnect": true,
+      "label": "session_concurrent_quota_and_reconnect",
+      "rejected429": 18
+    },
+    "account_concurrent_quota_and_reconnect": {
+      "abrupt_release_and_reconnect": true,
+      "accepted": 5,
+      "at_utc": "2026-10-27T23:53:50.361346396Z",
+      "attempts": 12,
+      "event": "observation",
+      "independent_sixth_on_nonfull_session429": true,
+      "label": "account_concurrent_quota_and_reconnect",
+      "rejected429": 7
+    },
+    "upgrade_failures_no_slot_leak": {
+      "426_Upgrade_instruction_validated": true,
+      "active_after_failures": 0,
+      "at_utc": "2026-10-27T23:53:50.410099375Z",
+      "cookie_refresh_same_token_validated": true,
+      "event": "observation",
+      "failed_attempts": 30,
+      "http_counts": {
+        "403": 10,
+        "426": 20
+      },
+      "label": "upgrade_failures_no_slot_leak",
+      "no101_or_SecWebSocketAccept": true,
+      "post_error_account_capacity": 5
+    },
+    "tier_1": {
+      "active": 1,
+      "at_utc": "2026-10-27T23:53:56.455655942Z",
+      "event": "observation",
+      "held_seconds": 6,
+      "label": "tier_1"
+    },
+    "tier_10": {
+      "active": 10,
+      "at_utc": "2026-10-27T23:54:02.504659054Z",
+      "event": "observation",
+      "held_seconds": 6,
+      "label": "tier_10"
+    },
+    "tier_100": {
+      "active": 100,
+      "at_utc": "2026-10-27T23:54:09.657998667Z",
+      "event": "observation",
+      "held_seconds": 6,
+      "label": "tier_100"
+    },
+    "tier_500": {
+      "active": 500,
+      "at_utc": "2026-10-27T23:54:30.279908168Z",
+      "event": "observation",
+      "held_seconds": 20,
+      "label": "tier_500"
+    },
+    "full_tier_revalidation": {
+      "at_utc": "2026-10-27T23:54:30.284079881Z",
+      "event": "observation",
+      "label": "full_tier_revalidation",
+      "note": "Actual API revalidation call metric, not inferred SQL query count",
+      "revalidation_call_delta": 500,
+      "revalidation_failures_delta": 0
+    },
+    "deployment_concurrent_quota": {
+      "at_utc": "2026-10-27T23:54:30.415111601Z",
+      "boundary_accepted": 10,
+      "boundary_rejected429": 20,
+      "concurrent_boundary_attempts": 30,
+      "event": "observation",
+      "full_active": 500,
+      "independent_extra429": true,
+      "label": "deployment_concurrent_quota",
+      "prefill": 490,
+      "release499_reconnect500": true
+    },
+    "reconnect100_cycle_1": {
+      "active": 100,
+      "at_utc": "2026-10-27T23:54:34.468524844Z",
+      "event": "observation",
+      "held_seconds": 4,
+      "label": "reconnect100_cycle_1"
+    },
+    "reconnect100_cycle_2": {
+      "active": 100,
+      "at_utc": "2026-10-27T23:54:39.519253984Z",
+      "event": "observation",
+      "held_seconds": 4,
+      "label": "reconnect100_cycle_2"
+    },
+    "bounded_mass_reconnect": {
+      "at_utc": "2026-10-27T23:54:39.525817688Z",
+      "connections_per_cycle": 100,
+      "cycles": 2,
+      "dial_concurrency_limit": 20,
+      "event": "observation",
+      "final_active": 0,
+      "label": "bounded_mass_reconnect"
+    },
+    "actual_own_session_revocation": {
+      "at_utc": "2026-10-27T23:54:54.546666401Z",
+      "close_code": 1008,
+      "elapsed_seconds": 14.996213284,
+      "event": "observation",
+      "label": "actual_own_session_revocation",
+      "logout_http": 204,
+      "revoked_retry_http": 401,
+      "sibling_session_upgrades101": true,
+      "slo_claim": "Observed bound only; no new general revalidation SLO claim"
+    }
+  },
+  "cleanup": {
+    "owned_members_retained_unblocked": 104,
+    "all_three_attempt_owned_session_rows": 936,
+    "owned_active_sessions": 0,
+    "original_services_running": 9,
+    "all_published_ports_loopback": true
+  },
+  "controller_failures_retained": [
+    "controller-attempts/attempt1/run-result.json",
+    "controller-attempts/attempt2/resume-result.json"
+  ],
+  "cookie_contract": "Require middleware may refresh the identical Secure/HttpOnly/SameSite=Lax vp_session; no replacement token and no new session row from quota attempts.401 revocation retry has no cookie.",
+  "limits": "Actual isolated direct Go API/PG17.6 and standard500/5/2 quotas; no Nginx/WSS/browser/native-client retry/media-capacity proof.1/10/100 held6s,500 held20s, two100-connection reconnect cycles held4s.3s DB and phase/1s API metric samples can miss peaks. Own logout closure~15s is an observation, not full revocation/delivery SLO acceptance.",
+  "native_tests": {
+    "top_level_pass": 6,
+    "skip": 0,
+    "result": "focused-go-result.json"
+  },
+  "source_binding": "source-binding.json",
+  "original480_requirement_texts_preserved": true,
+  "original43_consolidation_decisions_changed": false,
+  "historical_setup_commands": [
+    {
+      "command": "python -X utf8 .out/qa-ws-quota/run_ws.py run",
+      "source": "controller-attempts/attempt1/runner-source",
+      "exit": 1
+    },
+    {
+      "command": "python -X utf8 .out/qa-ws-quota/run_ws.py resume",
+      "source": "controller-attempts/attempt2/runner-source",
+      "exit": 1
+    }
+  ],
+  "source_reproduction": "Follow README.md for historical per-attempt source restore; completed fixture must not be rerun blindly."
+}

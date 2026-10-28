@@ -1,0 +1,117 @@
+{
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "API_image_id": "sha256:b34a09b6eebfb87fea478e7cd440cc7ab9c52dc7dbd3cf4d659b12a9eff98a47",
+  "go_version": "go version go1.26.4 windows/amd64",
+  "files": {
+    "backend/internal/realtime/admit_connection/limiter.go": {
+      "source_bytes": 2051,
+      "git_source_SHA256": "88cfdcd77da6e4bd8d946bd45e06433b34b898c78d97e959a8309a1dda3b7d86",
+      "working_bytes_SHA256": "63481b497c364289c2bb868ee29fdb9ebdf4cda84a2d7d4129c841adb14058c4"
+    },
+    "backend/internal/realtime/admit_connection/limiter_test.go": {
+      "source_bytes": 1687,
+      "git_source_SHA256": "4d952f13ee7fac55d4a1a407dd701841d29af64e1fc53dc163b30e703edde2af",
+      "working_bytes_SHA256": "8317b657b90e6611acb3bf37487fb67ddeba17251eb74dc7c1ecb26f9ef1f644"
+    },
+    "backend/internal/realtime/connect_session/admission.go": {
+      "source_bytes": 704,
+      "git_source_SHA256": "92ff9a62cecf3b379dce8ec5b2b66f89bac5af020a952270287ab432bcdfdf6c",
+      "working_bytes_SHA256": "8c21a1618a8c022d686745107d098f2b5c1886ded42e25edea1e255e105ffb56"
+    },
+    "backend/internal/realtime/connect_session/http_handler.go": {
+      "source_bytes": 4644,
+      "git_source_SHA256": "097ee04a164d6be54d2ef7e7a0e3506e35abdef270410246116fa1dcc6dbd255",
+      "working_bytes_SHA256": "9a33b28b9e2f3e3eb7fc749d7ef189e523d1fc42b0d1976f8be9452d90d8a2be"
+    },
+    "backend/internal/realtime/connect_session/event_stream.go": {
+      "source_bytes": 4490,
+      "git_source_SHA256": "74f9d05890b2727a4175efd217d50d630350030ef2566c19d772d50a6195a8e7",
+      "working_bytes_SHA256": "053826e5cd799357b39ba6e216bc347dd76b1a94d247b00bfce396d200f25ecb"
+    },
+    "backend/internal/realtime/connect_session/connection_contract.go": {
+      "source_bytes": 501,
+      "git_source_SHA256": "31d62ad9f3490072dc884cd992478c19b83178bebc474c0b73dcf1ea92732971",
+      "working_bytes_SHA256": "0a11cf912133dcf0b52b4514565b7c802d4de433f3e4a16290c466037c700ce3"
+    },
+    "backend/internal/realtime/connect_session/http_handler_test.go": {
+      "source_bytes": 5690,
+      "git_source_SHA256": "aab19a230dcf3b05ffb97f45349495671d75b1fef5aff5d8d2a3bbb18c9dd483",
+      "working_bytes_SHA256": "8b7eed8fbe0b8b19fa418256876c51756577d6d8012fa8e00aa7b12924922cad"
+    },
+    "backend/internal/realtime/connect_session/observability_test.go": {
+      "source_bytes": 2684,
+      "git_source_SHA256": "570f64b1307806c776d815653d947109a250aa72c23162e87e9206aac068d280",
+      "working_bytes_SHA256": "4fe2e4afab9f387f5402f2127708c9e87b7a0e14c4ffac73fe326ab1b1a0ab56"
+    },
+    "backend/internal/observability/http_metrics/realtime_connections.go": {
+      "source_bytes": 2255,
+      "git_source_SHA256": "d034282bc1ba2e6b93356c6c10af0a307df0cb9792fee9379add33a6e6ae611f",
+      "working_bytes_SHA256": "3d59383f7a1ebaebf4b2234c77d8ca0ed650c47e916a7b984f0ed544bb209987"
+    },
+    "backend/internal/observability/http_metrics/recorder_test.go": {
+      "source_bytes": 3919,
+      "git_source_SHA256": "b453fc0df78b2b407c0104ab645d8b815c9e4f88faa5f9a6d8d79719f617821b",
+      "working_bytes_SHA256": "4d7cae60670ed3cc5dc2d2b870b80f315f80c1f9d686545c22c4a624a1671f48"
+    },
+    "backend/internal/app/chat_routes/realtime_routes.go": {
+      "source_bytes": 1200,
+      "git_source_SHA256": "cee91565b6b679e7190a7293beeeb19bfc492f24527709f735c6f433cd0e032c",
+      "working_bytes_SHA256": "6f287897e5eac13e8a7ccd14b9a3b6d9c89df7562f96ece875ba2461847f97b8"
+    },
+    "backend/internal/app/runtime/routes.go": {
+      "source_bytes": 6842,
+      "git_source_SHA256": "48bf9c290391b82b641c3d5590d0873058f34eea0b47ab8d4f43880207f65590",
+      "working_bytes_SHA256": "ae33c446ac2ce8dedfe7713fb11471a1b4379215f37248d9368c3779a935c720"
+    },
+    "backend/internal/config/runtime/admission.go": {
+      "source_bytes": 2007,
+      "git_source_SHA256": "825f19e38be78367834c7e6bd93d670a2d34ce367172e9fe2e5c9b71c2c19b4c",
+      "working_bytes_SHA256": "bc7bd4722ac9ba6be94c476e4a0e66c352d70955c394db60f0edee65847f8fab"
+    },
+    "backend/internal/app/observability_routes/status_routes.go": {
+      "source_bytes": 720,
+      "git_source_SHA256": "f691c74527472af204e35dc126da75aad673983cc7f678a6ab58d2ad54ab9b08",
+      "working_bytes_SHA256": "44e8f619fd44719b1b1472cd65dd5884b7aaff539e84d43fea43d2b7c1c230f2"
+    },
+    "backend/internal/identity/authenticate_session/api/middleware.go": {
+      "source_bytes": 3756,
+      "git_source_SHA256": "09a61bb14f5817311593a01636afad9cd5b946b71afd1e6e501de73e0ff38c5e",
+      "working_bytes_SHA256": "bdc1a4755155911e976d9b7d258b7c861c2851ac94a6b6e5c2948107c2d6e45e"
+    },
+    "backend/internal/identity/session/cookie.go": {
+      "source_bytes": 836,
+      "git_source_SHA256": "5de52fe1904c52d8c60124d2a2660eb66337555b46f6baf08fa1cdf6276f7483",
+      "working_bytes_SHA256": "e5c613c09614d13d3ab5fbc04bca09bb6c047f075e7c7bf48ba0fdfc97972fb2"
+    },
+    "backend/go.mod": {
+      "source_bytes": 4430,
+      "git_source_SHA256": "2e183e09a0dd4271c7729af009f4c93927f3b36fa5e0aee5f5187ff80c8c6d31",
+      "working_bytes_SHA256": "33cbf13647d246156f0e65379e04fdea093de64db35c83573020f6b4bd3e9603"
+    },
+    "backend/go.sum": {
+      "source_bytes": 29219,
+      "git_source_SHA256": "25ff164719521fd4a9985757270b64489174e363fabad30b15ee5463a53eaec7",
+      "working_bytes_SHA256": "fa8aede6ebd700290411e15aa43dba8e793300dbcee5c583eb367169ad1d2d08"
+    },
+    "tools/toolchains.json": {
+      "source_bytes": 370,
+      "git_source_SHA256": "23eb056f13c993838cad651b0ce52e5cc4ce5f26daad96f8c0876621d7110961",
+      "working_bytes_SHA256": "ae1564530abb2697f24a0e1cff899aeb1fde5fb9266b63e973d71811114fbe28"
+    }
+  },
+  "pinned_library_contract": {
+    "github.com/coder/websocket@v1.8.15/accept.go": {
+      "bytes": 11682,
+      "SHA256": "3578bc97e032fdee9ff5fbcecf4e02f2f9d0928184b92466702858de76d8b6af"
+    },
+    "github.com/coder/websocket@v1.8.15/dial.go": {
+      "bytes": 9928,
+      "SHA256": "613ea3bb251a13de7c0f47839947a7e5f867acb9555bad1499d1a514b9a772d7"
+    }
+  },
+  "all_three_attempt_runner_pre_execution_hashes_verified": true,
+  "postcheck_pre_execution_hash_verified": true,
+  "runner_export_note": "Original-byte SHA in pre-execution receipts; public source exports normalize CRLF to LF and are sealed by manifest.",
+  "unchanged_dependency": "../local-staging/runner-source/profile_common.py.txt",
+  "product_edits": false
+}

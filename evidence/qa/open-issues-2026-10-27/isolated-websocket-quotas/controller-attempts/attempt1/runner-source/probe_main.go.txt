@@ -1,0 +1,30 @@
+package main
+
+import (
+ "context"
+ "fmt"
+ "net"
+ "os"
+ "time"
+)
+
+func itoa(n int)string{return fmt.Sprint(n)}
+func main(){
+ started:=time.Now();var cancel context.CancelFunc;ctx,cancel=context.WithTimeout(context.Background(),12*time.Minute)
+ mode:="observe";if len(os.Args)>1{mode=os.Args[1]}
+ defer func(){
+  failure:=recover();cancel();result:=map[string]any{"status_ok":true,"members_retained":0}
+  if mode=="run"{result=cleanup()};report["cleanup"]=result;report["records"]=records;report["metric_samples"]=observations;report["elapsed_seconds"]=time.Since(started).Seconds()
+  report["status"]="PASS_ACTUAL_WEBSOCKET_DEFAULT_QUOTAS";exit:=0
+  if mode=="observe"{report["status"]="PASS_OWNED_API_METRICS_PREREQUISITE"}
+  if failure!=nil||result["status_ok"]!=true{report["status"]="FAIL_OR_PROFILE";exit=1;if s,ok:=failure.(string);ok{report["failed_check"]=s}else{report["failed_check"]="private runtime error type"}}
+  emit("final",report);os.Exit(exit)
+ }()
+ require(mode=="observe"||mode=="run","invalid owned probe mode")
+ addresses,e:=net.LookupIP("api");require(e==nil&&len(addresses)>0,"owned API DNS");for _,a:=range addresses{require(a.IsPrivate(),"nonprivate API rejected")}
+ baseline:=snapshot("initial_baseline",0);require(baseline["voice_platform_realtime_connections_active"]==0,"owned target has preexisting realtime clients")
+ report["standard_limits"]=map[string]int{"deployment":500,"account":5,"session":2}
+ report["profile"]=map[string]any{"maximum_sockets":500,"maximum_concurrent_dials":20,"owned_members":104,"owned_sessions":312,"synthetic_documentation_source_cohorts":48,"server_configuration_changed":false,"direct_API_not_Nginx":true,"hard_deadline_seconds":720,"RSS_stop_bytes":512*1024*1024,"FD_stop":2048,"goroutine_stop":8000,"sustained_API_CPU_core_stop":1.8}
+ if mode=="observe"{return}
+ prepare();quotaRaces();upgradeFailures();tiers();revokeOne();snapshot("final_profile_baseline",0)
+}

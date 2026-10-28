@@ -1,0 +1,1781 @@
+{
+  "at_utc": "2026-10-27T23:54:55.016538363Z",
+  "cleanup": {
+    "already_revoked401": 0,
+    "failures": 0,
+    "logout204": 312,
+    "members_retained": 104,
+    "status_ok": true
+  },
+  "elapsed_seconds": 73.977561347,
+  "event": "final",
+  "metric_samples": [
+    {
+      "at_utc": "2026-10-27T23:53:39.053397904Z",
+      "event": "metrics",
+      "label": "initial_baseline",
+      "metrics": {
+        "go_goroutines": 30,
+        "go_memstats_heap_alloc_bytes": 10480448,
+        "process_cpu_seconds_total": 84.05,
+        "process_open_fds": 32,
+        "process_resident_memory_bytes": 53899264,
+        "voice_platform_realtime_connection_ready_seconds_count": 30,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 44,
+        "voice_platform_realtime_connections_total": 30,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:50.296710644Z",
+      "event": "metrics",
+      "label": "session_race_before",
+      "metrics": {
+        "go_goroutines": 31,
+        "go_memstats_heap_alloc_bytes": 46668832,
+        "process_cpu_seconds_total": 90.49,
+        "process_open_fds": 32,
+        "process_resident_memory_bytes": 103358464,
+        "voice_platform_realtime_connection_ready_seconds_count": 30,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 44,
+        "voice_platform_realtime_connections_total": 30,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:50.315923269Z",
+      "event": "metrics",
+      "label": "session_race_full",
+      "metrics": {
+        "go_goroutines": 52,
+        "go_memstats_heap_alloc_bytes": 48336136,
+        "process_cpu_seconds_total": 90.49,
+        "process_open_fds": 52,
+        "process_resident_memory_bytes": 104833024,
+        "voice_platform_realtime_connection_ready_seconds_count": 32,
+        "voice_platform_realtime_connections_active": 2,
+        "voice_platform_realtime_connections_rejected_total": 62,
+        "voice_platform_realtime_connections_total": 32,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:50.322214881Z",
+      "event": "metrics",
+      "label": "session_graceful_release",
+      "metrics": {
+        "go_goroutines": 50,
+        "go_memstats_heap_alloc_bytes": 8733832,
+        "process_cpu_seconds_total": 90.5,
+        "process_open_fds": 51,
+        "process_resident_memory_bytes": 103346176,
+        "voice_platform_realtime_connection_ready_seconds_count": 32,
+        "voice_platform_realtime_connections_active": 1,
+        "voice_platform_realtime_connections_rejected_total": 62,
+        "voice_platform_realtime_connections_total": 32,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:50.327523223Z",
+      "event": "metrics",
+      "label": "session_reconnect",
+      "metrics": {
+        "go_goroutines": 51,
+        "go_memstats_heap_alloc_bytes": 9236104,
+        "process_cpu_seconds_total": 90.5,
+        "process_open_fds": 51,
+        "process_resident_memory_bytes": 82944000,
+        "voice_platform_realtime_connection_ready_seconds_count": 33,
+        "voice_platform_realtime_connections_active": 2,
+        "voice_platform_realtime_connections_rejected_total": 62,
+        "voice_platform_realtime_connections_total": 33,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:50.331925595Z",
+      "event": "metrics",
+      "label": "session_drained",
+      "metrics": {
+        "go_goroutines": 47,
+        "go_memstats_heap_alloc_bytes": 9576480,
+        "process_cpu_seconds_total": 90.51,
+        "process_open_fds": 49,
+        "process_resident_memory_bytes": 82944000,
+        "voice_platform_realtime_connection_ready_seconds_count": 33,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 62,
+        "voice_platform_realtime_connections_total": 33,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:50.335927801Z",
+      "event": "metrics",
+      "label": "account_race_before",
+      "metrics": {
+        "go_goroutines": 47,
+        "go_memstats_heap_alloc_bytes": 9887600,
+        "process_cpu_seconds_total": 90.51,
+        "process_open_fds": 49,
+        "process_resident_memory_bytes": 83107840,
+        "voice_platform_realtime_connection_ready_seconds_count": 33,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 62,
+        "voice_platform_realtime_connections_total": 33,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:50.347608707Z",
+      "event": "metrics",
+      "label": "account_full",
+      "metrics": {
+        "go_goroutines": 52,
+        "go_memstats_heap_alloc_bytes": 10910768,
+        "process_cpu_seconds_total": 90.52,
+        "process_open_fds": 49,
+        "process_resident_memory_bytes": 83271680,
+        "voice_platform_realtime_connection_ready_seconds_count": 38,
+        "voice_platform_realtime_connections_active": 5,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 38,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:50.352277707Z",
+      "event": "metrics",
+      "label": "account_abrupt_release",
+      "metrics": {
+        "go_goroutines": 50,
+        "go_memstats_heap_alloc_bytes": 11167936,
+        "process_cpu_seconds_total": 90.53,
+        "process_open_fds": 48,
+        "process_resident_memory_bytes": 83927040,
+        "voice_platform_realtime_connection_ready_seconds_count": 38,
+        "voice_platform_realtime_connections_active": 4,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 38,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:50.357217475Z",
+      "event": "metrics",
+      "label": "account_reconnect",
+      "metrics": {
+        "go_goroutines": 55,
+        "go_memstats_heap_alloc_bytes": 12029952,
+        "process_cpu_seconds_total": 90.53,
+        "process_open_fds": 48,
+        "process_resident_memory_bytes": 84090880,
+        "voice_platform_realtime_connection_ready_seconds_count": 39,
+        "voice_platform_realtime_connections_active": 5,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 39,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:50.361320667Z",
+      "event": "metrics",
+      "label": "account_drained",
+      "metrics": {
+        "go_goroutines": 42,
+        "go_memstats_heap_alloc_bytes": 12396056,
+        "process_cpu_seconds_total": 90.53,
+        "process_open_fds": 43,
+        "process_resident_memory_bytes": 84418560,
+        "voice_platform_realtime_connection_ready_seconds_count": 39,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 39,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:50.364876143Z",
+      "event": "metrics",
+      "label": "upgrade_failures_before",
+      "metrics": {
+        "go_goroutines": 42,
+        "go_memstats_heap_alloc_bytes": 12832880,
+        "process_cpu_seconds_total": 90.54,
+        "process_open_fds": 43,
+        "process_resident_memory_bytes": 84746240,
+        "voice_platform_realtime_connection_ready_seconds_count": 39,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 39,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:50.393949134Z",
+      "event": "metrics",
+      "label": "upgrade_failures_after",
+      "metrics": {
+        "go_goroutines": 41,
+        "go_memstats_heap_alloc_bytes": 8510984,
+        "process_cpu_seconds_total": 90.55,
+        "process_open_fds": 43,
+        "process_resident_memory_bytes": 57221120,
+        "voice_platform_realtime_connection_ready_seconds_count": 39,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 39,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:50.405140931Z",
+      "event": "metrics",
+      "label": "post_error_account_capacity",
+      "metrics": {
+        "go_goroutines": 47,
+        "go_memstats_heap_alloc_bytes": 9261272,
+        "process_cpu_seconds_total": 90.55,
+        "process_open_fds": 43,
+        "process_resident_memory_bytes": 57221120,
+        "voice_platform_realtime_connection_ready_seconds_count": 44,
+        "voice_platform_realtime_connections_active": 5,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 44,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:50.409984903Z",
+      "event": "metrics",
+      "label": "post_error_drained",
+      "metrics": {
+        "go_goroutines": 36,
+        "go_memstats_heap_alloc_bytes": 9645960,
+        "process_cpu_seconds_total": 90.57,
+        "process_open_fds": 38,
+        "process_resident_memory_bytes": 57221120,
+        "voice_platform_realtime_connection_ready_seconds_count": 44,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 44,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:50.416029551Z",
+      "event": "metrics",
+      "label": "tier_1_start",
+      "metrics": {
+        "go_goroutines": 38,
+        "go_memstats_heap_alloc_bytes": 10136672,
+        "process_cpu_seconds_total": 90.57,
+        "process_open_fds": 38,
+        "process_resident_memory_bytes": 57221120,
+        "voice_platform_realtime_connection_ready_seconds_count": 45,
+        "voice_platform_realtime_connections_active": 1,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 45,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:51.425589149Z",
+      "event": "metrics",
+      "label": "tier_1_sample",
+      "metrics": {
+        "go_goroutines": 38,
+        "go_memstats_heap_alloc_bytes": 10770936,
+        "process_cpu_seconds_total": 90.57,
+        "process_open_fds": 38,
+        "process_resident_memory_bytes": 50663424,
+        "voice_platform_realtime_connection_ready_seconds_count": 45,
+        "voice_platform_realtime_connections_active": 1,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 45,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:52.431811713Z",
+      "event": "metrics",
+      "label": "tier_1_sample",
+      "metrics": {
+        "go_goroutines": 38,
+        "go_memstats_heap_alloc_bytes": 11239248,
+        "process_cpu_seconds_total": 90.58,
+        "process_open_fds": 38,
+        "process_resident_memory_bytes": 50663424,
+        "voice_platform_realtime_connection_ready_seconds_count": 45,
+        "voice_platform_realtime_connections_active": 1,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 45,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:53.436509487Z",
+      "event": "metrics",
+      "label": "tier_1_sample",
+      "metrics": {
+        "go_goroutines": 37,
+        "go_memstats_heap_alloc_bytes": 11631256,
+        "process_cpu_seconds_total": 90.59,
+        "process_open_fds": 38,
+        "process_resident_memory_bytes": 50663424,
+        "voice_platform_realtime_connection_ready_seconds_count": 45,
+        "voice_platform_realtime_connections_active": 1,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 45,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:54.444301012Z",
+      "event": "metrics",
+      "label": "tier_1_sample",
+      "metrics": {
+        "go_goroutines": 38,
+        "go_memstats_heap_alloc_bytes": 12280968,
+        "process_cpu_seconds_total": 90.6,
+        "process_open_fds": 38,
+        "process_resident_memory_bytes": 50663424,
+        "voice_platform_realtime_connection_ready_seconds_count": 45,
+        "voice_platform_realtime_connections_active": 1,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 45,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:55.44959931Z",
+      "event": "metrics",
+      "label": "tier_1_sample",
+      "metrics": {
+        "go_goroutines": 37,
+        "go_memstats_heap_alloc_bytes": 12895336,
+        "process_cpu_seconds_total": 90.6,
+        "process_open_fds": 38,
+        "process_resident_memory_bytes": 50663424,
+        "voice_platform_realtime_connection_ready_seconds_count": 45,
+        "voice_platform_realtime_connections_active": 1,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 45,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:56.455626514Z",
+      "event": "metrics",
+      "label": "tier_1_sample",
+      "metrics": {
+        "go_goroutines": 37,
+        "go_memstats_heap_alloc_bytes": 13482376,
+        "process_cpu_seconds_total": 90.62,
+        "process_open_fds": 38,
+        "process_resident_memory_bytes": 50663424,
+        "voice_platform_realtime_connection_ready_seconds_count": 45,
+        "voice_platform_realtime_connections_active": 1,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 45,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:56.460714889Z",
+      "event": "metrics",
+      "label": "tier_1_drained",
+      "metrics": {
+        "go_goroutines": 35,
+        "go_memstats_heap_alloc_bytes": 13836520,
+        "process_cpu_seconds_total": 90.62,
+        "process_open_fds": 37,
+        "process_resident_memory_bytes": 50827264,
+        "voice_platform_realtime_connection_ready_seconds_count": 45,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 45,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:56.467985633Z",
+      "event": "metrics",
+      "label": "tier_10_start",
+      "metrics": {
+        "go_goroutines": 50,
+        "go_memstats_heap_alloc_bytes": 14848880,
+        "process_cpu_seconds_total": 90.63,
+        "process_open_fds": 42,
+        "process_resident_memory_bytes": 51482624,
+        "voice_platform_realtime_connection_ready_seconds_count": 55,
+        "voice_platform_realtime_connections_active": 10,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 55,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:57.475333585Z",
+      "event": "metrics",
+      "label": "tier_10_sample",
+      "metrics": {
+        "go_goroutines": 50,
+        "go_memstats_heap_alloc_bytes": 15251568,
+        "process_cpu_seconds_total": 90.64,
+        "process_open_fds": 42,
+        "process_resident_memory_bytes": 51974144,
+        "voice_platform_realtime_connection_ready_seconds_count": 55,
+        "voice_platform_realtime_connections_active": 10,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 55,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:58.481717966Z",
+      "event": "metrics",
+      "label": "tier_10_sample",
+      "metrics": {
+        "go_goroutines": 50,
+        "go_memstats_heap_alloc_bytes": 9173424,
+        "process_cpu_seconds_total": 90.64,
+        "process_open_fds": 42,
+        "process_resident_memory_bytes": 52301824,
+        "voice_platform_realtime_connection_ready_seconds_count": 55,
+        "voice_platform_realtime_connections_active": 10,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 55,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:53:59.486355019Z",
+      "event": "metrics",
+      "label": "tier_10_sample",
+      "metrics": {
+        "go_goroutines": 50,
+        "go_memstats_heap_alloc_bytes": 9547520,
+        "process_cpu_seconds_total": 90.66,
+        "process_open_fds": 42,
+        "process_resident_memory_bytes": 52301824,
+        "voice_platform_realtime_connection_ready_seconds_count": 55,
+        "voice_platform_realtime_connections_active": 10,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 55,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:00.493459976Z",
+      "event": "metrics",
+      "label": "tier_10_sample",
+      "metrics": {
+        "go_goroutines": 51,
+        "go_memstats_heap_alloc_bytes": 11757784,
+        "process_cpu_seconds_total": 90.66,
+        "process_open_fds": 43,
+        "process_resident_memory_bytes": 52465664,
+        "voice_platform_realtime_connection_ready_seconds_count": 55,
+        "voice_platform_realtime_connections_active": 10,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 55,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:01.498915188Z",
+      "event": "metrics",
+      "label": "tier_10_sample",
+      "metrics": {
+        "go_goroutines": 50,
+        "go_memstats_heap_alloc_bytes": 12076568,
+        "process_cpu_seconds_total": 90.68,
+        "process_open_fds": 42,
+        "process_resident_memory_bytes": 52465664,
+        "voice_platform_realtime_connection_ready_seconds_count": 55,
+        "voice_platform_realtime_connections_active": 10,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 55,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:02.504630886Z",
+      "event": "metrics",
+      "label": "tier_10_sample",
+      "metrics": {
+        "go_goroutines": 51,
+        "go_memstats_heap_alloc_bytes": 12763552,
+        "process_cpu_seconds_total": 90.69,
+        "process_open_fds": 42,
+        "process_resident_memory_bytes": 52465664,
+        "voice_platform_realtime_connection_ready_seconds_count": 55,
+        "voice_platform_realtime_connections_active": 10,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 55,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:02.5096102Z",
+      "event": "metrics",
+      "label": "tier_10_drained",
+      "metrics": {
+        "go_goroutines": 31,
+        "go_memstats_heap_alloc_bytes": 13135512,
+        "process_cpu_seconds_total": 90.69,
+        "process_open_fds": 32,
+        "process_resident_memory_bytes": 52465664,
+        "voice_platform_realtime_connection_ready_seconds_count": 55,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 55,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:02.614027123Z",
+      "event": "metrics",
+      "label": "tier_100_start",
+      "metrics": {
+        "go_goroutines": 230,
+        "go_memstats_heap_alloc_bytes": 14440160,
+        "process_cpu_seconds_total": 90.73,
+        "process_open_fds": 133,
+        "process_resident_memory_bytes": 53612544,
+        "voice_platform_realtime_connection_ready_seconds_count": 155,
+        "voice_platform_realtime_connections_active": 100,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 155,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:03.61986398Z",
+      "event": "metrics",
+      "label": "tier_100_sample",
+      "metrics": {
+        "go_goroutines": 231,
+        "go_memstats_heap_alloc_bytes": 15075480,
+        "process_cpu_seconds_total": 90.74,
+        "process_open_fds": 133,
+        "process_resident_memory_bytes": 53612544,
+        "voice_platform_realtime_connection_ready_seconds_count": 155,
+        "voice_platform_realtime_connections_active": 100,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 155,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:04.62530654Z",
+      "event": "metrics",
+      "label": "tier_100_sample",
+      "metrics": {
+        "go_goroutines": 230,
+        "go_memstats_heap_alloc_bytes": 15665728,
+        "process_cpu_seconds_total": 90.75,
+        "process_open_fds": 133,
+        "process_resident_memory_bytes": 54104064,
+        "voice_platform_realtime_connection_ready_seconds_count": 155,
+        "voice_platform_realtime_connections_active": 100,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 155,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:06.640838795Z",
+      "event": "metrics",
+      "label": "tier_100_sample",
+      "metrics": {
+        "go_goroutines": 230,
+        "go_memstats_heap_alloc_bytes": 16001008,
+        "process_cpu_seconds_total": 90.75,
+        "process_open_fds": 133,
+        "process_resident_memory_bytes": 54431744,
+        "voice_platform_realtime_connection_ready_seconds_count": 155,
+        "voice_platform_realtime_connections_active": 100,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 155,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:07.648136883Z",
+      "event": "metrics",
+      "label": "tier_100_sample",
+      "metrics": {
+        "go_goroutines": 230,
+        "go_memstats_heap_alloc_bytes": 12091424,
+        "process_cpu_seconds_total": 90.77,
+        "process_open_fds": 133,
+        "process_resident_memory_bytes": 54759424,
+        "voice_platform_realtime_connection_ready_seconds_count": 155,
+        "voice_platform_realtime_connections_active": 100,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 155,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:08.652936359Z",
+      "event": "metrics",
+      "label": "tier_100_sample",
+      "metrics": {
+        "go_goroutines": 230,
+        "go_memstats_heap_alloc_bytes": 13345712,
+        "process_cpu_seconds_total": 90.78,
+        "process_open_fds": 133,
+        "process_resident_memory_bytes": 55414784,
+        "voice_platform_realtime_connection_ready_seconds_count": 155,
+        "voice_platform_realtime_connections_active": 100,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 155,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:09.657973933Z",
+      "event": "metrics",
+      "label": "tier_100_sample",
+      "metrics": {
+        "go_goroutines": 231,
+        "go_memstats_heap_alloc_bytes": 13780112,
+        "process_cpu_seconds_total": 90.78,
+        "process_open_fds": 133,
+        "process_resident_memory_bytes": 55414784,
+        "voice_platform_realtime_connection_ready_seconds_count": 155,
+        "voice_platform_realtime_connections_active": 100,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 155,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:09.768407125Z",
+      "event": "metrics",
+      "label": "tier_100_drained",
+      "metrics": {
+        "go_goroutines": 30,
+        "go_memstats_heap_alloc_bytes": 15025824,
+        "process_cpu_seconds_total": 90.79,
+        "process_open_fds": 33,
+        "process_resident_memory_bytes": 55578624,
+        "voice_platform_realtime_connection_ready_seconds_count": 155,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 155,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:10.096430828Z",
+      "event": "metrics",
+      "label": "deployment_before_race",
+      "metrics": {
+        "go_goroutines": 1010,
+        "go_memstats_heap_alloc_bytes": 31813208,
+        "process_cpu_seconds_total": 91.25,
+        "process_open_fds": 523,
+        "process_resident_memory_bytes": 81301504,
+        "voice_platform_realtime_connection_ready_seconds_count": 645,
+        "voice_platform_realtime_connections_active": 490,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 645,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:10.100532669Z",
+      "event": "metrics",
+      "label": "deployment_race_baseline",
+      "metrics": {
+        "go_goroutines": 1010,
+        "go_memstats_heap_alloc_bytes": 32867112,
+        "process_cpu_seconds_total": 91.25,
+        "process_open_fds": 523,
+        "process_resident_memory_bytes": 81956864,
+        "voice_platform_realtime_connection_ready_seconds_count": 645,
+        "voice_platform_realtime_connections_active": 490,
+        "voice_platform_realtime_connections_rejected_total": 70,
+        "voice_platform_realtime_connections_total": 645,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:10.147820084Z",
+      "event": "metrics",
+      "label": "deployment_full",
+      "metrics": {
+        "go_goroutines": 1051,
+        "go_memstats_heap_alloc_bytes": 37596984,
+        "process_cpu_seconds_total": 91.3,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 86708224,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 90,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:10.152777572Z",
+      "event": "metrics",
+      "label": "full_before_revalidation",
+      "metrics": {
+        "go_goroutines": 1051,
+        "go_memstats_heap_alloc_bytes": 38096208,
+        "process_cpu_seconds_total": 91.3,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 87199744,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:10.157400312Z",
+      "event": "metrics",
+      "label": "tier_500_start",
+      "metrics": {
+        "go_goroutines": 1051,
+        "go_memstats_heap_alloc_bytes": 38619440,
+        "process_cpu_seconds_total": 91.31,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 87855104,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:11.162652726Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1050,
+        "go_memstats_heap_alloc_bytes": 24590512,
+        "process_cpu_seconds_total": 91.32,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89329664,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:12.168226502Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1050,
+        "go_memstats_heap_alloc_bytes": 25773592,
+        "process_cpu_seconds_total": 91.33,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89493504,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:13.17502403Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1050,
+        "go_memstats_heap_alloc_bytes": 26207888,
+        "process_cpu_seconds_total": 91.34,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89493504,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:14.182670846Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1051,
+        "go_memstats_heap_alloc_bytes": 26953864,
+        "process_cpu_seconds_total": 91.34,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89493504,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:15.188920311Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1051,
+        "go_memstats_heap_alloc_bytes": 27363656,
+        "process_cpu_seconds_total": 91.36,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89657344,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:16.198146771Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1050,
+        "go_memstats_heap_alloc_bytes": 27748144,
+        "process_cpu_seconds_total": 91.36,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89657344,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:17.202285016Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1050,
+        "go_memstats_heap_alloc_bytes": 29972648,
+        "process_cpu_seconds_total": 91.38,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89657344,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:18.208692046Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1051,
+        "go_memstats_heap_alloc_bytes": 30412568,
+        "process_cpu_seconds_total": 91.38,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89657344,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:19.214431118Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1050,
+        "go_memstats_heap_alloc_bytes": 30798776,
+        "process_cpu_seconds_total": 91.39,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89657344,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:20.221001219Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1050,
+        "go_memstats_heap_alloc_bytes": 31343384,
+        "process_cpu_seconds_total": 91.4,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89657344,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:21.227028984Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1050,
+        "go_memstats_heap_alloc_bytes": 31916408,
+        "process_cpu_seconds_total": 91.4,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89657344,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:22.236593437Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1050,
+        "go_memstats_heap_alloc_bytes": 32506536,
+        "process_cpu_seconds_total": 91.41,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89657344,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:23.241666633Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1051,
+        "go_memstats_heap_alloc_bytes": 33112560,
+        "process_cpu_seconds_total": 91.42,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89657344,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:24.247374965Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1051,
+        "go_memstats_heap_alloc_bytes": 33696176,
+        "process_cpu_seconds_total": 91.43,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89657344,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:25.253662278Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1050,
+        "go_memstats_heap_alloc_bytes": 35623592,
+        "process_cpu_seconds_total": 91.48,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89657344,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:26.258298132Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1050,
+        "go_memstats_heap_alloc_bytes": 35988520,
+        "process_cpu_seconds_total": 91.49,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89657344,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:27.263603907Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1050,
+        "go_memstats_heap_alloc_bytes": 36608624,
+        "process_cpu_seconds_total": 91.49,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89657344,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:28.268982402Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1051,
+        "go_memstats_heap_alloc_bytes": 37371920,
+        "process_cpu_seconds_total": 91.5,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89657344,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:29.274443723Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1051,
+        "go_memstats_heap_alloc_bytes": 37821120,
+        "process_cpu_seconds_total": 91.5,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89985024,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:30.279875396Z",
+      "event": "metrics",
+      "label": "tier_500_sample",
+      "metrics": {
+        "go_goroutines": 1050,
+        "go_memstats_heap_alloc_bytes": 38308384,
+        "process_cpu_seconds_total": 91.52,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 89985024,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:30.284051404Z",
+      "event": "metrics",
+      "label": "full_after_revalidation",
+      "metrics": {
+        "go_goroutines": 1050,
+        "go_memstats_heap_alloc_bytes": 38864816,
+        "process_cpu_seconds_total": 91.52,
+        "process_open_fds": 553,
+        "process_resident_memory_bytes": 90312704,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:30.288429831Z",
+      "event": "metrics",
+      "label": "deployment_one_slot_released",
+      "metrics": {
+        "go_goroutines": 1049,
+        "go_memstats_heap_alloc_bytes": 39286832,
+        "process_cpu_seconds_total": 91.53,
+        "process_open_fds": 552,
+        "process_resident_memory_bytes": 90640384,
+        "voice_platform_realtime_connection_ready_seconds_count": 655,
+        "voice_platform_realtime_connections_active": 499,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 655,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:30.294344555Z",
+      "event": "metrics",
+      "label": "deployment_reconnect",
+      "metrics": {
+        "go_goroutines": 1050,
+        "go_memstats_heap_alloc_bytes": 39826776,
+        "process_cpu_seconds_total": 91.53,
+        "process_open_fds": 552,
+        "process_resident_memory_bytes": 91131904,
+        "voice_platform_realtime_connection_ready_seconds_count": 656,
+        "voice_platform_realtime_connections_active": 500,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 656,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:30.415079988Z",
+      "event": "metrics",
+      "label": "deployment_drained",
+      "metrics": {
+        "go_goroutines": 49,
+        "go_memstats_heap_alloc_bytes": 43604960,
+        "process_cpu_seconds_total": 91.57,
+        "process_open_fds": 52,
+        "process_resident_memory_bytes": 92442624,
+        "voice_platform_realtime_connection_ready_seconds_count": 656,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 656,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:30.444630754Z",
+      "event": "metrics",
+      "label": "reconnect100_cycle_1_start",
+      "metrics": {
+        "go_goroutines": 233,
+        "go_memstats_heap_alloc_bytes": 14295856,
+        "process_cpu_seconds_total": 91.61,
+        "process_open_fds": 133,
+        "process_resident_memory_bytes": 86982656,
+        "voice_platform_realtime_connection_ready_seconds_count": 756,
+        "voice_platform_realtime_connections_active": 100,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 756,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:31.450806969Z",
+      "event": "metrics",
+      "label": "reconnect100_cycle_1_sample",
+      "metrics": {
+        "go_goroutines": 230,
+        "go_memstats_heap_alloc_bytes": 15048024,
+        "process_cpu_seconds_total": 91.62,
+        "process_open_fds": 133,
+        "process_resident_memory_bytes": 76316672,
+        "voice_platform_realtime_connection_ready_seconds_count": 756,
+        "voice_platform_realtime_connections_active": 100,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 756,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:32.456509348Z",
+      "event": "metrics",
+      "label": "reconnect100_cycle_1_sample",
+      "metrics": {
+        "go_goroutines": 230,
+        "go_memstats_heap_alloc_bytes": 17184992,
+        "process_cpu_seconds_total": 91.63,
+        "process_open_fds": 133,
+        "process_resident_memory_bytes": 76316672,
+        "voice_platform_realtime_connection_ready_seconds_count": 756,
+        "voice_platform_realtime_connections_active": 100,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 756,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:33.462464955Z",
+      "event": "metrics",
+      "label": "reconnect100_cycle_1_sample",
+      "metrics": {
+        "go_goroutines": 230,
+        "go_memstats_heap_alloc_bytes": 17529136,
+        "process_cpu_seconds_total": 91.64,
+        "process_open_fds": 133,
+        "process_resident_memory_bytes": 76316672,
+        "voice_platform_realtime_connection_ready_seconds_count": 756,
+        "voice_platform_realtime_connections_active": 100,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 756,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:34.468494272Z",
+      "event": "metrics",
+      "label": "reconnect100_cycle_1_sample",
+      "metrics": {
+        "go_goroutines": 230,
+        "go_memstats_heap_alloc_bytes": 18051464,
+        "process_cpu_seconds_total": 91.64,
+        "process_open_fds": 133,
+        "process_resident_memory_bytes": 76316672,
+        "voice_platform_realtime_connection_ready_seconds_count": 756,
+        "voice_platform_realtime_connections_active": 100,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 756,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:34.478892636Z",
+      "event": "metrics",
+      "label": "reconnect100_drained_1",
+      "metrics": {
+        "go_goroutines": 45,
+        "go_memstats_heap_alloc_bytes": 19079856,
+        "process_cpu_seconds_total": 91.65,
+        "process_open_fds": 33,
+        "process_resident_memory_bytes": 76316672,
+        "voice_platform_realtime_connection_ready_seconds_count": 756,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 756,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:34.499430251Z",
+      "event": "metrics",
+      "label": "reconnect100_cycle_2_start",
+      "metrics": {
+        "go_goroutines": 232,
+        "go_memstats_heap_alloc_bytes": 15428344,
+        "process_cpu_seconds_total": 91.7,
+        "process_open_fds": 133,
+        "process_resident_memory_bytes": 61542400,
+        "voice_platform_realtime_connection_ready_seconds_count": 856,
+        "voice_platform_realtime_connections_active": 100,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 856,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:35.50559493Z",
+      "event": "metrics",
+      "label": "reconnect100_cycle_2_sample",
+      "metrics": {
+        "go_goroutines": 230,
+        "go_memstats_heap_alloc_bytes": 16706096,
+        "process_cpu_seconds_total": 91.7,
+        "process_open_fds": 133,
+        "process_resident_memory_bytes": 60051456,
+        "voice_platform_realtime_connection_ready_seconds_count": 856,
+        "voice_platform_realtime_connections_active": 100,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 856,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:37.508268276Z",
+      "event": "metrics",
+      "label": "reconnect100_cycle_2_sample",
+      "metrics": {
+        "go_goroutines": 230,
+        "go_memstats_heap_alloc_bytes": 12177240,
+        "process_cpu_seconds_total": 91.71,
+        "process_open_fds": 133,
+        "process_resident_memory_bytes": 59887616,
+        "voice_platform_realtime_connection_ready_seconds_count": 856,
+        "voice_platform_realtime_connections_active": 100,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 856,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:38.514001381Z",
+      "event": "metrics",
+      "label": "reconnect100_cycle_2_sample",
+      "metrics": {
+        "go_goroutines": 230,
+        "go_memstats_heap_alloc_bytes": 12582408,
+        "process_cpu_seconds_total": 91.73,
+        "process_open_fds": 133,
+        "process_resident_memory_bytes": 59887616,
+        "voice_platform_realtime_connection_ready_seconds_count": 856,
+        "voice_platform_realtime_connections_active": 100,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 856,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:39.519228846Z",
+      "event": "metrics",
+      "label": "reconnect100_cycle_2_sample",
+      "metrics": {
+        "go_goroutines": 230,
+        "go_memstats_heap_alloc_bytes": 12848888,
+        "process_cpu_seconds_total": 91.73,
+        "process_open_fds": 133,
+        "process_resident_memory_bytes": 59887616,
+        "voice_platform_realtime_connection_ready_seconds_count": 856,
+        "voice_platform_realtime_connections_active": 100,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 856,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:39.525785064Z",
+      "event": "metrics",
+      "label": "reconnect100_drained_2",
+      "metrics": {
+        "go_goroutines": 62,
+        "go_memstats_heap_alloc_bytes": 13634024,
+        "process_cpu_seconds_total": 91.74,
+        "process_open_fds": 33,
+        "process_resident_memory_bytes": 59887616,
+        "voice_platform_realtime_connection_ready_seconds_count": 856,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 856,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:39.532102184Z",
+      "event": "metrics",
+      "label": "revocation_before",
+      "metrics": {
+        "go_goroutines": 32,
+        "go_memstats_heap_alloc_bytes": 14205840,
+        "process_cpu_seconds_total": 91.75,
+        "process_open_fds": 34,
+        "process_resident_memory_bytes": 59887616,
+        "voice_platform_realtime_connection_ready_seconds_count": 857,
+        "voice_platform_realtime_connections_active": 1,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 857,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 506,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23030908000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:54.533158914Z",
+      "event": "metrics",
+      "label": "revocation_drained",
+      "metrics": {
+        "go_goroutines": 30,
+        "go_memstats_heap_alloc_bytes": 17237408,
+        "process_cpu_seconds_total": 91.81,
+        "process_open_fds": 33,
+        "process_resident_memory_bytes": 59887616,
+        "voice_platform_realtime_connection_ready_seconds_count": 857,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 857,
+        "voice_platform_realtime_session_revalidation_failures_total": 1,
+        "voice_platform_realtime_session_revalidation_seconds_count": 507,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23073146000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:54.542176415Z",
+      "event": "metrics",
+      "label": "sibling_session_still_usable",
+      "metrics": {
+        "go_goroutines": 33,
+        "go_memstats_heap_alloc_bytes": 17698024,
+        "process_cpu_seconds_total": 91.81,
+        "process_open_fds": 34,
+        "process_resident_memory_bytes": 59887616,
+        "voice_platform_realtime_connection_ready_seconds_count": 858,
+        "voice_platform_realtime_connections_active": 1,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 858,
+        "voice_platform_realtime_session_revalidation_failures_total": 1,
+        "voice_platform_realtime_session_revalidation_seconds_count": 507,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23073146000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:54.54664366Z",
+      "event": "metrics",
+      "label": "revocation_final_drained",
+      "metrics": {
+        "go_goroutines": 31,
+        "go_memstats_heap_alloc_bytes": 18174784,
+        "process_cpu_seconds_total": 91.82,
+        "process_open_fds": 33,
+        "process_resident_memory_bytes": 59887616,
+        "voice_platform_realtime_connection_ready_seconds_count": 858,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 858,
+        "voice_platform_realtime_session_revalidation_failures_total": 1,
+        "voice_platform_realtime_session_revalidation_seconds_count": 507,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23073146000000005
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:54:54.550783992Z",
+      "event": "metrics",
+      "label": "final_profile_baseline",
+      "metrics": {
+        "go_goroutines": 31,
+        "go_memstats_heap_alloc_bytes": 18766480,
+        "process_cpu_seconds_total": 91.82,
+        "process_open_fds": 33,
+        "process_resident_memory_bytes": 59887616,
+        "voice_platform_realtime_connection_ready_seconds_count": 858,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 91,
+        "voice_platform_realtime_connections_total": 858,
+        "voice_platform_realtime_session_revalidation_failures_total": 1,
+        "voice_platform_realtime_session_revalidation_seconds_count": 507,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.23073146000000005
+      }
+    }
+  ],
+  "production_touched": false,
+  "profile": {
+    "FD_stop": 2048,
+    "RSS_stop_bytes": 536870912,
+    "direct_API_not_Nginx": true,
+    "goroutine_stop": 8000,
+    "hard_deadline_seconds": 720,
+    "maximum_concurrent_dials": 20,
+    "maximum_sockets": 500,
+    "owned_members": 104,
+    "owned_sessions": 312,
+    "server_configuration_changed": false,
+    "sustained_API_CPU_core_stop": 1.8,
+    "synthetic_documentation_source_cohorts": 48
+  },
+  "records": [
+    {
+      "at_utc": "2026-10-27T23:53:50.289217185Z",
+      "event": "observation",
+      "label": "owned_fixture_setup",
+      "limits_unchanged": true,
+      "members": 104,
+      "reused_owned_members": true,
+      "sessions": 312,
+      "source_cohorts": 48
+    },
+    {
+      "RetryAfter": "1",
+      "accepted": 2,
+      "at_utc": "2026-10-27T23:53:50.331951827Z",
+      "attempts": 20,
+      "cookie_refresh_same_token_validated": true,
+      "event": "observation",
+      "graceful_release_and_reconnect": true,
+      "label": "session_concurrent_quota_and_reconnect",
+      "rejected429": 18
+    },
+    {
+      "abrupt_release_and_reconnect": true,
+      "accepted": 5,
+      "at_utc": "2026-10-27T23:53:50.361346396Z",
+      "attempts": 12,
+      "event": "observation",
+      "independent_sixth_on_nonfull_session429": true,
+      "label": "account_concurrent_quota_and_reconnect",
+      "rejected429": 7
+    },
+    {
+      "426_Upgrade_instruction_validated": true,
+      "active_after_failures": 0,
+      "at_utc": "2026-10-27T23:53:50.410099375Z",
+      "cookie_refresh_same_token_validated": true,
+      "event": "observation",
+      "failed_attempts": 30,
+      "http_counts": {
+        "403": 10,
+        "426": 20
+      },
+      "label": "upgrade_failures_no_slot_leak",
+      "no101_or_SecWebSocketAccept": true,
+      "post_error_account_capacity": 5
+    },
+    {
+      "active": 1,
+      "at_utc": "2026-10-27T23:53:56.455655942Z",
+      "event": "observation",
+      "held_seconds": 6,
+      "label": "tier_1"
+    },
+    {
+      "active": 10,
+      "at_utc": "2026-10-27T23:54:02.504659054Z",
+      "event": "observation",
+      "held_seconds": 6,
+      "label": "tier_10"
+    },
+    {
+      "active": 100,
+      "at_utc": "2026-10-27T23:54:09.657998667Z",
+      "event": "observation",
+      "held_seconds": 6,
+      "label": "tier_100"
+    },
+    {
+      "active": 500,
+      "at_utc": "2026-10-27T23:54:30.279908168Z",
+      "event": "observation",
+      "held_seconds": 20,
+      "label": "tier_500"
+    },
+    {
+      "at_utc": "2026-10-27T23:54:30.284079881Z",
+      "event": "observation",
+      "label": "full_tier_revalidation",
+      "note": "Actual API revalidation call metric, not inferred SQL query count",
+      "revalidation_call_delta": 500,
+      "revalidation_failures_delta": 0
+    },
+    {
+      "at_utc": "2026-10-27T23:54:30.415111601Z",
+      "boundary_accepted": 10,
+      "boundary_rejected429": 20,
+      "concurrent_boundary_attempts": 30,
+      "event": "observation",
+      "full_active": 500,
+      "independent_extra429": true,
+      "label": "deployment_concurrent_quota",
+      "prefill": 490,
+      "release499_reconnect500": true
+    },
+    {
+      "active": 100,
+      "at_utc": "2026-10-27T23:54:34.468524844Z",
+      "event": "observation",
+      "held_seconds": 4,
+      "label": "reconnect100_cycle_1"
+    },
+    {
+      "active": 100,
+      "at_utc": "2026-10-27T23:54:39.519253984Z",
+      "event": "observation",
+      "held_seconds": 4,
+      "label": "reconnect100_cycle_2"
+    },
+    {
+      "at_utc": "2026-10-27T23:54:39.525817688Z",
+      "connections_per_cycle": 100,
+      "cycles": 2,
+      "dial_concurrency_limit": 20,
+      "event": "observation",
+      "final_active": 0,
+      "label": "bounded_mass_reconnect"
+    },
+    {
+      "at_utc": "2026-10-27T23:54:54.546666401Z",
+      "close_code": 1008,
+      "elapsed_seconds": 14.996213284,
+      "event": "observation",
+      "label": "actual_own_session_revocation",
+      "logout_http": 204,
+      "revoked_retry_http": 401,
+      "sibling_session_upgrades101": true,
+      "slo_claim": "Observed bound only; no new general revalidation SLO claim"
+    }
+  ],
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "standard_limits": {
+    "account": 5,
+    "deployment": 500,
+    "session": 2
+  },
+  "status": "PASS_ACTUAL_WEBSOCKET_DEFAULT_QUOTAS"
+}

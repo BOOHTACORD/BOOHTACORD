@@ -1,0 +1,40 @@
+package main
+
+import (
+ "context"
+ "net/http"
+ "os"
+ "time"
+)
+
+func prepare(){
+ _,e:=os.Stat("/work/fixture.private.json");require(os.IsNotExist(e),"fixture already exists; no rerun")
+ for i:=0;i<104;i++{
+  a:=account{Login:"qa_ws_"+random(8),Password:random(20)}
+  status,d,_,e:=request(ctx,"POST","/api/v1/auth/register",map[string]string{"login":a.Login,"password":a.Password},"",i)
+  require(e==nil&&status==201,"owned registration refused")
+  a.ID,_=d["id"].(string);require(a.ID!=""&&d["role"]=="MEMBER","owned member identity")
+  owned.Accounts=append(owned.Accounts,a);savePrivate()
+  for lane:=0;lane<3;lane++{
+   status,_,h,e:=request(ctx,"POST","/api/v1/auth/login",map[string]string{"login":a.Login,"password":a.Password},"",i)
+   require(e==nil&&status==204,"owned login refused")
+   response:=http.Response{Header:h};cookies:=response.Cookies();cookie:=""
+   for _,c:=range cookies{if c.Name=="vp_session"{require(c.Secure&&c.HttpOnly,"cookie flags");cookie="vp_session="+c.Value}}
+   require(cookie!="","owned cookie absent");owned.Accounts[i].Cookies=append(owned.Accounts[i].Cookies,cookie);savePrivate()
+   status,d,_,e=request(ctx,"GET","/api/v1/auth/session",nil,cookie,-1)
+   require(e==nil&&status==200&&d["authenticated"]==true&&d["account_id"]==a.ID,"owned session binding")
+  }
+  if (i+1)%16==0{emit("progress",map[string]any{"phase":"owned_fixture_setup","members_ready":i+1,"target":104})}
+ }
+ record("owned_fixture_setup",map[string]any{"members":104,"sessions":312,"source_cohorts":48,"limits_unchanged":true})
+}
+
+func cleanup()map[string]any{
+ closeAll(false);c,cancel:=context.WithTimeout(context.Background(),2*time.Minute);defer cancel()
+ revoked,already,failed:=0,0,0
+ for _,a:=range owned.Accounts{for _,cookie:=range a.Cookies{
+  status,_,_,e:=request(c,"POST","/api/v1/auth/logout",nil,cookie,-1)
+  if e==nil&&status==204{revoked++}else if e==nil&&status==401{already++}else{failed++}
+ }}
+ return map[string]any{"members_retained":len(owned.Accounts),"logout204":revoked,"already_revoked401":already,"failures":failed,"status_ok":failed==0}
+}

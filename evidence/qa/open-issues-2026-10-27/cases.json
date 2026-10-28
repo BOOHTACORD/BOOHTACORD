@@ -1064,6 +1064,19 @@
       ],
       "result": "isolated-auth-denial/summary.json",
       "limits": "90 finite local requests,30/group; direct API through owned trusted-proxy network namespace with12 documentation-network synthetic cohorts; standard limits unchanged. No Nginx forwarding, browser/TLS, native login, production capacity or statistical timing-channel-absence acceptance."
+    },
+    {
+      "id": "ISOLATED-websocket-default-quotas-real-http",
+      "status": "PASS_SCOPED",
+      "protects": "I240.C3 actual atomic500/5/2 admission, pre-upgrade429, normal/TCP-error release, reconnect, upgrade errors and aggregate active/rejected counters",
+      "command": "python -X utf8 .out/qa-ws-quota/run_ws.py resume2; python -X utf8 .out/qa-ws-quota/run_ws.py observe; python -X utf8 .out/qa-ws-quota/verify_after.py",
+      "platform": "Windows11 controller; actual source072 Linux Go API and PostgreSQL17.6, standard configuration unchanged",
+      "mandatory_when": "Before accepting exact I240.C3 backend criterion; not the full parent240/implementation135 gate",
+      "issues": [
+        240
+      ],
+      "result": "isolated-websocket-quotas/summary.json",
+      "limits": "Actual isolated direct Go API/PG17.6 and standard500/5/2 quotas; no Nginx/WSS/browser/native-client retry/media-capacity proof.1/10/100 held6s,500 held20s, two100-connection reconnect cycles held4s.3s DB and phase/1s API metric samples can miss peaks. Own logout closure~15s is an observation, not full revocation/delivery SLO acceptance."
     }
   ]
 }

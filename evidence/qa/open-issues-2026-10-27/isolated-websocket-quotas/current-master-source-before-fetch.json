@@ -1,0 +1,30 @@
+{
+  "at_utc": "2026-10-27T23:59:12.856876+00:00",
+  "remote_master": "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a",
+  "tested_source": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "compared_exact_native_files": 19,
+  "changed_files": [],
+  "unavailable_files": [
+    "backend/internal/realtime/admit_connection/limiter.go",
+    "backend/internal/realtime/admit_connection/limiter_test.go",
+    "backend/internal/realtime/connect_session/admission.go",
+    "backend/internal/realtime/connect_session/http_handler.go",
+    "backend/internal/realtime/connect_session/event_stream.go",
+    "backend/internal/realtime/connect_session/connection_contract.go",
+    "backend/internal/realtime/connect_session/http_handler_test.go",
+    "backend/internal/realtime/connect_session/observability_test.go",
+    "backend/internal/observability/http_metrics/realtime_connections.go",
+    "backend/internal/observability/http_metrics/recorder_test.go",
+    "backend/internal/app/chat_routes/realtime_routes.go",
+    "backend/internal/app/runtime/routes.go",
+    "backend/internal/config/runtime/admission.go",
+    "backend/internal/app/observability_routes/status_routes.go",
+    "backend/internal/identity/authenticate_session/api/middleware.go",
+    "backend/internal/identity/session/cookie.go",
+    "backend/go.mod",
+    "backend/go.sum",
+    "tools/toolchains.json"
+  ],
+  "scope": "Exact consumed/native contract fingerprints only; no full-image/master/CI/platform acceptance substitution",
+  "observation_classification": "NOT_RUN_LOCAL_REMOTE_OBJECT_MISSING; exact commit subsequently fetched without changing checkout/refs"
+}

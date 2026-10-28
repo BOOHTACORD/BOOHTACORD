@@ -1,0 +1,102 @@
+{
+  "events": [
+    {
+      "Time": "2026-10-28T02:50:03.5910008+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/admit_connection",
+      "Test": "TestLimiterCapsDeploymentAccountAndSessionAndReleases"
+    },
+    {
+      "Time": "2026-10-28T02:50:03.5910008+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/admit_connection",
+      "Test": "TestLimiterCapsDeploymentAccountAndSessionAndReleases",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T02:50:03.5910008+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/admit_connection",
+      "Test": "TestLimiterConcurrentAcquisitionNeverExceedsGlobalLimit"
+    },
+    {
+      "Time": "2026-10-28T02:50:03.5910008+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/admit_connection",
+      "Test": "TestLimiterConcurrentAcquisitionNeverExceedsGlobalLimit",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T02:50:03.592498+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/admit_connection",
+      "Elapsed": 0.617
+    },
+    {
+      "Time": "2026-10-28T02:50:06.9816227+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/observability/http_metrics",
+      "Test": "TestRecorderPublishesRealtimeConnectionMetrics"
+    },
+    {
+      "Time": "2026-10-28T02:50:06.9826226+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/observability/http_metrics",
+      "Test": "TestRecorderPublishesRealtimeConnectionMetrics",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T02:50:06.9844624+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/observability/http_metrics",
+      "Elapsed": 1.837
+    },
+    {
+      "Time": "2026-10-28T02:50:07.4006278+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerClosesSocketWhenSessionIsRevoked"
+    },
+    {
+      "Time": "2026-10-28T02:50:07.4041357+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerClosesSocketWhenSessionIsRevoked",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T02:50:07.4041357+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerRejectsOverQuotaBeforeUpgradeAndReleasesOnClose"
+    },
+    {
+      "Time": "2026-10-28T02:50:07.4071386+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerRejectsOverQuotaBeforeUpgradeAndReleasesOnClose",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T02:50:07.4071386+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerObservesRealtimeLifecycle"
+    },
+    {
+      "Time": "2026-10-28T02:50:07.4076399+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Test": "TestHandlerObservesRealtimeLifecycle",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T02:50:07.4100062+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/realtime/connect_session",
+      "Elapsed": 2.262
+    }
+  ],
+  "raw_private_stream_SHA256": "93c28304b0eaa96347714f7990164120e42f53eb54e346f04e2f0cfddf663097",
+  "raw_stderr_bytes": 0
+}

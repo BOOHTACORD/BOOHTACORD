@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-27T23:44:09.123906+00:00",
+  "at_utc": "2026-10-27T23:59:58.046369+00:00",
   "candidate_evidence": "../../android/physical-share-2026-10-27/result.json",
   "files": {
     "acceptance-methods.json": {
@@ -667,8 +667,8 @@
       "sha256": "7d2ac8691a4dd0bef3ffd7fd6c9ea028ab04c058060810c65c5f27501d34d867"
     },
     "cases.json": {
-      "bytes": 70672,
-      "sha256": "b575f0a6cc6e017474f3661a436692d70e30d36353c2cedf6e739b92b65afa63"
+      "bytes": 71816,
+      "sha256": "d7a6e5bbe6df3703d226590e41c3a92278af508f6052decb7b1a74c6e3b52bc5"
     },
     "controlled-account-integrity.json": {
       "bytes": 640,
@@ -813,6 +813,254 @@
     "isolated-auth-denial/validation.json": {
       "bytes": 374,
       "sha256": "c5e86fafc24d6cb0fbd54263f631d58d2904b1dbff2a3e3d2d5e07cd6e0c7fd7"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt1/cleanup-attestation.json": {
+      "bytes": 383,
+      "sha256": "9d0c20c163f4f791a9ffa44ce12ec02213f4b444f0577e0361cc50e2fd44741a"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt1/run-database-resource-samples.json": {
+      "bytes": 702,
+      "sha256": "addd17e8ad307a54f2543a0d975de4fa27d8562cda6b36aea91570291b4fa51b"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt1/run-result.json": {
+      "bytes": 2895,
+      "sha256": "9be68104d740114f32823494082e0f69dc251b52e3ad3f2c4beb5a2c814e8917"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt1/run-runner.json": {
+      "bytes": 533,
+      "sha256": "c730bf672292e22e7a1c9c6bf457fb0f5c3a527fc287a5d3f8a7eef260c0bdbd"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt1/runner-before-run.json": {
+      "bytes": 999,
+      "sha256": "bd3e38778fec26eb1fac26a4efaffa28fb2fd6371ea0d21c86cf69df6920cb2d"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt1/runner-source/probe_common.go.txt": {
+      "bytes": 2666,
+      "sha256": "6f7ac8ae5098cc2288e73f04d5e0c8fbf4b09a513f55fbc1b35debeb9f9ac987"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt1/runner-source/probe_fixture.go.txt": {
+      "bytes": 2080,
+      "sha256": "510c689fbae6c77563192135799155d2700afc53a3a6b23bc793f1caa85a0de8"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt1/runner-source/probe_main.go.txt": {
+      "bytes": 1928,
+      "sha256": "3a15063cbaba9b5207aa4012805d35bf0af1276e45c8dd09bbed65f64f3e3387"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt1/runner-source/probe_metrics.go.txt": {
+      "bytes": 3029,
+      "sha256": "d27b5176d706e96cdf8596e3fb979623aa6293c73c84f65846c69d493a0df890"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt1/runner-source/probe_quota.go.txt": {
+      "bytes": 3208,
+      "sha256": "58bb21d051aba21dea4be79f39b593ed37e9fe110db44e4ff04d0ccc544fa3c3"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt1/runner-source/probe_sockets.go.txt": {
+      "bytes": 3317,
+      "sha256": "5d0c01a37c1d7c3d2501e9c8222987545730268ac66e06a20a5372e7d81c0db8"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt1/runner-source/probe_tiers.go.txt": {
+      "bytes": 2637,
+      "sha256": "7c59365367bdfe1b8aa8064106e0ab34dfd8d1069511a45c72288ed6b9f87acb"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt1/runner-source/run_ws.py.txt": {
+      "bytes": 4780,
+      "sha256": "127d98046c1b69b83f8d019916fb97db158a6a3143612ad3ba62de74a6814250"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt2/cleanup-attestation.json": {
+      "bytes": 527,
+      "sha256": "d676c0e88d113c483cf5bb35a870da2aab8795f8dd11f83a7a6ba1ec29db691f"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt2/resume-database-resource-samples.json": {
+      "bytes": 568,
+      "sha256": "92e6d1d86e2a4889c251b77dc028d5ef2ece53f5762f92a817301e436c86f267"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt2/resume-result.json": {
+      "bytes": 11994,
+      "sha256": "9b89cc00d826a6f469cfd5cb8689ef98286f0b9c80b51853d50157e275082a00"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt2/resume-runner.json": {
+      "bytes": 536,
+      "sha256": "2d7ce7f220119b3830ae4035a35f530d7ef5063377f0d26573c049a551728d85"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt2/resume-session-row-counts.json": {
+      "bytes": 44,
+      "sha256": "5c57cda8c8512580a15c378ff06053e2772716a3d31a2e45e51afbdc6c7c861c"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt2/runner-before-resume.json": {
+      "bytes": 999,
+      "sha256": "a5c13d3db0f897b97d806e57d4f0d3b177303c584550a03f07c5dc5f9ecdd4d7"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt2/runner-source/probe_common.go.txt": {
+      "bytes": 3053,
+      "sha256": "aa8c6bbdfbf11167c2b18999ff340b8dd9209d9d7a8198b371b5ea131d4852bc"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt2/runner-source/probe_fixture.go.txt": {
+      "bytes": 2532,
+      "sha256": "417d21484cf43050c63154c812b086d8edcb8c925bf9af4da6336726706d3da9"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt2/runner-source/probe_main.go.txt": {
+      "bytes": 2005,
+      "sha256": "f57d0191e7bfe01e99187cebc86761922a011afb687121b836212d04adeba651"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt2/runner-source/probe_metrics.go.txt": {
+      "bytes": 3029,
+      "sha256": "d27b5176d706e96cdf8596e3fb979623aa6293c73c84f65846c69d493a0df890"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt2/runner-source/probe_quota.go.txt": {
+      "bytes": 3235,
+      "sha256": "d17d9bfbcb226876162b03379dfc21789193379c40d37f397cc99a219a19ce63"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt2/runner-source/probe_sockets.go.txt": {
+      "bytes": 3500,
+      "sha256": "ca438ca42d1b0c980dfb8e31ba3f493114c15fa8e16d77f02e62656c53d3c1c8"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt2/runner-source/probe_tiers.go.txt": {
+      "bytes": 3262,
+      "sha256": "3d443c47820600afadd0eeee6b1ca14746dfa40f297aa38bbb7c8caa84d56580"
+    },
+    "isolated-websocket-quotas/controller-attempts/attempt2/runner-source/run_ws.py.txt": {
+      "bytes": 5711,
+      "sha256": "58cbbec24952c30658e802b62d04eae884916fc2bf4fa8da2044381c45647ca6"
+    },
+    "isolated-websocket-quotas/current-master-source-before-fetch.json": {
+      "bytes": 1618,
+      "sha256": "33d8d1a88cf9f1cfd2be6169d049eda325a58a17b66abe92d13a719145836fc7"
+    },
+    "isolated-websocket-quotas/current-master-source-comparison.json": {
+      "bytes": 453,
+      "sha256": "3e7c07ec8b4319190d748655902020e587280d2ad6031701c9f4bb9fec73f4c0"
+    },
+    "isolated-websocket-quotas/environment-after.json": {
+      "bytes": 5169,
+      "sha256": "b46d576962b6be0df8fafa5e3d478dfc0e3326ace9d9c4886632d569a624ea03"
+    },
+    "isolated-websocket-quotas/focused-go-events.json": {
+      "bytes": 3599,
+      "sha256": "3b647ea0b4b640aed6ee2b0727888519e01dce4eaec474f958af56f39535f0da"
+    },
+    "isolated-websocket-quotas/focused-go-result.json": {
+      "bytes": 1128,
+      "sha256": "cb3bfb3f0da4904bd2fcb7c8f4e67d75655cc4e186a4672a418406bc82f1d7c3"
+    },
+    "isolated-websocket-quotas/initial-observe/observe-database-resource-samples.json": {
+      "bytes": 152,
+      "sha256": "4bd9b572cda6809d7a0f022247e3c914f74aee178ca26f22124e126582ce7ce8"
+    },
+    "isolated-websocket-quotas/initial-observe/observe-preflight-attempt1.json": {
+      "bytes": 261,
+      "sha256": "8a04caec4105b8cd894fb67992824ae136b66630fd3e8e0596f6378deebcb43b"
+    },
+    "isolated-websocket-quotas/initial-observe/observe-result.json": {
+      "bytes": 1708,
+      "sha256": "8721d7a681f6145c40193b466805b03fc33544cbde498343cb570143bf03c412"
+    },
+    "isolated-websocket-quotas/initial-observe/observe-runner.json": {
+      "bytes": 533,
+      "sha256": "b02a685501226c85216ee62f4955680857840043b9928c327eddedc1ce3ecf88"
+    },
+    "isolated-websocket-quotas/initial-observe/runner-before-observe.json": {
+      "bytes": 999,
+      "sha256": "43faf55ff473837077248b6839ba5e6efce4978b8d1ef66acd9c5d567c172c4a"
+    },
+    "isolated-websocket-quotas/observe-preflight-attempt1.json": {
+      "bytes": 261,
+      "sha256": "8a04caec4105b8cd894fb67992824ae136b66630fd3e8e0596f6378deebcb43b"
+    },
+    "isolated-websocket-quotas/observe-result.json": {
+      "bytes": 1712,
+      "sha256": "8b5f3457b574da3922c2751aa168e56343e08d5f1b3176f74dbf40d511566325"
+    },
+    "isolated-websocket-quotas/observe-runner.json": {
+      "bytes": 533,
+      "sha256": "db40ea9169c7782d1c7f06f715687a4bbf23928164b29937fa128a935a895dc7"
+    },
+    "isolated-websocket-quotas/operating-brief.json": {
+      "bytes": 2443,
+      "sha256": "6c719987e8c35a2db6b3ac677b68b8f2bcc4a6947b6cee850d7daa4a263c3d52"
+    },
+    "isolated-websocket-quotas/README.md": {
+      "bytes": 8694,
+      "sha256": "9233cc483475431be49c85dcd96fb37f120421a202c78d5ed98dd4398e54296a"
+    },
+    "isolated-websocket-quotas/resume2-database-resource-samples.json": {
+      "bytes": 3328,
+      "sha256": "b6bf453f640a936506ccc86d26af914e860899ad25f634ee7bc77c64ff52efa8"
+    },
+    "isolated-websocket-quotas/resume2-result.json": {
+      "bytes": 76836,
+      "sha256": "49f7860482b0414aba4971f883dcce71d6d7deebc5c0621bb896d86f7802f59c"
+    },
+    "isolated-websocket-quotas/resume2-runner.json": {
+      "bytes": 534,
+      "sha256": "6f507496d0ba0c29127006dcba5537c61c3b0ceb4dfb97829cf8959864118dd9"
+    },
+    "isolated-websocket-quotas/resume2-session-row-counts.json": {
+      "bytes": 97,
+      "sha256": "8e40cae5256915543c00c7f02b0827bdbf3651e1e0d73a74dec4f3da18c8c7ef"
+    },
+    "isolated-websocket-quotas/runner-before-observe.json": {
+      "bytes": 999,
+      "sha256": "38fc0143bbc03261d40368b29114dfa89d728a22bb70f14c729a1021a6ae9aa1"
+    },
+    "isolated-websocket-quotas/runner-before-postcheck.json": {
+      "bytes": 159,
+      "sha256": "ba507a00e5154d0dff78bb7cfb513d7ee742f8bea8bd9646de5b982de10d4abb"
+    },
+    "isolated-websocket-quotas/runner-before-resume2.json": {
+      "bytes": 999,
+      "sha256": "37a53b285ed164d14849daafb105323c6ad18302d4e95744313b224578ffd93b"
+    },
+    "isolated-websocket-quotas/runner-source/probe_common.go.txt": {
+      "bytes": 3053,
+      "sha256": "aa8c6bbdfbf11167c2b18999ff340b8dd9209d9d7a8198b371b5ea131d4852bc"
+    },
+    "isolated-websocket-quotas/runner-source/probe_fixture.go.txt": {
+      "bytes": 2533,
+      "sha256": "81b6d085210dab8844e058a087484d032241aa5cfae1bc2bfe5c76ae366c7255"
+    },
+    "isolated-websocket-quotas/runner-source/probe_main.go.txt": {
+      "bytes": 2054,
+      "sha256": "8abfb808d69e92b5b2a65e7c350cca30fb472ca3cbebe7b9c91401ed00318142"
+    },
+    "isolated-websocket-quotas/runner-source/probe_metrics.go.txt": {
+      "bytes": 3029,
+      "sha256": "d27b5176d706e96cdf8596e3fb979623aa6293c73c84f65846c69d493a0df890"
+    },
+    "isolated-websocket-quotas/runner-source/probe_quota.go.txt": {
+      "bytes": 3492,
+      "sha256": "d7b2c974f016bec456be3ee4c345fae308e0a8aac76d9edcf7d04653edb6b66a"
+    },
+    "isolated-websocket-quotas/runner-source/probe_sockets.go.txt": {
+      "bytes": 3500,
+      "sha256": "ca438ca42d1b0c980dfb8e31ba3f493114c15fa8e16d77f02e62656c53d3c1c8"
+    },
+    "isolated-websocket-quotas/runner-source/probe_tiers.go.txt": {
+      "bytes": 3262,
+      "sha256": "3d443c47820600afadd0eeee6b1ca14746dfa40f297aa38bbb7c8caa84d56580"
+    },
+    "isolated-websocket-quotas/runner-source/run_ws.py.txt": {
+      "bytes": 5721,
+      "sha256": "589c253a6949a407172e8130d7630977fb3ec0bb4c762bf2becfca4b2106eb16"
+    },
+    "isolated-websocket-quotas/runner-source/validate_public.py.txt": {
+      "bytes": 3475,
+      "sha256": "69575d569fd2f93bc28edc56123a796e701a9232f8855ad5f79f37b0901ef490"
+    },
+    "isolated-websocket-quotas/runner-source/verify_after.py.txt": {
+      "bytes": 4473,
+      "sha256": "8ae9d10b60a2de17e1b1a6a1a8db2e5e1b98253a827271de745300b49d93a8fd"
+    },
+    "isolated-websocket-quotas/source-binding.json": {
+      "bytes": 6402,
+      "sha256": "da147e51dbf95ec397a7ccbc820fbe1234dffb5a6ec7a98e25315b9a54d31a88"
+    },
+    "isolated-websocket-quotas/summary.json": {
+      "bytes": 7131,
+      "sha256": "f8fe352c54c8691f4334bbce1479369e6046f2071bef17834dc66810e0d6f001"
+    },
+    "isolated-websocket-quotas/validation.json": {
+      "bytes": 532,
+      "sha256": "164029e21035218f90f5159657ad1a1329115eb23e90caf6f4e929c028a9867e"
     },
     "local-staging/bootstrap-receipt.json": {
       "bytes": 184,
@@ -959,8 +1207,8 @@
       "sha256": "4b7314f316cc66bb9c1c3e07919f4a2441de12db8ab970d26f9b4308a2cef8a4"
     },
     "matrix.json": {
-      "bytes": 1179060,
-      "sha256": "84aa4f2d4c11b2442b30d8ea60acf30411f73715f111275c485587ccf6d6979b"
+      "bytes": 1179709,
+      "sha256": "40432faf07949e40181b2323f9994149fdb44a1af3d7acf7f1f287a0a87b6d2f"
     },
     "muted-background-resume.json": {
       "bytes": 250,
@@ -2195,8 +2443,8 @@
       "sha256": "5c8013eb9693e540a771743fa74b10476a3b88dec2acdd1c683e36c8a6f9c391"
     },
     "README.md": {
-      "bytes": 18807,
-      "sha256": "a6e374079433db4d9688d5fbcf159799f2285ae56d6ac455eaa22727d4599002"
+      "bytes": 19750,
+      "sha256": "3695bb960fd4f6fa8b8f77dbbe0caf8aeef8c94fa748b31838cf96f11a29d3c9"
     },
     "restored-microphone.json": {
       "bytes": 269,

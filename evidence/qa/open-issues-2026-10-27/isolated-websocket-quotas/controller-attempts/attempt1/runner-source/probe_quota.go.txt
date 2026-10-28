@@ -1,0 +1,30 @@
+package main
+
+func quotaRaces(){
+ attempts:=make([]slot,20);for i:=range attempts{attempts[i]=slot{0,0}}
+ before:=snapshot("session_race_before",0);result:=batch(attempts,origin);live:=accepted(result);require(len(live)==2,"session race accepted count")
+ for _,v:=range result{if v.socket==nil{denied(v,429)}}
+ after:=snapshot("session_race_full",2);require(after["voice_platform_realtime_connections_rejected_total"]-before["voice_platform_realtime_connections_rejected_total"]==18,"session reject metric delta")
+ closeSet(live[:1],true);snapshot("session_graceful_release",1);requireAll(batch([]slot{{0,0}},origin));snapshot("session_reconnect",2);closeAll(false);snapshot("session_drained",0)
+ record("session_concurrent_quota_and_reconnect",map[string]any{"attempts":20,"accepted":2,"rejected429":18,"RetryAfter":"1","graceful_release_and_reconnect":true})
+ attempts=make([]slot,12);for i:=range attempts{attempts[i]=slot{0,i%3}}
+ before=snapshot("account_race_before",0);result=batch(attempts,origin);live=accepted(result);require(len(live)==5,"account race accepted count")
+ for _,v:=range result{if v.socket==nil{denied(v,429)}}
+ counts:=[]int{0,0,0};for _,s:=range live{counts[s.which.Lane]++};spare:=-1;full:=-1
+ for lane,n:=range counts{if n==1{spare=lane};if n==2{full=lane}};require(spare>=0&&full>=0,"account race capacity witness")
+ denied(dial(slot{0,spare},origin),429);after=snapshot("account_full",5)
+ require(after["voice_platform_realtime_connections_rejected_total"]-before["voice_platform_realtime_connections_rejected_total"]==8,"account reject metric delta")
+ for _,s:=range live{if s.which.Lane==full{closeSet([]*held{s},false);break}}
+ snapshot("account_abrupt_release",4);requireAll(batch([]slot{{0,spare}},origin));snapshot("account_reconnect",5);closeAll(false);snapshot("account_drained",0)
+ record("account_concurrent_quota_and_reconnect",map[string]any{"attempts":12,"accepted":5,"rejected429":7,"independent_sixth_on_nonfull_session429":true,"abrupt_release_and_reconnect":true})
+}
+
+func upgradeFailures(){
+ before:=snapshot("upgrade_failures_before",0);counts:=map[int]int{}
+ for i:=0;i<20;i++{status,_,h,e:=request(ctx,"GET","/api/v1/realtime",nil,owned.Accounts[0].Cookies[0],-1);require(e!=nil||status!=101,"plain GET unexpectedly upgraded");require(status==400||status==426,"unexpected missing upgrade response");require(h.Get("Set-Cookie")==""&&h.Get("Upgrade")=="","failed upgrade headers");counts[status]++}
+ for i:=0;i<10;i++{v:=dial(slot{0,0},"http://invalid-qa-origin.example");denied(v,403);counts[403]++}
+ after:=snapshot("upgrade_failures_after",0);require(after["voice_platform_realtime_connections_total"]==before["voice_platform_realtime_connections_total"],"failed upgrades created accepted subscriptions")
+ require(after["voice_platform_realtime_connections_rejected_total"]==before["voice_platform_realtime_connections_rejected_total"],"failed upgrades leaked quota")
+ requireAll(batch(plan(0,5),origin));snapshot("post_error_account_capacity",5);closeAll(false);snapshot("post_error_drained",0)
+ record("upgrade_failures_no_slot_leak",map[string]any{"http_counts":counts,"failed_attempts":30,"post_error_account_capacity":5,"active_after_failures":0})
+}

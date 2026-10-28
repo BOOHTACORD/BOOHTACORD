@@ -1,0 +1,45 @@
+package main
+
+import (
+ "bytes"
+ "context"
+ "crypto/rand"
+ "encoding/hex"
+ "encoding/json"
+ "fmt"
+ "io"
+ "net/http"
+ "os"
+ "sync"
+ "time"
+)
+
+const base="http://api:8080"
+const origin="http://localhost:18088"
+type account struct { ID string `json:"id"`; Login string `json:"login"`; Password string `json:"password"`; Cookies []string `json:"cookies"` }
+type fixture struct { Source string `json:"source_revision"`; Accounts []account `json:"accounts"` }
+var owned=fixture{Source:"072426d60b1c0b1f7e5f66722a0da5faa00b50d7"}
+var client=&http.Client{Timeout:10*time.Second,Transport:&http.Transport{Proxy:nil,MaxIdleConns:64,MaxIdleConnsPerHost:32},CheckRedirect:func(*http.Request,[]*http.Request)error{return http.ErrUseLastResponse}}
+var ctx context.Context
+var report=map[string]any{"status":"RUNNING","production_touched":false,"source_revision":owned.Source}
+var records=[]map[string]any{}
+var emitMu sync.Mutex
+
+func require(ok bool,label string){if !ok{panic(label)}}
+func random(n int)string{b:=make([]byte,n);_,e:=rand.Read(b);require(e==nil,"random source");return hex.EncodeToString(b)}
+func savePrivate(){b,e:=json.MarshalIndent(owned,"","  ");require(e==nil,"fixture encoding");e=os.WriteFile("/work/fixture.private.json",b,0600);require(e==nil,"private fixture persistence")}
+func emit(event string,d map[string]any){emitMu.Lock();defer emitMu.Unlock();d["event"]=event;d["at_utc"]=time.Now().UTC().Format(time.RFC3339Nano);_ =json.NewEncoder(os.Stdout).Encode(d)}
+func record(label string,d map[string]any){d["label"]=label;records=append(records,d);emit("observation",d)}
+func request(c context.Context,method,path string,body any,cookie string,cohort int)(int,map[string]any,http.Header,error){
+ if c==ctx{if _,e:=os.Stat("/work/STOP");e==nil{return 0,nil,nil,fmt.Errorf("owned stop condition")}}
+ var raw []byte;var e error
+ if body!=nil{raw,e=json.Marshal(body);if e!=nil{return 0,nil,nil,e}}
+ r,e:=http.NewRequestWithContext(c,method,base+path,bytes.NewReader(raw));if e!=nil{return 0,nil,nil,e}
+ r.Host="localhost:18088";r.Header.Set("Origin",origin);r.Header.Set("Content-Type","application/json")
+ if cookie!=""{r.Header.Set("Cookie",cookie)}
+ if cohort>=0{r.Header.Set("X-Forwarded-For",fmt.Sprintf("198.51.100.%d",1+cohort%48))}
+ response,e:=client.Do(r);if e!=nil{return 0,nil,nil,e};defer response.Body.Close()
+ raw,e=io.ReadAll(io.LimitReader(response.Body,65537));if e!=nil||len(raw)>65536{return 0,nil,nil,fmt.Errorf("bounded response")}
+ var d map[string]any;if len(raw)>0{if json.Unmarshal(raw,&d)!=nil{return response.StatusCode,nil,response.Header,fmt.Errorf("non JSON response")}}
+ return response.StatusCode,d,response.Header,nil
+}

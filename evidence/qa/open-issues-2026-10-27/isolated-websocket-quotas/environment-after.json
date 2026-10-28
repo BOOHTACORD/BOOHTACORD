@@ -1,0 +1,158 @@
+{
+  "at_utc": "2026-10-27T23:55:26.767621+00:00",
+  "status": "PASS_OWNED_FIXTURE_CLEANUP_NINE_SERVICES_AND_BOUNDED_LOG_SCAN",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "project": "boohtacord-local-qa",
+  "production_touched": false,
+  "owned_session_rows": 936,
+  "owned_active_sessions": 0,
+  "owned_members_retained_unblocked": 104,
+  "PostgreSQL_version": "17.6",
+  "log_scan_since_utc": "2026-10-27T23:50:15.952590+00:00",
+  "services": [
+    {
+      "service": "api",
+      "running": true,
+      "image_id": "sha256:b34a09b6eebfb87fea478e7cd440cc7ab9c52dc7dbd3cf4d659b12a9eff98a47",
+      "restart_count": 0
+    },
+    {
+      "service": "web",
+      "running": true,
+      "image_id": "sha256:414cc79b7ff85cfca81252bd12eb8a9525f2fb5727932a88b02ccf63ebb42d20",
+      "restart_count": 0
+    },
+    {
+      "service": "proxy",
+      "running": true,
+      "image_id": "sha256:f43d8810c944e27e6f7ea80b165de11dbdab16cff15c8a80d83ae3e1a109a35d",
+      "restart_count": 0
+    },
+    {
+      "service": "postgres",
+      "running": true,
+      "image_id": "sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94",
+      "restart_count": 0
+    },
+    {
+      "service": "livekit",
+      "running": true,
+      "image_id": "sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3",
+      "restart_count": 0
+    },
+    {
+      "service": "collector",
+      "running": true,
+      "image_id": "sha256:b6d2b9a85b1029d05b5ad913150c1f014eed4ae99be81a1813ca5ade4a191913",
+      "restart_count": 0
+    },
+    {
+      "service": "tempo",
+      "running": true,
+      "image_id": "sha256:cac9de2ac9f6da8efca5b64b690a7cb8c786a0c49cac7b4517dd1b0089a6c703",
+      "restart_count": 0
+    },
+    {
+      "service": "prometheus",
+      "running": true,
+      "image_id": "sha256:5550dc63da361dc30f6fe02ac0e4dfc736ededfef3c8d12a634db04a67824d78",
+      "restart_count": 0
+    },
+    {
+      "service": "grafana",
+      "running": true,
+      "image_id": "sha256:6e5d306338670f381a942f1c50d3c266bf71531e5ddd9ee4fc1a133dac5ce63d",
+      "restart_count": 0
+    }
+  ],
+  "bounded_owned_logs_scan": [
+    {
+      "service": "api",
+      "bytes": 899828,
+      "stdout_bytes": 899827,
+      "stderr_bytes": 0,
+      "SHA256": "97be3804ebf059d4ec371f867f213bb93af21a4e5cc1a3538e953de027be1f27",
+      "own_login_password_token_markers_found": false
+    },
+    {
+      "service": "web",
+      "bytes": 1,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "own_login_password_token_markers_found": false
+    },
+    {
+      "service": "proxy",
+      "bytes": 1,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "own_login_password_token_markers_found": false
+    },
+    {
+      "service": "postgres",
+      "bytes": 356,
+      "stdout_bytes": 0,
+      "stderr_bytes": 355,
+      "SHA256": "dc206b32d161910bb27510de13fe70f38b5ab02a69659b119d38919cda9d5952",
+      "own_login_password_token_markers_found": false
+    },
+    {
+      "service": "livekit",
+      "bytes": 23532,
+      "stdout_bytes": 0,
+      "stderr_bytes": 23531,
+      "SHA256": "f2f5440e710800d5d24f74531ed9b7c4d68010b2fd4933ad14e74b1d59474d10",
+      "own_login_password_token_markers_found": false
+    },
+    {
+      "service": "collector",
+      "bytes": 19361,
+      "stdout_bytes": 0,
+      "stderr_bytes": 19360,
+      "SHA256": "986939ad4556aa4979fbcd829fcbc945c6308c899eedad588e05e04c48b7d59b",
+      "own_login_password_token_markers_found": false
+    },
+    {
+      "service": "tempo",
+      "bytes": 13092,
+      "stdout_bytes": 0,
+      "stderr_bytes": 13091,
+      "SHA256": "a7a4bfd703c98c74dd4c96e7ee0820cc10f3a4c3d50f16a3486b6228632ae5a6",
+      "own_login_password_token_markers_found": false
+    },
+    {
+      "service": "prometheus",
+      "bytes": 1,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "own_login_password_token_markers_found": false
+    },
+    {
+      "service": "grafana",
+      "bytes": 2152,
+      "stdout_bytes": 2151,
+      "stderr_bytes": 0,
+      "SHA256": "6fa6539a0cc6c86d626977d41803485bf8e89e3e6c45e6cb8ed0fedc21faa59f",
+      "own_login_password_token_markers_found": false
+    }
+  ],
+  "final_private_API_metrics": {
+    "go_goroutines": 31,
+    "go_memstats_heap_alloc_bytes": 7502840,
+    "process_cpu_seconds_total": 92.09,
+    "process_open_fds": 33,
+    "process_resident_memory_bytes": 52170752,
+    "voice_platform_realtime_connection_ready_seconds_count": 858,
+    "voice_platform_realtime_connections_active": 0,
+    "voice_platform_realtime_connections_rejected_total": 91,
+    "voice_platform_realtime_connections_total": 858,
+    "voice_platform_realtime_session_revalidation_failures_total": 1,
+    "voice_platform_realtime_session_revalidation_seconds_count": 507,
+    "voice_platform_realtime_session_revalidation_seconds_sum": 0.23073146000000005
+  },
+  "API_health_http": 200,
+  "finished_at_utc": "2026-10-27T23:55:30.543060+00:00"
+}

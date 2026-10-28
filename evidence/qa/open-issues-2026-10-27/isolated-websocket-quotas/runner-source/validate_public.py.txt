@@ -1,0 +1,38 @@
+"""Check immutable source rows, exact scope, private markers and runner exports."""
+import ast,collections,json,re,subprocess
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];B=Path(r'C:\Users\egkur\.codex\worktrees\android-qa\BOOHTACORD');E=B/'evidence/qa/open-issues-2026-10-27';O=E/'isolated-websocket-quotas';BASE='32f7cccbf62e600e723aaf8b1ed8843477fcf848'
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+def old(name):return json.loads(subprocess.check_output(['git','show',BASE+':evidence/qa/open-issues-2026-10-27/'+name],cwd=B))
+def rows(m):return {r['id']:r for i in m['issues'] for r in i['criteria']}
+before=rows(old('matrix.json'));m=read(E/'matrix.json');after=rows(m);assert len(before)==len(after)==480 and set(before)==set(after)
+assert [k for k in before if before[k]!=after[k]]==['I240.C3'];assert before['I240.C3']['requirement']==after['I240.C3']['requirement']
+cases=read(E/'cases.json')['cases'];assert cases[:-1]==old('cases.json')['cases'] and len(cases)==69
+files=[P/'private/fixture.private.json',P/'attempt1/private/fixture.private.json',P/'attempt2/private/fixture.private.json',Q/'.out/local-qa/credentials.private.json',Q/'.out/qa-auth-denial/fixture.private.json',B/'.out/qa-goal/private-fixture.json',B/'.out/qa-goal/private-upgrade-identity.json',Q/'.out/qa-prod-resume/dm-fixture.private.json',Q/'.out/qa-prod-resume/dm-fixture-attempt1.private.json'];markers=set()
+def collect(value,key=''):
+ if isinstance(value,dict):
+  for k,v in value.items():collect(v,k.lower())
+ elif isinstance(value,list):
+  for v in value:collect(v,key)
+ elif isinstance(value,str) and len(value)>8:
+  secret=any(k in key for k in ['password','secret','cookie','token','ingest_auth']) or key in ['login','email','livekit_key']
+  if secret or ((key=='id' or key.endswith('_id')) and re.fullmatch('[0-9a-f-]{36}',value)):
+   markers.add(value)
+   if 'cookie' in key and '=' in value:markers.add(value.split('=',1)[1])
+for file in files:
+ if file.exists():
+  d=read(file)
+  if file.name=='credentials.private.json':d={k:v for k,v in d.items() if any(x in k for x in ['password','secret','ingest_auth']) or k=='livekit_key'}
+  collect(d)
+scanned=0
+for file in E.rglob('*'):
+ if file.is_file() and file.suffix in ['.json','.md','.txt','.log']:
+  text=file.read_text(encoding='utf-8');assert all(n not in text for n in markers),'Private marker: '+str(file.relative_to(E));scanned+=1
+for file in O.rglob('*.txt'):
+ text=file.read_text(encoding='utf-8');assert len(text.splitlines())<=120,file.name
+ if file.name.endswith('.py.txt'):ast.parse(text)
+assert read(O/'resume2-result.json')['status']=='PASS_ACTUAL_WEBSOCKET_DEFAULT_QUOTAS'
+assert read(O/'environment-after.json')['owned_active_sessions']==0 and read(O/'focused-go-result.json')['top_level_passed']==6
+assert not subprocess.check_output(['git','diff','HEAD','--','backend','clients','tools'],cwd=B)
+d={'status':'PASS_PUBLIC_PRIVACY_SOURCE_SCOPE_AND_RUNNER_SYNTAX','base_evidence_commit':BASE,'source_requirements_preserved':480,'only_changed_row':'I240.C3','previous_cases_preserved':True,'total_cases':len(cases),'public_text_files_scanned':scanned,'private_config_sources_scanned':sum(f.exists() for f in files),'row_status_counts':dict(collections.Counter(r['status'] for r in after.values())),'native_source_unchanged':True,'runner_hard120_lines':'PASS'}
+(O/'validation.json').write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(d))

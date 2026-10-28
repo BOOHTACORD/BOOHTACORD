@@ -1,0 +1,28 @@
+{
+  "at_utc": "2026-10-27T23:50:07.462695+00:00",
+  "command_argv": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-run",
+    "^Test(LimiterCapsDeploymentAccountAndSessionAndReleases|LimiterConcurrentAcquisitionNeverExceedsGlobalLimit|HandlerRejectsOverQuotaBeforeUpgradeAndReleasesOnClose|HandlerObservesRealtimeLifecycle|HandlerClosesSocketWhenSessionIsRevoked|RecorderPublishesRealtimeConnectionMetrics)$",
+    "./internal/realtime/admit_connection",
+    "./internal/realtime/connect_session",
+    "./internal/observability/http_metrics"
+  ],
+  "exit_code": 0,
+  "top_level_passed": 6,
+  "names": [
+    "TestLimiterCapsDeploymentAccountAndSessionAndReleases",
+    "TestLimiterConcurrentAcquisitionNeverExceedsGlobalLimit",
+    "TestRecorderPublishesRealtimeConnectionMetrics",
+    "TestHandlerClosesSocketWhenSessionIsRevoked",
+    "TestHandlerRejectsOverQuotaBeforeUpgradeAndReleasesOnClose",
+    "TestHandlerObservesRealtimeLifecycle"
+  ],
+  "skips": 0,
+  "fail_events": 0,
+  "scope": "Focused Windows Go units, independent real deployed HTTP/PG/WS evidence separate",
+  "status": "PASS_FOCUSED_GO_ZERO_SKIPS"
+}

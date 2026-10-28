@@ -1,0 +1,39 @@
+{
+  "workflow_class": "review_gate",
+  "task_size": "large",
+  "structure_mode": "structure_no_rg",
+  "route": "backend/internal/realtime/admit_connection",
+  "edge": "runtime/routes.go -> chat_routes/realtime_routes.go -> connect_session/http_handler.go -> admit_connection/limiter.go",
+  "mode": "Actual isolated API+PostgreSQL WebSocket admission runtime verification; no product edits",
+  "previous_goal_turn": "PROGRESS: I240.C4 PASS with90 real negative requests, cleanup, evidence commits4b4e8a003/32f7cccbf and issue240 readback",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "standard_limits": {
+    "deployment": 500,
+    "account": 5,
+    "session": 2
+  },
+  "profile": "1/10/100 and500 active sockets; actual concurrent session/account/global boundaries, pre-upgrade rejects, normal/TCP-error close, bad upgrades, two100-client reconnect cycles, one owned session revocation",
+  "owned_fixture_cap": {
+    "members": 104,
+    "sessions": 312,
+    "synthetic_source_cohorts": 48
+  },
+  "preservation": "No server config/restart/limit change; only new local fixtures; private ports; no production/router/native session changes",
+  "checks": [
+    "actual HTTP101/429/403/401 and connection.ready",
+    "actual private API active/rejected/resource metrics",
+    "aggregate local PG connection counters",
+    "focused native Go unit/race checks",
+    "post-cleanup zero owned active sessions and9 original services health"
+  ],
+  "stop_condition": "12min client deadline; API RSS512MiB/FD2048/goroutines8000/CPU1.8cores sustained5s; DB80 total/64 active; close all owned sockets, logout own sessions, preserve source-bound evidence and failures",
+  "controller_contract_corrections": [
+    "Authenticating Require middleware refreshes the same secure vp_session on successful/authenticated responses; compare token equality and flags, and DB row count rather than prohibiting all Set-Cookie.",
+    "Pinned coder/websocket verifyClientRequest returns426 with Upgrade:websocket for missing Connection upgrade token; require non101/no Sec-WebSocket-Accept, keep429 strict refusal contract."
+  ],
+  "retained_attempts": [
+    "attempt1 (terminal1,312/312 owned sessions revoked)",
+    "attempt2 (terminal1,312/312 new owned sessions revoked; original624 owned rows all revoked)"
+  ],
+  "final_attempt": "resume2 reuses same104 owned accounts, fresh312 owned sessions, source cohort192.0.2.1..48; no server changes"
+}

@@ -1,0 +1,39 @@
+"""After terminal owned WS client: attest source, aggregate DB, clean logs and services."""
+import hashlib,json,sys,subprocess,uuid,http.client
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,SOURCE,CONTEXT,credentials
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+def now():return datetime.now(timezone.utc).isoformat()
+r={'at_utc':now(),'status':'RUNNING','source_revision':SOURCE,'project':PROJECT,'production_touched':False}
+try:
+ runner=read(P/'resume2-runner.json');assert runner['status'].startswith('PASS') and runner['client_exit_code']==0
+ assert not docker('ps','-a','--filter','name=^boohtacord-ws-quota-probe$','--format','{{.Names}}').decode().strip()
+ cfg=read(P/'private/fixture.private.json');ids=[str(uuid.UUID(a['id'])) for a in cfg['accounts']];assert len(ids)==104 and len(set(ids))==104
+ literals=','.join("'"+x+"'::uuid" for x in ids)
+ sql='SELECT count(*),count(*) FILTER(WHERE revoked_at IS NULL) FROM sessions WHERE user_id IN ('+literals+');\nSELECT count(*) FROM users WHERE id IN ('+literals+") AND blocked_at IS NULL;\nSHOW server_version;\n"
+ values=docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-At',input=sql.encode()).decode().splitlines();rows,active=map(int,values[0].split('|'));assert rows==936 and active==0 and int(values[1])==104 and values[2].startswith('17.6')
+ r['owned_session_rows']=rows;r['owned_active_sessions']=active;r['owned_members_retained_unblocked']=104;r['PostgreSQL_version']=values[2]
+ markers=[]
+ for f in [P/'private/fixture.private.json',P/'attempt1/private/fixture.private.json',P/'attempt2/private/fixture.private.json']:
+  for a in read(f)['accounts']:markers.extend([a['login'],a['password']]);markers.extend(c.split('=',1)[1] for c in a['cookies'])
+ markers.extend(v for k,v in credentials().items() if any(s in k for s in ['password','secret','ingest_auth']) and isinstance(v,str))
+ started=read(P/'attempt1/run-runner.json')['at_utc'];r['log_scan_since_utc']=started;r['services']=[];r['bounded_owned_logs_scan']=[]
+ for name in ['api','web','proxy','postgres','livekit','collector','tempo','prometheus','grafana']:
+  v=json.loads(docker('inspect',PROJECT+'-'+name+'-1'))[0];assert v['State']['Running'] and v['Config']['Labels']['com.docker.compose.project']==PROJECT and v['RestartCount']==0
+  for bindings in v['NetworkSettings']['Ports'].values():
+   for b in bindings or []:assert b['HostIp']=='127.0.0.1'
+  if name in ['api','web']:
+   image=json.loads(docker('image','inspect',v['Image']))[0];assert image['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+  output=subprocess.run(['docker','--context',CONTEXT,'logs','--since',started,PROJECT+'-'+name+'-1'],capture_output=True);assert output.returncode==0
+  raw=output.stdout+b'\n'+output.stderr;(P/(name+'-logs.private.log')).write_bytes(raw);assert all(x.encode() not in raw for x in markers),'Owned marker found in '+name
+  r['services'].append({'service':name,'running':True,'image_id':v['Image'],'restart_count':v['RestartCount']})
+  r['bounded_owned_logs_scan'].append({'service':name,'bytes':len(raw),'stdout_bytes':len(output.stdout),'stderr_bytes':len(output.stderr),'SHA256':hashlib.sha256(raw).hexdigest(),'own_login_password_token_markers_found':False})
+ assert len(read(P/'observe-result.json')['metric_samples'])==1
+ m=read(P/'observe-result.json')['metric_samples'][0]['metrics'];assert m['voice_platform_realtime_connections_active']==0;r['final_private_API_metrics']=m
+ c=http.client.HTTPConnection('127.0.0.1',18088,timeout=8);c.request('GET','/api/v1/health',headers={'Host':'localhost:18088'});response=c.getresponse();assert response.status==200;response.read(65536);c.close();r['API_health_http']=200
+ r['status']='PASS_OWNED_FIXTURE_CLEANUP_NINE_SERVICES_AND_BOUNDED_LOG_SCAN'
+except Exception as e:r['status']='FAIL_POST_PROFILE';r['error_type']=type(e).__name__;r['failure_label']=str(e) if isinstance(e,AssertionError) and str(e).startswith('Owned marker') else 'private postcheck'
+finally:r['finished_at_utc']=now();(P/'environment-after.json').write_text(json.dumps(r,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps({k:v for k,v in r.items() if k not in ['services','bounded_owned_logs_scan','final_private_API_metrics']}));sys.exit(0 if r['status'].startswith('PASS') else 1)

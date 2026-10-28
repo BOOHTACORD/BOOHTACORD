@@ -258,3 +258,17 @@ I240.C4 is PASS for its exact backend requirement. QA240 stays FAIL/open with
 defect134 and unfinished rows. No Nginx/TLS/native-login, other platform/media,
 production-capacity or statistical timing-channel-absence claim. All480 original
 requirements, previous failures and43 consolidation decisions are preserved.
+
+## Actual isolated WebSocket quotas — 2026-10-28 Moscow
+
+[I240.C3 source-bound results and retained controller failures](isolated-websocket-quotas/README.md):
+real API/PostgreSQL17.6 enforces unchanged deployment500/account5/session2 quotas
+under concurrent attempts. Strict429 contract,30 failed upgrades, graceful/TCP
+close, reconnect,1/10/100/500 stages and two100-client reconnect cycles pass.
+500 sockets held20s yield500 actual revalidation calls without failures; all
+owned sockets return to0. Safe API/DB resource samples and6 native Go passes with
+zero skips retained.104 own test accounts reused; all936 historical own session
+rows revoked; original9 services healthy/private. I240.C3 is PASS for its exact
+backend scope; QA240 remains FAIL/open. No full implementation135, WSS/browser/native
+retry, prompt-revocation SLO, platform/media or capacity gate claim. All480 source
+requirements and43 consolidation decisions preserved.

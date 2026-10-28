@@ -1,0 +1,86 @@
+{
+  "at_utc": "2026-10-27T23:50:30.899537723Z",
+  "cleanup": {
+    "already_revoked401": 0,
+    "failures": 0,
+    "logout204": 312,
+    "members_retained": 104,
+    "status_ok": true
+  },
+  "elapsed_seconds": 12.932043201,
+  "event": "final",
+  "failed_check": "accepted handshake contract",
+  "metric_samples": [
+    {
+      "at_utc": "2026-10-27T23:50:16.969563776Z",
+      "event": "metrics",
+      "label": "initial_baseline",
+      "metrics": {
+        "go_goroutines": 31,
+        "go_memstats_heap_alloc_bytes": 5880280,
+        "process_cpu_seconds_total": 68.13,
+        "process_open_fds": 16,
+        "process_resident_memory_bytes": 45867008,
+        "voice_platform_realtime_connection_ready_seconds_count": 19,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 0,
+        "voice_platform_realtime_connections_total": 19,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    },
+    {
+      "at_utc": "2026-10-27T23:50:30.344286355Z",
+      "event": "metrics",
+      "label": "session_race_before",
+      "metrics": {
+        "go_goroutines": 30,
+        "go_memstats_heap_alloc_bytes": 44689752,
+        "process_cpu_seconds_total": 76.52,
+        "process_open_fds": 16,
+        "process_resident_memory_bytes": 101912576,
+        "voice_platform_realtime_connection_ready_seconds_count": 19,
+        "voice_platform_realtime_connections_active": 0,
+        "voice_platform_realtime_connections_rejected_total": 0,
+        "voice_platform_realtime_connections_total": 19,
+        "voice_platform_realtime_session_revalidation_failures_total": 0,
+        "voice_platform_realtime_session_revalidation_seconds_count": 6,
+        "voice_platform_realtime_session_revalidation_seconds_sum": 0.0027090599999999997
+      }
+    }
+  ],
+  "production_touched": false,
+  "profile": {
+    "FD_stop": 2048,
+    "RSS_stop_bytes": 536870912,
+    "direct_API_not_Nginx": true,
+    "goroutine_stop": 8000,
+    "hard_deadline_seconds": 720,
+    "maximum_concurrent_dials": 20,
+    "maximum_sockets": 500,
+    "owned_members": 104,
+    "owned_sessions": 312,
+    "server_configuration_changed": false,
+    "sustained_API_CPU_core_stop": 1.8,
+    "synthetic_documentation_source_cohorts": 48
+  },
+  "records": [
+    {
+      "at_utc": "2026-10-27T23:50:30.339038088Z",
+      "event": "observation",
+      "label": "owned_fixture_setup",
+      "limits_unchanged": true,
+      "members": 104,
+      "sessions": 312,
+      "source_cohorts": 48
+    }
+  ],
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "standard_limits": {
+    "account": 5,
+    "deployment": 500,
+    "session": 2
+  },
+  "status": "FAIL_OR_PROFILE"
+}

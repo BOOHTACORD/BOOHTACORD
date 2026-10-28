@@ -1,0 +1,50 @@
+package main
+
+import (
+ "context"
+ "encoding/json"
+ "io"
+ "net/http"
+ "sync"
+ "sync/atomic"
+ "time"
+ "github.com/coder/websocket"
+)
+
+type slot struct{Account,Lane int}
+type held struct{conn *websocket.Conn;which slot;done chan struct{};code atomic.Int32;frames atomic.Int64}
+type outcome struct{socket *held;status int;code,retry,problem string;cookie,refreshValid,upgrade bool}
+var sockets=[]*held{}
+var socketMu sync.Mutex
+
+func dial(s slot,requestOrigin string)outcome{
+ c,cancel:=context.WithTimeout(ctx,8*time.Second);defer cancel()
+ h:=http.Header{"Origin":{requestOrigin},"Cookie":{owned.Accounts[s.Account].Cookies[s.Lane]}}
+ connection,response,e:=websocket.Dial(c,"ws://api:8080/api/v1/realtime",&websocket.DialOptions{HTTPClient:client,Host:"localhost:18088",HTTPHeader:h})
+ r:=outcome{}
+ if response!=nil{r.status=response.StatusCode;r.retry=response.Header.Get("Retry-After");r.cookie=len(response.Header.Values("Set-Cookie"))>0;r.refreshValid=cookieRefreshValid(response.Header,owned.Accounts[s.Account].Cookies[s.Lane]);r.upgrade=response.Header.Get("Upgrade")!=""}
+ if e!=nil{
+  if response==nil{r.problem="transport";return r}
+  if response.Body!=nil{raw,_:=io.ReadAll(io.LimitReader(response.Body,2048));var d map[string]any;_ =json.Unmarshal(raw,&d);if er,ok:=d["error"].(map[string]any);ok{r.code,_=er["code"].(string)}}
+  return r
+ }
+ connection.SetReadLimit(1024*1024)
+ _,raw,e:=connection.Read(c);var event struct{Kind string `json:"kind"`}
+ if e!=nil||json.Unmarshal(raw,&event)!=nil||event.Kind!="connection.ready"{connection.CloseNow();r.problem="first event is not ready";return r}
+ v:=&held{conn:connection,which:s,done:make(chan struct{})};v.code.Store(-1);r.socket=v
+ socketMu.Lock();sockets=append(sockets,v);socketMu.Unlock()
+ go func(){defer close(v.done);for{_,_,err:=v.conn.Read(ctx);if err!=nil{v.code.Store(int32(websocket.CloseStatus(err)));return};v.frames.Add(1)}}()
+ return r
+}
+
+func batch(slots []slot,requestOrigin string)[]outcome{
+ result:=make([]outcome,len(slots));var wait sync.WaitGroup;semaphore:=make(chan struct{},20)
+ for i,s:=range slots{wait.Add(1);go func(i int,s slot){defer wait.Done();semaphore<-struct{}{};defer func(){<-semaphore}();result[i]=dial(s,requestOrigin)}(i,s)}
+ wait.Wait();return result
+}
+func plan(start,count int)[]slot{r:=make([]slot,count);for i:=range r{n:=start+i;r[i]=slot{n/5,(n%5)/2}};return r}
+func accepted(results []outcome)[]*held{var r []*held;for _,v:=range results{if v.socket!=nil{require(v.status==101&&v.refreshValid&&v.problem=="","accepted handshake contract");r=append(r,v.socket)}};return r}
+func denied(v outcome,status int){require(v.socket==nil&&v.status==status&&v.refreshValid&&!v.upgrade&&v.problem=="","pre-upgrade denial contract");if status==401{require(!v.cookie,"unauthenticated denial cookie")};if status==429{require(v.code=="REALTIME_LIMITED"&&v.retry=="1","quota code/retry contract")}}
+func requireAll(results []outcome)[]*held{r:=accepted(results);require(len(r)==len(results),"unexpected in-budget socket rejection");return r}
+func closeSet(set []*held,graceful bool){var wait sync.WaitGroup;semaphore:=make(chan struct{},20);for _,s:=range set{wait.Add(1);go func(s *held){defer wait.Done();semaphore<-struct{}{};defer func(){<-semaphore}();if graceful{_ =s.conn.Close(websocket.StatusNormalClosure,"qa complete")}else{_ =s.conn.CloseNow()}}(s)};wait.Wait()}
+func closeAll(graceful bool){socketMu.Lock();copy:=append([]*held(nil),sockets...);socketMu.Unlock();closeSet(copy,graceful)}

@@ -1,0 +1,10 @@
+{
+  "status": "PASS_ATTEMPT2_OWNED_SESSIONS_REVOKED",
+  "owned_members": 104,
+  "owned_session_rows": 624,
+  "owned_active_sessions": 0,
+  "terminal_exit_code": 1,
+  "observed_session_race": "2 accepted /18 HTTP429, graceful release and reconnect PASS",
+  "observed_account_race": "5 accepted /7 HTTP429, independent sixth HTTP429, abrupt release and reconnect PASS",
+  "failure_classification": "Controller overrestricts HTTP426 Upgrade response header; inspect pinned coder/websocket accept path before changing assertion"
+}

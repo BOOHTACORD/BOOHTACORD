@@ -5134,19 +5134,28 @@
           "requirement": "[#135 — квоты WebSocket](https://github.com/Egkurilov/BOOHTACORD/issues/135): проверить account/deployment/session limits, отказ до upgrade, закрытие соединения, reconnect и освобождение квоты после ошибки. Приложить тестовый сценарий, status/outcome и агрегированные active/rejected counters без account/session IDs.",
           "source_checkbox": " ",
           "id": "I240.C3",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental.",
-          "platform": "Disposable owned PostgreSQL/API/LiveKit target and bounded synthetic accounts/data; never shared production fault/load injection.",
+          "status": "PASS",
+          "execution_cases": [
+            "ISOLATED-websocket-default-quotas-real-http"
+          ],
+          "evidence": [
+            "isolated-websocket-quotas/summary.json",
+            "isolated-websocket-quotas/resume2-result.json",
+            "isolated-websocket-quotas/resume2-session-row-counts.json",
+            "isolated-websocket-quotas/environment-after.json",
+            "isolated-websocket-quotas/source-binding.json",
+            "isolated-websocket-quotas/focused-go-result.json"
+          ],
+          "execution": "python -X utf8 .out/qa-ws-quota/run_ws.py resume2; python -X utf8 .out/qa-ws-quota/run_ws.py observe; python -X utf8 .out/qa-ws-quota/verify_after.py",
+          "platform": "Actual source072 Linux API and PostgreSQL17.6 on this Windows11 PC; standard500/5/2 quotas unchanged",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "isolated-websocket-quotas/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_api_faults"
           ],
           "execution_plan": {
-            "status": "PLAN_ONLY_NOT_RUNTIME_PROOF",
+            "status": "EXECUTED_EXACT_BACKEND_ROW_SCOPE",
             "source_scenario": "I240.C3 requirement text retained verbatim",
             "method_scope": "Each method is supplemental; execute every remaining source-row clause and required platform variant separately",
             "mentioned_platforms": [
@@ -5154,10 +5163,12 @@
             ],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-websocket-default-quotas-real-http"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "reason": "Literal I240.C3 account/deployment/session limits, pre-upgrade denial, close/reconnect/error release and aggregate counters executed on isolated actual API/PG. Full implementation135 and platform/security/media acceptance are separate.",
+          "remaining_work_state": "COMPLETE_FOR_THIS_EXACT_BACKEND_CRITERION_ONLY"
         },
         {
           "section": "Сессия, backend admission и security",
@@ -5749,7 +5760,8 @@
         "UPLOAD-real-empty-TEXT-DM-body",
         "UPLOAD-real-deployed-15min-absolute",
         "UPLOAD-real-global16-cap",
-        "ISOLATED-auth-denial-real-http-postgres"
+        "ISOLATED-auth-denial-real-http-postgres",
+        "ISOLATED-websocket-default-quotas-real-http"
       ],
       "evidence": [
         "notification-readiness/summary.json",
@@ -5759,7 +5771,8 @@
         "local-staging/summary.json",
         "upload-timeout/summary.json",
         "upload-extended/summary.json",
-        "isolated-auth-denial/summary.json"
+        "isolated-auth-denial/summary.json",
+        "isolated-websocket-quotas/summary.json"
       ],
       "defects": [
         134
@@ -16077,7 +16090,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-27T23:41:34.274908+00:00",
+  "updated_utc": "2026-10-27T23:57:16.061041+00:00",
   "known_defect_issues": [
     579,
     580,

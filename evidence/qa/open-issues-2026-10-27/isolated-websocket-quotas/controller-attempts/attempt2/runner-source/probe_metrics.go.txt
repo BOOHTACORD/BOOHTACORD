@@ -1,0 +1,47 @@
+package main
+
+import (
+ "bufio"
+ "context"
+ "fmt"
+ "io"
+ "net/http"
+ "os"
+ "strconv"
+ "strings"
+ "time"
+)
+
+var allowedMetrics=[]string{"voice_platform_realtime_connections_active","voice_platform_realtime_connections_total","voice_platform_realtime_connections_rejected_total","voice_platform_realtime_connection_ready_seconds_count","voice_platform_realtime_session_revalidation_seconds_count","voice_platform_realtime_session_revalidation_seconds_sum","voice_platform_realtime_session_revalidation_failures_total","process_resident_memory_bytes","process_open_fds","process_cpu_seconds_total","go_goroutines","go_memstats_heap_alloc_bytes"}
+var observations=[]map[string]any{}
+
+func metrics(c context.Context)(map[string]float64,error){
+ r,e:=http.NewRequestWithContext(c,"GET",base+"/metrics",nil);if e!=nil{return nil,e};r.Host="localhost:18088"
+ response,e:=client.Do(r);if e!=nil{return nil,e};defer response.Body.Close();if response.StatusCode!=200{return nil,fmt.Errorf("metrics HTTP")}
+ b,e:=io.ReadAll(io.LimitReader(response.Body,4*1024*1024+1));if e!=nil||len(b)>4*1024*1024{return nil,fmt.Errorf("metrics bound")}
+ result:=map[string]float64{};scanner:=bufio.NewScanner(strings.NewReader(string(b)))
+ for scanner.Scan(){fields:=strings.Fields(scanner.Text());if len(fields)!=2{continue};for _,name:=range allowedMetrics{if fields[0]==name{v,e:=strconv.ParseFloat(fields[1],64);if e==nil{result[name]=v}}}}
+ if scanner.Err()!=nil{return nil,fmt.Errorf("metrics parse")}
+ for _,name:=range allowedMetrics{if _,ok:=result[name];!ok{return nil,fmt.Errorf("required aggregate metric absent")}}
+ return result,nil
+}
+
+func snapshot(label string,expected int)map[string]float64{
+ _,stop:=os.Stat("/work/STOP");require(os.IsNotExist(stop),"external owned resource stop")
+ deadline:=time.Now().Add(8*time.Second);var m map[string]float64
+ for {var e error;m,e=metrics(ctx);require(e==nil,"actual API metrics unavailable")
+  require(m["process_resident_memory_bytes"]<512*1024*1024,"resource stop RSS512MiB")
+  require(m["process_open_fds"]<2048,"resource stop FD2048");require(m["go_goroutines"]<8000,"resource stop goroutines8000")
+  if int(m["voice_platform_realtime_connections_active"])==expected{break};require(time.Now().Before(deadline),"active gauge did not reach expected baseline/tier");time.Sleep(100*time.Millisecond)
+ }
+ sample:=map[string]any{"label":label,"at_utc":time.Now().UTC().Format(time.RFC3339Nano),"metrics":m};observations=append(observations,sample)
+ emit("metrics",sample);return m
+}
+
+func hold(label string,count,seconds int){
+ before:=snapshot(label+"_start",count);started:=time.Now()
+ for i:=0;i<seconds;i++{select{case <-time.After(time.Second):case <-ctx.Done():panic("profile deadline")};m:=snapshot(label+"_sample",count)
+  if time.Since(started)>=5*time.Second{require((m["process_cpu_seconds_total"]-before["process_cpu_seconds_total"])/time.Since(started).Seconds()<1.8,"resource stop sustained API CPU1.8cores")}
+ }
+ record(label,map[string]any{"active":count,"held_seconds":seconds})
+}
