@@ -41,7 +41,7 @@ export class LatestScreenPreviewReader {
     }
     if (!state) {
       if (this.states.size >= 16) this.evictOldest()
-      state = { hint, revision: 0, pending: 0, running: false, poll: false, visible: this.visibility.isVisible(hint.leaseId), failures: 0 }
+      state = { hint, revision: 0, pending: 0, running: false, poll: false, visible: this.visibility.isVisible(hint.leaseId), failures: 0, initialRetries: 0 }
       this.states.set(hint.leaseId, state)
     }
     state.hint = hint
@@ -99,7 +99,7 @@ export class LatestScreenPreviewReader {
         if (frame && frame.revision > state.revision) {
           state.revision = frame.revision
           if (state.pending <= frame.revision) this.sink.apply(hint, frame.bytes)
-        } else state.revision = Math.max(state.revision, target)
+        }
       }
     } finally {
       state.running = false

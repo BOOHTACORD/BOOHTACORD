@@ -8,7 +8,7 @@ import (
 
 const (
 	MaxJPEGBytes     = 14 * 1024
-	MaxPreviewWidth  = 160
+	MaxPreviewWidth  = 480
 	MaxPreviewHeight = 320
 	MaxPreviewPixels = MaxPreviewWidth * MaxPreviewHeight
 )
