@@ -1,0 +1,28 @@
+{
+  "workflow_class": "review_gate",
+  "task_size": "large",
+  "structure_mode": "structure_no_rg",
+  "route": "backend/internal/security/rate_limit (native upload consumers)",
+  "leaf_acceptance": "I240.C5 / referenced137 upload multilevel budgets; parent already FAIL on NAT20",
+  "backlog_context": "T-010 auth/session fixture and existing storage runtime; no dedicated137 backlog record; source QA criterion is the selected verification leaf, no backlog changes",
+  "previous_goal_turn": "PROGRESS: NAT20 runtime counterexample, exact real-window/account/KDF controls,137 reopened,240 C5FAIL, evidencef850d062a/5594ea838",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "native_edges": "runtime/admission.go -> storage_routes.ConfigureStorageRoutes -> source/account/deployment Limiter.MiddlewareFor -> TEXT/DM multipart handlers",
+  "unchanged_limits": {
+    "account": 10,
+    "source": 200,
+    "deployment": 5000,
+    "window_s": 300,
+    "upload_concurrency_global": 16,
+    "upload_concurrency_account": 2
+  },
+  "bounded_profile": "104 prior own members plus400 new members across both attempts; same504 reused in final run,505 sessions per attempt; shared account/source/deployment budgets,4992 prefill and16 concurrent boundary, actual302s recovery,5 new32B controls201 with correct UNATTACHED404",
+  "filler_scope": "4997 short malformed400 plus3 valid201 in first5000 admissions, not successful-file capacity. Six own UNATTACHED32B files/192B retained across both attempts.",
+  "preservation": "No source/UI/product edits, security-limit changes, server restart, production/router/native session changes; own sessions revoked, staged/inflight/reserved return0;9 original services healthy/private",
+  "resource_stop": "12min client deadline, prefill100 starts/s maximum with4workers, boundary16, API RSS512MiB/FD2048/goroutines8000, DB80 total/64active; owned storage mounted read-only to client",
+  "stop_condition": "Both terminal attempts retained, all2011 historical own sessions inactive, six retained controls hash-audited, source/links/privacy/manifest checked,137/240 remain FAIL/open",
+  "remaining_limits": "NAT20 stillFAIL; live limiter store-capacity saturation, shipping-client retry, physical/native/media/capacity gates separate",
+  "retained_controller_attempt": "attempt1: terminal exit1, expected successful unattached upload followed by incorrect download200 assertion; actual authorized404 is correct until attachment links to message.505 sessions revoked; extra diagnostic session revoked.",
+  "continuation": "Reuse same504 accounts; allow previous touched upload/account/source windows to expire naturally plus30s margin; no restart or limiter reset. Then fresh505 sessions and fresh independent quota ledger.",
+  "positive_controls": "Accept5 new TEXT/DM uploads201 and validate owner UNATTACHED GET404. Audit only exact owned files by hash read-only later; full attached-file download acceptance separate."
+}

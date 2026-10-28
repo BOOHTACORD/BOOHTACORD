@@ -1,0 +1,37 @@
+package main
+
+import (
+ "bufio"
+ "net/http"
+ "os"
+ "path/filepath"
+ "strconv"
+ "strings"
+ "sync"
+ "time"
+ "io"
+)
+
+var samples=[]map[string]any{}
+var sampleMu sync.Mutex
+var names=map[string]string{"voice_platform_uploads_inflight":"uploads_inflight","voice_platform_upload_oldest_inflight_seconds":"oldest_inflight_s","voice_platform_attachment_upload_reserved_bytes":"reserved_bytes","voice_platform_attachment_filesystem_snapshot_success":"storage_success","process_resident_memory_bytes":"RSS_bytes","process_open_fds":"FD","process_cpu_seconds_total":"CPU_seconds","go_goroutines":"goroutines","voice_platform_upload_failures_total{reason=\"invalid_multipart\"}":"invalid_multipart"}
+func init(){
+ for _,operation:=range []string{"source","account","deployment"}{for _,kind:=range []string{"active","capacity"}{names["voice_platform_rate_limit_sources_"+kind+"{operation=\"upload_"+operation+"\"}"]="budget_"+operation+"_"+kind};names["voice_platform_rate_limit_saturation_total{operation=\"upload_"+operation+"\"}"]="store_saturated_"+operation}
+ for _,scope:=range []string{"TEXT","DM"}{route:="/api/v1/channels/{channelID}/attachments";if scope=="DM"{route="/api/v1/direct-messages/{directMessageID}/attachments"};for _,status:=range []string{"201","400","429"}{names["voice_platform_api_requests_total{method=\"POST\",route=\""+route+"\",status=\""+status+"\"}"]=scope+"_HTTP"+status}}
+}
+func inventory()map[string]int64{
+ r:=map[string]int64{}
+ for _,dir:=range []string{"staging","unattached"}{entries,e:=os.ReadDir(filepath.Join("/storage",dir));require(e==nil,"owned storage inventory unavailable");for _,f:=range entries{info,e:=f.Info();require(e==nil&&info.Mode().IsRegular(),"unexpected storage entry kind");r[dir+"_files"]++;r[dir+"_bytes"]+=info.Size()};if len(entries)==0{r[dir+"_files"]=0;r[dir+"_bytes"]=0}}
+ return r
+}
+func measure(label string)map[string]float64{
+ request,e:=http.NewRequestWithContext(ctx,"GET",base+"/metrics",nil);require(e==nil,"metrics request");response,e:=client.Do(request);require(e==nil,"metrics transport");defer response.Body.Close();require(response.StatusCode==200,"private metrics HTTP")
+ raw,e:=io.ReadAll(io.LimitReader(response.Body,4*1024*1024+1));require(e==nil&&len(raw)<=4*1024*1024,"metrics bound");m:=map[string]float64{};scanner:=bufio.NewScanner(strings.NewReader(string(raw)))
+ for scanner.Scan(){f:=strings.Fields(scanner.Text());if len(f)!=2{continue};if key,ok:=names[f[0]];ok{v,e:=strconv.ParseFloat(f[1],64);require(e==nil,"metric number");m[key]=v}}
+ for _,key:=range []string{"uploads_inflight","oldest_inflight_s","reserved_bytes","storage_success","RSS_bytes","FD","CPU_seconds","goroutines"}{_,ok:=m[key];require(ok,"required private metric absent")}
+ require(m["budget_source_capacity"]==10000&&m["budget_account_capacity"]==50000&&m["budget_deployment_capacity"]==1,"actual limiter store capacity contract")
+ require(m["RSS_bytes"]<512*1024*1024&&m["FD"]<2048&&m["goroutines"]<8000,"API resource stop");require(m["uploads_inflight"]<=16&&m["reserved_bytes"]==0&&m["storage_success"]==1,"upload resource baseline/limits")
+ _,stop:=os.Stat("/work/STOP");require(os.IsNotExist(stop),"external resource stop");sampleMu.Lock();samples=append(samples,map[string]any{"label":label,"at_utc":time.Now().UTC().Format(time.RFC3339Nano),"metrics":m});sampleMu.Unlock();return m
+}
+func drain(label string){deadline:=time.Now().Add(8*time.Second);for{m:=measure(label);if m["uploads_inflight"]==0&&m["reserved_bytes"]==0{break};require(time.Now().Before(deadline),"upload resources did not drain");time.Sleep(100*time.Millisecond)};require(inventory()["staging_files"]==0,"staging files did not drain")}
+func waitUntil(start time.Time,seconds float64,label string){for time.Since(start).Seconds()<seconds{left:=seconds-time.Since(start).Seconds();delay:=10*time.Second;if left<10{delay=time.Duration(left*float64(time.Second))};select{case <-time.After(delay):case <-ctx.Done():panic("profile deadline")};measure(label);emit("progress",map[string]any{"phase":label,"elapsed_seconds":time.Since(start).Seconds(),"target_seconds":seconds})}}

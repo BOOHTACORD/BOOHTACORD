@@ -1,0 +1,28 @@
+package main
+
+import (
+ "context"
+ "encoding/json"
+ "net"
+ "os"
+ "time"
+)
+
+func main(){
+ started:=time.Now();var cancel context.CancelFunc;ctx,cancel=context.WithTimeout(context.Background(),12*time.Minute)
+ mode:="run";if len(os.Args)>1{mode=os.Args[1]};report:=map[string]any{"source_revision":"072426d60b1c0b1f7e5f66722a0da5faa00b50d7","production_touched":false}
+ defer func(){failure:=recover();cancel();workers.Wait();clean:=map[string]any{"status_ok":true};if mode!="observe"{clean=cleanup()};report["cleanup"]=clean;report["records"]=records;report["metric_samples"]=samples;report["elapsed_seconds"]=time.Since(started).Seconds();report["status"]="PASS_ACTUAL_UPLOAD_ACCOUNT_SOURCE_DEPLOYMENT_WINDOWS";exit:=0
+  if mode=="observe"{report["status"]="PASS_PRIVATE_UPLOAD_METRICS_AND_STORAGE_INVENTORY"}
+  if failure!=nil||clean["status_ok"]!=true{exit=1;report["status"]="FAIL_OR_PROFILE";if s,ok:=failure.(string);ok{report["failed_check"]=s}else{report["failed_check"]="private runtime error type"}}
+  emit("final",report);os.Exit(exit)
+ }()
+ require(mode=="run"||mode=="observe"||mode=="resume","owned profile mode");resume=mode=="resume";raw,e:=os.ReadFile("/work/config.private.json");require(e==nil&&json.Unmarshal(raw,&cfg)==nil,"private config decode")
+ require(cfg.Source==report["source_revision"]&&len(cfg.Seeds)==104&&len(cfg.Sources)==128&&len(cfg.FileBody)==32,"owned profile source/shape")
+ addresses,e:=net.LookupIP("api");require(e==nil&&len(addresses)>0,"private API DNS");for _,a:=range addresses{require(a.IsPrivate(),"nonprivate API rejected")}
+ before:=measure("initial_baseline");require(before["uploads_inflight"]==0&&before["reserved_bytes"]==0,"target has ongoing uploads");first:=inventory();require(first["staging_files"]==0,"target has staged uploads");report["initial_storage_inventory"]=first
+ if mode=="observe"{return}
+ if resume{deadline,e:=time.Parse(time.RFC3339Nano,cfg.NotBefore);require(e==nil,"prior budget expiry deadline");delay:=time.Until(deadline).Seconds();if delay>0{waitUntil(time.Now(),delay,"prior_owned_window_natural_expiry")};record("prior_owned_window_expired_naturally",map[string]any{"not_before_utc":cfg.NotBefore,"server_restarted_or_limiter_reset":false,"reason":"Earlier terminal controller attempt consumed one upload; wait beyond its original window before fresh independent ledger"})}
+ prepare();globalStarted,sourceStarted:=accountAndSource();prefill(globalStarted);boundary();recovery(globalStarted,sourceStarted)
+ final:=inventory();require(final["staging_files"]==0&&final["unattached_files"]==first["unattached_files"]+5&&final["unattached_bytes"]==first["unattached_bytes"]+160,"unexpected final storage footprint")
+ report["final_storage_inventory"]=final;report["profile"]=map[string]any{"account_limit":10,"source_limit":200,"deployment_limit":5000,"window_s":300,"members":504,"new_members_total_across_attempts":400,"source_cohorts":128,"fill_concurrency":4,"boundary_concurrency":16,"data_control_bytes":32,"new_control_files_this_run":5,"expected_unattached_download404_this_run":unattachedDenials.Load(),"total_owned_control_files_retained":len(own.Files),"malformed_filler_not_successful_file_capacity":true,"server_limits_or_configuration_changed":false,"native_router_UI_media_capacity_acceptance":false}
+}

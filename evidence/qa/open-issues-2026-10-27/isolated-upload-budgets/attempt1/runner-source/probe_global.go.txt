@@ -1,0 +1,28 @@
+package main
+
+import "time"
+
+func boundary(){
+ before:=measure("global_boundary_before");outcomes:=make([]outcome,16);start:=make(chan struct{})
+ for j:=0;j<16;j++{i:=480+j;require(usage[i]==9,"boundary account must have one free slot");workers.Add(1);go func(j,i int){defer workers.Done();<-start;outcomes[j]=upload(i,scopeFor(j),cfg.Sources[i%128],false,false)}(j,i)}
+ close(start);workers.Wait();allowed,limited:=0,0
+ for j,r:=range outcomes{require(r.Problem=="","boundary transport/control");if r.HTTP==400{validate(r,400);allowed++;admitted.Add(1)}else{validate(r,429);limited++};usage[480+j]++}
+ require(allowed==8&&limited==8&&admitted.Load()==5000,"actual global5000 concurrent boundary")
+ after:=measure("global_boundary_after");require(after["invalid_multipart"]-before["invalid_multipart"]==8,"global rejected requests reached handler")
+ text:=upload(502,"TEXT",cfg.Fresh,false,false);validate(text,429);usage[502]++
+ dm:=upload(503,"DM",cfg.Fresh,false,false);validate(dm,429);usage[503]++
+ drain("global_full_drain")
+ record("deployment5000_shared_routes_concurrent_boundary",map[string]any{"status":"PASS","before":4992,"concurrent_attempts":16,"distinct_accounts_with_free_slots":16,"admitted400":allowed,"limited429":limited,"global_handler_admitted_total":admitted.Load(),"outcomes":outcomes,"independent_TEXT_fresh_account429":text,"independent_DM_fresh_account429":dm,"server_invalid_multipart_delta":8,"positive201_in_initial5000":3,"malformed400_in_initial5000":4997})
+}
+
+func recovery(globalStarted,sourceStarted time.Time){
+ waitUntil(globalStarted,150,"global_window_midpoint");outcomes:=[]outcome{}
+ for j,i:=range []int{502,503}{r:=upload(i,scopeFor(j),cfg.Fresh,false,false);validate(r,429);require(r.Retry<=155&&r.Retry>=140,"midpoint global Retry-After");outcomes=append(outcomes,r);usage[i]++}
+ record("global_midpoint_denials",map[string]any{"outcomes":outcomes,"elapsed_seconds":time.Since(globalStarted).Seconds()})
+ waitUntil(globalStarted,302,"global_original_window_recovery")
+ control:=upload(502,"TEXT",cfg.Fresh,false,false);validate(control,400)
+ r:=upload(0,"TEXT",cfg.Aux,true,false);validate(r,201);r=upload(0,"DM",cfg.Aux,true,false);validate(r,201)
+ record("global_and_account_original_window_recovery",map[string]any{"status":"PASS","free_account_control400":control,"owned_TEXT_DM_upload_and_download201":2,"elapsed_seconds":time.Since(globalStarted).Seconds(),"denials_do_not_extend_window":true,"server_restart_or_clock_injection":false})
+ waitUntil(sourceStarted,302,"source_original_window_recovery");source:=upload(503,"TEXT",cfg.FullIP,false,false);validate(source,400)
+ record("source_original_window_recovery",map[string]any{"status":"PASS","free_account_control400":source,"elapsed_seconds":time.Since(sourceStarted).Seconds()});drain("all_upload_resources_final")
+}

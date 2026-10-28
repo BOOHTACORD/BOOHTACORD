@@ -1,0 +1,490 @@
+{
+  "at_utc": "2026-10-28T00:58:17.364534+00:00",
+  "status": "PASS_SCOPED_UPLOAD_WINDOWS_I240_C5_REMAINS_FAIL",
+  "criterion": "I240.C5",
+  "canonical_fix_issue_remains_open": 137,
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "production_touched": false,
+  "protects": "Shared TEXT/DM account10/source200/deployment5000 windows, concurrent global boundary, Retry-After, finite foreign budget preservation and natural window recovery",
+  "command": "python -X utf8 .out/qa-upload-budgets/run_profile.py resume",
+  "post_commands": "python -X utf8 .out/qa-upload-budgets/run_profile.py observe; python -X utf8 .out/qa-upload-budgets/run_file_audit.py; python -X utf8 .out/qa-upload-budgets/run_metric_audit.py; python -X utf8 .out/qa-upload-budgets/verify_after.py",
+  "platform": "Windows11/Go1.26.4 controller; actual source072 Linux API/PostgreSQL17.6; unchanged10/200/5000 per300s",
+  "mandatory_when": "Before accepting upload multilevel-budget facet of I240.C5/#137; all remaining clauses/platform gates separate",
+  "facets": {
+    "prior_owned_window_expired_naturally": {
+      "at_utc": "2026-10-28T00:47:28.778020058Z",
+      "event": "observation",
+      "label": "prior_owned_window_expired_naturally",
+      "not_before_utc": "2026-10-28T00:47:24.824952+00:00",
+      "reason": "Earlier terminal controller attempt consumed one upload; wait beyond its original window before fresh independent ledger",
+      "server_restarted_or_limiter_reset": false
+    },
+    "owned_fixtures_ready": {
+      "at_utc": "2026-10-28T00:47:47.633485219Z",
+      "event": "observation",
+      "label": "owned_fixtures_ready",
+      "limits_unchanged": true,
+      "members": 504,
+      "new_members_this_run": 0,
+      "owned_DM_api_status": 201,
+      "owned_sessions": 505,
+      "registration_and_login_source_cohorts": 128,
+      "reused_members": 504
+    },
+    "account_budget_shared_NAT_cross_routes_sessions": {
+      "account_admitted": 10,
+      "at_utc": "2026-10-28T00:47:47.719289121Z",
+      "different_session_same_account": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 300,
+        "same_secure_cookie_valid": true
+      },
+      "event": "observation",
+      "label": "account_budget_shared_NAT_cross_routes_sessions",
+      "malformed400": 8,
+      "neighbor_same_source201": true,
+      "over_limit": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 300,
+        "same_secure_cookie_valid": true
+      },
+      "positive201": 2,
+      "server_invalid_multipart_delta": 8,
+      "shared_TEXT_DM_budget": true,
+      "status": "PASS"
+    },
+    "source_budget_independent_accounts": {
+      "DM": 100,
+      "TEXT": 100,
+      "admitted400": 200,
+      "at_utc": "2026-10-28T00:47:48.06412436Z",
+      "distinct_members_filling_source": 20,
+      "event": "observation",
+      "fresh_account_same_source429": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 300,
+        "same_secure_cookie_valid": true
+      },
+      "global_admitted_so_far": 212,
+      "label": "source_budget_independent_accounts",
+      "other_fresh_account_same_source429": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 300,
+        "same_secure_cookie_valid": true
+      },
+      "protected_account_still429": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 300,
+        "same_secure_cookie_valid": true
+      },
+      "same_account_fresh_source400": true,
+      "server_invalid_multipart_delta": 201,
+      "status": "PASS"
+    },
+    "global_prefill_and_foreign_budget_preservation": {
+      "at_utc": "2026-10-28T00:48:40.931935468Z",
+      "elapsed_since_global_window_s": 50.678846943,
+      "event": "observation",
+      "fill_concurrency": 4,
+      "global_handler_admitted": 4992,
+      "label": "global_prefill_and_foreign_budget_preservation",
+      "live_store_capacity_saturation_exercised": false,
+      "minimum_fill_request_start_interval_ms": 10,
+      "protected_account_still429_with_global_room": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 250,
+        "same_secure_cookie_valid": true
+      },
+      "protected_source_still429_with_global_room": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 250,
+        "same_secure_cookie_valid": true
+      },
+      "server_invalid_multipart_delta": 4780,
+      "status": "PASS"
+    },
+    "deployment5000_shared_routes_concurrent_boundary": {
+      "admitted400": 8,
+      "at_utc": "2026-10-28T00:48:40.987687131Z",
+      "before": 4992,
+      "concurrent_attempts": 16,
+      "distinct_accounts_with_free_slots": 16,
+      "event": "observation",
+      "global_handler_admitted_total": 5000,
+      "independent_DM_fresh_account429": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 250,
+        "same_secure_cookie_valid": true
+      },
+      "independent_TEXT_fresh_account429": {
+        "http": 429,
+        "code": "RATE_LIMITED",
+        "retry_after_s": 250,
+        "same_secure_cookie_valid": true
+      },
+      "label": "deployment5000_shared_routes_concurrent_boundary",
+      "limited429": 8,
+      "malformed400_in_initial5000": 4997,
+      "outcomes": [
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 250,
+          "same_secure_cookie_valid": true
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "same_secure_cookie_valid": true
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 250,
+          "same_secure_cookie_valid": true
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "same_secure_cookie_valid": true
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 250,
+          "same_secure_cookie_valid": true
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 250,
+          "same_secure_cookie_valid": true
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 250,
+          "same_secure_cookie_valid": true
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "same_secure_cookie_valid": true
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "same_secure_cookie_valid": true
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 250,
+          "same_secure_cookie_valid": true
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "same_secure_cookie_valid": true
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "same_secure_cookie_valid": true
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "same_secure_cookie_valid": true
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 250,
+          "same_secure_cookie_valid": true
+        },
+        {
+          "http": 400,
+          "code": "VALIDATION_FAILED",
+          "retry_after_s": 0,
+          "same_secure_cookie_valid": true
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 250,
+          "same_secure_cookie_valid": true
+        }
+      ],
+      "positive201_in_initial5000": 3,
+      "server_invalid_multipart_delta": 8,
+      "status": "PASS"
+    },
+    "global_midpoint_denials": {
+      "at_utc": "2026-10-28T00:50:24.264068505Z",
+      "elapsed_seconds": 150.019388772,
+      "event": "observation",
+      "label": "global_midpoint_denials",
+      "outcomes": [
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 150,
+          "same_secure_cookie_valid": true
+        },
+        {
+          "http": 429,
+          "code": "RATE_LIMITED",
+          "retry_after_s": 150,
+          "same_secure_cookie_valid": true
+        }
+      ]
+    },
+    "global_and_account_original_window_recovery": {
+      "at_utc": "2026-10-28T00:53:02.982105572Z",
+      "denials_do_not_extend_window": true,
+      "elapsed_seconds": 302.052801103,
+      "event": "observation",
+      "free_account_control400": {
+        "http": 400,
+        "code": "VALIDATION_FAILED",
+        "retry_after_s": 0,
+        "same_secure_cookie_valid": true
+      },
+      "label": "global_and_account_original_window_recovery",
+      "owned_TEXT_DM_upload201_unattached_download404": 2,
+      "server_restart_or_clock_injection": false,
+      "status": "PASS"
+    },
+    "source_original_window_recovery": {
+      "at_utc": "2026-10-28T00:53:03.023640035Z",
+      "elapsed_seconds": 302.008520906,
+      "event": "observation",
+      "free_account_control400": {
+        "http": 400,
+        "code": "VALIDATION_FAILED",
+        "retry_after_s": 0,
+        "same_secure_cookie_valid": true
+      },
+      "label": "source_original_window_recovery",
+      "status": "PASS"
+    }
+  },
+  "numeric_observations": {
+    "client_elapsed_seconds": 428.237034968,
+    "API_metric_samples": 99,
+    "periodic_DB_samples": 106,
+    "API_RSS_sampled_max_bytes": 122707968,
+    "API_FD_sampled_max": 39,
+    "API_goroutines_sampled_max": 45,
+    "DB_connections_sampled_max": 12,
+    "DB_active_connections_sampled_max": 1,
+    "API_CPU_counter_delta_seconds_before_cleanup": 14.66,
+    "short_upload_inflight_sampling_limit": "Sampled zero does not negate concurrent admission; sixteen real boundary outcomes are retained."
+  },
+  "native_tests": {
+    "status": "PASS",
+    "top_level": 7,
+    "skips": 0,
+    "scope": "Supplemental native regression, not substitute for actual5000-window profile"
+  },
+  "cleanup": {
+    "at_utc": "2026-10-28T00:55:00.145774+00:00",
+    "status": "PASS_OWNED_SESSION_CLEANUP_ACCOUNTED_FILES_AND_NINE_PRIVATE_SERVICES",
+    "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+    "project": "boohtacord-local-qa",
+    "production_touched": false,
+    "owned_session_rows": 2011,
+    "owned_active_sessions": 0,
+    "owned_members_retained_unblocked": 504,
+    "new_members_across_attempts": 400,
+    "retained_synthetic_unattached_files": 6,
+    "retained_control_bytes": 192,
+    "PostgreSQL_version": "17.6",
+    "log_scan_since_utc": "2026-10-28T00:41:21.048615+00:00",
+    "services": [
+      {
+        "service": "api",
+        "running": true,
+        "image_id": "sha256:b34a09b6eebfb87fea478e7cd440cc7ab9c52dc7dbd3cf4d659b12a9eff98a47",
+        "restart_count": 0
+      },
+      {
+        "service": "web",
+        "running": true,
+        "image_id": "sha256:414cc79b7ff85cfca81252bd12eb8a9525f2fb5727932a88b02ccf63ebb42d20",
+        "restart_count": 0
+      },
+      {
+        "service": "proxy",
+        "running": true,
+        "image_id": "sha256:f43d8810c944e27e6f7ea80b165de11dbdab16cff15c8a80d83ae3e1a109a35d",
+        "restart_count": 0
+      },
+      {
+        "service": "postgres",
+        "running": true,
+        "image_id": "sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94",
+        "restart_count": 0
+      },
+      {
+        "service": "livekit",
+        "running": true,
+        "image_id": "sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3",
+        "restart_count": 0
+      },
+      {
+        "service": "collector",
+        "running": true,
+        "image_id": "sha256:b6d2b9a85b1029d05b5ad913150c1f014eed4ae99be81a1813ca5ade4a191913",
+        "restart_count": 0
+      },
+      {
+        "service": "tempo",
+        "running": true,
+        "image_id": "sha256:cac9de2ac9f6da8efca5b64b690a7cb8c786a0c49cac7b4517dd1b0089a6c703",
+        "restart_count": 0
+      },
+      {
+        "service": "prometheus",
+        "running": true,
+        "image_id": "sha256:5550dc63da361dc30f6fe02ac0e4dfc736ededfef3c8d12a634db04a67824d78",
+        "restart_count": 0
+      },
+      {
+        "service": "grafana",
+        "running": true,
+        "image_id": "sha256:6e5d306338670f381a942f1c50d3c266bf71531e5ddd9ee4fc1a133dac5ce63d",
+        "restart_count": 0
+      }
+    ],
+    "bounded_owned_logs_scan": [
+      {
+        "service": "api",
+        "bytes": 2276696,
+        "stdout_bytes": 2276695,
+        "stderr_bytes": 0,
+        "SHA256": "227d36c627e56b232e79e4abee09d42e233b9968acdb032db52c4aada0c18f49",
+        "own_login_password_cookie_filename_payload_markers_found": false
+      },
+      {
+        "service": "web",
+        "bytes": 1,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0,
+        "SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "own_login_password_cookie_filename_payload_markers_found": false
+      },
+      {
+        "service": "proxy",
+        "bytes": 1,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0,
+        "SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "own_login_password_cookie_filename_payload_markers_found": false
+      },
+      {
+        "service": "postgres",
+        "bytes": 1081,
+        "stdout_bytes": 0,
+        "stderr_bytes": 1080,
+        "SHA256": "a8a4f1b07a581d25489ee2f8c586377d2bbf80a1d5d8f7e341c769b494843874",
+        "own_login_password_cookie_filename_payload_markers_found": false
+      },
+      {
+        "service": "livekit",
+        "bytes": 29906,
+        "stdout_bytes": 0,
+        "stderr_bytes": 29905,
+        "SHA256": "cc91288c5de2c3d0b7ad4a8e368f2c971f7b907187002cea36881258fdbaea14",
+        "own_login_password_cookie_filename_payload_markers_found": false
+      },
+      {
+        "service": "collector",
+        "bytes": 51305,
+        "stdout_bytes": 0,
+        "stderr_bytes": 51304,
+        "SHA256": "f391e42a0f4b9f2c0cd4b54061c958b207395692e6eb77ee074a72ecdf33758c",
+        "own_login_password_cookie_filename_payload_markers_found": false
+      },
+      {
+        "service": "tempo",
+        "bytes": 35791,
+        "stdout_bytes": 0,
+        "stderr_bytes": 35790,
+        "SHA256": "4dd33d23a64d02ae9321c0dee4a10623d929f2aeb5b52bbb83a51befe9cb4a6e",
+        "own_login_password_cookie_filename_payload_markers_found": false
+      },
+      {
+        "service": "prometheus",
+        "bytes": 1,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0,
+        "SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "own_login_password_cookie_filename_payload_markers_found": false
+      },
+      {
+        "service": "grafana",
+        "bytes": 5569,
+        "stdout_bytes": 5568,
+        "stderr_bytes": 0,
+        "SHA256": "75e96755170e960e4f8cc4fab353e2d3a0ff915cb34f375f7c44d4a1d4d2c710",
+        "own_login_password_cookie_filename_payload_markers_found": false
+      }
+    ],
+    "fresh_upload_resources": {
+      "CPU_seconds": 138.77,
+      "DM_HTTP201": 3,
+      "DM_HTTP400": 2499,
+      "DM_HTTP429": 9,
+      "FD": 19,
+      "RSS_bytes": 52207616,
+      "TEXT_HTTP201": 6,
+      "TEXT_HTTP400": 2500,
+      "TEXT_HTTP429": 12,
+      "budget_account_active": 468,
+      "budget_account_capacity": 50000,
+      "budget_deployment_active": 1,
+      "budget_deployment_capacity": 1,
+      "budget_source_active": 113,
+      "budget_source_capacity": 10000,
+      "goroutines": 31,
+      "invalid_multipart": 4999,
+      "oldest_inflight_s": 0,
+      "reserved_bytes": 0,
+      "storage_success": 1,
+      "store_saturated_account": 0,
+      "store_saturated_deployment": 0,
+      "store_saturated_source": 0,
+      "uploads_inflight": 0
+    },
+    "final_storage_inventory": {
+      "staging_bytes": 0,
+      "staging_files": 0,
+      "unattached_bytes": 66752,
+      "unattached_files": 9
+    },
+    "API_health_http": 200,
+    "finished_at_utc": "2026-10-28T00:55:06.953460+00:00"
+  },
+  "first_attempt": "attempt1/run-result.json: exit1 on incorrect controller download200 assertion. Correct UNATTACHED404 independently diagnosed; no product defect. Same504 accounts reused after natural expiry.",
+  "limits": "Ingress window accounting with4997 malformed400 and3 real201 in first5000 admissions, not5000 successful file transfers. Logical trusted source cohorts, direct actual API in own proxy namespace; no physical NAT/router, native retry, media/capacity, load SLO or live store-capacity saturation claim. Full I240.C5 remains FAIL due NAT20/#137.",
+  "source_binding": "source-binding.json",
+  "original480_requirement_texts_preserved": true,
+  "original43_consolidation_decisions_applied": false
+}

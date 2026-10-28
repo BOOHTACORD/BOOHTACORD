@@ -1,0 +1,40 @@
+"""After terminal client: own sessions/data accounting, private services and bounded logs."""
+import base64,hashlib,http.client,ipaddress,json,subprocess,sys,uuid
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,SOURCE,CONTEXT,credentials
+def now():return datetime.now(timezone.utc).isoformat()
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+r={'at_utc':now(),'status':'RUNNING','source_revision':SOURCE,'project':PROJECT,'production_touched':False}
+try:
+ runner=read(P/'resume-runner.json');assert runner['status'].startswith('PASS') and runner['client_exit_code']==0
+ assert not docker('ps','-a','--filter','name=^boohtacord-upload-budget-probe$','--format','{{.Names}}').decode().strip()
+ own=read(P/'private/owned.private.json');cfg=read(P/'private/config.private.json');ids=[str(uuid.UUID(a['id'])) for a in own['accounts']];assert len(ids)==504 and len(set(ids))==504
+ literals=','.join("'"+x+"'::uuid" for x in ids);sql='SELECT count(*),count(*) FILTER(WHERE revoked_at IS NULL) FROM sessions WHERE user_id IN ('+literals+');\nSELECT count(*) FROM users WHERE id IN ('+literals+") AND blocked_at IS NULL;\nSELECT count(*),coalesce(sum(byte_size),0) FROM attachments WHERE owner_id IN ("+literals+") AND state='UNATTACHED';\nSHOW server_version;\n"
+ values=docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-At',input=sql.encode()).decode().splitlines();session_rows,active=map(int,values[0].split('|'));files,byte_size=map(int,values[2].split('|'))
+ assert session_rows==2011 and active==0 and int(values[1])==504 and files==6 and byte_size==192 and values[3].startswith('17.6')
+ r.update(owned_session_rows=session_rows,owned_active_sessions=active,owned_members_retained_unblocked=504,new_members_across_attempts=400,retained_synthetic_unattached_files=files,retained_control_bytes=byte_size,PostgreSQL_version=values[3])
+ markers=[cfg['file_name'].encode(),base64.b64decode(cfg['file_body'])]
+ for f in [P/'private/owned.private.json',P/'attempt1/private/owned.private.json']:
+  d=read(f)
+  for a in d['accounts']:
+   markers.extend([a['login'].encode(),a['password'].encode()])
+   if a.get('cookie'):markers.append(a['cookie'].split('=',1)[1].encode())
+  if d.get('spare_cookie'):markers.append(d['spare_cookie'].split('=',1)[1].encode())
+ markers.append(read(P/'private/diagnostic-cookie.private.json')['cookie'].split('=',1)[1].encode());markers.extend(v.encode() for k,v in credentials().items() if any(s in k for s in ['password','secret','ingest_auth']) and isinstance(v,str))
+ started=read(P/'attempt1/run-runner.json')['at_utc'];r['log_scan_since_utc']=started;r['services']=[];r['bounded_owned_logs_scan']=[]
+ for name in ['api','web','proxy','postgres','livekit','collector','tempo','prometheus','grafana']:
+  v=json.loads(docker('inspect',PROJECT+'-'+name+'-1'))[0];assert v['State']['Running'] and v['Config']['Labels']['com.docker.compose.project']==PROJECT and v['RestartCount']==0
+  for bindings in v['NetworkSettings']['Ports'].values():
+   for b in bindings or []:assert ipaddress.ip_address(b['HostIp']).is_loopback
+  if name in ['api','web']:
+   image=json.loads(docker('image','inspect',v['Image']))[0];assert image['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+  log=subprocess.run(['docker','--context',CONTEXT,'logs','--since',started,PROJECT+'-'+name+'-1'],capture_output=True);assert log.returncode==0;raw=log.stdout+b'\n'+log.stderr;(P/(name+'-logs.private.log')).write_bytes(raw);assert all(n not in raw for n in markers),'Owned marker in '+name
+  r['services'].append({'service':name,'running':True,'image_id':v['Image'],'restart_count':v['RestartCount']});r['bounded_owned_logs_scan'].append({'service':name,'bytes':len(raw),'stdout_bytes':len(log.stdout),'stderr_bytes':len(log.stderr),'SHA256':hashlib.sha256(raw).hexdigest(),'own_login_password_cookie_filename_payload_markers_found':False})
+ final=read(P/'observe-result.json');metric=final['metric_samples'][-1]['metrics'];assert metric['uploads_inflight']==0 and metric['reserved_bytes']==0 and final['initial_storage_inventory']['staging_files']==0;r['fresh_upload_resources']=metric;r['final_storage_inventory']=final['initial_storage_inventory']
+ assert read(P/'file-integrity-audit.json')['files_checked']==6 and read(P/'metric-label-audit.json')['status'].startswith('PASS')
+ c=http.client.HTTPConnection('localhost',18088,timeout=8);c.request('GET','/api/v1/health',headers={'Host':'localhost:18088'});response=c.getresponse();assert response.status==200;response.read(65536);c.close();r['API_health_http']=200;r['status']='PASS_OWNED_SESSION_CLEANUP_ACCOUNTED_FILES_AND_NINE_PRIVATE_SERVICES'
+except Exception as e:r['status']='FAIL_POSTCHECK';r['error_type']=type(e).__name__;r['failed_label']=str(e) if isinstance(e,AssertionError) and str(e).startswith('Owned marker') else 'private postcheck'
+finally:r['finished_at_utc']=now();(P/'environment-after.json').write_text(json.dumps(r,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps({k:v for k,v in r.items() if k not in ['services','bounded_owned_logs_scan','fresh_upload_resources']}));sys.exit(0 if r['status'].startswith('PASS') else 1)

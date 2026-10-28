@@ -1,0 +1,115 @@
+{
+  "events": [
+    {
+      "Time": "2026-10-28T03:42:35.2998382+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareLimitsOneForwardedSourceAndResetsWindow"
+    },
+    {
+      "Time": "2026-10-28T03:42:35.2998382+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestMiddlewareLimitsOneForwardedSourceAndResetsWindow",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:42:35.2998382+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterKeepsActiveExhaustedBudgetAtCapacity"
+    },
+    {
+      "Time": "2026-10-28T03:42:35.2998382+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Test": "TestLimiterKeepsActiveExhaustedBudgetAtCapacity",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:42:35.3013378+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/security/rate_limit",
+      "Elapsed": 1.37
+    },
+    {
+      "Time": "2026-10-28T03:42:35.4124337+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/storage/admit_upload",
+      "Test": "TestLimiterCapsPerAccountAndDeploymentAndReleasesEverySlot"
+    },
+    {
+      "Time": "2026-10-28T03:42:35.4124337+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/storage/admit_upload",
+      "Test": "TestLimiterCapsPerAccountAndDeploymentAndReleasesEverySlot",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:42:35.4124337+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/storage/admit_upload",
+      "Test": "TestMiddlewareRejectsConcurrentRequestWithRetryAfterAndReleases"
+    },
+    {
+      "Time": "2026-10-28T03:42:35.4124337+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/storage/admit_upload",
+      "Test": "TestMiddlewareRejectsConcurrentRequestWithRetryAfterAndReleases",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:42:35.4139337+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/storage/admit_upload",
+      "Elapsed": 1.363
+    },
+    {
+      "Time": "2026-10-28T03:42:36.1599899+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/app/storage_routes",
+      "Test": "TestAttachmentFilesystemMetricSourceMapsStorageSnapshot"
+    },
+    {
+      "Time": "2026-10-28T03:42:36.1599899+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/app/storage_routes",
+      "Test": "TestAttachmentFilesystemMetricSourceMapsStorageSnapshot",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:42:36.1599899+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/app/storage_routes",
+      "Test": "TestAttachmentFilesystemMetricSourceForwardsStorageError"
+    },
+    {
+      "Time": "2026-10-28T03:42:36.1599899+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/app/storage_routes",
+      "Test": "TestAttachmentFilesystemMetricSourceForwardsStorageError",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:42:36.1599899+03:00",
+      "Action": "run",
+      "Package": "voice-platform/backend/internal/app/storage_routes",
+      "Test": "TestAttachmentFilesystemMetricSourceReadsLiveReservations"
+    },
+    {
+      "Time": "2026-10-28T03:42:36.1599899+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/app/storage_routes",
+      "Test": "TestAttachmentFilesystemMetricSourceReadsLiveReservations",
+      "Elapsed": 0
+    },
+    {
+      "Time": "2026-10-28T03:42:36.1614891+03:00",
+      "Action": "pass",
+      "Package": "voice-platform/backend/internal/app/storage_routes",
+      "Elapsed": 1.558
+    }
+  ],
+  "raw_private_stream_SHA256": "3acfc117290f94e373655cb35e7786738bcc9455d8cc47c1e41f60061a06469c",
+  "raw_stderr_bytes": 0
+}

@@ -1,0 +1,35 @@
+package main
+
+import (
+ "context"
+ "encoding/json"
+ "os"
+ "time"
+)
+
+func prepare(){
+ first:=104
+ if resume{raw,e:=os.ReadFile("/work/owned.private.json");require(e==nil&&json.Unmarshal(raw,&own)==nil&&len(own.Accounts)==504,"prior owned fixture identity");for i:=range own.Accounts{own.Accounts[i].Cookie=""};own.SpareCookie="";first=504;saveOwned()}else{_,e:=os.Stat("/work/owned.private.json");require(os.IsNotExist(e),"owned fixture already exists; no rerun");own.Accounts=append([]account(nil),cfg.Seeds...);saveOwned();require(len(own.Accounts)==104,"owned seed count")}
+ for i:=first;i<504;i++{
+  a:=account{Login:"qa_ur_"+random(8),Password:random(20)};s,d,_:=api("POST","/api/v1/auth/register",map[string]string{"login":a.Login,"password":a.Password},"",cfg.Sources[i%128]);require(s==201&&d["role"]=="MEMBER","bounded member registration")
+  a.ID,_=d["id"].(string);require(a.ID!="","registered member ID");own.Accounts=append(own.Accounts,a);saveOwned()
+  if (i-103)%50==0{emit("progress",map[string]any{"phase":"owned_registration","new_members_ready":i-103,"target":400})}
+ }
+ for i:=range own.Accounts{
+  own.Accounts[i].Cookie=login(i);saveOwned();if (i+1)%64==0{emit("progress",map[string]any{"phase":"owned_login","sessions_ready":i+1,"target":504})}
+ }
+ own.SpareCookie=login(0);saveOwned()
+ s,d,_:=api("POST","/api/v1/direct-messages",map[string]string{"participant_id":own.Accounts[1].ID},own.Accounts[0].Cookie,"");require(s==200||s==201,"owned participant DM creation");own.DM,_=d["id"].(string);require(own.DM!="","owned DM ID");saveOwned()
+ record("owned_fixtures_ready",map[string]any{"members":504,"new_members_this_run":504-first,"reused_members":first,"owned_sessions":505,"owned_DM_api_status":s,"registration_and_login_source_cohorts":128,"limits_unchanged":true})
+}
+func login(i int)string{
+ a:=own.Accounts[i];s,_,h:=api("POST","/api/v1/auth/login",map[string]string{"login":a.Login,"password":a.Password},"",cfg.Sources[i%128]);require(s==204,"owned positive login");cookie:=cookieFrom(h)
+ s,d,_:=api("GET","/api/v1/auth/session",nil,cookie,"");require(s==200&&d["authenticated"]==true&&d["account_id"]==a.ID,"owned login identity");return cookie
+}
+func cleanup()map[string]any{
+ c,cancel:=context.WithTimeout(context.Background(),2*time.Minute);defer cancel();ok,failed:=0,0
+ cookies:=[]string{};for _,a:=range own.Accounts{if a.Cookie!=""{cookies=append(cookies,a.Cookie)}};if own.SpareCookie!=""{cookies=append(cookies,own.SpareCookie)}
+ for _,cookie:=range cookies{s,_,_,e:=rawRequest(c,"POST","/api/v1/auth/logout",nil,"application/json",cookie,"");if e==nil&&(s==204||s==401){ok++}else{failed++}}
+ b,_:=json.Marshal(map[string]any{"issued_sessions":len(cookies),"retained_synthetic_attachments":len(own.Files)});_ =os.WriteFile("/work/cleanup-counts.private.json",b,0600)
+ return map[string]any{"members_retained":len(own.Accounts),"owned_session_count":len(cookies),"logout_successes":ok,"logout_failures":failed,"retained_synthetic_unattached_controls":len(own.Files),"retained_control_bytes":len(own.Files)*len(cfg.FileBody),"status_ok":failed==0}
+}

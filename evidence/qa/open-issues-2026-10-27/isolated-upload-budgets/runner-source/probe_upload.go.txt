@@ -1,0 +1,23 @@
+package main
+
+import (
+ "bytes"
+ "encoding/json"
+ "mime/multipart"
+)
+
+func path(scope string)string{if scope=="TEXT"{return "/api/v1/channels/"+cfg.Text+"/attachments"};return "/api/v1/direct-messages/"+own.DM+"/attachments"}
+func upload(i int,scope,source string,good,spare bool)outcome{
+ cookie:=own.Accounts[i].Cookie;if spare{cookie=own.SpareCookie}
+ body:=[]byte{};contentType:="application/octet-stream"
+ if good{var b bytes.Buffer;w:=multipart.NewWriter(&b);p,e:=w.CreateFormFile("file",cfg.FileName);if e!=nil{return outcome{Problem:"multipart construction"}};_,e=p.Write(cfg.FileBody);if e!=nil||w.Close()!=nil{return outcome{Problem:"multipart body"}};body=b.Bytes();contentType=w.FormDataContentType()}
+ s,raw,h,e:=rawRequest(ctx,"POST",path(scope),body,contentType,cookie,source);if e!=nil{return outcome{Problem:"bounded upload transport"}};r:=outcomeFrom(s,raw,h,cookie)
+ if good&&s==201{
+  var data struct{ID string `json:"id"`;Size int `json:"byte_size"`};if json.Unmarshal(raw,&data)!=nil||data.ID==""||data.Size!=len(cfg.FileBody){r.Problem="positive upload metadata";return r}
+  own.Files=append(own.Files,attachment{data.ID,i,scope,data.Size});saveOwned()
+  status,file,_,e:=rawRequest(ctx,"GET",path(scope)+"/"+data.ID,nil,"",cookie,"");var denied map[string]any;_ =json.Unmarshal(file,&denied);er,_:=denied["error"].(map[string]any);if e!=nil||status!=404||er["code"]!="NOT_FOUND"{r.Problem="unattached attachment must remain unavailable"}else{unattachedDenials.Add(1)}
+ }
+ return r
+}
+func spend(i int,scope,source string,good bool){r:=upload(i,scope,source,good,false);expected:=400;if good{expected=201};validate(r,expected);usage[i]++;admitted.Add(1)}
+func scopeFor(i int)string{if i%2==0{return "TEXT"};return "DM"}

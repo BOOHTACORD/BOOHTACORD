@@ -1,0 +1,53 @@
+package main
+
+import (
+ "bytes"
+ "context"
+ "crypto/rand"
+ "encoding/hex"
+ "encoding/json"
+ "fmt"
+ "io"
+ "net/http"
+ "os"
+ "strconv"
+ "sync"
+ "sync/atomic"
+ "time"
+)
+
+const base="http://api:8080"
+const origin="http://localhost:18088"
+type account struct{ID string `json:"id"`;Login string `json:"login"`;Password string `json:"password"`;Cookie string `json:"cookie,omitempty"`}
+type config struct{Source string `json:"source_revision"`;Seeds []account `json:"seeds"`;Sources []string `json:"sources"`;Shared,FullIP,Aux,Fresh,Text,NotBefore string;FileName string `json:"file_name"`;FileBody []byte `json:"file_body"`}
+type attachment struct{ID string `json:"id"`;Owner int `json:"owner_slot"`;Scope string `json:"scope"`;Size int `json:"size"`}
+type owned struct{Accounts []account `json:"accounts"`;SpareCookie string `json:"spare_cookie"`;DM string `json:"direct_message_id"`;Files []attachment `json:"files"`}
+type outcome struct{HTTP int `json:"http"`;Code string `json:"code"`;Retry int `json:"retry_after_s"`;RefreshValid bool `json:"same_secure_cookie_valid"`;Problem string `json:"problem,omitempty"`}
+var cfg config
+var own owned
+var ctx context.Context
+var workers sync.WaitGroup
+var usage=[504]int{}
+var admitted atomic.Int64
+var unattachedDenials atomic.Int64
+var resume bool
+var allMu sync.Mutex
+var client=&http.Client{Timeout:12*time.Second,Transport:&http.Transport{Proxy:nil,MaxIdleConns:64,MaxIdleConnsPerHost:32},CheckRedirect:func(*http.Request,[]*http.Request)error{return http.ErrUseLastResponse}}
+var records=[]map[string]any{}
+func require(ok bool,label string){if !ok{panic(label)}}
+func random(n int)string{b:=make([]byte,n);_,e:=rand.Read(b);require(e==nil,"random source");return hex.EncodeToString(b)}
+func saveOwned(){allMu.Lock();defer allMu.Unlock();raw,e:=json.MarshalIndent(own,"","  ");require(e==nil,"private state encode");require(os.WriteFile("/work/owned.private.json",raw,0600)==nil,"private state persistence")}
+func emit(event string,d map[string]any){d["event"]=event;d["at_utc"]=time.Now().UTC().Format(time.RFC3339Nano);_ =json.NewEncoder(os.Stdout).Encode(d)}
+func record(label string,d map[string]any){d["label"]=label;records=append(records,d);emit("observation",d)}
+func rawRequest(c context.Context,method,path string,body []byte,contentType,cookie,source string)(int,[]byte,http.Header,error){
+ if c==ctx{if _,e:=os.Stat("/work/STOP");e==nil{return 0,nil,nil,fmt.Errorf("owned resource stop")}}
+ r,e:=http.NewRequestWithContext(c,method,base+path,bytes.NewReader(body));if e!=nil{return 0,nil,nil,e};r.Host="localhost:18088";r.Header.Set("Origin",origin);if contentType!=""{r.Header.Set("Content-Type",contentType)};if cookie!=""{r.Header.Set("Cookie",cookie)};if source!=""{r.Header.Set("X-Forwarded-For",source)}
+ response,e:=client.Do(r);if e!=nil{return 0,nil,nil,e};defer response.Body.Close();raw,e:=io.ReadAll(io.LimitReader(response.Body,65537));if e!=nil||len(raw)>65536{return 0,nil,nil,fmt.Errorf("bounded response")};return response.StatusCode,raw,response.Header,nil
+}
+func api(method,path string,data any,cookie,source string)(int,map[string]any,http.Header){
+ var body []byte;if data!=nil{body,_=json.Marshal(data)};s,raw,h,e:=rawRequest(ctx,method,path,body,"application/json",cookie,source);require(e==nil,"local API request");var d map[string]any;if len(raw)>0{require(json.Unmarshal(raw,&d)==nil,"API JSON")};return s,d,h
+}
+func cookieFrom(h http.Header)string{r:=http.Response{Header:h};c:=r.Cookies();require(len(c)==1&&c[0].Name=="vp_session"&&c[0].Secure&&c[0].HttpOnly&&c[0].SameSite==http.SameSiteLaxMode,"secure session cookie");return "vp_session="+c[0].Value}
+func cookieValid(h http.Header,expected string)bool{r:=http.Response{Header:h};c:=r.Cookies();return len(c)==1&&c[0].Name=="vp_session"&&"vp_session="+c[0].Value==expected&&c[0].Secure&&c[0].HttpOnly&&c[0].SameSite==http.SameSiteLaxMode}
+func validate(r outcome,expected int){require(r.Problem==""&&r.HTTP==expected&&r.RefreshValid,"upload response/identity contract");if expected==429{require(r.Code=="RATE_LIMITED"&&r.Retry>=1&&r.Retry<=300,"window quota code/retry contract")};if expected==400{require(r.Code=="VALIDATION_FAILED","malformed handler response")}}
+func outcomeFrom(s int,raw []byte,h http.Header,cookie string)outcome{r:=outcome{HTTP:s,RefreshValid:cookieValid(h,cookie)};r.Retry,_=strconv.Atoi(h.Get("Retry-After"));var d map[string]any;_ =json.Unmarshal(raw,&d);if e,ok:=d["error"].(map[string]any);ok{r.Code,_=e["code"].(string)};return r}

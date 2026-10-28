@@ -1,0 +1,33 @@
+package main
+
+import (
+ "sync"
+ "sync/atomic"
+ "time"
+)
+
+type fillJob struct{index,count int}
+var paceMu sync.Mutex
+var nextStart time.Time
+func pace(){paceMu.Lock();defer paceMu.Unlock();delay:=time.Until(nextStart);if delay>0{select{case <-time.After(delay):case <-ctx.Done():return}};nextStart=time.Now().Add(10*time.Millisecond)}
+func prefill(started time.Time){
+ before:=measure("global_fill_before");initial:=admitted.Load();remaining:=4992-int(initial);jobs:=[]fillJob{}
+ for i:=0;i<504&&remaining>0;i++{limit:=10;if i>=480{limit=9};n:=limit-usage[i];if n>remaining{n=remaining};if n>0{jobs=append(jobs,fillJob{i,n});remaining-=n}}
+ require(remaining==0,"bounded cohort cannot reach actual global limit")
+ queue:=make(chan fillJob,len(jobs));for _,j:=range jobs{queue<-j};close(queue)
+ errors:=make(chan string,1);var stopped atomic.Bool;done:=make(chan struct{})
+ for w:=0;w<4;w++{workers.Add(1);go func(){defer workers.Done();for j:=range queue{if stopped.Load(){return};for k:=0;k<j.count;k++{
+  pace();r:=upload(j.index,scopeFor(j.index+k),cfg.Sources[j.index%128],false,false)
+  if r.Problem!=""||r.HTTP!=400||r.Code!="VALIDATION_FAILED"||!r.RefreshValid{stopped.Store(true);select{case errors<-"prefill response differs from bounded malformed400":default:};return}
+  usage[j.index]++;admitted.Add(1)
+ }}}()}
+ go func(){workers.Wait();close(done)}();running:=true
+ for running{select{case <-done:running=false;case <-time.After(time.Second):measure("global_fill_progress");emit("progress",map[string]any{"phase":"global_fill","admitted":admitted.Load(),"target":4992})}}
+ select{case label:=<-errors:panic(label);default:}
+ require(admitted.Load()==4992,"global prefill ledger")
+ require(time.Since(started)<240*time.Second,"global window too old before boundary; no capacity verdict")
+ after:=measure("global_fill_after");require(after["invalid_multipart"]-before["invalid_multipart"]==4992-float64(initial),"prefill server handler counter")
+ deniedAccount:=upload(0,"TEXT",cfg.Aux,false,false);validate(deniedAccount,429)
+ deniedSource:=upload(503,"DM",cfg.FullIP,false,false);validate(deniedSource,429)
+ record("global_prefill_and_foreign_budget_preservation",map[string]any{"status":"PASS","global_handler_admitted":4992,"fill_concurrency":4,"minimum_fill_request_start_interval_ms":10,"server_invalid_multipart_delta":after["invalid_multipart"]-before["invalid_multipart"],"protected_account_still429_with_global_room":deniedAccount,"protected_source_still429_with_global_room":deniedSource,"live_store_capacity_saturation_exercised":false,"elapsed_since_global_window_s":time.Since(started).Seconds()})
+}

@@ -1093,6 +1093,20 @@
       "defects": [
         137
       ]
+    },
+    {
+      "id": "ISOLATED-upload-account-source-deployment-windows",
+      "status": "PASS_SCOPED",
+      "protects": "Actual shared TEXT/DM account/source/deployment upload windows, concurrent global boundary and real recovery",
+      "command": "python -X utf8 .out/qa-upload-budgets/run_profile.py resume; python -X utf8 .out/qa-upload-budgets/run_profile.py observe; python -X utf8 .out/qa-upload-budgets/run_file_audit.py; python -X utf8 .out/qa-upload-budgets/run_metric_audit.py; python -X utf8 .out/qa-upload-budgets/verify_after.py",
+      "platform": "Windows11 controller; unchanged source072 Linux API/PostgreSQL17.6; owned logical source cohorts",
+      "mandatory_when": "Before accepting upload-window facet of I240.C5/#137, independent of NAT20 failure",
+      "issues": [
+        240
+      ],
+      "result": "isolated-upload-budgets/summary.json",
+      "limits": "Ingress window accounting with4997 malformed400 and3 real201 in first5000 admissions, not5000 successful file transfers. Logical trusted source cohorts, direct actual API in own proxy namespace; no physical NAT/router, native retry, media/capacity, load SLO or live store-capacity saturation claim. Full I240.C5 remains FAIL due NAT20/#137.",
+      "defects": []
     }
   ]
 }

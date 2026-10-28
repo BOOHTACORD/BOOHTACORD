@@ -1,0 +1,50 @@
+{
+  "at_utc": "2026-10-28T00:54:56.38909623Z",
+  "cleanup": {
+    "status_ok": true
+  },
+  "elapsed_seconds": 0.01571337,
+  "event": "final",
+  "initial_storage_inventory": {
+    "staging_bytes": 0,
+    "staging_files": 0,
+    "unattached_bytes": 66752,
+    "unattached_files": 9
+  },
+  "metric_samples": [
+    {
+      "at_utc": "2026-10-28T00:54:56.38888148Z",
+      "label": "initial_baseline",
+      "metrics": {
+        "CPU_seconds": 138.77,
+        "DM_HTTP201": 3,
+        "DM_HTTP400": 2499,
+        "DM_HTTP429": 9,
+        "FD": 19,
+        "RSS_bytes": 52207616,
+        "TEXT_HTTP201": 6,
+        "TEXT_HTTP400": 2500,
+        "TEXT_HTTP429": 12,
+        "budget_account_active": 468,
+        "budget_account_capacity": 50000,
+        "budget_deployment_active": 1,
+        "budget_deployment_capacity": 1,
+        "budget_source_active": 113,
+        "budget_source_capacity": 10000,
+        "goroutines": 31,
+        "invalid_multipart": 4999,
+        "oldest_inflight_s": 0,
+        "reserved_bytes": 0,
+        "storage_success": 1,
+        "store_saturated_account": 0,
+        "store_saturated_deployment": 0,
+        "store_saturated_source": 0,
+        "uploads_inflight": 0
+      }
+    }
+  ],
+  "production_touched": false,
+  "records": [],
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "status": "PASS_PRIVATE_UPLOAD_METRICS_AND_STORAGE_INVENTORY"
+}

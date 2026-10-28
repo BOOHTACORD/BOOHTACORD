@@ -1,0 +1,26 @@
+package main
+
+import (
+ "crypto/sha256"
+ "encoding/hex"
+ "encoding/json"
+ "io"
+ "os"
+ "path/filepath"
+ "regexp"
+)
+
+type entry struct{Key string `json:"storage_key"`;Size int64 `json:"size"`;Hash string `json:"SHA256"`}
+func main(){
+ r:=map[string]any{"status":"RUNNING","scope":"Read only exact DB-attested own32B control files, no payload/name/ID export"};exit:=0
+ defer func(){if recover()!=nil{r["status"]="FAIL_OWNED_CONTROL_FILE_INTEGRITY";exit=1};_ =json.NewEncoder(os.Stdout).Encode(r);os.Exit(exit)}()
+ check:=func(b bool){if !b{panic("owned file scope/integrity")}}
+ raw,e:=os.ReadFile("/audit.private.json");check(e==nil);var entries []entry;check(json.Unmarshal(raw,&entries)==nil&&len(entries)==6)
+ uuid:=regexp.MustCompile(`^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$`);root:="/storage/unattached";var total int64
+ seen:=map[string]bool{}
+ for _,x:=range entries{
+  check(uuid.MatchString(x.Key)&&!seen[x.Key]&&x.Size==32);seen[x.Key]=true;path:=filepath.Join(root,x.Key);check(filepath.Dir(path)==root)
+  info,e:=os.Lstat(path);check(e==nil&&info.Mode().IsRegular()&&info.Size()==x.Size);f,e:=os.Open(path);check(e==nil);body,e:=io.ReadAll(io.LimitReader(f,33));f.Close();check(e==nil&&int64(len(body))==x.Size);digest:=sha256.Sum256(body);check(hex.EncodeToString(digest[:])==x.Hash);total+=x.Size
+ }
+ r["status"]="PASS_EXACT_OWNED_CONTROL_FILE_HASHES";r["files_checked"]=len(entries);r["total_bytes"]=total;r["all_metadata_and_SHA256_match"]=true;r["read_only_volume"]=true
+}

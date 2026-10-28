@@ -1,0 +1,25 @@
+"""Link own attachment metadata to a read-only hash audit; never read arbitrary storage keys."""
+import base64,hashlib,json,os,subprocess,sys,uuid
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,SOURCE,CONTEXT
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+runner=read(P/'resume-runner.json');assert runner['status'].startswith('PASS') and runner['client_exit_code']==0
+own=read(P/'private/owned.private.json');cfg=read(P/'private/config.private.json');files=own['files'];assert len(files)==6
+ids=[str(uuid.UUID(x['id'])) for x in files];assert len(set(ids))==6
+query="SELECT coalesce(json_agg(json_build_object('id',id::text,'owner_id',owner_id::text,'storage_key',storage_key::text,'byte_size',byte_size,'state',state,'channel_id',channel_id::text,'direct_message_id',direct_message_id::text,'original_name',original_name)),'[]'::json) FROM attachments WHERE id IN ("+','.join("'"+x+"'::uuid" for x in ids)+');\n'
+rows=json.loads(docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-At',input=query.encode()));assert {x['id'] for x in rows}==set(ids)
+expected={x['id']:x for x in files};sha=hashlib.sha256(base64.b64decode(cfg['file_body'])).hexdigest();entries=[]
+for x in rows:
+ f=expected[x['id']];assert x['owner_id']==own['accounts'][f['owner_slot']]['id'] and x['state']=='UNATTACHED' and x['byte_size']==32 and x['original_name']==cfg['file_name']
+ assert (x['channel_id']==cfg['Text'] and f['scope']=='TEXT') or (x['direct_message_id']==own['direct_message_id'] and f['scope']=='DM')
+ entries.append({'storage_key':str(uuid.UUID(x['storage_key'])),'size':32,'SHA256':sha})
+private=P/'private/file-audit.private.json';private.write_text(json.dumps(entries),encoding='utf-8')
+api=json.loads(docker('inspect',PROJECT+'-api-1'))[0];assert api['State']['Running'] and api['Config']['Labels']['com.docker.compose.project']==PROJECT
+image=json.loads(docker('image','inspect',api['Image']))[0];assert image['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+volume=PROJECT+'_attachments-data';vol=json.loads(docker('volume','inspect',volume))[0];assert vol['Labels']['com.docker.compose.project']==PROJECT and any(v.get('Name')==volume for v in api['Mounts'])
+source=P/'audit_files.go';before={'at_utc':datetime.now(timezone.utc).isoformat(),'files_SHA256':{f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in [source,Path(__file__)]},'source_revision':SOURCE,'private_config_SHA256':hashlib.sha256(private.read_bytes()).hexdigest()};(P/'runner-before-file-audit.json').write_text(json.dumps(before,indent=2)+'\n',encoding='utf-8',newline='\n')
+built=subprocess.run(['go','build','-o',str(P/'file_audit'),str(source)],cwd=Q/'backend',env={**os.environ,'GOOS':'linux','GOARCH':'amd64','CGO_ENABLED':'0','GOTOOLCHAIN':'local'},capture_output=True);(P/'file-audit-build.private.log').write_bytes(built.stdout+built.stderr);assert built.returncode==0
+argv=['docker','--context',CONTEXT,'run','--rm','--name','boohtacord-upload-file-audit','--label','com.docker.compose.project='+PROJECT,'--network','none','--cpus','.5','--memory','128m','--pids-limit','64','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges','--mount','type=bind,source='+str(P/'file_audit')+',target=/audit,readonly','--mount','type=bind,source='+str(private)+',target=/audit.private.json,readonly','--mount','type=volume,source='+volume+',target=/storage,readonly','--entrypoint','/audit',api['Image']]
+r=subprocess.run(argv,capture_output=True,timeout=30);(P/'file-audit-stderr.private.log').write_bytes(r.stderr);d=json.loads(r.stdout);d.update(at_utc=datetime.now(timezone.utc).isoformat(),client_exit_code=r.returncode,fixture_payload_SHA256=sha,private_DB_owner_scope_verified=True,binary_SHA256=hashlib.sha256((P/'file_audit').read_bytes()).hexdigest());(P/'file-integrity-audit.json').write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8',newline='\n');print(json.dumps(d));assert r.returncode==0 and d['status'].startswith('PASS')

@@ -1,0 +1,28 @@
+{
+  "at_utc": "2026-10-28T00:57:33.390357+00:00",
+  "origin": "https://v.bootybay.ru",
+  "method": "Two read-only GETs without credentials, no account/session/server/network changes",
+  "observations": [
+    {
+      "path": "/",
+      "http": 200,
+      "final_url": "https://v.bootybay.ru/",
+      "bytes_bounded": 2602,
+      "body_SHA256": "eb8c114568027bf0bacee8c01ad4ff693e98ffb52e18a283d9ce682e0932edaa",
+      "tls_validation": "SYSTEM_TRUST_NO_BYPASS",
+      "content_type": "text/html"
+    },
+    {
+      "path": "/healthz",
+      "http": 200,
+      "final_url": "https://v.bootybay.ru/healthz",
+      "bytes_bounded": 2602,
+      "body_SHA256": "eb8c114568027bf0bacee8c01ad4ff693e98ffb52e18a283d9ce682e0932edaa",
+      "tls_validation": "SYSTEM_TRUST_NO_BYPASS",
+      "content_type": "text/html"
+    }
+  ],
+  "native_or_media_acceptance_proven": false,
+  "local_QA_endpoint_proven": false,
+  "healthz_interpretation": "HTTP200 has same HTML bytes/hash as root; SPA fallback, not a backend health assertion"
+}

@@ -1,0 +1,21 @@
+package main
+
+import "time"
+
+func accountAndSource()(time.Time,time.Time){
+ started:=time.Now();before:=measure("account_before")
+ spend(0,"TEXT",cfg.Shared,true);spend(0,"DM",cfg.Shared,true)
+ for j:=0;j<8;j++{spend(0,scopeFor(j),cfg.Shared,false)}
+ denied:=upload(0,"DM",cfg.Aux,false,false);validate(denied,429)
+ spare:=upload(0,"TEXT",cfg.Fresh,false,true);validate(spare,429)
+ spend(1,"TEXT",cfg.Shared,true);drain("account_after")
+ after:=measure("account_after_counter");require(after["invalid_multipart"]-before["invalid_multipart"]==8,"account handler failure counter")
+ record("account_budget_shared_NAT_cross_routes_sessions",map[string]any{"status":"PASS","account_admitted":10,"positive201":2,"malformed400":8,"over_limit":denied,"different_session_same_account":spare,"neighbor_same_source201":true,"shared_TEXT_DM_budget":true,"server_invalid_multipart_delta":8})
+ ipStarted:=time.Now();before=measure("source_before")
+ for i:=2;i<22;i++{for j:=0;j<10;j++{spend(i,scopeFor(j),cfg.FullIP,false)}}
+ blocked:=upload(22,"TEXT",cfg.FullIP,false,false);validate(blocked,429)
+ spend(22,"DM",cfg.Aux,false);blockedNeighbor:=upload(23,"DM",cfg.FullIP,false,false);validate(blockedNeighbor,429)
+ still:=upload(0,"TEXT",cfg.Aux,false,false);validate(still,429);after=measure("source_after");require(after["invalid_multipart"]-before["invalid_multipart"]==201,"source handler counter")
+ record("source_budget_independent_accounts",map[string]any{"status":"PASS","distinct_members_filling_source":20,"admitted400":200,"TEXT":100,"DM":100,"fresh_account_same_source429":blocked,"same_account_fresh_source400":true,"other_fresh_account_same_source429":blockedNeighbor,"protected_account_still429":still,"server_invalid_multipart_delta":201,"global_admitted_so_far":admitted.Load()})
+ require(admitted.Load()==212,"initial shared global ledger");return started,ipStarted
+}

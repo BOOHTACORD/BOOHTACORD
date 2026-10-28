@@ -5217,7 +5217,8 @@
           "id": "I240.C5",
           "status": "FAIL",
           "execution_cases": [
-            "ISOLATED-login-NAT20-account-IP-KDF-runtime"
+            "ISOLATED-login-NAT20-account-IP-KDF-runtime",
+            "ISOLATED-upload-account-source-deployment-windows"
           ],
           "evidence": [
             "isolated-login-budgets/summary.json",
@@ -5225,7 +5226,14 @@
             "isolated-login-budgets/environment-after.json",
             "isolated-login-budgets/metric-label-audit.json",
             "isolated-login-budgets/source-binding.json",
-            "isolated-login-budgets/focused-go-result.json"
+            "isolated-login-budgets/focused-go-result.json",
+            "isolated-upload-budgets/summary.json",
+            "isolated-upload-budgets/resume-result.json",
+            "isolated-upload-budgets/environment-after.json",
+            "isolated-upload-budgets/file-integrity-audit.json",
+            "isolated-upload-budgets/metric-label-audit.json",
+            "isolated-upload-budgets/source-binding.json",
+            "isolated-upload-budgets/focused-go-result.json"
           ],
           "execution": "python -X utf8 .out/qa-login-budgets/run_profile.py run",
           "platform": "Actual source072 Linux API/PostgreSQL17.6 on this Windows11 PC; unchanged network10/5min, account8/30s, processKDF4",
@@ -5236,20 +5244,25 @@
             "isolated_api_faults"
           ],
           "execution_plan": {
-            "status": "EXECUTED_FAILING_NAT_WITNESS_AND_PASSING_LOGIN_CONTROLS",
+            "status": "EXECUTED_FAILING_NAT_WITNESS_AND_PASSING_LOGIN_UPLOAD_CONTROLS",
             "source_scenario": "I240.C5 requirement text retained verbatim",
             "method_scope": "Each method is supplemental; execute every remaining source-row clause and required platform variant separately",
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
             "existing_scoped_witnesses": [
-              "ISOLATED-login-NAT20-account-IP-KDF-runtime"
+              "ISOLATED-login-NAT20-account-IP-KDF-runtime",
+              "ISOLATED-upload-account-source-deployment-windows"
             ]
           },
-          "reason": "Referenced137 NAT20 criterion fails2/2: ten valid users succeed, ten neighbors get429. Account/IP real-window recovery and bounded KDF controls pass; remaining upload budgets and live store-capacity saturation are queued independently.",
-          "remaining_work_state": "FAIL_FIX_REQUIRED_NAT_POLICY; UPLOAD_MULTILEVEL_BUDGETS_AND_LIVE_SATURATION_QUEUED",
+          "reason": "NAT20 criterion still fails2/2 (#137). Upload shared account10/source200/deployment5000 windows pass on actual unchanged API, including16-way boundary and real302s reset. Live store-capacity saturation and shipping-client retry remain separate.",
+          "remaining_work_state": "FAIL_FIX_REQUIRED_NAT_POLICY; UPLOAD_MULTILEVEL_WINDOWS_PASS_SCOPED; LIVE_STORE_CAPACITY_SATURATION_AND_SHIPPING_CLIENT_RETRY_QUEUED",
           "defects": [
             137
+          ],
+          "additional_execution_commands": [
+            "python -X utf8 .out/qa-upload-budgets/run_profile.py resume",
+            "python -X utf8 .out/qa-upload-budgets/run_profile.py observe; python -X utf8 .out/qa-upload-budgets/run_file_audit.py; python -X utf8 .out/qa-upload-budgets/run_metric_audit.py; python -X utf8 .out/qa-upload-budgets/verify_after.py"
           ]
         },
         {
@@ -5776,7 +5789,8 @@
         "UPLOAD-real-global16-cap",
         "ISOLATED-auth-denial-real-http-postgres",
         "ISOLATED-websocket-default-quotas-real-http",
-        "ISOLATED-login-NAT20-account-IP-KDF-runtime"
+        "ISOLATED-login-NAT20-account-IP-KDF-runtime",
+        "ISOLATED-upload-account-source-deployment-windows"
       ],
       "evidence": [
         "notification-readiness/summary.json",
@@ -5788,7 +5802,8 @@
         "upload-extended/summary.json",
         "isolated-auth-denial/summary.json",
         "isolated-websocket-quotas/summary.json",
-        "isolated-login-budgets/summary.json"
+        "isolated-login-budgets/summary.json",
+        "isolated-upload-budgets/summary.json"
       ],
       "defects": [
         134,
@@ -16107,7 +16122,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-28T00:18:27.936040+00:00",
+  "updated_utc": "2026-10-28T00:58:17.370538+00:00",
   "known_defect_issues": [
     579,
     580,

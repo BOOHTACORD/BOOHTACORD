@@ -1,0 +1,92 @@
+{
+  "at_utc": "2026-10-28T00:41:55.322728497Z",
+  "cleanup": {
+    "logout_failures": 0,
+    "logout_successes": 505,
+    "members_retained": 504,
+    "owned_session_count": 505,
+    "retained_control_bytes": 32,
+    "retained_synthetic_unattached_controls": 1,
+    "status_ok": true
+  },
+  "elapsed_seconds": 31.717688179,
+  "event": "final",
+  "failed_check": "upload response/identity contract",
+  "initial_storage_inventory": {
+    "staging_bytes": 0,
+    "staging_files": 0,
+    "unattached_bytes": 66560,
+    "unattached_files": 3
+  },
+  "metric_samples": [
+    {
+      "at_utc": "2026-10-28T00:41:22.409302231Z",
+      "label": "initial_baseline",
+      "metrics": {
+        "CPU_seconds": 104.26,
+        "DM_HTTP201": 1,
+        "FD": 31,
+        "RSS_bytes": 55775232,
+        "TEXT_HTTP201": 2,
+        "TEXT_HTTP429": 2,
+        "budget_account_active": 9,
+        "budget_account_capacity": 50000,
+        "budget_deployment_active": 1,
+        "budget_deployment_capacity": 1,
+        "budget_source_active": 1,
+        "budget_source_capacity": 10000,
+        "goroutines": 30,
+        "oldest_inflight_s": 0,
+        "reserved_bytes": 0,
+        "storage_success": 1,
+        "store_saturated_account": 0,
+        "store_saturated_deployment": 0,
+        "store_saturated_source": 0,
+        "uploads_inflight": 0
+      }
+    },
+    {
+      "at_utc": "2026-10-28T00:41:54.584880835Z",
+      "label": "account_before",
+      "metrics": {
+        "CPU_seconds": 122.35,
+        "DM_HTTP201": 1,
+        "FD": 31,
+        "RSS_bytes": 109715456,
+        "TEXT_HTTP201": 2,
+        "TEXT_HTTP429": 2,
+        "budget_account_active": 9,
+        "budget_account_capacity": 50000,
+        "budget_deployment_active": 1,
+        "budget_deployment_capacity": 1,
+        "budget_source_active": 1,
+        "budget_source_capacity": 10000,
+        "goroutines": 30,
+        "oldest_inflight_s": 0,
+        "reserved_bytes": 0,
+        "storage_success": 1,
+        "store_saturated_account": 0,
+        "store_saturated_deployment": 0,
+        "store_saturated_source": 0,
+        "uploads_inflight": 0
+      }
+    }
+  ],
+  "production_touched": false,
+  "records": [
+    {
+      "at_utc": "2026-10-28T00:41:54.579393354Z",
+      "event": "observation",
+      "label": "owned_fixtures_ready",
+      "limits_unchanged": true,
+      "members": 504,
+      "new_empty_DM_between_own_members": true,
+      "new_members": 400,
+      "owned_sessions": 505,
+      "registration_and_login_source_cohorts": 128,
+      "reused_members": 104
+    }
+  ],
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "status": "FAIL_OR_PROFILE"
+}

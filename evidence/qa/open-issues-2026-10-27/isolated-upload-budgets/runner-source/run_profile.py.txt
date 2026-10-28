@@ -1,0 +1,52 @@
+"""Own isolated standard-limit upload verification, bounded synthetic fixtures, no public keys."""
+import base64,hashlib,ipaddress,json,os,secrets,subprocess,sys,threading,uuid
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,SOURCE,CONTEXT
+mode=sys.argv[1];assert mode in ['run','observe','resume'];assert not (P/'private/STOP').exists()
+def now():return datetime.now(timezone.utc).isoformat()
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+def save(name,d):(P/name).write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8',newline='\n')
+proxy=json.loads(docker('inspect',PROJECT+'-proxy-1'))[0];api=json.loads(docker('inspect',PROJECT+'-api-1'))[0]
+for v in [proxy,api]:assert v['State']['Running'] and v['Config']['Labels']['com.docker.compose.project']==PROJECT and v['RestartCount']==0
+image=json.loads(docker('image','inspect',api['Image']))[0];assert image['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+trusted=[ipaddress.ip_network(v.split('=',1)[1]) for v in api['Config']['Env'] if v.startswith('TRUSTED_PROXY_CIDRS=')]
+assert any(ipaddress.ip_address(n['IPAddress']) in c for n in proxy['NetworkSettings']['Networks'].values() for c in trusted)
+volume=PROJECT+'_attachments-data';vol=json.loads(docker('volume','inspect',volume))[0];assert vol['Labels']['com.docker.compose.project']==PROJECT and any(m.get('Name')==volume for m in api['Mounts'])
+config=P/'private/config.private.json'
+if not config.exists():
+ prior=read(P.parent/'qa-ws-quota/private/fixture.private.json');assert prior['source_revision']==SOURCE and len(prior['accounts'])==104
+ seeds=[{k:a[k] for k in ['id','login','password']} for a in prior['accounts']];topology=read(P.parent/'local-qa/topology.private.json');assert str(uuid.UUID(topology['text']))==topology['text']
+ net=next(n for n in proxy['NetworkSettings']['Networks'].values() if n['IPAddress']);network=ipaddress.ip_network(net['IPAddress']+'/'+str(net['IPPrefixLen']),strict=False);assert network.is_private
+ hosts=[str(a) for a in network.hosts() if str(a)!=net['IPAddress']];assert len(hosts)>200
+ cfg={'source_revision':SOURCE,'seeds':seeds,'sources':hosts[32:160],'Shared':hosts[-4],'FullIP':hosts[-3],'Aux':hosts[-2],'Fresh':hosts[-1],'Text':topology['text'],'file_name':'qa_rate_'+secrets.token_hex(6)+'.bin','file_body':base64.b64encode(secrets.token_bytes(32)).decode()};config.write_text(json.dumps(cfg,indent=2),encoding='utf-8')
+ ids=[str(uuid.UUID(a['id'])) for a in seeds];query='SELECT count(*),count(*) FILTER(WHERE revoked_at IS NULL) FROM sessions WHERE user_id IN ('+','.join("'"+x+"'::uuid" for x in ids)+');\n';counts=list(map(int,docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-At',input=query.encode()).decode().strip().split('|')));assert counts==[1000,0]
+ save('baseline-owned-counts.json',{'at_utc':now(),'seed_members':104,'prior_owned_session_rows':counts[0],'prior_owned_active_sessions':0})
+if mode=='run':assert not (P/'run-result.json').exists() and not (P/'private/owned.private.json').exists()
+if mode=='resume':assert not (P/'resume-result.json').exists() and (P/'private/owned.private.json').exists()
+files=sorted(P.glob('probe_*.go'));assert len(files)==8
+save('runner-before-'+mode+'.json',{'at_utc':now(),'source_revision':SOURCE,'API_image_id':api['Image'],'owned_trusted_proxy_namespace':True,'owned_storage_volume_read_only':True,'private_config_SHA256':hashlib.sha256(config.read_bytes()).hexdigest(),'files_SHA256':{f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in [*files,Path(__file__)]}})
+build=subprocess.run(['go','build','-o',str(P/'upload_probe'),*[str(f) for f in files]],cwd=Q/'backend',env={**os.environ,'GOOS':'linux','GOARCH':'amd64','CGO_ENABLED':'0','GOTOOLCHAIN':'local'},capture_output=True);(P/'build.private.log').write_bytes(build.stdout+build.stderr);assert build.returncode==0,'Inspect private build log'
+r={'at_utc':now(),'status':'RUNNING','mode':mode,'source_revision':SOURCE,'project':PROJECT,'production_touched':False,'binary_SHA256':hashlib.sha256((P/'upload_probe').read_bytes()).hexdigest()}
+argv=['docker','--context',CONTEXT,'run','--rm','--name','boohtacord-upload-budget-probe','--label','com.docker.compose.project='+PROJECT,'--label','qa.packet=upload-budgets','--network','container:'+proxy['Id'],'--cpus','1','--memory','512m','--pids-limit','128','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges','--mount','type=bind,source='+str(P/'upload_probe')+',target=/qa-probe,readonly','--mount','type=bind,source='+str(P/'private')+',target=/work','--mount','type=volume,source='+volume+',target=/storage,readonly','--entrypoint','/qa-probe',api['Image'],mode]
+done=threading.Event();db_samples=[]
+def monitor():
+ while not done.wait(4):
+  try:
+   values=docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-At',input=b"SELECT count(*),count(*) FILTER(WHERE state='active') FROM pg_stat_activity WHERE datname=current_database();\n");total,active=map(int,values.decode().strip().split('|'));db_samples.append({'at_utc':now(),'connections':total,'active_connections':active})
+   if total>=80 or active>=64:(P/'private/STOP').write_text('DB resource stop',encoding='utf-8')
+  except Exception as e:db_samples.append({'at_utc':now(),'error_type':type(e).__name__});(P/'private/STOP').write_text('DB observer error',encoding='utf-8')
+try:
+ with (P/(mode+'-stderr.private.log')).open('wb') as errors,(P/(mode+'-stream.private.jsonl')).open('w',encoding='utf-8',newline='\n') as stream:
+  process=subprocess.Popen(argv,stdout=subprocess.PIPE,stderr=errors,text=True,encoding='utf-8');r['controller_PID']=os.getpid();r['docker_client_PID']=process.pid;save(mode+'-runner.json',r);threading.Thread(target=monitor,daemon=True).start()
+  for line in process.stdout:
+   d=json.loads(line);stream.write(line);stream.flush()
+   if d['event']=='observation':print(json.dumps({k:v for k,v in d.items() if k!='outcomes'}),flush=True)
+   if d['event']=='progress' and (d.get('phase')!='global_fill' or int(d.get('admitted',0))%500<100):print(json.dumps(d),flush=True)
+   if d['event']=='final':save(mode+'-result.json',d);r['profile_status']=d['status']
+  r['client_exit_code']=process.wait(timeout=20);assert r['client_exit_code']==0 and r['profile_status'].startswith('PASS')
+ r['status']='PASS_OWNED_UPLOAD_PROFILE'
+except Exception as e:r['status']='FAIL_OR_CONTROLLER';r['error_type']=type(e).__name__
+finally:done.set();save(mode+'-database-samples.json',{'samples':db_samples,'limits':{'connections':80,'active_connections':64},'scope':'Periodic own DB aggregate samples; no query-count/capacity inference'});r['finished_at_utc']=now();save(mode+'-runner.json',r)
+print(json.dumps(r));sys.exit(0 if r['status'].startswith('PASS') else 1)

@@ -1,0 +1,30 @@
+{
+  "at_utc": "2026-10-28T00:42:36.222148+00:00",
+  "status": "PASS_FOCUSED_NATIVE_GO_ZERO_SKIPS",
+  "command_argv": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-run",
+    "^Test(MiddlewareLimitsOneForwardedSourceAndResetsWindow|LimiterKeepsActiveExhaustedBudgetAtCapacity|LimiterCapsPerAccountAndDeploymentAndReleasesEverySlot|MiddlewareRejectsConcurrentRequestWithRetryAfterAndReleases|AttachmentFilesystemMetricSourceMapsStorageSnapshot|AttachmentFilesystemMetricSourceForwardsStorageError|AttachmentFilesystemMetricSourceReadsLiveReservations)$",
+    "./internal/security/rate_limit",
+    "./internal/storage/admit_upload",
+    "./internal/app/storage_routes"
+  ],
+  "exit_code": 0,
+  "top_level_passed": 7,
+  "skips": 0,
+  "fail_events": 0,
+  "names": [
+    "TestMiddlewareLimitsOneForwardedSourceAndResetsWindow",
+    "TestLimiterKeepsActiveExhaustedBudgetAtCapacity",
+    "TestLimiterCapsPerAccountAndDeploymentAndReleasesEverySlot",
+    "TestMiddlewareRejectsConcurrentRequestWithRetryAfterAndReleases",
+    "TestAttachmentFilesystemMetricSourceMapsStorageSnapshot",
+    "TestAttachmentFilesystemMetricSourceForwardsStorageError",
+    "TestAttachmentFilesystemMetricSourceReadsLiveReservations"
+  ],
+  "raw_SHA256": "3acfc117290f94e373655cb35e7786738bcc9455d8cc47c1e41f60061a06469c",
+  "scope": "Native Windows unit checks; actual deployed multi-level5000 profile separate"
+}

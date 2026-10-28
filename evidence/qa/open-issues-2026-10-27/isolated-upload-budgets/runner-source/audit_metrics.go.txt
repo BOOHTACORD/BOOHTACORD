@@ -1,0 +1,39 @@
+package main
+
+import (
+ "context"
+ "crypto/sha256"
+ "encoding/hex"
+ "encoding/json"
+ "io"
+ "net"
+ "net/http"
+ "os"
+ "regexp"
+ "strconv"
+ "strings"
+ "time"
+)
+
+func main(){
+ r:=map[string]any{"status":"RUNNING","scope":"Actual rate-limit/upload/attachment HTTP metric families; bounded identifier-label audit only"};exit:=0
+ defer func(){if recover()!=nil{r["status"]="FAIL_UPLOAD_METRIC_LABEL_CONTRACT";exit=1};_ =json.NewEncoder(os.Stdout).Encode(r);os.Exit(exit)}()
+ check:=func(ok bool){if !ok{panic("bounded metric read/label contract")}}
+ ips,e:=net.LookupIP("api");check(e==nil&&len(ips)>0);for _,ip:=range ips{check(ip.IsPrivate())}
+ c,cancel:=context.WithTimeout(context.Background(),12*time.Second);defer cancel();q,e:=http.NewRequestWithContext(c,"GET","http://api:8080/metrics",nil);check(e==nil)
+ client:=http.Client{Timeout:10*time.Second,Transport:&http.Transport{Proxy:nil}};response,e:=client.Do(q);check(e==nil);defer response.Body.Close();check(response.StatusCode==200);raw,e:=io.ReadAll(io.LimitReader(response.Body,4*1024*1024+1));check(e==nil&&len(raw)<=4*1024*1024)
+ operations:=map[string]bool{"registration":true,"login_source":true,"password_reset":true,"upload_source":true,"upload_account":true,"upload_deployment":true,"telemetry":true}
+ reasons:=map[string]bool{"invalid_multipart":true,"too_large":true,"timeout":true,"insufficient_storage":true,"target_unavailable":true,"internal":true};routes:=map[string]bool{}
+ for _,p:=range []string{"/api/v1/channels/{channelID}/attachments","/api/v1/direct-messages/{directMessageID}/attachments"}{routes[p]=true;routes[p+"/{attachmentID}"]=true;routes[p+"/{attachmentID}/preview"]=true}
+ methods:=map[string]bool{};for _,m:=range []string{"GET","HEAD","POST","PUT","PATCH","DELETE","OPTIONS","CONNECT","TRACE","OTHER"}{methods[m]=true}
+ pairs:=regexp.MustCompile(`([a-zA-Z_][a-zA-Z0-9_]*)="([^"]*)"`);selected:=[]string{};names:=map[string]bool{}
+ for _,line:=range strings.Split(string(raw),"\n"){
+  chosen:=strings.HasPrefix(line,"voice_platform_rate_limit_")||strings.HasPrefix(line,"voice_platform_upload_failures_total")||strings.HasPrefix(line,"voice_platform_uploads_inflight")||strings.HasPrefix(line,"voice_platform_upload_oldest_inflight_seconds")||strings.HasPrefix(line,"voice_platform_attachment_upload_reserved_bytes")||(strings.HasPrefix(line,"voice_platform_api_requests_total")&&strings.Contains(line,"attachments"))
+  if !chosen{continue};f:=strings.Fields(line);check(len(f)==2);_,e=strconv.ParseFloat(f[1],64);check(e==nil);name:=f[0]
+  if i:=strings.IndexByte(name,'{');i>=0{check(strings.HasSuffix(name,"}"));labels:=name[i+1:len(name)-1];parts:=[]string{}
+   for _,m:=range pairs.FindAllStringSubmatch(labels,-1){parts=append(parts,m[0]);switch m[1]{case "operation":check(operations[m[2]]);case "reason":check(reasons[m[2]]);case "route":check(routes[m[2]]);case "method":check(methods[m[2]]);case "status":n,e:=strconv.Atoi(m[2]);check(e==nil&&n>=100&&n<=599);default:check(false)}}
+   check(strings.Join(parts,",")==labels);name=name[:i]
+  };selected=append(selected,line);names[name]=true
+ }
+ check(len(selected)>20&&len(selected)<256);digest:=sha256.Sum256([]byte(strings.Join(selected,"\n")));r["status"]="PASS_FINITE_UPLOAD_RATE_METRIC_LABELS";r["series_checked"]=len(selected);r["metric_names_checked"]=len(names);r["selected_private_lines_SHA256"]=hex.EncodeToString(digest[:]);r["allowed_label_names"]=[]string{"operation","reason","method","route","status"};r["source_account_session_ID_labels_present"]=false
+}
