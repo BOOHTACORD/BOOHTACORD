@@ -8,9 +8,9 @@ from .inventory import EXPECTED, verify_sources
 
 
 class RunnerTests(unittest.TestCase):
-    def test_reviewed_sources_still_contain_all_forty_cases(self):
+    def test_reviewed_sources_still_contain_all_fifty_one_cases(self):
         verify_sources(run.ROOT)
-        self.assertEqual(40, sum(sum(row.values()) for row in EXPECTED.values()))
+        self.assertEqual(51, sum(sum(row.values()) for row in EXPECTED.values()))
 
     def test_modes_run_all_tasks_and_require_each_plugin_result(self):
         for mode in ('legacy', 'builtin'):
@@ -20,7 +20,7 @@ class RunnerTests(unittest.TestCase):
                  patch.object(run, 'validate', side_effect=list(EXPECTED.values())) as validate:
                 result = run.execute(mode)
                 self.assertEqual('PASS', result['status'])
-                self.assertEqual(40, result['tests'])
+                self.assertEqual(51, result['tests'])
                 command = call.call_args.args[0]
                 self.assertTrue(all(':' + p + ':testDebugUnitTest' in command for p in EXPECTED))
                 self.assertIn('--rerun-tasks', command)
