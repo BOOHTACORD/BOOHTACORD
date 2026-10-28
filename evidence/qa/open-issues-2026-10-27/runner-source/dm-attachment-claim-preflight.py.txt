@@ -1,0 +1,31 @@
+"""Read-only source, private stand and physical-device baseline before new sessions."""
+import ast,hashlib,json,re,subprocess,sys
+from datetime import datetime,timezone
+from common import P,Q,B,ADB,APP,call,state,read,write,digest,api
+assert not (P/'preflight.json').exists();(P/'private').mkdir(exist_ok=True)
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=Q,text=True).strip()=='072426d60b1c0b1f7e5f66722a0da5faa00b50d7'
+files=['backend/go.mod','backend/internal/chat/send_direct_message/service.go','backend/internal/chat/send_direct_message/attachments.go','backend/internal/chat/send_direct_message/api/http_handler.go','backend/internal/chat/send_direct_message/postgres/repository.go','backend/internal/chat/send_direct_message/postgres/committed_query.go','backend/internal/chat/send_direct_message/postgres/pool_database.go','backend/internal/chat/send_direct_message/postgres/repository_integration_test.go','backend/internal/chat/send_direct_message/postgres/repository_test.go','backend/internal/chat/send_direct_message/postgres/attachment_claim_race_integration_test.go','backend/internal/chat/send_direct_message/postgres/integration_database_test.go','backend/internal/chat/send_direct_message/service_test.go','backend/internal/chat/send_direct_message/api/http_handler_test.go','backend/internal/testsupport/postgres/config.go','backend/internal/testsupport/postgres/schema.go','contracts/openapi.yaml','clients/flutter/lib/src/widgets/message_attachment_list.dart','clients/flutter/pubspec.yaml','tools/toolchains.json']
+for n in files:assert (Q/n).read_bytes().replace(b'\r\n',b'\n')==subprocess.check_output(['git','show','HEAD:'+n],cwd=Q)
+sys.path.insert(0,str(P.parent/'local-qa'));from profile_common import docker,PROJECT,CONTEXT
+services=[]
+for name in ['api','web','proxy','postgres','livekit','collector','tempo','prometheus','grafana']:
+    v=json.loads(docker('inspect',PROJECT+'-'+name+'-1'))[0];assert v['State']['Running'] and v['RestartCount']==0 and v['Config']['Labels']['com.docker.compose.project']==PROJECT
+    write(P/'private'/(name+'-baseline.private.json'),v);services.append({'service':name,'image':v['Image'],'started_at':v['State']['StartedAt'],'running':True,'restart_count':0})
+pg=json.loads(docker('inspect',PROJECT+'-postgres-1'))[0];assert pg['NetworkSettings']['Ports']=={'5432/tcp':[{'HostIp':'127.0.0.1','HostPort':'15436'}]}
+db=docker('exec',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-At','-c',"SHOW server_version; SELECT count(*) FROM pg_namespace WHERE nspname LIKE 'voice_it_%';").decode().splitlines();assert db==['17.6','0']
+device={'status':'BLOCKED_NO_APPROVED_PHYSICAL_DEVICE'}
+try:
+    assert call('get-state').strip()=='device';assert call('shell','getprop','ro.product.model').strip()=='SM-A576B' and call('shell','getprop','ro.build.version.release').strip()=='16'
+    package=call('shell','dumpsys','package',APP);assert 'versionName=1.0.47' in package and re.search(r'versionCode=2082\b',package);path=call('shell','pm','path',APP).strip()[8:];assert re.fullmatch(r'/data/app/[A-Za-z0-9_~+/=.-]+/base\.apk',path)
+    q=subprocess.Popen([ADB,'exec-out','cat',path],stdout=subprocess.PIPE,stderr=subprocess.PIPE);sha=hashlib.sha256()
+    for block in iter(lambda:q.stdout.read(1024*1024),b''):sha.update(block)
+    assert q.wait(timeout=30)==0 and sha.hexdigest()==read(B/'evidence/qa/open-issues-2026-10-27/android-upgrade/verified.json')['arm64_APK_sha256']
+    device={'status':'PASS_FRESH_INSTALLED_SIGNED_CANDIDATE_HASH','model':'SM-A576B','Android':'16','version':'1.0.47+2082','APK_SHA256':sha.hexdigest(),'state':state()}
+except Exception as e:device['diagnostic_error_type']=type(e).__name__
+status,_,release=api('/release-receipt.json');assert status==200
+runner={}
+for f in sorted(P.glob('*.py')):
+    s=f.read_text(encoding='utf-8');ast.parse(s);assert len(s.splitlines())<=120;runner[f.name]=digest(f.read_bytes())
+assert len(runner)==8
+write(P/'preflight.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_SOURCE_PRIVATE_PG17_6_BASELINE','workflow_class':'review_gate','route':'backend/chat/send_direct_message/postgres','packet':'DM-cross-attachment-admission','task':'T-044, dependencies T-040/T-041; source-only legacy edges are read-only','previous_goal_turn':'PROGRESS: immutable evidence72441466f, new bug589 and verified parent updates','source_revision':'072426d60b1c0b1f7e5f66722a0da5faa00b50d7','source_SHA256':{n:digest((Q/n).read_bytes()) for n in files},'runner_SHA256':runner,'local_services':services,'PostgreSQL':'17.6','disposable_schema_baseline':0,'phone':device,'observed_Web_source':release.get('source_revision',release.get('git_sha','UNKNOWN')),'deployed_backend_source':'UNKNOWN','production_TLS_default_validation':True,'invariant':'Only caller-owned UNATTACHED attachments from the same DM bind atomically; denial must not consume valid inputs/idempotency key','preservation':'Existing controlled MEMBER profiles/DMs only; three tiny own PNGs, no roles/permissions/native sessions/baseURL/voice/router changes. Bind and delete all owned uploads, revoke only2 new API sessions. No existing record mutation, load/faults or production database access.','stop_condition':'Run native SQL supplement, bounded production counterexamples/positive controls and real phone owned render; retain source-bound scoped results/cleanup and file only confirmed new bugs after duplicates. All broader gates remain separate.'})
+print(json.dumps({'preflight':'PASS','PostgreSQL':'17.6','phone':device['status'],'runners':len(runner),'source_files':len(files)}))

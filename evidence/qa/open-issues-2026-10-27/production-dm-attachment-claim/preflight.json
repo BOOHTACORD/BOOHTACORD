@@ -1,0 +1,139 @@
+{
+  "at_utc": "2026-10-28T19:02:45.161451+00:00",
+  "status": "PASS_SOURCE_PRIVATE_PG17_6_BASELINE",
+  "workflow_class": "review_gate",
+  "route": "backend/chat/send_direct_message/postgres",
+  "packet": "DM-cross-attachment-admission",
+  "task": "T-044, dependencies T-040/T-041; source-only legacy edges are read-only",
+  "previous_goal_turn": "PROGRESS: immutable evidence72441466f, new bug589 and verified parent updates",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "source_SHA256": {
+    "backend/go.mod": "33cbf13647d246156f0e65379e04fdea093de64db35c83573020f6b4bd3e9603",
+    "backend/internal/chat/send_direct_message/service.go": "a2b859117473f0781062a9624c6d2eb5f3184a79746cf4f8989078a482253fe0",
+    "backend/internal/chat/send_direct_message/attachments.go": "78a1396f030f1af94e82d785d36b53426f863b4ddc789fc6ee6a3a7d68a12bea",
+    "backend/internal/chat/send_direct_message/api/http_handler.go": "3c2a0e64f96a3d889c254ee3e280d780e64ed298b3a18e25f813430eaf83bf9e",
+    "backend/internal/chat/send_direct_message/postgres/repository.go": "3cba7336869843955d374a5a623343ebb6bb32f2f21f3a2ab560fb61ad5809ec",
+    "backend/internal/chat/send_direct_message/postgres/committed_query.go": "292ed8039b242de2210c2038257b7dc1c0153705f134d56853cd890254498c84",
+    "backend/internal/chat/send_direct_message/postgres/pool_database.go": "5e50b49066a27f9935ec447d47b59b4433d3b8403d3ad8b1a2be08240a1efeca",
+    "backend/internal/chat/send_direct_message/postgres/repository_integration_test.go": "2a5e00f7360ebac1e3bbe746f738ae3414c33dd809961c61b4c06902152c4193",
+    "backend/internal/chat/send_direct_message/postgres/repository_test.go": "0534e9db52c9480ddec5fbd8259e69927ca5d38f30d9c4ab2cebdb13e117d614",
+    "backend/internal/chat/send_direct_message/postgres/attachment_claim_race_integration_test.go": "86837e780305a70c89ac772ca1cdbd521d6cc37c673807eba7bd56bfae90d969",
+    "backend/internal/chat/send_direct_message/postgres/integration_database_test.go": "49ebd7e9ce4c60c9dcbb69d5aacca8f4c22f9d64b4d0b91951420b5c162ee061",
+    "backend/internal/chat/send_direct_message/service_test.go": "99dbb9daaa6afdb311d5d511aa85a365ead8a2f41f209c88735e4d4e8fbc7b3a",
+    "backend/internal/chat/send_direct_message/api/http_handler_test.go": "86a6bfc940961a2e671780c215e30ab86224e47b3a142626521e12b8acc7e5b0",
+    "backend/internal/testsupport/postgres/config.go": "e611b437e206fd730ebf3222a8304e2c5272e556381e288c721b4b551f2801f8",
+    "backend/internal/testsupport/postgres/schema.go": "088b9b6f5208f46dae73c6b2853a54e49bc4f148d87acfeef744c60677d61178",
+    "contracts/openapi.yaml": "3c9895b2d9fc4df68948f6811435ac77a948686d62bed93730582ed174db39a1",
+    "clients/flutter/lib/src/widgets/message_attachment_list.dart": "983899704bdfce80b4128fa787e3198985a388579e986ab488328e10474f1a44",
+    "clients/flutter/pubspec.yaml": "de0377a63ab77456df14f211b498b8f2b7b12cf1773f65ff9abf4975626a76de",
+    "tools/toolchains.json": "ae1564530abb2697f24a0e1cff899aeb1fde5fb9266b63e973d71811114fbe28"
+  },
+  "runner_SHA256": {
+    "cases.py": "99aee27d2b1e77543ca5fdb20c2cb9692d814f63878b351cc14f474d6eaf4f23",
+    "cleanup.py": "c3e3a77e660b571b57302fd350110332ee1c38efe5e3c1bdf4f06ae5c836b28b",
+    "common.py": "769320c16b121d40b8afe8cf33d715a793b6e095fb0ad46bb9797f379f81ef56",
+    "native.py": "bd72efd4e4c0d157edf6801fde8b0fbec6ecd241d50115585d0a4d5caeda0305",
+    "native_check.py": "c1a9f323ecd69a83639d7693cef84c535260cccb87942ce43ea4c5bcc6f54785",
+    "preflight.py": "e16f559332fed9f9c3a8d8e8cedb8ab02eacc23d70d3910600501a6ab13d6a4d",
+    "prepare.py": "a44147c1ad50bfc69117c7d35b08166385f52967e34f19e80ea9869f567c0abf",
+    "retain.py": "ea1c3832385ee0b374272b4d92114dd9cbac8ad4ccdc1859fae71d56c476fc8c"
+  },
+  "local_services": [
+    {
+      "service": "api",
+      "image": "sha256:b34a09b6eebfb87fea478e7cd440cc7ab9c52dc7dbd3cf4d659b12a9eff98a47",
+      "started_at": "2026-10-27T19:23:42.035726328Z",
+      "running": true,
+      "restart_count": 0
+    },
+    {
+      "service": "web",
+      "image": "sha256:414cc79b7ff85cfca81252bd12eb8a9525f2fb5727932a88b02ccf63ebb42d20",
+      "started_at": "2026-10-27T19:23:35.714205197Z",
+      "running": true,
+      "restart_count": 0
+    },
+    {
+      "service": "proxy",
+      "image": "sha256:f43d8810c944e27e6f7ea80b165de11dbdab16cff15c8a80d83ae3e1a109a35d",
+      "started_at": "2026-10-27T19:23:42.190631072Z",
+      "running": true,
+      "restart_count": 0
+    },
+    {
+      "service": "postgres",
+      "image": "sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94",
+      "started_at": "2026-10-27T19:23:35.722735185Z",
+      "running": true,
+      "restart_count": 0
+    },
+    {
+      "service": "livekit",
+      "image": "sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3",
+      "started_at": "2026-10-27T19:33:06.758188554Z",
+      "running": true,
+      "restart_count": 0
+    },
+    {
+      "service": "collector",
+      "image": "sha256:b6d2b9a85b1029d05b5ad913150c1f014eed4ae99be81a1813ca5ade4a191913",
+      "started_at": "2026-10-27T19:23:36.481501631Z",
+      "running": true,
+      "restart_count": 0
+    },
+    {
+      "service": "tempo",
+      "image": "sha256:cac9de2ac9f6da8efca5b64b690a7cb8c786a0c49cac7b4517dd1b0089a6c703",
+      "started_at": "2026-10-27T19:23:36.32125598Z",
+      "running": true,
+      "restart_count": 0
+    },
+    {
+      "service": "prometheus",
+      "image": "sha256:5550dc63da361dc30f6fe02ac0e4dfc736ededfef3c8d12a634db04a67824d78",
+      "started_at": "2026-10-27T19:23:36.66452935Z",
+      "running": true,
+      "restart_count": 0
+    },
+    {
+      "service": "grafana",
+      "image": "sha256:6e5d306338670f381a942f1c50d3c266bf71531e5ddd9ee4fc1a133dac5ce63d",
+      "started_at": "2026-10-27T19:23:36.837715781Z",
+      "running": true,
+      "restart_count": 0
+    }
+  ],
+  "PostgreSQL": "17.6",
+  "disposable_schema_baseline": 0,
+  "phone": {
+    "status": "PASS_FRESH_INSTALLED_SIGNED_CANDIDATE_HASH",
+    "model": "SM-A576B",
+    "Android": "16",
+    "version": "1.0.47+2082",
+    "APK_SHA256": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+    "state": {
+      "at_utc": "2026-10-28T19:02:44.894690+00:00",
+      "permission": {
+        "granted": true,
+        "flags": [
+          "USER_SET",
+          "USER_SENSITIVE_WHEN_GRANTED",
+          "USER_SENSITIVE_WHEN_DENIED"
+        ]
+      },
+      "microphone_fgs": false,
+      "voice_connected": false,
+      "muted_control": false,
+      "app_hierarchy_present": true,
+      "system_permission_prompt": false,
+      "navigation_available": true,
+      "login_fields": false
+    }
+  },
+  "observed_Web_source": "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a",
+  "deployed_backend_source": "UNKNOWN",
+  "production_TLS_default_validation": true,
+  "invariant": "Only caller-owned UNATTACHED attachments from the same DM bind atomically; denial must not consume valid inputs/idempotency key",
+  "preservation": "Existing controlled MEMBER profiles/DMs only; three tiny own PNGs, no roles/permissions/native sessions/baseURL/voice/router changes. Bind and delete all owned uploads, revoke only2 new API sessions. No existing record mutation, load/faults or production database access.",
+  "stop_condition": "Run native SQL supplement, bounded production counterexamples/positive controls and real phone owned render; retain source-bound scoped results/cleanup and file only confirmed new bugs after duplicates. All broader gates remain separate."
+}

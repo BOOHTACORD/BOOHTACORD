@@ -1,0 +1,33 @@
+"""Actual claim admission, atomic denial, same-key retry and idempotent replay."""
+import json,uuid
+from datetime import datetime,timezone
+from common import P,read,write,api,request,prefix,valid,digest
+assert not (P/'cases-result.json').exists();c=read(P/'private/config.private.json');f={v['alias']:v for v in c['fixtures']};r={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'RUNNING','cases':[]};write(P/'cases-result.json',r)
+def history(scope):
+    s,_,p=api(prefix(c[scope])+'/messages?limit=100',cookie=c['sessions']['b']);assert s==200;return p['messages']
+def send(name,actor,scope,ids,expected,client=None,body=''):
+    client=client or str(uuid.uuid4());item={'name':name,'actor':actor,'scope':scope,'client':client,'attachment_ids':ids};c['attempts'].append(item);write(P/'private/config.private.json',c);before=history(scope);s,_,m=api(prefix(c[scope])+'/messages','POST',{'client_message_id':client,'body':body,'attachment_ids':ids},c['sessions'][actor]);row={'name':name,'HTTP':s,'expected_HTTP':expected}
+    if s==201:
+        valid(m['id']);assert m['author_id']==c['accounts'][actor] and m['direct_message_id']==c[scope]
+        if not any(v['id']==m['id'] for v in c['messages']):c['messages'].append({'id':m['id'],'actor':actor,'scope':scope,'client':client});write(P/'private/config.private.json',c)
+        row['response_body_is_original_empty']=m['body']==''
+    else:
+        row['error_code']=m.get('error',{}).get('code');row['no_message_or_link_visible_in_history']=history(scope)==before
+        needles=[v['id'] for v in c['fixtures']]+[v['filename'] for v in c['fixtures']]+list(c['accounts'].values())+[c['DM_phone'],c['DM_control']];payload=json.dumps(m);row['no_fixture_identifiers_or_names_in_error']=all(n not in payload for n in needles)
+    row['status']='PASS' if s==expected and (s==201 or row['no_message_or_link_visible_in_history'] and row['no_fixture_identifiers_or_names_in_error']) else 'FAIL';r['cases'].append(row);write(P/'cases-result.json',r);return client,m
+wrong,_=send('same_owner_wrong_DM','b','DM_control',[f['phone-own']['id']],404)
+mixed,_=send('mixed_valid_and_other_DM_atomic_denial','b','DM_control',[f['control-own']['id'],f['phone-own']['id']],404)
+send('same_DM_foreign_owner','b','DM_control',[f['control-peer']['id']],404)
+send('duplicate_attachment_ids_validation','b','DM_control',[f['control-own']['id']]*2,400)
+send('unknown_attachment_opaque_denial','b','DM_control',[str(uuid.uuid4())],404)
+client,control=send('same_failed_mixed_client_ID_valid_retry','b','DM_control',[f['control-own']['id']],201,client=mixed)
+peer_client,peer=send('previously_foreign_owner_own_positive','c','DM_control',[f['control-peer']['id']],201)
+phone_client,phone=send('previously_wrong_DM_own_scope_positive','b','DM_phone',[f['phone-own']['id']],201)
+c['phone_fixture_message']=valid(phone['id']);c['phone_fixture_client']=phone_client;write(P/'private/config.private.json',c)
+send('already_claimed_other_client_rejected','b','DM_phone',[f['phone-own']['id']],404)
+_,again=send('same_client_same_payload_idempotent','b','DM_phone',[f['phone-own']['id']],201,client=phone_client);same=again['id']==phone['id'] and again['body']==phone['body'];r['cases'][-1]['same_message_not_new']=same;r['cases'][-1]['status']='PASS' if same else 'FAIL'
+_,changed=send('same_client_changed_body_no_new_link','b','DM_phone',[f['phone-own']['id']],201,client=phone_client,body='QA_REPLAY_'+c['owner']);same=changed['id']==phone['id'] and changed['body']==phone['body'];r['cases'][-1]['same_message_original_body']=same;r['cases'][-1]['status']='PASS' if same else 'FAIL'
+proof=[]
+for fixture in c['fixtures']:
+    status,_,page=api(prefix(c[fixture['scope']])+'/messages?limit=100',cookie=c['sessions'][fixture['actor']]);assert status==200;linked=[m for m in page['messages'] if any(a['id']==fixture['id'] for a in m['attachments'])];code,_,raw=request(prefix(c[fixture['scope']])+'/attachments/'+fixture['id'],cookie=c['sessions'][fixture['actor']]);row={'alias':fixture['alias'],'one_visible_message_link':len(linked)==1,'download_HTTP':code,'original_SHA256_match':code==200 and digest(raw)==fixture['SHA256']};proof.append(row)
+r['positive_attachment_proof']=proof;r['distinct_own_messages']=len(c['messages']);r['status']='PASS11_ADMISSION_CONTROLS_THREE_POSITIVE_LINKS' if len(r['cases'])==11 and all(v['status']=='PASS' for v in r['cases']) and len(c['messages'])==3 and all(v['one_visible_message_link'] and v['original_SHA256_match'] for v in proof) else 'FAIL_ADMISSION_OR_ATOMICITY';r['finished_at_utc']=datetime.now(timezone.utc).isoformat();write(P/'cases-result.json',r);print(json.dumps({'status':r['status'],'cases':len(r['cases']),'messages':len(c['messages'])}));raise SystemExit(0 if r['status'].startswith('PASS') else 1)

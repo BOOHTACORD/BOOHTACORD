@@ -1,0 +1,58 @@
+{
+  "at_utc": "2026-10-28T19:03:23.768166+00:00",
+  "status": "PASS8_REAL_PG_AND_NATIVE_CHECKS_ZERO_SKIP",
+  "command_argv": [
+    "go",
+    "test",
+    "-json",
+    "-count=1",
+    "-run",
+    "^(TestDMAttachIsAtomicAndIdempotentWithPostgres|TestDMAttachRejectsForeignPairAndPartialSet|TestDMAttachConcurrentDifferentSendsClaimOnlyOnce|TestRepositoryWritesOnlyForActiveParticipantPair|TestSendAcceptsAttachmentWithoutCaption|TestSendRejectsInvalidAttachmentListsBeforePersistence|TestSendForwardsOrderedAttachmentIDs|TestHandlerForwardsAttachmentIDs)$",
+    "./internal/chat/send_direct_message",
+    "./internal/chat/send_direct_message/api",
+    "./internal/chat/send_direct_message/postgres"
+  ],
+  "working_directory": "backend",
+  "toolchain": "go version go1.26.4 windows/amd64",
+  "PostgreSQL": "17.6",
+  "exit_code": 0,
+  "passed": [
+    {
+      "package": "voice-platform/backend/internal/chat/send_direct_message",
+      "test": "TestSendAcceptsAttachmentWithoutCaption"
+    },
+    {
+      "package": "voice-platform/backend/internal/chat/send_direct_message",
+      "test": "TestSendRejectsInvalidAttachmentListsBeforePersistence"
+    },
+    {
+      "package": "voice-platform/backend/internal/chat/send_direct_message",
+      "test": "TestSendForwardsOrderedAttachmentIDs"
+    },
+    {
+      "package": "voice-platform/backend/internal/chat/send_direct_message/api",
+      "test": "TestHandlerForwardsAttachmentIDs"
+    },
+    {
+      "package": "voice-platform/backend/internal/chat/send_direct_message/postgres",
+      "test": "TestDMAttachConcurrentDifferentSendsClaimOnlyOnce"
+    },
+    {
+      "package": "voice-platform/backend/internal/chat/send_direct_message/postgres",
+      "test": "TestDMAttachIsAtomicAndIdempotentWithPostgres"
+    },
+    {
+      "package": "voice-platform/backend/internal/chat/send_direct_message/postgres",
+      "test": "TestDMAttachRejectsForeignPairAndPartialSet"
+    },
+    {
+      "package": "voice-platform/backend/internal/chat/send_direct_message/postgres",
+      "test": "TestRepositoryWritesOnlyForActiveParticipantPair"
+    }
+  ],
+  "skips": 0,
+  "fail_events": 0,
+  "disposable_schemas_after": 0,
+  "report_SHA256": "953982492d1e6472037b1b9796ab862e6879835c7a7cca0a269bc11073d8a176",
+  "scope": "Three PostgreSQL integration tests plus five unit/source checks; isolated loopback disposable schemas only. Not production, physical Android, load/capacity or all security gates."
+}

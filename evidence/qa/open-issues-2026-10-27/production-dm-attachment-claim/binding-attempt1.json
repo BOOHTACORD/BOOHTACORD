@@ -1,0 +1,6 @@
+{
+  "status": "DIAGNOSTIC_NEW_REMOTE_COMMIT_NOT_YET_IN_LOCAL_OBJECTS",
+  "observed_master": "68b6e01b069618c7a79ac5d4cce905081347cfb2",
+  "cause": "First git show could not read newly advanced master before fetch; no test/product failure or checkout changes",
+  "resolution": "Fetched exact commit with git fetch --no-tags origin <SHA>, then compared19 exact input files. PR588 affects Web participant cards."
+}

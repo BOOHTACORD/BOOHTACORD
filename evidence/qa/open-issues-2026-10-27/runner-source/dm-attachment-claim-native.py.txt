@@ -1,0 +1,29 @@
+"""Physical owned-DM positive control; explicit reveal never proves delivery latency."""
+import io,re,subprocess,time
+from datetime import datetime,timezone
+from PIL import Image,ImageCms,ImageStat
+from common import P,ADB,APP,call,nodes,label,state,tap_named,read,write,digest
+assert not (P/'native-result.json').exists();c=read(P/'private/config.private.json');f=next(v for v in c['fixtures'] if v['alias']=='phone-own');name=f['filename'];r={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'RUNNING','actions':[],'no_delivery_latency_claim':True}
+def bounds(n):return list(map(int,re.findall(r'\d+',n.get('bounds'))))
+def own():
+    rows=nodes();fields=[n for n in rows if n.get('class')=='android.widget.EditText' and n.get('package')==APP];return any(c['peer'] in label(n) and bounds(n)[1]<700 for n in rows) and len(fields)==1 and not fields[0].get('text') and not any((n.get('package')or'').endswith('permissioncontroller') for n in rows)
+try:
+    assert call('get-state').strip()=='device';call('shell','input','keyevent','KEYCODE_WAKEUP');call('shell','am','start','-n',APP+'/.MainActivity');time.sleep(.5);assert own(),'Owned DM/empty composer prerequisite missing; no navigation or login workaround'
+    r['before']=state();r['actions'].append('Explicit wake/bring existing app forward; no reinstall or session changes')
+    visible=False
+    for attempt in range(9):
+        rows=nodes();visible=any(label(n)=='Открыть изображение '+name for n in rows)
+        if visible:break
+        assert own();panes=[n for n in rows if n.get('package')==APP and n.get('scrollable')=='true' and bounds(n)[3]-bounds(n)[1]>500 and bounds(n)[2]-bounds(n)[0]>500];assert len(panes)==1;b=bounds(panes[0]);x=(b[0]+b[2])//2;call('shell','input','swipe',str(x),str(b[3]-100),str(x),str(b[1]+100),'400');r['actions'].append('Explicit scroll toward latest');time.sleep(.3)
+    r['own_preview_control_visible']=visible;assert visible,'Own image card not revealed; no realtime claim'
+    targets=[n for n in nodes() if n.get('package')==APP and n.get('class')=='android.widget.ImageView' and label(n)=='Открыть изображение '+name and n.get('clickable')=='true' and n.get('enabled')=='true'];assert len(targets)==1;b=bounds(targets[0]);assert 0<b[3]-b[1]<=1000;call('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2));r['observed_open_control_bounds']=b;r['own_viewer_opened']=True;time.sleep(.4);raw=subprocess.check_output([ADB,'exec-out','screencap','-p'],timeout=20);image=Image.open(io.BytesIO(raw));icc=image.info.get('icc_profile');image=ImageCms.profileToProfile(image,ImageCms.ImageCmsProfile(io.BytesIO(icc)),ImageCms.createProfile('sRGB'),outputMode='RGB') if icc else image.convert('RGB');views=[n for n in nodes() if n.get('class')=='android.widget.ImageView' and label(n)==name];assert len(views)==1;b=bounds(views[0]);w,h=b[2]-b[0],b[3]-b[1];side=min(w,h);left=b[0]+(w-side)/2;top=b[1]+(h-side)/2;means=[]
+    for x,y in [(.25,.25),(.75,.25),(.25,.75),(.75,.75)]:means.append(ImageStat.Stat(image.crop((round(left+side*(x-.04)),round(top+side*(y-.04)),round(left+side*(x+.04)),round(top+side*(y+.04))))).mean)
+    palette=[(255,0,34),(0,238,68),(17,68,255),(255,238,0)];errors=[max(abs(a-b) for a,b in zip(m,color)) for m,color in zip(means,palette)];negative=not all(max(abs(a-b) for a,b in zip(m,color))<=14 for m,color in zip(means,palette[1:]+palette[:1]));(P/'private/native-own-PNG.private.png').write_bytes(raw);r['pixel_probe']={'four_regions_match':all(e<=14 for e in errors),'max_RGB_errors':errors,'wrong_palette_negative_rejected':negative,'ICC_to_sRGB':bool(icc),'native_bounds':b,'source_resolution':list(image.size),'capture_SHA256':digest(raw),'raw_capture_private':True};assert all(e<=14 for e in errors) and negative;r['status']='PASS_PHYSICAL_NATIVE_OWN_PNG_POSITIVE_CONTROL'
+except Exception as e:r['status']='BLOCKED_OR_NATIVE_CONTROL_FAILURE';r['error_type']=type(e).__name__
+finally:
+    try:
+        if r.get('own_viewer_opened') and any(label(n)=='Закрыть просмотр изображения' for n in nodes()):tap_named('Закрыть просмотр изображения');r['own_viewer_closed']=True
+        r['after']=state();r['owned_DM_composer_empty_after']=own()
+    except Exception as e:r['restoration_error_type']=type(e).__name__
+    r['finished_at_utc']=datetime.now(timezone.utc).isoformat();write(P/'native-result.json',r);print({k:v for k,v in r.items() if k in ['status','own_preview_control_visible','owned_DM_composer_empty_after','error_type']})
+raise SystemExit(0 if r['status'].startswith('PASS') else 2)

@@ -1,0 +1,14 @@
+"""Closest real PostgreSQL tests in disposable schemas, never production SQL."""
+import json,os,subprocess,sys
+from datetime import datetime,timezone
+from urllib.parse import quote
+from common import P,Q,read,write,digest
+assert not (P/'native-check.json').exists();assert read(P/'preflight.json')['status'].startswith('PASS');sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,credentials
+tool='C:/Program Files/Go/bin/go.exe';version=subprocess.check_output([tool,'version'],text=True).strip();assert version=='go version go1.26.4 windows/amd64'
+c=credentials();env={**os.environ,'GOTOOLCHAIN':'local','GOWORK':'off','VOICE_PLATFORM_TEST_DATABASE_URL':'postgres://boohtacord_qa:'+quote(c['database_password'],safe='')+'@127.0.0.1:15436/boohtacord_qa?sslmode=disable'}
+pattern='^(TestDMAttachIsAtomicAndIdempotentWithPostgres|TestDMAttachRejectsForeignPairAndPartialSet|TestDMAttachConcurrentDifferentSendsClaimOnlyOnce|TestRepositoryWritesOnlyForActiveParticipantPair|TestSendAcceptsAttachmentWithoutCaption|TestSendRejectsInvalidAttachmentListsBeforePersistence|TestSendForwardsOrderedAttachmentIDs|TestHandlerForwardsAttachmentIDs)$'
+argv=[tool,'test','-json','-count=1','-run',pattern,'./internal/chat/send_direct_message','./internal/chat/send_direct_message/api','./internal/chat/send_direct_message/postgres'];r=subprocess.run(argv,cwd=Q/'backend',env=env,capture_output=True,timeout=240);(P/'private/native-go.private.jsonl').write_bytes(r.stdout);(P/'private/native-go-stderr.private.log').write_bytes(r.stderr)
+events=[json.loads(l) for l in r.stdout.splitlines() if l.strip().startswith(b'{')];passes=[{'package':e['Package'],'test':e['Test']} for e in events if e.get('Action')=='pass' and e.get('Test')];skips=[e for e in events if e.get('Action')=='skip'];failed=[e for e in events if e.get('Action')=='fail'];schemas=int(docker('exec',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-At','-c',"SELECT count(*) FROM pg_namespace WHERE nspname LIKE 'voice_it_%'").decode().strip())
+good=r.returncode==0 and len(passes)==8 and not skips and not failed and schemas==0
+write(P/'native-check.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS8_REAL_PG_AND_NATIVE_CHECKS_ZERO_SKIP' if good else 'FAIL_NATIVE_CHECK_OR_SCHEMA_CLEANUP','command_argv':['go',*argv[1:]],'working_directory':'backend','toolchain':version,'PostgreSQL':'17.6','exit_code':r.returncode,'passed':passes,'skips':len(skips),'fail_events':len(failed),'disposable_schemas_after':schemas,'report_SHA256':digest(r.stdout),'scope':'Three PostgreSQL integration tests plus five unit/source checks; isolated loopback disposable schemas only. Not production, physical Android, load/capacity or all security gates.'});print(json.dumps({'status':'PASS' if good else 'FAIL','tests':len(passes),'skips':len(skips),'schemas_after':schemas,'exit':r.returncode}));raise SystemExit(0 if good else 1)

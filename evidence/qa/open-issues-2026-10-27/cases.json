@@ -1249,6 +1249,37 @@
         589
       ],
       "prerequisites": "Fresh guarded own fixture, physical own viewer and critical setup; shared sequential replay/cleanup in summary.json and README.md"
+    },
+    {
+      "platform": "Windows11 HTTPS protocol producer / production v.bootybay.ru; isolated loopback PostgreSQL17.6 and Go1.26.4 supplement; physical Samsung SM-A576B Android16 signed QA1.0.47+2082 positive receiver",
+      "issues": [
+        53
+      ],
+      "mandatory_when": "Before accepting same-DM/caller-owner/atomic attachment-claim facet of DM/storage privacy; not complete QA53 or platform/security/media acceptance",
+      "result": "production-dm-attachment-claim/summary.json",
+      "limits": "Production producer uses two controlled MEMBER sessions and three202B PNGs in two existing DMs. Production outsider ADMIN, browser UI, blocked-account, concurrency/load, other native platforms and complete QA gates remain unexecuted. Isolated PostgreSQL tests separately cover fixture outsider-ADMIN and blocked-pair denial; that is not production or physical proof. Native authorized receiver explicitly reveals its own file; no delivery-latency, native-save or producer-UI claim. Existing cached-deletion bug589 remains open.",
+      "defects": [],
+      "id": "PRODUCTION-DM-attachment-owner-scope-atomic-claim",
+      "status": "PASS_SCOPED",
+      "protects": "Attachment claim requires caller owner, same DM and unclaimed state; mixed/duplicate/unknown/reuse denials leave no partial visible message/link; same failed key can retry successfully and same successful key replays original once",
+      "command": "python -X utf8 .out/qa-dm-attachment-admission/cases.py",
+      "setup_and_cleanup_commands": [
+        "python -X utf8 .out/qa-dm-attachment-admission/preflight.py",
+        "python -X utf8 .out/qa-dm-attachment-admission/native_check.py",
+        "python -X utf8 .out/qa-dm-attachment-admission/prepare.py",
+        "python -X utf8 .out/qa-dm-attachment-admission/cases.py",
+        "python -X utf8 .out/qa-dm-attachment-admission/native.py",
+        "python -X utf8 .out/qa-dm-attachment-admission/cleanup.py"
+      ],
+      "observed_commands_including_archival_publication": [
+        "python -X utf8 .out/qa-dm-attachment-admission/preflight.py",
+        "python -X utf8 .out/qa-dm-attachment-admission/native_check.py",
+        "python -X utf8 .out/qa-dm-attachment-admission/prepare.py",
+        "python -X utf8 .out/qa-dm-attachment-admission/cases.py",
+        "python -X utf8 .out/qa-dm-attachment-admission/native.py",
+        "python -X utf8 .out/qa-dm-attachment-admission/cleanup.py",
+        "python -X utf8 .out/qa-dm-attachment-admission/retain.py"
+      ]
     }
   ]
 }

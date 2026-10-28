@@ -1,0 +1,119 @@
+{
+  "at_utc": "2026-10-28T19:03:56.256384+00:00",
+  "status": "PASS11_ADMISSION_CONTROLS_THREE_POSITIVE_LINKS",
+  "cases": [
+    {
+      "name": "same_owner_wrong_DM",
+      "HTTP": 404,
+      "expected_HTTP": 404,
+      "error_code": "NOT_FOUND",
+      "no_message_or_link_visible_in_history": true,
+      "no_fixture_identifiers_or_names_in_error": true,
+      "status": "PASS"
+    },
+    {
+      "name": "mixed_valid_and_other_DM_atomic_denial",
+      "HTTP": 404,
+      "expected_HTTP": 404,
+      "error_code": "NOT_FOUND",
+      "no_message_or_link_visible_in_history": true,
+      "no_fixture_identifiers_or_names_in_error": true,
+      "status": "PASS"
+    },
+    {
+      "name": "same_DM_foreign_owner",
+      "HTTP": 404,
+      "expected_HTTP": 404,
+      "error_code": "NOT_FOUND",
+      "no_message_or_link_visible_in_history": true,
+      "no_fixture_identifiers_or_names_in_error": true,
+      "status": "PASS"
+    },
+    {
+      "name": "duplicate_attachment_ids_validation",
+      "HTTP": 400,
+      "expected_HTTP": 400,
+      "error_code": "VALIDATION_FAILED",
+      "no_message_or_link_visible_in_history": true,
+      "no_fixture_identifiers_or_names_in_error": true,
+      "status": "PASS"
+    },
+    {
+      "name": "unknown_attachment_opaque_denial",
+      "HTTP": 404,
+      "expected_HTTP": 404,
+      "error_code": "NOT_FOUND",
+      "no_message_or_link_visible_in_history": true,
+      "no_fixture_identifiers_or_names_in_error": true,
+      "status": "PASS"
+    },
+    {
+      "name": "same_failed_mixed_client_ID_valid_retry",
+      "HTTP": 201,
+      "expected_HTTP": 201,
+      "response_body_is_original_empty": true,
+      "status": "PASS"
+    },
+    {
+      "name": "previously_foreign_owner_own_positive",
+      "HTTP": 201,
+      "expected_HTTP": 201,
+      "response_body_is_original_empty": true,
+      "status": "PASS"
+    },
+    {
+      "name": "previously_wrong_DM_own_scope_positive",
+      "HTTP": 201,
+      "expected_HTTP": 201,
+      "response_body_is_original_empty": true,
+      "status": "PASS"
+    },
+    {
+      "name": "already_claimed_other_client_rejected",
+      "HTTP": 404,
+      "expected_HTTP": 404,
+      "error_code": "NOT_FOUND",
+      "no_message_or_link_visible_in_history": true,
+      "no_fixture_identifiers_or_names_in_error": true,
+      "status": "PASS"
+    },
+    {
+      "name": "same_client_same_payload_idempotent",
+      "HTTP": 201,
+      "expected_HTTP": 201,
+      "response_body_is_original_empty": true,
+      "status": "PASS",
+      "same_message_not_new": true
+    },
+    {
+      "name": "same_client_changed_body_no_new_link",
+      "HTTP": 201,
+      "expected_HTTP": 201,
+      "response_body_is_original_empty": true,
+      "status": "PASS",
+      "same_message_original_body": true
+    }
+  ],
+  "positive_attachment_proof": [
+    {
+      "alias": "phone-own",
+      "one_visible_message_link": true,
+      "download_HTTP": 200,
+      "original_SHA256_match": true
+    },
+    {
+      "alias": "control-own",
+      "one_visible_message_link": true,
+      "download_HTTP": 200,
+      "original_SHA256_match": true
+    },
+    {
+      "alias": "control-peer",
+      "one_visible_message_link": true,
+      "download_HTTP": 200,
+      "original_SHA256_match": true
+    }
+  ],
+  "distinct_own_messages": 3,
+  "finished_at_utc": "2026-10-28T19:03:59.210559+00:00"
+}

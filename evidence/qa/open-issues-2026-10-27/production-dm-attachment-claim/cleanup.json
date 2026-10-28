@@ -1,0 +1,84 @@
+{
+  "at_utc": "2026-10-28T19:06:42.075389+00:00",
+  "status": "PASS_ALL_OWN_MESSAGES_THREE_UPLOADS_TWO_SESSIONS_CLEANED",
+  "deleted_messages": [
+    {
+      "actor": "b",
+      "scope": "DM_control",
+      "delete_HTTP": 204,
+      "tombstone_blank_attachments_empty": true
+    },
+    {
+      "actor": "c",
+      "scope": "DM_control",
+      "delete_HTTP": 204,
+      "tombstone_blank_attachments_empty": true
+    },
+    {
+      "actor": "b",
+      "scope": "DM_phone",
+      "delete_HTTP": 204,
+      "tombstone_blank_attachments_empty": true
+    }
+  ],
+  "owned_sessions": [
+    {
+      "actor": "b",
+      "logout_HTTP": 204,
+      "live_unauthenticated_readback": true
+    },
+    {
+      "actor": "c",
+      "logout_HTTP": 204,
+      "live_unauthenticated_readback": true
+    }
+  ],
+  "attachment_denial_after_delete": [
+    {
+      "alias": "phone-own",
+      "original_preview_HTTP": [
+        404,
+        404
+      ]
+    },
+    {
+      "alias": "control-own",
+      "original_preview_HTTP": [
+        404,
+        404
+      ]
+    },
+    {
+      "alias": "control-peer",
+      "original_preview_HTTP": [
+        404,
+        404
+      ]
+    }
+  ],
+  "preexisting_unchanged": {
+    "DM_phone": 27,
+    "DM_control": 4
+  },
+  "phone_session_baseURL_or_permission_changed": false,
+  "physical_state_after": {
+    "at_utc": "2026-10-28T19:06:46.613434+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": false,
+    "voice_connected": false,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false
+  },
+  "phone_permission_flags_preserved": true,
+  "finished_at_utc": "2026-10-28T19:06:46.744194+00:00"
+}

@@ -1,0 +1,20 @@
+"""Guarded protocol access and private owned-fixture state for one claim packet."""
+import hashlib,http.client,json,sys,uuid
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];B=Path('C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD');G=B/'.out/qa-goal';ORIGIN='https://v.bootybay.ru'
+sys.path.insert(0,str(G))
+from android_permission_ui import ADB,APP,call,nodes,label,state,tap_named
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+def write(p,v):p.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+def digest(v):return hashlib.sha256(v).hexdigest()
+def valid(v):assert str(uuid.UUID(v))==v;return v
+def request(path,method='GET',body=None,cookie=None,content_type='application/json'):
+    assert path.startswith('/api/v1/') or path=='/release-receipt.json';h={'Origin':ORIGIN,'Accept':'application/json'}
+    if cookie:h['Cookie']=cookie
+    if body is not None:h['Content-Type']=content_type
+    raw=body if isinstance(body,bytes) else json.dumps(body).encode() if body is not None else None
+    c=http.client.HTTPSConnection('v.bootybay.ru',443,timeout=20);c.request(method,path,body=raw,headers=h);r=c.getresponse();status=r.status;headers=r.getheaders();data=r.read(2_000_000);c.close();return status,headers,data
+def api(path,method='GET',body=None,cookie=None):
+    status,headers,raw=request(path,method,body,cookie);return status,headers,json.loads(raw) if raw else None
+def prefix(dm):return '/api/v1/direct-messages/'+valid(dm)
+def snapshot(m):return digest(json.dumps(m,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode())

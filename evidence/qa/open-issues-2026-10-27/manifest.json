@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-28T18:51:33.670289+00:00",
+  "at_utc": "2026-10-28T19:14:48.130398+00:00",
   "candidate_evidence": "../../android/physical-share-2026-10-27/result.json",
   "files": {
     "acceptance-methods.json": {
@@ -667,8 +667,8 @@
       "sha256": "7d2ac8691a4dd0bef3ffd7fd6c9ea028ab04c058060810c65c5f27501d34d867"
     },
     "cases.json": {
-      "bytes": 88651,
-      "sha256": "5986c8820bc7a1b7f95a4b8ca92d60879804861e08adbd117a57193a3ab524b8"
+      "bytes": 91164,
+      "sha256": "b0fe217e3f2f1b83249ea82edb4f537baf4b089bdd68c86cde7b5a8ee6f80c27"
     },
     "controlled-account-integrity.json": {
       "bytes": 640,
@@ -2755,8 +2755,8 @@
       "sha256": "4b7314f316cc66bb9c1c3e07919f4a2441de12db8ab970d26f9b4308a2cef8a4"
     },
     "matrix.json": {
-      "bytes": 1196190,
-      "sha256": "4a94a07507726a8727a7104a9a1921659aad526983676b56fb928cb9654db84c"
+      "bytes": 1198064,
+      "sha256": "f5e82fea13a240357ef6c78354fc9f1cd904f396039251e4ca65710b34c6f71f"
     },
     "muted-background-resume.json": {
       "bytes": 250,
@@ -3890,6 +3890,62 @@
       "bytes": 2567,
       "sha256": "6aa11f6027afdbe25bb6af7134ccda71a61ce26403b6c7c24d1c5e42635c4bd7"
     },
+    "production-dm-attachment-claim/binding-attempt1.json": {
+      "bytes": 412,
+      "sha256": "87b40a5b21fe0bfd54204105b31b199d62eefe99c919bc78545f4d6fd07fee1f"
+    },
+    "production-dm-attachment-claim/cases-result.json": {
+      "bytes": 3345,
+      "sha256": "4a5ffe0c91134dcc15e0b10c2cdc4af171c84eb6de7a80b80321988e19b8b896"
+    },
+    "production-dm-attachment-claim/cleanup.json": {
+      "bytes": 1863,
+      "sha256": "c77b3f7d8dba374ca5706a3fc479f00e946c17ce632650fd5d16c05da4264005"
+    },
+    "production-dm-attachment-claim/final-audit.json": {
+      "bytes": 3841,
+      "sha256": "3cd0c6cd58bdeda876f743f404f3722d494c1d4ccb5fe89e55e9ef597320c9b9"
+    },
+    "production-dm-attachment-claim/native-attempt1.json": {
+      "bytes": 1364,
+      "sha256": "1f7116fa117e2a21a7e15367e0ceabfb83ebafbf2490b334e461e7a500ac7fec"
+    },
+    "production-dm-attachment-claim/native-check.json": {
+      "bytes": 2437,
+      "sha256": "c78d13a0036ea0ca3e778f6c4008928b8cced8d0e9179a434a83b227649b7b95"
+    },
+    "production-dm-attachment-claim/native-ready.json": {
+      "bytes": 1054,
+      "sha256": "d123ac7962dde01d14f24542291b0ac159580c8f8bde904e6fbe0c157cef5158"
+    },
+    "production-dm-attachment-claim/native-result.json": {
+      "bytes": 1897,
+      "sha256": "49170bc5035be81ddc94db34a4fbbcce069be5688084470fa461593bcef39fb5"
+    },
+    "production-dm-attachment-claim/pre-cleanup-audit.json": {
+      "bytes": 380,
+      "sha256": "f881e04732de58c11ebf1018a6335062f7b37b39aac9cc1f1c8add3f67de2096"
+    },
+    "production-dm-attachment-claim/preflight.json": {
+      "bytes": 7492,
+      "sha256": "6ef4fe1732f0c58304191eea71d6cdb077b0402fc63f53811e3ef14b83f9a43a"
+    },
+    "production-dm-attachment-claim/prepared.json": {
+      "bytes": 441,
+      "sha256": "30ae07aa36a69531ca7b07e27be8f3088adef24699e6fc9ea2c38234020aec88"
+    },
+    "production-dm-attachment-claim/README.md": {
+      "bytes": 3261,
+      "sha256": "5b147abe3a00ef96aa683b87918c2cfb92e0315be50248bc368cf53f6ba67afb"
+    },
+    "production-dm-attachment-claim/retention-check.json": {
+      "bytes": 192,
+      "sha256": "15161d3eb1343d2c1f7f3255408330ee53d9655beea63f4764cfaa4632c5b82f"
+    },
+    "production-dm-attachment-claim/summary.json": {
+      "bytes": 5487,
+      "sha256": "7b28c24a1c9a489f131546943eb5d151b32a9ce6c14a213bb2a3bdac4a29e183"
+    },
     "production-dm-image-revocation/critical-api-result.json": {
       "bytes": 4261,
       "sha256": "2e98529bcea6db09388ba0156b55ebd6ed3d3eb5ab41d6d46853681848bedc97"
@@ -4067,8 +4123,8 @@
       "sha256": "5c8013eb9693e540a771743fa74b10476a3b88dec2acdd1c683e36c8a6f9c391"
     },
     "README.md": {
-      "bytes": 27586,
-      "sha256": "9a7a7123d1810f60c1848f193abe980569ecfdf46b9a79b003f7895164ca3023"
+      "bytes": 27916,
+      "sha256": "218264da9cf4dccfadc16100fca77a2ca7ddec8b2bcf52d80ca56043837f3a89"
     },
     "restored-microphone.json": {
       "bytes": 269,
@@ -4229,6 +4285,42 @@
     "runner-source/context-realtime-verify.py.txt": {
       "bytes": 4467,
       "sha256": "55d926ae4d463357393374352923704255691dd447fcc95c1669897e8562b93d"
+    },
+    "runner-source/dm-attachment-claim-cases.py.txt": {
+      "bytes": 4787,
+      "sha256": "99aee27d2b1e77543ca5fdb20c2cb9692d814f63878b351cc14f474d6eaf4f23"
+    },
+    "runner-source/dm-attachment-claim-cleanup.py.txt": {
+      "bytes": 3866,
+      "sha256": "c3e3a77e660b571b57302fd350110332ee1c38efe5e3c1bdf4f06ae5c836b28b"
+    },
+    "runner-source/dm-attachment-claim-common.py.txt": {
+      "bytes": 1630,
+      "sha256": "769320c16b121d40b8afe8cf33d715a793b6e095fb0ad46bb9797f379f81ef56"
+    },
+    "runner-source/dm-attachment-claim-native-executed.py.txt": {
+      "bytes": 4295,
+      "sha256": "bd72efd4e4c0d157edf6801fde8b0fbec6ecd241d50115585d0a4d5caeda0305"
+    },
+    "runner-source/dm-attachment-claim-native.py.txt": {
+      "bytes": 4625,
+      "sha256": "c2f555d989dba95414e0c7f8ebe185712bcc25e4809c0ef36e5ff1367ee5024e"
+    },
+    "runner-source/dm-attachment-claim-native_check.py.txt": {
+      "bytes": 2942,
+      "sha256": "c1a9f323ecd69a83639d7693cef84c535260cccb87942ce43ea4c5bcc6f54785"
+    },
+    "runner-source/dm-attachment-claim-preflight.py.txt": {
+      "bytes": 5614,
+      "sha256": "e16f559332fed9f9c3a8d8e8cedb8ab02eacc23d70d3910600501a6ab13d6a4d"
+    },
+    "runner-source/dm-attachment-claim-prepare.py.txt": {
+      "bytes": 3716,
+      "sha256": "a44147c1ad50bfc69117c7d35b08166385f52967e34f19e80ea9869f567c0abf"
+    },
+    "runner-source/dm-attachment-claim-retain.py.txt": {
+      "bytes": 6498,
+      "sha256": "e46ca137490e801ebf80362279f58c3af6eae944f33f6605e5d44e95d6d3c6ec"
     },
     "runner-source/finalize_acceptance_plan.py.txt": {
       "bytes": 5325,

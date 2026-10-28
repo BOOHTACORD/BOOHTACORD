@@ -1,0 +1,70 @@
+{
+  "at_utc": "2026-10-28T19:09:54.914021+00:00",
+  "status": "PASS_SCOPED",
+  "invariant_command_platform_trigger_result": {
+    "platform": "Windows11 HTTPS protocol producer / production v.bootybay.ru; isolated loopback PostgreSQL17.6 and Go1.26.4 supplement; physical Samsung SM-A576B Android16 signed QA1.0.47+2082 positive receiver",
+    "issues": [
+      53
+    ],
+    "mandatory_when": "Before accepting same-DM/caller-owner/atomic attachment-claim facet of DM/storage privacy; not complete QA53 or platform/security/media acceptance",
+    "result": "production-dm-attachment-claim/summary.json",
+    "limits": "Production producer uses two controlled MEMBER sessions and three202B PNGs in two existing DMs. Production outsider ADMIN, browser UI, blocked-account, concurrency/load, other native platforms and complete QA gates remain unexecuted. Isolated PostgreSQL tests separately cover fixture outsider-ADMIN and blocked-pair denial; that is not production or physical proof. Native authorized receiver explicitly reveals its own file; no delivery-latency, native-save or producer-UI claim. Existing cached-deletion bug589 remains open.",
+    "defects": [],
+    "id": "PRODUCTION-DM-attachment-owner-scope-atomic-claim",
+    "status": "PASS_SCOPED",
+    "protects": "Attachment claim requires caller owner, same DM and unclaimed state; mixed/duplicate/unknown/reuse denials leave no partial visible message/link; same failed key can retry successfully and same successful key replays original once",
+    "command": "python -X utf8 .out/qa-dm-attachment-admission/cases.py",
+    "setup_and_cleanup_commands": [
+      "python -X utf8 .out/qa-dm-attachment-admission/preflight.py",
+      "python -X utf8 .out/qa-dm-attachment-admission/native_check.py",
+      "python -X utf8 .out/qa-dm-attachment-admission/prepare.py",
+      "python -X utf8 .out/qa-dm-attachment-admission/cases.py",
+      "python -X utf8 .out/qa-dm-attachment-admission/native.py",
+      "python -X utf8 .out/qa-dm-attachment-admission/cleanup.py"
+    ],
+    "observed_commands_including_archival_publication": [
+      "python -X utf8 .out/qa-dm-attachment-admission/preflight.py",
+      "python -X utf8 .out/qa-dm-attachment-admission/native_check.py",
+      "python -X utf8 .out/qa-dm-attachment-admission/prepare.py",
+      "python -X utf8 .out/qa-dm-attachment-admission/cases.py",
+      "python -X utf8 .out/qa-dm-attachment-admission/native.py",
+      "python -X utf8 .out/qa-dm-attachment-admission/cleanup.py",
+      "python -X utf8 .out/qa-dm-attachment-admission/retain.py"
+    ]
+  },
+  "protocol_cases": 11,
+  "native_PG_and_unit_checks": 8,
+  "native_skips": 0,
+  "physical_native_positive_control": "PASS_PHYSICAL_NATIVE_OWN_PNG_POSITIVE_CONTROL",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "API_runners_and_native_source_unchanged_from_preflight": true,
+  "corrected_native_runner_bound_before_replay": "native-ready.json",
+  "diagnostic": "Original native controller refused the observed405px-high own ImageView because tap_named allows250px; terminal failed attempt/source preserved. Corrected bounded own-target tap is a controller repair, not a product fix. Retention helper changed only to keep this diagnostic.",
+  "deployed_backend_source": "UNKNOWN",
+  "screenshot_raw_private": true,
+  "cleanup": "PASS_ALL_OWN_MESSAGES_THREE_UPLOADS_TWO_SESSIONS_CLEANED",
+  "limits": "Production producer uses two controlled MEMBER sessions and three202B PNGs in two existing DMs. Production outsider ADMIN, browser UI, blocked-account, concurrency/load, other native platforms and complete QA gates remain unexecuted. Isolated PostgreSQL tests separately cover fixture outsider-ADMIN and blocked-pair denial; that is not production or physical proof. Native authorized receiver explicitly reveals its own file; no delivery-latency, native-save or producer-UI claim. Existing cached-deletion bug589 remains open.",
+  "source_and_runtime_audit": "final-audit.json",
+  "supporting_sets": [
+    {
+      "protects": "Real PostgreSQL atomic claim/owner/pair and one-claim/idempotency source behavior",
+      "command": "python -X utf8 .out/qa-dm-attachment-admission/native_check.py",
+      "platform": "Windows Go1.26.4 / loopback isolated PostgreSQL17.6 in disposable schemas",
+      "mandatory_when": "Before relying on these nearest source checks; not a production or Android runtime gate",
+      "result": "native-check.json",
+      "status": "PASS8_ZERO_SKIP"
+    },
+    {
+      "protects": "Accepted owned DM PNG actually opens and renders on the physical authorized receiver; API success alone is insufficient",
+      "command": "python -X utf8 .out/qa-dm-attachment-admission/native.py",
+      "platform": "Physical Samsung SM-A576B Android16 / signed QA1.0.47+2082, APK SHA in preflight",
+      "mandatory_when": "Before accepting this owned positive Android receiver facet; no latency/native-save/deletion/voice or full QA62 acceptance",
+      "result": "native-result.json",
+      "status": "PASS_SCOPED",
+      "visual_review": "final-audit.json#/visual_review"
+    }
+  ],
+  "observed_master": "68b6e01b069618c7a79ac5d4cce905081347cfb2",
+  "all19_scoped_source_files_match_observed_master": true,
+  "fresh_replay_limit": "Reconstruct exactly8 active helpers; exclude *-executed.py.txt variants. retain.py is this historical packet publisher, not a fresh product acceptance command; fresh replay runs first6 commands through cleanup and records its own new receipts."
+}

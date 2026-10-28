@@ -1,0 +1,78 @@
+{
+  "at_utc": "2026-10-28T19:05:56.883002+00:00",
+  "status": "PASS_PHYSICAL_NATIVE_OWN_PNG_POSITIVE_CONTROL",
+  "actions": [
+    "Explicit wake/bring existing app forward; no reinstall or session changes"
+  ],
+  "no_delivery_latency_claim": true,
+  "before": {
+    "at_utc": "2026-10-28T19:06:02.460437+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": false,
+    "voice_connected": false,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false
+  },
+  "own_preview_control_visible": true,
+  "observed_open_control_bounds": [
+    172,
+    1283,
+    897,
+    1688
+  ],
+  "own_viewer_opened": true,
+  "pixel_probe": {
+    "four_regions_match": true,
+    "max_RGB_errors": [
+      0.0,
+      7.0,
+      1.0,
+      0.0
+    ],
+    "wrong_palette_negative_rejected": true,
+    "ICC_to_sRGB": true,
+    "native_bounds": [
+      450,
+      1117,
+      630,
+      1297
+    ],
+    "source_resolution": [
+      1080,
+      2340
+    ],
+    "capture_SHA256": "98e841fe2e69c6e707398951ddb59daf9ecc7d8593eb5ac805bb438f03343a0f",
+    "raw_capture_private": true
+  },
+  "own_viewer_closed": true,
+  "after": {
+    "at_utc": "2026-10-28T19:06:18.534638+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": false,
+    "voice_connected": false,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false
+  },
+  "owned_DM_composer_empty_after": true,
+  "finished_at_utc": "2026-10-28T19:06:21.071895+00:00"
+}

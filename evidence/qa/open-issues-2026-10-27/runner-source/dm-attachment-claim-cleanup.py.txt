@@ -1,0 +1,28 @@
+"""Own ordinary-message cleanup; guard partial uploads before revoking only new sessions."""
+import json,uuid
+from datetime import datetime,timezone
+from common import P,read,write,api,request,prefix,snapshot,state
+assert not (P/'cleanup.json').exists();c=read(P/'private/config.private.json');r={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'RUNNING','deleted_messages':[],'owned_sessions':[]};write(P/'cleanup.json',r)
+try:
+    for f in c['fixtures']:
+        scope=f['scope'];actor=f['actor'];s,_,page=api(prefix(c[scope])+'/messages?limit=100',cookie=c['sessions'][actor]);assert s==200;links=[m for m in page['messages'] if any(a['id']==f['id'] for a in m['attachments'])]
+        if not links:
+            client=str(uuid.uuid4());s,_,m=api(prefix(c[scope])+'/messages','POST',{'client_message_id':client,'body':'','attachment_ids':[f['id']]},c['sessions'][actor]);assert s==201 and m['author_id']==c['accounts'][actor];c['messages'].append({'id':m['id'],'actor':actor,'scope':scope,'client':client});write(P/'private/config.private.json',c)
+    for m in c['messages']:
+        assert m['actor'] in ['b','c'] and m['scope'] in ['DM_phone','DM_control'];base=prefix(c[m['scope']]);s,_,page=api(base+'/messages?at='+m['id']+'&limit=20',cookie=c['sessions'][m['actor']]);assert s==200;current=next(v for v in page['messages'] if v['id']==m['id']);assert current['author_id']==c['accounts'][m['actor']] and current['client_message_id']==m['client'] and all(a['id'] in [f['id'] for f in c['fixtures']] for a in current['attachments'])
+        s,_,_=api(base+'/messages/'+m['id'],'DELETE',{},c['sessions'][m['actor']]);assert s==204;s,_,page=api(base+'/messages?at='+m['id']+'&limit=20',cookie=c['sessions'][m['actor']]);assert s==200;current=next(v for v in page['messages'] if v['id']==m['id']);assert current['deleted'] and current['body']=='' and current['attachments']==[];r['deleted_messages'].append({'actor':m['actor'],'scope':m['scope'],'delete_HTTP':204,'tombstone_blank_attachments_empty':True});write(P/'cleanup.json',r)
+    r['attachment_denial_after_delete']=[]
+    for f in c['fixtures']:
+        codes=[request(prefix(c[f['scope']])+'/attachments/'+f['id']+suffix,cookie=c['sessions'][f['actor']])[0] for suffix in ['', '/preview']];assert codes==[404,404];r['attachment_denial_after_delete'].append({'alias':f['alias'],'original_preview_HTTP':codes})
+    r['preexisting_unchanged']={}
+    for scope,before in c['before'].items():
+        s,_,page=api(prefix(c[scope])+'/messages?limit=100',cookie=c['sessions']['b']);assert s==200;now={v['id']:snapshot(v) for v in page['messages']};assert all(now.get(v['id'])==v['SHA256'] for v in before);r['preexisting_unchanged'][scope]=len(before)
+    for actor,cookie in c['sessions'].items():
+        s,_,_=api('/api/v1/auth/logout','POST',{},cookie);assert s==204;s,_,v=api('/api/v1/auth/session',cookie=cookie);assert s==200 and v['authenticated'] is False;r['owned_sessions'].append({'actor':actor,'logout_HTTP':204,'live_unauthenticated_readback':True});write(P/'cleanup.json',r)
+    baseline=read(P/'preflight.json')['phone'];r['phone_session_baseURL_or_permission_changed']=False
+    if baseline['status'].startswith('PASS'):
+        end=state();r['physical_state_after']=end;r['phone_permission_flags_preserved']=end['permission']==baseline['state']['permission'];assert r['phone_permission_flags_preserved']
+    r['status']='PASS_ALL_OWN_MESSAGES_THREE_UPLOADS_TWO_SESSIONS_CLEANED'
+except Exception as e:r['status']='FAIL_CLEANUP_INCOMPLETE';r['error_type']=type(e).__name__
+finally:r['finished_at_utc']=datetime.now(timezone.utc).isoformat();write(P/'cleanup.json',r);print(json.dumps({'status':r['status'],'deleted_messages':len(r['deleted_messages']),'sessions':len(r['owned_sessions']),'error_type':r.get('error_type')}))
+raise SystemExit(0 if r['status'].startswith('PASS') else 1)

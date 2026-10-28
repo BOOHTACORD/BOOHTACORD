@@ -171,7 +171,8 @@
             "WEB-JPEG-GIF-private-image-lifecycle",
             "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
             "ANDROID-ADMIN-explicit-search-after-owned-delete",
-            "PRODUCTION-DM-protected-image-access-revocation"
+            "PRODUCTION-DM-protected-image-access-revocation",
+            "PRODUCTION-DM-attachment-owner-scope-atomic-claim"
           ],
           "evidence": [
             "privacy-result.json#/checks/two_participants_and_third_member_acl",
@@ -181,9 +182,10 @@
             "native-image/summary.json",
             "web-image-formats/summary.json",
             "native-admin-search-privacy/summary.json",
-            "production-dm-image-revocation/semantic-result.json"
+            "production-dm-image-revocation/semantic-result.json",
+            "production-dm-attachment-claim/summary.json"
           ],
-          "execution": "node .out/qa-goal/privacy_run.mjs; node .out/qa-goal/notification_readiness.mjs; node .out/qa-goal/notification_settings_ui.mjs; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs | native-admin-search-privacy/README.md actual ADMIN native all-scope UI with independently searchable owned API fixtures.; python -X utf8 .out/qa-native-image-formats/critical_checks.py; python -X utf8 .out/qa-native-image-formats/denial_review.py; python -X utf8 .out/qa-native-image-formats/denied_payloads.py",
+          "execution": "node .out/qa-goal/privacy_run.mjs; node .out/qa-goal/notification_readiness.mjs; node .out/qa-goal/notification_settings_ui.mjs; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs | native-admin-search-privacy/README.md actual ADMIN native all-scope UI with independently searchable owned API fixtures.; python -X utf8 .out/qa-native-image-formats/critical_checks.py; python -X utf8 .out/qa-native-image-formats/denial_review.py; python -X utf8 .out/qa-native-image-formats/denied_payloads.py; python -X utf8 .out/qa-dm-attachment-admission/cases.py",
           "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts; Actual production HTTPS and installed headed Windows Chrome155; controlled MEMBER only; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS; Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
           "result": "native-admin-search-privacy/summary.json",
@@ -195,7 +197,8 @@
             "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim.",
             "WEB-JPEG-GIF-private-image-lifecycle: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
             "Native rendered search only, with API fixture controls from Windows. No third ADMIN browser, raw native response/socket hints/unread/OS alert/file ACL/block/revoke/other-platform/whole search-filter or acoustic acceptance. Explicit search after delete; no automatic cache-invalidation claim.",
-            "PRODUCTION-DM-protected-image-access-revocation: API facet only.25 reviewed boundaries,2 opaque409 controls and9 denied-body controls. No ADMIN, account-block, native logout, browser UI or cross-DM attachment admission acceptance. Physical viewer failure is a separate case."
+            "PRODUCTION-DM-protected-image-access-revocation: API facet only.25 reviewed boundaries,2 opaque409 controls and9 denied-body controls. No ADMIN, account-block, native logout, browser UI or cross-DM attachment admission acceptance. Physical viewer failure is a separate case.",
+            "PRODUCTION-DM-attachment-owner-scope-atomic-claim: Production producer uses two controlled MEMBER sessions and three202B PNGs in two existing DMs. Production outsider ADMIN, browser UI, blocked-account, concurrency/load, other native platforms and complete QA gates remain unexecuted. Isolated PostgreSQL tests separately cover fixture outsider-ADMIN and blocked-pair denial; that is not production or physical proof. Native authorized receiver explicitly reveals its own file; no delivery-latency, native-save or producer-UI claim. Existing cached-deletion bug589 remains open."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -221,7 +224,8 @@
               "WEB-JPEG-GIF-private-image-lifecycle",
               "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
               "ANDROID-ADMIN-explicit-search-after-owned-delete",
-              "PRODUCTION-DM-protected-image-access-revocation"
+              "PRODUCTION-DM-protected-image-access-revocation",
+              "PRODUCTION-DM-attachment-owner-scope-atomic-claim"
             ]
           }
         },
@@ -289,9 +293,13 @@
           "source_checkbox": null,
           "id": "I53.C4",
           "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Use only the applicable scoped commands in cases.json, including node .out/qa-goal/privacy_run.mjs, node .out/qa-goal/web_logout_run.mjs, node .out/qa-goal/quickjump_run.mjs and node .out/qa-goal/web_image_formats_run.mjs; execute remaining row steps separately. | Read readiness with node .out/qa-goal/notification_readiness.mjs; once an approved real transport and signed containing candidate exist, execute the exact Web/FCM/APNs/PWA/OS steps and isolated negative cases from this source row. | Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental.",
+          "execution_cases": [
+            "PRODUCTION-DM-attachment-owner-scope-atomic-claim"
+          ],
+          "evidence": [
+            "production-dm-attachment-claim/summary.json"
+          ],
+          "execution": "Use only the applicable scoped commands in cases.json, including node .out/qa-goal/privacy_run.mjs, node .out/qa-goal/web_logout_run.mjs, node .out/qa-goal/quickjump_run.mjs and node .out/qa-goal/web_image_formats_run.mjs; execute remaining row steps separately. | Read readiness with node .out/qa-goal/notification_readiness.mjs; once an approved real transport and signed containing candidate exist, execute the exact Web/FCM/APNs/PWA/OS steps and isolated negative cases from this source row. | Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental.; python -X utf8 .out/qa-dm-attachment-admission/cases.py",
           "platform": "Installed headed Windows Chrome and explicitly stated CSS viewport; no physical mobile/other-browser substitution. | Actual supported Web browser, GMS Android signed candidate, signed iPhone and separate iOS PWA path. | Disposable owned PostgreSQL/API/LiveKit target and bounded synthetic accounts/data; never shared production fault/load injection.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
           "result": null,
@@ -308,10 +316,15 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "PRODUCTION-DM-attachment-owner-scope-atomic-claim"
+            ]
           },
           "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
+          "witness_limits": [
+            "PRODUCTION-DM-attachment-owner-scope-atomic-claim: Production producer uses two controlled MEMBER sessions and three202B PNGs in two existing DMs. Production outsider ADMIN, browser UI, blocked-account, concurrency/load, other native platforms and complete QA gates remain unexecuted. Isolated PostgreSQL tests separately cover fixture outsider-ADMIN and blocked-pair denial; that is not production or physical proof. Native authorized receiver explicitly reveals its own file; no delivery-latency, native-save or producer-UI claim. Existing cached-deletion bug589 remains open."
+          ]
         }
       ],
       "execution_cases": [
@@ -327,7 +340,8 @@
         "WEB-JPEG-GIF-private-image-lifecycle",
         "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
         "ANDROID-ADMIN-explicit-search-after-owned-delete",
-        "PRODUCTION-DM-protected-image-access-revocation"
+        "PRODUCTION-DM-protected-image-access-revocation",
+        "PRODUCTION-DM-attachment-owner-scope-atomic-claim"
       ],
       "evidence": [
         "privacy-result.json",
@@ -336,7 +350,8 @@
         "native-image/summary.json",
         "web-image-formats/summary.json",
         "native-admin-search-privacy/summary.json",
-        "production-dm-image-revocation/semantic-result.json"
+        "production-dm-image-revocation/semantic-result.json",
+        "production-dm-attachment-claim/summary.json"
       ],
       "defects": [],
       "blockers": [],
@@ -16303,7 +16318,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-28T18:44:31.161504+00:00",
+  "updated_utc": "2026-10-28T19:09:54.914021+00:00",
   "known_defect_issues": [
     579,
     580,

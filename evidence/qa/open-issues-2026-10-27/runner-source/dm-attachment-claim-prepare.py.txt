@@ -1,0 +1,21 @@
+"""Create2 owned sessions and3 tiny own PNG uploads in two existing controlled DMs."""
+import io,json,secrets,uuid
+from http.cookies import SimpleCookie
+from PIL import Image,ImageDraw
+from common import P,Q,G,read,write,api,request,valid,prefix,digest,snapshot
+assert read(P/'native-check.json')['status'].startswith('PASS') and not (P/'private/config.private.json').exists();old=read(Q/'.out/qa-native-image-formats/private/config.private.json');users=read(G/'private-fixture.json');c={'owner':secrets.token_hex(6),'sessions':{},'accounts':{a:valid(users[a]['id']) for a in ['b','c']},'phone_account':valid(old['phone_account']),'peer':old['peer'],'DM_phone':valid(old['conversation']),'fixtures':[],'attempts':[],'messages':[],'before':{}};write(P/'private/config.private.json',c)
+for actor in ['b','c']:
+    u=users[actor];assert u['registered'];status,h,_=request('/api/v1/auth/login','POST',{'login':u['login'],'password':u['password']});assert status==204;jar=SimpleCookie()
+    for k,v in h:
+        if k.lower()=='set-cookie':jar.load(v)
+    assert len(jar)==1;m=next(iter(jar.values()));assert m['secure'] and m['httponly'] and m['samesite'].lower()=='lax';cookie='; '.join(k+'='+v.value for k,v in jar.items());c['sessions'][actor]=cookie;write(P/'private/config.private.json',c)
+    status,_,s=api('/api/v1/auth/session',cookie=cookie);assert status==200 and s['authenticated'] and s['account_id']==u['id'] and s['role']=='MEMBER'
+status,_,dms=api('/api/v1/direct-messages',cookie=c['sessions']['b']);assert status==200;match=[d for d in dms['direct_messages'] if d['other_participant_id']==c['accounts']['c']];assert len(match)==1;c['DM_control']=valid(match[0]['id']);assert c['DM_control']!=c['DM_phone'] and any(d['id']==c['DM_phone'] and d['other_participant_id']==c['phone_account'] for d in dms['direct_messages'])
+for scope in ['DM_phone','DM_control']:
+    status,_,page=api(prefix(c[scope])+'/messages?limit=100',cookie=c['sessions']['b']);assert status==200;c['before'][scope]=[{'id':valid(m['id']),'SHA256':snapshot(m)} for m in page['messages']]
+write(P/'private/config.private.json',c);image=Image.new('RGB',(64,64));draw=ImageDraw.Draw(image)
+for box,color in [((0,0,31,31),(255,0,34)),((32,0,63,31),(0,238,68)),((0,32,31,63),(17,68,255)),((32,32,63,63),(255,238,0))]:draw.rectangle(box,fill=color)
+buf=io.BytesIO();image.save(buf,format='PNG');raw=buf.getvalue();assert len(raw)==202
+for alias,actor,scope in [('phone-own','b','DM_phone'),('control-own','b','DM_control'),('control-peer','c','DM_control')]:
+    filename='BOOHTACORD-QA-claim-'+alias+'-'+c['owner']+'.png';boundary='QA'+uuid.uuid4().hex;body=('--'+boundary+'\r\nContent-Disposition: form-data; name="file"; filename="'+filename+'"\r\nContent-Type: image/png\r\n\r\n').encode()+raw+('\r\n--'+boundary+'--\r\n').encode();status,_,data=request(prefix(c[scope])+'/attachments','POST',body,c['sessions'][actor],'multipart/form-data; boundary='+boundary);assert status==201;v=json.loads(data);assert v['original_name']==filename and v['byte_size']==202;c['fixtures'].append({'alias':alias,'actor':actor,'scope':scope,'id':valid(v['id']),'filename':filename,'SHA256':digest(raw),'bytes':202});write(P/'private/config.private.json',c)
+write(P/'prepared.json',{'status':'PASS_THREE_OWN_202B_PNG_UPLOADS_TWO_NEW_MEMBER_SESSIONS','production':True,'TLS_validation':True,'new_accounts':0,'new_sessions':2,'uploads':3,'payload_total_bytes':606,'preexisting_records_by_scope':{k:len(v) for k,v in c['before'].items()},'cookie_flags':'Secure; HttpOnly; SameSite=Lax verified on both new session cookies','phone_session_base_URL_roles_permissions_changed':False});print('PASS_THREE_OWN_UPLOADS_TWO_OWNED_SESSIONS_NO_MESSAGE_CREATED_YET')

@@ -335,3 +335,7 @@ The additional same-document account journey passes8 lifecycle assertions withou
 [Protocol privacy and physical viewer evidence](production-dm-image-revocation/README.md):25 reviewed API boundaries PASS_SCOPED, plus separate opaque409/denied-body controls; already-open Android viewer FAIL in a24,766ms post-control observation window despite fresh underlying history and server404; exact pixel probe is inside that window, not continuous sampling.15 widget tests pass/0skip. Both own messages/all3 owned API sessions cleaned; source/candidate and visual hashes retained.80 scoped cases; all480 source texts and existing row statuses preserved. ADMIN/other formats/platform/media/hosted gates and43 consolidation decisions remain unaccepted.
 
 Tracked Android defect: [#589](https://github.com/Egkurilov/BOOHTACORD/issues/589), exact readback/open. QA53/62/131 updated with prior-body prefix preserved and stay open. Immutable first evidence: 36b360bb8aa7663dceeb6e272c085826020b4c69. Hosted wrapper observation is NO_HOSTED_PASS_OBSERVED, not full check enumeration or gate acceptance.
+
+## DM attachment claim checkpoint — 2026-10-28
+
+[Owner/scope/atomic claim evidence](production-dm-attachment-claim/README.md). Detailed actual per-case outcomes, nearest real-PG checks, native positive-control status and cleanup are retained separately.81 scoped cases; all480 source rows and broad criteria statuses retained.

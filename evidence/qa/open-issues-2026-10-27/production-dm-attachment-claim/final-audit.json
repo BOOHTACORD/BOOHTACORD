@@ -1,0 +1,93 @@
+{
+  "at_utc": "2026-10-28T19:08:49.367728+00:00",
+  "status": "PASS_SOURCE_BINDING_OWN_HISTORY_DELTA_AND_RESTORATION",
+  "source_current": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "observed_master": "68b6e01b069618c7a79ac5d4cce905081347cfb2",
+  "source_matches_observed_master": {
+    "backend/go.mod": true,
+    "backend/internal/chat/send_direct_message/service.go": true,
+    "backend/internal/chat/send_direct_message/attachments.go": true,
+    "backend/internal/chat/send_direct_message/api/http_handler.go": true,
+    "backend/internal/chat/send_direct_message/postgres/repository.go": true,
+    "backend/internal/chat/send_direct_message/postgres/committed_query.go": true,
+    "backend/internal/chat/send_direct_message/postgres/pool_database.go": true,
+    "backend/internal/chat/send_direct_message/postgres/repository_integration_test.go": true,
+    "backend/internal/chat/send_direct_message/postgres/repository_test.go": true,
+    "backend/internal/chat/send_direct_message/postgres/attachment_claim_race_integration_test.go": true,
+    "backend/internal/chat/send_direct_message/postgres/integration_database_test.go": true,
+    "backend/internal/chat/send_direct_message/service_test.go": true,
+    "backend/internal/chat/send_direct_message/api/http_handler_test.go": true,
+    "backend/internal/testsupport/postgres/config.go": true,
+    "backend/internal/testsupport/postgres/schema.go": true,
+    "contracts/openapi.yaml": true,
+    "clients/flutter/lib/src/widgets/message_attachment_list.dart": true,
+    "clients/flutter/pubspec.yaml": true,
+    "tools/toolchains.json": true
+  },
+  "Web_release_source_after": "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a",
+  "deployed_backend_source": "UNKNOWN",
+  "local_services_preserved": [
+    {
+      "service": "api",
+      "same_image_config_hostconfig_starttime_no_restart": true
+    },
+    {
+      "service": "web",
+      "same_image_config_hostconfig_starttime_no_restart": true
+    },
+    {
+      "service": "proxy",
+      "same_image_config_hostconfig_starttime_no_restart": true
+    },
+    {
+      "service": "postgres",
+      "same_image_config_hostconfig_starttime_no_restart": true
+    },
+    {
+      "service": "livekit",
+      "same_image_config_hostconfig_starttime_no_restart": true
+    },
+    {
+      "service": "collector",
+      "same_image_config_hostconfig_starttime_no_restart": true
+    },
+    {
+      "service": "tempo",
+      "same_image_config_hostconfig_starttime_no_restart": true
+    },
+    {
+      "service": "prometheus",
+      "same_image_config_hostconfig_starttime_no_restart": true
+    },
+    {
+      "service": "grafana",
+      "same_image_config_hostconfig_starttime_no_restart": true
+    }
+  ],
+  "disposable_schemas_before_after": [
+    0,
+    0
+  ],
+  "preexisting_history_verified": {
+    "DM_phone": 27,
+    "DM_control": 4
+  },
+  "native_after_cleanup": {
+    "owned_DM_visible": true,
+    "composer_empty": true,
+    "own_image_card_absent": true,
+    "viewer_closed": true,
+    "media_projection_null": true
+  },
+  "visual_review": {
+    "source_resolution": [
+      1080,
+      2340
+    ],
+    "source_original_inspected": true,
+    "capture_SHA256": "98e841fe2e69c6e707398951ddb59daf9ecc7d8593eb5ac805bb438f03343a0f",
+    "observations": "Known red/green/blue/yellow four-region PNG fully visible in foreground native viewer with filename/download/close controls; own image card is visible underneath. Prior voice-recovery message behind modal is not a new voice failure claim. No screenshot golden/other viewport or native-download acceptance.",
+    "raw_screenshot_private": true
+  },
+  "runner_binding_limit": "Six unchanged helpers bind to original preflight; corrected native/retention helpers bind to native-ready before second native control. Original native controller failure is retained and is not a product failure."
+}

@@ -1,0 +1,38 @@
+"""Verify this bounded packet and retain source-bound public results after cleanup."""
+import ast,json,subprocess
+from datetime import datetime,timezone
+from common import P,Q,B,read,write,digest
+base=read(P/'preflight.json');tests=read(P/'native-check.json');runtime=read(P/'cases-result.json');cleanup=read(P/'cleanup.json');native=read(P/'native-result.json');assert cleanup['status'].startswith('PASS') and tests['status'].startswith('PASS')
+for n,s in base['runner_SHA256'].items():
+    if n not in ['native.py','retain.py']:assert digest((P/n).read_bytes())==s
+ready=read(P/'native-ready.json')
+for n,s in ready['runner_SHA256'].items():assert digest((P/n).read_bytes())==s
+assert digest((P/'private/native-executed.py.txt').read_bytes())==base['runner_SHA256']['native.py']
+for n,s in base['source_SHA256'].items():assert digest((Q/n).read_bytes())==s
+O=B/'evidence/qa/open-issues-2026-10-27';D=O/'production-dm-attachment-claim';D.mkdir(exist_ok=False)
+for n in ['preflight','native-check','prepared','cases-result','native-result','native-attempt1','native-ready','pre-cleanup-audit','cleanup']:write(D/(n+'.json'),read(P/(n+'.json')))
+for f in P.glob('*.py'):
+    s=f.read_text(encoding='utf-8');ast.parse(s);assert len(s.splitlines())<=120;(O/'runner-source'/('dm-attachment-claim-'+f.name+'.txt')).write_text(s,encoding='utf-8',newline='\n')
+(O/'runner-source/dm-attachment-claim-native-executed.py.txt').write_bytes((P/'private/native-executed.py.txt').read_bytes())
+commands=['python -X utf8 .out/qa-dm-attachment-admission/'+n+'.py' for n in ['preflight','native_check','prepare','cases','native','cleanup','retain']]
+common={'platform':'Windows11 HTTPS protocol producer / production v.bootybay.ru; isolated loopback PostgreSQL17.6 and Go1.26.4 supplement; physical Samsung SM-A576B Android16 signed QA1.0.47+2082 positive receiver','issues':[53],'mandatory_when':'Before accepting same-DM/caller-owner/atomic attachment-claim facet of DM/storage privacy; not complete QA53 or platform/security/media acceptance','result':'production-dm-attachment-claim/summary.json','limits':'Only own controlled MEMBER roles and three202B PNGs in two existing DMs. ADMIN, browser UI, blocked-account, concurrency/load on production, other native platforms and complete QA gates remain unexecuted. Native receiver explicitly reveals its own file; no delivery-latency or browser producer-UI claim. Existing native cached-deletion bug589 remains open.','defects':[]}
+case={**common,'id':'PRODUCTION-DM-attachment-owner-scope-atomic-claim','status':'PASS_SCOPED' if runtime['status'].startswith('PASS') else 'FAIL','protects':'Attachment claim requires caller owner, same DM and unclaimed state; mixed/duplicate/unknown/reuse denials leave no partial visible message/link; same failed key can retry successfully and same successful key replays original once','command':'python -X utf8 .out/qa-dm-attachment-admission/cases.py','setup_and_cleanup_commands':commands}
+summary={'at_utc':datetime.now(timezone.utc).isoformat(),'status':case['status'],'invariant_command_platform_trigger_result':case,'protocol_cases':len(runtime['cases']),'native_PG_and_unit_checks':len(tests['passed']),'native_skips':tests['skips'],'physical_native_positive_control':native['status'],'source_revision':base['source_revision'],'API_runners_and_native_source_unchanged_from_preflight':True,'corrected_native_runner_bound_before_replay':'native-ready.json','diagnostic':'Original native controller refused the observed405px-high own ImageView because tap_named allows250px; terminal failed attempt/source preserved. Corrected bounded own-target tap is a controller repair, not a product fix. Retention helper changed only to keep this diagnostic.','deployed_backend_source':'UNKNOWN','screenshot_raw_private':True,'cleanup':cleanup['status'],'limits':common['limits']};write(D/'summary.json',summary)
+doc='''# Production DM attachment claim — 2026-10-28
+
+This packet covers caller-owner, same-DM and atomic claim admission in two existing controlled production DMs, with a physical Android positive receiver and separate closest PostgreSQL checks. Each scoped invariant maps to command/platform/mandatory trigger/result in summary.json. No full QA, security/media/platform or hosted CI gate is closed.
+
+Reconstruct dm-attachment-claim-*.py.txt under .out/qa-dm-attachment-admission and reuse the existing private QA profiles/android_permission_ui.py helper. Execute setup_and_cleanup_commands sequentially in a fresh folder. API and native acceptance can exit nonzero; cleanup is a separate mandatory invocation, never chained only on success. Passwords/cookies/identities/payloads and original screenshots remain private. No old fixture can be replayed.
+
+Go tests use loopback15436/PostgreSQL17.6 in disposable schemas, never the production database. The production producer uses default trusted TLS and ordinary protected API requests. This is not a Windows browser UI witness. Native controlled PNG is explicitly revealed before opening; scrolling does not prove realtime latency. Existing deleted-viewer bug589 and other format/native download gates remain open. Source/API/runtime limits are explicit in the retained receipts.
+''';(D/'README.md').write_text(doc,encoding='utf-8',newline='\n')
+c=read(O/'cases.json');assert len(c['cases'])==80;c['cases'].append(case);write(O/'cases.json',c);m=read(O/'matrix.json')
+for i in m['issues']:
+    if i['number']!=53:continue
+    i['execution_cases'].append(case['id']);i['evidence'].append(case['result'])
+    for r in i['criteria']:
+        if r['id'] not in ['I53.C1','I53.C4']:continue
+        r['execution_cases'].append(case['id']);r['evidence'].append(case['result']);r.setdefault('witness_limits',[]).append(case['id']+': '+common['limits']);r['execution']+='; '+case['command'];r['execution_plan']['existing_scoped_witnesses']=list(r['execution_cases'])
+m['updated_utc']=summary['at_utc'];write(O/'matrix.json',m)
+with (O/'README.md').open('a',encoding='utf-8',newline='\n') as f:f.write('\n## DM attachment claim checkpoint — 2026-10-28\n\n[Owner/scope/atomic claim evidence](production-dm-attachment-claim/README.md). Detailed actual per-case outcomes, nearest real-PG checks, native positive-control status and cleanup are retained separately.81 scoped cases; all480 source rows and broad criteria statuses retained.\n')
+print(json.dumps({'retained':D.name,'scope':case['status'],'physical':native['status'],'tests':len(tests['passed']),'cases_total':81}))
