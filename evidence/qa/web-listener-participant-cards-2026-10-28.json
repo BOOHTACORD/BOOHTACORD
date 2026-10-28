@@ -32,6 +32,18 @@
       "observation": "40 browser cases passed, including equal-sized cards at desktop and 200% mobile text, avatar loading, left-aligned names, mute icon sizing, inline preview selection and no horizontal page overflow."
     },
     {
+      "name": "critical_acceptance_driver",
+      "result": "PASS",
+      "command": "node --test tools/qa/critical_client_acceptance/requests.test.mjs tools/qa/critical_client_acceptance/roster_observer.test.mjs tools/qa/critical_client_acceptance/roster_diagnostics.test.mjs tools/qa/critical_client_acceptance/sfu_control.test.mjs tools/qa/critical_client_acceptance/roster_network.test.mjs tools/qa/critical_client_acceptance/select_stream.test.mjs tools/qa/client_lifecycle/login_diagnostics.test.mjs",
+      "observation": "All 29 cases pass. Added coverage for selecting an inline participant-card preview before falling back to the stream panel; this fixes the CI lifecycle test harness after the UI moved previews into cards."
+    },
+    {
+      "name": "ci_gate_routing",
+      "result": "PASS",
+      "command": "python3 -m unittest tools.ci.select_changes.test_routing",
+      "observation": "The three Web-specific critical screen-share driver paths route to contracts and Web rather than the uncertain all-platform fallback. Actual lifecycle selection remains covered by the separate risk plan."
+    },
+    {
       "name": "authenticated_real_stack",
       "result": "PASS",
       "command": "./tools/qa/local_features/check.sh --feature screen --feature voice --feature shell --feature auth --feature connection_status --platform web --base origin/master --real-stack",

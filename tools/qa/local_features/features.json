@@ -439,6 +439,7 @@
       "clients/web/src/realtime/realtime_reconnect.spec.ts",
       "tools/qa/critical_client_acceptance/screen_share_ui.mjs",
       "tools/qa/critical_client_acceptance/select_stream.mjs",
+      "tools/qa/critical_client_acceptance/select_stream.test.mjs",
       "clients/web/tests/screen_share_ui/fixture.ts",
       "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts",
       "tools/qa/local_features/features.json",
@@ -644,6 +645,7 @@
           "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts",
           "clients/web/src/voice/voice_room_presentation.spec.ts",
           "clients/web/src/voice/participant_screen_actions.spec.ts",
+          "tools/qa/critical_client_acceptance/select_stream.test.mjs",
           "clients/web/tests/voice_interface/controls.browser.spec.ts"
         ],
         "scope": "Web voice roster places a live stream thumbnail inside its participant card and fills the matching voice-only card with a 16:9 voice status panel. Cards stay equal in size on desktop and 200% mobile text, use real avatars with initials fallback, left-align names, and size mute icons to status text. Clicking the inline preview opens the existing viewer. Real API/SFU acceptance waits for a decoded inline thumbnail before selecting the stream. No physical capture or media QoE claim."
