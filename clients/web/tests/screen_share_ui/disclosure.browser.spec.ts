@@ -179,8 +179,11 @@ test('listener room embeds the stream preview in an equal-sized participant card
     const rect = element.getBoundingClientRect()
     return { width: rect.width, height: rect.height }
   }))
+  const previewGeometry = await preview.boundingBox()
   expect(Math.abs(desktopGeometry[0].width - desktopGeometry[1].width)).toBeLessThanOrEqual(1)
   expect(Math.abs(desktopGeometry[0].height - desktopGeometry[1].height)).toBeLessThanOrEqual(1)
+  expect(desktopGeometry[0].width).toBeGreaterThanOrEqual(250)
+  expect(previewGeometry?.height ?? 0).toBeGreaterThanOrEqual(140)
   const muteScale = await streamCard.locator('.voice-person-state').evaluate(element => ({
     font: getComputedStyle(element).fontSize,
     icon: getComputedStyle(element.querySelector('.voice-person-state-icon')!).width,

@@ -1,4 +1,6 @@
-export const screenPreviewPollIntervalMs = 5_000
+export const screenPreviewPollIntervalMs = 30_000
+export const screenPreviewInitialRetryIntervalMs = 1_000
+export const screenPreviewInitialRetryLimit = 3
 
 export function screenPreviewRetryDelay(failures: number, random: () => number = Math.random): number {
   const exponent = Math.max(0, Math.min(10, failures - 1))

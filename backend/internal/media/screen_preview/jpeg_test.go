@@ -31,6 +31,14 @@ func TestValidateJPEGAcceptsSmallLandscapeAndPortraitFrames(t *testing.T) {
 	}
 }
 
+func TestValidateJPEGAcceptsHigherResolutionLandscapeAndPortraitPreviewFrames(t *testing.T) {
+	for _, size := range [][2]int{{480, 270}, {180, 320}} {
+		if err := ValidateJPEG(testJPEG(t, size[0], size[1])); err != nil {
+			t.Fatalf("%dx%d preview rejected: %v", size[0], size[1], err)
+		}
+	}
+}
+
 func TestValidateJPEGRejectsMalformedOversizedDimensionBombAndPolyglot(t *testing.T) {
 	cases := map[string][]byte{
 		"malformed":       []byte("<svg onload=alert(1) />"),
