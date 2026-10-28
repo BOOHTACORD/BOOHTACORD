@@ -1,0 +1,32 @@
+{
+  "at_utc": "2026-10-28 00:24:31 UTC",
+  "body_hash_scope": "UTF-8 LF with trailing LF removed; exact full-body and prior-prefix readbacks independently verified",
+  "receipts": [
+    {
+      "issue": 137,
+      "before_state": "closed",
+      "state": "open",
+      "exact_body": true,
+      "prior_body_prefix": true,
+      "unique_marker": true,
+      "evidence_commit": "f850d062aa395e8be41b57450b531608dda18c85",
+      "criterion": "I240.C5",
+      "criterion_status": "FAIL",
+      "action": "REOPENED_EXISTING_CANONICAL_FIX",
+      "canonical_body_SHA256": "ecb52a7be6709c1fb930c68cea7ec178e6338370412df6472b86817dcbd05a45"
+    },
+    {
+      "issue": 240,
+      "state": "open",
+      "exact_body": true,
+      "prior_body_prefix": true,
+      "unique_marker": true,
+      "evidence_commit": "f850d062aa395e8be41b57450b531608dda18c85",
+      "criterion": "I240.C5",
+      "criterion_status": "FAIL",
+      "canonical_fix_issue": 137,
+      "parent_status": "FAIL_OPEN",
+      "canonical_body_SHA256": "6d5b94f489056d048d00322801598af636de2a38c2ac5c343abcdfb4ad6aaa4b"
+    }
+  ]
+}
