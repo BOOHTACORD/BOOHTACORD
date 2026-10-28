@@ -1,0 +1,54 @@
+"""Observed controls only, own image payload pixels private; never touch voice/settings."""
+import hashlib,io,json,re,subprocess,sys,time
+from datetime import datetime,timezone
+from PIL import Image,ImageCms,ImageStat
+from common import P,ADB,APP,call,nodes,label,state,tap_named,read,write
+c=read(P/'private/config.private.json');action=sys.argv[1];index=int(sys.argv[2]);f=c['fixtures'][index];name=f['filename'];assert re.fullmatch(r'BOOHTACORD-QA-phone-[a-f0-9]{12}-(png|jpeg|gif)-(viewer|card)\.(png|jpg|gif)',name)
+def box(n):return list(map(int,re.findall(r'\d+',n.get('bounds'))))
+def tap(matches,limit=1500):
+    assert len(matches)==1,'One observed own control required';n=matches[0];b=box(n);assert n.get('enabled')=='true' and n.get('clickable')=='true' and 0<b[3]-b[1]<=limit;call('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2))
+def surface():
+    rows=nodes();fields=[n for n in rows if n.get('class')=='android.widget.EditText' and n.get('package')==APP]
+    return {'owned_DM_header':any(c['peer'] in label(n) and box(n)[1]<700 for n in rows),'composer_empty':len(fields)==1 and not fields[0].get('text'),'preview_open_control':any(label(n)=='Открыть изображение '+name for n in rows),'viewer_close':any(label(n)=='Закрыть просмотр изображения' for n in rows),'own_image_view':any(n.get('class')=='android.widget.ImageView' and label(n)==name for n in rows),'system_permission_prompt':any((n.get('package')or'').endswith('permissioncontroller') for n in rows),'retry_visible':any(label(n)=='Повторить подключение' for n in rows),'recovery_banner_visible':any(label(n) in ['Восстанавливаем подключение…','Сервер пока недоступен'] for n in rows),'native_loading_or_error':any(label(n) in ['Не удалось загрузить изображение.','Вложение удалено или недоступно.','Загружаем изображение…'] for n in rows)}
+def own_conversation():
+    s=surface();assert s['owned_DM_header'] and s['composer_empty'] and not s['system_permission_prompt'];return s
+def probe():
+    raw=subprocess.check_output([ADB,'exec-out','screencap','-p'],timeout=20);image=Image.open(io.BytesIO(raw));icc=image.info.get('icc_profile')
+    image=ImageCms.profileToProfile(image,ImageCms.ImageCmsProfile(io.BytesIO(icc)),ImageCms.createProfile('sRGB'),outputMode='RGB') if icc else image.convert('RGB')
+    views=[n for n in nodes() if n.get('class')=='android.widget.ImageView' and label(n)==name];assert len(views)==1;b=box(views[0]);w,h=b[2]-b[0],b[3]-b[1];sw,sh=f['pixels'];scale=min(w/sw,h/sh);pw,ph=sw*scale,sh*scale;left=b[0]+(w-pw)/2;top=b[1]+(h-ph)/2
+    points=[(.25,.25),(.75,.25),(.25,.75),(.75,.75)];colors={'PNG':[(255,0,34),(0,238,68),(17,68,255),(255,238,0)],'JPEG':[(238,85,34),(34,68,204),(238,85,34),(34,68,204)],'GIF':[(238,68,34)]*4}[f['format']];means=[]
+    for x,y in points:
+        patch=image.crop((round(left+pw*(x-.04)),round(top+ph*(y-.04)),round(left+pw*(x+.04)),round(top+ph*(y+.04))));means.append(ImageStat.Stat(patch).mean)
+    errors=[max(abs(a-b) for a,b in zip(m,color)) for m,color in zip(means,colors)];wrong=[(17,204,102)]*4 if f['format']=='GIF' else colors[1:]+colors[:1];negative=not all(max(abs(a-b) for a,b in zip(m,color))<=14 for m,color in zip(means,wrong));path=P/'private'/('viewer-'+str(index)+'.private.png');counter=1
+    while path.exists():counter+=1;path=P/'private'/('viewer-'+str(index)+'-capture'+str(counter)+'.private.png')
+    path.write_bytes(raw)
+    return {'known_pattern_rendered':all(e<=14 for e in errors),'matched_regions':sum(e<=14 for e in errors),'negative_wrong_palette_rejected':negative,'max_channel_errors':[round(e,2) for e in errors],'native_image_bounds':b,'source_resolution':list(image.size),'ICC_present':bool(icc),'ICC_converted_to_sRGB':bool(icc),'source_capture_SHA256':hashlib.sha256(raw).hexdigest(),'capture_private':True,'comparison':'Four known interior fixture regions at observed ImageView/FitContain bounds, tolerance14 RGB; not a screenshot hash or a generic nonblank check'}
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'action':action,'index':index,'alias':f['alias'],'body_or_identity_logged':False}
+if action=='inspect':r['surface']=surface()
+elif action=='critical-inspect':
+    r['surface']=surface();r['critical_control_rendered']=bool(c.get('critical_control_text')) and any(c['critical_control_text'] in label(n) and n.get('class')!='android.widget.EditText' for n in nodes());r['download_failure_notice']=any(label(n)=='Не удалось скачать вложение.' for n in nodes());r['document_provider_visible']=any((n.get('package')or'').endswith('documentsui') for n in nodes())
+elif action=='open':
+    r['before']=own_conversation();tap([n for n in nodes() if n.get('package')==APP and n.get('clickable')=='true' and label(n)=='Открыть изображение '+name]);r['surface']=surface()
+elif action=='probe':r['probe']=probe();assert r['probe']['known_pattern_rendered'] and r['probe']['negative_wrong_palette_rejected']
+elif action=='close':
+    assert surface()['viewer_close'];tap_named('Закрыть просмотр изображения');r['after']=own_conversation()
+elif action in ['download-viewer','download-card']:
+    if action=='download-viewer':assert surface()['own_image_view'] and surface()['viewer_close'];needle='Скачать'
+    else:own_conversation();needle='Скачать '+name
+    tap([n for n in nodes() if n.get('package')==APP and n.get('clickable')=='true' and label(n)==needle],limit=350);r['download_control_activated']=True
+elif action=='picker-inspect':
+    rows=nodes();docs=[n for n in rows if (n.get('package')or'').endswith('documentsui')];r['document_provider_visible']=bool(docs);r['own_filename_field']=any(n.get('class')=='android.widget.EditText' and n.get('text')==name for n in docs);r['downloads_location_visible']=any(label(n) in ['Загрузки','Downloads','Download','Скачанные'] for n in docs);r['static_controls']=[{'label':label(n),'resource_id':n.get('resource-id'),'bounds':box(n),'clickable':n.get('clickable')} for n in docs if label(n).casefold() in ['сохранить','save','загрузки','downloads','download']]
+elif action=='picker-save':
+    rows=nodes();docs=[n for n in rows if (n.get('package')or'').endswith('documentsui')];assert docs and any(n.get('class')=='android.widget.EditText' and n.get('text')==name for n in docs) and any(label(n) in ['Загрузки','Downloads','Download','Скачанные'] for n in docs),'Only observed local Downloads and exact own default filename'
+    tap([n for n in docs if n.get('clickable')=='true' and label(n).casefold() in ['сохранить','save']],limit=350);r['save_own_file_in_observed_Downloads']=True
+elif action=='refresh':
+    own_conversation();tap_named('Действия диалога');time.sleep(.4);tap_named('Обновить историю');r['explicit_native_history_refresh']=True
+elif action=='refresh-menu':tap_named('Обновить историю');r['explicit_native_history_refresh']=True
+elif action=='retry':
+    own_conversation();assert surface()['retry_visible'];tap_named('Повторить подключение');r['observed_backend_retry_activated']=True;r['after']=surface()
+elif action=='latest':
+    own_conversation();rows=nodes();panes=[n for n in rows if n.get('package')==APP and n.get('scrollable')=='true' and box(n)[3]-box(n)[1]>500 and box(n)[2]-box(n)[0]>500];assert len(panes)==1;b=box(panes[0]);x=(b[0]+b[2])//2;call('shell','input','swipe',str(x),str(b[3]-100),str(x),str(b[1]+100),'400');r['explicit_scroll_toward_latest']=True
+else:raise ValueError('Unknown scoped native action')
+path=P/(action+'-'+str(index)+'.json');attempt=1
+while path.exists():attempt+=1;path=P/(action+'-'+str(index)+'-attempt'+str(attempt)+'.json')
+write(path,r);print(json.dumps(r,ensure_ascii=True))

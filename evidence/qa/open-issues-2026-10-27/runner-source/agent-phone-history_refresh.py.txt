@@ -1,0 +1,9 @@
+import sys,time
+from pathlib import Path
+sys.path.insert(0,str(Path('.out/qa-agent-phone').resolve()))
+from common import *
+c=read(P/'private/config.private.json');assert own(c);r={'at_utc':datetime.now(timezone.utc).isoformat(),'actions':[],'native_skips':0,'before_owned_preview_controls':sum(label(n)=='Открыть изображение '+f['filename'] for n in nodes() for f in c['fixtures'])}
+try:
+ tap_named('Действия диалога');r['actions'].append('Fresh observed own DM Actions control');time.sleep(1);rows=nodes();write(P/'private/reconnect-refresh-menu.private.json',[dict(n.attrib) for n in rows]);r['menu_capture']=capture('reconnect-refresh-menu');r['refresh_control_visible']=any(label(n)=='Обновить историю' for n in rows);assert r['refresh_control_visible'];tap_named('Обновить историю');r['actions'].append('Fresh observed Refresh History');time.sleep(.4);rows=nodes();r['after_owned_preview_controls']=sum(label(n)=='Открыть изображение '+f['filename'] for n in rows for f in c['fixtures']);r['after_owned_DM_composer_empty']=own(c);r['after_capture']=capture('reconnect-after-explicit-refresh');r['status']='PASS_SCOPED_EXPLICIT_REFRESH_OWN_DELETED_CARD_ABSENCE' if r['after_owned_preview_controls']==0 and r['after_owned_DM_composer_empty'] else 'NOT_PROVEN';r['native_exit']=0 if r['status'].startswith('PASS') else 2
+except Exception as e:r['status']='CONTROLLER_FAILURE';r['error_type']=type(e).__name__;r['native_exit']=2
+write(P/'history-refresh-result.json',r);print({k:v for k,v in r.items() if k not in ['menu_capture','after_capture']});raise SystemExit(r['native_exit'])

@@ -1,0 +1,39 @@
+from common import P,OLD,read,write,valid,quote,sql,now,guard_state,table_state,sha
+def teardown():
+    cfg=read(OLD/'private/fixture.json');baseline=read(OLD/'before.json');handoff=read(OLD/'handoff.json');owner=cfg['owner']
+    assert len(owner)==24 and all(c in '0123456789abcdef' for c in owner)
+    expected=[]
+    for u in cfg['users'].values():
+        assert owner in u['login'];expected.append('('+quote(valid(u['id']))+'::uuid,'+quote(u['login'])+')')
+    assert len(expected)==4 and guard_state()==handoff['trigger_state_enabled_definition_function_MD5']
+    ids=','.join(quote(valid(u['id'])) for u in cfg['users'].values());values=','.join(expected)
+    state=guard_state().split('|');baseline_users=baseline['database']['users']
+    statements="""BEGIN; SET LOCAL lock_timeout='2s'; SET LOCAL statement_timeout='5s';
+LOCK TABLE public.users IN ACCESS EXCLUSIVE MODE NOWAIT;
+DO $guard$ DECLARE removed integer; other_triggers text; after_triggers text; original_users text; BEGIN
+ ASSERT (SELECT count(*) FROM public.users u JOIN (VALUES EXPECTED_VALUES) own(id,login) USING(id,login) WHERE u.blocked_at IS NOT NULL)=4;
+ ASSERT (SELECT count(*) FROM public.sessions WHERE user_id IN (OWN_IDS))=0;
+ ASSERT NOT EXISTS(SELECT 1 FROM public.support_product_identity WHERE account_id IN (OWN_IDS));
+ ASSERT NOT EXISTS(SELECT 1 FROM public.direct_messages WHERE participant_one_id IN (OWN_IDS) OR participant_two_id IN (OWN_IDS));
+ ASSERT NOT EXISTS(SELECT 1 FROM public.messages WHERE author_id IN (OWN_IDS));
+ ASSERT NOT EXISTS(SELECT 1 FROM public.direct_message_messages WHERE author_id IN (OWN_IDS));
+ ASSERT NOT EXISTS(SELECT 1 FROM public.attachments WHERE owner_id IN (OWN_IDS));
+ ASSERT NOT EXISTS(SELECT 1 FROM public.channels WHERE id=CHANNEL_ID::uuid);
+ ASSERT NOT EXISTS(SELECT 1 FROM public.categories WHERE id=CATEGORY_ID::uuid);
+ SELECT count(*)||'|'||COALESCE(md5(string_agg(h,'' ORDER BY h)),'empty') INTO original_users FROM (SELECT md5(row_to_json(x)::text) h FROM public.users x WHERE id NOT IN (OWN_IDS)) s;
+ ASSERT original_users=BASELINE_USERS;
+ ASSERT (SELECT tgenabled='O' AND md5(pg_get_triggerdef(oid))=TRIGGER_HASH AND md5(pg_get_functiondef(tgfoid))=FUNCTION_HASH FROM pg_trigger WHERE tgrelid='public.users'::regclass AND tgname='support_service_account_guard');
+ SELECT string_agg(tgname||':'||tgenabled::text||':'||md5(pg_get_triggerdef(oid)),',' ORDER BY tgname) INTO other_triggers FROM pg_trigger WHERE tgrelid='public.users'::regclass AND tgname<>'support_service_account_guard';
+ ALTER TABLE public.users DISABLE TRIGGER support_service_account_guard;
+ WITH d AS (DELETE FROM public.users u USING (VALUES EXPECTED_VALUES) own(id,login) WHERE u.id=own.id AND u.login=own.login AND u.blocked_at IS NOT NULL AND NOT EXISTS(SELECT 1 FROM public.support_product_identity WHERE account_id=u.id) RETURNING u.id) SELECT count(*) INTO removed FROM d;
+ ASSERT removed=4;
+ ALTER TABLE public.users ENABLE TRIGGER support_service_account_guard;
+ ASSERT NOT EXISTS(SELECT 1 FROM public.users WHERE id IN (OWN_IDS));
+ ASSERT (SELECT tgenabled='O' AND md5(pg_get_triggerdef(oid))=TRIGGER_HASH AND md5(pg_get_functiondef(tgfoid))=FUNCTION_HASH FROM pg_trigger WHERE tgrelid='public.users'::regclass AND tgname='support_service_account_guard');
+ SELECT string_agg(tgname||':'||tgenabled::text||':'||md5(pg_get_triggerdef(oid)),',' ORDER BY tgname) INTO after_triggers FROM pg_trigger WHERE tgrelid='public.users'::regclass AND tgname<>'support_service_account_guard';
+ ASSERT other_triggers IS NOT DISTINCT FROM after_triggers;
+END $guard$; SELECT 'OWN4_REMOVED_GUARD_O_OTHER_TRIGGERS_PRESERVED'; COMMIT;
+""".replace('EXPECTED_VALUES',values).replace('OWN_IDS',ids).replace('CHANNEL_ID',quote(valid(cfg['channel']))).replace('CATEGORY_ID',quote(valid(cfg['category']))).replace('BASELINE_USERS',quote(baseline_users)).replace('TRIGGER_HASH',quote(state[1])).replace('FUNCTION_HASH',quote(state[2]))
+    (P/'private/teardown.sql').write_text(statements,'utf-8');out=sql(statements);assert 'OWN4_REMOVED_GUARD_O_OTHER_TRIGGERS_PRESERVED' in out
+    assert guard_state()==handoff['trigger_state_enabled_definition_function_MD5'] and table_state()==baseline['database']
+    write(P/'teardown.json',{'utc':now(),'status':'PASS_OWN4_ATOMICALLY_REMOVED_GUARD_REENABLED_BEFORE_COMMIT','command':'python -B -X utf8 .out/qa-guard-teardown/run.py -> teardown(); guarded psql transaction','SQL_sha256':sha(statements.encode()),'rows_removed':4,'lock':'users ACCESS EXCLUSIVE NOWAIT; local lock_timeout2s/statement_timeout5s','exact_id_login_nonce_blocked_no_session_nonsupport_guards':True,'only_named_guard_disabled_in_transaction':True,'other_triggers_and_FKs_enabled_unchanged':True,'guard_enabled_definition_function_identical':True,'all10_original_count_hashes_restored':True,'users_final_count':516,'public_function_source_unchanged':True,'no_session_replication_role_or_globalconfig':True,'scope':'Fixture-only explicitly authorized local exception; not a product fix'})

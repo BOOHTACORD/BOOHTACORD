@@ -1,0 +1,33 @@
+{
+  "at_utc": "2026-10-28T19:24:04.510086+00:00",
+  "action": "probe",
+  "index": 2,
+  "alias": "JPEG-viewer",
+  "body_or_identity_logged": false,
+  "probe": {
+    "known_pattern_rendered": true,
+    "matched_regions": 4,
+    "negative_wrong_palette_rejected": true,
+    "max_channel_errors": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "native_image_bounds": [
+      450,
+      1140,
+      630,
+      1275
+    ],
+    "source_resolution": [
+      1080,
+      2340
+    ],
+    "ICC_present": true,
+    "ICC_converted_to_sRGB": true,
+    "source_capture_SHA256": "3cfe4915fd9e26aa5bab1369efb7bd065c18f1e6a851c4ceb125b12ae0575632",
+    "capture_private": true,
+    "comparison": "Four known interior fixture regions at observed ImageView/FitContain bounds, tolerance14 RGB; not a screenshot hash or a generic nonblank check"
+  }
+}

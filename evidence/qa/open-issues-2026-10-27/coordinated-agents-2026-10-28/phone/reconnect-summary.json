@@ -1,0 +1,82 @@
+{
+  "id": "ANDROID-observed-connection-retry-visible-recovery",
+  "status": "PASS_SCOPED_VISIBLE_STATE_ONLY",
+  "protects": "Observed existing recovery banner exposes native Retry and clears after its actual activation; own DM remains usable and explicit History Refresh presents no known deleted-fixture preview controls",
+  "command": "python -X utf8 .out/qa-agent-phone/reconnect.py; python -X utf8 .out/qa-agent-phone/history_refresh.py",
+  "result": "reconnect-result.json;history-refresh-result.json",
+  "source_criterion": {
+    "id": "I303.C2",
+    "original_requirement_unchanged": "Пройти task scripts: channel/DM search, send/edit/react, voice join, screen setup, admin members/roles/channels, settings save, destructive cancel, reconnect."
+  },
+  "native_receipts": [
+    {
+      "at_utc": "2026-10-28T19:30:48.908605+00:00",
+      "before": {
+        "retry_visible": true,
+        "banner_visible": true
+      },
+      "no_fault_injection": true,
+      "trigger": "Existing observed connection recovery state after DocumentsUI/background; backend maintenance is separately observed by Windows, cause UNKNOWN",
+      "actions": [
+        "Observed native retry control activated"
+      ],
+      "native_skips": 0,
+      "after_retry": {
+        "owned_DM_composer_empty": true,
+        "retry_visible": false,
+        "banner_visible": false,
+        "capture": {
+          "file": "[PRIVATE_ARTIFACT_PATH_RETAINED_LOCALLY]",
+          "SHA256": "4f06d20339fa4b5658c71c6b44786e5614aed3f8d66607f142da0b4c7c31bc30"
+        }
+      },
+      "status": "PASS_SCOPED_VISIBLE_RETRY_BANNER_CLEARED",
+      "native_exit": 0
+    },
+    {
+      "at_utc": "2026-10-28T19:31:19.074836+00:00",
+      "actions": [
+        "Fresh observed own DM Actions control",
+        "Fresh observed Refresh History"
+      ],
+      "native_skips": 0,
+      "before_owned_preview_controls": 0,
+      "menu_capture": {
+        "file": "[PRIVATE_ARTIFACT_PATH_RETAINED_LOCALLY]",
+        "SHA256": "179b20b4ee4fc25a5e179460b305c0308eeb053f0bbc4fddf86a7412b0e50584"
+      },
+      "refresh_control_visible": true,
+      "after_owned_preview_controls": 0,
+      "after_owned_DM_composer_empty": true,
+      "after_capture": {
+        "file": "[PRIVATE_ARTIFACT_PATH_RETAINED_LOCALLY]",
+        "SHA256": "f751a4260bdaaf8e9d37bf80318c5870abcad32405c58ffbe49df44044c77171"
+      },
+      "status": "PASS_SCOPED_EXPLICIT_REFRESH_OWN_DELETED_CARD_ABSENCE",
+      "native_exit": 0,
+      "interpretation": "Before and after both had zero owned preview controls, so this proves only absence after explicit refresh; it does not prove refresh removed cards or that native received deletion passively"
+    }
+  ],
+  "limits": [
+    "Nofaultinjection/serverlogs/runtimecatalog/sessiontransport handshake or wirelatency proof",
+    "Cause of observed recovery UNKNOWN; maintenance reportedindependently elsewhere is not provedcausal",
+    "Before andafterexplicitrefresh both0ownpreviewcontrols; noautomaticdeletioninvalidation orcausalrefreshremovalclaim",
+    "Existingbug589cachedalreadyopenviewer remainsopen, notfixed orretested",
+    "Only visible retrybanner/history subset; fullreconnect task andallP1gates remainNOT_RUN"
+  ],
+  "platform": "PhysicalSamsungSM-A576BAndroid16 signedinstalled1.0.47+2082 APK_SHA256=c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+  "mandatory_when": "Before claiming this exact native Android subset; full source criterion remains unaccepted",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "deployed_backend_source": "UNKNOWN",
+  "native_exit": 0,
+  "native_skips": 0,
+  "no_source_changes": true,
+  "no_new_API_sessions_or_messages": true,
+  "raw_captures_private": true,
+  "visual_observations": [
+    "Source-resolution1080x2340 reconnect-after-retry, reconnect-after-explicit-refresh and final-restored-keyboard-hidden captures inspected",
+    "After Retry native banner absent and several own synthetic fixture times present as Сообщение удалено tombstones; this is an observed visible result after an explicit useraction, notpassiveinvalidation proof",
+    "HistoryRefresh changedscroll position toearlierhistory and refocusedemptycomposer/reopenedkeyboard; onefreshsystemBack hidkeyboard andpreservedownDM"
+  ],
+  "final_native_state": "final-native-state.json"
+}

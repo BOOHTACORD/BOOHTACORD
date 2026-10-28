@@ -1,0 +1,38 @@
+import ast,ipaddress,subprocess,traceback
+from common import P,Q,OLD,SOURCE,PROJECT,read,write,now,sha,docker,sql,services,health,guard_state,frozen,table_state
+from counter import counterexample
+from teardown import teardown
+assert not (P/'binding.json').exists(),'Do not overwrite prior packet'
+(P/'private').mkdir(exist_ok=True)
+source=Q/'backend/internal/database/migrate/migrations/0056_product_support.sql';raw=source.read_bytes();head=subprocess.check_output(['git','show','HEAD:'+source.relative_to(Q).as_posix()],cwd=Q)
+assert raw.replace(b'\r\n',b'\n')==head.replace(b'\r\n',b'\n')
+helpers={}
+for f in P.glob('*.py'):
+    ast.parse(f.read_text('utf-8'));assert len(f.read_text('utf-8').splitlines())<=120;helpers[f.name]=sha(f.read_bytes())
+binding={'utc':now(),'workflow_class':'review_gate','route':'database/migrations/product-support-user-guard','packet':'guarded-local-fixture-teardown-and-trigger-counterexample','source_SHA256':sha(raw),'source_LF_SHA256':sha(raw.replace(b'\r\n',b'\n')),'HEAD_LF_SHA256':sha(head.replace(b'\r\n',b'\n')),'helper_hashes':helpers,'frozen_files':frozen(),'source_before_native_SQL':True}
+write(P/'binding.json',binding)
+try:
+    assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=Q,text=True).strip()==SOURCE
+    old=read(OLD/'private/services-before.json');before=services()
+    for name,v in before.items():
+        b=old[name];assert v['State']['Running'] and v['RestartCount']==b['RestartCount']==0 and all(v[k]==b[k] for k in ['Id','Image','Config','HostConfig']) and v['State']['StartedAt']==b['State']['StartedAt']
+        assert v['Config']['Labels']['com.docker.compose.project']==PROJECT
+        for bs in v['NetworkSettings']['Ports'].values():
+            for x in bs or []:assert ipaddress.ip_address(x['HostIp']).is_loopback
+    assert sql('SHOW server_version;').strip()=='17.6' and health()==200
+    assert guard_state()==read(OLD/'handoff.json')['trigger_state_enabled_definition_function_MD5']
+    write(P/'before.json',{'utc':now(),'PostgreSQL':'17.6','guard_state':guard_state(),'database':table_state(),'services_private_snapshot_sha256':sha((OLD/'private/services-before.json').read_bytes()),'source':SOURCE})
+    counterexample();assert all(sha((P/f).read_bytes())==h for f,h in helpers.items())
+    teardown()
+    current=services()
+    for n,v in current.items():
+        b=before[n];assert v['State']['Running'] and all(v[k]==b[k] for k in ['Id','Image','Config','HostConfig','RestartCount']) and v['State']['StartedAt']==b['State']['StartedAt']
+    assert health()==200 and frozen()==binding['frozen_files'] and source.read_bytes()==raw
+    native_before=read(OLD/'before.json')
+    assert all(sha((Q/f).read_bytes())==h['working_sha256'] for f,h in native_before['source_hashes'].items())
+    write(P/'cleanup-final-after-root-handoff.json',{'utc':now(),'status':'PASS_SEPARATE_FIXTURE_ONLY_TEARDOWN','counterexample':'counterexample.json','teardown':'teardown.json','original_PARTIAL_summary_preserved':True,'original_quarantine_preserved':True,'frozen_search_and_QA_audit_unchanged':True,'source_and_native_inputs_unchanged':True,'nine_services_unchanged':list(current),'health_HTTP':200,'all10_original_baselines_restored':True,'remaining_own_rows':0,'product_guard_bug_not_fixed':True,'production_CUA_Git_GitHub_touched':False})
+    print('PASS6 real PostgreSQL counterexample controls;ROLLBACK schema;own4 atomic teardown;guardO+hash unchanged;10table baseline restored;nine services/source/frozen receipts preserved')
+except Exception:
+    (P/'private/failure.txt').write_text(traceback.format_exc(),'utf-8')
+    write(P/'failure.json',{'utc':now(),'status':'BLOCKED_OR_FAILURE_STOPPED','guard_state_after':guard_state(),'counterexample_exists':(P/'counterexample.json').exists(),'teardown_receipt_exists':(P/'teardown.json').exists(),'transaction_failure_rolls_back_DDL':True})
+    print('STOP:guard or execution failed;private trace retained;no automatic retry');raise SystemExit(1)

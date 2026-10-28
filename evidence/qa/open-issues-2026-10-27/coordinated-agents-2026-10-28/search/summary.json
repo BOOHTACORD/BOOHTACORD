@@ -1,0 +1,34 @@
+{
+  "utc": "2026-10-28T19:48:02.544833+00:00",
+  "status": "PASS_SCOPED_RUNTIME_WITH_CLEANUP_BLOCKER",
+  "criterion": "I287.C3",
+  "literal_source_criterion": "#76: actual PostgreSQL author/date/attachments query, equal timestamps/stable cursor, timezone/DST, deleted and foreign-DM ACL, query plans; Web/native filter persistence and ordinary pointer/keyboard submission. Related #258/#54.",
+  "protects": "Current caller/own-DM ACL is retained under author,ATTACHED metadata,date instants and positional mixed-source cursor pagination",
+  "command": "python -X utf8 .out/qa-agent-search/run.py",
+  "platform": "Windows11 HTTP producer against existing isolated local API image source072426d6/PostgreSQL17.6; native Go1.26.4 supplement",
+  "mandatory_when": "Before accepting search filter/cursor server facet of I287.C3; does not close full criterion or QA287",
+  "runtime_checks_completed": 23,
+  "error_class": "ordinary-own-user-DELETE-suppressed-by-existing-trigger",
+  "cleanup_PASS": false,
+  "limits": [
+    "No CUA/browser/physical/UI filter persistence or pointer/keyboard acceptance",
+    "SQL-seeded metadata attachments; no real upload/download/file contents",
+    "Query plans,server-local calendar dates,named-zone DST resolution,load,production and complete gate NOT_RUN",
+    "DST test compares explicit RFC3339 offset instants through the repeated local hour; PostgreSQL timezone configuration unchanged",
+    "Native hidden-attachment case is separate from3ATTACHED metadata runtimefixtures"
+  ],
+  "production_touched": false,
+  "runtime_status": "PASS_SCOPED",
+  "HTTP_pages": 55,
+  "cleanup_status": "PARTIAL_ACCOUNT_ROWS_QUARANTINED_DELETE_SUPPRESSION",
+  "native_tests": {
+    "PASS": 12,
+    "skip": 0
+  },
+  "attempt_history": [
+    "attempt1-summary.json",
+    "attempt2-summary.json"
+  ],
+  "cleanup_evidence": "cleanup-final.json",
+  "new_search_bug": false
+}

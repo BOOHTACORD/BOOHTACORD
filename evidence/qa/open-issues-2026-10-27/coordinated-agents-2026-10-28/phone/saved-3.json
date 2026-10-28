@@ -1,0 +1,30 @@
+{
+  "status": "PASS_SCOPED_PHYSICAL_NATIVE_DOWNLOAD",
+  "at_utc": "2026-10-28T19:24:53.241305+00:00",
+  "alias": "JPEG-card",
+  "format": "JPEG",
+  "control": "card",
+  "local_Downloads_file_exists": true,
+  "filename_extension_matches": true,
+  "saved_bytes": 774,
+  "saved_SHA256": "cc2a68f90df1e554d644f61c67ae12f96aa2c8a042477110d6d2e3ab089df15c",
+  "expected_SHA256": "cc2a68f90df1e554d644f61c67ae12f96aa2c8a042477110d6d2e3ab089df15c",
+  "saved_original_equals_uploaded": true,
+  "saved_original_differs_from_server_preview": true,
+  "decoded_pixels": [
+    64,
+    48
+  ],
+  "frames": 1,
+  "native_exit": 0,
+  "native_skips": 0,
+  "runner_SHA256": {
+    "producer.py": "7b6cf8e26d09cd4769837822ec2e94d7697e37280509f48d8a0070ed39b56f6f",
+    "native_ui.py": "f830ec127b9b7fdd357a0d3efd7a45fb0294fa41baf16bcd60f9407decddb1ac",
+    "verify_save.py": "851ef5095196da4604af2d70347c884ae80cf38919bffead64216bc77969802c"
+  },
+  "limits": [
+    "DM-only; existing authorized QA phone receives new tiny protected API producer fixture",
+    "No realtime latency, native send/picker-upload, clipboard, TEXT, 507, third ADMIN or other platform gate claim"
+  ]
+}

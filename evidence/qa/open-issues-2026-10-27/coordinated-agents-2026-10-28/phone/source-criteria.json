@@ -1,0 +1,42 @@
+[
+  {
+    "issue": 53,
+    "source_body_SHA256": "9bd79d810511f9e2ee0ed02108bda21e48401c74cac18cc5d2f8e67c0aab85c5",
+    "id": "I53.C1",
+    "original_requirement_unchanged": "На trusted candidate проверить browser notification при granted/denied permission, generic preview без тела DM, dedup и logout/account switch; повторить приватность create/edit/delete hints, unread, download/preview после удаления/блокировки для двух участников и стороннего admin. Серверная [PostgreSQL ACL-матрица](../evidence/qa/qa03-dm-read-matrix-2026-09-25-001.json) и [локальный третий socket](../evidence/qa/qa03-third-browser-private-hints-2026-09-25-001.json) уже подтверждены, но OS notification и полный trusted browser сценарий ещё открыты.",
+    "source_row_status_unchanged": "PARTIAL",
+    "scope_relation": "Supplemental physical Android authorized DM original download; full source criterion and browser/other-platform clauses remain unaccepted"
+  },
+  {
+    "issue": 54,
+    "source_body_SHA256": "8a8abc62635cd5e7e4298bda6d5368d10da8caeeb0b3e7688be89652e77b8331",
+    "id": "I54.C1",
+    "original_requirement_unchanged": "На trusted candidate с двумя пользователями пройти auth/reset, TEXT/DM, search, admin, focus/screen reader, нативный OS file chooser, voice navigation/reconnect, zoom 125/150% и сохранённое screenshot comparison. Дополнительно после BE-19/20 и FE-53…55 проверить просмотр PNG/JPEG/GIF внутри TEXT/DM без download, отдельное скачивание, вставку изображения из clipboard с текстом и без него, лимиты/retry, keyboard/mobile и отказ третьему участнику DM. **Актуальная находка (30.09.2026):** в авторизованном production web prejoin `SHARE_TEST` сначала показал «состав недоступен»/повторяющуюся ошибку, а последующее автоматическое обновление восстановилось до состояния пустой комнаты; пользователь ранее приложил такой же экран Flutter, но live retry на Flutter не проверен. Сопоставить ошибку с серверными/LiveKit логами и проверить восстановление и populated roster на обоих клиентах до подключения микрофона — [QA-148](../evidence/flutter/qa148-production-prejoin-roster-recovery-2026-09-30-001.json). Причина пока не установлена; недоступный snapshot нельзя трактовать как пустую комнату. Изолированный [507→201](../evidence/qa/qa05-browser-real-507-wire-retry-2026-09-26-001.json) не заменяет этот полный прогон.",
+    "source_row_status_unchanged": "FAIL",
+    "scope_relation": "Supplemental physical Android authorized DM original download; full source criterion and browser/other-platform clauses remain unaccepted"
+  },
+  {
+    "issue": 131,
+    "source_body_SHA256": "83e44ebaafa6baea84eb1c6f4d625136646787cd52b1b055dc8c5d45ae0ec3bf",
+    "id": "I131.C5",
+    "original_requirement_unchanged": "[#44 — просмотр изображений](https://github.com/Egkurilov/BOOHTACORD/issues/44): в настоящем браузере TEXT и DM проверить Escape, возврат фокуса, narrow viewport, удалённое/недоступное вложение, protected preview/download и ACL обоих участников.",
+    "source_row_status_unchanged": "FAIL",
+    "scope_relation": "Supplemental physical Android authorized DM original download; full source criterion and browser/other-platform clauses remain unaccepted"
+  },
+  {
+    "issue": 303,
+    "source_body_SHA256": "5a826c0f9652d9535cbc049e9462da7c8fc9984b7114b9c7797bcdafc33aa8fc",
+    "id": "I303.C5",
+    "original_requirement_unchanged": "Для каждой комбинации записать PASS/FAIL/NOT_RUN, screenshot/video, build/version и минимальную reproduction; непроверенное не отмечать PASS.",
+    "source_row_status_unchanged": "NOT_RUN",
+    "scope_relation": "Supplemental physical Android authorized DM original download; full source criterion and browser/other-platform clauses remain unaccepted"
+  },
+  {
+    "issue": 303,
+    "source_body_SHA256": "5a826c0f9652d9535cbc049e9462da7c8fc9984b7114b9c7797bcdafc33aa8fc",
+    "id": "I303.C7",
+    "original_requirement_unchanged": "Есть версия приложения, устройство, шаги и evidence для каждого проверенного сценария.",
+    "source_row_status_unchanged": "NOT_RUN",
+    "scope_relation": "Supplemental physical Android authorized DM original download; full source criterion and browser/other-platform clauses remain unaccepted"
+  }
+]

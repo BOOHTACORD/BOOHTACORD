@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-28 19:23:29 UTC",
+  "status": "BLOCKED",
+  "browser_boundary": {
+    "received_from": "root and qa_browser",
+    "browser_repeat": "Never attempted",
+    "own_native_policy_stop_received": false,
+    "initial_coordination_stop_obeyed": true,
+    "native_resume": "Root explicitly corrected coordination stop for independent user-requested native target; native-only lease granted",
+    "exact_reported_stop": "Computer Use has been stopped for this turn because it could not determine the current browser URL on Windows with enough confidence to enforce policy. Stop your work and send a final message noting why Computer Use ended.",
+    "reported_failed_call": "sky.get_window_state({window:returnedChromeWindow,include_screenshot:true,include_text:true}); title Verify the currently visible production URL",
+    "source_note": "Reported by qa_browser after its separate user-requested fresh observation. Windows did not receive this error from its own selected native target."
+  },
+  "attempts": [
+    {
+      "sequence": 1,
+      "api": "sky.list_apps",
+      "result": "SUCCESS",
+      "scope": "Exact installed BOOHTACORD app; one target window"
+    },
+    {
+      "sequence": 2,
+      "api": "sky.get_window + sky.get_window_state",
+      "result": "SUCCESS",
+      "input": false,
+      "visual_verdict": "NONE; raw accessibility/private screenshots not copied to public evidence"
+    },
+    {
+      "sequence": 3,
+      "api": "STOP",
+      "result": "Root coordination stop; all CUA stopped until explicit native-only clarification"
+    },
+    {
+      "sequence": 4,
+      "api": "sky.get_window_state",
+      "result": "SUCCESS",
+      "input": false,
+      "visual_verdict": "Occluded by unrelated user windows; unusable as native rendering acceptance"
+    },
+    {
+      "sequence": 5,
+      "api": "sky.activate_window + get_window_state",
+      "result": "SUCCESS",
+      "visual_verdict": "Native workspace at original resolution; maintenance banner and existing voice connected; no image viewer open"
+    },
+    {
+      "sequence": 6,
+      "api": "sky.get_window_state",
+      "result": "SUCCESS",
+      "input": false,
+      "observed_target": "Account-settings launcher button; root native panel focus"
+    },
+    {
+      "sequence": 7,
+      "api": "sky.click(account settings launcher) + get_window_state",
+      "result": "SUCCESS",
+      "visual_verdict": "Account menu visible with admin/audio/profile/logout choices; none selected; no setting changed"
+    },
+    {
+      "sequence": 8,
+      "api": "sky.press_key(Tab)",
+      "result": "CONTROLLER_GUARD",
+      "exact_message": "user input was detected in this window; call get_window_state before continuing",
+      "key_confirmed": false
+    },
+    {
+      "sequence": 9,
+      "api": "sky.get_window_state",
+      "result": "SUCCESS",
+      "visual_verdict": "User foreground browser occludes native target; native account menu remains in underlying accessibility tree; no focus field returned"
+    },
+    {
+      "sequence": 10,
+      "api": "STOP",
+      "result": "Desktop lease RELEASED due user activity. No activation, input retry or cleanup click after interference."
+    }
+  ],
+  "final_ui": {
+    "native": "Account settings menu remains open behind user foreground window",
+    "foreground": "User-controlled unrelated browser; no browser input performed",
+    "restoration": "NOT_RUN; avoided interfering with user",
+    "voice": "No intentional leave/join/mic/share action; latest full visible native surface showed reconnection/maintenance. No audio/media continuity assertion."
+  },
+  "fixtures": {
+    "created": 0,
+    "messages": 0,
+    "attachments": 0,
+    "api_sessions": 0,
+    "cleanup": "No test production data/session exists to revoke or delete"
+  },
+  "raw_capture_policy": "No captures, personal names, DM bodies, credentials or cookies copied into these evidence artifacts.",
+  "limitations": [
+    "Not a BOOHTACORD product defect",
+    "Not native keyboard/Escape/focus or image lifecycle acceptance",
+    "No browser criterion can use these native observations"
+  ]
+}

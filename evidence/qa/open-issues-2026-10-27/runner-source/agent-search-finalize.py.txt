@@ -1,0 +1,49 @@
+import ast,json,subprocess
+from common import P,Q,WORK,CONTEXT,read,write,quote,valid,sql,request,now,digest,services,table_state
+before=read(P/'before.json');cfg=read(P/'private/fixture.json');owner=cfg['owner']
+assert len(owner)==24 and all(c in '0123456789abcdef' for c in owner)
+ast.parse((P/'finalize.py').read_text('utf-8'))
+write(P/'finalizer-binding.json',{'utc':now(),'sha256':digest((P/'finalize.py').read_bytes()),'purpose':'Nonce-only final cleanup review after normal DELETE is suppressed; no trigger/config bypass','original_runtime_binding_sha256':digest((P/'runtime-binding.json').read_bytes())})
+users=[valid(u['id']) for u in cfg['users'].values()];ids=','.join(map(quote,users))
+for u in cfg['users'].values():assert sql('SELECT login FROM users WHERE id='+quote(u['id'])+';').strip()==u['login'] and owner in u['login']
+assert sql('SELECT count(*) FROM support_product_identity WHERE account_id IN ('+ids+');').strip()=='0'
+function=sql("SELECT pg_get_functiondef('protect_support_service_account()'::regprocedure);")
+(P/'private/user-delete-trigger.sql').write_text(function,'utf-8')
+deleted=sql('WITH removed AS (DELETE FROM users WHERE id IN ('+ids+') RETURNING id) SELECT count(*) FROM removed;').strip()
+assert deleted=='0' and sql('SELECT count(*) FROM users WHERE id IN ('+ids+');').strip()=='4'
+credentials=read(WORK/'credentials.private.json')
+sql('UPDATE users SET blocked_at=now(),password_hash=(SELECT password_hash FROM users WHERE login='+quote(credentials['admin_login'])+'),updated_at=now() WHERE id IN ('+ids+');')
+assert sql('SELECT count(*) FROM users WHERE id IN ('+ids+') AND blocked_at IS NOT NULL;').strip()=='4'
+statuses=[]
+for alias,u in cfg['users'].items():
+    code,_,_=request('/api/v1/auth/login','POST',{'login':u['login'],'password':credentials['admin_password']})
+    write(P/'private/finalizer-login-status.json',{'alias':alias,'HTTP':code})
+    assert code==403, 'Blocked own fixture did not return documented blocked-account status'
+    statuses.append({'alias':alias,'HTTP':code})
+    code,_,session=request('/api/v1/auth/session',cookie=cfg['sessions'][alias]);assert code==200 and not session['authenticated']
+    assert request('/api/v1/search/messages?query=cleanup',cookie=cfg['sessions'][alias])[0]==401
+after=table_state()
+assert {k:v for k,v in after.items() if k!='users'}=={k:v for k,v in before['database'].items() if k!='users'}
+preexisting=sql("SELECT count(*),COALESCE(md5(string_agg(h,'' ORDER BY h)),'empty') FROM (SELECT md5(row_to_json(x)::text) h FROM users x WHERE id NOT IN ("+ids+')) s;').strip()
+assert preexisting==before['database']['users']
+old=read(P/'private/services-before.json');current=services()
+for name,v in current.items():
+    b=old[name];assert v['State']['Running'] and v['RestartCount']==b['RestartCount']==0 and all(v[k]==b[k] for k in ['Id','Image','Config','HostConfig']) and v['State']['StartedAt']==b['State']['StartedAt']
+assert request('/api/v1/health')[0]==200
+for rel,h in before['source_hashes'].items():assert digest((Q/rel).read_bytes())==h['working_sha256']
+for f,h in read(P/'runtime-binding.json')['helper_hashes'].items():assert digest((P/f).read_bytes())==h
+for f,h in before['frozen_audit_hashes'].items():assert digest((P.parent/'qa-agent-browser'/f).read_bytes())==h
+logs=subprocess.run(['docker','--context',CONTEXT,'logs','--since',before['utc'],'boohtacord-local-qa-api-1'],capture_output=True,timeout=20)
+assert logs.returncode==0;raw=logs.stdout+logs.stderr;(P/'private/api-final.log').write_bytes(raw)
+needles=[credentials['admin_password'],credentials['database_password'],cfg['query'],*users,*[u['login'] for u in cfg['users'].values()],*cfg['sessions'].values()]
+assert not any(n.encode() in raw for n in needles if n)
+public_files=list(P.glob('*.json'));matches=[]
+for f in public_files:
+    content=f.read_bytes()
+    if any(n.encode() in content for n in needles if n):matches.append(f.name)
+assert not matches,'Public record contains private fixture/credential value'
+cleanup={'utc':now(),'result':'PARTIAL_ACCOUNT_ROWS_QUARANTINED_DELETE_SUPPRESSION','own_messages_scopes_attachments_sessions_removed':True,'own_retained_user_rows':4,'own_rows_blocked_all_sessions_removed':True,'normal_login_denial':statuses,'old_cookies_auth_false_and_protected401':True,'preexisting_users_count_hash_preserved':preexisting,'other_nine_table_count_hashes_restored':True,'nine_services_unchanged':list(current),'source_runtime_helpers_frozen_audit_unchanged':True,'health_HTTP':200,'API_log_sha256':digest(raw),'API_log_bytes':len(raw),'secret_fixture_log_and_public_matches':0,'guard_suppressed_ordinary_DELETE_count':int(deleted),'guard_function_sha256':digest(function.encode()),'no_trigger_or_global_config_change':True,'finalizer_history':'First invalid stored password-hash quarantine produced an unrecorded non401/403 response; replaced with valid preexisting local fixture hash while retaining blocked_at, then required documented403. This harness setup is not a product finding.'}
+write(P/'cleanup-final.json',cleanup)
+result=read(P/'summary.json');result.update({'utc':now(),'status':'PASS_SCOPED_RUNTIME_WITH_CLEANUP_BLOCKER','runtime_status':'PASS_SCOPED','runtime_checks_completed':23,'HTTP_pages':55,'cleanup_status':cleanup['result'],'cleanup_PASS':False,'error_class':'ordinary-own-user-DELETE-suppressed-by-existing-trigger','native_tests':{'PASS':12,'skip':0},'attempt_history':['attempt1-summary.json','attempt2-summary.json'],'cleanup_evidence':'cleanup-final.json','new_search_bug':False})
+write(P/'summary.json',result)
+print('PASS23 search controls/55HTTP pages;4own account rows quarantined(login denied),all own sessions/resources removed;preexisting data/services/source unchanged;SQL DELETE blocker retained')

@@ -1,0 +1,15 @@
+{
+  "status": "FAIL_PRODUCT_ORDINARY_USER_DELETE",
+  "source_behavior": "Source normal-user DELETE returns0 and retains row without an error",
+  "expected_behavior": "Allowed ordinary-user DELETE returns1 and removes row; support identity DELETE remains42501 and normal UPDATE persists",
+  "counterexample_assertions": "PASS6_REAL_POSTGRESQL_CONTROLS",
+  "command": "python -B -X utf8 .out/qa-guard-teardown/run.py",
+  "command_exit_limit": "Counterexample validator success verifies reproduction; it does not mean product acceptance PASS",
+  "source_and_counterfactual": "counterexample.json",
+  "fixture_cleanup": "cleanup-final-after-root-handoff.json",
+  "product_fix_applied": false,
+  "scope": "Isolated SQL/fixture teardown, not production or user-facing account deletion API",
+  "new_bug": "PENDING_IMMUTABLE_EVIDENCE",
+  "command_scope_note": "Historical combined wrapper: six counterexample controls completed before later teardown-helper cast failure. Corrected separately sealed teardown used retry.py; never replay old fixture IDs/cookies. Pure counterexample function is counter.counterexample, not a nonexistent counterexample.py.",
+  "teardown_retry_command": "python -B -X utf8 .out/qa-guard-teardown/retry.py"
+}

@@ -1,0 +1,49 @@
+{
+  "at_utc": "2026-10-28T19:52:34.084775+00:00",
+  "status": "PASS_OWN_MESSAGES_AND_ONE_PRODUCER_SESSION_CLEANED",
+  "new_message_count": 3,
+  "own_messages": [
+    {
+      "alias": "pre",
+      "tombstone_HTTP": 200,
+      "body_blank_attachments_empty": true
+    },
+    {
+      "alias": "post",
+      "tombstone_HTTP": 200,
+      "body_blank_attachments_empty": true
+    },
+    {
+      "alias": "third",
+      "tombstone_HTTP": 200,
+      "body_blank_attachments_empty": true
+    }
+  ],
+  "old_message_count_unchanged": 34,
+  "owned_sessions_revoked_or_confirmed_unauthenticated": 1,
+  "live_unauthenticated_readback": true,
+  "force_stop_count": 1,
+  "phone_state": {
+    "at_utc": "2026-10-28T19:52:33.946722+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": false,
+    "voice_connected": false,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false
+  },
+  "owned_DM_composer_empty": true,
+  "no_native_logout_clear_data_reinstall_permissions_voice_orientation_font_changes": true,
+  "native_exit": 0,
+  "native_skips": 0,
+  "old_phone_artifacts_still_frozen_SHA_match": true
+}

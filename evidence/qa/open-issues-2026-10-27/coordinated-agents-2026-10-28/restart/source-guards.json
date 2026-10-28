@@ -1,0 +1,69 @@
+{
+  "at_utc": "2026-10-28T19:36:42.699869+00:00",
+  "workflow_class": "review_gate",
+  "route": "clients/flutter/features/session/lifecycle/restore",
+  "packet": "native-auth-realtime-continuity-one-cold-process-restart",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "source_SHA256": {
+    "AGENTS.md": "c2eb9bdb4d9fce83ceb972dacdf89c9bb82a54ac1511e94f5004671f11a64361",
+    "SKILL.md": "8c67eb1e71ed7cf9932bc72c360aac8f94f58ec19736e2acbfe3b288778bb685",
+    "structure.config.yaml": "3ca9f5484516e975a6a325b6920ef37bd6ec69f5ed05b29fa5beb933a3114ebe",
+    "clients/flutter/pubspec.yaml": "de0377a63ab77456df14f211b498b8f2b7b12cf1773f65ff9abf4975626a76de",
+    "docs/adr/ADR-006-android-client.md": "3c22906d9509dca613d43fa2f3eff689fc393e466215dde92fdff56cfa4d65be",
+    "clients/flutter/lib/src/features/session/lifecycle/restore.dart": "eae189b7bba63347016e26daa250ec562fbe0728a709c0b1c11ff88683a11902",
+    "clients/flutter/lib/src/features/session/lifecycle/controller.dart": "eb2f75215b8af4ad0ec5bf6c7576f9a4fa07e6907ddebffc13adb7fdac57dd3c",
+    "clients/flutter/lib/src/features/session/lifecycle/effects.dart": "07e38ec0d16c516fafdb071e7e3f9837c810750b838768aa1cf1381455040bfa",
+    "clients/flutter/lib/src/features/session/authentication/api.dart": "0fa57999abc4bc52dab773479b70ecb363bfec138904381d11813aa9684c0288",
+    "clients/flutter/lib/src/core/session/session_store.dart": "1ef2f2d25a776ded2916ee9ec081f8c6077e826e6613558b579a221921122acd",
+    "clients/flutter/lib/src/core/http/transport.dart": "5ae85d5d826625e3fe4a2690e2339b64509122a95ff2d1318366fa44d6511e24",
+    "clients/flutter/test/session_lifecycle/restore_test.dart": "10f0026106c1c01317d40ac3b7612bcc02c1a95da3ac8903e4ecdada862937cb",
+    "clients/flutter/test/api_session_restore_test.dart": "f8712781aab4d4cb5e65bb081b58c34b9379afe74ee239e14dd10be4d1db3c69"
+  },
+  "approved_brief_SHA256": "f2035ef83da4366b5f1aa69bb8742d87f5f7512c6adc22075a5c17c5f281a3bb",
+  "APK_SHA256": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+  "APK_version": "1.0.47+2082",
+  "model": "SM-A576B",
+  "Android": "16",
+  "phone_baseline": {
+    "at_utc": "2026-10-28T19:36:40.074032+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": false,
+    "voice_connected": false,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false
+  },
+  "owned_DM_composer_empty": true,
+  "viewer_closed": true,
+  "projection_null": true,
+  "previous_phone_artifacts_frozen_SHA_match": true,
+  "force_stop_count": 0,
+  "normal_login_attempts": 0,
+  "max_new_owned_messages": 3,
+  "stop_conditions": [
+    "one login denial prevents restart; no retry",
+    "passwordprompt,otherapp,lockscreen,voice/mic/projectionactive",
+    "noownedreceiver/profilematch; noinventednavigation",
+    "oneforce-stop+startonly; no cookieextraction/clear-data/reinstall/security/font/orientation/logoutnative/voicejoinleave"
+  ],
+  "limits": [
+    "I62.C1 supplemental physical auth/realtime-after-processrestartonly; fullQA/media gates remainunaccepted",
+    "No draftpersistencepromise fromdesktopcheckpoint; no drafttest",
+    "One bounded observed delivery window notp95 ortransportproof"
+  ],
+  "baseline_capture": {
+    "file": "[PRIVATE_ARTIFACT_PATH_RETAINED_LOCALLY]",
+    "SHA256": "c48a4edc8cc1c2628873b469587c53a936d3a86838e4404c04f6658a1613ec60"
+  },
+  "native_exit": 0,
+  "native_skips": 0
+}

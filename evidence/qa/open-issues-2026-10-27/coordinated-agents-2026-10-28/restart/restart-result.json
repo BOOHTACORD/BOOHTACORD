@@ -1,0 +1,63 @@
+{
+  "at_utc": "2026-10-28T19:43:37.407767+00:00",
+  "force_stop_count": 1,
+  "native_skips": 0,
+  "before_pid_count": 1,
+  "before": {
+    "at_utc": "2026-10-28T19:43:36.907930+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": false,
+    "voice_connected": false,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false
+  },
+  "projection_null_before": true,
+  "actions": [
+    "ONE ordinaryforce-stop approvedpackageonly",
+    "ONE ordinarynativeMainActivitystart"
+  ],
+  "one_force_stop_only": true,
+  "force_stop_native_exit": 0,
+  "no_process_after_force_stop": true,
+  "start_native_exit": 0,
+  "PID_changed": true,
+  "workspace_observed": true,
+  "workspace_observation_elapsed_ms_including_ADB": 2969,
+  "profile_guard_child_exit": 0,
+  "status": "PASS_SCOPED_ONE_COLD_PROCESS_RESTART_OWN_PROFILE_DM_RESTORED_UI_ONLY_PENDING_POST_CONTROL",
+  "native_exit": 0,
+  "after": {
+    "at_utc": "2026-10-28T19:43:59.200377+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": false,
+    "voice_connected": false,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false
+  },
+  "projection_null_after": true,
+  "after_capture": {
+    "file": "[PRIVATE_ARTIFACT_PATH_RETAINED_LOCALLY]",
+    "SHA256": "f49e19697abef543dda94054390ac039240d899001aba879fca4fa192250d6cb"
+  },
+  "finished_at_utc": "2026-10-28T19:43:59.929490+00:00"
+}

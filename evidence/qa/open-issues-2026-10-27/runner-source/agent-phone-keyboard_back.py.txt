@@ -1,0 +1,20 @@
+import secrets,time
+from common import *
+assert not (P/'keyboard-result.json').exists();c=read(P/'private/config.private.json');assert own(c);before=state();assert not before['voice_connected'] and not before['microphone_fgs'];marker='BOOHTACORD-QA-phone-draft-'+secrets.token_hex(6)
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'workflow_class':'review_gate','route':'clients/flutter/services/composer_draft_memory','packet':'native-Android-owned-DM-keyboard-Back','status':'RUNNING','no_send_control_activated':True,'typed_synthetic_ASCII_characters':len(marker),'native_skips':0,'actions':[],'phone_state_before':before,'source_SHA256':{n:digest((Q/n).read_bytes()) for n in ['clients/flutter/lib/src/services/composer_draft_memory.dart','clients/flutter/lib/src/features/direct/send_state/send.dart','clients/flutter/test/composer_draft_memory_test.dart']}}
+def field(rows):
+ f=[n for n in rows if n.get('package')==APP and n.get('class')=='android.widget.EditText'];assert len(f)==1;return f[0]
+def snap(name):
+ rows=nodes();f=field(rows);ime=call('shell','dumpsys','input_method');(P/'private'/('keyboard-'+name+'-ime.private.txt')).write_text(ime,encoding='utf-8');write(P/'private'/('keyboard-'+name+'-hierarchy.private.json'),[dict(n.attrib) for n in rows]);return {'capture':capture('keyboard-'+name),'composer_bounds':bounds(f),'own_marker_in_composer':f.get('text')==marker,'composer_empty':not f.get('text'),'marker_visible_in_history':any(marker in label(n) and n.get('class')!='android.widget.EditText' for n in rows),'IME_reported_input_shown':bool(re.search(r'mInputShown=true|mIsInputViewShown=true',ime)),'IME_node_packages':sorted(set(n.get('package') for n in rows if any(s in (n.get('package')or'') for s in ['inputmethod','honeyboard'])))}
+try:
+ rows=nodes();f=field(rows);b=bounds(f);assert not f.get('text');call('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2));time.sleep(.4);call('shell','input','text',marker);r['actions']+=['Tap current unique empty composer from observed bounds','Input unique ASCII synthetic draft without newline or Send'];r['with_keyboard']=snap('shown');assert r['with_keyboard']['own_marker_in_composer'] and not r['with_keyboard']['marker_visible_in_history'];call('shell','input','keyevent','KEYCODE_BACK');time.sleep(.3);r['actions'].append('System Back once');r['after_Back']=snap('after-back');assert r['after_Back']['own_marker_in_composer'] and not r['after_Back']['marker_visible_in_history'];r['status']='PASS_SCOPED_NATIVE_OWN_DM_DRAFT_SYSTEM_BACK'
+except Exception as e:r['status']='CONTROLLER_FAILURE_OR_UNPROVEN_NATIVE_STATE';r['error_type']=type(e).__name__
+finally:
+ try:
+  rows=nodes();f=field(rows)
+  if f.get('text')==marker:
+   b=bounds(f);call('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2));call('shell','input','keyevent','KEYCODE_MOVE_END',*(['KEYCODE_DEL']*len(marker)));assert not field(nodes()).get('text');call('shell','input','keyevent','KEYCODE_BACK');r['actions'].append('Exact own synthetic draft cleared with bounded Backspace then system Back')
+  r['after_cleanup']=snap('cleaned');assert own(c) and r['after_cleanup']['composer_empty'] and not r['after_cleanup']['marker_visible_in_history'];after=state();assert after['permission']==before['permission'] and not after['voice_connected'] and not after['microphone_fgs'];r['phone_state_after']=after;r['cleanup']='PASS_OWN_COMPOSER_EMPTY_NO_SEND';r['native_exit']=0 if r['status'].startswith('PASS') else 2
+ except Exception as e:r['cleanup']='BLOCKED_CLEANUP_CHECK';r['cleanup_error_type']=type(e).__name__;r['native_exit']=2
+ r['finished_at_utc']=datetime.now(timezone.utc).isoformat();write(P/'keyboard-result.json',r);print({k:r[k] for k in ['status','cleanup','native_exit','native_skips']})
+raise SystemExit(r['native_exit'])

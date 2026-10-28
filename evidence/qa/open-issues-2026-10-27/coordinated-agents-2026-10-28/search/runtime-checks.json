@@ -1,0 +1,456 @@
+{
+  "utc": "2026-10-28T19:43:36.745218+00:00",
+  "checks": [
+    {
+      "name": "A-global-mixed-equal-time-paging",
+      "actor": "a",
+      "expected_HTTP": 200,
+      "actual_HTTP": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "result": "PASS",
+      "pages": 6,
+      "expected_rows": [
+        "dm_late",
+        "dm_tie",
+        "channel_tie",
+        "channel_plain",
+        "dm_plain",
+        "channel_start"
+      ],
+      "actual_rows": [
+        "dm_late",
+        "dm_tie",
+        "channel_tie",
+        "channel_plain",
+        "dm_plain",
+        "channel_start"
+      ],
+      "first_cursor_sha256": "a3ecee3671dd865a2872d148addd3ee8ba0f19396e3d8104bc16f811c08167b4"
+    },
+    {
+      "name": "A-explicit-own-DM",
+      "actor": "a",
+      "expected_HTTP": 200,
+      "actual_HTTP": [
+        200,
+        200,
+        200
+      ],
+      "result": "PASS",
+      "pages": 3,
+      "expected_rows": [
+        "dm_late",
+        "dm_tie",
+        "dm_plain"
+      ],
+      "actual_rows": [
+        "dm_late",
+        "dm_tie",
+        "dm_plain"
+      ],
+      "first_cursor_sha256": "a3ecee3671dd865a2872d148addd3ee8ba0f19396e3d8104bc16f811c08167b4"
+    },
+    {
+      "name": "B-sees-both-owned-pairs",
+      "actor": "b",
+      "expected_HTTP": 200,
+      "actual_HTTP": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "result": "PASS",
+      "pages": 8,
+      "expected_rows": [
+        "foreign_late",
+        "dm_late",
+        "dm_tie",
+        "channel_tie",
+        "foreign_tie",
+        "channel_plain",
+        "dm_plain",
+        "channel_start"
+      ],
+      "actual_rows": [
+        "foreign_late",
+        "dm_late",
+        "dm_tie",
+        "channel_tie",
+        "foreign_tie",
+        "channel_plain",
+        "dm_plain",
+        "channel_start"
+      ],
+      "first_cursor_sha256": "ab44d0f411744a016298b6d4b68e746d6bf1b514f8f26af364892f3945f4681f"
+    },
+    {
+      "name": "C-global-excludes-AB",
+      "actor": "c",
+      "expected_HTTP": 200,
+      "actual_HTTP": [
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "result": "PASS",
+      "pages": 5,
+      "expected_rows": [
+        "foreign_late",
+        "channel_tie",
+        "foreign_tie",
+        "channel_plain",
+        "channel_start"
+      ],
+      "actual_rows": [
+        "foreign_late",
+        "channel_tie",
+        "foreign_tie",
+        "channel_plain",
+        "channel_start"
+      ],
+      "first_cursor_sha256": "ab44d0f411744a016298b6d4b68e746d6bf1b514f8f26af364892f3945f4681f"
+    },
+    {
+      "name": "ADMIN-global-no-DM-override",
+      "actor": "admin",
+      "expected_HTTP": 200,
+      "actual_HTTP": [
+        200,
+        200,
+        200
+      ],
+      "result": "PASS",
+      "pages": 3,
+      "expected_rows": [
+        "channel_tie",
+        "channel_plain",
+        "channel_start"
+      ],
+      "actual_rows": [
+        "channel_tie",
+        "channel_plain",
+        "channel_start"
+      ],
+      "first_cursor_sha256": "002b9360e19181b56ceca9931bfe7f619bf2bb0131963200d19235d1b0940a27"
+    },
+    {
+      "name": "A-authorB-attached-positive",
+      "actor": "a",
+      "expected_HTTP": 200,
+      "actual_HTTP": [
+        200
+      ],
+      "result": "PASS",
+      "pages": 1,
+      "expected_rows": [
+        "dm_tie"
+      ],
+      "actual_rows": [
+        "dm_tie"
+      ],
+      "first_cursor_sha256": null
+    },
+    {
+      "name": "B-authorB-attached-includes-foreign-positive",
+      "actor": "b",
+      "expected_HTTP": 200,
+      "actual_HTTP": [
+        200,
+        200
+      ],
+      "result": "PASS",
+      "pages": 2,
+      "expected_rows": [
+        "dm_tie",
+        "foreign_tie"
+      ],
+      "actual_rows": [
+        "dm_tie",
+        "foreign_tie"
+      ],
+      "first_cursor_sha256": "e31c17d45637417b8db1e2f488a6fc8c573a3eb91a2aa70d62fa15cff8ef1993"
+    },
+    {
+      "name": "A-authorB-no-attachment",
+      "actor": "a",
+      "expected_HTTP": 200,
+      "actual_HTTP": [
+        200
+      ],
+      "result": "PASS",
+      "pages": 1,
+      "expected_rows": [
+        "dm_plain"
+      ],
+      "actual_rows": [
+        "dm_plain"
+      ],
+      "first_cursor_sha256": null
+    },
+    {
+      "name": "A-authorC-empty-despite-B-positive",
+      "actor": "a",
+      "expected_HTTP": 200,
+      "actual_HTTP": [
+        200
+      ],
+      "result": "PASS",
+      "pages": 1,
+      "expected_rows": [],
+      "actual_rows": [],
+      "first_cursor_sha256": null
+    },
+    {
+      "name": "B-authorC-readable-positive",
+      "actor": "b",
+      "expected_HTTP": 200,
+      "actual_HTTP": [
+        200
+      ],
+      "result": "PASS",
+      "pages": 1,
+      "expected_rows": [
+        "foreign_late"
+      ],
+      "actual_rows": [
+        "foreign_late"
+      ],
+      "first_cursor_sha256": null
+    },
+    {
+      "name": "A-channel-filter-no-DM",
+      "actor": "a",
+      "expected_HTTP": 200,
+      "actual_HTTP": [
+        200
+      ],
+      "result": "PASS",
+      "pages": 1,
+      "expected_rows": [
+        "channel_tie"
+      ],
+      "actual_rows": [
+        "channel_tie"
+      ],
+      "first_cursor_sha256": null
+    },
+    {
+      "name": "A-UTC-equivalent-DST-bounds",
+      "actor": "a",
+      "expected_HTTP": 200,
+      "actual_HTTP": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "result": "PASS",
+      "pages": 6,
+      "expected_rows": [
+        "dm_late",
+        "dm_tie",
+        "channel_tie",
+        "channel_plain",
+        "dm_plain",
+        "channel_start"
+      ],
+      "actual_rows": [
+        "dm_late",
+        "dm_tie",
+        "channel_tie",
+        "channel_plain",
+        "dm_plain",
+        "channel_start"
+      ],
+      "first_cursor_sha256": "a3ecee3671dd865a2872d148addd3ee8ba0f19396e3d8104bc16f811c08167b4"
+    },
+    {
+      "name": "A-exclusive-end-at-fold-second-instant",
+      "actor": "a",
+      "expected_HTTP": 200,
+      "actual_HTTP": [
+        200,
+        200
+      ],
+      "result": "PASS",
+      "pages": 2,
+      "expected_rows": [
+        "dm_tie",
+        "channel_tie"
+      ],
+      "actual_rows": [
+        "dm_tie",
+        "channel_tie"
+      ],
+      "first_cursor_sha256": "e31c17d45637417b8db1e2f488a6fc8c573a3eb91a2aa70d62fa15cff8ef1993"
+    },
+    {
+      "name": "c-foreign-explicit-DM-denied",
+      "actor": "c",
+      "expected_HTTP": 404,
+      "actual_HTTP": [
+        404
+      ],
+      "result": "PASS",
+      "pages": 1,
+      "expected_rows": [],
+      "actual_rows": [],
+      "first_cursor_sha256": null
+    },
+    {
+      "name": "admin-foreign-explicit-DM-denied",
+      "actor": "admin",
+      "expected_HTTP": 404,
+      "actual_HTTP": [
+        404
+      ],
+      "result": "PASS",
+      "pages": 1,
+      "expected_rows": [],
+      "actual_rows": [],
+      "first_cursor_sha256": null
+    },
+    {
+      "name": "C-reuses-A-cursor-still-own-ACL",
+      "actor": "c",
+      "expected_HTTP": 200,
+      "actual_HTTP": [
+        200,
+        200,
+        200,
+        200
+      ],
+      "result": "PASS",
+      "pages": 4,
+      "expected_rows": [
+        "channel_tie",
+        "foreign_tie",
+        "channel_plain",
+        "channel_start"
+      ],
+      "actual_rows": [
+        "channel_tie",
+        "foreign_tie",
+        "channel_plain",
+        "channel_start"
+      ],
+      "first_cursor_sha256": "002b9360e19181b56ceca9931bfe7f619bf2bb0131963200d19235d1b0940a27"
+    },
+    {
+      "name": "ADMIN-reuses-A-cursor-no-DM",
+      "actor": "admin",
+      "expected_HTTP": 200,
+      "actual_HTTP": [
+        200,
+        200,
+        200
+      ],
+      "result": "PASS",
+      "pages": 3,
+      "expected_rows": [
+        "channel_tie",
+        "channel_plain",
+        "channel_start"
+      ],
+      "actual_rows": [
+        "channel_tie",
+        "channel_plain",
+        "channel_start"
+      ],
+      "first_cursor_sha256": "002b9360e19181b56ceca9931bfe7f619bf2bb0131963200d19235d1b0940a27"
+    },
+    {
+      "name": "missing-timezone",
+      "actor": "a",
+      "expected_HTTP": 400,
+      "actual_HTTP": [
+        400
+      ],
+      "result": "PASS",
+      "pages": 1,
+      "expected_rows": [],
+      "actual_rows": [],
+      "first_cursor_sha256": null
+    },
+    {
+      "name": "equal-UTC-instants",
+      "actor": "a",
+      "expected_HTTP": 400,
+      "actual_HTTP": [
+        400
+      ],
+      "result": "PASS",
+      "pages": 1,
+      "expected_rows": [],
+      "actual_rows": [],
+      "first_cursor_sha256": null
+    },
+    {
+      "name": "wrong-boolean",
+      "actor": "a",
+      "expected_HTTP": 400,
+      "actual_HTTP": [
+        400
+      ],
+      "result": "PASS",
+      "pages": 1,
+      "expected_rows": [],
+      "actual_rows": [],
+      "first_cursor_sha256": null
+    },
+    {
+      "name": "bad-author",
+      "actor": "a",
+      "expected_HTTP": 400,
+      "actual_HTTP": [
+        400
+      ],
+      "result": "PASS",
+      "pages": 1,
+      "expected_rows": [],
+      "actual_rows": [],
+      "first_cursor_sha256": null
+    },
+    {
+      "name": "mixed-conversations",
+      "actor": "a",
+      "expected_HTTP": 400,
+      "actual_HTTP": [
+        400
+      ],
+      "result": "PASS",
+      "pages": 1,
+      "expected_rows": [],
+      "actual_rows": [],
+      "first_cursor_sha256": null
+    },
+    {
+      "name": "anonymous-auth-required",
+      "actor": "anonymous",
+      "expected_HTTP": 401,
+      "actual_HTTP": [
+        401
+      ],
+      "result": "PASS",
+      "pages": 1,
+      "expected_rows": [],
+      "actual_rows": [],
+      "first_cursor_sha256": null
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "workflow_class": "review_gate",
+  "task_size": "medium",
+  "structure_mode": "structure_no_rg",
+  "search_stage": "exact_leaf",
+  "route": "FV2-022 protected image viewer open/unavailable lifecycle",
+  "active_doctrine": [
+    "Project AGENTS.md/SKILL.md",
+    "Slavik Gym v5.1",
+    "Computer Use SKILL.md, guidance.md, confirmations.md"
+  ],
+  "limits": {
+    "file_target": 100,
+    "file_hard": 120,
+    "leaf_production_target": 8,
+    "leaf_production_hard": 16
+  },
+  "scoped_search_boundary": [
+    "clients/flutter/lib/src/widgets/message_attachment_list.dart",
+    "clients/flutter/test/message_attachment_list_test.dart"
+  ],
+  "native_manifest": "clients/flutter/pubspec.yaml",
+  "backlog": "FV2-022; deps FV2-001,FV2-021,T-044,T-050,T-051",
+  "baseline": {
+    "source_head": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+    "installed_declared_source": "f5cd783518349e2f79a78910a91908882ba87cc1",
+    "installed_version": "1.0.47+82",
+    "existing_voice": "Connected; never intentionally changed",
+    "existing_git_status": [
+      "M clients/flutter/macos/Flutter/GeneratedPluginRegistrant.swift",
+      "M clients/flutter/windows/flutter/generated_plugin_registrant.cc",
+      "M clients/flutter/windows/flutter/generated_plugin_registrant.h",
+      "M clients/flutter/windows/flutter/generated_plugins.cmake"
+    ]
+  },
+  "checks": {
+    "executed": [
+      "53-file local installed manifest consistency",
+      "Exact source/test Git blob comparison across declared installed source and checkout HEAD",
+      "Native read-only state and one settings-menu open"
+    ],
+    "nearest_native_command": "flutter test test/message_attachment_list_test.dart",
+    "nearest_native_status": "NOT_RUN; immutable source supplement only, no acceptance substitution"
+  },
+  "stop_condition": "One bounded own image lifecycle with fresh history deletion control, Escape and focus, or concrete controller/ownership blocker",
+  "unresolved": [
+    "Windows current account is not yet matched to a confirmed existing owned receiver DM",
+    "No fresh producer session created while maintenance banner present",
+    "User input guard stops native keyboard verification",
+    "Existing oversized widget is unchanged; no conversion in verification packet"
+  ],
+  "effects": "No source, Git/index, public evidence, GitHub, credentials, API, sessions, media, device or production data mutations",
+  "ended_utc": "2026-10-28 19:23:29 UTC"
+}

@@ -1,0 +1,8 @@
+{
+  "status": "CONTROLLER_ASSERTION_FAILURE_NOT_PRODUCT_BUG",
+  "at_utc": "2026-10-28T19:38:21.422425+00:00",
+  "native_exit": 1,
+  "native_skips": 0,
+  "diagnostic": "Native footer includes avatarinitial as preceding line; expected_at_start=false despite privatelymatchedname in4-linelabel. Preserve source pattern; correctedbinding uses exactline equality at footer bounds. No restart/mutation/sessionchange",
+  "failed_source": "assert len(matches)==1 and label(matches[0]).startswith(expected+'\\n')"
+}

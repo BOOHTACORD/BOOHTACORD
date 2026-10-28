@@ -1,0 +1,24 @@
+{
+  "at_utc": "2026-10-28T19:30:48.908605+00:00",
+  "before": {
+    "retry_visible": true,
+    "banner_visible": true
+  },
+  "no_fault_injection": true,
+  "trigger": "Existing observed connection recovery state after DocumentsUI/background; backend maintenance is separately observed by Windows, cause UNKNOWN",
+  "actions": [
+    "Observed native retry control activated"
+  ],
+  "native_skips": 0,
+  "after_retry": {
+    "owned_DM_composer_empty": true,
+    "retry_visible": false,
+    "banner_visible": false,
+    "capture": {
+      "file": "[PRIVATE_ARTIFACT_PATH_RETAINED_LOCALLY]",
+      "SHA256": "4f06d20339fa4b5658c71c6b44786e5614aed3f8d66607f142da0b4c7c31bc30"
+    }
+  },
+  "status": "PASS_SCOPED_VISIBLE_RETRY_BANNER_CLEARED",
+  "native_exit": 0
+}

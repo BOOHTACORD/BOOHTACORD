@@ -339,3 +339,7 @@ Tracked Android defect: [#589](https://github.com/Egkurilov/BOOHTACORD/issues/58
 ## DM attachment claim checkpoint — 2026-10-28
 
 [Owner/scope/atomic claim evidence](production-dm-attachment-claim/README.md). Detailed actual per-case outcomes, nearest real-PG checks, native positive-control status and cleanup are retained separately.81 scoped cases; all480 source rows and broad criteria statuses retained.
+
+## Coordinated agents checkpoint — 2026-10-28
+
+[Device/API outcomes and original source qualifiers](coordinated-agents-2026-10-28/README.md):91scoped sets,480unchanged source rows plus13whole-gate qualifiers. Android6downloads and scoped lifecycle/keyboard; Windows7read-onlysections and menu keyboard; browser policyBLOCKED.23isolated search controls pass, separate DBguard defect confirmed. All full gates remain open;43consolidation decisions untouched.

@@ -1,0 +1,27 @@
+from http.cookies import SimpleCookie
+import secrets
+from common import *
+assert read(P/'source-guards.json')['force_stop_count']==0 and not (P/'availability.json').exists();known=read(Q/'.out/qa-native-image-formats/private/config.private.json');profile=read(G/'private-fixture.json')['b'];assert profile['id']==known['sender_account'] and profile['login']==known['peer']
+c={'nonce':secrets.token_hex(6),'origin':ORIGIN,'sessions':[],'messages':[],'conversation':valid(known['conversation']),'phone_account':valid(known['phone_account']),'sender_account':valid(profile['id']),'peer':profile['login'],'force_stop_count':0,'login_attempts':1};write(P/'private/config.private.json',c)
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'normal_login_attempts':1,'TLS_default_certificate_validation':True,'Origin':ORIGIN,'force_stop_count':0,'native_skips':0}
+try:
+ status,headers,body=request('/api/v1/auth/login','POST',{'login':profile['login'],'password':profile['password']});r['login_HTTP']=status
+ if status!=204:
+  (P/'private/login-denial-response.private.bin').write_bytes(body);r.update(status='BLOCKED_NORMAL_PRODUCER_LOGIN_DENIED_NO_RESTART',native_exit=2,dependent_native_restart='BLOCKED',no_login_retry=True,session_created=False)
+ else:
+  cookie=SimpleCookie()
+  for k,v in headers:
+   if k.lower()=='set-cookie':cookie.load(v)
+  assert len(cookie)==1;c['cookie']='; '.join(k+'='+v.value for k,v in cookie.items());c['sessions']=[c['cookie']];write(P/'private/config.private.json',c)
+  flags=all(bool(v['secure']) and bool(v['httponly']) for v in cookie.values());assert flags;s,_,v=api('/api/v1/auth/session',cookie=c['cookie']);assert s==200 and v['authenticated'] and v['role']=='MEMBER' and v['account_id']==c['sender_account']
+  s,_,v=api('/api/v1/direct-messages',cookie=c['cookie']);assert s==200;found=[d for d in v['direct_messages'] if d['id']==c['conversation'] and d['other_participant_id']==c['phone_account']];assert len(found)==1;c['DM_participant_row']=found[0]
+  baseline={};cursor=None
+  for _ in range(6):
+   s,_,page=api('/api/v1/direct-messages/'+c['conversation']+'/messages'+('?before='+cursor if cursor else ''),cookie=c['cookie']);assert s==200
+   for m in page['messages']:baseline[m['id']]=digest(json.dumps(m,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode())
+   cursor=page.get('next_cursor')
+   if not cursor:break
+  assert not cursor;c['preexisting_all_message_hashes']=baseline;write(P/'private/config.private.json',c)
+  r.update(status='PASS_PRODUCER_AVAILABLE_OWN_SESSION_EXISTING_DM_GUARDED',native_exit=0,session_created=True,secure_HttpOnly_cookie=True,live_session_HTTP=200,producer_role='MEMBER',exact_existing_receiver_DM_verified=True,preexisting_message_count=len(baseline),DM_row_field_names=list(found[0]),dependent_native_restart='READY_FOR_NATIVE_PROFILE_GUARD')
+except Exception as e:r.update(status='BLOCKED_PRODUCER_AVAILABILITY_GUARD_OR_TRANSPORT',native_exit=2,error_type=type(e).__name__,session_created=bool(c['sessions']),dependent_native_restart='BLOCKED',no_login_retry=True)
+write(P/'availability.json',r);print({k:v for k,v in r.items() if k!='DM_row_field_names'});raise SystemExit(r['native_exit'])

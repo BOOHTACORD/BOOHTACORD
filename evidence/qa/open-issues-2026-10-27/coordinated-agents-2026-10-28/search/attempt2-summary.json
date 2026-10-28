@@ -1,0 +1,21 @@
+{
+  "utc": "2026-10-28T19:44:13.925989+00:00",
+  "status": "FAIL_OR_CONTROLLER_REQUIRES_REVIEW",
+  "criterion": "I287.C3",
+  "literal_source_criterion": "#76: actual PostgreSQL author/date/attachments query, equal timestamps/stable cursor, timezone/DST, deleted and foreign-DM ACL, query plans; Web/native filter persistence and ordinary pointer/keyboard submission. Related #258/#54.",
+  "protects": "Current caller/own-DM ACL is retained under author,ATTACHED metadata,date instants and positional mixed-source cursor pagination",
+  "command": "python -X utf8 .out/qa-agent-search/run.py",
+  "platform": "Windows11 HTTP producer against existing isolated local API image source072426d6/PostgreSQL17.6; native Go1.26.4 supplement",
+  "mandatory_when": "Before accepting search filter/cursor server facet of I287.C3; does not close full criterion or QA287",
+  "runtime_checks_completed": 23,
+  "error_class": "cleanup-AssertionError",
+  "cleanup_PASS": false,
+  "limits": [
+    "No CUA/browser/physical/UI filter persistence or pointer/keyboard acceptance",
+    "SQL-seeded metadata attachments; no real upload/download/file contents",
+    "Query plans,server-local calendar dates,named-zone DST resolution,load,production and complete gate NOT_RUN",
+    "DST test compares explicit RFC3339 offset instants through the repeated local hour; PostgreSQL timezone configuration unchanged",
+    "Native hidden-attachment case is separate from3ATTACHED metadata runtimefixtures"
+  ],
+  "production_touched": false
+}

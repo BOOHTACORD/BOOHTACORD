@@ -1,0 +1,28 @@
+import hashlib,http.client,json,subprocess,sys,uuid
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];OLD=Q/'.out/qa-agent-search';sys.path.insert(0,str(Q/'.out/local-qa'))
+from profile_common import CONTEXT,PROJECT,SOURCE
+def read(p):return json.loads(p.read_text('utf-8-sig'))
+def write(p,v):p.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n','utf-8')
+def now():return datetime.now(timezone.utc).isoformat()
+def sha(b):return hashlib.sha256(b).hexdigest()
+def quote(v):return "'"+str(v).replace("'","''")+"'"
+def valid(v):assert str(uuid.UUID(v))==v;return v
+def docker(*args,input=None):
+    result=subprocess.run(['docker','--context',CONTEXT,*args],cwd=Q,input=input,capture_output=True,timeout=25)
+    if result.returncode:
+        (P/'private/last-failed-command.stderr').write_bytes(result.stderr)
+        raise RuntimeError('Guarded local Docker command failed; private stderr preserved; connection-close rolls back transaction')
+    return result.stdout
+def sql(text):return docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-qAt','-v','ON_ERROR_STOP=1',input=text.encode()).decode()
+def table_state():
+    return {t:sql("SELECT count(*),COALESCE(md5(string_agg(h,'' ORDER BY h)),'empty') FROM (SELECT md5(row_to_json(x)::text) h FROM "+t+' x) s;').strip() for t in read(OLD/'before.json')['database']}
+def services():return {n:json.loads(docker('inspect',PROJECT+'-'+n+'-1'))[0] for n in read(OLD/'private/services-before.json')}
+def guard_state():return sql("SELECT tgenabled,md5(pg_get_triggerdef(oid)),md5(pg_get_functiondef(tgfoid)) FROM pg_trigger WHERE tgrelid='public.users'::regclass AND tgname='support_service_account_guard';").strip()
+def health():
+    c=http.client.HTTPConnection('127.0.0.1',18088,timeout=5);c.request('GET','/api/v1/health',headers={'Host':'localhost:18088'});r=c.getresponse();status=r.status;r.read(65536);c.close();return status
+def frozen():
+    paths=[Path(x['path']) for x in read(OLD/'integrity.json')['artifacts']]+[OLD/'integrity.json']
+    paths += [Q/'.out/qa-agent-browser'/n for n in read(OLD/'before.json')['frozen_audit_hashes']]
+    return {str(p):sha(p.read_bytes()) for p in paths}

@@ -1,0 +1,15 @@
+import sys,time
+from pathlib import Path
+sys.path.insert(0,str(Path('.out/qa-agent-phone').resolve()))
+from common import *
+c=read(P/'private/config.private.json');assert own(c);rows=nodes();before={'retry_visible':any(label(n)=='Повторить подключение' for n in rows),'banner_visible':any(label(n) in ['Восстанавливаем подключение…','Сервер пока недоступен'] for n in rows)};r={'at_utc':datetime.now(timezone.utc).isoformat(),'before':before,'no_fault_injection':True,'trigger':'Existing observed connection recovery state after DocumentsUI/background; backend maintenance is separately observed by Windows, cause UNKNOWN','actions':[],'native_skips':0}
+try:
+ if before['retry_visible']:
+  tap_named('Повторить подключение');r['actions'].append('Observed native retry control activated')
+  for _ in range(5):
+   rows=nodes()
+   if not any(label(n) in ['Повторить подключение','Восстанавливаем подключение…','Сервер пока недоступен'] for n in rows):break
+   time.sleep(.4)
+ rows=nodes();r['after_retry']={'owned_DM_composer_empty':own(c),'retry_visible':any(label(n)=='Повторить подключение' for n in rows),'banner_visible':any(label(n) in ['Восстанавливаем подключение…','Сервер пока недоступен'] for n in rows),'capture':capture('reconnect-after-retry')};r['status']='PASS_SCOPED_VISIBLE_RETRY_BANNER_CLEARED' if before['retry_visible'] and not r['after_retry']['retry_visible'] and not r['after_retry']['banner_visible'] else 'NOT_RUN_OR_RECOVERY_NOT_ESTABLISHED';r['native_exit']=0 if r['status'].startswith('PASS') else 2
+except Exception as e:r['status']='CONTROLLER_FAILURE';r['error_type']=type(e).__name__;r['native_exit']=2
+write(P/'reconnect-result.json',r);print({k:r[k] for k in ['status','native_exit','native_skips']});raise SystemExit(r['native_exit'])

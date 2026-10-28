@@ -1,0 +1,29 @@
+"""Publication helpers; raw device captures, bodies and credentials remain private."""
+import ast,hashlib,json,re
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];B=Path('C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD');O=B/'evidence/qa/open-issues-2026-10-27';D=O/'coordinated-agents-2026-10-28'
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+def write(p,v):p.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+def sha(b):return hashlib.sha256(b).hexdigest()
+needles=set()
+def collect(v,key='',parent=False):
+    sensitive=parent or bool(re.search(r'password|cookie|token|secret|marker|draft|owner|filename|login|display_name|sessions',key,re.I))
+    if isinstance(v,dict):
+        for k,x in v.items():collect(x,k,sensitive)
+    elif isinstance(v,list):
+        for x in v:collect(x,key,sensitive)
+    elif isinstance(v,str) and len(v)>=8 and (sensitive or re.fullmatch(r'[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}',v)):needles.add(v)
+for path in [Q/'.out/qa-agent-phone/private/config.private.json',Q/'.out/qa-agent-phone-restart/private/config.private.json',Q/'.out/qa-agent-search/private/fixture.json',Q/'.out/local-qa/credentials.private.json',B/'.out/qa-goal/private-fixture.json']:
+    if path.exists():collect(read(path))
+def clean(v):
+    if isinstance(v,dict):return {k:clean(x) for k,x in v.items()}
+    if isinstance(v,list):return [clean(x) for x in v]
+    if isinstance(v,str):
+        if any(n in v for n in needles):return '[PRIVATE_VALUE_RETAINED_LOCALLY]'
+        if '/private/' in v.replace('\\','/').lower():return '[PRIVATE_ARTIFACT_PATH_RETAINED_LOCALLY]'
+    return v
+origins=[]
+def json_copy(source,target):
+    raw=source.read_bytes();data=clean(read(source));dest=D/target;dest.parent.mkdir(parents=True,exist_ok=True);write(dest,data);origins.append({'public':target,'private_original_SHA256':sha(raw),'private_original_bytes':len(raw),'sanitized':data!=read(source)})
+def code_copy(source,prefix):
+    raw=source.read_bytes();s=raw.decode('utf-8-sig');ast.parse(s);assert len(s.splitlines())<=120;assert not any(n in s for n in needles),'Private constant in helper: '+source.name;(O/'runner-source'/(prefix+source.name+'.txt')).write_text(s,encoding='utf-8',newline='\n')

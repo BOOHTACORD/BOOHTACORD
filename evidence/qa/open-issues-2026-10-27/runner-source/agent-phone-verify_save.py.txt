@@ -1,0 +1,10 @@
+import io,sys,time
+from PIL import Image
+from common import *
+c=read(P/'private/config.private.json');i=int(sys.argv[1]);f=c['fixtures'][i];name=f['filename'];assert re.fullmatch(r'BOOHTACORD-QA-phone-[a-f0-9]{12}-(png|jpeg|gif)-(viewer|card)\.(png|jpg|gif)',name);path='/sdcard/Download/'+name
+for _ in range(10):
+ if subprocess.run([ADB,'shell','test','-f',path],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode==0:break
+ time.sleep(.2)
+raw=subprocess.check_output([ADB,'exec-out','cat',path],timeout=20);sha=digest(raw);im=Image.open(io.BytesIO(raw));ok=sha==f['SHA256'] and len(raw)==f['bytes'] and im.format==f['format'];assert ok
+assert sha!=f['server_preview_SHA256'];c['saved_files'].append({'filename':name,'SHA256':sha,'bytes':len(raw),'index':i});write(P/'private/config.private.json',c)
+r={'status':'PASS_SCOPED_PHYSICAL_NATIVE_DOWNLOAD','at_utc':datetime.now(timezone.utc).isoformat(),'alias':f['alias'],'format':im.format,'control':f['control'],'local_Downloads_file_exists':True,'filename_extension_matches':name.endswith({'PNG':'.png','JPEG':'.jpg','GIF':'.gif'}[f['format']]),'saved_bytes':len(raw),'saved_SHA256':sha,'expected_SHA256':f['SHA256'],'saved_original_equals_uploaded':True,'saved_original_differs_from_server_preview':True,'decoded_pixels':list(im.size),'frames':getattr(im,'n_frames',1),'native_exit':0,'native_skips':0,'runner_SHA256':{n:digest((P/n).read_bytes()) for n in ['producer.py','native_ui.py','verify_save.py']},'limits':['DM-only; existing authorized QA phone receives new tiny protected API producer fixture','No realtime latency, native send/picker-upload, clipboard, TEXT, 507, third ADMIN or other platform gate claim']};write(P/('saved-'+str(i)+'.json'),r);print(r)

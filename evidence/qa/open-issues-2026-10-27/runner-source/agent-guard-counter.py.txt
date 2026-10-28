@@ -1,0 +1,43 @@
+import re,secrets
+from common import P,Q,sql,write,now,quote,sha,guard_state
+def counterexample():
+    source=(Q/'backend/internal/database/migrate/migrations/0056_product_support.sql').read_text('utf-8')
+    function=re.search(r'CREATE OR REPLACE FUNCTION protect_support_service_account\(\).*?END \$\$;',source,re.S).group()
+    trigger=re.search(r'CREATE TRIGGER support_service_account_guard.*?protect_support_service_account\(\);',source,re.S).group()
+    fixed=function.replace(' RETURN NEW;'," IF TG_OP='DELETE' THEN RETURN OLD; END IF;\n RETURN NEW;")
+    assert fixed!=function and function.count(' RETURN NEW;')==1
+    schema='qa_guard_'+secrets.token_hex(12);before=guard_state()
+    statements="""BEGIN; SET LOCAL lock_timeout='2s'; SET LOCAL statement_timeout='5s';
+CREATE SCHEMA SCHEMA_NAME; SET LOCAL search_path=SCHEMA_NAME,pg_catalog;
+CREATE TABLE users(id uuid PRIMARY KEY,login text); CREATE TABLE support_product_identity(account_id uuid);
+CREATE TABLE receipt(name text,result text);
+FUNCTION_SOURCE
+TRIGGER_SOURCE
+INSERT INTO users VALUES('11111111-1111-4111-8111-111111111111','normal'),('22222222-2222-4222-8222-222222222222','support');
+INSERT INTO support_product_identity VALUES('22222222-2222-4222-8222-222222222222');
+DO $test$ DECLARE removed integer; changed text; BEGIN
+ WITH d AS (DELETE FROM users WHERE login='normal' RETURNING id) SELECT count(*) INTO removed FROM d;
+ ASSERT removed=0 AND (SELECT count(*) FROM users WHERE login='normal')=1;
+ INSERT INTO receipt VALUES('source_normal_DELETE','0 rows returned;normal retained');
+ UPDATE users SET login='normal_updated' WHERE login='normal' RETURNING login INTO changed;
+ ASSERT changed='normal_updated'; INSERT INTO receipt VALUES('source_UPDATE','NEW returned;update persisted');
+ BEGIN DELETE FROM users WHERE login='support'; RAISE EXCEPTION 'support DELETE was permitted';
+ EXCEPTION WHEN SQLSTATE '42501' THEN INSERT INTO receipt VALUES('source_support_DELETE','42501'); END;
+END $test$;
+COUNTERFACTUAL_SOURCE
+DO $test$ DECLARE removed integer; changed text; BEGIN
+ UPDATE users SET login='normal_counterfactual' WHERE login='normal_updated' RETURNING login INTO changed;
+ ASSERT changed='normal_counterfactual'; INSERT INTO receipt VALUES('counterfactual_UPDATE','NEW returned;update persisted');
+ WITH d AS (DELETE FROM users WHERE login='normal_counterfactual' RETURNING id) SELECT count(*) INTO removed FROM d;
+ ASSERT removed=1 AND NOT EXISTS(SELECT 1 FROM users WHERE login='normal_counterfactual');
+ INSERT INTO receipt VALUES('counterfactual_normal_DELETE','1 row returned;normal removed');
+ BEGIN DELETE FROM users WHERE login='support'; RAISE EXCEPTION 'support DELETE was permitted';
+ EXCEPTION WHEN SQLSTATE '42501' THEN INSERT INTO receipt VALUES('counterfactual_support_DELETE','42501'); END;
+END $test$;
+SELECT name||'|'||result FROM receipt ORDER BY name; ROLLBACK;
+""".replace('SCHEMA_NAME',schema).replace('FUNCTION_SOURCE',function).replace('TRIGGER_SOURCE',trigger).replace('COUNTERFACTUAL_SOURCE',fixed)
+    (P/'private/counterexample.sql').write_text(statements,'utf-8');out=sql(statements);(P/'private/counterexample.stdout').write_text(out,'utf-8')
+    rows=[x.split('|',1) for x in out.splitlines() if '|' in x];assert len(rows)==6
+    assert sql('SELECT count(*) FROM pg_namespace WHERE nspname='+quote(schema)+';').strip()=='0' and guard_state()==before
+    result={'utc':now(),'status':'PASS_REAL_POSTGRESQL_COUNTEREXAMPLE_ROLLED_BACK','command':'python -B -X utf8 .out/qa-guard-teardown/run.py -> counterexample(); real psql transaction','PostgreSQL':'17.6','checks':[{'name':n,'actual':v,'result':'PASS'} for n,v in rows],'SQL_sha256':sha(statements.encode()),'source_function_sha256_LF':sha(function.encode()),'source_trigger_sha256_LF':sha(trigger.encode()),'counterfactual_only_disposable_schema':True,'schema_absent_after_rollback':True,'public_guard_unchanged':True,'limits':'Minimal users/support-identity schema; no public function fix, no product UI/production or full native Go gate claim'}
+    write(P/'counterexample.json',result)

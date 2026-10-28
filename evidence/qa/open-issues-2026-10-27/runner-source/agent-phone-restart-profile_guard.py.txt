@@ -1,0 +1,11 @@
+import sys,time
+from common import *
+phase=sys.argv[1];assert phase in ['before','after'];c=read(P/'private/config.private.json');r={'at_utc':datetime.now(timezone.utc).isoformat(),'phase':phase,'actions':[],'native_skips':0}
+rows=nodes();assert not any(label(n) in ['Логин','Пароль'] for n in rows) and not any((n.get('package')or'').endswith('permissioncontroller') for n in rows)
+if not any(label(n)=='Закрыть навигацию' for n in rows):tap_named('Открыть навигацию');r['actions'].append('Open observed native navigation')
+rows=nodes();expected=c['DM_participant_row']['other_participant_display_name'];matches=[n for n in rows if n.get('package')==APP and expected in [s.strip() for s in label(n).splitlines()] and bounds(n)[1]>2000 and bounds(n)[3]<2340];assert len(matches)==1
+r['native_profile_footer_bounds']=bounds(matches[0]);r['native_profile_exact_display_matches_private_DM_participant']=True;r['native_profile_capture']=capture('profile-'+phase);c['receiver_display_name']=expected;c['receiver_profile_name_SHA256']=digest(expected.encode());write(P/'private/config.private.json',c)
+if phase=='after':
+ tap_named('Личные');rows=nodes();peers=[n for n in rows if n.get('package')==APP and n.get('class')=='android.widget.ImageView' and n.get('clickable')=='true' and c['peer'] in label(n) and 0<bounds(n)[3]-bounds(n)[1]<250];assert len(peers)==1;b=bounds(peers[0]);call('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2));r['actions'].append('Observed unique existing allowed MEMBER B DM row, no newDM/refresh')
+else:tap_named('Закрыть навигацию');r['actions'].append('Close observed navigation')
+assert own(c);r.update(status='PASS_NATIVE_PROFILE_AND_EXISTING_OWN_DM_GUARD',owned_peer_header=True,composer_empty=True,no_manual_history_refresh=True,native_exit=0);write(P/('profile-guard-'+phase+'.json'),r);print({k:v for k,v in r.items() if k not in ['native_profile_capture']})

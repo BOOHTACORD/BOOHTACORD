@@ -1,0 +1,35 @@
+{
+  "utc": "2026-10-28T19:39:45.833870+00:00",
+  "source": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "command": [
+    "C:\\Program Files\\Go\\bin\\go.exe",
+    "test",
+    "-json",
+    "-count=1",
+    "-run",
+    "^(TestSearchCreatesMixedConversationCursor|TestSearchRejectsInvalidInputBeforeStore|TestDateBoundContractPatternAcceptsClientFractionalInstants|TestSearchDateRangeNormalizesOffsetsAndRetainsBoundsOnCursor|TestSearchRejectsInvalidDateRangeBeforeStore|TestSearchAcceptsUnboundedOrSingleSidedDateRange|TestHandlerUsesSessionActorAndCurrentConversationFilter|TestHandlerForwardsExplicitDateBoundsAndCursor|TestHandlerRejectsAmbiguousOrEmptyDateParameters|TestSearchFiltersAttachmentsAndAuthorsWithinReadableScope|TestDateRangeInclusiveStartExclusiveEndAndPrivateMixedCursor|TestDateRangeDoesNotReviveDeletedMessagesOrHiddenAttachments)$",
+    "./internal/chat/search_messages/..."
+  ],
+  "exit": 0,
+  "passed_tests": [
+    "TestDateBoundContractPatternAcceptsClientFractionalInstants",
+    "TestSearchDateRangeNormalizesOffsetsAndRetainsBoundsOnCursor",
+    "TestSearchRejectsInvalidDateRangeBeforeStore",
+    "TestSearchAcceptsUnboundedOrSingleSidedDateRange",
+    "TestSearchCreatesMixedConversationCursor",
+    "TestSearchRejectsInvalidInputBeforeStore",
+    "TestHandlerForwardsExplicitDateBoundsAndCursor",
+    "TestHandlerRejectsAmbiguousOrEmptyDateParameters",
+    "TestHandlerUsesSessionActorAndCurrentConversationFilter",
+    "TestDateRangeInclusiveStartExclusiveEndAndPrivateMixedCursor",
+    "TestDateRangeDoesNotReviveDeletedMessagesOrHiddenAttachments",
+    "TestSearchFiltersAttachmentsAndAuthorsWithinReadableScope"
+  ],
+  "pass_count": 12,
+  "skip_count": 0,
+  "fail_count": 0,
+  "stdout_sha256": "09c8846f3557bd56cb10e17a121e592c131fba890e4de7e87512f898f8c9d9dc",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "schemas_after": "0",
+  "public_tables_unchanged": true
+}

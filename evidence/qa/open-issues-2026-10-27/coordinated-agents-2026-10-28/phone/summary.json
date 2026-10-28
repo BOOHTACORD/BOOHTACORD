@@ -1,0 +1,513 @@
+{
+  "id": "ANDROID-native-image-original-download-six-controls",
+  "status": "PASS_SCOPED",
+  "at_utc": "2026-10-28T19:27:57.985236+00:00",
+  "protects": "Real physical Android viewer and attachment-card downloads preserve uploaded PNG/JPEG/GIF original bytes and filename extension through DocumentsUI local Downloads; exact owned saved files are verified by size/SHA/decode and removed after SHA guard",
+  "command": "python -X utf8 .out/qa-agent-phone/preflight.py; prepare.py then exact sequential per-case commands in actual_commands; cleanup_batch.py. Native input belongs only to qa_phone",
+  "actual_commands": [
+    {
+      "index": 0,
+      "alias": "PNG-viewer",
+      "actual_successful_commands": [
+        "python -X utf8 .out/qa-agent-phone/producer.py send 0",
+        "python -X utf8 .out/qa-agent-phone/reveal.py 0",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py open 0",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py probe 0",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py download-viewer 0",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py picker-inspect 0",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py picker-save 0",
+        "python -X utf8 .out/qa-agent-phone/verify_save.py 0",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py close 0"
+      ],
+      "actual_successful_terminal_exit": 0,
+      "skips": 0,
+      "result": "saved-0.json",
+      "supplemental_control_receipts": "send/reveal/open/probe/download/picker files by index; initialmanual0/1 tools and batch2..5 terminal logs; failed attempts retained separately"
+    },
+    {
+      "index": 1,
+      "alias": "PNG-card",
+      "actual_successful_commands": [
+        "python -X utf8 .out/qa-agent-phone/producer.py send 1",
+        "python -X utf8 .out/qa-agent-phone/reveal.py 1",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py download-card 1",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py picker-inspect 1",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py picker-save 1",
+        "python -X utf8 .out/qa-agent-phone/verify_save.py 1"
+      ],
+      "actual_successful_terminal_exit": 0,
+      "skips": 0,
+      "result": "saved-1.json",
+      "supplemental_control_receipts": "send/reveal/open/probe/download/picker files by index; initialmanual0/1 tools and batch2..5 terminal logs; failed attempts retained separately"
+    },
+    {
+      "index": 2,
+      "alias": "JPEG-viewer",
+      "actual_successful_commands": [
+        "python -X utf8 .out/qa-agent-phone/producer.py send 2",
+        "python -X utf8 .out/qa-agent-phone/reveal.py 2",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py open 2",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py probe 2",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py download-viewer 2",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py picker-inspect 2",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py picker-save 2",
+        "python -X utf8 .out/qa-agent-phone/verify_save.py 2",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py close 2"
+      ],
+      "actual_successful_terminal_exit": 0,
+      "skips": 0,
+      "result": "saved-2.json",
+      "supplemental_control_receipts": "send/reveal/open/probe/download/picker files by index; initialmanual0/1 tools and batch2..5 terminal logs; failed attempts retained separately"
+    },
+    {
+      "index": 3,
+      "alias": "JPEG-card",
+      "actual_successful_commands": [
+        "python -X utf8 .out/qa-agent-phone/producer.py send 3",
+        "python -X utf8 .out/qa-agent-phone/reveal.py 3",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py download-card 3",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py picker-inspect 3",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py picker-save 3",
+        "python -X utf8 .out/qa-agent-phone/verify_save.py 3"
+      ],
+      "actual_successful_terminal_exit": 0,
+      "skips": 0,
+      "result": "saved-3.json",
+      "supplemental_control_receipts": "send/reveal/open/probe/download/picker files by index; initialmanual0/1 tools and batch2..5 terminal logs; failed attempts retained separately"
+    },
+    {
+      "index": 4,
+      "alias": "GIF-viewer",
+      "actual_successful_commands": [
+        "python -X utf8 .out/qa-agent-phone/producer.py send 4",
+        "python -X utf8 .out/qa-agent-phone/reveal.py 4",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py open 4",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py probe 4",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py download-viewer 4",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py picker-inspect 4",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py picker-save 4",
+        "python -X utf8 .out/qa-agent-phone/verify_save.py 4",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py close 4"
+      ],
+      "actual_successful_terminal_exit": 0,
+      "skips": 0,
+      "result": "saved-4.json",
+      "supplemental_control_receipts": "send/reveal/open/probe/download/picker files by index; initialmanual0/1 tools and batch2..5 terminal logs; failed attempts retained separately"
+    },
+    {
+      "index": 5,
+      "alias": "GIF-card",
+      "actual_successful_commands": [
+        "python -X utf8 .out/qa-agent-phone/producer.py send 5",
+        "python -X utf8 .out/qa-agent-phone/reveal.py 5",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py download-card 5",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py picker-inspect 5",
+        "python -X utf8 .out/qa-agent-phone/native_ui.py picker-save 5",
+        "python -X utf8 .out/qa-agent-phone/verify_save.py 5"
+      ],
+      "actual_successful_terminal_exit": 0,
+      "skips": 0,
+      "result": "saved-5.json",
+      "supplemental_control_receipts": "send/reveal/open/probe/download/picker files by index; initialmanual0/1 tools and batch2..5 terminal logs; failed attempts retained separately"
+    }
+  ],
+  "platform": "Physical Samsung SM-A576B Android16; signed installedru.boohtacord.app1.0.47+2082; real GoogleDocumentsUI localСкачанные; protectedHTTPSproductionv.bootybay.ru; one new syntheticMEMBER B producer session; existing own authorizedDM",
+  "mandatory_when": "Before claiming this exact six native Android DM original-download scope; does not close any entire source row or QA issue",
+  "result": "summary.json; saved-0..5.json; preflight.json; cleanup.json; visual-record.json; source-criteria.json; native-commands.json",
+  "issues": [
+    53,
+    54,
+    131,
+    303
+  ],
+  "source_criteria": [
+    {
+      "issue": 53,
+      "source_body_SHA256": "9bd79d810511f9e2ee0ed02108bda21e48401c74cac18cc5d2f8e67c0aab85c5",
+      "id": "I53.C1",
+      "original_requirement_unchanged": "На trusted candidate проверить browser notification при granted/denied permission, generic preview без тела DM, dedup и logout/account switch; повторить приватность create/edit/delete hints, unread, download/preview после удаления/блокировки для двух участников и стороннего admin. Серверная [PostgreSQL ACL-матрица](../evidence/qa/qa03-dm-read-matrix-2026-09-25-001.json) и [локальный третий socket](../evidence/qa/qa03-third-browser-private-hints-2026-09-25-001.json) уже подтверждены, но OS notification и полный trusted browser сценарий ещё открыты.",
+      "source_row_status_unchanged": "PARTIAL",
+      "scope_relation": "Supplemental physical Android authorized DM original download; full source criterion and browser/other-platform clauses remain unaccepted"
+    },
+    {
+      "issue": 54,
+      "source_body_SHA256": "8a8abc62635cd5e7e4298bda6d5368d10da8caeeb0b3e7688be89652e77b8331",
+      "id": "I54.C1",
+      "original_requirement_unchanged": "На trusted candidate с двумя пользователями пройти auth/reset, TEXT/DM, search, admin, focus/screen reader, нативный OS file chooser, voice navigation/reconnect, zoom 125/150% и сохранённое screenshot comparison. Дополнительно после BE-19/20 и FE-53…55 проверить просмотр PNG/JPEG/GIF внутри TEXT/DM без download, отдельное скачивание, вставку изображения из clipboard с текстом и без него, лимиты/retry, keyboard/mobile и отказ третьему участнику DM. **Актуальная находка (30.09.2026):** в авторизованном production web prejoin `SHARE_TEST` сначала показал «состав недоступен»/повторяющуюся ошибку, а последующее автоматическое обновление восстановилось до состояния пустой комнаты; пользователь ранее приложил такой же экран Flutter, но live retry на Flutter не проверен. Сопоставить ошибку с серверными/LiveKit логами и проверить восстановление и populated roster на обоих клиентах до подключения микрофона — [QA-148](../evidence/flutter/qa148-production-prejoin-roster-recovery-2026-09-30-001.json). Причина пока не установлена; недоступный snapshot нельзя трактовать как пустую комнату. Изолированный [507→201](../evidence/qa/qa05-browser-real-507-wire-retry-2026-09-26-001.json) не заменяет этот полный прогон.",
+      "source_row_status_unchanged": "FAIL",
+      "scope_relation": "Supplemental physical Android authorized DM original download; full source criterion and browser/other-platform clauses remain unaccepted"
+    },
+    {
+      "issue": 131,
+      "source_body_SHA256": "83e44ebaafa6baea84eb1c6f4d625136646787cd52b1b055dc8c5d45ae0ec3bf",
+      "id": "I131.C5",
+      "original_requirement_unchanged": "[#44 — просмотр изображений](https://github.com/Egkurilov/BOOHTACORD/issues/44): в настоящем браузере TEXT и DM проверить Escape, возврат фокуса, narrow viewport, удалённое/недоступное вложение, protected preview/download и ACL обоих участников.",
+      "source_row_status_unchanged": "FAIL",
+      "scope_relation": "Supplemental physical Android authorized DM original download; full source criterion and browser/other-platform clauses remain unaccepted"
+    },
+    {
+      "issue": 303,
+      "source_body_SHA256": "5a826c0f9652d9535cbc049e9462da7c8fc9984b7114b9c7797bcdafc33aa8fc",
+      "id": "I303.C5",
+      "original_requirement_unchanged": "Для каждой комбинации записать PASS/FAIL/NOT_RUN, screenshot/video, build/version и минимальную reproduction; непроверенное не отмечать PASS.",
+      "source_row_status_unchanged": "NOT_RUN",
+      "scope_relation": "Supplemental physical Android authorized DM original download; full source criterion and browser/other-platform clauses remain unaccepted"
+    },
+    {
+      "issue": 303,
+      "source_body_SHA256": "5a826c0f9652d9535cbc049e9462da7c8fc9984b7114b9c7797bcdafc33aa8fc",
+      "id": "I303.C7",
+      "original_requirement_unchanged": "Есть версия приложения, устройство, шаги и evidence для каждого проверенного сценария.",
+      "source_row_status_unchanged": "NOT_RUN",
+      "scope_relation": "Supplemental physical Android authorized DM original download; full source criterion and browser/other-platform clauses remain unaccepted"
+    }
+  ],
+  "native_successes": 6,
+  "native_failed_product_cases": 0,
+  "native_skips": 0,
+  "native_successful_replay_exit": 0,
+  "controller_failed_attempts": [
+    {
+      "result": "preflight-attempt1-diagnostic.json",
+      "native_exit": 1,
+      "reason": "Legacy projection key assertion; actualdumpsys MediaProjection:null freshverified, replayexit0",
+      "product_bug": false
+    },
+    {
+      "result": "refresh1-failure.json",
+      "native_exit": 1,
+      "reason": "Expected refresh menu absent after own bounded action; fresh hierarchy/capture saved, nochange totheproduct; explicitreveal passed",
+      "product_bug": false
+    }
+  ],
+  "original_sizes_bytes": {
+    "PNG": 202,
+    "JPEG": 774,
+    "GIF": 205
+  },
+  "saved_originals": [
+    {
+      "alias": "PNG-viewer",
+      "bytes": 202,
+      "SHA256": "cff882654890f4efaa6600d3a9252ab585dd10d552f8fbd46222ecc7d8d76a28",
+      "decoded_format": "PNG",
+      "pixels": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "extension_matches": true,
+      "equals_original": true,
+      "differs_from_preview": true
+    },
+    {
+      "alias": "PNG-card",
+      "bytes": 202,
+      "SHA256": "cff882654890f4efaa6600d3a9252ab585dd10d552f8fbd46222ecc7d8d76a28",
+      "decoded_format": "PNG",
+      "pixels": [
+        64,
+        64
+      ],
+      "frames": 1,
+      "extension_matches": true,
+      "equals_original": true,
+      "differs_from_preview": true
+    },
+    {
+      "alias": "JPEG-viewer",
+      "bytes": 774,
+      "SHA256": "cc2a68f90df1e554d644f61c67ae12f96aa2c8a042477110d6d2e3ab089df15c",
+      "decoded_format": "JPEG",
+      "pixels": [
+        64,
+        48
+      ],
+      "frames": 1,
+      "extension_matches": true,
+      "equals_original": true,
+      "differs_from_preview": true
+    },
+    {
+      "alias": "JPEG-card",
+      "bytes": 774,
+      "SHA256": "cc2a68f90df1e554d644f61c67ae12f96aa2c8a042477110d6d2e3ab089df15c",
+      "decoded_format": "JPEG",
+      "pixels": [
+        64,
+        48
+      ],
+      "frames": 1,
+      "extension_matches": true,
+      "equals_original": true,
+      "differs_from_preview": true
+    },
+    {
+      "alias": "GIF-viewer",
+      "bytes": 205,
+      "SHA256": "307057a156b56cdc8042d2ecee09b258a204769ede03f3c0f2f2a01d585c594b",
+      "decoded_format": "GIF",
+      "pixels": [
+        32,
+        32
+      ],
+      "frames": 2,
+      "extension_matches": true,
+      "equals_original": true,
+      "differs_from_preview": true
+    },
+    {
+      "alias": "GIF-card",
+      "bytes": 205,
+      "SHA256": "307057a156b56cdc8042d2ecee09b258a204769ede03f3c0f2f2a01d585c594b",
+      "decoded_format": "GIF",
+      "pixels": [
+        32,
+        32
+      ],
+      "frames": 2,
+      "extension_matches": true,
+      "equals_original": true,
+      "differs_from_preview": true
+    }
+  ],
+  "identity": {
+    "at_utc": "2026-10-28T19:18:33.154372+00:00",
+    "workflow_class": "review_gate",
+    "route": "clients/flutter/features/attachments/download",
+    "packet": "physical-Android-six-native-downloads",
+    "task": "T-044 dependencies T-040/T-041",
+    "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+    "source_SHA256": {
+      "clients/flutter/pubspec.yaml": "de0377a63ab77456df14f211b498b8f2b7b12cf1773f65ff9abf4975626a76de",
+      "clients/flutter/lib/src/widgets/message_attachment_list.dart": "983899704bdfce80b4128fa787e3198985a388579e986ab488328e10474f1a44",
+      "clients/flutter/lib/src/features/attachments/download/api.dart": "eae3bb4de6eb805a8b6563f1e326b9a54c71e1ab6f48c56519fe2a81553a5973",
+      "clients/flutter/lib/src/features/attachments/download/facade.dart": "faf50517aae3c1500c6a077a85fcfdb7a1d0bb391c3fafa6b370b395a68fa885",
+      "clients/flutter/android/app/src/main/kotlin/ru/boohtacord/app/MainActivity.kt": "1c3e42366a82045b7a052ffcf82668e60df9a720d6adcfe24b128e5343711cdb"
+    },
+    "model": "SM-A576B",
+    "Android": "16",
+    "APK_version": "1.0.47+2082",
+    "APK_SHA256": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+    "phone_baseline": {
+      "at_utc": "2026-10-28T19:18:30.512070+00:00",
+      "permission": {
+        "granted": true,
+        "flags": [
+          "USER_SET",
+          "USER_SENSITIVE_WHEN_GRANTED",
+          "USER_SENSITIVE_WHEN_DENIED"
+        ]
+      },
+      "microphone_fgs": false,
+      "voice_connected": false,
+      "muted_control": false,
+      "app_hierarchy_present": true,
+      "system_permission_prompt": false,
+      "navigation_available": true,
+      "login_fields": false
+    },
+    "owned_DM_header": true,
+    "composer_empty": true,
+    "viewer_closed": true,
+    "projection_null": true,
+    "deployed_backend_source": "UNKNOWN",
+    "invariant": "Only new tiny owned QA files in existing DM; native current session/URL/roles/permissions/voice/projection unchanged; exact own saved files SHA-guarded cleanup",
+    "stop_condition": "Six formats x control witnesses with real DocumentsUI local Downloads and SHA controls, or precise blocker; API session revoked, own messages and saved files cleaned",
+    "baseline_capture": {
+      "file": "[PRIVATE_ARTIFACT_PATH_RETAINED_LOCALLY]",
+      "SHA256": "6cb1e4e85dd338ca32adbed170fe0ddb1dc89b0ac8e8eb0fb09ec7a6efe2f7a8"
+    },
+    "native_exit": 0,
+    "native_skips": 0
+  },
+  "cleanup": {
+    "at_utc": "2026-10-28T19:27:14.380873+00:00",
+    "status": "PASS_SCOPED_OWN_SIX_MESSAGES_SIX_FILES_ONE_SESSION_CLEANED",
+    "messages": [
+      {
+        "index": 0,
+        "delete_native_exit": 0,
+        "skips": 0,
+        "tombstone_body_blank_attachments_empty": true,
+        "original_after_delete_HTTP": 404,
+        "preview_after_delete_HTTP": 404
+      },
+      {
+        "index": 1,
+        "delete_native_exit": 0,
+        "skips": 0,
+        "tombstone_body_blank_attachments_empty": true,
+        "original_after_delete_HTTP": 404,
+        "preview_after_delete_HTTP": 404
+      },
+      {
+        "index": 2,
+        "delete_native_exit": 0,
+        "skips": 0,
+        "tombstone_body_blank_attachments_empty": true,
+        "original_after_delete_HTTP": 404,
+        "preview_after_delete_HTTP": 404
+      },
+      {
+        "index": 3,
+        "delete_native_exit": 0,
+        "skips": 0,
+        "tombstone_body_blank_attachments_empty": true,
+        "original_after_delete_HTTP": 404,
+        "preview_after_delete_HTTP": 404
+      },
+      {
+        "index": 4,
+        "delete_native_exit": 0,
+        "skips": 0,
+        "tombstone_body_blank_attachments_empty": true,
+        "original_after_delete_HTTP": 404,
+        "preview_after_delete_HTTP": 404
+      },
+      {
+        "index": 5,
+        "delete_native_exit": 0,
+        "skips": 0,
+        "tombstone_body_blank_attachments_empty": true,
+        "original_after_delete_HTTP": 404,
+        "preview_after_delete_HTTP": 404
+      }
+    ],
+    "saved_files": [
+      {
+        "index": 0,
+        "SHA256_matched_before_exact_delete": true,
+        "exact_own_file_absent_after": true
+      },
+      {
+        "index": 1,
+        "SHA256_matched_before_exact_delete": true,
+        "exact_own_file_absent_after": true
+      },
+      {
+        "index": 2,
+        "SHA256_matched_before_exact_delete": true,
+        "exact_own_file_absent_after": true
+      },
+      {
+        "index": 3,
+        "SHA256_matched_before_exact_delete": true,
+        "exact_own_file_absent_after": true
+      },
+      {
+        "index": 4,
+        "SHA256_matched_before_exact_delete": true,
+        "exact_own_file_absent_after": true
+      },
+      {
+        "index": 5,
+        "SHA256_matched_before_exact_delete": true,
+        "exact_own_file_absent_after": true
+      }
+    ],
+    "preexisting_latest_records_unchanged": 28,
+    "owned_API_sessions_revoked": 1,
+    "live_unauthenticated_readback": true,
+    "Windows_extra_fixture_created": false,
+    "Windows_status": "BLOCKED_OWN_RECEIVER_HANDSHAKE_EXPECTED_PEER_ABSENT",
+    "source_inputs_unchanged": true,
+    "phone_state": {
+      "at_utc": "2026-10-28T19:27:09.256407+00:00",
+      "permission": {
+        "granted": true,
+        "flags": [
+          "USER_SET",
+          "USER_SENSITIVE_WHEN_GRANTED",
+          "USER_SENSITIVE_WHEN_DENIED"
+        ]
+      },
+      "microphone_fgs": false,
+      "voice_connected": false,
+      "muted_control": false,
+      "app_hierarchy_present": true,
+      "system_permission_prompt": false,
+      "navigation_available": true,
+      "login_fields": false
+    },
+    "owned_DM_composer_empty": true,
+    "viewer_closed": true,
+    "projection_null": true,
+    "phone_session_URL_roles_OS_permissions_unchanged": true,
+    "capture": {
+      "file": "[PRIVATE_ARTIFACT_PATH_RETAINED_LOCALLY]",
+      "SHA256": "065386c54599a42f50741998b181c3c9849ff5c17e859fc45e62bb3981eaac39"
+    },
+    "native_exit": 0,
+    "native_skips": 0
+  },
+  "visual_record": "visual-record.json",
+  "runner_bindings": {
+    "cleanup_batch.py": {
+      "SHA256": "ba9f3839136a44658d54f8f4e8b6a90ae9378cdc6b61171f0260ff02666a07c6",
+      "lines": 26
+    },
+    "common.py": {
+      "SHA256": "d3ba142554fd7b4ad083463bf9da096958c6d75c03ec5d4e48ca907378296e61",
+      "lines": 24
+    },
+    "execute_rest.py": {
+      "SHA256": "4428d9c31e8b467eaf4bea852371c34ab4a79cd24e7c5aebd6ae0df2a46e1082",
+      "lines": 16
+    },
+    "native_ui.py": {
+      "SHA256": "f830ec127b9b7fdd357a0d3efd7a45fb0294fa41baf16bcd60f9407decddb1ac",
+      "lines": 54
+    },
+    "preflight.py": {
+      "SHA256": "2f91ad8db97d886ee59df29dd8fe64f0af50b37b5c1c575c724c07c9598e8708",
+      "lines": 15
+    },
+    "prepare.py": {
+      "SHA256": "12c0605e1ceb802e3c1d5e63e80db904b2f701de23b798c3c521d36af61e3b58",
+      "lines": 26
+    },
+    "producer.py": {
+      "SHA256": "7b6cf8e26d09cd4769837822ec2e94d7697e37280509f48d8a0070ed39b56f6f",
+      "lines": 28
+    },
+    "reveal.py": {
+      "SHA256": "036d7b2eba4a8a3b4eda8a7b90e858eb623a291a778dc984061c2909b9b4bdc7",
+      "lines": 9
+    },
+    "seal_summary.py": {
+      "SHA256": "70ba28f94effecc8ef8f214808bbe1fffa531965fe57a4abfd58660f4efef7aa",
+      "lines": 23
+    },
+    "verify_save.py": {
+      "SHA256": "851ef5095196da4604af2d70347c884ae80cf38919bffead64216bc77969802c",
+      "lines": 10
+    }
+  },
+  "nearest_typed_test": "clients/flutter/test/message_attachment_list_test.dart (read; notexecuted by this Android runtime-only packet)",
+  "new_confirmed_product_bugs": [],
+  "known_bug589": "Remains open; this scope does not retest or fix cachedviewer-after-delete",
+  "unresolved_observation": "Transient recovery/retry banner after DocumentsUI return. Observedretry restored visible state; cause not isolated; no latency/outage or newbugclaim",
+  "limits": [
+    "Existing authorized QA DM and tiny API producer fixtures only; no native upload/clipboard/TEXT/newDM or producerUI claim",
+    "No realtime latency; explicit history refresh/scroll/retry are disclosed and do not prove passive delivery",
+    "No third ADMIN/blocked account/logout/reset/revoke while open acceptance; cleanup404 checks are narrow producer controls",
+    "No GIF animation, human accessibility, acoustic/voice/projection/orientation/font, OS notification, load/507/outage or full parent QA gate acceptance",
+    "Installed signed APK1.0.47+2082 hash matches expected; checkoutHEAD known, deployed backend source UNKNOWN; source binding does not independently attest production backend",
+    "Browser handoff BLOCKED by peer policy; Windows own-DM handshake expectedPeerMatched=false, no extra fixture created",
+    "All screenshots/hierarchy private; raw native screenshots can contain QA names and unrelated local folder names; publish only sanitized observations"
+  ],
+  "additional_runtime_packets": [
+    {
+      "id": "ANDROID-own-DM-keyboard-SystemBack-draft",
+      "status": "PASS_SCOPED",
+      "result": "keyboard-summary.json"
+    },
+    {
+      "id": "ANDROID-observed-connection-retry-visible-recovery",
+      "status": "PASS_SCOPED_VISIBLE_STATE_ONLY",
+      "result": "reconnect-summary.json"
+    }
+  ],
+  "final_native_state": "final-native-state.json"
+}

@@ -1,0 +1,45 @@
+{
+  "utc": "2026-10-28T19:53:47.906109+00:00",
+  "status": "PASS_REAL_POSTGRESQL_COUNTEREXAMPLE_ROLLED_BACK",
+  "command": "python -B -X utf8 .out/qa-guard-teardown/run.py -> counterexample(); real psql transaction",
+  "PostgreSQL": "17.6",
+  "checks": [
+    {
+      "name": "counterfactual_UPDATE",
+      "actual": "NEW returned;update persisted",
+      "result": "PASS"
+    },
+    {
+      "name": "counterfactual_normal_DELETE",
+      "actual": "1 row returned;normal removed",
+      "result": "PASS"
+    },
+    {
+      "name": "counterfactual_support_DELETE",
+      "actual": "42501",
+      "result": "PASS"
+    },
+    {
+      "name": "source_UPDATE",
+      "actual": "NEW returned;update persisted",
+      "result": "PASS"
+    },
+    {
+      "name": "source_normal_DELETE",
+      "actual": "0 rows returned;normal retained",
+      "result": "PASS"
+    },
+    {
+      "name": "source_support_DELETE",
+      "actual": "42501",
+      "result": "PASS"
+    }
+  ],
+  "SQL_sha256": "8fb7d5584e1b5667a9df4d05ae1d900e2ab81d1d0d84ee8ca2c20ef021413ded",
+  "source_function_sha256_LF": "9fb8f1d0ba18a4b9583589a04c090ac6b4ed1f1065228e4d236abefeb2fa2805",
+  "source_trigger_sha256_LF": "c907134b7c69dd4d67a067cd2813aeb6225beade6d4c2987dac7277683dd4c3a",
+  "counterfactual_only_disposable_schema": true,
+  "schema_absent_after_rollback": true,
+  "public_guard_unchanged": true,
+  "limits": "Minimal users/support-identity schema; no public function fix, no product UI/production or full native Go gate claim"
+}

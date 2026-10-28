@@ -1,0 +1,8 @@
+import sys,time
+from common import *
+c=read(P/'private/config.private.json');assert own(c) and c['force_stop_count']==1;target=c['pre_marker'];steps=[];seen=False
+for i in range(10):
+ rows=nodes();assert own(c);seen=any(target in label(n) and n.get('class')!='android.widget.EditText' and 0<=bounds(n)[1]<bounds(n)[3]<=2101 for n in rows)
+ if seen:break
+ panes=[n for n in rows if n.get('package')==APP and n.get('scrollable')=='true' and bounds(n)[3]-bounds(n)[1]>500 and bounds(n)[2]-bounds(n)[0]>500];assert len(panes)==1;b=bounds(panes[0]);x=(b[0]+b[2])//2;call('shell','input','swipe',str(x),str(b[3]-100),str(x),str(b[1]+100),'350');steps.append('Explicit afterrestart baseline scroll BEFORE postmarker creation');time.sleep(.35)
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'phase':'after_restart_before_post_POST','explicit_scrolls':len(steps),'pre_marker_visible':seen,'no_post_marker_exists_yet':not c.get('post_marker'),'owned_DM_composer_empty':own(c),'no_history_refresh':True,'capture':capture('position-after-restart-before-post'),'native_exit':0 if seen else 2,'native_skips':0,'limit':'Pre marker was created before restart; this is positioning only, not proof of authenticated fresh postrestartread orrealtime'};write(P/'position-after-restart-before-post.json',r);print({k:v for k,v in r.items() if k not in ['capture']});raise SystemExit(r['native_exit'])

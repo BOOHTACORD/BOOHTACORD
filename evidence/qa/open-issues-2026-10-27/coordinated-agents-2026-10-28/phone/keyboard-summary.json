@@ -1,0 +1,160 @@
+{
+  "id": "ANDROID-own-DM-keyboard-SystemBack-draft",
+  "status": "PASS_SCOPED",
+  "protects": "Current own DM composer stays above actual native keyboard, system Back hides keyboard while preserving the exact unique draft, and clearing leaves empty composer withoutSend",
+  "command": "python -X utf8 .out/qa-agent-phone/keyboard_back.py",
+  "result": "keyboard-result.json",
+  "source_criterion": {
+    "id": "I303.C3",
+    "original_requirement_unchanged": "На iOS/Android проверить системный Back/swipe, keyboard overlays, dynamic text, SafeArea, TalkBack/VoiceOver и system sharing picker."
+  },
+  "numeric_observations": {
+    "unique_synthetic_draft_characters": 38,
+    "keyboard_visible_composer_bounds": [
+      23,
+      1314,
+      1058,
+      1466
+    ],
+    "visually_observed_keyboard_top": 1488,
+    "composer_to_keyboard_gap_px": 22,
+    "after_Back_composer_bounds": [
+      23,
+      2124,
+      1058,
+      2276
+    ]
+  },
+  "visual_observations": [
+    "Source-resolution1080x2340 shown/afterBack/cleanedcaptures inspected",
+    "Systemkeyboard visually present undercomposer, neither inputline nor Send control covered",
+    "After one systemBack keyboard visually absent and exactdraft retained",
+    "Exact own38-char draft removed; composerempty and keyboardvisually absent aftercleanup"
+  ],
+  "diagnostic_limit": "IME_reported_input_shown is a broad substring across historical dumpsys sections and remains true afterBack; it is not used as currentkeyboard visibility evidence",
+  "limits": [
+    "Existing authorized own DM only; no newconversation, navigation persistence, send/edit/react,TalkBack,orientation,dynamicfont,otherdevice,wholeI303.C3 orI303acceptance",
+    "NoSend action activated; markerabsentfromvisiblehistory; noafterwardserverquery becauseAPIproduceralreadyrevoked"
+  ],
+  "native_receipt": {
+    "at_utc": "2026-10-28T19:29:31.530083+00:00",
+    "workflow_class": "review_gate",
+    "route": "clients/flutter/services/composer_draft_memory",
+    "packet": "native-Android-owned-DM-keyboard-Back",
+    "status": "PASS_SCOPED_NATIVE_OWN_DM_DRAFT_SYSTEM_BACK",
+    "no_send_control_activated": true,
+    "typed_synthetic_ASCII_characters": 38,
+    "native_skips": 0,
+    "actions": [
+      "Tap current unique empty composer from observed bounds",
+      "Input unique ASCII synthetic draft without newline or Send",
+      "System Back once",
+      "Exact own synthetic draft cleared with bounded Backspace then system Back"
+    ],
+    "phone_state_before": {
+      "at_utc": "2026-10-28T19:29:31.386060+00:00",
+      "permission": {
+        "granted": true,
+        "flags": [
+          "USER_SET",
+          "USER_SENSITIVE_WHEN_GRANTED",
+          "USER_SENSITIVE_WHEN_DENIED"
+        ]
+      },
+      "microphone_fgs": false,
+      "voice_connected": false,
+      "muted_control": false,
+      "app_hierarchy_present": true,
+      "system_permission_prompt": false,
+      "navigation_available": true,
+      "login_fields": false
+    },
+    "source_SHA256": {
+      "clients/flutter/lib/src/services/composer_draft_memory.dart": "3272ab27f1fac478afcff1f82e668a98fb46303ce143927616c22178adbd4c36",
+      "clients/flutter/lib/src/features/direct/send_state/send.dart": "8940722bea478ae5904d3b56d5127c083e941f1307909b7ca2732f2ee0915e0e",
+      "clients/flutter/test/composer_draft_memory_test.dart": "d09dc119002e2fdea537282b843a4992d88dc8cae7dd1438f98d07c9edab72db"
+    },
+    "with_keyboard": {
+      "capture": {
+        "file": "[PRIVATE_ARTIFACT_PATH_RETAINED_LOCALLY]",
+        "SHA256": "a2e52c2150cc67d08c3ca7a7923f3405c86d69ee66f4413d76ba8a1aaac3f281"
+      },
+      "composer_bounds": [
+        23,
+        1314,
+        1058,
+        1466
+      ],
+      "own_marker_in_composer": true,
+      "composer_empty": false,
+      "marker_visible_in_history": false,
+      "IME_reported_input_shown": true,
+      "IME_node_packages": []
+    },
+    "after_Back": {
+      "capture": {
+        "file": "[PRIVATE_ARTIFACT_PATH_RETAINED_LOCALLY]",
+        "SHA256": "bc006d2b9e41f06597f4c768db77ff471bc831cf2cc7e261cd16a2678201d50a"
+      },
+      "composer_bounds": [
+        23,
+        2124,
+        1058,
+        2276
+      ],
+      "own_marker_in_composer": true,
+      "composer_empty": false,
+      "marker_visible_in_history": false,
+      "IME_reported_input_shown": true,
+      "IME_node_packages": []
+    },
+    "after_cleanup": {
+      "capture": {
+        "file": "[PRIVATE_ARTIFACT_PATH_RETAINED_LOCALLY]",
+        "SHA256": "5916bee8566302a9e792d595a779b11adf6d0863fa71649feb32c131ee84f79f"
+      },
+      "composer_bounds": [
+        23,
+        2124,
+        1058,
+        2276
+      ],
+      "own_marker_in_composer": false,
+      "composer_empty": true,
+      "marker_visible_in_history": false,
+      "IME_reported_input_shown": true,
+      "IME_node_packages": []
+    },
+    "phone_state_after": {
+      "at_utc": "2026-10-28T19:29:55.499790+00:00",
+      "permission": {
+        "granted": true,
+        "flags": [
+          "USER_SET",
+          "USER_SENSITIVE_WHEN_GRANTED",
+          "USER_SENSITIVE_WHEN_DENIED"
+        ]
+      },
+      "microphone_fgs": false,
+      "voice_connected": false,
+      "muted_control": false,
+      "app_hierarchy_present": true,
+      "system_permission_prompt": false,
+      "navigation_available": true,
+      "login_fields": false
+    },
+    "cleanup": "PASS_OWN_COMPOSER_EMPTY_NO_SEND",
+    "native_exit": 0,
+    "finished_at_utc": "2026-10-28T19:29:55.616313+00:00"
+  },
+  "platform": "PhysicalSamsungSM-A576BAndroid16 signedinstalled1.0.47+2082 APK_SHA256=c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+  "mandatory_when": "Before claiming this exact native Android subset; full source criterion remains unaccepted",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "deployed_backend_source": "UNKNOWN",
+  "native_exit": 0,
+  "native_skips": 0,
+  "no_source_changes": true,
+  "no_new_API_sessions_or_messages": true,
+  "raw_captures_private": true,
+  "runner_SHA256": "a65b77552617f469468644e5e1a79a8d2d0f57169ce25973847099b38f43a319"
+}

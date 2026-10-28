@@ -1,0 +1,40 @@
+{
+  "utc": "2026-10-28T19:41:26.344000+00:00",
+  "helper_hashes": {
+    "bind_runtime.py": "b7c25b91b53e6bbb55a42b09d79004da53cfc7196d1feba5225f4fe60dc143dc",
+    "checks.py": "c443a4b63e730b616376da9cd3a8d29bf8f0c0d7d12e3e3ddc769de8f2401fd7",
+    "cleanup.py": "f6ef9f855903214a3e66e01d5538317404b49d3a7b29eaec81ecfaaaed293308",
+    "common.py": "214bbc01015bc41a372e76d773535d5e5d3867c4b347e6bdf5d1a546d7f61044",
+    "native.py": "4e6dd9e3b9a9212a6ef0d9276a5d3b09eea7b629f008f8fde5c46f7be62f783e",
+    "preflight.py": "edffdb9cd0115e4ee1a9dc073c7341c1a648965fd3341f9aac3b9b23e5079f37",
+    "prepare.py": "359396f79e96e72594735de6dd731996be999da214b24b6096efe84c1c2a6860",
+    "run.py": "25d76b2a1af4cb11431d073f31ff332a27241c38d6b9128013a6e6556c3a3984"
+  },
+  "source_hashes_unchanged": true,
+  "native12_zero_skips_retained": true,
+  "pre_runtime_harness_corrections": [
+    "Read-only schema showed users.login max32; shortened nonce-only own fixture usernames before creation.",
+    "Read-only schema showed sessions.user_id; corrected cleanup predicate before creation.",
+    "Kept3ATTACHED metadata fixtures within explicit grant; HIDDEN runtime not claimed.",
+    "Log scan uses same explicit local npipe context.",
+    "Attempt1 category position0 failed unique constraint and fully rolled back; fresh attempt uses max(position)+1 and new nonce."
+  ],
+  "changed_since_native": {
+    "bind_runtime.py": {
+      "native_hash": null,
+      "runtime_hash": "b7c25b91b53e6bbb55a42b09d79004da53cfc7196d1feba5225f4fe60dc143dc"
+    },
+    "cleanup.py": {
+      "native_hash": "41949b76b2477f28d5347896fe5433a628172ae8fa51b809a32b8899702a4647",
+      "runtime_hash": "f6ef9f855903214a3e66e01d5538317404b49d3a7b29eaec81ecfaaaed293308"
+    },
+    "common.py": {
+      "native_hash": "57f92cd24e837a6272f948245b5af88426051ce465c4da6180573f1f67a44a98",
+      "runtime_hash": "214bbc01015bc41a372e76d773535d5e5d3867c4b347e6bdf5d1a546d7f61044"
+    },
+    "prepare.py": {
+      "native_hash": "ab40817b02ce276627f9d7830428465472b3082978e0b0b5fccb532bb271ff4e",
+      "runtime_hash": "359396f79e96e72594735de6dd731996be999da214b24b6096efe84c1c2a6860"
+    }
+  }
+}

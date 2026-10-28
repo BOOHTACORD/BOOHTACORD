@@ -1,0 +1,36 @@
+import ipaddress,json,subprocess
+from common import P,Q,read,write,valid,quote,sql,request,now,table_state,services,digest,docker,WORK,CONTEXT
+def cleanup():
+    cfg=read(P/'private/fixture.json');before=read(P/'before.json');owner=cfg['owner']
+    assert len(owner)==24 and all(c in '0123456789abcdef' for c in owner)
+    users=[valid(u['id']) for u in cfg['users'].values()];uid=','.join(map(quote,users));scopes=','.join(map(quote,[valid(cfg['dm']),valid(cfg['foreign'])]));channel=valid(cfg['channel']);category=valid(cfg['category'])
+    for u in cfg['users'].values():
+        stored=sql('SELECT login FROM users WHERE id='+quote(u['id'])+';').strip();assert not stored or stored==u['login'] and owner in stored
+    live=[]
+    for alias,cookie in cfg['sessions'].items():
+        code,_,session=request('/api/v1/auth/session',cookie=cookie);assert code==200
+        if session['authenticated']:assert request('/api/v1/auth/logout','POST',{},cookie)[0]==204
+        code,_,session=request('/api/v1/auth/session',cookie=cookie);assert code==200 and not session['authenticated']
+        assert request('/api/v1/search/messages?query=cleanup',cookie=cookie)[0]==401;live.append(alias)
+    assert sql('SELECT count(*) FROM direct_messages WHERE id IN ('+scopes+') AND (participant_one_id NOT IN ('+uid+') OR participant_two_id NOT IN ('+uid+'));').strip()=='0'
+    name=sql('SELECT name FROM categories WHERE id='+quote(category)+';').strip();assert not name or name=='qa_search_'+owner
+    assert sql('SELECT count(*) FROM attachments WHERE (channel_id='+quote(channel)+' OR direct_message_id IN ('+scopes+')) AND owner_id NOT IN ('+uid+');').strip()=='0'
+    assert sql('SELECT count(*) FROM messages WHERE channel_id='+quote(channel)+' AND author_id NOT IN ('+uid+');').strip()=='0'
+    assert sql('SELECT count(*) FROM direct_message_messages WHERE direct_message_id IN ('+scopes+') AND author_id NOT IN ('+uid+');').strip()=='0'
+    own='SELECT id FROM attachments WHERE owner_id IN ('+uid+')';messages='SELECT id FROM messages WHERE channel_id='+quote(channel);dms='SELECT id FROM direct_message_messages WHERE direct_message_id IN ('+scopes+')'
+    sql('BEGIN; DELETE FROM message_attachments WHERE attachment_id IN ('+own+'); DELETE FROM direct_message_attachments WHERE attachment_id IN ('+own+'); DELETE FROM attachments WHERE owner_id IN ('+uid+'); DELETE FROM messages WHERE channel_id='+quote(channel)+'; DELETE FROM direct_message_messages WHERE direct_message_id IN ('+scopes+'); DELETE FROM direct_messages WHERE id IN ('+scopes+'); DELETE FROM channels WHERE id='+quote(channel)+'; DELETE FROM categories WHERE id='+quote(category)+' AND name='+quote('qa_search_'+owner)+'; DELETE FROM sessions WHERE user_id IN ('+uid+'); DELETE FROM users WHERE id IN ('+uid+'); COMMIT;')
+    after=table_state();assert after==before['database'],'Unexpected remaining public-table delta'
+    current=services();same=[];old=read(P/'private/services-before.json')
+    for name,v in current.items():
+        b=old[name];assert v['State']['Running'] and v['RestartCount']==b['RestartCount']==0 and all(v[k]==b[k] for k in ['Id','Image','Config','HostConfig']) and v['State']['StartedAt']==b['State']['StartedAt']
+        for bindings in v['NetworkSettings']['Ports'].values():
+            for binding in bindings or []:assert ipaddress.ip_address(binding['HostIp']).is_loopback
+        same.append(name)
+    assert request('/api/v1/health')[0]==200
+    assert all(digest((P.parent/'qa-agent-browser'/f).read_bytes())==h for f,h in before['frozen_audit_hashes'].items())
+    for rel,h in before['source_hashes'].items():assert digest((Q/rel).read_bytes())==h['working_sha256']
+    for f,h in read(P/'runtime-binding.json')['helper_hashes'].items():assert digest((P/f).read_bytes())==h
+    logs=subprocess.run(['docker','--context',CONTEXT,'logs','--since',before['utc'],'boohtacord-local-qa-api-1'],capture_output=True,timeout=20);raw=logs.stdout+logs.stderr;(P/'private/api.log').write_bytes(raw)
+    credentials=read(WORK/'credentials.private.json');needles=[credentials['admin_password'],credentials['database_password'],cfg['query'],*users,*[u['login'] for u in cfg['users'].values()],*cfg['sessions'].values()]
+    leak=[n for n in needles if n and n.encode() in raw];assert not leak,'Private API log contains fixture/credential material'
+    write(P/'cleanup.json',{'utc':now(),'result':'PASS','own_sessions_revoked_live_readback':live,'all_ten_public_table_count_hashes_restored':True,'database_after':after,'nine_services_unchanged':same,'source_and_frozen_audit_unchanged_runtime_helpers_match_seal':True,'health_HTTP':200,'API_log_bytes':len(raw),'API_log_sha256':digest(raw),'secret_fixture_matches':0,'production_touched':False})

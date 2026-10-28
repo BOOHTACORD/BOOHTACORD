@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-28T19:14:48.130398+00:00",
+  "at_utc": "2026-10-28T20:10:53.432281+00:00",
   "candidate_evidence": "../../android/physical-share-2026-10-27/result.json",
   "files": {
     "acceptance-methods.json": {
@@ -667,12 +667,500 @@
       "sha256": "7d2ac8691a4dd0bef3ffd7fd6c9ea028ab04c058060810c65c5f27501d34d867"
     },
     "cases.json": {
-      "bytes": 91164,
-      "sha256": "b0fe217e3f2f1b83249ea82edb4f537baf4b089bdd68c86cde7b5a8ee6f80c27"
+      "bytes": 100995,
+      "sha256": "462316764992d2c2ba0c96cad3bce9a36729ac290dcaf851692c27de912adbad"
     },
     "controlled-account-integrity.json": {
       "bytes": 640,
       "sha256": "044860742a5770cf836660dd62322842ffeccedae68cf8e8531be365165c96b4"
+    },
+    "coordinated-agents-2026-10-28/browser/browser-ui-policy-blocker-user-selected.json": {
+      "bytes": 2602,
+      "sha256": "20fea477362ff13394b65b7aee22fac91fae02c86889c64496fe1065cd46b531"
+    },
+    "coordinated-agents-2026-10-28/browser/browser-ui-policy-blocker.json": {
+      "bytes": 2219,
+      "sha256": "64707a078737fb3a1da753d569cc52252aef42add76f0fb3006bc4075c984229"
+    },
+    "coordinated-agents-2026-10-28/coordination.json": {
+      "bytes": 1387,
+      "sha256": "3bfb661eac6f4b87fc7befd2fcf9c3f531d7aa392277710584c23ad6921cb195"
+    },
+    "coordinated-agents-2026-10-28/guard/after-failure.json": {
+      "bytes": 469,
+      "sha256": "bd38e7927264e612eb3268aa6ecb2b48d38a635f6c370b8703bb7f9e48b0cd29"
+    },
+    "coordinated-agents-2026-10-28/guard/before.json": {
+      "bytes": 859,
+      "sha256": "dbc2be57f5527e0fa59a2ad918165525dfe4760d88845d9e34e8bcb83331e98c"
+    },
+    "coordinated-agents-2026-10-28/guard/binding.json": {
+      "bytes": 6102,
+      "sha256": "36e53266db11ff3c8f3e4768441074023011947939a7b43bcca7d009a65cb803"
+    },
+    "coordinated-agents-2026-10-28/guard/cleanup-final-after-root-handoff.json": {
+      "bytes": 907,
+      "sha256": "b3bbaa69a74f38466214b82c6ce079bfd7a00bda8698342bea24389d36a5547c"
+    },
+    "coordinated-agents-2026-10-28/guard/counterexample.json": {
+      "bytes": 1500,
+      "sha256": "df0bb1adf9107b6dcff43c657da9972950cac5d125b7f2ff62c94609d70dbd90"
+    },
+    "coordinated-agents-2026-10-28/guard/failure.json": {
+      "bytes": 299,
+      "sha256": "906168c1d6067e1060991083dd0cb77bc9aaadfb615f8e90a1cdbb12c562a2ee"
+    },
+    "coordinated-agents-2026-10-28/guard/integrity.json": {
+      "bytes": 3966,
+      "sha256": "a9b1a4b2925a1ee0a61c6049a3881c82bfb74d2b41c19e134b89ace0f6887067"
+    },
+    "coordinated-agents-2026-10-28/guard/product-verdict.json": {
+      "bytes": 1230,
+      "sha256": "d77fa49caf12e19f79cb3bf4b228a9765d889ba3d9f18fc70fdc4268ff2b712e"
+    },
+    "coordinated-agents-2026-10-28/guard/retry-binding.json": {
+      "bytes": 980,
+      "sha256": "7300eba95350e6dafa4d120b310ce84535fb9b96ddc2d3c45d2aa4039d3c981a"
+    },
+    "coordinated-agents-2026-10-28/guard/teardown.json": {
+      "bytes": 903,
+      "sha256": "735b380d207391439b945a0302892f5fa71ebf1fee2cfe375fbacfe29d496b5d"
+    },
+    "coordinated-agents-2026-10-28/phone/cleanup.json": {
+      "bytes": 3275,
+      "sha256": "13778503ac686763d38d036005a261b33e5a68e755aba6bbddb09b56d1b44195"
+    },
+    "coordinated-agents-2026-10-28/phone/delete-0.json": {
+      "bytes": 348,
+      "sha256": "34dcbce45cfa9b34aae6024d1efc2776fc2ba9d72061d2fe4def6baf0d303ac6"
+    },
+    "coordinated-agents-2026-10-28/phone/delete-1.json": {
+      "bytes": 346,
+      "sha256": "188d5a6941e3d17ea0535d71762f9f69095b3e2f08aac0ba85673c916fc0be27"
+    },
+    "coordinated-agents-2026-10-28/phone/delete-2.json": {
+      "bytes": 349,
+      "sha256": "51efbf63c93513492a4d6b8edf12460ea88794e1456a8b438cb16cf1f39d15fb"
+    },
+    "coordinated-agents-2026-10-28/phone/delete-3.json": {
+      "bytes": 347,
+      "sha256": "d849fbb2fa381e32ae2ccadeb0be9770a15eb21d7adb06d713a87dfaf3b178fc"
+    },
+    "coordinated-agents-2026-10-28/phone/delete-4.json": {
+      "bytes": 348,
+      "sha256": "9cbcabe87b415dfa4161ade241117d4cb126301095ae273fce741df2e2bdbfcb"
+    },
+    "coordinated-agents-2026-10-28/phone/delete-5.json": {
+      "bytes": 346,
+      "sha256": "9343ea340bc42ef4338c1f9477f2474be4d5d7f14f278316db171f0b0b8a30ca"
+    },
+    "coordinated-agents-2026-10-28/phone/final-native-state.json": {
+      "bytes": 982,
+      "sha256": "6cc91118238d4d27e07761125dea0b8a3648638cdb3ae6e7725ee91f5ed08cc1"
+    },
+    "coordinated-agents-2026-10-28/phone/history-refresh-result.json": {
+      "bytes": 952,
+      "sha256": "1a6433693ebbaf78babded853a5f3f68b3c3775264170a459ee97a295fe7a528"
+    },
+    "coordinated-agents-2026-10-28/phone/keyboard-result.json": {
+      "bytes": 3419,
+      "sha256": "c4183dbe91d1c8c9b54c4af841af1be11c36a57e4c3c4177ac3ee757a9967636"
+    },
+    "coordinated-agents-2026-10-28/phone/keyboard-summary.json": {
+      "bytes": 6105,
+      "sha256": "dfe19d29991d29088416134273c7ff4bb03452307c5f47a16ba2b092ef12b744"
+    },
+    "coordinated-agents-2026-10-28/phone/native-commands.json": {
+      "bytes": 12065,
+      "sha256": "337998c572a62a6b7ad13168ff37b4f54eaefb6c4b7e1d90426dcd8b1ae18e32"
+    },
+    "coordinated-agents-2026-10-28/phone/preflight-attempt1-diagnostic.json": {
+      "bytes": 369,
+      "sha256": "2d810dfb2e7f0650d3d9666ab886d57550b7615dd4da2e21a68cb89331525dc8"
+    },
+    "coordinated-agents-2026-10-28/phone/preflight.json": {
+      "bytes": 2351,
+      "sha256": "ef67a4e8c4e7424886964c6a22ead763e841cfacae71768d6888863ee445f8b0"
+    },
+    "coordinated-agents-2026-10-28/phone/probe-0.json": {
+      "bytes": 838,
+      "sha256": "bb332c711ca3693e554251d09625b3886dc96d3246d1f30b1ce5a304615ff0bd"
+    },
+    "coordinated-agents-2026-10-28/phone/probe-2.json": {
+      "bytes": 839,
+      "sha256": "8066156b323a035526957852af2ed969cc116a5ada6f0721bb4ac32dc760ed69"
+    },
+    "coordinated-agents-2026-10-28/phone/probe-4.json": {
+      "bytes": 838,
+      "sha256": "f7c0812f4b07c9eddcf2f5a967742618afeb2c943e086ebdd7c66f9e79c71470"
+    },
+    "coordinated-agents-2026-10-28/phone/reconnect-result.json": {
+      "bytes": 758,
+      "sha256": "965ae6a489dbf47230b4614ec75034636914e54e78167bfaa6437ce2a2daff5d"
+    },
+    "coordinated-agents-2026-10-28/phone/reconnect-summary.json": {
+      "bytes": 4340,
+      "sha256": "e1dae678ac981b686c9c8848d8b7d434e54521cf53653ffc3122cfca45217c9a"
+    },
+    "coordinated-agents-2026-10-28/phone/refresh1-failure.json": {
+      "bytes": 547,
+      "sha256": "70d04f1db13f7d742a7f1dd6c96d3b24703be38048ec275d32e12ad20610697a"
+    },
+    "coordinated-agents-2026-10-28/phone/saved-0.json": {
+      "bytes": 1158,
+      "sha256": "31d1e95f4bd42b46d9fcd3e406759b262923c0eb69d00a66a4ab8f5504459a88"
+    },
+    "coordinated-agents-2026-10-28/phone/saved-1.json": {
+      "bytes": 1154,
+      "sha256": "0eef2c4d90c9ba637a27c7623c713408e345db13365f3ea2012095186e5e2fbe"
+    },
+    "coordinated-agents-2026-10-28/phone/saved-2.json": {
+      "bytes": 1160,
+      "sha256": "631e24a0de510b24cd15eed5c0453e465770d795dd2400e0dbc20a601aa7df9e"
+    },
+    "coordinated-agents-2026-10-28/phone/saved-3.json": {
+      "bytes": 1156,
+      "sha256": "f3b1c5b7734adb556a1210cd86b8a3345225047ff6e6118ac414493d231885cb"
+    },
+    "coordinated-agents-2026-10-28/phone/saved-4.json": {
+      "bytes": 1158,
+      "sha256": "b83ff4f2807a8b3e9b4d55e83ad9ac7cfb01ae76065edff13d6f18411ea750fc"
+    },
+    "coordinated-agents-2026-10-28/phone/saved-5.json": {
+      "bytes": 1154,
+      "sha256": "0f91106b1b7d532452c94b1cf429bb9c096d6ed1b914faca17a740abfd2065f8"
+    },
+    "coordinated-agents-2026-10-28/phone/send-0.json": {
+      "bytes": 660,
+      "sha256": "d456150a60f373deadf7882a496ad0273ffcf927291faf3aa6b97c5616fa6f13"
+    },
+    "coordinated-agents-2026-10-28/phone/send-1.json": {
+      "bytes": 658,
+      "sha256": "5478eaea1d7dd1c0b95faaeb3b667fb33da86b4856e8cdf6976e1fbfffccd75d"
+    },
+    "coordinated-agents-2026-10-28/phone/send-2.json": {
+      "bytes": 661,
+      "sha256": "f7f03695c1320873169c975f971e3d008fb6c3fe2cd5870407b3acbc0cf90830"
+    },
+    "coordinated-agents-2026-10-28/phone/send-3.json": {
+      "bytes": 659,
+      "sha256": "7e6775ace293fa1a9a56fdc43e488b1d9c606c5be31f6eba611048e57a6b9816"
+    },
+    "coordinated-agents-2026-10-28/phone/send-4.json": {
+      "bytes": 660,
+      "sha256": "1d446c511e860fcbb97a3a95518bfe4cfce116d98b89388e6330fcf6c7c3ab00"
+    },
+    "coordinated-agents-2026-10-28/phone/send-5.json": {
+      "bytes": 658,
+      "sha256": "08f83c41e43d1deac234f0c1e3f8f46e79c5cd88a6654000f0f4a2f8b5a34f14"
+    },
+    "coordinated-agents-2026-10-28/phone/source-criteria.json": {
+      "bytes": 5187,
+      "sha256": "42fb6776cc568a3c40f54a12ef4841bcd0dd727634a905369ea19e8de55601a5"
+    },
+    "coordinated-agents-2026-10-28/phone/summary.json": {
+      "bytes": 23921,
+      "sha256": "f4ef59da744fe667484956a7617080f46bb501fa185b584de3b7de35e5357626"
+    },
+    "coordinated-agents-2026-10-28/phone/visual-record.json": {
+      "bytes": 4626,
+      "sha256": "76e38098b754566905a9cd788664c283e8a4c66838f41d8f19c31773459e2f17"
+    },
+    "coordinated-agents-2026-10-28/private-origin-hashes.json": {
+      "bytes": 25501,
+      "sha256": "3989d4ce40a9ad4ff1a29aa901140535a3cf800055ca4d0120170d0522a284f4"
+    },
+    "coordinated-agents-2026-10-28/README.md": {
+      "bytes": 2882,
+      "sha256": "dfa1021f01af1a648af3d70231642675b5a67e3604d7758dfc8db7cd875f5b7b"
+    },
+    "coordinated-agents-2026-10-28/restart/availability.json": {
+      "bytes": 751,
+      "sha256": "559bf023987aa5670d56eec47d4170214a42925b078afe07e950463195f36665"
+    },
+    "coordinated-agents-2026-10-28/restart/cleanup.json": {
+      "bytes": 1342,
+      "sha256": "131d89834ca45bcd5599b3c3b1f289064edf358c7bb5c9c5e2bc278ed6d41ef3"
+    },
+    "coordinated-agents-2026-10-28/restart/control-post.json": {
+      "bytes": 701,
+      "sha256": "ddaed3946469138b814f379796762b2c5a4e0d038fc06712ac78b729c2763903"
+    },
+    "coordinated-agents-2026-10-28/restart/control-pre.json": {
+      "bytes": 732,
+      "sha256": "b251307dad5539c8f8348763ab550ead74e3d865d51a5ac62f75700d5cc71ca4"
+    },
+    "coordinated-agents-2026-10-28/restart/control-third.json": {
+      "bytes": 771,
+      "sha256": "16faac5bf927bb8972d52f780760a632b4b73ad4badfce81469601912c995935"
+    },
+    "coordinated-agents-2026-10-28/restart/final-state.json": {
+      "bytes": 2972,
+      "sha256": "447eb800b88200047c1bdbbeb4bee01959670d7f56624c385d25772bbe51a4ff"
+    },
+    "coordinated-agents-2026-10-28/restart/helper-binding-before-cleanup.json": {
+      "bytes": 230,
+      "sha256": "8788f74adcbbe44f6cb9f9b9adde2790cad1ceececc402cc2335378b72725a9b"
+    },
+    "coordinated-agents-2026-10-28/restart/helper-binding-before-final-seal.json": {
+      "bytes": 178,
+      "sha256": "f274486bda6447d538523124a4ccc022f12d99a6f5cd5b810bbe9604a4e6a821"
+    },
+    "coordinated-agents-2026-10-28/restart/helper-bindings-before-manual-refresh.json": {
+      "bytes": 254,
+      "sha256": "ccaf456083089c73f0b58c31563d0644a28fd049e7c8f24d75c0c5c7a257d205"
+    },
+    "coordinated-agents-2026-10-28/restart/helper-bindings-before-post-position.json": {
+      "bytes": 252,
+      "sha256": "88626ca482420fedc649f785588d98e2d492ea08da77b49dc176b184bfdd240f"
+    },
+    "coordinated-agents-2026-10-28/restart/helper-bindings-before-pre-control.json": {
+      "bytes": 672,
+      "sha256": "eb6a7d90fb6916dee3299b7ee50eb1994ce1d113ff063e86f5c03b751e2bd42f"
+    },
+    "coordinated-agents-2026-10-28/restart/helper-bindings-before-pre-observe.json": {
+      "bytes": 283,
+      "sha256": "235df26beb349b72db6b22982e8b8e6346dca030d4cdf96001791281bde0d260"
+    },
+    "coordinated-agents-2026-10-28/restart/helper-bindings-before-profile.json": {
+      "bytes": 498,
+      "sha256": "fbcad1fb8ab3541d4790b0e557dfe89af4248af237ee6cacfd39933851b78bbf"
+    },
+    "coordinated-agents-2026-10-28/restart/helper-bindings-before-restart.json": {
+      "bytes": 955,
+      "sha256": "07a83d449ad3573fb72db6ed1790f4e1db3386e51eff808a49c3a9d8f1f03fe4"
+    },
+    "coordinated-agents-2026-10-28/restart/helper-bindings-before-stable-latest.json": {
+      "bytes": 312,
+      "sha256": "f41bbcb81a043b4fc1e9da7a2c30209b75f9b31945905caec9b5760cc06441cc"
+    },
+    "coordinated-agents-2026-10-28/restart/helper-bindings-before-third-reveal.json": {
+      "bytes": 268,
+      "sha256": "b4e49d802a2dc52610db6cb7745839a94d9d0a24da7aaa6fc01caa721d4984c0"
+    },
+    "coordinated-agents-2026-10-28/restart/position-after-restart-before-post.json": {
+      "bytes": 590,
+      "sha256": "99b7461888d35dad3035a38dccbdd2621539479925d06635e3c9017fd180c612"
+    },
+    "coordinated-agents-2026-10-28/restart/position-before-control.json": {
+      "bytes": 391,
+      "sha256": "f164b7cc92308da94f044f1de1903a6f0edae289472c7f8aa87d295fbff41c94"
+    },
+    "coordinated-agents-2026-10-28/restart/post-auth-manual-refresh.json": {
+      "bytes": 960,
+      "sha256": "f3ccb37e1537d7c48be3c4d89ead42bf0fb783b92a48ff64d6a3387fab5c677a"
+    },
+    "coordinated-agents-2026-10-28/restart/producer-pre-attempt1.json": {
+      "bytes": 427,
+      "sha256": "5e133d038bf68456bde20d92a83908dbf141b5e7d01572846ebd6f5468a6c443"
+    },
+    "coordinated-agents-2026-10-28/restart/producer-pre-recovered-owned-message.json": {
+      "bytes": 244,
+      "sha256": "8b8a93a234482793dd8a4415db007143c4e3eb65b664f489c3897c88710e0022"
+    },
+    "coordinated-agents-2026-10-28/restart/profile-guard-after.json": {
+      "bytes": 678,
+      "sha256": "c4613d6db04947dafbcc7afcc53fa600d530031dd3d337d13e5a0bb6da6ed16b"
+    },
+    "coordinated-agents-2026-10-28/restart/profile-guard-before-attempt1.json": {
+      "bytes": 507,
+      "sha256": "ac95044d7d6d114fb4ad52e4c698506b945d5d1ef314560e2a14dc396a939bbb"
+    },
+    "coordinated-agents-2026-10-28/restart/profile-guard-before.json": {
+      "bytes": 638,
+      "sha256": "82eb7994200be261735ff6f57e313c3b5685a06d329130b33db5a9708bae6b9f"
+    },
+    "coordinated-agents-2026-10-28/restart/restart-progress.json": {
+      "bytes": 665,
+      "sha256": "e014f7c0665cce41510247775cfd0be93b28da577799172d8bc1c2ec93c981fb"
+    },
+    "coordinated-agents-2026-10-28/restart/restart-result.json": {
+      "bytes": 1838,
+      "sha256": "e4040711e115adf1a1c119fc1bde7393e340bb0b8fd24c1bd43c5374469201ef"
+    },
+    "coordinated-agents-2026-10-28/restart/source-criterion.json": {
+      "bytes": 9166,
+      "sha256": "190877f53ed94bdecd1be1e2f27cb3cc47f07bf49801d5a594d8a2a041d0b5f8"
+    },
+    "coordinated-agents-2026-10-28/restart/source-guards.json": {
+      "bytes": 3621,
+      "sha256": "b59100afb57f440776b48036b6c0a4f446fc2a38ab14b4410ec40edcfb6174d4"
+    },
+    "coordinated-agents-2026-10-28/restart/stable-latest-before-third.json": {
+      "bytes": 986,
+      "sha256": "0e67fdf4d4d29533f7359625164d58b942ee67c29c171c1d6b31031e9eaa590e"
+    },
+    "coordinated-agents-2026-10-28/restart/summary.json": {
+      "bytes": 10131,
+      "sha256": "24c538a25c15dbf419a714fe64302ae6fd300d6cc132076905c1f59446f5dd33"
+    },
+    "coordinated-agents-2026-10-28/restart/third-after-explicit-scroll.json": {
+      "bytes": 627,
+      "sha256": "e3861d369143c29d0cb9d0c96a3ac9f869d54b1ed44f8ebce7a189898eb92b30"
+    },
+    "coordinated-agents-2026-10-28/restart/third-passive-review.json": {
+      "bytes": 1064,
+      "sha256": "e9612cfcdada7dbee2423a4cad43cf724e51bd8fc2b3801f0163b7e22cff59b5"
+    },
+    "coordinated-agents-2026-10-28/restart/third-settled.json": {
+      "bytes": 409,
+      "sha256": "f1130f360454808006f8d20e4a6eb305ba5c1e48115793b61dca64ef5d41ea3e"
+    },
+    "coordinated-agents-2026-10-28/restart/visual-record.json": {
+      "bytes": 977,
+      "sha256": "8ea8a841b9280b24fe17575bcb3d7da5eedb6dc871443d01a460ba4273154ce1"
+    },
+    "coordinated-agents-2026-10-28/root-retention-check.json": {
+      "bytes": 351,
+      "sha256": "fa32c0c9a892b8be4c499825a8b48ea656ae8a656a65bc084cb351d910bc1b40"
+    },
+    "coordinated-agents-2026-10-28/scope-audit.json": {
+      "bytes": 121211,
+      "sha256": "c8ae343b4fc1257fd9437f27f901313d123042f622e5949b1561d6550eed51ca"
+    },
+    "coordinated-agents-2026-10-28/search/aggregate-result.json": {
+      "bytes": 614,
+      "sha256": "dd5d38524adbdb40c6aa812eea5a836cc810bf1eab388005799695594f4ed8aa"
+    },
+    "coordinated-agents-2026-10-28/search/attempt1-summary.json": {
+      "bytes": 1498,
+      "sha256": "365448152b4cc90c89d961b62d7353ce1febc79f53d9fed800943bf76813c79d"
+    },
+    "coordinated-agents-2026-10-28/search/attempt2-summary.json": {
+      "bytes": 1510,
+      "sha256": "4a3bf09df171100350ffa616f2bc12ea965f6558ee4e2767560f6f3289bc6298"
+    },
+    "coordinated-agents-2026-10-28/search/before.json": {
+      "bytes": 13738,
+      "sha256": "89d02ed0ef8b0a70af919ec858929ec3e566d718491d3ef70b7fe9993377c0ea"
+    },
+    "coordinated-agents-2026-10-28/search/cleanup-blocker.json": {
+      "bytes": 936,
+      "sha256": "422cdcdf539112944f2277161a963027348488753fd5529713d85d1b8137f095"
+    },
+    "coordinated-agents-2026-10-28/search/cleanup-final.json": {
+      "bytes": 1539,
+      "sha256": "2c9ffdc48ca29d6b6d68c3b185b4551ebc32a2d639d711b3b077679d518b1f9f"
+    },
+    "coordinated-agents-2026-10-28/search/cleanup.json": {
+      "bytes": 1142,
+      "sha256": "0d47efb3ab0659c31ae1bd693c14244d58ad3e64d46c8e3f1802dcaf92119866"
+    },
+    "coordinated-agents-2026-10-28/search/duplicate-search.json": {
+      "bytes": 3070,
+      "sha256": "33fa6612d4876be686400018097a0bbdcbdf9809a81372d9fbc09ebaedc0965a"
+    },
+    "coordinated-agents-2026-10-28/search/finalizer-binding.json": {
+      "bytes": 341,
+      "sha256": "62a05e7b0578986e0b3e5f50af17f1a89660b9204aeb368e0a876eb196a36312"
+    },
+    "coordinated-agents-2026-10-28/search/fixture-ready.json": {
+      "bytes": 308,
+      "sha256": "f4c368f908614b2a7dc005164e6b6f7151e6df81c3f4dcdb99cfcf4dcfa9aaec"
+    },
+    "coordinated-agents-2026-10-28/search/handoff.json": {
+      "bytes": 812,
+      "sha256": "9062b032c45916cc92eb67208911795cd333271d4c058dc07abf1a6ea3d33c10"
+    },
+    "coordinated-agents-2026-10-28/search/integrity.json": {
+      "bytes": 6438,
+      "sha256": "41306296d1cb9aeaff05431fc75ae9e9f5e6bad6ad08e6c729bea3bd352660b3"
+    },
+    "coordinated-agents-2026-10-28/search/native-result.json": {
+      "bytes": 1942,
+      "sha256": "d978bbc43b9eb4ead69a71cf2a73741076955617cb2b4100f3a2e842d8887086"
+    },
+    "coordinated-agents-2026-10-28/search/runtime-binding.json": {
+      "bytes": 2156,
+      "sha256": "87845a2e1561ea6739fd1ecb1371137a30096e2a2c3db22f914f325e26cac99e"
+    },
+    "coordinated-agents-2026-10-28/search/runtime-checks.json": {
+      "bytes": 9687,
+      "sha256": "f852b283b7dc5c5745aab52da6f9682f1698a7de812b716618afcd31f8236371"
+    },
+    "coordinated-agents-2026-10-28/search/summary.json": {
+      "bytes": 1890,
+      "sha256": "6588be9ff3294d0e7b9c9efdc50e8c1c7f5df92e55fdb7fdf899a7ae78308aa1"
+    },
+    "coordinated-agents-2026-10-28/source-qualifiers.json": {
+      "bytes": 18294,
+      "sha256": "6c9a8aac399ff9514507786009d986d8b8983b1c02c67e1b44bd7db041315bd3"
+    },
+    "coordinated-agents-2026-10-28/summary.json": {
+      "bytes": 10434,
+      "sha256": "16fc668c78832058bcb5c76b64e4f998b3f1190030c4673b5c2d1c23758ea4e9"
+    },
+    "coordinated-agents-2026-10-28/windows/admin/captures.json": {
+      "bytes": 4148,
+      "sha256": "41133c62db061a6c2ceffec62ffa19ec3bd351da9c0763e1061d9fc2cb1d4e96"
+    },
+    "coordinated-agents-2026-10-28/windows/admin/sections.json": {
+      "bytes": 8020,
+      "sha256": "1acc5ca69fd0db1ac83eaadb74e78471b7b8dd35849288b90b97700bd4f0ca22"
+    },
+    "coordinated-agents-2026-10-28/windows/admin/summary.json": {
+      "bytes": 13498,
+      "sha256": "cdd51f8b5164863a72adcdac29cf392c2510a19a7d14cd8fbb35f67bf5780e02"
+    },
+    "coordinated-agents-2026-10-28/windows/admin-blocked/native-attempts.json": {
+      "bytes": 590,
+      "sha256": "5573a7cc16b64d8c20de41d339d159b21e9e58c1bca0ed2f4e9e9f3ac7697e86"
+    },
+    "coordinated-agents-2026-10-28/windows/admin-blocked/sections.json": {
+      "bytes": 3351,
+      "sha256": "5efecf464c9927fa95f59941adf3698f7ab4adc794b92cf0b4e9b2180366acef"
+    },
+    "coordinated-agents-2026-10-28/windows/admin-blocked/summary.json": {
+      "bytes": 8406,
+      "sha256": "2837dabbb274d49aa1c910e747c1e50f61c839d57103abdae3e272fd3b3b0052"
+    },
+    "coordinated-agents-2026-10-28/windows/attempt2/candidate-readback.json": {
+      "bytes": 630,
+      "sha256": "ed16f6f961318f9d4a4b43c80ea922e9d482e5f56e7c213e465c7f0bd5a45427"
+    },
+    "coordinated-agents-2026-10-28/windows/attempt2/captures.json": {
+      "bytes": 1604,
+      "sha256": "9e42615069bd0743024f8668353f4af259006743b414a08636f861e54d7322ab"
+    },
+    "coordinated-agents-2026-10-28/windows/attempt2/diagnostic-attempts.json": {
+      "bytes": 4293,
+      "sha256": "5533a208ac4e0175bff998b910b624ce0caf556a8737b6adabd538b384479744"
+    },
+    "coordinated-agents-2026-10-28/windows/attempt2/final-state.json": {
+      "bytes": 412,
+      "sha256": "94c39243e13b4028ed4620f0e549c9ab3a02f04469279261a5cdd2f2c4e04313"
+    },
+    "coordinated-agents-2026-10-28/windows/attempt2/preexecution.json": {
+      "bytes": 806,
+      "sha256": "37edaf55b7c738862e74775afd10e3048b0a3303fdfa768f537b8a50807665c6"
+    },
+    "coordinated-agents-2026-10-28/windows/attempt2/summary.json": {
+      "bytes": 5347,
+      "sha256": "8f4015ca7e197d744add39575f4224a23db83ac7af6e0ec490492209a2546fda"
+    },
+    "coordinated-agents-2026-10-28/windows/candidate-integrity.json": {
+      "bytes": 18464,
+      "sha256": "25e97e48f5dfa8ff49394f8ab710d53c5481223a7f02c5aae475f3351ba71ca0"
+    },
+    "coordinated-agents-2026-10-28/windows/candidate.json": {
+      "bytes": 703,
+      "sha256": "61697778b51c48a660887074d8eff55430f157e99911449a4ac51935246447a7"
+    },
+    "coordinated-agents-2026-10-28/windows/diagnostic-attempts.json": {
+      "bytes": 4132,
+      "sha256": "3be3273ed34ddc4229e0a82637a0f6a56a2549548a3770cc8f6bf22aa84c5389"
+    },
+    "coordinated-agents-2026-10-28/windows/operating-brief.json": {
+      "bytes": 2442,
+      "sha256": "ffc4ddeff0ec50a69da9bd3e858ec01777dd4999ff8ecf9858b9ac5767b6cb07"
+    },
+    "coordinated-agents-2026-10-28/windows/preexecution-hashes.json": {
+      "bytes": 2224,
+      "sha256": "89df8fb5852b27015798d22bc29d76c7073b9b94c95dd459c9a0f1b890668376"
+    },
+    "coordinated-agents-2026-10-28/windows/summary.json": {
+      "bytes": 4927,
+      "sha256": "8002262e5c75061a8a5b64ec74ba96303c595ed833e07ec3064e446692b737fc"
     },
     "github-updates-android-connectivity.json": {
       "bytes": 1365,
@@ -2755,8 +3243,8 @@
       "sha256": "4b7314f316cc66bb9c1c3e07919f4a2441de12db8ab970d26f9b4308a2cef8a4"
     },
     "matrix.json": {
-      "bytes": 1198064,
-      "sha256": "f5e82fea13a240357ef6c78354fc9f1cd904f396039251e4ca65710b34c6f71f"
+      "bytes": 1209211,
+      "sha256": "163fa0292105a611147bc5b861f76a060423ff7c0ea392cd11f6daebc21dde26"
     },
     "muted-background-resume.json": {
       "bytes": 250,
@@ -3906,6 +4394,10 @@
       "bytes": 3841,
       "sha256": "3cd0c6cd58bdeda876f743f404f3722d494c1d4ccb5fe89e55e9ef597320c9b9"
     },
+    "production-dm-attachment-claim/github-readback.json": {
+      "bytes": 455,
+      "sha256": "c38fb08da6765d94a594396c38b7417588906469aee31e18edab8bed498f7e01"
+    },
     "production-dm-attachment-claim/native-attempt1.json": {
       "bytes": 1364,
       "sha256": "1f7116fa117e2a21a7e15367e0ceabfb83ebafbf2490b334e461e7a500ac7fec"
@@ -4123,12 +4615,176 @@
       "sha256": "5c8013eb9693e540a771743fa74b10476a3b88dec2acdd1c683e36c8a6f9c391"
     },
     "README.md": {
-      "bytes": 27916,
-      "sha256": "218264da9cf4dccfadc16100fca77a2ca7ddec8b2bcf52d80ca56043837f3a89"
+      "bytes": 28376,
+      "sha256": "9a5a70a84b02253225a697d991d455fa78773e62a220dcda944a38fd042a4361"
     },
     "restored-microphone.json": {
       "bytes": 269,
       "sha256": "5f51b45c468c2deae7f33b76b527c9455b7ed728334da1186e3ee44d8db1eb3f"
+    },
+    "runner-source/agent-guard-common.py.txt": {
+      "bytes": 2255,
+      "sha256": "427ed773b8bb3579f186151eeee721eace9078ab962247c00c6c6faa4bb82720"
+    },
+    "runner-source/agent-guard-counter.py.txt": {
+      "bytes": 4065,
+      "sha256": "a19815a00841611fb1fa8ccca82fcf24d5aa1a17ca4901391a5ba11bd1db8887"
+    },
+    "runner-source/agent-guard-retry.py.txt": {
+      "bytes": 3301,
+      "sha256": "77f4f047165dbfe601fb613508b0f23425eec541f8dd4123815dfa6598c482d7"
+    },
+    "runner-source/agent-guard-run.py.txt": {
+      "bytes": 3978,
+      "sha256": "b3dfaf35a089ee997567b5899e7d3799bcd2323ac47e859b13bdccd844b6b6aa"
+    },
+    "runner-source/agent-guard-teardown.py.txt": {
+      "bytes": 4994,
+      "sha256": "87325556ca5a253b359cec4261a311abcad79d2e467e152273f9c0e6161c79b2"
+    },
+    "runner-source/agent-phone-cleanup_batch.py.txt": {
+      "bytes": 4143,
+      "sha256": "69b82cfddf00a6b16ecb65cf524a335a7f818611b2fba4beb744a04f4e8ebdf8"
+    },
+    "runner-source/agent-phone-common.py.txt": {
+      "bytes": 2045,
+      "sha256": "4bd943c38ba3b99b618931d735baf4d7827e2da5c2d54737bb7195e5c7daf53c"
+    },
+    "runner-source/agent-phone-execute_rest.py.txt": {
+      "bytes": 1546,
+      "sha256": "771d0de1154f3a2ee8ef8f0bf37cc4f6f0c678eb5aedcdaa8a260f9dc812ed27"
+    },
+    "runner-source/agent-phone-history_refresh.py.txt": {
+      "bytes": 1667,
+      "sha256": "170845fa97441faf4a72e24b6a88a6e9cb974c063fd323a540b5c0596b52840c"
+    },
+    "runner-source/agent-phone-keyboard_back.py.txt": {
+      "bytes": 3802,
+      "sha256": "833424b02c86c86c18ed4b5f50085ce0a97d758195a582be1c0f0c8297fb1348"
+    },
+    "runner-source/agent-phone-native_ui.py.txt": {
+      "bytes": 7998,
+      "sha256": "f50cf0447f138a3d2c43b10e463398fc6bc6cf1fb5234837f0af31d44270413b"
+    },
+    "runner-source/agent-phone-preflight.py.txt": {
+      "bytes": 2958,
+      "sha256": "33be94e9188275dfe8d9d3ca205c4002a829dc9a6a3b90ef6f6ff772ebb51d4c"
+    },
+    "runner-source/agent-phone-prepare.py.txt": {
+      "bytes": 3225,
+      "sha256": "5432ee8ed03dceeb3d1d83e896c53e91784fcb4a2f4ced038b1faffe756bef19"
+    },
+    "runner-source/agent-phone-producer.py.txt": {
+      "bytes": 3711,
+      "sha256": "fe25fc75c10b5095b548c65a086b7e500e55c3fd520dcf747c2af61cab1703a1"
+    },
+    "runner-source/agent-phone-reconnect.py.txt": {
+      "bytes": 1992,
+      "sha256": "21b6f32fecfda771dc0a6cb2c15067ea653d321031f9a1fe4b1c773247e28ed5"
+    },
+    "runner-source/agent-phone-restart-availability.py.txt": {
+      "bytes": 3188,
+      "sha256": "0963165570f148846daaf4cd231cf16251e87879eec92d0ea40694da7fe52c49"
+    },
+    "runner-source/agent-phone-restart-cleanup.py.txt": {
+      "bytes": 2539,
+      "sha256": "b684b9875a4785e65bc254b70fde2eedabbd38e138d8816e5ef57520debded22"
+    },
+    "runner-source/agent-phone-restart-common.py.txt": {
+      "bytes": 2045,
+      "sha256": "4bd943c38ba3b99b618931d735baf4d7827e2da5c2d54737bb7195e5c7daf53c"
+    },
+    "runner-source/agent-phone-restart-manual_refresh.py.txt": {
+      "bytes": 2290,
+      "sha256": "78e9cf469f3263aa2a3f6d75b137f7f44abf2ea4964dfd7b8379de4b1f4f75cb"
+    },
+    "runner-source/agent-phone-restart-position.py.txt": {
+      "bytes": 1107,
+      "sha256": "3455980531f4d7a52fc7aa62808fa601f78abac0da34b454da9ff2a533dcd74e"
+    },
+    "runner-source/agent-phone-restart-position_after.py.txt": {
+      "bytes": 1382,
+      "sha256": "a1dd5410c37a33678445d4732d3e324a21763e23b313dd26548136a903c96daa"
+    },
+    "runner-source/agent-phone-restart-producer.py.txt": {
+      "bytes": 3021,
+      "sha256": "57792f63f7733df1d0cad5947d69336611807993d60152310754ead6bd5113fa"
+    },
+    "runner-source/agent-phone-restart-profile_guard.py.txt": {
+      "bytes": 1970,
+      "sha256": "55af9253fc58b7ec78c9b75d945f118371b15016459b601d9754ed947b407edc"
+    },
+    "runner-source/agent-phone-restart-restart.py.txt": {
+      "bytes": 3944,
+      "sha256": "a7194781e7dc465b2edf290a5c2813c9d6f6c1023fb5efe870ab4e6ed68f687f"
+    },
+    "runner-source/agent-phone-restart-reveal_third.py.txt": {
+      "bytes": 1348,
+      "sha256": "1569d145dac79528d1b2617c99ef61e301f65db0907f98a835bede1c6db8d2ad"
+    },
+    "runner-source/agent-phone-restart-seal.py.txt": {
+      "bytes": 9480,
+      "sha256": "0db455999dcf78eb0f82eaaa3ce18c0ee4d3fbeed8311c2b65751e3022008a41"
+    },
+    "runner-source/agent-phone-restart-source_guards.py.txt": {
+      "bytes": 3860,
+      "sha256": "4c160035a0b5b4398f38ec59a9db2c2fbbcd8eb05d556a9fdadf3f133c78d9a9"
+    },
+    "runner-source/agent-phone-restart-stable_latest.py.txt": {
+      "bytes": 1676,
+      "sha256": "6698909a282b68ffc65008977f73fd4f02511a4575fbc2c5dca06a0314845b6c"
+    },
+    "runner-source/agent-phone-reveal.py.txt": {
+      "bytes": 1070,
+      "sha256": "c261847bc4ad8cef5f0f1c0bd4ec5c4139c7bd1460f27661a6d776b3c55acae4"
+    },
+    "runner-source/agent-phone-seal_additional.py.txt": {
+      "bytes": 5463,
+      "sha256": "e2282126437c61ab3cd1d89be296b053323d53542679f161a96610b01548666d"
+    },
+    "runner-source/agent-phone-seal_summary.py.txt": {
+      "bytes": 7407,
+      "sha256": "4464ba3c7019ce2e29234b72f87043cf82f4289854b04ed576c4cc598b2cadce"
+    },
+    "runner-source/agent-phone-verify_save.py.txt": {
+      "bytes": 1730,
+      "sha256": "11a6f8cd1fa4c700ae4cc1e59152973ad77a7c8808a4719f64a1a1092cfef020"
+    },
+    "runner-source/agent-search-bind_runtime.py.txt": {
+      "bytes": 1505,
+      "sha256": "b7c25b91b53e6bbb55a42b09d79004da53cfc7196d1feba5225f4fe60dc143dc"
+    },
+    "runner-source/agent-search-checks.py.txt": {
+      "bytes": 5481,
+      "sha256": "c443a4b63e730b616376da9cd3a8d29bf8f0c0d7d12e3e3ddc769de8f2401fd7"
+    },
+    "runner-source/agent-search-cleanup.py.txt": {
+      "bytes": 4741,
+      "sha256": "f6ef9f855903214a3e66e01d5538317404b49d3a7b29eaec81ecfaaaed293308"
+    },
+    "runner-source/agent-search-common.py.txt": {
+      "bytes": 2066,
+      "sha256": "214bbc01015bc41a372e76d773535d5e5d3867c4b347e6bdf5d1a546d7f61044"
+    },
+    "runner-source/agent-search-finalize.py.txt": {
+      "bytes": 5753,
+      "sha256": "bed54e3865261f493941b1d2aa9f3041a5ef77e14fdfd9e9bd979f75f7a93674"
+    },
+    "runner-source/agent-search-native.py.txt": {
+      "bytes": 2450,
+      "sha256": "4e6dd9e3b9a9212a6ef0d9276a5d3b09eea7b629f008f8fde5c46f7be62f783e"
+    },
+    "runner-source/agent-search-preflight.py.txt": {
+      "bytes": 4209,
+      "sha256": "edffdb9cd0115e4ee1a9dc073c7341c1a648965fd3341f9aac3b9b23e5079f37"
+    },
+    "runner-source/agent-search-prepare.py.txt": {
+      "bytes": 4892,
+      "sha256": "359396f79e96e72594735de6dd731996be999da214b24b6096efe84c1c2a6860"
+    },
+    "runner-source/agent-search-run.py.txt": {
+      "bytes": 2075,
+      "sha256": "25d76b2a1af4cb11431d073f31ff332a27241c38d6b9128013a6e6556c3a3984"
     },
     "runner-source/android_attachment_actions.py.txt": {
       "bytes": 5988,
@@ -4285,6 +4941,22 @@
     "runner-source/context-realtime-verify.py.txt": {
       "bytes": 4467,
       "sha256": "55d926ae4d463357393374352923704255691dd447fcc95c1669897e8562b93d"
+    },
+    "runner-source/coordinated-collect.py.txt": {
+      "bytes": 5809,
+      "sha256": "c8e3a277eb92939e212f4281b2b77fece384dce06effad40371dbf157f55f8b4"
+    },
+    "runner-source/coordinated-common.py.txt": {
+      "bytes": 2287,
+      "sha256": "6ce0328c37663e683fda829e92ed4f10d9fa0733b7c1faee9cda409608d5f59a"
+    },
+    "runner-source/coordinated-link.py.txt": {
+      "bytes": 13446,
+      "sha256": "684b8b62d61d4f8f58f1059b09b3aa000ba21f88f0f2b479928416cefd0c4ebf"
+    },
+    "runner-source/coordinated-validate.py.txt": {
+      "bytes": 2682,
+      "sha256": "a539d457e3619cedd78f1a150ee0f2f20cc12d3729f11f9b72f21aacb2cae6e8"
     },
     "runner-source/dm-attachment-claim-cases.py.txt": {
       "bytes": 4787,

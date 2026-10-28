@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "packet": "Windows-native-attempt2",
+  "source_head": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "installed": {
+    "version": "1.0.47+82",
+    "declared_source": "f5cd783518349e2f79a78910a91908882ba87cc1",
+    "exe_sha256": "9540d2b1f7f18af24186a585b104ae98bffa401083ca2d8dbdb5dcaf7bcd50ea",
+    "app_so_sha256": "0021e21e51e1e8ea5a949933f59803911b01feb5c24ee2cf1265196578921567",
+    "readback": "candidate-readback.json"
+  },
+  "goal_context": {
+    "intake_issues": 37,
+    "criteria": 480,
+    "criterion_statuses_not_promoted": true
+  },
+  "facets": [
+    {
+      "id": "WINDOWS-native-account-menu-keyboard-cancel",
+      "status": "PASS_SCOPED",
+      "criterion_ids": [
+        "I301.C9",
+        "I303.C2",
+        "I303.C4"
+      ],
+      "protects": "Actual installed native account menu supports visible forward/reverse keyboard targets and Escape cancellation without invoking logout/settings",
+      "command": "Computer Use node_repl @oai/sky: native account launcher click -> settled observe -> Tab -> observe -> Shift_L+Tab -> observe -> Escape -> settled observe",
+      "platform": "Windows11 physical PC; installed native1.0.47+82, declared sourcef5cd7835",
+      "mandatory_when": "Before accepting this exact native menu keyboard/cancel facet",
+      "actual": "One bounded actual cycle. Tab highlighted first item; ShiftTab highlighted last item; settled Escape removed menu and preserved native session. No save/delete/logout/media action.",
+      "result": "diagnostic-attempts.json#/attempts/7",
+      "visual_evidence": [
+        "private/menu-tab.jpg",
+        "private/menu-shift-tab.jpg",
+        "private/menu-escape-settled.jpg"
+      ],
+      "limits": "Native account menu only; no full-row PASS, screen reader, complete traversal, unrelated dialogs/settings save or browser substitution"
+    },
+    {
+      "id": "WINDOWS-native-opener-focus-restoration",
+      "status": "NOT_PROVEN",
+      "criterion_ids": [
+        "I301.C9",
+        "I303.C4"
+      ],
+      "protects": "Escape returns focus to the exact launcher and next traversal target is identified",
+      "command": "Escape -> settled AX/screenshot -> ShiftTab -> settled observation",
+      "platform": "Same installed native candidate",
+      "mandatory_when": "Before claiming exact opener focus restoration",
+      "actual": "Menu closed; AX always reports generic panel; opener hover/tooltip does not prove keyboard focus. After-Escape ShiftTab target not unambiguous.",
+      "result": "diagnostic-attempts.json#/attempts/10",
+      "limits": "No focus defect filed; hover glow and AX panel are insufficient proof"
+    },
+    {
+      "id": "WINDOWS-native-owned-image-lifecycle",
+      "status": "BLOCKED_OWN_RECEIVER_HANDSHAKE",
+      "criterion_ids": [
+        "I62.C1"
+      ],
+      "related_gates": [
+        "I303.C2",
+        "I303.C8"
+      ],
+      "protects": "Existing controlled receiver DM must be positively matched before protected PNG delivery/open/owner-delete lifecycle",
+      "command": "Native existing DM list -> compare private expected B peer -> require unique new marker before image acceptance",
+      "platform": "Same installed native candidate; existing permitted B producer session held by phone",
+      "mandatory_when": "Before accepting this Windows image lifecycle",
+      "actual": "Expected B peer absent from currently rendered existing DM list, receiver identity not equated to phone receiver. Phone created no WIN fixture and revoked held session normally.",
+      "result": "diagnostic-attempts.json#/attempts/4",
+      "limits": "No new DM/session/cookie extraction. Current recovery/cached list cannot establish authoritative server absence. No PNG render/deletion/Escape image viewer or Windows bug result. Browser-only I131.C5 gets no acceptance."
+    },
+    {
+      "id": "WINDOWS-native-state-restoration",
+      "status": "PASS_SCOPED",
+      "protects": "Temporary menu/navigation actions finish at existing channel view without changing voice or account",
+      "command": "Observed Channels -> existing already-joined SHARE_TEST view -> fresh state",
+      "platform": "Same installed native candidate",
+      "mandatory_when": "At end of this bounded test",
+      "actual": "Account menu closed, Channels/SHARE_TEST visible. Current own voice membership remained; peer count changed independently. Existing recovery banner retained without retry.",
+      "result": "private/restored-share-test.jpg",
+      "limits": "No acoustic/RTP/continuity or recovery-success claim"
+    }
+  ],
+  "source_static_note": "Exact viewer/test source blobs unchanged from declared installed f5cd7835 to checkout072; source risk remains hypothesis, Android589 not duplicated.",
+  "private_capture_registry": "captures.json",
+  "diagnostics": "diagnostic-attempts.json",
+  "preexecution": "preexecution.json",
+  "end_state": "final-state.json",
+  "new_product_defects": [],
+  "source_changes": false,
+  "public_changes": false,
+  "production_mutations": false,
+  "desktop_lease": "RELEASED",
+  "report": "Slavik Gym report: route=native/account-menu-keyboard-cancel; packet=Windows-native-attempt2-review_gate; tokens=estimated:6500; method=manual_estimate; driver=actual-native-keyboard-and-own-receiver-guard; next_split=Windows-image-lifecycle-with-confirmed-existing-receiver"
+}

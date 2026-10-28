@@ -1,0 +1,18 @@
+import sys,time
+from common import *
+phase=sys.argv[1];assert phase in ['pre','post','third'];mode=sys.argv[2] if len(sys.argv)>2 else 'send';assert mode in ['send','observe'];c=read(P/'private/config.private.json');assert own(c) and c['force_stop_count']==(0 if phase=='pre' else 1)
+s,_,v=api('/api/v1/auth/session',cookie=c['cookie']);assert s==200 and v['authenticated'] and v['account_id']==c['sender_account'] and v['role']=='MEMBER'
+marker='BOOHTACORD-QA-phone-restart-'+c['nonce']+'-'+phase;started=time.monotonic()
+if mode=='send':
+ assert len(c['messages'])<3 and not any(x['alias']==phase for x in c['messages']) and not any(marker in label(n) for n in nodes());c[phase+'_marker']=marker;c[phase+'_POST_started_at_utc']=datetime.now(timezone.utc).isoformat();write(P/'private/config.private.json',c);client_id=str(uuid.uuid4());s,_,m=api('/api/v1/direct-messages/'+c['conversation']+'/messages','POST',{'client_message_id':client_id,'body':marker,'attachment_ids':[]},c['cookie']);assert s==201;assert m['author_id']==c['sender_account'] and m['body']==marker;c['messages'].append({'alias':phase,'id':valid(m['id']),'body_SHA256':digest(marker.encode())});write(P/'private/config.private.json',c);assert m.get('attachments',[])==[]
+else:assert c[phase+'_marker']==marker and len([x for x in c['messages'] if x['alias']==phase])==1
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'phase':phase,'message_HTTP':201,'live_producer_session_guard_HTTP':200,'native_skips':0,'manual_history_refresh':False,'polling_window_seconds':45,'polls':0,'seen':False,'marker_or_identity_logged':False,'mode':mode,'timer_origin':'before_POST' if mode=='send' else 'after_controller_recovery_observer_start','no_delivery_latency_or_percentile_claim':True}
+try:
+ while time.monotonic()-started<45:
+  rows=nodes();r['polls']+=1;fields=[n for n in rows if n.get('package')==APP and n.get('class')=='android.widget.EditText'];assert len(fields)==1 and not fields[0].get('text') and any(c['peer'] in label(n) and bounds(n)[1]<700 for n in rows);assert not any(label(n) in ['Логин','Пароль'] for n in rows) and not any((n.get('package')or'').endswith('permissioncontroller') for n in rows)
+  matches=[n for n in rows if n.get('package')==APP and n.get('class')!='android.widget.EditText' and marker in label(n) and 0<=bounds(n)[1]<bounds(n)[3]<=2101]
+  if matches:r['seen']=True;r['observed_bounds']=[bounds(n) for n in matches];break
+  time.sleep(.3)
+ r['elapsed_observer_ms_including_ADB_polling']=round((time.monotonic()-started)*1000);r['native_capture']=capture('control-'+phase);r['status']='PASS_SCOPED_NEW_NATIVE_CONTROL_VISIBLE' if r['seen'] else 'NOT_PROVEN_NEW_NATIVE_CONTROL_NOT_VISIBLE_IN_WINDOW';r['native_exit']=0 if r['seen'] else 2
+except Exception as e:r['status']='BLOCKED_NATIVE_SURFACE_GUARD';r['error_type']=type(e).__name__;r['native_exit']=2
+write(P/('control-'+phase+'.json'),r);print({k:v for k,v in r.items() if k not in ['native_capture','observed_bounds']});raise SystemExit(r['native_exit'])

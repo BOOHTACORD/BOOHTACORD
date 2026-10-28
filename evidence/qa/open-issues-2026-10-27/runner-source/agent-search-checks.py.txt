@@ -1,0 +1,63 @@
+import base64,json
+from datetime import datetime
+from urllib.parse import urlencode
+from common import P,request,write,now,digest
+def key(row):return (row['created_at'],row['id'],row['kind'])
+def expected(cfg,actor,filters,cursor=None):
+    user=cfg['users'][actor]['id'];result=[]
+    anchor=json.loads(base64.urlsafe_b64decode(cursor+'='*(-len(cursor)%4))) if cursor else None
+    for row in cfg['rows']:
+        if row['deleted']:continue
+        if row['kind']=='DIRECT_MESSAGE' and user not in [cfg['users'][a]['id'] for a in (['a','b'] if row['scope']==cfg['dm'] else ['b','c'])]:continue
+        if filters.get('channel_id') and (row['kind']!='CHANNEL' or row['scope']!=filters['channel_id']):continue
+        if filters.get('direct_message_id') and (row['kind']!='DIRECT_MESSAGE' or row['scope']!=filters['direct_message_id']):continue
+        if filters.get('author_id') and row['author']!=filters['author_id']:continue
+        if 'has_attachment' in filters and row['attachment']!=(filters['has_attachment']=='true'):continue
+        instant=datetime.fromisoformat(row['created_at'].replace('Z','+00:00'))
+        if filters.get('created_from') and instant<datetime.fromisoformat(filters['created_from'].replace('Z','+00:00')):continue
+        if filters.get('created_before') and instant>=datetime.fromisoformat(filters['created_before'].replace('Z','+00:00')):continue
+        if anchor and (instant,row['id'],row['kind']) >= (datetime.fromisoformat(anchor['t'].replace('Z','+00:00')),anchor['i'],anchor['k']):continue
+        result.append(row)
+    return sorted(result,key=key,reverse=True)
+def run(cfg):
+    checks=[];cursors={};aliases={(r['kind'],r['id']):r['alias'] for r in cfg['rows']}
+    def search(name,actor,filters=None,limit=1,first_cursor=None,status=200):
+        filters=dict(filters or {});want=expected(cfg,actor,filters,first_cursor) if status==200 else []
+        collected=[];cursor=first_cursor;pages=0;first=None;actual_status=[]
+        for _ in range(16):
+            params={'query':cfg['query'],**filters,'limit':str(limit)}
+            if cursor:params['before']=cursor
+            code,headers,body=request('/api/v1/search/messages?'+urlencode(params),cookie=cfg['sessions'].get(actor));actual_status.append(code);pages+=1
+            assert code==status, name+' unexpected HTTP '+str(code)
+            if status!=200:break
+            page=body['messages'];got=[(r['kind'],r['id']) for r in page];collected+=got
+            assert len(page)<=limit and all(r['body'].startswith(cfg['query']) for r in page)
+            cursor=body.get('next_cursor');first=first or cursor
+            if not cursor:break
+        assert pages<16 and collected==[(r['kind'],r['id']) for r in want],name+' membership/order mismatch'
+        assert len(collected)==len(set(collected)),name+' duplicate page row'
+        checks.append({'name':name,'actor':actor,'expected_HTTP':status,'actual_HTTP':actual_status,'result':'PASS','pages':pages,'expected_rows':[r['alias'] for r in want],'actual_rows':[aliases[r] for r in collected],'first_cursor_sha256':digest(first.encode()) if first else None})
+        if first:cursors[name]=first
+        write(P/'runtime-checks.json',{'utc':now(),'checks':checks})
+        return first
+    bounds={'created_from':'2026-11-01T01:00:00-04:00','created_before':'2026-11-01T02:00:00-05:00'}
+    all_cursor=search('A-global-mixed-equal-time-paging','a',bounds)
+    search('A-explicit-own-DM','a',{**bounds,'direct_message_id':cfg['dm']})
+    search('B-sees-both-owned-pairs','b',bounds)
+    search('C-global-excludes-AB','c',bounds)
+    search('ADMIN-global-no-DM-override','admin',bounds)
+    search('A-authorB-attached-positive','a',{**bounds,'author_id':cfg['users']['b']['id'],'has_attachment':'true'})
+    search('B-authorB-attached-includes-foreign-positive','b',{**bounds,'author_id':cfg['users']['b']['id'],'has_attachment':'true'})
+    search('A-authorB-no-attachment','a',{**bounds,'author_id':cfg['users']['b']['id'],'has_attachment':'false'})
+    search('A-authorC-empty-despite-B-positive','a',{**bounds,'author_id':cfg['users']['c']['id']})
+    search('B-authorC-readable-positive','b',{**bounds,'author_id':cfg['users']['c']['id']})
+    search('A-channel-filter-no-DM','a',{**bounds,'channel_id':cfg['channel'],'has_attachment':'true'})
+    search('A-UTC-equivalent-DST-bounds','a',{'created_from':'2026-11-01T05:00:00Z','created_before':'2026-11-01T07:00:00Z'})
+    search('A-exclusive-end-at-fold-second-instant','a',{'created_from':'2026-11-01T01:30:00-04:00','created_before':'2026-11-01T01:30:00-05:00'})
+    for actor in ['c','admin']:search(actor+'-foreign-explicit-DM-denied',''+actor,{**bounds,'direct_message_id':cfg['dm'],'author_id':cfg['users']['b']['id'],'has_attachment':'true'},first_cursor=all_cursor,status=404)
+    search('C-reuses-A-cursor-still-own-ACL','c',bounds,first_cursor=all_cursor)
+    search('ADMIN-reuses-A-cursor-no-DM','admin',bounds,first_cursor=all_cursor)
+    for name,flt in [('missing-timezone',{'created_from':'2026-11-01T05:00:00'}),('equal-UTC-instants',{'created_from':'2026-11-01T01:30:00-04:00','created_before':'2026-11-01T05:30:00Z'}),('wrong-boolean',{'has_attachment':'TRUE'}),('bad-author',{'author_id':'not-uuid'}),('mixed-conversations',{'channel_id':cfg['channel'],'direct_message_id':cfg['dm']})]:search(name,'a',flt,status=400)
+    search('anonymous-auth-required','anonymous',bounds,status=401)
+    write(P/'private/cursors.json',cursors)
+    return checks

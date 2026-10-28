@@ -1,0 +1,35 @@
+{
+  "status": "PASS_SCOPED_SEMANTIC_ARRIVAL_ONLY_FULL_PASSIVE_VISIBILITY_NOT_PROVEN",
+  "raw_controller_result": "control-third.json is retained broad PASS diagnostic, not finalvisualacceptance",
+  "unique_new_third_payload_in_native_TextView": true,
+  "first_semantic_match_observer_elapsed_ms_including_API_and_ADB": 5062,
+  "first_semantic_match_bounds": [
+    [
+      169,
+      2096,
+      900,
+      2101
+    ]
+  ],
+  "settled_sample_after_POST_ms": 36501,
+  "settled_sample_bounds": [
+    169,
+    2096,
+    900,
+    2101
+  ],
+  "clipped_text_height_px": 5,
+  "fully_visible_in_passive_samples": false,
+  "UI_actions_between_third_POST_and_settled_sample": 0,
+  "no_history_refresh_or_retry_after_third_POST": true,
+  "full_render_after_explicit_scroll": {
+    "result": "third-after-explicit-scroll.json",
+    "text_height_px": 113,
+    "explicit_scrolls": 1
+  },
+  "limits": [
+    "No p95 or transportlevel latency",
+    "Noautoscrollbugwithout exactfollowlatestrequirement/source",
+    "Firstpre/postNOT_PROVEN retained; cannotattribute torestart"
+  ]
+}

@@ -1,0 +1,465 @@
+{
+  "status": "PASS_SCOPED",
+  "started_utc": "2026-10-28T19:23:47.3043251Z",
+  "finished_utc": "2026-10-28T19:23:47.6069174Z",
+  "command": "& .out/qa-agent-windows/verify-candidate.ps1",
+  "protects": "Selected installed Windows files match their local artifact manifest",
+  "platform": "Installed Windows x64 1.0.47+82; no UI behavior acceptance",
+  "mandatory_when": "Before reusing this exact installed candidate identity in runtime evidence",
+  "version": "1.0.47+82",
+  "declared_source_revision": "f5cd783518349e2f79a78910a91908882ba87cc1",
+  "declared_source_dirty": false,
+  "release_id": "windows-direct-stable-r61",
+  "source_head": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "manifest_sha256": "00e441e98bcb83e18d56ef1f55ae10dcfd44156902e4d7e935fc3677310a5b9e",
+  "file_count": 53,
+  "files": [
+    {
+      "path": "BOOHTACORDRecovery.exe",
+      "status": "PASS",
+      "bytes": 350720,
+      "sha256": "dfeadd8af25ba655aac219d1b2b17f03d726be366b21dfac88fa92f0c4e7e818",
+      "expected_bytes": 350720,
+      "expected_sha256": "dfeadd8af25ba655aac219d1b2b17f03d726be366b21dfac88fa92f0c4e7e818"
+    },
+    {
+      "path": "FLAC.dll",
+      "status": "PASS",
+      "bytes": 483328,
+      "sha256": "c0498038842c4f78b22770b72a1cf8bcee3cd2653fa58533a6b1f8a01d9b679a",
+      "expected_bytes": 483328,
+      "expected_sha256": "c0498038842c4f78b22770b72a1cf8bcee3cd2653fa58533a6b1f8a01d9b679a"
+    },
+    {
+      "path": "LICENSE-RNNoise.txt",
+      "status": "PASS",
+      "bytes": 1612,
+      "sha256": "0bb95d752b966f69fea022227297ad49fdb4464eb45f1c1fff494a435bfbeaa5",
+      "expected_bytes": 1612,
+      "expected_sha256": "0bb95d752b966f69fea022227297ad49fdb4464eb45f1c1fff494a435bfbeaa5"
+    },
+    {
+      "path": "LICENSE-Velopack.txt",
+      "status": "PASS",
+      "bytes": 1111,
+      "sha256": "03281b7debf1730d5b2a2cdfb6f98c542edcd965867453686bfe6d1177bc134e",
+      "expected_bytes": 1111,
+      "expected_sha256": "03281b7debf1730d5b2a2cdfb6f98c542edcd965867453686bfe6d1177bc134e"
+    },
+    {
+      "path": "boohtacord_desktop.exe",
+      "status": "PASS",
+      "bytes": 225280,
+      "sha256": "9540d2b1f7f18af24186a585b104ae98bffa401083ca2d8dbdb5dcaf7bcd50ea",
+      "expected_bytes": 225280,
+      "expected_sha256": "9540d2b1f7f18af24186a585b104ae98bffa401083ca2d8dbdb5dcaf7bcd50ea"
+    },
+    {
+      "path": "clipboard_plugin.dll",
+      "status": "PASS",
+      "bytes": 129024,
+      "sha256": "0715addbe64aaa126a8aaa945962e1f5888a16209ddae7db80ca61d573e24094",
+      "expected_bytes": 129024,
+      "expected_sha256": "0715addbe64aaa126a8aaa945962e1f5888a16209ddae7db80ca61d573e24094"
+    },
+    {
+      "path": "concrt140.dll",
+      "status": "PASS",
+      "bytes": 324208,
+      "sha256": "2405355f0a58067b258f8df33c327e3a3d716eaac5a3a5aebb757842d85bd376",
+      "expected_bytes": 324208,
+      "expected_sha256": "2405355f0a58067b258f8df33c327e3a3d716eaac5a3a5aebb757842d85bd376"
+    },
+    {
+      "path": "connectivity_plus_plugin.dll",
+      "status": "PASS",
+      "bytes": 102912,
+      "sha256": "0e035c5d45c531e6f06f9a994d41eb86b59d0ec0c1e1e23723482e652ad4465b",
+      "expected_bytes": 102912,
+      "expected_sha256": "0e035c5d45c531e6f06f9a994d41eb86b59d0ec0c1e1e23723482e652ad4465b"
+    },
+    {
+      "path": "dartjni.dll",
+      "status": "PASS",
+      "bytes": 59904,
+      "sha256": "79d7344b38c7e8ccdd40ac45243456f83d250e2b5aa14bce375f169f1a295c61",
+      "expected_bytes": 59904,
+      "expected_sha256": "79d7344b38c7e8ccdd40ac45243456f83d250e2b5aa14bce375f169f1a295c61"
+    },
+    {
+      "path": "data/app.so",
+      "status": "PASS",
+      "bytes": 13927304,
+      "sha256": "0021e21e51e1e8ea5a949933f59803911b01feb5c24ee2cf1265196578921567",
+      "expected_bytes": 13927304,
+      "expected_sha256": "0021e21e51e1e8ea5a949933f59803911b01feb5c24ee2cf1265196578921567"
+    },
+    {
+      "path": "data/flutter_assets/AssetManifest.bin",
+      "status": "PASS",
+      "bytes": 565,
+      "sha256": "5f20c3dd836e379fc69518a09981509343a329bf06a804b5ac3314b1d1265d98",
+      "expected_bytes": 565,
+      "expected_sha256": "5f20c3dd836e379fc69518a09981509343a329bf06a804b5ac3314b1d1265d98"
+    },
+    {
+      "path": "data/flutter_assets/FontManifest.json",
+      "status": "PASS",
+      "bytes": 280,
+      "sha256": "996d8a068f0d41fd1c05b8047837cc710d54e52ac5c37b1bfe36600b9f0eac3b",
+      "expected_bytes": 280,
+      "expected_sha256": "996d8a068f0d41fd1c05b8047837cc710d54e52ac5c37b1bfe36600b9f0eac3b"
+    },
+    {
+      "path": "data/flutter_assets/NOTICES.Z",
+      "status": "PASS",
+      "bytes": 120677,
+      "sha256": "767f3b30b01e31154b6a753d542c021fda97f4752e00ee7d5690d5141c9c37b0",
+      "expected_bytes": 120677,
+      "expected_sha256": "767f3b30b01e31154b6a753d542c021fda97f4752e00ee7d5690d5141c9c37b0"
+    },
+    {
+      "path": "data/flutter_assets/NativeAssetsManifest.json",
+      "status": "PASS",
+      "bytes": 45,
+      "sha256": "9548a31e4a048135c1d94f919328bfb62ae2c7bb3cab96557c7941daa97776cb",
+      "expected_bytes": 45,
+      "expected_sha256": "9548a31e4a048135c1d94f919328bfb62ae2c7bb3cab96557c7941daa97776cb"
+    },
+    {
+      "path": "data/flutter_assets/assets/branding/brand.png",
+      "status": "PASS",
+      "bytes": 5177,
+      "sha256": "f2e91a6ddab0f4556572d8111ca959065e2d009f62ef23e67f3bf2894c5a2864",
+      "expected_bytes": 5177,
+      "expected_sha256": "f2e91a6ddab0f4556572d8111ca959065e2d009f62ef23e67f3bf2894c5a2864"
+    },
+    {
+      "path": "data/flutter_assets/assets/emoji/emoji_full_catalog.json",
+      "status": "PASS",
+      "bytes": 333696,
+      "sha256": "ea67a76971c44cd9334d5a11b8490c8087ff711343337f735d73646776e12946",
+      "expected_bytes": 333696,
+      "expected_sha256": "ea67a76971c44cd9334d5a11b8490c8087ff711343337f735d73646776e12946"
+    },
+    {
+      "path": "data/flutter_assets/assets/fonts/InterVariable.ttf",
+      "status": "PASS",
+      "bytes": 879708,
+      "sha256": "f87caf5cdc61c6acb34dcdf6ae38909f6bef73cc86ee5da3691601a54cd6a314",
+      "expected_bytes": 879708,
+      "expected_sha256": "f87caf5cdc61c6acb34dcdf6ae38909f6bef73cc86ee5da3691601a54cd6a314"
+    },
+    {
+      "path": "data/flutter_assets/assets/licenses/rnnoise.txt",
+      "status": "PASS",
+      "bytes": 1849,
+      "sha256": "76ed76e5e90a01e28ed4ba8146ece9ecb5f6b193f426da34dc090be871b5fac4",
+      "expected_bytes": 1849,
+      "expected_sha256": "76ed76e5e90a01e28ed4ba8146ece9ecb5f6b193f426da34dc090be871b5fac4"
+    },
+    {
+      "path": "data/flutter_assets/assets/licenses/unicode-emoji.txt",
+      "status": "PASS",
+      "bytes": 277,
+      "sha256": "fcb69f163c4eaafa3d8164650440503dcafddd2950b86b8b6e4449bcaa373c95",
+      "expected_bytes": 277,
+      "expected_sha256": "fcb69f163c4eaafa3d8164650440503dcafddd2950b86b8b6e4449bcaa373c95"
+    },
+    {
+      "path": "data/flutter_assets/assets/updates/publisher.pub",
+      "status": "PASS",
+      "bytes": 83,
+      "sha256": "fd08ce8ee3761c3276d3d7651994066542125fe79b31661c17502a42f093f916",
+      "expected_bytes": 83,
+      "expected_sha256": "fd08ce8ee3761c3276d3d7651994066542125fe79b31661c17502a42f093f916"
+    },
+    {
+      "path": "data/flutter_assets/fonts/MaterialIcons-Regular.otf",
+      "status": "PASS",
+      "bytes": 14664,
+      "sha256": "13420cc35a86c2e9036aba494cd1fdf9f21a3b64d5aaba60172acb3103152ca0",
+      "expected_bytes": 14664,
+      "expected_sha256": "13420cc35a86c2e9036aba494cd1fdf9f21a3b64d5aaba60172acb3103152ca0"
+    },
+    {
+      "path": "data/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf",
+      "status": "PASS",
+      "bytes": 257628,
+      "sha256": "67c44fe9183b002e79dde7f6977e2988661c9a3e4a3c5fce968787efdbed823c",
+      "expected_bytes": 257628,
+      "expected_sha256": "67c44fe9183b002e79dde7f6977e2988661c9a3e4a3c5fce968787efdbed823c"
+    },
+    {
+      "path": "data/flutter_assets/shaders/ink_sparkle.frag",
+      "status": "PASS",
+      "bytes": 21856,
+      "sha256": "1fe8436a743884cb65078fe8c7b38e18f5365f2a2961270916f426fd13c604af",
+      "expected_bytes": 21856,
+      "expected_sha256": "1fe8436a743884cb65078fe8c7b38e18f5365f2a2961270916f426fd13c604af"
+    },
+    {
+      "path": "data/flutter_assets/shaders/stretch_effect.frag",
+      "status": "PASS",
+      "bytes": 17616,
+      "sha256": "bc7599dbbbaab310efe41520574138d21fb18a88c8fe4495ed79315309336f6f",
+      "expected_bytes": 17616,
+      "expected_sha256": "bc7599dbbbaab310efe41520574138d21fb18a88c8fe4495ed79315309336f6f"
+    },
+    {
+      "path": "data/icudtl.dat",
+      "status": "PASS",
+      "bytes": 864880,
+      "sha256": "325a86063d26334c2eabe1743cea073b612540fbf3d8fc2ef0b5708e3763a8c7",
+      "expected_bytes": 864880,
+      "expected_sha256": "325a86063d26334c2eabe1743cea073b612540fbf3d8fc2ef0b5708e3763a8c7"
+    },
+    {
+      "path": "file_selector_windows_plugin.dll",
+      "status": "PASS",
+      "bytes": 111616,
+      "sha256": "a28034cd68f4a1727d83aa5db64f23c0f474953c2005ddf7f53dee9769820fb7",
+      "expected_bytes": 111616,
+      "expected_sha256": "a28034cd68f4a1727d83aa5db64f23c0f474953c2005ddf7f53dee9769820fb7"
+    },
+    {
+      "path": "flutter_local_notifications_windows.dll",
+      "status": "PASS",
+      "bytes": 91136,
+      "sha256": "0c121eb5f6f2b6151a3e93b7d184e34c307a1a3d621825f2d238082463495f8f",
+      "expected_bytes": 91136,
+      "expected_sha256": "0c121eb5f6f2b6151a3e93b7d184e34c307a1a3d621825f2d238082463495f8f"
+    },
+    {
+      "path": "flutter_secure_storage_windows_plugin.dll",
+      "status": "PASS",
+      "bytes": 159744,
+      "sha256": "2c9b9f471f7c18b8deeb8419716d02411d2d2df2eb25a64932793124043ad560",
+      "expected_bytes": 159744,
+      "expected_sha256": "2c9b9f471f7c18b8deeb8419716d02411d2d2df2eb25a64932793124043ad560"
+    },
+    {
+      "path": "flutter_soloud_plugin.dll",
+      "status": "PASS",
+      "bytes": 1111040,
+      "sha256": "b3ad0f05dc41edd88c5c39d21e9872e31460044d7fde5589b1657d3234cf4bf3",
+      "expected_bytes": 1111040,
+      "expected_sha256": "b3ad0f05dc41edd88c5c39d21e9872e31460044d7fde5589b1657d3234cf4bf3"
+    },
+    {
+      "path": "flutter_webrtc_plugin.dll",
+      "status": "PASS",
+      "bytes": 660992,
+      "sha256": "a540e126ecb98e8cbf8fd8d28854aa971291aeee6d6e6e5e0831591a702b9b09",
+      "expected_bytes": 660992,
+      "expected_sha256": "a540e126ecb98e8cbf8fd8d28854aa971291aeee6d6e6e5e0831591a702b9b09"
+    },
+    {
+      "path": "flutter_windows.dll",
+      "status": "PASS",
+      "bytes": 21274112,
+      "sha256": "7b03815958c49d72385be497fbd0eb1bb2ae27d24989d6c9aee83eafbd93e9d3",
+      "expected_bytes": 21274112,
+      "expected_sha256": "7b03815958c49d72385be497fbd0eb1bb2ae27d24989d6c9aee83eafbd93e9d3"
+    },
+    {
+      "path": "libwebrtc.dll",
+      "status": "PASS",
+      "bytes": 20538880,
+      "sha256": "dfdbcc9670618ac4c3696d7e232aac2fe8034ef202f46d732a6828ccfcb017dd",
+      "expected_bytes": 20538880,
+      "expected_sha256": "dfdbcc9670618ac4c3696d7e232aac2fe8034ef202f46d732a6828ccfcb017dd"
+    },
+    {
+      "path": "livekit_client_plugin.dll",
+      "status": "PASS",
+      "bytes": 176640,
+      "sha256": "10f825107d84f117e68de7ba420e4a29678cb55958c7d8a0328cba4c6bbabcdf",
+      "expected_bytes": 176640,
+      "expected_sha256": "10f825107d84f117e68de7ba420e4a29678cb55958c7d8a0328cba4c6bbabcdf"
+    },
+    {
+      "path": "msvcp140.dll",
+      "status": "PASS",
+      "bytes": 557728,
+      "sha256": "0f885b509a685d2bbfa652fed26b5fb31d88fbdab0a978c641d1c7b8aa460aa9",
+      "expected_bytes": 557728,
+      "expected_sha256": "0f885b509a685d2bbfa652fed26b5fb31d88fbdab0a978c641d1c7b8aa460aa9"
+    },
+    {
+      "path": "msvcp140_1.dll",
+      "status": "PASS",
+      "bytes": 35952,
+      "sha256": "bfad5aef4c63a669e3c140655cdfdf395b6c979b400a447bd5dcb65ed8826c3d",
+      "expected_bytes": 35952,
+      "expected_sha256": "bfad5aef4c63a669e3c140655cdfdf395b6c979b400a447bd5dcb65ed8826c3d"
+    },
+    {
+      "path": "msvcp140_2.dll",
+      "status": "PASS",
+      "bytes": 280200,
+      "sha256": "3ea06f0ee098b4823cb79599df3780e7f23cce52c19aac31d2a0d47efe33a5e9",
+      "expected_bytes": 280200,
+      "expected_sha256": "3ea06f0ee098b4823cb79599df3780e7f23cce52c19aac31d2a0d47efe33a5e9"
+    },
+    {
+      "path": "msvcp140_atomic_wait.dll",
+      "status": "PASS",
+      "bytes": 50304,
+      "sha256": "640b2aefced484d0368eea5bdd06addd0658a3a70a49256e560d6923b404a479",
+      "expected_bytes": 50304,
+      "expected_sha256": "640b2aefced484d0368eea5bdd06addd0658a3a70a49256e560d6923b404a479"
+    },
+    {
+      "path": "msvcp140_codecvt_ids.dll",
+      "status": "PASS",
+      "bytes": 31872,
+      "sha256": "f2069a52880ec885ee7f0511186100eb7fada0411a2b4948fafea7735b878a18",
+      "expected_bytes": 31872,
+      "expected_sha256": "f2069a52880ec885ee7f0511186100eb7fada0411a2b4948fafea7735b878a18"
+    },
+    {
+      "path": "ogg.dll",
+      "status": "PASS",
+      "bytes": 30208,
+      "sha256": "aad3763723ba548a885fcb9e750d7092970c16234fd4c5d021135b8b89753d3b",
+      "expected_bytes": 30208,
+      "expected_sha256": "aad3763723ba548a885fcb9e750d7092970c16234fd4c5d021135b8b89753d3b"
+    },
+    {
+      "path": "opus.dll",
+      "status": "PASS",
+      "bytes": 460288,
+      "sha256": "1072b0b1f2f50835b48f6428a793b03b417009afe8311bdca595f73a12cb1581",
+      "expected_bytes": 460288,
+      "expected_sha256": "1072b0b1f2f50835b48f6428a793b03b417009afe8311bdca595f73a12cb1581"
+    },
+    {
+      "path": "record_windows_plugin.dll",
+      "status": "PASS",
+      "bytes": 216064,
+      "sha256": "021c1e2311f464e8c92ef2caf23f06775dedb2d543bd9bd9af2d380cc7d243cc",
+      "expected_bytes": 216064,
+      "expected_sha256": "021c1e2311f464e8c92ef2caf23f06775dedb2d543bd9bd9af2d380cc7d243cc"
+    },
+    {
+      "path": "rnnoise-component.cdx.json",
+      "status": "PASS",
+      "bytes": 1018,
+      "sha256": "744d313555579461c847508971950196f9b99775af9f3c180ad0a10696d1f615",
+      "expected_bytes": 1018,
+      "expected_sha256": "744d313555579461c847508971950196f9b99775af9f3c180ad0a10696d1f615"
+    },
+    {
+      "path": "screen_retriever_windows_plugin.dll",
+      "status": "PASS",
+      "bytes": 119296,
+      "sha256": "80d9ed64966112b90b1eff0d3bf5d69b3e2a50d268d1cec21179d9f4ec134f81",
+      "expected_bytes": 119296,
+      "expected_sha256": "80d9ed64966112b90b1eff0d3bf5d69b3e2a50d268d1cec21179d9f4ec134f81"
+    },
+    {
+      "path": "url_launcher_windows_plugin.dll",
+      "status": "PASS",
+      "bytes": 98304,
+      "sha256": "64c5dce226991260bfe771bf8be9a4e11fe63ce8278c41f8550af202ab1c6c3b",
+      "expected_bytes": 98304,
+      "expected_sha256": "64c5dce226991260bfe771bf8be9a4e11fe63ce8278c41f8550af202ab1c6c3b"
+    },
+    {
+      "path": "vccorlib140.dll",
+      "status": "PASS",
+      "bytes": 352384,
+      "sha256": "19839407c3fdbc824e5bce189bf68ddf8097f12ec28b757797ffa0415c144ddd",
+      "expected_bytes": 352384,
+      "expected_sha256": "19839407c3fdbc824e5bce189bf68ddf8097f12ec28b757797ffa0415c144ddd"
+    },
+    {
+      "path": "vcruntime140.dll",
+      "status": "PASS",
+      "bytes": 124544,
+      "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+      "expected_bytes": 124544,
+      "expected_sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+    },
+    {
+      "path": "vcruntime140_1.dll",
+      "status": "PASS",
+      "bytes": 49792,
+      "sha256": "1f2d41c4aa5db0bc33ebf7b66d72943a817d7ce6cbe880502a9403823633093f",
+      "expected_bytes": 49792,
+      "expected_sha256": "1f2d41c4aa5db0bc33ebf7b66d72943a817d7ce6cbe880502a9403823633093f"
+    },
+    {
+      "path": "vcruntime140_threads.dll",
+      "status": "PASS",
+      "bytes": 38528,
+      "sha256": "219915cf20822f34d5e7c1fdd4e21ae7f3396881096c51036225fb8f84b47afa",
+      "expected_bytes": 38528,
+      "expected_sha256": "219915cf20822f34d5e7c1fdd4e21ae7f3396881096c51036225fb8f84b47afa"
+    },
+    {
+      "path": "velopack_libc.dll",
+      "status": "PASS",
+      "bytes": 2691072,
+      "sha256": "3387c5f362501374b2f2d942466c3ec565ac573ec24e3d6e7679c0b8e7828b12",
+      "expected_bytes": 2691072,
+      "expected_sha256": "3387c5f362501374b2f2d942466c3ec565ac573ec24e3d6e7679c0b8e7828b12"
+    },
+    {
+      "path": "vorbis.dll",
+      "status": "PASS",
+      "bytes": 737792,
+      "sha256": "adbd21ba4d265995cff8172a5762ca41d6fce13b49a275edea1581aad34b98c1",
+      "expected_bytes": 737792,
+      "expected_sha256": "adbd21ba4d265995cff8172a5762ca41d6fce13b49a275edea1581aad34b98c1"
+    },
+    {
+      "path": "vorbisenc.dll",
+      "status": "PASS",
+      "bytes": 563200,
+      "sha256": "1b2134d5035c3be889bd7b14eaaa3ea530dd1c7765295605513bcd2e156a51ee",
+      "expected_bytes": 563200,
+      "expected_sha256": "1b2134d5035c3be889bd7b14eaaa3ea530dd1c7765295605513bcd2e156a51ee"
+    },
+    {
+      "path": "vorbisfile.dll",
+      "status": "PASS",
+      "bytes": 36864,
+      "sha256": "3ea75ed11a88f12d46333b3848fc849e05ed730bf5cd3346502d499440435b2b",
+      "expected_bytes": 36864,
+      "expected_sha256": "3ea75ed11a88f12d46333b3848fc849e05ed730bf5cd3346502d499440435b2b"
+    },
+    {
+      "path": "window_manager_plugin.dll",
+      "status": "PASS",
+      "bytes": 130048,
+      "sha256": "fe402c8af630b77088274097f33032ebcef8aaccc2ce23e3b03cd4daf0853b4b",
+      "expected_bytes": 130048,
+      "expected_sha256": "fe402c8af630b77088274097f33032ebcef8aaccc2ce23e3b03cd4daf0853b4b"
+    }
+  ],
+  "source_edges": [
+    {
+      "path": "clients/flutter/lib/src/widgets/message_attachment_list.dart",
+      "declared_installed_source_blob": "beaf044578a87f8ec2a78ad426052abc7eb610f0",
+      "current_head_blob": "beaf044578a87f8ec2a78ad426052abc7eb610f0",
+      "unchanged": true,
+      "worktree_sha256": "983899704bdfce80b4128fa787e3198985a388579e986ab488328e10474f1a44",
+      "lines": 643
+    },
+    {
+      "path": "clients/flutter/test/message_attachment_list_test.dart",
+      "declared_installed_source_blob": "e0a82443b17b9a7dc3130279853a06c282a30cf6",
+      "current_head_blob": "e0a82443b17b9a7dc3130279853a06c282a30cf6",
+      "unchanged": true,
+      "worktree_sha256": "6257f8ea4722dbcc0efa1f270da21dab7ef09bfcd619be1e295ea52d31c6bc0b",
+      "lines": 637
+    }
+  ],
+  "limits": [
+    "Local manifest consistency only; source identity is manifest-declared, not independent attestation.",
+    "No native image render, post-delete invalidation, download, Escape or focus runtime acceptance.",
+    "No UI input, process restart, credentials, API sessions, production mutations or media changes."
+  ]
+}

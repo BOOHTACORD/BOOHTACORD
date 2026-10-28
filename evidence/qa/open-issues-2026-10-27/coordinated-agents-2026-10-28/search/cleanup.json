@@ -1,0 +1,35 @@
+{
+  "utc": "2026-10-28T19:40:42.121942+00:00",
+  "result": "PASS",
+  "own_sessions_revoked_live_readback": [],
+  "all_ten_public_table_count_hashes_restored": true,
+  "database_after": {
+    "users": "516|897fd4bbb50b2921f5bc9bee3daed2dd",
+    "sessions": "2086|f0a66fc786b52273484336cc39807932",
+    "categories": "1|47107fb5924151cc6f13140c8a1b0b93",
+    "channels": "2|deb09206118abf37d5a644219d7ea746",
+    "direct_messages": "2|290feb105c7c845f5716b96302013ab4",
+    "messages": "3|155abc7d2234b2f412a160cd14863ade",
+    "direct_message_messages": "0|empty",
+    "attachments": "9|8b40e806ced1be93313b4902e3c065a7",
+    "message_attachments": "0|empty",
+    "direct_message_attachments": "0|empty"
+  },
+  "nine_services_unchanged": [
+    "api",
+    "web",
+    "proxy",
+    "postgres",
+    "livekit",
+    "collector",
+    "tempo",
+    "prometheus",
+    "grafana"
+  ],
+  "source_and_frozen_audit_unchanged_runtime_helpers_match_seal": true,
+  "health_HTTP": 200,
+  "API_log_bytes": 1314,
+  "API_log_sha256": "05a041e638dffb72df1290f2bf608dc8ba3a16dc8764382409fac8c88876c4a8",
+  "secret_fixture_matches": 0,
+  "production_touched": false
+}

@@ -1,0 +1,27 @@
+import hashlib,http.client,json,subprocess,sys,uuid
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,SOURCE,ORIGIN,WORK,CONTEXT
+TABLES=['users','sessions','categories','channels','direct_messages','messages','direct_message_messages','attachments','message_attachments','direct_message_attachments']
+def read(path):return json.loads(path.read_text('utf-8-sig'))
+def write(path,value):path.write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n','utf-8')
+def now():return datetime.now(timezone.utc).isoformat()
+def digest(value):return hashlib.sha256(value).hexdigest()
+def valid(value):assert str(uuid.UUID(value))==value;return value
+def quote(value):return "'"+str(value).replace("'","''")+"'"
+def sql(statement):
+    return docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-qAt','-v','ON_ERROR_STOP=1',input=statement.encode()).decode()
+def request(path,method='GET',body=None,cookie=None):
+    assert ORIGIN=='http://localhost:18088' and path.startswith('/api/v1/')
+    conn=http.client.HTTPConnection('localhost',18088,timeout=12)
+    headers={'Host':'localhost:18088','Origin':ORIGIN,'Accept':'application/json'}
+    if cookie:headers['Cookie']=cookie
+    if body is not None:headers['Content-Type']='application/json'
+    conn.request(method,path,json.dumps(body) if body is not None else None,headers)
+    response=conn.getresponse();status=response.status;headers=response.getheaders();raw=response.read(2_000_000);conn.close()
+    return status,headers,json.loads(raw) if raw else None
+def table_state():
+    return {t:sql('SELECT count(*),COALESCE(md5(string_agg(h,\'\' ORDER BY h)),\'empty\') FROM (SELECT md5(row_to_json(x)::text) h FROM '+t+' x) s;').strip() for t in TABLES}
+def services():
+    return {n:json.loads(docker('inspect',PROJECT+'-'+n+'-1'))[0] for n in ['api','web','proxy','postgres','livekit','collector','tempo','prometheus','grafana']}

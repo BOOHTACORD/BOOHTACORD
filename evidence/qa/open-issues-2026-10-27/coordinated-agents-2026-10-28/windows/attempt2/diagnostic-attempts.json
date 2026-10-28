@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "packet": "native-only-attempt2",
+  "previous_attempt": "../summary.json (immutable)",
+  "desktop_lease": "RELEASED",
+  "policy": {
+    "native_policy_stop": false,
+    "new_user_input_guard": false,
+    "browser_attempts": 0,
+    "root_authorized_native_only": true,
+    "cua": "@oai/sky via shared node_repl, unique qaWin names; no reset"
+  },
+  "attempts": [
+    {
+      "n": 1,
+      "action": "fresh get_window_state (AX only)",
+      "actual": "Previous account menu already absent; focused native panel; no Escape sent against unknown menu"
+    },
+    {
+      "n": 2,
+      "action": "activate exact returned native330338; get_window_state",
+      "actual": "Native SHARE_TEST view already selected, existing membership3; recovery banner; no voice action"
+    },
+    {
+      "n": 3,
+      "action": "click fresh AX Lichnie text index115460",
+      "actual": "CONTROLLER_FAILURE: element 115460 is not available in cached app state for boohtacord_desktop.exe",
+      "product_defect": false
+    },
+    {
+      "n": 4,
+      "action": "Refresh selection by list_apps/get_window; fresh screenshot; one coordinate recovery at observed Lichnie tab",
+      "actual": "Existing native DM list opened; no conversation selected or created"
+    },
+    {
+      "n": 5,
+      "action": "Private existing MEMBER B peer read from phone private config; compare current native tree and inspect DM list",
+      "actual": "expectedPeerMatched=false. Current rendered list contains two existing peer rows and support, expected peer absent; no inference about authoritative server DM existence",
+      "image_send": false
+    },
+    {
+      "n": 6,
+      "action": "Phone coordination",
+      "actual": "Phone confirms no alternate mapping; B hold released; WIN fixture never created. Phone reports logout204 and unauthenticated readback; see phone cleanup.json"
+    },
+    {
+      "n": 7,
+      "action": "Click observed existing account launcher; fresh immediate and settled state",
+      "actual": "Account menu visible; no option invoked"
+    },
+    {
+      "n": 8,
+      "action": "Tab; fresh native screenshot+AX",
+      "actual": "Visible first menu item Admin highlighted; original private/menu-tab image reviewed. AX focused_element is generic panel"
+    },
+    {
+      "n": 9,
+      "action": "Shift_L+Tab; fresh native screenshot+AX",
+      "actual": "Visible last menu item Logout highlighted; original private/menu-shift-tab reviewed. No activation/save/logout"
+    },
+    {
+      "n": 10,
+      "action": "Escape; immediate and settled fresh states",
+      "actual": "Immediate frame still shows fade-old menu. Settled state menuGone=true; account launcher visible; original private/menu-escape-settled reviewed"
+    },
+    {
+      "n": 11,
+      "action": "Shift_L+Tab after Escape; fresh and settled screenshot",
+      "actual": "No unambiguous next target visible, AX generic panel. Exact opener focus restoration NOT_PROVEN; no activation attempted"
+    },
+    {
+      "n": 12,
+      "action": "Observed Channels tab then already-joined SHARE_TEST view",
+      "actual": "Restored start2 native surface; account menu absent; current membership1 follows peer departures. No join/leave/mic/share/reconnect performed"
+    },
+    {
+      "n": 13,
+      "action": "Final screenshot/hash and source/candidate readback",
+      "actual": "private/restored-share-test reviewed; captures.json and candidate-readback.json; no further desktop input"
+    }
+  ],
+  "cleanup": {
+    "test_fixtures_created": 0,
+    "test_api_sessions_created_by_windows": 0,
+    "new_dm_created": false,
+    "data_mutations": false,
+    "current_surface": "Native Windows BOOHTACORD, Channels/SHARE_TEST, account menu closed",
+    "voice_actions": 0,
+    "settings_saved": 0,
+    "session_switched": false,
+    "phone_session_revoke": "Reported by phone; own phone cleanup.json is authoritative; Windows did not reuse or revoke it"
+  },
+  "limitations": [
+    "Scoped native menu traversal only; no screen reader, complete tab cycle, exact opener focus, native audio/media or full platform criterion acceptance",
+    "Browser is independently BLOCKED and receives no result from this native test",
+    "Image lifecycle BLOCKED_OWN_RECEIVER_HANDSHAKE; no Windows image defect reproduced"
+  ]
+}

@@ -1,0 +1,26 @@
+import subprocess,sys
+from common import *
+assert not (P/'cleanup.json').exists();c=read(P/'private/config.private.json');assert len(c['messages'])==len(set(c['messages']))==6 and len(c['sessions'])==1 and len(c['saved_files'])==6
+prefix='/api/v1/direct-messages/'+valid(c['conversation']);removed=[]
+for i,f in enumerate(c['fixtures']):
+ assert f['message'] in c['messages'] and f['attachment'] in c['attachments'];s,_,v=api(prefix+'/messages?at='+valid(f['message'])+'&limit=20',cookie=c['cookie']);assert s==200 and v['messages'][0]['id']==f['message'] and v['messages'][0]['author_id']==c['sender_account'] and v['messages'][0]['body']==''
+ cmd=[sys.executable,'-X','utf8',str(P/'producer.py'),'delete',str(i)];p=subprocess.run(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=60);(P/'private'/('cleanup-delete-'+str(i)+'.private.log')).write_bytes(p.stdout);assert p.returncode==0;removed.append({'index':i,'delete_native_exit':0,'skips':0,'tombstone_body_blank_attachments_empty':True,'original_after_delete_HTTP':404,'preview_after_delete_HTTP':404});print('own message cleanup',i,'exit',p.returncode,flush=True)
+c=read(P/'private/config.private.json');files=[]
+for f in c['saved_files']:
+ name=f['filename'];assert re.fullmatch(r'BOOHTACORD-QA-phone-[a-f0-9]{12}-(png|jpeg|gif)-(viewer|card)\.(png|jpg|gif)',name);path='/sdcard/Download/'+name
+ raw=subprocess.check_output([ADB,'exec-out','cat',path],timeout=20);assert digest(raw)==f['SHA256'] and len(raw)==f['bytes'];p=subprocess.run([ADB,'shell','rm','--',path],stdout=subprocess.PIPE,stderr=subprocess.PIPE,timeout=20);assert p.returncode==0
+ assert subprocess.run([ADB,'shell','test','-e',path],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode!=0;files.append({'index':f['index'],'SHA256_matched_before_exact_delete':True,'exact_own_file_absent_after':True});print('own saved file cleanup',f['index'],'exit',p.returncode,flush=True)
+expected={v['id']:v for v in c['preexisting_latest']};found={};cursor=None
+for _ in range(5):
+ s,_,page=api(prefix+'/messages'+('?before='+cursor if cursor else ''),cookie=c['cookie']);assert s==200
+ for v in page['messages']:
+  if v['id'] in expected:found[v['id']]={'id':v['id'],'revision':v['revision'],'deleted':v['deleted'],'attachment_ids':[a['id'] for a in v['attachments']]}
+ if len(found)==len(expected):break
+ cursor=page.get('next_cursor');assert cursor
+assert found==expected
+for cookie in c['sessions']:
+ s,_,v=api('/api/v1/auth/session',cookie=cookie);assert s==200 and v['authenticated'];s,_,_=api('/api/v1/auth/logout','POST',{},cookie);assert s==204;s,_,v=api('/api/v1/auth/session',cookie=cookie);assert s==200 and not v['authenticated']
+s=state();baseline=read(P/'preflight.json');assert own(c) and s['permission']==baseline['phone_baseline']['permission'] and not s['voice_connected'] and not s['microphone_fgs'] and not s['system_permission_prompt'];assert not any(label(n)=='Закрыть просмотр изображения' for n in nodes());assert re.search(r'Media Projection:\s*null\s*$',call('shell','dumpsys','media_projection'))
+assert all(digest((Q/n).read_bytes())==v for n,v in baseline['source_SHA256'].items())
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_SCOPED_OWN_SIX_MESSAGES_SIX_FILES_ONE_SESSION_CLEANED','messages':removed,'saved_files':files,'preexisting_latest_records_unchanged':len(expected),'owned_API_sessions_revoked':1,'live_unauthenticated_readback':True,'Windows_extra_fixture_created':False,'Windows_status':'BLOCKED_OWN_RECEIVER_HANDSHAKE_EXPECTED_PEER_ABSENT','source_inputs_unchanged':True,'phone_state':s,'owned_DM_composer_empty':True,'viewer_closed':True,'projection_null':True,'phone_session_URL_roles_OS_permissions_unchanged':True,'capture':capture('final-after-cleanup'),'native_exit':0,'native_skips':0};write(P/'cleanup.json',r)
+lease=read(P/'private/windows-session-lease.private.json');lease.update(status='RELEASED_SESSION_REVOKED_READBACK_UNAUTHENTICATED_NO_WIN_FIXTURE_CREATED',released_at_utc=datetime.now(timezone.utc).isoformat());write(P/'private/windows-session-lease.private.json',lease);print(r['status'],flush=True)

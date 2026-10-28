@@ -1,0 +1,24 @@
+import hashlib,http.client,json,re,subprocess,sys,uuid
+from pathlib import Path
+from datetime import datetime,timezone
+P=Path(__file__).resolve().parent;Q=P.parents[1];B=Path('C:/Users/egkur/.codex/worktrees/android-qa/BOOHTACORD');G=B/'.out/qa-goal';ORIGIN='https://v.bootybay.ru'
+sys.path.insert(0,str(G))
+from android_permission_ui import ADB,APP,call,nodes,label,state,tap_named
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+def write(p,v):p.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+def digest(b):return hashlib.sha256(b).hexdigest()
+def valid(v):assert str(uuid.UUID(v))==v;return v
+def request(path,method='GET',body=None,cookie=None,content_type='application/json'):
+ assert path.startswith('/api/v1/') or path=='/release-receipt.json';h={'Origin':ORIGIN,'Accept':'*/*' if '/attachments/' in path else 'application/json'}
+ if cookie:h['Cookie']=cookie
+ if body is not None:h['Content-Type']=content_type
+ raw=body if isinstance(body,bytes) else json.dumps(body).encode() if body is not None else None
+ c=http.client.HTTPSConnection('v.bootybay.ru',443,timeout=20);c.request(method,path,body=raw,headers=h);r=c.getresponse();status=r.status;headers=r.getheaders();data=r.read(2_000_000);c.close();return status,headers,data
+def api(path,method='GET',body=None,cookie=None):
+ s,h,b=request(path,method,body,cookie);return s,h,json.loads(b) if b else None
+def bounds(n):return list(map(int,re.findall(r'\d+',n.get('bounds'))))
+def own(c):
+ rows=nodes();fields=[n for n in rows if n.get('class')=='android.widget.EditText' and n.get('package')==APP]
+ return any(c['peer'] in label(n) and bounds(n)[1]<700 for n in rows) and len(fields)==1 and not fields[0].get('text') and not any((n.get('package')or'').endswith('permissioncontroller') for n in rows)
+def capture(name):
+ raw=subprocess.check_output([ADB,'exec-out','screencap','-p'],timeout=20);path=P/'private'/(name+'.private.png');assert not path.exists();path.write_bytes(raw);return {'file':str(path),'SHA256':digest(raw)}

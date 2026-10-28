@@ -1,0 +1,16 @@
+import subprocess,sys,time
+from common import *
+commands=[]
+def run(i,script,*args):
+ command=[sys.executable,'-X','utf8',str(P/script),*map(str,args)];start=datetime.now(timezone.utc).isoformat();p=subprocess.run(command,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=150)
+ log=P/'private'/('batch-'+str(i)+'-'+script.replace('.py','')+'-'+('-'.join(map(str,args)))+'.private.log');assert not log.exists();log.write_bytes(p.stdout)
+ commands.append({'started_at_utc':start,'finished_at_utc':datetime.now(timezone.utc).isoformat(),'command':'python -X utf8 .out/qa-agent-phone/'+script+' '+' '.join(map(str,args)),'exit_code':p.returncode,'skips':0,'terminal_log':str(log),'runner_SHA256':digest((P/script).read_bytes())});write(P/'native-commands.json',commands);print(i,script,*args,'exit',p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)
+for i in range(2,6):
+ c=read(P/'private/config.private.json');assert own(c)
+ if any(label(n)=='Повторить подключение' for n in nodes()):run(i,'native_ui.py','retry',i)
+ run(i,'producer.py','send',i);run(i,'reveal.py',i)
+ if c['fixtures'][i]['control']=='viewer':run(i,'native_ui.py','open',i);run(i,'native_ui.py','probe',i)
+ run(i,'native_ui.py','download-'+c['fixtures'][i]['control'],i);run(i,'native_ui.py','picker-inspect',i);capture('picker-'+str(i));run(i,'native_ui.py','picker-save',i);run(i,'verify_save.py',i)
+ if c['fixtures'][i]['control']=='viewer':run(i,'native_ui.py','close',i)
+print('PASS_REMAINING_FOUR_NATIVE_DOWNLOADS',flush=True)

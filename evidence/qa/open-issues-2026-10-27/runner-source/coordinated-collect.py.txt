@@ -1,0 +1,39 @@
+"""Collect frozen independent-agent evidence and original source qualifiers."""
+import json,subprocess
+from datetime import datetime,timezone
+from common import P,Q,B,O,D,read,write,sha,json_copy,code_copy,clean,origins
+assert not D.exists();D.mkdir();phone=Q/'.out/qa-agent-phone';restart=Q/'.out/qa-agent-phone-restart';win=Q/'.out/qa-agent-windows';admin=Q/'.out/qa-agent-windows-admin';browser=Q/'.out/qa-agent-browser';search=Q/'.out/qa-agent-search';guard=Q/'.out/qa-guard-teardown'
+for name,h in read(phone/'artifact-hashes.json')['artifacts'].items():assert sha((phone/name).read_bytes())==h['SHA256']
+for i in range(6):
+    r=read(phone/('saved-'+str(i)+'.json'));assert r['saved_original_equals_uploaded'] and r['filename_extension_matches'] and r['saved_SHA256']==r['expected_SHA256'] and r['native_exit']==0
+assert read(phone/'cleanup.json')['owned_API_sessions_revoked']==1 and read(phone/'cleanup.json')['live_unauthenticated_readback']
+for group,folder,names in [
+ ('phone',phone,['summary','preflight','cleanup','source-criteria','visual-record','native-commands','keyboard-result','keyboard-summary','reconnect-result','reconnect-summary','history-refresh-result','final-native-state','preflight-attempt1-diagnostic','refresh1-failure']),
+ ('windows',win,['summary','candidate','candidate-integrity','diagnostic-attempts','preexecution-hashes','operating-brief']),
+ ('windows/attempt2',win/'attempt2',['summary','candidate-readback','captures','diagnostic-attempts','preexecution','final-state']),
+ ('windows/admin-blocked',admin,['summary','sections','native-attempts']),
+ ('windows/admin',admin/'attempt2',['summary','sections','captures','preexecution','final-state']),
+ ('browser',browser,['browser-ui-policy-blocker','browser-ui-policy-blocker-user-selected']),
+ ('restart',restart,['summary','cleanup','final-state','visual-record','third-passive-review','post-auth-manual-refresh','helper-bindings-before-restart']),
+ ('search',search,['summary','before','native-check','cleanup-final','cleanup-blocker','handoff','integrity']),
+ ('guard',guard,['counterexample','teardown','cleanup-final-after-root-handoff','integrity'])]:
+    for name in names:
+        f=folder/(name+'.json')
+        if f.exists():json_copy(f,group+'/'+name+'.json')
+for i in range(6):
+    for stem in ['saved','send','delete']:
+        json_copy(phone/(stem+'-'+str(i)+'.json'),'phone/'+stem+'-'+str(i)+'.json')
+for i in [0,2,4]:json_copy(phone/('probe-'+str(i)+'.json'),'phone/probe-'+str(i)+'.json')
+for folder,prefix in [(phone,'agent-phone-'),(restart,'agent-phone-restart-'),(search,'agent-search-'),(guard,'agent-guard-')]:
+    scripts=list(folder.glob('*.py'));assert len(scripts)<=16
+    for f in scripts:code_copy(f,prefix)
+audit=read(browser/'qa-scope-audit.json');assert audit['original_issues']==audit['current_open_count']==37 and audit['current_closed_count']==0 and audit['original_requirements']==480
+brief={k:v for k,v in audit.items() if k not in ['original_requirement_texts','preservation','source_issues']};brief['source_issues']=[{k:v for k,v in i.items() if k!='append_text'} for i in audit['source_issues']];write(D/'scope-audit.json',clean(brief));assert len(audit['source_clauses_not_standalone_rows'])==13
+matrix=read(O/'matrix.json');sources={x['number']:x for x in read(B/'.out/qa-goal/open-issues-snapshot.json')['issues']};issues={x['number']:x for x in matrix['issues']};qualifiers=[]
+for clause in audit['source_clauses_not_standalone_rows']:
+    n=clause['issue'];source=sources[n]['body'];assert sha(source.encode())==issues[n]['source_body_sha256'];line=source.splitlines()[clause['source_line']-1];assert line.strip()==clause['text'];index=sum(q['issue']==n for q in qualifiers)+1
+    qualifiers.append({'id':'I'+str(n)+'.Q'+str(index),'issue':n,'source_url':sources[n]['url'],'source_line':clause['source_line'],'original_body_SHA256':sha(source.encode()),'source_text':clause['text'],'applies_to_full_issue_gate':True,'criterion_ids':[r['id'] for r in issues[n]['criteria']],'mandatory_when':'Before accepting/closing the parent QA gate; scoped witnesses never waive this original source constraint','runtime_acceptance':'NOT_RUN_FULL_SOURCE_QUALIFIER_NOT_ACCEPTED','interpretation_limit':'Preserve original epistemic status: approved305 thresholds are binding; proposed332 durations require agreement and are not silently ratified.'})
+write(D/'source-qualifiers.json',{'source_rows_preserved':480,'additional_original_source_qualifiers':13,'clauses':qualifiers,'scope':'Original prose/table constraints attached to their whole issue gates, not new requirements or thirteen runtime PASS results'})
+ledger=read(Q/'.out/qa-dm-attachment-admission/private/github-readback.private.json');canon=lambda s:s.replace('\r\n','\n').rstrip('\n');assert canon(ledger['expected_body'])==canon(ledger['readback_body']) and ledger['readback_body'].startswith(ledger['before_body']);write(O/'production-dm-attachment-claim/github-readback.json',{'at_utc':ledger['at_utc'],'number':53,'state':ledger['state'],'old_prefix_preserved':True,'canonical_exact_readback':True,'previous_body_SHA256':sha(canon(ledger['before_body']).encode()),'body_SHA256':sha(canon(ledger['readback_body']).encode()),'first_evidence_commit':ledger['first_evidence_commit'],'canonicalization':'UTF-8/LF/trailing LF removed only'})
+write(D/'private-origin-hashes.json',{'scope':'Hashes of private original receipts before public sanitation, distinct from the public manifest','origins':origins})
+write(P/'collection.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_FROZEN_AGENT_COLLECTION_SOURCE_QUALIFIERS','public_directory':D.as_posix(),'original_receipts':len(origins),'source_qualifiers':13});print(json.dumps({'collection':'PASS','original_receipts':len(origins),'source_qualifiers':13}))

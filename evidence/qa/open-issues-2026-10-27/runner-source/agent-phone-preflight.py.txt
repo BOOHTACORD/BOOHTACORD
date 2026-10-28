@@ -1,0 +1,15 @@
+import re,subprocess
+from common import *
+assert not (P/'preflight.json').exists();known=read(Q/'.out/qa-native-image-formats/private/config.private.json')
+assert call('get-state').strip()=='device';assert call('shell','getprop','ro.product.model').strip()=='SM-A576B';assert call('shell','getprop','ro.build.version.release').strip()=='16'
+package=call('shell','dumpsys','package',APP);assert 'versionName=1.0.47' in package and re.search(r'versionCode=2082\b',package)
+path=call('shell','pm','path',APP).strip()[8:];assert re.fullmatch(r'/data/app/[A-Za-z0-9_~+/=.-]+/base\.apk',path)
+p=subprocess.Popen([ADB,'exec-out','cat',path],stdout=subprocess.PIPE,stderr=subprocess.PIPE);sha=hashlib.sha256()
+for b in iter(lambda:p.stdout.read(1024*1024),b''):sha.update(b)
+assert p.wait(timeout=30)==0;assert sha.hexdigest()=='c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243'
+call('shell','input','keyevent','KEYCODE_WAKEUP');call('shell','am','start','-n',APP+'/.MainActivity');assert own(known)
+s=state();assert s['app_hierarchy_present'] and not s['voice_connected'] and not s['microphone_fgs'] and not s['system_permission_prompt'];assert not any(label(n)=='Закрыть просмотр изображения' for n in nodes())
+projection=call('shell','dumpsys','media_projection');assert re.search(r'Media Projection:\s*null\s*$',projection) or 'mProjectionGrant=null' in projection
+source=['clients/flutter/pubspec.yaml','clients/flutter/lib/src/widgets/message_attachment_list.dart','clients/flutter/lib/src/features/attachments/download/api.dart','clients/flutter/lib/src/features/attachments/download/facade.dart','clients/flutter/android/app/src/main/kotlin/ru/boohtacord/app/MainActivity.kt']
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'workflow_class':'review_gate','route':'clients/flutter/features/attachments/download','packet':'physical-Android-six-native-downloads','task':'T-044 dependencies T-040/T-041','source_revision':subprocess.check_output(['git','rev-parse','HEAD'],cwd=Q,text=True).strip(),'source_SHA256':{n:digest((Q/n).read_bytes()) for n in source},'model':'SM-A576B','Android':'16','APK_version':'1.0.47+2082','APK_SHA256':sha.hexdigest(),'phone_baseline':s,'owned_DM_header':True,'composer_empty':True,'viewer_closed':True,'projection_null':True,'deployed_backend_source':'UNKNOWN','invariant':'Only new tiny owned QA files in existing DM; native current session/URL/roles/permissions/voice/projection unchanged; exact own saved files SHA-guarded cleanup','stop_condition':'Six formats x control witnesses with real DocumentsUI local Downloads and SHA controls, or precise blocker; API session revoked, own messages and saved files cleaned','baseline_capture':capture('baseline'),'native_exit':0,'native_skips':0}
+write(P/'preflight.json',r);print({k:r[k] for k in ['route','APK_version','APK_SHA256','owned_DM_header','composer_empty','viewer_closed','projection_null','native_exit','native_skips']})

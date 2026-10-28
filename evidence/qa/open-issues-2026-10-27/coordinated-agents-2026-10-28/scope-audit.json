@@ -1,0 +1,2785 @@
+{
+  "schema": "qa-scope-audit-v1",
+  "observed_utc": "2026-10-28T19:27:28.778367+00:00",
+  "workflow_class": "review_gate",
+  "route": "qa/intake-source-completeness",
+  "result": "SOURCE_AUDIT_ONLY_NOT_RUNTIME_ACCEPTANCE",
+  "original_issues": 37,
+  "original_requirements": 480,
+  "original_scopes": 81,
+  "original_scope_ids": [
+    "DM-two_participants_and_third_member_acl",
+    "DM-owned_empty_DM_composer",
+    "DM-draft_navigation_and_reload",
+    "DM-actual_send_receive_and_peer_display",
+    "DM-actual_message_actions",
+    "DM-actual_image_upload_and_protected_download",
+    "NAV-Web-shortcut",
+    "ROSTER-populated-prejoin",
+    "WEB-shell-six-widths",
+    "ANDROID-DM-receive",
+    "ANDROID-muted-background",
+    "ANDROID-stop-with-mic",
+    "WINDOWS-dialog",
+    "PUBLIC-update-catalog",
+    "AUDIO-audibility",
+    "ANDROID-DM-two-x-text-and-IME",
+    "ANDROID-DM-input-actions",
+    "ANDROID-OS-microphone-denial",
+    "NOTIFY-deployment-readiness-consent",
+    "ANDROID-populated-prejoin-no-permission",
+    "WEB-session-revocation-draft-isolation",
+    "WEB-current-public-Swagger-viewer",
+    "ANDROID-real-filechooser-cancel",
+    "NAV-desktop-DM-no-voice-mutation",
+    "ANDROID-native-PNG-picker-send-view-delete",
+    "WINDOWS-native-admin-entry",
+    "WEB-JPEG-GIF-private-image-lifecycle",
+    "WEB-viewer-download-format-mismatch",
+    "ISOLATED-relay-sanitization-health",
+    "ISOLATED-two-browser-sdk-flow",
+    "ISOLATED-windows-flutter-sdk-flow",
+    "ISOLATED-worker-durable-cause-sfu",
+    "ISOLATED-websocket-replay-acl",
+    "ISOLATED-relay-dependency-outages",
+    "ISOLATED-traceql-semantic-fixtures",
+    "ISOLATED-traceql-dashboard-queries",
+    "ANDROID-physical-ptt-release-cancel-home",
+    "ANDROID-orientation-draft-voice-retention",
+    "ANDROID-landscape-ime-send-voice-dock-overlap",
+    "ANDROID-wifi-cellular-native-DM-and-restoration",
+    "ANDROID-signed-master-candidate-in-place-upgrade",
+    "ANDROID-master-landscape-ime-send-voice-dock-overlap",
+    "LOCAL-QA-runtime-and-telemetry",
+    "LOCAL-QA-TEXT-ACL-and-two-SDK-peers",
+    "UPLOAD-real-TEXT-idle-deadline",
+    "UPLOAD-real-DM-idle-deadline",
+    "UPLOAD-real-account-concurrency-and-progress",
+    "UPLOAD-native-HTTP1-idle-and-absolute",
+    "UPLOAD-real-TEXT-DM-midwrite-ENOSPC",
+    "UPLOAD-real-empty-TEXT-DM-body",
+    "UPLOAD-real-deployed-15min-absolute",
+    "UPLOAD-real-global16-cap",
+    "ANDROID-production-resume-outbound",
+    "ANDROID-production-resume-manual-history",
+    "ANDROID-production-resume-live-receive",
+    "ANDROID-screen-two-Web-receivers",
+    "ANDROID-screen-static-first-frame",
+    "ANDROID-screen-native-stop-polling-quiet",
+    "ANDROID-admin-sections-fonts-targets",
+    "ANDROID-admin-1x-IME-Back",
+    "ANDROID-admin-role-popup-root-Back",
+    "ANDROID-admin-2x-IME-Back-unaccepted",
+    "ANDROID-admin-2x-Gboard-keeps-focus",
+    "ANDROID-admin-1x-Gboard-query-Back",
+    "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
+    "ANDROID-ADMIN-explicit-search-after-owned-delete",
+    "ANDROID-search-scope-48dp-touch-target",
+    "ISOLATED-auth-denial-real-http-postgres",
+    "ISOLATED-websocket-default-quotas-real-http",
+    "ISOLATED-login-NAT20-account-IP-KDF-runtime",
+    "ISOLATED-upload-account-source-deployment-windows",
+    "ISOLATED-rate-limit-capacity-race-benchmark",
+    "ISOLATED-trusted-proxy-source-repeated-fields",
+    "ISOLATED-production-screen-binding-real-SFU-lifecycle",
+    "ISOLATED-history-edit-draft-cache-eviction",
+    "ISOLATED-history20-source-performance-and-window-matrix",
+    "ISOLATED-built-history-context-navigation-lifecycle",
+    "ISOLATED-built-open-context-realtime-edit-delete",
+    "PRODUCTION-DM-protected-image-access-revocation",
+    "ANDROID-image-viewer-delete-invalidation",
+    "PRODUCTION-DM-attachment-owner-scope-atomic-claim"
+  ],
+  "original_row_status_counts": {
+    "BLOCKED": 160,
+    "PARTIAL": 52,
+    "NOT_RUN": 241,
+    "FAIL": 19,
+    "PASS": 8
+  },
+  "current_open_count": 37,
+  "current_closed_count": 0,
+  "limits": [
+    "No requirement/status/scoped result is removed or reclassified.",
+    "GitHub bodies can include evidence append; appended text is reviewed separately.",
+    "No CUA, production mutation, source edit, Git/index/GitHub mutation or runtime PASS.",
+    "Search results are a time-bounded connected GitHub snapshot; search indexing/concurrent edits may change later.",
+    "No new gate source found in current all-open/label/title queries; this does not automatically enlarge the original intake.",
+    "Next conditions are bounded execution candidates, not completed runtime results; Mac/iPhone/Pixel/provider/human audibility remain unavailable or separate.",
+    "Search results are a time-bounded connected GitHub snapshot; search indexing/concurrent edits may change later.",
+    "No new gate source found in current all-open/label/title queries; this does not automatically enlarge the original intake.",
+    "Next conditions are bounded execution candidates, not completed runtime results; Mac/iPhone/Pixel/provider/human audibility remain unavailable or separate.",
+    "Search results are a time-bounded connected GitHub snapshot; search indexing/concurrent edits may change later.",
+    "No new gate source found in current all-open/label/title queries; this does not automatically enlarge the original intake.",
+    "Next conditions are bounded execution candidates, not completed runtime results; Mac/iPhone/Pixel/provider/human audibility remain unavailable or separate."
+  ],
+  "source_clauses_not_standalone_rows": [
+    {
+      "issue": 132,
+      "source_line": 16,
+      "text": "Для каждого пункта приложить версии обеих сборок, устройство/версию ОС, время прогона и статус PASS, FAIL или NOT_RUN с кратким результатом. При FAIL приложить безопасные sender/receiver counters и диагностические логи без содержимого аудио/видео, сообщений, токенов, имён и ID пользователей. Для NOT_RUN указать конкретно недоступное устройство или сборку. Тесты и сборка сами по себе не заменяют парную runtime-приёмку.",
+      "status": "CONFIRMED_SOURCE_CLAUSE_WITHOUT_STANDALONE_MATRIX_TEXT"
+    },
+    {
+      "issue": 305,
+      "source_line": 26,
+      "text": "- Release owner Pistol121 approved the task-success/time/error/backtracking thresholds recorded in the protocol: success and errors/backtracking must not regress; median time may be at most 10% slower for a non-regression result; stop/rollback for a ≥10 percentage-point success drop, >20% slowdown on at least two critical tasks, or a P1/data/access blocker.",
+      "status": "CONFIRMED_SOURCE_CLAUSE_WITHOUT_STANDALONE_MATRIX_TEXT"
+    },
+    {
+      "issue": 305,
+      "source_line": 34,
+      "text": "- The user reports that the real-user task measurements and a responsible owner exist. Their values, tester/sample details, and the Web rollback owner's identity were not provided or linked in the evidence available for this review. Keep those items `NOT_RUN` and the release decision `NO-GO` until the source evidence is attached and the owner is named; no human measurements are inferred from automated browser tests.",
+      "status": "CONFIRMED_SOURCE_CLAUSE_WITHOUT_STANDALONE_MATRIX_TEXT"
+    },
+    {
+      "issue": 332,
+      "source_line": 22,
+      "text": "| Направления | Web→Web (контроль), Web→Mac, Mac→Web, Mac→Mac |",
+      "status": "CONFIRMED_SOURCE_CLAUSE_WITHOUT_STANDALONE_MATRIX_TEXT"
+    },
+    {
+      "issue": 332,
+      "source_line": 23,
+      "text": "| Mac sender source | выбранное окно и весь экран; Retina/обычный размер, ultrawide/portrait, resize |",
+      "status": "CONFIRMED_SOURCE_CLAUSE_WITHOUT_STANDALONE_MATRIX_TEXT"
+    },
+    {
+      "issue": 332,
+      "source_line": 24,
+      "text": "| Профили | 720p/1080p ×30/60; 15 FPS и 1440p — совместимость без объявления 1440p60 подтверждённым |",
+      "status": "CONFIRMED_SOURCE_CLAUSE_WITHOUT_STANDALONE_MATRIX_TEXT"
+    },
+    {
+      "issue": 332,
+      "source_line": 26,
+      "text": "| Lifecycle | start/cancel/stop/restart, low→high→low с честным restart-required, late viewer, reconnect/republish, full→mini→full, sleep/wake, source close/unplug |",
+      "status": "CONFIRMED_SOURCE_CLAUSE_WITHOUT_STANDALONE_MATRIX_TEXT"
+    },
+    {
+      "issue": 332,
+      "source_line": 27,
+      "text": "| Медиа | независимый voice + системный звук там, где поддержан; mute/deafen/share-audio, отсутствие петли и лишних audio outputs |",
+      "status": "CONFIRMED_SOURCE_CLAUSE_WITHOUT_STANDALONE_MATRIX_TEXT"
+    },
+    {
+      "issue": 332,
+      "source_line": 28,
+      "text": "| Сеть/отказы | stable direct UDP baseline; отдельно supported TURN/TCP/TLS route, ограничение sender uplink и receiver downlink, потери/восстановление, медленный metrics/metadata endpoint |",
+      "status": "CONFIRMED_SOURCE_CLAUSE_WITHOUT_STANDALONE_MATRIX_TEXT"
+    },
+    {
+      "issue": 332,
+      "source_line": 29,
+      "text": "| Совместимость | старый native без descriptor → новый Web; новый native → поддерживаемый старый Web; фактический браузер пользователя и заявляемые supported viewers |",
+      "status": "CONFIRMED_SOURCE_CLAUSE_WITHOUT_STANDALONE_MATRIX_TEXT"
+    },
+    {
+      "issue": 332,
+      "source_line": 31,
+      "text": "Для ключевых healthy 1080p60 window/display прогонов минимум три повтора на двух физических устройствах. Предлагаемая длительность — 30 с warm-up + 5 мин steady; зафиксировать и согласовать до сравнения. Не запускать оба тяжёлых endpoints на одном Mac как единственное hardware evidence. Для сетевых отказов healthy FPS-SLO не применяется: проверяются voice-first, truthful downgrade и recovery.",
+      "status": "CONFIRMED_SOURCE_CLAUSE_WITHOUT_STANDALONE_MATRIX_TEXT"
+    },
+    {
+      "issue": 564,
+      "source_line": 11,
+      "text": "Disposable HTTPS BOOHTACORD с настоящим PostgreSQL, две тестовые установки (включая намеренно совпадающие локальные account IDs), accounts A/B/C/admin, изолированный staging relay/provider project и подписанные тестовые native builds. Только синтетический текст/файлы, production cookies/ключи/пользователи не используются. Пересылка содержимого на provider проверяется отрицательными assertions, а не публичным дампом реальных payload.",
+      "status": "CONFIRMED_SOURCE_CLAUSE_WITHOUT_STANDALONE_MATRIX_TEXT"
+    },
+    {
+      "issue": 564,
+      "source_line": 13,
+      "text": "Минимальный runtime охват: Chrome/Firefox/Safari desktop в реально доступных версиях, iOS Home Screen Web Push как отдельная строка, один физический iPhone и один физический Android с GMS. Не делать бесконечную матрицу всех OEM; объявленные поддержанные версии/исключения фиксировать явно. Android без GMS — проверить честный unsupported, не фиктивный delivery PASS.",
+      "status": "CONFIRMED_SOURCE_CLAUSE_WITHOUT_STANDALONE_MATRIX_TEXT"
+    }
+  ],
+  "omission_review_limit": "Confirmed clauses remain authoritative in issue bodies. Do not add/remove/reclassify the 480 rows automatically. Candidate list also contains boilerplate/context and is not a new requirement count.",
+  "searches": [
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue is:open label:\"area: verification\"",
+      "observed_utc": "2026-10-28T19:27:54.226Z",
+      "returned_count": 12,
+      "issues": [
+        {
+          "number": 278,
+          "title": "[QA] Verify accessible configured guild name in Flutter (#78)",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/278"
+        },
+        {
+          "number": 272,
+          "title": "[VoiceRoster][VR-07][P1] QA/release: отказоустойчивость roster, ACL и приемка на Web + Flutter + production",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/272"
+        },
+        {
+          "number": 132,
+          "title": "QA — Android screen share и фоновые потоки: runtime-приёмка #40 #42 #48 #49 #51 #86",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/132"
+        },
+        {
+          "number": 131,
+          "title": "QA — сводная runtime-приёмка реализованных функций",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/131"
+        },
+        {
+          "number": 98,
+          "title": "QA-13 — Задержка запуска macOS Debug",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/98"
+        },
+        {
+          "number": 62,
+          "title": "QA-13 — Flutter parity и Android/device release",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/62"
+        },
+        {
+          "number": 61,
+          "title": "QA-14 — Решение о выпуске",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/61"
+        },
+        {
+          "number": 58,
+          "title": "QA-09 — Capacity",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/58"
+        },
+        {
+          "number": 57,
+          "title": "QA-07 — POC-02 и 15 FPS",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/57"
+        },
+        {
+          "number": 55,
+          "title": "QA-06 — POC-01",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/55"
+        },
+        {
+          "number": 54,
+          "title": "QA-05 — Authenticated browser E2E",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/54"
+        },
+        {
+          "number": 53,
+          "title": "QA-03 — DM/storage privacy",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/53"
+        }
+      ]
+    },
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue is:open",
+      "observed_utc": "2026-10-28T19:27:54.226Z",
+      "returned_count": 50,
+      "issues": [
+        {
+          "number": 589,
+          "title": "[BUG][Android] Открытый viewer сохраняет PNG после удаления сообщения",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/589"
+        },
+        {
+          "number": 587,
+          "title": "[BUG][Web][P1] Открытый reply/search context сохраняет удалённый текст после realtime hint",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/587"
+        },
+        {
+          "number": 586,
+          "title": "[BUG][Android][A11y] «Область поиска»: цель32dp, касания за верхним/нижним краем не открывают список",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/586"
+        },
+        {
+          "number": 585,
+          "title": "[BUG][Android][2× text] Поиск участников в админке теряет фокус и закрывает Gboard после первого символа",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/585"
+        },
+        {
+          "number": 584,
+          "title": "[BUG][Android→Web] После долгого app-only picker нет первого кадра до движения источника",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/584"
+        },
+        {
+          "number": 582,
+          "title": "[BUG][Android] Landscape + Gboard: voice dock перекрывает кнопку отправки DM",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/582"
+        },
+        {
+          "number": 581,
+          "title": "[BUG][Web] Viewer «Скачать» отдаёт PNG с расширением .jpg/.gif вместо оригинала",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/581"
+        },
+        {
+          "number": 580,
+          "title": "[BUG][Web] Ctrl+K не открывает поиск из navigation drawer в окнах 800/390px",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/580"
+        },
+        {
+          "number": 579,
+          "title": "[BUG][Windows native] Android screen обнаружен, но просмотр зависает без первого кадра; Chrome на том же ПК декодирует",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/579"
+        },
+        {
+          "number": 564,
+          "title": "[NOTIFY-10][P1] Сквозная приёмка уведомлений Web/iOS/Android: доставка, приватность, отказоустойчивость и release gate",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/564"
+        },
+        {
+          "number": 554,
+          "title": "[Epic][NOTIFY][P1] Фоновые уведомления Web/iOS/Android: личные сообщения, упоминания и безопасный self-hosted push",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/554"
+        },
+        {
+          "number": 332,
+          "title": "[ScreenShare][MW-06][P1] Регрессионный стенд Mac↔Web, физическая приёмка 1080p60 и независимый rollback capture/codec",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/332"
+        },
+        {
+          "number": 331,
+          "title": "[ScreenShare][MW-05][P1] macOS: сравнить VP8/H.264 и внедрить измеренную native codec policy с безопасным fallback",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/331"
+        },
+        {
+          "number": 329,
+          "title": "[ScreenShare][MW-03][P1] Локализовать 18 FPS: stage-level метрики capture → encode → SFU → decode → presentation",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/329"
+        },
+        {
+          "number": 326,
+          "title": "[ScreenShare][Mac↔Web][EPIC] Устранить асимметрию качества: native macOS → Web и Web → macOS",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/326"
+        },
+        {
+          "number": 305,
+          "title": "[UIUX-2026][UX-16][P2] UX release gate: документация, метрики task success и план отката",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/305"
+        },
+        {
+          "number": 303,
+          "title": "[UIUX-2026][UX-14][P1] Физическая UX-приёмка macOS/Windows/Android/iOS и мобильного Web",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/303"
+        },
+        {
+          "number": 302,
+          "title": "[UIUX-2026][UX-13][P1] Автотесты UI/UX: viewport matrix, visual snapshots и сценарии E2E",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/302"
+        },
+        {
+          "number": 301,
+          "title": "[UIUX-2026][UX-12][P1] Accessibility WCAG 2.2 AA + Flutter Semantics для ключевых сценариев",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/301"
+        },
+        {
+          "number": 289,
+          "title": "[UIUX-2026][EPIC] Единый UI/UX BOOHTACORD — Web + Flutter desktop/mobile",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/289"
+        },
+        {
+          "number": 287,
+          "title": "[QA] Приёмка завершённого пакета roster, client features и native hardening",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/287"
+        },
+        {
+          "number": 283,
+          "title": "[QA] Browser/device acceptance for channel and DM quick jump (#78)",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/283"
+        },
+        {
+          "number": 278,
+          "title": "[QA] Verify accessible configured guild name in Flutter (#78)",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/278"
+        },
+        {
+          "number": 272,
+          "title": "[VoiceRoster][VR-07][P1] QA/release: отказоустойчивость roster, ACL и приемка на Web + Flutter + production",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/272"
+        },
+        {
+          "number": 259,
+          "title": "[QA] Проверить восстановление выбранных audio devices перед Join/reconnect на macOS (#181)",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/259"
+        },
+        {
+          "number": 257,
+          "title": "[QA] Проверить состояния разрешений и списка Audio Settings на macOS (#182)",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/257"
+        },
+        {
+          "number": 249,
+          "title": "[QA] Deploy and verify Windows update catalog for #223",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/249"
+        },
+        {
+          "number": 243,
+          "title": "[QA] Backend load harness acceptance and capacity evidence for #8",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/243"
+        },
+        {
+          "number": 241,
+          "title": "[QA] Acceptance for OpenAPI, observability, media QoE, chat history, accessibility, social preview and on-call map",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/241"
+        },
+        {
+          "number": 240,
+          "title": "QA — runtime-приёмка реализаций #133–#141, #145–#153, #155, #157",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/240"
+        },
+        {
+          "number": 227,
+          "title": "QA — runtime-приёмка screen-share implementation #158–#172",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/227"
+        },
+        {
+          "number": 184,
+          "title": "[MacAudio][MA-07][P1] Провести физическую macOS приёмку и зафиксировать evidence Debug/Release",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/184"
+        },
+        {
+          "number": 174,
+          "title": "[ScreenShare][SS-18][P1] Нагрузочная приёмка: 10/20/30 участников, 4/10/20 стримов, churn и soak",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/174"
+        },
+        {
+          "number": 173,
+          "title": "[ScreenShare][SS-17][P1] Провести физическую парную приёмку FPS, артефактов, задержки и звука",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/173"
+        },
+        {
+          "number": 154,
+          "title": "[Tracing][UF-10] Сквозная приёмка user flow через реальные relay, Collector и Tempo",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/154"
+        },
+        {
+          "number": 141,
+          "title": "[P2][F09] Web chat: индексировать ответы и ограничить рендеринг и кеш длинной истории",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/141"
+        },
+        {
+          "number": 138,
+          "title": "[P2][F06] Security hardening: учитывать X-Forwarded-For только от доверенных прокси",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/138"
+        },
+        {
+          "number": 137,
+          "title": "[P2][F05] Rate limiting: разделить квоты пользователей за NAT и добавить многоуровневые бюджеты",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/137"
+        },
+        {
+          "number": 134,
+          "title": "[P1][F02] Backend: ограничить длительность и параллелизм загрузок, освобождать ресурсы при зависшем теле запроса",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/134"
+        },
+        {
+          "number": 132,
+          "title": "QA — Android screen share и фоновые потоки: runtime-приёмка #40 #42 #48 #49 #51 #86",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/132"
+        },
+        {
+          "number": 131,
+          "title": "QA — сводная runtime-приёмка реализованных функций",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/131"
+        },
+        {
+          "number": 98,
+          "title": "QA-13 — Задержка запуска macOS Debug",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/98"
+        },
+        {
+          "number": 62,
+          "title": "QA-13 — Flutter parity и Android/device release",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/62"
+        },
+        {
+          "number": 61,
+          "title": "QA-14 — Решение о выпуске",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/61"
+        },
+        {
+          "number": 58,
+          "title": "QA-09 — Capacity",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/58"
+        },
+        {
+          "number": 57,
+          "title": "QA-07 — POC-02 и 15 FPS",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/57"
+        },
+        {
+          "number": 55,
+          "title": "QA-06 — POC-01",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/55"
+        },
+        {
+          "number": 54,
+          "title": "QA-05 — Authenticated browser E2E",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/54"
+        },
+        {
+          "number": 53,
+          "title": "QA-03 — DM/storage privacy",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/53"
+        },
+        {
+          "number": 42,
+          "title": "FE-59/61 paired runtime — Android Emulator → macOS",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/42"
+        }
+      ]
+    },
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue is:open label:QA",
+      "observed_utc": "2026-10-28T19:27:03.460Z",
+      "returned_count": 15,
+      "issues": [
+        {
+          "number": 305,
+          "title": "[UIUX-2026][UX-16][P2] UX release gate: документация, метрики task success и план отката",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/305"
+        },
+        {
+          "number": 303,
+          "title": "[UIUX-2026][UX-14][P1] Физическая UX-приёмка macOS/Windows/Android/iOS и мобильного Web",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/303"
+        },
+        {
+          "number": 302,
+          "title": "[UIUX-2026][UX-13][P1] Автотесты UI/UX: viewport matrix, visual snapshots и сценарии E2E",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/302"
+        },
+        {
+          "number": 287,
+          "title": "[QA] Приёмка завершённого пакета roster, client features и native hardening",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/287"
+        },
+        {
+          "number": 283,
+          "title": "[QA] Browser/device acceptance for channel and DM quick jump (#78)",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/283"
+        },
+        {
+          "number": 278,
+          "title": "[QA] Verify accessible configured guild name in Flutter (#78)",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/278"
+        },
+        {
+          "number": 259,
+          "title": "[QA] Проверить восстановление выбранных audio devices перед Join/reconnect на macOS (#181)",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/259"
+        },
+        {
+          "number": 257,
+          "title": "[QA] Проверить состояния разрешений и списка Audio Settings на macOS (#182)",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/257"
+        },
+        {
+          "number": 249,
+          "title": "[QA] Deploy and verify Windows update catalog for #223",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/249"
+        },
+        {
+          "number": 243,
+          "title": "[QA] Backend load harness acceptance and capacity evidence for #8",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/243"
+        },
+        {
+          "number": 241,
+          "title": "[QA] Acceptance for OpenAPI, observability, media QoE, chat history, accessibility, social preview and on-call map",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/241"
+        },
+        {
+          "number": 240,
+          "title": "QA — runtime-приёмка реализаций #133–#141, #145–#153, #155, #157",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/240"
+        },
+        {
+          "number": 227,
+          "title": "QA — runtime-приёмка screen-share implementation #158–#172",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/227"
+        },
+        {
+          "number": 132,
+          "title": "QA — Android screen share и фоновые потоки: runtime-приёмка #40 #42 #48 #49 #51 #86",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/132"
+        },
+        {
+          "number": 131,
+          "title": "QA — сводная runtime-приёмка реализованных функций",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/131"
+        }
+      ]
+    },
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue is:open in:title acceptance",
+      "observed_utc": "2026-10-28T19:27:03.461Z",
+      "returned_count": 3,
+      "issues": [
+        {
+          "number": 243,
+          "title": "[QA] Backend load harness acceptance and capacity evidence for #8",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/243"
+        },
+        {
+          "number": 283,
+          "title": "[QA] Browser/device acceptance for channel and DM quick jump (#78)",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/283"
+        },
+        {
+          "number": 241,
+          "title": "[QA] Acceptance for OpenAPI, observability, media QoE, chat history, accessibility, social preview and on-call map",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/241"
+        }
+      ]
+    },
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue is:open in:title приёмка",
+      "observed_utc": "2026-10-28T19:27:03.461Z",
+      "returned_count": 10,
+      "issues": [
+        {
+          "number": 131,
+          "title": "QA — сводная runtime-приёмка реализованных функций",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/131"
+        },
+        {
+          "number": 227,
+          "title": "QA — runtime-приёмка screen-share implementation #158–#172",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/227"
+        },
+        {
+          "number": 287,
+          "title": "[QA] Приёмка завершённого пакета roster, client features и native hardening",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/287"
+        },
+        {
+          "number": 240,
+          "title": "QA — runtime-приёмка реализаций #133–#141, #145–#153, #155, #157",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/240"
+        },
+        {
+          "number": 154,
+          "title": "[Tracing][UF-10] Сквозная приёмка user flow через реальные relay, Collector и Tempo",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/154"
+        },
+        {
+          "number": 564,
+          "title": "[NOTIFY-10][P1] Сквозная приёмка уведомлений Web/iOS/Android: доставка, приватность, отказоустойчивость и release gate",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/564"
+        },
+        {
+          "number": 303,
+          "title": "[UIUX-2026][UX-14][P1] Физическая UX-приёмка macOS/Windows/Android/iOS и мобильного Web",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/303"
+        },
+        {
+          "number": 132,
+          "title": "QA — Android screen share и фоновые потоки: runtime-приёмка #40 #42 #48 #49 #51 #86",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/132"
+        },
+        {
+          "number": 332,
+          "title": "[ScreenShare][MW-06][P1] Регрессионный стенд Mac↔Web, физическая приёмка 1080p60 и независимый rollback capture/codec",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/332"
+        },
+        {
+          "number": 174,
+          "title": "[ScreenShare][SS-18][P1] Нагрузочная приёмка: 10/20/30 участников, 4/10/20 стримов, churn и soak",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/174"
+        }
+      ]
+    },
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue is:open created:>=2026-10-27",
+      "observed_utc": "2026-10-28T19:27:03.462Z",
+      "returned_count": 7,
+      "issues": [
+        {
+          "number": 589,
+          "title": "[BUG][Android] Открытый viewer сохраняет PNG после удаления сообщения",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/589"
+        },
+        {
+          "number": 587,
+          "title": "[BUG][Web][P1] Открытый reply/search context сохраняет удалённый текст после realtime hint",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/587"
+        },
+        {
+          "number": 586,
+          "title": "[BUG][Android][A11y] «Область поиска»: цель32dp, касания за верхним/нижним краем не открывают список",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/586"
+        },
+        {
+          "number": 585,
+          "title": "[BUG][Android][2× text] Поиск участников в админке теряет фокус и закрывает Gboard после первого символа",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/585"
+        },
+        {
+          "number": 584,
+          "title": "[BUG][Android→Web] После долгого app-only picker нет первого кадра до движения источника",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/584"
+        },
+        {
+          "number": 582,
+          "title": "[BUG][Android] Landscape + Gboard: voice dock перекрывает кнопку отправки DM",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/582"
+        },
+        {
+          "number": 581,
+          "title": "[BUG][Web] Viewer «Скачать» отдаёт PNG с расширением .jpg/.gif вместо оригинала",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/581"
+        }
+      ]
+    },
+    {
+      "query": "repo:Egkurilov/BOOHTACORD is:issue is:open created:<2026-10-27",
+      "observed_utc": "2026-10-28T19:27:54.226Z",
+      "returned_count": 43,
+      "issues": [
+        {
+          "number": 580,
+          "title": "[BUG][Web] Ctrl+K не открывает поиск из navigation drawer в окнах 800/390px",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/580"
+        },
+        {
+          "number": 579,
+          "title": "[BUG][Windows native] Android screen обнаружен, но просмотр зависает без первого кадра; Chrome на том же ПК декодирует",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/579"
+        },
+        {
+          "number": 564,
+          "title": "[NOTIFY-10][P1] Сквозная приёмка уведомлений Web/iOS/Android: доставка, приватность, отказоустойчивость и release gate",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/564"
+        },
+        {
+          "number": 554,
+          "title": "[Epic][NOTIFY][P1] Фоновые уведомления Web/iOS/Android: личные сообщения, упоминания и безопасный self-hosted push",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/554"
+        },
+        {
+          "number": 332,
+          "title": "[ScreenShare][MW-06][P1] Регрессионный стенд Mac↔Web, физическая приёмка 1080p60 и независимый rollback capture/codec",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/332"
+        },
+        {
+          "number": 331,
+          "title": "[ScreenShare][MW-05][P1] macOS: сравнить VP8/H.264 и внедрить измеренную native codec policy с безопасным fallback",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/331"
+        },
+        {
+          "number": 329,
+          "title": "[ScreenShare][MW-03][P1] Локализовать 18 FPS: stage-level метрики capture → encode → SFU → decode → presentation",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/329"
+        },
+        {
+          "number": 326,
+          "title": "[ScreenShare][Mac↔Web][EPIC] Устранить асимметрию качества: native macOS → Web и Web → macOS",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/326"
+        },
+        {
+          "number": 305,
+          "title": "[UIUX-2026][UX-16][P2] UX release gate: документация, метрики task success и план отката",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/305"
+        },
+        {
+          "number": 303,
+          "title": "[UIUX-2026][UX-14][P1] Физическая UX-приёмка macOS/Windows/Android/iOS и мобильного Web",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/303"
+        },
+        {
+          "number": 302,
+          "title": "[UIUX-2026][UX-13][P1] Автотесты UI/UX: viewport matrix, visual snapshots и сценарии E2E",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/302"
+        },
+        {
+          "number": 301,
+          "title": "[UIUX-2026][UX-12][P1] Accessibility WCAG 2.2 AA + Flutter Semantics для ключевых сценариев",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/301"
+        },
+        {
+          "number": 289,
+          "title": "[UIUX-2026][EPIC] Единый UI/UX BOOHTACORD — Web + Flutter desktop/mobile",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/289"
+        },
+        {
+          "number": 287,
+          "title": "[QA] Приёмка завершённого пакета roster, client features и native hardening",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/287"
+        },
+        {
+          "number": 283,
+          "title": "[QA] Browser/device acceptance for channel and DM quick jump (#78)",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/283"
+        },
+        {
+          "number": 278,
+          "title": "[QA] Verify accessible configured guild name in Flutter (#78)",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/278"
+        },
+        {
+          "number": 272,
+          "title": "[VoiceRoster][VR-07][P1] QA/release: отказоустойчивость roster, ACL и приемка на Web + Flutter + production",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/272"
+        },
+        {
+          "number": 259,
+          "title": "[QA] Проверить восстановление выбранных audio devices перед Join/reconnect на macOS (#181)",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/259"
+        },
+        {
+          "number": 257,
+          "title": "[QA] Проверить состояния разрешений и списка Audio Settings на macOS (#182)",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/257"
+        },
+        {
+          "number": 249,
+          "title": "[QA] Deploy and verify Windows update catalog for #223",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/249"
+        },
+        {
+          "number": 243,
+          "title": "[QA] Backend load harness acceptance and capacity evidence for #8",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/243"
+        },
+        {
+          "number": 241,
+          "title": "[QA] Acceptance for OpenAPI, observability, media QoE, chat history, accessibility, social preview and on-call map",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/241"
+        },
+        {
+          "number": 240,
+          "title": "QA — runtime-приёмка реализаций #133–#141, #145–#153, #155, #157",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/240"
+        },
+        {
+          "number": 227,
+          "title": "QA — runtime-приёмка screen-share implementation #158–#172",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/227"
+        },
+        {
+          "number": 184,
+          "title": "[MacAudio][MA-07][P1] Провести физическую macOS приёмку и зафиксировать evidence Debug/Release",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/184"
+        },
+        {
+          "number": 174,
+          "title": "[ScreenShare][SS-18][P1] Нагрузочная приёмка: 10/20/30 участников, 4/10/20 стримов, churn и soak",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/174"
+        },
+        {
+          "number": 173,
+          "title": "[ScreenShare][SS-17][P1] Провести физическую парную приёмку FPS, артефактов, задержки и звука",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/173"
+        },
+        {
+          "number": 154,
+          "title": "[Tracing][UF-10] Сквозная приёмка user flow через реальные relay, Collector и Tempo",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/154"
+        },
+        {
+          "number": 141,
+          "title": "[P2][F09] Web chat: индексировать ответы и ограничить рендеринг и кеш длинной истории",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/141"
+        },
+        {
+          "number": 138,
+          "title": "[P2][F06] Security hardening: учитывать X-Forwarded-For только от доверенных прокси",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/138"
+        },
+        {
+          "number": 137,
+          "title": "[P2][F05] Rate limiting: разделить квоты пользователей за NAT и добавить многоуровневые бюджеты",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/137"
+        },
+        {
+          "number": 134,
+          "title": "[P1][F02] Backend: ограничить длительность и параллелизм загрузок, освобождать ресурсы при зависшем теле запроса",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/134"
+        },
+        {
+          "number": 132,
+          "title": "QA — Android screen share и фоновые потоки: runtime-приёмка #40 #42 #48 #49 #51 #86",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/132"
+        },
+        {
+          "number": 131,
+          "title": "QA — сводная runtime-приёмка реализованных функций",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/131"
+        },
+        {
+          "number": 98,
+          "title": "QA-13 — Задержка запуска macOS Debug",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/98"
+        },
+        {
+          "number": 62,
+          "title": "QA-13 — Flutter parity и Android/device release",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/62"
+        },
+        {
+          "number": 61,
+          "title": "QA-14 — Решение о выпуске",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/61"
+        },
+        {
+          "number": 58,
+          "title": "QA-09 — Capacity",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/58"
+        },
+        {
+          "number": 57,
+          "title": "QA-07 — POC-02 и 15 FPS",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/57"
+        },
+        {
+          "number": 55,
+          "title": "QA-06 — POC-01",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/55"
+        },
+        {
+          "number": 54,
+          "title": "QA-05 — Authenticated browser E2E",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/54"
+        },
+        {
+          "number": 53,
+          "title": "QA-03 — DM/storage privacy",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/53"
+        },
+        {
+          "number": 42,
+          "title": "FE-59/61 paired runtime — Android Emulator → macOS",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/issues/42"
+        }
+      ]
+    }
+  ],
+  "prior_title_search_union": {
+    "numbers": [
+      53,
+      54,
+      55,
+      57,
+      58,
+      61,
+      62,
+      98,
+      131,
+      132,
+      154,
+      174,
+      227,
+      240,
+      241,
+      243,
+      249,
+      257,
+      259,
+      272,
+      278,
+      283,
+      287,
+      303,
+      332,
+      564
+    ],
+    "outside_intake": []
+  },
+  "repository_open_observed_count": 50,
+  "new_explicit_qa_gate_candidates": [],
+  "outside_intake_open_sources": [
+    {
+      "number": 589,
+      "title": "[BUG][Android] Открытый viewer сохраняет PNG после удаления сообщения",
+      "state": "open",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/589",
+      "observed_utc": "2026-10-28T19:27:51.304Z",
+      "updated_at": "2026-10-28T18:49:39Z",
+      "source_body_sha256": "bf94bb9ff9ed2411e0312e4b78984b2a8e8ecbd00167db96bc61b421defcbce6",
+      "labels": [],
+      "disposition": "IMPLEMENTATION_DEFECT_OR_FOLLOWUP_NOT_NEW_QA_GATE",
+      "known_defect_in_matrix": true,
+      "referenced_source_rows": []
+    },
+    {
+      "number": 587,
+      "title": "[BUG][Web][P1] Открытый reply/search context сохраняет удалённый текст после realtime hint",
+      "state": "open",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/587",
+      "observed_utc": "2026-10-28T19:27:51.278Z",
+      "updated_at": "2026-10-28T04:33:07Z",
+      "source_body_sha256": "2e7d5f4bce81a353cd190fb608598f2953f33fc425720e57a859cc9cd06718cd",
+      "labels": [],
+      "disposition": "IMPLEMENTATION_DEFECT_OR_FOLLOWUP_NOT_NEW_QA_GATE",
+      "known_defect_in_matrix": true,
+      "referenced_source_rows": []
+    },
+    {
+      "number": 586,
+      "title": "[BUG][Android][A11y] «Область поиска»: цель32dp, касания за верхним/нижним краем не открывают список",
+      "state": "open",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/586",
+      "observed_utc": "2026-10-28T19:27:51.484Z",
+      "updated_at": "2026-10-27T23:21:26Z",
+      "source_body_sha256": "e960d8530b1eb9b217974ff9585db271762d79ff06c301c6362fd8ea373d0c72",
+      "labels": [],
+      "disposition": "IMPLEMENTATION_DEFECT_OR_FOLLOWUP_NOT_NEW_QA_GATE",
+      "known_defect_in_matrix": true,
+      "referenced_source_rows": []
+    },
+    {
+      "number": 585,
+      "title": "[BUG][Android][2× text] Поиск участников в админке теряет фокус и закрывает Gboard после первого символа",
+      "state": "open",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/585",
+      "observed_utc": "2026-10-28T19:27:51.316Z",
+      "updated_at": "2026-10-27T22:48:38Z",
+      "source_body_sha256": "a51aeb413f498b37b8c9c8c2e77dfb30188aa9f15bb77c95ab4c57a998e5fc8a",
+      "labels": [],
+      "disposition": "IMPLEMENTATION_DEFECT_OR_FOLLOWUP_NOT_NEW_QA_GATE",
+      "known_defect_in_matrix": true,
+      "referenced_source_rows": []
+    },
+    {
+      "number": 584,
+      "title": "[BUG][Android→Web] После долгого app-only picker нет первого кадра до движения источника",
+      "state": "open",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/584",
+      "observed_utc": "2026-10-28T19:27:51.300Z",
+      "updated_at": "2026-10-27T21:56:54Z",
+      "source_body_sha256": "e809440b2062c10fa873be4a90c44cde2ebaa2d4f3eb3434e49f4f45fce01416",
+      "labels": [],
+      "disposition": "IMPLEMENTATION_DEFECT_OR_FOLLOWUP_NOT_NEW_QA_GATE",
+      "known_defect_in_matrix": true,
+      "referenced_source_rows": []
+    },
+    {
+      "number": 582,
+      "title": "[BUG][Android] Landscape + Gboard: voice dock перекрывает кнопку отправки DM",
+      "state": "open",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/582",
+      "observed_utc": "2026-10-28T19:27:51.303Z",
+      "updated_at": "2026-10-27T04:43:52Z",
+      "source_body_sha256": "1ca99f7ce036db503f2fa6189bc433220adb7430d4365d75a32c824d1f096839",
+      "labels": [],
+      "disposition": "IMPLEMENTATION_DEFECT_OR_FOLLOWUP_NOT_NEW_QA_GATE",
+      "known_defect_in_matrix": true,
+      "referenced_source_rows": []
+    },
+    {
+      "number": 581,
+      "title": "[BUG][Web] Viewer «Скачать» отдаёт PNG с расширением .jpg/.gif вместо оригинала",
+      "state": "open",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/581",
+      "observed_utc": "2026-10-28T19:27:51.303Z",
+      "updated_at": "2026-10-27T01:12:00Z",
+      "source_body_sha256": "fa145354fd88e5dfee50958a8bb95a33f36759b447e745419f5005f6fd7af33e",
+      "labels": [],
+      "disposition": "IMPLEMENTATION_DEFECT_OR_FOLLOWUP_NOT_NEW_QA_GATE",
+      "known_defect_in_matrix": true,
+      "referenced_source_rows": []
+    },
+    {
+      "number": 580,
+      "title": "[BUG][Web] Ctrl+K не открывает поиск из navigation drawer в окнах 800/390px",
+      "state": "open",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/580",
+      "observed_utc": "2026-10-28T19:27:51.303Z",
+      "updated_at": "2026-10-26T22:37:10Z",
+      "source_body_sha256": "b65cdd91878c61f175617daf585d25ff5c874ff1a18d03f658025246ee5f319e",
+      "labels": [],
+      "disposition": "IMPLEMENTATION_DEFECT_OR_FOLLOWUP_NOT_NEW_QA_GATE",
+      "known_defect_in_matrix": true,
+      "referenced_source_rows": []
+    },
+    {
+      "number": 579,
+      "title": "[BUG][Windows native] Android screen обнаружен, но просмотр зависает без первого кадра; Chrome на том же ПК декодирует",
+      "state": "open",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/579",
+      "observed_utc": "2026-10-28T19:27:51.278Z",
+      "updated_at": "2026-10-26T21:55:22Z",
+      "source_body_sha256": "0d0d24ac69eafb733dae9627b41d2923851ca83c57810b530c1f0eefa25ea6fc",
+      "labels": [
+        "screen-sharing-stability"
+      ],
+      "disposition": "IMPLEMENTATION_DEFECT_OR_FOLLOWUP_NOT_NEW_QA_GATE",
+      "known_defect_in_matrix": true,
+      "referenced_source_rows": []
+    },
+    {
+      "number": 141,
+      "title": "[P2][F09] Web chat: индексировать ответы и ограничить рендеринг и кеш длинной истории",
+      "state": "open",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/141",
+      "observed_utc": "2026-10-28T19:27:51.230Z",
+      "updated_at": "2026-10-28T04:30:28Z",
+      "source_body_sha256": "dfae1aeafe0a55906ee74bd7cca5fa3974d996bcc35ccb057ec175c126aee5f7",
+      "labels": [],
+      "disposition": "IMPLEMENTATION_DEFECT_OR_FOLLOWUP_NOT_NEW_QA_GATE",
+      "known_defect_in_matrix": true,
+      "referenced_source_rows": [
+        "I240.C9"
+      ]
+    },
+    {
+      "number": 138,
+      "title": "[P2][F06] Security hardening: учитывать X-Forwarded-For только от доверенных прокси",
+      "state": "open",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/138",
+      "observed_utc": "2026-10-28T19:27:51.316Z",
+      "updated_at": "2026-10-28T01:38:39Z",
+      "source_body_sha256": "44a526071d51401ed2eb19fa2ffe1483a7e5b33e632acdfaea488d687e0dc431",
+      "labels": [],
+      "disposition": "IMPLEMENTATION_DEFECT_OR_FOLLOWUP_NOT_NEW_QA_GATE",
+      "known_defect_in_matrix": true,
+      "referenced_source_rows": [
+        "I240.C6"
+      ]
+    },
+    {
+      "number": 137,
+      "title": "[P2][F05] Rate limiting: разделить квоты пользователей за NAT и добавить многоуровневые бюджеты",
+      "state": "open",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/137",
+      "observed_utc": "2026-10-28T19:27:51.254Z",
+      "updated_at": "2026-10-28T01:01:06Z",
+      "source_body_sha256": "3857cf613d244fbab87f4c4c81b59197b1034a0b50302c29bc8d896565e820d3",
+      "labels": [],
+      "disposition": "IMPLEMENTATION_DEFECT_OR_FOLLOWUP_NOT_NEW_QA_GATE",
+      "known_defect_in_matrix": true,
+      "referenced_source_rows": [
+        "I240.C5"
+      ]
+    },
+    {
+      "number": 134,
+      "title": "[P1][F02] Backend: ограничить длительность и параллелизм загрузок, освобождать ресурсы при зависшем теле запроса",
+      "state": "open",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/134",
+      "observed_utc": "2026-10-28T19:27:51.345Z",
+      "updated_at": "2026-10-27T20:38:45Z",
+      "source_body_sha256": "d5dc44df412b4c510253d537921e988a6f1a1cbe96ea3a963100934bbde8bf5a",
+      "labels": [],
+      "disposition": "IMPLEMENTATION_DEFECT_OR_FOLLOWUP_NOT_NEW_QA_GATE",
+      "known_defect_in_matrix": false,
+      "referenced_source_rows": [
+        "I240.C2"
+      ]
+    }
+  ],
+  "append_review": {
+    "core_edits": 0,
+    "title_changes": 0,
+    "unchanged_body_count": 6,
+    "exact_original_prefix_plus_suffix_count": 31,
+    "semantic_review": "All changed suffixes are scoped QA evidence/prerequisite/limitation updates with evidence links; no new acceptance clause identified. This is semantic classification, not authorship attribution. No GitHub revision-history/comment audit.",
+    "items": [
+      {
+        "number": 42,
+        "headings": [
+          "<!-- qa-sweep-20261027-prerequisites -->",
+          "## Physical QA sweep prerequisites — 2026-10-27"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 53,
+        "headings": [
+          "<!-- qa-sweep-20261027-checkpoint1 -->",
+          "## Physical QA sweep — 2026-10-27, checkpoint 1",
+          "<!-- qa-sweep-20261027-permission-prejoin-notify -->",
+          "### Дополнение физической приёмки — 2026-10-27",
+          "<!-- qa-sweep-20261027-session-contract -->",
+          "### Дополнение приёмки — 2026-10-27",
+          "<!-- qa-native-png-20261027 -->",
+          "### Физический Android PNG / системный picker — 2026-10-27",
+          "<!-- qa-web-image-formats-20261027 -->",
+          "### Проверка 2026-10-27: JPEG/GIF и protected files",
+          "<!-- qa-physical-native-admin-search-privacy-20261028 -->",
+          "### Физический Android ADMIN: scoped search privacy PASS — 28.10.2026",
+          "### Critical protected-image API facet — 2026-10-28"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 54,
+        "headings": [
+          "<!-- qa-sweep-20261027-checkpoint1 -->",
+          "## Physical QA sweep — 2026-10-27, checkpoint 1",
+          "<!-- qa-sweep-native-chat-20261027 -->",
+          "## Physical Android message/IME actions — 2026-10-27",
+          "<!-- qa-sweep-20261027-session-contract -->",
+          "### Дополнение приёмки — 2026-10-27",
+          "<!-- qa-native-png-20261027 -->",
+          "### Физический Android PNG / системный picker — 2026-10-27",
+          "<!-- qa-web-image-formats-20261027 -->",
+          "### Проверка 2026-10-27: JPEG/GIF и protected files",
+          "<!-- qa-production-native-resume-20261028 -->",
+          "### Production: физический Android ↔ Chrome — 28.10.2026 (Москва)"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 58,
+        "headings": [
+          "<!-- qa-sweep-20261027-prerequisites -->",
+          "## Physical QA sweep prerequisites — 2026-10-27"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 61,
+        "headings": [
+          "<!-- qa-sweep-20261027-prerequisites -->",
+          "## Physical QA sweep prerequisites — 2026-10-27"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 62,
+        "headings": [
+          "<!-- qa-sweep-native-chat-20261027 -->",
+          "## Physical Android message/IME actions — 2026-10-27",
+          "<!-- qa-sweep-20261027-permission-prejoin-notify -->",
+          "### Дополнение физической приёмки — 2026-10-27",
+          "<!-- qa-sweep-20261027-session-contract -->",
+          "### Дополнение приёмки — 2026-10-27",
+          "<!-- qa-native-png-20261027 -->",
+          "### Физический Android PNG / системный picker — 2026-10-27",
+          "<!-- qa-physical-android-ptt-20261027 -->",
+          "### Физический Samsung PTT — scoped PASS, полная QA-задача открыта",
+          "<!-- qa-physical-android-landscape-20261027 -->",
+          "### Физическая Android landscape/IME проверка — дефект #582",
+          "<!-- qa-physical-android-cellular-20261027 -->",
+          "### Физический Android Wi-Fi→CELLULAR — scoped PASS, полная QA-задача открыта",
+          "<!-- qa-physical-android-upgrade-20261027 -->",
+          "### Физическая приёмка: подписанный Android-кандидат из master — 2026-10-27",
+          "<!-- qa-android-current-master-landscape-20261027 -->",
+          "### Повторная физическая приёмка на текущем master — 2026-10-27",
+          "### Physical critical DM/image deletion checkpoint — 2026-10-28"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 98,
+        "headings": [
+          "<!-- qa-sweep-20261027-prerequisites -->",
+          "## Physical QA sweep prerequisites — 2026-10-27"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 131,
+        "headings": [
+          "<!-- qa-sweep-20261027-checkpoint1 -->",
+          "## Physical QA sweep — 2026-10-27, checkpoint 1",
+          "<!-- qa-sweep-native-chat-20261027 -->",
+          "## Physical Android message/IME actions — 2026-10-27",
+          "<!-- qa-sweep-20261027-permission-prejoin-notify -->",
+          "### Дополнение физической приёмки — 2026-10-27",
+          "<!-- qa-sweep-20261027-session-contract -->",
+          "### Дополнение приёмки — 2026-10-27",
+          "<!-- qa-native-png-20261027 -->",
+          "### Физический Android PNG / системный picker — 2026-10-27",
+          "<!-- qa-web-image-formats-20261027 -->",
+          "### Проверка 2026-10-27: JPEG/GIF и protected files",
+          "<!-- qa-physical-android-ptt-20261027 -->",
+          "### Физический Samsung PTT — scoped PASS, полная QA-задача открыта",
+          "<!-- qa-physical-sender-two-web-20261028 -->",
+          "### Физический Android sender и два Web receiver — 28.10.2026 (Москва)",
+          "<!-- qa-web-native-receiver-cua-prerequisite-20261028 -->",
+          "### Web → физический Android receiver: NOT_RUN",
+          "### Critical DM image boundaries and separate Android viewer — 2026-10-28"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 132,
+        "headings": [
+          "<!-- qa-sweep-20261027-checkpoint1 -->",
+          "## Physical QA sweep — 2026-10-27, checkpoint 1",
+          "<!-- qa-sweep-20261027-permission-prejoin-notify -->",
+          "### Дополнение физической приёмки — 2026-10-27",
+          "<!-- qa-physical-android-ptt-20261027 -->",
+          "### Физический Samsung PTT — scoped PASS, полная QA-задача открыта",
+          "<!-- qa-physical-sender-two-web-20261028 -->",
+          "### Физический Android sender и два Web receiver — 28.10.2026 (Москва)"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 154,
+        "headings": [
+          "<!-- qa-isolated-tracing-20261027 -->",
+          "### Изолированная runtime-проверка 2026-10-27 — PARTIAL для полной QA-задачи"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 173,
+        "headings": [
+          "<!-- qa-physical-sender-two-web-20261028 -->",
+          "### Физический Android sender и два Web receiver — 28.10.2026 (Москва)"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 174,
+        "headings": [
+          "<!-- qa-sweep-20261027-prerequisites -->",
+          "## Physical QA sweep prerequisites — 2026-10-27"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 184,
+        "headings": [
+          "<!-- qa-sweep-20261027-prerequisites -->",
+          "## Physical QA sweep prerequisites — 2026-10-27"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 240,
+        "headings": [
+          "<!-- qa-sweep-20261027-permission-prejoin-notify -->",
+          "### Дополнение физической приёмки — 2026-10-27",
+          "<!-- qa-sweep-20261027-session-contract -->",
+          "### Дополнение приёмки — 2026-10-27",
+          "<!-- qa-isolated-tracing-20261027 -->",
+          "### Изолированная runtime-проверка 2026-10-27 — PARTIAL для полной QA-задачи",
+          "<!-- qa-local-staging-20261027:begin -->",
+          "<!-- qa-local-staging-20261027:end -->",
+          "<!-- qa-real-upload-timeout-20261027:begin -->",
+          "<!-- qa-real-upload-timeout-20261027:end -->",
+          "<!-- qa-upload-extended-20261027:begin -->",
+          "<!-- qa-upload-extended-20261027:end -->",
+          "<!-- qa-auth-denial-2026-10-28 -->",
+          "### Runtime-проверка #136 / I240.C4 — 2026-10-28",
+          "<!-- qa-websocket-quotas-2026-10-28 -->",
+          "### Runtime-проверка #135 / I240.C3 — 2026-10-28",
+          "<!-- qa-login-budgets-NAT20-2026-10-28 -->",
+          "### I240.C5 / #137 — NAT20 runtime FAIL, 2026-10-28",
+          "<!-- qa-upload-budgets-2026-10-28 -->",
+          "### Фактическая проверка upload budgets, 2026-10-28 — PASS_SCOPED",
+          "<!-- qa-rate-capacity-2026-10-28 -->",
+          "### Фактическая приёмка I240.C7 /139, 2026-10-28 — PASS в точном объёме критерия",
+          "<!-- qa-proxy-repeated-fields-2026-10-28 -->",
+          "### I240.C6 /138 — подтверждённый условный дефект repeated XFF, 2026-10-28",
+          "<!-- qa-screen-preview-lifecycle-2026-10-28 -->",
+          "### I240.C8 — подписки screen preview: PASS в проверенном source/SDK/SFU scope",
+          "<!-- qa-history-edit-eviction-2026-10-28 -->",
+          "### Runtime FAIL — потеря несохранённого редактирования при eviction",
+          "<!-- qa-history-profile-matrix-2026-10-28 -->",
+          "### Long TEXT history — выполнена20-dataset source/browser matrix",
+          "<!-- qa-built-history-context-navigation-2026-10-28 -->",
+          "### Изолированная приёмка переходов истории в собранном Web-клиенте — 2026-10-28",
+          "<!-- qa-context-realtime-2026-10-28 -->",
+          "### Live freshness уже открытого контекста — 2026-10-28"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 241,
+        "headings": [
+          "<!-- qa-sweep-20261027-session-contract -->",
+          "### Дополнение приёмки — 2026-10-27",
+          "<!-- qa-isolated-tracing-20261027 -->",
+          "### Изолированная runtime-проверка 2026-10-27 — PARTIAL для полной QA-задачи",
+          "<!-- qa-local-staging-20261027:begin -->",
+          "<!-- qa-local-staging-20261027:end -->",
+          "<!-- qa-history-edit-eviction-2026-10-28 -->",
+          "### Runtime FAIL — потеря несохранённого редактирования при eviction",
+          "<!-- qa-history-profile-matrix-2026-10-28 -->",
+          "### Long TEXT history — выполнена20-dataset source/browser matrix",
+          "<!-- qa-built-history-context-navigation-2026-10-28 -->",
+          "### Изолированная приёмка переходов истории в собранном Web-клиенте — 2026-10-28",
+          "<!-- qa-context-realtime-2026-10-28 -->",
+          "### Live freshness уже открытого контекста — 2026-10-28"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 243,
+        "headings": [
+          "<!-- qa-sweep-20261027-prerequisites -->",
+          "## Physical QA sweep prerequisites — 2026-10-27"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 249,
+        "headings": [
+          "<!-- qa-sweep-20261027-checkpoint1 -->",
+          "## Physical QA sweep — 2026-10-27, checkpoint 1"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 257,
+        "headings": [
+          "<!-- qa-sweep-20261027-prerequisites -->",
+          "## Physical QA sweep prerequisites — 2026-10-27"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 259,
+        "headings": [
+          "<!-- qa-sweep-20261027-prerequisites -->",
+          "## Physical QA sweep prerequisites — 2026-10-27"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 272,
+        "headings": [
+          "<!-- qa-sweep-20261027-permission-prejoin-notify -->",
+          "### Дополнение физической приёмки — 2026-10-27",
+          "<!-- qa-sweep-20261027-session-contract -->",
+          "### Дополнение приёмки — 2026-10-27",
+          "<!-- qa-physical-android-cellular-20261027 -->",
+          "### Физический Android Wi-Fi→CELLULAR — scoped PASS, полная QA-задача открыта",
+          "<!-- qa-local-staging-20261027:begin -->",
+          "<!-- qa-local-staging-20261027:end -->"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 283,
+        "headings": [
+          "<!-- qa-sweep-20261027-checkpoint1 -->",
+          "## Physical QA sweep — 2026-10-27, checkpoint 1",
+          "<!-- qa-sweep-20261027-permission-prejoin-notify -->",
+          "### Дополнение физической приёмки — 2026-10-27",
+          "<!-- qa-sweep-20261027-session-contract -->",
+          "### Дополнение приёмки — 2026-10-27"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 287,
+        "headings": [
+          "<!-- qa-sweep-native-chat-20261027 -->",
+          "## Physical Android message/IME actions — 2026-10-27",
+          "<!-- qa-sweep-20261027-session-contract -->",
+          "### Дополнение приёмки — 2026-10-27",
+          "<!-- qa-native-png-20261027 -->",
+          "### Физический Android PNG / системный picker — 2026-10-27",
+          "<!-- qa-native-windows-admin-tool-blocker-20261027 -->",
+          "### Windows native admin — приёмка NOT_RUN из-за инструмента",
+          "<!-- qa-web-image-formats-20261027 -->",
+          "### Проверка 2026-10-27: JPEG/GIF и protected files",
+          "<!-- qa-isolated-tracing-20261027 -->",
+          "### Изолированная runtime-проверка 2026-10-27 — PARTIAL для полной QA-задачи",
+          "<!-- qa-physical-android-ptt-20261027 -->",
+          "### Физический Samsung PTT — scoped PASS, полная QA-задача открыта",
+          "<!-- qa-physical-android-cellular-20261027 -->",
+          "### Физический Android Wi-Fi→CELLULAR — scoped PASS, полная QA-задача открыта",
+          "<!-- qa-physical-native-admin-20261028 -->",
+          "### Production: физическая Android админка — 28.10.2026 (Москва)",
+          "<!-- qa-physical-native-admin-gboard-20261028 -->",
+          "### Физический Android: подтверждённый large-text input FAIL — #585",
+          "<!-- qa-physical-native-admin-search-privacy-20261028 -->",
+          "### Физический Android ADMIN: scoped search privacy PASS — 28.10.2026"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 301,
+        "headings": [
+          "<!-- qa-sweep-20261027-checkpoint1 -->",
+          "## Physical QA sweep — 2026-10-27, checkpoint 1",
+          "<!-- qa-sweep-20261027-android-text-scale -->",
+          "## Physical Android 2× text / IME — 2026-10-27",
+          "<!-- qa-sweep-20261027-session-contract -->",
+          "### Дополнение приёмки — 2026-10-27",
+          "<!-- qa-native-windows-admin-tool-blocker-20261027 -->",
+          "### Windows native admin — приёмка NOT_RUN из-за инструмента",
+          "<!-- qa-physical-native-admin-gboard-20261028 -->",
+          "### Физический Android: подтверждённый large-text input FAIL — #585",
+          "<!-- qa-native-search-touch-targets-20261028 -->",
+          "### Физический Android48dp target — подтверждённый FAIL #586"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 302,
+        "headings": [
+          "<!-- qa-physical-android-landscape-20261027 -->",
+          "### Физическая Android landscape/IME проверка — дефект #582",
+          "<!-- qa-android-current-master-landscape-20261027 -->",
+          "### Повторная физическая приёмка на текущем master — 2026-10-27"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 303,
+        "headings": [
+          "<!-- qa-sweep-20261027-checkpoint1 -->",
+          "## Physical QA sweep — 2026-10-27, checkpoint 1",
+          "<!-- qa-sweep-20261027-android-text-scale -->",
+          "## Physical Android 2× text / IME — 2026-10-27",
+          "<!-- qa-sweep-native-chat-20261027 -->",
+          "## Physical Android message/IME actions — 2026-10-27",
+          "<!-- qa-sweep-20261027-permission-prejoin-notify -->",
+          "### Дополнение физической приёмки — 2026-10-27",
+          "<!-- qa-sweep-20261027-session-contract -->",
+          "### Дополнение приёмки — 2026-10-27",
+          "<!-- qa-native-png-20261027 -->",
+          "### Физический Android PNG / системный picker — 2026-10-27",
+          "<!-- qa-native-windows-admin-tool-blocker-20261027 -->",
+          "### Windows native admin — приёмка NOT_RUN из-за инструмента",
+          "<!-- qa-web-image-formats-20261027 -->",
+          "### Проверка 2026-10-27: JPEG/GIF и protected files",
+          "<!-- qa-physical-android-ptt-20261027 -->",
+          "### Физический Samsung PTT — scoped PASS, полная QA-задача открыта",
+          "<!-- qa-physical-android-landscape-20261027 -->",
+          "### Физическая Android landscape/IME проверка — дефект #582",
+          "<!-- qa-physical-android-cellular-20261027 -->",
+          "### Физический Android Wi-Fi→CELLULAR — scoped PASS, полная QA-задача открыта",
+          "<!-- qa-android-current-master-landscape-20261027 -->",
+          "### Повторная физическая приёмка на текущем master — 2026-10-27",
+          "<!-- qa-production-native-resume-20261028 -->",
+          "### Production: физический Android ↔ Chrome — 28.10.2026 (Москва)",
+          "<!-- qa-physical-native-admin-20261028 -->",
+          "### Production: физическая Android админка — 28.10.2026 (Москва)",
+          "<!-- qa-physical-native-admin-gboard-20261028 -->",
+          "### Физический Android: подтверждённый large-text input FAIL — #585",
+          "<!-- qa-native-search-touch-targets-20261028 -->",
+          "### Физический Android48dp target — подтверждённый FAIL #586"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 326,
+        "headings": [
+          "<!-- qa-sweep-20261027-prerequisites -->",
+          "## Physical QA sweep prerequisites — 2026-10-27"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 329,
+        "headings": [
+          "<!-- qa-sweep-20261027-prerequisites -->",
+          "## Physical QA sweep prerequisites — 2026-10-27"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 331,
+        "headings": [
+          "<!-- qa-sweep-20261027-prerequisites -->",
+          "## Physical QA sweep prerequisites — 2026-10-27"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 332,
+        "headings": [
+          "<!-- qa-sweep-20261027-prerequisites -->",
+          "## Physical QA sweep prerequisites — 2026-10-27"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 554,
+        "headings": [
+          "<!-- qa-sweep-20261027-permission-prejoin-notify -->",
+          "### Дополнение физической приёмки — 2026-10-27"
+        ],
+        "new_checkboxes": []
+      },
+      {
+        "number": 564,
+        "headings": [
+          "<!-- qa-sweep-20261027-checkpoint1 -->",
+          "## Physical QA sweep — 2026-10-27, checkpoint 1",
+          "<!-- qa-sweep-20261027-permission-prejoin-notify -->",
+          "### Дополнение физической приёмки — 2026-10-27"
+        ],
+        "new_checkboxes": []
+      }
+    ]
+  },
+  "row_kind_status_counts": {
+    "ACCEPTANCE_REQUIREMENT": {
+      "BLOCKED": 134,
+      "PARTIAL": 50,
+      "NOT_RUN": 181,
+      "FAIL": 19,
+      "PASS": 7
+    },
+    "EVIDENCE_REQUIREMENT": {
+      "BLOCKED": 3,
+      "NOT_RUN": 15,
+      "PARTIAL": 2,
+      "PASS": 1
+    },
+    "HISTORICAL_TEST_CLAIM": {
+      "NOT_RUN": 7
+    },
+    "SOURCE_CONTEXT": {
+      "BLOCKED": 16,
+      "NOT_RUN": 13
+    },
+    "DEPENDENCY": {
+      "NOT_RUN": 25,
+      "BLOCKED": 7
+    }
+  },
+  "unwitnessed_acceptance_rows": [
+    "I42.C1",
+    "I42.C2",
+    "I42.C4",
+    "I53.C2",
+    "I54.C2",
+    "I54.C4",
+    "I55.C2",
+    "I55.C4",
+    "I57.C1",
+    "I57.C2",
+    "I57.C4",
+    "I58.C1",
+    "I58.C2",
+    "I58.C4",
+    "I61.C1",
+    "I61.C2",
+    "I61.C4",
+    "I62.C2",
+    "I62.C4",
+    "I98.C1",
+    "I98.C2",
+    "I98.C4",
+    "I131.C1",
+    "I131.C3",
+    "I131.C6",
+    "I131.C7",
+    "I131.C8",
+    "I131.C9",
+    "I131.C12",
+    "I131.C13",
+    "I132.C1",
+    "I132.C2",
+    "I132.C3",
+    "I132.C6",
+    "I154.C4",
+    "I154.C9",
+    "I154.C14",
+    "I173.C2",
+    "I173.C3",
+    "I173.C5",
+    "I173.C7",
+    "I173.C8",
+    "I173.C9",
+    "I173.C10",
+    "I173.C11",
+    "I173.C12",
+    "I173.C13",
+    "I174.C1",
+    "I174.C2",
+    "I174.C3",
+    "I174.C4",
+    "I174.C5",
+    "I174.C6",
+    "I174.C7",
+    "I174.C8",
+    "I174.C9",
+    "I174.C10",
+    "I174.C11",
+    "I174.C12",
+    "I184.C1",
+    "I184.C2",
+    "I184.C3",
+    "I184.C4",
+    "I184.C5",
+    "I184.C6",
+    "I184.C7",
+    "I184.C8",
+    "I184.C9",
+    "I184.C10",
+    "I184.C11",
+    "I184.C12",
+    "I184.C13",
+    "I184.C14",
+    "I184.C15",
+    "I184.C16",
+    "I184.C17",
+    "I184.C18",
+    "I184.C19",
+    "I184.C20",
+    "I184.C21",
+    "I184.C22",
+    "I184.C23",
+    "I184.C24",
+    "I184.C25",
+    "I184.C26",
+    "I184.C27",
+    "I184.C28",
+    "I184.C29",
+    "I184.C30",
+    "I227.C1",
+    "I227.C2",
+    "I227.C3",
+    "I227.C4",
+    "I227.C5",
+    "I227.C6",
+    "I227.C7",
+    "I227.C8",
+    "I227.C9",
+    "I227.C10",
+    "I227.C11",
+    "I227.C12",
+    "I227.C13",
+    "I227.C14",
+    "I227.C15",
+    "I240.C1",
+    "I240.C10",
+    "I240.C17",
+    "I240.C20",
+    "I241.C5",
+    "I241.C6",
+    "I241.C9",
+    "I241.C10",
+    "I241.C11",
+    "I241.C14",
+    "I241.C15",
+    "I241.C16",
+    "I241.C17",
+    "I241.C18",
+    "I241.C21",
+    "I241.C22",
+    "I241.C23",
+    "I241.C26",
+    "I241.C27",
+    "I241.C28",
+    "I241.C29",
+    "I241.C31",
+    "I241.C32",
+    "I241.C33",
+    "I241.C34",
+    "I243.C3",
+    "I243.C4",
+    "I243.C5",
+    "I243.C6",
+    "I243.C7",
+    "I249.C3",
+    "I249.C4",
+    "I249.C5",
+    "I249.C6",
+    "I249.C7",
+    "I257.C1",
+    "I257.C2",
+    "I257.C3",
+    "I257.C4",
+    "I257.C5",
+    "I257.C6",
+    "I257.C7",
+    "I259.C2",
+    "I259.C3",
+    "I259.C4",
+    "I259.C5",
+    "I259.C6",
+    "I259.C7",
+    "I272.C5",
+    "I272.C6",
+    "I272.C8",
+    "I272.C10",
+    "I272.C11",
+    "I272.C12",
+    "I272.C13",
+    "I272.C14",
+    "I272.C16",
+    "I272.C18",
+    "I278.C2",
+    "I278.C3",
+    "I278.C4",
+    "I278.C5",
+    "I278.C6",
+    "I283.C2",
+    "I283.C8",
+    "I287.C4",
+    "I287.C5",
+    "I287.C6",
+    "I287.C7",
+    "I287.C9",
+    "I287.C10",
+    "I287.C12",
+    "I287.C13",
+    "I289.C1",
+    "I289.C2",
+    "I289.C3",
+    "I289.C4",
+    "I289.C5",
+    "I289.C6",
+    "I289.C7",
+    "I289.C8",
+    "I289.C9",
+    "I289.C10",
+    "I301.C1",
+    "I301.C5",
+    "I301.C7",
+    "I301.C10",
+    "I301.C11",
+    "I302.C1",
+    "I302.C2",
+    "I302.C3",
+    "I302.C4",
+    "I302.C5",
+    "I302.C6",
+    "I302.C7",
+    "I302.C8",
+    "I302.C9",
+    "I302.C10",
+    "I303.C6",
+    "I303.C7",
+    "I303.C9",
+    "I303.C10",
+    "I305.C1",
+    "I305.C2",
+    "I305.C3",
+    "I305.C4",
+    "I305.C5",
+    "I305.C6",
+    "I305.C7",
+    "I305.C8",
+    "I305.C9",
+    "I305.C10",
+    "I305.C11",
+    "I305.C12",
+    "I326.C13",
+    "I326.C14",
+    "I326.C15",
+    "I326.C16",
+    "I326.C17",
+    "I326.C18",
+    "I326.C19",
+    "I326.C20",
+    "I326.C21",
+    "I329.C5",
+    "I329.C6",
+    "I329.C7",
+    "I329.C8",
+    "I329.C9",
+    "I329.C10",
+    "I329.C11",
+    "I329.C12",
+    "I329.C13",
+    "I329.C14",
+    "I329.C15",
+    "I329.C16",
+    "I329.C17",
+    "I329.C18",
+    "I329.C19",
+    "I329.C20",
+    "I329.C21",
+    "I331.C5",
+    "I331.C6",
+    "I331.C7",
+    "I331.C8",
+    "I331.C9",
+    "I331.C10",
+    "I331.C11",
+    "I331.C12",
+    "I331.C13",
+    "I331.C14",
+    "I331.C15",
+    "I331.C16",
+    "I331.C17",
+    "I331.C18",
+    "I331.C19",
+    "I331.C20",
+    "I331.C21",
+    "I331.C22",
+    "I331.C23",
+    "I332.C1",
+    "I332.C2",
+    "I332.C3",
+    "I332.C4",
+    "I332.C5",
+    "I332.C6",
+    "I332.C7",
+    "I332.C8",
+    "I332.C9",
+    "I332.C10",
+    "I332.C11",
+    "I332.C12",
+    "I332.C13",
+    "I332.C14",
+    "I332.C15",
+    "I332.C16",
+    "I332.C17",
+    "I554.C5",
+    "I554.C6",
+    "I554.C7",
+    "I554.C8",
+    "I554.C9",
+    "I554.C10",
+    "I554.C11",
+    "I554.C12",
+    "I554.C13",
+    "I554.C15",
+    "I554.C16",
+    "I554.C17",
+    "I554.C18",
+    "I554.C19",
+    "I554.C20",
+    "I564.C2",
+    "I564.C4",
+    "I564.C5",
+    "I564.C6",
+    "I564.C7",
+    "I564.C8",
+    "I564.C9",
+    "I564.C10",
+    "I564.C11",
+    "I564.C12",
+    "I564.C13",
+    "I564.C15",
+    "I564.C16",
+    "I564.C17"
+  ],
+  "next_bounded_conditions": [
+    {
+      "source": "I287.C14 / I303.C4",
+      "platform": "Installed Windows native",
+      "condition": "Read-only keyboard traversal of the seven admin sections, Tab/ShiftTab/Enter/Space/Escape/focus return and resize draft/selection preservation; no role/security/save mutations.",
+      "gap": "Current peer receipt accepts only account-menu Tab/ShiftTab/Escape. Sections not entered; exact opener focus unproven. Broad source remains FAIL/PARTIAL.",
+      "readiness": "Successful native target and Admin option observed; fresh desktop lease/user-idle and own-role guards still required."
+    },
+    {
+      "source": "I287.C3",
+      "platform": "Local real PostgreSQL/API",
+      "condition": "Owned synthetic author/date/attachment queries, equal-timestamp stable cursor, timezone/DST and query plans; preserve foreign-DM/deleted ACL.",
+      "gap": "Only explicit Android ADMIN search/privacy/delete witnesses are linked; database filters/cursors/DST/plans have no linked result.",
+      "readiness": "Existing isolated stack route; fresh local health/fixture preflight required. No production role/login/security changes."
+    },
+    {
+      "source": "I287.C6",
+      "platform": "Local real PostgreSQL/API",
+      "condition": "Archive/restore a disposable synthetic channel, retain channel ID/history/search/download; reject archived send/edit/upload/react/pin including held-upload/idempotency replay.",
+      "gap": "Source row NOT_RUN with no execution case/evidence.",
+      "readiness": "Isolated API fixtures only; no production archive or permission mutation."
+    },
+    {
+      "source": "I564.C8 / I564.C10",
+      "platform": "Local real PostgreSQL/isolated worker",
+      "condition": "Atomic notification outbox/rollback/replayed ClientMessageID and core commit while relay disabled; finite expiry on resume. External provider remains absent.",
+      "gap": "Source rows NOT_RUN with no linked runtime witness. Synthetic/CI historical claim is not this runtime result.",
+      "readiness": "Existing local API/DB route; precise worker/fault boundary must be isolated, no external provider or production workload."
+    }
+  ],
+  "final_input_readback": {
+    "matrix": {
+      "sha256": "f5e82fea13a240357ef6c78354fc9f1cd904f396039251e4ca65710b34c6f71f",
+      "same_as_preserved": true
+    },
+    "cases": {
+      "sha256": "b0fe217e3f2f1b83249ea82edb4f537baf4b089bdd68c86cde7b5a8ee6f80c27",
+      "same_as_preserved": true
+    },
+    "intake": {
+      "sha256": "49b22881665b02e79c748a96dca6cd5ae7244db504e510c78552ce6d3e13f375",
+      "same_as_preserved": true
+    }
+  },
+  "completed_utc": "2026-10-28T19:32:21.046838+00:00",
+  "local_api_readiness": {
+    "observed_utc": "2026-10-28T19:31:23.4212592Z",
+    "target": "127.0.0.1:18088",
+    "tcp_reachable": true,
+    "exact_command": "System.Net.Sockets.TcpClient.ConnectAsync('127.0.0.1',18088), bounded Wait(2000), Dispose()",
+    "scope": "Read-only local preflight only. No HTTP, browser fallback, app health, database readiness or runtime acceptance is asserted."
+  },
+  "peer_current_subsets": {
+    "phone": "Six native format/download/save cases complete and cleaned; keyboard/system Back supplement in progress; do not duplicate.",
+    "windows": "Account-menu Tab/ShiftTab/Escape scoped PASS; opener focus unproven, seven admin sections not entered, image own-receiver handshake blocked."
+  },
+  "source_issues": [
+    {
+      "number": 42,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/42",
+      "state": "open",
+      "title": "FE-59/61 paired runtime — Android Emulator → macOS",
+      "original_title": "FE-59/61 paired runtime — Android Emulator → macOS",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:28.866Z",
+      "updated_at": "2026-10-26T23:23:21Z",
+      "labels": [
+        "priority: P1",
+        "area: frontend",
+        "backlog"
+      ],
+      "original_body_sha256": "b663704c09a871461c87de1ce5c479847b3466bdf70d8b380388313d20238e11",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "5b3f74368713faa9f9df43cfd7bf50a99ff537433dac711594d757f86a894f53",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 910,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 53,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/53",
+      "state": "open",
+      "title": "QA-03 — DM/storage privacy",
+      "original_title": "QA-03 — DM/storage privacy",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:29.477Z",
+      "updated_at": "2026-10-28T18:50:13Z",
+      "labels": [
+        "priority: P1",
+        "area: verification",
+        "backlog"
+      ],
+      "original_body_sha256": "9bd79d810511f9e2ee0ed02108bda21e48401c74cac18cc5d2f8e67c0aab85c5",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "8bdda6842c94aa70cd10f5a20bd5c6d43aa5e01ca8d44930fa36552decfbd0e1",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 11758,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 54,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/54",
+      "state": "open",
+      "title": "QA-05 — Authenticated browser E2E",
+      "original_title": "QA-05 — Authenticated browser E2E",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:28.641Z",
+      "updated_at": "2026-10-27T21:29:21Z",
+      "labels": [
+        "priority: P1",
+        "area: verification",
+        "backlog"
+      ],
+      "original_body_sha256": "8a8abc62635cd5e7e4298bda6d5368d10da8caeeb0b3e7688be89652e77b8331",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "8d82d2ed03d148e1442bbe1e990a5e7dacd93cb7588547889b6774a3df193a9b",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 10077,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 55,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/55",
+      "state": "open",
+      "title": "QA-06 — POC-01",
+      "original_title": "QA-06 — POC-01",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:28.809Z",
+      "updated_at": "2026-10-03T11:22:10Z",
+      "labels": [
+        "priority: P1",
+        "area: verification",
+        "backlog"
+      ],
+      "original_body_sha256": "33ed2671d7b715cf241a7424c845453497ffe7afd1639052c57042f42bd42a25",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "33ed2671d7b715cf241a7424c845453497ffe7afd1639052c57042f42bd42a25",
+      "body_changed": false,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 0,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 57,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/57",
+      "state": "open",
+      "title": "QA-07 — POC-02 и 15 FPS",
+      "original_title": "QA-07 — POC-02 и 15 FPS",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:28.865Z",
+      "updated_at": "2026-10-04T19:56:47Z",
+      "labels": [
+        "priority: P1",
+        "area: verification",
+        "backlog"
+      ],
+      "original_body_sha256": "80ed423ef10751997081758b269dec253bdf2c6b489078906d1c1a11a15acced",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "80ed423ef10751997081758b269dec253bdf2c6b489078906d1c1a11a15acced",
+      "body_changed": false,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 0,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 58,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/58",
+      "state": "open",
+      "title": "QA-09 — Capacity",
+      "original_title": "QA-09 — Capacity",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:28.705Z",
+      "updated_at": "2026-10-26T23:23:32Z",
+      "labels": [
+        "priority: P1",
+        "area: verification",
+        "backlog"
+      ],
+      "original_body_sha256": "48300350f5d8c4a6b31b6481f62e3f22411a65535eaa6d07499cdf1bf628ae0d",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "4f5f71666c43e1ac243adbbc95bfa4bf24b840e2b056762de19c86a4cbb3203b",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 886,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 61,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/61",
+      "state": "open",
+      "title": "QA-14 — Решение о выпуске",
+      "original_title": "QA-14 — Решение о выпуске",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:29.224Z",
+      "updated_at": "2026-10-26T23:23:36Z",
+      "labels": [
+        "priority: P1",
+        "area: verification",
+        "backlog"
+      ],
+      "original_body_sha256": "08279ed9a31014d26a9824ef7d4ded05efb7fc7a39d0679b78ed6026e60d7b32",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "da913619d7645f871a3fbbb8122be52b6be1263deea69594344ed2118afbca4c",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 851,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 62,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/62",
+      "state": "open",
+      "title": "QA-13 — Flutter parity и Android/device release",
+      "original_title": "QA-13 — Flutter parity и Android/device release",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:29.224Z",
+      "updated_at": "2026-10-28T18:50:10Z",
+      "labels": [
+        "priority: P1",
+        "area: verification",
+        "backlog"
+      ],
+      "original_body_sha256": "587d2de3b7ebec5f3b764e992e717698dcdbdd8d477ab9b97be27fd2d28ce86a",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "d003ba21d5deebd5a23471a4403071e6b72c2e3b555c27761318d3421a2e4798",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 19874,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 98,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/98",
+      "state": "open",
+      "title": "QA-13 — Задержка запуска macOS Debug",
+      "original_title": "QA-13 — Задержка запуска macOS Debug",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:28.865Z",
+      "updated_at": "2026-10-26T23:23:22Z",
+      "labels": [
+        "priority: P1",
+        "area: verification",
+        "backlog"
+      ],
+      "original_body_sha256": "7d1afe878a97baeb492bcd832c66c74ccd014b7ab811b3bf2bdcec05af10422c",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "7bfa67a8a8fe8703c27b22aa6b4588f1a4d5b6d0a970e987687b547d4cd76223",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 910,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 131,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/131",
+      "state": "open",
+      "title": "QA — сводная runtime-приёмка реализованных функций",
+      "original_title": "QA — сводная runtime-приёмка реализованных функций",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:29.264Z",
+      "updated_at": "2026-10-28T18:50:16Z",
+      "labels": [
+        "priority: P1",
+        "area: verification",
+        "QA"
+      ],
+      "original_body_sha256": "83e44ebaafa6baea84eb1c6f4d625136646787cd52b1b055dc8c5d45ae0ec3bf",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "125bbd694344fa74fe1696f5b258118be37ac569bf6f14f27bfed2015cb8b6e3",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 16998,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 132,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/132",
+      "state": "open",
+      "title": "QA — Android screen share и фоновые потоки: runtime-приёмка #40 #42 #48 #49 #51 #86",
+      "original_title": "QA — Android screen share и фоновые потоки: runtime-приёмка #40 #42 #48 #49 #51 #86",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:29.015Z",
+      "updated_at": "2026-10-27T21:57:36Z",
+      "labels": [
+        "area: verification",
+        "QA"
+      ],
+      "original_body_sha256": "cc4f531679599ea7bead81f481f19ce4f31e8cd2327642182b12aa72b64afbd8",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "dc6d667594f84c375702e304e994dacfb3545974983d16a635d4dc6a77286e0f",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 7707,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 154,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/154",
+      "state": "open",
+      "title": "[Tracing][UF-10] Сквозная приёмка user flow через реальные relay, Collector и Tempo",
+      "original_title": "[Tracing][UF-10] Сквозная приёмка user flow через реальные relay, Collector и Tempo",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:29.174Z",
+      "updated_at": "2026-10-27T02:15:12Z",
+      "labels": [
+        "tracing-user-flow"
+      ],
+      "original_body_sha256": "c1cd47eb48a662df1e08ef6094983c7c1b28507b0b8a9449ebe2ca6157f3f20b",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "484b3d8f575ca11230f5e0bc6635de643e818749ee787f4588438c898d2e5299",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 2375,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 173,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/173",
+      "state": "open",
+      "title": "[ScreenShare][SS-17][P1] Провести физическую парную приёмку FPS, артефактов, задержки и звука",
+      "original_title": "[ScreenShare][SS-17][P1] Провести физическую парную приёмку FPS, артефактов, задержки и звука",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:29.174Z",
+      "updated_at": "2026-10-27T21:57:38Z",
+      "labels": [
+        "screen-sharing-stability"
+      ],
+      "original_body_sha256": "9b1dc4202471e53a89c3d91a356ce905f574aa4827974711c44c9625f0fa64f5",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "99103bef48b7b421d3838ed0829ea94b54557cb540756edbde67e1baa49d4579",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 2895,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 174,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/174",
+      "state": "open",
+      "title": "[ScreenShare][SS-18][P1] Нагрузочная приёмка: 10/20/30 участников, 4/10/20 стримов, churn и soak",
+      "original_title": "[ScreenShare][SS-18][P1] Нагрузочная приёмка: 10/20/30 участников, 4/10/20 стримов, churn и soak",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:29.015Z",
+      "updated_at": "2026-10-26T23:23:34Z",
+      "labels": [
+        "screen-sharing-stability"
+      ],
+      "original_body_sha256": "a87833047e6b675947512b7f3dc9ef88b2df8aa57f915b1678d1c4b6da0f5cb7",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "81a2118d81234c4e15cb561c91932aaba351c7317fe95c5d57552b0412a1cd8c",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 886,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 184,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/184",
+      "state": "open",
+      "title": "[MacAudio][MA-07][P1] Провести физическую macOS приёмку и зафиксировать evidence Debug/Release",
+      "original_title": "[MacAudio][MA-07][P1] Провести физическую macOS приёмку и зафиксировать evidence Debug/Release",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:28.736Z",
+      "updated_at": "2026-10-26T23:23:23Z",
+      "labels": [
+        "bug",
+        "priority: P1",
+        "area: frontend",
+        "area: media"
+      ],
+      "original_body_sha256": "804631a897e4dbfb8e49f5cfdd64c52fdbe556f00b5339c5e07b6153e95ca6da",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "6979d0caa4ade755b5b2e3c9147b91cfa1214117e2610612bbf621fd4739e152",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 910,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 227,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/227",
+      "state": "open",
+      "title": "QA — runtime-приёмка screen-share implementation #158–#172",
+      "original_title": "QA — runtime-приёмка screen-share implementation #158–#172",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:29.015Z",
+      "updated_at": "2026-10-08T22:57:33Z",
+      "labels": [
+        "QA"
+      ],
+      "original_body_sha256": "81c4c92fce170a0a9cb3d38782496b68c2a5a263bf9c8621de8f07ba16cffacc",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "81c4c92fce170a0a9cb3d38782496b68c2a5a263bf9c8621de8f07ba16cffacc",
+      "body_changed": false,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 0,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 240,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/240",
+      "state": "open",
+      "title": "QA — runtime-приёмка реализаций #133–#141, #145–#153, #155, #157",
+      "original_title": "QA — runtime-приёмка реализаций #133–#141, #145–#153, #155, #157",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:29.475Z",
+      "updated_at": "2026-10-28T04:30:31Z",
+      "labels": [
+        "QA"
+      ],
+      "original_body_sha256": "7cca703010a69ef8a373315fc6e27adac88f81ff7c8be3a80976e06bfdaba9d3",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "1cb3469208849d38656293271114bf37ea7f9e2d24f5c5d45d5032bac3bfa183",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 40161,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 241,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/241",
+      "state": "open",
+      "title": "[QA] Acceptance for OpenAPI, observability, media QoE, chat history, accessibility, social preview and on-call map",
+      "original_title": "[QA] Acceptance for OpenAPI, observability, media QoE, chat history, accessibility, social preview and on-call map",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:29.409Z",
+      "updated_at": "2026-10-28T04:30:35Z",
+      "labels": [
+        "QA"
+      ],
+      "original_body_sha256": "c7015703e8c3646b54715e7fa253e04637f73666844cd5ab58d90aca55487f92",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "4f1ad536ad1b79c2601fed4c4bfe190126872da194d734d7bcb5b2bb38515553",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 16610,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 243,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/243",
+      "state": "open",
+      "title": "[QA] Backend load harness acceptance and capacity evidence for #8",
+      "original_title": "[QA] Backend load harness acceptance and capacity evidence for #8",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:29.174Z",
+      "updated_at": "2026-10-26T23:23:35Z",
+      "labels": [
+        "QA"
+      ],
+      "original_body_sha256": "1ecff6ea8bde5fa467825eef9f20dd19a397c14d015d01512f0a338da5db54e7",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "e0101f8478c0d5fd521ebb573a9dc809af2c45074c9048207d2c06e221621fec",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 886,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 249,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/249",
+      "state": "open",
+      "title": "[QA] Deploy and verify Windows update catalog for #223",
+      "original_title": "[QA] Deploy and verify Windows update catalog for #223",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:40.598Z",
+      "updated_at": "2026-10-26T22:38:29Z",
+      "labels": [
+        "QA"
+      ],
+      "original_body_sha256": "3476813aada849541a26b41ffdf59b8fa4b9add829e59559261e66fbdf8fb920",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "2cc492332c9a86a87a3a707e89c98261fdd33956cccc6776457f906e4f3d1e54",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 1268,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 257,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/257",
+      "state": "open",
+      "title": "[QA] Проверить состояния разрешений и списка Audio Settings на macOS (#182)",
+      "original_title": "[QA] Проверить состояния разрешений и списка Audio Settings на macOS (#182)",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:39.950Z",
+      "updated_at": "2026-10-26T23:23:24Z",
+      "labels": [
+        "QA"
+      ],
+      "original_body_sha256": "1c96ebf492b22cc3f41028372fed60d3213155a89e1dfeeb2ff4d699c4e0a850",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "200c35be6ef3670dd8dbbf047aa158ce168c7dbff9a16f697fcd625b18120645",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 910,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 259,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/259",
+      "state": "open",
+      "title": "[QA] Проверить восстановление выбранных audio devices перед Join/reconnect на macOS (#181)",
+      "original_title": "[QA] Проверить восстановление выбранных audio devices перед Join/reconnect на macOS (#181)",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:40.177Z",
+      "updated_at": "2026-10-26T23:23:25Z",
+      "labels": [
+        "QA"
+      ],
+      "original_body_sha256": "dcc4c4eef084eaa0c1ad1099b7f180b03d6b1d9978a16e692e8df0792c6e5dbd",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "e5ac354d3e87a46376523d7f92c35fcd186ad138dc919e45f62fef23bed9eb79",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 910,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 272,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/272",
+      "state": "open",
+      "title": "[VoiceRoster][VR-07][P1] QA/release: отказоустойчивость roster, ACL и приемка на Web + Flutter + production",
+      "original_title": "[VoiceRoster][VR-07][P1] QA/release: отказоустойчивость roster, ACL и приемка на Web + Flutter + production",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:40.063Z",
+      "updated_at": "2026-10-27T19:46:48Z",
+      "labels": [
+        "bug",
+        "priority: P1",
+        "area: verification",
+        "area: media"
+      ],
+      "original_body_sha256": "916e3059dbaf2d6d058333dbc1120321a1042a66a046d3ee33a48d9345a76dc6",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "3b2ebed734189882e9cbd231a26c1dcf6736a08c804f80745fddaf40be57f3d1",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 7263,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 278,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/278",
+      "state": "open",
+      "title": "[QA] Verify accessible configured guild name in Flutter (#78)",
+      "original_title": "[QA] Verify accessible configured guild name in Flutter (#78)",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:40.176Z",
+      "updated_at": "2026-10-12T16:03:04Z",
+      "labels": [
+        "area: verification",
+        "QA"
+      ],
+      "original_body_sha256": "6f67e6e3b57c5844f059542c3e5a72dc4b408b12ca8339969038961d8b5f7822",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "6f67e6e3b57c5844f059542c3e5a72dc4b408b12ca8339969038961d8b5f7822",
+      "body_changed": false,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 0,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 283,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/283",
+      "state": "open",
+      "title": "[QA] Browser/device acceptance for channel and DM quick jump (#78)",
+      "original_title": "[QA] Browser/device acceptance for channel and DM quick jump (#78)",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:40.175Z",
+      "updated_at": "2026-10-27T00:21:12Z",
+      "labels": [
+        "QA"
+      ],
+      "original_body_sha256": "427bb71ed8ea5fa02d04934dfc08b9b8c9585d266af76d524b3eb75f4a8ab40d",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "6cfb7f165d9e25346610cfe0729ea50bdf2209069e84517a1f75e819bb9537a2",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 3609,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 287,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/287",
+      "state": "open",
+      "title": "[QA] Приёмка завершённого пакета roster, client features и native hardening",
+      "original_title": "[QA] Приёмка завершённого пакета roster, client features и native hardening",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:40.032Z",
+      "updated_at": "2026-10-27T23:08:32Z",
+      "labels": [
+        "QA"
+      ],
+      "original_body_sha256": "a83fef8b8e240dd707238b30627799e13b746c325c03491ceee200011f15c924",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "d4a6f2eb509141fd2a8ecb8324c1747e1e569cb255374d16ee7df25386b79d36",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 23890,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 289,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/289",
+      "state": "open",
+      "title": "[UIUX-2026][EPIC] Единый UI/UX BOOHTACORD — Web + Flutter desktop/mobile",
+      "original_title": "[UIUX-2026][EPIC] Единый UI/UX BOOHTACORD — Web + Flutter desktop/mobile",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:40.177Z",
+      "updated_at": "2026-10-11T19:19:43Z",
+      "labels": [
+        "enhancement",
+        "priority: P1",
+        "area: frontend",
+        "ui-ux-audit-2026"
+      ],
+      "original_body_sha256": "199c75bdc325d7a1ae153ee27a7f9f65c796b2fac32f6982b9e6fd991d85b32a",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "199c75bdc325d7a1ae153ee27a7f9f65c796b2fac32f6982b9e6fd991d85b32a",
+      "body_changed": false,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 0,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 301,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/301",
+      "state": "open",
+      "title": "[UIUX-2026][UX-12][P1] Accessibility WCAG 2.2 AA + Flutter Semantics для ключевых сценариев",
+      "original_title": "[UIUX-2026][UX-12][P1] Accessibility WCAG 2.2 AA + Flutter Semantics для ключевых сценариев",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:40.062Z",
+      "updated_at": "2026-10-27T23:22:28Z",
+      "labels": [
+        "enhancement",
+        "priority: P1",
+        "area: frontend",
+        "ui-ux-audit-2026"
+      ],
+      "original_body_sha256": "aaa044c343dc440b945d0ff645f4f1cef853f7ec91ce684c0319ac7a28520ce7",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "cc01b2b2df1ad8d7af88c88d97f74a47b7e90df9cb932cde6e350d2138653cbc",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 9569,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 302,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/302",
+      "state": "open",
+      "title": "[UIUX-2026][UX-13][P1] Автотесты UI/UX: viewport matrix, visual snapshots и сценарии E2E",
+      "original_title": "[UIUX-2026][UX-13][P1] Автотесты UI/UX: viewport matrix, visual snapshots и сценарии E2E",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:40.147Z",
+      "updated_at": "2026-10-27T04:43:57Z",
+      "labels": [
+        "enhancement",
+        "priority: P1",
+        "area: frontend",
+        "QA",
+        "ui-ux-audit-2026"
+      ],
+      "original_body_sha256": "631a5fca6b7c0d5cb9c99bc09ee7ea08390b63d23539313003a5732fb29a837b",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "6cd75102aaa7447b7dc47dd8cd1cd166d0b194d46253a7f4a7f820f082274ffa",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 4402,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 303,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/303",
+      "state": "open",
+      "title": "[UIUX-2026][UX-14][P1] Физическая UX-приёмка macOS/Windows/Android/iOS и мобильного Web",
+      "original_title": "[UIUX-2026][UX-14][P1] Физическая UX-приёмка macOS/Windows/Android/iOS и мобильного Web",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:40.085Z",
+      "updated_at": "2026-10-27T23:22:30Z",
+      "labels": [
+        "enhancement",
+        "priority: P1",
+        "area: frontend",
+        "QA",
+        "ui-ux-audit-2026"
+      ],
+      "original_body_sha256": "5a826c0f9652d9535cbc049e9462da7c8fc9984b7114b9c7797bcdafc33aa8fc",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "e8e3f1a95cca3b419ffc4564cf44d7da45d9390249da7823fc4a1612afe64f73",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 31035,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 305,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/305",
+      "state": "open",
+      "title": "[UIUX-2026][UX-16][P2] UX release gate: документация, метрики task success и план отката",
+      "original_title": "[UIUX-2026][UX-16][P2] UX release gate: документация, метрики task success и план отката",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:40.174Z",
+      "updated_at": "2026-10-17T19:30:45Z",
+      "labels": [
+        "enhancement",
+        "priority: P2",
+        "area: frontend",
+        "QA",
+        "ui-ux-audit-2026"
+      ],
+      "original_body_sha256": "7a29f218cc77b14a8f1538683653916a53117819e5194d7ee06e7c1da529e98c",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "7a29f218cc77b14a8f1538683653916a53117819e5194d7ee06e7c1da529e98c",
+      "body_changed": false,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 0,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 326,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/326",
+      "state": "open",
+      "title": "[ScreenShare][Mac↔Web][EPIC] Устранить асимметрию качества: native macOS → Web и Web → macOS",
+      "original_title": "[ScreenShare][Mac↔Web][EPIC] Устранить асимметрию качества: native macOS → Web и Web → macOS",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:40.033Z",
+      "updated_at": "2026-10-26T23:23:27Z",
+      "labels": [
+        "screen-sharing-stability",
+        "screen-share-macos-parity"
+      ],
+      "original_body_sha256": "2d57e5cd95a46bb3022ef7f299ba9328b5480a6330fb1bb7e404e1eeb8a277f0",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "f875c0ff8a1bb5894a5bdfec56381079870575206e7590cb6565648ca0c44d07",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 910,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 329,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/329",
+      "state": "open",
+      "title": "[ScreenShare][MW-03][P1] Локализовать 18 FPS: stage-level метрики capture → encode → SFU → decode → presentation",
+      "original_title": "[ScreenShare][MW-03][P1] Локализовать 18 FPS: stage-level метрики capture → encode → SFU → decode → presentation",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:40.387Z",
+      "updated_at": "2026-10-26T23:23:28Z",
+      "labels": [
+        "screen-sharing-stability",
+        "screen-share-macos-parity"
+      ],
+      "original_body_sha256": "4814fe43bbb87a0e76382bb8aa06f65df4cc28c2452d3ba162ec23c57847369d",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "303790eeb07a57daeb02c77d5091a6907328e6fbc456ed1b51dab4ef6633ac32",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 910,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 331,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/331",
+      "state": "open",
+      "title": "[ScreenShare][MW-05][P1] macOS: сравнить VP8/H.264 и внедрить измеренную native codec policy с безопасным fallback",
+      "original_title": "[ScreenShare][MW-05][P1] macOS: сравнить VP8/H.264 и внедрить измеренную native codec policy с безопасным fallback",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:40.174Z",
+      "updated_at": "2026-10-26T23:23:29Z",
+      "labels": [
+        "screen-sharing-stability",
+        "screen-share-macos-parity"
+      ],
+      "original_body_sha256": "32297a1257f874d4453ab6a1216b12183a48e8c36051e8e937daf98b2f100dcb",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "58c7c6729ba6e17d7e9d667e9e4a924c2a8f3c9fee74a1db60c7aa579be40bc5",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 910,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 332,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/332",
+      "state": "open",
+      "title": "[ScreenShare][MW-06][P1] Регрессионный стенд Mac↔Web, физическая приёмка 1080p60 и независимый rollback capture/codec",
+      "original_title": "[ScreenShare][MW-06][P1] Регрессионный стенд Mac↔Web, физическая приёмка 1080p60 и независимый rollback capture/codec",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:40.033Z",
+      "updated_at": "2026-10-26T23:23:31Z",
+      "labels": [
+        "screen-sharing-stability",
+        "screen-share-macos-parity"
+      ],
+      "original_body_sha256": "075862bb9ee0efbcec83dd99fe02a0d79599f2f4099a2975fe44cd27bc350d99",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "45b7f36752bb989a9e923f28593bbb6dbe433728553486272afc5aa9c5ecb057",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 910,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 554,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/554",
+      "state": "open",
+      "title": "[Epic][NOTIFY][P1] Фоновые уведомления Web/iOS/Android: личные сообщения, упоминания и безопасный self-hosted push",
+      "original_title": "[Epic][NOTIFY][P1] Фоновые уведомления Web/iOS/Android: личные сообщения, упоминания и безопасный self-hosted push",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:40.235Z",
+      "updated_at": "2026-10-27T00:03:24Z",
+      "labels": [
+        "enhancement",
+        "priority: P1"
+      ],
+      "original_body_sha256": "3c9e491604dd805e1886b7e6d135575e048bbb77839c08bb1e749f61d13699ae",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "8db388977d52bc4898bbe3d670c16c0ad01e184d353d0ccba0c44bce0aec9c33",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 1193,
+      "requires_source_edit_review": false
+    },
+    {
+      "number": 564,
+      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/564",
+      "state": "open",
+      "title": "[NOTIFY-10][P1] Сквозная приёмка уведомлений Web/iOS/Android: доставка, приватность, отказоустойчивость и release gate",
+      "original_title": "[NOTIFY-10][P1] Сквозная приёмка уведомлений Web/iOS/Android: доставка, приватность, отказоустойчивость и release gate",
+      "title_changed": false,
+      "observed_utc": "2026-10-28T19:26:40.203Z",
+      "updated_at": "2026-10-27T00:03:26Z",
+      "labels": [
+        "enhancement",
+        "priority: P1"
+      ],
+      "original_body_sha256": "097a7b8d654382cd99c5e280430e00885410f04c544c1c778eb3ac009ccff4f7",
+      "matrix_source_hash_matches_snapshot": true,
+      "current_body_sha256": "422c53cef5a2d4bf08ab617bd9e2fcf4210b7a7b269ed31fac0158b54a4d90e9",
+      "body_changed": true,
+      "original_exact_prefix_rstrip": true,
+      "append_chars": 2493,
+      "requires_source_edit_review": false
+    }
+  ]
+}

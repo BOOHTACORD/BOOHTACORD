@@ -1,0 +1,33 @@
+import ast,ipaddress,subprocess
+from common import P,Q,SOURCE,PROJECT,read,write,now,digest,sql,services,table_state,request,docker
+assert not (P/'before.json').exists(),'Do not overwrite a completed baseline'
+(P/'private').mkdir(exist_ok=True)
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=Q,text=True).strip()==SOURCE
+snap=services();public=[]
+for name,v in snap.items():
+    assert v['State']['Running'] and v['RestartCount']==0 and v['Config']['Labels']['com.docker.compose.project']==PROJECT
+    for bindings in v['NetworkSettings']['Ports'].values():
+        for binding in bindings or []:assert ipaddress.ip_address(binding['HostIp']).is_loopback
+    if name in ['api','web']:assert __import__('json').loads(docker('image','inspect',v['Image']))[0]['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+    public.append({'service':name,'image_id':v['Image'],'running':True,'restart_count':0})
+write(P/'private/services-before.json',snap)
+source=[Q/'backend/go.mod',Q/'contracts/openapi.yaml',Q/'backend/internal/app/chat_routes/chat_routes.go']
+source+=list((Q/'backend/internal/chat/search_messages').rglob('*.go'))
+source+=[Q/'backend/internal/testsupport/postgres/config.go',Q/'backend/internal/testsupport/postgres/schema.go']
+hashes={}
+for path in source:
+    raw=path.read_bytes();rel=path.relative_to(Q).as_posix();head=subprocess.check_output(['git','show','HEAD:'+rel],cwd=Q)
+    assert raw.replace(b'\r\n',b'\n')==head.replace(b'\r\n',b'\n')
+    hashes[rel]={'working_sha256':digest(raw),'HEAD_sha256':digest(head),'equal_normalized_bytes':True}
+helpers={}
+for path in P.glob('*.py'):
+    ast.parse(path.read_text('utf-8'));assert len(path.read_text('utf-8').splitlines())<=120
+    helpers[path.name]=digest(path.read_bytes())
+frozen={name:digest((P.parent/'qa-agent-browser'/name).read_bytes()) for name in ['qa-scope-audit.json','qa-scope-review.md','audit-integrity.json']}
+assert request('/api/v1/health')[0]==200
+schema=sql("SELECT table_name,column_name,data_type,is_nullable,column_default FROM information_schema.columns WHERE table_schema='public' AND table_name IN ('users','sessions','categories','channels','direct_messages','messages','direct_message_messages','attachments','message_attachments','direct_message_attachments') ORDER BY table_name,ordinal_position; SELECT conrelid::regclass,conname,pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid IN ('users'::regclass,'attachments'::regclass,'direct_message_messages'::regclass);")
+(P/'private/schema.txt').write_text(schema,'utf-8')
+criterion=next(r for r in read(P.parent/'qa-agent-browser/private/preserved-matrix.json')['issues'] if r['number']==287)['criteria'][2]['requirement']
+write(P/'before.json',{'utc':now(),'source':SOURCE,'health_HTTP':200,'services':public,'database':table_state(),'PostgreSQL':sql('SHOW server_version;').strip(),'disposable_schemas':sql("SELECT count(*) FROM pg_namespace WHERE nspname LIKE 'voice_it_%';").strip(),'source_hashes':hashes,'helper_hashes':helpers,'frozen_audit_hashes':frozen,'schema_sha256':digest(schema.encode()),'git_status':subprocess.check_output(['git','status','--short'],cwd=Q,text=True),'criterion':criterion})
+write(P/'operating-brief.json',{'workflow_class':'review_gate','route':'backend/internal/chat/search_messages','packet':'I287.C3 caller isolation under author/attachment/date/cursor filters','doctrine':'Preserve exact RFC3339 instant and positional cursor contract; recheck ACL per query','ratchet':'7 helpers target100/hard120; no source changes','search_boundary':'Exact selected leaf, app chat_routes binding, OpenAPI, postgres fixture support','native_checks':'Focused Go JSON tests; zero skips; followed by real local HTTP/PG fixture','stop':'all own rows/sessions removed, nine services unchanged, source/hash and logs verified','limits':['No CUA/browser/physical/production acceptance','Query plans and full UI filter persistence remain NOT_RUN'],'diagnostics':['One source-discovery rg call incorrectly comma-combined exact paths; corrected with separate literal args before execution. No product result.']})
+print('PASS fresh local health/source/nine-service/read-only baseline; helper/source hashes sealed')

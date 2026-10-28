@@ -1,0 +1,8 @@
+import sys,time
+from common import *
+c=read(P/'private/config.private.json');assert own(c);steps=[];previous=None
+for i in range(10):
+ rows=nodes();assert own(c);signature=digest(json.dumps([(n.get('class'),n.get('bounds'),label(n)) for n in rows if n.get('package')==APP],ensure_ascii=False).encode())
+ if signature==previous:break
+ previous=signature;panes=[n for n in rows if n.get('package')==APP and n.get('scrollable')=='true' and bounds(n)[3]-bounds(n)[1]>500 and bounds(n)[2]-bounds(n)[0]>500];assert len(panes)==1;b=bounds(panes[0]);x=(b[0]+b[2])//2;call('shell','input','swipe',str(x),str(b[3]-100),str(x),str(b[1]+100),'350');steps.append('Explicit pre-control scroll toward latest');time.sleep(.35)
+write(P/'position-before-control.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'explicit_scrolls':len(steps),'consecutive_hierarchy_equal_after_scroll':signature==previous,'owned_DM_composer_empty':own(c),'no_history_refresh':True,'capture':capture('position-before-control'),'native_exit':0,'native_skips':0});print({'explicit_precontrol_scrolls':len(steps),'own_composer_empty':True})

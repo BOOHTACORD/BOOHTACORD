@@ -1,0 +1,259 @@
+{
+  "utc": "2026-10-28T19:39:33.961630+00:00",
+  "source": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "health_HTTP": 200,
+  "services": [
+    {
+      "service": "api",
+      "image_id": "sha256:b34a09b6eebfb87fea478e7cd440cc7ab9c52dc7dbd3cf4d659b12a9eff98a47",
+      "running": true,
+      "restart_count": 0
+    },
+    {
+      "service": "web",
+      "image_id": "sha256:414cc79b7ff85cfca81252bd12eb8a9525f2fb5727932a88b02ccf63ebb42d20",
+      "running": true,
+      "restart_count": 0
+    },
+    {
+      "service": "proxy",
+      "image_id": "sha256:f43d8810c944e27e6f7ea80b165de11dbdab16cff15c8a80d83ae3e1a109a35d",
+      "running": true,
+      "restart_count": 0
+    },
+    {
+      "service": "postgres",
+      "image_id": "sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94",
+      "running": true,
+      "restart_count": 0
+    },
+    {
+      "service": "livekit",
+      "image_id": "sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3",
+      "running": true,
+      "restart_count": 0
+    },
+    {
+      "service": "collector",
+      "image_id": "sha256:b6d2b9a85b1029d05b5ad913150c1f014eed4ae99be81a1813ca5ade4a191913",
+      "running": true,
+      "restart_count": 0
+    },
+    {
+      "service": "tempo",
+      "image_id": "sha256:cac9de2ac9f6da8efca5b64b690a7cb8c786a0c49cac7b4517dd1b0089a6c703",
+      "running": true,
+      "restart_count": 0
+    },
+    {
+      "service": "prometheus",
+      "image_id": "sha256:5550dc63da361dc30f6fe02ac0e4dfc736ededfef3c8d12a634db04a67824d78",
+      "running": true,
+      "restart_count": 0
+    },
+    {
+      "service": "grafana",
+      "image_id": "sha256:6e5d306338670f381a942f1c50d3c266bf71531e5ddd9ee4fc1a133dac5ce63d",
+      "running": true,
+      "restart_count": 0
+    }
+  ],
+  "database": {
+    "users": "516|897fd4bbb50b2921f5bc9bee3daed2dd",
+    "sessions": "2086|f0a66fc786b52273484336cc39807932",
+    "categories": "1|47107fb5924151cc6f13140c8a1b0b93",
+    "channels": "2|deb09206118abf37d5a644219d7ea746",
+    "direct_messages": "2|290feb105c7c845f5716b96302013ab4",
+    "messages": "3|155abc7d2234b2f412a160cd14863ade",
+    "direct_message_messages": "0|empty",
+    "attachments": "9|8b40e806ced1be93313b4902e3c065a7",
+    "message_attachments": "0|empty",
+    "direct_message_attachments": "0|empty"
+  },
+  "PostgreSQL": "17.6",
+  "disposable_schemas": "0",
+  "source_hashes": {
+    "backend/go.mod": {
+      "working_sha256": "33cbf13647d246156f0e65379e04fdea093de64db35c83573020f6b4bd3e9603",
+      "HEAD_sha256": "2e183e09a0dd4271c7729af009f4c93927f3b36fa5e0aee5f5187ff80c8c6d31",
+      "equal_normalized_bytes": true
+    },
+    "contracts/openapi.yaml": {
+      "working_sha256": "3c9895b2d9fc4df68948f6811435ac77a948686d62bed93730582ed174db39a1",
+      "HEAD_sha256": "c6d89f48f0d34a07a202a910f108e39458bfd196ada8028bea070c6bfc82acf3",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/app/chat_routes/chat_routes.go": {
+      "working_sha256": "02b679b970710d9d4f2ec44ddcf01d64803a4e5f8a04a7e63b617ce8017d71c1",
+      "HEAD_sha256": "2e4b5435f1131d303bb8ed32c85fbbc8c982b48f3d514f9950b89402009dde3b",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/cursor.go": {
+      "working_sha256": "6ecead173331eb1f5614b8fb9f15ca2181d8202522ed776d8ab6691b997acacd",
+      "HEAD_sha256": "f1d526c6929b191da2dc22f9d9ff2cd8f2f95c2574d80e9cc65a9f8a6023ef48",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/date_contract_test.go": {
+      "working_sha256": "4b1e01be1a5129cef105ad97451098a3923c62b28145c3a06cd57f3b42e94bea",
+      "HEAD_sha256": "ec86afe36933227b27bad321e05aef824b8cc843c6f795216b3fb977f8c99650",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/date_range.go": {
+      "working_sha256": "942281df76e6e8e74eb0640ed29971bff143952c921c01131c35fa95c686b506",
+      "HEAD_sha256": "67c8a6ad3b8a14e362e5b743bbbc8b3bd1797d874839d052a15a9e9af7d17a28",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/date_range_test.go": {
+      "working_sha256": "979159e51ee45cd1f8c4782b569a99b80a6ed1d44655854eaf2fed71cd3c0f72",
+      "HEAD_sha256": "85569a90d2618fe2507ae1602a110bda07d91e0d6ec0bebd780807a4a59533f4",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/service.go": {
+      "working_sha256": "80187af485ae7911909328780b8fda379d1def73a37893e3a16f62aa8c9e5817",
+      "HEAD_sha256": "152309ec190e1f432623eafa4830811814927b4dbdde032fec460a955d569cbe",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/service_test.go": {
+      "working_sha256": "2509d2e91119689915849b5838318b94a88a8bffd4227a05e79e5242b1f1fff2",
+      "HEAD_sha256": "2a95f2f7544316f1c21c3bb168f4e857d54fbee14e065f8d823507bbb349cb05",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/api/archive_handler.go": {
+      "working_sha256": "4488a2ff3944c683a6f5008c895da153c14ae569a498354d14d3335bbb5191fb",
+      "HEAD_sha256": "19ea09360a6f24e9d846f730f6c99f5fd2ad00c2575ca41d7532b725fa6d6e3d",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/api/archive_handler_test.go": {
+      "working_sha256": "37250379c1f4854fe2bf254ad78a4af98ef0a363f3aee89932f0994d2d1051d5",
+      "HEAD_sha256": "fadd886968d7e56bb781cf7b6d38d2692414ea29bd7dcd1d248d80f4136c1876",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/api/date_range_test.go": {
+      "working_sha256": "9909f66ab15da74e0715da8cd691e404ae24c6a922b230304b6e8f99659736c0",
+      "HEAD_sha256": "5fd5e4073bc7018ddcb67e2eea50683d334e7306f5faa9b228d03add27970796",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/api/filters.go": {
+      "working_sha256": "41c2d7f602795d5b465b3eed456465cd193574276c5357ed37efd9c44489511f",
+      "HEAD_sha256": "4b2afa280d1724738da592143dd228518d0e9330286a829bac45691657dbf7d0",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/api/http_handler.go": {
+      "working_sha256": "e37ac0dc227f4dfefc0816cddd9abebfd17366759933620112ba6d548e2d4cd6",
+      "HEAD_sha256": "939574480cfaf987f01e9b5a4a0ecc220176ed029cffbc0cb748019f5b00028d",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/api/http_handler_test.go": {
+      "working_sha256": "525e57f80ae756e455ffae72f32d746af2c6f5e9892aba3d09599923e69c4930",
+      "HEAD_sha256": "e032ec236c19b2cd9a8cfb02f73dd08cdf47eec10abfe60d58f0ebedc06c1bb6",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/postgres/date_range_integration_test.go": {
+      "working_sha256": "a13af37a1ee2df752e98fb7ff8096b4208d764e567b217629ded6a000485fed3",
+      "HEAD_sha256": "5e81837f96191a7d9efbdf72600c263ee4c3a36b094b2dbebf7250ca6aa4a9bf",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/postgres/date_range_plan_integration_test.go": {
+      "working_sha256": "9af3816898fbb88c60ccf90d600966faf04fe6853cdc211260dea7db178bf57b",
+      "HEAD_sha256": "93a60fc463ca73ec81efdf4e50d801f69bfe000b7e457517c53bfdbecae9d701",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/postgres/filters_integration_test.go": {
+      "working_sha256": "d089c39e65826c36c445ca64dc11c13755799648e0f6a5b04cfb198048aa7c30",
+      "HEAD_sha256": "a8049df8d30abc82b3083dd871325018f38a034156356d17ed81d7220c71c11b",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/postgres/gin_plan_integration_test.go": {
+      "working_sha256": "c1da58ab718c163e87c86cbc099eb164afe2b3f4f0429bf75a39a790710dbea7",
+      "HEAD_sha256": "7d3ab387cb439f82ce2c1bece7c14230bdadf26c81296bc3f25e863f24840c8d",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/postgres/integration_fixture_test.go": {
+      "working_sha256": "a8e7d53d9c20997b888cf3c270d6eb379a018527a791377f1d27e9305d8f2b87",
+      "HEAD_sha256": "5c951597fc7ba6cf0d4212f4458baf257c1782d6e0ecf660ddc353f6e285afed",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/postgres/pool_database.go": {
+      "working_sha256": "2f7cfcf40205c59211d8706ec1fb6aad404b14b2b1310f3fc25a3a55bd841a51",
+      "HEAD_sha256": "d34e160633554ccc89a7f37d1ad9db6b9dae1e0f930dd53e571ece173c35e2c6",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/postgres/repository.go": {
+      "working_sha256": "0502f6579d8f32034925342f06952a64ab0765309689a7a8e0d7ce62b96610b3",
+      "HEAD_sha256": "04cc46766e64925d07f6b3070041a1d2499d1f6087339ea86fddf17cb66d5a8f",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/postgres/repository_test.go": {
+      "working_sha256": "f4e038121da234199547d396bb11f55dff431b91c75669786c114543f1c6f9f5",
+      "HEAD_sha256": "7e56f3ee04b4ee661e970e6b82fd97eb6e0bf5398c1b1a420398d5f100731688",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/postgres/russian_noise_preservation_test.go": {
+      "working_sha256": "bc3ae87c4d6795775969bd495c4206f05ed6294b8f0a5a814557e0570c7e7618",
+      "HEAD_sha256": "76ad4fb3bd2351fe9d497094d6a3bab177958a30b433962a068bbab153b2a856",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/postgres/russian_search_quality_integration_test.go": {
+      "working_sha256": "d6c81bcc2816528b2b5d90a16b81a08ab1584e44f82209b6307d5475ede7019c",
+      "HEAD_sha256": "aa8a0c440101e2fb60ac54ebe631e79015fa8df46fb964fd5401defd21a78e62",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/postgres/russian_search_quality_support_test.go": {
+      "working_sha256": "4f4495aa21e66d78e4dda4eb702f5c3ce8ed714afa8b1cf4c8b7a6a5f08cc371",
+      "HEAD_sha256": "0963211113f07f524988a9196e6778684329e0a2512c2180db7ae52b49fe30c0",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/postgres/russian_search_query_helpers_test.go": {
+      "working_sha256": "19ba40dc5d06cca20e196e4b4cc40904634fdeab3ae38b2a4839be38eac67167",
+      "HEAD_sha256": "acf154f2897f2d8e0a14dea30980c7d20d0e15f84daddbae99f7f5bcfdcab537",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/postgres/search_behavior_integration_test.go": {
+      "working_sha256": "2520dc28c894b22f45355c3e36ff4421500273ff91f3070fbbb373bf311a2bf3",
+      "HEAD_sha256": "1d94920542daff8504fb60addb6f0a6c7f5ac1905584005c70daac63924e79fd",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/postgres/search_data_integration_test.go": {
+      "working_sha256": "834a0e5d82b04a8d5d3bd5d6a9d0721681e7ca2b399fbe89cacf589db49b7744",
+      "HEAD_sha256": "2a587735bec29c93d64d78ed92380f02bf6f00c9238f1948a4de4f0ff8b066c1",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/postgres/statements.go": {
+      "working_sha256": "260198939b93b693a7a725351598df4609b65dcbb4c98844e02dc167816c7596",
+      "HEAD_sha256": "70d03fc6795c40bf6a885f28027c4c0fdd0b9061a0815f5e83a6ac4a4be77187",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/chat/search_messages/postgres/welcome_test.go": {
+      "working_sha256": "632fc3dafc45558ebc2af05521fb042d2b3034ee70080055fa8d61131d9e6bd7",
+      "HEAD_sha256": "d603361cc159430e9778ea54d0ee015c7a904a84912edf4951eac0def0ac82c0",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/testsupport/postgres/config.go": {
+      "working_sha256": "e611b437e206fd730ebf3222a8304e2c5272e556381e288c721b4b551f2801f8",
+      "HEAD_sha256": "d022d1cc0f5c35f172824a55f65addfba17d901a7a89bbbbc7d51da8e5f99996",
+      "equal_normalized_bytes": true
+    },
+    "backend/internal/testsupport/postgres/schema.go": {
+      "working_sha256": "088b9b6f5208f46dae73c6b2853a54e49bc4f148d87acfeef744c60677d61178",
+      "HEAD_sha256": "62b04b60d941b605b91605d4a1e6056daf5e3d1faf3b79b4057e3b680e534dd0",
+      "equal_normalized_bytes": true
+    }
+  },
+  "helper_hashes": {
+    "checks.py": "c443a4b63e730b616376da9cd3a8d29bf8f0c0d7d12e3e3ddc769de8f2401fd7",
+    "cleanup.py": "41949b76b2477f28d5347896fe5433a628172ae8fa51b809a32b8899702a4647",
+    "common.py": "57f92cd24e837a6272f948245b5af88426051ce465c4da6180573f1f67a44a98",
+    "native.py": "4e6dd9e3b9a9212a6ef0d9276a5d3b09eea7b629f008f8fde5c46f7be62f783e",
+    "preflight.py": "edffdb9cd0115e4ee1a9dc073c7341c1a648965fd3341f9aac3b9b23e5079f37",
+    "prepare.py": "ab40817b02ce276627f9d7830428465472b3082978e0b0b5fccb532bb271ff4e",
+    "run.py": "25d76b2a1af4cb11431d073f31ff332a27241c38d6b9128013a6e6556c3a3984"
+  },
+  "frozen_audit_hashes": {
+    "qa-scope-audit.json": "d754855c4f985f991268023e33112d4a62fe2a35faba4e2e1a6f95d2787fa57b",
+    "qa-scope-review.md": "a6fc1f0f37b9834be0bf17054ee8a01227d089821ed3d0e24443e4dcf25cefe5",
+    "audit-integrity.json": "ce79bafe415cfe8017cf9fcf5dcbb3508255d3433c882402eabb5aa95e6c61ef"
+  },
+  "schema_sha256": "25c1efa5e81c8e460d1c11c25dbd1c7db3f34ff2bd9d6548f5816dfada49cc32",
+  "git_status": " M clients/flutter/macos/Flutter/GeneratedPluginRegistrant.swift\n M clients/flutter/windows/flutter/generated_plugin_registrant.cc\n M clients/flutter/windows/flutter/generated_plugin_registrant.h\n M clients/flutter/windows/flutter/generated_plugins.cmake\n",
+  "criterion": "#76: actual PostgreSQL author/date/attachments query, equal timestamps/stable cursor, timezone/DST, deleted and foreign-DM ACL, query plans; Web/native filter persistence and ordinary pointer/keyboard submission. Related #258/#54."
+}

@@ -1,0 +1,156 @@
+{
+  "at_utc": "2026-10-28T20:00:25.403309+00:00",
+  "status": "IN_PROGRESS_SCOPED_PROGRESS_NEW_DB_DEFECT_BROWSER_BLOCKED",
+  "new_sets": [
+    {
+      "id": "ANDROID-original-image-download-viewer-and-card-six",
+      "status": "PASS_SCOPED",
+      "protects": "Six PNG/JPEG/GIF original downloads preserve bytes, extension and decoded format through actual DocumentsUI local Downloads",
+      "command": "python -X utf8 .out/qa-agent-phone/preflight.py; use phone/summary.json actual_commands for prepare/send/reveal/native download/save/verify; cleanup_batch.py",
+      "platform": "Physical Samsung SM-A576B Android16 / signed QA1.0.47+2082, APK c7262608…4ea6243; HTTPS production API producer, no native-cookie extraction",
+      "mandatory_when": "Before accepting original-image native download facet; complete platform/privacy gates remain separate",
+      "issues": [
+        62,
+        303
+      ],
+      "result": "coordinated-agents-2026-10-28/phone/summary.json",
+      "limits": "Six native controls, SHAoriginal != preview, six files/messages cleaned and own session revoked. No native upload/TEXT/ADMIN/revoke-while-open/GIF animation or whole browser gate. Existing589 remains open.",
+      "defects": []
+    },
+    {
+      "id": "ANDROID-native-keyboard-SystemBack-draft",
+      "status": "PASS_SCOPED",
+      "protects": "Actual IME leaves own composer above keyboard; SystemBack hides IME while preserving current in-memory draft, exact clear restores empty",
+      "command": "python -X utf8 .out/qa-agent-phone/keyboard_back.py",
+      "platform": "Physical Samsung SM-A576B Android16 / signed QA1.0.47+2082, APK c7262608…4ea6243; HTTPS production API producer, no native-cookie extraction",
+      "mandatory_when": "Before accepting Android portrait IME/SystemBack facet",
+      "issues": [
+        303
+      ],
+      "result": "coordinated-agents-2026-10-28/phone/keyboard-summary.json",
+      "limits": "38synthetic characters,22px IME gap. No restart persistence, orientation/large text, screen reader, send or full iOS/Android criterion.",
+      "defects": []
+    },
+    {
+      "id": "ANDROID-explicit-retry-visible-state-only",
+      "status": "PASS_SCOPED",
+      "protects": "Observed explicit Retry clears its visible recovery banner while own context/session remains",
+      "command": "python -X utf8 .out/qa-agent-phone/reconnect.py; python -X utf8 .out/qa-agent-phone/history_refresh.py",
+      "platform": "Physical Samsung SM-A576B Android16 / signed QA1.0.47+2082, APK c7262608…4ea6243; HTTPS production API producer, no native-cookie extraction",
+      "mandatory_when": "Before accepting the visible Retry action facet only",
+      "issues": [
+        303
+      ],
+      "result": "coordinated-agents-2026-10-28/phone/reconnect-summary.json",
+      "limits": "UI-only. Zero image controls both before/after refresh; no passive deletion, network cause, voice recovery or full reconnect PASS inferred.",
+      "defects": []
+    },
+    {
+      "id": "ANDROID-cold-start-auth-explicit-refresh",
+      "status": "PASS_SCOPED",
+      "protects": "Existing native secure session remains usable after one actual process stop/start, demonstrated by a newly committed post-start marker read after explicit refresh",
+      "command": "Follow restart/summary.json exact commands and cleanup",
+      "platform": "Physical Samsung SM-A576B Android16 / signed QA1.0.47+2082, APK c7262608…4ea6243; HTTPS production API producer, no native-cookie extraction",
+      "mandatory_when": "Before accepting this Android cold-start authentication facet",
+      "issues": [
+        62
+      ],
+      "result": "coordinated-agents-2026-10-28/restart/summary.json",
+      "limits": "One restart. Explicit refresh required for auth-positive; pre/post passive windows NOT_PROVEN. Third semantic payload clipped5px until explicit scroll: no full passive visibility/p95 or causal restart regression. Three own messages/session cleaned.",
+      "defects": []
+    },
+    {
+      "id": "WINDOWS-native-account-menu-keyboard-cancel",
+      "status": "PASS_SCOPED",
+      "protects": "Actual installed account menu has visible forward/reverse keyboard targets and closes on Escape without invoking an option",
+      "command": "Computer Use @oai/sky: fresh native target, account launcher, Tab, Shift+Tab, Escape with fresh settled observations",
+      "platform": "Actual installed Windows Flutter1.0.47+82, manifest DECLARED sourcef5cd7835,53file internal integrity; not independent signed/reproducible source attestation",
+      "mandatory_when": "Before accepting this native menu keyboard/cancel facet",
+      "issues": [
+        301,
+        303
+      ],
+      "result": "coordinated-agents-2026-10-28/windows/attempt2/summary.json",
+      "limits": "Admin/Logout highlighted without activation. AX panel cannot prove exact opener focus or screen reader. Early user-input guard preserved, final native channel restored.",
+      "defects": []
+    },
+    {
+      "id": "WINDOWS-native-admin-seven-readonly-sections",
+      "status": "PASS_SCOPED",
+      "protects": "All seven installed native admin sections actually open/render during a bounded human-granted input interval, without changing settings",
+      "command": "Computer Use @oai/sky exact section actions in windows/admin/summary.json; fresh target/action/observe, Escape restore",
+      "platform": "Actual installed Windows Flutter1.0.47+82, manifest DECLARED sourcef5cd7835,53file internal integrity; not independent signed/reproducible source attestation",
+      "mandatory_when": "Before accepting seven-section Windows read-only render/navigation facet",
+      "issues": [
+        287,
+        303
+      ],
+      "result": "coordinated-agents-2026-10-28/windows/admin/summary.json",
+      "limits": "78.465s of120s. No CRUD/fields/roles/security/media changes. Media EMPTY0fresh; populated media, exact focus, Enter/Space, scale/IME/resize/SR remain NOT_RUN/NOT_PROVEN. Candidate source is manifest declaration,53file hash integrity only.",
+      "defects": []
+    },
+    {
+      "id": "WEB-production-protected-viewer-policy-blocked",
+      "status": "BLOCKED",
+      "protects": "Live browser viewer deletion needs an actual trusted production receiver and current URL before UI input",
+      "command": "Computer Use @oai/sky list_apps/get_window/get_window_state; exact denial in browser receipts",
+      "platform": "Windows Chrome / build UNKNOWN, no page captured",
+      "mandatory_when": "Before accepting browser already-open protected viewer invalidation",
+      "issues": [
+        131
+      ],
+      "result": "coordinated-agents-2026-10-28/browser/browser-ui-policy-blocker-user-selected.json",
+      "limits": "Two policy stops, second after direct human tab/URL selection. No input/fixture/session; no browser behavior or new product bug. Native tests do not replace this gate.",
+      "defects": []
+    },
+    {
+      "id": "WINDOWS-owned-image-lifecycle-handshake",
+      "status": "BLOCKED",
+      "protects": "An owned existing Windows receiver must be positively identified before protected image send/view/delete acceptance",
+      "command": "Fresh native existing DM list/private expected-peer comparison; see windows/attempt2/summary.json",
+      "platform": "Actual installed Windows Flutter1.0.47+82, manifest DECLARED sourcef5cd7835,53file internal integrity; not independent signed/reproducible source attestation",
+      "mandatory_when": "Before accepting Windows protected-image lifecycle",
+      "issues": [
+        62
+      ],
+      "result": "coordinated-agents-2026-10-28/windows/attempt2/summary.json",
+      "limits": "Expected peer absent from currently rendered list; authoritative server absence not proven. No new DM/fixture/session; no Windows image verdict or Android589 extension.",
+      "defects": []
+    },
+    {
+      "id": "ISOLATED-search-filtered-cursor-ACL",
+      "status": "PASS_SCOPED",
+      "protects": "Author/attachment/time filters and cursor reuse cannot broaden readable CHANNEL/DM scope; exact paging/order and denied foreign scopes remain correct",
+      "command": "python -X utf8 .out/qa-agent-search/run.py",
+      "platform": "Own loopback QA API/Go072/PostgreSQL17.6,12native checks and23runtime controls/55HTTPpages",
+      "mandatory_when": "Before accepting this isolated I287.C3 search/cursor ACL facet",
+      "issues": [
+        287
+      ],
+      "result": "coordinated-agents-2026-10-28/search/aggregate-result.json",
+      "limits": "No production/CUA/browser UI/load claim. Three metadata attachments are not upload/download acceptance. Original PARTIAL cleanup retained; separate guarded transaction restores all10baseline fingerprints and four own accounts.",
+      "defects": []
+    },
+    {
+      "id": "DB-support-guard-ordinary-delete-counterexample",
+      "status": "FAIL",
+      "protects": "Support identity immutability must coexist with ordinary-user DELETE and UPDATE semantics",
+      "command": "python -B -X utf8 .out/qa-guard-teardown/run.py",
+      "platform": "Isolated PostgreSQL17.6; actual0056function/trigger text, no production/UI account deletion",
+      "mandatory_when": "Before accepting ordinary-user delete guard semantics and relying on account fixture teardown",
+      "issues": [],
+      "result": "coordinated-agents-2026-10-28/guard/product-verdict.json",
+      "limits": "Six controls validate the counterexample (validator0 is not product PASS): source DELETE returns0/retains normal row; temporary counterfactual deletes1; support remains42501. Public function unchanged. Bug creation pending immutable evidence.",
+      "defects": [],
+      "command_scope_note": "Historical combined wrapper: six counterexample controls completed before later teardown-helper cast failure. Corrected separately sealed teardown used retry.py; never replay old fixture IDs/cookies. Pure counterexample function is counter.counterexample, not a nonexistent counterexample.py."
+    }
+  ],
+  "old81_cases_preserved": true,
+  "source_rows_preserved": 480,
+  "original_source_qualifiers": 13,
+  "intake_all37_open_at_audit": true,
+  "cleanup": "Original search quarantine/PARTIAL retained, then separate transaction restores all10table fingerprints and four own users; phone6files/6messages+3restartmessages and own sessions cleaned",
+  "new_DB_bug": "PENDING_IMMUTABLE_EVIDENCE",
+  "all_full_gates_closed": false,
+  "consolidation43_touched": false
+}

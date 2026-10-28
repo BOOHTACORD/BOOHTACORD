@@ -1,0 +1,134 @@
+{
+  "at_utc": "2026-10-28T19:27:57.975232+00:00",
+  "reviewer": "qa_phone Codex visual inspection",
+  "source_resolution": [
+    1080,
+    2340
+  ],
+  "inspected_source_resolution": true,
+  "captures_private_do_not_publish_raw": true,
+  "observations": [
+    "PNG viewer shows expected four quadrants at180x180 physical ImageView; header Download/Close visible",
+    "JPEG viewer shows expected orange-left/blue-right pattern at180x135; full image fits; filename visually ellipsized while DocumentsUI EditText and saved exact own filename verified separately",
+    "GIF protected preview is static red-orange first frame at90x90; original saved GIF retains2frames; no animation acceptance",
+    "JPEG/GIF card screenshots show matching synthetic color patterns, byte labels774 B/205 B and download icons; PNG-card reveal capture initially includes partly clipped next card before settled action binding, so no complete-card-layout claim from that capture",
+    "DocumentsUI screenshots show local Скачанные, exact own EditText filename validated via hierarchy and Save visible; saved bytes found only at exact local /sdcard/Download own path"
+  ],
+  "pixel_probes": [
+    {
+      "at_utc": "2026-10-28T19:20:45.651803+00:00",
+      "action": "probe",
+      "index": 0,
+      "alias": "PNG-viewer",
+      "body_or_identity_logged": false,
+      "probe": {
+        "known_pattern_rendered": true,
+        "matched_regions": 4,
+        "negative_wrong_palette_rejected": true,
+        "max_channel_errors": [
+          0.0,
+          7.0,
+          1.0,
+          0.0
+        ],
+        "native_image_bounds": [
+          450,
+          1117,
+          630,
+          1297
+        ],
+        "source_resolution": [
+          1080,
+          2340
+        ],
+        "ICC_present": true,
+        "ICC_converted_to_sRGB": true,
+        "source_capture_SHA256": "a6f193cc0d45393aec838411f91b1ab50e6a96aa067235191d5b1b88494cb23a",
+        "capture_private": true,
+        "comparison": "Four known interior fixture regions at observed ImageView/FitContain bounds, tolerance14 RGB; not a screenshot hash or a generic nonblank check"
+      }
+    },
+    {
+      "at_utc": "2026-10-28T19:24:04.510086+00:00",
+      "action": "probe",
+      "index": 2,
+      "alias": "JPEG-viewer",
+      "body_or_identity_logged": false,
+      "probe": {
+        "known_pattern_rendered": true,
+        "matched_regions": 4,
+        "negative_wrong_palette_rejected": true,
+        "max_channel_errors": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "native_image_bounds": [
+          450,
+          1140,
+          630,
+          1275
+        ],
+        "source_resolution": [
+          1080,
+          2340
+        ],
+        "ICC_present": true,
+        "ICC_converted_to_sRGB": true,
+        "source_capture_SHA256": "3cfe4915fd9e26aa5bab1369efb7bd065c18f1e6a851c4ceb125b12ae0575632",
+        "capture_private": true,
+        "comparison": "Four known interior fixture regions at observed ImageView/FitContain bounds, tolerance14 RGB; not a screenshot hash or a generic nonblank check"
+      }
+    },
+    {
+      "at_utc": "2026-10-28T19:25:23.666235+00:00",
+      "action": "probe",
+      "index": 4,
+      "alias": "GIF-viewer",
+      "body_or_identity_logged": false,
+      "probe": {
+        "known_pattern_rendered": true,
+        "matched_regions": 4,
+        "negative_wrong_palette_rejected": true,
+        "max_channel_errors": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "native_image_bounds": [
+          495,
+          1162,
+          585,
+          1252
+        ],
+        "source_resolution": [
+          1080,
+          2340
+        ],
+        "ICC_present": true,
+        "ICC_converted_to_sRGB": true,
+        "source_capture_SHA256": "23eccac7b8263123f2bb5fc9a1993cbddf3136c2d73bf940728b2786531067ec",
+        "capture_private": true,
+        "comparison": "Four known interior fixture regions at observed ImageView/FitContain bounds, tolerance14 RGB; not a screenshot hash or a generic nonblank check"
+      }
+    }
+  ],
+  "inspected_captures": [
+    "revealed-0.private.png",
+    "revealed-1.private.png",
+    "viewer-0.private.png",
+    "viewer-2.private.png",
+    "revealed-3.private.png",
+    "viewer-4.private.png",
+    "picker-4.private.png",
+    "revealed-5.private.png",
+    "picker-5.private.png",
+    "picker-initial.private.png"
+  ],
+  "not_proven": [
+    "Human TalkBack/keyboard/focus/nativeOS animation acceptance",
+    "Unchanged image viewer after deleting current open image: existingbug589 remains open, no repair/retest claim"
+  ]
+}

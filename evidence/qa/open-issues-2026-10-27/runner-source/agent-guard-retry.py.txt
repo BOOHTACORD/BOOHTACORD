@@ -1,0 +1,28 @@
+import ast,traceback
+from common import P,Q,OLD,read,write,now,sha,sql,services,health,guard_state,frozen,table_state
+from teardown import teardown
+binding=read(P/'binding.json');source=Q/'backend/internal/database/migrate/migrations/0056_product_support.sql'
+assert not (P/'retry-binding.json').exists()
+helpers={}
+for f in P.glob('*.py'):
+    ast.parse(f.read_text('utf-8'));assert len(f.read_text('utf-8').splitlines())<=120;helpers[f.name]=sha(f.read_bytes())
+assert sha(source.read_bytes())==binding['source_SHA256'] and frozen()==binding['frozen_files']
+counter_sha=sha((P/'counterexample.json').read_bytes())
+write(P/'retry-binding.json',{'utc':now(),'helper_hashes':helpers,'source_raw_SHA256':sha(source.read_bytes()),'source_LF_SHA256':sha(source.read_bytes().replace(b'\r\n',b'\n')),'counterexample_sha256':counter_sha,'counterexample_not_rerun':True,'change':'Only two casts tgenabled::text in diagnostic fingerprint concatenation; same DELETE/ownership/lock/trigger scope; first attempt rolled back before DISABLE.'})
+try:
+    assert sql('SHOW server_version;').strip()=='17.6' and health()==200
+    old=read(OLD/'private/services-before.json');current=services()
+    assert all(v['State']['Running'] and all(v[k]==old[n][k] for k in ['Id','Image','Config','HostConfig','RestartCount']) and v['State']['StartedAt']==old[n]['State']['StartedAt'] for n,v in current.items())
+    assert guard_state()==read(OLD/'handoff.json')['trigger_state_enabled_definition_function_MD5']
+    teardown()
+    assert table_state()==read(OLD/'before.json')['database'] and frozen()==binding['frozen_files'] and sha(source.read_bytes())==binding['source_SHA256']
+    native=read(OLD/'before.json')
+    assert all(sha((Q/f).read_bytes())==h['working_sha256'] for f,h in native['source_hashes'].items())
+    after=services();assert all(v['State']['Running'] and all(v[k]==old[n][k] for k in ['Id','Image','Config','HostConfig','RestartCount']) and v['State']['StartedAt']==old[n]['State']['StartedAt'] for n,v in after.items())
+    assert health()==200 and sha((P/'counterexample.json').read_bytes())==counter_sha and all(sha((P/f).read_bytes())==h for f,h in helpers.items())
+    write(P/'cleanup-final-after-root-handoff.json',{'utc':now(),'status':'PASS_SEPARATE_FIXTURE_ONLY_TEARDOWN','counterexample':'counterexample.json','teardown':'teardown.json','original_PARTIAL_summary_preserved':True,'original_quarantine_preserved':True,'failed_attempt1_preserved':'private/attempt1','counterexample_not_rerun':True,'frozen_search_and_QA_audit_unchanged':True,'source_and_native_inputs_unchanged':True,'nine_services_unchanged':list(after),'health_HTTP':200,'all10_original_baselines_restored':True,'remaining_own_rows':0,'guard_enabled_original_definition_and_function':guard_state(),'product_guard_bug_not_fixed':True,'production_CUA_Git_GitHub_touched':False})
+    print('PASS separately sealed retry;own4 removed atomically;guardO/hash identical;all10baselines restored;source/nine services/original receipts unchanged')
+except Exception:
+    (P/'private/retry-failure.txt').write_text(traceback.format_exc(),'utf-8')
+    write(P/'retry-failure.json',{'utc':now(),'status':'STOP_AFTER_SINGLE_RETRY','guard_state':guard_state()})
+    print('STOP single retry failed; no further mutations');raise SystemExit(1)

@@ -1,0 +1,13 @@
+import ast
+from common import P,Q,read,write,digest,now
+before=read(P/'before.json');native=read(P/'native-result.json')
+assert native['exit']==0 and native['skip_count']==native['fail_count']==0 and native['pass_count']==12
+assert not (P/'private/fixture.json').exists() and not (P/'runtime-binding.json').exists()
+helpers={}
+for file in P.glob('*.py'):
+    ast.parse(file.read_text('utf-8'));assert len(file.read_text('utf-8').splitlines())<=120
+    helpers[file.name]=digest(file.read_bytes())
+assert len(helpers)==8
+for rel,value in before['source_hashes'].items():assert digest((Q/rel).read_bytes())==value['working_sha256']
+write(P/'runtime-binding.json',{'utc':now(),'helper_hashes':helpers,'source_hashes_unchanged':True,'native12_zero_skips_retained':True,'pre_runtime_harness_corrections':['Read-only schema showed users.login max32; shortened nonce-only own fixture usernames before creation.','Read-only schema showed sessions.user_id; corrected cleanup predicate before creation.','Kept3ATTACHED metadata fixtures within explicit grant; HIDDEN runtime not claimed.','Log scan uses same explicit local npipe context.','Attempt1 category position0 failed unique constraint and fully rolled back; fresh attempt uses max(position)+1 and new nonce.'],'changed_since_native':{f:{'native_hash':before['helper_hashes'].get(f),'runtime_hash':h} for f,h in helpers.items() if before['helper_hashes'].get(f)!=h}})
+print('PASS runtime helper/source seal;8helpers;native result preserved;no fixture yet')

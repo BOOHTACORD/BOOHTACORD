@@ -1,0 +1,23 @@
+import sys
+from common import *
+c=read(P/'private/config.private.json');prefix='/api/v1/direct-messages/'+valid(c['conversation']);removed=[];assert 0<=len(c['messages'])<=3 and len(c['sessions'])<=1
+for ownm in c['messages']:
+ s,_,page=api(prefix+'/messages?at='+valid(ownm['id'])+'&limit=20',cookie=c['cookie']);assert s==200;m=page['messages'][0];assert m['id']==ownm['id'] and m['author_id']==c['sender_account']
+ if not m['deleted']:
+  assert digest(m['body'].encode())==ownm['body_SHA256'] and m.get('attachments',[])==[];s,_,_=api(prefix+'/messages/'+ownm['id'],'DELETE',{},c['cookie']);assert s==204
+ s,_,page=api(prefix+'/messages?at='+ownm['id']+'&limit=20',cookie=c['cookie']);assert s==200;m=page['messages'][0];assert m['id']==ownm['id'] and m['deleted'] and m['body']=='' and m.get('attachments',[])==[];removed.append({'alias':ownm['alias'],'tombstone_HTTP':200,'body_blank_attachments_empty':True})
+found={};cursor=None
+if c.get('preexisting_all_message_hashes'):
+ for _ in range(6):
+  s,_,page=api(prefix+'/messages'+('?before='+cursor if cursor else ''),cookie=c['cookie']);assert s==200
+  for m in page['messages']:
+   if m['id'] in c['preexisting_all_message_hashes']:found[m['id']]=digest(json.dumps(m,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode())
+  cursor=page.get('next_cursor')
+  if not cursor:break
+ assert found==c['preexisting_all_message_hashes']
+for cookie in c['sessions']:
+ s,_,v=api('/api/v1/auth/session',cookie=cookie);assert s==200
+ if v['authenticated']:s,_,_=api('/api/v1/auth/logout','POST',{},cookie);assert s==204
+ s,_,v=api('/api/v1/auth/session',cookie=cookie);assert s==200 and not v['authenticated']
+s=state();r={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_OWN_MESSAGES_AND_ONE_PRODUCER_SESSION_CLEANED','new_message_count':len(c['messages']),'own_messages':removed,'old_message_count_unchanged':len(found),'owned_sessions_revoked_or_confirmed_unauthenticated':len(c['sessions']),'live_unauthenticated_readback':True,'force_stop_count':c['force_stop_count'],'phone_state':s,'owned_DM_composer_empty':own(c),'no_native_logout_clear_data_reinstall_permissions_voice_orientation_font_changes':True,'native_exit':0,'native_skips':0}
+frozen=read(Q/'.out/qa-agent-phone/artifact-hashes.json')['artifacts'];assert all(digest((Q/'.out/qa-agent-phone'/n).read_bytes())==v['SHA256'] for n,v in frozen.items());r['old_phone_artifacts_still_frozen_SHA_match']=True;write(P/'cleanup.json',r);print({k:v for k,v in r.items() if k not in ['phone_state','own_messages']})

@@ -1,0 +1,50 @@
+{
+  "at_utc": "2026-10-28T19:18:33.154372+00:00",
+  "workflow_class": "review_gate",
+  "route": "clients/flutter/features/attachments/download",
+  "packet": "physical-Android-six-native-downloads",
+  "task": "T-044 dependencies T-040/T-041",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "source_SHA256": {
+    "clients/flutter/pubspec.yaml": "de0377a63ab77456df14f211b498b8f2b7b12cf1773f65ff9abf4975626a76de",
+    "clients/flutter/lib/src/widgets/message_attachment_list.dart": "983899704bdfce80b4128fa787e3198985a388579e986ab488328e10474f1a44",
+    "clients/flutter/lib/src/features/attachments/download/api.dart": "eae3bb4de6eb805a8b6563f1e326b9a54c71e1ab6f48c56519fe2a81553a5973",
+    "clients/flutter/lib/src/features/attachments/download/facade.dart": "faf50517aae3c1500c6a077a85fcfdb7a1d0bb391c3fafa6b370b395a68fa885",
+    "clients/flutter/android/app/src/main/kotlin/ru/boohtacord/app/MainActivity.kt": "1c3e42366a82045b7a052ffcf82668e60df9a720d6adcfe24b128e5343711cdb"
+  },
+  "model": "SM-A576B",
+  "Android": "16",
+  "APK_version": "1.0.47+2082",
+  "APK_SHA256": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+  "phone_baseline": {
+    "at_utc": "2026-10-28T19:18:30.512070+00:00",
+    "permission": {
+      "granted": true,
+      "flags": [
+        "USER_SET",
+        "USER_SENSITIVE_WHEN_GRANTED",
+        "USER_SENSITIVE_WHEN_DENIED"
+      ]
+    },
+    "microphone_fgs": false,
+    "voice_connected": false,
+    "muted_control": false,
+    "app_hierarchy_present": true,
+    "system_permission_prompt": false,
+    "navigation_available": true,
+    "login_fields": false
+  },
+  "owned_DM_header": true,
+  "composer_empty": true,
+  "viewer_closed": true,
+  "projection_null": true,
+  "deployed_backend_source": "UNKNOWN",
+  "invariant": "Only new tiny owned QA files in existing DM; native current session/URL/roles/permissions/voice/projection unchanged; exact own saved files SHA-guarded cleanup",
+  "stop_condition": "Six formats x control witnesses with real DocumentsUI local Downloads and SHA controls, or precise blocker; API session revoked, own messages and saved files cleaned",
+  "baseline_capture": {
+    "file": "[PRIVATE_ARTIFACT_PATH_RETAINED_LOCALLY]",
+    "SHA256": "6cb1e4e85dd338ca32adbed170fe0ddb1dc89b0ac8e8eb0fb09ec7a6efe2f7a8"
+  },
+  "native_exit": 0,
+  "native_skips": 0
+}

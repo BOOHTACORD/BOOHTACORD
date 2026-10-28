@@ -1,0 +1,21 @@
+import subprocess,sys,time
+from common import *
+c=read(P/'private/config.private.json');assert read(P/'availability.json')['native_exit']==0 and read(P/'profile-guard-before.json')['native_exit']==0 and c['force_stop_count']==0 and own(c)
+s=state();assert not s['voice_connected'] and not s['microphone_fgs'] and not s['system_permission_prompt'] and not s['login_fields'];assert re.search(r'Media Projection:\s*null\s*$',call('shell','dumpsys','media_projection'))
+source=read(P/'source-guards.json')['source_SHA256'];assert all(digest((Q/n).read_bytes())==v for n,v in source.items())
+resumed=call('shell','dumpsys','activity','activities');assert any('topResumedActivity=' in line and APP+'/.MainActivity' in line for line in resumed.splitlines());before_pid=call('shell','pidof',APP).split();assert before_pid and all(x.isdigit() for x in before_pid)
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'force_stop_count':1,'native_skips':0,'before_pid_count':len(before_pid),'before':s,'projection_null_before':True,'actions':[],'one_force_stop_only':True};c['force_stop_count']=1;write(P/'private/config.private.json',c);write(P/'restart-progress.json',r)
+try:
+ p=subprocess.run([ADB,'shell','am','force-stop',APP],stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=35);(P/'private/force-stop-terminal.private.log').write_bytes(p.stdout);r['force_stop_native_exit']=p.returncode;assert p.returncode==0;r['actions'].append('ONE ordinaryforce-stop approvedpackageonly')
+ p=subprocess.run([ADB,'shell','pidof',APP],stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=20);assert p.returncode==1 and not p.stdout.strip();r['no_process_after_force_stop']=True
+ p=subprocess.run([ADB,'shell','am','start','-W','-n',APP+'/.MainActivity'],stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=35);(P/'private/start-terminal.private.log').write_bytes(p.stdout);r['start_native_exit']=p.returncode;assert p.returncode==0;r['actions'].append('ONE ordinarynativeMainActivitystart');start=time.monotonic();workspace=False
+ while time.monotonic()-start<40:
+  rows=nodes();assert not any(label(n) in ['Логин','Пароль'] for n in rows);assert not any((n.get('package')or'').endswith('permissioncontroller') for n in rows)
+  if any(label(n)=='Открыть навигацию' for n in rows):workspace=True;break
+  if not any(n.get('package')==APP for n in rows):raise RuntimeError('Otherapp/lockscreen/systempromptorunavailableworkspace')
+  time.sleep(.4)
+ assert workspace;after_pid=call('shell','pidof',APP).split();assert after_pid and set(before_pid).isdisjoint(after_pid);r['PID_changed']=True;r['workspace_observed']=True;r['workspace_observation_elapsed_ms_including_ADB']=round((time.monotonic()-start)*1000)
+ p=subprocess.run([sys.executable,'-X','utf8',str(P/'profile_guard.py'),'after'],stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=120);(P/'private/profile-after-terminal.private.log').write_bytes(p.stdout);r['profile_guard_child_exit']=p.returncode;assert p.returncode==0 and own(c)
+ after=state();assert not after['voice_connected'] and not after['microphone_fgs'] and after['permission']==s['permission'];assert re.search(r'Media Projection:\s*null\s*$',call('shell','dumpsys','media_projection'));r.update(status='PASS_SCOPED_ONE_COLD_PROCESS_RESTART_OWN_PROFILE_DM_RESTORED_UI_ONLY_PENDING_POST_CONTROL',native_exit=0,after=after,projection_null_after=True,after_capture=capture('after-restart-owned-DM'))
+except Exception as e:r.update(status='BLOCKED_NATIVE_COLD_RESTORE_OR_CONTROLLER_GUARD',error_type=type(e).__name__,native_exit=2,failed_capture=capture('restart-failed'))
+r['finished_at_utc']=datetime.now(timezone.utc).isoformat();write(P/'restart-result.json',r);print({k:v for k,v in r.items() if k in ['status','native_exit','native_skips','PID_changed','force_stop_count','force_stop_native_exit','start_native_exit','profile_guard_child_exit','error_type']});raise SystemExit(r['native_exit'])

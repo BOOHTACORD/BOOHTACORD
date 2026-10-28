@@ -1,0 +1,18 @@
+import json,os,subprocess
+from urllib.parse import quote
+from common import P,Q,SOURCE,WORK,read,write,now,digest,sql,table_state
+before=read(P/'before.json')
+assert all(digest((P/f).read_bytes())==h for f,h in before['helper_hashes'].items())
+c=read(WORK/'credentials.private.json');env=dict(os.environ)
+env['VOICE_PLATFORM_TEST_DATABASE_URL']='postgres://boohtacord_qa:'+quote(c['database_password'],safe='')+'@127.0.0.1:15436/boohtacord_qa?sslmode=disable'
+names=['TestSearchCreatesMixedConversationCursor','TestSearchRejectsInvalidInputBeforeStore','TestDateBoundContractPatternAcceptsClientFractionalInstants','TestSearchDateRangeNormalizesOffsetsAndRetainsBoundsOnCursor','TestSearchRejectsInvalidDateRangeBeforeStore','TestSearchAcceptsUnboundedOrSingleSidedDateRange','TestHandlerUsesSessionActorAndCurrentConversationFilter','TestHandlerForwardsExplicitDateBoundsAndCursor','TestHandlerRejectsAmbiguousOrEmptyDateParameters','TestSearchFiltersAttachmentsAndAuthorsWithinReadableScope','TestDateRangeInclusiveStartExclusiveEndAndPrivateMixedCursor','TestDateRangeDoesNotReviveDeletedMessagesOrHiddenAttachments']
+command=[r'C:\Program Files\Go\bin\go.exe','test','-json','-count=1','-run','^('+'|'.join(names)+')$','./internal/chat/search_messages/...']
+proc=subprocess.run(command,cwd=Q/'backend',env=env,capture_output=True,timeout=150)
+(P/'private/native.stdout.jsonl').write_bytes(proc.stdout);(P/'private/native.stderr.txt').write_bytes(proc.stderr)
+events=[json.loads(line) for line in proc.stdout.splitlines() if line.startswith(b'{')]
+passed=[e['Test'] for e in events if e['Action']=='pass' and e.get('Test')]
+skips=[e for e in events if e['Action']=='skip'];failures=[e for e in events if e['Action']=='fail']
+result={'utc':now(),'source':SOURCE,'command':command,'exit':proc.returncode,'passed_tests':passed,'pass_count':len(passed),'skip_count':len(skips),'fail_count':len(failures),'stdout_sha256':digest(proc.stdout),'stderr_sha256':digest(proc.stderr),'schemas_after':sql("SELECT count(*) FROM pg_namespace WHERE nspname LIKE 'voice_it_%';").strip(),'public_tables_unchanged':table_state()==before['database']}
+write(P/'native-result.json',result)
+assert proc.returncode==0 and not skips and not failures and set(passed)==set(names) and result['public_tables_unchanged'] and result['schemas_after']==before['disposable_schemas']
+print('PASS12 focused native Go tests,0skips,public tables unchanged,disposable schemas cleaned')

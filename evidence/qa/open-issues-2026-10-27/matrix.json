@@ -1114,7 +1114,10 @@
             "ANDROID-signed-master-candidate-in-place-upgrade",
             "ANDROID-master-landscape-ime-send-voice-dock-overlap",
             "PRODUCTION-DM-protected-image-access-revocation",
-            "ANDROID-image-viewer-delete-invalidation"
+            "ANDROID-image-viewer-delete-invalidation",
+            "ANDROID-original-image-download-viewer-and-card-six",
+            "ANDROID-cold-start-auth-explicit-refresh",
+            "WINDOWS-owned-image-lifecycle-handshake"
           ],
           "evidence": [
             "native-realtime-result.json",
@@ -1129,9 +1132,12 @@
             "android-upgrade/summary.json",
             "android-orientation-master/summary.json",
             "production-dm-image-revocation/semantic-result.json",
-            "production-dm-image-revocation/revocation-result.json"
+            "production-dm-image-revocation/revocation-result.json",
+            "coordinated-agents-2026-10-28/phone/summary.json",
+            "coordinated-agents-2026-10-28/restart/summary.json",
+            "coordinated-agents-2026-10-28/windows/attempt2/summary.json"
           ],
-          "execution": "node .out/qa-goal/native_realtime_run.mjs; node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback; node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py; python .out/qa-goal/android_filechooser.py; Physical listening at PC and phone; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python -X utf8 .out/qa-goal/verify_android_candidate.py; node .out/qa-goal/native_upgrade_peer.mjs before; python -X utf8 .out/qa-goal/android_candidate_install.py; python -X utf8 .out/qa-goal/upgrade_restore_owned_dm.py; node .out/qa-goal/native_upgrade_peer.mjs after; python -X utf8 .out/qa-goal/android_candidate_after.py; node .out/qa-goal/native_ptt_peer.mjs upgrade-final; python -X utf8 .out/qa-native-image-formats/critical_checks.py; python -X utf8 .out/qa-native-image-formats/denial_review.py; python -X utf8 .out/qa-native-image-formats/denied_payloads.py; python -X utf8 .out/qa-native-image-formats/revocation.py",
+          "execution": "node .out/qa-goal/native_realtime_run.mjs; node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback; node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py; python .out/qa-goal/android_filechooser.py; Physical listening at PC and phone; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python -X utf8 .out/qa-goal/verify_android_candidate.py; node .out/qa-goal/native_upgrade_peer.mjs before; python -X utf8 .out/qa-goal/android_candidate_install.py; python -X utf8 .out/qa-goal/upgrade_restore_owned_dm.py; node .out/qa-goal/native_upgrade_peer.mjs after; python -X utf8 .out/qa-goal/android_candidate_after.py; node .out/qa-goal/native_ptt_peer.mjs upgrade-final; python -X utf8 .out/qa-native-image-formats/critical_checks.py; python -X utf8 .out/qa-native-image-formats/denial_review.py; python -X utf8 .out/qa-native-image-formats/denied_payloads.py; python -X utf8 .out/qa-native-image-formats/revocation.py; python -X utf8 .out/qa-agent-phone/preflight.py; use phone/summary.json actual_commands for prepare/send/reveal/native download/save/verify; cleanup_batch.py; Follow restart/summary.json exact commands and cleanup; Fresh native existing DM list/private expected-peer comparison; see windows/attempt2/summary.json",
           "platform": "Physical Samsung SM-A576B Android16; signed 1.0.45+2080 paired with Chrome; Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Physical Samsung SM-A576B Android16, signed1.0.45+2080; actual Android permission controller; headed Chrome peer; Physical Samsung SM-A576B Android16; signed1.0.45+2080; protected production roster read by controlled peer; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Physical Windows + Samsung; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
           "result": "android-connectivity/summary.json",
@@ -1144,7 +1150,10 @@
             "AUDIO-audibility: User answered 2026-10-27 that they cannot listen now. Packet counters never substitute for listening.",
             "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim.",
             "PRODUCTION-DM-protected-image-access-revocation: API facet only.25 reviewed boundaries,2 opaque409 controls and9 denied-body controls. No ADMIN, account-block, native logout, browser UI or cross-DM attachment admission acceptance. Physical viewer failure is a separate case.",
-            "ANDROID-image-viewer-delete-invalidation: One physical PNG reproduction, viewer remains through a24,766ms post-control observer window; exact known bitmap is probed inside that window. Not a backend ACL bypass. Native save after deletion is observation only without positive save control; no full media/other-platform acceptance."
+            "ANDROID-image-viewer-delete-invalidation: One physical PNG reproduction, viewer remains through a24,766ms post-control observer window; exact known bitmap is probed inside that window. Not a backend ACL bypass. Native save after deletion is observation only without positive save control; no full media/other-platform acceptance.",
+            "ANDROID-original-image-download-viewer-and-card-six: Six native controls, SHAoriginal != preview, six files/messages cleaned and own session revoked. No native upload/TEXT/ADMIN/revoke-while-open/GIF animation or whole browser gate. Existing589 remains open.",
+            "ANDROID-cold-start-auth-explicit-refresh: One restart. Explicit refresh required for auth-positive; pre/post passive windows NOT_PROVEN. Third semantic payload clipped5px until explicit scroll: no full passive visibility/p95 or causal restart regression. Three own messages/session cleaned.",
+            "WINDOWS-owned-image-lifecycle-handshake: Expected peer absent from currently rendered list; authoritative server absence not proven. No new DM/fixture/session; no Windows image verdict or Android589 extension."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -1183,7 +1192,10 @@
               "ANDROID-signed-master-candidate-in-place-upgrade",
               "ANDROID-master-landscape-ime-send-voice-dock-overlap",
               "PRODUCTION-DM-protected-image-access-revocation",
-              "ANDROID-image-viewer-delete-invalidation"
+              "ANDROID-image-viewer-delete-invalidation",
+              "ANDROID-original-image-download-viewer-and-card-six",
+              "ANDROID-cold-start-auth-explicit-refresh",
+              "WINDOWS-owned-image-lifecycle-handshake"
             ]
           },
           "reason": " Physical Android PTT UP/outside-UP/CANCEL/HOME server-mute and resume facets passed; all other source-row clauses and stated audio/AT/platform limits remain unaccepted. Physical landscape90/IME preserved draft and voice but native voice dock covered Send in2/2 runs; other platform/AT/selection/send variants remain unaccepted. Physical WiFi→cellular native DM/PC render and original-state restoration verified, with retained controller cleanup failures; full SDK/audio/background/platform/revoke matrix remains unaccepted. Physical already-open PNG viewer retains deleted cached content despite fresh underlying tombstone/control and server404: bug589. API MEMBER/anonymous/revoked/Origin facet passes; full native gate remains FAIL.",
@@ -1296,7 +1308,10 @@
         "ANDROID-signed-master-candidate-in-place-upgrade",
         "ANDROID-master-landscape-ime-send-voice-dock-overlap",
         "PRODUCTION-DM-protected-image-access-revocation",
-        "ANDROID-image-viewer-delete-invalidation"
+        "ANDROID-image-viewer-delete-invalidation",
+        "ANDROID-original-image-download-viewer-and-card-six",
+        "ANDROID-cold-start-auth-explicit-refresh",
+        "WINDOWS-owned-image-lifecycle-handshake"
       ],
       "evidence": [
         "native-realtime-result.json",
@@ -1311,7 +1326,10 @@
         "android-upgrade/summary.json",
         "android-orientation-master/summary.json",
         "production-dm-image-revocation/semantic-result.json",
-        "production-dm-image-revocation/revocation-result.json"
+        "production-dm-image-revocation/revocation-result.json",
+        "coordinated-agents-2026-10-28/phone/summary.json",
+        "coordinated-agents-2026-10-28/restart/summary.json",
+        "coordinated-agents-2026-10-28/windows/attempt2/summary.json"
       ],
       "defects": [
         582,
@@ -1616,15 +1634,17 @@
             "ANDROID-native-PNG-picker-send-view-delete",
             "WEB-JPEG-GIF-private-image-lifecycle",
             "WEB-viewer-download-format-mismatch",
-            "PRODUCTION-DM-protected-image-access-revocation"
+            "PRODUCTION-DM-protected-image-access-revocation",
+            "WEB-production-protected-viewer-policy-blocked"
           ],
           "evidence": [
             "privacy-result.json#/checks/actual_image_upload_and_protected_download",
             "native-image/summary.json",
             "web-image-formats/summary.json",
-            "production-dm-image-revocation/semantic-result.json"
+            "production-dm-image-revocation/semantic-result.json",
+            "coordinated-agents-2026-10-28/browser/browser-ui-policy-blocker-user-selected.json"
           ],
-          "execution": "node .out/qa-goal/privacy_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs; python -X utf8 .out/qa-native-image-formats/critical_checks.py; python -X utf8 .out/qa-native-image-formats/denial_review.py; python -X utf8 .out/qa-native-image-formats/denied_payloads.py",
+          "execution": "node .out/qa-goal/privacy_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs; python -X utf8 .out/qa-native-image-formats/critical_checks.py; python -X utf8 .out/qa-native-image-formats/denial_review.py; python -X utf8 .out/qa-native-image-formats/denied_payloads.py; Computer Use @oai/sky list_apps/get_window/get_window_state; exact denial in browser receipts",
           "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS; Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
           "result": "privacy-result.json#/checks/actual_image_upload_and_protected_download; native-image/summary.json; web-image-formats/summary.json",
@@ -1633,7 +1653,8 @@
             "ANDROID-native-PNG-picker-send-view-delete: PNG only; no personal files/pixels published. Native raster uses embedded-ICC-aware synthetic probe. No third ADMIN, clipboard, native download or post-delete preview claim.",
             "WEB-JPEG-GIF-private-image-lifecycle: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
             "WEB-viewer-download-format-mismatch: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
-            "PRODUCTION-DM-protected-image-access-revocation: API facet only.25 reviewed boundaries,2 opaque409 controls and9 denied-body controls. No ADMIN, account-block, native logout, browser UI or cross-DM attachment admission acceptance. Physical viewer failure is a separate case."
+            "PRODUCTION-DM-protected-image-access-revocation: API facet only.25 reviewed boundaries,2 opaque409 controls and9 denied-body controls. No ADMIN, account-block, native logout, browser UI or cross-DM attachment admission acceptance. Physical viewer failure is a separate case.",
+            "WEB-production-protected-viewer-policy-blocked: Two policy stops, second after direct human tab/URL selection. No input/fixture/session; no browser behavior or new product bug. Native tests do not replace this gate."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -1651,7 +1672,8 @@
               "ANDROID-native-PNG-picker-send-view-delete",
               "WEB-JPEG-GIF-private-image-lifecycle",
               "WEB-viewer-download-format-mismatch",
-              "PRODUCTION-DM-protected-image-access-revocation"
+              "PRODUCTION-DM-protected-image-access-revocation",
+              "WEB-production-protected-viewer-policy-blocked"
             ]
           }
         },
@@ -1932,7 +1954,8 @@
         "WEB-JPEG-GIF-private-image-lifecycle",
         "WEB-viewer-download-format-mismatch",
         "ANDROID-physical-ptt-release-cancel-home",
-        "PRODUCTION-DM-protected-image-access-revocation"
+        "PRODUCTION-DM-protected-image-access-revocation",
+        "WEB-production-protected-viewer-policy-blocked"
       ],
       "evidence": [
         "native-realtime-result.json",
@@ -1944,7 +1967,8 @@
         "native-image/summary.json",
         "web-image-formats/summary.json",
         "native-ptt/summary.json",
-        "production-dm-image-revocation/semantic-result.json"
+        "production-dm-image-revocation/semantic-result.json",
+        "coordinated-agents-2026-10-28/browser/browser-ui-policy-blocker-user-selected.json"
       ],
       "defects": [
         581
@@ -2205,7 +2229,10 @@
       ],
       "blockers": [],
       "source_body_sha256": "cc4f531679599ea7bead81f481f19ce4f31e8cd2327642182b12aa72b64afbd8",
-      "source_snapshot": ".out/qa-goal/open-issues-snapshot.json"
+      "source_snapshot": ".out/qa-goal/open-issues-snapshot.json",
+      "mandatory_original_source_qualifiers": [
+        "I132.Q1"
+      ]
     },
     {
       "number": 154,
@@ -9359,12 +9386,14 @@
           "status": "PARTIAL",
           "execution_cases": [
             "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
-            "ANDROID-ADMIN-explicit-search-after-owned-delete"
+            "ANDROID-ADMIN-explicit-search-after-owned-delete",
+            "ISOLATED-search-filtered-cursor-ACL"
           ],
           "evidence": [
-            "native-admin-search-privacy/summary.json"
+            "native-admin-search-privacy/summary.json",
+            "coordinated-agents-2026-10-28/search/aggregate-result.json"
           ],
-          "execution": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental. | Use only the applicable scoped commands in cases.json, including node .out/qa-goal/privacy_run.mjs, node .out/qa-goal/web_logout_run.mjs, node .out/qa-goal/quickjump_run.mjs and node .out/qa-goal/web_image_formats_run.mjs; execute remaining row steps separately. | native-admin-search-privacy/README.md actual ADMIN native all-scope UI with independently searchable owned API fixtures.",
+          "execution": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental. | Use only the applicable scoped commands in cases.json, including node .out/qa-goal/privacy_run.mjs, node .out/qa-goal/web_logout_run.mjs, node .out/qa-goal/quickjump_run.mjs and node .out/qa-goal/web_image_formats_run.mjs; execute remaining row steps separately. | native-admin-search-privacy/README.md actual ADMIN native all-scope UI with independently searchable owned API fixtures.; Follow search/summary.json native and runtime commands",
           "platform": "Disposable owned PostgreSQL/API/LiveKit target and bounded synthetic accounts/data; never shared production fault/load injection. | Installed headed Windows Chrome and explicitly stated CSS viewport; no physical mobile/other-browser substitution.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
           "result": "native-admin-search-privacy/summary.json",
@@ -9385,13 +9414,15 @@
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
             "existing_scoped_witnesses": [
               "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
-              "ANDROID-ADMIN-explicit-search-after-owned-delete"
+              "ANDROID-ADMIN-explicit-search-after-owned-delete",
+              "ISOLATED-search-filtered-cursor-ACL"
             ]
           },
           "reason": "Physical ADMIN global-search foreign-DM and explicit post-delete exclusion now scoped PASS; author/date/attachments/DST/cursors/plans and remaining platforms still unaccepted.",
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
           "witness_limits": [
-            "Native rendered search only, with API fixture controls from Windows. No third ADMIN browser, raw native response/socket hints/unread/OS alert/file ACL/block/revoke/other-platform/whole search-filter or acoustic acceptance. Explicit search after delete; no automatic cache-invalidation claim."
+            "Native rendered search only, with API fixture controls from Windows. No third ADMIN browser, raw native response/socket hints/unread/OS alert/file ACL/block/revoke/other-platform/whole search-filter or acoustic acceptance. Explicit search after delete; no automatic cache-invalidation claim.",
+            "ISOLATED-search-filtered-cursor-ACL: No production/CUA/browser UI/load claim. Three metadata attachments are not upload/download acceptance. Original PARTIAL cleanup retained; separate guarded transaction restores all10baseline fingerprints and four own accounts."
           ]
         },
         {
@@ -9744,21 +9775,24 @@
             "ANDROID-admin-role-popup-root-Back",
             "ANDROID-admin-2x-IME-Back-unaccepted",
             "ANDROID-admin-2x-Gboard-keeps-focus",
-            "ANDROID-admin-1x-Gboard-query-Back"
+            "ANDROID-admin-1x-Gboard-query-Back",
+            "WINDOWS-native-admin-seven-readonly-sections"
           ],
           "evidence": [
             "windows-admin-entry-attempt.json",
             "native-admin/summary.json",
-            "native-admin-gboard/summary.json"
+            "native-admin-gboard/summary.json",
+            "coordinated-agents-2026-10-28/windows/admin/summary.json"
           ],
-          "execution": "Computer Use node_repl @oai/sky: get_window_state -> observed account Settings element_index click; fresh observation retry; activate_window; paired Tab/ShiftTab; exact tool error retained | Physical Android: follow native-admin/README.md with preserved exact runner sources and observed ADB/native UI guards. | Actual Gboard production procedure: native-admin-gboard/README.md; explicit physical observation assertion exits1 for both2x runs,0 for1x control.",
+          "execution": "Computer Use node_repl @oai/sky: get_window_state -> observed account Settings element_index click; fresh observation retry; activate_window; paired Tab/ShiftTab; exact tool error retained | Physical Android: follow native-admin/README.md with preserved exact runner sources and observed ADB/native UI guards. | Actual Gboard production procedure: native-admin-gboard/README.md; explicit physical observation assertion exits1 for both2x runs,0 for1x control.; Computer Use @oai/sky exact section actions in windows/admin/summary.json; fresh target/action/observe, Escape restore",
           "platform": "Physical Windows; installed native1.0.47+82/sourcef5cd7835; supported Windows Computer Use only | Physical Samsung SM-A576B Android16 signed1.0.47+2082/source072426d6, real font1.0/1.3/2.0, production HTTPS",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
           "result": "native-admin-gboard/summary.json",
           "witness_limits": [
             "WINDOWS-native-admin-entry: Two indexed clicks rejected by the helper cache. No admin panel entered, no data mutation or app defect established; keyboard focus name/restoration not proven.",
             "Native admin: Navigation/static chrome only; no CRUD/API success, whole44dp/SafeArea/AT/contrast/keyboard matrix, acoustic or all-platform claim. Full QA gates remain open.2x input acceptance unproven; controller failures retained.",
-            "Physical Samsung/source072426d6/Gboard18.5.4 only; no TalkBack/human/hardware-keyboard/other-platform/whole-admin or acoustic acceptance. No exact latency/capacity/causal patch claim. Original controller failures remain historical."
+            "Physical Samsung/source072426d6/Gboard18.5.4 only; no TalkBack/human/hardware-keyboard/other-platform/whole-admin or acoustic acceptance. No exact latency/capacity/causal patch claim. Original controller failures remain historical.",
+            "WINDOWS-native-admin-seven-readonly-sections: 78.465s of120s. No CRUD/fields/roles/security/media changes. Media EMPTY0fresh; populated media, exact focus, Enter/Space, scale/IME/resize/SR remain NOT_RUN/NOT_PROVEN. Candidate source is manifest declaration,53file hash integrity only."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -9789,7 +9823,8 @@
               "ANDROID-admin-role-popup-root-Back",
               "ANDROID-admin-2x-IME-Back-unaccepted",
               "ANDROID-admin-2x-Gboard-keeps-focus",
-              "ANDROID-admin-1x-Gboard-query-Back"
+              "ANDROID-admin-1x-Gboard-query-Back",
+              "WINDOWS-native-admin-seven-readonly-sections"
             ]
           },
           "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
@@ -9932,7 +9967,9 @@
         "ANDROID-admin-2x-Gboard-keeps-focus",
         "ANDROID-admin-1x-Gboard-query-Back",
         "ANDROID-ADMIN-global-search-foreign-DM-exclusion",
-        "ANDROID-ADMIN-explicit-search-after-owned-delete"
+        "ANDROID-ADMIN-explicit-search-after-owned-delete",
+        "WINDOWS-native-admin-seven-readonly-sections",
+        "ISOLATED-search-filtered-cursor-ACL"
       ],
       "evidence": [
         "privacy-result.json",
@@ -9948,7 +9985,9 @@
         "android-connectivity/summary.json",
         "native-admin/summary.json",
         "native-admin-gboard/summary.json",
-        "native-admin-search-privacy/summary.json"
+        "native-admin-search-privacy/summary.json",
+        "coordinated-agents-2026-10-28/windows/admin/summary.json",
+        "coordinated-agents-2026-10-28/search/aggregate-result.json"
       ],
       "defects": [
         581,
@@ -11289,19 +11328,22 @@
           "status": "PARTIAL",
           "execution_cases": [
             "WEB-session-revocation-draft-isolation",
-            "WINDOWS-native-admin-entry"
+            "WINDOWS-native-admin-entry",
+            "WINDOWS-native-account-menu-keyboard-cancel"
           ],
           "evidence": [
             "web-session-contract/logout.json",
-            "windows-admin-entry-attempt.json"
+            "windows-admin-entry-attempt.json",
+            "coordinated-agents-2026-10-28/windows/attempt2/summary.json"
           ],
-          "execution": "node .out/qa-goal/web_logout_run.mjs; Computer Use node_repl @oai/sky: get_window_state -> observed account Settings element_index click; fresh observation retry; activate_window; paired Tab/ShiftTab; exact tool error retained",
+          "execution": "node .out/qa-goal/web_logout_run.mjs; Computer Use node_repl @oai/sky: get_window_state -> observed account Settings element_index click; fresh observation retry; activate_window; paired Tab/ShiftTab; exact tool error retained; Computer Use @oai/sky: fresh native target, account launcher, Tab, Shift+Tab, Escape with fresh settled observations",
           "platform": "Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only; Physical Windows; installed native1.0.47+82/sourcef5cd7835; supported Windows Computer Use only",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
           "result": "web-session-contract/logout.json; windows-admin-entry-attempt.json",
           "witness_limits": [
             "WEB-session-revocation-draft-isolation: No BFcache restore, immediate passive second-tab purge, native logout, password reset, external provider or stale callback acceptance",
-            "WINDOWS-native-admin-entry: Two indexed clicks rejected by the helper cache. No admin panel entered, no data mutation or app defect established; keyboard focus name/restoration not proven."
+            "WINDOWS-native-admin-entry: Two indexed clicks rejected by the helper cache. No admin panel entered, no data mutation or app defect established; keyboard focus name/restoration not proven.",
+            "WINDOWS-native-account-menu-keyboard-cancel: Admin/Logout highlighted without activation. AX panel cannot prove exact opener focus or screen reader. Early user-input guard preserved, final native channel restored."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -11319,7 +11361,8 @@
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
             "existing_scoped_witnesses": [
               "WEB-session-revocation-draft-isolation",
-              "WINDOWS-native-admin-entry"
+              "WINDOWS-native-admin-entry",
+              "WINDOWS-native-account-menu-keyboard-cancel"
             ]
           }
         },
@@ -11495,7 +11538,8 @@
         "WINDOWS-native-admin-entry",
         "ANDROID-admin-2x-Gboard-keeps-focus",
         "ANDROID-admin-1x-Gboard-query-Back",
-        "ANDROID-search-scope-48dp-touch-target"
+        "ANDROID-search-scope-48dp-touch-target",
+        "WINDOWS-native-account-menu-keyboard-cancel"
       ],
       "evidence": [
         "quickjump-result.json",
@@ -11504,7 +11548,8 @@
         "web-session-contract/logout.json",
         "windows-admin-entry-attempt.json",
         "native-admin-gboard/summary.json",
-        "native-search-touch-targets/summary.json"
+        "native-search-touch-targets/summary.json",
+        "coordinated-agents-2026-10-28/windows/attempt2/summary.json"
       ],
       "defects": [
         580,
@@ -11901,7 +11946,10 @@
             "ANDROID-admin-role-popup-root-Back",
             "ANDROID-admin-2x-IME-Back-unaccepted",
             "ANDROID-admin-2x-Gboard-keeps-focus",
-            "ANDROID-admin-1x-Gboard-query-Back"
+            "ANDROID-admin-1x-Gboard-query-Back",
+            "ANDROID-explicit-retry-visible-state-only",
+            "WINDOWS-native-account-menu-keyboard-cancel",
+            "WINDOWS-native-admin-seven-readonly-sections"
           ],
           "evidence": [
             "native-chat/summary.json",
@@ -11914,9 +11962,12 @@
             "android-orientation-master/summary.json",
             "production-native-resume/summary.json",
             "native-admin/summary.json",
-            "native-admin-gboard/summary.json"
+            "native-admin-gboard/summary.json",
+            "coordinated-agents-2026-10-28/phone/reconnect-summary.json",
+            "coordinated-agents-2026-10-28/windows/attempt2/summary.json",
+            "coordinated-agents-2026-10-28/windows/admin/summary.json"
           ],
-          "execution": "node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs | Actual Gboard production procedure: native-admin-gboard/README.md; explicit physical observation assertion exits1 for both2x runs,0 for1x control.",
+          "execution": "node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; node .out/qa-goal/web_logout_run.mjs; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python .out/qa-goal/image_format_fixtures.py; node .out/qa-goal/web_image_formats_run.mjs | Actual Gboard production procedure: native-admin-gboard/README.md; explicit physical observation assertion exits1 for both2x runs,0 for1x control.; python -X utf8 .out/qa-agent-phone/reconnect.py; python -X utf8 .out/qa-agent-phone/history_refresh.py; Computer Use @oai/sky: fresh native target, account launcher, Tab, Shift+Tab, Escape with fresh settled observations; Computer Use @oai/sky exact section actions in windows/admin/summary.json; fresh target/action/observe, Escape restore",
           "platform": "Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Installed headed Windows Chrome155, production Web072426d6, controlled MEMBER B/C only; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS; Physical Windows installed headed Chrome155; real production Web072426d6; owned MEMBER B/C DM;1440/390 CSS px",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
           "result": "native-admin-gboard/summary.json",
@@ -11928,7 +11979,10 @@
             "WEB-viewer-download-format-mismatch: DM only; file-input API not OS picker; no clipboard/TEXT/507/third ADMIN/native/GIF animation/human AT acceptance",
             "Production native resume: three scoped DM facets pass; transient WSS recovery root cause unknown; all prior failures and remaining source-row/platform clauses remain required.",
             "Native admin: Navigation/static chrome only; no CRUD/API success, whole44dp/SafeArea/AT/contrast/keyboard matrix, acoustic or all-platform claim. Full QA gates remain open.2x input acceptance unproven; controller failures retained.",
-            "Physical Samsung/source072426d6/Gboard18.5.4 only; no TalkBack/human/hardware-keyboard/other-platform/whole-admin or acoustic acceptance. No exact latency/capacity/causal patch claim. Original controller failures remain historical."
+            "Physical Samsung/source072426d6/Gboard18.5.4 only; no TalkBack/human/hardware-keyboard/other-platform/whole-admin or acoustic acceptance. No exact latency/capacity/causal patch claim. Original controller failures remain historical.",
+            "ANDROID-explicit-retry-visible-state-only: UI-only. Zero image controls both before/after refresh; no passive deletion, network cause, voice recovery or full reconnect PASS inferred.",
+            "WINDOWS-native-account-menu-keyboard-cancel: Admin/Logout highlighted without activation. AX panel cannot prove exact opener focus or screen reader. Early user-input guard preserved, final native channel restored.",
+            "WINDOWS-native-admin-seven-readonly-sections: 78.465s of120s. No CRUD/fields/roles/security/media changes. Media EMPTY0fresh; populated media, exact focus, Enter/Space, scale/IME/resize/SR remain NOT_RUN/NOT_PROVEN. Candidate source is manifest declaration,53file hash integrity only."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -11954,12 +12008,19 @@
               "ANDROID-orientation-draft-voice-retention",
               "ANDROID-landscape-ime-send-voice-dock-overlap",
               "ANDROID-wifi-cellular-native-DM-and-restoration",
+              "ANDROID-master-landscape-ime-send-voice-dock-overlap",
+              "ANDROID-production-resume-outbound",
+              "ANDROID-production-resume-manual-history",
+              "ANDROID-production-resume-live-receive",
               "ANDROID-admin-sections-fonts-targets",
               "ANDROID-admin-1x-IME-Back",
               "ANDROID-admin-role-popup-root-Back",
               "ANDROID-admin-2x-IME-Back-unaccepted",
               "ANDROID-admin-2x-Gboard-keeps-focus",
-              "ANDROID-admin-1x-Gboard-query-Back"
+              "ANDROID-admin-1x-Gboard-query-Back",
+              "ANDROID-explicit-retry-visible-state-only",
+              "WINDOWS-native-account-menu-keyboard-cancel",
+              "WINDOWS-native-admin-seven-readonly-sections"
             ]
           },
           "reason": "Confirmed physical2x Gboard first-character focus/IME loss in2/2 attempts;1x four-key/Back control passed. All original missing platform/AT/body/CRUD requirements remain unaccepted; other existing failures retained.",
@@ -11987,7 +12048,8 @@
             "ANDROID-admin-2x-IME-Back-unaccepted",
             "ANDROID-admin-2x-Gboard-keeps-focus",
             "ANDROID-admin-1x-Gboard-query-Back",
-            "ANDROID-search-scope-48dp-touch-target"
+            "ANDROID-search-scope-48dp-touch-target",
+            "ANDROID-native-keyboard-SystemBack-draft"
           ],
           "evidence": [
             "android-text-scale-review.json",
@@ -11997,9 +12059,10 @@
             "android-orientation-master/summary.json",
             "native-admin/summary.json",
             "native-admin-gboard/summary.json",
-            "native-search-touch-targets/summary.json"
+            "native-search-touch-targets/summary.json",
+            "coordinated-agents-2026-10-28/phone/keyboard-summary.json"
           ],
-          "execution": "python .out/qa-goal/android_text_scale.py; inspect original-resolution captures; python .out/qa-goal/android_filechooser.py | Actual Gboard production procedure: native-admin-gboard/README.md; explicit physical observation assertion exits1 for both2x runs,0 for1x control. | native-search-touch-targets/README.md actual8-point dropdown activation and48dp assertion.",
+          "execution": "python .out/qa-goal/android_text_scale.py; inspect original-resolution captures; python .out/qa-goal/android_filechooser.py | Actual Gboard production procedure: native-admin-gboard/README.md; explicit physical observation assertion exits1 for both2x runs,0 for1x control. | native-search-touch-targets/README.md actual8-point dropdown activation and48dp assertion.; python -X utf8 .out/qa-agent-phone/keyboard_back.py",
           "platform": "Physical Samsung SM-A576B Android16, signed1.0.45+2080; Gboard18.5.4; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
           "result": "native-search-touch-targets/summary.json",
@@ -12008,7 +12071,8 @@
             "ANDROID-real-filechooser-cancel: No file was selected or uploaded, no personal file listings/captures retained; not browser file chooser or image-viewer acceptance",
             "Native admin: Navigation/static chrome only; no CRUD/API success, whole44dp/SafeArea/AT/contrast/keyboard matrix, acoustic or all-platform claim. Full QA gates remain open.2x input acceptance unproven; controller failures retained.",
             "Physical Samsung/source072426d6/Gboard18.5.4 only; no TalkBack/human/hardware-keyboard/other-platform/whole-admin or acoustic acceptance. No exact latency/capacity/causal patch claim. Original controller failures remain historical.",
-            "One physical Android/font1.0/density450 profile,8 discrete points at one x; no complete touch map, whole control inventory, TalkBack/other-platform/large-text or acoustic acceptance. Disabled Find is a geometry reference only. Source/typed test presence is not physical acceptance."
+            "One physical Android/font1.0/density450 profile,8 discrete points at one x; no complete touch map, whole control inventory, TalkBack/other-platform/large-text or acoustic acceptance. Disabled Find is a geometry reference only. Source/typed test presence is not physical acceptance.",
+            "ANDROID-native-keyboard-SystemBack-draft: 38synthetic characters,22px IME gap. No restart persistence, orientation/large text, screen reader, send or full iOS/Android criterion."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -12035,13 +12099,15 @@
               "ANDROID-physical-ptt-release-cancel-home",
               "ANDROID-orientation-draft-voice-retention",
               "ANDROID-landscape-ime-send-voice-dock-overlap",
+              "ANDROID-master-landscape-ime-send-voice-dock-overlap",
               "ANDROID-admin-sections-fonts-targets",
               "ANDROID-admin-1x-IME-Back",
               "ANDROID-admin-role-popup-root-Back",
               "ANDROID-admin-2x-IME-Back-unaccepted",
               "ANDROID-admin-2x-Gboard-keeps-focus",
               "ANDROID-admin-1x-Gboard-query-Back",
-              "ANDROID-search-scope-48dp-touch-target"
+              "ANDROID-search-scope-48dp-touch-target",
+              "ANDROID-native-keyboard-SystemBack-draft"
             ]
           },
           "reason": "Physical active search scope target32dp;4 inside/center activations and4 immediate outside misses. Required48dp check FAIL/exit1. Other existing failures and remaining platform/AT/inventory requirements retained.",
@@ -12059,19 +12125,25 @@
           "status": "PARTIAL",
           "execution_cases": [
             "WINDOWS-dialog",
-            "WINDOWS-native-admin-entry"
+            "WINDOWS-native-admin-entry",
+            "WINDOWS-native-account-menu-keyboard-cancel",
+            "WINDOWS-native-admin-seven-readonly-sections"
           ],
           "evidence": [
             "windows-dialog.json",
-            "windows-admin-entry-attempt.json"
+            "windows-admin-entry-attempt.json",
+            "coordinated-agents-2026-10-28/windows/attempt2/summary.json",
+            "coordinated-agents-2026-10-28/windows/admin/summary.json"
           ],
-          "execution": "Windows Computer Use; header Start -> Tab traversal -> Escape; subsequent settled Escape; Computer Use node_repl @oai/sky: get_window_state -> observed account Settings element_index click; fresh observation retry; activate_window; paired Tab/ShiftTab; exact tool error retained",
+          "execution": "Windows Computer Use; header Start -> Tab traversal -> Escape; subsequent settled Escape; Computer Use node_repl @oai/sky: get_window_state -> observed account Settings element_index click; fresh observation retry; activate_window; paired Tab/ShiftTab; exact tool error retained; Computer Use @oai/sky: fresh native target, account launcher, Tab, Shift+Tab, Escape with fresh settled observations; Computer Use @oai/sky exact section actions in windows/admin/summary.json; fresh target/action/observe, Escape restore",
           "platform": "Installed Windows native 1.0.47+82; Physical Windows; installed native1.0.47+82/sourcef5cd7835; supported Windows Computer Use only",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
           "result": "windows-dialog.json; windows-admin-entry-attempt.json",
           "witness_limits": [
             "WINDOWS-dialog: Focus restoration, every tab target and visual layout remain NOT_PROVEN; initial immediate AX state was unsettled.",
-            "WINDOWS-native-admin-entry: Two indexed clicks rejected by the helper cache. No admin panel entered, no data mutation or app defect established; keyboard focus name/restoration not proven."
+            "WINDOWS-native-admin-entry: Two indexed clicks rejected by the helper cache. No admin panel entered, no data mutation or app defect established; keyboard focus name/restoration not proven.",
+            "WINDOWS-native-account-menu-keyboard-cancel: Admin/Logout highlighted without activation. AX panel cannot prove exact opener focus or screen reader. Early user-input guard preserved, final native channel restored.",
+            "WINDOWS-native-admin-seven-readonly-sections: 78.465s of120s. No CRUD/fields/roles/security/media changes. Media EMPTY0fresh; populated media, exact focus, Enter/Space, scale/IME/resize/SR remain NOT_RUN/NOT_PROVEN. Candidate source is manifest declaration,53file hash integrity only."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -12092,7 +12164,9 @@
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
             "existing_scoped_witnesses": [
               "WINDOWS-dialog",
-              "WINDOWS-native-admin-entry"
+              "WINDOWS-native-admin-entry",
+              "WINDOWS-native-account-menu-keyboard-cancel",
+              "WINDOWS-native-admin-seven-readonly-sections"
             ]
           }
         },
@@ -12102,9 +12176,13 @@
           "source_checkbox": " ",
           "id": "I303.C5",
           "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "python .out/qa-goal/seal_evidence.py working; then manually inspect every required runtime receipt, visual observation, skip/platform limit and source identity.",
+          "execution_cases": [
+            "ANDROID-original-image-download-viewer-and-card-six"
+          ],
+          "evidence": [
+            "coordinated-agents-2026-10-28/phone/summary.json"
+          ],
+          "execution": "python .out/qa-goal/seal_evidence.py working; then manually inspect every required runtime receipt, visual observation, skip/platform limit and source identity.; python -X utf8 .out/qa-agent-phone/preflight.py; use phone/summary.json actual_commands for prepare/send/reveal/native download/save/verify; cleanup_batch.py",
           "platform": "Evidence files plus the actual platform stated in each receipt.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
           "result": null,
@@ -12119,10 +12197,15 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ANDROID-original-image-download-viewer-and-card-six"
+            ]
           },
           "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
+          "witness_limits": [
+            "ANDROID-original-image-download-viewer-and-card-six: Six native controls, SHAoriginal != preview, six files/messages cleaned and own session revoked. No native upload/TEXT/ADMIN/revoke-while-open/GIF animation or whole browser gate. Existing589 remains open."
+          ]
         },
         {
           "section": "Подзадачи",
@@ -12161,9 +12244,13 @@
           "source_checkbox": " ",
           "id": "I303.C7",
           "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Use only the applicable scoped commands in cases.json, including node .out/qa-goal/privacy_run.mjs, node .out/qa-goal/web_logout_run.mjs, node .out/qa-goal/quickjump_run.mjs and node .out/qa-goal/web_image_formats_run.mjs; execute remaining row steps separately. | Use applicable cases.json ADB/native helper commands and native-image/reproduce.md; run the remaining row's actual UI/OS steps on the physical approved candidate and verify the paired result. | Supported Computer Use node_repl @oai/sky: select returned native window, observe, perform one actual UI action and refresh; follow the exact source row task script. Preserve windows-admin-entry-attempt.json for the current input-cache blocker. | Supplemental isolated runtime: python3 -m tools.qa.accessibility_runtime.run; follow tools/qa/accessibility_runtime/README.md and this row's actual TalkBack/NVDA/VoiceOver/physical keyboard steps.",
+          "execution_cases": [
+            "ANDROID-original-image-download-viewer-and-card-six"
+          ],
+          "evidence": [
+            "coordinated-agents-2026-10-28/phone/summary.json"
+          ],
+          "execution": "Use only the applicable scoped commands in cases.json, including node .out/qa-goal/privacy_run.mjs, node .out/qa-goal/web_logout_run.mjs, node .out/qa-goal/quickjump_run.mjs and node .out/qa-goal/web_image_formats_run.mjs; execute remaining row steps separately. | Use applicable cases.json ADB/native helper commands and native-image/reproduce.md; run the remaining row's actual UI/OS steps on the physical approved candidate and verify the paired result. | Supported Computer Use node_repl @oai/sky: select returned native window, observe, perform one actual UI action and refresh; follow the exact source row task script. Preserve windows-admin-entry-attempt.json for the current input-cache blocker. | Supplemental isolated runtime: python3 -m tools.qa.accessibility_runtime.run; follow tools/qa/accessibility_runtime/README.md and this row's actual TalkBack/NVDA/VoiceOver/physical keyboard steps.; python -X utf8 .out/qa-agent-phone/preflight.py; use phone/summary.json actual_commands for prepare/send/reveal/native download/save/verify; cleanup_batch.py",
           "platform": "Installed headed Windows Chrome and explicitly stated CSS viewport; no physical mobile/other-browser substitution. | Physical Samsung Android16 now available; Pixel/iOS/emulator or other OS versions remain distinct variants. | Physical installed Windows native candidate; no hidden-engine or source/widget substitution. | Target browsers and real native devices/readers; emulator/fixture captures are labelled supplemental.",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
           "result": null,
@@ -12181,10 +12268,15 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ANDROID-original-image-download-viewer-and-card-six"
+            ]
           },
           "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
+          "witness_limits": [
+            "ANDROID-original-image-download-viewer-and-card-six: Six native controls, SHAoriginal != preview, six files/messages cleaned and own session revoked. No native upload/TEXT/ADMIN/revoke-while-open/GIF animation or whole browser gate. Existing589 remains open."
+          ]
         },
         {
           "section": "Критерии приёмки",
@@ -12323,7 +12415,12 @@
         "ANDROID-admin-2x-IME-Back-unaccepted",
         "ANDROID-admin-2x-Gboard-keeps-focus",
         "ANDROID-admin-1x-Gboard-query-Back",
-        "ANDROID-search-scope-48dp-touch-target"
+        "ANDROID-search-scope-48dp-touch-target",
+        "ANDROID-original-image-download-viewer-and-card-six",
+        "ANDROID-native-keyboard-SystemBack-draft",
+        "ANDROID-explicit-retry-visible-state-only",
+        "WINDOWS-native-account-menu-keyboard-cancel",
+        "WINDOWS-native-admin-seven-readonly-sections"
       ],
       "evidence": [
         "muted-background-resume.json; muted-stop.json; restored-microphone.json",
@@ -12348,7 +12445,12 @@
         "android-orientation-master/summary.json",
         "native-admin/summary.json",
         "native-admin-gboard/summary.json",
-        "native-search-touch-targets/summary.json"
+        "native-search-touch-targets/summary.json",
+        "coordinated-agents-2026-10-28/phone/summary.json",
+        "coordinated-agents-2026-10-28/phone/keyboard-summary.json",
+        "coordinated-agents-2026-10-28/phone/reconnect-summary.json",
+        "coordinated-agents-2026-10-28/windows/attempt2/summary.json",
+        "coordinated-agents-2026-10-28/windows/admin/summary.json"
       ],
       "defects": [
         579,
@@ -12737,7 +12839,11 @@
       "defects": [],
       "blockers": [],
       "source_body_sha256": "7a29f218cc77b14a8f1538683653916a53117819e5194d7ee06e7c1da529e98c",
-      "source_snapshot": ".out/qa-goal/open-issues-snapshot.json"
+      "source_snapshot": ".out/qa-goal/open-issues-snapshot.json",
+      "mandatory_original_source_qualifiers": [
+        "I305.Q1",
+        "I305.Q2"
+      ]
     },
     {
       "number": 326,
@@ -15163,7 +15269,17 @@
         "No physical macOS host / signed current macOS candidate is connected; Windows and Samsung cannot execute the required macOS capture/audio/permission/codec path."
       ],
       "source_body_sha256": "075862bb9ee0efbcec83dd99fe02a0d79599f2f4099a2975fe44cd27bc350d99",
-      "source_snapshot": ".out/qa-goal/open-issues-snapshot.json"
+      "source_snapshot": ".out/qa-goal/open-issues-snapshot.json",
+      "mandatory_original_source_qualifiers": [
+        "I332.Q1",
+        "I332.Q2",
+        "I332.Q3",
+        "I332.Q4",
+        "I332.Q5",
+        "I332.Q6",
+        "I332.Q7",
+        "I332.Q8"
+      ]
     },
     {
       "number": 554,
@@ -16313,12 +16429,16 @@
         "Actual production capability: operator_enabled=false, web_push_available=false, no VAPID key; device count0. Real provider alert/tap cannot run until a configured approved transport is available."
       ],
       "source_body_sha256": "097a7b8d654382cd99c5e280430e00885410f04c544c1c778eb3ac009ccff4f7",
-      "source_snapshot": ".out/qa-goal/open-issues-snapshot.json"
+      "source_snapshot": ".out/qa-goal/open-issues-snapshot.json",
+      "mandatory_original_source_qualifiers": [
+        "I564.Q1",
+        "I564.Q2"
+      ]
     }
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-28T19:09:54.914021+00:00",
+  "updated_utc": "2026-10-28T20:00:25.403309+00:00",
   "known_defect_issues": [
     579,
     580,
@@ -16343,5 +16463,8 @@
     "DEPENDENCY": 32
   },
   "remaining_execution_note": "Isolated tracing subset completed and owned resources removed. Remaining safe Windows/Android/Web/isolated API fault subsets are queued; do not blanket-block them. Human audibility, missing physical Mac/iPhone/Pixel, provider delivery and deployed Grafana remain separate limitations.",
-  "prerequisite_evidence": "prerequisites/constraints.json"
+  "prerequisite_evidence": "prerequisites/constraints.json",
+  "source_qualifier_catalog": "coordinated-agents-2026-10-28/source-qualifiers.json",
+  "source_qualifier_count": 13,
+  "source_qualifier_note": "480 original rows remain verbatim. Thirteen original prose/table qualifiers are explicit whole-gate prerequisites; proposed durations are not promoted to approved values."
 }

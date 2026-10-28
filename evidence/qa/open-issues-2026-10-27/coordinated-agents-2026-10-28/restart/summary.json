@@ -1,0 +1,206 @@
+{
+  "id": "ANDROID-native-existing-session-after-one-cold-process-restart",
+  "status": "PASS_SCOPED_AUTH_WITH_EXPLICIT_REFRESH_DELIVERY_LIMITED",
+  "at_utc": "2026-10-28T19:54:14.990216+00:00",
+  "protects": "Existing signedAndroid native session can access newly created protected own-DM content after exactlyone ordinary processrestart without nativeLogin/cookieextraction; distinguish manualauthenticatedrefresh, semanticarrival andfullvisiblemessage rendering",
+  "command": "python -X utf8 .out/qa-agent-phone-restart/source_guards.py; availability.py; profile_guard.py before; position.py; producer.py pre (committed201 controllerfailure); producer.py pre observe; restart.py ONCE; position_after.py; producer.py post; manual_refresh.py ONCE; stable_latest.py; producer.py third; reveal_third.py; cleanup.py; seal.py capture/summary",
+  "platform": "PhysicalSamsungSM-A576BAndroid16, signedinstalledQA1.0.47+2082, normalHTTPS/TLS+Originv.bootybay.ru, existingownDM andone normalcontrolledMEMBER Bproducer session",
+  "mandatory_when": "Beforeclaiming this exactnativecold-process/auth/controlleddelivery subset; neverfullQA/media/browseracceptance",
+  "result": "summary.json; availability.json; restart-result.json; control-pre/post/third.json; post-auth-manual-refresh.json; stable-latest-before-third.json; third-passive-review.json; third-after-explicit-scroll.json; cleanup.json; final-state.json",
+  "issue": 62,
+  "source_criterion_id": "I62.C1",
+  "original_requirement_unchanged": "Закрыть [открытые Flutter parity leaves](../docs/flutter-web-parity-todo.md) на macOS/Windows/Android; отдельно сохранить upload key/credentials вне host, установить/обновить два release APK на физическом Android и пройти auth/Origin/secure-cookie, permissions, reconnect, voice/viewer. На двух аккаунтах с одного IP проверить, что активная аренда аккаунта A не вызывает `ACTIVE_VOICE_LEASE` и автоперенос у аккаунта B; при конфликте сверить серверный `AccountID` авторизованной сессии с владельцем аренды и зафиксировать результат без cookies, токенов и персональных данных. Подписанный arm64 APK 1.0.15+20 установлен на Pixel 7 без очистки данных, но это пока одна установка, а post-fix screen-thumbnail/device acceptance и полный QA-13 остаются открыты — [QA-13 signing](../evidence/android/qa13-release-signing-2026-09-26-002.json), [QA-159](../evidence/flutter/qa159-android-screen-thumbnail-buffer-2026-09-30-001.json). Проверку аудиоустройств по T-061 отслеживать отдельным leaf, без повторного зачёта в QA-13.",
+  "original_issue_body_SHA256": "587d2de3b7ebec5f3b764e992e717698dcdbdd8d477ab9b97be27fd2d28ce86a",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "installed_APK_SHA256": "c7262608f5b5abbd722aa30428fe09d1532530026026d738837c14a884ea6243",
+  "deployed_backend_source": "UNKNOWN",
+  "native_force_stop_count": 1,
+  "force_stop_native_exit": 0,
+  "start_native_exit": 0,
+  "normal_producer_login_attempts": 1,
+  "producer_login_HTTP": 204,
+  "native_skips": 0,
+  "producer_auth_live_HTTP": 200,
+  "secure_HttpOnly_producer_cookie_observed": true,
+  "native_profile_DM_guards": [
+    "profile-guard-before.json",
+    "profile-guard-after.json"
+  ],
+  "auth_after_cold_restart": {
+    "status": "PASS_SCOPED_AUTHENTICATED_NEW_POST_MARKER_AFTER_EXPLICIT_REFRESH",
+    "result": "post-auth-manual-refresh.json",
+    "manual_history_refreshes": 1,
+    "explicit_scrolls_for_post": 2,
+    "no_native_relogin": true
+  },
+  "realtime_and_visible_delivery": {
+    "status": "PASS_SCOPED_SEMANTIC_ARRIVAL_ONLY_FULL_PASSIVE_VISIBILITY_NOT_PROVEN",
+    "raw_controller_result": "control-third.json is retained broad PASS diagnostic, not finalvisualacceptance",
+    "unique_new_third_payload_in_native_TextView": true,
+    "first_semantic_match_observer_elapsed_ms_including_API_and_ADB": 5062,
+    "first_semantic_match_bounds": [
+      [
+        169,
+        2096,
+        900,
+        2101
+      ]
+    ],
+    "settled_sample_after_POST_ms": 36501,
+    "settled_sample_bounds": [
+      169,
+      2096,
+      900,
+      2101
+    ],
+    "clipped_text_height_px": 5,
+    "fully_visible_in_passive_samples": false,
+    "UI_actions_between_third_POST_and_settled_sample": 0,
+    "no_history_refresh_or_retry_after_third_POST": true,
+    "full_render_after_explicit_scroll": {
+      "result": "third-after-explicit-scroll.json",
+      "text_height_px": 113,
+      "explicit_scrolls": 1
+    },
+    "limits": [
+      "No p95 or transportlevel latency",
+      "Noautoscrollbugwithout exactfollowlatestrequirement/source",
+      "Firstpre/postNOT_PROVEN retained; cannotattribute torestart"
+    ]
+  },
+  "raw_controller_attempts": [
+    {
+      "result": "profile-guard-before-attempt1.json",
+      "native_exit": 1,
+      "product_bug": false
+    },
+    {
+      "result": "producer-pre-attempt1.json",
+      "native_exit": 1,
+      "product_bug": false,
+      "committed_message_recovered_without_rePOST": true
+    },
+    {
+      "result": "control-third.json",
+      "native_exit": 0,
+      "narrowed_final_review": "third-passive-review.json"
+    }
+  ],
+  "pre_and_post_passive_observer_results_retained_unmodified": true,
+  "controller_pre_observer_wrapper_limit": "FirstPowerShellwrapperreported1 while receiptdeclaresPythonexit2; laterinvocations explicitly propagatedLASTEXITCODE",
+  "source_and_helper_bindings": {
+    "availability.py": {
+      "SHA256": "d64357574545eb831b1c81d1ad08f16f8fc392273a94807668cd044214447ae2",
+      "lines": 27
+    },
+    "cleanup.py": {
+      "SHA256": "5b03119a17ef4bd8ec07d6fa3f7cb17327b7a8b906befdf84c8e21fb310a5bd0",
+      "lines": 23
+    },
+    "common.py": {
+      "SHA256": "d3ba142554fd7b4ad083463bf9da096958c6d75c03ec5d4e48ca907378296e61",
+      "lines": 24
+    },
+    "manual_refresh.py": {
+      "SHA256": "325a675146a41017a815b3c36a89bf7ceb05d19c47b8c89f47588b0f11e0410d",
+      "lines": 13
+    },
+    "position.py": {
+      "SHA256": "fbaf60f3e34f6ec23a49c8105fcdb0ce1efe6bae9e31014234697e6e405cb9d1",
+      "lines": 8
+    },
+    "position_after.py": {
+      "SHA256": "4eaaae65fd689a65eb8ce6e9c4dbafb77d3ce7214812cc91ffac5f9fc11520bd",
+      "lines": 8
+    },
+    "producer.py": {
+      "SHA256": "6ddab012f15feb328b421a716089282ac98e0a654bed9c22000f93f69da16e79",
+      "lines": 18
+    },
+    "profile_guard.py": {
+      "SHA256": "d7ca2ab3dfea1bdd93ad893a162567608267fd5ab52e40e5e583eea9e725256d",
+      "lines": 11
+    },
+    "restart.py": {
+      "SHA256": "be575c61fc543e530ae3c2a625bd4735f9ed83877cbacfffb368ea703a44db8d",
+      "lines": 21
+    },
+    "reveal_third.py": {
+      "SHA256": "b38b5be8f99fe48aee2a3444636daec65f36c50e4be97547e96f90c1b9159cb4",
+      "lines": 4
+    },
+    "seal.py": {
+      "SHA256": "83b6d74de39fde540621c39d4fa6a13092255528b9ac158dd8fd95c6ed31391d",
+      "lines": 18
+    },
+    "source_guards.py": {
+      "SHA256": "07ca6c8e96897dba63eb55d318b5ef95ad3c72d1c8c0b1e8f0ba1a5f3b9f0062",
+      "lines": 13
+    },
+    "stable_latest.py": {
+      "SHA256": "359a9ee625399f8c4e4545c01a4aa84fdccbdafb246eb1eb38ef37f46d8a1885",
+      "lines": 6
+    }
+  },
+  "final_state": "final-state.json",
+  "cleanup": {
+    "at_utc": "2026-10-28T19:52:34.084775+00:00",
+    "status": "PASS_OWN_MESSAGES_AND_ONE_PRODUCER_SESSION_CLEANED",
+    "new_message_count": 3,
+    "own_messages": [
+      {
+        "alias": "pre",
+        "tombstone_HTTP": 200,
+        "body_blank_attachments_empty": true
+      },
+      {
+        "alias": "post",
+        "tombstone_HTTP": 200,
+        "body_blank_attachments_empty": true
+      },
+      {
+        "alias": "third",
+        "tombstone_HTTP": 200,
+        "body_blank_attachments_empty": true
+      }
+    ],
+    "old_message_count_unchanged": 34,
+    "owned_sessions_revoked_or_confirmed_unauthenticated": 1,
+    "live_unauthenticated_readback": true,
+    "force_stop_count": 1,
+    "phone_state": {
+      "at_utc": "2026-10-28T19:52:33.946722+00:00",
+      "permission": {
+        "granted": true,
+        "flags": [
+          "USER_SET",
+          "USER_SENSITIVE_WHEN_GRANTED",
+          "USER_SENSITIVE_WHEN_DENIED"
+        ]
+      },
+      "microphone_fgs": false,
+      "voice_connected": false,
+      "muted_control": false,
+      "app_hierarchy_present": true,
+      "system_permission_prompt": false,
+      "navigation_available": true,
+      "login_fields": false
+    },
+    "owned_DM_composer_empty": true,
+    "no_native_logout_clear_data_reinstall_permissions_voice_orientation_font_changes": true,
+    "native_exit": 0,
+    "native_skips": 0,
+    "old_phone_artifacts_still_frozen_SHA_match": true
+  },
+  "new_confirmed_product_bugs": [],
+  "known_bug589": "Remainsopen; notfixed/retested",
+  "limits": [
+    "FullI62.C1/QA62 remainsFAIL/unaccepted; audio,voice,media,Originnegative,deviceupgrade,permissions matrix andotherplatforms notaccepted",
+    "Nativeprofile/cache alone notauthproof; pre47,235ms/18polls andpost45,969ms/16polls NOT_PROVEN; no demonstratedpre-restartnativeauthpositive, so noregessioncausalclaim",
+    "Authpositive is NEWpost-restart marker rendered onlyafteroneexplicitHistoryRefresh and2scrolls; no nativecookieextraction/login/logout/clear-data/reinstall",
+    "Thirdnewpayload arrived innativeUIsemantics after stablelatestguard, but TextViewclippedto5px atfirst and~36s sample; fullrender requiredoneexplicitlater scroll; rawbroadcontrollerPASS downgraded",
+    "No p95/latencySLO or WebSocket/network/backendsource inference; deployedbackendsource UNKNOWN",
+    "Original34messages byte-stable JSONhashes preserved; only3ownsyntheticcontrols/1newBsession cleaned; previousphonepacket frozenhashes match",
+    "Screenshots/hierarchies/privateconfig sensitive and rawprivate; publish onlysanitized numerical/visualrecords"
+  ]
+}

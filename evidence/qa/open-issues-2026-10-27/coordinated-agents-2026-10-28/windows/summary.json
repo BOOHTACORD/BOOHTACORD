@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-28 19:23:29 UTC",
+  "scope": "Windows-native bounded QA only",
+  "goal_context": {
+    "intake_qa_issues": 37,
+    "criteria": 480,
+    "scope_narrowing": false
+  },
+  "source_head": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "facets": [
+    {
+      "id": "WINDOWS-installed-candidate-manifest-consistency",
+      "status": "PASS_SCOPED",
+      "protects": "Runtime evidence identifies exact installed candidate and detects local manifest/file inconsistency",
+      "command": "& .out/qa-agent-windows/verify-candidate.ps1",
+      "platform": "Windows x64 installed1.0.47+82; declared source f5cd783518349e2f79a78910a91908882ba87cc1",
+      "mandatory_when": "Before reusing this exact installed candidate identity",
+      "result": "candidate-integrity.json",
+      "actual": "53/53 file hashes and byte counts match local artifact-manifest; exact viewer source+test blobs unchanged from declared installed source to current checkout",
+      "limits": "Local manifest consistency and declared source only; no independent publisher/source attestation or runtime capability proof"
+    },
+    {
+      "id": "WINDOWS-native-settings-menu-entry",
+      "status": "PASS_SCOPED",
+      "criteria": [
+        "I303.C2"
+      ],
+      "protects": "Existing native account settings launcher opens its menu visibly",
+      "command": "Computer Use @oai/sky: fresh state -> observed account launcher click -> fresh state",
+      "platform": "Installed Windows1.0.47+82/source f5cd7835; native window330338",
+      "mandatory_when": "Before accepting the settings-navigation facet of native task scripts",
+      "result": "diagnostic-attempts.json#/attempts/6",
+      "actual": "One own menu open click succeeded; menu original-resolution visual inspection; no option selected",
+      "limits": "Entry only; no settings save, keyboard, admin, logout, security, accessibility reader, full task-script or full criterion acceptance"
+    },
+    {
+      "id": "WINDOWS-native-keyboard-focus",
+      "status": "BLOCKED",
+      "criteria": [
+        "I301.C9",
+        "I303.C4"
+      ],
+      "protects": "Actual native keyboard route, Escape dismissal and opener focus restoration are directly witnessed",
+      "command": "Computer Use @oai/sky: Tab (guarded), fresh state",
+      "platform": "Installed Windows1.0.47+82/source f5cd7835",
+      "mandatory_when": "Before accepting the native keyboard/focus facets",
+      "result": "diagnostic-attempts.json#/attempts/7",
+      "actual": "Tab controller guard due detected user input; fresh observation confirmed target occlusion by user foreground; no subsequent input",
+      "limits": "No app keyboard defect established; native menu left open behind foreground to avoid interference"
+    },
+    {
+      "id": "WINDOWS-protected-image-lifecycle",
+      "status": "BLOCKED",
+      "criteria": [
+        "I62.C1"
+      ],
+      "related_gates": [
+        "I303.C2",
+        "I303.C8"
+      ],
+      "protects": "Accepted owned PNG renders; real owner deletion invalidates already-open viewer only after fresh underlying history control; Escape restores focus",
+      "command": "PLAN_ONLY: guarded fresh producer+owned existing receiver DM -> tiny PNG -> native open -> owner API delete -> fresh history control -> unavailable/close -> Escape/focus",
+      "platform": "Installed Windows1.0.47+82/source f5cd7835",
+      "mandatory_when": "Before accepting released Windows protected-image lifecycle",
+      "result": "diagnostic-attempts.json",
+      "actual": "Not executed; receiver ownership mapping unconfirmed, maintenance banner present and user took desktop input",
+      "limits": "No fixture/session created; no Windows bug reproduction. Android589, Web587/581 remain distinct. I131.C5 expressly browser-only and receives no Windows acceptance."
+    }
+  ],
+  "static_observation": {
+    "source": "clients/flutter/lib/src/widgets/message_attachment_list.dart:389",
+    "notes": [
+      "Dialog image future is assigned at initState and explicit retry; no app-state listener in this exact widget.",
+      "Nearest test starting line24 exercises initial404, not successful render followed by deletion.",
+      "Shared source makes Windows lifecycle a priority hypothesis only; no additional defect filed."
+    ],
+    "native_test_run": false
+  },
+  "plan_queue": "windows-prioritized-queue.json",
+  "diagnostics": "diagnostic-attempts.json",
+  "preexecution": "preexecution-hashes.json",
+  "candidate": "candidate-integrity.json",
+  "no_public_mutations": true,
+  "no_source_mutations": true,
+  "new_product_defects": [],
+  "git_status_preserved": true,
+  "report": "Slavik Gym report: route=FV2-022/protected-image-viewer; packet=Windows-native-review_gate; tokens=estimated:11500; method=manual_estimate; driver=controller-user-input-and-candidate-integrity; next_split=owned-Windows-image-lifecycle-after-desktop-available"
+}

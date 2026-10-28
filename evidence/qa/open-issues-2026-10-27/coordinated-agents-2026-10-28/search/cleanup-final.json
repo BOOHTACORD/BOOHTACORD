@@ -1,0 +1,48 @@
+{
+  "utc": "2026-10-28T19:48:02.543833+00:00",
+  "result": "PARTIAL_ACCOUNT_ROWS_QUARANTINED_DELETE_SUPPRESSION",
+  "own_messages_scopes_attachments_sessions_removed": true,
+  "own_retained_user_rows": 4,
+  "own_rows_blocked_all_sessions_removed": true,
+  "normal_login_denial": [
+    {
+      "alias": "a",
+      "HTTP": 403
+    },
+    {
+      "alias": "b",
+      "HTTP": 403
+    },
+    {
+      "alias": "c",
+      "HTTP": 403
+    },
+    {
+      "alias": "admin",
+      "HTTP": 403
+    }
+  ],
+  "old_cookies_auth_false_and_protected401": true,
+  "preexisting_users_count_hash_preserved": "516|897fd4bbb50b2921f5bc9bee3daed2dd",
+  "other_nine_table_count_hashes_restored": true,
+  "nine_services_unchanged": [
+    "api",
+    "web",
+    "proxy",
+    "postgres",
+    "livekit",
+    "collector",
+    "tempo",
+    "prometheus",
+    "grafana"
+  ],
+  "source_runtime_helpers_frozen_audit_unchanged": true,
+  "health_HTTP": 200,
+  "API_log_sha256": "de197d3eae0969449c0b5a2f78e7a97ae0533f4eb9c5cb3a77cfed214f4323fc",
+  "API_log_bytes": 33036,
+  "secret_fixture_log_and_public_matches": 0,
+  "guard_suppressed_ordinary_DELETE_count": 0,
+  "guard_function_sha256": "d3e28c7f3d1e829fba5db22e8fd6abb53c0c6c182c4e25f318cf3e69221d40a5",
+  "no_trigger_or_global_config_change": true,
+  "finalizer_history": "First invalid stored password-hash quarantine produced an unrecorded non401/403 response; replaced with valid preexisting local fixture hash while retaining blocked_at, then required documented403. This harness setup is not a product finding."
+}

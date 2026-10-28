@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "packet": "Windows-native-admin120s-attempt2",
+  "workflow_class": "review_gate",
+  "status": "PASS_SCOPED",
+  "criterion_ids": [
+    "I287.C14",
+    "I303.C4"
+  ],
+  "whole_criteria_closed": false,
+  "goal_context": {
+    "intake_qa_issues": 37,
+    "criterion_rows": 480,
+    "full_goal_preserved": true
+  },
+  "timebox": {
+    "external_permission": "User explicitly said they would not touch PC for2minutes; root granted native-only120s",
+    "started_utc": "2026-10-28T19:39:02.304Z",
+    "deadline_utc": "2026-10-28T19:41:02.304Z",
+    "last_input_elapsed_ms": 78465,
+    "within_deadline": true,
+    "lease": "RELEASED",
+    "further_ui_without_new_grant": false
+  },
+  "source": {
+    "checkout": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+    "route": "features/admin/shell/tab_control; selection/render navigation only",
+    "backlog": "FV2-031 (#188)",
+    "native_manifest": "clients/flutter/pubspec.yaml",
+    "preexecution": "../preexecution-corrected.json reused immutable from immediately preceding packet; exact selected source/test blobs verified unchanged vs declared installed revision",
+    "native_tests": "NOT_RUN in this actual physical packet; source tests do not replace native UI acceptance"
+  },
+  "installed": {
+    "version": "1.0.47+82",
+    "source_kind": "MANIFEST_DECLARED",
+    "declared_source": "f5cd783518349e2f79a78910a91908882ba87cc1",
+    "exe_sha256": "9540d2b1f7f18af24186a585b104ae98bffa401083ca2d8dbdb5dcaf7bcd50ea",
+    "app_so_sha256": "0021e21e51e1e8ea5a949933f59803911b01feb5c24ee2cf1265196578921567",
+    "fresh_after": "candidate-final.json; compare to immutable preceding candidate",
+    "no_signed_or_reproducible_attestation_claim": true
+  },
+  "protects": "Existing installed Windows administrator can navigate all seven existing sections and see their actual selected body state without changing production configuration",
+  "command": "Native-only @oai/sky: fresh exact window observe -> observed account launcher -> observed Admin entry -> Members(default),Guild,Roles,Channels,Audit,Media,Readiness tabs -> Tab -> ShiftTab -> Escape",
+  "platform": "Physical Windows PC; native1432x896 window; no browser substitution",
+  "mandatory_when": "Before accepting the actual seven-section read-only Windows facet of I287.C14 and bounded native keyboard/window facet of I303.C4",
+  "actual": {
+    "sections_opened": 7,
+    "sections_inspected_original": 7,
+    "policy_stops": 0,
+    "user_input_guards": 0,
+    "config_or_production_mutations": 0,
+    "media_populated": false,
+    "readiness_ui_became_stale": true
+  },
+  "sections": [
+    {
+      "key": "guild",
+      "label": "Гильдия",
+      "navigation": "PASS_SCOPED",
+      "body_state": "POPULATED_OBSERVED",
+      "landmark": "Гильдия; untouched settings form and installation-diagnostics region",
+      "controls": "Save/Cancel visibly disabled for unchanged form; no field, selector, telemetry or key control touched",
+      "overflow": "No obvious horizontal clipping in visible header/form area; content continues below viewport and was not scrolled",
+      "error": "No error banner in visible body",
+      "limits": "No settings save, diagnostics opt-in, hidden lower controls or sensitive form data acceptance",
+      "criterion_ids": [
+        "I287.C14",
+        "I303.C4"
+      ],
+      "mandatory_when": "Before accepting this exact installed-Windows read-only selected-section rendering facet",
+      "platform": "Physical Windows11 installed native1.0.47+82, manifest DECLARED f5cd7835;1432x896 original capture",
+      "command": "@oai/sky native screenshot-derived existing admin tab click -> immediate state/AX capture -> original visual inspection",
+      "result": "private/guild.jpg (hashes/dimensions in captures.json)"
+    },
+    {
+      "key": "members",
+      "label": "Участники",
+      "navigation": "PASS_SCOPED",
+      "body_state": "POPULATED_OBSERVED",
+      "landmark": "Участники; 25 of25 loaded count; filter/search chrome",
+      "controls": "Search, role/status filters and account action columns visible; all untouched",
+      "overflow": "Visible first rows and header fit panel; long row labels can ellipsize; lower rows not reviewed",
+      "error": "No error banner in visible body",
+      "limits": "No personal account contents read or published; no CRUD, role/status/password-reset action, search typing or full25row review",
+      "criterion_ids": [
+        "I287.C14",
+        "I303.C4"
+      ],
+      "mandatory_when": "Before accepting this exact installed-Windows read-only selected-section rendering facet",
+      "platform": "Physical Windows11 installed native1.0.47+82, manifest DECLARED f5cd7835;1432x896 original capture",
+      "command": "@oai/sky native screenshot-derived existing admin tab click -> immediate state/AX capture -> original visual inspection",
+      "result": "private/members.jpg (hashes/dimensions in captures.json)"
+    },
+    {
+      "key": "roles",
+      "label": "Роли",
+      "navigation": "PASS_SCOPED",
+      "body_state": "POPULATED_OBSERVED",
+      "landmark": "Роли и разрешения; role selector and three object rows",
+      "controls": "Default selected role and checkbox matrix visible; Save/Cancel disabled; no role selection or checkbox toggled",
+      "overflow": "Action labels wrap into narrow multiple lines; no obvious text escaping card boundaries in visible viewport. Readability observation only, no product defect established",
+      "error": "No error banner in visible body",
+      "limits": "No ACL correctness, permission mutation, role editing, contrast or full keyboard acceptance",
+      "criterion_ids": [
+        "I287.C14",
+        "I303.C4"
+      ],
+      "mandatory_when": "Before accepting this exact installed-Windows read-only selected-section rendering facet",
+      "platform": "Physical Windows11 installed native1.0.47+82, manifest DECLARED f5cd7835;1432x896 original capture",
+      "command": "@oai/sky native screenshot-derived existing admin tab click -> immediate state/AX capture -> original visual inspection",
+      "result": "private/roles.jpg (hashes/dimensions in captures.json)"
+    },
+    {
+      "key": "channels",
+      "label": "Каналы",
+      "navigation": "PASS_SCOPED",
+      "body_state": "POPULATED_OBSERVED",
+      "landmark": "Управление каналами; channel hierarchy and untouched creation form",
+      "controls": "Hierarchy, empty new-section field, create button and existing category selector visible; untouched",
+      "overflow": "Hierarchy and top form fit horizontally; lower controls extend below scroll viewport and were not inspected",
+      "error": "No error banner in visible body",
+      "limits": "No expand/collapse, create/rename/move/delete/archive/admission action or full lower form acceptance",
+      "criterion_ids": [
+        "I287.C14",
+        "I303.C4"
+      ],
+      "mandatory_when": "Before accepting this exact installed-Windows read-only selected-section rendering facet",
+      "platform": "Physical Windows11 installed native1.0.47+82, manifest DECLARED f5cd7835;1432x896 original capture",
+      "command": "@oai/sky native screenshot-derived existing admin tab click -> immediate state/AX capture -> original visual inspection",
+      "result": "private/channels.jpg (hashes/dimensions in captures.json)"
+    },
+    {
+      "key": "audit",
+      "label": "Аудит",
+      "navigation": "PASS_SCOPED",
+      "body_state": "POPULATED_OBSERVED",
+      "landmark": "Аудит; filter chrome;100 of100 loaded count",
+      "controls": "Scope/initiator/type/date/refresh controls visible, untouched; record content not read",
+      "overflow": "Header and filters fit visible panel; records continue below viewport",
+      "error": "No error banner in visible body",
+      "limits": "No audit-record contents, filter submission, pagination/ACL/security or complete record acceptance",
+      "criterion_ids": [
+        "I287.C14",
+        "I303.C4"
+      ],
+      "mandatory_when": "Before accepting this exact installed-Windows read-only selected-section rendering facet",
+      "platform": "Physical Windows11 installed native1.0.47+82, manifest DECLARED f5cd7835;1432x896 original capture",
+      "command": "@oai/sky native screenshot-derived existing admin tab click -> immediate state/AX capture -> original visual inspection",
+      "result": "private/audit.jpg (hashes/dimensions in captures.json)"
+    },
+    {
+      "key": "media",
+      "label": "Медиа",
+      "navigation": "PASS_SCOPED",
+      "body_state": "EMPTY_OBSERVED",
+      "landmark": "Показатели трансляций; explicit Нет данных and0fresh samples",
+      "controls": "Refresh visible; not invoked; no capture/share/voice action",
+      "overflow": "Header/status/empty guidance visible without obvious horizontal clipping",
+      "error": "Explicit no-data state; no populated stream metrics observed",
+      "limits": "Populated media diagnostics NOT_RUN/BLOCKED_NO_FRESH_SAMPLES; empty state is not a media-health/capability PASS",
+      "criterion_ids": [
+        "I287.C14",
+        "I303.C4"
+      ],
+      "mandatory_when": "Before accepting this exact installed-Windows read-only selected-section rendering facet",
+      "platform": "Physical Windows11 installed native1.0.47+82, manifest DECLARED f5cd7835;1432x896 original capture",
+      "command": "@oai/sky native screenshot-derived existing admin tab click -> immediate state/AX capture -> original visual inspection",
+      "result": "private/media.jpg (hashes/dimensions in captures.json)"
+    },
+    {
+      "key": "readiness",
+      "label": "Готовность",
+      "navigation": "PASS_SCOPED",
+      "body_state": "POPULATED_THEN_STALE_OBSERVED",
+      "landmark": "Готовность сервисов; PostgreSQL,LiveKit,storage cards",
+      "controls": "Initial three Ready cards and age0s; after16s UI displayed no fresh confirmation/stale; refresh not invoked",
+      "overflow": "Three cards and capacity-status area fit visible panel, some labels wrap inside boundaries",
+      "error": "No fetch-error banner observed; stale state after15s explicitly rendered",
+      "limits": "UI readback only, no server/deployment/source readiness attestation, operator change or release gate acceptance",
+      "criterion_ids": [
+        "I287.C14",
+        "I303.C4"
+      ],
+      "mandatory_when": "Before accepting this exact installed-Windows read-only selected-section rendering facet",
+      "platform": "Physical Windows11 installed native1.0.47+82, manifest DECLARED f5cd7835;1432x896 original capture",
+      "command": "@oai/sky native screenshot-derived existing admin tab click -> immediate state/AX capture -> original visual inspection",
+      "result": "private/readiness.jpg (hashes/dimensions in captures.json)"
+    }
+  ],
+  "keyboard": {
+    "status": "PASS_SCOPED",
+    "actual": "Tab and ShiftTab accepted within Readiness; no control invoked. Escape closed administration and restored SHARE_TEST. AX focused_element remained generic panel; exact traversal target/opener focus NOT_PROVEN.",
+    "result": [
+      "private/tab.jpg",
+      "private/shift_tab.jpg",
+      "private/restored.jpg"
+    ],
+    "limits": "Not full7-section keyboard matrix; Enter/Space, full traversal, focus names, screen reader and native IME are NOT_RUN"
+  },
+  "restoration": {
+    "status": "PASS_SCOPED",
+    "actual": "Channels/SHARE_TEST returned, account/admin menus closed; same own membership1. No join/leave/mute/share/reconnect pressed; recovery banner already present remains.",
+    "result": "private/restored.jpg",
+    "persisted_state": "Admin selected-section workspace navigation now Readiness; no configuration save. Original visible channel surface restored.",
+    "limits": "No acoustic,RTP/media continuity or recovery-success assertion"
+  },
+  "not_run": [
+    "Resize/window800–1920 matrix (no documented sky resize API)",
+    "Screen reader/NVDA",
+    "IME,text scale1.3/2.0,long-string matrix",
+    "CRUD/save/toggles/permissions/security/privacy changes",
+    "Full keyboard/Enter/Space/focus return",
+    "Populated media diagnostics",
+    "Complete lower scroll bodies",
+    "All other platform/browser/QA criteria"
+  ],
+  "limits": [
+    "One bounded read-only native visit per section on the installed old source-declared candidate; not current-master shipping proof",
+    "All raw screenshots and account/form values remain private; only sanitized observations,counts and hashes intended for root public evidence",
+    "Empty Media state is observed, not guessed server fault or successful populated diagnostics",
+    "Roles narrow label wrapping recorded without filing a bug; no obvious visible card-boundary clipping proved",
+    "Root retains prior first-input controller blockers as historical; this external availability interval enabled separate execution",
+    "No source/Git/index/public evidence/GitHub/production fixture/session changes"
+  ],
+  "result_paths": [
+    "sections.json",
+    "native-attempts.json",
+    "captures.json",
+    "candidate-final.json",
+    "source-binding.json",
+    "artifact-hashes.json"
+  ],
+  "report": "Slavik Gym report: route=admin/shell/tab_control; packet=Windows-native-admin120s-review_gate; tokens=estimated:5700; method=manual_estimate; driver=seven-actual-native-sections-with-78s-input; next_split=remaining-focus-IME-resize-SR-and-populated-media"
+}

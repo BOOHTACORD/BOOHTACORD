@@ -1,0 +1,37 @@
+import secrets,uuid
+from http.cookies import SimpleCookie
+from common import P,WORK,read,write,sql,request,quote,valid,now
+def prepare():
+    assert not (P/'private/fixture.json').exists()
+    c=read(WORK/'credentials.private.json');owner=secrets.token_hex(12)
+    cfg={'owner':owner,'query':'search'+owner,'users':{},'sessions':{},'rows':[],'attachments':[],'category':str(uuid.uuid4()),'channel':str(uuid.uuid4()),'dm':str(uuid.uuid4()),'foreign':str(uuid.uuid4())}
+    for alias in ['a','b','c','admin']:cfg['users'][alias]={'id':str(uuid.uuid4()),'login':'qs_'+owner+'_'+('d' if alias=='admin' else alias),'role':'ADMINISTRATOR' if alias=='admin' else 'MEMBER'}
+    write(P/'private/fixture.json',cfg)
+    statements=['BEGIN;']
+    for u in cfg['users'].values():
+        statements.append("INSERT INTO users(id,login,display_name,password_hash,role) SELECT "+','.join(map(quote,[u['id'],u['login'],u['login']]))+",password_hash,"+quote(u['role'])+" FROM users WHERE login="+quote(c['admin_login'])+";")
+    statements += ["INSERT INTO categories(id,name,position) SELECT "+quote(cfg['category'])+",'qa_search_"+owner+"',COALESCE(max(position),-1)+1 FROM categories;","INSERT INTO channels(id,category_id,name,kind,position) VALUES("+','.join(map(quote,[cfg['channel'],cfg['category'],'qa_search_'+owner,'TEXT']))+",0);"]
+    for dm,pair in [('dm',['a','b']),('foreign',['b','c'])]:
+        ids=sorted(cfg['users'][a]['id'] for a in pair);statements.append('INSERT INTO direct_messages(id,participant_one_id,participant_two_id) VALUES('+','.join(map(quote,[cfg[dm],*ids]))+');')
+    tie=str(uuid.uuid4())
+    rows=[('channel_start','CHANNEL','a','05:00:00',None),('channel_plain','CHANNEL','a','05:15:00',None),('channel_tie','CHANNEL','a','05:30:00','ATTACHED'),('channel_end','CHANNEL','a','07:00:00',None),('dm_tie','DIRECT_MESSAGE','b','05:30:00','ATTACHED'),('dm_late','DIRECT_MESSAGE','a','06:30:00',None),('dm_plain','DIRECT_MESSAGE','b','05:10:00',None),('dm_deleted','DIRECT_MESSAGE','a','05:45:00',None),('foreign_tie','DIRECT_MESSAGE','b','05:30:00','ATTACHED'),('foreign_late','DIRECT_MESSAGE','c','06:30:00',None)]
+    for alias,kind,author,clock,state in rows:
+        row={'alias':alias,'kind':kind,'id':tie if alias in ['channel_tie','dm_tie'] else str(uuid.uuid4()),'author':cfg['users'][author]['id'],'created_at':'2026-11-01T'+clock+'Z','scope':cfg['channel'] if kind=='CHANNEL' else cfg['foreign'] if alias.startswith('foreign') else cfg['dm'],'deleted':alias=='dm_deleted','attachment':state=='ATTACHED'}
+        cfg['rows'].append(row);table='messages' if kind=='CHANNEL' else 'direct_message_messages';scope_col='channel_id' if kind=='CHANNEL' else 'direct_message_id'
+        body='' if row['deleted'] else cfg['query']+' '+alias
+        statements.append('INSERT INTO '+table+'(id,'+scope_col+',author_id,client_message_id,body,created_at,deleted_at) VALUES('+','.join(map(quote,[row['id'],row['scope'],row['author'],str(uuid.uuid4()),body,row['created_at']]))+(",now());" if row['deleted'] else ',NULL);'))
+        if state:
+            aid=str(uuid.uuid4());cfg['attachments'].append(aid);ac='channel_id' if kind=='CHANNEL' else 'direct_message_id'
+            statements.append('INSERT INTO attachments(id,owner_id,'+ac+',original_name,storage_key,byte_size,state,attached_at,hidden_at) VALUES('+','.join(map(quote,[aid,row['author'],row['scope'],'synthetic.txt',str(uuid.uuid4())]))+",4,"+quote(state)+",now(),"+('now()' if state=='HIDDEN' else 'NULL')+');')
+            link='message_attachments' if kind=='CHANNEL' else 'direct_message_attachments';statements.append('INSERT INTO '+link+'(message_id,attachment_id,position) VALUES('+quote(row['id'])+','+quote(aid)+',0);')
+    statements.append('COMMIT;');write(P/'private/fixture.json',cfg);sql('\n'.join(statements))
+    assert sql('SELECT count(*) FROM users WHERE id IN ('+','.join(quote(u['id']) for u in cfg['users'].values())+');').strip()=='4'
+    for alias,u in cfg['users'].items():
+        status,headers,_=request('/api/v1/auth/login','POST',{'login':u['login'],'password':c['admin_password']});assert status==204
+        cookies=SimpleCookie()
+        for k,v in headers:
+            if k.lower()=='set-cookie':cookies.load(v)
+        assert len(cookies)==1;cfg['sessions'][alias]='; '.join(k+'='+v.value for k,v in cookies.items());write(P/'private/fixture.json',cfg)
+        status,_,session=request('/api/v1/auth/session',cookie=cfg['sessions'][alias]);assert status==200 and session['authenticated'] and session['account_id']==u['id'] and session['role']==u['role']
+    write(P/'fixture-ready.json',{'utc':now(),'own_users':4,'own_sessions':4,'own_channel':1,'own_DMs':2,'own_messages':len(rows),'own_metadata_attachments':len(cfg['attachments']),'scope':'SQL-seeded search metadata; real local normal auth/HTTP; no storage payload or product attachment-upload acceptance'})
+    return cfg

@@ -1,0 +1,23 @@
+{
+  "at_utc": "2026-10-28T19:31:19.074836+00:00",
+  "actions": [
+    "Fresh observed own DM Actions control",
+    "Fresh observed Refresh History"
+  ],
+  "native_skips": 0,
+  "before_owned_preview_controls": 0,
+  "menu_capture": {
+    "file": "[PRIVATE_ARTIFACT_PATH_RETAINED_LOCALLY]",
+    "SHA256": "179b20b4ee4fc25a5e179460b305c0308eeb053f0bbc4fddf86a7412b0e50584"
+  },
+  "refresh_control_visible": true,
+  "after_owned_preview_controls": 0,
+  "after_owned_DM_composer_empty": true,
+  "after_capture": {
+    "file": "[PRIVATE_ARTIFACT_PATH_RETAINED_LOCALLY]",
+    "SHA256": "f751a4260bdaaf8e9d37bf80318c5870abcad32405c58ffbe49df44044c77171"
+  },
+  "status": "PASS_SCOPED_EXPLICIT_REFRESH_OWN_DELETED_CARD_ABSENCE",
+  "native_exit": 0,
+  "interpretation": "Before and after both had zero owned preview controls, so this proves only absence after explicit refresh; it does not prove refresh removed cards or that native received deletion passively"
+}

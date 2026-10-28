@@ -1,0 +1,17 @@
+{
+  "utc": "2026-10-28T19:55:04.130495+00:00",
+  "status": "PASS_OWN4_ATOMICALLY_REMOVED_GUARD_REENABLED_BEFORE_COMMIT",
+  "command": "python -B -X utf8 .out/qa-guard-teardown/run.py -> teardown(); guarded psql transaction",
+  "SQL_sha256": "30dc967ca2c840d0c6550511bd39b78093ed4753acd236046fc754dbfd624580",
+  "rows_removed": 4,
+  "lock": "users ACCESS EXCLUSIVE NOWAIT; local lock_timeout2s/statement_timeout5s",
+  "exact_id_login_nonce_blocked_no_session_nonsupport_guards": true,
+  "only_named_guard_disabled_in_transaction": true,
+  "other_triggers_and_FKs_enabled_unchanged": true,
+  "guard_enabled_definition_function_identical": true,
+  "all10_original_count_hashes_restored": true,
+  "users_final_count": 516,
+  "public_function_source_unchanged": true,
+  "no_session_replication_role_or_globalconfig": true,
+  "scope": "Fixture-only explicitly authorized local exception; not a product fix"
+}

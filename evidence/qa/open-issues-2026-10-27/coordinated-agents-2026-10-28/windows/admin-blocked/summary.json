@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "packet": "Windows-native-admin-read-only-seven-sections",
+  "workflow_class": "review_gate",
+  "status": "BLOCKED",
+  "criterion_ids": [
+    "I287.C14",
+    "I303.C4"
+  ],
+  "whole_criteria_closed": false,
+  "source_head": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "source_route": "clients/flutter/lib/src/features/admin/shell/tab_control (section selection/render navigation)",
+  "source_evidence": {
+    "declared_tabs": 7,
+    "labels_source": "clients/flutter/lib/src/features/admin/shell/section_tabs.dart",
+    "enum_source": "clients/flutter/lib/src/features/admin/shell/types.dart",
+    "selection_effects": "Navigation persists selected section and performs section read loads/media 5s refresh; none executed because entry not confirmed",
+    "nearest_native_test": "clients/flutter/test/admin_accessibility/section_context_test.dart",
+    "native_test": "NOT_RUN; test engine is not physical Windows acceptance",
+    "exact_blob_binding": "preexecution-corrected.json; selected code/test paths unchanged at manifest-declared installed source vs checkout HEAD; pubspec differs",
+    "preexecution_failure": "First blob path normalization used a malformed backslash regex; original preexecution.json retains null blob fields. Corrected using literal String.Replace before any UI input; no source mutation."
+  },
+  "installed": {
+    "version": "1.0.47+82",
+    "source_kind": "MANIFEST_DECLARED",
+    "declared_source": "f5cd783518349e2f79a78910a91908882ba87cc1",
+    "exe_sha256": "9540d2b1f7f18af24186a585b104ae98bffa401083ca2d8dbdb5dcaf7bcd50ea",
+    "app_so_sha256": "0021e21e51e1e8ea5a949933f59803911b01feb5c24ee2cf1265196578921567",
+    "fresh_candidate": "candidate.json",
+    "previous_53_file_manifest_check": "../qa-agent-windows/candidate-integrity.json (reused; unchanged, not independently attested)"
+  },
+  "protects": "Actual installed Windows seven-section admin navigation/render must be directly observed without changing production configuration or replacing native proof with source tests",
+  "command": "Computer Use node_repl @oai/sky: list_apps -> exact get_window -> get_window_state -> activate exact returned native target -> get_window_state -> screenshot-derived account launcher click",
+  "platform": "Physical Windows11; installed BOOHTACORD native1.0.47+82; original native baseline1432x896",
+  "mandatory_when": "Before accepting the seven native admin section read-only navigation/render facet of I287.C14 or native keyboard/window facet of I303.C4",
+  "actual": {
+    "last_confirmed_baseline": "Channels/SHARE_TEST; account menu closed; existing own voice membership1; recovery banner present; original native screenshot inspected",
+    "first_click_result": "CONTROLLER_USER_INPUT_GUARD",
+    "exact_message": "user input was detected in this window; call get_window_state before continuing",
+    "admin_entry_confirmed": false,
+    "sections_executed": 0,
+    "sections_required": 7,
+    "product_defect_established": false
+  },
+  "sections": [
+    {
+      "key": "guild",
+      "label": "Гильдия",
+      "status": "BLOCKED",
+      "execution": "NOT_RUN",
+      "reason": "Native user-input controller guard on the first account launcher click; admin entry not confirmed",
+      "selected_section_observed": false,
+      "landmark_observed": false,
+      "render_verdict": "NOT_RUN",
+      "overflow_clipping": "NOT_RUN",
+      "keyboard": "NOT_RUN",
+      "limits": "Source tab existence is not native section rendering acceptance"
+    },
+    {
+      "key": "members",
+      "label": "Участники",
+      "status": "BLOCKED",
+      "execution": "NOT_RUN",
+      "reason": "Native user-input controller guard on the first account launcher click; admin entry not confirmed",
+      "selected_section_observed": false,
+      "landmark_observed": false,
+      "render_verdict": "NOT_RUN",
+      "overflow_clipping": "NOT_RUN",
+      "keyboard": "NOT_RUN",
+      "limits": "Source tab existence is not native section rendering acceptance"
+    },
+    {
+      "key": "roles",
+      "label": "Роли",
+      "status": "BLOCKED",
+      "execution": "NOT_RUN",
+      "reason": "Native user-input controller guard on the first account launcher click; admin entry not confirmed",
+      "selected_section_observed": false,
+      "landmark_observed": false,
+      "render_verdict": "NOT_RUN",
+      "overflow_clipping": "NOT_RUN",
+      "keyboard": "NOT_RUN",
+      "limits": "Source tab existence is not native section rendering acceptance"
+    },
+    {
+      "key": "channels",
+      "label": "Каналы",
+      "status": "BLOCKED",
+      "execution": "NOT_RUN",
+      "reason": "Native user-input controller guard on the first account launcher click; admin entry not confirmed",
+      "selected_section_observed": false,
+      "landmark_observed": false,
+      "render_verdict": "NOT_RUN",
+      "overflow_clipping": "NOT_RUN",
+      "keyboard": "NOT_RUN",
+      "limits": "Source tab existence is not native section rendering acceptance"
+    },
+    {
+      "key": "audit",
+      "label": "Аудит",
+      "status": "BLOCKED",
+      "execution": "NOT_RUN",
+      "reason": "Native user-input controller guard on the first account launcher click; admin entry not confirmed",
+      "selected_section_observed": false,
+      "landmark_observed": false,
+      "render_verdict": "NOT_RUN",
+      "overflow_clipping": "NOT_RUN",
+      "keyboard": "NOT_RUN",
+      "limits": "Source tab existence is not native section rendering acceptance"
+    },
+    {
+      "key": "media",
+      "label": "Медиа",
+      "status": "BLOCKED",
+      "execution": "NOT_RUN",
+      "reason": "Native user-input controller guard on the first account launcher click; admin entry not confirmed",
+      "selected_section_observed": false,
+      "landmark_observed": false,
+      "render_verdict": "NOT_RUN",
+      "overflow_clipping": "NOT_RUN",
+      "keyboard": "NOT_RUN",
+      "limits": "Source tab existence is not native section rendering acceptance"
+    },
+    {
+      "key": "readiness",
+      "label": "Готовность/Статус",
+      "status": "BLOCKED",
+      "execution": "NOT_RUN",
+      "reason": "Native user-input controller guard on the first account launcher click; admin entry not confirmed",
+      "selected_section_observed": false,
+      "landmark_observed": false,
+      "render_verdict": "NOT_RUN",
+      "overflow_clipping": "NOT_RUN",
+      "keyboard": "NOT_RUN",
+      "limits": "Source tab existence is not native section rendering acceptance"
+    }
+  ],
+  "resize": {
+    "status": "NOT_RUN",
+    "reason": "sky window2 reference has no documented resize/size-setting API; no custom Win32, shell UI, drag-based invention or OS setting fallback used",
+    "baseline_size": [
+      1432,
+      896
+    ],
+    "resized": false
+  },
+  "keyboard": {
+    "status": "NOT_RUN",
+    "reason": "Stopped before admin entry; no Tab/ShiftTab/Escape input after guard; previous account-menu-only packet remains independent"
+  },
+  "cleanup": {
+    "desktop_lease": "RELEASED",
+    "no_ui_input_after_guard": true,
+    "retry_count_after_guard": 0,
+    "account_or_config_fields_changed": false,
+    "production_mutations": false,
+    "voice_actions": 0,
+    "new_sessions": 0,
+    "fixtures": 0,
+    "source_changes": false,
+    "public_or_git_changes": false,
+    "restoration": "Last confirmed baseline already Channels/SHARE_TEST/menu closed. Rejected click outcome unconfirmed; no cleanup input performed while respecting user-input guard."
+  },
+  "result_paths": [
+    "native-attempts.json",
+    "captures.json",
+    "preexecution-corrected.json",
+    "candidate.json",
+    "final-state.json"
+  ],
+  "precise_limits": [
+    "All seven native section acceptance facets remain BLOCKED/NOT_RUN; no role/security/privacy/maintenance/notification/audio configuration was changed",
+    "No browser UI attempts or browser acceptance",
+    "No server/operator configuration diagnosis from recovery banner",
+    "No new product bug or broad QA gate closure",
+    "Raw baseline screenshot remains private; only sanitized counts/observations/hashes may be published"
+  ],
+  "report": "Slavik Gym report: route=admin/shell/tab_control; packet=Windows-native-admin-review_gate; tokens=estimated:4400; method=manual_estimate; driver=first-input-controller-user-guard; next_split=seven-admin-sections-after-user-input-clear"
+}

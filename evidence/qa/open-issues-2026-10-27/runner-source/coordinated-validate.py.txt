@@ -1,0 +1,21 @@
+"""Check source preservation, original qualifiers, agent links and public privacy."""
+import ast,json,subprocess
+from common import P,Q,B,O,D,read,write,sha,needles,code_copy
+cases=read(O/'cases.json');m=read(O/'matrix.json');oldc=json.loads(subprocess.check_output(['git','show','0b70dc7cd440be41120847c3289bef53888e0499:evidence/qa/open-issues-2026-10-27/cases.json'],cwd=B));oldm=json.loads(subprocess.check_output(['git','show','0b70dc7cd440be41120847c3289bef53888e0499:evidence/qa/open-issues-2026-10-27/matrix.json'],cwd=B))
+assert len(cases['cases'])==91 and len(oldc['cases'])==81 and cases['cases'][:81]==oldc['cases'];rows={r['id']:r for i in m['issues'] for r in i['criteria']};oldrows={r['id']:r for i in oldm['issues'] for r in i['criteria']};assert len(rows)==480
+assert {k:r['requirement'] for k,r in rows.items()}=={k:r['requirement'] for k,r in oldrows.items()};assert {k:r['status'] for k,r in rows.items()}=={k:r['status'] for k,r in oldrows.items()}
+sources={i['number']:i for i in read(B/'.out/qa-goal/open-issues-snapshot.json')['issues']};q=read(O/m['source_qualifier_catalog'])['clauses'];assert len(q)==m['source_qualifier_count']==13 and len({c['id'] for c in q})==13
+for c in q:
+    source=sources[c['issue']]['body'];assert sha(source.encode())==c['original_body_SHA256'] and source.splitlines()[c['source_line']-1].strip()==c['source_text'];assert set(c['criterion_ids'])<=set(rows)
+for issue in m['issues']:
+    assert issue.get('mandatory_original_source_qualifiers',[])==[c['id'] for c in q if c['issue']==issue['number']]
+for c in cases['cases'][81:]:
+    assert all(c.get(k) for k in ['protects','command','platform','mandatory_when','result','limits']) and (O/c['result']).is_file()
+for f in D.rglob('*.json'):
+    raw=f.read_text(encoding='utf-8');json.loads(raw);assert not any(n in raw for n in needles),'Sensitive fixture in '+f.name
+for prefix in ['agent-phone-','agent-phone-restart-','agent-search-','agent-guard-','coordinated-']:
+    for f in (O/'runner-source').glob(prefix+'*.py.txt'):
+        s=f.read_text(encoding='utf-8');ast.parse(s);assert len(s.splitlines())<=120
+for f in P.glob('*.py'):code_copy(f,'coordinated-')
+write(D/'root-retention-check.json',{'status':'PASS_ALL80_PLUS1_PRIOR_CASES_AND480_TEXTS_PRESERVED_13_SOURCE_QUALIFIERS_LINKED','old_cases_preserved':81,'all_cases':91,'source_rows_preserved':480,'whole_issue_original_qualifiers':13,'privacy_scan':'PASS','raw_device_capture_exported':False,'whole_gate_promotions':0,'consolidation43_touched':False})
+print(json.dumps({'source_rows_preserved':480,'source_qualifiers':13,'old_cases_preserved':81,'all_sets':91,'privacy':'PASS','native_helpers_line_ratchet':120}))

@@ -1,0 +1,13 @@
+import time
+from common import *
+c=read(P/'private/config.private.json');assert c['force_stop_count']==1 and own(c) and c.get('manual_history_refresh_count',0)==0 and c.get('post_marker');target=c['post_marker'];assert len(c['messages'])==2
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'scope':'authenticated native continuity after onecoldprocessrestart, explicitlymanualrefresh, NOTrealtime','manual_history_refresh_count':1,'explicit_scrolls':0,'native_skips':0,'no_new_POST':True,'before_post_marker_in_any_label':any(target in label(n) for n in nodes()),'seen':False,'actions':[]}
+try:
+ tap_named('Действия диалога');time.sleep(1);rows=nodes();assert any(label(n)=='Обновить историю' for n in rows);r['fresh_menu_capture']=capture('post-auth-manual-refresh-menu');c['manual_history_refresh_count']=1;write(P/'private/config.private.json',c);tap_named('Обновить историю');r['actions'].append('ONE observed native RefreshHistory');time.sleep(.5)
+ for i in range(10):
+  rows=nodes();assert own(c);matches=[n for n in rows if n.get('package')==APP and n.get('class')!='android.widget.EditText' and target in label(n) and 0<=bounds(n)[1]<bounds(n)[3]<=2101]
+  if matches:r['seen']=True;r['post_marker_bounds']=[bounds(n) for n in matches];break
+  panes=[n for n in rows if n.get('package')==APP and n.get('scrollable')=='true' and bounds(n)[3]-bounds(n)[1]>500 and bounds(n)[2]-bounds(n)[0]>500];assert len(panes)==1;b=bounds(panes[0]);x=(b[0]+b[2])//2;call('shell','input','swipe',str(x),str(b[3]-100),str(x),str(b[1]+100),'350');r['explicit_scrolls']+=1;time.sleep(.35)
+ r['capture']=capture('post-auth-after-manual-refresh');r['status']='PASS_SCOPED_NATIVE_AUTH_AFTER_COLD_RESTART_WITH_EXPLICIT_REFRESH' if r['seen'] else 'BLOCKED_NEW_POST_MARKER_NOT_RENDERED_AFTER_ONE_REFRESH';r['native_exit']=0 if r['seen'] else 2
+except Exception as e:r.update(status='CONTROLLER_FAILURE_OR_NATIVE_AUTH_UNPROVEN',error_type=type(e).__name__,native_exit=2,failed_capture=capture('post-auth-manual-refresh-failed'))
+r['finished_at_utc']=datetime.now(timezone.utc).isoformat();write(P/'post-auth-manual-refresh.json',r);print({k:v for k,v in r.items() if k not in ['capture','fresh_menu_capture','failed_capture']});raise SystemExit(r['native_exit'])

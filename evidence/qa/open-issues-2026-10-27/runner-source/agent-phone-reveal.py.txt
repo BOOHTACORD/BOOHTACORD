@@ -1,0 +1,9 @@
+from common import *
+import sys,time
+c=read(P/'private/config.private.json');i=int(sys.argv[1]);f=c['fixtures'][i];steps=[]
+for attempt in range(16):
+ rows=nodes();visible=any(label(n)=='Открыть изображение '+f['filename'] for n in rows)
+ if visible:break
+ assert own(c);panes=[n for n in rows if n.get('package')==APP and n.get('scrollable')=='true' and bounds(n)[3]-bounds(n)[1]>500 and bounds(n)[2]-bounds(n)[0]>500];assert len(panes)==1;b=bounds(panes[0]);x=(b[0]+b[2])//2
+ call('shell','input','swipe',str(x),str(b[3]-100),str(x),str(b[1]+100),'400');steps.append('Explicit bounded scroll toward latest');time.sleep(.2)
+r={'at_utc':datetime.now(timezone.utc).isoformat(),'index':i,'alias':f['alias'],'own_card_visible':visible,'manual_scrolls':len(steps),'explicit_scroll_toward_latest':True,'no_realtime_delivery_latency_claim':True,'capture':capture('revealed-'+str(i)),'native_exit':0 if visible else 2,'native_skips':0};write(P/('reveal-'+str(i)+'.json'),r);print({k:v for k,v in r.items() if k!='capture'});raise SystemExit(r['native_exit'])
