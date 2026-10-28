@@ -1,0 +1,48 @@
+{
+  "status": "PASS_APPEND_ONLY_READBACKS",
+  "immutable_data_commit": "de7d4101a200043081106532a7368e4920d33243",
+  "normalization": "UTF8/CRLF->LF/trim trailing LF",
+  "qa": [
+    {
+      "issue": 287,
+      "at_utc": "2026-10-28T21:54:42.037Z",
+      "status": "PASS_APPEND_ONLY_READBACK",
+      "state": "open",
+      "title_preserved": true,
+      "previous_body_prefix_preserved": true,
+      "before_body_canonical_SHA256": "afdec24bcc31adba26a0f9a177397f2382dcd2c2445a9ab972bf260a7669d68a",
+      "after_body_canonical_SHA256": "833c153e7a8c6d14d4c5e03bdcf8cc4280cda5f4ad243c3db08fd2f332a57776",
+      "immutable_data_commit": "de7d4101a200043081106532a7368e4920d33243"
+    },
+    {
+      "issue": 62,
+      "at_utc": "2026-10-28T21:54:45.464Z",
+      "status": "PASS_APPEND_ONLY_READBACK",
+      "state": "open",
+      "title_preserved": true,
+      "previous_body_prefix_preserved": true,
+      "before_body_canonical_SHA256": "5ec2b50df28c796350562f31ee6bfdd5fb2c5c769d6cf0dbb9cd892682697e15",
+      "after_body_canonical_SHA256": "cdddeac717a21dcef15e992443f99398cf62fc8c0296dbde4c7b46a0bc7b5495",
+      "immutable_data_commit": "de7d4101a200043081106532a7368e4920d33243"
+    }
+  ],
+  "new_CI_blocker": {
+    "issue": 595,
+    "url": "https://github.com/Egkurilov/BOOHTACORD/issues/595",
+    "state": "open",
+    "status": "PASS_CREATED_ISSUE_READBACK",
+    "body_canonical_SHA256": "9320e9ffed2c316870ddaab78411a2d2b3b98de7c034767f02a2eb90276df376",
+    "at_utc": "2026-10-28T21:54:46.066Z"
+  },
+  "fix_PR": {
+    "number": 596,
+    "url": "https://github.com/Egkurilov/BOOHTACORD/pull/596",
+    "status": "HOSTED_QUALIFICATION_IN_PROGRESS",
+    "close595_after": "Actual same-attempt native gate and postmerge signed dry_run proof",
+    "first_observed_head": "536b42427bf6a854a8d39ab7fd9248cbb87784a4",
+    "current_followup_head": "69189949ce850769ab568e211fa06cdfc6bde5a2",
+    "current_CI_run": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40776034399"
+  },
+  "whole_QA_closed": [],
+  "consolidation43_touched": false
+}

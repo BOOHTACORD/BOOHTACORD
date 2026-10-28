@@ -1,0 +1,160 @@
+{
+  "at_utc": "2026-10-28T21:53:38.326910+00:00",
+  "base": "b7f1c3ad438201c0461ed4858d97df6917815ceb",
+  "reviewed_commit": "536b42427bf6a854a8d39ab7fd9248cbb87784a4",
+  "branch": "codex/ci-macos-intel-unit-gate",
+  "worktree_clean_before_and_after": true,
+  "exact_changed_files": {
+    ".github/workflows/ci-flutter.yaml": {
+      "head_SHA256": "77c5a55fcb759c953bd42906beb8349c90b57f69132589874a16d62479a9f692",
+      "working_tree_SHA256": "2f02e9d47b2c7ac9fcb6c0617f72421a0fb0fb4bddfb1ba002afd16183b8a5ef",
+      "head_blob": "5e0eabb200c8a0f85080f022e3c74c3134ee3ceb",
+      "lines": 210,
+      "base_SHA256": "358188ca02917b97eee21c644788ff430767ca79c5ed5bcfa844d3c41bd4d777"
+    },
+    "tools/ci/flutter_gates/workflow.py": {
+      "head_SHA256": "3e0532dda6bb28cee7d6feff4537ee1784cc21164051800a6288eff4b1355e67",
+      "working_tree_SHA256": "e5e9c2b66075f6d8455ff44b4eaffd40d9533191680105a2388db11b0a212bda",
+      "head_blob": "04c6aa0c98701bcc7adddd943309bfd97a2a9599",
+      "lines": 56,
+      "base_SHA256": "8fa635da7cfa4c95d420da001f5ce00cbf0317a2245549ca38e51b23a9953968"
+    },
+    "tools/ci/flutter_gates/test_workflow.py": {
+      "head_SHA256": "5f2bba7274b2c2f470052b3815cbd90efcf9d5100b8e79e66e81cf165932448d",
+      "working_tree_SHA256": "ac32c44401716158073362c8e62fbc926743ba298b28caaef0831a9b3113c3a1",
+      "head_blob": "36d62c5c0c386740310ec1ae4166bacc9714e92c",
+      "lines": 86,
+      "base_SHA256": "8fc91ad8e8f7bde1a1326e5b346df88ea9f479206eeee86a3c07cd2b346e8f47"
+    },
+    "docs/ci/flutter-gates.md": {
+      "head_SHA256": "dc4bf5a6f13665aca6837416340579beb50f9d348f44152ad88d2ad0519acea9",
+      "working_tree_SHA256": "0583d259506d28e3dc805306729c7198f58565465be3e9d267ebdc201172fb4f",
+      "head_blob": "f77cf39e5f505d5f9569958b804d30ebe3d4cb63",
+      "lines": 130,
+      "base_SHA256": "8161bd9c2b222003348770199474e12e7bbc34b2a80fb9ca03583c04bc7bf23c"
+    },
+    "docs/superpowers/plans/2026-10-29-macos-intel-unit-gate.md": {
+      "head_SHA256": "52484e77a824d23f2c52a22bfa40db770bd5718e719d7ec8a87ab6fa837545c6",
+      "working_tree_SHA256": "52484e77a824d23f2c52a22bfa40db770bd5718e719d7ec8a87ab6fa837545c6",
+      "head_blob": "40e4ad674fe6f214ed392d6c471ca8a26bde00ef",
+      "lines": 91
+    }
+  },
+  "unchanged_critical_edges": {
+    "tools/verify/macos_unit/run.py": {
+      "base_and_head_SHA256": "5fb50ff71d0c6da20d54bfa3e5c1306d8c0456fcc978d60c6595d776197b0165",
+      "git_blob": "527ced8bedb7563de93ca5566d83a536a1ac6f21",
+      "unchanged": true
+    },
+    "tools/verify/macos_unit/events.py": {
+      "base_and_head_SHA256": "3ba6295dc229571b37038e3d30247aa6790be821b36c521b550e464992dc0724",
+      "git_blob": "2312a7f0c9e66c95de4560d1137b97bdfaadbf62",
+      "unchanged": true
+    },
+    "clients/flutter/packages/livekit_client/test/options/screen_capture_engine_test.dart": {
+      "base_and_head_SHA256": "0b9c27894b24fcd6502fd10309bc670a01531f998acd91415c745949a1a579ec",
+      "git_blob": "9d496b6f4f2196f9d4892911bf0251075a2c11ec",
+      "unchanged": true
+    },
+    "tools/ci/flutter_gates/profiles.py": {
+      "base_and_head_SHA256": "4258785cc27c150a8b538ed839111288e2150d1999ae7c6e99d061253beee488",
+      "git_blob": "de92842477ccd0a7bdd538b0e246696928acf184",
+      "unchanged": true
+    },
+    "tools/ci/flutter_gates/results.py": {
+      "base_and_head_SHA256": "19f6f4e36ce5ca2c9139e115237569455ec9cf9446c0b97ab2c4c1d6b14c40f7",
+      "git_blob": "d700610667ba6ff9e2e7e643f4772e083e018029",
+      "unchanged": true
+    },
+    "tools/ci/flutter_gates/aggregate.py": {
+      "base_and_head_SHA256": "fdede1e7901e906533a3e90bf9f845b4c55a587802cfe90e3a816e16f5d5c440",
+      "git_blob": "8da445666ab6a4cca2a8833d6ae268545023700d",
+      "unchanged": true
+    },
+    "tools/ci/flutter_gates/source.py": {
+      "base_and_head_SHA256": "6cd09685b85aae507d7efbe46573c6f3c8270a76b448830c00d3ce6989bd583f",
+      "git_blob": "653c227a9106574400f0cb25995715545f83983c",
+      "unchanged": true
+    },
+    "tools/ci/flutter_gates/run.py": {
+      "base_and_head_SHA256": "aef24a549c06c127f2de9efee26d25c9e5416e6709f75d68407b4d808dfd2063",
+      "git_blob": "85a49aa7b17561c9481130c1290007a807f64268",
+      "unchanged": true
+    },
+    ".github/actions/flutter-setup/action.yaml": {
+      "base_and_head_SHA256": "824065038a36b1389329a15505e544db53be184d597613ea464d8f2223f35031",
+      "git_blob": "53e173ef58b8abeed929b8b3a4cf1429845f2efc",
+      "unchanged": true
+    },
+    "tools/ci/flutter_setup/run.py": {
+      "base_and_head_SHA256": "37a13d31db81b7ffbfb901d2e90669fc691f6ea5d6f809171a81215d3b21f450",
+      "git_blob": "db841acd759d656a1e880386aa8df41cda5a99a7",
+      "unchanged": true
+    },
+    "tools/ci/flutter_setup/metadata.py": {
+      "base_and_head_SHA256": "ac604ad3fab7efede314f8604a20c90caf9a157411b6fe798b3e1a586bff6d79",
+      "git_blob": "da7c1b396c9614f4ecc7784967953ac1e4b46af6",
+      "unchanged": true
+    },
+    "tools/ci/flutter_setup/source.json": {
+      "base_and_head_SHA256": "8a4495435ab63c30d14497e98b6b4cc489d38c312a69194d98c025321957b631",
+      "git_blob": "62c01e64d5e605e80706c8092f114fc239032671",
+      "unchanged": true
+    },
+    "tools/toolchains.json": {
+      "base_and_head_SHA256": "23eb056f13c993838cad651b0ce52e5cc4ce5f26daad96f8c0876621d7110961",
+      "git_blob": "1deefcb62ed712fe7024a38bb9d3b349bcd48433",
+      "unchanged": true
+    },
+    "tools/verify/action_pins/pins.json": {
+      "base_and_head_SHA256": "2cd4a4fa6d9ca9903d3189e2ca5ed114f2a464e5427feac1649ae309d02f5234",
+      "git_blob": "fd1ebca2286eb2f849092266cad598c5266d8a77",
+      "unchanged": true
+    },
+    ".github/workflows/android-release.yaml": {
+      "base_and_head_SHA256": "85fcb98495f77fe45c918aef5b92626cd8bfaa75eab8df7f2cbb36d366cd1e92",
+      "git_blob": "4a8f375d09c0f89820fc2d9bde8b78aa7c7f73ea",
+      "unchanged": true
+    },
+    "tools/ci/macos/host-v1.json": {
+      "base_and_head_SHA256": "84add3a4daefd6f69322d8285d71edd3d42b9b62a4cbae16b9800351c16bf6b0",
+      "git_blob": "786404bcead7f8fae72385d867fe63b0045200ca",
+      "unchanged": true
+    },
+    "docs/ci/macos-sdk.md": {
+      "base_and_head_SHA256": "6e0df0423494bf04bb842065531282f05d841b73d21e7bcd7e3a7f4aa213c78e",
+      "git_blob": "644cd6b0dee1d864288dc788dbcd9d6339998afb",
+      "unchanged": true
+    }
+  },
+  "implementation_receipts_SHA256": {
+    "summary.json": "ef78d3bbdad57f46cccdd9a78d270bb2322ffd6360361f81446a567c65c329fb",
+    "01-baseline-default-python.json": "f35ba89687ecdab95b1759a82878345d5859924cb3702e27d07e0bc711b8f7d5",
+    "01-baseline-default-python.log": "84728211919c4bec75528d94a49c8fc3d3487bdda683f40621ed64085d33e7e5",
+    "02-red-policy.json": "03208458346d7910f9d4f24155d001ab72103dcfa5c8f38bc4d55ea846421a2c",
+    "02-red-policy.log": "991d73a841506abe2591c6e791d24f3e8c0c452fb1144edee94d84e176097a7a",
+    "03-green-policy.json": "6b6a81d823167a57fefcdae91f2ea863aa9663b352ec4e3746fff94b3d3ad372",
+    "03-green-policy.log": "dbf032af4b3f926729e97debc713f29425660a2fc52d93a999254a52ce7006fe",
+    "07-flutter-gates-explicit.json": "f03effbca4ee017cdcc098f2a178f2e3eddea43e2e91061a0987a980c545783f",
+    "07-flutter-gates-explicit.log": "835673669ae5cf125efc9dfb6652e47fc6a730dc1b284529cf61fe19909101b6",
+    "08-macos-unit-explicit.json": "dbb21c9d7771900d4c9d45afab410a503e0e0fce3cd96cc3a8f58beed414c43c",
+    "08-macos-unit-explicit.log": "0449c08e09fa689b49d3700b5daad376c6704b67b19ed4faec918c6c9d3ee6a5",
+    "06-contracts.json": "f2bd93859b667ad3ed5e393b4cb97c7b452565e017d51fbd0a2b521a2d547a12",
+    "06-contracts.log": "f4462d77611bdf1fbb84e58c460268af8759c8578fbde5605196471ca50d1680",
+    "09-production-preservation.json": "7c9e8affb012ff5fb16d39ee946dad6802932f1d89921f970bbdbf7547f10a20",
+    "baseline-files.json": "8fdec9f214ff926583b8fb305a9d6ac98f77659ccb775806b80707c4c3d5689f",
+    "final-files.json": "fce6948d7ba2a398360aaae670f9b3cf9dcb334778afc373d264022eb70eb60d",
+    "commit.json": "2f2b1e450b3eb7a91baa1bb2411ebbb0af0221918baa1ad45b4bd6d6093b871b"
+  },
+  "expected_eight_test_names_unchanged": [
+    "default screen options preserve baseline constraints without engine",
+    "macOS capture engine preserves exact source and frame rate",
+    "copyWith keeps engine independently of audio and FPS changes",
+    "from constructor carries explicit engine without inventing one",
+    "diagnostics default leaves native default unchanged",
+    "macOS diagnostics switch preserves engine source and frame rate",
+    "diagnostics copyWith preserves explicit false and independent audio policy",
+    "from constructor forwards explicit diagnostics without inventing one"
+  ],
+  "review_helpers_do_not_execute_repo_tests": true
+}

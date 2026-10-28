@@ -1,0 +1,155 @@
+{
+  "at_utc": "2026-10-28T21:57:19.762957+00:00",
+  "workflow_class": "review_gate",
+  "packet": "macos-ci-spec-delta",
+  "status": "PASS_SCOPED_SPEC_DELTA_NO_ACTIONABLE_FINDINGS",
+  "previous_reviewed_commit": "536b42427bf6a854a8d39ab7fd9248cbb87784a4",
+  "reviewed_commit": "69189949ce850769ab568e211fa06cdfc6bde5a2",
+  "direct_parent_matches_previous": true,
+  "worktree_clean_before_and_after": true,
+  "exact_changed_files": {
+    "docs/ci/test-protection.md": {
+      "previous_git_blob": "924da4721febf5f51d6d014ecb81ebfbd99fe87c",
+      "new_git_blob": "9640c32fe2b1ffcf72e626080fb9d46c19d7bb0e",
+      "previous_SHA256": "f9cc4cc1614f7e8e49e38e944ec925de314f57b51dbc7912cd23b4f699920019",
+      "new_SHA256": "797a999352ffe98ca667f909d5983121b008c3c31ec3844c17f0d7da3dc2bf5a"
+    },
+    "docs/superpowers/plans/2026-10-29-macos-intel-unit-gate.md": {
+      "previous_git_blob": "40e4ad674fe6f214ed392d6c471ca8a26bde00ef",
+      "new_git_blob": "e872b191147c0b218a0d4a4e0b1967a333565839",
+      "previous_SHA256": "52484e77a824d23f2c52a22bfa40db770bd5718e719d7ec8a87ab6fa837545c6",
+      "new_SHA256": "634afa81cef46d484c20990c8ed502355a484a08345df83a03fde66762991dcc"
+    }
+  },
+  "mapping": {
+    "suite": "LiveKit `screen_capture_engine_test.dart` (8 named cases, including 2 Apple-only)",
+    "protects": "Capture engine/source/FPS constraints, diagnostics flags, copy/from behavior",
+    "command": "`task test:macos-unit` / `python -m tools.verify.macos_unit.run`",
+    "platform": "Actual macOS; CI Flutter unit uses hosted `macos-26-intel`; full-build/release retain their own host policies",
+    "mandatory_when": "Every selected Flutter gate, macOS full-build dispatch and macOS release/dry-run before build",
+    "result": "`.out/checks/macos-unit/{result.json,screen-capture-engine.jsonl}`; `macos-unit-*` upload, 30 days"
+  },
+  "mapping_verdict": "Only the platform cell changed; hosted Intel is scoped to the CI Flutter unit profile. Commands, protected invariant, triggers and result paths are byte-identical; full-build/release host policies remain separate.",
+  "plan_verdict": "Only the exact protection-map file was added to the file list.",
+  "unchanged_reviewed_blobs": {
+    ".github/workflows/ci-flutter.yaml": {
+      "git_blob": "5e0eabb200c8a0f85080f022e3c74c3134ee3ceb",
+      "SHA256": "77c5a55fcb759c953bd42906beb8349c90b57f69132589874a16d62479a9f692",
+      "matches_reviewed_536": true
+    },
+    "tools/ci/flutter_gates/workflow.py": {
+      "git_blob": "04c6aa0c98701bcc7adddd943309bfd97a2a9599",
+      "SHA256": "3e0532dda6bb28cee7d6feff4537ee1784cc21164051800a6288eff4b1355e67",
+      "matches_reviewed_536": true
+    },
+    "tools/ci/flutter_gates/test_workflow.py": {
+      "git_blob": "36d62c5c0c386740310ec1ae4166bacc9714e92c",
+      "SHA256": "5f2bba7274b2c2f470052b3815cbd90efcf9d5100b8e79e66e81cf165932448d",
+      "matches_reviewed_536": true
+    },
+    "docs/ci/flutter-gates.md": {
+      "git_blob": "f77cf39e5f505d5f9569958b804d30ebe3d4cb63",
+      "SHA256": "dc4bf5a6f13665aca6837416340579beb50f9d348f44152ad88d2ad0519acea9",
+      "matches_reviewed_536": true
+    },
+    "tools/verify/macos_unit/run.py": {
+      "git_blob": "527ced8bedb7563de93ca5566d83a536a1ac6f21",
+      "SHA256": "5fb50ff71d0c6da20d54bfa3e5c1306d8c0456fcc978d60c6595d776197b0165",
+      "matches_reviewed_536": true
+    },
+    "tools/verify/macos_unit/events.py": {
+      "git_blob": "2312a7f0c9e66c95de4560d1137b97bdfaadbf62",
+      "SHA256": "3ba6295dc229571b37038e3d30247aa6790be821b36c521b550e464992dc0724",
+      "matches_reviewed_536": true
+    },
+    "clients/flutter/packages/livekit_client/test/options/screen_capture_engine_test.dart": {
+      "git_blob": "9d496b6f4f2196f9d4892911bf0251075a2c11ec",
+      "SHA256": "0b9c27894b24fcd6502fd10309bc670a01531f998acd91415c745949a1a579ec",
+      "matches_reviewed_536": true
+    },
+    "tools/ci/flutter_gates/profiles.py": {
+      "git_blob": "de92842477ccd0a7bdd538b0e246696928acf184",
+      "SHA256": "4258785cc27c150a8b538ed839111288e2150d1999ae7c6e99d061253beee488",
+      "matches_reviewed_536": true
+    },
+    "tools/ci/flutter_gates/results.py": {
+      "git_blob": "d700610667ba6ff9e2e7e643f4772e083e018029",
+      "SHA256": "19f6f4e36ce5ca2c9139e115237569455ec9cf9446c0b97ab2c4c1d6b14c40f7",
+      "matches_reviewed_536": true
+    },
+    "tools/ci/flutter_gates/aggregate.py": {
+      "git_blob": "8da445666ab6a4cca2a8833d6ae268545023700d",
+      "SHA256": "fdede1e7901e906533a3e90bf9f845b4c55a587802cfe90e3a816e16f5d5c440",
+      "matches_reviewed_536": true
+    },
+    "tools/ci/flutter_gates/source.py": {
+      "git_blob": "653c227a9106574400f0cb25995715545f83983c",
+      "SHA256": "6cd09685b85aae507d7efbe46573c6f3c8270a76b448830c00d3ce6989bd583f",
+      "matches_reviewed_536": true
+    },
+    "tools/ci/flutter_gates/run.py": {
+      "git_blob": "85a49aa7b17561c9481130c1290007a807f64268",
+      "SHA256": "aef24a549c06c127f2de9efee26d25c9e5416e6709f75d68407b4d808dfd2063",
+      "matches_reviewed_536": true
+    },
+    ".github/actions/flutter-setup/action.yaml": {
+      "git_blob": "53e173ef58b8abeed929b8b3a4cf1429845f2efc",
+      "SHA256": "824065038a36b1389329a15505e544db53be184d597613ea464d8f2223f35031",
+      "matches_reviewed_536": true
+    },
+    "tools/ci/flutter_setup/run.py": {
+      "git_blob": "db841acd759d656a1e880386aa8df41cda5a99a7",
+      "SHA256": "37a13d31db81b7ffbfb901d2e90669fc691f6ea5d6f809171a81215d3b21f450",
+      "matches_reviewed_536": true
+    },
+    "tools/ci/flutter_setup/metadata.py": {
+      "git_blob": "da7c1b396c9614f4ecc7784967953ac1e4b46af6",
+      "SHA256": "ac604ad3fab7efede314f8604a20c90caf9a157411b6fe798b3e1a586bff6d79",
+      "matches_reviewed_536": true
+    },
+    "tools/ci/flutter_setup/source.json": {
+      "git_blob": "62c01e64d5e605e80706c8092f114fc239032671",
+      "SHA256": "8a4495435ab63c30d14497e98b6b4cc489d38c312a69194d98c025321957b631",
+      "matches_reviewed_536": true
+    },
+    "tools/toolchains.json": {
+      "git_blob": "1deefcb62ed712fe7024a38bb9d3b349bcd48433",
+      "SHA256": "23eb056f13c993838cad651b0ce52e5cc4ce5f26daad96f8c0876621d7110961",
+      "matches_reviewed_536": true
+    },
+    "tools/verify/action_pins/pins.json": {
+      "git_blob": "fd1ebca2286eb2f849092266cad598c5266d8a77",
+      "SHA256": "2cd4a4fa6d9ca9903d3189e2ca5ed114f2a464e5427feac1649ae309d02f5234",
+      "matches_reviewed_536": true
+    },
+    ".github/workflows/android-release.yaml": {
+      "git_blob": "4a8f375d09c0f89820fc2d9bde8b78aa7c7f73ea",
+      "SHA256": "85fcb98495f77fe45c918aef5b92626cd8bfaa75eab8df7f2cbb36d366cd1e92",
+      "matches_reviewed_536": true
+    },
+    "tools/ci/macos/host-v1.json": {
+      "git_blob": "786404bcead7f8fae72385d867fe63b0045200ca",
+      "SHA256": "84add3a4daefd6f69322d8285d71edd3d42b9b62a4cbae16b9800351c16bf6b0",
+      "matches_reviewed_536": true
+    },
+    "docs/ci/macos-sdk.md": {
+      "git_blob": "644cd6b0dee1d864288dc788dbcd9d6339998afb",
+      "SHA256": "6e0df0423494bf04bb842065531282f05d841b73d21e7bcd7e3a7f4aa213c78e",
+      "matches_reviewed_536": true
+    }
+  },
+  "preserved_obligations": [
+    "8 named Darwin cases and zero-skip enforcement",
+    "all 4 profiles and same-source/run/attempt strict fan-in",
+    "SDK, action pins, cache, security and signer dependencies",
+    "full ARM/Intel SDK and physical Mac/media acceptance"
+  ],
+  "actionable_findings": [],
+  "tests_repeated": 0,
+  "source_edits": 0,
+  "CI_PR_push_actions": 0,
+  "device_actions": 0,
+  "old_frozen_manifest_verified": true,
+  "Intel_runtime": "NOT_RUN_BY_THIS_REVIEW; no runtime or CI status inferred",
+  "runtime_acceptance_limit": "Documentation delta does not close issue #595 or qualify hosted Intel execution, full SDK builds, physical Mac or signed release."
+}

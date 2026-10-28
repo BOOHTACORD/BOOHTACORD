@@ -1,0 +1,50 @@
+{
+  "baseline": {
+    "exit_code": 0,
+    "tests": 6,
+    "skips": 0
+  },
+  "red": {
+    "exit_code": 1,
+    "tests": 8,
+    "failures": 1,
+    "cause": "Exact prior policy rejects Intel and accepts former ARM host",
+    "errors": 1,
+    "skips": 0
+  },
+  "focused_green": {
+    "exit_code": 0,
+    "tests": 8,
+    "skips": 0
+  },
+  "flutter_leaf": {
+    "modules": 14,
+    "tests": 59,
+    "skips": 0,
+    "exit_code": 0
+  },
+  "macos_unit_leaf": {
+    "modules": 2,
+    "tests": 6,
+    "skips": 0,
+    "exit_code": 0
+  },
+  "contracts": {
+    "exit_code": 0,
+    "tests": 20,
+    "skips": 0,
+    "schema_lint": "PASS",
+    "route_security_parameter_parity": "PASS: 129 public operations; 4 private exclusions"
+  },
+  "bootstrap": {
+    "resolution": "All exact namespace modules invoked with Python3.12.10; no package source changes",
+    "original_discovery": "ImportError: Start directory is not importable",
+    "runtime_probe": "Bundled3.12.14 observed only; no tests or modifications with it"
+  },
+  "limits": [
+    "Actual Intel hosted8Darwin cases NOT_RUN",
+    "ARM/Intel SDK matrix and physical Mac remain separate",
+    "No push, PR, dispatch, rerun, merge, device, browser or production action"
+  ],
+  "evidence": "./.out/qa-macos-ci-implementation"
+}

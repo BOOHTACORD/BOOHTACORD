@@ -1,0 +1,98 @@
+{
+  "at_utc": "2026-10-28T21:53:38.327412+00:00",
+  "status": "PASS_SCOPED_INDEPENDENT_SPEC_REVIEW_NO_ACTIONABLE_FINDINGS",
+  "workflow_class": "review_gate",
+  "route": "tools/ci/flutter_gates exactrunnerconstraint",
+  "reviewed_commit": "536b42427bf6a854a8d39ab7fd9248cbb87784a4",
+  "base": "b7f1c3ad438201c0461ed4858d97df6917815ceb",
+  "changed_file_count": 5,
+  "actionable_findings": [],
+  "checks": [
+    {
+      "protects": "ExactpinnedAppleIntelpoolqualificationwithoutbroaderfallback",
+      "result": "PASS_SPEC",
+      "evidence": "Onlyrunnerliteral changedin YAML/policy, newpositiveandfive negativehost cases"
+    },
+    {
+      "protects": "All8Darwin vendorcaseswith0skips",
+      "result": "PASS_SOURCE_PRESERVATION",
+      "evidence": "events/run/Darttest blobs equalbase; EXPECTED8exactnames,2Platform.isMacOS guards andskiprejection unchanged"
+    },
+    {
+      "protects": "All4profiles/current-source/run/attempt strictfanin andstablecheck",
+      "result": "PASS_SOURCE_PRESERVATION",
+      "evidence": "OnlyYAMLrunnerliteral differs; aggregate/results/profiles/source blobs equalbase"
+    },
+    {
+      "protects": "SDK/actionpins/cache/security/signerdependency",
+      "result": "PASS_SOURCE_PRESERVATION",
+      "evidence": "All setup/pins/toolchain/releaseworkflow blobs equalbase, release needsquality unchanged"
+    },
+    {
+      "protects": "FullARM/IntelSDKandphysical obligations separate",
+      "result": "PASS_SPEC",
+      "evidence": "host-v1matrix andmacos-sdk runbook equalbase; documentationandplan explicitlyretainseparation"
+    },
+    {
+      "protects": "RealTDD beforeproductionimplementation",
+      "result": "PASS_EXISTING_RECEIPT_AUDIT",
+      "evidence": "baseline6OK; red8failure1/error1exactoldpolicy, source/testSHA matches; green8OK; leaf59/0,wrapper6/0,contracts20/0+129operations; notreexecuted"
+    }
+  ],
+  "existing_TDD_summary_reviewed": {
+    "baseline": {
+      "exit_code": 0,
+      "tests": 6,
+      "skips": 0
+    },
+    "red": {
+      "exit_code": 1,
+      "tests": 8,
+      "failures": 1,
+      "cause": "Exact prior policy rejects Intel and accepts former ARM host",
+      "errors": 1,
+      "skips": 0
+    },
+    "focused_green": {
+      "exit_code": 0,
+      "tests": 8,
+      "skips": 0
+    },
+    "flutter_leaf": {
+      "modules": 14,
+      "tests": 59,
+      "skips": 0,
+      "exit_code": 0
+    },
+    "macos_unit_leaf": {
+      "modules": 2,
+      "tests": 6,
+      "skips": 0,
+      "exit_code": 0
+    },
+    "contracts": {
+      "exit_code": 0,
+      "tests": 20,
+      "skips": 0,
+      "schema_lint": "PASS",
+      "route_security_parameter_parity": "PASS: 129 public operations; 4 private exclusions"
+    }
+  },
+  "actual_Intel_hosted_runtime": "NOT_RUN",
+  "not_a_hosted_gate_or_signed_release_acceptance": true,
+  "issue595": "Allocationblocker remainsopen; PRRefs595 only; closure requirespostmergesigneddryrunproof, notthisstaticreview",
+  "notes": [
+    "No rawtestlogpaths/usernames copied; onlysourceandreceipt hashes/aggregatefacts",
+    "Preservedoriginalnamespace-discoverybootstrapdiagnostics; intendedRED isactualpolicyrejection, notimportfailure",
+    "ReviewdoesnotqualifyfullARM/x64SDK,physicalMac/mediaorcurrentIntelpoolcapacity",
+    "Five-filechange matchesapprovedplan/macOScapacityreview; addedtestsreach intendedRED/GREEN byexistingreceipts"
+  ],
+  "review_actions": {
+    "source_edits": 0,
+    "tests_repeated": 0,
+    "push_PR_CI_dispatch_rerun": 0,
+    "device_UI_ADB": 0,
+    "cross_chat_messages": 0
+  },
+  "source_binding": "source-binding.json"
+}

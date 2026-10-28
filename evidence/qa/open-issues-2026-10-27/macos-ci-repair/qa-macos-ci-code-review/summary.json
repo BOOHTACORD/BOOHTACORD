@@ -1,0 +1,76 @@
+{
+  "status": "NO_ACTIONABLE_CODE_OR_REGRESSION_FINDINGS_HOSTED_INTEL_NOT_RUN",
+  "workflow_class": "review_gate",
+  "route": "tools/ci/flutter_gates/workflow.py: exact mandatory macOS unit runner policy",
+  "reviewed_head": "536b42427bf6a854a8d39ab7fd9248cbb87784a4",
+  "reviewed_base": "b7f1c3ad438201c0461ed4858d97df6917815ceb",
+  "findings": [],
+  "frozen_after_this_packet": true,
+  "installed_or_restarted": false,
+  "source_or_GitHub_changes": false,
+  "test_execution_performed_by_reviewer": false,
+  "scope": "Independent read-only five-file code/regression review, exact caller and native SDK/macOS test edges; implementation receipts inspected without rerunning tests",
+  "diff_assessment": {
+    "production_changes": "Only the macOS runner label and matching exact validator literal changed from macos-26 to macos-26-intel",
+    "test_changes": "One positive Intel control and one five-host rejection table; current full workflow remains separately validated",
+    "documentation": "Host and eight-Darwin-case scope accurately narrowed; ARM/Intel builds and physical Mac acceptance remain distinct",
+    "API_signing_permissions_dependencies_commands_artifact_guards": "Unchanged"
+  },
+  "TDD_and_discovery": {
+    "baseline": "Receipt:6 tests, exit0",
+    "RED": "Receipt:8 tests, one intended positive-control ValueError and one intended negative-control failure for former ARM host; not the bootstrap discovery error",
+    "binding": "RED implementation hash matches base policy; RED test hash matches final committed test; all five final file hashes match current W",
+    "GREEN": "Receipt:8 tests, exit0",
+    "namespace_discovery": "Two discover -t . invocations failed before tests and are preserved separately; exact explicit module fallback covers every leaf test file",
+    "flutter_leaf": "14 modules /59 source-declared tests; receipt59 tests,0skips,exit0; every receipt test hash matches W",
+    "macos_unit_leaf": "2 modules /6 source-declared tests; receipt6 tests,0skips,exit0; every receipt test hash matches W",
+    "contracts": "Receipt20 tests,exit0; no independent execution by this reviewer",
+    "acceptance_limit": "Receipt consistency and source review; not a new test execution or historical execution attestation"
+  },
+  "preserved_guards": {
+    "host_policy": "Exact Intel literal only; rejects macos-latest, former ARM macos-26, macos-15-intel, Linux and self-hosted list",
+    "macos_unit": "Same Darwin-only entrypoint and eight exact source-declared case names; skipped/failed/missing/duplicate/incomplete events rejected",
+    "source": "Exact clean tracked GITHUB_SHA verified before and after profile execution",
+    "run_identity": "Repository/source/run_id/run_attempt/namespace validation unchanged",
+    "fan_in": "All four successful profiles required; exact filenames and source/run/attempt/SDK/operation inventories; no old-attempt substitution",
+    "SDK_cache": "Actual OS/architecture must match runner context; x64 and arm64 cache keys and directories separated; private fresh pub cache preserved",
+    "signing": "Android release still needs complete quality reusable workflow; source-only runner edit cannot bypass signing dependency"
+  },
+  "exact_callers": [
+    ".github/workflows/ci.yaml:67",
+    ".github/workflows/native-master.yaml:47",
+    ".github/workflows/android-release.yaml:20",
+    ".github/workflows/flutter-ci-shadow.yaml:100"
+  ],
+  "SDK_readiness": {
+    "classification": "STATIC_AND_PUBLIC_METADATA_READY_ONLY",
+    "runner": "Official GitHub docs list macos-26-intel as native Intel standard runner",
+    "installer": "Pinned subosito/flutter-action1a449444c387b1966244ae4d4f8c696479add0b2 supports -a x64 and filters official catalog architecture",
+    "Flutter": "3.47.7",
+    "Dart": "3.13.5",
+    "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8",
+    "official_x64_archive_sha256_declared": "17d39b000a5d0681e3f7b61a105a36f6f31dd41ab9073f625fd466f38035f901",
+    "archive_HEAD": 200,
+    "archive_binary_downloaded_or_executed": false,
+    "actual_hosted_Intel_SDK_install_and_eight_cases": "NOT_RUN"
+  },
+  "primary_sources": [
+    "https://docs.github.com/en/actions/reference/runners/github-hosted-runners",
+    "https://github.com/actions/runner-images/blob/main/README.md",
+    "https://raw.githubusercontent.com/subosito/flutter-action/1a449444c387b1966244ae4d4f8c696479add0b2/setup.sh",
+    "https://storage.googleapis.com/flutter_infra_release/releases/releases_macos.json"
+  ],
+  "limits_and_required_hosted_proof": [
+    "New capacity issue595 remains an actual hosted blocker; changing the label does not prove allocation",
+    "Require actual Intel runner architecture/SDK identity, eight expected Darwin cases and zero skips with source/run/attempt binding",
+    "Require all current required native/SQL/Android checks and tested/final tree identity before integration acceptance",
+    "ARM SDK/build, Intel application build and physical Mac/media acceptance remain separate",
+    "Postmerge signed Android dry-run and actual APK checks belong to root; this review dispatched nothing",
+    "No device, CUA, ADB, install, PR, merge, rerun, cross-chat or public-evidence action"
+  ],
+  "controller_diagnostics": [
+    "Initial action.yml read corrected to repository action.yaml; no source fault",
+    "One implementation receipt read used W cwd instead of Q and was corrected; no source/test fault"
+  ],
+  "report": "Slavik Gym report: route=tools/ci/flutter_gates/workflow; packet=macos-intel-independent-code-review; tokens=estimated:6500; method=manual_estimate; driver=five-file-diff-and-bound-receipt-audit; next_split=actual-hosted-Intel-qualification"
+}
