@@ -1,0 +1,191 @@
+{
+  "actual_runtime": {
+    "lifecycle": {
+      "owned_resources_removed": true,
+      "physical_acceptance": "NOT_RUN",
+      "profile": "lifecycle",
+      "release_acceptance": "NOT_RUN",
+      "run_attempt": "1",
+      "run_id": "40781872794",
+      "scope": "automatic-PR-real-runtime",
+      "source_revision": "40af8f1a9c353ea9b5c841c6afd66dbaeaeaa692",
+      "status": "PASS"
+    },
+    "next": {
+      "owned_resources_removed": true,
+      "physical_acceptance": "NOT_RUN",
+      "profile": "next",
+      "release_acceptance": "NOT_RUN",
+      "run_attempt": "1",
+      "run_id": "40781872794",
+      "scope": "automatic-PR-real-runtime",
+      "source_revision": "40af8f1a9c353ea9b5c841c6afd66dbaeaeaa692",
+      "status": "PASS"
+    },
+    "sfu": {
+      "owned_resources_removed": true,
+      "physical_acceptance": "NOT_RUN",
+      "profile": "sfu",
+      "release_acceptance": "NOT_RUN",
+      "run_attempt": "1",
+      "run_id": "40781872794",
+      "scope": "automatic-PR-real-runtime",
+      "source_revision": "40af8f1a9c353ea9b5c841c6afd66dbaeaeaa692",
+      "status": "PASS"
+    }
+  },
+  "identity": {
+    "actual_checkout": "40af8f1a9c353ea9b5c841c6afd66dbaeaeaa692",
+    "event": "pull_request",
+    "head": "1a608bfac6f5a177d06f77ba040acc18760e2246",
+    "head_tree": "1677b5698447482654771487c000d0c1e94edd6f",
+    "pr": 596,
+    "run_attempt": 1,
+    "run_id": 40781872794,
+    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40781872794",
+    "source_base": "9bda19e6db5c754c497dc652a8effa836c75451a",
+    "synthetic_tree": "1677b5698447482654771487c000d0c1e94edd6f"
+  },
+  "kotlin": {
+    "job_id": 123145375416,
+    "modes": {
+      "builtin": {
+        "class_count": 14,
+        "classes": {
+          "com.cloudwebrtc.webrtc.RemoteTrackRegistryTest": 1,
+          "com.cloudwebrtc.webrtc.ScreenCaptureConstraintsTest": 3,
+          "com.cloudwebrtc.webrtc.ScreenCaptureDimensionsTest": 6,
+          "com.cloudwebrtc.webrtc.ScreenCaptureFrameRateGateTest": 3,
+          "com.cloudwebrtc.webrtc.SurfaceProducerAvailabilityTest": 1,
+          "com.cloudwebrtc.webrtc.SurfaceReleaseBarrierTest": 3,
+          "com.cloudwebrtc.webrtc.VideoFrameDimensionsTest": 3,
+          "com.cloudwebrtc.webrtc.record.FrameCaptureGateTest": 2,
+          "com.cloudwebrtc.webrtc.record.FrameCapturerBufferTest": 1,
+          "com.cloudwebrtc.webrtc.screen.refresh.FrameTimestampTest": 2,
+          "com.cloudwebrtc.webrtc.screen.refresh.StationaryFrameRefreshTest": 9,
+          "com.cloudwebrtc.webrtc.utils.ConstraintsMapTest": 1,
+          "io.livekit.plugin.AudioResamplerTest": 11,
+          "ru.boohtacord.voice.start.AdmissionPolicyTest": 5
+        },
+        "failed_names": [],
+        "skipped_names": [],
+        "tests": 51
+      },
+      "legacy": {
+        "class_count": 14,
+        "classes": {
+          "com.cloudwebrtc.webrtc.RemoteTrackRegistryTest": 1,
+          "com.cloudwebrtc.webrtc.ScreenCaptureConstraintsTest": 3,
+          "com.cloudwebrtc.webrtc.ScreenCaptureDimensionsTest": 6,
+          "com.cloudwebrtc.webrtc.ScreenCaptureFrameRateGateTest": 3,
+          "com.cloudwebrtc.webrtc.SurfaceProducerAvailabilityTest": 1,
+          "com.cloudwebrtc.webrtc.SurfaceReleaseBarrierTest": 3,
+          "com.cloudwebrtc.webrtc.VideoFrameDimensionsTest": 3,
+          "com.cloudwebrtc.webrtc.record.FrameCaptureGateTest": 2,
+          "com.cloudwebrtc.webrtc.record.FrameCapturerBufferTest": 1,
+          "com.cloudwebrtc.webrtc.screen.refresh.FrameTimestampTest": 2,
+          "com.cloudwebrtc.webrtc.screen.refresh.StationaryFrameRefreshTest": 9,
+          "com.cloudwebrtc.webrtc.utils.ConstraintsMapTest": 1,
+          "io.livekit.plugin.AudioResamplerTest": 11,
+          "ru.boohtacord.voice.start.AdmissionPolicyTest": 5
+        },
+        "failed_names": [],
+        "skipped_names": [],
+        "tests": 51
+      }
+    }
+  },
+  "macos": {
+    "expected_names": [
+      "default screen options preserve baseline constraints without engine",
+      "macOS capture engine preserves exact source and frame rate",
+      "copyWith keeps engine independently of audio and FPS changes",
+      "from constructor carries explicit engine without inventing one",
+      "diagnostics default leaves native default unchanged",
+      "macOS diagnostics switch preserves engine source and frame rate",
+      "diagnostics copyWith preserves explicit false and independent audio policy",
+      "from constructor forwards explicit diagnostics without inventing one"
+    ],
+    "job_id": 123145375392,
+    "labels": [
+      "macos-26-intel"
+    ],
+    "mandatory_part_upload": "SUCCESS",
+    "os": "macOS26.6.1",
+    "passed": 8,
+    "physical_media": "NOT_RUN",
+    "runner_id": 1000017040,
+    "sdk": {
+      "dart": "3.13.5",
+      "flutter": "3.47.7",
+      "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8"
+    },
+    "sdk_host_architecture": "x64",
+    "skipped_names": []
+  },
+  "postgresql": {
+    "failed_names": [],
+    "job_id": 123145375377,
+    "package_passes": 375,
+    "passed": 1674,
+    "server_version": "17.6",
+    "skipped_names": [],
+    "started": 1674,
+    "unfinished_names": [],
+    "version_evidence": "Actual hosted PostgreSQL server startup log"
+  },
+  "windows": {
+    "build_scope": "CI acceptance package; stable release NOT_RUN",
+    "captures_checksum_verified": 8,
+    "gui_cases": [
+      {
+        "case": "header-initial",
+        "escape": true,
+        "focus_returned": true,
+        "footer_visible": true,
+        "mute_deafen_preserved": true,
+        "no_publication": true,
+        "same_connected_room_and_lease": true
+      },
+      {
+        "cancel_keyboard_reachable": true,
+        "case": "header-traversed",
+        "escape": true,
+        "focus_returned": true,
+        "footer_visible": true,
+        "mute_deafen_preserved": true,
+        "no_publication": true,
+        "quality_reachable": true,
+        "same_connected_room_and_lease": true
+      },
+      {
+        "case": "dock-initial",
+        "escape": true,
+        "focus_returned": true,
+        "footer_visible": true,
+        "mute_deafen_preserved": true,
+        "no_publication": true,
+        "same_connected_room_and_lease": true
+      },
+      {
+        "cancel_keyboard_reachable": true,
+        "case": "dock-traversed",
+        "escape": true,
+        "focus_returned": true,
+        "footer_visible": true,
+        "mute_deafen_preserved": true,
+        "no_publication": true,
+        "quality_reachable": true,
+        "same_connected_room_and_lease": true
+      }
+    ],
+    "gui_status": "PASS",
+    "manifest_sha256": "79f31a30b607e0054f050dfa0b46455be6876958d17455770136691857e9e3c9",
+    "n_to_n1_ui_acceptance": "NOT_RUN",
+    "native_aggregate_validator": "PASS",
+    "real_flutter_relaunch": true,
+    "real_monitor": true,
+    "recovery_status": "PASS",
+    "scope": "Actual release Windows GUI, real API/PostgreSQL/LiveKit listener. No acoustic/media quality claim."
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "qualification": "Historical source/run identities only; never current part or required-status inputs",
+  "results": [
+    {
+      "attempt": 1,
+      "head": "536b42427bf6a854a8d39ab7fd9248cbb87784a4",
+      "run_id": 40775454357,
+      "scope": "Limited completed Darwin8 and Go1673 execution evidence; no complete accepted gate",
+      "status": "CANCELLED"
+    },
+    {
+      "attempt": 1,
+      "head": "69189949ce850769ab568e211fa06cdfc6bde5a2",
+      "run_id": 40776034399,
+      "scope": "Accepted for its own head/base/tree only; later strict-base rejection did not alter that result",
+      "status": "ALL27SUCCESS"
+    },
+    {
+      "attempt": 1,
+      "cause": "CreateArtifact ENOTFOUND after eight successful Darwin tests; mandatory macOS part absent; fan-in and required status failed closed",
+      "head": "e7c5420c113f7cced09fd3ad7588f4479388c7cb",
+      "retry_guard_stop": "Master changed before POST",
+      "retry_posts_attempted": 0,
+      "retry_status": "RETIRED_UNUSED_NEVER_POST",
+      "run_id": 40779166677,
+      "status": "FAIL24OF27SUCCESS"
+    }
+  ]
+}

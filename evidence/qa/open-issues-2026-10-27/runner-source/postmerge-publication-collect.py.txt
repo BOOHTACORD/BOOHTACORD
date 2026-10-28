@@ -1,0 +1,59 @@
+"""Publish only frozen current-CI metadata; execute no workflow/device action."""
+import sys
+from pathlib import Path
+Q = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Q / '.out/qa-archive-release'))
+from common import *
+
+src = Q / '.out/qa-pr596-hosted/head1a'
+allow = read(src / 'public-metadata-allowlist.json')
+assert allow['identity']['head'] == '1a608bfac6f5a177d06f77ba040acc18760e2246'
+dest = O / 'macos-ci-repair/hosted-current'
+assert not dest.exists(), 'One-shot collector: review an existing packet instead'
+provenance = []
+for item in allow['allowed_files']:
+    name = item['path']
+    assert name.startswith('public-metadata/') and name.endswith('.json')
+    assert Path(name).name == name.removeprefix('public-metadata/')
+    p = src / name
+    raw = p.read_bytes()
+    assert sha(raw) == item['sha256'] and len(raw) == item['bytes']
+    value = clean(read(p))
+    assert not any(n in json.dumps(value, ensure_ascii=False) for n in needles)
+    out = dest / Path(name).name
+    write(out, value)
+    assert p.read_bytes() == raw, 'Concurrent source change'
+    provenance.append({'public': out.relative_to(O).as_posix(),
+                       'private_original_SHA256': sha(raw), 'sanitized': value != read(p)})
+for name in ['pre-merge.json', 'post-merge.json']:
+    p = Q / '.out/qa-pr596-merge-final' / name
+    raw = p.read_bytes()
+    write(dest / name, clean(read(p)))
+    provenance.append({'public': (dest / name).relative_to(O).as_posix(),
+                       'private_original_SHA256': sha(raw)})
+s = read(dest / 'summary.json')
+assert s['checks']['successful'] == s['checks']['total'] == 27
+assert s['merge_tree_equal'] and s['counts']['go_passed'] == 1674
+assert s['counts']['go_skipped'] == s['counts']['macos_skipped'] == 0
+assert s['counts']['macos_passed'] == 8
+write(dest / 'publication-provenance.json', {
+    'status': 'PASS_METADATA_ONLY', 'artifacts': provenance,
+    'excluded': 'Raw logs, binaries, screenshots, credentials, signed download URLs',
+    'scope': 'Current PR CI and matching merged tree; no new physical or signing PASS'})
+ref = (dest / 'summary.json').relative_to(O).as_posix()
+m = read(O / 'matrix.json')
+for issue in m['issues']:
+    if issue['number'] == 62:
+        if ref not in issue['evidence']: issue['evidence'].append(ref)
+        for row in issue['criteria']:
+            if row['id'] == 'I62.C1':
+                assert row['status'] == 'FAIL'
+                if ref not in row['evidence']: row['evidence'].append(ref)
+write(O / 'matrix.json', m)
+s = read(D / 'summary.json')
+s['current_native_ci_and_merge'] = '../macos-ci-repair/hosted-current/summary.json'
+s['current_native_ci_limit'] = '27 current checks PASS; Android signing and physical acceptance remain separate. Earlier failed/superseded runs preserved.'
+write(D / 'summary.json', s)
+code(Path(__file__), 'postmerge-publication-')
+print(json.dumps({'published_metadata': len(provenance), 'checks': 27,
+                  'new_physical_pass': False, 'criterion_status_changes': 0}))

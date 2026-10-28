@@ -1,0 +1,56 @@
+{
+  "checks": {
+    "required": {
+      "app_id": 15368,
+      "app_slug": "github-actions",
+      "conclusion": "success",
+      "head": "1a608bfac6f5a177d06f77ba040acc18760e2246",
+      "id": 123151884335,
+      "name": "ci-required",
+      "run_attempt": 1,
+      "run_id": 40781872794,
+      "status": "completed"
+    },
+    "successful": 27,
+    "total": 27
+  },
+  "counts": {
+    "go_failed": 0,
+    "go_passed": 1674,
+    "go_skipped": 0,
+    "kotlin_classes_each_mode": 14,
+    "kotlin_skipped": 0,
+    "kotlin_tests_each_mode": 51,
+    "macos_passed": 8,
+    "macos_skipped": 0,
+    "windows_capture_checksums_verified": 8,
+    "windows_gui_cases": 4
+  },
+  "historical_results": "historical-results.json",
+  "identity": {
+    "actual_checkout": "40af8f1a9c353ea9b5c841c6afd66dbaeaeaa692",
+    "event": "pull_request",
+    "head": "1a608bfac6f5a177d06f77ba040acc18760e2246",
+    "head_tree": "1677b5698447482654771487c000d0c1e94edd6f",
+    "pr": 596,
+    "run_attempt": 1,
+    "run_id": 40781872794,
+    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40781872794",
+    "source_base": "9bda19e6db5c754c497dc652a8effa836c75451a",
+    "synthetic_tree": "1677b5698447482654771487c000d0c1e94edd6f"
+  },
+  "limitations": [
+    "Full ARM/Intel SDK builds and physical Mac/media acceptance remain separate",
+    "Windows GUI receipt makes no acoustic/media quality claim and stable release remains NOT_RUN",
+    "Signed Android candidate is a separate root/qa_windows V3 packet; no claim here"
+  ],
+  "merge_sha": "754b5997ad100cb00300373f29ab88bda4ed267d",
+  "merge_tree_equal": true,
+  "metadata_only": true,
+  "native_four_profile_validation": "PASS",
+  "no_raw_logs_or_binaries": true,
+  "schema_version": 1,
+  "source_edits_or_workflow_mutations_by_observer": false,
+  "status": "PASS_CURRENT_PR_CI_AND_MERGED_TESTED_TREE",
+  "verified_archives": 16
+}

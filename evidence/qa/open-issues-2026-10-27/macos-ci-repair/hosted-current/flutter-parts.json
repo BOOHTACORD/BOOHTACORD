@@ -1,0 +1,91 @@
+{
+  "identity": {
+    "actual_checkout": "40af8f1a9c353ea9b5c841c6afd66dbaeaeaa692",
+    "event": "pull_request",
+    "head": "1a608bfac6f5a177d06f77ba040acc18760e2246",
+    "head_tree": "1677b5698447482654771487c000d0c1e94edd6f",
+    "pr": 596,
+    "run_attempt": 1,
+    "run_id": 40781872794,
+    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40781872794",
+    "source_base": "9bda19e6db5c754c497dc652a8effa836c75451a",
+    "synthetic_tree": "1677b5698447482654771487c000d0c1e94edd6f"
+  },
+  "namespace": "flutter",
+  "native_validator": "tools.ci.flutter_gates.results.validate",
+  "profiles": {
+    "android": {
+      "completed": [
+        "app-dependencies",
+        "debug-apk"
+      ],
+      "job_conclusion": "success",
+      "job_id": 123145375422,
+      "measured_artifact_count": 5,
+      "part_archive_sha256": "d90175c0abab81c1fa9fe678a9150dc14b16c013d0bf90d3be8f2d24d723a8b0",
+      "part_artifact_id": 12858286039,
+      "sdk": {
+        "dart": "3.13.5",
+        "flutter": "3.47.7",
+        "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8"
+      }
+    },
+    "android-kotlin": {
+      "completed": [
+        "app-dependencies",
+        "kotlin-modes"
+      ],
+      "job_conclusion": "success",
+      "job_id": 123145375416,
+      "measured_artifact_count": 0,
+      "part_archive_sha256": "da907bc8cbde30c67ba105b41835686b3efcb12abb09f4d315349dd5af9e6f1a",
+      "part_artifact_id": 12857848463,
+      "sdk": {
+        "dart": "3.13.5",
+        "flutter": "3.47.7",
+        "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8"
+      }
+    },
+    "dart": {
+      "completed": [
+        "public-headers",
+        "app-dependencies",
+        "app-tests",
+        "livekit-locks",
+        "livekit-dependencies",
+        "livekit-tests",
+        "webrtc-locks",
+        "webrtc-dependencies",
+        "webrtc-tests",
+        "app-analysis"
+      ],
+      "job_conclusion": "success",
+      "job_id": 123145375381,
+      "measured_artifact_count": 161,
+      "part_archive_sha256": "79dde8b6d4d41686699b250cb70ce17a3877d60cecf6a0d05672df7643ef89ef",
+      "part_artifact_id": 12857837370,
+      "sdk": {
+        "dart": "3.13.5",
+        "flutter": "3.47.7",
+        "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8"
+      }
+    },
+    "macos": {
+      "completed": [
+        "app-dependencies",
+        "macos-platform-unit"
+      ],
+      "job_conclusion": "success",
+      "job_id": 123145375392,
+      "measured_artifact_count": 0,
+      "part_archive_sha256": "d69edc699c3c45413176ba554f9ac72b535427951748326d8c0316907915ef94",
+      "part_artifact_id": 12857762920,
+      "sdk": {
+        "dart": "3.13.5",
+        "flutter": "3.47.7",
+        "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8"
+      }
+    }
+  },
+  "status": "PASS"
+}
