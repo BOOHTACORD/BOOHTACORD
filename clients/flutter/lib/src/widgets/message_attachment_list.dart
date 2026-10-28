@@ -8,6 +8,7 @@ import '../app_state.dart';
 import '../models.dart';
 import '../services/api_client.dart';
 import '../theme.dart';
+import '../features/attachments/revocation/view.dart';
 
 class MessageAttachmentList extends StatefulWidget {
   const MessageAttachmentList({
@@ -15,11 +16,13 @@ class MessageAttachmentList extends StatefulWidget {
     required this.state,
     required this.parentPath,
     required this.attachments,
+    this.messageId,
   });
 
   final AppState state;
   final String parentPath;
   final List<MessageAttachment> attachments;
+  final String? messageId;
 
   @override
   State<MessageAttachmentList> createState() => _MessageAttachmentListState();
@@ -48,11 +51,17 @@ class _MessageAttachmentListState extends State<MessageAttachmentList> {
     useSafeArea: false,
     barrierDismissible: true,
     barrierColor: Colors.transparent,
-    builder: (_) => _ProtectedImagePreview(
+    builder: (_) => RevocableAttachmentView(
       state: widget.state,
       parentPath: widget.parentPath,
-      attachment: attachment,
-      onSave: () => _save(attachment),
+      messageId: widget.messageId,
+      attachmentId: attachment.id,
+      child: _ProtectedImagePreview(
+        state: widget.state,
+        parentPath: widget.parentPath,
+        attachment: attachment,
+        onSave: () => _save(attachment),
+      ),
     ),
   );
 

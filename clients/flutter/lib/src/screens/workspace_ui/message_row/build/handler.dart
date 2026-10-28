@@ -107,6 +107,7 @@ extension WorkspaceMessageRowBuildAction on WorkspaceMessageRowContext {
                   message.sendStatus == null &&
                   message.attachments.isNotEmpty)
                 MessageAttachmentList(
+                  messageId: message.id,
                   state: state,
                   parentPath:
                       '/channels/${Uri.encodeComponent(message.channelId)}',
