@@ -151,6 +151,24 @@ test('listener room embeds the stream preview in an equal-sized participant card
   await expect(preview).toBeVisible()
   await expect(preview.locator('img')).toHaveAttribute('src', '/synthetic-screen.svg')
   await expect.poll(() => preview.locator('img').evaluate(image => (image as HTMLImageElement).naturalWidth)).toBe(640)
+  await expect(preview.locator('.participant-screen-preview__caption')).toHaveText('Экран · 1080p · 60 FPS')
+  await expect(preview.locator('.participant-screen-preview__live')).toHaveCSS('top', '10px')
+  await expect(preview.locator('.participant-screen-preview__live')).toHaveCSS('right', '10px')
+  expect(await preview.evaluate(button => {
+    const caption = button.querySelector('.participant-screen-preview__caption')!.getBoundingClientRect()
+    const live = button.querySelector('.participant-screen-preview__live')!.getBoundingClientRect()
+    return caption.right <= live.left
+  })).toBe(true)
+  const playOverlay = preview.locator('.participant-screen-preview__play')
+  await expect(playOverlay).toBeVisible()
+  await expect(playOverlay).toHaveCSS('opacity', '1')
+  const overlayPosition = await preview.evaluate(button => {
+    const buttonRect = button.getBoundingClientRect()
+    const overlayRect = button.querySelector('.participant-screen-preview__play')!.getBoundingClientRect()
+    return { buttonCenterX: buttonRect.left + buttonRect.width / 2, buttonCenterY: buttonRect.top + buttonRect.height / 2, overlayCenterX: overlayRect.left + overlayRect.width / 2, overlayCenterY: overlayRect.top + overlayRect.height / 2 }
+  })
+  expect(Math.abs(overlayPosition.buttonCenterX - overlayPosition.overlayCenterX)).toBeLessThanOrEqual(1)
+  expect(Math.abs(overlayPosition.buttonCenterY - overlayPosition.overlayCenterY)).toBeLessThanOrEqual(1)
   await expect(page.locator('.screen-rail-section')).toHaveCount(0)
   await expect(page.getByRole('button', { name: 'Смотреть экран', exact: true })).toHaveCount(0)
   await expect(voiceOnlyCard.locator('.participant-voice-placeholder')).toBeVisible()
@@ -180,9 +198,20 @@ test('listener room embeds the stream preview in an equal-sized participant card
   expect(await page.evaluate(() => (window as any).__screenUI.events)).toEqual([{ watchScreen: 'remote-screen' }])
   await clean(page)
 
+  await open(page, 'participant-cards&no-profile', 876, 100, 656)
+  const fallbackPreview = page.getByTestId('participant-screen-preview')
+  await expect(fallbackPreview.locator('.participant-screen-preview__caption')).toHaveText('Демонстрация экрана')
+  await expect(fallbackPreview.locator('.participant-screen-preview__play')).toHaveCSS('opacity', '1')
+
   await open(page, 'participant-cards', 390, 200, 740)
   const mobileCards = page.getByTestId('participant-card')
-  await expect(page.getByTestId('participant-screen-preview')).toBeVisible()
+  const mobilePreview = page.getByTestId('participant-screen-preview')
+  await expect(mobilePreview).toBeVisible()
+  expect(await mobilePreview.evaluate(button => {
+    const caption = button.querySelector('.participant-screen-preview__caption')!.getBoundingClientRect()
+    const live = button.querySelector('.participant-screen-preview__live')!.getBoundingClientRect()
+    return caption.right <= live.left
+  })).toBe(true)
   const mobileGeometry = await mobileCards.evaluateAll(elements => elements.map(element => {
     const rect = element.getBoundingClientRect()
     return { width: rect.width, height: rect.height }
