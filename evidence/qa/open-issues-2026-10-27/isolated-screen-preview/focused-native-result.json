@@ -1,0 +1,232 @@
+{
+  "status": "PASS_36_NATIVE_TESTS_ZERO_SKIPS",
+  "test_files": 5,
+  "tests": 36,
+  "skips": 0,
+  "failures": 0,
+  "command_argv": [
+    "node",
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "src/voice/livekit_screen_subscription_policy.spec.ts",
+    "src/voice/livekit_screen_sdk_boundary.spec.ts",
+    "src/voice/livekit_screen_viewer_adapter.spec.ts",
+    "src/voice/screen_viewer_controller.spec.ts",
+    "src/voice/screen_viewer_lifecycle.spec.ts",
+    "--reporter=json",
+    "--outputFile=C:\\Users\\egkur\\.codex\\worktrees\\local-qa-stack\\BOOHTACORD\\.out\\qa-screen-preview\\focused-vitest.private.json"
+  ],
+  "raw_private_report_SHA256": "eb7c10162c1c3eca43e1d589ffeb83d2b4b81325c5cbfa81c404c82576bb05d8",
+  "events": [
+    {
+      "path": "clients/web/src/voice/livekit_screen_sdk_boundary.spec.ts",
+      "status": "passed",
+      "assertions": [
+        {
+          "title": "pinned LiveKit SDK screen publication boundary labels a legacy target as a launch profile, without claiming current encoder settings",
+          "status": "passed",
+          "duration_ms": 1.0291999999999462
+        },
+        {
+          "title": "pinned LiveKit SDK screen publication boundary reads native legacy 720p15 from a real SDK publication without name",
+          "status": "passed",
+          "duration_ms": 1.4133999999999105
+        },
+        {
+          "title": "pinned LiveKit SDK screen publication boundary reads native legacy 720p30 from a real SDK publication without name",
+          "status": "passed",
+          "duration_ms": 0.38779999999997017
+        },
+        {
+          "title": "pinned LiveKit SDK screen publication boundary reads native legacy 720p60 from a real SDK publication without name",
+          "status": "passed",
+          "duration_ms": 0.5126999999999953
+        },
+        {
+          "title": "pinned LiveKit SDK screen publication boundary reads native legacy 1080p15 from a real SDK publication without name",
+          "status": "passed",
+          "duration_ms": 0.350800000000163
+        },
+        {
+          "title": "pinned LiveKit SDK screen publication boundary reads native legacy 1080p30 from a real SDK publication without name",
+          "status": "passed",
+          "duration_ms": 0.2841000000000804
+        },
+        {
+          "title": "pinned LiveKit SDK screen publication boundary reads native legacy 1080p60 from a real SDK publication without name",
+          "status": "passed",
+          "duration_ms": 0.27110000000016043
+        },
+        {
+          "title": "pinned LiveKit SDK screen publication boundary reads native legacy 1440p15 from a real SDK publication without name",
+          "status": "passed",
+          "duration_ms": 0.2295000000001437
+        },
+        {
+          "title": "pinned LiveKit SDK screen publication boundary reads native legacy 1440p30 from a real SDK publication without name",
+          "status": "passed",
+          "duration_ms": 0.2536000000000058
+        },
+        {
+          "title": "pinned LiveKit SDK screen publication boundary reads native legacy 1440p60 from a real SDK publication without name",
+          "status": "passed",
+          "duration_ms": 0.3245999999999185
+        },
+        {
+          "title": "pinned LiveKit SDK screen publication boundary keeps unknown SDK track profile unknown: empty",
+          "status": "passed",
+          "duration_ms": 0.18470000000002074
+        },
+        {
+          "title": "pinned LiveKit SDK screen publication boundary keeps unknown SDK track profile unknown: screenshare-1080p-59fps",
+          "status": "passed",
+          "duration_ms": 0.08749999999986358
+        },
+        {
+          "title": "pinned LiveKit SDK screen publication boundary keeps unknown SDK track profile unknown: screenshare-2160p-60fps",
+          "status": "passed",
+          "duration_ms": 0.06410000000005311
+        },
+        {
+          "title": "pinned LiveKit SDK screen publication boundary keeps unknown SDK track profile unknown: unknown",
+          "status": "passed",
+          "duration_ms": 0.06320000000005166
+        },
+        {
+          "title": "pinned LiveKit SDK screen publication boundary keeps real subscription methods/getters and silent local preview intact",
+          "status": "passed",
+          "duration_ms": 1.5231999999998607
+        },
+        {
+          "title": "pinned LiveKit SDK screen publication boundary passes the real SDK publication through the adapter for late join, reconnect and SID replacement",
+          "status": "passed",
+          "duration_ms": 1.4645999999997912
+        },
+        {
+          "title": "pinned LiveKit SDK screen publication boundary keeps owner and generation descriptor guards above the real SDK legacy name",
+          "status": "passed",
+          "duration_ms": 1.8677000000000135
+        }
+      ]
+    },
+    {
+      "path": "clients/web/src/voice/livekit_screen_subscription_policy.spec.ts",
+      "status": "passed",
+      "assertions": [
+        {
+          "title": "screen publication subscriptions keeps 20 publications discoverable without subscribing until one is selected",
+          "status": "passed",
+          "duration_ms": 9.73090000000002
+        },
+        {
+          "title": "screen publication subscriptions ignores a late TrackSubscribed for A after the viewer moved to B",
+          "status": "passed",
+          "duration_ms": 0.8372999999999138
+        },
+        {
+          "title": "screen publication subscriptions shows subscription failure only for the currently selected publication SID",
+          "status": "passed",
+          "duration_ms": 0.5235999999999876
+        },
+        {
+          "title": "screen publication subscriptions refreshes muted screen state and exposes the source pause without resubscribing",
+          "status": "passed",
+          "duration_ms": 0.32179999999993925
+        }
+      ]
+    },
+    {
+      "path": "clients/web/src/voice/livekit_screen_viewer_adapter.spec.ts",
+      "status": "passed",
+      "assertions": [
+        {
+          "title": "LiveKit screen viewer adapter reads the selected publisher audience using the viewer lease and the publisher lease",
+          "status": "passed",
+          "duration_ms": 69.46879999999987
+        },
+        {
+          "title": "LiveKit screen viewer adapter subscribes to room voice while keeping every unselected screen track disabled",
+          "status": "passed",
+          "duration_ms": 0.9046000000000731
+        },
+        {
+          "title": "LiveKit screen viewer adapter owns remote microphone playback and includes it in deafen cleanup",
+          "status": "passed",
+          "duration_ms": 0.6006999999999607
+        },
+        {
+          "title": "LiveKit screen viewer adapter retains a captured preview after unsubscribe and clears it only when the share is unpublished",
+          "status": "passed",
+          "duration_ms": 0.6371999999998934
+        },
+        {
+          "title": "LiveKit screen viewer adapter maps LiveKit active speakers to local and remote participants and forgets a departed participant",
+          "status": "passed",
+          "duration_ms": 0.4998000000000502
+        }
+      ]
+    },
+    {
+      "path": "clients/web/src/voice/screen_viewer_controller.spec.ts",
+      "status": "passed",
+      "assertions": [
+        {
+          "title": "screen viewer controller detaches and unsubscribes the old screen before subscribing to the selected one",
+          "status": "passed",
+          "duration_ms": 2.819699999999898
+        },
+        {
+          "title": "screen viewer controller clears the selection when the selected remote stream disappears",
+          "status": "passed",
+          "duration_ms": 0.6508000000000038
+        },
+        {
+          "title": "screen viewer controller requires a new selection when the selected publication disappears",
+          "status": "passed",
+          "duration_ms": 0.40190000000006876
+        },
+        {
+          "title": "screen viewer controller rejects a stream not reported by the current room",
+          "status": "passed",
+          "duration_ms": 0.6177999999999884
+        },
+        {
+          "title": "screen viewer controller mutes the one selected screen-audio element while deafened",
+          "status": "passed",
+          "duration_ms": 0.3210000000000264
+        }
+      ]
+    },
+    {
+      "path": "clients/web/src/voice/screen_viewer_lifecycle.spec.ts",
+      "status": "passed",
+      "assertions": [
+        {
+          "title": "screen viewer publication lifecycle keeps the current binding stable across 100 reselects of one publication generation",
+          "status": "passed",
+          "duration_ms": 2.434600000000046
+        },
+        {
+          "title": "screen viewer publication lifecycle rebinds elements without resubscribing or creating another audio output",
+          "status": "passed",
+          "duration_ms": 0.8084999999999809
+        },
+        {
+          "title": "screen viewer publication lifecycle fails closed when a new publication reuses an id without confirmed session identity",
+          "status": "passed",
+          "duration_ms": 0.6023000000000138
+        },
+        {
+          "title": "screen viewer publication lifecycle allows one explicit retry only while the selected publication remains current",
+          "status": "passed",
+          "duration_ms": 0.5721999999999525
+        },
+        {
+          "title": "screen viewer publication lifecycle stops the selected stream and disposes its single audio output idempotently",
+          "status": "passed",
+          "duration_ms": 0.917699999999968
+        }
+      ]
+    }
+  ]
+}

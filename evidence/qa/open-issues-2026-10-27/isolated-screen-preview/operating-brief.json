@@ -1,0 +1,20 @@
+{
+  "at_utc": "2026-10-28T01:47:50.843748+00:00",
+  "workflow_class": "review_gate",
+  "task_size": "large",
+  "structure_mode": "structure_no_rg",
+  "route": "clients/web/src/voice screen_viewer_lifecycle exact file family",
+  "criterion": "I240.C8 / referenced140",
+  "backlog_context": "T-003 runtime and browser E2E/media verification context; no product/backlog/contract edits",
+  "previous_goal_turn": "PROGRESS: I240.C6 repeated-XFF failure confirmed with literal TCP,138 reopened, evidencee2dac4396/68891d329; prior134/137 retained",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "native_edges": "Room(autoSubscribe=false) -> actual bindLiveKitScreenViewer -> LiveKitScreenRegistry -> ScreenViewerController/Lifecycle -> actual RemoteTrackPublication/RemoteVideoTrack; native SyntheticScreenPublisher only generates640x360/15fps source",
+  "preservation": "No production/router/device/session/OS security/privacy changes, no capture picker, no screenshots/recordings/frames/SDP/token export; original9 services/config stay intact; own ephemeral SFU room/peers and loopback-only bridge removed",
+  "primary_scope": "Real Chromium + SDK2.22.3 + existing isolated LiveKit1.13.7 with production binding,2 synthetic publishers, selected subscription0/1, renderer0/1, select/unselect/unpublish/reconnect, captured actual SDK callbacks delayed at consumer boundary and replayed only to test stale protection, bounded viewer timer/resource observations",
+  "known_native_smoke_limit": "Existing screen_share_sfu smoke uses an independent test ScreenShareViewer, not production binding; cannot alone satisfyC8 and will not be substituted",
+  "principal_limits": "Direct SDK credentials from own isolated server, no Go-auth/voice-lease/physical/permission-picker/production UI acceptance implied; generic supported SDK identities avoid pretending to be active production leases",
+  "CUA_boundary": "Prior stopped production picker/receiver UI flow remains stopped. This separate project-owned isolated SDK/controller test is native verification, not alternate automation of that flow. CUA used only if a Windows-window observation becomes necessary.",
+  "dependencies": "Source package/lock bytes equal already installed test-sql-native-gates dependency tree; ignored junction planned, pinned versions verified",
+  "resource_stop": "At most3 SDK clients,2 synthetic640x360 sources15fps,1 selected receive video; owned helper0.5CPU128MiB; fixed loopback dev ports; browser deadline8min; no capacity/physicalFPS/SLO claim",
+  "stop_condition": "Complete exact availableC8 protocol or retain real blocker/failure, source hashes/native controls/no skip accounting, SFU observations, cleanup/room absence/services/private logs, privacy/480row fidelity/sealed publication and fresh QA updates"
+}

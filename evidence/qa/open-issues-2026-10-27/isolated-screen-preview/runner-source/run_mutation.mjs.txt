@@ -1,0 +1,42 @@
+import { createRequire } from 'node:module'
+import { readFile, writeFile } from 'node:fs/promises'
+import { createHash, randomUUID } from 'node:crypto'
+import path from 'node:path'
+import { fileURLToPath, pathToFileURL } from 'node:url'
+const P = path.dirname(fileURLToPath(import.meta.url)), Q = path.resolve(P, '../..'), WEB = path.join(Q, 'clients/web'), require = createRequire(path.join(WEB, 'package.json'))
+const { chromium } = require('@playwright/test'), { AccessToken, RoomServiceClient } = require('livekit-server-sdk')
+const cfg = JSON.parse(await readFile(path.join(P, 'private/config.private.json'), 'utf8')), rpc = new RoomServiceClient(cfg.server_url, cfg.livekit_key, cfg.livekit_secret)
+const sha = raw => createHash('sha256').update(raw).digest('hex'), save = (n, d) => writeFile(path.join(P, n), JSON.stringify(d, null, 2) + '\n')
+const target = path.join(WEB, 'src/voice/livekit_screen_registry.ts'), original = await readFile(target, 'utf8')
+const from = 'if (stream.video.isDesired !== false) stream.video.setSubscribed?.(false)', to = 'stream.video.setSubscribed?.(true)'
+if (original.split(from).length !== 2) throw new Error('QA_MUTATION_EDGE_NOT_UNIQUE')
+const IDs = { room: 'qa-mutant-' + randomUUID(), A: 'qa-mutant-source-' + randomUUID(), B: 'qa-mutant-source-' + randomUUID(), viewer: 'qa-mutant-viewer-' + randomUUID() }, issued = []
+async function grant(role) { const token = new AccessToken(cfg.livekit_key, cfg.livekit_secret, { identity: IDs[role], ttl: '10m' }); token.addGrant({ roomJoin: true, room: IDs.room, canPublish: role !== 'viewer', canSubscribe: role === 'viewer', canPublishData: false }); const value = await token.toJwt(); issued.push(value); await save('private/issued-mutation.private.json', { IDs, issued }); return value }
+async function call(page, target, method, ...args) { const r = await page.evaluate(async a => { try { return { ok: true, value: await window.qaPreview[a.target][a.method](...a.args) } } catch (e) { return { ok: false, type: e?.name } } }, { target, method, args }); if (!r.ok) throw new Error('QA_MUTATION_BROWSER_METHOD'); return r.value }
+async function metrics(name) { const response = await fetch(cfg.metrics_url); if (!response.ok) throw new Error('QA_MUTATION_METRICS'); const raw = await response.text(); await writeFile(path.join(P, 'private', name + '.private.txt'), raw); let active = 0; for (const line of raw.split('\n')) if (/^livekit_track_subscribed_total(?:\{|\s)/.test(line)) active += Number(line.trim().split(/\s+/).at(-1)); return { active, raw_private_SHA256: sha(raw) } }
+await save('runner-before-mutation.json', { at_utc: new Date().toISOString(), source_revision: cfg.source_revision, production_source_original_SHA256: sha(original), served_mutated_copy_SHA256: sha(original.replace(from, to)), mutation_from: from, mutation_to: to, no_disk_source_edit: true, files_SHA256: { 'run_mutation.mjs': sha(await readFile(fileURLToPath(import.meta.url))) } })
+let browser, vite, ownedRoom = false, transformed = 0; const pages = {}; const r = { at_utc: new Date().toISOString(), status: 'RUNNING', source_revision: cfg.source_revision, production_touched: false, controller_PID: process.pid }
+const deadline = setTimeout(() => { save('mutation-timeout.json', { status: 'DEADLINE' }).finally(() => process.exit(2)) }, 120000)
+try {
+  if ((await rpc.listRooms()).length) throw new Error('QA_MUTATION_FOREIGN_ROOM')
+  r.baseline_SFU = await metrics('mutation-baseline'); await rpc.createRoom({ name: IDs.room, emptyTimeout: 120, maxParticipants: 4 }); ownedRoom = true
+  const { createServer } = await import(pathToFileURL(require.resolve('vite')).href), manifest = require('./package.json')
+  vite = await createServer({ configFile: path.join(WEB, 'vite.config.ts'), root: WEB, cacheDir: path.join(P, 'private/mutation-vite-cache'), resolve: { dedupe: [...Object.keys(manifest.dependencies), ...Object.keys(manifest.devDependencies)] }, server: { host: '127.0.0.1', port: 4809, strictPort: true, fs: { allow: [Q] } }, logLevel: 'silent', plugins: [{ name: 'qa-only-background-subscription-mutant', enforce: 'pre', transform(code, id) { if (id.split('?')[0].replaceAll('\\', '/').toLowerCase() !== target.replaceAll('\\', '/').toLowerCase()) return; if (code.split(from).length !== 2) throw new Error('QA_TRANSFORM_EDGE'); transformed++; return { code: code.replace(from, to), map: null } } }] })
+  await vite.listen(); browser = await chromium.launch({ headless: true }); r.browser_version = browser.version()
+  for (const role of ['A', 'B', 'viewer']) { const context = await browser.newContext({ viewport: { width: 1100, height: 750 } }), page = await context.newPage(); pages[role] = page; await page.goto('http://127.0.0.1:4809/@fs/' + path.join(P, 'fixture.html').replaceAll('\\', '/')); await page.waitForFunction(() => Boolean(window.qaPreview)); const token = await grant(role); if (role === 'viewer') await call(page, 'viewer', 'open', cfg.signal_url, token, { A: IDs.A, B: IDs.B }); else await call(page, 'sender', 'open', cfg.signal_url, token) }
+  await call(pages.A, 'sender', 'publish'); await call(pages.B, 'sender', 'publish')
+  const start = Date.now(); let snapshot
+  while (Date.now() - start < 15000) { snapshot = await call(pages.viewer, 'viewer', 'snapshot'); if (snapshot.cards === 2 && snapshot.probe.subscribed === 2) break; await new Promise(resolve => setTimeout(resolve, 100)) }
+  const observed = await metrics('mutation-observed'); r.observed_viewer = snapshot; r.observed_SFU = observed; r.transform_hits = transformed
+  const invariantWouldPass = snapshot?.selected === 'none' && snapshot.probe.desired === 0 && snapshot.probe.subscribed === 0 && snapshot.probe.trueRequests === 0 && observed.active === 0
+  if (transformed !== 1 || invariantWouldPass || observed.active !== 2 || snapshot.selected !== 'none') throw new Error('QA_MUTATION_NOT_KILLED_AS_EXPECTED')
+  r.status = 'MUTATION_KILLED_BACKGROUND_SUBSCRIPTIONS'; r.original_zero_selection_check = 'FAIL_ON_MUTANT'; r.note = 'Source file unchanged; only test Vite response replaces unselected unsubscribe with subscribe.'
+} catch (e) { r.status = 'FAIL_MUTATION_DIAGNOSTIC'; r.error_type = e?.name; r.safe_failure = /^QA_[A-Z_]+$/.test(e?.message ?? '') ? e.message : 'PRIVATE_MUTATION_ERROR' }
+finally {
+  r.cleanup = []
+  for (const role of ['A', 'B', 'viewer']) if (pages[role]) { try { await call(pages[role], role === 'viewer' ? 'viewer' : 'sender', 'stop'); r.cleanup.push({ role, stopped: true }) } catch { r.cleanup.push({ role, stopped: false }) } }
+  await browser?.close().catch(() => undefined); await vite?.close().catch(() => undefined)
+  if (ownedRoom) { const listed = await rpc.listRooms([IDs.room]); if (listed.some(room => room.name !== IDs.room)) throw new Error('QA_MUTATION_DELETE_AUTHORITY'); await rpc.deleteRoom(IDs.room); if ((await rpc.listRooms([IDs.room])).length) throw new Error('QA_MUTATION_ROOM_REMAINS'); r.own_room_removed = true }
+  r.final_SFU = await metrics('mutation-final'); r.original_source_unchanged = sha(await readFile(target, 'utf8')) === sha(original); if (!r.original_source_unchanged) r.status = 'FAIL_SOURCE_CHANGED'; r.finished_at_utc = new Date().toISOString(); await save('mutation-result.json', r); clearTimeout(deadline)
+}
+console.log(JSON.stringify({ status: r.status, transform_hits: r.transform_hits, original_check: r.original_zero_selection_check, actual_unselected_subscriptions: r.observed_SFU?.active, source_unchanged: r.original_source_unchanged, own_room_removed: r.own_room_removed })); process.exitCode = r.status.startsWith('MUTATION_KILLED') ? 0 : 1

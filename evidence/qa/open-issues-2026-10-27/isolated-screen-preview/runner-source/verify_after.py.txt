@@ -1,0 +1,37 @@
+"""Remove only the owned loopback bridge after empty-SFU audit; preserve original stand."""
+import hashlib,http.client,ipaddress,json,socket,subprocess,sys
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,SOURCE,CONTEXT,credentials
+def read(p):return json.loads(p.read_text(encoding='utf-8'))
+def now():return datetime.now(timezone.utc).isoformat()
+def sha(b):return hashlib.sha256(b).hexdigest()
+r={'at_utc':now(),'status':'RUNNING','source_revision':SOURCE,'project':PROJECT,'production_touched':False}
+try:
+ assert read(P/'runtime-audit.json')['status'].startswith('PASS')
+ for port in [4807,4809]:
+  with socket.socket() as s:s.bind(('127.0.0.1',port))
+ r['own_Vite_ports_closed']=[4807,4809]
+ cfg=read(P/'private/config.private.json');ready=read(P/'bridge-ready.json');identifier=ready['bridge_container_ID'];v=json.loads(docker('inspect',identifier))[0]
+ assert v['Id']==identifier and v['State']['Running'] and v['Config']['Labels'].get('qa.packet')=='screen-preview' and v['Config']['Labels'].get('com.docker.compose.project')==PROJECT
+ assert all(ipaddress.ip_address(b['HostIp']).is_loopback for bindings in v['NetworkSettings']['Ports'].values() for b in bindings or [])
+ started=ready['at_utc'];markers=[cfg['livekit_key'].encode(),cfg['livekit_secret'].encode()]
+ for name in ['issued.private.json','issued-mutation.private.json']:
+  d=read(P/'private'/name);markers.extend(v.encode() for v in d['issued'])
+ markers.extend(v.encode() for k,v in credentials().items() if isinstance(v,str) and any(s in k for s in ['password','secret','ingest_auth']))
+ logs=subprocess.run(['docker','--context',CONTEXT,'logs',identifier],capture_output=True);assert logs.returncode==0;raw=logs.stdout+b'\n'+logs.stderr;(P/'bridge-logs.private.log').write_bytes(raw);assert all(m not in raw for m in markers);r['owned_bridge_logs_SHA256']=sha(raw)
+ docker('rm','-f',identifier);assert not docker('ps','-a','--filter','label=qa.packet=screen-preview','--format','{{.Names}}').decode().strip();r['owned_bridge_removed']=True
+ r['services']=[];r['bounded_private_logs_scan']=[]
+ for service in ['api','web','proxy','postgres','livekit','collector','tempo','prometheus','grafana']:
+  name=PROJECT+'-'+service+'-1';v=json.loads(docker('inspect',name))[0];assert v['State']['Running'] and v['RestartCount']==0 and v['Config']['Labels']['com.docker.compose.project']==PROJECT
+  for bindings in v['NetworkSettings']['Ports'].values():
+   for b in bindings or []:assert ipaddress.ip_address(b['HostIp']).is_loopback
+  if service in ['api','web']:assert json.loads(docker('image','inspect',v['Image']))[0]['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+  logs=subprocess.run(['docker','--context',CONTEXT,'logs','--since',started,name],capture_output=True);assert logs.returncode==0;raw=logs.stdout+b'\n'+logs.stderr;(P/(service+'-logs.private.log')).write_bytes(raw);assert all(m not in raw for m in markers),'Credential marker in '+service;r['services'].append({'service':service,'running':True,'restart_count':v['RestartCount'],'image_id':v['Image']});r['bounded_private_logs_scan'].append({'service':service,'stdout_bytes':len(logs.stdout),'stderr_bytes':len(logs.stderr),'SHA256':sha(raw),'credential_or_JWT_markers_found':False,'SFU_room_and_actor_fields_stay_private':service=='livekit'})
+ rows=docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-At',input=b"SELECT (SELECT count(*) FROM users),(SELECT count(*) FROM sessions),(SELECT count(*) FROM sessions WHERE revoked_at IS NULL),(SELECT count(*) FROM attachments);\nSHOW server_version;\n").decode().splitlines();counts=list(map(int,rows[0].split('|')));prior=read(P.parent/'qa-proxy-source/environment-after.json');assert counts==prior['users_sessions_active_attachments'];r.update(database_counts=counts,database_comparison='Equal to last prior-packet attestation; no fresh pre-run SQL snapshot was captured in this SDK-only packet',prior_database_attestation_utc=prior['at_utc'],PostgreSQL_version=rows[1])
+ c=http.client.HTTPConnection('localhost',18088,timeout=8);c.request('GET','/api/v1/health',headers={'Host':'localhost:18088'});response=c.getresponse();assert response.status==200;response.read(65536);c.close();r['API_health_http']=200
+ assert not subprocess.check_output(['git','-c','core.autocrlf=false','status','--porcelain'],cwd=Q,text=True).strip();r['source_worktree_clean']=True;r['status']='PASS_EMPTY_OWN_SFU_ROOMS_BRIDGE_REMOVAL_NINE_PRIVATE_SERVICES'
+except Exception as e:r['status']='FAIL_POSTCHECK';r['error_type']=type(e).__name__;r['failed_label']=str(e) if isinstance(e,AssertionError) and str(e).startswith('Credential') else 'Inspect private postcheck'
+finally:r['finished_at_utc']=now();(P/'environment-after.json').write_text(json.dumps(r,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps({k:v for k,v in r.items() if k not in ['services','bounded_private_logs_scan']}));sys.exit(0 if r['status'].startswith('PASS') else 1)

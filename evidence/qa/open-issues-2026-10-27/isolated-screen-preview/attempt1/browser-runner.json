@@ -1,0 +1,43 @@
+{
+  "at_utc": "2026-10-28T01:55:39.947Z",
+  "status": "FAIL_OR_ENVIRONMENT",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "production_touched": false,
+  "controller_PID": 43984,
+  "frames_SDP_tokens_or_IDs_exported": false,
+  "browser_version": "153.0.8010.12",
+  "failed_stage": "setup",
+  "error_type": "Error",
+  "safe_failure_label": "PRIVATE_BROWSER_FAILURE",
+  "own_room_removed": true,
+  "final_SFU": {
+    "entries": [
+      {
+        "name": "livekit_participant_total",
+        "type": "gauge",
+        "labels": {},
+        "value": 0
+      },
+      {
+        "name": "livekit_room_total",
+        "type": "gauge",
+        "labels": {},
+        "value": 0
+      },
+      {
+        "name": "livekit_track_subscribe_counter",
+        "type": "counter",
+        "labels": {},
+        "value": 0
+      }
+    ],
+    "raw_private_SHA256": "93ef37a536fc93fccd727273a8f60cee7b8ad62e385ed278df2c09a1a65350a7",
+    "raw_bytes": 51723
+  },
+  "finished_at_utc": "2026-10-28T01:55:42.157Z",
+  "cleanup": [],
+  "browser_errors": {
+    "browser_page_errors": 0,
+    "browser_console_errors": 0
+  }
+}

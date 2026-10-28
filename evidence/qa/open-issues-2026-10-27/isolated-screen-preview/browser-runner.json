@@ -1,0 +1,89 @@
+{
+  "at_utc": "2026-10-28T01:56:27.780Z",
+  "status": "PASS_ACTUAL_PRODUCTION_BINDING_SCREEN_LIFECYCLE",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "production_touched": false,
+  "controller_PID": 29608,
+  "frames_SDP_tokens_or_IDs_exported": false,
+  "browser_version": "153.0.8010.12",
+  "livekit_client_version": "2.22.3",
+  "livekit_server_sdk_version": "2.19.1",
+  "own_room_removed": true,
+  "final_SFU": {
+    "entries": [
+      {
+        "name": "livekit_participant_total",
+        "type": "gauge",
+        "labels": {},
+        "value": 0
+      },
+      {
+        "name": "livekit_room_total",
+        "type": "gauge",
+        "labels": {},
+        "value": 0
+      },
+      {
+        "name": "livekit_track_publish_counter",
+        "type": "counter",
+        "labels": {},
+        "value": 4
+      },
+      {
+        "name": "livekit_track_publish_counter",
+        "type": "counter",
+        "labels": {
+          "state": "success"
+        },
+        "value": 4
+      },
+      {
+        "name": "livekit_track_published_total",
+        "type": "gauge",
+        "labels": {},
+        "value": 0
+      },
+      {
+        "name": "livekit_track_subscribe_counter",
+        "type": "counter",
+        "labels": {},
+        "value": 10
+      },
+      {
+        "name": "livekit_track_subscribe_counter",
+        "type": "counter",
+        "labels": {
+          "state": "success"
+        },
+        "value": 9
+      },
+      {
+        "name": "livekit_track_subscribed_total",
+        "type": "gauge",
+        "labels": {},
+        "value": 0
+      }
+    ],
+    "raw_private_SHA256": "618e9cf04f8e36df49be759d06e4930fc01e2985d3bcf7a231348b1041ad5553",
+    "raw_bytes": 73197
+  },
+  "finished_at_utc": "2026-10-28T01:56:41.205Z",
+  "cleanup": [
+    {
+      "role": "A",
+      "stopped": true
+    },
+    {
+      "role": "B",
+      "stopped": true
+    },
+    {
+      "role": "viewer",
+      "stopped": true
+    }
+  ],
+  "browser_errors": {
+    "browser_page_errors": 0,
+    "browser_console_errors": 0
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "at_utc": "2026-10-28T02:08:05.808155+00:00",
+  "tested_source": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "SFU_image_id": "sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3",
+  "SFU_version_command": [
+    "docker",
+    "exec",
+    "boohtacord-local-qa-livekit-1",
+    "/livekit-server",
+    "--version"
+  ],
+  "SFU_version_stdout": "livekit-server version 1.13.7",
+  "browser_version": "153.0.8010.12",
+  "livekit_client": "2.22.3",
+  "server_sdk": "2.19.1",
+  "SDK_browser_entry": "livekit-client.esm.mjs",
+  "SDK_browser_entry_SHA256": "23e6b0966c20ccaba8d39343035fcc49e64aa46c93e772ca0a3f1b5a6d30b573",
+  "files": {
+    "clients/web/src/voice/livekit_room_factory.ts": {
+      "git_source_SHA256": "9cce2c0005b958f0f3e59c2d96af07ae4568cc6cfd70d7944abc4e00f36d4424",
+      "working_bytes_SHA256": "8c46280c277700ed59414de9682b41815a5acfb6c9e45edb1cb381817516189d",
+      "bytes": 6936
+    },
+    "clients/web/src/voice/livekit_screen_viewer_adapter.ts": {
+      "git_source_SHA256": "a9cf4f164ea3a8a137ef745790540a68781310a807f4b2723cb17d1b595ffde9",
+      "working_bytes_SHA256": "65917e88015fca892730ad7d83c397d16d78d032172767a6f32bcb56d2318d44",
+      "bytes": 6962
+    },
+    "clients/web/src/voice/livekit_screen_registry.ts": {
+      "git_source_SHA256": "48f3ffeb80131b401d0e2561af64c0ba606280082daa1572d5134ec274df081c",
+      "working_bytes_SHA256": "dee99e6e7e032335571446660b1cc84781cdb19e0c4047d0c3689af1e3cfd678",
+      "bytes": 4961
+    },
+    "clients/web/src/voice/screen_viewer_controller.ts": {
+      "git_source_SHA256": "e2d77c48f3cc8e8781bd22a420ffecfa6786f47013e31878b97ffe55588584a6",
+      "working_bytes_SHA256": "d5b55f14c763a42e633e5c9a97142d2f5e6ee89ce1e537593d00d656c5cdc6dd",
+      "bytes": 6078
+    },
+    "clients/web/src/voice/screen_viewer_lifecycle.ts": {
+      "git_source_SHA256": "8e25434e2d1f291d00e2cecbd361a17521759a1df544908b7f66a60656062d07",
+      "working_bytes_SHA256": "8d1e18917f8caa26f720fbde3fe53367a0b0dfef6ebb046f16b22c9703564d6c",
+      "bytes": 7422
+    },
+    "clients/web/src/voice/screen_viewer_media_binding.ts": {
+      "git_source_SHA256": "30374118797d9cff3c9554c16badd0189c91ffa413a70f55ec51068f4341dd58",
+      "working_bytes_SHA256": "5caaf040e5293c57b96ebae8ed461d9aa11232f2d0f7da9a535c04a4fc6fd6ef",
+      "bytes": 3194
+    },
+    "clients/web/src/voice/screen_viewer_subscription.ts": {
+      "git_source_SHA256": "3485b735f48470460ac95399c8f9313cacc2e5552f77c2ccb4bd947c88cf1205",
+      "working_bytes_SHA256": "8ab19ffc94c428ee1c13f5107a1e11b2ebf4befc1a131acafb697b388a228e61",
+      "bytes": 525
+    },
+    "clients/web/src/voice/screen_track_attachment.ts": {
+      "git_source_SHA256": "95f66899172ebc313f251c6bb2d58bcc4bd3c99771a03422849d4db0b1557295",
+      "working_bytes_SHA256": "5527b0176d17caa9a598e545923b027177bdddcb57d668ba45dcb8abf0af365b",
+      "bytes": 928
+    },
+    "clients/web/src/voice/livekit_remote_voice_events.ts": {
+      "git_source_SHA256": "234e5edad489bfd21d82f66b80a01e00755a960d15a8a1954485f75166d92fbb",
+      "working_bytes_SHA256": "58ce086b4342abed18ea3e795f738f4a8d650b684080d6a37f111c7b653dfd11",
+      "bytes": 2283
+    },
+    "clients/web/src/voice/screen_viewer_presence.ts": {
+      "git_source_SHA256": "e680daaa49d5cc02450941c97e3c9a2e59c1850dc0ac7da0bb6577be065b508b",
+      "working_bytes_SHA256": "d9ed18e7523c767b49193b8a312c8e42226c536d502ed908f9ec7e27a4294971",
+      "bytes": 14152
+    },
+    "clients/web/src/voice/media_publishing.ts": {
+      "git_source_SHA256": "adbe71f5391639255e586bc5c671eff0b2cd1890c38ac6b968c0968f9b293db4",
+      "working_bytes_SHA256": "d401ad91ad3979c997f88b5224a1b4ef3007b59bbba69a0edd4e9b35d4dfd09c",
+      "bytes": 2464
+    },
+    "clients/web/package.json": {
+      "git_source_SHA256": "a8f1157117334f4e334abce1edf9cab1b04c5fb9d1841c75aae3ebe449e00227",
+      "working_bytes_SHA256": "38b58afba0b1819abe3bac47df7673786ccd4611b2449714a5565b50e8cb496d",
+      "bytes": 4398
+    },
+    "clients/web/package-lock.json": {
+      "git_source_SHA256": "52413dbf0a3a79c11afc3f7ec3c28bd173d29635401310f2aa3c00beb2ad17ff",
+      "working_bytes_SHA256": "1363987ad55f000d9bce83808b76721aa157745f7708383e170c1e221d8b756b",
+      "bytes": 75273
+    },
+    "clients/web/tests/screen_profile/screen_share_sfu/capture.ts": {
+      "git_source_SHA256": "93e20515317a8f9585c4811c1e3093fb743203bf61005b2751e6e46f29db1e2c",
+      "working_bytes_SHA256": "1888b656c6e4bedddfee18756b3fbedcccb13a036d59830b727336d635b2fc2a",
+      "bytes": 703
+    },
+    "clients/web/tests/screen_profile/screen_share_sfu/publisher.ts": {
+      "git_source_SHA256": "16e14e6d5b20ee36b22914331d63d25b08d473b88974530a80505e38e2d8333d",
+      "working_bytes_SHA256": "f21883ef746053910ba69ea6da05306ed660dcaf94182013d2f63e7cfe247c37",
+      "bytes": 1400
+    },
+    "clients/web/src/voice/livekit_screen_subscription_policy.spec.ts": {
+      "git_source_SHA256": "d8d9f08a7a6a3dd6d4a509afcfa9dffa26e85fa38edcfe2c7f19feaecc77f8d1",
+      "working_bytes_SHA256": "6cba009a99a406492f210568c5ffc75b2d1968c8b29d9d8826570ddf0664a1e4",
+      "bytes": 6720
+    },
+    "clients/web/src/voice/livekit_screen_sdk_boundary.spec.ts": {
+      "git_source_SHA256": "d2b9ce384b12c85e262a2b74a61d08a7f7490729bb78bb297e1938ddab7c0594",
+      "working_bytes_SHA256": "5f958c018270db28eea24bd7701316defe0bd4ca905b00fbe0bf031ec3320e4c",
+      "bytes": 7670
+    },
+    "clients/web/src/voice/livekit_screen_viewer_adapter.spec.ts": {
+      "git_source_SHA256": "b8a2a8a07db8c6ec7422c7fabd28b8fbd5f605d21de143c1c90929c7e170a2e5",
+      "working_bytes_SHA256": "d2d16142d11f38c458dd590679ee6309ec3c5452b1770e011d7f18cae2d81a59",
+      "bytes": 10817
+    },
+    "clients/web/src/voice/screen_viewer_controller.spec.ts": {
+      "git_source_SHA256": "672572167b6eb26d0e6a3c96b5e4e6396736db790cdf5ab2cfa776646b2f6905",
+      "working_bytes_SHA256": "0821c962a78c4ac8da6493ae8e63923e7b703a549840560568c98d1935319efd",
+      "bytes": 4269
+    },
+    "clients/web/src/voice/screen_viewer_lifecycle.spec.ts": {
+      "git_source_SHA256": "9d78bd20f1db80b916ca7a7c4e684c1ba09dee06d34c28c986b913341ec93511",
+      "working_bytes_SHA256": "7d579918dbf83902152480faa2f05ca19bd34c19fd841000beea2baf7c81a610",
+      "bytes": 5793
+    }
+  },
+  "remote_master": "8a2cda38bee5a4d8f7988eb4eefbfa176a62c43a",
+  "selected_files_changed_from_master": [],
+  "selected_master_files_unavailable": [],
+  "pre_execution_source_runner_hashes_verified": true,
+  "first_attempt_source_preserved": true,
+  "source_export_note": "Original working-byte hashes and LF public copies sealed separately",
+  "limits": "Vite-served source-module integration through real default factory and SFU, not built/deployed Web bundle or full-master/hosted/platform acceptance",
+  "unchanged_dependency": "../local-staging/runner-source/profile_common.py.txt",
+  "dependency_setup": "Ignored node_modules junction to existing tree with identical package and lock content; pinned package versions verified"
+}

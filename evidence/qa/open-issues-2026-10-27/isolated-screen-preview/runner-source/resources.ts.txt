@@ -1,0 +1,28 @@
+type Group = 'viewer' | 'preview' | 'presence' | 'other'
+const groups = new Map<number, Group>()
+const counts = { viewer: 0, preview: 0, presence: 0, other: 0 }
+const peak = { ...counts }
+const timeout = window.setTimeout.bind(window), interval = window.setInterval.bind(window)
+const clearTimeoutNative = window.clearTimeout.bind(window), clearIntervalNative = window.clearInterval.bind(window)
+function classify(): Group {
+  const stack = new Error().stack ?? ''
+  if (/\/src\/voice\/screen_preview\//.test(stack)) return 'preview'
+  if (/\/src\/voice\/screen_viewer_presence/.test(stack)) return 'presence'
+  if (/\/src\/voice\/(screen_viewer_(?:controller|lifecycle|media_binding)|screen_track_attachment|livekit_screen_(?:viewer_adapter|registry))/.test(stack)) return 'viewer'
+  return 'other'
+}
+function add(id: number, group: Group) { groups.set(id, group); counts[group]++; peak[group] = Math.max(peak[group], counts[group]); return id }
+function drop(id?: number) { if (id === undefined) return; const group = groups.get(id); if (group) { counts[group]--; groups.delete(id) } }
+window.setTimeout = ((handler: TimerHandler, delay?: number, ...args: unknown[]) => {
+  if (typeof handler !== 'function') throw new Error('QA_FUNCTION_TIMER_REQUIRED')
+  const group = classify(); let id = 0
+  id = timeout(() => { drop(id); handler(...args) }, delay)
+  return add(id, group)
+}) as typeof window.setTimeout
+window.setInterval = ((handler: TimerHandler, delay?: number, ...args: unknown[]) => {
+  if (typeof handler !== 'function') throw new Error('QA_FUNCTION_TIMER_REQUIRED')
+  return add(interval(handler, delay, ...args), classify())
+}) as typeof window.setInterval
+window.clearTimeout = ((id?: number) => { drop(id); clearTimeoutNative(id) }) as typeof window.clearTimeout
+window.clearInterval = ((id?: number) => { drop(id); clearIntervalNative(id) }) as typeof window.clearInterval
+export const timerSnapshot = () => ({ active: { ...counts }, peak: { ...peak }, scope: 'Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers' })

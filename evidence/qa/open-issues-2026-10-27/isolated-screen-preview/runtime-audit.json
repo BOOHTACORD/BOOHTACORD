@@ -1,0 +1,48 @@
+{
+  "at_utc": "2026-10-28T02:03:22.430Z",
+  "status": "PASS_SEMANTIC_SFU_AND_MUTATION_RUNTIME_AUDIT",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "source_binding_cases": 27,
+  "original_native_tests": 36,
+  "original_native_skips": 0,
+  "initially_unselected_SDK_subscriptions": 0,
+  "initial_SFU_subscribe_counter_delta": 0,
+  "fresh_connection_two_sources_SFU_active": 0,
+  "selected_settled_SFU_active": 1,
+  "selected_settled_renderer_elements": 1,
+  "late_actual_event_delivery_scenarios": 2,
+  "automatic_signal_reconnect_observed": true,
+  "explicit_disconnect_fresh_factory_observed": true,
+  "select_unselect_cycles": 3,
+  "same_publication_reselects": 25,
+  "final_SFU_gauges": {
+    "livekit_participant_total": 0,
+    "livekit_room_total": 0,
+    "livekit_track_published_total": 0,
+    "livekit_track_subscribed_total": 0
+  },
+  "own_rooms_remaining": 0,
+  "transient_timer_attribution_peaks": {
+    "viewer": 1,
+    "preview": 1,
+    "presence": 0,
+    "other": 8
+  },
+  "settled_consumer_timers": {
+    "viewer": 0,
+    "preview": 0,
+    "presence": 0
+  },
+  "mutation": {
+    "detected": true,
+    "actual_unselected_SFU_subscriptions": 2,
+    "original_source_unchanged": true,
+    "method": "Single Vite-served registry statement changed; no file edit"
+  },
+  "limitations": [
+    "Headless Chromium source-module integration, not packaged/native/physical/production UI acceptance",
+    "Direct owned SFU principal grants; Go auth and voice-lease presence paths not tested",
+    "Initial absent SFU active child-series is supported by unchanged server subscribe counter; fresh viewer later observes initialized gauge0 directly",
+    "Other SDK/harness timers are not classified as preview queue timers; no worst-case latency, capacity, FPS or acoustic claim"
+  ]
+}

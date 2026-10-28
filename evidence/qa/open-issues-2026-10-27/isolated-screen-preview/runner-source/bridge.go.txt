@@ -1,0 +1,8 @@
+package main
+import("log";"net/http";"net/http/httputil";"net/url";"os";"time")
+func proxy(target string)*httputil.ReverseProxy{u,e:=url.Parse(target);if e!=nil{panic("fixed target")};p:=httputil.NewSingleHostReverseProxy(u);p.ErrorHandler=func(w http.ResponseWriter,r *http.Request,e error){http.Error(w,"owned QA upstream unavailable",502)};return p}
+func main(){
+ signal:=proxy("http://livekit:7880");metrics:=proxy("http://livekit:6789");logger:=log.New(os.Stderr,"",0)
+ go func(){server:=&http.Server{Addr:":17887",ReadHeaderTimeout:5*time.Second,Handler:http.HandlerFunc(func(w http.ResponseWriter,r *http.Request){if r.Method!="GET"||r.URL.Path!="/metrics"{http.NotFound(w,r);return};metrics.ServeHTTP(w,r)})};if server.ListenAndServe()!=http.ErrServerClosed{logger.Print("owned metrics bridge stopped")}}()
+ server:=&http.Server{Addr:":17886",ReadHeaderTimeout:5*time.Second,Handler:signal};if server.ListenAndServe()!=http.ErrServerClosed{logger.Print("owned signal bridge stopped")}
+}

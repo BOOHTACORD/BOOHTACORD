@@ -1,0 +1,27 @@
+"""Expose only loopback test access to the existing own isolated SFU, not production."""
+import hashlib,ipaddress,json,os,socket,subprocess,sys,time,urllib.request
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(P.parent/'local-qa'))
+from profile_common import docker,PROJECT,SOURCE,CONTEXT,credentials
+def sha(b):return hashlib.sha256(b).hexdigest()
+def save(n,d):(P/n).write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8',newline='\n')
+assert not (P/'bridge-ready.json').exists();name='boohtacord-screen-preview-bridge';assert not docker('ps','-a','--filter','name=^'+name+'$','--format','{{.Names}}').decode().strip()
+for port in [17886,17887]:
+ with socket.socket() as s:s.bind(('127.0.0.1',port))
+api=json.loads(docker('inspect',PROJECT+'-api-1'))[0];sfu=json.loads(docker('inspect',PROJECT+'-livekit-1'))[0]
+for v in [api,sfu]:assert v['State']['Running'] and v['RestartCount']==0 and v['Config']['Labels']['com.docker.compose.project']==PROJECT
+assert json.loads(docker('image','inspect',api['Image']))[0]['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+network=next(n for n in sfu['NetworkSettings']['Networks'] if n in api['NetworkSettings']['Networks']);assert json.loads(docker('network','inspect',network))[0]['Labels']['com.docker.compose.project']==PROJECT
+save('runner-before-bridge.json',{'at_utc':datetime.now(timezone.utc).isoformat(),'source_revision':SOURCE,'API_image_id':api['Image'],'SFU_image_id':sfu['Image'],'files_SHA256':{f.name:sha(f.read_bytes()) for f in [P/'bridge.go',Path(__file__)]}})
+build=subprocess.run(['go','build','-o',str(P/'qa_sfu_bridge'),str(P/'bridge.go')],cwd=Q/'backend',env={**os.environ,'GOOS':'linux','GOARCH':'amd64','CGO_ENABLED':'0','GOTOOLCHAIN':'local'},capture_output=True);(P/'bridge-build.private.log').write_bytes(build.stdout+build.stderr);assert build.returncode==0
+identifier=docker('run','-d','--name',name,'--label','com.docker.compose.project='+PROJECT,'--label','qa.packet=screen-preview','--network',network,'--cpus','0.5','--memory','128m','--pids-limit','64','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges','-p','127.0.0.1:17886:17886','-p','127.0.0.1:17887:17887','--mount','type=bind,source='+str(P/'qa_sfu_bridge')+',target=/qa-bridge,readonly','--entrypoint','/qa-bridge',api['Image']).decode().strip();v=json.loads(docker('inspect',identifier))[0]
+assert v['State']['Running'] and all(ipaddress.ip_address(b['HostIp']).is_loopback for bindings in v['NetworkSettings']['Ports'].values() for b in bindings or [])
+for i in range(30):
+ try:
+  with urllib.request.urlopen('http://127.0.0.1:17887/metrics',timeout=2) as r:raw=r.read(4194305);assert r.status==200 and len(raw)<=4194304
+  break
+ except OSError:time.sleep(.2)
+else:raise RuntimeError('Owned SFU metrics bridge not ready')
+(P/'private/initial-metrics.private.txt').write_bytes(raw);c=credentials();(P/'private/config.private.json').write_text(json.dumps({'source_revision':SOURCE,'signal_url':'ws://127.0.0.1:17886','server_url':'http://127.0.0.1:17886','metrics_url':'http://127.0.0.1:17887/metrics','livekit_key':c['livekit_key'],'livekit_secret':c['livekit_secret'],'bridge_ID':identifier,'SFU_image_id':sfu['Image']},indent=2)+'\n',encoding='utf-8')
+d={'at_utc':datetime.now(timezone.utc).isoformat(),'status':'OWNED_LOOPBACK_BRIDGE_READY','source_revision':SOURCE,'bridge_container_ID':identifier,'SFU_image_id':sfu['Image'],'existing_services_restarted':False,'host_ports_loopback_only':[17886,17887],'binary_SHA256':sha((P/'qa_sfu_bridge').read_bytes()),'metrics_HTTP':200,'metrics_private_SHA256':sha(raw)};save('bridge-ready.json',d);print(json.dumps(d))

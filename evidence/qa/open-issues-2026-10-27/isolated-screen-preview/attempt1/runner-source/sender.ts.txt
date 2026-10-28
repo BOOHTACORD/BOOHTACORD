@@ -1,0 +1,16 @@
+import { LogLevel, Room, Track, setLogLevel } from 'livekit-client'
+import { SyntheticScreenPublisher } from '/tests/screen_profile/screen_share_sfu/publisher'
+import { timerSnapshot } from './resources'
+export class SenderHarness {
+  private room: Room | null = null
+  private publisher = new SyntheticScreenPublisher()
+  async open(url: string, token: string) { setLogLevel(LogLevel.silent); this.room = new Room({ adaptiveStream: false, dynacast: false }); await this.room.connect(url, token, { autoSubscribe: false }) }
+  async publish() { if (!this.room) throw new Error('QA_SENDER_NOT_OPEN'); await this.publisher.publish(this.room) }
+  async unpublish() { await this.publisher.stop(this.room) }
+  async snapshot() {
+    const values = await this.publisher.snapshot(); let remoteSubscribed = 0
+    this.room?.remoteParticipants.forEach(participant => { if (participant.getTrackPublication(Track.Source.ScreenShare)?.isSubscribed) remoteSubscribed++ })
+    return { connected: this.room?.state === 'connected', syntheticFrames: values.syntheticFramesProduced, encodedFrames: values.outboundFramesEncoded, remoteScreenSubscriptions: remoteSubscribed, timers: timerSnapshot() }
+  }
+  async stop() { await this.unpublish(); await this.room?.disconnect(); this.room?.removeAllListeners(); this.room = null }
+}

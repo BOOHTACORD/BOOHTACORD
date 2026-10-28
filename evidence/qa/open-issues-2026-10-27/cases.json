@@ -1137,6 +1137,20 @@
       "defects": [
         138
       ]
+    },
+    {
+      "id": "ISOLATED-production-screen-binding-real-SFU-lifecycle",
+      "status": "PASS_SCOPED",
+      "protects": "Actual production screen binding real-SFU0/1 subscription/renderer, stale event generation guards and lifecycle cleanup",
+      "command": "python -X utf8 .out/qa-screen-preview/start_bridge.py; node .out/qa-screen-preview/run_profile.mjs; node .out/qa-screen-preview/run_mutation.mjs; node .out/qa-screen-preview/verify_runtime.mjs; python -X utf8 .out/qa-screen-preview/verify_after.py",
+      "platform": "Windows11/headlessChromium153/livekit-client2.22.3/actual own SFU1.13.7 with real production default factory",
+      "mandatory_when": "Before exact I240.C8 source/SDK/SFU lifecycle acceptance",
+      "issues": [
+        240
+      ],
+      "result": "isolated-screen-preview/summary.json",
+      "limits": "Headless Chromium153/real pinned SDK and existing owned SFU;2 synthetic640x360 sources at requested15fps, no physical FPS/acoustic/capacity/native/UI-picker/production acceptance. Direct SDK grants with supported generic identities; Go-auth/voice-lease presence paths separate. Actual SDK events held/replayed at consumer boundary, not naturally delayed network packets. No screenshots, video, frame payloads, SDP, candidate data, IDs or credentials exported.",
+      "defects": []
     }
   ]
 }

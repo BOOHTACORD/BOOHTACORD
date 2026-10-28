@@ -1,0 +1,155 @@
+{
+  "at_utc": "2026-10-28T02:03:22.860537+00:00",
+  "status": "PASS_EMPTY_OWN_SFU_ROOMS_BRIDGE_REMOVAL_NINE_PRIVATE_SERVICES",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "project": "boohtacord-local-qa",
+  "production_touched": false,
+  "own_Vite_ports_closed": [
+    4807,
+    4809
+  ],
+  "owned_bridge_logs_SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+  "owned_bridge_removed": true,
+  "services": [
+    {
+      "service": "api",
+      "running": true,
+      "restart_count": 0,
+      "image_id": "sha256:b34a09b6eebfb87fea478e7cd440cc7ab9c52dc7dbd3cf4d659b12a9eff98a47"
+    },
+    {
+      "service": "web",
+      "running": true,
+      "restart_count": 0,
+      "image_id": "sha256:414cc79b7ff85cfca81252bd12eb8a9525f2fb5727932a88b02ccf63ebb42d20"
+    },
+    {
+      "service": "proxy",
+      "running": true,
+      "restart_count": 0,
+      "image_id": "sha256:f43d8810c944e27e6f7ea80b165de11dbdab16cff15c8a80d83ae3e1a109a35d"
+    },
+    {
+      "service": "postgres",
+      "running": true,
+      "restart_count": 0,
+      "image_id": "sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94"
+    },
+    {
+      "service": "livekit",
+      "running": true,
+      "restart_count": 0,
+      "image_id": "sha256:6fd3b7088874c4d119160dd688798dfec852bc014786d392caad15f6f63912a3"
+    },
+    {
+      "service": "collector",
+      "running": true,
+      "restart_count": 0,
+      "image_id": "sha256:b6d2b9a85b1029d05b5ad913150c1f014eed4ae99be81a1813ca5ade4a191913"
+    },
+    {
+      "service": "tempo",
+      "running": true,
+      "restart_count": 0,
+      "image_id": "sha256:cac9de2ac9f6da8efca5b64b690a7cb8c786a0c49cac7b4517dd1b0089a6c703"
+    },
+    {
+      "service": "prometheus",
+      "running": true,
+      "restart_count": 0,
+      "image_id": "sha256:5550dc63da361dc30f6fe02ac0e4dfc736ededfef3c8d12a634db04a67824d78"
+    },
+    {
+      "service": "grafana",
+      "running": true,
+      "restart_count": 0,
+      "image_id": "sha256:6e5d306338670f381a942f1c50d3c266bf71531e5ddd9ee4fc1a133dac5ce63d"
+    }
+  ],
+  "bounded_private_logs_scan": [
+    {
+      "service": "api",
+      "stdout_bytes": 15981,
+      "stderr_bytes": 0,
+      "SHA256": "f000b5c212f1b1f275fc37ae44b916970425c228698213b0e87235b8a35dc222",
+      "credential_or_JWT_markers_found": false,
+      "SFU_room_and_actor_fields_stay_private": false
+    },
+    {
+      "service": "web",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "credential_or_JWT_markers_found": false,
+      "SFU_room_and_actor_fields_stay_private": false
+    },
+    {
+      "service": "proxy",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "credential_or_JWT_markers_found": false,
+      "SFU_room_and_actor_fields_stay_private": false
+    },
+    {
+      "service": "postgres",
+      "stdout_bytes": 0,
+      "stderr_bytes": 1059,
+      "SHA256": "d8dead80a97bec91b51bff158472c32a1c24d6bc3e29d2467659f412f164a58e",
+      "credential_or_JWT_markers_found": false,
+      "SFU_room_and_actor_fields_stay_private": false
+    },
+    {
+      "service": "livekit",
+      "stdout_bytes": 0,
+      "stderr_bytes": 239226,
+      "SHA256": "f999b4a604f7cd5f6df4142edea0609ade0c632ea540760cf5dfd1fe53668be7",
+      "credential_or_JWT_markers_found": false,
+      "SFU_room_and_actor_fields_stay_private": true
+    },
+    {
+      "service": "collector",
+      "stdout_bytes": 0,
+      "stderr_bytes": 47432,
+      "SHA256": "de3ea3a4b712b0bdaa16c7f368bca930c8aafa1f8bca95a99209678b2fdf8da1",
+      "credential_or_JWT_markers_found": false,
+      "SFU_room_and_actor_fields_stay_private": false
+    },
+    {
+      "service": "tempo",
+      "stdout_bytes": 0,
+      "stderr_bytes": 29147,
+      "SHA256": "c25250dea3eea101e64d45105959756409493dca7f1abeb914a52b9494f6a4c8",
+      "credential_or_JWT_markers_found": false,
+      "SFU_room_and_actor_fields_stay_private": false
+    },
+    {
+      "service": "prometheus",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "SHA256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "credential_or_JWT_markers_found": false,
+      "SFU_room_and_actor_fields_stay_private": false
+    },
+    {
+      "service": "grafana",
+      "stdout_bytes": 4485,
+      "stderr_bytes": 0,
+      "SHA256": "e3e0fa72515bbf06dd3c550ce8f0f85c30a3b114715f20778dd72a8f41952f38",
+      "credential_or_JWT_markers_found": false,
+      "SFU_room_and_actor_fields_stay_private": false
+    }
+  ],
+  "database_counts": [
+    516,
+    2065,
+    50,
+    9
+  ],
+  "database_comparison": "Equal to last prior-packet attestation; no fresh pre-run SQL snapshot was captured in this SDK-only packet",
+  "prior_database_attestation_utc": "2026-10-28T01:32:54.616903+00:00",
+  "PostgreSQL_version": "17.6",
+  "API_health_http": 200,
+  "source_worktree_clean": true,
+  "finished_at_utc": "2026-10-28T02:03:29.368125+00:00"
+}

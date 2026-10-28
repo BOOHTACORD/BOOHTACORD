@@ -1,0 +1,6 @@
+import './resources'
+import { ViewerHarness } from './viewer'
+import { SenderHarness } from './sender'
+const viewer = new ViewerHarness(), sender = new SenderHarness()
+;(window as any).qaPreview = { viewer, sender }
+document.querySelector('#status')!.textContent = 'Isolated production-binding SDK test; synthetic source only'

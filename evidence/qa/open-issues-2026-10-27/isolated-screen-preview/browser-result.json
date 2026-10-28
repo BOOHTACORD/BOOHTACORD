@@ -1,0 +1,4438 @@
+{
+  "at_utc": "2026-10-28T01:56:27.780Z",
+  "status": "PASS_ACTUAL_PRODUCTION_BINDING_SCREEN_LIFECYCLE",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "production_touched": false,
+  "controller_PID": 29608,
+  "frames_SDP_tokens_or_IDs_exported": false,
+  "browser_version": "153.0.8010.12",
+  "livekit_client_version": "2.22.3",
+  "livekit_server_sdk_version": "2.19.1",
+  "own_room_removed": true,
+  "final_SFU": {
+    "entries": [
+      {
+        "name": "livekit_participant_total",
+        "type": "gauge",
+        "labels": {},
+        "value": 0
+      },
+      {
+        "name": "livekit_room_total",
+        "type": "gauge",
+        "labels": {},
+        "value": 0
+      },
+      {
+        "name": "livekit_track_publish_counter",
+        "type": "counter",
+        "labels": {},
+        "value": 4
+      },
+      {
+        "name": "livekit_track_publish_counter",
+        "type": "counter",
+        "labels": {
+          "state": "success"
+        },
+        "value": 4
+      },
+      {
+        "name": "livekit_track_published_total",
+        "type": "gauge",
+        "labels": {},
+        "value": 0
+      },
+      {
+        "name": "livekit_track_subscribe_counter",
+        "type": "counter",
+        "labels": {},
+        "value": 10
+      },
+      {
+        "name": "livekit_track_subscribe_counter",
+        "type": "counter",
+        "labels": {
+          "state": "success"
+        },
+        "value": 9
+      },
+      {
+        "name": "livekit_track_subscribed_total",
+        "type": "gauge",
+        "labels": {},
+        "value": 0
+      }
+    ],
+    "raw_private_SHA256": "618e9cf04f8e36df49be759d06e4930fc01e2985d3bcf7a231348b1041ad5553",
+    "raw_bytes": 73197
+  },
+  "finished_at_utc": "2026-10-28T01:56:41.205Z",
+  "records": [
+    {
+      "label": "two_sources_idle",
+      "at_utc": "2026-10-28T01:56:33.676Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "none",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 0,
+        "rendererElements": 0,
+        "framesPresented": 0,
+        "videoWidth": 0,
+        "videoHeight": 0,
+        "probe": {
+          "desired": 0,
+          "subscribed": 0,
+          "attached": 0,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": false,
+              "subscribed": false
+            },
+            "B": {
+              "desired": false,
+              "subscribed": false
+            }
+          },
+          "trueRequests": 0,
+          "falseRequests": 0,
+          "attaches": 0,
+          "detaches": 0,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 0,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackPublished": 2,
+            "connectionQualityChanged": 1
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 5
+          },
+          "peak": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 7
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 19,
+          "encodedFrames": 19,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 19,
+          "encodedFrames": 19,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 2
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 0
+          }
+        ],
+        "raw_private_SHA256": "972c9bcd484f6c49fe3802342064d151eab074a5852189692a05c66c2f8e4b0e",
+        "raw_bytes": 54162
+      },
+      "SFU_active_video": null
+    },
+    {
+      "label": "A_actual_event_held",
+      "at_utc": "2026-10-28T01:56:33.815Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "A",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 0,
+        "rendererElements": 0,
+        "framesPresented": 0,
+        "videoWidth": 0,
+        "videoHeight": 0,
+        "probe": {
+          "desired": 1,
+          "subscribed": 1,
+          "attached": 0,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": true,
+              "subscribed": true
+            },
+            "B": {
+              "desired": false,
+              "subscribed": false
+            }
+          },
+          "trueRequests": 1,
+          "falseRequests": 0,
+          "attaches": 0,
+          "detaches": 0,
+          "queuedActualEvents": 1,
+          "deliveredHeld": 0,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackPublished": 2,
+            "connectionQualityChanged": 2,
+            "trackSubscriptionStatusChanged": 2,
+            "trackSubscribed": 1
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 6
+          },
+          "peak": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 7
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 2
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 1
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          }
+        ],
+        "raw_private_SHA256": "00056472e4ed8034636a3a6c8fd5736229c643c0b8c3103023b37910471d2e8f",
+        "raw_bytes": 58417
+      },
+      "event_shaping": "Actual SDK TrackSubscribed held before consumer delivery; no network or SDK publication mock"
+    },
+    {
+      "label": "select_B_while_A_event_held",
+      "at_utc": "2026-10-28T01:56:34.185Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "B",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 1,
+        "rendererElements": 1,
+        "framesPresented": 1,
+        "videoWidth": 640,
+        "videoHeight": 360,
+        "probe": {
+          "desired": 1,
+          "subscribed": 1,
+          "attached": 1,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": false,
+              "subscribed": false
+            },
+            "B": {
+              "desired": true,
+              "subscribed": true
+            }
+          },
+          "trueRequests": 2,
+          "falseRequests": 1,
+          "attaches": 1,
+          "detaches": 1,
+          "queuedActualEvents": 1,
+          "deliveredHeld": 0,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackPublished": 2,
+            "connectionQualityChanged": 3,
+            "trackSubscriptionStatusChanged": 5,
+            "trackSubscribed": 2,
+            "activeSpeakersChanged": 1,
+            "trackUnsubscribed": 1
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 7
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 0,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 27,
+          "encodedFrames": 27,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 26,
+          "encodedFrames": 26,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 2
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          }
+        ],
+        "raw_private_SHA256": "b73a7cc491b227a9ad7aa2068edf3d346dca7521e8b0d67d8b18419e16a04728",
+        "raw_bytes": 62789
+      },
+      "SFU_active_video": 1
+    },
+    {
+      "label": "late_A_delivered_after_B",
+      "at_utc": "2026-10-28T01:56:34.235Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "B",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 1,
+        "rendererElements": 1,
+        "framesPresented": 1,
+        "videoWidth": 640,
+        "videoHeight": 360,
+        "probe": {
+          "desired": 1,
+          "subscribed": 1,
+          "attached": 1,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": false,
+              "subscribed": false
+            },
+            "B": {
+              "desired": true,
+              "subscribed": true
+            }
+          },
+          "trueRequests": 2,
+          "falseRequests": 1,
+          "attaches": 1,
+          "detaches": 1,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 1,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackPublished": 2,
+            "connectionQualityChanged": 3,
+            "trackSubscriptionStatusChanged": 5,
+            "trackSubscribed": 2,
+            "activeSpeakersChanged": 1,
+            "trackUnsubscribed": 1
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 6
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 0,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 28,
+          "encodedFrames": 27,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 27,
+          "encodedFrames": 26,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 2
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          }
+        ],
+        "raw_private_SHA256": "0951adf4d042bdecb686f264609f4dbc105fec45b568515fb36399db3c7da3d9",
+        "raw_bytes": 62790
+      },
+      "SFU_active_video": 1,
+      "actual_delayed_events_delivered": 1
+    },
+    {
+      "label": "B_reselected_25_times",
+      "at_utc": "2026-10-28T01:56:34.285Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "B",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 1,
+        "rendererElements": 1,
+        "framesPresented": 2,
+        "videoWidth": 640,
+        "videoHeight": 360,
+        "probe": {
+          "desired": 1,
+          "subscribed": 1,
+          "attached": 1,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": false,
+              "subscribed": false
+            },
+            "B": {
+              "desired": true,
+              "subscribed": true
+            }
+          },
+          "trueRequests": 2,
+          "falseRequests": 1,
+          "attaches": 1,
+          "detaches": 1,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 1,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackPublished": 2,
+            "connectionQualityChanged": 3,
+            "trackSubscriptionStatusChanged": 5,
+            "trackSubscribed": 2,
+            "activeSpeakersChanged": 1,
+            "trackUnsubscribed": 1
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 6
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 0,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 29,
+          "encodedFrames": 29,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 28,
+          "encodedFrames": 28,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 2
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          }
+        ],
+        "raw_private_SHA256": "b4f18a6852c381dfd246bf6a45f7fbbf403d1e665c5888e288b2f36def73394c",
+        "raw_bytes": 62790
+      },
+      "SFU_active_video": 1
+    },
+    {
+      "label": "unselect_all",
+      "at_utc": "2026-10-28T01:56:34.564Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "none",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 0,
+        "rendererElements": 0,
+        "framesPresented": 3,
+        "videoWidth": 0,
+        "videoHeight": 0,
+        "probe": {
+          "desired": 0,
+          "subscribed": 0,
+          "attached": 0,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": false,
+              "subscribed": false
+            },
+            "B": {
+              "desired": false,
+              "subscribed": false
+            }
+          },
+          "trueRequests": 2,
+          "falseRequests": 2,
+          "attaches": 1,
+          "detaches": 2,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 1,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackPublished": 2,
+            "connectionQualityChanged": 3,
+            "trackSubscriptionStatusChanged": 6,
+            "trackSubscribed": 2,
+            "activeSpeakersChanged": 1,
+            "trackUnsubscribed": 1
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 7
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 0,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 33,
+          "encodedFrames": 33,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 32,
+          "encodedFrames": 32,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 2
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 0
+          }
+        ],
+        "raw_private_SHA256": "7acda767e4ba2898c9badd90814eed12f392028112e96de15130ee32014354e8",
+        "raw_bytes": 62790
+      },
+      "SFU_active_video": 0
+    },
+    {
+      "label": "select_A",
+      "at_utc": "2026-10-28T01:56:34.839Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "A",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 1,
+        "rendererElements": 1,
+        "framesPresented": 3,
+        "videoWidth": 640,
+        "videoHeight": 360,
+        "probe": {
+          "desired": 1,
+          "subscribed": 1,
+          "attached": 1,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": true,
+              "subscribed": true
+            },
+            "B": {
+              "desired": false,
+              "subscribed": false
+            }
+          },
+          "trueRequests": 3,
+          "falseRequests": 2,
+          "attaches": 2,
+          "detaches": 3,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 1,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackPublished": 2,
+            "connectionQualityChanged": 3,
+            "trackSubscriptionStatusChanged": 8,
+            "trackSubscribed": 3,
+            "activeSpeakersChanged": 2,
+            "trackUnsubscribed": 2
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 7
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 0,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 37,
+          "encodedFrames": 37,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 36,
+          "encodedFrames": 36,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 2
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 3
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          }
+        ],
+        "raw_private_SHA256": "f5ca2a4afdc8481ed2bd2fa086d10e6cd034fec9f14a48efee191ff5c09e57f1",
+        "raw_bytes": 62783
+      },
+      "SFU_active_video": 1
+    },
+    {
+      "label": "selected_A_unpublished",
+      "at_utc": "2026-10-28T01:56:35.019Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "none",
+        "cards": 1,
+        "subscriptionFailed": false,
+        "ended": true,
+        "videoTracks": 0,
+        "rendererElements": 0,
+        "framesPresented": 7,
+        "videoWidth": 0,
+        "videoHeight": 0,
+        "probe": {
+          "desired": 0,
+          "subscribed": 0,
+          "attached": 0,
+          "discovered": 1,
+          "byRole": {
+            "B": {
+              "desired": false,
+              "subscribed": false
+            }
+          },
+          "trueRequests": 3,
+          "falseRequests": 3,
+          "attaches": 2,
+          "detaches": 5,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 1,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackPublished": 2,
+            "connectionQualityChanged": 3,
+            "trackSubscriptionStatusChanged": 10,
+            "trackSubscribed": 3,
+            "activeSpeakersChanged": 3,
+            "trackUnsubscribed": 3,
+            "trackUnpublished": 1
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 6
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 0,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 0,
+          "encodedFrames": 0,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 5
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 39,
+          "encodedFrames": 39,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 2
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 4
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 3
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 0
+          }
+        ],
+        "raw_private_SHA256": "2e642dcdd6112204255cb97ee45c4451b9032b2b44444b55d0855ea038dd0fa9",
+        "raw_bytes": 70935
+      },
+      "SFU_active_video": 0
+    },
+    {
+      "label": "A_republished_requires_selection",
+      "at_utc": "2026-10-28T01:56:35.104Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "none",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": true,
+        "videoTracks": 0,
+        "rendererElements": 0,
+        "framesPresented": 7,
+        "videoWidth": 0,
+        "videoHeight": 0,
+        "probe": {
+          "desired": 0,
+          "subscribed": 0,
+          "attached": 0,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": false,
+              "subscribed": false
+            },
+            "B": {
+              "desired": false,
+              "subscribed": false
+            }
+          },
+          "trueRequests": 3,
+          "falseRequests": 3,
+          "attaches": 2,
+          "detaches": 5,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 1,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackPublished": 3,
+            "connectionQualityChanged": 3,
+            "trackSubscriptionStatusChanged": 10,
+            "trackSubscribed": 3,
+            "activeSpeakersChanged": 3,
+            "trackUnsubscribed": 3,
+            "trackUnpublished": 1
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 6
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 0,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 0,
+          "encodedFrames": 0,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 40,
+          "encodedFrames": 40,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 3
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 4
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 3
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 0
+          }
+        ],
+        "raw_private_SHA256": "27a8d3482937af6aad4240f39782eeba7e72d6a3ffbd592ae647c0d9c8274e5f",
+        "raw_bytes": 70939
+      },
+      "SFU_active_video": 0
+    },
+    {
+      "label": "B_selected_for_unselected_unpublish",
+      "at_utc": "2026-10-28T01:56:35.343Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "B",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 1,
+        "rendererElements": 1,
+        "framesPresented": 7,
+        "videoWidth": 0,
+        "videoHeight": 0,
+        "probe": {
+          "desired": 1,
+          "subscribed": 1,
+          "attached": 1,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": false,
+              "subscribed": false
+            },
+            "B": {
+              "desired": true,
+              "subscribed": true
+            }
+          },
+          "trueRequests": 4,
+          "falseRequests": 3,
+          "attaches": 3,
+          "detaches": 5,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 1,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackPublished": 3,
+            "connectionQualityChanged": 3,
+            "trackSubscriptionStatusChanged": 12,
+            "trackSubscribed": 4,
+            "activeSpeakersChanged": 3,
+            "trackUnsubscribed": 3,
+            "trackUnpublished": 1
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 7
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 0,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 4,
+          "encodedFrames": 4,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 44,
+          "encodedFrames": 44,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 3
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 5
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          }
+        ],
+        "raw_private_SHA256": "365a65e6cf4856067611631f420d05bb38007121dce9848185e89c883616ccb1",
+        "raw_bytes": 70939
+      },
+      "SFU_active_video": 1
+    },
+    {
+      "label": "unselected_A_unpublished_B_unchanged",
+      "at_utc": "2026-10-28T01:56:35.406Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "B",
+        "cards": 1,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 1,
+        "rendererElements": 1,
+        "framesPresented": 8,
+        "videoWidth": 640,
+        "videoHeight": 360,
+        "probe": {
+          "desired": 1,
+          "subscribed": 1,
+          "attached": 1,
+          "discovered": 1,
+          "byRole": {
+            "B": {
+              "desired": true,
+              "subscribed": true
+            }
+          },
+          "trueRequests": 4,
+          "falseRequests": 3,
+          "attaches": 3,
+          "detaches": 5,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 1,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackPublished": 3,
+            "connectionQualityChanged": 3,
+            "trackSubscriptionStatusChanged": 12,
+            "trackSubscribed": 4,
+            "activeSpeakersChanged": 3,
+            "trackUnsubscribed": 3,
+            "trackUnpublished": 2
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 7
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 0,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 0,
+          "encodedFrames": 0,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 5
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 45,
+          "encodedFrames": 45,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 3
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 5
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          }
+        ],
+        "raw_private_SHA256": "da8cb6fe2d5aea7c4fca4e0a8466dfb52dd00cb8dd29db28602490bc78e06330",
+        "raw_bytes": 70936
+      },
+      "SFU_active_video": 1
+    },
+    {
+      "label": "unselected_A_returns_B_unchanged",
+      "at_utc": "2026-10-28T01:56:35.480Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "B",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 1,
+        "rendererElements": 1,
+        "framesPresented": 9,
+        "videoWidth": 640,
+        "videoHeight": 360,
+        "probe": {
+          "desired": 1,
+          "subscribed": 1,
+          "attached": 1,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": false,
+              "subscribed": false
+            },
+            "B": {
+              "desired": true,
+              "subscribed": true
+            }
+          },
+          "trueRequests": 4,
+          "falseRequests": 3,
+          "attaches": 3,
+          "detaches": 5,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 1,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackPublished": 4,
+            "connectionQualityChanged": 3,
+            "trackSubscriptionStatusChanged": 12,
+            "trackSubscribed": 4,
+            "activeSpeakersChanged": 3,
+            "trackUnsubscribed": 3,
+            "trackUnpublished": 2
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 6
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 0,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 0,
+          "encodedFrames": 0,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 46,
+          "encodedFrames": 46,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 4
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 5
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          }
+        ],
+        "raw_private_SHA256": "788b48d5ed922a897ead5e666aba1283316757cd1b204ac37eb953d396869c09",
+        "raw_bytes": 70937
+      },
+      "SFU_active_video": 1
+    },
+    {
+      "label": "SDK_signal_reconnect_B_retained",
+      "at_utc": "2026-10-28T01:56:37.930Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "B",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 1,
+        "rendererElements": 1,
+        "framesPresented": 42,
+        "videoWidth": 640,
+        "videoHeight": 360,
+        "probe": {
+          "desired": 1,
+          "subscribed": 1,
+          "attached": 1,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": false,
+              "subscribed": false
+            },
+            "B": {
+              "desired": true,
+              "subscribed": true
+            }
+          },
+          "trueRequests": 4,
+          "falseRequests": 3,
+          "attaches": 3,
+          "detaches": 5,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 1,
+          "events": {
+            "connectionStateChanged": 4,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackPublished": 4,
+            "connectionQualityChanged": 3,
+            "trackSubscriptionStatusChanged": 12,
+            "trackSubscribed": 4,
+            "activeSpeakersChanged": 3,
+            "trackUnsubscribed": 3,
+            "trackUnpublished": 2,
+            "signalReconnecting": 1,
+            "reconnected": 1
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 6
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 0,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 37,
+          "encodedFrames": 37,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 83,
+          "encodedFrames": 82,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 4
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 5
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          }
+        ],
+        "raw_private_SHA256": "76bc59cf14adbedd5fb25172d30da9e6afd67cd06ed4797b39cd37083b8665c1",
+        "raw_bytes": 70948
+      },
+      "SFU_active_video": 1
+    },
+    {
+      "label": "before_full_disconnect",
+      "at_utc": "2026-10-28T01:56:38.225Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "none",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 0,
+        "rendererElements": 0,
+        "framesPresented": 43,
+        "videoWidth": 0,
+        "videoHeight": 0,
+        "probe": {
+          "desired": 0,
+          "subscribed": 0,
+          "attached": 0,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": false,
+              "subscribed": false
+            },
+            "B": {
+              "desired": false,
+              "subscribed": false
+            }
+          },
+          "trueRequests": 4,
+          "falseRequests": 4,
+          "attaches": 3,
+          "detaches": 6,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 1,
+          "events": {
+            "connectionStateChanged": 4,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackPublished": 4,
+            "connectionQualityChanged": 3,
+            "trackSubscriptionStatusChanged": 13,
+            "trackSubscribed": 4,
+            "activeSpeakersChanged": 3,
+            "trackUnsubscribed": 3,
+            "trackUnpublished": 2,
+            "signalReconnecting": 1,
+            "reconnected": 1
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 7
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 0,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 42,
+          "encodedFrames": 42,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 87,
+          "encodedFrames": 86,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 4
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 5
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 0
+          }
+        ],
+        "raw_private_SHA256": "701ddf8c5e558a13405bffcb10b74b2ecbb1561ec1bd5b06c49f23308d8ce0d4",
+        "raw_bytes": 73154
+      },
+      "SFU_active_video": 0
+    },
+    {
+      "label": "viewer_disconnected",
+      "at_utc": "2026-10-28T01:56:38.474Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": false,
+        "selected": "none",
+        "cards": 0,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 0,
+        "rendererElements": 0,
+        "framesPresented": 43,
+        "videoWidth": 0,
+        "videoHeight": 0,
+        "probe": null,
+        "oldQueuedActualEvents": 1,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 1
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 1,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 4
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 6
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 5
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 0
+          }
+        ],
+        "raw_private_SHA256": "0fd0e5c66c5ea4a17df5206d58f54a0754e9d5e578d4243ae440e699e8faa9a0",
+        "raw_bytes": 73160
+      }
+    },
+    {
+      "label": "fresh_connection_no_implicit_selection",
+      "at_utc": "2026-10-28T01:56:38.614Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "none",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 0,
+        "rendererElements": 0,
+        "framesPresented": 43,
+        "videoWidth": 0,
+        "videoHeight": 0,
+        "probe": {
+          "desired": 0,
+          "subscribed": 0,
+          "attached": 0,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": false,
+              "subscribed": false
+            },
+            "B": {
+              "desired": false,
+              "subscribed": false
+            }
+          },
+          "trueRequests": 0,
+          "falseRequests": 0,
+          "attaches": 0,
+          "detaches": 0,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 0,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1
+          }
+        },
+        "oldQueuedActualEvents": 1,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 6
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 1,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 48,
+          "encodedFrames": 48,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 93,
+          "encodedFrames": 92,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 4
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 6
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 5
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 0
+          }
+        ],
+        "raw_private_SHA256": "53b732cc977b86fb7c14ecf90e2650cd7b5e3fee24544c175c4eac78be4bce1e",
+        "raw_bytes": 73159
+      },
+      "SFU_active_video": 0
+    },
+    {
+      "label": "fresh_connection_select_B",
+      "at_utc": "2026-10-28T01:56:38.878Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "B",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 1,
+        "rendererElements": 1,
+        "framesPresented": 43,
+        "videoWidth": 0,
+        "videoHeight": 0,
+        "probe": {
+          "desired": 1,
+          "subscribed": 1,
+          "attached": 1,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": false,
+              "subscribed": false
+            },
+            "B": {
+              "desired": true,
+              "subscribed": true
+            }
+          },
+          "trueRequests": 1,
+          "falseRequests": 0,
+          "attaches": 1,
+          "detaches": 0,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 0,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackSubscriptionStatusChanged": 2,
+            "connectionQualityChanged": 1,
+            "trackSubscribed": 1
+          }
+        },
+        "oldQueuedActualEvents": 1,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 7
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 1,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 52,
+          "encodedFrames": 51,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 97,
+          "encodedFrames": 96,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 4
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 7
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 6
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          }
+        ],
+        "raw_private_SHA256": "bea6c35b14e88894de2ef2d3b97566c4673ace86fcb163ae82da71b3d094ca2c",
+        "raw_bytes": 73172
+      },
+      "SFU_active_video": 1
+    },
+    {
+      "label": "old_connection_late_event_ignored",
+      "at_utc": "2026-10-28T01:56:38.915Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "B",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 1,
+        "rendererElements": 1,
+        "framesPresented": 44,
+        "videoWidth": 640,
+        "videoHeight": 360,
+        "probe": {
+          "desired": 1,
+          "subscribed": 1,
+          "attached": 1,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": false,
+              "subscribed": false
+            },
+            "B": {
+              "desired": true,
+              "subscribed": true
+            }
+          },
+          "trueRequests": 1,
+          "falseRequests": 0,
+          "attaches": 1,
+          "detaches": 0,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 0,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackSubscriptionStatusChanged": 2,
+            "connectionQualityChanged": 1,
+            "trackSubscribed": 1
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 7
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 1,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 52,
+          "encodedFrames": 51,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 98,
+          "encodedFrames": 96,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 4
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 7
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 6
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          }
+        ],
+        "raw_private_SHA256": "d104c120a36caef699af3c0880e6f8bcc227e7dd29f8db4e890dcbf2381448f0",
+        "raw_bytes": 73171
+      },
+      "SFU_active_video": 1,
+      "old_actual_events_delivered": 1
+    },
+    {
+      "label": "cycle_0_none",
+      "at_utc": "2026-10-28T01:56:39.234Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "none",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 0,
+        "rendererElements": 0,
+        "framesPresented": 44,
+        "videoWidth": 0,
+        "videoHeight": 0,
+        "probe": {
+          "desired": 0,
+          "subscribed": 0,
+          "attached": 0,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": false,
+              "subscribed": false
+            },
+            "B": {
+              "desired": false,
+              "subscribed": false
+            }
+          },
+          "trueRequests": 1,
+          "falseRequests": 1,
+          "attaches": 1,
+          "detaches": 1,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 0,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackSubscriptionStatusChanged": 3,
+            "connectionQualityChanged": 1,
+            "trackSubscribed": 1
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 7
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 1,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 57,
+          "encodedFrames": 56,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 103,
+          "encodedFrames": 101,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 4
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 7
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 6
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 0
+          }
+        ],
+        "raw_private_SHA256": "b0b8eb35c8bfe0edaf85760448c8182e0d4de2e06149727f704c1486712dc6b2",
+        "raw_bytes": 73173
+      },
+      "SFU_active_video": 0
+    },
+    {
+      "label": "cycle_0_selected",
+      "at_utc": "2026-10-28T01:56:39.498Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "A",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 1,
+        "rendererElements": 1,
+        "framesPresented": 45,
+        "videoWidth": 640,
+        "videoHeight": 360,
+        "probe": {
+          "desired": 1,
+          "subscribed": 1,
+          "attached": 1,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": true,
+              "subscribed": true
+            },
+            "B": {
+              "desired": false,
+              "subscribed": false
+            }
+          },
+          "trueRequests": 2,
+          "falseRequests": 1,
+          "attaches": 2,
+          "detaches": 2,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 0,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackSubscriptionStatusChanged": 5,
+            "connectionQualityChanged": 2,
+            "trackSubscribed": 2,
+            "activeSpeakersChanged": 1,
+            "trackUnsubscribed": 1
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 7
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 1,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 61,
+          "encodedFrames": 60,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 107,
+          "encodedFrames": 105,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 4
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 8
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 7
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          }
+        ],
+        "raw_private_SHA256": "039abf41c2b10a31100b6cfe6f1c1225efd9c7143fb3b940e3fb5b55d9cf7a0d",
+        "raw_bytes": 73177
+      },
+      "SFU_active_video": 1
+    },
+    {
+      "label": "cycle_1_none",
+      "at_utc": "2026-10-28T01:56:39.792Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "none",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 0,
+        "rendererElements": 0,
+        "framesPresented": 45,
+        "videoWidth": 0,
+        "videoHeight": 0,
+        "probe": {
+          "desired": 0,
+          "subscribed": 0,
+          "attached": 0,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": false,
+              "subscribed": false
+            },
+            "B": {
+              "desired": false,
+              "subscribed": false
+            }
+          },
+          "trueRequests": 2,
+          "falseRequests": 2,
+          "attaches": 2,
+          "detaches": 3,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 0,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackSubscriptionStatusChanged": 6,
+            "connectionQualityChanged": 2,
+            "trackSubscribed": 2,
+            "activeSpeakersChanged": 1,
+            "trackUnsubscribed": 1
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 7
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 1,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 65,
+          "encodedFrames": 64,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 111,
+          "encodedFrames": 109,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 4
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 8
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 7
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 0
+          }
+        ],
+        "raw_private_SHA256": "c346f324ee7fbd3d4344a4e8e082c567ba51ace2a852886aa4eb0e89f7efa24f",
+        "raw_bytes": 73174
+      },
+      "SFU_active_video": 0
+    },
+    {
+      "label": "cycle_1_selected",
+      "at_utc": "2026-10-28T01:56:40.056Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "B",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 1,
+        "rendererElements": 1,
+        "framesPresented": 45,
+        "videoWidth": 0,
+        "videoHeight": 0,
+        "probe": {
+          "desired": 1,
+          "subscribed": 1,
+          "attached": 1,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": false,
+              "subscribed": false
+            },
+            "B": {
+              "desired": true,
+              "subscribed": true
+            }
+          },
+          "trueRequests": 3,
+          "falseRequests": 2,
+          "attaches": 3,
+          "detaches": 4,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 0,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackSubscriptionStatusChanged": 8,
+            "connectionQualityChanged": 2,
+            "trackSubscribed": 3,
+            "activeSpeakersChanged": 2,
+            "trackUnsubscribed": 2
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 7
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 1,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 69,
+          "encodedFrames": 68,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 115,
+          "encodedFrames": 113,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 4
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 9
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 8
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          }
+        ],
+        "raw_private_SHA256": "b2068a4017c42d75476fae5135e7d8505952de412344d684721f8e914759c029",
+        "raw_bytes": 73172
+      },
+      "SFU_active_video": 1
+    },
+    {
+      "label": "cycle_2_none",
+      "at_utc": "2026-10-28T01:56:40.350Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "none",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 0,
+        "rendererElements": 0,
+        "framesPresented": 46,
+        "videoWidth": 0,
+        "videoHeight": 0,
+        "probe": {
+          "desired": 0,
+          "subscribed": 0,
+          "attached": 0,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": false,
+              "subscribed": false
+            },
+            "B": {
+              "desired": false,
+              "subscribed": false
+            }
+          },
+          "trueRequests": 3,
+          "falseRequests": 3,
+          "attaches": 3,
+          "detaches": 5,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 0,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackSubscriptionStatusChanged": 9,
+            "connectionQualityChanged": 2,
+            "trackSubscribed": 3,
+            "activeSpeakersChanged": 2,
+            "trackUnsubscribed": 2
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 7
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 1,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 74,
+          "encodedFrames": 73,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 120,
+          "encodedFrames": 118,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 4
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 9
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 8
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 0
+          }
+        ],
+        "raw_private_SHA256": "cb876a6515ae08720a4c6bb4cc399cd73ffbb6cd36cc778fe6fa00bc5e831a44",
+        "raw_bytes": 73171
+      },
+      "SFU_active_video": 0
+    },
+    {
+      "label": "cycle_2_selected",
+      "at_utc": "2026-10-28T01:56:40.615Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "A",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 1,
+        "rendererElements": 1,
+        "framesPresented": 46,
+        "videoWidth": 0,
+        "videoHeight": 0,
+        "probe": {
+          "desired": 1,
+          "subscribed": 1,
+          "attached": 1,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": true,
+              "subscribed": true
+            },
+            "B": {
+              "desired": false,
+              "subscribed": false
+            }
+          },
+          "trueRequests": 4,
+          "falseRequests": 3,
+          "attaches": 4,
+          "detaches": 6,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 0,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackSubscriptionStatusChanged": 11,
+            "connectionQualityChanged": 2,
+            "trackSubscribed": 4,
+            "activeSpeakersChanged": 3,
+            "trackUnsubscribed": 3
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 7
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 1,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 78,
+          "encodedFrames": 77,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 124,
+          "encodedFrames": 122,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 4
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 10
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 9
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          }
+        ],
+        "raw_private_SHA256": "a9e6ca474f3db6ce710478f8432b7d39d87da87ca467f849e706f48697540f87",
+        "raw_bytes": 73179
+      },
+      "SFU_active_video": 1
+    },
+    {
+      "label": "final_unselected",
+      "at_utc": "2026-10-28T01:56:40.909Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "none",
+        "cards": 2,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 0,
+        "rendererElements": 0,
+        "framesPresented": 47,
+        "videoWidth": 0,
+        "videoHeight": 0,
+        "probe": {
+          "desired": 0,
+          "subscribed": 0,
+          "attached": 0,
+          "discovered": 2,
+          "byRole": {
+            "A": {
+              "desired": false,
+              "subscribed": false
+            },
+            "B": {
+              "desired": false,
+              "subscribed": false
+            }
+          },
+          "trueRequests": 4,
+          "falseRequests": 4,
+          "attaches": 4,
+          "detaches": 7,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 0,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackSubscriptionStatusChanged": 12,
+            "connectionQualityChanged": 2,
+            "trackSubscribed": 4,
+            "activeSpeakersChanged": 3,
+            "trackUnsubscribed": 3
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 7
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 1,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 82,
+          "encodedFrames": 81,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 128,
+          "encodedFrames": 126,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 7
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 4
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 2
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 10
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 9
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 0
+          }
+        ],
+        "raw_private_SHA256": "4d642cc5f72e2a7b9f0b9538f23cf53a48eadeaf4bda2e76d733f1f2a99ca3a5",
+        "raw_bytes": 73175
+      },
+      "SFU_active_video": 0
+    },
+    {
+      "label": "all_unpublished",
+      "at_utc": "2026-10-28T01:56:41.003Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": true,
+        "selected": "none",
+        "cards": 0,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 0,
+        "rendererElements": 0,
+        "framesPresented": 47,
+        "videoWidth": 0,
+        "videoHeight": 0,
+        "probe": {
+          "desired": 0,
+          "subscribed": 0,
+          "attached": 0,
+          "discovered": 0,
+          "byRole": {},
+          "trueRequests": 4,
+          "falseRequests": 4,
+          "attaches": 4,
+          "detaches": 8,
+          "queuedActualEvents": 0,
+          "deliveredHeld": 0,
+          "events": {
+            "connectionStateChanged": 2,
+            "signalConnected": 1,
+            "connected": 1,
+            "trackSubscriptionStatusChanged": 12,
+            "connectionQualityChanged": 2,
+            "trackSubscribed": 4,
+            "activeSpeakersChanged": 4,
+            "trackUnsubscribed": 4,
+            "trackUnpublished": 2
+          }
+        },
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 5
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 1,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "senders": [
+        {
+          "connected": true,
+          "syntheticFrames": 0,
+          "encodedFrames": 0,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 5
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        },
+        {
+          "connected": true,
+          "syntheticFrames": 0,
+          "encodedFrames": 0,
+          "remoteScreenSubscriptions": 0,
+          "timers": {
+            "active": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 5
+            },
+            "peak": {
+              "viewer": 0,
+              "preview": 0,
+              "presence": 0,
+              "other": 9
+            },
+            "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+          }
+        }
+      ],
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 3
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 4
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 0
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 10
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 9
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 0
+          }
+        ],
+        "raw_private_SHA256": "471cc04da2745efd40602dba735f68610d101e59205b715d799bb8be0094a1f6",
+        "raw_bytes": 73185
+      },
+      "SFU_active_video": 0
+    },
+    {
+      "label": "all_clients_stopped",
+      "at_utc": "2026-10-28T01:56:41.035Z",
+      "status": "PASS",
+      "viewer": {
+        "connected": false,
+        "selected": "none",
+        "cards": 0,
+        "subscriptionFailed": false,
+        "ended": false,
+        "videoTracks": 0,
+        "rendererElements": 0,
+        "framesPresented": 47,
+        "videoWidth": 0,
+        "videoHeight": 0,
+        "probe": null,
+        "oldQueuedActualEvents": 0,
+        "timers": {
+          "active": {
+            "viewer": 0,
+            "preview": 0,
+            "presence": 0,
+            "other": 1
+          },
+          "peak": {
+            "viewer": 1,
+            "preview": 1,
+            "presence": 0,
+            "other": 8
+          },
+          "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+        },
+        "scriptErrors": 0
+      },
+      "SFU": {
+        "entries": [
+          {
+            "name": "livekit_participant_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 0
+          },
+          {
+            "name": "livekit_room_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 1
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 4
+          },
+          {
+            "name": "livekit_track_publish_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 4
+          },
+          {
+            "name": "livekit_track_published_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 0
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {},
+            "value": 10
+          },
+          {
+            "name": "livekit_track_subscribe_counter",
+            "type": "counter",
+            "labels": {
+              "state": "success"
+            },
+            "value": 9
+          },
+          {
+            "name": "livekit_track_subscribed_total",
+            "type": "gauge",
+            "labels": {},
+            "value": 0
+          }
+        ],
+        "raw_private_SHA256": "54d6cb87ea7ad378d9671442efc6d6d9ba1183c74ed810656f4ec530da237818",
+        "raw_bytes": 73192
+      }
+    }
+  ],
+  "cleanup": [
+    {
+      "role": "A",
+      "stopped": true
+    },
+    {
+      "role": "B",
+      "stopped": true
+    },
+    {
+      "role": "viewer",
+      "stopped": true
+    }
+  ],
+  "browser_errors": {
+    "browser_page_errors": 0,
+    "browser_console_errors": 0
+  }
+}

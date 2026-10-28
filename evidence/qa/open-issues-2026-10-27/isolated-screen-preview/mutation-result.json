@@ -1,0 +1,100 @@
+{
+  "at_utc": "2026-10-28T02:01:41.881Z",
+  "status": "MUTATION_KILLED_BACKGROUND_SUBSCRIPTIONS",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "production_touched": false,
+  "controller_PID": 43264,
+  "baseline_SFU": {
+    "active": 0,
+    "raw_private_SHA256": "b2e4487272aa9915acd41a920195edccc34573bc3723e84037c697c98ecf4aba"
+  },
+  "browser_version": "153.0.8010.12",
+  "observed_viewer": {
+    "connected": true,
+    "selected": "none",
+    "cards": 2,
+    "subscriptionFailed": false,
+    "ended": false,
+    "videoTracks": 0,
+    "rendererElements": 0,
+    "framesPresented": 0,
+    "videoWidth": 0,
+    "videoHeight": 0,
+    "probe": {
+      "desired": 2,
+      "subscribed": 2,
+      "attached": 0,
+      "discovered": 2,
+      "byRole": {
+        "A": {
+          "desired": true,
+          "subscribed": true
+        },
+        "B": {
+          "desired": true,
+          "subscribed": true
+        }
+      },
+      "trueRequests": 7,
+      "falseRequests": 0,
+      "attaches": 0,
+      "detaches": 0,
+      "queuedActualEvents": 0,
+      "deliveredHeld": 0,
+      "events": {
+        "connectionStateChanged": 2,
+        "signalConnected": 1,
+        "connected": 1,
+        "trackPublished": 2,
+        "trackSubscriptionStatusChanged": 4,
+        "connectionQualityChanged": 2,
+        "trackSubscribed": 2
+      }
+    },
+    "oldQueuedActualEvents": 0,
+    "timers": {
+      "active": {
+        "viewer": 0,
+        "preview": 0,
+        "presence": 0,
+        "other": 7
+      },
+      "peak": {
+        "viewer": 0,
+        "preview": 0,
+        "presence": 0,
+        "other": 8
+      },
+      "scope": "Viewer/preview/presence source-stack attribution; other includes SDK, diagnostic and test timers"
+    },
+    "scriptErrors": 0
+  },
+  "observed_SFU": {
+    "active": 2,
+    "raw_private_SHA256": "b8d66f427ffbcc8ae64f777c32e89ca27b45ed4185a042f6617358541a1bc2da"
+  },
+  "transform_hits": 1,
+  "original_zero_selection_check": "FAIL_ON_MUTANT",
+  "note": "Source file unchanged; only test Vite response replaces unselected unsubscribe with subscribe.",
+  "cleanup": [
+    {
+      "role": "A",
+      "stopped": true
+    },
+    {
+      "role": "B",
+      "stopped": true
+    },
+    {
+      "role": "viewer",
+      "stopped": true
+    }
+  ],
+  "own_room_removed": true,
+  "final_SFU": {
+    "active": 1,
+    "raw_private_SHA256": "7966df7c719aa588a92efdbd0b21bb80dcbe3e5331569d4f3b19bdcc30d1ff4e"
+  },
+  "original_source_unchanged": true,
+  "finished_at_utc": "2026-10-28T02:01:45.888Z"
+}

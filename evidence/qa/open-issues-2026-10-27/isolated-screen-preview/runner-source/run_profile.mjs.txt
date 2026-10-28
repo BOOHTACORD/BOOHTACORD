@@ -1,0 +1,36 @@
+import { readFile, writeFile } from 'node:fs/promises'
+import { spawnSync } from 'node:child_process'
+import path from 'node:path'
+import { P, Q, WEB, cfg, sha, save, require, chromium, rpc, IDs, issued, grant, startVite, fixtureURL, call, metrics, guardNoForeignRooms, sourceFingerprint } from './support.mjs'
+import { scenario } from './scenario.mjs'
+const SOURCE = '072426d60b1c0b1f7e5f66722a0da5faa00b50d7'
+const git = spawnSync('git', ['rev-parse', 'HEAD'], { cwd: Q, encoding: 'utf8' }); if (git.status || git.stdout.trim() !== SOURCE || cfg.source_revision !== SOURCE) throw new Error('QA_SOURCE_AUTHORITY')
+await save('runner-before-browser.json', { at_utc: new Date().toISOString(), source_revision: SOURCE, files_SHA256: await sourceFingerprint(), private_config_SHA256: sha(await readFile(path.join(P, 'private/config.private.json'))) })
+let browser, vite, ownedRoom = false, stage = 'setup'; const rows = []
+const result = { at_utc: new Date().toISOString(), status: 'RUNNING', source_revision: SOURCE, production_touched: false, controller_PID: process.pid, frames_SDP_tokens_or_IDs_exported: false }
+await save('browser-runner.json', result)
+const deadline = setTimeout(() => { save('browser-timeout.json', { at_utc: new Date().toISOString(), status: 'DEADLINE', stage }).finally(() => process.exit(2)) }, 8 * 60 * 1000)
+async function record(label, value) { rows.push({ label, at_utc: new Date().toISOString(), ...value }); await save('browser-progress.json', { status: 'RUNNING', last_stage: label, records: rows }); console.log(JSON.stringify({ label, status: value.status, selected: value.viewer?.selected, subscriptions: value.viewer?.probe?.subscribed, renderers: value.viewer?.rendererElements, held: value.viewer?.probe?.queuedActualEvents, SFU_active_video: value.SFU_active_video })); stage = label }
+const pages = {}; const counts = { browser_page_errors: 0, browser_console_errors: 0 }
+try {
+  await guardNoForeignRooms(); const baseline = await metrics(); await save('SFU-baseline.json', baseline)
+  await rpc.createRoom({ name: IDs.room, emptyTimeout: 300, maxParticipants: 4 }); ownedRoom = true
+  vite = await startVite(); browser = await chromium.launch({ headless: true }); result.browser_version = browser.version()
+  result.livekit_client_version = JSON.parse(await readFile(path.join(WEB, 'node_modules/livekit-client/package.json'), 'utf8')).version
+  result.livekit_server_sdk_version = JSON.parse(await readFile(path.join(WEB, 'node_modules/livekit-server-sdk/package.json'), 'utf8')).version
+  for (const role of ['A', 'B', 'viewer']) { const context = await browser.newContext({ viewport: { width: 1100, height: 750 } }); const page = await context.newPage(); page.on('pageerror', () => counts.browser_page_errors++); page.on('console', value => { if (value.type() === 'error') counts.browser_console_errors++ }); page.setDefaultTimeout(20000); await page.goto(fixtureURL); await page.waitForFunction(() => Boolean(window.qaPreview)); pages[role] = page; const token = await grant(role); if (role === 'viewer') await call(page, 'viewer', 'open', cfg.signal_url, token, { A: IDs.A, B: IDs.B }); else await call(page, 'sender', 'open', cfg.signal_url, token) }
+  pages.signalURL = cfg.signal_url; stage = 'scenario'; await scenario(pages, record); result.status = 'PASS_ACTUAL_PRODUCTION_BINDING_SCREEN_LIFECYCLE'
+} catch (error) {
+  let detail = String(error?.stack ?? error); for (const value of [...issued, cfg.livekit_key, cfg.livekit_secret, ...Object.values(IDs)]) detail = detail.replaceAll(value, '[private]'); detail = detail.replace(/eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g, '[private-jwt]'); await save('controller-exception.private.json', { type: error?.name, code: error?.code, redacted_detail: detail.slice(0, 3000) });
+  result.status = 'FAIL_OR_ENVIRONMENT'; result.failed_stage = stage; result.error_type = error?.name ?? 'UnknownError'; result.safe_failure_label = error?.safeLabel ?? (/^QA_[A-Z_]+$/.test(error?.message ?? '') ? error.message : 'PRIVATE_BROWSER_FAILURE')
+  if (error?.lastSafeValue) result.last_safe_value = error.lastSafeValue
+} finally {
+  const cleanup = []
+  for (const role of ['A', 'B', 'viewer']) if (pages[role]) { try { await call(pages[role], role === 'viewer' ? 'viewer' : 'sender', 'stop'); cleanup.push({ role, stopped: true }) } catch { cleanup.push({ role, stopped: false }) } }
+  if (browser) await browser.close().catch(() => undefined)
+  if (vite) await vite.close().catch(() => undefined)
+  if (ownedRoom) { const rooms = await rpc.listRooms([IDs.room]); if (rooms.some(room => room.name !== IDs.room)) throw new Error('QA_ROOM_DELETE_AUTHORITY'); await rpc.deleteRoom(IDs.room); const remaining = await rpc.listRooms([IDs.room]); if (remaining.length) throw new Error('QA_OWN_ROOM_REMAINS'); result.own_room_removed = true }
+  result.final_SFU = await metrics(); result.finished_at_utc = new Date().toISOString(); result.records = rows; result.cleanup = cleanup; result.browser_errors = counts
+  await save('browser-result.json', result); await save('browser-runner.json', { ...result, records: undefined }); clearTimeout(deadline)
+}
+console.log(JSON.stringify({ status: result.status, failed_stage: result.failed_stage, safe_failure_label: result.safe_failure_label, browser_version: result.browser_version, records: rows.length, own_room_removed: result.own_room_removed })); process.exitCode = result.status.startsWith('PASS') ? 0 : 1

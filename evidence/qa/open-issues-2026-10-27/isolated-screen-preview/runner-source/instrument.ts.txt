@@ -1,0 +1,46 @@
+import { Room, RoomEvent, Track } from 'livekit-client'
+export class RoomProbe {
+  readonly events: Record<string, number> = {}
+  private held: Array<() => unknown> = []
+  private gateRole: string | null = null
+  private seen = new WeakSet<object>()
+  private tracks = new WeakSet<object>()
+  trueRequests = 0; falseRequests = 0; attaches = 0; detaches = 0; deliveredHeld = 0
+  constructor(readonly room: Room, readonly roles: Record<string, string>) {
+    const emit = room.emit.bind(room)
+    ;(room as any).emit = (event: string, ...args: any[]) => {
+      this.events[event] = (this.events[event] ?? 0) + 1
+      if (event === RoomEvent.TrackPublished) this.publication(args[0])
+      if (event === RoomEvent.TrackSubscribed) { this.publication(args[1]); this.track(args[0]) }
+      if (event === RoomEvent.TrackSubscribed && this.gateRole && this.role(args[2]?.identity) === this.gateRole) { this.held.push(() => emit(event as never, ...args)); return false }
+      return emit(event as never, ...args)
+    }
+  }
+  role(identity?: string) { return Object.entries(this.roles).find(([, value]) => value === identity)?.[0] ?? 'none' }
+  publication(publication: any) {
+    if (!publication || publication.source !== Track.Source.ScreenShare || this.seen.has(publication)) return
+    this.seen.add(publication); const original = publication.setSubscribed
+    publication.setSubscribed = (enabled: boolean) => { if (enabled) this.trueRequests++; else this.falseRequests++; return original.call(publication, enabled) }
+    if (publication.track) this.track(publication.track)
+  }
+  track(track: any) {
+    if (!track || this.tracks.has(track)) return
+    this.tracks.add(track); const attach = track.attach, detach = track.detach
+    track.attach = (...args: any[]) => { this.attaches++; return attach.apply(track, args) }
+    track.detach = (...args: any[]) => { this.detaches++; return detach.apply(track, args) }
+  }
+  gate(role: string | null) { this.gateRole = role }
+  release() { this.gateRole = null; const held = [...this.held]; this.held.length = 0; held.forEach(callback => { callback(); this.deliveredHeld++ }); return held.length }
+  snapshots() {
+    let desired = 0, subscribed = 0, attached = 0, discovered = 0
+    const byRole: Record<string, { desired: boolean; subscribed: boolean }> = {}
+    this.room.remoteParticipants.forEach(participant => {
+      const publication = participant.getTrackPublication(Track.Source.ScreenShare)
+      if (!publication) return
+      this.publication(publication); discovered++; desired += Number(publication.isDesired); subscribed += Number(publication.isSubscribed)
+      attached += publication.track?.attachedElements?.length ?? 0
+      byRole[this.role(participant.identity)] = { desired: publication.isDesired, subscribed: publication.isSubscribed }
+    })
+    return { desired, subscribed, attached, discovered, byRole, trueRequests: this.trueRequests, falseRequests: this.falseRequests, attaches: this.attaches, detaches: this.detaches, queuedActualEvents: this.held.length, deliveredHeld: this.deliveredHeld, events: { ...this.events } }
+  }
+}

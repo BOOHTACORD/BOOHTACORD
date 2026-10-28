@@ -1,0 +1,62 @@
+import { createRequire } from 'node:module'
+import { readFile, writeFile, mkdir } from 'node:fs/promises'
+import { createHash, randomUUID } from 'node:crypto'
+import path from 'node:path'
+import { fileURLToPath, pathToFileURL } from 'node:url'
+export const P = path.dirname(fileURLToPath(import.meta.url)), Q = path.resolve(P, '../..'), WEB = path.join(Q, 'clients/web')
+export const require = createRequire(path.join(WEB, 'package.json'))
+export const { chromium } = require('@playwright/test')
+export const { AccessToken, RoomServiceClient } = require('livekit-server-sdk')
+export const cfg = JSON.parse(await readFile(path.join(P, 'private/config.private.json'), 'utf8'))
+export const sha = raw => createHash('sha256').update(raw).digest('hex')
+export const save = (name, data) => writeFile(path.join(P, name), JSON.stringify(data, null, 2) + '\n', 'utf8')
+export const rpc = new RoomServiceClient(cfg.server_url, cfg.livekit_key, cfg.livekit_secret)
+export const IDs = { room: 'qa-preview-' + randomUUID(), A: 'qa-source-' + randomUUID(), B: 'qa-source-' + randomUUID(), viewer: 'qa-viewer-' + randomUUID() }
+export const issued = []
+export async function grant(role) { const token = new AccessToken(cfg.livekit_key, cfg.livekit_secret, { identity: IDs[role], ttl: '15m' }); token.addGrant({ roomJoin: true, room: IDs.room, canPublish: role !== 'viewer', canSubscribe: role === 'viewer', canPublishData: false }); const value = await token.toJwt(); issued.push(value); await save('private/issued.private.json', { IDs, issued }); return value }
+export async function startVite() {
+  const { createServer } = await import(pathToFileURL(require.resolve('vite')).href)
+  const manifest = require('./package.json')
+  const server = await createServer({ configFile: path.join(WEB, 'vite.config.ts'), root: WEB, cacheDir: path.join(P, 'private/vite-cache'),
+    resolve: { dedupe: [...Object.keys(manifest.dependencies), ...Object.keys(manifest.devDependencies)] },
+    server: { host: '127.0.0.1', port: 4807, strictPort: true, fs: { allow: [Q] } }, logLevel: 'silent' })
+  await server.listen(); return server
+}
+export const fixtureURL = 'http://127.0.0.1:4807/@fs/' + path.join(P, 'fixture.html').replaceAll('\\', '/')
+export async function call(page, target, method, ...args) {
+  const result = await page.evaluate(async a => { try { return { ok: true, value: await window.qaPreview[a.target][a.method](...a.args) } } catch (e) { return { ok: false, errorType: e?.name ?? 'UnknownError' } } }, { target, method, args })
+  if (!result.ok) throw Object.assign(new Error('QA_BROWSER_METHOD_FAILED'), { safeLabel: target + '.' + method, browserErrorType: result.errorType })
+  return result.value
+}
+export const snap = page => call(page, 'viewer', 'snapshot')
+export async function until(label, fn, predicate, timeout = 18000) {
+  const start = Date.now(); let value
+  while (Date.now() - start < timeout) { value = await fn(); if (predicate(value)) return value; await new Promise(resolve => setTimeout(resolve, 100)) }
+  throw Object.assign(new Error('QA_EXPECTATION_TIMEOUT'), { safeLabel: label, lastSafeValue: value })
+}
+let metricIndex = 0
+export async function metrics() {
+  const response = await fetch(cfg.metrics_url); if (!response.ok) throw new Error('QA_SFU_METRICS_HTTP')
+  const raw = await response.text(); if (raw.length > 4194304) throw new Error('QA_SFU_METRICS_BOUND')
+  await writeFile(path.join(P, 'private', 'metrics-' + (++metricIndex) + '.private.txt'), raw, 'utf8')
+  const types = new Map(), sums = new Map()
+  const allowed = new Set(['audio', 'video', 'screen_share', 'screen_share_audio', 'microphone', 'pub', 'sub', 'incoming', 'outgoing', 'success', 'failure', 'true', 'false', 'ok', 'error', 'subscribe', 'unsubscribe', 'published', 'unpublished'])
+  for (const line of raw.split('\n')) {
+    const type = /^# TYPE (\S+) (\S+)/.exec(line); if (type) { types.set(type[1], type[2]); continue }
+    const match = /^(livekit_\S+?)(?:\{([^}]*)\})?\s+([-+\deE.]+)(?:\s.*)?$/.exec(line)
+    if (!match || !/(track|participant_total|room_total)/.test(match[1]) || /_bucket$/.test(match[1])) continue
+    const roleLabels = {}
+    for (const pair of (match[2] ?? '').matchAll(/([a-z_]+)="([^"]*)"/g)) if (['kind', 'state', 'direction', 'type'].includes(pair[1]) && allowed.has(pair[2])) roleLabels[pair[1]] = pair[2]
+    const key = match[1] + '|' + JSON.stringify(roleLabels); const previous = sums.get(key)
+    sums.set(key, { name: match[1], type: types.get(match[1]) ?? 'unspecified', labels: roleLabels, value: (previous?.value ?? 0) + Number(match[3]) })
+  }
+  return { entries: [...sums.values()], raw_private_SHA256: sha(raw), raw_bytes: Buffer.byteLength(raw) }
+}
+export function activeVideo(metric) { const rows = metric.entries.filter(row => row.type === 'gauge' && /subscribed.*track|track.*subscribed/.test(row.name) && (!row.labels.kind || row.labels.kind === 'video')); return rows.length ? rows.reduce((sum, row) => sum + row.value, 0) : null }
+export async function guardNoForeignRooms() { const rooms = await rpc.listRooms(); if (rooms.length !== 0) throw new Error('QA_FOREIGN_ROOM_BASELINE'); return rooms.length }
+export async function sourceFingerprint() {
+  const names = ['livekit_room_factory.ts', 'livekit_screen_viewer_adapter.ts', 'livekit_screen_registry.ts', 'screen_viewer_controller.ts', 'screen_viewer_lifecycle.ts', 'screen_viewer_media_binding.ts', 'screen_viewer_subscription.ts', 'screen_track_attachment.ts', 'livekit_remote_voice_events.ts', 'screen_viewer_presence.ts', 'media_publishing.ts']
+  const sources = {}; for (const name of names) sources['clients/web/src/voice/' + name] = sha(await readFile(path.join(WEB, 'src/voice', name)))
+  for (const name of ['resources.ts', 'instrument.ts', 'viewer.ts', 'sender.ts', 'fixture.ts', 'fixture.html', 'support.mjs', 'scenario.mjs', 'run_profile.mjs']) sources['.out/qa-screen-preview/' + name] = sha(await readFile(path.join(P, name)))
+  return sources
+}

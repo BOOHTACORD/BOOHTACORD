@@ -1,0 +1,56 @@
+import { Room, Track, LogLevel, setLogLevel } from 'livekit-client'
+import { defaultLiveKitRoomFactory } from '/src/voice/livekit_room_factory'
+import { timerSnapshot } from './resources'
+import { RoomProbe } from './instrument'
+type State = { room: Room & { screenViewer: any }; probe: RoomProbe }
+export class ViewerHarness {
+  private current: State | null = null
+  private old: State[] = []
+  private video = document.querySelector<HTMLVideoElement>('#stage')!
+  private frameCallback: number | null = null
+  private frames = 0
+  private errors = 0
+  constructor() { window.addEventListener('error', () => { this.errors++ }); window.addEventListener('unhandledrejection', () => { this.errors++ }) }
+  async open(url: string, token: string, roles: Record<string, string>) {
+    if (this.current) throw new Error('QA_VIEWER_ALREADY_OPEN')
+    setLogLevel(LogLevel.silent)
+    const room = await defaultLiveKitRoomFactory() as unknown as State['room']
+    const probe = new RoomProbe(room, roles); this.current = { room, probe }
+    await room.connect(url, token, { autoSubscribe: true }) // Production wire must override this to false.
+    this.sampleFrames()
+  }
+  select(role: string | null) {
+    const s = this.require(), card = role === null ? null : s.room.screenViewer.cards().find((card: any) => card.participantId === s.probe.roles[role])
+    if (role && !card) throw new Error('QA_REQUESTED_CARD_NOT_DISCOVERED')
+    s.room.screenViewer.select(card?.id ?? null, this.video, null)
+  }
+  gate(role: string | null) { this.require().probe.gate(role) }
+  release() { return this.require().probe.release() }
+  releaseOld() { return this.old.reduce((sum, state) => sum + state.probe.release(), 0) }
+  async signalReconnect() { await this.require().room.simulateScenario('signal-reconnect') }
+  async disconnect() {
+    const s = this.require(); await s.room.disconnect(); this.old.push(s); this.current = null
+  }
+  snapshot() {
+    const s = this.current, cards = s?.room.screenViewer.cards() ?? []
+    const selected = cards.find((card: any) => card.id === s?.room.screenViewer.selectedId)
+    const stream = this.video.srcObject instanceof MediaStream ? this.video.srcObject : null
+    return { connected: s?.room.state === 'connected', selected: selected ? s!.probe.role(selected.participantId) : 'none', cards: cards.length,
+      subscriptionFailed: s?.room.screenViewer.subscriptionFailed ?? false, ended: s?.room.screenViewer.ended ?? false,
+      videoTracks: stream?.getVideoTracks().filter(track => track.readyState === 'live').length ?? 0, rendererElements: stream ? 1 : 0,
+      framesPresented: this.frames, videoWidth: this.video.videoWidth, videoHeight: this.video.videoHeight,
+      probe: s?.probe.snapshots() ?? null, oldQueuedActualEvents: this.old.reduce((sum, state) => sum + state.probe.snapshots().queuedActualEvents, 0),
+      timers: timerSnapshot(), scriptErrors: this.errors }
+  }
+  async stop() {
+    if (this.current) await this.disconnect()
+    if (this.frameCallback !== null) this.video.cancelVideoFrameCallback(this.frameCallback)
+    this.frameCallback = null
+    this.old.forEach(state => state.room.removeAllListeners()); this.old.length = 0
+  }
+  private require() { if (!this.current) throw new Error('QA_VIEWER_NOT_OPEN'); return this.current }
+  private sampleFrames() {
+    if (!this.video.requestVideoFrameCallback || this.frameCallback !== null) return
+    this.frameCallback = this.video.requestVideoFrameCallback(() => { this.frames++; this.frameCallback = null; this.sampleFrames() })
+  }
+}

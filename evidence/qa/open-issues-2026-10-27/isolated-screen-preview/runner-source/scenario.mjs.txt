@@ -1,0 +1,48 @@
+import { call, snap, until, metrics, activeVideo, IDs, grant } from './support.mjs'
+export async function scenario(pages, record) {
+  const { A, B, viewer } = pages
+  await call(A, 'sender', 'publish'); await call(B, 'sender', 'publish')
+  await until('discover_two_without_selection', () => snap(viewer), value => value.cards === 2)
+  await new Promise(resolve => setTimeout(resolve, 1200))
+  async function state(label, selected, subscribed, videoTracks, extra = {}) {
+    const view = await until(label, () => snap(viewer), value => value.selected === selected && (value.probe?.subscribed ?? 0) === subscribed && value.videoTracks === videoTracks)
+    if ((view.probe?.desired ?? 0) !== subscribed || view.timers.active.viewer || view.timers.active.preview) throw Object.assign(new Error('QA_RESOURCE_INVARIANT'), { safeLabel: label, lastSafeValue: view })
+    const observed = await metrics(); const serverActive = activeVideo(observed)
+    if (serverActive !== null && serverActive !== subscribed) await until(label + '_SFU', metrics, value => activeVideo(value) === subscribed)
+    const senders = await Promise.all([call(A, 'sender', 'snapshot'), call(B, 'sender', 'snapshot')])
+    if (senders.some(sender => sender.remoteScreenSubscriptions !== 0)) throw new Error('QA_PUBLISHER_UNEXPECTED_SUBSCRIPTION')
+    await record(label, { status: 'PASS', viewer: view, senders, SFU: await metrics(), SFU_active_video: activeVideo(await metrics()), ...extra }); return view
+  }
+  const idle = await state('two_sources_idle', 'none', 0, 0)
+  if (idle.probe.trueRequests !== 0 || idle.framesPresented !== 0) throw new Error('QA_UNSELECTED_TRACK_WAS_SUBSCRIBED_OR_PRESENTED')
+  await call(viewer, 'viewer', 'gate', 'A'); await call(viewer, 'viewer', 'select', 'A')
+  await until('capture_real_A_subscription_event', () => snap(viewer), value => value.probe.queuedActualEvents > 0 && value.probe.subscribed === 1)
+  await record('A_actual_event_held', { status: 'PASS', viewer: await snap(viewer), SFU: await metrics(), event_shaping: 'Actual SDK TrackSubscribed held before consumer delivery; no network or SDK publication mock' })
+  await call(viewer, 'viewer', 'select', 'B'); await state('select_B_while_A_event_held', 'B', 1, 1)
+  await until('B_real_frames_presented', () => snap(viewer), value => value.framesPresented > 0 && value.videoWidth > 0)
+  const before = await snap(viewer); const released = await call(viewer, 'viewer', 'release'); const after = await state('late_A_delivered_after_B', 'B', 1, 1, { actual_delayed_events_delivered: released })
+  if (released < 1 || after.probe.attaches !== before.probe.attaches || after.subscriptionFailed) throw new Error('QA_LATE_EVENT_CHANGED_SELECTED_RENDERER')
+  const requests = after.probe.trueRequests; for (let i = 0; i < 25; i++) await call(viewer, 'viewer', 'select', 'B')
+  const repeated = await state('B_reselected_25_times', 'B', 1, 1); if (repeated.probe.trueRequests !== requests) throw new Error('QA_RESELECT_RESUBSCRIBED')
+  await call(viewer, 'viewer', 'select', null); await state('unselect_all', 'none', 0, 0)
+  await call(viewer, 'viewer', 'select', 'A'); await state('select_A', 'A', 1, 1)
+  await call(A, 'sender', 'unpublish'); await until('selected_A_removed', () => snap(viewer), value => value.cards === 1); await state('selected_A_unpublished', 'none', 0, 0)
+  await call(A, 'sender', 'publish'); await until('A_republished', () => snap(viewer), value => value.cards === 2); await state('A_republished_requires_selection', 'none', 0, 0)
+  await call(viewer, 'viewer', 'select', 'B'); await state('B_selected_for_unselected_unpublish', 'B', 1, 1)
+  await call(A, 'sender', 'unpublish'); await until('unselected_A_removed', () => snap(viewer), value => value.cards === 1); await state('unselected_A_unpublished_B_unchanged', 'B', 1, 1)
+  await call(A, 'sender', 'publish'); await until('A_returns', () => snap(viewer), value => value.cards === 2); await state('unselected_A_returns_B_unchanged', 'B', 1, 1)
+  await call(viewer, 'viewer', 'signalReconnect'); await until('signal_reconnected', () => snap(viewer), value => value.connected && (value.probe.events.signalReconnecting ?? value.probe.events.reconnecting ?? 0) > 0, 30000); await state('SDK_signal_reconnect_B_retained', 'B', 1, 1)
+  await call(viewer, 'viewer', 'select', null); await state('before_full_disconnect', 'none', 0, 0)
+  await call(viewer, 'viewer', 'gate', 'A'); await call(viewer, 'viewer', 'select', 'A'); await until('second_actual_A_event_held', () => snap(viewer), value => value.probe.queuedActualEvents > 0)
+  await call(viewer, 'viewer', 'disconnect'); await until('disconnect_subscriptions_drained', metrics, value => activeVideo(value) === 0 || activeVideo(value) === null)
+  await record('viewer_disconnected', { status: 'PASS', viewer: await snap(viewer), SFU: await metrics() })
+  await call(viewer, 'viewer', 'open', pages.signalURL, await grant('viewer'), { A: IDs.A, B: IDs.B })
+  await until('viewer_fresh_connection_discovery', () => snap(viewer), value => value.connected && value.cards === 2); await state('fresh_connection_no_implicit_selection', 'none', 0, 0)
+  await call(viewer, 'viewer', 'select', 'B'); const fresh = await state('fresh_connection_select_B', 'B', 1, 1)
+  const oldReleased = await call(viewer, 'viewer', 'releaseOld'); const stable = await state('old_connection_late_event_ignored', 'B', 1, 1, { old_actual_events_delivered: oldReleased })
+  if (oldReleased < 1 || stable.probe.attaches !== fresh.probe.attaches) throw new Error('QA_OLD_CONNECTION_CHANGED_RENDERER')
+  for (let cycle = 0; cycle < 3; cycle++) { await call(viewer, 'viewer', 'select', null); await state('cycle_' + cycle + '_none', 'none', 0, 0); await call(viewer, 'viewer', 'select', cycle % 2 ? 'B' : 'A'); await state('cycle_' + cycle + '_selected', cycle % 2 ? 'B' : 'A', 1, 1) }
+  await call(viewer, 'viewer', 'select', null); await state('final_unselected', 'none', 0, 0)
+  await Promise.all([call(A, 'sender', 'unpublish'), call(B, 'sender', 'unpublish')]); await until('all_publications_removed', () => snap(viewer), value => value.cards === 0); await state('all_unpublished', 'none', 0, 0)
+  await Promise.all([call(A, 'sender', 'stop'), call(B, 'sender', 'stop'), call(viewer, 'viewer', 'stop')]); await record('all_clients_stopped', { status: 'PASS', viewer: await snap(viewer), SFU: await metrics() })
+}

@@ -299,3 +299,7 @@ The requested [production URL readiness](production-origin-readiness/result.json
 ## Trusted-source header differential, 2026-10-28
 
 [I240.C6 evidence](isolated-proxy-source/README.md) records a conditional repeated-XFF defect for canonical138:5/100 primary case failures and3/18 literal-wire failures, while default Caddy/untrusted-peer controls pass30/30. Equivalent combined field chains retain429; separate fields reach malformed-parser400. Three focused native regressions fail3 repeats each;19 original/config controls pass with zero skips. All DB/config/source and nine services remain unchanged; two own peers were removed. QA240 stays FAIL with134/137/138. Actual runtime bridge permits outbound access; API/admin remain unpublished and host ports loopback. No consolidation decision is applied.
+
+## Production screen binding / actual SDK-SFU lifecycle, 2026-10-28
+
+[I240.C8 evidence](isolated-screen-preview/README.md) passes27 real production-factory/SDK/SFU stages: unselected0/selected1 subscription and renderer, selected/unselected unpublish, signal reconnect, new factory and delayed actual old callbacks.36 nearest native tests pass with zero skips. A served registry mutation produces2 unselected SFU subscriptions and is killed; original source stays unchanged. Own rooms/bridge are removed, original9 services remain healthy/private. This source-module headless integration does not close physical/native/production UI or Go lease/auth gates. QA240 remains FAIL on134/137/138;43 consolidation decisions stay untouched.

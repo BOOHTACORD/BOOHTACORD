@@ -1,0 +1,28 @@
+{
+  "at_utc": "2026-10-28T02:08:05.969231+00:00",
+  "status": "PASS_I240_C8_SOURCE_SDK_SFU_LIFECYCLE",
+  "criterion": "I240.C8",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "production_touched": false,
+  "protects": "No incoming screen-video subscription before explicit selection, one selected SFU subscription/renderer, generation-safe late events, cleanup across publication and connection lifecycle",
+  "command": "python -X utf8 .out/qa-screen-preview/start_bridge.py; node .out/qa-screen-preview/run_profile.mjs",
+  "additional_commands": "node .out/qa-screen-preview/run_mutation.mjs; node .out/qa-screen-preview/verify_runtime.mjs; python -X utf8 .out/qa-screen-preview/verify_after.py",
+  "platform": "Windows11/Node24.18.0, actual headlessChromium153.0.8010.12, livekit-client2.22.3, own Docker LiveKit1.13.7",
+  "mandatory_when": "Before accepting exact I240.C8 source/SDK/SFU subscription-lifecycle criterion",
+  "runtime_audit": "runtime-audit.json",
+  "scenario_stages": 27,
+  "native_tests": {
+    "test_files": 5,
+    "passed": 36,
+    "skips": 0
+  },
+  "counterexample": "mutation-result.json: served registry copy subscribes unselected video; real SFU gauge2 with no selection, original zero-subscription check rejects; source file unchanged",
+  "initial_SFU_gauge_limit": "Child-series absent before first subscription; actual unchanged subscribe counter proves no transient subscriptions, later fresh viewer with two publications sees initialized gauge0 directly",
+  "cleanup": "environment-after.json: own rooms/participants/published/subscribed0, own bridge removed, Vite ports closed, original9 services/restart0",
+  "database_limit": "Counts equal last prior-packet attestation; no fresh SQL pre-snapshot and no Go API auth/lease acceptance asserted",
+  "grant_lifetime": "SDK-grant-lifetime.json: stateless temporary grants expire naturally; no explicit JWT revocation claim",
+  "first_attempt": "attempt1: setup-only package subpath export error,0 stages and own room removed; version-probe records exact code",
+  "limits": "Headless Chromium153/real pinned SDK and existing owned SFU;2 synthetic640x360 sources at requested15fps, no physical FPS/acoustic/capacity/native/UI-picker/production acceptance. Direct SDK grants with supported generic identities; Go-auth/voice-lease presence paths separate. Actual SDK events held/replayed at consumer boundary, not naturally delayed network packets. No screenshots, video, frame payloads, SDP, candidate data, IDs or credentials exported.",
+  "parent240_remains_FAIL": true,
+  "original43_consolidation_decisions_applied": false
+}

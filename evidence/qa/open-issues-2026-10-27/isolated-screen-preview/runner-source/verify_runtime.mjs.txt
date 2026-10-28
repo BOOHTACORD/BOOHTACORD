@@ -1,0 +1,32 @@
+import { createRequire } from 'node:module'
+import { readFile, writeFile } from 'node:fs/promises'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+const P = path.dirname(fileURLToPath(import.meta.url)), Q = path.resolve(P, '../..'), require = createRequire(path.join(Q, 'clients/web/package.json'))
+const { RoomServiceClient } = require('livekit-server-sdk'), cfg = JSON.parse(await readFile(path.join(P, 'private/config.private.json')))
+const read = async name => JSON.parse(await readFile(path.join(P, name), 'utf8'))
+const primary = await read('browser-result.json'), mutant = await read('mutation-result.json'), native = await read('focused-vitest.private.json')
+if (primary.status !== 'PASS_ACTUAL_PRODUCTION_BINDING_SCREEN_LIFECYCLE' || primary.records.length !== 27 || !primary.own_room_removed || primary.cleanup.some(x => !x.stopped)) throw new Error('QA_PRIMARY_VERDICT')
+if (primary.browser_errors.browser_page_errors || primary.browser_errors.browser_console_errors || primary.records.some(x => x.viewer?.scriptErrors)) throw new Error('QA_BROWSER_ERRORS')
+if (mutant.status !== 'MUTATION_KILLED_BACKGROUND_SUBSCRIPTIONS' || mutant.observed_SFU.active !== 2 || !mutant.original_source_unchanged || !mutant.own_room_removed || mutant.cleanup.some(x => !x.stopped)) throw new Error('QA_MUTATION_VERDICT')
+if (!native.success || native.numTotalTests !== 36 || native.numPassedTests !== 36 || native.numFailedTests || native.numPendingTests) throw new Error('QA_NATIVE_VERDICT')
+const state = name => { const s = primary.records.find(x => x.label === name); if (!s) throw new Error('QA_MISSING_STATE'); return s }
+const rows = ['two_sources_idle', 'late_A_delivered_after_B', 'selected_A_unpublished', 'unselected_A_unpublished_B_unchanged', 'SDK_signal_reconnect_B_retained', 'fresh_connection_no_implicit_selection', 'old_connection_late_event_ignored', 'all_unpublished', 'all_clients_stopped'].map(label => state(label))
+if (state('two_sources_idle').viewer.probe.trueRequests || state('two_sources_idle').viewer.probe.subscribed || state('two_sources_idle').viewer.framesPresented) throw new Error('QA_INITIAL_NO_SELECTION')
+const sum = (m, name, condition = () => true) => m.entries.filter(x => x.name === name && condition(x)).reduce((n, x) => n + x.value, 0)
+const initial = await read('SFU-baseline.json'), idle = state('two_sources_idle').SFU
+if (sum(idle, 'livekit_track_subscribe_counter') !== sum(initial, 'livekit_track_subscribe_counter')) throw new Error('QA_PRESELECT_TRANSIENT_SUBSCRIPTIONS')
+const fresh = state('fresh_connection_no_implicit_selection'); if (fresh.SFU_active_video !== 0 || fresh.viewer.cards !== 2 || fresh.viewer.probe.trueRequests !== 0) throw new Error('QA_FRESH_CONNECTION_SFU_ZERO')
+for (const row of primary.records) if (row.viewer && (row.viewer.timers.active.viewer || row.viewer.timers.active.preview || row.viewer.timers.active.presence)) throw new Error('QA_SETTLED_CONSUMER_TIMERS')
+const rpc = new RoomServiceClient(cfg.server_url, cfg.livekit_key, cfg.livekit_secret), issued = [await read('private/issued.private.json'), await read('private/issued-mutation.private.json')]
+for (const own of issued) if ((await rpc.listRooms([own.IDs.room])).length) throw new Error('QA_OWN_ROOM_REMAINS')
+if ((await rpc.listRooms()).length) throw new Error('QA_SFU_NOT_EMPTY_AFTER')
+const response = await fetch(cfg.metrics_url); if (!response.ok) throw new Error('QA_FINAL_METRICS_HTTP'); const raw = await response.text(); await writeFile(path.join(P, 'private/after-metrics.private.txt'), raw)
+const gauges = {}; for (const name of ['livekit_participant_total', 'livekit_room_total', 'livekit_track_published_total', 'livekit_track_subscribed_total']) { gauges[name] = 0; for (const line of raw.split('\n')) if (new RegExp('^' + name + '(?:\\{|\\s)').test(line)) gauges[name] += Number(line.trim().split(/\s+/).at(-1)); if (gauges[name] !== 0) throw new Error('QA_FINAL_SFU_RESOURCES') }
+const d = { at_utc: new Date().toISOString(), status: 'PASS_SEMANTIC_SFU_AND_MUTATION_RUNTIME_AUDIT', source_revision: cfg.source_revision, source_binding_cases: primary.records.length, original_native_tests: 36, original_native_skips: 0,
+  initially_unselected_SDK_subscriptions: 0, initial_SFU_subscribe_counter_delta: 0, fresh_connection_two_sources_SFU_active: 0, selected_settled_SFU_active: 1, selected_settled_renderer_elements: 1,
+  late_actual_event_delivery_scenarios: 2, automatic_signal_reconnect_observed: true, explicit_disconnect_fresh_factory_observed: true, select_unselect_cycles: 3, same_publication_reselects: 25,
+  final_SFU_gauges: gauges, own_rooms_remaining: 0, transient_timer_attribution_peaks: state('all_clients_stopped').viewer.timers.peak, settled_consumer_timers: { viewer: 0, preview: 0, presence: 0 },
+  mutation: { detected: true, actual_unselected_SFU_subscriptions: 2, original_source_unchanged: true, method: 'Single Vite-served registry statement changed; no file edit' },
+  limitations: ['Headless Chromium source-module integration, not packaged/native/physical/production UI acceptance', 'Direct owned SFU principal grants; Go auth and voice-lease presence paths not tested', 'Initial absent SFU active child-series is supported by unchanged server subscribe counter; fresh viewer later observes initialized gauge0 directly', 'Other SDK/harness timers are not classified as preview queue timers; no worst-case latency, capacity, FPS or acoustic claim'] }
+await writeFile(path.join(P, 'runtime-audit.json'), JSON.stringify(d, null, 2) + '\n'); console.log(JSON.stringify(d))

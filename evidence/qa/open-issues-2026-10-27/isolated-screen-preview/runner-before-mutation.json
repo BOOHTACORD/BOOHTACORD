@@ -1,0 +1,12 @@
+{
+  "at_utc": "2026-10-28T02:01:41.880Z",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "production_source_original_SHA256": "dee99e6e7e032335571446660b1cc84781cdb19e0c4047d0c3689af1e3cfd678",
+  "served_mutated_copy_SHA256": "9e015b63db561863228b0c16f32de463f068114023d6a6750a91783395ba9e18",
+  "mutation_from": "if (stream.video.isDesired !== false) stream.video.setSubscribed?.(false)",
+  "mutation_to": "stream.video.setSubscribed?.(true)",
+  "no_disk_source_edit": true,
+  "files_SHA256": {
+    "run_mutation.mjs": "93a84acea1d75dce4cd320b3aa3d79f5e91ae67286828be6dc1e5b13b031c2e2"
+  }
+}
