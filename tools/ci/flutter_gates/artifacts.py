@@ -3,7 +3,7 @@ import hashlib
 import json
 import re
 from tools.build.android.signature import APPLICATION
-
+from .recent_bug_visuals import VISUALS as RECENT_BUG_VISUALS
 VISUALS = (
     'R14-navigation-top.png', 'maintenance-banner-safe-area-390x800.png',
     'flutter-screen-audience-viewer-strip-1024x92@2x.png',
@@ -64,7 +64,7 @@ VISUALS += tuple(
     f'support-{width}-text{scale}.png'
     for width in (320, 393, 1440) for scale in (1.0, 2.0)
 ) + ('support-320-text2-ime.png',) + tuple(f'notification-settings-{width}-{scale}-{position}.png'
-    for width, scale in ((393, 1), (393, 2), (1440, 1)) for position in ('top', 'bottom'))
+    for width, scale in ((393, 1), (393, 2), (1440, 1)) for position in ('top', 'bottom')) + RECENT_BUG_VISUALS
 
 
 def regular(path, maximum):
