@@ -39,9 +39,8 @@ public final class TextureFrameRefresh {
             started = System.nanoTime();
             timestamps.reset();
             running = true;
-            refresh.start();
             // Android 14+ reports visibility. Never refresh before that confirmation.
-            refresh.setVisible(Build.VERSION.SDK_INT < 34);
+            refresh.start(Build.VERSION.SDK_INT >= 34);
         });
     }
 

@@ -67,4 +67,17 @@ public class StationaryFrameRefreshTest {
         stale.run(); assertSame(current, h.pending); assertEquals(0, h.requests);
         h.tick(); assertEquals(1, h.requests);
     }
+
+    @Test public void firstVisibilityConfirmationCanFollowTheFirstSourceFrame() {
+        Harness h = new Harness(); h.refresh.start(true); h.refresh.frameArrived();
+        assertNull(h.pending); // Do not repeat before visibility is confirmed.
+        h.refresh.setVisible(true); h.tick(); assertEquals(1, h.requests);
+    }
+
+    @Test public void firstHiddenNotificationInvalidatesTheUnconfirmedImage() {
+        Harness h = new Harness(); h.refresh.start(true); h.refresh.frameArrived();
+        h.refresh.setVisible(false); h.refresh.setVisible(true);
+        assertNull(h.pending);
+        h.refresh.frameArrived(); h.tick(); assertEquals(1, h.requests);
+    }
 }

@@ -11,7 +11,7 @@ EXPECTED = {
         'com.cloudwebrtc.webrtc.ScreenCaptureConstraintsTest': 3,
         'com.cloudwebrtc.webrtc.ScreenCaptureDimensionsTest': 6,
         'com.cloudwebrtc.webrtc.ScreenCaptureFrameRateGateTest': 3,
-        'com.cloudwebrtc.webrtc.screen.refresh.StationaryFrameRefreshTest': 6,
+        'com.cloudwebrtc.webrtc.screen.refresh.StationaryFrameRefreshTest': 8,
         'com.cloudwebrtc.webrtc.screen.refresh.FrameTimestampTest': 2,
         'com.cloudwebrtc.webrtc.SurfaceProducerAvailabilityTest': 1,
         'com.cloudwebrtc.webrtc.SurfaceReleaseBarrierTest': 3,

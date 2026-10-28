@@ -10,7 +10,9 @@ final class StationaryFrameRefresh {
     private final Scheduler scheduler;
     private final Clock clock;
     private final Runnable requestFrame;
-    private boolean running, visible, hasFrame;
+    private enum Visibility { UNKNOWN, VISIBLE, HIDDEN }
+    private boolean running, hasFrame;
+    private Visibility visibility;
     private long lastSourceFrameAt;
     private Runnable scheduled;
 
@@ -20,24 +22,27 @@ final class StationaryFrameRefresh {
         this.requestFrame = requestFrame;
     }
 
-    void start() {
+    void start() { start(false); }
+
+    void start(boolean awaitVisibility) {
         stop();
         running = true;
-        visible = true;
+        visibility = awaitVisibility ? Visibility.UNKNOWN : Visibility.VISIBLE;
     }
 
     void frameArrived() {
-        if (!running || !visible) return;
+        if (!running || visibility == Visibility.HIDDEN) return;
         hasFrame = true;
         lastSourceFrameAt = clock.millis();
         arm();
     }
 
     void setVisible(boolean value) {
-        if (visible == value) return;
-        visible = value;
-        hasFrame = false;
-        cancel();
+        Visibility next = value ? Visibility.VISIBLE : Visibility.HIDDEN;
+        if (visibility == next) return;
+        if (visibility != Visibility.UNKNOWN || !value) hasFrame = false;
+        visibility = next;
+        if (value) arm(); else cancel();
     }
 
     void stop() {
@@ -52,12 +57,12 @@ final class StationaryFrameRefresh {
     }
 
     private void arm() {
-        if (scheduled != null || !running || !visible || !hasFrame) return;
+        if (scheduled != null || !running || visibility != Visibility.VISIBLE || !hasFrame) return;
         scheduled = new Runnable() {
             @Override public void run() {
                 if (scheduled != this) return; // Includes a stopped/restarted generation.
                 scheduled = null;
-                if (!running || !visible || !hasFrame) return;
+                if (!running || visibility != Visibility.VISIBLE || !hasFrame) return;
                 if (clock.millis() - lastSourceFrameAt >= 1000) requestFrame.run();
                 arm();
             }
