@@ -1,0 +1,2406 @@
+{
+  "status": "PASS_SPECIFIC_SAMSUNG_SCENARIO",
+  "candidate": {
+    "source_revision": "b7f1c3ad438201c0461ed4858d97df6917815ceb",
+    "version": "1.0.47+82",
+    "version_code": 2082,
+    "apk_sha256": "c2a5489368980a66dedd291c2899ed946a86aa400c2229bcc43ba1363029bd8b",
+    "signing_certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+    "source_dirty": false,
+    "workflow_run": 40771321004,
+    "installed_apk_hash_verified_before_cycles": true,
+    "installed_apk_hash_verified_after_cycles": true
+  },
+  "browser": "155.0.8059.85",
+  "receiver_sources": [
+    "4511c532743e209529db3dd8984f7542e0baa866",
+    "4511c532743e209529db3dd8984f7542e0baa866"
+  ],
+  "backend_source": "UNKNOWN",
+  "device": "Samsung SM-A576B / Android 16",
+  "source": "public Settings Display, app-only",
+  "synthetic_media": false,
+  "video_or_audio_recording": false,
+  "still_frame_screenshots_only": true,
+  "cross_device_clock_subtraction": false,
+  "receiver_poll_interval_ms": 200,
+  "timing_scope": "Phone log-clock capture-to-first-positive-encoder-sample; each browser own performance clock for watch-to-observed RTP/decode/presentation. Observations are sampling bounds, not calibrated latency or an SLO.",
+  "source_fps": "UNKNOWN; unique SurfaceTexture timestamps are callback counters, not a calibrated source FPS",
+  "generic_local_feature_runner": "BLOCKED on Windows; dedicated physical scenario is separate",
+  "cycles": [
+    {
+      "sequence": 1,
+      "picker": {
+        "sequence": 1,
+        "app_only_selected": true,
+        "settings_app_selected": true,
+        "display_title_observed": true,
+        "picker_wait_device_s": 8,
+        "projection": {
+          "projection_package_present": true,
+          "screen_fgs": true,
+          "mic_fgs": true,
+          "fgs_types": [
+            "0x80",
+            "0x20"
+          ]
+        }
+      },
+      "first_frame_status": "PASS_WITHOUT_SOURCE_MOTION",
+      "first_frame_receivers": [
+        {
+          "role": "b",
+          "stats": {
+            "at_utc": "2026-10-28T21:47:48.355Z",
+            "browser_monotonic_ms": 818432.400000006,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224068354.807,
+                "bytesReceived": 14672,
+                "packetsReceived": 13,
+                "packetsLost": 0,
+                "framesDecoded": 1,
+                "framesDropped": 0,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0,
+                "totalDecodeTime": 0.0023109999999999997,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 818206.1,
+                  "presentedFrames": 1,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 0,
+                  "expectedDisplayTime": 818210.3
+                },
+                "quality": {
+                  "totalVideoFrames": 1,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        },
+        {
+          "role": "c",
+          "stats": {
+            "at_utc": "2026-10-28T21:47:48.356Z",
+            "browser_monotonic_ms": 815906.599999994,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224068326.082,
+                "bytesReceived": 14672,
+                "packetsReceived": 13,
+                "packetsLost": 0,
+                "framesDecoded": 1,
+                "framesDropped": 0,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0,
+                "totalDecodeTime": 0.002241,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 815678.9,
+                  "presentedFrames": 1,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 0,
+                  "expectedDisplayTime": 815681.7
+                },
+                "quality": {
+                  "totalVideoFrames": 1,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        }
+      ],
+      "receiver_timings_from_watch": [
+        {
+          "rtp_observed_ms": 914.4,
+          "decode_observed_ms": 1350.7,
+          "presentation_observed_ms": 1350.7
+        },
+        {
+          "rtp_observed_ms": 887.4,
+          "decode_observed_ms": 1323.8,
+          "presentation_observed_ms": 1323.8
+        }
+      ],
+      "phone_source_to_first_positive_encoder_sample_ms": 3053.0,
+      "capture_events": [
+        {
+          "device_log_epoch_s": 1793224064.201,
+          "event": "projection_capture_started display=ready"
+        },
+        {
+          "device_log_epoch_s": 1793224064.218,
+          "event": "source_first",
+          "elapsed_ms": 42,
+          "captured_frames": 1,
+          "source_frames": 1,
+          "forwarded_frames": 0,
+          "refresh_requests": 0
+        },
+        {
+          "device_log_epoch_s": 1793224064.22,
+          "event": "forward_first",
+          "elapsed_ms": 44,
+          "captured_frames": 1,
+          "source_frames": 1,
+          "forwarded_frames": 1,
+          "refresh_requests": 0
+        },
+        {
+          "device_log_epoch_s": 1793224064.242,
+          "event": "projection_content_visibility=visible"
+        },
+        {
+          "device_log_epoch_s": 1793224066.245,
+          "event": "refresh_requested",
+          "elapsed_ms": 2069,
+          "captured_frames": 51,
+          "source_frames": 51,
+          "forwarded_frames": 8,
+          "refresh_requests": 1
+        },
+        {
+          "device_log_epoch_s": 1793224067.248,
+          "event": "refresh_requested",
+          "elapsed_ms": 3072,
+          "captured_frames": 52,
+          "source_frames": 51,
+          "forwarded_frames": 9,
+          "refresh_requests": 2
+        },
+        {
+          "device_log_epoch_s": 1793224069.25,
+          "event": "refresh_requested",
+          "elapsed_ms": 5074,
+          "captured_frames": 54,
+          "source_frames": 51,
+          "forwarded_frames": 11,
+          "refresh_requests": 4
+        },
+        {
+          "device_log_epoch_s": 1793224073.259,
+          "event": "refresh_requested",
+          "elapsed_ms": 9083,
+          "captured_frames": 58,
+          "source_frames": 51,
+          "forwarded_frames": 15,
+          "refresh_requests": 8
+        },
+        {
+          "device_log_epoch_s": 1793224081.271,
+          "event": "refresh_requested",
+          "elapsed_ms": 17095,
+          "captured_frames": 66,
+          "source_frames": 51,
+          "forwarded_frames": 23,
+          "refresh_requests": 16
+        },
+        {
+          "device_log_epoch_s": 1793224081.409,
+          "event": "projection_content_visibility=hidden"
+        },
+        {
+          "device_log_epoch_s": 1793224087.494,
+          "event": "projection_app_stop"
+        },
+        {
+          "device_log_epoch_s": 1793224087.495,
+          "event": "stopped",
+          "elapsed_ms": 23319,
+          "captured_frames": 68,
+          "source_frames": 52,
+          "forwarded_frames": 25,
+          "refresh_requests": 16
+        }
+      ],
+      "first_encoder_sample": {
+        "device_log_epoch_s": 1793224067.271,
+        "event": "sender_stats_sampled",
+        "platform": "android",
+        "frames_sent": 5,
+        "sender_stats_entries": 10,
+        "bytes_sent": 36281
+      },
+      "stable_receivers": [
+        {
+          "role": "b",
+          "stats": {
+            "at_utc": "2026-10-28T21:47:59.943Z",
+            "browser_monotonic_ms": 830020.7999999821,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224079943.171,
+                "bytesReceived": 71330,
+                "packetsReceived": 66,
+                "packetsLost": 0,
+                "framesDecoded": 13,
+                "framesDropped": 0,
+                "framesPerSecond": 1,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0.015,
+                "totalDecodeTime": 0.016847,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 829925.6,
+                  "presentedFrames": 13,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 11.583,
+                  "expectedDisplayTime": 829933.9
+                },
+                "quality": {
+                  "totalVideoFrames": 13,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        },
+        {
+          "role": "c",
+          "stats": {
+            "at_utc": "2026-10-28T21:47:59.945Z",
+            "browser_monotonic_ms": 827495.599999994,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224079945.042,
+                "bytesReceived": 71330,
+                "packetsReceived": 66,
+                "packetsLost": 0,
+                "framesDecoded": 13,
+                "framesDropped": 0,
+                "framesPerSecond": 1,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0.015,
+                "totalDecodeTime": 0.015856,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 826372.6,
+                  "presentedFrames": 12,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 10.62,
+                  "expectedDisplayTime": 826380.9
+                },
+                "quality": {
+                  "totalVideoFrames": 13,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        }
+      ],
+      "stop": {
+        "at_utc": "2026-10-28T21:48:10.279967+00:00",
+        "permission": {
+          "granted": true,
+          "flags": [
+            "USER_SET",
+            "USER_SENSITIVE_WHEN_GRANTED",
+            "USER_SENSITIVE_WHEN_DENIED"
+          ]
+        },
+        "microphone_fgs": true,
+        "voice_connected": true,
+        "muted_control": false,
+        "app_hierarchy_present": true,
+        "system_permission_prompt": false,
+        "navigation_available": true,
+        "login_fields": false,
+        "projection_package_present": false,
+        "screen_fgs": false,
+        "mic_fgs": true,
+        "fgs_types": [
+          "0x80"
+        ],
+        "SHARE_TEST_visible": true,
+        "unknown_draft": false
+      }
+    },
+    {
+      "sequence": 3,
+      "picker": {
+        "sequence": 3,
+        "app_only_selected": true,
+        "settings_app_selected": true,
+        "display_title_observed": true,
+        "picker_wait_device_s": 153,
+        "projection": {
+          "projection_package_present": true,
+          "screen_fgs": true,
+          "mic_fgs": true,
+          "fgs_types": [
+            "0x80",
+            "0x20"
+          ]
+        }
+      },
+      "first_frame_status": "PASS_WITHOUT_SOURCE_MOTION",
+      "first_frame_receivers": [
+        {
+          "role": "b",
+          "stats": {
+            "at_utc": "2026-10-28T21:51:40.597Z",
+            "browser_monotonic_ms": 1050675,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224300597.351,
+                "bytesReceived": 14921,
+                "packetsReceived": 13,
+                "packetsLost": -3,
+                "framesDecoded": 1,
+                "framesDropped": 0,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0,
+                "totalDecodeTime": 0.002248,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1050578.6,
+                  "presentedFrames": 1,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 232.372,
+                  "expectedDisplayTime": 1050582.9
+                },
+                "quality": {
+                  "totalVideoFrames": 1,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        },
+        {
+          "role": "c",
+          "stats": {
+            "at_utc": "2026-10-28T21:51:40.601Z",
+            "browser_monotonic_ms": 1048151.1999999881,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224300600.657,
+                "bytesReceived": 14921,
+                "packetsReceived": 13,
+                "packetsLost": 0,
+                "framesDecoded": 1,
+                "framesDropped": 0,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0,
+                "totalDecodeTime": 0.002228,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1048051.5,
+                  "presentedFrames": 1,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 232.376,
+                  "expectedDisplayTime": 1048058
+                },
+                "quality": {
+                  "totalVideoFrames": 1,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        }
+      ],
+      "receiver_timings_from_watch": [
+        {
+          "rtp_observed_ms": 918.0,
+          "decode_observed_ms": 918.0,
+          "presentation_observed_ms": 918.0
+        },
+        {
+          "rtp_observed_ms": 894.9,
+          "decode_observed_ms": 894.9,
+          "presentation_observed_ms": 894.9
+        }
+      ],
+      "phone_source_to_first_positive_encoder_sample_ms": 3048.0,
+      "capture_events": [
+        {
+          "device_log_epoch_s": 1793224296.903,
+          "event": "projection_capture_started display=ready"
+        },
+        {
+          "device_log_epoch_s": 1793224296.927,
+          "event": "source_first",
+          "elapsed_ms": 49,
+          "captured_frames": 1,
+          "source_frames": 1,
+          "forwarded_frames": 0,
+          "refresh_requests": 0
+        },
+        {
+          "device_log_epoch_s": 1793224296.929,
+          "event": "forward_first",
+          "elapsed_ms": 50,
+          "captured_frames": 1,
+          "source_frames": 1,
+          "forwarded_frames": 1,
+          "refresh_requests": 0
+        },
+        {
+          "device_log_epoch_s": 1793224296.954,
+          "event": "projection_content_visibility=visible"
+        },
+        {
+          "device_log_epoch_s": 1793224298.957,
+          "event": "refresh_requested",
+          "elapsed_ms": 2079,
+          "captured_frames": 65,
+          "source_frames": 65,
+          "forwarded_frames": 9,
+          "refresh_requests": 1
+        },
+        {
+          "device_log_epoch_s": 1793224299.959,
+          "event": "refresh_requested",
+          "elapsed_ms": 3080,
+          "captured_frames": 66,
+          "source_frames": 65,
+          "forwarded_frames": 10,
+          "refresh_requests": 2
+        },
+        {
+          "device_log_epoch_s": 1793224301.963,
+          "event": "refresh_requested",
+          "elapsed_ms": 5085,
+          "captured_frames": 68,
+          "source_frames": 65,
+          "forwarded_frames": 12,
+          "refresh_requests": 4
+        },
+        {
+          "device_log_epoch_s": 1793224305.971,
+          "event": "refresh_requested",
+          "elapsed_ms": 9092,
+          "captured_frames": 72,
+          "source_frames": 65,
+          "forwarded_frames": 16,
+          "refresh_requests": 8
+        },
+        {
+          "device_log_epoch_s": 1793224313.702,
+          "event": "projection_content_visibility=hidden"
+        },
+        {
+          "device_log_epoch_s": 1793224319.193,
+          "event": "projection_app_stop"
+        },
+        {
+          "device_log_epoch_s": 1793224319.194,
+          "event": "stopped",
+          "elapsed_ms": 22315,
+          "captured_frames": 81,
+          "source_frames": 66,
+          "forwarded_frames": 25,
+          "refresh_requests": 15
+        }
+      ],
+      "first_encoder_sample": {
+        "device_log_epoch_s": 1793224299.975,
+        "event": "sender_stats_sampled",
+        "platform": "android",
+        "sender_stats_entries": 10,
+        "bytes_sent": 52209,
+        "frames_sent": 7
+      },
+      "stable_receivers": [
+        {
+          "role": "b",
+          "stats": {
+            "at_utc": "2026-10-28T21:51:52.217Z",
+            "browser_monotonic_ms": 1062294.199999988,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224312192.651,
+                "bytesReceived": 99866,
+                "packetsReceived": 90,
+                "packetsLost": -3,
+                "framesDecoded": 12,
+                "framesDropped": 0,
+                "framesPerSecond": 1,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0.009,
+                "totalDecodeTime": 0.017698,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1061622.5,
+                  "presentedFrames": 11,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 243.374,
+                  "expectedDisplayTime": 1061622.5
+                },
+                "quality": {
+                  "totalVideoFrames": 12,
+                  "droppedVideoFrames": 1
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        },
+        {
+          "role": "c",
+          "stats": {
+            "at_utc": "2026-10-28T21:51:52.218Z",
+            "browser_monotonic_ms": 1059768.599999994,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224312218.12,
+                "bytesReceived": 99866,
+                "packetsReceived": 90,
+                "packetsLost": 0,
+                "framesDecoded": 12,
+                "framesDropped": 0,
+                "framesPerSecond": 1,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0.01,
+                "totalDecodeTime": 0.017373,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1059095.4,
+                  "presentedFrames": 11,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 243.379,
+                  "expectedDisplayTime": 1059095.4
+                },
+                "quality": {
+                  "totalVideoFrames": 12,
+                  "droppedVideoFrames": 1
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        }
+      ],
+      "stop": {
+        "at_utc": "2026-10-28T21:52:01.296108+00:00",
+        "permission": {
+          "granted": true,
+          "flags": [
+            "USER_SET",
+            "USER_SENSITIVE_WHEN_GRANTED",
+            "USER_SENSITIVE_WHEN_DENIED"
+          ]
+        },
+        "microphone_fgs": true,
+        "voice_connected": true,
+        "muted_control": false,
+        "app_hierarchy_present": true,
+        "system_permission_prompt": false,
+        "navigation_available": true,
+        "login_fields": false,
+        "projection_package_present": false,
+        "screen_fgs": false,
+        "mic_fgs": true,
+        "fgs_types": [
+          "0x80"
+        ],
+        "SHARE_TEST_visible": true,
+        "unknown_draft": false
+      }
+    },
+    {
+      "sequence": 5,
+      "picker": {
+        "sequence": 5,
+        "app_only_selected": true,
+        "settings_app_selected": true,
+        "display_title_observed": true,
+        "picker_wait_device_s": 7,
+        "projection": {
+          "projection_package_present": true,
+          "screen_fgs": true,
+          "mic_fgs": true,
+          "fgs_types": [
+            "0x80",
+            "0x20"
+          ]
+        }
+      },
+      "first_frame_status": "PASS_WITHOUT_SOURCE_MOTION",
+      "first_frame_receivers": [
+        {
+          "role": "b",
+          "stats": {
+            "at_utc": "2026-10-28T21:53:12.095Z",
+            "browser_monotonic_ms": 1142172.400000006,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224392094.801,
+                "bytesReceived": 14912,
+                "packetsReceived": 13,
+                "packetsLost": -1,
+                "framesDecoded": 1,
+                "framesDropped": 0,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0,
+                "totalDecodeTime": 0.002202,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1141932.7,
+                  "presentedFrames": 1,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 323.728,
+                  "expectedDisplayTime": 1141938.3
+                },
+                "quality": {
+                  "totalVideoFrames": 1,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        },
+        {
+          "role": "c",
+          "stats": {
+            "at_utc": "2026-10-28T21:53:12.101Z",
+            "browser_monotonic_ms": 1139651.5,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224392100.881,
+                "bytesReceived": 14912,
+                "packetsReceived": 13,
+                "packetsLost": 0,
+                "framesDecoded": 1,
+                "framesDropped": 0,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0,
+                "totalDecodeTime": 0.0021089999999999998,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1139405.7,
+                  "presentedFrames": 1,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 323.728,
+                  "expectedDisplayTime": 1139409.7
+                },
+                "quality": {
+                  "totalVideoFrames": 1,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        }
+      ],
+      "receiver_timings_from_watch": [
+        {
+          "rtp_observed_ms": 899.5,
+          "decode_observed_ms": 1104.1,
+          "presentation_observed_ms": 1104.1
+        },
+        {
+          "rtp_observed_ms": 884.9,
+          "decode_observed_ms": 1089.5,
+          "presentation_observed_ms": 1089.5
+        }
+      ],
+      "phone_source_to_first_positive_encoder_sample_ms": 3019.0,
+      "capture_events": [
+        {
+          "device_log_epoch_s": 1793224388.288,
+          "event": "projection_capture_started display=ready"
+        },
+        {
+          "device_log_epoch_s": 1793224388.289,
+          "event": "projection_content_visibility=visible"
+        },
+        {
+          "device_log_epoch_s": 1793224388.328,
+          "event": "source_first",
+          "elapsed_ms": 74,
+          "captured_frames": 1,
+          "source_frames": 1,
+          "forwarded_frames": 0,
+          "refresh_requests": 0
+        },
+        {
+          "device_log_epoch_s": 1793224388.329,
+          "event": "forward_first",
+          "elapsed_ms": 74,
+          "captured_frames": 1,
+          "source_frames": 1,
+          "forwarded_frames": 1,
+          "refresh_requests": 0
+        },
+        {
+          "device_log_epoch_s": 1793224390.331,
+          "event": "refresh_requested",
+          "elapsed_ms": 2077,
+          "captured_frames": 63,
+          "source_frames": 63,
+          "forwarded_frames": 9,
+          "refresh_requests": 1
+        },
+        {
+          "device_log_epoch_s": 1793224391.332,
+          "event": "refresh_requested",
+          "elapsed_ms": 3078,
+          "captured_frames": 64,
+          "source_frames": 63,
+          "forwarded_frames": 10,
+          "refresh_requests": 2
+        },
+        {
+          "device_log_epoch_s": 1793224393.336,
+          "event": "refresh_requested",
+          "elapsed_ms": 5081,
+          "captured_frames": 66,
+          "source_frames": 63,
+          "forwarded_frames": 12,
+          "refresh_requests": 4
+        },
+        {
+          "device_log_epoch_s": 1793224397.341,
+          "event": "refresh_requested",
+          "elapsed_ms": 9087,
+          "captured_frames": 70,
+          "source_frames": 63,
+          "forwarded_frames": 16,
+          "refresh_requests": 8
+        },
+        {
+          "device_log_epoch_s": 1793224405.355,
+          "event": "refresh_requested",
+          "elapsed_ms": 17100,
+          "captured_frames": 78,
+          "source_frames": 63,
+          "forwarded_frames": 24,
+          "refresh_requests": 16
+        },
+        {
+          "device_log_epoch_s": 1793224405.397,
+          "event": "projection_content_visibility=hidden"
+        },
+        {
+          "device_log_epoch_s": 1793224408.551,
+          "event": "projection_app_stop"
+        },
+        {
+          "device_log_epoch_s": 1793224408.551,
+          "event": "stopped",
+          "elapsed_ms": 20296,
+          "captured_frames": 80,
+          "source_frames": 64,
+          "forwarded_frames": 25,
+          "refresh_requests": 16
+        }
+      ],
+      "first_encoder_sample": {
+        "device_log_epoch_s": 1793224391.347,
+        "event": "sender_stats_sampled",
+        "platform": "android",
+        "sender_stats_entries": 10,
+        "bytes_sent": 55191,
+        "frames_sent": 8
+      },
+      "stable_receivers": [
+        {
+          "role": "b",
+          "stats": {
+            "at_utc": "2026-10-28T21:53:23.935Z",
+            "browser_monotonic_ms": 1154012.599999994,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224403934.972,
+                "bytesReceived": 101731,
+                "packetsReceived": 92,
+                "packetsLost": -1,
+                "framesDecoded": 13,
+                "framesDropped": 0,
+                "framesPerSecond": 1,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0.01,
+                "totalDecodeTime": 0.019018,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1153960.9,
+                  "presentedFrames": 11,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 335.745,
+                  "expectedDisplayTime": 1153960.9
+                },
+                "quality": {
+                  "totalVideoFrames": 13,
+                  "droppedVideoFrames": 2
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        },
+        {
+          "role": "c",
+          "stats": {
+            "at_utc": "2026-10-28T21:53:23.936Z",
+            "browser_monotonic_ms": 1151487.099999994,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224403936.551,
+                "bytesReceived": 101733,
+                "packetsReceived": 92,
+                "packetsLost": 1,
+                "framesDecoded": 13,
+                "framesDropped": 0,
+                "framesPerSecond": 1,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0.009,
+                "totalDecodeTime": 0.018085999999999998,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1151458.8,
+                  "presentedFrames": 10,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 335.751,
+                  "expectedDisplayTime": 1151458.9
+                },
+                "quality": {
+                  "totalVideoFrames": 13,
+                  "droppedVideoFrames": 3
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        }
+      ],
+      "stop": {
+        "at_utc": "2026-10-28T21:53:30.557909+00:00",
+        "permission": {
+          "granted": true,
+          "flags": [
+            "USER_SET",
+            "USER_SENSITIVE_WHEN_GRANTED",
+            "USER_SENSITIVE_WHEN_DENIED"
+          ]
+        },
+        "microphone_fgs": true,
+        "voice_connected": true,
+        "muted_control": false,
+        "app_hierarchy_present": true,
+        "system_permission_prompt": false,
+        "navigation_available": true,
+        "login_fields": false,
+        "projection_package_present": false,
+        "screen_fgs": false,
+        "mic_fgs": true,
+        "fgs_types": [
+          "0x80"
+        ],
+        "SHARE_TEST_visible": true,
+        "unknown_draft": false
+      }
+    },
+    {
+      "sequence": 7,
+      "picker": {
+        "sequence": 7,
+        "app_only_selected": true,
+        "settings_app_selected": true,
+        "display_title_observed": true,
+        "picker_wait_device_s": 153,
+        "projection": {
+          "projection_package_present": true,
+          "screen_fgs": true,
+          "mic_fgs": true,
+          "fgs_types": [
+            "0x80",
+            "0x20"
+          ]
+        }
+      },
+      "first_frame_status": "PASS_WITHOUT_SOURCE_MOTION",
+      "first_frame_receivers": [
+        {
+          "role": "b",
+          "stats": {
+            "at_utc": "2026-10-28T21:56:48.475Z",
+            "browser_monotonic_ms": 1358552.699999988,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224608475.19,
+                "bytesReceived": 14883,
+                "packetsReceived": 13,
+                "packetsLost": 0,
+                "framesDecoded": 1,
+                "framesDropped": 0,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0,
+                "totalDecodeTime": 0.0023769999999999998,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1358398.3,
+                  "presentedFrames": 1,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 540.189,
+                  "expectedDisplayTime": 1358399.2
+                },
+                "quality": {
+                  "totalVideoFrames": 1,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        },
+        {
+          "role": "c",
+          "stats": {
+            "at_utc": "2026-10-28T21:56:48.476Z",
+            "browser_monotonic_ms": 1356027.099999994,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224608476.564,
+                "bytesReceived": 14883,
+                "packetsReceived": 13,
+                "packetsLost": 0,
+                "framesDecoded": 1,
+                "framesDropped": 0,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0,
+                "totalDecodeTime": 0.002216,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1355871.2,
+                  "presentedFrames": 1,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 540.19,
+                  "expectedDisplayTime": 1355871.7
+                },
+                "quality": {
+                  "totalVideoFrames": 1,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        }
+      ],
+      "receiver_timings_from_watch": [
+        {
+          "rtp_observed_ms": 1119.3,
+          "decode_observed_ms": 1119.3,
+          "presentation_observed_ms": 1119.3
+        },
+        {
+          "rtp_observed_ms": 1086.8,
+          "decode_observed_ms": 1086.8,
+          "presentation_observed_ms": 1086.8
+        }
+      ],
+      "phone_source_to_first_positive_encoder_sample_ms": 3063.0,
+      "capture_events": [
+        {
+          "device_log_epoch_s": 1793224604.756,
+          "event": "projection_capture_started display=ready"
+        },
+        {
+          "device_log_epoch_s": 1793224604.765,
+          "event": "projection_content_visibility=visible"
+        },
+        {
+          "device_log_epoch_s": 1793224604.777,
+          "event": "source_first",
+          "elapsed_ms": 49,
+          "captured_frames": 1,
+          "source_frames": 1,
+          "forwarded_frames": 0,
+          "refresh_requests": 0
+        },
+        {
+          "device_log_epoch_s": 1793224604.781,
+          "event": "forward_first",
+          "elapsed_ms": 53,
+          "captured_frames": 1,
+          "source_frames": 1,
+          "forwarded_frames": 1,
+          "refresh_requests": 0
+        },
+        {
+          "device_log_epoch_s": 1793224606.781,
+          "event": "refresh_requested",
+          "elapsed_ms": 2052,
+          "captured_frames": 53,
+          "source_frames": 53,
+          "forwarded_frames": 8,
+          "refresh_requests": 1
+        },
+        {
+          "device_log_epoch_s": 1793224607.783,
+          "event": "refresh_requested",
+          "elapsed_ms": 3055,
+          "captured_frames": 54,
+          "source_frames": 53,
+          "forwarded_frames": 9,
+          "refresh_requests": 2
+        },
+        {
+          "device_log_epoch_s": 1793224609.787,
+          "event": "refresh_requested",
+          "elapsed_ms": 5059,
+          "captured_frames": 56,
+          "source_frames": 53,
+          "forwarded_frames": 11,
+          "refresh_requests": 4
+        },
+        {
+          "device_log_epoch_s": 1793224613.796,
+          "event": "refresh_requested",
+          "elapsed_ms": 9068,
+          "captured_frames": 60,
+          "source_frames": 53,
+          "forwarded_frames": 15,
+          "refresh_requests": 8
+        },
+        {
+          "device_log_epoch_s": 1793224621.805,
+          "event": "projection_content_visibility=hidden"
+        },
+        {
+          "device_log_epoch_s": 1793224625.062,
+          "event": "projection_app_stop"
+        },
+        {
+          "device_log_epoch_s": 1793224625.063,
+          "event": "stopped",
+          "elapsed_ms": 20335,
+          "captured_frames": 69,
+          "source_frames": 54,
+          "forwarded_frames": 24,
+          "refresh_requests": 15
+        }
+      ],
+      "first_encoder_sample": {
+        "device_log_epoch_s": 1793224607.84,
+        "event": "sender_stats_sampled",
+        "platform": "android",
+        "frames_sent": 6,
+        "bytes_sent": 40424,
+        "sender_stats_entries": 10
+      },
+      "stable_receivers": [
+        {
+          "role": "b",
+          "stats": {
+            "at_utc": "2026-10-28T21:57:00.302Z",
+            "browser_monotonic_ms": 1370379.199999988,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224620301.673,
+                "bytesReceived": 101820,
+                "packetsReceived": 94,
+                "packetsLost": 0,
+                "framesDecoded": 12,
+                "framesDropped": 0,
+                "framesPerSecond": 1,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0.011,
+                "totalDecodeTime": 0.017946,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1369417.2,
+                  "presentedFrames": 11,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 551.198,
+                  "expectedDisplayTime": 1369417.1
+                },
+                "quality": {
+                  "totalVideoFrames": 12,
+                  "droppedVideoFrames": 1
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        },
+        {
+          "role": "c",
+          "stats": {
+            "at_utc": "2026-10-28T21:57:00.303Z",
+            "browser_monotonic_ms": 1367853.699999988,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224620303.11,
+                "bytesReceived": 102959,
+                "packetsReceived": 95,
+                "packetsLost": 0,
+                "framesDecoded": 12,
+                "framesDropped": 0,
+                "framesPerSecond": 1,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0.011,
+                "totalDecodeTime": 0.018744999999999998,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1366882.3,
+                  "presentedFrames": 12,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 551.206,
+                  "expectedDisplayTime": 1366890.7
+                },
+                "quality": {
+                  "totalVideoFrames": 12,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        }
+      ],
+      "stop": {
+        "at_utc": "2026-10-28T21:57:07.144460+00:00",
+        "permission": {
+          "granted": true,
+          "flags": [
+            "USER_SET",
+            "USER_SENSITIVE_WHEN_GRANTED",
+            "USER_SENSITIVE_WHEN_DENIED"
+          ]
+        },
+        "microphone_fgs": true,
+        "voice_connected": true,
+        "muted_control": false,
+        "app_hierarchy_present": true,
+        "system_permission_prompt": false,
+        "navigation_available": true,
+        "login_fields": false,
+        "projection_package_present": false,
+        "screen_fgs": false,
+        "mic_fgs": true,
+        "fgs_types": [
+          "0x80"
+        ],
+        "SHARE_TEST_visible": true,
+        "unknown_draft": false
+      }
+    },
+    {
+      "sequence": 9,
+      "picker": {
+        "sequence": 9,
+        "app_only_selected": true,
+        "settings_app_selected": true,
+        "display_title_observed": true,
+        "picker_wait_device_s": 7,
+        "projection": {
+          "projection_package_present": true,
+          "screen_fgs": true,
+          "mic_fgs": true,
+          "fgs_types": [
+            "0x80",
+            "0x20"
+          ]
+        }
+      },
+      "first_frame_status": "PASS_WITHOUT_SOURCE_MOTION",
+      "first_frame_receivers": [
+        {
+          "role": "b",
+          "stats": {
+            "at_utc": "2026-10-28T21:57:50.365Z",
+            "browser_monotonic_ms": 1420442.2999999821,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224670364.68,
+                "bytesReceived": 14878,
+                "packetsReceived": 13,
+                "packetsLost": 0,
+                "framesDecoded": 1,
+                "framesDropped": 0,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0,
+                "totalDecodeTime": 0.002127,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1420199.1,
+                  "presentedFrames": 1,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 601.989,
+                  "expectedDisplayTime": 1420199.2
+                },
+                "quality": {
+                  "totalVideoFrames": 1,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        },
+        {
+          "role": "c",
+          "stats": {
+            "at_utc": "2026-10-28T21:57:50.371Z",
+            "browser_monotonic_ms": 1417921.2999999821,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224670370.743,
+                "bytesReceived": 14878,
+                "packetsReceived": 13,
+                "packetsLost": 0,
+                "framesDecoded": 1,
+                "framesDropped": 0,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0,
+                "totalDecodeTime": 0.002417,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1417680.4,
+                  "presentedFrames": 1,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 602,
+                  "expectedDisplayTime": 1417681.4
+                },
+                "quality": {
+                  "totalVideoFrames": 1,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        }
+      ],
+      "receiver_timings_from_watch": [
+        {
+          "rtp_observed_ms": 1149.7,
+          "decode_observed_ms": 1149.7,
+          "presentation_observed_ms": 1149.7
+        },
+        {
+          "rtp_observed_ms": 1126.8,
+          "decode_observed_ms": 1126.8,
+          "presentation_observed_ms": 1126.8
+        }
+      ],
+      "phone_source_to_first_positive_encoder_sample_ms": 2056.0,
+      "capture_events": [
+        {
+          "device_log_epoch_s": 1793224666.563,
+          "event": "projection_capture_started display=ready"
+        },
+        {
+          "device_log_epoch_s": 1793224666.57,
+          "event": "projection_content_visibility=visible"
+        },
+        {
+          "device_log_epoch_s": 1793224666.586,
+          "event": "source_first",
+          "elapsed_ms": 60,
+          "captured_frames": 1,
+          "source_frames": 1,
+          "forwarded_frames": 0,
+          "refresh_requests": 0
+        },
+        {
+          "device_log_epoch_s": 1793224666.592,
+          "event": "forward_first",
+          "elapsed_ms": 66,
+          "captured_frames": 1,
+          "source_frames": 1,
+          "forwarded_frames": 1,
+          "refresh_requests": 0
+        },
+        {
+          "device_log_epoch_s": 1793224668.588,
+          "event": "refresh_requested",
+          "elapsed_ms": 2062,
+          "captured_frames": 62,
+          "source_frames": 62,
+          "forwarded_frames": 9,
+          "refresh_requests": 1
+        },
+        {
+          "device_log_epoch_s": 1793224669.59,
+          "event": "refresh_requested",
+          "elapsed_ms": 3064,
+          "captured_frames": 63,
+          "source_frames": 62,
+          "forwarded_frames": 10,
+          "refresh_requests": 2
+        },
+        {
+          "device_log_epoch_s": 1793224671.594,
+          "event": "refresh_requested",
+          "elapsed_ms": 5068,
+          "captured_frames": 65,
+          "source_frames": 62,
+          "forwarded_frames": 12,
+          "refresh_requests": 4
+        },
+        {
+          "device_log_epoch_s": 1793224675.599,
+          "event": "refresh_requested",
+          "elapsed_ms": 9073,
+          "captured_frames": 69,
+          "source_frames": 62,
+          "forwarded_frames": 16,
+          "refresh_requests": 8
+        },
+        {
+          "device_log_epoch_s": 1793224683.134,
+          "event": "projection_content_visibility=hidden"
+        },
+        {
+          "device_log_epoch_s": 1793224685.78,
+          "event": "projection_app_stop"
+        },
+        {
+          "device_log_epoch_s": 1793224685.78,
+          "event": "stopped",
+          "elapsed_ms": 19254,
+          "captured_frames": 78,
+          "source_frames": 63,
+          "forwarded_frames": 25,
+          "refresh_requests": 15
+        }
+      ],
+      "first_encoder_sample": {
+        "device_log_epoch_s": 1793224668.642,
+        "event": "sender_stats_sampled",
+        "platform": "android",
+        "sender_stats_entries": 9,
+        "bytes_sent": 46669,
+        "frames_sent": 6
+      },
+      "stable_receivers": [
+        {
+          "role": "b",
+          "stats": {
+            "at_utc": "2026-10-28T21:58:01.995Z",
+            "browser_monotonic_ms": 1432072.599999994,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224681995.032,
+                "bytesReceived": 100197,
+                "packetsReceived": 92,
+                "packetsLost": 0,
+                "framesDecoded": 12,
+                "framesDropped": 0,
+                "framesPerSecond": 1,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0.021,
+                "totalDecodeTime": 0.017790999999999998,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1431209.7,
+                  "presentedFrames": 11,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 613.027,
+                  "expectedDisplayTime": 1431226.4
+                },
+                "quality": {
+                  "totalVideoFrames": 12,
+                  "droppedVideoFrames": 1
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        },
+        {
+          "role": "c",
+          "stats": {
+            "at_utc": "2026-10-28T21:58:01.996Z",
+            "browser_monotonic_ms": 1429547.099999994,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224681996.661,
+                "bytesReceived": 100197,
+                "packetsReceived": 92,
+                "packetsLost": 0,
+                "framesDecoded": 12,
+                "framesDropped": 0,
+                "framesPerSecond": 1,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0.02,
+                "totalDecodeTime": 0.017686999999999998,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1428641,
+                  "presentedFrames": 11,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 612.011,
+                  "expectedDisplayTime": 1428641
+                },
+                "quality": {
+                  "totalVideoFrames": 12,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        }
+      ],
+      "stop": {
+        "at_utc": "2026-10-28T21:58:07.875253+00:00",
+        "permission": {
+          "granted": true,
+          "flags": [
+            "USER_SET",
+            "USER_SENSITIVE_WHEN_GRANTED",
+            "USER_SENSITIVE_WHEN_DENIED"
+          ]
+        },
+        "microphone_fgs": true,
+        "voice_connected": true,
+        "muted_control": false,
+        "app_hierarchy_present": true,
+        "system_permission_prompt": false,
+        "navigation_available": true,
+        "login_fields": false,
+        "projection_package_present": false,
+        "screen_fgs": false,
+        "mic_fgs": true,
+        "fgs_types": [
+          "0x80"
+        ],
+        "SHARE_TEST_visible": true,
+        "unknown_draft": false
+      }
+    },
+    {
+      "sequence": 11,
+      "picker": {
+        "sequence": 11,
+        "app_only_selected": true,
+        "settings_app_selected": true,
+        "display_title_observed": true,
+        "picker_wait_device_s": 153,
+        "projection": {
+          "projection_package_present": true,
+          "screen_fgs": true,
+          "mic_fgs": true,
+          "fgs_types": [
+            "0x80",
+            "0x20"
+          ]
+        }
+      },
+      "first_frame_status": "PASS_WITHOUT_SOURCE_MOTION",
+      "first_frame_receivers": [
+        {
+          "role": "b",
+          "stats": {
+            "at_utc": "2026-10-28T22:02:36.565Z",
+            "browser_monotonic_ms": 1706642.599999994,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224956516.879,
+                "bytesReceived": 17207,
+                "packetsReceived": 15,
+                "packetsLost": 0,
+                "framesDecoded": 1,
+                "framesDropped": 0,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0,
+                "totalDecodeTime": 0.002656,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1706406.6,
+                  "presentedFrames": 1,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 888.2,
+                  "expectedDisplayTime": 1706410.8
+                },
+                "quality": {
+                  "totalVideoFrames": 1,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        },
+        {
+          "role": "c",
+          "stats": {
+            "at_utc": "2026-10-28T22:02:36.567Z",
+            "browser_monotonic_ms": 1704117.199999988,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224956566.665,
+                "bytesReceived": 17207,
+                "packetsReceived": 15,
+                "packetsLost": -2,
+                "framesDecoded": 1,
+                "framesDropped": 0,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0,
+                "totalDecodeTime": 0.0022819999999999997,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1703879.4,
+                  "presentedFrames": 1,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 888.2,
+                  "expectedDisplayTime": 1703881.7
+                },
+                "quality": {
+                  "totalVideoFrames": 1,
+                  "droppedVideoFrames": 0
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        }
+      ],
+      "receiver_timings_from_watch": [
+        {
+          "rtp_observed_ms": 929.5,
+          "decode_observed_ms": 1148.2,
+          "presentation_observed_ms": 1148.2
+        },
+        {
+          "rtp_observed_ms": 905.7,
+          "decode_observed_ms": 1124.1,
+          "presentation_observed_ms": 1124.1
+        }
+      ],
+      "phone_source_to_first_positive_encoder_sample_ms": 2065.0,
+      "capture_events": [
+        {
+          "device_log_epoch_s": 1793224952.759,
+          "event": "projection_capture_started display=ready"
+        },
+        {
+          "device_log_epoch_s": 1793224952.76,
+          "event": "projection_content_visibility=visible"
+        },
+        {
+          "device_log_epoch_s": 1793224952.79,
+          "event": "source_first",
+          "elapsed_ms": 57,
+          "captured_frames": 1,
+          "source_frames": 1,
+          "forwarded_frames": 0,
+          "refresh_requests": 0
+        },
+        {
+          "device_log_epoch_s": 1793224952.791,
+          "event": "forward_first",
+          "elapsed_ms": 58,
+          "captured_frames": 1,
+          "source_frames": 1,
+          "forwarded_frames": 1,
+          "refresh_requests": 0
+        },
+        {
+          "device_log_epoch_s": 1793224954.792,
+          "event": "refresh_requested",
+          "elapsed_ms": 2059,
+          "captured_frames": 61,
+          "source_frames": 61,
+          "forwarded_frames": 9,
+          "refresh_requests": 1
+        },
+        {
+          "device_log_epoch_s": 1793224955.794,
+          "event": "refresh_requested",
+          "elapsed_ms": 3061,
+          "captured_frames": 62,
+          "source_frames": 61,
+          "forwarded_frames": 10,
+          "refresh_requests": 2
+        },
+        {
+          "device_log_epoch_s": 1793224957.797,
+          "event": "refresh_requested",
+          "elapsed_ms": 5064,
+          "captured_frames": 64,
+          "source_frames": 61,
+          "forwarded_frames": 12,
+          "refresh_requests": 4
+        },
+        {
+          "device_log_epoch_s": 1793224961.801,
+          "event": "refresh_requested",
+          "elapsed_ms": 9068,
+          "captured_frames": 68,
+          "source_frames": 61,
+          "forwarded_frames": 16,
+          "refresh_requests": 8
+        },
+        {
+          "device_log_epoch_s": 1793224969.817,
+          "event": "refresh_requested",
+          "elapsed_ms": 17084,
+          "captured_frames": 76,
+          "source_frames": 61,
+          "forwarded_frames": 24,
+          "refresh_requests": 16
+        },
+        {
+          "device_log_epoch_s": 1793224977.361,
+          "event": "projection_content_visibility=hidden"
+        },
+        {
+          "device_log_epoch_s": 1793224980.955,
+          "event": "projection_app_stop"
+        },
+        {
+          "device_log_epoch_s": 1793224980.956,
+          "event": "stopped",
+          "elapsed_ms": 28223,
+          "captured_frames": 397,
+          "source_frames": 379,
+          "forwarded_frames": 68,
+          "refresh_requests": 18
+        }
+      ],
+      "first_encoder_sample": {
+        "device_log_epoch_s": 1793224954.855,
+        "event": "sender_stats_sampled",
+        "platform": "android",
+        "sender_stats_entries": 9,
+        "frames_sent": 8,
+        "bytes_sent": 63104
+      },
+      "stable_receivers": [
+        {
+          "role": "b",
+          "stats": {
+            "at_utc": "2026-10-28T22:02:48.421Z",
+            "browser_monotonic_ms": 1718499,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224968421.393,
+                "bytesReceived": 108554,
+                "packetsReceived": 100,
+                "packetsLost": 0,
+                "framesDecoded": 13,
+                "framesDropped": 0,
+                "framesPerSecond": 1,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0.011,
+                "totalDecodeTime": 0.020092,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1718401.4,
+                  "presentedFrames": 12,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 900.181,
+                  "expectedDisplayTime": 1718401.4
+                },
+                "quality": {
+                  "totalVideoFrames": 13,
+                  "droppedVideoFrames": 1
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        },
+        {
+          "role": "c",
+          "stats": {
+            "at_utc": "2026-10-28T22:02:48.423Z",
+            "browser_monotonic_ms": 1715973.7999999821,
+            "observer_version": "precreate-current-receiver-v2",
+            "inbound": [
+              {
+                "timestamp": 1793224968423.231,
+                "bytesReceived": 104460,
+                "packetsReceived": 96,
+                "packetsLost": -2,
+                "framesDecoded": 13,
+                "framesDropped": 0,
+                "framesPerSecond": 1,
+                "frameWidth": 590,
+                "frameHeight": 1280,
+                "jitter": 0.011,
+                "totalDecodeTime": 0.018852999999999998,
+                "freezeCount": 0,
+                "totalFreezesDuration": 0,
+                "codec": "video/VP8"
+              }
+            ],
+            "remote": [],
+            "observed_video_receivers": 1,
+            "connected_peers": 1,
+            "mic_calls": 0,
+            "video": [
+              {
+                "width": 590,
+                "height": 1280,
+                "readyState": 4,
+                "paused": false,
+                "presentation": {
+                  "callback_now": 1715857.6,
+                  "presentedFrames": 11,
+                  "width": 590,
+                  "height": 1280,
+                  "mediaTime": 900.182,
+                  "expectedDisplayTime": 1715857.6
+                },
+                "quality": {
+                  "totalVideoFrames": 13,
+                  "droppedVideoFrames": 2
+                }
+              }
+            ],
+            "watch_controls": 0
+          }
+        }
+      ],
+      "stop": {
+        "at_utc": "2026-10-28T22:03:02.992235+00:00",
+        "permission": {
+          "granted": true,
+          "flags": [
+            "USER_SET",
+            "USER_SENSITIVE_WHEN_GRANTED",
+            "USER_SENSITIVE_WHEN_DENIED"
+          ]
+        },
+        "microphone_fgs": true,
+        "voice_connected": true,
+        "muted_control": false,
+        "app_hierarchy_present": true,
+        "system_permission_prompt": false,
+        "navigation_available": true,
+        "login_fields": false,
+        "projection_package_present": false,
+        "screen_fgs": false,
+        "mic_fgs": true,
+        "fgs_types": [
+          "0x80"
+        ],
+        "SHARE_TEST_visible": true,
+        "unknown_draft": false
+      },
+      "motion_after_first_image": {
+        "sequence": 13,
+        "action": "sample",
+        "at_utc": "2026-10-28T22:02:52.373Z",
+        "receivers": [
+          {
+            "role": "b",
+            "stats": {
+              "at_utc": "2026-10-28T22:02:52.374Z",
+              "browser_monotonic_ms": 1722451.7999999821,
+              "observer_version": "precreate-current-receiver-v2",
+              "inbound": [
+                {
+                  "timestamp": 1793224972374.221,
+                  "bytesReceived": 176097,
+                  "packetsReceived": 164,
+                  "packetsLost": 0,
+                  "framesDecoded": 25,
+                  "framesDropped": 0,
+                  "framesPerSecond": 9,
+                  "frameWidth": 590,
+                  "frameHeight": 1280,
+                  "jitter": 0.014,
+                  "totalDecodeTime": 0.035733999999999995,
+                  "freezeCount": 0,
+                  "totalFreezesDuration": 0,
+                  "codec": "video/VP8"
+                }
+              ],
+              "remote": [],
+              "observed_video_receivers": 1,
+              "connected_peers": 1,
+              "mic_calls": 0,
+              "video": [
+                {
+                  "width": 590,
+                  "height": 1280,
+                  "readyState": 4,
+                  "paused": false,
+                  "presentation": {
+                    "callback_now": 1722405.2,
+                    "presentedFrames": 16,
+                    "width": 590,
+                    "height": 1280,
+                    "mediaTime": 904.159,
+                    "expectedDisplayTime": 1722405.1
+                  },
+                  "quality": {
+                    "totalVideoFrames": 25,
+                    "droppedVideoFrames": 9
+                  }
+                }
+              ],
+              "watch_controls": 0
+            }
+          },
+          {
+            "role": "c",
+            "stats": {
+              "at_utc": "2026-10-28T22:02:52.376Z",
+              "browser_monotonic_ms": 1719926.2999999821,
+              "observer_version": "precreate-current-receiver-v2",
+              "inbound": [
+                {
+                  "timestamp": 1793224972375.824,
+                  "bytesReceived": 173118,
+                  "packetsReceived": 161,
+                  "packetsLost": -2,
+                  "framesDecoded": 25,
+                  "framesDropped": 0,
+                  "framesPerSecond": 9,
+                  "frameWidth": 590,
+                  "frameHeight": 1280,
+                  "jitter": 0.011,
+                  "totalDecodeTime": 0.035397,
+                  "freezeCount": 0,
+                  "totalFreezesDuration": 0,
+                  "codec": "video/VP8"
+                }
+              ],
+              "remote": [],
+              "observed_video_receivers": 1,
+              "connected_peers": 1,
+              "mic_calls": 0,
+              "video": [
+                {
+                  "width": 590,
+                  "height": 1280,
+                  "readyState": 4,
+                  "paused": false,
+                  "presentation": {
+                    "callback_now": 1719861.4,
+                    "presentedFrames": 15,
+                    "width": 590,
+                    "height": 1280,
+                    "mediaTime": 904.162,
+                    "expectedDisplayTime": 1719861.4
+                  },
+                  "quality": {
+                    "totalVideoFrames": 25,
+                    "droppedVideoFrames": 10
+                  }
+                }
+              ],
+              "watch_controls": 0
+            }
+          }
+        ],
+        "status": "PASS"
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "receiver-1-0.png",
+      "sha256": "21133f35d7925e8b00809dd170ea3919bcc6a4aec73bc1313dcabd23e9316322",
+      "public_Display_visible": true,
+      "reviewed_at_original_resolution": true,
+      "observation": "Public Display title, light/dark theme cards and brightness controls visible; actual 590x1280 decoded frame, no black/empty initial image. Source was not scrolled."
+    },
+    {
+      "name": "receiver-1-1.png",
+      "sha256": "21133f35d7925e8b00809dd170ea3919bcc6a4aec73bc1313dcabd23e9316322",
+      "public_Display_visible": true,
+      "reviewed_at_original_resolution": true,
+      "observation": "Public Display title, light/dark theme cards and brightness controls visible; actual 590x1280 decoded frame, no black/empty initial image. Source was not scrolled."
+    },
+    {
+      "name": "receiver-3-0.png",
+      "sha256": "c452847de84cf5b950ed902694bb3b3cb5b138348360dfa51ce123314698efb9",
+      "public_Display_visible": true,
+      "reviewed_at_original_resolution": true,
+      "observation": "Public Display settings shown at 590x1280 after the 150-second selection hold; visible theme/brightness controls, no black/empty frame. No source scroll."
+    },
+    {
+      "name": "receiver-3-1.png",
+      "sha256": "c452847de84cf5b950ed902694bb3b3cb5b138348360dfa51ce123314698efb9",
+      "public_Display_visible": true,
+      "reviewed_at_original_resolution": true,
+      "observation": "Public Display settings shown at 590x1280 after the 150-second selection hold; visible theme/brightness controls, no black/empty frame. No source scroll."
+    },
+    {
+      "name": "receiver-5-0.png",
+      "sha256": "57e81f33dab4979a9ef055b91a5133fd3660c3dc333041a8e45c7a526d28d81e",
+      "public_Display_visible": true,
+      "reviewed_at_original_resolution": true,
+      "observation": "Public Display settings visible at 590x1280 after fast selection, source not scrolled; both first images contain the expected theme and brightness controls."
+    },
+    {
+      "name": "receiver-5-1.png",
+      "sha256": "57e81f33dab4979a9ef055b91a5133fd3660c3dc333041a8e45c7a526d28d81e",
+      "public_Display_visible": true,
+      "reviewed_at_original_resolution": true,
+      "observation": "Public Display settings visible at 590x1280 after fast selection, source not scrolled; both first images contain the expected theme and brightness controls."
+    },
+    {
+      "name": "receiver-7-0.png",
+      "sha256": "07b5366cd5aa7c6c9c35e141d37c3472b4cf71a51abb7ce17e943373fdb6906f",
+      "public_Display_visible": true,
+      "reviewed_at_original_resolution": true,
+      "observation": "Public Display first image at 590x1280 after the second 150-second hold; no source motion, expected theme and brightness controls visible."
+    },
+    {
+      "name": "receiver-7-1.png",
+      "sha256": "07b5366cd5aa7c6c9c35e141d37c3472b4cf71a51abb7ce17e943373fdb6906f",
+      "public_Display_visible": true,
+      "reviewed_at_original_resolution": true,
+      "observation": "Public Display first image at 590x1280 after the second 150-second hold; no source motion, expected theme and brightness controls visible."
+    },
+    {
+      "name": "receiver-9-0.png",
+      "sha256": "9735286361bf3bd5ae05c8991c7e19871e59a0667f38d339a719986dc0c4a2dc",
+      "public_Display_visible": true,
+      "reviewed_at_original_resolution": true,
+      "observation": "Public Display first image at 590x1280 after the third fast selection; source was not scrolled, controls and content visible."
+    },
+    {
+      "name": "receiver-9-1.png",
+      "sha256": "9735286361bf3bd5ae05c8991c7e19871e59a0667f38d339a719986dc0c4a2dc",
+      "public_Display_visible": true,
+      "reviewed_at_original_resolution": true,
+      "observation": "Public Display first image at 590x1280 after the third fast selection; source was not scrolled, controls and content visible."
+    },
+    {
+      "name": "receiver-11-0.png",
+      "sha256": "59e49f530dc8da4f1b4d2b5879f3321a955ec7a714d9bbdc05ea77c20cad1e54",
+      "public_Display_visible": true,
+      "reviewed_at_original_resolution": true,
+      "observation": "Public Display first image at 590x1280 after the third 150-second hold; expected theme/brightness content shown before any source motion."
+    },
+    {
+      "name": "receiver-11-1.png",
+      "sha256": "59e49f530dc8da4f1b4d2b5879f3321a955ec7a714d9bbdc05ea77c20cad1e54",
+      "public_Display_visible": true,
+      "reviewed_at_original_resolution": true,
+      "observation": "Public Display first image at 590x1280 after the third 150-second hold; expected theme/brightness content shown before any source motion."
+    }
+  ],
+  "quiet_after_stop": {
+    "device_start_epoch_s": 1793225030,
+    "device_end_epoch_s": 1793225099,
+    "observation_seconds": 68,
+    "new_screen_events": [],
+    "projection_after": {
+      "projection_package_present": false,
+      "screen_fgs": false,
+      "mic_fgs": true,
+      "fgs_types": [
+        "0x80"
+      ]
+    }
+  },
+  "receiver_cleanup": [
+    true,
+    true
+  ],
+  "harness_sources": {
+    "peers.mjs": "f6a6e7c054760ae7b58681d77df0e11e885c029f816d5b9468d1aac14b515e65",
+    "receiver_stats.mjs": "a548015e31b604b311c29f6d4e5857d3df319dc36e43d8abdb8874860da062c1",
+    "cycle.py": "0534c9dec9b7d32a621fd1e66c7c966978c01b53effa559745551e68d1a52916",
+    "verify_cycle.py": "d72dbf85f5fab31fd29f580aa002f03e26332d2c17e468466249099b62086120",
+    "collect_logs.py": "8c59631d662d0dfb703791aeb1d0d5785fd34dee4237ee175f9273ca4f2b530d",
+    "collect_capture.py": "461aa21d64a0c2f60536a5bdcb4d5f7ce2a71478c581dda47321591cf4e587ba",
+    "stop.py": "8d6e69baf90ec01ee9da7904c50fa66dee964b139700369113b55c3acc61a8dc"
+  }
+}
