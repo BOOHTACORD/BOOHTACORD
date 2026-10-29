@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "owned-qa-dependency-cache-recovery",
+  "source_revision": "d05922d7475b6e8f7774f72b9884a3517a747f9c",
+  "image": "livekit/egress:v1.14.1",
+  "image_repo_digest": "livekit/egress@sha256:bf2b648b947349c3e9ff7aa8c718f00378d5c06af7624652a3653318e00333ce",
+  "ubuntu_cache_pull": {
+    "started_at": "2026-10-29T21:08:46.547407+00:00",
+    "finished_at": "2026-10-29T21:11:57.554320+00:00",
+    "exit_code": 0,
+    "scope": "Existing Ubuntu QA daemon image cache; independent pull maintained the pinned download after canonical stage timeout"
+  },
+  "duplicate_windows_pull": {
+    "stopped_at": "2026-10-29T21:09:55.7617431Z",
+    "process_id": 34688,
+    "guard": "Exact docker.exe path, pinned image command and creation timestamp verified immediately before selective stop",
+    "running_container_count_before": 9,
+    "running_container_count_after": 9,
+    "running_container_identities_unchanged": true
+  },
+  "prior_attempt": "canonical-attempt1.json",
+  "removed_timed_out_attempt": {
+    "containers": 7,
+    "networks": 1,
+    "volumes": 0,
+    "images": 1,
+    "remaining_owned_containers": 0,
+    "private_temporary_directory_removed": true,
+    "loopback_ports_available": true
+  },
+  "canonical_retry": {
+    "started_at": "2026-10-29T21:14:36.051362+00:00",
+    "features": [
+      "chat",
+      "auth",
+      "connection_status",
+      "screen",
+      "voice"
+    ],
+    "platform": "web",
+    "base": "87a0bdccbfc1d9194de6015ac3aea78d66726ac1",
+    "real_stack": true,
+    "stage_limit_seconds": 1800,
+    "source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "boundaries": {
+    "production_mutation": false,
+    "source_changed": false,
+    "pin_changed": false,
+    "stage_limit_changed": false,
+    "router_or_internet_settings_changed": false,
+    "docker_daemon_settings_changed": false,
+    "old_windows_services_changed": false,
+    "new_screenshot_baseline_approved": false
+  }
+}

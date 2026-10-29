@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "kind": "canonical-local-features-first-attempt",
+  "at_utc": "2026-10-29T21:13:36.399906+00:00",
+  "source": "d05922d7475b6e8f7774f72b9884a3517a747f9c diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "status": "FAIL",
+  "features": [
+    "auth",
+    "chat",
+    "connection_status",
+    "screen",
+    "voice"
+  ],
+  "platforms": [
+    "web"
+  ],
+  "stages": [
+    {
+      "name": "web-unit",
+      "status": "PASS"
+    },
+    {
+      "name": "web-build",
+      "status": "PASS"
+    },
+    {
+      "name": "web-accessibility",
+      "status": "PASS"
+    },
+    {
+      "name": "web-auth_session_retention",
+      "status": "PASS"
+    },
+    {
+      "name": "web-chat_rhythm",
+      "status": "PASS"
+    },
+    {
+      "name": "web-connection_status",
+      "status": "PASS"
+    },
+    {
+      "name": "web-conversation_action_disclosure",
+      "status": "PASS"
+    },
+    {
+      "name": "web-dm_starter",
+      "status": "PASS"
+    },
+    {
+      "name": "web-mentions_inbox",
+      "status": "PASS"
+    },
+    {
+      "name": "web-message_social",
+      "status": "PASS"
+    },
+    {
+      "name": "web-mini_player",
+      "status": "PASS"
+    },
+    {
+      "name": "web-password_generation",
+      "status": "PASS"
+    },
+    {
+      "name": "web-password_reset_visibility",
+      "status": "PASS"
+    },
+    {
+      "name": "web-quick_jump_people",
+      "status": "PASS"
+    },
+    {
+      "name": "web-screen_profile",
+      "status": "PASS"
+    },
+    {
+      "name": "web-screen_share_ui",
+      "status": "PASS"
+    },
+    {
+      "name": "web-search_dates",
+      "status": "PASS"
+    },
+    {
+      "name": "web-search_presentation",
+      "status": "PASS"
+    },
+    {
+      "name": "web-search_sessions",
+      "status": "PASS"
+    },
+    {
+      "name": "web-voice_disconnect_notice",
+      "status": "PASS"
+    },
+    {
+      "name": "web-voice_interface",
+      "status": "PASS"
+    },
+    {
+      "name": "web-real-stack-1440",
+      "status": "BLOCKED"
+    },
+    {
+      "name": "web-real-stack-393",
+      "status": "FAIL"
+    }
+  ],
+  "screenshot_count": 525,
+  "visual_review": "NOT_RUN",
+  "original_report_sha256": "033482768e2905dab7b5c9749d9bc1d59a40698af4618c6de40e7b5bf391f242",
+  "stage_log_sha256": {
+    "web-real-stack-1440": "27e62e931308967d23bd1302fe7c36282f0a3956bea30413d3bc3bef4a52cd27",
+    "web-real-stack-393": "4e874399eaf27e22f635160da97829c3a241f46992e95392abc55bbae3be3d91"
+  },
+  "primary_blocker": "Pinned Egress v1.14.1 cache download exceeded existing 1800-second real-stack stage limit",
+  "following_stage_reason": "OSError: [Errno 98] Address already in use",
+  "removed_owned_resources": {
+    "container": 7,
+    "network": 1,
+    "volume": 0,
+    "image": 1
+  },
+  "remaining_owned_containers": 0,
+  "owned_loopback_ports_available": true,
+  "owned_private_temporary_directory_removed": true,
+  "source_or_stage_limit_changed": false
+}

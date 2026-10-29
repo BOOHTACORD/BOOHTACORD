@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "kind": "pr605-delivery-closure",
+  "issues": [
+    580,
+    581
+  ],
+  "pull_request": 605,
+  "checked_at": "2026-10-29T21:15:32.303454+00:00",
+  "status": "PASS_DELIVERED_CANONICAL_RETRY_PENDING",
+  "source_revision": "4cdc3dc8b69e210dc83e47714287562eab9f4f86",
+  "source_tree": "ebeac23a5fc9b9d989318f2d80e7f353faf5033c",
+  "build": {
+    "run_id": 40954061417,
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "source_revision": "4cdc3dc8b69e210dc83e47714287562eab9f4f86",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40954061417",
+    "jobs": [
+      {
+        "id": 123729437755,
+        "name": "changes",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123729526288,
+        "name": "web / sfu",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123729526316,
+        "name": "web / fast",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123729526328,
+        "name": "contracts / contracts",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123729526435,
+        "name": "backend / load",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123729526490,
+        "name": "backend / static",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123729526494,
+        "name": "web / browser (browser-content)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123729526534,
+        "name": "backend / database",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123729526557,
+        "name": "web / browser (browser-voice)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123729526634,
+        "name": "web / browser (browser-conversations)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123729527168,
+        "name": "web / browser (browser-shell)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123732530350,
+        "name": "backend / backend",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123732716776,
+        "name": "web / frontend",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123732860735,
+        "name": "server-quality",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123732964916,
+        "name": "bundle",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "deploy": {
+    "run_id": 40955588855,
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "source_revision": "4cdc3dc8b69e210dc83e47714287562eab9f4f86",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40955588855",
+    "jobs": [
+      {
+        "id": 123734727861,
+        "name": "route",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123734828482,
+        "name": "install",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "delivery_artifact": {
+    "id": 12932697694,
+    "name": "delivery-40955588855-1",
+    "size_in_bytes": 1499,
+    "url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/artifacts/12932697694",
+    "archive_download_url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/artifacts/12932697694/zip",
+    "expired": false,
+    "created_at": "2026-10-29T21:12:57Z",
+    "expires_at": "2026-11-28T21:12:57Z",
+    "updated_at": "2026-10-29T21:12:57Z",
+    "digest": "sha256:8ee25dc636e5b4a77e4374e68411076d33e34fb707ef29ab6bb16b7442089aff",
+    "workflow_run": {
+      "id": 40955588855,
+      "repository_id": 1398599178,
+      "head_repository_id": 1398599178,
+      "head_branch": "master",
+      "head_sha": "4cdc3dc8b69e210dc83e47714287562eab9f4f86"
+    }
+  },
+  "actual_delivery_zip_sha256_verified": true,
+  "original_receipt_sha256": "7eb32de7082dadbd7feb5c44692284560459053a73232028c9d0bce6b3f57b71",
+  "producer_artifact": {
+    "id": 12932583983,
+    "name": "server-4cdc3dc8b69e210dc83e47714287562eab9f4f86-40954061417-1",
+    "size_in_bytes": 89139254,
+    "url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/artifacts/12932583983",
+    "archive_download_url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/artifacts/12932583983/zip",
+    "expired": false,
+    "created_at": "2026-10-29T21:11:01Z",
+    "expires_at": "2026-11-28T21:10:57Z",
+    "updated_at": "2026-10-29T21:11:01Z",
+    "digest": "sha256:7b90a98c6eb07f03b33fbb801c2afda2833f16abdbdc725bd210e6c6ef068d94",
+    "workflow_run": {
+      "id": 40954061417,
+      "repository_id": 1398599178,
+      "head_repository_id": 1398599178,
+      "head_branch": "master",
+      "head_sha": "4cdc3dc8b69e210dc83e47714287562eab9f4f86"
+    }
+  },
+  "fresh_runtime_readback": "FRESH_READBACK_VERIFIED",
+  "api_web_source_match": true,
+  "health": "PASS",
+  "persistent_volume_identities_unchanged": true,
+  "schema_sha256_unchanged": true,
+  "migration_inventory_sha256_unchanged": true,
+  "public_receipt": "public-receipt605.json",
+  "delivery_receipt": "../delivery605.json",
+  "human_approval": "NOT_ASSERTED",
+  "prior_failed_attempts": [
+    "master-attempt1-infra.json",
+    "master-attempt2-receipt-boundary.json"
+  ],
+  "canonical_gate": {
+    "prior_attempt": "canonical-attempt1.json",
+    "retry_started_at": "2026-10-29T21:14:36.051362+00:00",
+    "status": "RUNNING",
+    "source_or_stage_limit_changed": false
+  },
+  "limits": [
+    "No manual production installation, SQL, fault/load traffic or browser/device acceptance executed by delivery packet.",
+    "Web headed changed-view acceptance and exact runner/source hashes remain in a535c3af.",
+    "Canonical gallery visual_review remains scoped separately; no new screenshot baseline was approved."
+  ]
+}
