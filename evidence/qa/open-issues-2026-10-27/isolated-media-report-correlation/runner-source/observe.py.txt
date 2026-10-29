@@ -1,0 +1,56 @@
+import json,time
+from urllib.parse import urlencode
+from common import P,read,write,get,now,sha
+QUERY='sum(voice_platform_client_screen_reports_total{platform="desktop_web",direction="receiver",state="playing"})'
+def counter():
+    port=read(P/'private/observer-ports.json')['prometheus'];code,raw=get(port,'/api/v1/query?'+urlencode({'query':QUERY}));assert code==200
+    d=json.loads(raw);assert d['status']=='success';xs=d['data']['result'];assert len(xs)<=1
+    return float(xs[0]['value'][1]) if xs else 0,raw
+def before(c):
+    value,raw=counter();(P/'private/prom-before.json').write_bytes(raw)
+    write(P/'observer-before.json',{'utc':now(),'counter_value':value,'query':'fixed-enum screen-report counter sum','raw_SHA256':sha(raw)})
+def walk(obj):
+    if isinstance(obj,dict):
+        if obj.get('name')=='media.sample' and 'attributes' in obj:yield obj
+        for v in obj.values():yield from walk(v)
+    elif isinstance(obj,list):
+        for v in obj:yield from walk(v)
+def attrs(span):
+    d={}
+    for x in span.get('attributes',[]):
+        v=x.get('value',{});d[x['key']]=next((v[k] for k in ['stringValue','intValue','doubleValue','boolValue','string_value','int_value'] if k in v),None)
+    return d
+def after(c):
+    start=time.monotonic();port=read(P/'private/observer-ports.json')['tempo'];attempt=0;found={};samples=[];counter_after=None
+    while time.monotonic()-start<35:
+        attempt+=1;code,raw=get(port,'/api/search?'+urlencode({'q':'{ span.app.visit.id = "'+c['visit']+'" }','limit':20}))
+        (P/'private'/('tempo-search-'+str(attempt)+'.json')).write_bytes(raw);assert code==200
+        data=json.loads(raw)
+        for row in data.get('traces',[]):
+            trace=row.get('traceID') or row.get('traceId');assert trace and all(x in '0123456789abcdef' for x in trace.lower())
+            if trace in found:continue
+            status,body=get(port,'/api/traces/'+trace);assert status==200
+            (P/'private'/('trace-'+str(len(found))+'.json')).write_bytes(body);found[trace]=body
+        samples=[span for body in found.values() for span in walk(json.loads(body))]
+        value,raw_prom=counter();counter_after=value;(P/'private/prom-after.json').write_bytes(raw_prom)
+        if len(samples)>=3 and value-read(P/'observer-before.json')['counter_value']>=3:break
+        time.sleep(2)
+    matching={};unexpected=[]
+    for span in samples:
+        a=attrs(span);flow=a.get('app.flow.id');matching.setdefault(flow,[]).append(a)
+        if a.get('app.visit.id')!=c['visit']:unexpected.append('foreign-visit')
+    rows=[]
+    for r in c['reports']:
+        xs=matching.get(r['flow'],[]);accepted=r['actual_HTTP']==204;ok=len(xs)==(1 if accepted else 0)
+        item={'case':r['label'],'actual_HTTP':r['actual_HTTP'],'media_sample_span_count':len(xs),'expected_span_count':1 if accepted else 0}
+        if accepted and len(xs)==1:
+            a=xs[0];expected=c['leases']['first']['id'].replace('-','') if 'voice_lease_id' in r['body'] else None
+            identity=a.get('user.id')==c['accounts']['a'] and a.get('session.id')==c['sessions']['a1']['telemetry']
+            flow=a.get('app.visit.id')==c['visit'] and a.get('app.flow.id')==r['flow'] and str(a.get('app.flow.attempt'))=='2'
+            media=a.get('app.media.session.id')==expected and a.get('app.media.session.id')!=c['forged']
+            item.update({'authenticated_identity_matches':identity,'visit_flow_attempt_preserved':flow,'server_derived_or_absent_media_ID_matches':media,'provenance_client_observed':a.get('app.provenance')=='client_observed'})
+            ok=ok and identity and flow and media and item['provenance_client_observed']
+        item['result']='PASS' if ok else 'NOT_PROVEN';rows.append(item)
+    delta=counter_after-read(P/'observer-before.json')['counter_value']
+    result={'utc':now(),'status':'PASS_SCOPED' if all(x['result']=='PASS' for x in rows) and delta==3 and not unexpected else 'PARTIAL','window_seconds':round(time.monotonic()-start,3),'search_attempts':attempt,'actual_media_sample_spans':len(samples),'expected_accepted_spans':3,'negative_flow_span_matches':sum(len(matching.get(r['flow'],[])) for r in c['reports'] if r['actual_HTTP']!=204),'Prometheus_counter_delta':delta,'expected_counter_delta':3,'checks':rows,'raw_trace_files_private':len(found),'unexpected_visit_matches':len(unexpected),'trace_payloads_exported_public':False,'limit':'Real GoAPI/PG/Tempo and Prometheus diagnostic data only; no RTC/media/frame/capacity capability or p95 claim.'}
+    write(P/'observer-result.json',result);return result

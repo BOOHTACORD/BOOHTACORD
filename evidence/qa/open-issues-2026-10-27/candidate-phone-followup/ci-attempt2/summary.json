@@ -1,0 +1,141 @@
+{
+  "status": "PASS_SIGNED_QA_CANDIDATE_BYTES_AND_NATIVE_CONTRACT_NO_INSTALL",
+  "frozen_after_this_packet": true,
+  "source_revision": "754b5997ad100cb00300373f29ab88bda4ed267d",
+  "source_tree": "1677b5698447482654771487c000d0c1e94edd6f",
+  "base": "9bda19e6db5c754c497dc652a8effa836c75451a",
+  "installed_or_restarted": false,
+  "workflow_class": "review_gate",
+  "packet": "PR596-same-run-full-rerun-attempt2-signed-QA-candidate",
+  "run": {
+    "recorded_utc": "2026-10-28T23:24:04.429572+00:00",
+    "run_id": 40784080135,
+    "run_attempt": 2,
+    "source_revision": "754b5997ad100cb00300373f29ab88bda4ed267d",
+    "event": "workflow_dispatch",
+    "dry_run": true,
+    "workflow_id": 371496531,
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40784080135/attempts/2",
+    "ref": "master",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "command": "ONE FULL rerun of existing source-bound dry-run event; no new dispatch; exact source/master/input guard; actual signed artifact inspection",
+  "mandatory_when": "Before treating this exact QA candidate as available; physical acceptance and updater replacement are separate",
+  "hosted_gate": {
+    "profiles": [
+      "dart",
+      "android",
+      "android-kotlin",
+      "macos"
+    ],
+    "same_source_run_attempt": true,
+    "all_six_jobs_success": true,
+    "four_current_parts_downloaded_by_fan_in": 4,
+    "publisher_actual_conclusion": "skipped",
+    "macos_named_cases": 8,
+    "macos_skipped": 0,
+    "app_flutter": "1656pass/3skip",
+    "livekit_vendor": "449pass/3skip",
+    "webrtc_vendor": "34pass",
+    "Android_debug": "PASS actual APK built",
+    "Kotlin": "PASS both compatibility modes"
+  },
+  "actual_signed_bytes": {
+    "status": "PASS_ACTUAL_SIGNED_APK_BYTE_IDENTITY_NO_INSTALL",
+    "signed_artifact_id": 12860811483,
+    "archive_bytes": 61164043,
+    "archive_digest": "sha256:987fc91427caba8756912455c7dbffaf4669e41fb09f1f417326f890b076731d",
+    "native_version": "1.0.47+82",
+    "application_id": "ru.boohtacord.app",
+    "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+    "actual_APKs": {
+      "arm64-v8a": {
+        "bytes": 20913795,
+        "sha256": "f5a45c36d2c351c92bf2689bb0d02d2e9c495a51e07d78e088042128d03c0b66",
+        "application_id": "ru.boohtacord.app",
+        "version_name": "1.0.47",
+        "version_code": 2082,
+        "ABI": "arm64-v8a",
+        "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+        "revision_code_if_reported": null
+      },
+      "armeabi-v7a": {
+        "bytes": 18798595,
+        "sha256": "9fadc0789c6492898fa467e54e36b6c9a0a4fe0635b2472164c290d33b35d981",
+        "application_id": "ru.boohtacord.app",
+        "version_name": "1.0.47",
+        "version_code": 1082,
+        "ABI": "armeabi-v7a",
+        "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+        "revision_code_if_reported": null
+      },
+      "x86_64": {
+        "bytes": 22276589,
+        "sha256": "52c2c6da54ad737db2f105e7b359d3e345c61ca905cb635f2a0401e23e6d0674",
+        "application_id": "ru.boohtacord.app",
+        "version_name": "1.0.47",
+        "version_code": 4082,
+        "ABI": "x86_64",
+        "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+        "revision_code_if_reported": null
+      }
+    },
+    "canonical_contract_Git_blobs_checked": 20,
+    "complete_manifest_and_SHA256SUMS": "PASS",
+    "all_three_APKs_remain_in_verified_archive": true
+  },
+  "native_contract": {
+    "status": "PASS_NATIVE_CONTRACT_SOURCE_AND_SIGNED_BYTES_SAME_RUN_ATTEMPT",
+    "artifact_id": 12859839202,
+    "archive_sha256": "d4b60f4d395de99c8fa4e4555edd3b41dada2178e53b6b919a822a3d5954147d",
+    "release_mode": "candidate",
+    "source_ref": "refs/heads/master",
+    "source_event": "workflow_dispatch",
+    "tag_verified": false,
+    "trigger_revision": "754b5997ad100cb00300373f29ab88bda4ed267d",
+    "execution": {
+      "run_attempt": "2",
+      "run_id": "40784080135"
+    },
+    "assets_match_actual_signed_byte_inventory": true
+  },
+  "mutations": {
+    "full_rerun_posts_this_packet": 1,
+    "new_dispatches_this_packet": 0,
+    "original_dispatch_previous_packet": 1,
+    "additional_reruns": 0,
+    "cancel_calls": 0,
+    "release_or_tag_publications": 0,
+    "source_workflow_security_cache_rule_changes": 0,
+    "UI_ADB_install_device_actions": 0,
+    "local_private_signing_key_access": false,
+    "controller_credentials_logged_or_written": false
+  },
+  "prior_failure": {
+    "historical_packet_role": "initial_CI_attempt1",
+    "run_attempt": 1,
+    "status": "cancelled",
+    "observation": "Mac exceeded15m limit;20m01s observed wall; runner logs404;3parts/fan-inFAIL/signskipped",
+    "underlying_cause": "UNKNOWN; no provider/product conclusion substituted after retry success",
+    "summary_sha256": "90f9b17af963f56b16266287ac956e61ac33f87c184878661efb05a5f599b416",
+    "all_65_frozen_files_unchanged": true
+  },
+  "source_identity": {
+    "prepared_head": "1a608bfac6f5a177d06f77ba040acc18760e2246",
+    "actual_merged_source": "754b5997ad100cb00300373f29ab88bda4ed267d",
+    "tested_synthetic": "40af8f1a9c353ea9b5c841c6afd66dbaeaeaa692",
+    "same_tree_verified_before_dispatch": true,
+    "pre_merge_all27_success": "Root-verified receipt retained; this packet independently proves fresh release workflow six jobs",
+    "source_contract_and_expected_helpers_pins_preserved": true
+  },
+  "limits": [
+    "Artifact byte/source/signature and hosted gate acceptance only; no installability/replacement/physical/UI/media PASS",
+    "No fresh installed phone binary or Android base/split revision compatibility read; aapt did not report revisionCode",
+    "No version increment required solely for same-code QA; monotonic updater acceptance NOT_RUN",
+    "No public GitHub Release published; dry-run publisher actualSKIPPED; production deployed source not inferred",
+    "Raw logs/APKs/ZIPs remain private in Q .out; public metadata only through allowlist",
+    "Issue595 unchanged by this agent; complete hosted signed-candidate proof supplied to root for disposition"
+  ],
+  "report": "Slavik Gym report: route=tools/release/native_contract; packet=PR596-attempt2-signed-byte-review_gate; tokens=estimated:13000; method=manual_estimate; driver=same-attempt-four-profile-and-actual-signed-bytes; next_split=separately-coordinated-physical-regression"
+}

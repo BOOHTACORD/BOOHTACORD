@@ -1,0 +1,103 @@
+{
+  "head": "1a608bfac6f5a177d06f77ba040acc18760e2246",
+  "checkout": "40af8f1a9c353ea9b5c841c6afd66dbaeaeaa692",
+  "run_id": 40781872794,
+  "attempt": 1,
+  "raw_events_sha256": "6ba0ace9cd25aa14543d68f42e48183ce3763dd7c4ae31564f9672e21621947e",
+  "passed": 3,
+  "skipped": 0,
+  "failed": 0,
+  "rerun": false,
+  "tests": [
+    {
+      "name": "TestConcurrentDuplicateDesiredStateCreatesOneReaction",
+      "events": [
+        {
+          "Time": "2026-10-28T22:42:40.406179427Z",
+          "Action": "run",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestConcurrentDuplicateDesiredStateCreatesOneReaction"
+        },
+        {
+          "Time": "2026-10-28T22:42:40.406210264Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestConcurrentDuplicateDesiredStateCreatesOneReaction"
+        },
+        {
+          "Time": "2026-10-28T22:42:41.790328022Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestConcurrentDuplicateDesiredStateCreatesOneReaction"
+        },
+        {
+          "Time": "2026-10-28T22:42:41.79036726Z",
+          "Action": "pass",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestConcurrentDuplicateDesiredStateCreatesOneReaction",
+          "Elapsed": 1.38
+        }
+      ]
+    },
+    {
+      "name": "TestReactionAndPinDesiredStatesAreIdempotentAndCountsDoNotExposeActors",
+      "events": [
+        {
+          "Time": "2026-10-28T22:42:42.822227108Z",
+          "Action": "run",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestReactionAndPinDesiredStatesAreIdempotentAndCountsDoNotExposeActors"
+        },
+        {
+          "Time": "2026-10-28T22:42:42.822235611Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestReactionAndPinDesiredStatesAreIdempotentAndCountsDoNotExposeActors"
+        },
+        {
+          "Time": "2026-10-28T22:42:43.84344808Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestReactionAndPinDesiredStatesAreIdempotentAndCountsDoNotExposeActors"
+        },
+        {
+          "Time": "2026-10-28T22:42:43.843594442Z",
+          "Action": "pass",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestReactionAndPinDesiredStatesAreIdempotentAndCountsDoNotExposeActors",
+          "Elapsed": 1.02
+        }
+      ]
+    },
+    {
+      "name": "TestReactionPrivacyBlocksOutsiderAdminBlockedAndWrongConversation",
+      "events": [
+        {
+          "Time": "2026-10-28T22:42:43.843671719Z",
+          "Action": "run",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestReactionPrivacyBlocksOutsiderAdminBlockedAndWrongConversation"
+        },
+        {
+          "Time": "2026-10-28T22:42:43.84367939Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestReactionPrivacyBlocksOutsiderAdminBlockedAndWrongConversation"
+        },
+        {
+          "Time": "2026-10-28T22:42:44.860599671Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestReactionPrivacyBlocksOutsiderAdminBlockedAndWrongConversation"
+        },
+        {
+          "Time": "2026-10-28T22:42:44.860655776Z",
+          "Action": "pass",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestReactionPrivacyBlocksOutsiderAdminBlockedAndWrongConversation",
+          "Elapsed": 1.02
+        }
+      ]
+    }
+  ]
+}

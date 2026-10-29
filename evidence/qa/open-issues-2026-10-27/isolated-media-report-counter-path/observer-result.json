@@ -1,0 +1,18 @@
+{
+  "utc": "2026-10-28T23:48:20.229568+00:00",
+  "status": "PASS_SCOPED_OTLP_AND_TRACE",
+  "observation_seconds": 20.344,
+  "attempts": 11,
+  "correct_OTLP_metric_before": 3.0,
+  "correct_OTLP_metric_after": 4.0,
+  "correct_OTLP_counter_delta": 1.0,
+  "native_private_metric_Prometheus_series_before": 0,
+  "native_private_metric_Prometheus_series_after": 0,
+  "native_private_empty_is_not_counter_zero": true,
+  "owned_media_sample_spans": 1,
+  "rejected_flow_media_sample_spans": 0,
+  "trace_owner_session_visit_match_and_no_mediaID": true,
+  "raw_trace_payloads_private": true,
+  "expected_no_native_API_scrape_path": true,
+  "limit": "One declared synthetic diagnostic report. No physical quality, SLO, publication or connected media evidence."
+}

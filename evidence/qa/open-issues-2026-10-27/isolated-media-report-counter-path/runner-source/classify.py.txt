@@ -1,0 +1,24 @@
+import hashlib,json,re,subprocess
+from pathlib import Path
+from datetime import datetime,timezone
+P=Path(__file__).resolve().parent;Q=P.parents[1];P.mkdir(exist_ok=True)
+write=lambda p,v:p.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+sha=lambda b:hashlib.sha256(b).hexdigest()
+files=['backend/internal/observability/report_client_screen/api/http_handler.go','backend/internal/observability/report_client_screen/api/record_qoe.go','backend/internal/observability/report_client_screen/aggregate/instruments.go','backend/internal/observability/report_client_screen/aggregate/observe.go','backend/internal/observability/report_client_screen/aggregate/sample.go','backend/internal/observability/report_client_screen/aggregate/freshness.go','backend/internal/observability/http_metrics/client_screen.go','backend/internal/observability/start_metrics/provider.go','docker/observability/collector.yaml','docker/observability/prometheus.yaml','docker/observability/media-qoe-alerts.yaml','docker/observability/dashboards/media-qoe.json','tools/verify/media_qoe/fields.json','tools/verify/media_qoe/test_dashboard.py','tools/verify/media_qoe/promql.py','docs/operations/media-qoe.md']
+refs={'Q072':'072426d60b1c0b1f7e5f66722a0da5faa00b50d7','W1a':'1a608bfac6f5a177d06f77ba040acc18760e2246','merged754b':'754b5997ad100cb00300373f29ab88bda4ed267d'}
+bindings=[]
+for name in files:
+    raw=(Q/name).read_bytes();lf=raw.replace(b'\r\n',b'\n');blobs={}
+    for label,ref in refs.items():
+        b=subprocess.check_output(['git','show',ref+':'+name],cwd=Q);blobs[label]=sha(b.replace(b'\r\n',b'\n'));assert b.replace(b'\r\n',b'\n')==lf,(name,label)
+    bindings.append({'file':name,'working_SHA256':sha(raw),'LF_SHA256':sha(lf),'equal_Q072_W1a_merged754b':True,'blob_LF_SHA256':blobs})
+dashboard=json.loads((Q/files[11]).read_text('utf-8'));mapping=json.loads((Q/files[12]).read_text('utf-8'))
+consumers=files[10:15]+['docs/operations/media-qoe.md']
+manual='voice_platform_client_screen_reports_total';qoe='boohtacord_media_reports_total'
+assert not any(manual in (Q/f).read_text('utf-8') for f in consumers)
+assert qoe in mapping['prometheus_metrics'] and qoe in json.dumps(dashboard)
+prom=(Q/'docker/observability/prometheus.yaml').read_text('utf-8');collector=(Q/'docker/observability/collector.yaml').read_text('utf-8')
+assert len(re.findall(r'job_name:',prom))==5 and 'api:8080' not in prom and 'prometheus:' not in collector.split('processors:')[0]
+root=P.parent/'qa-prometheus-discovery';receipts={n:sha((root/(n+'.json')).read_bytes()) for n in ['result','names','collector-path','reload-readiness','direct-native-counter']}
+write(P/'source-classification.json',{'utc':datetime.now(timezone.utc).isoformat(),'workflow_class':'review_gate','route':'observability/report_client_screen/aggregate','scope':'Accepted report: native private exposition versus OTLP QoE export and bounded canonical consumers','source_bindings':bindings,'root_discovery_receipt_SHA256':receipts,'native_private_family':{'instrument':manual,'writer':'http_metrics/client_screen.go: ObserveClientScreen','transport':'Private API /metrics native Prometheus registry; not automatically bridged into OTLP','configured_Prometheus_API_scrape':False,'counter_empty_vector_meaning':'No configured scrape path for this instrument, not data-loss evidence'},'OTLP_QoE_family':{'instrument':'boohtacord_media_reports','Prometheus_name':qoe,'writer':'record_qoe.go -> aggregate.Observe','transport':'start_metrics15s periodic OTLP -> collector OTLP receiver/batch -> Prometheus exporter8889 -> canonical scrape','source_counter_labels':['platform','direction','source','state','freshness']},'canonical_consumer_review':{'dashboard_UID':dashboard['uid'],'reviewed_files':consumers,'native_manual_counter_references':0,'OTLP_QoE_name_in_mapping_and_dashboard':True,'typed_test':'tools/verify/media_qoe/test_dashboard.py::test_mapping_is_bound_to_exported_production_instruments','limits':'Bounded QoE consumer set only, not a claim about every repository/deployment consumer. Native incident-snapshot scrape dependency is separately documented and not this client-report counter.'},'bug_candidate':'NO_CONFIRMED_MANUAL_COUNTER_CONSUMER_GAP_IN_REVIEWED_SET','new_native_tests_executed':0,'native_policy':'Current CI already ran1674 Go tests; inspect source only, no rerun','previous_empty_vector_record':'Frozen unchanged; classification is separate evidence, not retroactive Prometheus PASS'})
+print('PASS16 exact source blobs matchQ072/W1a/754b; canonicalQoE consumers use OTLP names, not native private counter')

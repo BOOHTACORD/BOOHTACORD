@@ -1,0 +1,2003 @@
+{
+  "schema": "closed-safe-execution-projection-v1",
+  "source_audit_SHA256": "184631d33b6745238653673214b06302afacbe6d9d6964445473cd39c45a43ee",
+  "controller_exit0_not_fullQA_PASS": true,
+  "no_raw_output_credentials_body_identifiers_names_or_private_paths": true,
+  "receipts": [
+    {
+      "receipt": "identity-after.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "package",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "pm",
+            "path",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "pull",
+            "<owned-base.apk>",
+            "<private-owned-APK>"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "aapt",
+            "dump",
+            "badging",
+            "<owned-APK>"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "apksigner",
+            "verify",
+            "--verbose",
+            "--print-certs",
+            "<owned-APK>"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "identity-before.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "package",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "pm",
+            "path",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "pull",
+            "<owned-base.apk>",
+            "<private-owned-APK>"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "aapt",
+            "dump",
+            "badging",
+            "<owned-APK>"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "apksigner",
+            "verify",
+            "--verbose",
+            "--print-certs",
+            "<owned-APK>"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "identity-candidate.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "aapt",
+            "dump",
+            "badging",
+            "<owned-APK>"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "apksigner",
+            "verify",
+            "--verbose",
+            "--print-certs",
+            "<owned-APK>"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "known-DM-navigation-diagnostic.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "native-after-recovered.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "native-after.json",
+      "controller_exit": 2,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "native-before.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "native-final.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "navigation-peer-recovered.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "input",
+            "tap",
+            "450",
+            "1036"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "navigation-peer.json",
+      "controller_exit": 2,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "navigation-personal.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "input",
+            "tap",
+            "655",
+            "502"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "one-ordinary-activation.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "package",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "pm",
+            "path",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "sha256sum",
+            "<owned-installed-base.apk>"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "am",
+            "start",
+            "-n",
+            "ru.boohtacord.app/.MainActivity"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "postinstall-surface-diagnostic.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "profile-back.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "input",
+            "tap",
+            "90",
+            "164"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "profile-compare.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "profile-open-navigation.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "input",
+            "tap",
+            "101",
+            "175"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "profile-own-profile.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "input",
+            "tap",
+            "315",
+            "2208"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "replacement.json",
+      "controller_exit": 2,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "smoke-native-marker.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "input",
+            "tap",
+            "978",
+            "175"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "input",
+            "tap",
+            "765",
+            "479"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "input",
+            "swipe",
+            "540",
+            "2001",
+            "540",
+            "355",
+            "350"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "input",
+            "swipe",
+            "540",
+            "2001",
+            "540",
+            "355",
+            "350"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "screencap",
+            "-p"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "smoke-peer-cleanup.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [],
+      "HTTP": [
+        {
+          "operation_alias": "own B session guard",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-28T23:58:54.102381+00:00"
+        },
+        {
+          "operation_alias": "exact owned control message read",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-28T23:58:54.171941+00:00"
+        },
+        {
+          "operation_alias": "delete only own B marker",
+          "method": "DELETE",
+          "HTTP": 204,
+          "at_utc": "2026-10-28T23:58:54.211994+00:00"
+        },
+        {
+          "operation_alias": "exact owned control message read",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-28T23:58:54.284129+00:00"
+        },
+        {
+          "operation_alias": "unchanged baseline guard",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-28T23:58:54.329188+00:00"
+        },
+        {
+          "operation_alias": "only own B session revoke",
+          "method": "POST",
+          "HTTP": 204,
+          "at_utc": "2026-10-28T23:58:54.377249+00:00"
+        },
+        {
+          "operation_alias": "live revoked session guard",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-28T23:58:54.422310+00:00"
+        }
+      ],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "smoke-peer-login.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [
+        {
+          "operation_alias": "one normal own B login",
+          "method": "POST",
+          "HTTP": 204,
+          "at_utc": "2026-10-28T23:58:25.266064+00:00"
+        },
+        {
+          "operation_alias": "own B session guard",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-28T23:58:25.394228+00:00"
+        },
+        {
+          "operation_alias": "known existing pair metadata",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-28T23:58:25.432278+00:00"
+        },
+        {
+          "operation_alias": "owned pair baseline",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-28T23:58:25.473835+00:00"
+        }
+      ],
+      "attachment_HTTP": []
+    },
+    {
+      "receipt": "smoke-peer-post.json",
+      "controller_exit": 0,
+      "controller_status": null,
+      "actual_commands": [
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "exec-out",
+            "uiautomator",
+            "dump",
+            "/dev/tty"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "activities"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "activity",
+            "services",
+            "ru.boohtacord.app"
+          ],
+          "actual_exit": 0
+        },
+        {
+          "argv": [
+            "adb",
+            "shell",
+            "dumpsys",
+            "media_projection"
+          ],
+          "actual_exit": 0
+        }
+      ],
+      "HTTP": [
+        {
+          "operation_alias": "own B session guard",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-28T23:58:25.713743+00:00"
+        },
+        {
+          "operation_alias": "one B postinstall marker",
+          "method": "POST",
+          "HTTP": 201,
+          "at_utc": "2026-10-28T23:58:28.621900+00:00"
+        }
+      ],
+      "attachment_HTTP": []
+    }
+  ],
+  "normal_install_command": [
+    "adb",
+    "install",
+    "-r",
+    "<SHA-bound-candidate>"
+  ],
+  "normal_install_actual_exit": 0,
+  "normal_PM_success": true
+}

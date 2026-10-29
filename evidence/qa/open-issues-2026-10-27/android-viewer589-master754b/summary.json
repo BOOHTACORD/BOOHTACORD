@@ -1,0 +1,283 @@
+{
+  "schema": "closed-safe-viewer589-physical-v1",
+  "sealed_at_utc": "2026-10-29T00:08:29.328136+00:00",
+  "workflow_class": "review_gate",
+  "route": "widgets/attachment_revocation/already-open-native-viewer",
+  "status": "NOT_PROVEN_STRICT_INDEPENDENT_WHILE_OPEN_HISTORY_CONDITION_WITH_POSITIVE_VISUAL_INVALIDATION_SIGNAL_CLEANED",
+  "source_revision": "754b5997ad100cb00300373f29ab88bda4ed267d",
+  "actual_APK_SHA256": "f5a45c36d2c351c92bf2689bb0d02d2e9c495a51e07d78e088042128d03c0b66",
+  "application_id": "ru.boohtacord.app",
+  "version_name": "1.0.47",
+  "version_code": 2082,
+  "certificate_SHA256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+  "certificate_evidence": "Immediately preceding frozen same-code replacement packet; actual installed byte SHA freshly matches before and after current packet",
+  "device": "Samsung SM-A576B",
+  "Android": "16",
+  "approved_API_origin": "https://v.bootybay.ru",
+  "configured_native_URL_string": "UNOBSERVED",
+  "deployed_backend_source": "UNKNOWN",
+  "fix_under_review": "Existing589 implementation throughPR590; no new implementation or full QA acceptance",
+  "fixture": {
+    "source_SHA256": "b728e748db015458cf1b16eb808da3660292ffbfa85c507e96d4d0e98a023ac0",
+    "original_bytes": 155,
+    "preview_SHA256": "284b61cca7cbd778bd33a5313600bba5f2a0cddc5a48fc4fec23a22fe293ac05",
+    "preview_pixels": [
+      48,
+      32
+    ],
+    "preview_four_region_exact": true
+  },
+  "before": {
+    "result": "PASS_SCOPED_NATIVE_ALREADY_OPEN_PIXEL_POSITIVE_CONTROL",
+    "actual_open_input_count": 1,
+    "source_capture_SHA256": "d276fa230474c84d0b0a1df62441ab0c5e3149c8ffa54190e87951b1c7673996",
+    "image_view_count": 1,
+    "Download_visible_before_delete": true,
+    "original_pixels": [
+      1080,
+      2340
+    ],
+    "ICC_converted_to_sRGB": true,
+    "known_regions_matched": 4,
+    "max_channel_errors": [
+      0.0,
+      7.0,
+      1.0,
+      0.0
+    ],
+    "wrong_palette_rejected": true,
+    "original_resolution_visually_inspected": true
+  },
+  "API_revocation": {
+    "result": "PASS_SCOPED_OWN_AUTHOR_DELETE_AND_PROTECTED_URL_REVOCATION",
+    "B_Delete204": true,
+    "exact_tombstone200_blank_body_attachments_empty": true,
+    "original_HTTP": 404,
+    "preview_HTTP": 404,
+    "fresh_unique_B_control_POST201": true
+  },
+  "while_open": {
+    "result": "NOT_PROVEN_FULL_WHILE_OPEN_HISTORY_CONDITION",
+    "viewer_never_closed_or_reopened_during_delete_and_window": true,
+    "input_count": 0,
+    "observer_poll_window_ms_including_ADB_after_initial_guard": 20704,
+    "observations": 7,
+    "all_seven_owned_ImageView_count": 0,
+    "all_seven_unavailable_count": 1,
+    "all_seven_Download_and_imageRetry_count": 0,
+    "first_and_last_original_resolution_ICC_pixel_probes": [
+      {
+        "capture_SHA256": "f744e9d1a195375c10b41dc18414c905b05afe24007b81834d48c9af7aa30b9c",
+        "original_pixels": [
+          1080,
+          2340
+        ],
+        "ICC_present": true,
+        "ICC_converted_to_sRGB": true,
+        "four_region_means": [
+          [
+            27.0,
+            29.0,
+            38.0
+          ],
+          [
+            27.0,
+            29.0,
+            38.0
+          ],
+          [
+            27.0,
+            29.0,
+            38.0
+          ],
+          [
+            27.0,
+            29.0,
+            38.0
+          ]
+        ],
+        "max_channel_errors": [
+          228.0,
+          209.0,
+          217.0,
+          228.0
+        ],
+        "matched_regions": 0,
+        "known_pattern": false,
+        "wrong_palette_negative_control_rejected": true,
+        "tolerance_RGB": 14,
+        "reference_source_fit_rect": [
+          473.0,
+          1162.0,
+          135.0,
+          90.0
+        ]
+      },
+      {
+        "capture_SHA256": "0629d87cf01db1448c4ee8c0b260c29aba5235ba9cda6627d945604ab2c074d7",
+        "original_pixels": [
+          1080,
+          2340
+        ],
+        "ICC_present": true,
+        "ICC_converted_to_sRGB": true,
+        "four_region_means": [
+          [
+            27.0,
+            29.0,
+            38.0
+          ],
+          [
+            27.0,
+            29.0,
+            38.0
+          ],
+          [
+            27.0,
+            29.0,
+            38.0
+          ],
+          [
+            27.0,
+            29.0,
+            38.0
+          ]
+        ],
+        "max_channel_errors": [
+          228.0,
+          209.0,
+          217.0,
+          228.0
+        ],
+        "matched_regions": 0,
+        "known_pattern": false,
+        "wrong_palette_negative_control_rejected": true,
+        "tolerance_RGB": 14,
+        "reference_source_fit_rect": [
+          473.0,
+          1162.0,
+          135.0,
+          90.0
+        ]
+      }
+    ],
+    "native_history_independently_observable": false,
+    "new_control_plus_deletedrow_applied_while_open": "NOT_PROVEN_OPAQUE_FULLSCREEN_AND_MODAL_SEMANTICS_EXCLUDE_MAIN_HISTORY",
+    "pixel_unavailable_and_stale_actions_signal": "PASS_SCOPED_OBSERVATION",
+    "no_stale_download_or_retry_tapped": true
+  },
+  "after_close": {
+    "result": "PASS_SCOPED_POSTCLOSE_CORROBORATION_ONLY",
+    "normal_Back_count": 1,
+    "main_only_latest_motion": 1,
+    "History_Refresh_after_delete": 0,
+    "new_control_fully_rendered": true,
+    "current_fixture_minute_deleted_B_row_semantics": true,
+    "fixture_open_action_absent": true,
+    "frame_SHA256": "ce5f9d7df099ccf5808f01d67e376067e94dc14f482b3d6a6fbe0050bfb59c19",
+    "does_not_upgrade_while_open_condition": true
+  },
+  "cleanup": {
+    "own_B_image_and_control_tombstones_verified": 2,
+    "baseline_records_unchanged": 43,
+    "one_own_B_session_logout204_live_authenticated_false": true,
+    "native_session_untouched": true,
+    "phone_fixture_files_pushed_or_saved": 0
+  },
+  "final": {
+    "APP_known_DM_empty_composer_viewer_closed": true,
+    "media": {
+      "microphone_FGS": false,
+      "screen_FGS": false,
+      "projection_null": true,
+      "voice_connected_UI": false,
+      "active_room_is_approved": "NOT_APPLICABLE_IDLE"
+    },
+    "recovery_banner_visible": false,
+    "actual_installed_SHA_unchanged": true
+  },
+  "actions": {
+    "B_normal_login_sessions": 1,
+    "tiny_PNG_uploads": 1,
+    "B_owned_messages": 2,
+    "native_viewer_open": 1,
+    "viewer_Back_after_window": 1,
+    "previewer_History_Refresh": 1,
+    "previewer_main_reveals": 2,
+    "postclose_main_reveal": 1,
+    "RealtimeRetry": 0,
+    "native_Send": 0,
+    "Downloads_Save_or_stale_Download": 0,
+    "install_restart_force_stop_baseURL_native_logout_OS_permissions_voice_mic_share": 0
+  },
+  "source_SHA256": {
+    "clients/flutter/pubspec.yaml": "80c62dce2175e12d825d14aa079bf578fc08527c90fab0b5c86e1b14cf3054ca",
+    "clients/flutter/android/app/src/main/AndroidManifest.xml": "a13e23632992a7d370fbf1b42e94503bd2dcee38d37914c190a98a619334ed1e",
+    "clients/flutter/lib/src/widgets/attachment_revocation/view.dart": "4b582307d3ab1bb802609db0543bd06dd2e888345357986e78fba15035bb6e31",
+    "clients/flutter/lib/src/widgets/message_attachment_list.dart": "e48bfc00787d986258f8b502990c534d5c96a22331f57529f1904698ed1aa161",
+    "clients/flutter/test/attachment_revocation_test.dart": "408b5d65ac236b10673e3ec5c9f7b44620b1d62f74e90028ce233907c086acfd",
+    "clients/flutter/test/attachment_revocation/fixture.dart": "bdc69594ccaa64573487b8e0968ffecb9b4676e9d871c87987fe750a7f1387a3",
+    "clients/flutter/lib/src/features/realtime/lifecycle/status.dart": "409210dd360b156b5abcd4c56776747b996df4c90e0b275f740c4ad820bc9b0f",
+    "clients/flutter/lib/src/features/realtime/lifecycle/recovery.dart": "00f94512de433b9cd31a3feabbb7bc184749ca06db15f5e0c8d77cb5d7a41d60",
+    "clients/flutter/lib/src/features/realtime/lifecycle/connect.dart": "59bd4957a0dbd285cf4600cff39e382e7161217843ec9a6503b31695eb479aaa",
+    "clients/flutter/lib/src/screens/workspace_ui/header/conversation_actions.dart": "456f7ff9570f77e89e56b8b55208b5c93c7a87409b4061b78d09ace0610b53f1",
+    "clients/flutter/lib/src/screens/workspace_ui/direct_conversation/build/handler.dart": "b46abe0844427d2ecebe67761b72bc604bc0f17461c6aa47d7a7a4199e54a9f9",
+    "clients/flutter/lib/src/features/direct/history/api.dart": "1d76a867491a3b31bf52c1879a8fe115c5ee7eef9435b0699ca5b41ed8d3783c"
+  },
+  "nearest_native_unit_command": "cd clients/flutter && flutter test --no-pub --reporter expanded test/attachment_revocation_test.dart",
+  "unit_build_tests_this_packet": "NOT_RUN observational physical QA; no source changes; earlier hosted proof separate",
+  "criteria_mapping": [
+    {
+      "criterion": "I62.C1",
+      "source_requirement_SHA256": "bef4eb30c0bfe8f949abadff7fb30d7695af75e8d246ea3e07833cefe27db7d1",
+      "literal_source_requirement_retained_unaltered_private": true,
+      "protects": "Already-open native PNG viewer does not retain deleted cached pixels or stale actions once matching history deletion is applied",
+      "command": "baseline.py before; peer.py login; fixture_peer.py send; history.py fixture; viewer.py open/before; fixture_peer.py delete/control; viewer.py post/close; history.py after-close; peer.py cleanup; baseline.py final",
+      "platform": "Physical Samsung SM-A576B Android16 signed actualf5a arm64 1.0.47+2082 source754b",
+      "mandatory_when": "Before accepting physical already-open viewer invalidation facet; all remaining full criterion clauses stay distinct",
+      "result": "PASS_SCOPED rendered-image removal/unavailable/stale-actions absence observed while viewer remains open; strict independent applied-history/control condition NOT_PROVEN; full source criterion UNACCEPTED"
+    }
+  ],
+  "limits": [
+    "One PNG fixture/one device; no GIF animation, JPEG viewer, other platforms, human audio, media/capacity or whole security acceptance",
+    "POSTCLOSE control/tombstone evidence is not contemporaneous independent while-open history proof",
+    "No refresh/retry/close/download during decisive while-open observer; no p95 or transport claim",
+    "No cause inferred from opaque modal or source guard timing; unavailable renderer is an observed signal",
+    "B POST response attachment_count0 versus canonical GET1 is separate bounded shape evidence; no nativeA POST inspected or emptybubble causal claim"
+  ],
+  "controller_diagnostics": {
+    "CRLF_raw_bytes_edit_error_preserved": true,
+    "initial_send_immediate_guard_insertion_did_not_match_prior_CRLF": true,
+    "prior_APP_idle_baseline_27_seconds_before_send_and_no_intervening_native_input": true,
+    "fresh_main_history_source_guard_after_send_PASS": true,
+    "corrected_and_bound_before_VIEWER_or_DELETE_execution": true,
+    "no_repeated_upload_or_message_POST": true,
+    "temporary_over120_controller_copies_preserved_in_archives": true,
+    "all_final_helpers_within120_lines": true
+  },
+  "helper_count": 10,
+  "helper_lines": {
+    "baseline.py": 22,
+    "fixture_peer.py": 59,
+    "history.py": 35,
+    "http_api.py": 39,
+    "main_pane_guard.py": 23,
+    "native_guard.py": 73,
+    "peer.py": 43,
+    "pixels.py": 23,
+    "prepare.py": 41,
+    "viewer.py": 65
+  },
+  "native_skips": 0,
+  "old_frozen_packets_unchanged": {
+    "qa-agent-phone-native-lifecycle": {
+      "artifacts": 139,
+      "manifest_SHA256": "345b23f4e6417abf231856fceb968c3abba4fe37d727b51b31fbdb9996d0f28f"
+    },
+    "qa-phone-master754b-install": {
+      "artifacts": 59,
+      "manifest_SHA256": "ca13ae5f7ff901485cefa5378977e2456cd87e856be5ba0d1705db6d257198a3"
+    }
+  },
+  "source_index_B_public_GitHub_edits": 0
+}

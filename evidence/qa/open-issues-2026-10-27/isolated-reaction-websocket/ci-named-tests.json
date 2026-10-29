@@ -1,0 +1,103 @@
+{
+  "head": "1a608bfac6f5a177d06f77ba040acc18760e2246",
+  "checkout": "40af8f1a9c353ea9b5c841c6afd66dbaeaeaa692",
+  "run_id": 40781872794,
+  "attempt": 1,
+  "passed": 3,
+  "skipped": 0,
+  "failed": 0,
+  "rerun": false,
+  "raw_events_sha256": "6ba0ace9cd25aa14543d68f42e48183ce3763dd7c4ae31564f9672e21621947e",
+  "tests": [
+    {
+      "name": "TestCurrentSessionReceivesPrivateDirectMessageHint",
+      "events": [
+        {
+          "Time": "2026-10-28T22:44:08.408670871Z",
+          "Action": "run",
+          "Package": "voice-platform/backend/internal/realtime/connect_session",
+          "Test": "TestCurrentSessionReceivesPrivateDirectMessageHint"
+        },
+        {
+          "Time": "2026-10-28T22:44:08.408676039Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/realtime/connect_session",
+          "Test": "TestCurrentSessionReceivesPrivateDirectMessageHint"
+        },
+        {
+          "Time": "2026-10-28T22:44:08.408688207Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/realtime/connect_session",
+          "Test": "TestCurrentSessionReceivesPrivateDirectMessageHint"
+        },
+        {
+          "Time": "2026-10-28T22:44:08.408693265Z",
+          "Action": "pass",
+          "Package": "voice-platform/backend/internal/realtime/connect_session",
+          "Test": "TestCurrentSessionReceivesPrivateDirectMessageHint",
+          "Elapsed": 0
+        }
+      ]
+    },
+    {
+      "name": "TestReplayRejectsRevokedSessionBeforePrivateHint",
+      "events": [
+        {
+          "Time": "2026-10-28T22:44:08.4204445Z",
+          "Action": "run",
+          "Package": "voice-platform/backend/internal/realtime/connect_session",
+          "Test": "TestReplayRejectsRevokedSessionBeforePrivateHint"
+        },
+        {
+          "Time": "2026-10-28T22:44:08.420449287Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/realtime/connect_session",
+          "Test": "TestReplayRejectsRevokedSessionBeforePrivateHint"
+        },
+        {
+          "Time": "2026-10-28T22:44:08.420454936Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/realtime/connect_session",
+          "Test": "TestReplayRejectsRevokedSessionBeforePrivateHint"
+        },
+        {
+          "Time": "2026-10-28T22:44:08.420459883Z",
+          "Action": "pass",
+          "Package": "voice-platform/backend/internal/realtime/connect_session",
+          "Test": "TestReplayRejectsRevokedSessionBeforePrivateHint",
+          "Elapsed": 0
+        }
+      ]
+    },
+    {
+      "name": "TestSocialJournalReplayKeepsDMPrivateAndRevalidatesCurrentACL",
+      "events": [
+        {
+          "Time": "2026-10-28T22:42:44.860667534Z",
+          "Action": "run",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestSocialJournalReplayKeepsDMPrivateAndRevalidatesCurrentACL"
+        },
+        {
+          "Time": "2026-10-28T22:42:44.860674915Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestSocialJournalReplayKeepsDMPrivateAndRevalidatesCurrentACL"
+        },
+        {
+          "Time": "2026-10-28T22:42:45.899693176Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestSocialJournalReplayKeepsDMPrivateAndRevalidatesCurrentACL"
+        },
+        {
+          "Time": "2026-10-28T22:42:45.899772807Z",
+          "Action": "pass",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestSocialJournalReplayKeepsDMPrivateAndRevalidatesCurrentACL",
+          "Elapsed": 1.04
+        }
+      ]
+    }
+  ]
+}

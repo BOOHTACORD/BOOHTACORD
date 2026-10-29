@@ -1,0 +1,63 @@
+{
+  "status": "SAFE_METADATA_CLOSED_ALLOWLIST",
+  "allowlist": [
+    "source-classification.json",
+    "operating-brief.json",
+    "before.json",
+    "direct-before.json",
+    "direct-counter-result.json",
+    "prom-before.json",
+    "observer-result.json",
+    "cleanup.json",
+    "summary.json",
+    "controller-preexecution-binding.json",
+    "README.md",
+    "classify.py",
+    "cleanup.py",
+    "common.py",
+    "observe.py",
+    "preflight.py",
+    "run.py",
+    "seal.py",
+    "public-review.json",
+    "integrity.json"
+  ],
+  "exclude": [
+    "private/**",
+    "*.log",
+    "any new unlisted files"
+  ],
+  "private_value_scan_matches": 0,
+  "raw_exposition_trace_cookie_IDs_exported": false,
+  "helpers": {
+    "classify.py": {
+      "lines": 24,
+      "sha256": "ba7a2f3fd04adcfb64f3a66e70ef65d90011702bf066cfef0b2e46910e9b45dd"
+    },
+    "cleanup.py": {
+      "lines": 21,
+      "sha256": "58a039e85de254fd6adbbea7ee1144628e8c4a7ec3189fc593bbe974fa60a8a7"
+    },
+    "common.py": {
+      "lines": 42,
+      "sha256": "7fef39b9c5de2a2c63494a8b518ffb2f51b60f3818b69f932140ca21d73b31a3"
+    },
+    "observe.py": {
+      "lines": 37,
+      "sha256": "709bc8034a7615a56257141ca0eb26dc0811fec52c4084bd25df39ef6bc0d469"
+    },
+    "preflight.py": {
+      "lines": 29,
+      "sha256": "21062f878ddec229339492dfa394983d84bc4764aa6fc414ce9c1863a81fbf4e"
+    },
+    "run.py": {
+      "lines": 35,
+      "sha256": "45e669534fa52aaf41b32525501925dedbbb3df91bcd93302bbdc0901341d3d9"
+    },
+    "seal.py": {
+      "lines": 23,
+      "sha256": "b98a7e014e2bfa89eac59d4faf0c9b185d308dc0ae19b1036bc2dac0d6afd9a0"
+    }
+  },
+  "limit": "No tests rerun, config changes, physical quality or broad gate acceptance"
+}

@@ -1,0 +1,21 @@
+import traceback
+from common import P,write,now
+from prepare import prepare
+from checks import run
+from observe import before,after
+from cleanup import cleanup
+assert (P/'before.json').is_file() and not (P/'private/fixture.json').exists()
+failure=False
+try:
+    c=prepare();before(c);run(c);result=after(c)
+    print('Runtime HTTP/PG controls complete; actual observer status '+result['status'])
+except Exception as exc:
+    failure=True;(P/'private/runtime-attempt1-error.log').write_text(traceback.format_exc(),'utf-8')
+    write(P/'runtime-attempt1.json',{'utc':now(),'status':'FAILED_ATTEMPT_PRESERVED','error_type':type(exc).__name__,'raw_error_private':True})
+finally:
+    if (P/'private/fixture.json').exists():
+        try:cleanup()
+        except Exception as exc:
+            failure=True;(P/'private/cleanup-attempt1-error.log').write_text(traceback.format_exc(),'utf-8')
+            write(P/'cleanup-attempt1.json',{'utc':now(),'status':'PARTIAL_STOP','error_type':type(exc).__name__,'raw_error_private':True})
+if failure:raise SystemExit('Attempt failed; inspect private receipt; no blind replay')

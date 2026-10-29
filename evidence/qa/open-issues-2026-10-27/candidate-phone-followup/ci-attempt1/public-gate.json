@@ -1,0 +1,46 @@
+{
+  "source_revision": "754b5997ad100cb00300373f29ab88bda4ed267d",
+  "run_id": 40784080135,
+  "run_attempt": 1,
+  "dry_run": true,
+  "run_conclusion": "cancelled",
+  "jobs": [
+    {
+      "id": 123152795558,
+      "name": "quality / android-kotlin",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123152795847,
+      "name": "quality / dart",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123152795974,
+      "name": "quality / macos",
+      "status": "completed",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 123152795991,
+      "name": "quality / android",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123161081682,
+      "name": "quality / flutter",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 123161170501,
+      "name": "android-release",
+      "status": "completed",
+      "conclusion": "skipped"
+    }
+  ],
+  "signing_and_publish": "NOT_RUN_WHOLE_RELEASE_JOB_SKIPPED"
+}

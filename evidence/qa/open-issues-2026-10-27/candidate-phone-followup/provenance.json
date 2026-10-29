@@ -1,0 +1,301 @@
+{
+  "schema_version": 1,
+  "source_controls": {
+    "ci-attempt2": {
+      "allowlist_sha256": "16b3bd7256245f5b8a980fe7115d4a1cfdfaa840bea7c7458da25076f76df06e",
+      "allowed_count": 7
+    },
+    "ci-attempt1": {
+      "allowlist_sha256": "5bd132a3d1f467f5b9d7b4eb95c2191059f802a1a1b6199c2234e6b1b82b16e0",
+      "allowed_count": 5
+    },
+    "phone-native-lifecycle": {
+      "allowlist_sha256": "cff1e755b1c08393aec28941ca83cfa1fddbed6542cda4936079bcc36d800a2d",
+      "allowed_count": 10,
+      "opaque_private_inventory_sha256": "345b23f4e6417abf231856fceb968c3abba4fe37d727b51b31fbdb9996d0f28f",
+      "opaque_private_inventory_content_not_parsed_or_exported": true
+    },
+    "root-signing": {
+      "explicitly_authorized_root_metadata": true
+    },
+    "root-jpeg-review": {
+      "explicitly_authorized_root_metadata": true
+    }
+  },
+  "original_vs_normalized_hashes_are_distinct_fields": true,
+  "projections": [
+    {
+      "source_packet_alias": "ci-attempt2",
+      "source_metadata_name": "summary.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "61d1fbfa0779c8e3e1782096c6f4b0ee4a61b45329533dc892fb45fab17009f2",
+      "original_bytes": 6785,
+      "normalized_path": "ci-attempt2/summary.json",
+      "normalized_sha256": "8419f4a0745a7a850e2d96611ee8d4a35f4af5ed11d8ab4d760a1c6138635422",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "ci-attempt2",
+      "source_metadata_name": "public-gate.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "106abc6fe73aad67c36164c84c461de3aa86b6824263aa13116d3707da750e9e",
+      "original_bytes": 1307,
+      "normalized_path": "ci-attempt2/public-gate.json",
+      "normalized_sha256": "fe585b9b615b9bfaf735fc086ad9d87918e6f1e9fb6133d00e06ea3e6cabe54d",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "ci-attempt2",
+      "source_metadata_name": "public-artifact-digests.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "170e60e98c8581d45976be94df5c02596a4550fe2950698a74f00178add06877",
+      "original_bytes": 2122,
+      "normalized_path": "ci-attempt2/public-artifact-digests.json",
+      "normalized_sha256": "23e23d42010ffb469c8bf8fffa29371c43cb1242d987e613ba6490829af96361",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "ci-attempt2",
+      "source_metadata_name": "verified.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "849a80c7fb6a558ad33e753aa9c5e49217330619dd6993ed05de8105713716ad",
+      "original_bytes": 3042,
+      "normalized_path": "ci-attempt2/verified.json",
+      "normalized_sha256": "38d9b3296c49798c1e5361e6e3ef8ababcbfc2113c1e04ce6db5b95feff06a62",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "ci-attempt2",
+      "source_metadata_name": "native-contract-verified.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "4af6a01b531a4f3e6f9c4cd3149263de183b78c163f2e2479b26202131d30589",
+      "original_bytes": 1491,
+      "normalized_path": "ci-attempt2/native-contract-verified.json",
+      "normalized_sha256": "8d97aec8bdeca9c4b22c03abdd6af786b8a61a724b5e156aed44172980cc8b3c",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "ci-attempt2",
+      "source_metadata_name": "macos-unit-verified.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "7aecb9921b503118d90ee18a4d815cedb8079775c5ec71091ef238a82a1ee0bb",
+      "original_bytes": 1585,
+      "normalized_path": "ci-attempt2/macos-unit-verified.json",
+      "normalized_sha256": "c02c4dc7708b8b2020b9c4f38498ad0275ae4d924414b61a63bda9e27e803fee",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "ci-attempt2",
+      "source_metadata_name": "preservation-final.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "774cf73a7eaca632fee628fa06eea138aa3c2163fef571b539fa950ce074ca0e",
+      "original_bytes": 547,
+      "normalized_path": "ci-attempt2/preservation-final.json",
+      "normalized_sha256": "0928c056471413272bcc94aa615948d637d474ea0c8924db79f3f2cf90a8619f",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "ci-attempt1",
+      "source_metadata_name": "execution-summary.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "90f9b17af963f56b16266287ac956e61ac33f87c184878661efb05a5f599b416",
+      "original_bytes": 4681,
+      "normalized_path": "ci-attempt1/execution-summary.json",
+      "normalized_sha256": "8ad6813034e6a57f071eb132fa61c13fbe0aacf684a02cbbf75f7afebc35dd86",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "ci-attempt1",
+      "source_metadata_name": "public-gate.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "7cd3ae0326620f3d060fbdc5d60412a6392cae1ef236ff69c78ac758b850bada",
+      "original_bytes": 1087,
+      "normalized_path": "ci-attempt1/public-gate.json",
+      "normalized_sha256": "a384b20896a6e65960363306b47f7088a736971dfbdc35817c08452094010a81",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "ci-attempt1",
+      "source_metadata_name": "public-artifact-digests.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "9f4066b63e3e4848c6ff08e1f6a4efb9feecc16e8dc19d9ab653f8977d7ea2a1",
+      "original_bytes": 1779,
+      "normalized_path": "ci-attempt1/public-artifact-digests.json",
+      "normalized_sha256": "5699e11bae97a5f8cc29db2adf6c726aded31c448cb6360c6882723808174bab",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "ci-attempt1",
+      "source_metadata_name": "macos-timeout-analysis.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "e93e8e34a1ff14b3a56feefa6a63496fa9d6c61b5477a8e369b47fad87621532",
+      "original_bytes": 1702,
+      "normalized_path": "ci-attempt1/macos-timeout-analysis.json",
+      "normalized_sha256": "8ab70253121e8746670f31c5fcca3b53deb2197aaa2968ad2d153433e6a764b0",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "ci-attempt1",
+      "source_metadata_name": "execution-preservation-final.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "518fb60991f659e577458e8eace007145484022cdff536c1ede4fc62d51b4aa2",
+      "original_bytes": 368,
+      "normalized_path": "ci-attempt1/execution-preservation-final.json",
+      "normalized_sha256": "2a8205d4ef35b4f9b8b51bb5371c9a84a82eaab535352718fb8ad23eb4f5bdc2",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "phone-native-lifecycle",
+      "source_metadata_name": "summary.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "999794fb7b6804a11a0379a22048a0488b5cd42372a3c59c2dc5be31e1b90264",
+      "original_bytes": 10955,
+      "normalized_path": "phone-native-lifecycle/summary.json",
+      "normalized_sha256": "0f74fd63d1238dffd41054c356534c5725a40a41a3388183f72a896592b3d704",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "phone-native-lifecycle",
+      "source_metadata_name": "public-projection.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "ad515bbbff5a903f3673e8bae8f99d0a5b96e65015cbfa96790f28b2c64759d4",
+      "original_bytes": 16786,
+      "normalized_path": "phone-native-lifecycle/public-projection.json",
+      "normalized_sha256": "a20dd8ee26f294183cf4b7a6b6b7b5a2dc50907b0ae7f7aab00b8eacac0e2516",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "phone-native-lifecycle",
+      "source_metadata_name": "jpeg-empty-bubble-bug-proof.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "0af9a126952453c53a7aea0768f9f8c243269746d9c45f4e97e7a56b5eb06723",
+      "original_bytes": 4584,
+      "normalized_path": "phone-native-lifecycle/jpeg-empty-bubble-bug-proof.json",
+      "normalized_sha256": "cfd06f9976acc0104fe1cad040541793e7d67219e91d5f2ff4244e09b7be2786",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "phone-native-lifecycle",
+      "source_metadata_name": "jpeg-empty-bubble-bug-proof.hashes.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "ddd467afc289a467a71c2449432afdc467f04a6f1a4d1b7a0996f6af22403b12",
+      "original_bytes": 182,
+      "normalized_path": "phone-native-lifecycle/jpeg-empty-bubble-bug-proof.hashes.json",
+      "normalized_sha256": "ddd467afc289a467a71c2449432afdc467f04a6f1a4d1b7a0996f6af22403b12",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "phone-native-lifecycle",
+      "source_metadata_name": "gif-empty-bubble-bug-proof.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "b287362f0b6fe3b3f96e8d3a96d09cfe131a2a4260413adc45402df02661f9d5",
+      "original_bytes": 3581,
+      "normalized_path": "phone-native-lifecycle/gif-empty-bubble-bug-proof.json",
+      "normalized_sha256": "b413176004c462ba62f373e804b2107fdfa8fbcf71c7a5275b3a18493d805a39",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "phone-native-lifecycle",
+      "source_metadata_name": "gif-empty-bubble-bug-proof.hashes.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "301d4a32bed46ae77127b5ece248c2b51b2d18a514a94f3e5fe54cb1f5d3fbdb",
+      "original_bytes": 1754,
+      "normalized_path": "phone-native-lifecycle/gif-empty-bubble-bug-proof.hashes.json",
+      "normalized_sha256": "3cd1a810d51931387089c3e6848111220440409f2ac6f6c9de87d9f845233d75",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "phone-native-lifecycle",
+      "source_metadata_name": "next-viewer-regression-plan-only.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "711b699cc19f825807b5b5dad1253e1ec34aa63d43028524062e1fdb8372be78",
+      "original_bytes": 3747,
+      "normalized_path": "phone-native-lifecycle/next-viewer-regression-plan-only.json",
+      "normalized_sha256": "bbf1d526365cd126ca59d2ad44a6626a2444970e6d57830ff37d8d7373f1c870",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "phone-native-lifecycle",
+      "source_metadata_name": "README-public.md",
+      "source_authority": "closed allowlist",
+      "original_sha256": "659e770e63ad2f33a4f466b0fa33a6e976b1d0aa49a39f405dfad4f40e7f5c42",
+      "original_bytes": 769,
+      "normalized_path": "phone-native-lifecycle/README-public.md",
+      "normalized_sha256": "659e770e63ad2f33a4f466b0fa33a6e976b1d0aa49a39f405dfad4f40e7f5c42",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "phone-native-lifecycle",
+      "source_metadata_name": "publication-allowlist.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "cff1e755b1c08393aec28941ca83cfa1fddbed6542cda4936079bcc36d800a2d",
+      "original_bytes": 787,
+      "normalized_path": "phone-native-lifecycle/publication-allowlist.json",
+      "normalized_sha256": "68adb8ac64f2f9ea2f4b44b7d1987eaf1ea8f689b86065940650ae82591c7000",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "phone-native-lifecycle",
+      "source_metadata_name": "public-artifact-hashes.json",
+      "source_authority": "closed allowlist",
+      "original_sha256": "db3e3a0d466f0227f6c66c4a4ece11644ca14496081700427193271d62a9bb5e",
+      "original_bytes": 1112,
+      "normalized_path": "phone-native-lifecycle/public-artifact-hashes.json",
+      "normalized_sha256": "ad70ce78c0bb8ab0d0c45ac57a9403ebad4a18f8e023b18d5a44b67f1238e640",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "root-signing",
+      "source_metadata_name": "signing-final-root.json",
+      "source_authority": "explicit root metadata",
+      "original_sha256": "d29499846969f3e9a7bec035f2389b16d17576c170de71a6d85e320c415c9666",
+      "original_bytes": 1047,
+      "normalized_path": "root-signing/metadata.json",
+      "normalized_sha256": "d29499846969f3e9a7bec035f2389b16d17576c170de71a6d85e320c415c9666",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    },
+    {
+      "source_packet_alias": "root-jpeg-review",
+      "source_metadata_name": "review.json",
+      "source_authority": "explicit root metadata",
+      "original_sha256": "3f2326d8cf0c49a37e9838b5ed903ff8d0f17ae9c98006e43527544978fb9959",
+      "original_bytes": 641,
+      "normalized_path": "root-jpeg-review/metadata.json",
+      "normalized_sha256": "94cff5e997a316865e0c8df6e8b0e452ba40e5d5988f4a2c784113ffe1989f8a",
+      "normalization": "Canonical closed projection; private criterion maps/path identifiers omitted; historical status/limits preserved"
+    }
+  ],
+  "derived_cases": [
+    {
+      "case": "CI-master754b-signed-candidate-native-contract",
+      "source_packets": [
+        "ci-attempt1",
+        "ci-attempt2",
+        "root-signing"
+      ]
+    },
+    {
+      "case": "ANDROID-current-data-plane-AuthorID-bound",
+      "source_packets": [
+        "phone-native-lifecycle",
+        "root-jpeg-review"
+      ]
+    },
+    {
+      "case": "ANDROID-current-native-JPEG-GIF-upload-original-delete",
+      "source_packets": [
+        "phone-native-lifecycle",
+        "root-jpeg-review"
+      ]
+    },
+    {
+      "case": "ANDROID-current-native-attachment-only-self-row-empty",
+      "source_packets": [
+        "phone-native-lifecycle",
+        "root-jpeg-review"
+      ]
+    }
+  ],
+  "active_future_packets_excluded_and_never_read": true,
+  "unlisted_raw_helpers_receipts_captures_APKs_not_exported": true
+}

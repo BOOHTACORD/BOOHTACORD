@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "criterion": "I62.C1",
+  "existing_status": "FAIL",
+  "required_status_after_apply": "FAIL",
+  "whole_criterion_promotion": false,
+  "add_execution_cases": [
+    "CI-master754b-signed-candidate-native-contract",
+    "ANDROID-current-data-plane-AuthorID-bound",
+    "ANDROID-current-native-JPEG-GIF-upload-original-delete",
+    "ANDROID-current-native-attachment-only-self-row-empty"
+  ],
+  "issues": [
+    62
+  ],
+  "add_evidence": [
+    "candidate-phone-followup/ci-attempt1/execution-summary.json",
+    "candidate-phone-followup/ci-attempt2/summary.json",
+    "candidate-phone-followup/phone-native-lifecycle/summary.json",
+    "candidate-phone-followup/phone-native-lifecycle/public-projection.json",
+    "candidate-phone-followup/phone-native-lifecycle/jpeg-empty-bubble-bug-proof.json",
+    "candidate-phone-followup/phone-native-lifecycle/gif-empty-bubble-bug-proof.json",
+    "candidate-phone-followup/root-signing/metadata.json",
+    "candidate-phone-followup/root-jpeg-review/metadata.json"
+  ],
+  "pending_owner": {
+    "new_defect_count": 1,
+    "case_defects_initially_empty": true,
+    "timing": "Root duplicate review and filing after immutable data commit"
+  },
+  "do_not_change_other_rows_or_existing_defects": true,
+  "existing_intake_count": 37,
+  "existing_criterion_count": 480,
+  "existing_source_qualifier_count": 13,
+  "case_arithmetic": {
+    "existing_cases": 97,
+    "this_bundle": 4,
+    "other_worker_bundle": 5,
+    "expected_combined_cases": 106,
+    "applied_by_this_worker": false
+  }
+}

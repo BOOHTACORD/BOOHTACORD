@@ -1,0 +1,36 @@
+{
+  "status": "PASS_ACTUAL_EIGHT_DARWIN_CASES_ZERO_SKIPS",
+  "recorded_utc": "2026-10-28T23:24:04.429572+00:00",
+  "run_id": 40784080135,
+  "run_attempt": 2,
+  "source_revision": "754b5997ad100cb00300373f29ab88bda4ed267d",
+  "event": "workflow_dispatch",
+  "dry_run": true,
+  "workflow_id": 371496531,
+  "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40784080135",
+  "ref": "master",
+  "artifact_id": 12859608085,
+  "artifact_digest": "sha256:582528b3931c20a79d3fbb216fb1e3f297de4b5dc8ed82fd22ab93f0bc4c348e",
+  "report": {
+    "status": "PASS",
+    "platform": "darwin",
+    "tests": 8,
+    "physical_media": "NOT_RUN",
+    "skipped": 0
+  },
+  "named_cases": [
+    "default screen options preserve baseline constraints without engine",
+    "macOS capture engine preserves exact source and frame rate",
+    "copyWith keeps engine independently of audio and FPS changes",
+    "from constructor carries explicit engine without inventing one",
+    "diagnostics default leaves native default unchanged",
+    "macOS diagnostics switch preserves engine source and frame rate",
+    "diagnostics copyWith preserves explicit false and independent audio policy",
+    "from constructor forwards explicit diagnostics without inventing one"
+  ],
+  "validator_git_blob_sha256": "3ba6295dc229571b37038e3d30247aa6790be821b36c521b550e464992dc0724",
+  "event_stream_sha256": "0f902159b715898d907979a97e7cd8cf3f0c26fb25e5a1d49c1bfa86f80728fe",
+  "physical_media": "NOT_RUN",
+  "hosted_tests_rerun_by_controller": false,
+  "installed_or_restarted": false
+}

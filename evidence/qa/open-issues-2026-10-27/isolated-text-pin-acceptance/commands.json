@@ -1,0 +1,53 @@
+{
+  "interpreter": "Python3.12.10",
+  "working_directory": "test-sql-native-gates/BOOHTACORD",
+  "commands": [
+    "python -X utf8 Q/.out/qa-text-pin-acceptance/preflight.py",
+    "python -X utf8 Q/.out/qa-text-pin-acceptance/setup.py",
+    "python -X utf8 Q/.out/qa-text-pin-acceptance/exercise.py",
+    "python -X utf8 Q/.out/qa-text-pin-acceptance/exercise2.py",
+    "python -X utf8 Q/.out/qa-text-pin-acceptance/cleanup.py",
+    "python -X utf8 Q/.out/qa-text-pin-acceptance/seal2.py"
+  ],
+  "native_tests": "Existing source-bound Go JSON only; no rerun",
+  "helpers": {
+    "cleanup.py": {
+      "lines": 51,
+      "sha256": "b9b5b964003822660b4605498b2f17ac0c98c9a5ee5d81239d3253284c09df61"
+    },
+    "common.py": {
+      "lines": 63,
+      "sha256": "dcd41761017e4b6d345f64bebaa13557393d6f3513263b943e7e6c71b74c0766"
+    },
+    "exercise.py": {
+      "lines": 71,
+      "sha256": "6af50de85b042c45fea23a11e6370c719b9627bccec10a9769eb906d112e9449"
+    },
+    "exercise2.py": {
+      "lines": 72,
+      "sha256": "b5dc2c9c00d5d26561369fdaca3cc377b29365de8191e0bd756b4db4e7c8f353"
+    },
+    "fixture_common.py": {
+      "lines": 51,
+      "sha256": "87110093151d5e8d37eed1a167721d113864bb545fd071d8bc0e570c3356a64a"
+    },
+    "preflight.py": {
+      "lines": 63,
+      "sha256": "240fb1c466413e126849dd032583d96e832f342253dc504990262658a7942a5f"
+    },
+    "seal.py": {
+      "lines": 44,
+      "sha256": "b1457b87cd549a24c54f632859a4cd70e7b1d2d117e3726dae272c177b58671b"
+    },
+    "seal2.py": {
+      "lines": 45,
+      "sha256": "d2c597d1065011f0a635ef95bae81bdb9dffd77d7b44400f8d9c28b5247f3e02"
+    },
+    "setup.py": {
+      "lines": 38,
+      "sha256": "1be9e9034d4695d0b912ccd5e724ad71899302bc184f4a1e8dbe6c7991e4abf6"
+    }
+  },
+  "private_input_sha256": "ce67c0e4a66413c0ca6a5619d4fc96e9f8a3ed34e2b44b495c5ce779cbf08d49",
+  "journal_sha256": "8761fb453ab404d33ed27526410e6c08f921fd51b718098354f9bba881c54687"
+}

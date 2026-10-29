@@ -1,0 +1,72 @@
+{
+  "scope": "Publication copy; source receipts remain frozen in Q",
+  "source_authority": "public-allowlist.json",
+  "source_authority_SHA256": "d656e3e6bf8d9d79096e334c651fac5f1db65b3aea598fbc0233eabba4bc61da",
+  "source_owner": "CI verification worker; declared controller working_directory test-sql-native-gates/BOOHTACORD",
+  "files": [
+    {
+      "source_file": "public/attempt-diagnostics.json",
+      "export_file": "attempt-diagnostics.json",
+      "source_SHA256": "958efd205dfbef0a39483f96da6f1d67615ae52597205a5b07a363b0626cd19f",
+      "export_SHA256": "958efd205dfbef0a39483f96da6f1d67615ae52597205a5b07a363b0626cd19f",
+      "bytes": 360,
+      "transformation": "exact_bytes_path_only"
+    },
+    {
+      "source_file": "public/ci-named-tests.json",
+      "export_file": "ci-named-tests.json",
+      "source_SHA256": "d2b35c27a69fdb0a53f1e03443d56a3d5921cd794cd94ab914a6a1c3a0606a25",
+      "export_SHA256": "d2b35c27a69fdb0a53f1e03443d56a3d5921cd794cd94ab914a6a1c3a0606a25",
+      "bytes": 6399,
+      "transformation": "exact_bytes_path_only"
+    },
+    {
+      "source_file": "public/cleanup.json",
+      "export_file": "cleanup.json",
+      "source_SHA256": "9a6483c1343bff09cb9c9844aaecdafa315058e11a3dfefecec29b5e112cd83c",
+      "export_SHA256": "9a6483c1343bff09cb9c9844aaecdafa315058e11a3dfefecec29b5e112cd83c",
+      "bytes": 828,
+      "transformation": "exact_bytes_path_only"
+    },
+    {
+      "source_file": "public/commands.json",
+      "export_file": "commands.json",
+      "source_SHA256": "96f297d7414d468c7309b87fad94dbe0fb96f5d5bc068f14bce2da21b638c494",
+      "export_SHA256": "96f297d7414d468c7309b87fad94dbe0fb96f5d5bc068f14bce2da21b638c494",
+      "bytes": 1980,
+      "transformation": "exact_bytes_path_only"
+    },
+    {
+      "source_file": "public/runtime.json",
+      "export_file": "runtime.json",
+      "source_SHA256": "50a52f645b37bbde2c84e88ba2b1fece4e82ffa57b05379452a91d9a81d7dd6b",
+      "export_SHA256": "50a52f645b37bbde2c84e88ba2b1fece4e82ffa57b05379452a91d9a81d7dd6b",
+      "bytes": 1771,
+      "transformation": "exact_bytes_path_only"
+    },
+    {
+      "source_file": "public/source-binding.json",
+      "export_file": "source-binding.json",
+      "source_SHA256": "d65993818585d3383c6ed6b1176e5f235b2d6200498f3c82229ea95f45e4f766",
+      "export_SHA256": "d65993818585d3383c6ed6b1176e5f235b2d6200498f3c82229ea95f45e4f766",
+      "bytes": 11300,
+      "transformation": "exact_bytes_path_only"
+    },
+    {
+      "source_file": "public/summary.json",
+      "export_file": "summary.json",
+      "source_SHA256": "aefd397fe6c54384699a13bf8403393d7476412ce77ba288a420fafc35b27147",
+      "export_SHA256": "aefd397fe6c54384699a13bf8403393d7476412ce77ba288a420fafc35b27147",
+      "bytes": 736,
+      "transformation": "exact_bytes_path_only"
+    }
+  ],
+  "normalized_projections": [],
+  "archival_controllers": [],
+  "limits": [
+    "Archival Python is .py.txt, AST checked, hard120 lines, exact source hashes; never executed here",
+    "Source integrity/allowlist metadata describe original source paths; this export integrity describes current paths",
+    "CI helper hashes/actual commands are retained, but their code is not exported because it is outside their closed files allowlist",
+    "No B/GitHub/git/device/runtime mutation; source classifications do not close whole gates"
+  ]
+}

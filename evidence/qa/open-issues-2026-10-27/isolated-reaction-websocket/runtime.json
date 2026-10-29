@@ -1,0 +1,30 @@
+{
+  "utc": "2026-10-28T23:41:58.045805+00:00",
+  "status": "PASS_SCOPED_REAL_WS",
+  "checks_passed": 8,
+  "observations": {
+    "sockets": 3,
+    "capability_negotiated": true,
+    "A_B_exact_private_hint": true,
+    "private_payload_fields": 2,
+    "outsider_common_controls_before_after": 2,
+    "outsider_private_hints": 0,
+    "outsider_private_ID_matches": 0,
+    "outsider_replay_actual_cursor": true,
+    "outsider_replay_common_control": true,
+    "outsider_replay_private_hints": 0,
+    "revoked_socket_private_hints_after_logout": 0,
+    "live_socket_closed_observed": true,
+    "live_close_code": 1008,
+    "logout_to_close_observed_seconds": 0.030999999988125637,
+    "live_close_deadline_claim": "Observed source-defined private-send authentication and15s periodic revalidation;no general SLA",
+    "revoked_cookie_WS_plain_and_replay_HTTP": [
+      401,
+      401
+    ],
+    "revoked_handshake_events": 0
+  },
+  "criterion": "I287.C8",
+  "criterion_status": "PARTIAL",
+  "UI_native_RTC_load_production": "NOT_RUN"
+}

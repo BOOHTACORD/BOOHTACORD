@@ -1,0 +1,54 @@
+{
+  "source_revision": "754b5997ad100cb00300373f29ab88bda4ed267d",
+  "source_tree": "1677b5698447482654771487c000d0c1e94edd6f",
+  "run_id": 40784080135,
+  "run_attempt": 2,
+  "event": "workflow_dispatch",
+  "ref": "master",
+  "dry_run": true,
+  "run_status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "id": 123162879069,
+      "name": "quality / dart",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123162879219,
+      "name": "quality / android-kotlin",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123162879243,
+      "name": "quality / android",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123162879270,
+      "name": "quality / macos",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123166916708,
+      "name": "quality / flutter",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123166991815,
+      "name": "android-release",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "signing_assets_upload": "SUCCESS",
+  "publisher": "SKIPPED",
+  "macos_named_cases": 8,
+  "macos_skips": 0,
+  "physical_media": "NOT_RUN"
+}

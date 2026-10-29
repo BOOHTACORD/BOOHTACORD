@@ -1,0 +1,71 @@
+{
+  "generated_utc": "2026-10-28T23:56:03.254361+00:00",
+  "workflow_class": "review_gate",
+  "route": "qa/evidence/publication-bundle",
+  "publication_by": "root only; prepared Q-only bundle is not published",
+  "packet_count": 5,
+  "packets": [
+    {
+      "alias": "media-correlation",
+      "source_folder": ".out/qa-owned-media-correlation",
+      "future_O_subtree": "isolated-media-report-correlation",
+      "source_authority_SHA256": "e79b71525b5f60ec2f329c0a69fe628e375a728b520db3d5b9f00d93f94ce791",
+      "source_owner": "/root/qa_browser",
+      "source_allowlisted_files": 23,
+      "archival_helpers": 8,
+      "provenance_file": "isolated-media-report-correlation/publication-provenance.json",
+      "normalized_integrity": "isolated-media-report-correlation/integrity.json"
+    },
+    {
+      "alias": "counter-path",
+      "source_folder": ".out/qa-agent-counter-path",
+      "future_O_subtree": "isolated-media-report-counter-path",
+      "source_authority_SHA256": "8a9319c5b6c6095baf484af6fab8d05336da7e63755b977b195a8991e233cf1d",
+      "source_owner": "/root/qa_browser",
+      "source_allowlisted_files": 20,
+      "archival_helpers": 7,
+      "provenance_file": "isolated-media-report-counter-path/publication-provenance.json",
+      "normalized_integrity": "isolated-media-report-counter-path/integrity.json"
+    },
+    {
+      "alias": "reactions",
+      "source_folder": ".out/qa-reaction-concurrency",
+      "future_O_subtree": "isolated-reaction-concurrency",
+      "source_authority_SHA256": "4ff1b828404976bad143637f7cf19da5f99525756b8fadf53b1f5d8b122afdef",
+      "source_owner": "CI verification worker; declared controller working_directory test-sql-native-gates/BOOHTACORD",
+      "source_allowlisted_files": 6,
+      "archival_helpers": 0,
+      "provenance_file": "isolated-reaction-concurrency/publication-provenance.json",
+      "normalized_integrity": "isolated-reaction-concurrency/integrity.json"
+    },
+    {
+      "alias": "pins",
+      "source_folder": ".out/qa-text-pin-acceptance",
+      "future_O_subtree": "isolated-text-pin-acceptance",
+      "source_authority_SHA256": "d656e3e6bf8d9d79096e334c651fac5f1db65b3aea598fbc0233eabba4bc61da",
+      "source_owner": "CI verification worker; declared controller working_directory test-sql-native-gates/BOOHTACORD",
+      "source_allowlisted_files": 7,
+      "archival_helpers": 0,
+      "provenance_file": "isolated-text-pin-acceptance/publication-provenance.json",
+      "normalized_integrity": "isolated-text-pin-acceptance/integrity.json"
+    },
+    {
+      "alias": "reaction-WS",
+      "source_folder": ".out/qa-reaction-websocket",
+      "future_O_subtree": "isolated-reaction-websocket",
+      "source_authority_SHA256": "e77f41d7e48daa3f6ebb3cdc6963aab6c84cc8c07a8a5542d0d96e8103502c06",
+      "source_owner": "CI verification worker; declared controller working_directory test-sql-native-gates/BOOHTACORD",
+      "source_allowlisted_files": 6,
+      "archival_helpers": 0,
+      "provenance_file": "isolated-reaction-websocket/publication-provenance.json",
+      "normalized_integrity": "isolated-reaction-websocket/integrity.json"
+    }
+  ],
+  "new_runtime_actions": 0,
+  "new_native_tests": 0,
+  "original_first_media_observer": "PARTIAL with native-family Prometheus delta NOT_PROVEN; historical receipt retained",
+  "separate_counter_followup": "PASS_SCOPED direct native3->4 and correct OTLP3->4; not a product-metric-loss issue",
+  "original_reaction_WS_clause": "First reaction packet NOT_RUN remains historical; separate actual WS packet supplies a new scoped witness",
+  "whole_gates_closed": 0,
+  "consolidation43_touched": false
+}

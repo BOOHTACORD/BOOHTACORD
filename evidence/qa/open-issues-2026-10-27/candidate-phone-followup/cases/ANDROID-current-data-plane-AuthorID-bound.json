@@ -1,0 +1,14 @@
+{
+  "id": "ANDROID-current-data-plane-AuthorID-bound",
+  "status": "PASS_SCOPED",
+  "protects": "An existing controlled native owner and pair must correlate with the approved peer data plane before owned native attachment scenarios",
+  "command": "ONE normal controlled peer login and challenge POST; observe23.063s/7poll passive window; ONE explicit native HistoryRefresh; ONE native reply Send; peer checks exact reply body SHA and AuthorID equality with known phone; exact own cleanup and session logout/livefalse",
+  "platform": "Physical Samsung SM-A576B Android16; CLOSED C2 snapshot 1.0.47/code2082; APK c2a5489368980a66dedd291c2899ed946a86aa400c2229bcc43ba1363029bd8b; source b7f1c3ad438201c0461ed4858d97df6917815ceb; protected peer API separately bound",
+  "mandatory_when": "Before accepting ownership/data-plane prerequisites for these exact existing-pair native attachment scenarios",
+  "issues": [
+    62
+  ],
+  "result": "candidate-phone-followup/phone-native-lifecycle/summary.json#/backend_data_plane",
+  "limits": "PASS only after explicit refresh. Earlier passive visibility remains NOT_PROVEN; native configured URL UNOBSERVED; no native TLS/whole auth or deployed-backend-source proof. Shared batch:4 new messages tombstoned,2 SHA-guarded local files removed,1 own peer session revoked/livefalse,38 baseline records unchanged; native owner session preserved.",
+  "defects": []
+}

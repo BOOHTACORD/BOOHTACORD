@@ -1,0 +1,55 @@
+import uuid
+from common import P,request,sql,quote,valid,write,save,journal,sha,now,lease_predicate
+from prepare import acquire
+REPORT='/api/v1/voice/screen-metrics';SNAP='/api/v1/admin/screen-metrics'
+BASE={'platform':'desktop_web','direction':'receiver','state':'playing'}
+def snapshot(c):
+    code,h,v=request(SNAP,cookie=c['sessions']['admin']['cookie']);assert code==200 and h['cache-control']=='no-store'
+    assert set(v)=={'samples'}
+    for s in v['samples']:
+        assert set(s)=={'report','sampled_at_utc'} and not any(k.endswith('_id') for k in s['report'])
+    return v
+def run(c):
+    c['visit']=uuid.uuid4().hex;c['forged']=uuid.uuid4().hex;save(c);rows=[]
+    def send(name,expected,session,body,recorded=False):
+        s=c['sessions'][session] if session else None;before=snapshot(c);flow=uuid.uuid4().hex
+        headers={'X-App-Visit':c['visit'],'X-App-Flow':flow,'X-App-Flow-Name':'screen.view','X-App-Attempt':'2'}
+        if name!='active-owned-handle':headers['X-App-Media-Session']=c['forged']
+        if s:headers['X-Telemetry-Session']=s['telemetry']
+        item={'label':name,'expected_HTTP':expected,'flow':flow,'recorded':recorded,'session':session,'body':body}
+        c['reports'].append(item);journal(c,'before-report',{'label':name,'flow':flow,'expected_HTTP':expected})
+        code,h,v=request(REPORT,'POST',body,s['cookie'] if s else None,headers);item['actual_HTTP']=code;save(c)
+        after=snapshot(c);stable=before==after
+        r={'name':name,'expected_HTTP':expected,'actual_HTTP':code,'result':'PASS' if code==expected else 'FAIL','negative_snapshot_unchanged':stable if not recorded else None,'response_SHA256':sha(str(v).encode())}
+        rows.append(r);write(P/'runtime-checks.json',{'utc':now(),'checks':rows});assert code==expected,name
+        if recorded:
+            matches=[x for x in after['samples'] if x['report'].get('platform')==BASE['platform'] and x['report'].get('direction')==BASE['direction']]
+            assert len(matches)==1 and matches[0]['report']['presented_fps']==body['presented_fps']
+            assert 'voice_lease_id' not in matches[0]['report'];r['accepted_anonymous_sample_matches']=True
+        else:assert stable,name+' recorded a rejected sample'
+        write(P/'runtime-checks.json',{'utc':now(),'checks':rows})
+    a=c['sessions']['a1']['cookie'];l1=acquire(c,'first','a1');owned={**BASE,'voice_lease_id':l1,'presented_fps':101.125}
+    send('active-owned-handle',204,'a1',owned,True)
+    send('other-account-owned-handle',409,'b',{**owned,'presented_fps':201.125})
+    send('sibling-session-owned-handle',409,'a2',{**owned,'presented_fps':202.125})
+    unknown=str(uuid.uuid4());assert sql('SELECT count(*) FROM voice_leases WHERE id='+quote(unknown)+';').strip()=='0'
+    send('unknown-handle',409,'a1',{**owned,'voice_lease_id':unknown,'presented_fps':203.125})
+    send('malformed-handle',400,'a1',{**owned,'voice_lease_id':'not-a-handle','presented_fps':204.125})
+    send('anonymous-handle',401,None,{**owned,'presented_fps':205.125})
+    send('forged-media-header-owned-derived',204,'a1',{**owned,'presented_fps':102.125},True)
+    send('omitted-handle-forged-header-uncorrelated',204,'a1',{**BASE,'presented_fps':103.125},True)
+    journal(c,'before-normal-release',{'lease':'first'});assert request('/api/v1/voice/leases/'+l1,'DELETE',cookie=a)[0]==204
+    assert sql('SELECT count(*) FROM voice_leases WHERE '+lease_predicate(c,c['leases']['first'])+' AND revoked_at IS NOT NULL;').strip()=='1'
+    send('revoked-owned-handle',409,'a1',{**owned,'presented_fps':206.125})
+    l2=acquire(c,'expiry','a2');s=c['sessions']['a2'];predicate='public_id='+quote(valid(s['id']))+' AND user_id='+quote(valid(s['account']))+" AND token_digest=decode("+quote(s['digest'])+",'hex')"
+    c['expiry_prior']=sql('SELECT expires_at FROM sessions WHERE '+predicate+' AND revoked_at IS NULL;').strip();assert c['expiry_prior'];journal(c,'before-own-session-expiry',{'session':'a2','lease':'expiry','prior_expires_at':c['expiry_prior']})
+    changed=sql("BEGIN; SET LOCAL lock_timeout='2s'; SET LOCAL statement_timeout='5s'; UPDATE sessions SET expires_at=clock_timestamp()-interval '1 second' WHERE "+predicate+' AND revoked_at IS NULL AND expires_at>clock_timestamp() RETURNING public_id; COMMIT;').strip();assert changed==s['id'];c['a2_expired']=True;save(c)
+    send('expired-own-session-handle',401,'a2',{**BASE,'voice_lease_id':l2,'presented_fps':207.125})
+    assert request('/api/v1/auth/session',cookie=s['cookie'])[2]['authenticated'] is False
+    journal(c,'before-sibling-own-session-revoke',{'session':'a2'})
+    code,_,_=request('/api/v1/me/sessions/'+s['id'],'DELETE',cookie=a,extra={'X-Account-ID':s['account']});assert code==204
+    assert sql('SELECT count(*) FROM sessions WHERE '+predicate+' AND revoked_at IS NOT NULL;').strip()=='1'
+    assert sql('SELECT count(*) FROM voice_leases WHERE '+lease_predicate(c,c['leases']['expiry'])+' AND revoked_at IS NOT NULL;').strip()=='1'
+    c['expired_session_normally_revoked']=True;save(c)
+    write(P/'policy-result.json',{'utc':now(),'status':'PASS_SCOPED_HTTP_PG','HTTP_controls':len(rows),'accepted_reports':3,'negative_reports':len(rows)-3,'all_negative_latest_snapshots_unchanged':True,'all_accepted_samples_anonymous_and_match':True,'expired_own_session401':True,'expired_session_sibling_revoke204_and_lease_revoked':True,'standalone_lease_TTL':'NOT_APPLICABLE_NO_SCHEMA_FIELD','RTC_credentials_or_participants':0,'actual_trace_verification':'observe.py required'})
+    return rows

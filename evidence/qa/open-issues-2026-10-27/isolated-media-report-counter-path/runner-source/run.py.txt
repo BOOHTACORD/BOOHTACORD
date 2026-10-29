@@ -1,0 +1,35 @@
+import base64,secrets,traceback,uuid
+from http.cookies import SimpleCookie
+from common import P,WORK,read,write,save,quote,sql,request,direct,sha,now
+from observe import prom,after
+from cleanup import cleanup
+assert (P/'before.json').exists() and not (P/'private/fixture.json').exists();failed=False
+try:
+    account=read(P/'private/account.json')['account'];creds=read(WORK/'credentials.private.json');old=sql('SELECT public_id FROM sessions;').splitlines()
+    write(P/'private/create-intent.json',{'utc':now(),'account':account,'prior_session_ids':old,'operation':'one normal owned login, no uncertain rePOST'})
+    status,h,_=request('/api/v1/auth/login','POST',{'login':creds['member_a_login'],'password':creds['member_a_password']});assert status==204
+    cookies=SimpleCookie();cookies.load(h['set-cookie']);assert len(cookies)==1;cookie='; '.join(k+'='+v.value for k,v in cookies.items());token=next(iter(cookies.values())).value;material=base64.urlsafe_b64decode(token+'='*((4-len(token)%4)%4));assert len(material)==32
+    new=set(sql('SELECT public_id FROM sessions;').splitlines())-set(old);assert len(new)==1
+    c={'id':new.pop(),'account':account,'cookie':cookie,'digest':sha(material),'prior_session_ids':old,'visit':uuid.uuid4().hex,'flow':uuid.uuid4().hex,'negative_flow':uuid.uuid4().hex};save(c)
+    assert sql('SELECT count(*) FROM sessions WHERE public_id='+quote(c['id'])+' AND user_id='+quote(account)+" AND token_digest=decode("+quote(c['digest'])+",'hex') AND revoked_at IS NULL;").strip()=='1'
+    code,h,v=request('/api/v1/auth/session',cookie=cookie);assert code==200 and v['authenticated'] and v['account_id']==account;c['telemetry']=h['x-telemetry-session'];assert len(c['telemetry'])==32;save(c)
+    before=direct('before');write(P/'direct-before.json',before);write(P/'prom-before.json',prom('before'))
+    body={'platform':'desktop_web','direction':'receiver','state':'playing','presented_fps':27.625,'sample_age_ms':500}
+    headers={'X-Telemetry-Session':c['telemetry'],'X-App-Visit':c['visit'],'X-App-Flow':c['flow'],'X-App-Flow-Name':'screen.view','X-App-Attempt':'1'}
+    c['report_intent']={'utc':now(),'body_SHA256':sha(str(body).encode()),'stage':'before-one-accepted-POST'};save(c)
+    code,_,_=request('/api/v1/voice/screen-metrics','POST',body,cookie,headers);assert code==204
+    accepted=direct('accepted');assert accepted['value']==before['value']+1
+    assert request('/api/v1/auth/logout','POST',{},cookie)[0]==204
+    headers['X-App-Flow']=c['negative_flow'];c['rejected_intent']={'utc':now(),'stage':'before-one-oldcookie-POST'};save(c)
+    denied,_,_=request('/api/v1/voice/screen-metrics','POST',body,cookie,headers);assert denied==401
+    rejected=direct('rejected');assert rejected['value']==accepted['value']
+    write(P/'direct-counter-result.json',{'utc':now(),'status':'PASS_SCOPED_DIRECT_COUNTER','accepted_HTTP':code,'old_cookie_after_logout_HTTP':denied,'before':before,'after_accepted':accepted,'after_rejected':rejected,'accepted_delta':accepted['value']-before['value'],'rejected_delta':rejected['value']-accepted['value'],'accepted_reports':1,'rejected_reports':1,'label_keys_fixed3':True,'synthetic_diagnostic_not_physical_quality':True,'native_source':'http_metrics/client_screen.go','private_API_exposition_only':True})
+    result=after(c);print('Direct counter PASS; optional OTLP/Tempo '+result['status'])
+except Exception as exc:
+    failed=True;(P/'private/runtime-attempt1-error.log').write_text(traceback.format_exc(),'utf-8');write(P/'runtime-attempt1.json',{'utc':now(),'status':'FAILED_ATTEMPT_PRESERVED','error_type':type(exc).__name__,'private_error_retained':True})
+finally:
+    if (P/'private/fixture.json').exists():
+        try:cleanup()
+        except Exception as exc:
+            failed=True;(P/'private/cleanup-attempt1-error.log').write_text(traceback.format_exc(),'utf-8');write(P/'cleanup-attempt1.json',{'utc':now(),'status':'PARTIAL_STOP','error_type':type(exc).__name__})
+if failed:raise SystemExit('Attempt failed; inspect private receipt; no blind replay')

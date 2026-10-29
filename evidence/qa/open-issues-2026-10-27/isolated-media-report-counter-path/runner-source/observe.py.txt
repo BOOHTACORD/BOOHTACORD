@@ -1,0 +1,37 @@
+import json,time
+from urllib.parse import urlencode
+from common import P,read,write,get,sha,now
+QOE='sum(boohtacord_media_reports_total{platform="desktop_web",direction="receiver",state="playing"})'
+NATIVE='sum(voice_platform_client_screen_reports_total{platform="desktop_web",direction="receiver",state="playing"})'
+def prom(label):
+    values={}
+    for name,query in [('OTLP_QoE',QOE),('native_private',NATIVE)]:
+        code,raw=get('prometheus','/api/v1/query?'+urlencode({'query':query}));assert code==200
+        (P/'private'/('prom-'+label+'-'+name+'.json')).write_bytes(raw);d=json.loads(raw);assert d['status']=='success'
+        xs=d['data']['result'];assert len(xs)<=1;values[name]={'series':len(xs),'value':float(xs[0]['value'][1]) if xs else None,'raw_SHA256':sha(raw)}
+    return values
+def walk(x):
+    if isinstance(x,dict):
+        if x.get('name')=='media.sample' and 'attributes' in x:yield x
+        for v in x.values():yield from walk(v)
+    elif isinstance(x,list):
+        for v in x:yield from walk(v)
+def attrs(s):return {x['key']:next(iter(x['value'].values())) for x in s['attributes']}
+def after(c):
+    initial=read(P/'prom-before.json');start=time.monotonic();attempt=0;traces={};spans=[];final={}
+    while time.monotonic()-start<35:
+        attempt+=1;final=prom('after-'+str(attempt));code,raw=get('tempo','/api/search?'+urlencode({'q':'{ span.app.visit.id = "'+c['visit']+'" }','limit':10}));assert code==200
+        (P/'private'/('tempo-search-'+str(attempt)+'.json')).write_bytes(raw)
+        for item in json.loads(raw).get('traces',[]):
+            trace=item.get('traceID') or item.get('traceId');assert trace and all(x in '0123456789abcdef' for x in trace.lower())
+            if trace not in traces:
+                status,body=get('tempo','/api/traces/'+trace);assert status==200;(P/'private'/('trace-'+str(len(traces))+'.json')).write_bytes(body);traces[trace]=body
+        spans=[attrs(s) for raw in traces.values() for s in walk(json.loads(raw))]
+        a=initial['OTLP_QoE']['value'];b=final['OTLP_QoE']['value']
+        if a is not None and b is not None and b-a==1 and len(spans)==1:break
+        time.sleep(2)
+    positive=[x for x in spans if x.get('app.flow.id')==c['flow']];negative=[x for x in spans if x.get('app.flow.id')==c['negative_flow']]
+    matched=len(positive)==1 and positive[0].get('app.visit.id')==c['visit'] and positive[0].get('user.id')==c['account'] and positive[0].get('session.id')==c['telemetry'] and 'app.media.session.id' not in positive[0]
+    a=initial['OTLP_QoE']['value'];b=final['OTLP_QoE']['value'];delta=b-a if a is not None and b is not None else None
+    r={'utc':now(),'status':'PASS_SCOPED_OTLP_AND_TRACE' if delta==1 and matched and not negative else 'PARTIAL_OPTIONAL_OBSERVERS','observation_seconds':round(time.monotonic()-start,3),'attempts':attempt,'correct_OTLP_metric_before':a,'correct_OTLP_metric_after':b,'correct_OTLP_counter_delta':delta,'native_private_metric_Prometheus_series_before':initial['native_private']['series'],'native_private_metric_Prometheus_series_after':final['native_private']['series'],'native_private_empty_is_not_counter_zero':True,'owned_media_sample_spans':len(positive),'rejected_flow_media_sample_spans':len(negative),'trace_owner_session_visit_match_and_no_mediaID':matched,'raw_trace_payloads_private':True,'expected_no_native_API_scrape_path':True,'limit':'One declared synthetic diagnostic report. No physical quality, SLO, publication or connected media evidence.'}
+    write(P/'observer-result.json',r);return r

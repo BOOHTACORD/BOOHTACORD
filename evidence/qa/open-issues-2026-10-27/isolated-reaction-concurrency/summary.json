@@ -1,0 +1,29 @@
+{
+  "utc": "2026-10-28T23:34:40.161725+00:00",
+  "case": "ISOLATED-reaction-concurrency-privacy",
+  "criterion": "I287.C8",
+  "criterion_status": "PARTIAL",
+  "result": "PASS_SCOPED_HTTP",
+  "checks_passed": 11,
+  "fixture": {
+    "utc": "2026-10-28T23:34:14.184256+00:00",
+    "new_users": 0,
+    "own_sessions": 3,
+    "own_category": 1,
+    "own_TEXT": 1,
+    "DM_pair_reused": true,
+    "TEXT_messages": 1,
+    "DM_messages": 1,
+    "attachments": 0
+  },
+  "cleanup": "PASS",
+  "PG": "17.6",
+  "CI_tests_passed": 3,
+  "CI_skipped": 0,
+  "native_reruns": 0,
+  "limits": [
+    "API/PG verification only; no UI/native/production/load acceptance",
+    "NOT_RUN: no existing actual WS controller in bounded local-QA controller files"
+  ],
+  "no_source_B_GitHub_device_production_writes": true
+}

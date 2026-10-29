@@ -1,0 +1,125 @@
+{
+  "schema": "closed-safe-native-empty-attachment-proof-v1",
+  "frozen_at_utc": "2026-10-28T23:42:09.697457+00:00",
+  "status": "ONE_SCOPED_NATIVE_SENDER_RENDERING_MISMATCH_REPRO_CLEANED",
+  "source_revision": "b7f1c3ad438201c0461ed4858d97df6917815ceb",
+  "application_id": "ru.boohtacord.app",
+  "version_name": "1.0.47",
+  "version_code": 2082,
+  "APK_SHA256": "c2a5489368980a66dedd291c2899ed946a86aa400c2229bcc43ba1363029bd8b",
+  "signing_certificate_SHA256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+  "device": "Samsung SM-A576B",
+  "Android": "16",
+  "deployed_backend_source": "UNKNOWN",
+  "approved_peer_API_origin": "https://v.bootybay.ru",
+  "configured_native_URL_string": "UNOBSERVED",
+  "criterion_scope": "I62.C1 supplemental native attachment sender rendering; no whole criterion acceptance",
+  "repro_count": 1,
+  "fixture": {
+    "format": "JPEG",
+    "bytes": 774,
+    "pixels": [
+      64,
+      48
+    ],
+    "original_SHA256": "cc2a68f90df1e554d644f61c67ae12f96aa2c8a042477110d6d2e3ab089df15c"
+  },
+  "native_steps": {
+    "real_system_DocumentsUI_activity_and_hierarchy_bound": true,
+    "local_Downloads_root_bound": true,
+    "own_uploaded_pending_chip_seen": true,
+    "pending_chip_original_resolution_visual_review": true,
+    "pending_frame_SHA256": "0796e20f70d0e67c3993c86aa02b922b4f19e2316df0f307b05850ebfda4aaec",
+    "explicit_Send_count": 1,
+    "native_Sender_and_existing_pair_verified_by_peer_API": true
+  },
+  "peer_original": {
+    "HTTP": 200,
+    "bytes": 774,
+    "SHA256": "cc2a68f90df1e554d644f61c67ae12f96aa2c8a042477110d6d2e3ab089df15c",
+    "source_SHA256_match": true,
+    "decoded_format": "JPEG",
+    "decoded_pixels": [
+      64,
+      48
+    ],
+    "decoded_frames": 1
+  },
+  "peer_preview_separate": {
+    "HTTP": 200,
+    "SHA256": "92bae122f970d9f80feed2ce664eccc76666ac7d5b87fe5030c8e1f6cb56b31e",
+    "bytes": 153,
+    "format": "PNG",
+    "pixels": [
+      64,
+      48
+    ],
+    "four_region_max_channel_errors": [
+      0.0,
+      1.0,
+      0.0,
+      1.0
+    ]
+  },
+  "native_initial_observation": {
+    "at_utc": "2026-10-28T23:31:59.014391+00:00",
+    "source_resolution": [
+      1080,
+      2340
+    ],
+    "frame_SHA256": "fa4dff3283ea5f29df71d35635a9c224a2b24ffb9bb59144da2fca1ecb20c5b1",
+    "reviewed_at_original_resolution_by_phone_agent_and_root": true,
+    "root_review_ref": "Parent reviewed original frame in this QA thread before authorizing alternate exact-owned cleanup",
+    "fully_visible_own_row_bounds": [
+      34,
+      1696,
+      1046,
+      2079
+    ],
+    "own_row_content": "Empty content except standard reaction controls; no attachment image or filename",
+    "own_filename_semantic_match_count": 0,
+    "main_history_bounds": [
+      0,
+      480,
+      1080,
+      2101
+    ],
+    "recovery_banner_present": true,
+    "composer_empty": true
+  },
+  "diagnostic_countercontrol": {
+    "additional_HistoryRefresh_count": 1,
+    "API_message_content_SHA256_before": "fbb75aa2eb5b46b78a39f9a40fcebb3bb2fe8080833b5938a06ea13dc1f362e8",
+    "API_message_content_SHA256_after": "fbb75aa2eb5b46b78a39f9a40fcebb3bb2fe8080833b5938a06ea13dc1f362e8",
+    "API_message_content_unchanged": true,
+    "immediate_native_viewport_reset_to_older_history": true,
+    "post_refresh_reveal_gestures": 3,
+    "exact_original_filename_card_semantics_returned_after_reveal": true,
+    "post_reveal_bitmap_or_persistence_PASS_claim": false,
+    "initial_empty_bubble_observation_retained": true
+  },
+  "exact_cleanup": {
+    "native_author_Delete_and_confirmation": true,
+    "preferred_original_filename_payload_binding_used": true,
+    "alternate_time_binding_not_used": true,
+    "peer_tombstone_HTTP": 200,
+    "peer_body_blank_attachments_empty": true,
+    "original_HTTP_after_native_Delete": 404,
+    "preview_HTTP_after_native_Delete": 404
+  },
+  "cause": "UNKNOWN; no codec/network/backend/native state cause assigned",
+  "limits": [
+    "One JPEG sender-row mismatch; GIF not included in this immutable proof",
+    "Recovery banner context observed; no native realtime or native TLS/whole-auth claim",
+    "No native viewer, GIF animation, clipboard/paste/system-share or full security/QA acceptance",
+    "Whole lifecycle packet remains active for GIF/final own session and local-file cleanup"
+  ],
+  "public_safety": "No production IDs, logins, uploaded filenames, message bodies, raw pixels or private paths. Private originals referenced only by SHA256.",
+  "snapshot_context": "HISTORICAL_AT_ORIGINAL_FROZEN_TIMESTAMP",
+  "later_final_cleanup_qualification": {
+    "closed_summary_original_sha256": "999794fb7b6804a11a0379a22048a0488b5cd42372a3c59c2dc5be31e1b90264",
+    "reference": "summary.json#/cleanup",
+    "four_messages_two_files_one_session_cleaned_baseline38_unchanged": true,
+    "does_not_rewrite_historical_active_phase_limits_or_initial_FAIL": true
+  }
+}

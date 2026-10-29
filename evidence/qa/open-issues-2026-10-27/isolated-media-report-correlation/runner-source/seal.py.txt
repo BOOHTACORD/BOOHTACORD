@@ -1,0 +1,26 @@
+import ast,hashlib,json,re
+from pathlib import Path
+from datetime import datetime,timezone
+P=Path(__file__).resolve().parent;Q=P.parents[1]
+read=lambda p:json.loads(p.read_text(encoding='utf-8-sig'))
+write=lambda p,v:p.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+before=read(P/'before.json');policy=read(P/'policy-result.json');obs=read(P/'observer-result.json');cleanup=read(P/'cleanup.json')
+assert cleanup['status']=='PASS'
+helpers={}
+for f in P.glob('*.py'):
+    s=f.read_text('utf-8');ast.parse(s);assert len(s.splitlines())<=120;helpers[f.name]={'sha256':sha(f),'lines':len(s.splitlines())}
+assert len(helpers)<=16
+summary={'utc':datetime.now(timezone.utc).isoformat(),'status':'PASS_SCOPED' if obs['status']=='PASS_SCOPED' else 'PARTIAL','criterion':'I240.C17','criterion_status_unchanged':'NOT_RUN_PENDING_ROOT_REVIEW','recommended_full_criterion_status':'PARTIAL','source_revision':before['source'],'platform':'Windows HTTP controller; own local GoAPI/PostgreSQL17.6/Tempo/Prometheus; declared image072','protects':'Only authenticated owner/current session can bind a report to its server-issued active logical lease; forged media header cannot override server-derived correlation','command':'python -B -X utf8 .out/qa-owned-media-correlation/preflight.py; python -B -X utf8 .out/qa-owned-media-correlation/run.py','mandatory_when':'Before accepting this exact backend report-correlation facet','HTTP_controls':policy['HTTP_controls'],'accepted_diagnostic_reports':3,'negative_reports_without_latest_sample_change':policy['negative_reports'],'native_existing_CI_named_PASS':3,'native_tests_rerun':0,'actual_media_sample_spans':obs['actual_media_sample_spans'],'Prometheus_counter_delta':obs['Prometheus_counter_delta'],'expired_session401':True,'expired_session_normal_sibling_revoke':True,'normal_cleanup':'PASS','selected_baseline_tables':cleanup['selected_baseline_tables_restored'],'nine_services_unchanged':True,'new_users_RTCcredentials_participants_chatfixtures':0,'limits':['No independent lease expires/heartbeat field or standalone lease TTL acceptance','No connected media, native/browser/physical/production or capacity claim','Trace/counter data are synthetic diagnostic observations, not measured media quality','Expected aggregate/trace/audit/topology metadata retained; no recorder reset or wholeDB equality'],'whole_gate_closed':False}
+write(P/'summary.json',summary)
+f=read(P/'private/fixture.json');cred=read(Q/'.out/local-qa/credentials.private.json')
+needles=[f['owner'],*f['accounts'].values(),f['category'],f['voice'],f['visit'],f['forged']]+[v for k,v in cred.items() if any(x in k for x in ['password','secret','key','login','auth'])]
+for s in f['sessions'].values():needles += [s['id'],s['cookie'],s['cookie'].split('=',1)[1],s['digest'],s['telemetry']]
+needles += [l['id'] for l in f['leases'].values()]+[r['flow'] for r in f['reports']]
+names=['operating-brief.json','native-ci.json','verification-plan.json','before.json','fixture-ready.json','runtime-checks.json','policy-result.json','observer-before.json','observer-result.json','cleanup.json','summary.json','README.md','source-probe-review.json']+sorted(helpers)
+for name in names:
+    text=(P/name).read_text('utf-8');assert not any(isinstance(v,str) and len(v)>7 and v in text for v in needles),name
+    assert not re.search(r'(?i)C:[/\\]+Users[/\\]+|\b[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}\b',text),name
+write(P/'public-review.json',{'status':'SAFE_CLOSED_METADATA_ALLOWLIST','allowlist':names+['public-review.json','integrity.json'],'exclude':['private/**','*.log','unlisted future files'],'private_value_scan_matches':0,'raw_traces_cookies_IDs_session_hashes_exported':False,'helpers':helpers,'limits':['Criterion status remains pending root review','Session-expiry control does not imply lease TTL','No native/physical/media gate acceptance']})
+names+=['public-review.json'];write(P/'integrity.json',{'utc':datetime.now(timezone.utc).isoformat(),'files':{n:{'sha256':sha(P/n),'bytes':(P/n).stat().st_size} for n in names},'self_hash_not_included':True})
+print(json.dumps({'status':summary['status'],'summary_SHA256':sha(P/'summary.json'),'public_review_SHA256':sha(P/'public-review.json'),'integrity_SHA256':sha(P/'integrity.json'),'allowlisted_files':len(names)+1,'helpers':len(helpers),'max_helper_lines':max(x['lines'] for x in helpers.values())}))

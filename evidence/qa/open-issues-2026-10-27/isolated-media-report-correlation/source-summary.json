@@ -1,0 +1,32 @@
+{
+  "utc": "2026-10-28T23:30:25.693889+00:00",
+  "status": "PARTIAL",
+  "criterion": "I240.C17",
+  "criterion_status_unchanged": "NOT_RUN_PENDING_ROOT_REVIEW",
+  "recommended_full_criterion_status": "PARTIAL",
+  "source_revision": "072426d60b1c0b1f7e5f66722a0da5faa00b50d7",
+  "platform": "Windows HTTP controller; own local GoAPI/PostgreSQL17.6/Tempo/Prometheus; declared image072",
+  "protects": "Only authenticated owner/current session can bind a report to its server-issued active logical lease; forged media header cannot override server-derived correlation",
+  "command": "python -B -X utf8 .out/qa-owned-media-correlation/preflight.py; python -B -X utf8 .out/qa-owned-media-correlation/run.py",
+  "mandatory_when": "Before accepting this exact backend report-correlation facet",
+  "HTTP_controls": 10,
+  "accepted_diagnostic_reports": 3,
+  "negative_reports_without_latest_sample_change": 7,
+  "native_existing_CI_named_PASS": 3,
+  "native_tests_rerun": 0,
+  "actual_media_sample_spans": 3,
+  "Prometheus_counter_delta": 0,
+  "expired_session401": true,
+  "expired_session_normal_sibling_revoke": true,
+  "normal_cleanup": "PASS",
+  "selected_baseline_tables": 14,
+  "nine_services_unchanged": true,
+  "new_users_RTCcredentials_participants_chatfixtures": 0,
+  "limits": [
+    "No independent lease expires/heartbeat field or standalone lease TTL acceptance",
+    "No connected media, native/browser/physical/production or capacity claim",
+    "Trace/counter data are synthetic diagnostic observations, not measured media quality",
+    "Expected aggregate/trace/audit/topology metadata retained; no recorder reset or wholeDB equality"
+  ],
+  "whole_gate_closed": false
+}

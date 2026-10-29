@@ -1,0 +1,29 @@
+import ast,ipaddress,subprocess
+from common import P,Q,WORK,SOURCE,PROJECT,read,write,quote,sha,sql,request,state,services,frozen,get,now
+assert not (P/'before.json').exists();(P/'private').mkdir(exist_ok=True)
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=Q,text=True).strip()==SOURCE
+cred=read(WORK/'credentials.private.json');row=sql('SELECT id,role,blocked_at IS NULL FROM users WHERE login='+quote(cred['member_a_login'])+';').strip().split('|');assert len(row)==3 and row[1:] == ['MEMBER','t']
+account=row[0];write(P/'private/account.json',{'account':account})
+assert sql('SELECT count(*) FROM voice_leases WHERE user_id='+quote(account)+' AND revoked_at IS NULL;').strip()=='0'
+s=services();ports={}
+for n,v in s.items():
+    assert v['State']['Running'] and v['RestartCount']==0 and v['Config']['Labels']['com.docker.compose.project']==PROJECT
+    for bindings in v['NetworkSettings']['Ports'].values():
+        for b in bindings or []:assert ipaddress.ip_address(b['HostIp']).is_loopback
+    if n in ['tempo','prometheus']:
+        key='3200/tcp' if n=='tempo' else '9090/tcp';bindings=v['NetworkSettings']['Ports'][key];assert len(bindings)==1;ports[n]=int(bindings[0]['HostPort'])
+shared=set(s['api']['NetworkSettings']['Networks']) & set(s['postgres']['NetworkSettings']['Networks']);assert len(shared)==1
+assert 'api' in s['api']['NetworkSettings']['Networks'][next(iter(shared))]['Aliases']
+write(P/'private/services-before.json',s);write(P/'private/observer-ports.json',ports)
+assert request('/api/v1/health')[0]==200 and sql('SHOW server_version;').strip()=='17.6' and ports['tempo']==13200
+for n in ports:assert get(n,'/ready' if n=='tempo' else '/-/ready')[0]==200
+helpers={}
+for f in P.glob('*.py'):
+    source=f.read_text('utf-8');ast.parse(source);assert len(source.splitlines())<=120;helpers[f.name]=sha(f.read_bytes())
+assert len(helpers)<=8;classification=read(P/'source-classification.json')
+hashes={x['file']:x['working_SHA256'] for x in classification['source_bindings']}
+for f in ['AGENTS.md','SKILL.md','structure.config.yaml','backend/go.mod','tools/toolchains.json','backend/internal/identity/session/token.go','backend/internal/identity/authenticate_session/api/diagnostic_headers.go']:hashes[f]=sha((Q/f).read_bytes())
+revision=int(sql('SELECT revision FROM channel_topology_state WHERE singleton;').strip());assert revision==57
+write(P/'before.json',{'utc':now(),'source':SOURCE,'database':state(),'source_hashes':hashes,'helper_hashes':helpers,'prior_packets':frozen(),'PostgreSQL':'17.6','health_HTTP':200,'existing_MEMBER_account_verified':True,'new_users_categories_channels_leases_chat_RTC':0,'native_tests_rerun':0,'topology_revision':revision,'audit_count':int(sql('SELECT count(*) FROM audit_events;').strip()),'shared_API_postgres_network_guarded':True,'configured_observer_service_ports_loopback_owned':True})
+write(P/'operating-brief.json',{'workflow_class':'review_gate','route':'observability/report_client_screen/aggregate','packet':'direct-native-counter-and-OTLP-source-path','source_family':'One accepted diagnostic report, one revoked-cookie rejection; actual private exposition delta. Canonical consumers reviewed separately from metric-family assumptions.','guards':'One fresh ownedA session only; no newusers/resources/leases/chat/RTC; exactID/account/digest cleanup; no service/config/source changes','checks':'No tests rerun; source Q072/W1a/754 equal; directcounter before/after accepted and revokedcookie; optional correct-nameProm/ownflowTempo','stop':'Owned session revoked/live401/deleted,14selectedtable baselines and9services/source/priorpackets preserved; topology unchanged; release window before metadata seal'})
+print('PASS localPG17.6/9services/ownership/source/hash baseline; topology57; no fixture mutation yet')

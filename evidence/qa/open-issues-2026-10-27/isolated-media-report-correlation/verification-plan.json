@@ -1,0 +1,9 @@
+{
+  "workflow_class": "review_gate",
+  "route": "observability/report_client_screen/api",
+  "criterion": "I240.C17",
+  "runtime_scope": "Owned local HTTP/PG report correlation and actual Tempo/Prometheus observations; no RTC or media quality",
+  "limits": "No standalone lease TTL exists; session-expiry401 is separate. Prior3 named CI tests reused, not rerun. Current criterion remains NOT_RUN pending root review.",
+  "guards": "Existing3 accounts;4own sessions;nonce category/VOICE;2logical leases;own-session expires_at only;normal sibling revoke/release/logout;exact own cleanup",
+  "expected_metadata": "Diagnostic sample counters/traces, audit and topology revisions retained; no recorder reset or entireDB equality"
+}

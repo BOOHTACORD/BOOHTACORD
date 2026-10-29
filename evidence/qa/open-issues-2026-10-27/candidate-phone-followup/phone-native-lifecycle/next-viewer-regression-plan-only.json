@@ -1,0 +1,45 @@
+{
+  "schema": "closed-safe-plan-only-v1",
+  "created_at_utc": "2026-10-28T23:48:19.791630+00:00",
+  "status": "PLAN_ONLY_NOT_RUN_NO_DEVICE_OR_API_ACTIONS",
+  "route": "widgets/attachment_revocation",
+  "source_revision": "b7f1c3ad438201c0461ed4858d97df6917815ceb",
+  "source_SHA256": {
+    "clients/flutter/lib/src/widgets/attachment_revocation/view.dart": "4b582307d3ab1bb802609db0543bd06dd2e888345357986e78fba15035bb6e31",
+    "clients/flutter/lib/src/widgets/message_attachment_list.dart": "e48bfc00787d986258f8b502990c534d5c96a22331f57529f1904698ed1aa161",
+    "clients/flutter/lib/src/screens/auth_screen.dart": "06719746d01a3777540d13dadf3107c0884e7da7ce1a52dc6b4ac55cfd2f57f0"
+  },
+  "fix": "Existing #589 implementation closed through PR590; fresh physical acceptance remains separate",
+  "source_expectation": "RevocableAttachmentView captures session/server/message identity and replaces its child with revoked viewer when observed matching history row is deleted or loses attachment; cache eviction alone is not deletion evidence",
+  "prerequisites": [
+    "New explicit root authorization after current packet seal",
+    "Fresh installed identity, APP/main-pane/known pair/empty draft and unchanged media guards",
+    "One controlled B normal session, exact existing pair; no new accounts or DM",
+    "Known tiny four-region PNG, original/preview hashes and positive native viewer pixels before deletion"
+  ],
+  "steps": [
+    "B author creates one new owned PNG message; native main history binds exact own fixture",
+    "Open actual native viewer, capture original-resolution ICC-aware four-region positive bitmap control; keep viewer OPEN",
+    "B own DELETE exact message; peer tombstone blank/[] and original plus preview404",
+    "B creates one unique text control in same pair; require independently observed native underlying control and deleted-row application without closing or reopening viewer",
+    "Bound observer captures original-resolution frame; known bitmap negative plus unavailable state and absent stale download/retry controls; observe only controls remaining, no stale download/save action unless separately authorized",
+    "Close viewer normally only after decisive window; delete B own control, verify tombstone, baseline hashes and only own session logout/livefalse; final native state guard"
+  ],
+  "verdict_rules": [
+    "No underlying native history application proof => NOT_PROVEN; API404 alone cannot prove native invalidation",
+    "Viewer closed before deletion or reopened afterward does not qualify already-open regression",
+    "Pixel absence requires known before-pixel positive control and original-resolution ICC-aware region observations",
+    "No passive delivery/p95, audio/whole security/platform acceptance",
+    "No source edit, install, force-stop, native logout, baseURL, OS permission, voice/mic/share change"
+  ],
+  "configured_URL_inspection_plan": {
+    "status": "PLAN_ONLY_NO_IN_SESSION_READ_ONLY_ROUTE_VALIDATED",
+    "known_source_UI": "AuthScreen _changeServer opens _ServerAddressDialog with state.serverUrl minus /api/v1, HTTPS-address TextField, Cancel and Save",
+    "safe_limit": "Do not navigate to authentication by logging out; no dialog Save or native session/server changes. Current configured URL string remains UNOBSERVED. A separate source-backed in-session route would need validation before any device navigation."
+  },
+  "controller_discovery_diagnostics": [
+    "Wrong speculative widgets/attachment_viewer path did not exist; exact widgets/attachment_revocation/view.dart was selected afterward",
+    "No revoked-viewer key match in bounded clients/flutter/test lookup; no unit-suite claim or test execution"
+  ],
+  "publication_qualification": "HISTORICAL_PLAN_ONLY; no later active install/viewer packet is an input or result"
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "closed-safe-allowlist-v1",
+  "mode": "CLOSED_ONLY_LISTED_FILES",
+  "allow": [
+    "summary.json",
+    "public-projection.json",
+    "post-response-shape-observation.json",
+    "public-execution.json",
+    "install-public-execution.json",
+    "publication-allowlist.json",
+    "public-artifact-hashes.json"
+  ],
+  "deny_everything_else": true,
+  "raw_private_APKs_frames_hierarchies_payloads_helpers_sourcecriteria_not_public": true,
+  "original_frozen_packets_not_modified": true,
+  "source_criteria_entirely_omitted": true
+}

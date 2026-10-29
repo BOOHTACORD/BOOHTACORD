@@ -1,0 +1,214 @@
+{
+  "status": "PROPOSED_ROOT_MERGE_ONLY_NOT_APPLIED",
+  "cases": [
+    {
+      "id": "ISOLATED-media-report-owner-session-correlation",
+      "status": "PARTIAL",
+      "protects": "Authenticated owner/current-session revalidation controls report-to-lease correlation; forged media header cannot override the derived ID; rejected reports record no sample/span",
+      "command": "python -B -X utf8 .out/qa-owned-media-correlation/preflight.py; python -B -X utf8 .out/qa-owned-media-correlation/run.py",
+      "actual_commands": [
+        "python -B -X utf8 .out/qa-owned-media-correlation/preflight.py; python -B -X utf8 .out/qa-owned-media-correlation/run.py"
+      ],
+      "execution_owner": "/root/qa_browser",
+      "publication_owner": "root only",
+      "platform": "Windows HTTP controller; own local GoAPI/PostgreSQL17.6/Tempo/Prometheus; declared image072",
+      "mandatory_when": "Before accepting this exact I240.C17 backend facet; full original clauses and required platforms remain mandatory",
+      "issues": [
+        240
+      ],
+      "criterion_ids": [
+        "I240.C17"
+      ],
+      "result": "isolated-media-report-correlation/summary.json",
+      "limits": "10HTTP/PG and3actual Tempo spans; original native-counter Prometheus observation NOT_PROVEN (empty vector, not measured zero). Three current-CI tests reused; no rerun. Own-session expiry401 is not standalone lease TTL; no RTC/physical/native/browser/production/full152 acceptance.14selected tables restored; topology49->51/+5audit retained.",
+      "actual_counts": {
+        "HTTP_controls": 10,
+        "accepted_reports": 3,
+        "rejected_reports": 7,
+        "actual_Tempo_media_sample_spans": 3,
+        "native_tests_reused": 3,
+        "native_tests_rerun": 0,
+        "new_RTC_credentials_participants": 0
+      },
+      "source_packet": "qa-owned-media-correlation",
+      "source_authority_SHA256": "e79b71525b5f60ec2f329c0a69fe628e375a728b520db3d5b9f00d93f94ce791",
+      "whole_gate_closed": false,
+      "command_context": {
+        "working_directory": "Q",
+        "interpreter": "Python3.12.10"
+      }
+    },
+    {
+      "id": "ISOLATED-media-report-native-counter-and-OTLP-path",
+      "status": "PASS_SCOPED",
+      "protects": "A single authenticated diagnostic report increments direct native exposition once; revoked cookie cannot increment; correct OTLP metric and owned trace are distinct from the uncollected native-family query",
+      "command": "python -B -X utf8 .out/qa-agent-counter-path/classify.py; python -B -X utf8 .out/qa-agent-counter-path/preflight.py; python -B -X utf8 .out/qa-agent-counter-path/run.py",
+      "actual_commands": [
+        "python -B -X utf8 .out/qa-agent-counter-path/classify.py; python -B -X utf8 .out/qa-agent-counter-path/preflight.py; python -B -X utf8 .out/qa-agent-counter-path/run.py"
+      ],
+      "execution_owner": "/root/qa_browser",
+      "publication_owner": "root only",
+      "platform": "Own local GoAPI/PostgreSQL17.6; direct native private exposition; configured local Prometheus/Collector/Tempo",
+      "mandatory_when": "Before accepting this exact I240.C17 backend facet; full original clauses and required platforms remain mandatory",
+      "issues": [
+        240
+      ],
+      "criterion_ids": [
+        "I240.C17"
+      ],
+      "result": "isolated-media-report-counter-path/summary.json",
+      "limits": "Direct native3->4->4; correct OTLP3->4 and1actual Tempo span.16exact source/config/QoE-consumer blobs Q072/W1a/754 equal. Canonical reviewed QoE consumers use OTLP names; no metric-loss product bug confirmed. One synthetic report,0RTC/no physical quality. Original Prometheus NOT_PROVEN receipt unchanged;14table/9service cleanup, topology57 unchanged.",
+      "actual_counts": {
+        "accepted_HTTP": 204,
+        "revoked_cookie_HTTP": 401,
+        "native_before": 3,
+        "native_after_accepted": 4,
+        "native_after_rejected": 4,
+        "OTLP_delta": 1,
+        "actual_Tempo_media_sample_spans": 1,
+        "native_tests_rerun": 0
+      },
+      "source_packet": "qa-agent-counter-path",
+      "source_authority_SHA256": "8a9319c5b6c6095baf484af6fab8d05336da7e63755b977b195a8991e233cf1d",
+      "whole_gate_closed": false,
+      "command_context": {
+        "working_directory": "Q",
+        "interpreter": "Python3.12.10"
+      }
+    },
+    {
+      "id": "ISOLATED-reaction-concurrency-privacy",
+      "status": "PASS_SCOPED",
+      "protects": "Six desired-state reactions and concurrent/retried PUT/DELETE preserve unique actor state and counts in owned TEXT/DM; outsider ADMIN and wrong scope remain denied",
+      "command": "python -X utf8 Q/.out/qa-reaction-concurrency/preflight.py; python -X utf8 Q/.out/qa-reaction-concurrency/setup.py; python -X utf8 Q/.out/qa-reaction-concurrency/exercise.py; python -X utf8 Q/.out/qa-reaction-concurrency/cleanup.py; python -X utf8 Q/.out/qa-reaction-concurrency/seal.py",
+      "actual_commands": [
+        "python -X utf8 Q/.out/qa-reaction-concurrency/preflight.py",
+        "python -X utf8 Q/.out/qa-reaction-concurrency/setup.py",
+        "python -X utf8 Q/.out/qa-reaction-concurrency/exercise.py",
+        "python -X utf8 Q/.out/qa-reaction-concurrency/cleanup.py",
+        "python -X utf8 Q/.out/qa-reaction-concurrency/seal.py"
+      ],
+      "execution_owner": "CI verification worker; declared controller working_directory test-sql-native-gates/BOOHTACORD",
+      "publication_owner": "root only",
+      "platform": "Windows Python3.12.10 controller; owned local GoAPI declared072/PostgreSQL17.6",
+      "mandatory_when": "Before accepting this exact I287.C8 backend facet; full original clauses and required platforms remain mandatory",
+      "issues": [
+        287
+      ],
+      "criterion_ids": [
+        "I287.C8"
+      ],
+      "result": "isolated-reaction-concurrency/summary.json",
+      "limits": "11HTTP/PG checks,40reaction mutations,sixemoji/twoconversation kinds/two race clients. Foreign ADMIN404 and revoked cookie401. No actual WS in this first packet; separate WS case supplies that later subset.3named current-CI PASS/0skip reused; no rerun.17selected baseline tables/9services cleanup; topology51->53/+2audit retained; no UI/native/production/load/full96 acceptance.",
+      "actual_counts": {
+        "checks_passed": 11,
+        "desired_reaction_requests": 40,
+        "emoji_count": 6,
+        "conversation_kinds": 2,
+        "race_clients": 2,
+        "CI_named_PASS": 3,
+        "CI_skipped": 0,
+        "native_reruns": 0
+      },
+      "source_packet": "qa-reaction-concurrency",
+      "source_authority_SHA256": "4ff1b828404976bad143637f7cf19da5f99525756b8fadf53b1f5d8b122afdef",
+      "whole_gate_closed": false,
+      "command_context": {
+        "interpreter": "Python3.12.10",
+        "working_directory": "test-sql-native-gates/BOOHTACORD",
+        "native_tests": "Existing source-bound Go JSON only; no rerun"
+      }
+    },
+    {
+      "id": "ISOLATED-TEXT-pin-acceptance",
+      "status": "PASS_SCOPED",
+      "protects": "Only administrator mutates common TEXT pins; desired-state retries, pagination/original reference and soft-delete cleanup cannot duplicate or resurrect pins",
+      "command": "python -X utf8 Q/.out/qa-text-pin-acceptance/preflight.py; python -X utf8 Q/.out/qa-text-pin-acceptance/setup.py; python -X utf8 Q/.out/qa-text-pin-acceptance/exercise.py; python -X utf8 Q/.out/qa-text-pin-acceptance/exercise2.py; python -X utf8 Q/.out/qa-text-pin-acceptance/cleanup.py; python -X utf8 Q/.out/qa-text-pin-acceptance/seal2.py",
+      "actual_commands": [
+        "python -X utf8 Q/.out/qa-text-pin-acceptance/preflight.py",
+        "python -X utf8 Q/.out/qa-text-pin-acceptance/setup.py",
+        "python -X utf8 Q/.out/qa-text-pin-acceptance/exercise.py",
+        "python -X utf8 Q/.out/qa-text-pin-acceptance/exercise2.py",
+        "python -X utf8 Q/.out/qa-text-pin-acceptance/cleanup.py",
+        "python -X utf8 Q/.out/qa-text-pin-acceptance/seal2.py"
+      ],
+      "execution_owner": "CI verification worker; declared controller working_directory test-sql-native-gates/BOOHTACORD",
+      "publication_owner": "root only",
+      "platform": "Windows Python3.12.10 controller; owned local GoAPI declared072/PostgreSQL17.6",
+      "mandatory_when": "Before accepting this exact I287.C8 backend facet; full original clauses and required platforms remain mandatory",
+      "issues": [
+        287
+      ],
+      "criterion_ids": [
+        "I287.C8"
+      ],
+      "result": "isolated-text-pin-acceptance/summary.json",
+      "limits": "8HTTP/PG checks; member403, administrator PUT/DELETE204 idempotent,3pages/3unique original references and re-pin after delete404. Initial Cache-Control header KeyError is retained as controller expectation mismatch, not product failure.5current-CI PASS/0skip reused; no rerun. No DM pin/WS/UI/native/production/load claim.17table/9service cleanup; topology53->55/+12audit retained.",
+      "actual_counts": {
+        "checks_passed": 8,
+        "pagination_pages": 3,
+        "unique_messages": 3,
+        "CI_named_PASS": 5,
+        "CI_skipped": 0,
+        "native_reruns": 0
+      },
+      "source_packet": "qa-text-pin-acceptance",
+      "source_authority_SHA256": "d656e3e6bf8d9d79096e334c651fac5f1db65b3aea598fbc0233eabba4bc61da",
+      "whole_gate_closed": false,
+      "command_context": {
+        "interpreter": "Python3.12.10",
+        "working_directory": "test-sql-native-gates/BOOHTACORD",
+        "native_tests": "Existing source-bound Go JSON only; no rerun"
+      }
+    },
+    {
+      "id": "ISOLATED-private-reaction-WS-delivery-replay-revoke",
+      "status": "PASS_SCOPED",
+      "protects": "Actual authorized sockets receive exact private reaction hints; outsider ADMIN/replay and revoked socket/cookie cannot receive or reconnect to private data",
+      "command": "python -X utf8 Q/.out/qa-reaction-websocket/build_client.py; python -X utf8 Q/.out/qa-reaction-websocket/preflight.py; python -X utf8 Q/.out/qa-reaction-websocket/setup.py; python -X utf8 Q/.out/qa-reaction-websocket/exercise.py; python -X utf8 Q/.out/qa-reaction-websocket/cleanup.py; python -X utf8 Q/.out/qa-reaction-websocket/seal.py",
+      "actual_commands": [
+        "python -X utf8 Q/.out/qa-reaction-websocket/build_client.py",
+        "python -X utf8 Q/.out/qa-reaction-websocket/preflight.py",
+        "python -X utf8 Q/.out/qa-reaction-websocket/setup.py",
+        "python -X utf8 Q/.out/qa-reaction-websocket/exercise.py",
+        "python -X utf8 Q/.out/qa-reaction-websocket/cleanup.py",
+        "python -X utf8 Q/.out/qa-reaction-websocket/seal.py"
+      ],
+      "execution_owner": "CI verification worker; declared controller working_directory test-sql-native-gates/BOOHTACORD",
+      "publication_owner": "root only",
+      "platform": "Windows Python3.12.10 controller; owned local GoAPI declared072/PostgreSQL17.6; actual Go1.26.4/coder-websocket1.8.15 client, no browser/native-device claim",
+      "mandatory_when": "Before accepting this exact I287.C8 backend facet; full original clauses and required platforms remain mandatory",
+      "issues": [
+        287
+      ],
+      "criterion_ids": [
+        "I287.C8"
+      ],
+      "result": "isolated-reaction-websocket/summary.json",
+      "limits": "8actual isolated HTTP/WS/PG checks with3sockets, authorizedA/B hints,0outsider/replayed private hints; revoked socket observed close1008 at0.031s (single observation, no SLA), plain/replay revoked-cookie handshake401.3current-CI PASS/0skip reused; no tests rerun. No UI/native-device/RTC/production/load/full96 acceptance.17tables/9services preserved; topology55->57/+2audit and8realtime metadata retained.",
+      "actual_counts": {
+        "checks_passed": 8,
+        "actual_sockets": 3,
+        "outsider_private_hints": 0,
+        "revoked_flow_private_hints": 0,
+        "revoked_cookie_handshakes_HTTP": [
+          401,
+          401
+        ],
+        "CI_named_PASS": 3,
+        "CI_skipped": 0,
+        "native_reruns": 0
+      },
+      "source_packet": "qa-reaction-websocket",
+      "source_authority_SHA256": "e77f41d7e48daa3f6ebb3cdc6963aab6c84cc8c07a8a5542d0d96e8103502c06",
+      "whole_gate_closed": false,
+      "command_context": {
+        "interpreter": "Python3.12.10",
+        "working_directory": "test-sql-native-gates/BOOHTACORD",
+        "native_client_build": "go -C Q/backend build -o Q/.out/qa-reaction-websocket/private/ws-client.exe Q/.out/qa-reaction-websocket/client.go Q/.out/qa-reaction-websocket/transport.go",
+        "native_client_version": "Go1.26.4/coder-websocket1.8.15",
+        "native_tests": "Existing source-bound Go JSON only; no rerun"
+      }
+    }
+  ]
+}

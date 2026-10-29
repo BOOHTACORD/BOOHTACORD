@@ -1512,6 +1512,300 @@
       "defects": [
         249
       ]
+    },
+    {
+      "id": "ISOLATED-media-report-owner-session-correlation",
+      "status": "PARTIAL",
+      "protects": "Authenticated owner/current-session revalidation controls report-to-lease correlation; forged media header cannot override the derived ID; rejected reports record no sample/span",
+      "command": "python -B -X utf8 .out/qa-owned-media-correlation/preflight.py; python -B -X utf8 .out/qa-owned-media-correlation/run.py",
+      "actual_commands": [
+        "python -B -X utf8 .out/qa-owned-media-correlation/preflight.py; python -B -X utf8 .out/qa-owned-media-correlation/run.py"
+      ],
+      "execution_owner": "/root/qa_browser",
+      "publication_owner": "root only",
+      "platform": "Windows HTTP controller; own local GoAPI/PostgreSQL17.6/Tempo/Prometheus; declared image072",
+      "mandatory_when": "Before accepting this exact I240.C17 backend facet; full original clauses and required platforms remain mandatory",
+      "issues": [
+        240
+      ],
+      "criterion_ids": [
+        "I240.C17"
+      ],
+      "result": "isolated-media-report-correlation/summary.json",
+      "limits": "10HTTP/PG and3actual Tempo spans; original native-counter Prometheus observation NOT_PROVEN (empty vector, not measured zero). Three current-CI tests reused; no rerun. Own-session expiry401 is not standalone lease TTL; no RTC/physical/native/browser/production/full152 acceptance.14selected tables restored; topology49->51/+5audit retained.",
+      "actual_counts": {
+        "HTTP_controls": 10,
+        "accepted_reports": 3,
+        "rejected_reports": 7,
+        "actual_Tempo_media_sample_spans": 3,
+        "native_tests_reused": 3,
+        "native_tests_rerun": 0,
+        "new_RTC_credentials_participants": 0
+      },
+      "source_packet": "qa-owned-media-correlation",
+      "source_authority_SHA256": "e79b71525b5f60ec2f329c0a69fe628e375a728b520db3d5b9f00d93f94ce791",
+      "whole_gate_closed": false,
+      "command_context": {
+        "working_directory": "Q",
+        "interpreter": "Python3.12.10"
+      }
+    },
+    {
+      "id": "ISOLATED-media-report-native-counter-and-OTLP-path",
+      "status": "PASS_SCOPED",
+      "protects": "A single authenticated diagnostic report increments direct native exposition once; revoked cookie cannot increment; correct OTLP metric and owned trace are distinct from the uncollected native-family query",
+      "command": "python -B -X utf8 .out/qa-agent-counter-path/classify.py; python -B -X utf8 .out/qa-agent-counter-path/preflight.py; python -B -X utf8 .out/qa-agent-counter-path/run.py",
+      "actual_commands": [
+        "python -B -X utf8 .out/qa-agent-counter-path/classify.py; python -B -X utf8 .out/qa-agent-counter-path/preflight.py; python -B -X utf8 .out/qa-agent-counter-path/run.py"
+      ],
+      "execution_owner": "/root/qa_browser",
+      "publication_owner": "root only",
+      "platform": "Own local GoAPI/PostgreSQL17.6; direct native private exposition; configured local Prometheus/Collector/Tempo",
+      "mandatory_when": "Before accepting this exact I240.C17 backend facet; full original clauses and required platforms remain mandatory",
+      "issues": [
+        240
+      ],
+      "criterion_ids": [
+        "I240.C17"
+      ],
+      "result": "isolated-media-report-counter-path/summary.json",
+      "limits": "Direct native3->4->4; correct OTLP3->4 and1actual Tempo span.16exact source/config/QoE-consumer blobs Q072/W1a/754 equal. Canonical reviewed QoE consumers use OTLP names; no metric-loss product bug confirmed. One synthetic report,0RTC/no physical quality. Original Prometheus NOT_PROVEN receipt unchanged;14table/9service cleanup, topology57 unchanged.",
+      "actual_counts": {
+        "accepted_HTTP": 204,
+        "revoked_cookie_HTTP": 401,
+        "native_before": 3,
+        "native_after_accepted": 4,
+        "native_after_rejected": 4,
+        "OTLP_delta": 1,
+        "actual_Tempo_media_sample_spans": 1,
+        "native_tests_rerun": 0
+      },
+      "source_packet": "qa-agent-counter-path",
+      "source_authority_SHA256": "8a9319c5b6c6095baf484af6fab8d05336da7e63755b977b195a8991e233cf1d",
+      "whole_gate_closed": false,
+      "command_context": {
+        "working_directory": "Q",
+        "interpreter": "Python3.12.10"
+      }
+    },
+    {
+      "id": "ISOLATED-reaction-concurrency-privacy",
+      "status": "PASS_SCOPED",
+      "protects": "Six desired-state reactions and concurrent/retried PUT/DELETE preserve unique actor state and counts in owned TEXT/DM; outsider ADMIN and wrong scope remain denied",
+      "command": "python -X utf8 Q/.out/qa-reaction-concurrency/preflight.py; python -X utf8 Q/.out/qa-reaction-concurrency/setup.py; python -X utf8 Q/.out/qa-reaction-concurrency/exercise.py; python -X utf8 Q/.out/qa-reaction-concurrency/cleanup.py; python -X utf8 Q/.out/qa-reaction-concurrency/seal.py",
+      "actual_commands": [
+        "python -X utf8 Q/.out/qa-reaction-concurrency/preflight.py",
+        "python -X utf8 Q/.out/qa-reaction-concurrency/setup.py",
+        "python -X utf8 Q/.out/qa-reaction-concurrency/exercise.py",
+        "python -X utf8 Q/.out/qa-reaction-concurrency/cleanup.py",
+        "python -X utf8 Q/.out/qa-reaction-concurrency/seal.py"
+      ],
+      "execution_owner": "CI verification worker; declared controller working_directory test-sql-native-gates/BOOHTACORD",
+      "publication_owner": "root only",
+      "platform": "Windows Python3.12.10 controller; owned local GoAPI declared072/PostgreSQL17.6",
+      "mandatory_when": "Before accepting this exact I287.C8 backend facet; full original clauses and required platforms remain mandatory",
+      "issues": [
+        287
+      ],
+      "criterion_ids": [
+        "I287.C8"
+      ],
+      "result": "isolated-reaction-concurrency/summary.json",
+      "limits": "11HTTP/PG checks,40reaction mutations,sixemoji/twoconversation kinds/two race clients. Foreign ADMIN404 and revoked cookie401. No actual WS in this first packet; separate WS case supplies that later subset.3named current-CI PASS/0skip reused; no rerun.17selected baseline tables/9services cleanup; topology51->53/+2audit retained; no UI/native/production/load/full96 acceptance.",
+      "actual_counts": {
+        "checks_passed": 11,
+        "desired_reaction_requests": 40,
+        "emoji_count": 6,
+        "conversation_kinds": 2,
+        "race_clients": 2,
+        "CI_named_PASS": 3,
+        "CI_skipped": 0,
+        "native_reruns": 0
+      },
+      "source_packet": "qa-reaction-concurrency",
+      "source_authority_SHA256": "4ff1b828404976bad143637f7cf19da5f99525756b8fadf53b1f5d8b122afdef",
+      "whole_gate_closed": false,
+      "command_context": {
+        "interpreter": "Python3.12.10",
+        "working_directory": "test-sql-native-gates/BOOHTACORD",
+        "native_tests": "Existing source-bound Go JSON only; no rerun"
+      }
+    },
+    {
+      "id": "ISOLATED-TEXT-pin-acceptance",
+      "status": "PASS_SCOPED",
+      "protects": "Only administrator mutates common TEXT pins; desired-state retries, pagination/original reference and soft-delete cleanup cannot duplicate or resurrect pins",
+      "command": "python -X utf8 Q/.out/qa-text-pin-acceptance/preflight.py; python -X utf8 Q/.out/qa-text-pin-acceptance/setup.py; python -X utf8 Q/.out/qa-text-pin-acceptance/exercise.py; python -X utf8 Q/.out/qa-text-pin-acceptance/exercise2.py; python -X utf8 Q/.out/qa-text-pin-acceptance/cleanup.py; python -X utf8 Q/.out/qa-text-pin-acceptance/seal2.py",
+      "actual_commands": [
+        "python -X utf8 Q/.out/qa-text-pin-acceptance/preflight.py",
+        "python -X utf8 Q/.out/qa-text-pin-acceptance/setup.py",
+        "python -X utf8 Q/.out/qa-text-pin-acceptance/exercise.py",
+        "python -X utf8 Q/.out/qa-text-pin-acceptance/exercise2.py",
+        "python -X utf8 Q/.out/qa-text-pin-acceptance/cleanup.py",
+        "python -X utf8 Q/.out/qa-text-pin-acceptance/seal2.py"
+      ],
+      "execution_owner": "CI verification worker; declared controller working_directory test-sql-native-gates/BOOHTACORD",
+      "publication_owner": "root only",
+      "platform": "Windows Python3.12.10 controller; owned local GoAPI declared072/PostgreSQL17.6",
+      "mandatory_when": "Before accepting this exact I287.C8 backend facet; full original clauses and required platforms remain mandatory",
+      "issues": [
+        287
+      ],
+      "criterion_ids": [
+        "I287.C8"
+      ],
+      "result": "isolated-text-pin-acceptance/summary.json",
+      "limits": "8HTTP/PG checks; member403, administrator PUT/DELETE204 idempotent,3pages/3unique original references and re-pin after delete404. Initial Cache-Control header KeyError is retained as controller expectation mismatch, not product failure.5current-CI PASS/0skip reused; no rerun. No DM pin/WS/UI/native/production/load claim.17table/9service cleanup; topology53->55/+12audit retained.",
+      "actual_counts": {
+        "checks_passed": 8,
+        "pagination_pages": 3,
+        "unique_messages": 3,
+        "CI_named_PASS": 5,
+        "CI_skipped": 0,
+        "native_reruns": 0
+      },
+      "source_packet": "qa-text-pin-acceptance",
+      "source_authority_SHA256": "d656e3e6bf8d9d79096e334c651fac5f1db65b3aea598fbc0233eabba4bc61da",
+      "whole_gate_closed": false,
+      "command_context": {
+        "interpreter": "Python3.12.10",
+        "working_directory": "test-sql-native-gates/BOOHTACORD",
+        "native_tests": "Existing source-bound Go JSON only; no rerun"
+      }
+    },
+    {
+      "id": "ISOLATED-private-reaction-WS-delivery-replay-revoke",
+      "status": "PASS_SCOPED",
+      "protects": "Actual authorized sockets receive exact private reaction hints; outsider ADMIN/replay and revoked socket/cookie cannot receive or reconnect to private data",
+      "command": "python -X utf8 Q/.out/qa-reaction-websocket/build_client.py; python -X utf8 Q/.out/qa-reaction-websocket/preflight.py; python -X utf8 Q/.out/qa-reaction-websocket/setup.py; python -X utf8 Q/.out/qa-reaction-websocket/exercise.py; python -X utf8 Q/.out/qa-reaction-websocket/cleanup.py; python -X utf8 Q/.out/qa-reaction-websocket/seal.py",
+      "actual_commands": [
+        "python -X utf8 Q/.out/qa-reaction-websocket/build_client.py",
+        "python -X utf8 Q/.out/qa-reaction-websocket/preflight.py",
+        "python -X utf8 Q/.out/qa-reaction-websocket/setup.py",
+        "python -X utf8 Q/.out/qa-reaction-websocket/exercise.py",
+        "python -X utf8 Q/.out/qa-reaction-websocket/cleanup.py",
+        "python -X utf8 Q/.out/qa-reaction-websocket/seal.py"
+      ],
+      "execution_owner": "CI verification worker; declared controller working_directory test-sql-native-gates/BOOHTACORD",
+      "publication_owner": "root only",
+      "platform": "Windows Python3.12.10 controller; owned local GoAPI declared072/PostgreSQL17.6; actual Go1.26.4/coder-websocket1.8.15 client, no browser/native-device claim",
+      "mandatory_when": "Before accepting this exact I287.C8 backend facet; full original clauses and required platforms remain mandatory",
+      "issues": [
+        287
+      ],
+      "criterion_ids": [
+        "I287.C8"
+      ],
+      "result": "isolated-reaction-websocket/summary.json",
+      "limits": "8actual isolated HTTP/WS/PG checks with3sockets, authorizedA/B hints,0outsider/replayed private hints; revoked socket observed close1008 at0.031s (single observation, no SLA), plain/replay revoked-cookie handshake401.3current-CI PASS/0skip reused; no tests rerun. No UI/native-device/RTC/production/load/full96 acceptance.17tables/9services preserved; topology55->57/+2audit and8realtime metadata retained.",
+      "actual_counts": {
+        "checks_passed": 8,
+        "actual_sockets": 3,
+        "outsider_private_hints": 0,
+        "revoked_flow_private_hints": 0,
+        "revoked_cookie_handshakes_HTTP": [
+          401,
+          401
+        ],
+        "CI_named_PASS": 3,
+        "CI_skipped": 0,
+        "native_reruns": 0
+      },
+      "source_packet": "qa-reaction-websocket",
+      "source_authority_SHA256": "e77f41d7e48daa3f6ebb3cdc6963aab6c84cc8c07a8a5542d0d96e8103502c06",
+      "whole_gate_closed": false,
+      "command_context": {
+        "interpreter": "Python3.12.10",
+        "working_directory": "test-sql-native-gates/BOOHTACORD",
+        "native_client_build": "go -C Q/backend build -o Q/.out/qa-reaction-websocket/private/ws-client.exe Q/.out/qa-reaction-websocket/client.go Q/.out/qa-reaction-websocket/transport.go",
+        "native_client_version": "Go1.26.4/coder-websocket1.8.15",
+        "native_tests": "Existing source-bound Go JSON only; no rerun"
+      }
+    },
+    {
+      "id": "CI-master754b-signed-candidate-native-contract",
+      "status": "PASS_SCOPED",
+      "protects": "Exact merged-source signed QA candidate requires all four fresh profiles in one run/attempt, skipped publisher and actual APK/native-contract identity",
+      "command": "ONE Android Release workflow_dispatch master dry_run=true; ONE full rerun of same run40784080135; actual apksigner/aapt inspection of3 APKs; exact manifest/SHA256SUMS/canonical Git contracts/native-source receipt verification; independent root hosted/ARM64 readback",
+      "platform": "GitHub hosted Linux and Intel/macOS gates; Windows controller byte inspection only; source754b5997ad100cb00300373f29ab88bda4ed267d; signed QA1.0.47+82, ABI codes2082/1082/4082",
+      "mandatory_when": "Before accepting availability and source/signature identity of this exact signed QA candidate",
+      "issues": [
+        62
+      ],
+      "result": "candidate-phone-followup/ci-attempt2/summary.json",
+      "limits": "Attempt1 observed15m Mac timeout/20m01s wall, underlying cause UNKNOWN,3parts/fan-inFAIL/signskipped retained. Attempt2 all6 jobs/all4fresh PASS, publisherSKIPPED,3actual APKs and20Git contracts verified. No install by these closed packets; no device/updater/security/production deployment acceptance. Root owns595 disposition.",
+      "defects": []
+    },
+    {
+      "id": "ANDROID-current-data-plane-AuthorID-bound",
+      "status": "PASS_SCOPED",
+      "protects": "An existing controlled native owner and pair must correlate with the approved peer data plane before owned native attachment scenarios",
+      "command": "ONE normal controlled peer login and challenge POST; observe23.063s/7poll passive window; ONE explicit native HistoryRefresh; ONE native reply Send; peer checks exact reply body SHA and AuthorID equality with known phone; exact own cleanup and session logout/livefalse",
+      "platform": "Physical Samsung SM-A576B Android16; CLOSED C2 snapshot 1.0.47/code2082; APK c2a5489368980a66dedd291c2899ed946a86aa400c2229bcc43ba1363029bd8b; source b7f1c3ad438201c0461ed4858d97df6917815ceb; protected peer API separately bound",
+      "mandatory_when": "Before accepting ownership/data-plane prerequisites for these exact existing-pair native attachment scenarios",
+      "issues": [
+        62
+      ],
+      "result": "candidate-phone-followup/phone-native-lifecycle/summary.json#/backend_data_plane",
+      "limits": "PASS only after explicit refresh. Earlier passive visibility remains NOT_PROVEN; native configured URL UNOBSERVED; no native TLS/whole auth or deployed-backend-source proof. Shared batch:4 new messages tombstoned,2 SHA-guarded local files removed,1 own peer session revoked/livefalse,38 baseline records unchanged; native owner session preserved.",
+      "defects": []
+    },
+    {
+      "id": "ANDROID-current-native-JPEG-GIF-upload-original-delete",
+      "status": "PASS_SCOPED",
+      "protects": "Actual DocumentsUI selection must remain pending until explicit Send; peer original bytes/decode/preview and native author deletion must preserve and revoke only owned synthetic JPEG/GIF data",
+      "command": "python picker_files.py open/select/pending/send <jpeg|gif>; python attachments.py read <jpeg|gif>; python native_message.py delete[-after-hydration|-exact-owned] <jpeg|gif>; python peer.py native-tombstone <jpeg|gif>; python attachments.py revocation <jpeg|gif>; python picker_files.py cleanup; python peer.py revoke",
+      "platform": "Physical Samsung SM-A576B Android16; CLOSED C2 snapshot 1.0.47/code2082; APK c2a5489368980a66dedd291c2899ed946a86aa400c2229bcc43ba1363029bd8b; source b7f1c3ad438201c0461ed4858d97df6917815ceb; protected peer API separately bound",
+      "mandatory_when": "Before accepting this scoped native JPEG/GIF picker/send/original/preview/author-revocation lifecycle",
+      "issues": [
+        62
+      ],
+      "result": "candidate-phone-followup/phone-native-lifecycle/summary.json#/formats",
+      "limits": "One JPEG774bytes64x48/1frame and one GIF205bytes32x32/2frames: real picker/pending/Send, peer originalSHA/decode, separate preview and nativeDelete/tombstone/original+preview404 PASS. Initial own sender rows FAIL separately; no native bitmap/viewer, GIF animation, clipboard/system share, passive realtime or whole criterion acceptance. Shared batch:4 new messages tombstoned,2 SHA-guarded local files removed,1 own peer session revoked/livefalse,38 baseline records unchanged; native owner session preserved.",
+      "defects": []
+    },
+    {
+      "id": "ANDROID-current-native-attachment-only-self-row-empty",
+      "status": "FAIL",
+      "protects": "A newly sent owned attachment-only row must show its image or filename when the complete row is visible, rather than empty content with only standard controls",
+      "command": "For each JPEG/GIF: actual DocumentsUI selection, reviewed uploaded pending chip, explicit native Send, peer author/pair/original/preview controls; inspect complete own row at original1080x2340 resolution. JPEG diagnostic HistoryRefresh1 plus3reveal gestures; no additional GIF refresh. Exact native author Delete and peer404 cleanup afterward",
+      "platform": "Physical Samsung SM-A576B Android16; CLOSED C2 snapshot 1.0.47/code2082; APK c2a5489368980a66dedd291c2899ed946a86aa400c2229bcc43ba1363029bd8b; source b7f1c3ad438201c0461ed4858d97df6917815ceb; protected peer API separately bound",
+      "mandatory_when": "Before accepting initial own-sender native attachment rendering; full I62.C1 remains FAIL",
+      "issues": [
+        62
+      ],
+      "result": "candidate-phone-followup/phone-native-lifecycle/summary.json#/formats",
+      "limits": "Both formats show fully visible own initial empty bubble/no filename or image; recovery banner observed. JPEG reviewed by phone+root, GIF by phone. JPEG API content stayed unchanged; later filename semantics returned after refresh/reveal, native bitmap/persistence still UNOBSERVED. Cause UNKNOWN; no codec/network/backend/native-state cause assigned. One deduplicated defect id pending root after immutable data commit; defects=[] intentional. Shared batch:4 new messages tombstoned,2 SHA-guarded local files removed,1 own peer session revoked/livefalse,38 baseline records unchanged; native owner session preserved.",
+      "defects": []
+    },
+    {
+      "id": "ANDROID-master754b-same-code-install-session-smoke",
+      "status": "PASS_SCOPED",
+      "protects": "One normal signed same-code APK replacement preserves the known native owner and authenticated fresh peer-data access",
+      "command": "One pre-journaled adb install -r of verified arm64 APK; actual installed APK pull/SHA/signature/ABI/code; one authorized amstart; private own-profile comparison; fresh B marker, one explicit HistoryRefresh/two reveals, exact B delete/logout",
+      "platform": "Physical Samsung SM-A576B Android16; actual installed f5a45c36d2c351c92bf2689bb0d02d2e9c495a51e07d78e088042128d03c0b66; source754b; appID ru.boohtacord.app/version1.0.47/code2082/cert394e",
+      "mandatory_when": "Before accepting exact candidate physical installation and same-code session-retention smoke only",
+      "issues": [
+        62
+      ],
+      "result": "android-master754b-install/summary.json",
+      "limits": "Exactly one install-r/one amstart, no forced downgrade/reset/uninstall/native logout. Same code2082 replacement is not monotonic updater acceptance. Fresh marker visible only after labelled refresh/reveal; passive realtime/native URL/TLS/full security/media NOT_PROVEN. Marker/session cleaned,42baseline rows unchanged; mediaidle. Unexpected benign Settings/zero-editor guards retained as controller diagnostics.",
+      "defects": []
+    },
+    {
+      "id": "ANDROID-master754b-already-open-viewer-revocation",
+      "status": "PARTIAL",
+      "protects": "An already-open owned native image viewer must drop revoked pixels and stale actions, with independently witnessed native deletion application",
+      "command": "Follow android-viewer589-master754b/public-execution.json: B owned PNG upload/message; native open; ICC-aware source-resolution positive/wrong-palette control; exact B Delete and original/preview404; B control;7 no-input while-open polls/pixel probes; normal Back only afterward, separate postclose corroboration and exact cleanup",
+      "platform": "Physical Samsung SM-A576B Android16; signed actual f5a ARM64 source754b/version1.0.47/code2082; existing owned DM; protected peer API",
+      "mandatory_when": "Before accepting this exact physical already-open viewer regression of implementation589; whole QA62/privacy remains separate",
+      "issues": [
+        62
+      ],
+      "result": "android-viewer589-master754b/summary.json",
+      "limits": "4/4known regions before;0/4after, unavailable1/ImageView0/Download0/Retry0 on7while-open samples over20.704s, no intervening close/retry/download. Opaque revoked modal hides underlying history: independent deleted-row/control application WHILEOPEN is NOT_PROVEN. One postclose motion/0HistoryRefresh then control+tombstone is separate corroboration. No continuous pixel trace, passive p95, audio/full security PASS.2own B messages/session cleaned,43baseline records unchanged, finalAPP/knownDM/empty/mediaidle. Actual B POST201 attachments0 versus canonicalGET200 attachments1 is separate API shape observation, not nativeA POST/cause proof.",
+      "defects": [],
+      "related_implementation_issue": 589
     }
   ]
 }

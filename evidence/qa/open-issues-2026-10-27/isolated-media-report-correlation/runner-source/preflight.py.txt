@@ -1,0 +1,41 @@
+import ast,ipaddress,subprocess
+from common import P,Q,WORK,SOURCE,PROJECT,read,write,sha,quote,sql,request,state,services,frozen,get,now
+assert not (P/'before.json').exists();(P/'private').mkdir(exist_ok=True)
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=Q,text=True).strip()==SOURCE
+cred=read(WORK/'credentials.private.json');accounts={}
+for alias,prefix in [('admin','admin'),('a','member_a'),('b','member_b')]:
+    row=sql('SELECT id,role,blocked_at IS NULL FROM users WHERE login='+quote(cred[prefix+'_login'])+';').strip().split('|')
+    assert len(row)==3 and row[1]==('ADMINISTRATOR' if alias=='admin' else 'MEMBER') and row[2]=='t';accounts[alias]=row[0]
+for alias in ['a','b']:
+    uid=quote(accounts[alias]);assert sql('SELECT count(*) FROM voice_timeouts WHERE user_id='+uid+';').strip()=='0'
+    assert sql('SELECT count(*) FROM voice_leases WHERE user_id='+uid+' AND revoked_at IS NULL;').strip()=='0'
+    assert sql('SELECT count(*) FROM voice_sfu_revocations w JOIN voice_leases l ON l.id=w.lease_id WHERE l.user_id='+uid+' AND w.completed_at IS NULL;').strip()=='0'
+write(P/'private/accounts.json',accounts)
+n=read(P/'native-ci.json');assert n['new_native_tests_executed']==0 and len(n['events'])==3
+for name,events in n['events'].items():assert sum(e['Action']=='pass' for e in events)==1 and not any(e['Action'] in ['skip','fail'] for e in events)
+paths=[Q/x['file'] for x in n['source_files']]
+paths += [Q/x for x in ['AGENTS.md','SKILL.md','structure.config.yaml','backend/go.mod','contracts/openapi.yaml','backend/internal/app/observability_routes/client_screen_routes.go','backend/internal/media/issue_livekit_credential/postgres/repository.go','backend/internal/observability/http_metrics/client_screen.go','backend/internal/observability/http_metrics/client_screen_report.go','backend/internal/observability/bind_flow/request.go','backend/internal/identity/authenticate_session/api/diagnostic_headers.go','backend/internal/app/media_routes/voice_lease_routes.go']]
+paths += [Q/x for x in ['backend/internal/identity/session/token.go','backend/internal/identity/revoke_own_sessions/postgres/revoke.sql','backend/internal/identity/revoke_own_sessions/postgres/repository.go','backend/internal/voice/release_voice_lease/postgres/repository.go']]
+hashes={p.relative_to(Q).as_posix():sha(p.read_bytes()) for p in paths}
+for item in n['source_files']:
+    assert sha((Q/item['file']).read_bytes().replace(b'\r\n',b'\n'))==item['LF_SHA256'] and item['Q072_equals_merged754b']
+helpers={}
+for p in P.glob('*.py'):
+    s=p.read_text('utf-8');ast.parse(s);assert len(s.splitlines())<=120;helpers[p.name]=sha(p.read_bytes())
+assert len(helpers)<=16;s=services();ports={}
+for name,v in s.items():
+    assert v['State']['Running'] and v['RestartCount']==0 and v['Config']['Labels']['com.docker.compose.project']==PROJECT
+    for bindings in v['NetworkSettings']['Ports'].values():
+        for b in bindings or []:assert ipaddress.ip_address(b['HostIp']).is_loopback
+    if name in ['api','web']:assert __import__('json').loads(__import__('common').docker('image','inspect',v['Image']))[0]['Config']['Labels']['org.opencontainers.image.revision']==SOURCE
+    if name in ['tempo','prometheus']:
+        key='3200/tcp' if name=='tempo' else '9090/tcp';bs=v['NetworkSettings']['Ports'][key];assert len(bs)==1;ports[name]=int(bs[0]['HostPort'])
+write(P/'private/services-before.json',s);write(P/'private/observer-ports.json',ports)
+assert ports['tempo']==13200 and get(ports['tempo'],'/ready')[0]==200 and get(ports['prometheus'],'/-/ready')[0]==200
+assert request('/api/v1/health')[0]==200 and sql('SHOW server_version;').strip()=='17.6'
+cols=sql("SELECT table_name,column_name FROM information_schema.columns WHERE table_schema='public' AND table_name IN ('sessions','voice_leases') ORDER BY table_name,ordinal_position;")
+assert 'sessions|expires_at' in cols and 'voice_leases|expires_at' not in cols and 'voice_leases|heartbeat' not in cols
+(P/'private/session-lease-columns.txt').write_text(cols,'utf-8')
+write(P/'before.json',{'utc':now(),'source':SOURCE,'PostgreSQL':'17.6','health_HTTP':200,'database':state(),'source_hashes':hashes,'helper_hashes':helpers,'frozen_files':frozen(),'controlled_accounts_verified':True,'A_B_timeoutnone_activelease0_pending0':True,'observer_service_ownership_verified':True,'new_native_tests':0,'existing_CI_named_tests_PASS':3,'topology_revision':int(sql('SELECT revision FROM channel_topology_state WHERE singleton;').strip()),'audit_count':int(sql('SELECT count(*) FROM audit_events;').strip())})
+write(P/'verification-plan.json',{'workflow_class':'review_gate','route':'observability/report_client_screen/api','criterion':'I240.C17','runtime_scope':'Owned local HTTP/PG report correlation and actual Tempo/Prometheus observations; no RTC or media quality','limits':'No standalone lease TTL exists; session-expiry401 is separate. Prior3 named CI tests reused, not rerun. Current criterion remains NOT_RUN pending root review.','guards':'Existing3 accounts;4own sessions;nonce category/VOICE;2logical leases;own-session expires_at only;normal sibling revoke/release/logout;exact own cleanup','expected_metadata':'Diagnostic sample counters/traces, audit and topology revisions retained; no recorder reset or entireDB equality'})
+print('PASS source/CI/baseline/9services/PG17.6/localobserver ownership; no mutable fixtures yet')

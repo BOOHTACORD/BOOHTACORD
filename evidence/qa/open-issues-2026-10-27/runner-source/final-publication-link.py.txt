@@ -1,0 +1,68 @@
+"""Apply reviewed scoped witnesses to the existing graph, preserving all source clauses."""
+import sys
+from pathlib import Path
+Q = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Q / '.out/qa-archive-release'))
+from common import *
+P = Path(__file__).resolve().parent
+m, cases = read(O / 'matrix.json'), read(O / 'cases.json')
+assert len(cases['cases']) == 97
+rows = {r['id']: r for i in m['issues'] for r in i['criteria']}
+original = {k: r['requirement'] for k, r in rows.items()}
+
+def add(c, ids):
+    assert not any(old['id'] == c['id'] for old in cases['cases'])
+    assert set(ids) <= {'I240.C17', 'I287.C8', 'I62.C1'}
+    assert c['issues'] == sorted({int(r.split('.')[0][1:]) for r in ids})
+    for key in ['protects', 'command', 'platform', 'mandatory_when', 'result', 'limits']:
+        assert isinstance(c.get(key), str) and c[key].strip()
+    path, _, pointer = c['result'].partition('#')
+    value = read(O / path)
+    if pointer:
+        assert pointer.startswith('/')
+        for part in pointer[1:].split('/'):
+            part = part.replace('~1', '/').replace('~0', '~')
+            value = value[int(part)] if isinstance(value, list) else value[part]
+    cases['cases'].append(c)
+    for rid in ids:
+        r = rows[rid]
+        r['execution_cases'].append(c['id'])
+        r['evidence'].append(c['result'])
+        r.setdefault('witness_limits', []).append(c['id'] + ': ' + c['limits'])
+        r['execution'] += '; ' + c['command']
+        if 'execution_plan' in r: r['execution_plan']['existing_scoped_witnesses'] = list(r['execution_cases'])
+    for issue in m['issues']:
+        if issue['number'] in c['issues']:
+            issue['execution_cases'].append(c['id'])
+            issue['evidence'].append(c['result'])
+
+for c in read(P / 'proposed-cases.json')['cases']:
+    ids = c.get('criterion_ids', ['I62.C1'])
+    add(c, ids)
+install = read(O / 'android-master754b-install/summary.json')
+assert 'PASS' in install['status']
+add({'id': 'ANDROID-master754b-same-code-install-session-smoke', 'status': 'PASS_SCOPED',
+    'protects': 'One normal signed same-code APK replacement preserves the known native owner and authenticated fresh peer-data access',
+    'command': 'One pre-journaled adb install -r of verified arm64 APK; actual installed APK pull/SHA/signature/ABI/code; one authorized amstart; private own-profile comparison; fresh B marker, one explicit HistoryRefresh/two reveals, exact B delete/logout',
+    'platform': 'Physical Samsung SM-A576B Android16; actual installed f5a45c36d2c351c92bf2689bb0d02d2e9c495a51e07d78e088042128d03c0b66; source754b; appID ru.boohtacord.app/version1.0.47/code2082/cert394e',
+    'mandatory_when': 'Before accepting exact candidate physical installation and same-code session-retention smoke only',
+    'issues': [62], 'result': 'android-master754b-install/summary.json',
+    'limits': 'Exactly one install-r/one amstart, no forced downgrade/reset/uninstall/native logout. Same code2082 replacement is not monotonic updater acceptance. Fresh marker visible only after labelled refresh/reveal; passive realtime/native URL/TLS/full security/media NOT_PROVEN. Marker/session cleaned,42baseline rows unchanged; mediaidle. Unexpected benign Settings/zero-editor guards retained as controller diagnostics.',
+    'defects': []}, ['I62.C1'])
+assert rows['I240.C17']['status'] == 'NOT_RUN'
+rows['I240.C17']['status'] = 'PARTIAL'
+rows['I240.C17']['reason'] = 'Actual isolated HTTP/PG owner/current-session/revoked/expired-session controls, real Tempo spans and direct/correct-OTLP counter followup now linked. Synthetic diagnostic reports and logical leases,0RTC participants; standalone lease TTL and complete connected-client/media152 acceptance are not claimed. Original empty legacy-query observer retained.'
+assert rows['I287.C8']['status'] == 'PARTIAL' and rows['I249.C4']['status'] == 'FAIL'
+rows['I287.C8']['reason'] = 'Isolated normal TEXT/DM reaction races, retries/count privacy, administrator-only TEXT pins, pagination/delete cleanup, real authorized/outsider/revoked HTTP+WS replay now linked. Released Web and native UI/platform/full96 acceptance remain separate; actual local source072 leaf hashes match current code.'
+assert rows['I62.C1']['status'] == 'FAIL'
+assert {k: r['requirement'] for k, r in rows.items()} == original
+assert len(cases['cases']) == 107
+m['updated_utc'] = datetime.now(timezone.utc).isoformat()
+write(O / 'cases.json', cases)
+write(O / 'matrix.json', m)
+write(P / 'link-receipt.json', {'status': 'PASS', 'old_sets': 97, 'current_sets': 107,
+    'new_sets': [c['id'] for c in cases['cases'][97:]], 'source_texts_preserved': 480,
+    'only_new_status_delta': 'I240.C17 NOT_RUN -> PARTIAL', 'I62_C1': 'FAIL',
+    'I287_C8': 'PARTIAL', 'I249_C4': 'FAIL', 'whole_gate_closures': 0})
+code(Path(__file__), 'final-publication-')
+print(json.dumps({'sets': 107, 'status_delta': 'I240.C17 NOT_RUN -> PARTIAL', 'whole_gate_closures': 0}))

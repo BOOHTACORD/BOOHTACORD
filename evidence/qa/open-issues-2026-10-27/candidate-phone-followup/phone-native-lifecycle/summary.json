@@ -1,0 +1,194 @@
+{
+  "schema": "closed-safe-native-lifecycle-summary-v1",
+  "sealed_at_utc": "2026-10-28T23:49:19.404425+00:00",
+  "workflow_class": "review_gate",
+  "route": "attachments/upload/native-lifecycle-with-data-plane-prerequisite",
+  "status": "SCOPED_FORMAT_LIFECYCLE_PASS_WITH_NATIVE_OWN_SENDER_RENDERING_FAIL_CLEANED",
+  "source_revision": "b7f1c3ad438201c0461ed4858d97df6917815ceb",
+  "application_id": "ru.boohtacord.app",
+  "version_name": "1.0.47",
+  "version_code": 2082,
+  "APK_SHA256": "c2a5489368980a66dedd291c2899ed946a86aa400c2229bcc43ba1363029bd8b",
+  "certificate_SHA256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+  "device": "Samsung SM-A576B",
+  "Android": "16",
+  "source_confidence": "Exact installed APK SHA matches signed acceptance report",
+  "final_package_version_unchanged": true,
+  "final_local_pulled_APK_SHA_unchanged": true,
+  "APK_NOT_repulled_at_final": true,
+  "deployed_backend_source": "UNKNOWN",
+  "approved_peer_API_origin": "https://v.bootybay.ru",
+  "configured_native_URL_string": "UNOBSERVED",
+  "backend_data_plane": {
+    "result": "PASS_SCOPED_ACCOUNT_PAIR_CORRELATION",
+    "new_B_challenge_POST_count": 1,
+    "passive_visibility": "NOT_PROVEN",
+    "passive_window_seconds": 23.063,
+    "polls": 7,
+    "actual_manual_history_refreshes_for_challenge": 1,
+    "manual_refresh_challenge_full_visibility": true,
+    "one_native_reply": true,
+    "server_AuthorID_equals_known_phone": true,
+    "existing_pair_unchanged": true,
+    "reply_exact_body_SHA256": "ebc4b34cdc06cc85e32b0545e0e3815633c46dff491c45db0e25b0e7cabce99e",
+    "configured_URL_or_native_TLS_acceptance": false
+  },
+  "formats": {
+    "jpeg": {
+      "picker_selection_count": 1,
+      "uploaded_pending_chip": true,
+      "explicit_native_Send_count": 1,
+      "native_author_and_existing_pair_guarded": true,
+      "original_HTTP": 200,
+      "original_SHA256": "cc2a68f90df1e554d644f61c67ae12f96aa2c8a042477110d6d2e3ab089df15c",
+      "original_bytes": 774,
+      "decoded_format": "JPEG",
+      "decoded_pixels": [
+        64,
+        48
+      ],
+      "decoded_frames": 1,
+      "preview_HTTP": 200,
+      "preview_SHA256": "92bae122f970d9f80feed2ce664eccc76666ac7d5b87fe5030c8e1f6cb56b31e",
+      "preview_pixels": [
+        64,
+        48
+      ],
+      "preview_four_region_max_channel_errors": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "own_sender_initial_card": "FAIL_SCOPED_EMPTY_BUBBLE_VISIBLE_NO_IMAGE_OR_FILENAME",
+      "native_author_Delete": true,
+      "tombstone_blank_body_attachments_empty": true,
+      "original_HTTP_after_delete": 404,
+      "preview_HTTP_after_delete": 404
+    },
+    "gif": {
+      "picker_selection_count": 1,
+      "uploaded_pending_chip": true,
+      "explicit_native_Send_count": 1,
+      "native_author_and_existing_pair_guarded": true,
+      "original_HTTP": 200,
+      "original_SHA256": "307057a156b56cdc8042d2ecee09b258a204769ede03f3c0f2f2a01d585c594b",
+      "original_bytes": 205,
+      "decoded_format": "GIF",
+      "decoded_pixels": [
+        32,
+        32
+      ],
+      "decoded_frames": 2,
+      "preview_HTTP": 200,
+      "preview_SHA256": "288da035f5b70351391b255d84b112025c124ee55fdc663ec329193be15ce805",
+      "preview_pixels": [
+        32,
+        32
+      ],
+      "preview_four_region_max_channel_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "own_sender_initial_card": "FAIL_SCOPED_EMPTY_BUBBLE_VISIBLE_NO_IMAGE_OR_FILENAME",
+      "native_author_Delete": true,
+      "tombstone_blank_body_attachments_empty": true,
+      "original_HTTP_after_delete": 404,
+      "preview_HTTP_after_delete": 404
+    }
+  },
+  "JPEG_recovery_observation": {
+    "additional_diagnostic_history_refreshes": 1,
+    "immediate_viewport_reset_to_old_history": true,
+    "additional_main_history_reveals_before_filename_cleanup": 3,
+    "filename_card_semantics_returned": true,
+    "native_bitmap_after_reveal": "UNOBSERVED",
+    "API_content_unchanged_SHA256": "fbb75aa2eb5b46b78a39f9a40fcebb3bb2fe8080833b5938a06ea13dc1f362e8",
+    "persistence_or_pixel_recovery_NOT_claimed": true
+  },
+  "cleanup": {
+    "new_messages_created": 4,
+    "B_challenge_API_deleted": 1,
+    "native_reply_author_UI_deleted": 1,
+    "native_image_messages_author_UI_deleted": 2,
+    "exact_all_four_tombstones_verified": true,
+    "two_images_original_and_preview_404": true,
+    "exact_own_pushed_files_SHA_checked_removed": 2,
+    "expected_absent_tests_exit1": true,
+    "baseline_records_unchanged": 38,
+    "normal_B_login_new_sessions": 1,
+    "only_own_session_logout204_and_live_authenticated_false": true,
+    "native_owner_session_untouched": true
+  },
+  "final_state": {
+    "APP_foreground_guard": true,
+    "main_drawer_closed": true,
+    "known_main_DM_header_bound": true,
+    "composer_empty": true,
+    "pending_attachment_absent": true,
+    "media": {
+      "microphone_FGS": false,
+      "screen_FGS": false,
+      "projection_null": true,
+      "voice_connected_UI": false,
+      "active_room_is_approved": "NOT_APPLICABLE_IDLE"
+    },
+    "recovery_banner_visible": true
+  },
+  "actions": {
+    "ordinary_Retry": 1,
+    "ordinary_Back_for_visually_proven_drawer": 1,
+    "actual_history_refreshes": 2,
+    "fixture_push": 2,
+    "picker_select": 2,
+    "native_upload": 2,
+    "image_explicit_Send": 2,
+    "native_text_reply_Send": 1,
+    "B_challenge_POST": 1,
+    "native_user_data_or_cookie_extraction": 0,
+    "install_force_stop_native_logout_baseURL_Settings_permissions_voice_mic_share_changes": 0,
+    "new_accounts_or_DM_pairs": 0
+  },
+  "browser_paste_or_clipboard_facets": "NOT_RUN_NOT_APPLICABLE_TO_NATIVE_PICKER",
+  "full_QA_gate": "UNACCEPTED",
+  "limits": [
+    "One device, one JPEG and one GIF run; no GIF animation or image viewer acceptance",
+    "Both own-sender initial bubbles empty with recovery banner visible; cause UNKNOWN; separate frozen proofs",
+    "Manual refresh controls are not passive-delivery/realtime or p95 acceptance",
+    "Configured native URL string remains UNOBSERVED despite approved API/account-pair data-plane correlation",
+    "No native TLS/whole auth/security/third ADMIN/nonparticipant/clipboard/system-share/platform acceptance",
+    "No human audibility, media/capacity or already-open viewer invalidation result in this packet",
+    "No product cause inferred from controller selector/encoding failures"
+  ],
+  "controller_diagnostics": {
+    "receipts_native_exit_counts": {
+      "0": 44,
+      "2": 8,
+      "1": 1
+    },
+    "eight_exit2_guard_attempts_and_one_local_exit1_retained": true,
+    "local_exit1_default_encoding_error_not_native_product_failure": true,
+    "bound_controller_revision_hashes_preserved": 44,
+    "helper_count": 16,
+    "helpers_within120_lines": true,
+    "declared_native_skips": 0,
+    "native_unit_build_tests": "NOT_RUN physical QA packet, no source edits"
+  },
+  "prior_frozen_packets_unchanged": 5,
+  "JPEG_closed_proof_SHA256": "0af9a126952453c53a7aea0768f9f8c243269746d9c45f4e97e7a56b5eb06723",
+  "GIF_closed_proof_SHA256": "b287362f0b6fe3b3f96e8d3a96d09cfe131a2a4260413adc45402df02661f9d5",
+  "source_SHA256": {
+    "clients/flutter/pubspec.yaml": "80c62dce2175e12d825d14aa079bf578fc08527c90fab0b5c86e1b14cf3054ca",
+    "clients/flutter/android/app/src/main/AndroidManifest.xml": "a13e23632992a7d370fbf1b42e94503bd2dcee38d37914c190a98a619334ed1e",
+    "clients/flutter/lib/src/features/realtime/lifecycle/status.dart": "409210dd360b156b5abcd4c56776747b996df4c90e0b275f740c4ad820bc9b0f",
+    "clients/flutter/lib/src/features/realtime/lifecycle/recovery.dart": "00f94512de433b9cd31a3feabbb7bc184749ca06db15f5e0c8d77cb5d7a41d60",
+    "clients/flutter/lib/src/features/realtime/lifecycle/connect.dart": "59bd4957a0dbd285cf4600cff39e382e7161217843ec9a6503b31695eb479aaa",
+    "clients/flutter/lib/src/features/realtime/connect/api.dart": "a0a8144e60a19196788d4f3639fbd0ac4ec6dfb98d377ff9e1f2b2deba4ce8d7",
+    "clients/flutter/lib/src/features/attachments/upload/api.dart": "31e63d554c39c681471e36e9f97570c80a22c1f35c4155216b405e6a8c259f65",
+    "clients/flutter/lib/src/widgets/message_attachment_composer.dart": "f2ee9acb7f7b2c4a889da28e57211d03970bf1dbd9a5603855c64702dc177dbc",
+    "clients/flutter/lib/src/features/direct/send_state/send.dart": "a2fe6e1bdd5d33f859d871161d5dd77426c7d0d8ccebf028af92f3cf5601ea81"
+  },
+  "no_source_index_public_or_GitHub_edits": true
+}

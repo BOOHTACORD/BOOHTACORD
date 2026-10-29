@@ -1,0 +1,74 @@
+{
+  "status": "SAFE_CLOSED_METADATA_ALLOWLIST",
+  "allowlist": [
+    "operating-brief.json",
+    "native-ci.json",
+    "verification-plan.json",
+    "before.json",
+    "fixture-ready.json",
+    "runtime-checks.json",
+    "policy-result.json",
+    "observer-before.json",
+    "observer-result.json",
+    "cleanup.json",
+    "summary.json",
+    "README.md",
+    "source-probe-review.json",
+    "checks.py",
+    "cleanup.py",
+    "common.py",
+    "observe.py",
+    "preflight.py",
+    "prepare.py",
+    "run.py",
+    "seal.py",
+    "public-review.json",
+    "integrity.json"
+  ],
+  "exclude": [
+    "private/**",
+    "*.log",
+    "unlisted future files"
+  ],
+  "private_value_scan_matches": 0,
+  "raw_traces_cookies_IDs_session_hashes_exported": false,
+  "helpers": {
+    "checks.py": {
+      "sha256": "53351589f30833e4c818d61b29208d315d82d14625f2b193c6840ce342075680",
+      "lines": 55
+    },
+    "cleanup.py": {
+      "sha256": "505933387c1302e5139196bee7cb29db3c603bca5eff8fcbc1cd137d3c63a1b2",
+      "lines": 52
+    },
+    "common.py": {
+      "sha256": "c7a0bd656dfbae354384d47531473d31748b52863f193db0f23c85f5107918af",
+      "lines": 39
+    },
+    "observe.py": {
+      "sha256": "d8bee082d2775dc20ed878439ecc8defe3cdf355ea6959d93f79b24c37c966b0",
+      "lines": 56
+    },
+    "preflight.py": {
+      "sha256": "c6c598b8a6b7eb13388c0d2b72c01e6fd8e334d2bf81afe0158133e8ed24191d",
+      "lines": 41
+    },
+    "prepare.py": {
+      "sha256": "f1a05804764610ffde018d83d25ba9b625c9a39a5cdc03b9c5b808b752eebff7",
+      "lines": 27
+    },
+    "run.py": {
+      "sha256": "9e3a59c07978c4a565af81f0cd46b02aff063d147d74768d0d220efe6814243c",
+      "lines": 21
+    },
+    "seal.py": {
+      "sha256": "86c68563f7893817e29601a5e8d624bf2c2508e99e84765b39bc7d3c15731fce",
+      "lines": 26
+    }
+  },
+  "limits": [
+    "Criterion status remains pending root review",
+    "Session-expiry control does not imply lease TTL",
+    "No native/physical/media gate acceptance"
+  ]
+}

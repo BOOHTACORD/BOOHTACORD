@@ -1,0 +1,29 @@
+{
+  "utc": "2026-10-28T23:42:18.044608+00:00",
+  "case": "ISOLATED-private-reaction-WS-delivery-replay-revoke",
+  "criterion": "I287.C8",
+  "criterion_status": "PARTIAL",
+  "result": "PASS_SCOPED_REAL_WS",
+  "checks_passed": 8,
+  "fixture": {
+    "utc": "2026-10-28T23:41:54.484687+00:00",
+    "new_users": 0,
+    "own_sessions": 3,
+    "own_category": 1,
+    "own_TEXT": 1,
+    "DM_pair_reused": true,
+    "TEXT_messages": 1,
+    "DM_messages": 1,
+    "attachments": 0
+  },
+  "cleanup": "PASS",
+  "PG": "17.6",
+  "CI_tests_passed": 3,
+  "CI_skipped": 0,
+  "native_reruns": 0,
+  "limits": [
+    "Actual isolated HTTP/WS/PG only; no UI/native-device/RTC/production/load acceptance",
+    "Broad criterion remains PARTIAL"
+  ],
+  "no_source_B_GitHub_device_production_writes": true
+}

@@ -1,0 +1,44 @@
+{
+  "interpreter": "Python3.12.10",
+  "working_directory": "test-sql-native-gates/BOOHTACORD",
+  "commands": [
+    "python -X utf8 Q/.out/qa-reaction-concurrency/preflight.py",
+    "python -X utf8 Q/.out/qa-reaction-concurrency/setup.py",
+    "python -X utf8 Q/.out/qa-reaction-concurrency/exercise.py",
+    "python -X utf8 Q/.out/qa-reaction-concurrency/cleanup.py",
+    "python -X utf8 Q/.out/qa-reaction-concurrency/seal.py"
+  ],
+  "native_tests": "Existing source-bound Go JSON only; no rerun",
+  "helpers": {
+    "cleanup.py": {
+      "lines": 69,
+      "sha256": "358aa2d119fcc6d34fe118901fdd11396a1b36a0b519127207f65c49211b561f"
+    },
+    "common.py": {
+      "lines": 63,
+      "sha256": "dcd41761017e4b6d345f64bebaa13557393d6f3513263b943e7e6c71b74c0766"
+    },
+    "exercise.py": {
+      "lines": 77,
+      "sha256": "ef5870a5c943d9daeb285041148e17191b8ed5c50a71cebd866e532011c19379"
+    },
+    "fixture_common.py": {
+      "lines": 51,
+      "sha256": "87110093151d5e8d37eed1a167721d113864bb545fd071d8bc0e570c3356a64a"
+    },
+    "preflight.py": {
+      "lines": 60,
+      "sha256": "a0dd6df201b29853dafdc8a26230d848e825f5781f7883c17eba4c29cf41551d"
+    },
+    "seal.py": {
+      "lines": 44,
+      "sha256": "4deea43e44d9bc46048ae717c04aa8cb246ac89678cea8a07639968c5142088c"
+    },
+    "setup.py": {
+      "lines": 46,
+      "sha256": "b52d7f6c65f1bbb2c000f16ea7a70c2756f6b711566eb9d15b91ab4c0bee472b"
+    }
+  },
+  "private_input_sha256": "81ebbc3000abb8793aed0eb8d53edcb7f08a6c7b02992597746f03e7cfb06eef",
+  "journal_sha256": "ba731c6bc25e5f0674bf10e35f8b8fa04b9d14f8463206b4ef070e0c010b2e5a"
+}

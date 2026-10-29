@@ -1,0 +1,16 @@
+{
+  "workflow_class": "small_direct",
+  "task_size": "small",
+  "mode": "verification",
+  "structure_mode": "structure_no_rg",
+  "search_stage": "structure_no_rg",
+  "route": "backend/internal/observability/report_client_screen/api",
+  "criterion": "I240.C17",
+  "source": "Q072 running local QA; compare exact leaf blobs with merged754b",
+  "native_edge": "POST /api/v1/voice/screen-metrics -> NewHandler -> leases.FindActive -> derived media session and sanitized recording",
+  "bounds": "Exact handler/record_media_sample/media_session_id and exact finder/import/test edges only",
+  "checks": "Named current-CI native receipts plus owned local HTTP/PG active, absent, foreign account/session, revoked/expired controls and sanitized aggregate/trace matrix",
+  "limits": "Helpers target100/hard120lines, leaf target8/hard16 per production/test; no source/config mutation, recorder reset, restarts, production changes, RTC media or new users",
+  "stop_condition": "Closed scoped status with owner-bound cleanup and honest trace/counter limits; no whole-row promotion without every requested facet",
+  "questions": "Discover owned local fixture connection/session/lease and existing observer edges without outputting secrets"
+}

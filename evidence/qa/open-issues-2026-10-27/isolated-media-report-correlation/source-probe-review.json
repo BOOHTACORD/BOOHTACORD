@@ -1,0 +1,12 @@
+{
+  "status": "READ_ONLY_SOURCE_DISCOVERY_DIAGNOSTICS_NOT_RUNTIME_FAILURE",
+  "missing_candidates": [
+    "backend/internal/identity/revoke_session",
+    "backend/internal/identity/revoke_own_sessions/api/http_handler.go"
+  ],
+  "actual_edge": "contracts /api/v1/me/sessions/{sessionID} -> identity/revoke_own_sessions/postgres/repository.go -> revoke.sql",
+  "mutating_or_product_test_actions_before_resolution": 0,
+  "source_contract_note": "OpenAPI screen-metrics response list omits409; actual handler and named inactive-lease native test explicitly return409. This verification uses the implemented source/test contract and records the schema omission without a source fix.",
+  "token_digest_note": "Source session/token.go hashes decoded32-byte token material. The controller uses this exact digest for own-session SQL guards.",
+  "native_tests_rerun": 0
+}

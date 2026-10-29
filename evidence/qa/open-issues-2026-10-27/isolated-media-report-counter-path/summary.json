@@ -1,0 +1,42 @@
+{
+  "utc": "2026-10-28T23:48:56.640711+00:00",
+  "status": "PASS_SCOPED_DIRECT_COUNTER_AND_SOURCE_CLASSIFICATION",
+  "protects": "Accepted authenticated report increments the private native counter exactly once; revoked cookie cannot record; canonical OTLP/QoE metric family is classified separately",
+  "command": "python -B -X utf8 .out/qa-agent-counter-path/classify.py; python -B -X utf8 .out/qa-agent-counter-path/preflight.py; python -B -X utf8 .out/qa-agent-counter-path/run.py",
+  "platform": "Own local GoAPI/PostgreSQL17.6; direct native private exposition; configured local Prometheus/Collector/Tempo",
+  "mandatory_when": "Before accepting this direct counter facet or interpreting an empty native-counter Prometheus query",
+  "accepted_HTTP": 204,
+  "revoked_cookie_HTTP": 401,
+  "direct_native_counter_before": 3.0,
+  "direct_native_counter_after_accepted": 4.0,
+  "direct_native_counter_after_rejected": 4.0,
+  "accepted_delta": 1,
+  "rejected_delta": 0,
+  "fixed_native_label_keys": [
+    "platform",
+    "direction",
+    "state"
+  ],
+  "OTLP_Tempo_optional_status": "PASS_SCOPED_OTLP_AND_TRACE",
+  "correct_OTLP_counter_delta": 1.0,
+  "owned_media_sample_spans": 1,
+  "reviewed_QoE_consumers_expect_native_private_counter": false,
+  "new_product_bug_confirmed": false,
+  "source_Q072_W1a_merged754b_equal_files": 16,
+  "new_native_tests_executed": 0,
+  "new_owned_sessions": 1,
+  "cleanup": "PASS",
+  "selected_baseline_tables": 14,
+  "nine_services_unchanged": true,
+  "source_config_changed": false,
+  "service_reload_restart": false,
+  "previous_Prometheus_empty_vector_record_unchanged": true,
+  "full_QA_gate_closed": false,
+  "limits": [
+    "One synthetic diagnostic report, not physical media quality",
+    "Native private family has no canonical API scrape; absence is not data-loss proof",
+    "Consumer review bounded to canonical media QoE mapping/dashboard/alerts/docs and typed tests",
+    "Expected counters/latest anonymous sample/private trace retained; no recorder reset",
+    "Original I240.C17/full platform/provider gates remain outside this exact counter facet"
+  ]
+}

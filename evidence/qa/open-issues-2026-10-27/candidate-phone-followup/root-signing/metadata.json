@@ -1,0 +1,28 @@
+{
+  "status": "ROOT_INDEPENDENT_HOSTED_AND_ARM64_BYTE_READBACK_PASS",
+  "run": 40784080135,
+  "attempt": 2,
+  "source": "754b5997ad100cb00300373f29ab88bda4ed267d",
+  "all6_jobs_success": true,
+  "publisher_steps": [
+    {
+      "name": "Test idempotent GitHub release publisher",
+      "conclusion": "success"
+    },
+    {
+      "name": "Publish immutable exact-source native release",
+      "conclusion": "skipped"
+    }
+  ],
+  "artifact_API_digests_match_actual_worker_bytes": true,
+  "signed_artifact_id": 12860811483,
+  "native_contract_artifact_id": 12859839202,
+  "root_ARM64_SHA256": "f5a45c36d2c351c92bf2689bb0d02d2e9c495a51e07d78e088042128d03c0b66",
+  "native_source_Flutter_tree_equal_b7_and_754b": {
+    "b7f1c3ad438201c0461ed4858d97df6917815ceb": "9d253f42fe04f3aff6f98a568b4e789c638a5a7b",
+    "754b5997ad100cb00300373f29ab88bda4ed267d": "9d253f42fe04f3aff6f98a568b4e789c638a5a7b"
+  },
+  "native_path_changes": [],
+  "live_master": "754b5997ad100cb00300373f29ab88bda4ed267d",
+  "physical_install": false
+}

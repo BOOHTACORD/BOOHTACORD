@@ -1,0 +1,54 @@
+"""Append the closed already-open viewer observation without promoting its strict verdict."""
+import sys, re
+from pathlib import Path
+Q = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Q / '.out/qa-archive-release'))
+from common import *
+src = Q / '.out/qa-phone-viewer589-master754b'
+assert sha((src / 'summary.json').read_bytes()) == '824c7e5bc8d9cc10ec6ef02efade99b80581f7a4bad7e13003b9c6bf4f15c4a7'
+files = read(src / 'publication-allowlist.json')['allow']
+assert len(files) == 7
+origins = []
+for name in files:
+    assert Path(name).name == name and name.endswith('.json')
+    p = src / name
+    raw = p.read_bytes()
+    text = raw.decode('utf-8-sig')
+    assert not any(n in text for n in needles)
+    assert not re.search(r'[A-Za-z]:[/\\]Users[/\\]', text)
+    dst = O / 'android-viewer589-master754b' / name
+    assert not dst.exists()
+    write(dst, read(p))
+    origins.append({'source': name, 'private_original_SHA256': sha(raw),
+                    'final_public_SHA256': sha(dst.read_bytes())})
+write(O / 'android-viewer589-master754b/root-provenance.json', {
+    'status': 'PASS_METADATA_ONLY', 'files': origins,
+    'strict_verdict': 'NOT_PROVEN independent native history while modal remains open',
+    'raw_pixels_bodies_sessions_APKs_sourcecriteria_published': False})
+cases, m = read(O / 'cases.json'), read(O / 'matrix.json')
+assert len(cases['cases']) == 107
+c = {'id': 'ANDROID-master754b-already-open-viewer-revocation', 'status': 'PARTIAL',
+    'protects': 'An already-open owned native image viewer must drop revoked pixels and stale actions, with independently witnessed native deletion application',
+    'command': 'Follow android-viewer589-master754b/public-execution.json: B owned PNG upload/message; native open; ICC-aware source-resolution positive/wrong-palette control; exact B Delete and original/preview404; B control;7 no-input while-open polls/pixel probes; normal Back only afterward, separate postclose corroboration and exact cleanup',
+    'platform': 'Physical Samsung SM-A576B Android16; signed actual f5a ARM64 source754b/version1.0.47/code2082; existing owned DM; protected peer API',
+    'mandatory_when': 'Before accepting this exact physical already-open viewer regression of implementation589; whole QA62/privacy remains separate',
+    'issues': [62], 'result': 'android-viewer589-master754b/summary.json',
+    'limits': '4/4known regions before;0/4after, unavailable1/ImageView0/Download0/Retry0 on7while-open samples over20.704s, no intervening close/retry/download. Opaque revoked modal hides underlying history: independent deleted-row/control application WHILEOPEN is NOT_PROVEN. One postclose motion/0HistoryRefresh then control+tombstone is separate corroboration. No continuous pixel trace, passive p95, audio/full security PASS.2own B messages/session cleaned,43baseline records unchanged, finalAPP/knownDM/empty/mediaidle. Actual B POST201 attachments0 versus canonicalGET200 attachments1 is separate API shape observation, not nativeA POST/cause proof.',
+    'defects': [], 'related_implementation_issue': 589}
+assert not any(v['id'] == c['id'] for v in cases['cases'])
+cases['cases'].append(c)
+for issue in m['issues']:
+    if issue['number'] != 62: continue
+    issue['execution_cases'].append(c['id'])
+    issue['evidence'].append(c['result'])
+    r = next(r for r in issue['criteria'] if r['id'] == 'I62.C1')
+    assert r['status'] == 'FAIL'
+    r['execution_cases'].append(c['id'])
+    r['evidence'].append(c['result'])
+    r.setdefault('witness_limits', []).append(c['id'] + ': ' + c['limits'])
+    r['execution'] += '; ' + c['command']
+    if 'execution_plan' in r: r['execution_plan']['existing_scoped_witnesses'] = list(r['execution_cases'])
+write(O / 'cases.json', cases)
+write(O / 'matrix.json', m)
+code(Path(__file__), 'final-publication-')
+print(json.dumps({'scopes': 108, 'viewer': 'PARTIAL strict while-open-history NOT_PROVEN', 'whole_gate_closures': 0}))

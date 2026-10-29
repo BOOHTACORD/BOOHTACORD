@@ -1,0 +1,102 @@
+{
+  "utc": "2026-10-28T23:34:22.330488+00:00",
+  "status": "PASS_SCOPED_HTTP",
+  "checks": [
+    {
+      "check": "TEXT_six_allowlisted_emoji_present",
+      "status": "PASS",
+      "emoji_count": 6,
+      "aggregate_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "actor_id_lists_exposed": false
+    },
+    {
+      "check": "TEXT_six_allowlisted_emoji_removed",
+      "status": "PASS",
+      "remaining": 0
+    },
+    {
+      "check": "TEXT_duplicate_PUT_and_retry",
+      "status": "PASS",
+      "clients": 2,
+      "counts_after_duplicate": 1,
+      "counts_after_other_actor": 2,
+      "duplicate_actor_rows": 0
+    },
+    {
+      "check": "TEXT_duplicate_DELETE_and_retry",
+      "status": "PASS",
+      "clients": 2,
+      "other_actor_retained": 1,
+      "final_count": 0
+    },
+    {
+      "check": "DM_six_allowlisted_emoji_present",
+      "status": "PASS",
+      "emoji_count": 6,
+      "aggregate_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "actor_id_lists_exposed": false
+    },
+    {
+      "check": "DM_six_allowlisted_emoji_removed",
+      "status": "PASS",
+      "remaining": 0
+    },
+    {
+      "check": "DM_duplicate_PUT_and_retry",
+      "status": "PASS",
+      "clients": 2,
+      "counts_after_duplicate": 1,
+      "counts_after_other_actor": 2,
+      "duplicate_actor_rows": 0
+    },
+    {
+      "check": "DM_duplicate_DELETE_and_retry",
+      "status": "PASS",
+      "clients": 2,
+      "other_actor_retained": 1,
+      "final_count": 0
+    },
+    {
+      "check": "third_account_ADMIN_foreign_DM",
+      "status": "PASS",
+      "PUT": 404,
+      "DELETE": 404,
+      "read": 404,
+      "private_hints": false
+    },
+    {
+      "check": "wrong_conversation_target",
+      "status": "PASS",
+      "HTTP": 404
+    },
+    {
+      "check": "revoked_HTTP_cookie_replay",
+      "status": "PASS",
+      "write": 401,
+      "read": 401
+    }
+  ],
+  "checks_passed": 11,
+  "allowlisted_emoji_count": 6,
+  "conversation_kinds": 2,
+  "race_clients": 2,
+  "desired_reaction_mutation_requests": 40,
+  "WebSocket_delivery_revocation": "NOT_RUN: no existing actual WS controller in bounded local-QA controller files",
+  "UI_native_production_load": "NOT_RUN",
+  "criterion": "I287.C8",
+  "criterion_status": "PARTIAL"
+}

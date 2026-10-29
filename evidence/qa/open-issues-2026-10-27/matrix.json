@@ -1122,7 +1122,13 @@
             "ANDROID-original-image-download-viewer-and-card-six",
             "ANDROID-cold-start-auth-explicit-refresh",
             "WINDOWS-owned-image-lifecycle-handshake",
-            "ANDROID-native-JPEG-GIF-picker-upload-availability"
+            "ANDROID-native-JPEG-GIF-picker-upload-availability",
+            "CI-master754b-signed-candidate-native-contract",
+            "ANDROID-current-data-plane-AuthorID-bound",
+            "ANDROID-current-native-JPEG-GIF-upload-original-delete",
+            "ANDROID-current-native-attachment-only-self-row-empty",
+            "ANDROID-master754b-same-code-install-session-smoke",
+            "ANDROID-master754b-already-open-viewer-revocation"
           ],
           "evidence": [
             "native-realtime-result.json",
@@ -1146,12 +1152,18 @@
             "archive-release-followup/phone-upload-resume/summary.json",
             "archive-release-followup/signed-candidate-b74/summary.json",
             "archive-release-followup/signed-candidate-b74-full-rerun/summary.json",
-            "macos-ci-repair/hosted-current/summary.json"
+            "macos-ci-repair/hosted-current/summary.json",
+            "candidate-phone-followup/ci-attempt2/summary.json",
+            "candidate-phone-followup/phone-native-lifecycle/summary.json#/backend_data_plane",
+            "candidate-phone-followup/phone-native-lifecycle/summary.json#/formats",
+            "candidate-phone-followup/phone-native-lifecycle/summary.json#/formats",
+            "android-master754b-install/summary.json",
+            "android-viewer589-master754b/summary.json"
           ],
-          "execution": "node .out/qa-goal/native_realtime_run.mjs; node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback; node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py; python .out/qa-goal/android_filechooser.py; Physical listening at PC and phone; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python -X utf8 .out/qa-goal/verify_android_candidate.py; node .out/qa-goal/native_upgrade_peer.mjs before; python -X utf8 .out/qa-goal/android_candidate_install.py; python -X utf8 .out/qa-goal/upgrade_restore_owned_dm.py; node .out/qa-goal/native_upgrade_peer.mjs after; python -X utf8 .out/qa-goal/android_candidate_after.py; node .out/qa-goal/native_ptt_peer.mjs upgrade-final; python -X utf8 .out/qa-native-image-formats/critical_checks.py; python -X utf8 .out/qa-native-image-formats/denial_review.py; python -X utf8 .out/qa-native-image-formats/denied_payloads.py; python -X utf8 .out/qa-native-image-formats/revocation.py; python -X utf8 .out/qa-agent-phone/preflight.py; use phone/summary.json actual_commands for prepare/send/reveal/native download/save/verify; cleanup_batch.py; Follow restart/summary.json exact commands and cleanup; Fresh native existing DM list/private expected-peer comparison; see windows/attempt2/summary.json; Read-onlysource/APKpreflight; ONEauthorized amstart -n ru.boohtacord.app/.MainActivity; freshUI/room/media availabilityguards only. No picker/upload/send/nativeDelete/peerAPIcommand executed",
-          "platform": "Physical Samsung SM-A576B Android16; signed 1.0.45+2080 paired with Chrome; Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Physical Samsung SM-A576B Android16, signed1.0.45+2080; actual Android permission controller; headed Chrome peer; Physical Samsung SM-A576B Android16; signed1.0.45+2080; protected production roster read by controlled peer; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Physical Windows + Samsung; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS",
+          "execution": "node .out/qa-goal/native_realtime_run.mjs; node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; python .out/qa-goal/android_mic_permission.py; explicit leave, HOME/resume and SHARE_TEST rejoin; native system-state and paired roster readback; node .out/qa-goal/native_prejoin_run.mjs; python .out/qa-goal/bundle_prejoin.py; python .out/qa-goal/android_filechooser.py; Physical listening at PC and phone; Follow native-image/reproduce.md: actual CLI commands and separate live peer receive/view-acl/deleted/stop protocol; commands below are separate sequential invocations, with peer in a second terminal; python -X utf8 .out/qa-goal/verify_android_candidate.py; node .out/qa-goal/native_upgrade_peer.mjs before; python -X utf8 .out/qa-goal/android_candidate_install.py; python -X utf8 .out/qa-goal/upgrade_restore_owned_dm.py; node .out/qa-goal/native_upgrade_peer.mjs after; python -X utf8 .out/qa-goal/android_candidate_after.py; node .out/qa-goal/native_ptt_peer.mjs upgrade-final; python -X utf8 .out/qa-native-image-formats/critical_checks.py; python -X utf8 .out/qa-native-image-formats/denial_review.py; python -X utf8 .out/qa-native-image-formats/denied_payloads.py; python -X utf8 .out/qa-native-image-formats/revocation.py; python -X utf8 .out/qa-agent-phone/preflight.py; use phone/summary.json actual_commands for prepare/send/reveal/native download/save/verify; cleanup_batch.py; Follow restart/summary.json exact commands and cleanup; Fresh native existing DM list/private expected-peer comparison; see windows/attempt2/summary.json; Read-onlysource/APKpreflight; ONEauthorized amstart -n ru.boohtacord.app/.MainActivity; freshUI/room/media availabilityguards only. No picker/upload/send/nativeDelete/peerAPIcommand executed; ONE Android Release workflow_dispatch master dry_run=true; ONE full rerun of same run40784080135; actual apksigner/aapt inspection of3 APKs; exact manifest/SHA256SUMS/canonical Git contracts/native-source receipt verification; independent root hosted/ARM64 readback; ONE normal controlled peer login and challenge POST; observe23.063s/7poll passive window; ONE explicit native HistoryRefresh; ONE native reply Send; peer checks exact reply body SHA and AuthorID equality with known phone; exact own cleanup and session logout/livefalse; python picker_files.py open/select/pending/send <jpeg|gif>; python attachments.py read <jpeg|gif>; python native_message.py delete[-after-hydration|-exact-owned] <jpeg|gif>; python peer.py native-tombstone <jpeg|gif>; python attachments.py revocation <jpeg|gif>; python picker_files.py cleanup; python peer.py revoke; For each JPEG/GIF: actual DocumentsUI selection, reviewed uploaded pending chip, explicit native Send, peer author/pair/original/preview controls; inspect complete own row at original1080x2340 resolution. JPEG diagnostic HistoryRefresh1 plus3reveal gestures; no additional GIF refresh. Exact native author Delete and peer404 cleanup afterward; One pre-journaled adb install -r of verified arm64 APK; actual installed APK pull/SHA/signature/ABI/code; one authorized amstart; private own-profile comparison; fresh B marker, one explicit HistoryRefresh/two reveals, exact B delete/logout; Follow android-viewer589-master754b/public-execution.json: B owned PNG upload/message; native open; ICC-aware source-resolution positive/wrong-palette control; exact B Delete and original/preview404; B control;7 no-input while-open polls/pixel probes; normal Back only afterward, separate postclose corroboration and exact cleanup",
+          "platform": "Physical Samsung SM-A576B Android16; signed 1.0.45+2080 paired with Chrome; Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Physical Samsung SM-A576B Android16, signed1.0.45+2080; actual Android permission controller; headed Chrome peer; Physical Samsung SM-A576B Android16; signed1.0.45+2080; protected production roster read by controlled peer; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Physical Windows + Samsung; Physical Samsung SM-A576B Android16 signed1.0.45+2080; actual Google DocumentsUI; Windows headed Chrome155; real production HTTPS; GitHub hosted Linux and Intel/macOS gates; Windows controller byte inspection only; source754b5997ad100cb00300373f29ab88bda4ed267d; signed QA1.0.47+82, ABI codes2082/1082/4082; Physical Samsung SM-A576B Android16; CLOSED C2 snapshot 1.0.47/code2082; APK c2a5489368980a66dedd291c2899ed946a86aa400c2229bcc43ba1363029bd8b; source b7f1c3ad438201c0461ed4858d97df6917815ceb; protected peer API separately bound; Physical Samsung SM-A576B Android16; actual installed f5a45c36d2c351c92bf2689bb0d02d2e9c495a51e07d78e088042128d03c0b66; source754b; appID ru.boohtacord.app/version1.0.47/code2082/cert394e; Physical Samsung SM-A576B Android16; signed actual f5a ARM64 source754b/version1.0.47/code2082; existing owned DM; protected peer API",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "android-connectivity/summary.json",
+          "result": "android-connectivity/summary.json; candidate-phone-followup/ci-attempt2/summary.json; candidate-phone-followup/phone-native-lifecycle/summary.json#/backend_data_plane; candidate-phone-followup/phone-native-lifecycle/summary.json#/formats; android-master754b-install/summary.json; android-viewer589-master754b/summary.json",
           "witness_limits": [
             "ANDROID-DM-receive: One observed upper bound 2450ms includes ADB UI polling; not p95 or proof of the underlying transport. Owned message deleted204.",
             "ANDROID-DM-input-actions: Owned synthetic DM only; no native auth IME, all-platform, full ACL/admin or human testing claim",
@@ -1165,7 +1177,13 @@
             "ANDROID-original-image-download-viewer-and-card-six: Six native controls, SHAoriginal != preview, six files/messages cleaned and own session revoked. No native upload/TEXT/ADMIN/revoke-while-open/GIF animation or whole browser gate. Existing589 remains open.",
             "ANDROID-cold-start-auth-explicit-refresh: One restart. Explicit refresh required for auth-positive; pre/post passive windows NOT_PROVEN. Third semantic payload clipped5px until explicit scroll: no full passive visibility/p95 or causal restart regression. Three own messages/session cleaned.",
             "WINDOWS-owned-image-lifecycle-handshake: Expected peer absent from currently rendered list; authoritative server absence not proven. No new DM/fixture/session; no Windows image verdict or Android589 extension.",
-            "ANDROID-native-JPEG-GIF-picker-upload-availability: One normal authorized app activation. Settings returned before own profile/DM/navigation guard;0picker/upload/Send/peerGET/delete/logins/sessions/pushes/messages. JPEG/GIF runtime NOT_RUN. Active microphoneFGS and changing projection guard are observations without cause/outcome inference. Not browser paste or system-share acceptance."
+            "ANDROID-native-JPEG-GIF-picker-upload-availability: One normal authorized app activation. Settings returned before own profile/DM/navigation guard;0picker/upload/Send/peerGET/delete/logins/sessions/pushes/messages. JPEG/GIF runtime NOT_RUN. Active microphoneFGS and changing projection guard are observations without cause/outcome inference. Not browser paste or system-share acceptance.",
+            "CI-master754b-signed-candidate-native-contract: Attempt1 observed15m Mac timeout/20m01s wall, underlying cause UNKNOWN,3parts/fan-inFAIL/signskipped retained. Attempt2 all6 jobs/all4fresh PASS, publisherSKIPPED,3actual APKs and20Git contracts verified. No install by these closed packets; no device/updater/security/production deployment acceptance. Root owns595 disposition.",
+            "ANDROID-current-data-plane-AuthorID-bound: PASS only after explicit refresh. Earlier passive visibility remains NOT_PROVEN; native configured URL UNOBSERVED; no native TLS/whole auth or deployed-backend-source proof. Shared batch:4 new messages tombstoned,2 SHA-guarded local files removed,1 own peer session revoked/livefalse,38 baseline records unchanged; native owner session preserved.",
+            "ANDROID-current-native-JPEG-GIF-upload-original-delete: One JPEG774bytes64x48/1frame and one GIF205bytes32x32/2frames: real picker/pending/Send, peer originalSHA/decode, separate preview and nativeDelete/tombstone/original+preview404 PASS. Initial own sender rows FAIL separately; no native bitmap/viewer, GIF animation, clipboard/system share, passive realtime or whole criterion acceptance. Shared batch:4 new messages tombstoned,2 SHA-guarded local files removed,1 own peer session revoked/livefalse,38 baseline records unchanged; native owner session preserved.",
+            "ANDROID-current-native-attachment-only-self-row-empty: Both formats show fully visible own initial empty bubble/no filename or image; recovery banner observed. JPEG reviewed by phone+root, GIF by phone. JPEG API content stayed unchanged; later filename semantics returned after refresh/reveal, native bitmap/persistence still UNOBSERVED. Cause UNKNOWN; no codec/network/backend/native-state cause assigned. One deduplicated defect id pending root after immutable data commit; defects=[] intentional. Shared batch:4 new messages tombstoned,2 SHA-guarded local files removed,1 own peer session revoked/livefalse,38 baseline records unchanged; native owner session preserved.",
+            "ANDROID-master754b-same-code-install-session-smoke: Exactly one install-r/one amstart, no forced downgrade/reset/uninstall/native logout. Same code2082 replacement is not monotonic updater acceptance. Fresh marker visible only after labelled refresh/reveal; passive realtime/native URL/TLS/full security/media NOT_PROVEN. Marker/session cleaned,42baseline rows unchanged; mediaidle. Unexpected benign Settings/zero-editor guards retained as controller diagnostics.",
+            "ANDROID-master754b-already-open-viewer-revocation: 4/4known regions before;0/4after, unavailable1/ImageView0/Download0/Retry0 on7while-open samples over20.704s, no intervening close/retry/download. Opaque revoked modal hides underlying history: independent deleted-row/control application WHILEOPEN is NOT_PROVEN. One postclose motion/0HistoryRefresh then control+tombstone is separate corroboration. No continuous pixel trace, passive p95, audio/full security PASS.2own B messages/session cleaned,43baseline records unchanged, finalAPP/knownDM/empty/mediaidle. Actual B POST201 attachments0 versus canonicalGET200 attachments1 is separate API shape observation, not nativeA POST/cause proof."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -1208,7 +1226,13 @@
               "ANDROID-original-image-download-viewer-and-card-six",
               "ANDROID-cold-start-auth-explicit-refresh",
               "WINDOWS-owned-image-lifecycle-handshake",
-              "ANDROID-native-JPEG-GIF-picker-upload-availability"
+              "ANDROID-native-JPEG-GIF-picker-upload-availability",
+              "CI-master754b-signed-candidate-native-contract",
+              "ANDROID-current-data-plane-AuthorID-bound",
+              "ANDROID-current-native-JPEG-GIF-upload-original-delete",
+              "ANDROID-current-native-attachment-only-self-row-empty",
+              "ANDROID-master754b-same-code-install-session-smoke",
+              "ANDROID-master754b-already-open-viewer-revocation"
             ]
           },
           "reason": " Physical Android PTT UP/outside-UP/CANCEL/HOME server-mute and resume facets passed; all other source-row clauses and stated audio/AT/platform limits remain unaccepted. Physical landscape90/IME preserved draft and voice but native voice dock covered Send in2/2 runs; other platform/AT/selection/send variants remain unaccepted. Physical WiFi→cellular native DM/PC render and original-state restoration verified, with retained controller cleanup failures; full SDK/audio/background/platform/revoke matrix remains unaccepted. Physical already-open PNG viewer retains deleted cached content despite fresh underlying tombstone/control and server404: bug589. API MEMBER/anonymous/revoked/Origin facet passes; full native gate remains FAIL.",
@@ -1325,7 +1349,13 @@
         "ANDROID-original-image-download-viewer-and-card-six",
         "ANDROID-cold-start-auth-explicit-refresh",
         "WINDOWS-owned-image-lifecycle-handshake",
-        "ANDROID-native-JPEG-GIF-picker-upload-availability"
+        "ANDROID-native-JPEG-GIF-picker-upload-availability",
+        "CI-master754b-signed-candidate-native-contract",
+        "ANDROID-current-data-plane-AuthorID-bound",
+        "ANDROID-current-native-JPEG-GIF-upload-original-delete",
+        "ANDROID-current-native-attachment-only-self-row-empty",
+        "ANDROID-master754b-same-code-install-session-smoke",
+        "ANDROID-master754b-already-open-viewer-revocation"
       ],
       "evidence": [
         "native-realtime-result.json",
@@ -1349,7 +1379,13 @@
         "archive-release-followup/phone-upload-resume/summary.json",
         "archive-release-followup/signed-candidate-b74/summary.json",
         "archive-release-followup/signed-candidate-b74-full-rerun/summary.json",
-        "macos-ci-repair/hosted-current/summary.json"
+        "macos-ci-repair/hosted-current/summary.json",
+        "candidate-phone-followup/ci-attempt2/summary.json",
+        "candidate-phone-followup/phone-native-lifecycle/summary.json#/backend_data_plane",
+        "candidate-phone-followup/phone-native-lifecycle/summary.json#/formats",
+        "candidate-phone-followup/phone-native-lifecycle/summary.json#/formats",
+        "android-master754b-install/summary.json",
+        "android-viewer589-master754b/summary.json"
       ],
       "defects": [
         582,
@@ -5806,13 +5842,19 @@
           "requirement": "[#152 — media report/voice lease correlation](https://github.com/Egkurilov/BOOHTACORD/issues/152): на изолированных voice clients проверить active lease, expired/revoked lease, другой account/session и отсутствие handle; correlation разрешается только для повторно проверенного владельца. Приложить API test output и sanitized trace/counter matrix; media frames, SDP, tokens и participant IDs исключить.",
           "source_checkbox": " ",
           "id": "I240.C17",
-          "status": "NOT_RUN",
-          "execution_cases": [],
-          "evidence": [],
-          "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly.",
-          "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate.",
+          "status": "PARTIAL",
+          "execution_cases": [
+            "ISOLATED-media-report-owner-session-correlation",
+            "ISOLATED-media-report-native-counter-and-OTLP-path"
+          ],
+          "evidence": [
+            "isolated-media-report-correlation/summary.json",
+            "isolated-media-report-counter-path/summary.json"
+          ],
+          "execution": "Follow tools/qa/tracing_flow/README.md with its isolated Compose; from backend run go test -tags tracing_runtime ./internal/observability/ingest_client_traces -run 'TestRuntimeRelay|TestRelayHealth|TestBrowserComponents|TestNativeSDK' -v, selecting only configured SDK variants and recording unrun variants explicitly.; python -B -X utf8 .out/qa-owned-media-correlation/preflight.py; python -B -X utf8 .out/qa-owned-media-correlation/run.py; python -B -X utf8 .out/qa-agent-counter-path/classify.py; python -B -X utf8 .out/qa-agent-counter-path/preflight.py; python -B -X utf8 .out/qa-agent-counter-path/run.py",
+          "platform": "Owned loopback PostgreSQL17.6/Collector/Tempo/LiveKit plus actual supported SDK runtimes; packaged native/production dashboards remain separate.; Windows HTTP controller; own local GoAPI/PostgreSQL17.6/Tempo/Prometheus; declared image072; Own local GoAPI/PostgreSQL17.6; direct native private exposition; configured local Prometheus/Collector/Tempo",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "isolated-media-report-correlation/summary.json; isolated-media-report-counter-path/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_trace_runtime"
@@ -5824,10 +5866,17 @@
             "mentioned_platforms": [],
             "required_result": "Actual source/build/platform/command/UTC outcomes, numerical/visual observations and exact limits; unavailable is NOT_RUN/BLOCKED; expected values are not observed values",
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
-            "existing_scoped_witnesses": []
+            "existing_scoped_witnesses": [
+              "ISOLATED-media-report-owner-session-correlation",
+              "ISOLATED-media-report-native-counter-and-OTLP-path"
+            ]
           },
-          "reason": "No fresh full-row execution in this sweep. The explicit methods are a plan, not PASS; existing scoped witnesses cover only their stated facets.",
-          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run"
+          "reason": "Actual isolated HTTP/PG owner/current-session/revoked/expired-session controls, real Tempo spans and direct/correct-OTLP counter followup now linked. Synthetic diagnostic reports and logical leases,0RTC participants; standalone lease TTL and complete connected-client/media152 acceptance are not claimed. Original empty legacy-query observer retained.",
+          "remaining_work_state": "QUEUED_OR_PREREQUISITES_REQUIRED; do not infer an external blocker merely from a missing run",
+          "witness_limits": [
+            "ISOLATED-media-report-owner-session-correlation: 10HTTP/PG and3actual Tempo spans; original native-counter Prometheus observation NOT_PROVEN (empty vector, not measured zero). Three current-CI tests reused; no rerun. Own-session expiry401 is not standalone lease TTL; no RTC/physical/native/browser/production/full152 acceptance.14selected tables restored; topology49->51/+5audit retained.",
+            "ISOLATED-media-report-native-counter-and-OTLP-path: Direct native3->4->4; correct OTLP3->4 and1actual Tempo span.16exact source/config/QoE-consumer blobs Q072/W1a/754 equal. Canonical reviewed QoE consumers use OTLP names; no metric-loss product bug confirmed. One synthetic report,0RTC/no physical quality. Original Prometheus NOT_PROVEN receipt unchanged;14table/9service cleanup, topology57 unchanged."
+          ]
         },
         {
           "section": "Сквозная трассировка",
@@ -5967,7 +6016,9 @@
         "ISOLATED-upload-account-source-deployment-windows",
         "ISOLATED-rate-limit-capacity-race-benchmark",
         "ISOLATED-trusted-proxy-source-repeated-fields",
-        "ISOLATED-production-screen-binding-real-SFU-lifecycle"
+        "ISOLATED-production-screen-binding-real-SFU-lifecycle",
+        "ISOLATED-media-report-owner-session-correlation",
+        "ISOLATED-media-report-native-counter-and-OTLP-path"
       ],
       "evidence": [
         "notification-readiness/summary.json",
@@ -5983,7 +6034,9 @@
         "isolated-upload-budgets/summary.json",
         "isolated-rate-capacity/summary.json",
         "isolated-proxy-source/summary.json",
-        "isolated-screen-preview/summary.json"
+        "isolated-screen-preview/summary.json",
+        "isolated-media-report-correlation/summary.json",
+        "isolated-media-report-counter-path/summary.json"
       ],
       "defects": [
         134,
@@ -7650,9 +7703,9 @@
             "public-catalog-current/result.json"
           ],
           "execution": "Read-only python .out/qa-goal/public_readback.py; use the approved release process and a separate controlled old-client installation for remaining source row upgrade/restart/promotion cases.",
-          "platform": "Intended production public selector plus isolated genuine old Windows client; owner-approved deployment/restart window when required.",
+          "platform": "Intended production public selector plus isolated genuine old Windows client; owner-approved deployment/restart window when required.; Production public HTTPS from Windows/Python3.12; default TLS verification; no cookies",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": null,
+          "result": "public-catalog-current/result.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "release_updates"
@@ -9441,9 +9494,9 @@
             "search-plans-2026-10-29/summary.json"
           ],
           "execution": "Prepared isolated fixture: python -m tools.qa.next_client_acceptance.run; use the exact row-specific backend/security/fault protocol where this composer/upload harness is only supplemental. | Use only the applicable scoped commands in cases.json, including node .out/qa-goal/privacy_run.mjs, node .out/qa-goal/web_logout_run.mjs, node .out/qa-goal/quickjump_run.mjs and node .out/qa-goal/web_image_formats_run.mjs; execute remaining row steps separately. | native-admin-search-privacy/README.md actual ADMIN native all-scope UI with independently searchable owned API fixtures.; Follow search/summary.json native and runtime commands",
-          "platform": "Disposable owned PostgreSQL/API/LiveKit target and bounded synthetic accounts/data; never shared production fault/load injection. | Installed headed Windows Chrome and explicitly stated CSS viewport; no physical mobile/other-browser substitution.",
+          "platform": "Disposable owned PostgreSQL/API/LiveKit target and bounded synthetic accounts/data; never shared production fault/load injection. | Installed headed Windows Chrome and explicitly stated CSS viewport; no physical mobile/other-browser substitution.; Owned loopback QA API072/PostgreSQL17.6; exact SQL equals merged754b; default seqscan=on, plan_cache_mode=auto",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "native-admin-search-privacy/summary.json",
+          "result": "native-admin-search-privacy/summary.json; search-plans-2026-10-29/summary.json",
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
             "isolated_api_faults",
@@ -9611,19 +9664,28 @@
           "status": "PARTIAL",
           "execution_cases": [
             "DM-actual_message_actions",
-            "ANDROID-DM-input-actions"
+            "ANDROID-DM-input-actions",
+            "ISOLATED-reaction-concurrency-privacy",
+            "ISOLATED-TEXT-pin-acceptance",
+            "ISOLATED-private-reaction-WS-delivery-replay-revoke"
           ],
           "evidence": [
             "privacy-result.json#/checks/actual_message_actions",
-            "native-chat/summary.json"
+            "native-chat/summary.json",
+            "isolated-reaction-concurrency/summary.json",
+            "isolated-text-pin-acceptance/summary.json",
+            "isolated-reaction-websocket/summary.json"
           ],
-          "execution": "node .out/qa-goal/privacy_run.mjs; node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed",
-          "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts; Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155",
+          "execution": "node .out/qa-goal/privacy_run.mjs; node .out/qa-goal/native_chat_peer.mjs; python .out/qa-goal/android_chat_actions.py <bounded-action>; node .out/qa-goal/native_reaction_read.mjs added|removed; python -X utf8 Q/.out/qa-reaction-concurrency/preflight.py; python -X utf8 Q/.out/qa-reaction-concurrency/setup.py; python -X utf8 Q/.out/qa-reaction-concurrency/exercise.py; python -X utf8 Q/.out/qa-reaction-concurrency/cleanup.py; python -X utf8 Q/.out/qa-reaction-concurrency/seal.py; python -X utf8 Q/.out/qa-text-pin-acceptance/preflight.py; python -X utf8 Q/.out/qa-text-pin-acceptance/setup.py; python -X utf8 Q/.out/qa-text-pin-acceptance/exercise.py; python -X utf8 Q/.out/qa-text-pin-acceptance/exercise2.py; python -X utf8 Q/.out/qa-text-pin-acceptance/cleanup.py; python -X utf8 Q/.out/qa-text-pin-acceptance/seal2.py; python -X utf8 Q/.out/qa-reaction-websocket/build_client.py; python -X utf8 Q/.out/qa-reaction-websocket/preflight.py; python -X utf8 Q/.out/qa-reaction-websocket/setup.py; python -X utf8 Q/.out/qa-reaction-websocket/exercise.py; python -X utf8 Q/.out/qa-reaction-websocket/cleanup.py; python -X utf8 Q/.out/qa-reaction-websocket/seal.py",
+          "platform": "Windows PC; installed headed Chrome 155; production Vue/Go; three controlled MEMBER contexts; Physical Samsung SM-A576B Android16 + actual Gboard18.5.4 + headed Windows Chrome155; Windows Python3.12.10 controller; owned local GoAPI declared072/PostgreSQL17.6; Windows Python3.12.10 controller; owned local GoAPI declared072/PostgreSQL17.6; actual Go1.26.4/coder-websocket1.8.15 client, no browser/native-device claim",
           "mandatory_when": "Before claiming this criterion or closing the QA issue",
-          "result": "privacy-result.json#/checks/actual_message_actions; native-chat/summary.json",
+          "result": "privacy-result.json#/checks/actual_message_actions; native-chat/summary.json; isolated-reaction-concurrency/summary.json; isolated-text-pin-acceptance/summary.json; isolated-reaction-websocket/summary.json",
           "witness_limits": [
             "DM-actual_message_actions: No third ADMIN, native touch/IME, OS notification or 507/outage claim",
-            "ANDROID-DM-input-actions: Owned synthetic DM only; no native auth IME, all-platform, full ACL/admin or human testing claim"
+            "ANDROID-DM-input-actions: Owned synthetic DM only; no native auth IME, all-platform, full ACL/admin or human testing claim",
+            "ISOLATED-reaction-concurrency-privacy: 11HTTP/PG checks,40reaction mutations,sixemoji/twoconversation kinds/two race clients. Foreign ADMIN404 and revoked cookie401. No actual WS in this first packet; separate WS case supplies that later subset.3named current-CI PASS/0skip reused; no rerun.17selected baseline tables/9services cleanup; topology51->53/+2audit retained; no UI/native/production/load/full96 acceptance.",
+            "ISOLATED-TEXT-pin-acceptance: 8HTTP/PG checks; member403, administrator PUT/DELETE204 idempotent,3pages/3unique original references and re-pin after delete404. Initial Cache-Control header KeyError is retained as controller expectation mismatch, not product failure.5current-CI PASS/0skip reused; no rerun. No DM pin/WS/UI/native/production/load claim.17table/9service cleanup; topology53->55/+12audit retained.",
+            "ISOLATED-private-reaction-WS-delivery-replay-revoke: 8actual isolated HTTP/WS/PG checks with3sockets, authorizedA/B hints,0outsider/replayed private hints; revoked socket observed close1008 at0.031s (single observation, no SLA), plain/replay revoked-cookie handshake401.3current-CI PASS/0skip reused; no tests rerun. No UI/native-device/RTC/production/load/full96 acceptance.17tables/9services preserved; topology55->57/+2audit and8realtime metadata retained."
           ],
           "row_kind": "ACCEPTANCE_REQUIREMENT",
           "acceptance_methods": [
@@ -9641,9 +9703,13 @@
             "mandatory_when": "Before accepting this exact source requirement or closing its parent QA gate",
             "existing_scoped_witnesses": [
               "DM-actual_message_actions",
-              "ANDROID-DM-input-actions"
+              "ANDROID-DM-input-actions",
+              "ISOLATED-reaction-concurrency-privacy",
+              "ISOLATED-TEXT-pin-acceptance",
+              "ISOLATED-private-reaction-WS-delivery-replay-revoke"
             ]
-          }
+          },
+          "reason": "Isolated normal TEXT/DM reaction races, retries/count privacy, administrator-only TEXT pins, pagination/delete cleanup, real authorized/outsider/revoked HTTP+WS replay now linked. Released Web and native UI/platform/full96 acceptance remain separate; actual local source072 leaf hashes match current code."
         },
         {
           "section": "Matrix",
@@ -10046,7 +10112,10 @@
         "ISOLATED-archive-restore-held-upload-and-write-denial",
         "ISOLATED-voice-timeout-lease-session-and-chat-policy",
         "ISOLATED-voice-timeout-scheduled-dispatch-absent-participant",
-        "ISOLATED-search-unforced-query-plans"
+        "ISOLATED-search-unforced-query-plans",
+        "ISOLATED-reaction-concurrency-privacy",
+        "ISOLATED-TEXT-pin-acceptance",
+        "ISOLATED-private-reaction-WS-delivery-replay-revoke"
       ],
       "evidence": [
         "privacy-result.json",
@@ -10068,7 +10137,10 @@
         "archive-release-followup/archive/summary.json",
         "voice-timeout-policy/summary.json",
         "voice-timeout-dispatch/summary.json",
-        "search-plans-2026-10-29/summary.json"
+        "search-plans-2026-10-29/summary.json",
+        "isolated-reaction-concurrency/summary.json",
+        "isolated-text-pin-acceptance/summary.json",
+        "isolated-reaction-websocket/summary.json"
       ],
       "defects": [
         581,
@@ -16520,7 +16592,7 @@
   ],
   "criterion_count": 480,
   "scope_note": "480 preserved source rows include requirements, dependencies, context and historical claims; they are not480 independent executed tests. Method coverage is not execution coverage.",
-  "updated_utc": "2026-10-28T23:28:16.149492+00:00",
+  "updated_utc": "2026-10-29T00:13:03.707264+00:00",
   "known_defect_issues": [
     579,
     580,

@@ -1,0 +1,230 @@
+{
+  "utc": "2026-10-28T23:47:46.120532+00:00",
+  "workflow_class": "review_gate",
+  "route": "observability/report_client_screen/aggregate",
+  "scope": "Accepted report: native private exposition versus OTLP QoE export and bounded canonical consumers",
+  "source_bindings": [
+    {
+      "file": "backend/internal/observability/report_client_screen/api/http_handler.go",
+      "working_SHA256": "236f470070e88e277769f6623ada024088165ef2e64b71e448e9301424b04814",
+      "LF_SHA256": "9f21d1aaca9cbda4377caacd40581aa35f9e3337c77e2cd1a89501d61cadea7a",
+      "equal_Q072_W1a_merged754b": true,
+      "blob_LF_SHA256": {
+        "Q072": "9f21d1aaca9cbda4377caacd40581aa35f9e3337c77e2cd1a89501d61cadea7a",
+        "W1a": "9f21d1aaca9cbda4377caacd40581aa35f9e3337c77e2cd1a89501d61cadea7a",
+        "merged754b": "9f21d1aaca9cbda4377caacd40581aa35f9e3337c77e2cd1a89501d61cadea7a"
+      }
+    },
+    {
+      "file": "backend/internal/observability/report_client_screen/api/record_qoe.go",
+      "working_SHA256": "9e199fde979f303e1f25c70256f485a7ab8b9f1bd607cdc203cf3fcfdc7684df",
+      "LF_SHA256": "f78040a7552e22f1da112b0f8b8499a4d971cddfbedb3cf87525b067da3756f8",
+      "equal_Q072_W1a_merged754b": true,
+      "blob_LF_SHA256": {
+        "Q072": "f78040a7552e22f1da112b0f8b8499a4d971cddfbedb3cf87525b067da3756f8",
+        "W1a": "f78040a7552e22f1da112b0f8b8499a4d971cddfbedb3cf87525b067da3756f8",
+        "merged754b": "f78040a7552e22f1da112b0f8b8499a4d971cddfbedb3cf87525b067da3756f8"
+      }
+    },
+    {
+      "file": "backend/internal/observability/report_client_screen/aggregate/instruments.go",
+      "working_SHA256": "6403221e85abc28df6488afcb01e6bfa85dbb427bc9bb74d6d7cd871765b850c",
+      "LF_SHA256": "54c57ea20528a463b177dfa98ab0349261d6e37b6ce90af80e528d36a6d618e2",
+      "equal_Q072_W1a_merged754b": true,
+      "blob_LF_SHA256": {
+        "Q072": "54c57ea20528a463b177dfa98ab0349261d6e37b6ce90af80e528d36a6d618e2",
+        "W1a": "54c57ea20528a463b177dfa98ab0349261d6e37b6ce90af80e528d36a6d618e2",
+        "merged754b": "54c57ea20528a463b177dfa98ab0349261d6e37b6ce90af80e528d36a6d618e2"
+      }
+    },
+    {
+      "file": "backend/internal/observability/report_client_screen/aggregate/observe.go",
+      "working_SHA256": "f24e2ed9c0fb2e728308a765c21f7bc34837834964a1400b0f56b25b1fdd6dd6",
+      "LF_SHA256": "6a01542dbfe41474746055e89679a8e751aa06f7426811633703e513a0a43cb4",
+      "equal_Q072_W1a_merged754b": true,
+      "blob_LF_SHA256": {
+        "Q072": "6a01542dbfe41474746055e89679a8e751aa06f7426811633703e513a0a43cb4",
+        "W1a": "6a01542dbfe41474746055e89679a8e751aa06f7426811633703e513a0a43cb4",
+        "merged754b": "6a01542dbfe41474746055e89679a8e751aa06f7426811633703e513a0a43cb4"
+      }
+    },
+    {
+      "file": "backend/internal/observability/report_client_screen/aggregate/sample.go",
+      "working_SHA256": "1a734a88f116a644140a385976e82d04e1704f9fbb5a1df43727b9a02084b2e9",
+      "LF_SHA256": "fcbd18a3ed0b475c04ac5d0ad1134ccd9aca1f48fad2081d321bb92c55bbb049",
+      "equal_Q072_W1a_merged754b": true,
+      "blob_LF_SHA256": {
+        "Q072": "fcbd18a3ed0b475c04ac5d0ad1134ccd9aca1f48fad2081d321bb92c55bbb049",
+        "W1a": "fcbd18a3ed0b475c04ac5d0ad1134ccd9aca1f48fad2081d321bb92c55bbb049",
+        "merged754b": "fcbd18a3ed0b475c04ac5d0ad1134ccd9aca1f48fad2081d321bb92c55bbb049"
+      }
+    },
+    {
+      "file": "backend/internal/observability/report_client_screen/aggregate/freshness.go",
+      "working_SHA256": "284a2dc9d8c43cfb5f85499adf9fcb066a6b7cf2ee91e0ab5888082931b2a11d",
+      "LF_SHA256": "3c018c1763ff6353c16a05855bb595f74d3c2ac7322a08c480aada47d5f2d50e",
+      "equal_Q072_W1a_merged754b": true,
+      "blob_LF_SHA256": {
+        "Q072": "3c018c1763ff6353c16a05855bb595f74d3c2ac7322a08c480aada47d5f2d50e",
+        "W1a": "3c018c1763ff6353c16a05855bb595f74d3c2ac7322a08c480aada47d5f2d50e",
+        "merged754b": "3c018c1763ff6353c16a05855bb595f74d3c2ac7322a08c480aada47d5f2d50e"
+      }
+    },
+    {
+      "file": "backend/internal/observability/http_metrics/client_screen.go",
+      "working_SHA256": "708071d3fbf2af01a685a4c5d1030ec8f0902bb1763a4a2e1e0002a4a06c19ed",
+      "LF_SHA256": "04108543021b7f8d6ac0c8ff61b9b149bc5d80af334fbb66c03ecd1068c2d013",
+      "equal_Q072_W1a_merged754b": true,
+      "blob_LF_SHA256": {
+        "Q072": "04108543021b7f8d6ac0c8ff61b9b149bc5d80af334fbb66c03ecd1068c2d013",
+        "W1a": "04108543021b7f8d6ac0c8ff61b9b149bc5d80af334fbb66c03ecd1068c2d013",
+        "merged754b": "04108543021b7f8d6ac0c8ff61b9b149bc5d80af334fbb66c03ecd1068c2d013"
+      }
+    },
+    {
+      "file": "backend/internal/observability/start_metrics/provider.go",
+      "working_SHA256": "6ff04826a8f93b70b611ba84bca3441f166ca0c8df673dbc72c15f83cc728202",
+      "LF_SHA256": "bc77894712f4a9d19b5ddbca7622e7de492c73503b0d65c63194d7a910c5acad",
+      "equal_Q072_W1a_merged754b": true,
+      "blob_LF_SHA256": {
+        "Q072": "bc77894712f4a9d19b5ddbca7622e7de492c73503b0d65c63194d7a910c5acad",
+        "W1a": "bc77894712f4a9d19b5ddbca7622e7de492c73503b0d65c63194d7a910c5acad",
+        "merged754b": "bc77894712f4a9d19b5ddbca7622e7de492c73503b0d65c63194d7a910c5acad"
+      }
+    },
+    {
+      "file": "docker/observability/collector.yaml",
+      "working_SHA256": "1402771cab890ed633a9368c1d42299564c944315b44ddef44589feed90f5432",
+      "LF_SHA256": "1028941ae24b3f322c77734a5fcc61437bd9bd1e309fd4357bb75693fb97ced1",
+      "equal_Q072_W1a_merged754b": true,
+      "blob_LF_SHA256": {
+        "Q072": "1028941ae24b3f322c77734a5fcc61437bd9bd1e309fd4357bb75693fb97ced1",
+        "W1a": "1028941ae24b3f322c77734a5fcc61437bd9bd1e309fd4357bb75693fb97ced1",
+        "merged754b": "1028941ae24b3f322c77734a5fcc61437bd9bd1e309fd4357bb75693fb97ced1"
+      }
+    },
+    {
+      "file": "docker/observability/prometheus.yaml",
+      "working_SHA256": "e4025aab2057411bf79f37f3e41e9a0391e978566acce24908aa3df3aa4a73df",
+      "LF_SHA256": "878bac94dfac6afdbc3814c51f7fba8d04521379d54825000dd0687e505406b4",
+      "equal_Q072_W1a_merged754b": true,
+      "blob_LF_SHA256": {
+        "Q072": "878bac94dfac6afdbc3814c51f7fba8d04521379d54825000dd0687e505406b4",
+        "W1a": "878bac94dfac6afdbc3814c51f7fba8d04521379d54825000dd0687e505406b4",
+        "merged754b": "878bac94dfac6afdbc3814c51f7fba8d04521379d54825000dd0687e505406b4"
+      }
+    },
+    {
+      "file": "docker/observability/media-qoe-alerts.yaml",
+      "working_SHA256": "454af773d9bf10d4871d265d5749f2e3b5987a9179c15aeed4565c83c966bd75",
+      "LF_SHA256": "98d5a3d72000048cd5faeab9961bb29d0f5e62900c619ae72565c6e5edaac61c",
+      "equal_Q072_W1a_merged754b": true,
+      "blob_LF_SHA256": {
+        "Q072": "98d5a3d72000048cd5faeab9961bb29d0f5e62900c619ae72565c6e5edaac61c",
+        "W1a": "98d5a3d72000048cd5faeab9961bb29d0f5e62900c619ae72565c6e5edaac61c",
+        "merged754b": "98d5a3d72000048cd5faeab9961bb29d0f5e62900c619ae72565c6e5edaac61c"
+      }
+    },
+    {
+      "file": "docker/observability/dashboards/media-qoe.json",
+      "working_SHA256": "77891bd3244affa2881a45aadcec155e655c37092b6dde18984805879aff0524",
+      "LF_SHA256": "f9aca5e493209e2acc43bae3a519021ffc0d4440f9d597fcbe3cd8ffc8e573fe",
+      "equal_Q072_W1a_merged754b": true,
+      "blob_LF_SHA256": {
+        "Q072": "f9aca5e493209e2acc43bae3a519021ffc0d4440f9d597fcbe3cd8ffc8e573fe",
+        "W1a": "f9aca5e493209e2acc43bae3a519021ffc0d4440f9d597fcbe3cd8ffc8e573fe",
+        "merged754b": "f9aca5e493209e2acc43bae3a519021ffc0d4440f9d597fcbe3cd8ffc8e573fe"
+      }
+    },
+    {
+      "file": "tools/verify/media_qoe/fields.json",
+      "working_SHA256": "48a1af39dd0847f02921f4f85a55d52a2281db2ecfb6240f441a589883f1edd1",
+      "LF_SHA256": "71a5f95515b8af42f4a9a841428918566a32ad60fb72ad2c0e5827e7de8274bd",
+      "equal_Q072_W1a_merged754b": true,
+      "blob_LF_SHA256": {
+        "Q072": "71a5f95515b8af42f4a9a841428918566a32ad60fb72ad2c0e5827e7de8274bd",
+        "W1a": "71a5f95515b8af42f4a9a841428918566a32ad60fb72ad2c0e5827e7de8274bd",
+        "merged754b": "71a5f95515b8af42f4a9a841428918566a32ad60fb72ad2c0e5827e7de8274bd"
+      }
+    },
+    {
+      "file": "tools/verify/media_qoe/test_dashboard.py",
+      "working_SHA256": "73229e5ba90382cb88db9246a43f90551a0cfc2849134e002f52ae952f0bf15f",
+      "LF_SHA256": "7fdfe6c01c13f337ecfb2d5861971e3e98bd4bed4e7c01715383adebd86cf2b3",
+      "equal_Q072_W1a_merged754b": true,
+      "blob_LF_SHA256": {
+        "Q072": "7fdfe6c01c13f337ecfb2d5861971e3e98bd4bed4e7c01715383adebd86cf2b3",
+        "W1a": "7fdfe6c01c13f337ecfb2d5861971e3e98bd4bed4e7c01715383adebd86cf2b3",
+        "merged754b": "7fdfe6c01c13f337ecfb2d5861971e3e98bd4bed4e7c01715383adebd86cf2b3"
+      }
+    },
+    {
+      "file": "tools/verify/media_qoe/promql.py",
+      "working_SHA256": "bfded1145c6e2ed8ade643c67f138843b4acd7614abe44f340c348ef4fdefbe9",
+      "LF_SHA256": "9ec567fdfd48a27cd27903fc6acce326c045e67b015608a757c533b9e098e67f",
+      "equal_Q072_W1a_merged754b": true,
+      "blob_LF_SHA256": {
+        "Q072": "9ec567fdfd48a27cd27903fc6acce326c045e67b015608a757c533b9e098e67f",
+        "W1a": "9ec567fdfd48a27cd27903fc6acce326c045e67b015608a757c533b9e098e67f",
+        "merged754b": "9ec567fdfd48a27cd27903fc6acce326c045e67b015608a757c533b9e098e67f"
+      }
+    },
+    {
+      "file": "docs/operations/media-qoe.md",
+      "working_SHA256": "fb840b14ce7015e395f87621fadf9b43005b7bb339b33777fcf6c74511a2992a",
+      "LF_SHA256": "5209f1bc3cdd3bbfdb5c10e971af36a103e8b36ddc845eca72e424367c38eec1",
+      "equal_Q072_W1a_merged754b": true,
+      "blob_LF_SHA256": {
+        "Q072": "5209f1bc3cdd3bbfdb5c10e971af36a103e8b36ddc845eca72e424367c38eec1",
+        "W1a": "5209f1bc3cdd3bbfdb5c10e971af36a103e8b36ddc845eca72e424367c38eec1",
+        "merged754b": "5209f1bc3cdd3bbfdb5c10e971af36a103e8b36ddc845eca72e424367c38eec1"
+      }
+    }
+  ],
+  "root_discovery_receipt_SHA256": {
+    "result": "df9ba39ba2ca2988cdfefdcc6d60b70d5379b0b18a3a9e6a47847bd8c743831e",
+    "names": "1c7adb6c1b12caef944a7541dc5fbf7a0bb79992fde127fe975cfc095eddcefe",
+    "collector-path": "6860f8edb2dc0281b97e5c1bc7904f1eb24db4d3ae0b560cd38a60c4bec5558c",
+    "reload-readiness": "da4a925e403e2789f066d61c01c3ac21534979c229fbe72e58c42dd00a178514",
+    "direct-native-counter": "7863c63db0df1c40399e9fd872027d475b040d8da11c559ff39bba6d1b5b1f18"
+  },
+  "native_private_family": {
+    "instrument": "voice_platform_client_screen_reports_total",
+    "writer": "http_metrics/client_screen.go: ObserveClientScreen",
+    "transport": "Private API /metrics native Prometheus registry; not automatically bridged into OTLP",
+    "configured_Prometheus_API_scrape": false,
+    "counter_empty_vector_meaning": "No configured scrape path for this instrument, not data-loss evidence"
+  },
+  "OTLP_QoE_family": {
+    "instrument": "boohtacord_media_reports",
+    "Prometheus_name": "boohtacord_media_reports_total",
+    "writer": "record_qoe.go -> aggregate.Observe",
+    "transport": "start_metrics15s periodic OTLP -> collector OTLP receiver/batch -> Prometheus exporter8889 -> canonical scrape",
+    "source_counter_labels": [
+      "platform",
+      "direction",
+      "source",
+      "state",
+      "freshness"
+    ]
+  },
+  "canonical_consumer_review": {
+    "dashboard_UID": "boohtacord-media-qoe",
+    "reviewed_files": [
+      "docker/observability/media-qoe-alerts.yaml",
+      "docker/observability/dashboards/media-qoe.json",
+      "tools/verify/media_qoe/fields.json",
+      "tools/verify/media_qoe/test_dashboard.py",
+      "tools/verify/media_qoe/promql.py",
+      "docs/operations/media-qoe.md"
+    ],
+    "native_manual_counter_references": 0,
+    "OTLP_QoE_name_in_mapping_and_dashboard": true,
+    "typed_test": "tools/verify/media_qoe/test_dashboard.py::test_mapping_is_bound_to_exported_production_instruments",
+    "limits": "Bounded QoE consumer set only, not a claim about every repository/deployment consumer. Native incident-snapshot scrape dependency is separately documented and not this client-report counter."
+  },
+  "bug_candidate": "NO_CONFIRMED_MANUAL_COUNTER_CONSUMER_GAP_IN_REVIEWED_SET",
+  "new_native_tests_executed": 0,
+  "native_policy": "Current CI already ran1674 Go tests; inspect source only, no rerun",
+  "previous_empty_vector_record": "Frozen unchanged; classification is separate evidence, not retroactive Prometheus PASS"
+}

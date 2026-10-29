@@ -1,0 +1,61 @@
+{
+  "status": "IN_PROGRESS",
+  "cases": [
+    {
+      "id": "CI-master754b-signed-candidate-native-contract",
+      "status": "PASS_SCOPED",
+      "protects": "Exact merged-source signed QA candidate requires all four fresh profiles in one run/attempt, skipped publisher and actual APK/native-contract identity",
+      "command": "ONE Android Release workflow_dispatch master dry_run=true; ONE full rerun of same run40784080135; actual apksigner/aapt inspection of3 APKs; exact manifest/SHA256SUMS/canonical Git contracts/native-source receipt verification; independent root hosted/ARM64 readback",
+      "platform": "GitHub hosted Linux and Intel/macOS gates; Windows controller byte inspection only; source754b5997ad100cb00300373f29ab88bda4ed267d; signed QA1.0.47+82, ABI codes2082/1082/4082",
+      "mandatory_when": "Before accepting availability and source/signature identity of this exact signed QA candidate",
+      "issues": [
+        62
+      ],
+      "result": "candidate-phone-followup/ci-attempt2/summary.json",
+      "limits": "Attempt1 observed15m Mac timeout/20m01s wall, underlying cause UNKNOWN,3parts/fan-inFAIL/signskipped retained. Attempt2 all6 jobs/all4fresh PASS, publisherSKIPPED,3actual APKs and20Git contracts verified. No install by these closed packets; no device/updater/security/production deployment acceptance. Root owns595 disposition.",
+      "defects": []
+    },
+    {
+      "id": "ANDROID-current-data-plane-AuthorID-bound",
+      "status": "PASS_SCOPED",
+      "protects": "An existing controlled native owner and pair must correlate with the approved peer data plane before owned native attachment scenarios",
+      "command": "ONE normal controlled peer login and challenge POST; observe23.063s/7poll passive window; ONE explicit native HistoryRefresh; ONE native reply Send; peer checks exact reply body SHA and AuthorID equality with known phone; exact own cleanup and session logout/livefalse",
+      "platform": "Physical Samsung SM-A576B Android16; CLOSED C2 snapshot 1.0.47/code2082; APK c2a5489368980a66dedd291c2899ed946a86aa400c2229bcc43ba1363029bd8b; source b7f1c3ad438201c0461ed4858d97df6917815ceb; protected peer API separately bound",
+      "mandatory_when": "Before accepting ownership/data-plane prerequisites for these exact existing-pair native attachment scenarios",
+      "issues": [
+        62
+      ],
+      "result": "candidate-phone-followup/phone-native-lifecycle/summary.json#/backend_data_plane",
+      "limits": "PASS only after explicit refresh. Earlier passive visibility remains NOT_PROVEN; native configured URL UNOBSERVED; no native TLS/whole auth or deployed-backend-source proof. Shared batch:4 new messages tombstoned,2 SHA-guarded local files removed,1 own peer session revoked/livefalse,38 baseline records unchanged; native owner session preserved.",
+      "defects": []
+    },
+    {
+      "id": "ANDROID-current-native-JPEG-GIF-upload-original-delete",
+      "status": "PASS_SCOPED",
+      "protects": "Actual DocumentsUI selection must remain pending until explicit Send; peer original bytes/decode/preview and native author deletion must preserve and revoke only owned synthetic JPEG/GIF data",
+      "command": "python picker_files.py open/select/pending/send <jpeg|gif>; python attachments.py read <jpeg|gif>; python native_message.py delete[-after-hydration|-exact-owned] <jpeg|gif>; python peer.py native-tombstone <jpeg|gif>; python attachments.py revocation <jpeg|gif>; python picker_files.py cleanup; python peer.py revoke",
+      "platform": "Physical Samsung SM-A576B Android16; CLOSED C2 snapshot 1.0.47/code2082; APK c2a5489368980a66dedd291c2899ed946a86aa400c2229bcc43ba1363029bd8b; source b7f1c3ad438201c0461ed4858d97df6917815ceb; protected peer API separately bound",
+      "mandatory_when": "Before accepting this scoped native JPEG/GIF picker/send/original/preview/author-revocation lifecycle",
+      "issues": [
+        62
+      ],
+      "result": "candidate-phone-followup/phone-native-lifecycle/summary.json#/formats",
+      "limits": "One JPEG774bytes64x48/1frame and one GIF205bytes32x32/2frames: real picker/pending/Send, peer originalSHA/decode, separate preview and nativeDelete/tombstone/original+preview404 PASS. Initial own sender rows FAIL separately; no native bitmap/viewer, GIF animation, clipboard/system share, passive realtime or whole criterion acceptance. Shared batch:4 new messages tombstoned,2 SHA-guarded local files removed,1 own peer session revoked/livefalse,38 baseline records unchanged; native owner session preserved.",
+      "defects": []
+    },
+    {
+      "id": "ANDROID-current-native-attachment-only-self-row-empty",
+      "status": "FAIL",
+      "protects": "A newly sent owned attachment-only row must show its image or filename when the complete row is visible, rather than empty content with only standard controls",
+      "command": "For each JPEG/GIF: actual DocumentsUI selection, reviewed uploaded pending chip, explicit native Send, peer author/pair/original/preview controls; inspect complete own row at original1080x2340 resolution. JPEG diagnostic HistoryRefresh1 plus3reveal gestures; no additional GIF refresh. Exact native author Delete and peer404 cleanup afterward",
+      "platform": "Physical Samsung SM-A576B Android16; CLOSED C2 snapshot 1.0.47/code2082; APK c2a5489368980a66dedd291c2899ed946a86aa400c2229bcc43ba1363029bd8b; source b7f1c3ad438201c0461ed4858d97df6917815ceb; protected peer API separately bound",
+      "mandatory_when": "Before accepting initial own-sender native attachment rendering; full I62.C1 remains FAIL",
+      "issues": [
+        62
+      ],
+      "result": "candidate-phone-followup/phone-native-lifecycle/summary.json#/formats",
+      "limits": "Both formats show fully visible own initial empty bubble/no filename or image; recovery banner observed. JPEG reviewed by phone+root, GIF by phone. JPEG API content stayed unchanged; later filename semantics returned after refresh/reveal, native bitmap/persistence still UNOBSERVED. Cause UNKNOWN; no codec/network/backend/native-state cause assigned. One deduplicated defect id pending root after immutable data commit; defects=[] intentional. Shared batch:4 new messages tombstoned,2 SHA-guarded local files removed,1 own peer session revoked/livefalse,38 baseline records unchanged; native owner session preserved.",
+      "defects": []
+    }
+  ]
+}

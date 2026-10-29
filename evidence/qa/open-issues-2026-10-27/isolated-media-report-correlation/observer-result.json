@@ -1,0 +1,104 @@
+{
+  "utc": "2026-10-28T23:28:44.793445+00:00",
+  "status": "PARTIAL",
+  "window_seconds": 36.578,
+  "search_attempts": 18,
+  "actual_media_sample_spans": 3,
+  "expected_accepted_spans": 3,
+  "negative_flow_span_matches": 0,
+  "Prometheus_counter_delta": null,
+  "expected_counter_delta": 3,
+  "checks": [
+    {
+      "case": "active-owned-handle",
+      "actual_HTTP": 204,
+      "media_sample_span_count": 1,
+      "expected_span_count": 1,
+      "authenticated_identity_matches": true,
+      "visit_flow_attempt_preserved": true,
+      "server_derived_or_absent_media_ID_matches": true,
+      "provenance_client_observed": true,
+      "result": "PASS"
+    },
+    {
+      "case": "other-account-owned-handle",
+      "actual_HTTP": 409,
+      "media_sample_span_count": 0,
+      "expected_span_count": 0,
+      "result": "PASS"
+    },
+    {
+      "case": "sibling-session-owned-handle",
+      "actual_HTTP": 409,
+      "media_sample_span_count": 0,
+      "expected_span_count": 0,
+      "result": "PASS"
+    },
+    {
+      "case": "unknown-handle",
+      "actual_HTTP": 409,
+      "media_sample_span_count": 0,
+      "expected_span_count": 0,
+      "result": "PASS"
+    },
+    {
+      "case": "malformed-handle",
+      "actual_HTTP": 400,
+      "media_sample_span_count": 0,
+      "expected_span_count": 0,
+      "result": "PASS"
+    },
+    {
+      "case": "anonymous-handle",
+      "actual_HTTP": 401,
+      "media_sample_span_count": 0,
+      "expected_span_count": 0,
+      "result": "PASS"
+    },
+    {
+      "case": "forged-media-header-owned-derived",
+      "actual_HTTP": 204,
+      "media_sample_span_count": 1,
+      "expected_span_count": 1,
+      "authenticated_identity_matches": true,
+      "visit_flow_attempt_preserved": true,
+      "server_derived_or_absent_media_ID_matches": true,
+      "provenance_client_observed": true,
+      "result": "PASS"
+    },
+    {
+      "case": "omitted-handle-forged-header-uncorrelated",
+      "actual_HTTP": 204,
+      "media_sample_span_count": 1,
+      "expected_span_count": 1,
+      "authenticated_identity_matches": true,
+      "visit_flow_attempt_preserved": true,
+      "server_derived_or_absent_media_ID_matches": true,
+      "provenance_client_observed": true,
+      "result": "PASS"
+    },
+    {
+      "case": "revoked-owned-handle",
+      "actual_HTTP": 409,
+      "media_sample_span_count": 0,
+      "expected_span_count": 0,
+      "result": "PASS"
+    },
+    {
+      "case": "expired-own-session-handle",
+      "actual_HTTP": 401,
+      "media_sample_span_count": 0,
+      "expected_span_count": 0,
+      "result": "PASS"
+    }
+  ],
+  "raw_trace_files_private": 3,
+  "unexpected_visit_matches": 0,
+  "trace_payloads_exported_public": false,
+  "limit": "Real GoAPI/PG/Tempo and Prometheus diagnostic data only; no RTC/media/frame/capacity capability or p95 claim.",
+  "Prometheus_counter_observation": "NOT_PROVEN_EMPTY_VECTOR",
+  "historical_controller_empty_vector_sentinel": 0,
+  "normalization_note": "Original source receipt preserved separately with exact SHA; empty-vector sentinel is not a measured zero. No rerun or retroactive PASS.",
+  "source_receipt": "source-observer-result.json",
+  "source_receipt_SHA256": "9e92c98b73d53577842386717349dcae584976b49bb567325d6e241312a9fc5d"
+}

@@ -1,0 +1,88 @@
+{
+  "utc": "2026-10-28T23:28:07.776297+00:00",
+  "checks": [
+    {
+      "name": "active-owned-handle",
+      "expected_HTTP": 204,
+      "actual_HTTP": 204,
+      "result": "PASS",
+      "negative_snapshot_unchanged": null,
+      "response_SHA256": "dc937b59892604f5a86ac96936cd7ff09e25f18ae6b758e8014a24c7fa039e91",
+      "accepted_anonymous_sample_matches": true
+    },
+    {
+      "name": "other-account-owned-handle",
+      "expected_HTTP": 409,
+      "actual_HTTP": 409,
+      "result": "PASS",
+      "negative_snapshot_unchanged": true,
+      "response_SHA256": "dc937b59892604f5a86ac96936cd7ff09e25f18ae6b758e8014a24c7fa039e91"
+    },
+    {
+      "name": "sibling-session-owned-handle",
+      "expected_HTTP": 409,
+      "actual_HTTP": 409,
+      "result": "PASS",
+      "negative_snapshot_unchanged": true,
+      "response_SHA256": "dc937b59892604f5a86ac96936cd7ff09e25f18ae6b758e8014a24c7fa039e91"
+    },
+    {
+      "name": "unknown-handle",
+      "expected_HTTP": 409,
+      "actual_HTTP": 409,
+      "result": "PASS",
+      "negative_snapshot_unchanged": true,
+      "response_SHA256": "dc937b59892604f5a86ac96936cd7ff09e25f18ae6b758e8014a24c7fa039e91"
+    },
+    {
+      "name": "malformed-handle",
+      "expected_HTTP": 400,
+      "actual_HTTP": 400,
+      "result": "PASS",
+      "negative_snapshot_unchanged": true,
+      "response_SHA256": "dc937b59892604f5a86ac96936cd7ff09e25f18ae6b758e8014a24c7fa039e91"
+    },
+    {
+      "name": "anonymous-handle",
+      "expected_HTTP": 401,
+      "actual_HTTP": 401,
+      "result": "PASS",
+      "negative_snapshot_unchanged": true,
+      "response_SHA256": "8cdd457e0c19c9a6182fe2d5be1b4f5486353351eb97b4bf7419e308ac2f68c5"
+    },
+    {
+      "name": "forged-media-header-owned-derived",
+      "expected_HTTP": 204,
+      "actual_HTTP": 204,
+      "result": "PASS",
+      "negative_snapshot_unchanged": null,
+      "response_SHA256": "dc937b59892604f5a86ac96936cd7ff09e25f18ae6b758e8014a24c7fa039e91",
+      "accepted_anonymous_sample_matches": true
+    },
+    {
+      "name": "omitted-handle-forged-header-uncorrelated",
+      "expected_HTTP": 204,
+      "actual_HTTP": 204,
+      "result": "PASS",
+      "negative_snapshot_unchanged": null,
+      "response_SHA256": "dc937b59892604f5a86ac96936cd7ff09e25f18ae6b758e8014a24c7fa039e91",
+      "accepted_anonymous_sample_matches": true
+    },
+    {
+      "name": "revoked-owned-handle",
+      "expected_HTTP": 409,
+      "actual_HTTP": 409,
+      "result": "PASS",
+      "negative_snapshot_unchanged": true,
+      "response_SHA256": "dc937b59892604f5a86ac96936cd7ff09e25f18ae6b758e8014a24c7fa039e91"
+    },
+    {
+      "name": "expired-own-session-handle",
+      "expected_HTTP": 401,
+      "actual_HTTP": 401,
+      "result": "PASS",
+      "negative_snapshot_unchanged": true,
+      "response_SHA256": "9a2db7fbe8e16c7d2037bb6ac9a3b7aa9aefa4330444af7b959040aacc61bde6"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+"""Import only hashed frozen projections; leave every runtime packet untouched."""
+import sys, re
+from pathlib import Path
+Q = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Q / '.out/qa-archive-release'))
+from common import *
+P = Path(__file__).resolve().parent
+receipt, proposed = [], []
+
+def copy(src, rel, dst, expected=None):
+    source = (src / rel).resolve()
+    assert source.is_relative_to(src.resolve())
+    raw = source.read_bytes()
+    if expected:
+        assert sha(raw) == expected['sha256'] and len(raw) == expected['bytes']
+    assert Path(rel).suffix in ['.json', '.txt', '.md'] and len(raw) < 300000
+    text = raw.decode('utf-8-sig')
+    assert not any(n in text for n in needles)
+    assert not re.search(r'[A-Za-z]:[/\\]Users[/\\]', text)
+    if dst.startswith('publication-bundles/') and Path(rel).suffix == '.md':
+        text = re.sub(r'\]\((isolated-[^)]+)\)', r'](../../\1)', text)
+    out = O / dst
+    assert not out.exists(), dst
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(text.replace('\r\n', '\n'), encoding='utf-8', newline='\n')
+    assert source.read_bytes() == raw
+    receipt.append({'source_export_relative': rel, 'public_relative_to_root': dst,
+                    'prepared_original_SHA256': sha(raw),
+                    'final_public_SHA256': sha(out.read_bytes()), 'bytes': out.stat().st_size})
+
+src = Q / '.out/qa-batch-publication-plan/export'
+manifest_raw = (src / 'manifest.json').read_bytes()
+assert sha(manifest_raw) == '817f1c261b958bd8da0a99fffc6f7c0a6307d2160db4c8451ed06d90b4b4cc1f'
+bound = read(src / 'manifest.json')['files']
+files = read(src / 'public-allowlist.json')['files']
+assert len(files) == 80
+for name in files:
+    dst = name if '/' in name else 'publication-bundles/isolated-five/' + name
+    copy(src, name, dst, bound.get(name))
+proposed += read(src / 'case-entries.json')['cases']
+src = Q / '.out/qa-candidate-phone-publication/export'
+assert sha((src / 'bundle-manifest.json').read_bytes()) == 'bc9962549deb92192948f6b4e58c2995a2243531de3ff6735033d791094e9ae4'
+assert sha((src / 'closed-hash-allowlist.json').read_bytes()) == 'e418200366efb7e8f2beee83b5be5209659117d39cde1060509349fad312578d'
+items = read(src / 'closed-hash-allowlist.json')['allowed']
+for item in items: copy(src, item['path'], 'candidate-phone-followup/' + item['path'], item)
+if not any(i['path'] == 'closed-hash-allowlist.json' for i in items):
+    copy(src, 'closed-hash-allowlist.json', 'candidate-phone-followup/closed-hash-allowlist.json')
+proposed += read(src / 'case-additions.json')['cases']
+src = Q / '.out/qa-phone-master754b-install'
+assert sha((src / 'summary.json').read_bytes()) == 'c9420b3303b05415e329866a1e52db116f6e608e6da2796f6ce24f951de359cf'
+for name in read(src / 'publication-allowlist.json')['allow']:
+    assert Path(name).name == name
+    copy(src, name, 'android-master754b-install/' + name)
+copy(Q / '.out/qa-public-catalog-current', 'github-readback.json', 'public-catalog-current/github-readback.json')
+assert len(proposed) == 9 and len({c['id'] for c in proposed}) == 9
+write(P / 'proposed-cases.json', {'cases': proposed})
+write(O / 'publication-bundles/root-107-import.json', {
+    'status': 'PASS_FROZEN_PROJECTIONS_IMPORTED', 'files': receipt,
+    'authority': 'Worker manifests commit to prepared exports; root manifest binds final public paths/LF bytes.',
+    'runtime_actions': 0, 'APK_or_raw_payloads': 0, 'whole_gate_closures': 0})
+code(Path(__file__), 'final-publication-')
+print(json.dumps({'imported_files': len(receipt), 'proposed_cases': len(proposed), 'raw_binaries': 0}))

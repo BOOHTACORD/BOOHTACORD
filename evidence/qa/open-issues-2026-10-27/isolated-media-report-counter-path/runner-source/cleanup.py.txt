@@ -1,0 +1,21 @@
+import subprocess
+from common import P,Q,WORK,CONTEXT,PROJECT,read,write,fixture,quote,sql,request,state,services,frozen,sha,now
+def cleanup():
+    c=fixture();before=read(P/'before.json');code,_,v=request('/api/v1/auth/session',cookie=c['cookie']);assert code==200
+    if v['authenticated']:assert request('/api/v1/auth/logout','POST',{},c['cookie'])[0]==204
+    assert request('/api/v1/channels',cookie=c['cookie'])[0]==401
+    predicate='public_id='+quote(c['id'])+' AND user_id='+quote(c['account'])+" AND token_digest=decode("+quote(c['digest'])+",'hex')"
+    assert sql('SELECT count(*) FROM sessions WHERE '+predicate+' AND revoked_at IS NOT NULL;').strip()=='1'
+    assert c['id'] not in c['prior_session_ids']
+    deleted=sql('DELETE FROM sessions WHERE '+predicate+' AND revoked_at IS NOT NULL RETURNING public_id;').strip();assert deleted==c['id']
+    assert state()==before['database'],'Selected baseline mismatch'
+    previous=read(P/'private/services-before.json');current=services()
+    assert all(v['State']['Running'] and all(v[k]==previous[n][k] for k in ['Id','Image','Config','HostConfig','RestartCount']) and v['State']['StartedAt']==previous[n]['State']['StartedAt'] for n,v in current.items())
+    assert all(sha((Q/f).read_bytes())==h for f,h in before['source_hashes'].items()) and all(sha((P/f).read_bytes())==h for f,h in before['helper_hashes'].items())
+    assert frozen()==before['prior_packets'] and request('/api/v1/health')[0]==200
+    revision=int(sql('SELECT revision FROM channel_topology_state WHERE singleton;').strip());assert revision==before['topology_revision']
+    logs=subprocess.run(['docker','--context',CONTEXT,'logs','--since',before['utc'],PROJECT+'-api-1'],capture_output=True,timeout=15);assert logs.returncode==0;raw=logs.stdout+logs.stderr;(P/'private/api.log').write_bytes(raw)
+    creds=read(WORK/'credentials.private.json');needles=[c[k] for k in ['account','id','cookie','digest','telemetry','visit','flow','negative_flow']]+[c['cookie'].split('=',1)[1]]+[v for k,v in creds.items() if any(x in k for x in ['password','secret','key','login','auth'])]
+    assert not any(isinstance(v,str) and v.encode() in raw for v in needles)
+    write(P/'cleanup.json',{'utc':now(),'status':'PASS','own_session_normal_logout_protected401_removed':1,'own_new_users_resources_leases_chat_RTC':0,'selected_baseline_tables_restored':len(before['database']),'nine_services_configuration_identity_start_restart_unchanged':True,'source_helpers_frozen_prior_packets_unchanged':True,'health_HTTP':200,'topology_revision_before':before['topology_revision'],'topology_revision_after':revision,'audit_metadata_delta':int(sql('SELECT count(*) FROM audit_events;').strip())-before['audit_count'],'API_log_SHA256':sha(raw),'private_value_log_matches':0,'expected_retained':'Native/OTLP diagnostic counters plus anonymous latest sample and private Tempo trace; no recorder reset, no entireDB equality claim'})
+    print('PASS cleanup1ownsession/live401/14selectedtables/9services/source/topologyunchanged')

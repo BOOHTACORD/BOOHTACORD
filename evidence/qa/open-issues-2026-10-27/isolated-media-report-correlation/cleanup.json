@@ -1,0 +1,33 @@
+{
+  "utc": "2026-10-28T23:28:54.347804+00:00",
+  "status": "PASS",
+  "normal_release_or_sibling_revoke_before_SQL": true,
+  "own_sessions_revoked_live401_and_removed": [
+    "admin",
+    "a1",
+    "a2",
+    "b"
+  ],
+  "own_category_VOICE_leases_work_removed": true,
+  "chat_data_untouched": true,
+  "selected_baseline_tables_restored": 14,
+  "nine_services_unchanged": [
+    "api",
+    "web",
+    "proxy",
+    "postgres",
+    "livekit",
+    "collector",
+    "tempo",
+    "prometheus",
+    "grafana"
+  ],
+  "source_helpers_and_prior_packets_unchanged": true,
+  "health_HTTP": 200,
+  "privatevalue_log_matches": 0,
+  "API_log_SHA256": "a2615c7bca196c6d0daa603b016970ff2f09dd717df8b76ca360b70f9997e8c2",
+  "topology_revision_before": 49,
+  "topology_revision_after": 51,
+  "audit_metadata_delta": 5,
+  "expected_retained": "Finite diagnostic counters/latest sample/Tempo traces and monotonic audit/topology metadata; no recorder reset or wholeDB equality claim"
+}

@@ -1,0 +1,28 @@
+{
+  "status": "OBSERVED_MACOS_JOB_TIMEOUT_UNDERLYING_CAUSE_UNKNOWN",
+  "source_revision": "754b5997ad100cb00300373f29ab88bda4ed267d",
+  "run_id": 40784080135,
+  "run_attempt": 1,
+  "actual_workflow_ref": [
+    {
+      "path": "Egkurilov/BOOHTACORD/.github/workflows/ci-flutter.yaml@754b5997ad100cb00300373f29ab88bda4ed267d",
+      "sha": "754b5997ad100cb00300373f29ab88bda4ed267d",
+      "ref": "refs/heads/master"
+    }
+  ],
+  "configured_timeout_minutes": 15,
+  "configured_workflow_blob_sha256": "77c5a55fcb759c953bd42906beb8349c90b57f69132589874a16d62479a9f692",
+  "job_started_at": "2026-10-28T22:59:36Z",
+  "job_completed_at": "2026-10-28T23:19:37Z",
+  "wall_seconds": 1201,
+  "beyond_900_seconds": 301,
+  "annotation": "The job has exceeded the maximum execution time of 15m0s",
+  "observed_SDK_setup": "SUCCESS22:59:55-23:03:14UTC",
+  "unfinished_step": "Execute Apple-only vendor tests with no skips",
+  "unfinished_step_started_at": "2026-10-28T23:03:14Z",
+  "logs": "Active and two bounded terminal job-log reads returned BlobNotFound404; no macOS named outcome artifact",
+  "underlying_command_test_dependency_compile_cause": "UNKNOWN; no product assertion discovered in available evidence",
+  "cancellation_grace_inference": "20m01s wall time is consistent with the documented five-minute cancellation termination window after the15m limit; mechanism is an inference, not established by unavailable runner logs",
+  "primary_docs": "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-cancellation",
+  "fresh_HTTP_dates": "2026-10-28T23:20:38Z run and job allowlisted headers retained privately; actual terminal data source754b/attempt1"
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "closed-publication-allowlist-v1",
+  "mode": "CLOSED_ONLY_LISTED_FILES",
+  "allow": [
+    "summary.json",
+    "public-projection.json",
+    "jpeg-empty-bubble-bug-proof.json",
+    "jpeg-empty-bubble-bug-proof.hashes.json",
+    "gif-empty-bubble-bug-proof.json",
+    "gif-empty-bubble-bug-proof.hashes.json",
+    "next-viewer-regression-plan-only.json",
+    "README-public.md",
+    "publication-allowlist.json",
+    "public-artifact-hashes.json"
+  ],
+  "deny_everything_else": true,
+  "helpers_not_public_allowlisted": true,
+  "internal_full_artifact_manifest_not_public": true,
+  "raw_private_sources_not_public": true,
+  "all_selected_JSON_closed_fields_no_redaction_needed": true,
+  "source_criteria_entirely_omitted_from_public_projection": true,
+  "projection_only": true
+}

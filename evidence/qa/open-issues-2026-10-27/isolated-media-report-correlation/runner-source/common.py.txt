@@ -1,0 +1,39 @@
+import hashlib,http.client,json,subprocess,sys,uuid
+from datetime import datetime,timezone
+from pathlib import Path
+P=Path(__file__).resolve().parent;Q=P.parents[1];sys.path.insert(0,str(Q/'.out/local-qa'))
+from profile_common import CONTEXT,PROJECT,SOURCE,WORK,ORIGIN
+TABLES=['users','sessions','categories','channels','messages','direct_messages','direct_message_messages','voice_timeouts','voice_leases','voice_sfu_revocations','attachments','message_attachments','direct_message_attachments','channel_read_cursors']
+def read(p):return json.loads(p.read_text('utf-8-sig'))
+def write(p,v):p.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n','utf-8')
+def now():return datetime.now(timezone.utc).isoformat()
+def sha(b):return hashlib.sha256(b).hexdigest()
+def valid(v):assert str(uuid.UUID(v))==v;return v
+def quote(v):return "'"+str(v).replace("'","''")+"'"
+def docker(*args,input=None):
+    r=subprocess.run(['docker','--context',CONTEXT,*args],cwd=Q,input=input,capture_output=True,timeout=25)
+    if r.returncode:(P/'private/last-command-error.log').write_bytes(r.stderr);raise RuntimeError('Owned local command failed; private receipt retained')
+    return r.stdout
+def sql(s):return docker('exec','-i',PROJECT+'-postgres-1','psql','-U','boohtacord_qa','-d','boohtacord_qa','-qAt','-v','ON_ERROR_STOP=1',input=s.encode()).decode()
+def request(path,method='GET',body=None,cookie=None,extra=None):
+    assert ORIGIN=='http://localhost:18088' and path.startswith('/api/v1/')
+    h={'Host':'localhost:18088','Origin':ORIGIN,'Accept':'application/json'}
+    if cookie:h['Cookie']=cookie
+    if body is not None:h['Content-Type']='application/json'
+    h.update(extra or {});c=http.client.HTTPConnection('127.0.0.1',18088,timeout=10)
+    c.request(method,path,json.dumps(body) if body is not None else None,h);r=c.getresponse();code=r.status;headers={k.lower():v for k,v in r.getheaders()};raw=r.read(2_000_000);c.close()
+    return code,headers,json.loads(raw) if raw else None
+def get(port,path):
+    assert port in read(P/'private/observer-ports.json').values() and path.startswith('/')
+    c=http.client.HTTPConnection('127.0.0.1',port,timeout=6);c.request('GET',path,headers={'Accept':'application/json'});r=c.getresponse();raw=r.read(5_000_000);code=r.status;c.close();return code,raw
+def state():return {t:sql("SELECT count(*),COALESCE(md5(string_agg(h,'' ORDER BY h)),'empty') FROM (SELECT md5(row_to_json(x)::text) h FROM "+t+' x) s;').strip() for t in TABLES}
+def services():return {n:json.loads(docker('inspect',PROJECT+'-'+n+'-1'))[0] for n in ['api','web','proxy','postgres','livekit','collector','tempo','prometheus','grafana']}
+def fixture():return read(P/'private/fixture.json')
+def save(c):write(P/'private/fixture.json',c)
+def journal(c,stage,details):c.setdefault('journal',[]).append({'utc':now(),'stage':stage,**details});save(c)
+def frozen():
+    names=['qa-agent-search/summary.json','qa-guard-teardown/counterexample.json','qa-agent-archive/summary.json','qa-agent-timeout/summary.json','qa-agent-timeout-dispatch/summary.json','qa-intake-coverage-754b/integrity.json']
+    return {n:sha((Q/'.out'/n).read_bytes()) for n in names}
+def lease_predicate(c,l):
+    s=c['sessions'][l['session']]
+    return 'id='+quote(valid(l['id']))+' AND channel_id='+quote(valid(c['voice']))+' AND user_id='+quote(valid(s['account']))+" AND session_token_digest=decode("+quote(s['digest'])+",'hex')"

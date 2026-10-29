@@ -1,0 +1,63 @@
+{
+  "interpreter": "Python3.12.10",
+  "working_directory": "test-sql-native-gates/BOOHTACORD",
+  "commands": [
+    "python -X utf8 Q/.out/qa-reaction-websocket/build_client.py",
+    "python -X utf8 Q/.out/qa-reaction-websocket/preflight.py",
+    "python -X utf8 Q/.out/qa-reaction-websocket/setup.py",
+    "python -X utf8 Q/.out/qa-reaction-websocket/exercise.py",
+    "python -X utf8 Q/.out/qa-reaction-websocket/cleanup.py",
+    "python -X utf8 Q/.out/qa-reaction-websocket/seal.py"
+  ],
+  "native_client_build": "go -C Q/backend build -o Q/.out/qa-reaction-websocket/private/ws-client.exe Q/.out/qa-reaction-websocket/client.go Q/.out/qa-reaction-websocket/transport.go",
+  "native_client_version": "Go1.26.4/coder-websocket1.8.15",
+  "SDK_or_module_downloads_allowed": false,
+  "client_binary_sha256": "f62901919f5f52b928b0a83b7ce0e468406a29359c9bfdb0903820f79f9b0ce9",
+  "native_tests": "Existing source-bound Go JSON only; no rerun",
+  "helpers": {
+    "build_client.py": {
+      "lines": 16,
+      "sha256": "9666b77ae7442103bed8e6cafca968922c817e3eaf22000a66d978eadb39a23a"
+    },
+    "cleanup.py": {
+      "lines": 79,
+      "sha256": "b91764812c6c7fab61d778c2d057c0eecc88b59869427989935674c2654b1c58"
+    },
+    "common.py": {
+      "lines": 63,
+      "sha256": "dcd41761017e4b6d345f64bebaa13557393d6f3513263b943e7e6c71b74c0766"
+    },
+    "exercise.py": {
+      "lines": 81,
+      "sha256": "74c732201b03074a40ae1629419b14e2b1b7118692bee3a0e2d6c8f9c2ab8c17"
+    },
+    "fixture_common.py": {
+      "lines": 51,
+      "sha256": "87110093151d5e8d37eed1a167721d113864bb545fd071d8bc0e570c3356a64a"
+    },
+    "preflight.py": {
+      "lines": 55,
+      "sha256": "876f1e41c914de32256e3417cbc1c5fbb1be51fb77ad6c83eed2625c4d2950bb"
+    },
+    "seal.py": {
+      "lines": 50,
+      "sha256": "7f48f01bb7394c2bd3d544bcd08c9c9c10c196959de6c23e4755119ea4388561"
+    },
+    "setup.py": {
+      "lines": 46,
+      "sha256": "b52d7f6c65f1bbb2c000f16ea7a70c2756f6b711566eb9d15b91ab4c0bee472b"
+    },
+    "client.go": {
+      "lines": 40,
+      "sha256": "ba16a8e9acf8cfac079bc94307d9d3dcd177b13364bb9eaf57a7d5be1bc9f8fc"
+    },
+    "transport.go": {
+      "lines": 72,
+      "sha256": "301dccbc0558d335760454079c8dd01d2c16192b55d14d3f5264bdb0220c90a7"
+    }
+  },
+  "private_input_sha256": "773b3383de158b49df81b2329378fc17752309a920c0f9c8d6820bd774867de2",
+  "journal_sha256": "5a46aa43062d541f15629f3f5d9f0d0816b3a1960bb9f36a93e6cbd1132b9578",
+  "raw_WS_frames_sha256": "67c875b1ee9b0ec95621d95db0da87271d173c67b7e253dc524782d46825b6bf",
+  "private_protocol_observations_sha256": "90fe727be209f7e032981daa5be618f058075a03388025067e22d2a87e9c1c29"
+}

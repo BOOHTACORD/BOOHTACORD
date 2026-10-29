@@ -1,0 +1,27 @@
+import base64,secrets
+from http.cookies import SimpleCookie
+from common import P,WORK,read,write,save,journal,quote,valid,sql,request,now,sha
+def prepare():
+    assert not (P/'private/fixture.json').exists();cred=read(WORK/'credentials.private.json');accounts=read(P/'private/accounts.json')
+    c={'owner':secrets.token_hex(12),'accounts':accounts,'sessions':{},'leases':{},'reports':[]};save(c)
+    for alias,prefix,actor in [('admin','admin','admin'),('a1','member_a','a'),('a2','member_a','a'),('b','member_b','b')]:
+        old=set(sql('SELECT public_id FROM sessions;').splitlines());journal(c,'before-login',{'alias':alias,'account':accounts[actor],'prior_ids':sorted(old)})
+        code,headers,_=request('/api/v1/auth/login','POST',{'login':cred[prefix+'_login'],'password':cred[prefix+'_password']});assert code==204
+        cookies=SimpleCookie();cookies.load(headers['set-cookie']);assert len(cookies)==1
+        cookie='; '.join(k+'='+v.value for k,v in cookies.items());token=next(iter(cookies.values())).value
+        sidset=set(sql('SELECT public_id FROM sessions;').splitlines())-old;assert len(sidset)==1;sid=valid(sidset.pop());raw=base64.urlsafe_b64decode(token+'='*((4-len(token)%4)%4));assert len(raw)==32;digest=sha(raw)
+        assert sql('SELECT count(*) FROM sessions WHERE public_id='+quote(sid)+' AND user_id='+quote(accounts[actor])+" AND token_digest=decode("+quote(digest)+",'hex') AND revoked_at IS NULL;").strip()=='1'
+        c['sessions'][alias]={'id':sid,'account':accounts[actor],'cookie':cookie,'digest':digest};save(c)
+        code,h,v=request('/api/v1/auth/session',cookie=cookie);assert code==200 and v['authenticated'] and v['account_id']==accounts[actor]
+        c['sessions'][alias]['telemetry']=h['x-telemetry-session'];assert len(h['x-telemetry-session'])==32;save(c)
+    admin=c['sessions']['admin']['cookie'];c['category_name']='qa_media_corr_'+c['owner'];c['voice_name']='qa_media_voice_'+c['owner'];save(c)
+    journal(c,'before-category-POST',{'name':c['category_name']})
+    code,_,v=request('/api/v1/admin/categories','POST',{'name':c['category_name']},admin);assert code==201;c['category']=valid(v['id']);save(c)
+    journal(c,'before-VOICE-POST',{'category':c['category'],'name':c['voice_name']})
+    code,_,v=request('/api/v1/admin/categories/'+c['category']+'/channels','POST',{'name':c['voice_name'],'kind':'VOICE'},admin);assert code==201;c['voice']=valid(v['id']);save(c)
+    write(P/'fixture-ready.json',{'utc':now(),'new_users':0,'new_sessions':4,'own_category':1,'own_VOICE':1,'chat_fixtures':0,'RTC_credentials_or_participants':0})
+    return c
+def acquire(c,alias,session):
+    journal(c,'before-lease-POST',{'alias':alias,'session':session,'channel':c['voice']})
+    code,_,v=request('/api/v1/voice/channels/'+c['voice']+'/leases','POST',{'transfer':False},c['sessions'][session]['cookie']);assert code==201
+    c['leases'][alias]={'id':valid(v['id']),'session':session};save(c);return v['id']

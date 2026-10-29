@@ -1,0 +1,78 @@
+{
+  "status": "PASS_ACTUAL_SIGNED_APK_BYTE_IDENTITY_NO_INSTALL",
+  "recorded_utc": "2026-10-28T23:24:04.429572+00:00",
+  "run_id": 40784080135,
+  "run_attempt": 2,
+  "source_revision": "754b5997ad100cb00300373f29ab88bda4ed267d",
+  "event": "workflow_dispatch",
+  "dry_run": true,
+  "workflow_id": 371496531,
+  "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40784080135",
+  "ref": "master",
+  "files": {
+    "APK:x86_64": {
+      "bytes": 22276589,
+      "sha256": "52c2c6da54ad737db2f105e7b359d3e345c61ca905cb635f2a0401e23e6d0674"
+    },
+    "artifact_manifest": {
+      "bytes": 5444,
+      "sha256": "25cf2675e95097dd2c8f3bfb31b1d21a2bd18195f945801e826a9049610609ae"
+    },
+    "audio_license": {
+      "bytes": 1581,
+      "sha256": "e2f59ff41d9d03adc3dcf3deff170f8c8cf4a6eb4a9b174762a7656d23200ffa"
+    },
+    "checksums": {
+      "bytes": 588,
+      "sha256": "9fd4916a562631d2399ddf814e3ac0c0cbfe55259d596dd5fb309567bb4966d7"
+    },
+    "audio_SBOM": {
+      "bytes": 823,
+      "sha256": "0426bb951827495adc912304b4c500ea553ee2ddce89e3cc807e0e2521539d06"
+    },
+    "APK:arm64-v8a": {
+      "bytes": 20913795,
+      "sha256": "f5a45c36d2c351c92bf2689bb0d02d2e9c495a51e07d78e088042128d03c0b66"
+    },
+    "APK:armeabi-v7a": {
+      "bytes": 18798595,
+      "sha256": "9fadc0789c6492898fa467e54e36b6c9a0a4fe0635b2472164c290d33b35d981"
+    }
+  },
+  "actual_apks": {
+    "arm64-v8a": {
+      "bytes": 20913795,
+      "sha256": "f5a45c36d2c351c92bf2689bb0d02d2e9c495a51e07d78e088042128d03c0b66",
+      "application_id": "ru.boohtacord.app",
+      "version_name": "1.0.47",
+      "version_code": 2082,
+      "ABI": "arm64-v8a",
+      "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+      "revision_code_if_reported": null
+    },
+    "armeabi-v7a": {
+      "bytes": 18798595,
+      "sha256": "9fadc0789c6492898fa467e54e36b6c9a0a4fe0635b2472164c290d33b35d981",
+      "application_id": "ru.boohtacord.app",
+      "version_name": "1.0.47",
+      "version_code": 1082,
+      "ABI": "armeabi-v7a",
+      "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+      "revision_code_if_reported": null
+    },
+    "x86_64": {
+      "bytes": 22276589,
+      "sha256": "52c2c6da54ad737db2f105e7b359d3e345c61ca905cb635f2a0401e23e6d0674",
+      "application_id": "ru.boohtacord.app",
+      "version_name": "1.0.47",
+      "version_code": 4082,
+      "ABI": "x86_64",
+      "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+      "revision_code_if_reported": null
+    }
+  },
+  "contract_git_blob_hashes": "PASS",
+  "installed_or_restarted": false,
+  "installability_or_replacement": "NOT_ASSESSED",
+  "physical_or_updater_acceptance": "NOT_RUN"
+}

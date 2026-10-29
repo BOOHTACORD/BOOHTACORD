@@ -1,0 +1,59 @@
+"""Preservation and completeness checks for the next physical-evidence checkpoint."""
+import collections, json, subprocess
+from pathlib import Path
+B = Path(__import__('os').environ['BOOHTACORD_EVIDENCE_WORKTREE'])
+O = B / 'evidence/qa/open-issues-2026-10-27'
+BASE = 'e06c9019d7cd3557d7042e234483616e3bddc52f'
+
+def read(p):
+    return json.loads(p.read_text(encoding='utf-8'))
+
+def before(name):
+    p = subprocess.run(['git', 'show', BASE + ':evidence/qa/open-issues-2026-10-27/' + name],
+                       cwd=B, capture_output=True, check=True)
+    return json.loads(p.stdout)
+
+old, now = before('matrix.json'), read(O / 'matrix.json')
+oldrows = {r['id']: r for i in old['issues'] for r in i['criteria']}
+rows = {r['id']: r for i in now['issues'] for r in i['criteria']}
+assert len(rows) == len(oldrows) == 480
+assert {k: r['requirement'] for k, r in rows.items()} == {
+    k: r['requirement'] for k, r in oldrows.items()}
+delta = {k: (oldrows[k]['status'], r['status']) for k, r in rows.items()
+         if r['status'] != oldrows[k]['status']}
+assert delta == {'I249.C4': ('NOT_RUN', 'FAIL'), 'I240.C17': ('NOT_RUN', 'PARTIAL')}
+catalog = read(O / 'public-catalog-current/result.json')
+assert catalog['rows']['windows_catalog']['http'] == 503
+assert now['source_qualifier_count'] == old['source_qualifier_count'] == 13
+q = now['source_qualifier_catalog']
+assert read(O / q) == before(q)
+prior, current = before('cases.json')['cases'], read(O / 'cases.json')['cases']
+assert len(prior) == 95
+expected_prior = json.loads(json.dumps(prior))
+db = next(c for c in expected_prior if c['id'] == 'DB-support-guard-ordinary-delete-counterexample')
+db['limits'] = db['limits'].replace('Bug creation pending immutable evidence.',
+    'Bug592 is filed/open; product function remains unchanged. Original counterexample and separate teardown receipts are preserved.')
+assert current[:95] == expected_prior
+checkpoint = subprocess.run(['git', 'show', '5d3e30a9264295a08fdb9465410690f3de89abc8:evidence/qa/open-issues-2026-10-27/cases.json'],
+                            cwd=B, capture_output=True, check=True)
+assert current[:97] == json.loads(checkpoint.stdout)['cases']
+assert len(current) == 108
+assert len({c['id'] for c in current}) == len(current)
+new = current[95:]
+for case in new:
+    for key in ['protects', 'command', 'platform', 'mandatory_when', 'result', 'limits']:
+        assert isinstance(case.get(key), str) and case[key].strip(), (case['id'], key)
+    assert (O / case['result']).is_file()
+    refs = [r for r in rows.values() if case['id'] in r['execution_cases']]
+    assert refs and all(case['result'] in r['evidence'] for r in refs)
+    assert sorted({int(r['id'].split('.')[0][1:]) for r in refs}) == case['issues']
+changed = subprocess.run(['git', 'diff', '--name-only', BASE], cwd=B,
+                         capture_output=True, check=True).stdout.decode().splitlines()
+assert all(n.startswith('evidence/qa/open-issues-2026-10-27/') for n in changed)
+print(json.dumps({'status': 'PASS', 'source_texts_preserved': 480,
+                  'previous_sets_preserved': 95, 'current_scopes': len(current),
+                  'new_sets': [c['id'] for c in new], 'qualifiers_preserved': 13,
+                  'criterion_status_changes': delta,
+                  'old_case_metadata_correction': 'DB592 already filed/open; behavior/result unchanged',
+                  'status_counts': dict(collections.Counter(r['status'] for r in rows.values())),
+                  'whole_gate_closures': 0, 'consolidation43_touched': False}))

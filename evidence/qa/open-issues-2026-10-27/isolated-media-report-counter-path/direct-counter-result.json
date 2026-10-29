@@ -1,0 +1,47 @@
+{
+  "utc": "2026-10-28T23:47:59.874916+00:00",
+  "status": "PASS_SCOPED_DIRECT_COUNTER",
+  "accepted_HTTP": 204,
+  "old_cookie_after_logout_HTTP": 401,
+  "before": {
+    "value": 3.0,
+    "label_keys": [
+      "direction",
+      "platform",
+      "state"
+    ],
+    "fixed_label_keys_only": true,
+    "raw_SHA256": "083b365f7a729cc5dfe19fa21c4da999800cc08bdaf7088ec1b0f98bd990e6df",
+    "raw_bytes": 348282
+  },
+  "after_accepted": {
+    "value": 4.0,
+    "label_keys": [
+      "direction",
+      "platform",
+      "state"
+    ],
+    "fixed_label_keys_only": true,
+    "raw_SHA256": "1be6b4de8fef639dce74ace4bb5e374bb18b592e20452b8463312a66b74d01c8",
+    "raw_bytes": 349811
+  },
+  "after_rejected": {
+    "value": 4.0,
+    "label_keys": [
+      "direction",
+      "platform",
+      "state"
+    ],
+    "fixed_label_keys_only": true,
+    "raw_SHA256": "e27fca0ab21f7ad7a3fd3cc4f6300cfc4865eda043c16119eaa1aa6d000258e6",
+    "raw_bytes": 349809
+  },
+  "accepted_delta": 1.0,
+  "rejected_delta": 0.0,
+  "accepted_reports": 1,
+  "rejected_reports": 1,
+  "label_keys_fixed3": true,
+  "synthetic_diagnostic_not_physical_quality": true,
+  "native_source": "http_metrics/client_screen.go",
+  "private_API_exposition_only": true
+}

@@ -1,0 +1,52 @@
+import subprocess,time
+from common import P,Q,WORK,CONTEXT,PROJECT,read,write,fixture,save,journal,quote,valid,sql,request,state,services,frozen,sha,now,lease_predicate
+def cleanup():
+    c=fixture();before=read(P/'before.json');owner=c['owner'];assert len(owner)==24 and all(x in '0123456789abcdef' for x in owner)
+    for alias,l in c['leases'].items():
+        assert sql('SELECT count(*) FROM voice_leases WHERE '+lease_predicate(c,l)+';').strip()=='1'
+        active=sql('SELECT revoked_at IS NULL FROM voice_leases WHERE '+lease_predicate(c,l)+';').strip()=='t'
+        if active:
+            s=c['sessions'][l['session']];status,_,v=request('/api/v1/auth/session',cookie=s['cookie']);assert status==200
+            if v['authenticated']:assert request('/api/v1/voice/leases/'+valid(l['id']),'DELETE',cookie=s['cookie'])[0]==204
+            else:
+                sibling=c['sessions']['a1'];assert s['account']==sibling['account']
+                assert request('/api/v1/me/sessions/'+s['id'],'DELETE',cookie=sibling['cookie'],extra={'X-Account-ID':s['account']})[0]==204
+        assert sql('SELECT count(*) FROM voice_leases WHERE '+lease_predicate(c,l)+' AND revoked_at IS NOT NULL;').strip()=='1'
+    revoked=[]
+    for alias,s in c['sessions'].items():
+        status,_,v=request('/api/v1/auth/session',cookie=s['cookie']);assert status==200
+        if v['authenticated']:assert request('/api/v1/auth/logout','POST',{},s['cookie'])[0]==204
+        assert request('/api/v1/channels',cookie=s['cookie'])[0]==401
+        predicate='public_id='+quote(valid(s['id']))+' AND user_id='+quote(valid(s['account']))+" AND token_digest=decode("+quote(s['digest'])+",'hex')"
+        assert sql('SELECT count(*) FROM sessions WHERE '+predicate+' AND revoked_at IS NOT NULL;').strip()=='1';revoked.append(alias)
+    ids=','.join(quote(valid(l['id'])) for l in c['leases'].values())
+    if ids:
+        for _ in range(15):
+            busy=int(sql('SELECT count(*) FROM voice_sfu_revocations WHERE lease_id IN ('+ids+') AND claim_token IS NOT NULL;').strip())
+            if not busy:break
+            time.sleep(.2)
+        assert not busy,'Own consumer work remains claimed; stop for owner review'
+        assert set(sql('SELECT id FROM voice_leases WHERE channel_id='+quote(valid(c['voice']))+';').splitlines())=={l['id'] for l in c['leases'].values()}
+        sql("BEGIN; SET LOCAL lock_timeout='2s'; SET LOCAL statement_timeout='5s'; SELECT lease_id FROM voice_sfu_revocations WHERE lease_id IN ("+ids+") FOR UPDATE NOWAIT; DO $$ BEGIN IF EXISTS(SELECT 1 FROM voice_sfu_revocations WHERE lease_id IN ("+ids+") AND claim_token IS NOT NULL) THEN RAISE EXCEPTION 'OWN_WORK_CLAIMED'; END IF; END $$; DELETE FROM voice_sfu_revocations WHERE lease_id IN ("+ids+'); DELETE FROM voice_leases WHERE id IN ('+ids+') AND revoked_at IS NOT NULL; COMMIT;')
+    if c.get('category'):
+        cat=valid(c['category']);assert sql('SELECT name FROM categories WHERE id='+quote(cat)+';').strip()==c['category_name']
+        channels=set(sql('SELECT id FROM channels WHERE category_id='+quote(cat)+';').splitlines());assert channels==({c['voice']} if c.get('voice') else set())
+        if c.get('voice'):
+            voice=valid(c['voice']);assert sql('SELECT name FROM channels WHERE id='+quote(voice)+';').strip()==c['voice_name']
+            for table in ['messages','attachments','channel_read_cursors']:assert sql('SELECT count(*) FROM '+table+' WHERE channel_id='+quote(voice)+';').strip()=='0'
+        sql('BEGIN; DELETE FROM channels WHERE category_id='+quote(cat)+'; DELETE FROM categories WHERE id='+quote(cat)+' AND name='+quote(c['category_name'])+'; COMMIT;')
+    for s in c['sessions'].values():
+        result=sql('DELETE FROM sessions WHERE public_id='+quote(valid(s['id']))+' AND user_id='+quote(valid(s['account']))+" AND token_digest=decode("+quote(s['digest'])+",'hex') AND revoked_at IS NOT NULL RETURNING public_id;").strip();assert result==s['id']
+    after=state();assert after==before['database'],'Selected baseline mismatch; do not conceal'
+    previous=read(P/'private/services-before.json');current=services()
+    assert all(v['State']['Running'] and all(v[k]==previous[n][k] for k in ['Id','Image','Config','HostConfig','RestartCount']) and v['State']['StartedAt']==previous[n]['State']['StartedAt'] for n,v in current.items())
+    assert request('/api/v1/health')[0]==200 and frozen()==before['frozen_files']
+    assert all(sha((Q/f).read_bytes())==h for f,h in before['source_hashes'].items()) and all(sha((P/f).read_bytes())==h for f,h in before['helper_hashes'].items())
+    r=subprocess.run(['docker','--context',CONTEXT,'logs','--since',before['utc'],PROJECT+'-api-1'],capture_output=True,timeout=15);assert r.returncode==0
+    raw=r.stdout+r.stderr;(P/'private/api.log').write_bytes(raw);cred=read(WORK/'credentials.private.json')
+    needles=[owner,*c['accounts'].values(),c.get('visit',''),c.get('forged',''),c.get('category',''),c.get('voice','')]+[cred[k] for k in ['admin_login','admin_password','member_a_login','member_a_password','member_b_login','member_b_password','database_password']]
+    for s in c['sessions'].values():needles += [s['cookie'],s['cookie'].split('=',1)[1],s['id'],s['digest'],s['telemetry']]
+    needles += [l['id'] for l in c['leases'].values()]+[r['flow'] for r in c['reports']]
+    assert not any(v.encode() in raw for v in needles if v)
+    write(P/'cleanup.json',{'utc':now(),'status':'PASS','normal_release_or_sibling_revoke_before_SQL':True,'own_sessions_revoked_live401_and_removed':revoked,'own_category_VOICE_leases_work_removed':True,'chat_data_untouched':True,'selected_baseline_tables_restored':len(after),'nine_services_unchanged':list(current),'source_helpers_and_prior_packets_unchanged':True,'health_HTTP':200,'privatevalue_log_matches':0,'API_log_SHA256':sha(raw),'topology_revision_before':before['topology_revision'],'topology_revision_after':int(sql('SELECT revision FROM channel_topology_state WHERE singleton;').strip()),'audit_metadata_delta':int(sql('SELECT count(*) FROM audit_events;').strip())-before['audit_count'],'expected_retained':'Finite diagnostic counters/latest sample/Tempo traces and monotonic audit/topology metadata; no recorder reset or wholeDB equality claim'})
+    print('PASS cleanup: own4sessions/resources removed,14selected baselines restored,9services/source/health preserved')

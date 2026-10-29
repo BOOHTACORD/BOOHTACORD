@@ -1,0 +1,70 @@
+{
+  "status": "Q_ONLY_PREPARED_NOT_PUBLISHED",
+  "utc": "2026-10-28T23:56:03.467200+00:00",
+  "workflow_class": "review_gate",
+  "route": "qa/evidence/publication-bundle",
+  "publisher": "root only",
+  "baseline_B_commit": "5d3e30a9264295a08fdb9465410690f3de89abc8",
+  "baseline_B_cases": 97,
+  "source_rows_preserved": 480,
+  "whole_gate_qualifiers_preserved": 13,
+  "new_case_count": 5,
+  "criterion_proposals": [
+    {
+      "criterion": "I240.C17",
+      "baseline_JSON_pointer": "/issues/16/criteria/16",
+      "source_text_SHA256": "ce64a6a9152021fafbe4d0e3f0d57dc1bf36aa3b284688dd08fdaaa4b10a5c98",
+      "baseline_status": "NOT_RUN",
+      "proposed_status": "PARTIAL",
+      "append_execution_cases": [
+        "ISOLATED-media-report-owner-session-correlation",
+        "ISOLATED-media-report-native-counter-and-OTLP-path"
+      ],
+      "append_evidence": [
+        "isolated-media-report-correlation/summary.json",
+        "isolated-media-report-counter-path/summary.json"
+      ],
+      "do_not_replace_existing_links": true
+    },
+    {
+      "criterion": "I287.C8",
+      "baseline_JSON_pointer": "/issues/25/criteria/7",
+      "source_text_SHA256": "537b08d990947914de974e6822eed5487e00111093b2eeb6ae20f1bdb4be5697",
+      "baseline_status": "PARTIAL",
+      "proposed_status": "PARTIAL",
+      "append_execution_cases": [
+        "ISOLATED-reaction-concurrency-privacy",
+        "ISOLATED-TEXT-pin-acceptance",
+        "ISOLATED-private-reaction-WS-delivery-replay-revoke"
+      ],
+      "append_evidence": [
+        "isolated-reaction-concurrency/summary.json",
+        "isolated-text-pin-acceptance/summary.json",
+        "isolated-reaction-websocket/summary.json"
+      ],
+      "do_not_replace_existing_links": true
+    }
+  ],
+  "preserve_I249_C4": {
+    "status": "FAIL",
+    "execution_cases": [
+      "PUBLIC-update-catalog",
+      "PUBLIC-current-update-catalog-2026-10-29"
+    ],
+    "note": "Fresh503 and historical witness already linked; do not revert to NOT_RUN or erase either link"
+  },
+  "all_other_statuses_unchanged_by_this_batch": true,
+  "original43_consolidation_decisions_touched": false,
+  "whole_gates_closed": 0,
+  "goal_complete": false,
+  "source_text_status_fingerprint": "80ef1fac884f2e74b440761102e553a54fd9471e44663c8d7d3f6ed67a32303e",
+  "root_actions": [
+    "Review export allowlist/provenance and normalized metadata",
+    "Copy only export allowlisted files to future O paths; add5 proposed cases by uniqueID",
+    "Apply only I240.C17 NOT_RUN->PARTIAL; I287.C8 remainsPARTIAL; retain existing links/statuses/480texts/13qualifiers/I249C4FAIL",
+    "Root adds phone/CI records separately; do not hardcode final case count as102",
+    "Resolve rows by ID and recheck source hashes if B advances; no blind whole-matrix replacement",
+    "Run a fresh preservation/privacy validation after root merge; never execute old writers on this prepared plan"
+  ],
+  "worker_B_GitHub_git_device_runtime_writes": 0
+}

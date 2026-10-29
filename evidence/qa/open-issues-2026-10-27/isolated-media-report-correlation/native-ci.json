@@ -1,0 +1,84 @@
+{
+  "status": "PASS_SCOPED_NATIVE_SUPPLEMENT",
+  "source_revision": "40af8f1a9c353ea9b5c841c6afd66dbaeaeaa692",
+  "run_id": 40781872794,
+  "attempt": 1,
+  "artifact_id": 12856523580,
+  "GoJSON_SHA256": "6ba0ace9cd25aa14543d68f42e48183ce3763dd7c4ae31564f9672e21621947e",
+  "events": {
+    "TestVerifiedLeaseBindsServerMediaSampleToMediaSession": [
+      {
+        "Time": "2026-10-28T22:44:02.99433695Z",
+        "Action": "run",
+        "Package": "voice-platform/backend/internal/observability/report_client_screen/api",
+        "Test": "TestVerifiedLeaseBindsServerMediaSampleToMediaSession"
+      },
+      {
+        "Time": "2026-10-28T22:44:02.99539355Z",
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/observability/report_client_screen/api",
+        "Test": "TestVerifiedLeaseBindsServerMediaSampleToMediaSession",
+        "Elapsed": 0
+      }
+    ],
+    "TestInactiveLeaseCannotBindOrRecordMediaSample": [
+      {
+        "Time": "2026-10-28T22:44:02.995436234Z",
+        "Action": "run",
+        "Package": "voice-platform/backend/internal/observability/report_client_screen/api",
+        "Test": "TestInactiveLeaseCannotBindOrRecordMediaSample"
+      },
+      {
+        "Time": "2026-10-28T22:44:02.996158344Z",
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/observability/report_client_screen/api",
+        "Test": "TestInactiveLeaseCannotBindOrRecordMediaSample",
+        "Elapsed": 0
+      }
+    ],
+    "TestMediaSamplePreservesVisitWithoutOverridingVerifiedLease": [
+      {
+        "Time": "2026-10-28T22:44:02.993601449Z",
+        "Action": "run",
+        "Package": "voice-platform/backend/internal/observability/report_client_screen/api",
+        "Test": "TestMediaSamplePreservesVisitWithoutOverridingVerifiedLease"
+      },
+      {
+        "Time": "2026-10-28T22:44:02.993625585Z",
+        "Action": "pass",
+        "Package": "voice-platform/backend/internal/observability/report_client_screen/api",
+        "Test": "TestMediaSamplePreservesVisitWithoutOverridingVerifiedLease",
+        "Elapsed": 0
+      }
+    ]
+  },
+  "source_files": [
+    {
+      "file": "backend/internal/observability/report_client_screen/api/http_handler.go",
+      "LF_SHA256": "9f21d1aaca9cbda4377caacd40581aa35f9e3337c77e2cd1a89501d61cadea7a",
+      "Q072_equals_merged754b": true
+    },
+    {
+      "file": "backend/internal/observability/report_client_screen/api/record_media_sample.go",
+      "LF_SHA256": "6e7fe435080cdb22c03622313c01c1b03267eab7a60a3998673476000bb0ea8b",
+      "Q072_equals_merged754b": true
+    },
+    {
+      "file": "backend/internal/observability/report_client_screen/api/media_session_id.go",
+      "LF_SHA256": "87f0dc544b95dfc39395bc274a496f21c50838eb3b8e109cfeae3dc74a955889",
+      "Q072_equals_merged754b": true
+    },
+    {
+      "file": "backend/internal/observability/report_client_screen/api/media_lease_binding_test.go",
+      "LF_SHA256": "c1502c516d2cabe8e220a13414902a0294f71b30c9e0b6d928527e8ff2100536",
+      "Q072_equals_merged754b": true
+    },
+    {
+      "file": "backend/internal/observability/report_client_screen/api/identity_scope_test.go",
+      "LF_SHA256": "43a3a0fa488760328b900454d2f09c9ba9e58a40fdb2163f9407ad25e7fa9835",
+      "Q072_equals_merged754b": true
+    }
+  ],
+  "new_native_tests_executed": 0,
+  "limit": "Fake finder/unit exporter supplements; actual HTTP+PG+Tempo matrix still required"
+}

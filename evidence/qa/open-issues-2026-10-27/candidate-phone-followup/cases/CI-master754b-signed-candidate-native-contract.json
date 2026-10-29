@@ -1,0 +1,14 @@
+{
+  "id": "CI-master754b-signed-candidate-native-contract",
+  "status": "PASS_SCOPED",
+  "protects": "Exact merged-source signed QA candidate requires all four fresh profiles in one run/attempt, skipped publisher and actual APK/native-contract identity",
+  "command": "ONE Android Release workflow_dispatch master dry_run=true; ONE full rerun of same run40784080135; actual apksigner/aapt inspection of3 APKs; exact manifest/SHA256SUMS/canonical Git contracts/native-source receipt verification; independent root hosted/ARM64 readback",
+  "platform": "GitHub hosted Linux and Intel/macOS gates; Windows controller byte inspection only; source754b5997ad100cb00300373f29ab88bda4ed267d; signed QA1.0.47+82, ABI codes2082/1082/4082",
+  "mandatory_when": "Before accepting availability and source/signature identity of this exact signed QA candidate",
+  "issues": [
+    62
+  ],
+  "result": "candidate-phone-followup/ci-attempt2/summary.json",
+  "limits": "Attempt1 observed15m Mac timeout/20m01s wall, underlying cause UNKNOWN,3parts/fan-inFAIL/signskipped retained. Attempt2 all6 jobs/all4fresh PASS, publisherSKIPPED,3actual APKs and20Git contracts verified. No install by these closed packets; no device/updater/security/production deployment acceptance. Root owns595 disposition.",
+  "defects": []
+}

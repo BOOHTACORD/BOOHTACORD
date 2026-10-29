@@ -1,0 +1,14 @@
+{
+  "id": "ANDROID-current-native-attachment-only-self-row-empty",
+  "status": "FAIL",
+  "protects": "A newly sent owned attachment-only row must show its image or filename when the complete row is visible, rather than empty content with only standard controls",
+  "command": "For each JPEG/GIF: actual DocumentsUI selection, reviewed uploaded pending chip, explicit native Send, peer author/pair/original/preview controls; inspect complete own row at original1080x2340 resolution. JPEG diagnostic HistoryRefresh1 plus3reveal gestures; no additional GIF refresh. Exact native author Delete and peer404 cleanup afterward",
+  "platform": "Physical Samsung SM-A576B Android16; CLOSED C2 snapshot 1.0.47/code2082; APK c2a5489368980a66dedd291c2899ed946a86aa400c2229bcc43ba1363029bd8b; source b7f1c3ad438201c0461ed4858d97df6917815ceb; protected peer API separately bound",
+  "mandatory_when": "Before accepting initial own-sender native attachment rendering; full I62.C1 remains FAIL",
+  "issues": [
+    62
+  ],
+  "result": "candidate-phone-followup/phone-native-lifecycle/summary.json#/formats",
+  "limits": "Both formats show fully visible own initial empty bubble/no filename or image; recovery banner observed. JPEG reviewed by phone+root, GIF by phone. JPEG API content stayed unchanged; later filename semantics returned after refresh/reveal, native bitmap/persistence still UNOBSERVED. Cause UNKNOWN; no codec/network/backend/native-state cause assigned. One deduplicated defect id pending root after immutable data commit; defects=[] intentional. Shared batch:4 new messages tombstoned,2 SHA-guarded local files removed,1 own peer session revoked/livefalse,38 baseline records unchanged; native owner session preserved.",
+  "defects": []
+}

@@ -1,0 +1,163 @@
+{
+  "head": "1a608bfac6f5a177d06f77ba040acc18760e2246",
+  "checkout": "40af8f1a9c353ea9b5c841c6afd66dbaeaeaa692",
+  "run_id": 40781872794,
+  "attempt": 1,
+  "raw_events_sha256": "6ba0ace9cd25aa14543d68f42e48183ce3763dd7c4ae31564f9672e21621947e",
+  "passed": 5,
+  "skipped": 0,
+  "failed": 0,
+  "rerun": false,
+  "tests": [
+    {
+      "name": "TestPinOnlyAdminWithExplicitDesiredMethod",
+      "events": [
+        {
+          "Time": "2026-10-28T22:42:40.490305484Z",
+          "Action": "run",
+          "Package": "voice-platform/backend/internal/chat/change_text_pin/api",
+          "Test": "TestPinOnlyAdminWithExplicitDesiredMethod"
+        },
+        {
+          "Time": "2026-10-28T22:42:40.490334366Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/change_text_pin/api",
+          "Test": "TestPinOnlyAdminWithExplicitDesiredMethod"
+        },
+        {
+          "Time": "2026-10-28T22:42:40.490371601Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/change_text_pin/api",
+          "Test": "TestPinOnlyAdminWithExplicitDesiredMethod"
+        },
+        {
+          "Time": "2026-10-28T22:42:40.490377329Z",
+          "Action": "pass",
+          "Package": "voice-platform/backend/internal/chat/change_text_pin/api",
+          "Test": "TestPinOnlyAdminWithExplicitDesiredMethod",
+          "Elapsed": 0
+        }
+      ]
+    },
+    {
+      "name": "TestPinCursorRoundTripAndBounds",
+      "events": [
+        {
+          "Time": "2026-10-28T22:42:51.600105077Z",
+          "Action": "run",
+          "Package": "voice-platform/backend/internal/chat/list_text_pins",
+          "Test": "TestPinCursorRoundTripAndBounds"
+        },
+        {
+          "Time": "2026-10-28T22:42:51.60013316Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/list_text_pins",
+          "Test": "TestPinCursorRoundTripAndBounds"
+        },
+        {
+          "Time": "2026-10-28T22:42:51.600172019Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/list_text_pins",
+          "Test": "TestPinCursorRoundTripAndBounds"
+        },
+        {
+          "Time": "2026-10-28T22:42:51.600178538Z",
+          "Action": "pass",
+          "Package": "voice-platform/backend/internal/chat/list_text_pins",
+          "Test": "TestPinCursorRoundTripAndBounds",
+          "Elapsed": 0
+        }
+      ]
+    },
+    {
+      "name": "TestPinReadBindsCurrentActorRoleAndRejectsAmbiguousPaging",
+      "events": [
+        {
+          "Time": "2026-10-28T22:42:51.946378512Z",
+          "Action": "run",
+          "Package": "voice-platform/backend/internal/chat/list_text_pins/api",
+          "Test": "TestPinReadBindsCurrentActorRoleAndRejectsAmbiguousPaging"
+        },
+        {
+          "Time": "2026-10-28T22:42:51.946412323Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/list_text_pins/api",
+          "Test": "TestPinReadBindsCurrentActorRoleAndRejectsAmbiguousPaging"
+        },
+        {
+          "Time": "2026-10-28T22:42:51.946812369Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/list_text_pins/api",
+          "Test": "TestPinReadBindsCurrentActorRoleAndRejectsAmbiguousPaging"
+        },
+        {
+          "Time": "2026-10-28T22:42:51.946867552Z",
+          "Action": "pass",
+          "Package": "voice-platform/backend/internal/chat/list_text_pins/api",
+          "Test": "TestPinReadBindsCurrentActorRoleAndRejectsAmbiguousPaging",
+          "Elapsed": 0
+        }
+      ]
+    },
+    {
+      "name": "TestReactionAndPinDesiredStatesAreIdempotentAndCountsDoNotExposeActors",
+      "events": [
+        {
+          "Time": "2026-10-28T22:42:42.822227108Z",
+          "Action": "run",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestReactionAndPinDesiredStatesAreIdempotentAndCountsDoNotExposeActors"
+        },
+        {
+          "Time": "2026-10-28T22:42:42.822235611Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestReactionAndPinDesiredStatesAreIdempotentAndCountsDoNotExposeActors"
+        },
+        {
+          "Time": "2026-10-28T22:42:43.84344808Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestReactionAndPinDesiredStatesAreIdempotentAndCountsDoNotExposeActors"
+        },
+        {
+          "Time": "2026-10-28T22:42:43.843594442Z",
+          "Action": "pass",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestReactionAndPinDesiredStatesAreIdempotentAndCountsDoNotExposeActors",
+          "Elapsed": 1.02
+        }
+      ]
+    },
+    {
+      "name": "TestRealMessageDeletesAtomicallyClearReactionsPinsAndRejectResurrection",
+      "events": [
+        {
+          "Time": "2026-10-28T22:42:41.790376564Z",
+          "Action": "run",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestRealMessageDeletesAtomicallyClearReactionsPinsAndRejectResurrection"
+        },
+        {
+          "Time": "2026-10-28T22:42:41.79038121Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestRealMessageDeletesAtomicallyClearReactionsPinsAndRejectResurrection"
+        },
+        {
+          "Time": "2026-10-28T22:42:42.822167298Z",
+          "Action": "output",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestRealMessageDeletesAtomicallyClearReactionsPinsAndRejectResurrection"
+        },
+        {
+          "Time": "2026-10-28T22:42:42.822212075Z",
+          "Action": "pass",
+          "Package": "voice-platform/backend/internal/chat/change_message_reaction/postgres",
+          "Test": "TestRealMessageDeletesAtomicallyClearReactionsPinsAndRejectResurrection",
+          "Elapsed": 1.03
+        }
+      ]
+    }
+  ]
+}

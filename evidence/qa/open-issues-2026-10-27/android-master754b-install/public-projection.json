@@ -1,0 +1,106 @@
+{
+  "schema": "closed-safe-samecode-replacement-v1",
+  "sealed_at_utc": "2026-10-28T23:59:28.498061+00:00",
+  "workflow_class": "review_gate",
+  "route": "delivery/android/same-code-signed-replacement",
+  "status": "PASS_SCOPED_SAME_CODE_REPLACEMENT_AND_FRESH_AUTHENTICATED_DATA_SMOKE_CLEANED",
+  "source_revision": "754b5997ad100cb00300373f29ab88bda4ed267d",
+  "source_tree": "1677b5698447482654771487c000d0c1e94edd6f",
+  "identical_Flutter_tree": "9d253f42fe04f3aff6f98a568b4e789c638a5a7b",
+  "root_hosted_signing_receipt_SHA256": "d29499846969f3e9a7bec035f2389b16d17576c170de71a6d85e320c415c9666",
+  "prior_installed_APK_SHA256": "c2a5489368980a66dedd291c2899ed946a86aa400c2229bcc43ba1363029bd8b",
+  "actual_replacement_APK_SHA256": "f5a45c36d2c351c92bf2689bb0d02d2e9c495a51e07d78e088042128d03c0b66",
+  "actual_APK_bytes": 20913795,
+  "appID": "ru.boohtacord.app",
+  "certificate_SHA256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+  "version_name": "1.0.47",
+  "version_code": 2082,
+  "ABI": "arm64-v8a",
+  "installed_base_count": 1,
+  "installed_split_count": 0,
+  "device": "Samsung SM-A576B",
+  "Android": "16",
+  "install": {
+    "command": "adb install -r <SHA-bound-signed-candidate>",
+    "attempts": 1,
+    "actual_exit": 0,
+    "normal_PM_success": true,
+    "force_or_downgrade_bypass": false,
+    "same_version_code_before_after": true,
+    "normal_am_start_count": 1,
+    "benign_Settings_fallback_controller_stop_retained": true
+  },
+  "smoke": {
+    "native_profile_immutable_login_retained_matches_known_phone": true,
+    "native_login_excludes_B": true,
+    "known_existing_main_DM_header_history_empty_composer": true,
+    "normal_B_login_new_session_count": 1,
+    "B_marker_POST201_count": 1,
+    "new_marker_SHA256": "77ca15b743d8142173ee1e0761fca7dc4757757e5277fb39a396b37bbc83bed4",
+    "new_marker_semantic_and_original_resolution_visual_positive": true,
+    "marker_frame_SHA256": "cb8c642995fa1ee4744e9f2400917bca7860266b7ad6c10bffb360cb3bc2025e",
+    "manual_History_Refresh_count": 1,
+    "main_history_latest_reveals": 2,
+    "configured_native_URL_string": "UNOBSERVED",
+    "no_native_Send_files_or_profile_changes": true,
+    "no_passive_delivery_latency_p95_transport_acceptance": true
+  },
+  "cleanup": {
+    "only_own_marker_DELETE204_and_tombstone_blank_attachments_empty": true,
+    "baseline_records_unchanged": 42,
+    "only_own_B_session_logout204_live_false": true,
+    "producer_sessions_or_pushed_files_left": 0,
+    "native_session_retained": true
+  },
+  "final": {
+    "APP_known_DM_empty_composer": true,
+    "viewer_closed": true,
+    "media": {
+      "microphone_FGS": false,
+      "screen_FGS": false,
+      "projection_null": true,
+      "voice_connected_UI": false,
+      "active_room_is_approved": "NOT_APPLICABLE_IDLE"
+    },
+    "recovery_banner_visible": false
+  },
+  "controller_diagnostics": [
+    "Postinstall launcher-only allowlist stopped after successful PM replacement; root authorized one unused normal app activation from benign Settings",
+    "Personal navigation list had no editor; zero-input selector stop retained, corrected absent-editor no-draft guard then first actual peer-row input passed",
+    "No repeated install, launch, uncertain marker POST, native auth or protected action"
+  ],
+  "criteria_mapping": [
+    {
+      "criterion": "I62.C1",
+      "source_requirement_SHA256": "bef4eb30c0bfe8f949abadff7fb30d7695af75e8d246ea3e07833cefe27db7d1",
+      "literal_requirement_retained_unaltered_private": true,
+      "protects": "Signed same-code in-place candidate replacement with native identity/session context and fresh postinstall data access",
+      "command": "identity.py candidate/before; preflight.py before; replace.py; identity.py after; activate.py; profile.py; navigation.py; smoke_peer.py login/post/cleanup; smoke_native.py; preflight.py final",
+      "platform": "Physical Samsung SM-A576B Android16, signed arm64 1.0.47+2082, actual f5a APK",
+      "mandatory_when": "Before claiming candidate replacement/auth restore facet; full source requirement remains separate",
+      "result": "PASS_SCOPED same-code replacement/retained profile/fresh explicit-refresh data smoke/cleanup; full I62.C1 UNACCEPTED"
+    }
+  ],
+  "limits": [
+    "Same source Flutter tree and same versionCode replacement only; no monotonic updater/version increment, rollback or security acceptance",
+    "Configured native base URL string UNOBSERVED; approved peer API origin only https://v.bootybay.ru; deployed backend source UNKNOWN",
+    "No whole QA, media/audibility/capacity, already-open viewer invalidation or other platform claim"
+  ],
+  "helper_count": 11,
+  "helper_lines": {
+    "activate.py": 29,
+    "http_api.py": 39,
+    "identity.py": 49,
+    "main_pane_guard.py": 23,
+    "native_guard.py": 73,
+    "navigation.py": 23,
+    "preflight.py": 19,
+    "profile.py": 35,
+    "replace.py": 32,
+    "smoke_native.py": 35,
+    "smoke_peer.py": 59
+  },
+  "native_skips": 0,
+  "source_edits": 0,
+  "prior139_artifacts_unchanged": true
+}
