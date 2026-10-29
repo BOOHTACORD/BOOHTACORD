@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "issue": 610,
+  "kind": "native-only-promotion-readback-orchestration-failure",
+  "status": "CONFIRMED_CI_FAILURE_PRODUCT_DELIVERY_NOT_REQUIRED",
+  "source_revision": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0",
+  "observed": {
+    "run_id": 40969659339,
+    "attempt": 1,
+    "failed_job_id": 123782930046,
+    "artifact": {
+      "id": 12939303284,
+      "name": "windows-promotion-readback-3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0-40969659339-1",
+      "bytes": 414,
+      "sha256": "c770ef282c5c43c629d32c28fe11c638a17ca0d766704c8088f6b6e52248c6f9",
+      "actual_zip_digest_verified": true,
+      "workflow_run": {
+        "id": 40969659339,
+        "repository_id": 1398599178,
+        "head_repository_id": 1398599178,
+        "head_branch": "master",
+        "head_sha": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0"
+      }
+    },
+    "deploy_run_id": 40969629966,
+    "deploy_jobs": [
+      {
+        "id": 123782829062,
+        "name": "route",
+        "conclusion": "success"
+      },
+      {
+        "id": 123782909271,
+        "name": "install",
+        "conclusion": "skipped"
+      }
+    ],
+    "server_run_id": 40969157228,
+    "server_jobs": [
+      {
+        "id": 123781219285,
+        "name": "changes",
+        "conclusion": "success"
+      },
+      {
+        "id": 123781289642,
+        "name": "contracts / contracts",
+        "conclusion": "success"
+      },
+      {
+        "id": 123781291031,
+        "name": "backend",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 123781291788,
+        "name": "web",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 123782724625,
+        "name": "server-quality",
+        "conclusion": "success"
+      },
+      {
+        "id": 123782807523,
+        "name": "bundle",
+        "conclusion": "skipped"
+      }
+    ]
+  },
+  "master_server_quality": {
+    "jobs": {
+      "backend": "skipped",
+      "changes": "success",
+      "contracts": "success",
+      "web": "skipped"
+    },
+    "map_sha256": "cf501bbb879dadec880c4fb53ccfc8b63d793408fc9d526c8538c3a8001082cf",
+    "run_attempt": "1",
+    "run_id": "40969157228",
+    "schema_version": 1,
+    "scope": "server",
+    "server_release_impact": false,
+    "source_revision": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0",
+    "status": "PASS"
+  },
+  "actual_trace": {
+    "candidate_ci": {
+      "status": "NOT_RUN"
+    },
+    "deployment": {
+      "failure_code": "verification_failed",
+      "status": "FAIL"
+    },
+    "endpoint": {
+      "status": "NOT_RUN"
+    },
+    "failure_stage": "deployment",
+    "human_review": "NOT_ASSERTED",
+    "issue_249": "https://github.com/Egkurilov/BOOHTACORD/issues/249",
+    "merge": {
+      "status": "NOT_RUN"
+    },
+    "physical_acceptance": "NOT_RUN",
+    "release": {
+      "status": "NOT_RUN"
+    },
+    "review_pr": {
+      "status": "NOT_RUN"
+    },
+    "schema_version": 1,
+    "scope": "source-pr-ci-merge-deploy-catalog",
+    "source": {
+      "status": "NOT_RUN"
+    },
+    "status": "FAIL"
+  },
+  "diagnosis": "Successful trusted native-only route skips install; catalog readback unconditionally seeks delivery receipt and fails before source/catalog work.",
+  "expected": "Only a fully proven source/run/attempt and impactfalse no-op may return NOT_RUN; genuine deployment receipt and strict acknowledgement remain mandatory for server-impacttrue.",
+  "limits": [
+    "Artifact ownership metadata and verified ZIP digest bind this early-failure trace to source; its source stage itself remains NOT_RUN.",
+    "No production or Windows catalog mutation/failure is inferred; public Web/API remain verifiedde4c.",
+    "No failed or missing required deployment may be hidden; no blanket skipped-install bypass is acceptable.",
+    "Separate CI packet;582 corrected signed candidate retains priority;579/607 product code untouched."
+  ]
+}
