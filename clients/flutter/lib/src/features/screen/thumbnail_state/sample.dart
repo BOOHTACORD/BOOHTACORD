@@ -5,7 +5,10 @@ import '../../../services/screen_thumbnail.dart';
 import 'controller.dart';
 
 extension ScreenThumbnailSample on ScreenThumbnailController {
-  Future<void> sample(Room room, LocalVideoTrack track) async {
+  Future<ScreenThumbnailCaptureResult?> sample(
+    Room room,
+    LocalVideoTrack track,
+  ) async {
     await cleanup;
     final ticket = scope.capture();
     final expected = revision;
@@ -18,17 +21,20 @@ extension ScreenThumbnailSample on ScreenThumbnailController {
         identical(readRoom(), room) &&
         leaseId == previewLease &&
         isSharing();
-    if (!active() || busy == expected) return;
+    if (!active() || busy == expected) return null;
     busy = expected;
+    ScreenThumbnailCaptureResult? result;
     try {
-      final result = await captureScreenThumbnailFrame(
+      result = await captureScreenThumbnailFrame(
         capture: () => queue.run(() => capture(track)),
         encode: encode,
         storeLocally: (thumbnail) {
           final identity = room.localParticipant?.identity;
           if (identity == null) return;
           thumbnails[identity] = thumbnail;
-          if (previewLease != null) previewUploader.offer(previewLease, thumbnail);
+          if (previewLease != null) {
+            previewUploader.offer(previewLease, thumbnail);
+          }
           changed();
         },
         isActive: active,
@@ -41,6 +47,8 @@ extension ScreenThumbnailSample on ScreenThumbnailController {
       // Thumbnail diagnostics must never interrupt the media publication.
     } finally {
       if (busy == expected) busy = null;
+      if (result != null && active()) scheduleNextSample(room, track, result);
     }
+    return result;
   }
 }

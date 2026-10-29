@@ -79,12 +79,12 @@ void main() {
       findsOneWidget,
     );
     expect(created.participant.videoTrackPublications.single.track, isNull);
-    expect(
-      find.widgetWithText(OutlinedButton, 'Смотреть экран'),
-      findsOneWidget,
-    );
+    expect(find.text('Смотреть экран'), findsNothing);
     final remoteCard = find.byKey(
       const ValueKey('voice-participant-card:remote-sid'),
+    );
+    final streamPreview = find.byKey(
+      const ValueKey('voice-participant-preview:remote-screen'),
     );
     final remoteAvatar = find.descendant(
       of: remoteCard,
@@ -97,7 +97,7 @@ void main() {
     expect(volumeMenu, findsOneWidget);
     expect(
       tester.getRect(volumeMenu).center.dy,
-      lessThanOrEqualTo(tester.getRect(remoteAvatar).top + 8),
+      closeTo(tester.getRect(remoteAvatar).center.dy, 0.1),
     );
     debugDefaultTargetPlatformOverride = TargetPlatform.android;
     await tester.pumpWidget(MaterialApp(home: WorkspaceScreen(state: state)));
@@ -116,9 +116,9 @@ void main() {
     expect(androidVolumeMenu, findsOneWidget);
     expect(
       tester.getRect(androidVolumeMenu).center.dy,
-      lessThanOrEqualTo(tester.getRect(androidAvatar).top + 8),
+      closeTo(tester.getRect(androidAvatar).center.dy, 0.1),
     );
-    await tester.tap(find.widgetWithText(OutlinedButton, 'Смотреть экран'));
+    await tester.tap(streamPreview);
     await tester.pump();
     expect(state.selectedScreen, 'remote-screen');
     expect(find.text('Подключаемся к демонстрации…'), findsOneWidget);
@@ -1961,16 +1961,17 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Все в сборе'), findsNothing);
-    expect(
-      find.widgetWithText(OutlinedButton, 'Смотреть экран'),
-      findsOneWidget,
-    );
+    expect(find.text('Смотреть экран'), findsNothing);
     expect(find.bySemanticsLabel('Участник показывает экран'), findsOneWidget);
     expect(
       find.byKey(const ValueKey('voice-participant-grid')),
       findsOneWidget,
     );
     final selfCard = find.byKey(const ValueKey('voice-participant-card:self'));
+    final localPreview = find.byKey(
+      const ValueKey('voice-participant-preview:local'),
+    );
+    expect(localPreview, findsOneWidget);
     expect(tester.getSize(selfCard).height, greaterThanOrEqualTo(160));
     expect(tester.getSize(selfCard).width, greaterThanOrEqualTo(160));
     final selfCardRect = tester.getRect(selfCard);
@@ -1989,7 +1990,7 @@ void main() {
     state.dispose();
   });
 
-  testWidgets('deafened participant status stays centered without truncating', (
+  testWidgets('deafened participant status follows the inline mic indicator', (
     tester,
   ) async {
     tester.view.devicePixelRatio = 1;
@@ -2012,14 +2013,19 @@ void main() {
     await tester.pumpAndSettle();
 
     final status = find.text('Звук и микрофон выключены');
-    final statusText = tester.widget<Text>(status);
     final card = find.byKey(const ValueKey('voice-participant-card:self'));
-    expect(statusText.textAlign, TextAlign.center);
-    expect(statusText.maxLines, isNull);
-    expect(statusText.overflow, isNull);
+    final statusIcon = find.descendant(
+      of: card,
+      matching: find.byIcon(Icons.headset_off),
+    );
+    expect(statusIcon, findsOneWidget);
     expect(
-      tester.getRect(status).center.dx,
-      closeTo(tester.getRect(card).center.dx, 0.1),
+      tester.renderObject<RenderParagraph>(status).didExceedMaxLines,
+      isFalse,
+    );
+    expect(
+      tester.getRect(status).left,
+      greaterThan(tester.getRect(statusIcon).right),
     );
 
     await tester.pumpWidget(const SizedBox.shrink());
@@ -2848,7 +2854,13 @@ void main() {
     );
     expect(connectedLabel, findsOneWidget);
     expect(find.text('Подключено'), findsNothing);
-    expect(find.byIcon(Icons.headphones_outlined), findsOneWidget);
+    expect(
+      find.descendant(
+        of: dock,
+        matching: find.byIcon(Icons.headphones_outlined),
+      ),
+      findsOneWidget,
+    );
     expect(
       tester.widget<Text>(connectedLabel).style?.fontWeight,
       FontWeight.w500,
@@ -2898,7 +2910,7 @@ void main() {
       qualitySemantics.every((item) => item.properties.liveRegion != true),
       isTrue,
     );
-    expect(find.text('В голосовом канале'), findsNothing);
+    expect(find.text('В голосовом канале'), findsWidgets);
     final microphoneButton = tester.getSemantics(
       find.bySemanticsLabel('Выключить микрофон').first,
     );

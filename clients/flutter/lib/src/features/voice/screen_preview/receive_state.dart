@@ -4,6 +4,7 @@ import 'package:livekit_client/livekit_client.dart'
     hide ChatMessage, voiceReconnectAttemptLimit;
 
 import '../../../core/http/api_failure.dart';
+import '../../../services/screen_thumbnail.dart';
 import '../lifecycle/controller.dart';
 import 'client.dart';
 import '../../screen/rollout/policy.dart';
@@ -102,7 +103,7 @@ class ScreenPreviewReceiver {
       state.busy = false;
       if (identical(states[lease], state)) {
         state.timer?.cancel();
-        state.timer = Timer(const Duration(seconds: 5), () {
+        state.timer = Timer(screenThumbnailCaptureInterval, () {
           if (!identical(states[lease], state)) return;
           if (!_active(lease)) { invalidated(lease, state.generation); return; }
           state.poll = true;

@@ -23,7 +23,40 @@ void main() {
     final thumbnail = encodeScreenThumbnail(png);
     expect(thumbnail, isNotNull);
     expect(thumbnail!.length, lessThanOrEqualTo(14 * 1024));
-    expect(image.decodeJpg(thumbnail)?.width, 160);
+    final decoded = image.decodeJpg(thumbnail);
+    expect(decoded?.width, 480);
+    expect(decoded?.height, 270);
+  });
+
+  test('retries the first preview quickly and refreshes successful previews every 30 seconds', () {
+    expect(
+      screenThumbnailCaptureDelay(
+        hasCapturedFirstFrame: false,
+        initialFailureCount: 0,
+      ),
+      const Duration(seconds: 1),
+    );
+    expect(
+      screenThumbnailCaptureDelay(
+        hasCapturedFirstFrame: false,
+        initialFailureCount: 9,
+      ),
+      const Duration(seconds: 1),
+    );
+    expect(
+      screenThumbnailCaptureDelay(
+        hasCapturedFirstFrame: false,
+        initialFailureCount: 10,
+      ),
+      const Duration(seconds: 30),
+    );
+    expect(
+      screenThumbnailCaptureDelay(
+        hasCapturedFirstFrame: true,
+        initialFailureCount: 0,
+      ),
+      const Duration(seconds: 30),
+    );
   });
 
   test('rejects malformed JPEG previews', () {

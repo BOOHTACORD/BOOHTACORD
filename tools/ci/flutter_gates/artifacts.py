@@ -8,6 +8,9 @@ VISUALS = (
     'R14-navigation-top.png', 'maintenance-banner-safe-area-390x800.png',
     'flutter-screen-audience-viewer-strip-1024x92@2x.png',
     'flutter-screen-viewer-transient-controls-1440x900.png',
+    # Flutter participant-card inline stream and voice-only previews.
+    'flutter-participant-cards-stream-and-voice.png',
+    'flutter-participant-cards-mobile-large-text.png',
     # #544: compact room and fullscreen viewer participant overlays.
     'voice-viewer-participants-room.png',
     'voice-viewer-participants-room-open.png',
