@@ -2,7 +2,7 @@
 import { nextTick, ref } from 'vue'
 import { useProtectedImagePreview } from './protected_image_preview/use_protected_image_preview'
 
-const props = defineProps<{ name: string; previewUrl: string }>()
+const props = defineProps<{ name: string; previewUrl: string; downloadUrl: string }>()
 
 const dialog = ref<HTMLDialogElement | null>(null)
 const closeButton = ref<HTMLButtonElement | null>(null)
@@ -71,7 +71,7 @@ function onDialogClick(event: MouseEvent): void {
     <header class="attachment-image-dialog__header">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"/><path d="M14 2v6h6"/></svg>
       <h2>{{ props.name }}</h2>
-      <a v-if="imageUrl && !failed" :href="imageUrl" :download="props.name" class="attachment-image-dialog__download"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg>Скачать</a>
+      <a v-if="imageUrl && !failed" :href="props.downloadUrl" :download="props.name" class="attachment-image-dialog__download"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg>Скачать</a>
       <button
         ref="closeButton"
         type="button"

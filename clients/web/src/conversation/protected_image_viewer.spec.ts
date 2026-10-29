@@ -38,7 +38,8 @@ describe('protected attachment image viewer', () => {
   it('uses real file and download icons while preserving the protected link', () => {
     expect(component).toContain('M14 2H6a2 2 0 0 0-2 2')
     expect(component).toContain('M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5')
-    expect(component).toContain(':href="imageUrl" :download="props.name"')
+    expect(component).toContain(':href="props.downloadUrl" :download="props.name"')
+    expect(component).toContain(':src="imageUrl"')
     expect(component).not.toContain('♧')
   })
 })

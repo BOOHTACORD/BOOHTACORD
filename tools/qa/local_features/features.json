@@ -1404,6 +1404,14 @@
           "clients/flutter/test/message_attachment_list_test.dart"
         ],
         "scope": "Already open and loading viewer drops image/actions when its source message deletion is applied or session/server changes; late bytes cannot remount it. Physical signed Android acceptance remains required."
+      },
+      "issue581": {
+        "unit": "clients/web/src/conversation/protected_image_preview/viewer_download.spec.ts",
+        "scope": "Web TEXT/DM PNG/JPEG/GIF viewer download must use the protected original path while image display stays on the normalized preview; failed/revoked controls and actual download bytes/ACL require full-app runtime evidence."
+      },
+      "issue580": {
+        "unit": "clients/web/src/search/navigation_shortcut.spec.ts",
+        "scope": "Web Ctrl+K/Meta+K from its own launcher in the navigation drawer at1440/800/390; editable/composition/repeat and ordinary/nested dialog guards preserved; actual headed runtime, Escape/focus and no-auto-voice required."
       }
     },
     "parity": [
@@ -1456,13 +1464,13 @@
       }
     ],
     "parity_review": {
-      "issue": 598,
+      "issue": 581,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-28 (PR #590): #586/#587/#589: shared Flutter mobile 48dp scope and open-image revocation; Web TEXT/DM live context refresh, immediate deletion redaction and generation/revision guards. Web browser/controller and shared Flutter tests pass; physical Android/iOS and the original real-stack counterexamples remain NOT_RUN. 2026-10-29 (#598): Android and iOS share the canonical attachment-only DM Send fix, correlation/revision/tombstone/session/navigation guards and 20s readback deadline. Shared Flutter focused+nearest115 tests and two actual production-widget JPEG/GIF Send cases pass on Windows; signed Android physical and iOS runtime remain NOT_RUN. Web implementation is unchanged; existing browser regression gates remain mandatory and hosted results are recorded separately. No platform runtime PASS is inferred from shared widget results."
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-28 (PR #590): #586/#587/#589: shared Flutter mobile 48dp scope and open-image revocation; Web TEXT/DM live context refresh, immediate deletion redaction and generation/revision guards. Web browser/controller and shared Flutter tests pass; physical Android/iOS and the original real-stack counterexamples remain NOT_RUN. 2026-10-29 (#598): Android and iOS share the canonical attachment-only DM Send fix, correlation/revision/tombstone/session/navigation guards and 20s readback deadline. Shared Flutter focused+nearest115 tests and two actual production-widget JPEG/GIF Send cases pass on Windows; signed Android physical and iOS runtime remain NOT_RUN. Web implementation is unchanged; existing browser regression gates remain mandatory and hosted results are recorded separately. No platform runtime PASS is inferred from shared widget results. 2026-10-29 (#581/#580): Web viewer original download is separated from normalized image preview, and the owned search launcher can use its declared shortcut inside the navigation drawer without relaxing editors/content dialogs. These changes are Web-only; Flutter Android/iOS source and all earlier platform runtime rows remain unchanged. Focused Web regressions and real full-app download/shortcut/ACL acceptance are mandatory. Unit/SSR checks do not certify physical/native/platform-wide acceptance."
     }
   },
   "shell": {
