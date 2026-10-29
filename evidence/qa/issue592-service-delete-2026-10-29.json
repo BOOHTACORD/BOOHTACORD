@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "issue": 592,
+  "status": "PASS_LOCAL_HOSTED_DELIVERY_PENDING",
+  "base": "f370396c468d26588cb934f8262b2ee7f4801044",
+  "route": "SP-002 -> native embedded migration 0065 / support service BEFORE DELETE",
+  "postgres_version_num": 170006,
+  "postgres_image": "postgres:17.6-alpine",
+  "postgres_repo_digest": "postgres@sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94",
+  "host": "Windows / Go1.26.4; isolated Docker PostgreSQL loopback-only",
+  "RED": {
+    "file_SHA256": "4631b321b7d6a0e1efe4f0e3f1dcc86e697c92ab2722e9b337ed492b8db3c111",
+    "test_events": {
+      "pass": 1,
+      "fail": 2,
+      "skip": 0
+    },
+    "top_level_pass": 1
+  },
+  "GREEN": {
+    "file_SHA256": "e86a0d06cfe0e9d4474d0c78e0d57e65b58e7421b3eed9d98523fbc3843c0295",
+    "test_events": {
+      "pass": 11,
+      "fail": 0,
+      "skip": 0
+    },
+    "top_level_pass": 9
+  },
+  "source_LF_SHA256": {
+    "backend/internal/database/migrate/migrations/0056_product_support.sql": "e985172eba4f0f72756068b6c1930c7480695025ae22d86bf57f3b5702a8acc0",
+    "backend/internal/database/migrate/migrations/0065_support_service_delete.sql": "9841deb1cb053c96fd05c470e591c626d702c05856d7a100b3a8d00bb0e0f933",
+    "backend/internal/database/migrate/support_service_guard_integration_test.go": "90ce51436af88f9ba2fe7c10f1a07724dbe93d866245d125ac919542b29671a4",
+    "backend/internal/database/migrate/run_test.go": "ef4ac41c09f39e676984d177a624a204c9034ed844eb0f7f1e3fdba30907b204"
+  },
+  "historical_0056_unchanged": true,
+  "checks": [
+    {
+      "invariant": "Ordinary UPDATE and DELETE affect one row; deleted user absent",
+      "command": "go test -json -count=1 ./internal/database/migrate -run TestSupportServiceGuardAllowsOrdinaryDelete",
+      "platform": "Actual isolated PostgreSQL17.6",
+      "mandatory_when": "Support guard/migrations change",
+      "counterexample": "Unchanged0056 returns NEW on DELETE: native DELETE rows=0, error=nil",
+      "result": "PASS in full native package run"
+    },
+    {
+      "invariant": "Upgrade from0064 and two complete startup replays preserve service identity and ordinary deletion",
+      "command": "go test -json -count=1 ./internal/database/migrate -run TestSupportServiceGuardUpgradeAndRepeatedStartup",
+      "platform": "Same",
+      "mandatory_when": "Forward migration delivery/restart",
+      "result": "PASS"
+    },
+    {
+      "invariant": "Support user DELETE/UPDATE and session INSERT/UPDATE still fail with SQLSTATE42501",
+      "command": "go test -json -count=1 ./internal/database/migrate -run TestSupportServiceGuardRetainsIdentityAndSessionFences",
+      "platform": "Same",
+      "mandatory_when": "Before accepting the repair as security-preserving",
+      "result": "PASS before and after repair"
+    },
+    {
+      "invariant": "Embedded discovery and nearest consent/operator migration behavior retained",
+      "command": "go test -json -count=1 ./internal/database/migrate",
+      "platform": "Same",
+      "mandatory_when": "Before PR",
+      "result": "9 top-level +2 subtest PASS; 0 FAIL/skip"
+    }
+  ],
+  "cleanup": {
+    "remaining_voice_it_schemas": 0,
+    "old_QA_services_modified": false
+  },
+  "setup_diagnostics": [
+    {
+      "SHA256": "1c2ece941a774dc1084af76b9fd88fc3eddb27ba85cd4f65d1a81a33417d90ce",
+      "kind": "Test fixture reused uuid parameter as text:42P08; not a product RED"
+    },
+    {
+      "SHA256": "b5c41a83e2a8f158a424e906314bf8029f0b35cf4d52fd37800977e9135c76ee",
+      "kind": "Test fixture login exceeded native32-character limit:23514; not a product RED"
+    }
+  ],
+  "limits": [
+    "Current-head hosted PostgreSQL gate and approved server delivery are pending",
+    "No production SQL, public deletion API, platform/media or capacity claims"
+  ]
+}
