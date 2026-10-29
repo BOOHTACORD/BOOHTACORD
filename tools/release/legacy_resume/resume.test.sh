@@ -44,7 +44,8 @@ run_resume() {
 }
 
 run_resume
-mapfile -t calls < "$fixture/calls"
+calls=()
+while IFS= read -r line; do calls+=("$line"); done < "$fixture/calls"
 [[ "${calls[0]}" == guard ]]
 [[ "${calls[1]}" == "docker:image inspect voice-platform-api:$sha" ]]
 [[ "${calls[2]}" == "docker:image inspect voice-platform-web:$sha" ]]
@@ -72,4 +73,16 @@ if TEST_LOG="$fixture/calls" PATH="$fixture/bin:$PATH" \
   echo 'expected invalid SHA to fail' >&2
   exit 1
 fi
+
+mkdir -p "$release_dir/deploy"
+mv "$release_dir/compose.yaml" "$release_dir/deploy/compose.yaml"
+run_resume
+calls=()
+while IFS= read -r line; do calls+=("$line"); done < "$fixture/calls"
+[[ "${calls[0]}" == guard ]]
+[[ "${calls[1]}" == "docker:image inspect voice-platform-api:$sha" ]]
+[[ "${calls[2]}" == "docker:image inspect voice-platform-web:$sha" ]]
+[[ "${calls[3]}" == "deploy:$release_dir:voice-platform-api:$sha:voice-platform-web:$sha" ]]
+[[ "${calls[4]}" == "audit:$sha" ]]
+[[ "${#calls[@]}" -eq 5 ]]
 echo 'resume-built-release tests passed'

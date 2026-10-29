@@ -12,7 +12,9 @@ sha="${1:-}"
 release_root="${VOICE_PLATFORM_RELEASE_ROOT:-/opt/voice-platform-releases}"
 [[ "$release_root" == /* && -d "$release_root" ]] || fail 'release root is unavailable'
 release_dir="$release_root/$sha"
-[[ -f "$release_dir/compose.yaml" && -f "$release_dir/.env" ]] || fail 'built release is unavailable'
+compose_file="$release_dir/deploy/compose.yaml"
+[[ -f "$compose_file" ]] || compose_file="$release_dir/compose.yaml"
+[[ -f "$compose_file" && -f "$release_dir/.env" ]] || fail 'built release is unavailable'
 
 scripts=()
 for relative in tools/ops/attachment_headroom/check-attachment-volume-headroom.sh tools/release/rollout/deploy-images.sh tools/ops/attachment_audit/audit-attachment-volume.sh; do
