@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "issue": 598,
+  "protects": "Every changed shared chat feature records explicit Web, Android and iOS regression decisions without inferring runtime PASS from widget tests.",
+  "mandatory_when": "Changing shared chat implementation before required hosted contracts gate.",
+  "platform": "Windows/Python3.12.10 policy verification; shared Flutter targets Android and iOS.",
+  "command": "python -m tools.verify.client_parity.run --base 754b5997ad100cb00300373f29ab88bda4ed267d",
+  "counterexample": {
+    "hosted_run": 40822874230,
+    "attempt": 1,
+    "head": "5ff74c170f79b562ddb2573851f206fc6f42d486",
+    "job": 123279100356,
+    "failure": "Missing changed chat parity_review decision",
+    "local_RED_exit": 1,
+    "log_sha256": "c1a01a13e081ad1f81f81c4607d1e9080e5de70c06d540bc3be90ffb915081f8"
+  },
+  "GREEN": {
+    "exit": 0,
+    "policy_tests": 6,
+    "skips": 0,
+    "policy_command": "python -m unittest tools.verify.client_parity.test_policy tools.qa.local_features.test_policy",
+    "log_sha256": "2c7016c4aefaea43852e1b78769880f2f85d8109fa1b997aac6149cc5bcbc767"
+  },
+  "production_Dart_sources_changed_by_followup": false,
+  "gate_policy_changed": false,
+  "native_real_stack_gate": {
+    "at_utc": "2026-10-29T05:21:43.692306+00:00",
+    "source_revision": "5ff74c170f79b562ddb2573851f206fc6f42d486",
+    "canonical_command": "./tools/qa/local_features/check.sh --feature chat --platform android --base 754b5997ad100cb00300373f29ab88bda4ed267d --real-stack",
+    "canonical": {
+      "exit": 49,
+      "log_sha256": "adf27d430ca4c636ac731cd04730a3aaf4382fe595f849edd4e4bb70a83e23a5"
+    },
+    "actual_connected_physical_target_used": false,
+    "connected_physical_device_count": 0,
+    "device_identifier_published": false,
+    "native_prerequisite": {
+      "status": "BLOCKED_NO_DEVICE",
+      "exit": null
+    },
+    "physical_policy_rejected_before_runtime": false,
+    "status": "BLOCKED",
+    "native_real_stack_acceptance": "NOT_RUN",
+    "limits": "Canonical harness needs its supported host and owned emulator; separate signed physical acceptance remains required."
+  },
+  "limits": "Fresh final-head hosted CI remains pending. Physical Android and iOS runtime remain NOT_RUN. Previous hosted failure and physical failures are preserved."
+}

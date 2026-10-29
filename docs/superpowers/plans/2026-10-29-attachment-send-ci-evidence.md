@@ -29,3 +29,12 @@ Files: `clients/flutter/pubspec.yaml`, `contracts/client-build.json`.
 - [ ] Follow `docs/clients/versions.md`: change the shared Flutter build from `1.0.47+82` to `1.0.47+83` for the new distributed QA binary.
 - [ ] Change each native identity to `native_build: "83"`, `release_order: 62`, and its corresponding `*-r62` release ID. Preserve Web identity and the complete production update catalog byte for byte. This prepares a distinct candidate; it does not publish or promote a release.
 - [ ] Run `python -m pytest tools/build/test_client_identity.py -q`, native source/manifest tests, and `tools/verify/contracts/verify-contracts.ps1`. Require success before staging.
+
+### Task 3: Record the shared chat platform decision
+
+Files: `tools/qa/local_features/features.json`, `evidence/qa/issue598-parity-review-2026-10-29.json`.
+
+- [x] Preserve hosted attempt 1 contracts failure and reproduce it with `python -m tools.verify.client_parity.run --base 754b5997ad100cb00300373f29ab88bda4ed267d` before editing the registry.
+- [x] Set `chat.parity_review.issue` to 598 and append the Android/iOS shared implementation and headless regression decision, unchanged Web regression obligation, and explicit Android/iOS runtime NOT_RUN limits. Preserve existing decisions and all scenario runtime states.
+- [x] Run `python -m unittest tools.verify.client_parity.test_policy tools.qa.local_features.test_policy` and the same parity command; require six passing policy tests and successful changed-feature validation. Preserve RED/GREEN hashes and the separate canonical harness bootstrap BLOCKED result.
+- [ ] Push the metadata follow-up and require a fresh full hosted CI execution on its final head. Keep attempt 1 failure as history; never weaken the parity gate or reuse its unfinished checks as final-head evidence.
