@@ -1233,6 +1233,8 @@
       "clients/web/src/direct*",
       "clients/flutter/lib/src/features/conversation/*",
       "clients/flutter/lib/src/features/attachments/*",
+      "clients/flutter/lib/src/features/direct/send_state/**",
+      "clients/flutter/lib/src/features/direct/edit_state/delete.dart",
       "clients/web/src/search/*",
       "clients/flutter/lib/src/screens/workspace_ui/message_action_menu/*",
       "clients/flutter/lib/src/screens/workspace_ui/direct_message_action_menu/*",
@@ -1271,6 +1273,7 @@
       "test/features/workspace/dm_drafts/widget_test.dart",
       "test/clipboard_paste_edit_generation_test.dart",
       "test/message_attachment_composer_test.dart",
+      "test/direct_send_hydration/",
       "test/workspace_screen_test.dart",
       "test/web_parity/message_policy_test.dart",
       "test/search_scope_touch_test.dart",
@@ -1361,6 +1364,17 @@
         ],
         "scope": "Shared TEXT/DM context refreshes protected revisions and immediately redacts delete hints; session/conversation/generation guards prevent stale responses. Component HTTP fixtures are separate from real-stack/live acceptance."
       },
+      "attachment_send_hydration_598": {
+        "issue": 598,
+        "focused": [
+          "clients/flutter/test/direct_send_hydration/"
+        ],
+        "captures": [
+          "dm-attachment-send-jpeg.png",
+          "dm-attachment-send-gif.png"
+        ],
+        "scope": "Own DM JPEG/GIF attachment-only Send without realtime: minimal POST receipt is hydrated through existing author/client-scoped canonical history, with exact message/DM/session correlation, known201 checking-only retry and newer/tombstone precedence. Production conversation rows and explicit Send produce deterministic fixture captures. Web and backend receipt/ACL contracts are unchanged; signed Android/iOS physical acceptance remains NOT_RUN until a new candidate is tested."
+      },
       "image_viewer_revocation_589": {
         "issue": 589,
         "focused": [
@@ -1420,13 +1434,13 @@
       }
     ],
     "parity_review": {
-      "issue": 590,
+      "issue": 598,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-28 (PR #590): #586/#587/#589: shared Flutter mobile 48dp scope and open-image revocation; Web TEXT/DM live context refresh, immediate deletion redaction and generation/revision guards. Web browser/controller and shared Flutter tests pass; physical Android/iOS and the original real-stack counterexamples remain NOT_RUN."
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-28 (PR #590): #586/#587/#589: shared Flutter mobile 48dp scope and open-image revocation; Web TEXT/DM live context refresh, immediate deletion redaction and generation/revision guards. Web browser/controller and shared Flutter tests pass; physical Android/iOS and the original real-stack counterexamples remain NOT_RUN. 2026-10-29 (#598): Android and iOS share the canonical attachment-only DM Send fix, correlation/revision/tombstone/session/navigation guards and 20s readback deadline. Shared Flutter focused+nearest115 tests and two actual production-widget JPEG/GIF Send cases pass on Windows; signed Android physical and iOS runtime remain NOT_RUN. Web implementation is unchanged; existing browser regression gates remain mandatory and hosted results are recorded separately. No platform runtime PASS is inferred from shared widget results."
     }
   },
   "shell": {
@@ -1473,7 +1487,8 @@
       "test/web_parity/presentation_test.dart",
       "test/member_voice_presence_panel_test.dart",
       "test/features/workspace/channel_favorites_preferences_test.dart",
-      "test/workspace_channel_favorites_test.dart"
+      "test/workspace_channel_favorites_test.dart",
+      "test/profile_screen_test.dart"
     ],
     "acceptance": {
       "issue292": {
@@ -1717,13 +1732,13 @@
       }
     ],
     "parity_review": {
-      "issue": 590,
+      "issue": 598,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "2026-10-24 (#518 Web-to-Flutter parity): Flutter channel favorites match Web's account/deployment scoped behavior, ordered shortcuts, topology pruning, mobile touch control, desktop hover/focus affordance, and persistence. Flutter connection status now presents independent chat/voice/roster state and recovery actions while retaining existing retry policies. Focused widget coverage, source-resolution desktop/mobile captures, and the authenticated native local-stack smoke are registered; physical screen-reader and media acceptance remain separate. 2026-10-24 (#570): Flutter member voice captions show the channel name without a redundant prefix and wrap within compact rows; Android and iOS share this behavior, while Web is unchanged. 2026-10-24 (Web PR #544): Flutter active screen viewing now uses a compact on-demand participant overlay and preserves the available video stage height; paired native stream acceptance remains NOT_VERIFIED. 2026-10-24 (Flutter stream-viewer layout parity, PR #573): shared Flutter workspace widgets place active stream viewing over the available room stage, with participant/stream panels and viewer actions overlaid on demand. Web presentation is unchanged; browser checks remain in PR CI. Focused Flutter widget tests pass and 900x640 source captures were reviewed; the black fixture proves layout only. Android/iOS native runtime is BLOCKED because this host has no registered QA devices; live-stream/media acceptance remains NOT_VERIFIED. 2026-10-25 (#554): Web/Flutter composition owns notification lifecycle and logout fencing; taps navigate to a permitted exact message without marking it read or joining voice. Web and shared Flutter local regressions passed; physical Android/iOS and provider delivery remain NOT_RUN. 2026-10-27 (Web participant overlay, PR #583): Web cards in the active screen viewer wrap into a compact one-column phone/two-column tablet and desktop grid without horizontal scrolling. This change is scoped to Web; Flutter/iOS/Android implementations and their platform decisions are unchanged. 2026-10-28 (Web participant stream cards, PR #588): stream previews are embedded in equal-size participant cards, with aligned names, repaired avatar rendering and mute indicators sized to the text. Flutter/iOS/Android layouts and regression decisions are unchanged; this change is Web-only. 2026-10-28 (Web stream card mock details): Web participant-card preview adds a source/profile caption and a persistent centered play affordance. Flutter/iOS/Android layouts and regression decisions are unchanged; this is Web-only. 2026-10-28 (PR #590): #587/#589: Web realtime composition forwards scoped context hints; shared Flutter conversation/header attachment bindings carry message identity. Platform regressions use existing Web/shared Flutter suites; physical native and media acceptance remain NOT_RUN. 2026-10-28 (PR #594): Web stream-card previews raise JPEG quality up to 0.82 while staying within the existing 14 KiB cap; Flutter/iOS/Android preview behavior and platform decisions are unchanged. 2026-10-29 (Flutter participant-card parity): Flutter now matches the Web cards with equal responsive previews, live/profile labels, tap-to-view behavior and an equivalent voice-only card. Preview JPEGs stay within 14 KiB and 480×320; capture retries start at one second and steady refresh is 30 seconds. Android authenticated local-stack smoke passed on dedicated BOOHTACORD_QA_API35 in .out/local-features/20261029-091822; it covers auth/workspace/settings/logout, not stream media. iOS native runtime and physical-device/media acceptance remain NOT_RUN; no media-quality claim."
+      "scope": "2026-10-24 (#518 Web-to-Flutter parity): Flutter channel favorites match Web's account/deployment scoped behavior, ordered shortcuts, topology pruning, mobile touch control, desktop hover/focus affordance, and persistence. Flutter connection status now presents independent chat/voice/roster state and recovery actions while retaining existing retry policies. Focused widget coverage, source-resolution desktop/mobile captures, and the authenticated native local-stack smoke are registered; physical screen-reader and media acceptance remain separate. 2026-10-24 (#570): Flutter member voice captions show the channel name without a redundant prefix and wrap within compact rows; Android and iOS share this behavior, while Web is unchanged. 2026-10-24 (Web PR #544): Flutter active screen viewing now uses a compact on-demand participant overlay and preserves the available video stage height; paired native stream acceptance remains NOT_VERIFIED. 2026-10-24 (Flutter stream-viewer layout parity, PR #573): shared Flutter workspace widgets place active stream viewing over the available room stage, with participant/stream panels and viewer actions overlaid on demand. Web presentation is unchanged; browser checks remain in PR CI. Focused Flutter widget tests pass and 900x640 source captures were reviewed; the black fixture proves layout only. Android/iOS native runtime is BLOCKED because this host has no registered QA devices; live-stream/media acceptance remains NOT_VERIFIED. 2026-10-25 (#554): Web/Flutter composition owns notification lifecycle and logout fencing; taps navigate to a permitted exact message without marking it read or joining voice. Web and shared Flutter local regressions passed; physical Android/iOS and provider delivery remain NOT_RUN. 2026-10-27 (Web participant overlay, PR #583): Web cards in the active screen viewer wrap into a compact one-column phone/two-column tablet and desktop grid without horizontal scrolling. This change is scoped to Web; Flutter/iOS/Android implementations and their platform decisions are unchanged. 2026-10-28 (Web participant stream cards, PR #588): stream previews are embedded in equal-size participant cards, with aligned names, repaired avatar rendering and mute indicators sized to the text. Flutter/iOS/Android layouts and regression decisions are unchanged; this change is Web-only. 2026-10-28 (Web stream card mock details): Web participant-card preview adds a source/profile caption and a persistent centered play affordance. Flutter/iOS/Android layouts and regression decisions are unchanged; this is Web-only. 2026-10-28 (PR #590): #587/#589: Web realtime composition forwards scoped context hints; shared Flutter conversation/header attachment bindings carry message identity. Platform regressions use existing Web/shared Flutter suites; physical native and media acceptance remain NOT_RUN. 2026-10-28 (PR #594): Web stream-card previews raise JPEG quality up to 0.82 while staying within the existing 14 KiB cap; Flutter/iOS/Android preview behavior and platform decisions are unchanged. 2026-10-29 (Flutter participant-card parity): Flutter now matches the Web cards with equal responsive previews, live/profile labels, tap-to-view behavior and an equivalent voice-only card. Preview JPEGs stay within 14 KiB and 480×320; capture retries start at one second and steady refresh is 30 seconds. Android authenticated local-stack smoke passed on dedicated BOOHTACORD_QA_API35 in .out/local-features/20261029-091822; it covers auth/workspace/settings/logout, not stream media. iOS native runtime and physical-device/media acceptance remain NOT_RUN; no media-quality claim. 2026-10-29 (#598 build83 acceptance candidate): shared Flutter profile version label fallback matches pubspec/native build83; the existing independent pubspec equality test is preserved. Android and iOS share implementation and profile widget regressions; physical Android and iOS runtime remain NOT_RUN. Web implementation is unchanged and existing browser regression gates remain mandatory."
     }
   },
   "screen_track_name": {

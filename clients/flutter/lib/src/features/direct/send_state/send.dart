@@ -1,6 +1,7 @@
 import '../../conversation/lifecycle/controller.dart';
 import '../../conversation/delivery/recovery.dart';
 import 'delivery.dart';
+import 'hydrate.dart';
 
 extension ConversationSendDirect on ConversationController {
   Future<bool> sendDirect(
@@ -61,13 +62,17 @@ extension ConversationSendDirect on ConversationController {
     changed();
     final action = sendObservation.begin(clientMessageId);
     try {
-      final message = await action.run(
+      var message = await action.run(
         () => deliverDirect(pending, retry, active),
       );
       if (!active()) return false;
+      if (pending.attachments.isNotEmpty) {
+        message = newestDirectMessage(pending, message);
+      }
       sendObservation.accepted(clientMessageId, message);
       sendRetryIds.remove(retryKey);
       pendingDirectSends.remove(clientMessageId);
+      directSendReceipts.remove(clientMessageId);
       if (isReady() && selectedDirectMessage?.id == conversation.id) {
         directMessageHistory = [
           ...directMessageHistory.where(

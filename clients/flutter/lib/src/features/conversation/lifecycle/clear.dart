@@ -16,6 +16,7 @@ extension ConversationCleanup on ConversationController {
     blockedSendRetries.clear();
     pendingTextSends.clear();
     pendingDirectSends.clear();
+    directSendReceipts.clear();
     lastReadDirectMessageId = null;
     lastReadTextCursor.clear();
     pendingTextReadCursor.clear();
