@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "issue": 582,
+  "pull_request": 611,
+  "source_revision": "f798972d84dc8fb5a7f39a641384f2e36b490771",
+  "source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "status": "BLOCKED_NATIVE_RUNTIME",
+  "command": "python -m tools.qa.local_features.run --platform android --platform ios --base 3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0 --real-stack",
+  "runner": "Windows11/Python3.12; original module with bare-flutter resolution adapter to prepared official Flutter3.47.7/Dart3.13.5 entrypoint.",
+  "features": [
+    "admin",
+    "auth",
+    "chat",
+    "connection_status",
+    "notifications",
+    "screen",
+    "screen_metrics",
+    "screen_track_name",
+    "settings",
+    "shell",
+    "support",
+    "telemetry",
+    "voice"
+  ],
+  "stages": [
+    {
+      "name": "flutter-unit",
+      "status": "PASS"
+    },
+    {
+      "name": "flutter-component-captures",
+      "status": "PASS"
+    },
+    {
+      "name": "android-runtime",
+      "status": "BLOCKED"
+    },
+    {
+      "name": "ios-runtime",
+      "status": "BLOCKED"
+    }
+  ],
+  "full_flutter_unit": {
+    "passed": 1698,
+    "failed": 0,
+    "skipped": 3
+  },
+  "selected_component_tests": {
+    "passed": 706,
+    "failed": 0,
+    "skipped": 1
+  },
+  "report_sha256": "e8a1fc726d379b5bc97fc6f0cdd79e529b4eed06d2c1ebbcc0a9c56b6e62756d",
+  "logs_sha256": {
+    "flutter-unit.log": "a38b2878cf20cd80de9d0834039642e418bfb3f711c53e2f68994026d66c8e5a",
+    "flutter-component-captures.log": "d90c3cff8b60a155b4755b9a0c245a4272b6850355a1452d856336f925616f84"
+  },
+  "selected_capture_count": 167,
+  "visual_review": "NOT_RUN",
+  "blockers": [
+    "Dedicated BOOHTACORD_QA Android emulator unavailable; physical phone intentionally not selected.",
+    "iOS Simulator/xcrun unavailable on Windows."
+  ],
+  "limits": [
+    "All167standard captures retained; full gallery has not been visually approved and no baseline changed.",
+    "Root-reviewed four unique final followup Before/After component images are separately scoped and do not prove device/runtime acceptance.",
+    "Corrected signed candidate, final physical geometry/visual/selection/draft/Send/PCpeer receipt remain pending;582 stays open.",
+    "No phone/receiver/PCsession/container/network/production action performed by this check."
+  ]
+}
