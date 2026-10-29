@@ -1,0 +1,94 @@
+{
+  "at_utc": "2026-10-29T23:26:55.402685+00:00",
+  "source": "de4c30b26bc61aeac5c885ae805634a082eefe5e",
+  "apk_sha256": "f63613dd0dc92cca96737dd8235fed728c422da959228008bf6ff3e6b2afbaca",
+  "version_code": 2083,
+  "fixture_SHA256": "f632a1f1496d21a6962567920c17dda20918a6e9ec870fb0e9b633f288da7866",
+  "POST_attempts": 1,
+  "UI_navigation_or_refresh_after_POST": 0,
+  "status": "NOT_OBSERVED_WITHIN_BOUNDED_UI_POLL",
+  "native_passive_fixture_visible": false,
+  "observed_UI_poll_upper_ms": 18344,
+  "one_scroll_after_passive_poll_revealed_fixture": true,
+  "only_owned_fixture_deleted_blank_tombstone": true,
+  "only_owned_new_session_revoked": true,
+  "HTTP": [
+    {
+      "alias": "one owned MEMBER normal login",
+      "method": "POST",
+      "HTTP": 204,
+      "at_utc": "2026-10-29T23:27:01.897407+00:00",
+      "response_bytes": 0,
+      "finished_at_utc": "2026-10-29T23:27:02.054964+00:00"
+    },
+    {
+      "alias": "own B session guard",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-29T23:27:02.073985+00:00",
+      "response_bytes": 91,
+      "finished_at_utc": "2026-10-29T23:27:02.099491+00:00"
+    },
+    {
+      "alias": "existing own pair binding",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-29T23:27:02.118492+00:00",
+      "response_bytes": 978,
+      "finished_at_utc": "2026-10-29T23:27:02.144510+00:00"
+    },
+    {
+      "alias": "one own B fixture",
+      "method": "POST",
+      "HTTP": 201,
+      "at_utc": "2026-10-29T23:27:04.704180+00:00",
+      "response_bytes": 321,
+      "finished_at_utc": "2026-10-29T23:27:04.745199+00:00"
+    },
+    {
+      "alias": "resolve only new owned fixture",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-29T23:27:29.795016+00:00",
+      "response_bytes": 16834,
+      "finished_at_utc": "2026-10-29T23:27:29.825528+00:00"
+    },
+    {
+      "alias": "delete only own new B fixture",
+      "method": "DELETE",
+      "HTTP": 204,
+      "at_utc": "2026-10-29T23:27:29.840527+00:00",
+      "response_bytes": 0,
+      "finished_at_utc": "2026-10-29T23:27:29.871530+00:00"
+    },
+    {
+      "alias": "own tombstone readback",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-29T23:27:29.886535+00:00",
+      "response_bytes": 6767,
+      "finished_at_utc": "2026-10-29T23:27:29.926046+00:00"
+    },
+    {
+      "alias": "revoke only new owned B session",
+      "method": "POST",
+      "HTTP": 204,
+      "at_utc": "2026-10-29T23:27:29.943050+00:00",
+      "response_bytes": 0,
+      "finished_at_utc": "2026-10-29T23:27:29.970059+00:00"
+    },
+    {
+      "alias": "own revocation readback",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-29T23:27:29.985565+00:00",
+      "response_bytes": 24,
+      "finished_at_utc": "2026-10-29T23:27:30.028576+00:00"
+    }
+  ],
+  "finished_at_utc": "2026-10-29T23:27:30.028576+00:00",
+  "limits": [
+    "Passive visible incoming UI only, not an instrumented proof of WebSocket transport or calibrated latency. Signed606 current-source repeat of609; includes first582 fix, does not include607/final611; not final582 acceptance. Screenshot requires original-resolution review; raw fixture/IDs stay private. No voice join, browser/nativePC input or network fault."
+  ],
+  "original_receipt_sha256": "cbe327dc9b91866a6446d1cea921cc21a197010115742d712a0f5d28f6efc8cd"
+}

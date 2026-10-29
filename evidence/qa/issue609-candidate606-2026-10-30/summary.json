@@ -1,0 +1,51 @@
+{
+  "issue": 609,
+  "status": "FAIL_SCOPED_VISIBLE_INCOMING_FOLLOW_TAIL",
+  "source_revision": "de4c30b26bc61aeac5c885ae805634a082eefe5e",
+  "apk_sha256": "f63613dd0dc92cca96737dd8235fed728c422da959228008bf6ff3e6b2afbaca",
+  "version_code": 2083,
+  "invariant": "An existing owned DM at its observed newest-history boundary displays a new authorized incoming fixture without a user scroll.",
+  "commands": [
+    "python -X utf8 .out/issue582/passive606/boundary.py",
+    "Review original1080x2340 boundary PNG, closed main DM and empty composer",
+    "python -X utf8 .out/issue582/passive606/control.py",
+    "Review original before/after-scroll PNGs"
+  ],
+  "platform": "Physical Samsung SM-A576B,Android16/API36,font1.0; signed606 candidate de4c/f636 bytes verified on device before each helper. Ordinary production API owned MEMBER fixture; no browser or Windows GUI input.",
+  "mandatory_when": "Accepting609 follow-tail fix or changing native DM history scroll/viewport/incoming append behavior.",
+  "observed": {
+    "closed_main_pane_bound_to_owned_peer": true,
+    "boundary_unchanged_swipes": 2,
+    "POST201_attempts": 1,
+    "fixture_not_visible_during_poll_ms": 18344,
+    "one_scroll_revealed_exact_fixture": true,
+    "no_refresh_or_navigation_after_POST": true,
+    "root_review": "Three PNGs inspected original1080x2340: boundary and passive-before show prior02:18 tombstone at bottom; after one scroll exact new fixture02:27 appears."
+  },
+  "cleanup": {
+    "only_owned_fixture_deleted_blank_tombstone": true,
+    "only_short_lived_new_B_session_revoked": true,
+    "original_browser_receiver_B_session_untouched": true,
+    "native_composer_empty_voice_idle": true
+  },
+  "limits": [
+    "This confirms609 on first582fixed606 candidate; it does not include607 or final611 and does not assign the cause to WebSocket transport.",
+    "Observed18.344s is a bounded UI polling interval, not a latency SLO. NativeScrollController metrics were not instrumented; boundary is two stable guarded UI swipes and original PNG review.",
+    "No production faults/load, secrets extraction, unread/provider push/media/wholeQA gate claim.",
+    "Original old2083/f370609 evidence retained separately.",
+    "43consolidation decisions untouched."
+  ],
+  "artifact_SHA256": {
+    "boundary.py": "ad46486cda86d92c324391bcf94084b06c97c9608c40cc18354947070fe8d29a",
+    "control.py": "e4d6b455e4ec7652590407d6be08a8b4220a0ce93056a453801000062c326a4f",
+    "history-boundary-strict-candidate606.json": "cde14d4c4dd386d3205d755fe0d6c5c384b465cb40aa31ccb3fa41815eefea07",
+    "passive-dm-scroll-control-candidate606.json": "cbe327dc9b91866a6446d1cea921cc21a197010115742d712a0f5d28f6efc8cd"
+  },
+  "image_SHA256": {
+    "history-boundary-strict-candidate606.png": "5222cc1a7d339afceccb500a140fdb6065a2676cf203e0114cd2849fcad704fb",
+    "passive-before-scroll-control.png": "15756dd2f13a9caae3a0b5f6ac9a0ba389f3cedefcea29219764bed55090e122",
+    "passive-after-scroll-control.png": "6017b1d469b188ecc3888064d4ca3804b32f2354571cb3fdcd670d1705b5a178"
+  },
+  "source_owner": "Root physical tester; all3original1080x2340 PNGs reviewed. Release agent copies sanitized receipts only.",
+  "original_receipt_sha256": "5b338d95e127680e33439bfdf68c2f5cbd90a2715ef8c3604b8c90badf0fb6c5"
+}
