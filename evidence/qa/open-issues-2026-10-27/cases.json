@@ -1775,8 +1775,10 @@
         62
       ],
       "result": "candidate-phone-followup/phone-native-lifecycle/summary.json#/formats",
-      "limits": "Both formats show fully visible own initial empty bubble/no filename or image; recovery banner observed. JPEG reviewed by phone+root, GIF by phone. JPEG API content stayed unchanged; later filename semantics returned after refresh/reveal, native bitmap/persistence still UNOBSERVED. Cause UNKNOWN; no codec/network/backend/native-state cause assigned. One deduplicated defect id pending root after immutable data commit; defects=[] intentional. Shared batch:4 new messages tombstoned,2 SHA-guarded local files removed,1 own peer session revoked/livefalse,38 baseline records unchanged; native owner session preserved.",
-      "defects": []
+      "limits": "Both formats show fully visible own initial empty bubble/no filename or image; recovery banner observed. JPEG reviewed by phone+root, GIF by phone. JPEG API content stayed unchanged; later filename semantics returned after refresh/reveal, native bitmap/persistence still UNOBSERVED. Cause UNKNOWN; no codec/network/backend/native-state cause assigned. Bug598 filed/open after immutable runtime-data commit; frozen source proposal retains its earlier pending wording. Shared batch:4 new messages tombstoned,2 SHA-guarded local files removed,1 own peer session revoked/livefalse,38 baseline records unchanged; native owner session preserved.",
+      "defects": [
+        598
+      ]
     },
     {
       "id": "ANDROID-master754b-same-code-install-session-smoke",

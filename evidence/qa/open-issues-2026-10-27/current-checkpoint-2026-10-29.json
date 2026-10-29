@@ -1,6 +1,6 @@
 {
-  "at_utc": "2026-10-29T00:13:03.707264+00:00",
-  "status": "IN_PROGRESS_SCOPED_CHECKPOINT",
+  "at_utc": "2026-10-29T00:28:09.873253+00:00",
+  "status": "PUBLISHED_CHECKPOINT_WITH_OPEN_FULL_QA_GATES",
   "original_QA_issues": 37,
   "original_criteria": 480,
   "whole_gate_qualifiers": 13,
@@ -19,7 +19,14 @@
   "signing_result": "All6jobs/fourfreshprofiles PASS in attempt2; publisherSKIPPED;3actual APKs/native20contracts verified. Original attempt1 timeout UNKNOWN retained.",
   "physical_install": "android-master754b-install/summary.json",
   "native_lifecycle_C2": "candidate-phone-followup/phone-native-lifecycle/summary.json",
-  "native_sender_UI_bug": "JPEG/GIF initial own rows empty;1deduplicated issue pending immutable-data link",
+  "native_sender_UI_bug": {
+    "issue": 598,
+    "state": "OPEN",
+    "URL": "https://github.com/Egkurilov/BOOHTACORD/issues/598",
+    "physical_source": "C2/sourceb7",
+    "current_Flutter_tree_equal": "754b",
+    "limits": "Two formats/one device; causeUNKNOWN; own-Send on f5a not asserted"
+  },
   "viewer_current": "android-viewer589-master754b/summary.json",
   "viewer_limit": "Pixels and stale actions removed, but independent underlying deletion/control WHILEOPEN NOT_PROVEN; no full conditional acceptance.",
   "isolated_report_correlation": "isolated-media-report-correlation/summary.json",
@@ -34,5 +41,23 @@
   "remaining": "Full original QA/platform/security/media gates remain open; Mac/iOS/Pixel/human acoustic/hardware cohort/approved release and runtime observers only as specified by individual matrix clauses.",
   "whole_gate_closures": 0,
   "consolidation43_touched": false,
-  "privacy": "Closed metadata only; raw screens/frames/bodies/cookies/IDs/APKs/logs remain private"
+  "privacy": "Closed metadata only; raw screens/frames/bodies/cookies/IDs/APKs/logs remain private",
+  "immutable_runtime_data_commit": "d1f327a7efa056b29afa3ecc8bddc2b993384755",
+  "resolved_hosted_blocker": {
+    "issue": 595,
+    "state": "CLOSED",
+    "scope": "Hosted/signing only"
+  },
+  "open_PRs_at_readback": 0,
+  "original37_QA_all_OPEN_at_readback": true,
+  "whole_gate_closures_scope": "37 original QA issues only; technical hosted blocker595 is closed",
+  "github_readback": "github-final-readback-2026-10-29.json",
+  "remaining_prerequisites": [
+    "Physical Mac/iOS/required device and hardware cohorts plus applicable signed SDK builds",
+    "Human acoustic/screen-reader/game/mixed-DPI and additional authorized quiet Windows input where required",
+    "Browser controller URL-confidence blocker remains; no retry/bypass result",
+    "Trusted QA HTTPS domain/profile and required provider/release credentials where specified",
+    "Reviewed catalog rollout/old Windows fixture and resolution of confirmed bugs, including598/592",
+    "Independent while-open native history witness unavailable behind opaque release modal; strict verdictNOT_PROVEN"
+  ]
 }

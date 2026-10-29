@@ -1,0 +1,58 @@
+"""Link the actual created bug and final GitHub readbacks without changing runtime proofs."""
+import sys
+from pathlib import Path
+Q = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Q / '.out/qa-archive-release'))
+from common import *
+P = Path(__file__).resolve().parent
+receipt = read(P / 'github-readback.json')
+issues = {i['number']: i for i in receipt['issues']}
+assert issues[598]['state'] == 'open' and issues[595]['state'] == 'closed'
+assert receipt['fresh_search']['original37_all_present']
+assert receipt['fresh_search']['open_PRs'] == 0
+assert all(i['title_preserved'] is not False and i['original_prefix_preserved'] is not False
+           for i in receipt['issues'])
+write(O / 'github-final-readback-2026-10-29.json', receipt)
+cases = read(O / 'cases.json')
+assert len(cases['cases']) == 108
+c = next(c for c in cases['cases'] if c['id'] == 'ANDROID-current-native-attachment-only-self-row-empty')
+assert c['status'] == 'FAIL' and not c['defects']
+c['defects'] = [598]
+fragment = 'One deduplicated defect id pending root after immutable data commit; defects=[] intentional.'
+assert fragment in c['limits']
+c['limits'] = c['limits'].replace(fragment,
+    'Bug598 filed/open after immutable runtime-data commit; frozen source proposal retains its earlier pending wording.')
+write(O / 'cases.json', cases)
+m = read(O / 'matrix.json')
+i = next(i for i in m['issues'] if i['number'] == 62)
+if 598 not in i['defects']: i['defects'].append(598)
+r = next(r for r in i['criteria'] if r['id'] == 'I62.C1')
+assert r['status'] == 'FAIL'
+r['reason'] += '; Latest checkpoint: native C2/sourceb7 own JPEG/GIF rows fail under observed recovery context, tracked598; Fluttertree equals754b, but no own-Send reproduction on f5a is inferred. Exact754b signed/physical same-code install-smoke accepted only in linked scope; currentviewer strict while-open history NOT_PROVEN and all full platform/security/media clauses remain separate.'
+m['updated_utc'] = datetime.now(timezone.utc).isoformat()
+write(O / 'matrix.json', m)
+s = read(O / 'current-checkpoint-2026-10-29.json')
+s['status'] = 'PUBLISHED_CHECKPOINT_WITH_OPEN_FULL_QA_GATES'
+s['at_utc'] = m['updated_utc']
+s['immutable_runtime_data_commit'] = receipt['immutable_runtime_data_commit']
+s['native_sender_UI_bug'] = {'issue': 598, 'state': 'OPEN', 'URL': issues[598]['url'],
+    'physical_source': 'C2/sourceb7', 'current_Flutter_tree_equal': '754b',
+    'limits': 'Two formats/one device; causeUNKNOWN; own-Send on f5a not asserted'}
+s['resolved_hosted_blocker'] = {'issue': 595, 'state': 'CLOSED', 'scope': 'Hosted/signing only'}
+s['open_PRs_at_readback'] = 0
+s['original37_QA_all_OPEN_at_readback'] = True
+s['whole_gate_closures_scope'] = '37 original QA issues only; technical hosted blocker595 is closed'
+s['github_readback'] = 'github-final-readback-2026-10-29.json'
+s['remaining_prerequisites'] = [
+    'Physical Mac/iOS/required device and hardware cohorts plus applicable signed SDK builds',
+    'Human acoustic/screen-reader/game/mixed-DPI and additional authorized quiet Windows input where required',
+    'Browser controller URL-confidence blocker remains; no retry/bypass result',
+    'Trusted QA HTTPS domain/profile and required provider/release credentials where specified',
+    'Reviewed catalog rollout/old Windows fixture and resolution of confirmed bugs, including598/592',
+    'Independent while-open native history witness unavailable behind opaque release modal; strict verdictNOT_PROVEN']
+write(O / 'current-checkpoint-2026-10-29.json', s)
+with (O / 'README.md').open('a', encoding='utf-8', newline='\n') as f:
+    f.write('\n[Final GitHub readback](github-final-readback-2026-10-29.json): new Android sender-rendering bug598 OPEN, hosted/signing blocker595 CLOSED, PR596 merged and0openPRs; all37originalQAissues remainOPEN. Cases108/sourceclauses480/qualifiers13 retained. Complete media/platform/security gates remain unaccepted, so43consolidation decisions are untouched.\n')
+code(Path(__file__), 'final-publication-')
+print(json.dumps({'bug': 598, 'hosted_blocker_closed': 595, 'cases': 108,
+                  'original_QA_closed': 0, 'consolidation43_touched': False}))
