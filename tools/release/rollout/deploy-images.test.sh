@@ -30,6 +30,11 @@ if [[ "$1" == "compose" && " $* " == *" up -d --wait postgres "* && "${FAKE_POST
   exit 1
 fi
 
+if [[ "$1" == "compose" && " $* " == *" run --rm --no-deps screen-preview-storage-init "* && "${FAKE_PREVIEW_INIT_MODE:-allowed}" == "fail" ]]; then
+  printf '%s\n' 'screen preview storage initialization failed' >&2
+  exit 1
+fi
+
 if [[ "$1" == "inspect" ]]; then
   [[ "${FAKE_NETWORK_MODE:-allowed}" != "extra" ]] || printf '%s\n' fluxer_fluxer
   printf '%s\n' voice-platform_edge voice-platform_private ''
@@ -73,6 +78,7 @@ run_deploy() {
   FAKE_DOCKER_LOG="$temporary_root/commands-$network_mode.log" \
   FAKE_NETWORK_MODE="$network_mode" \
   FAKE_POSTGRES_MODE="${5:-allowed}" \
+  FAKE_PREVIEW_INIT_MODE="${6:-allowed}" \
   FAKE_POSTGRES_FAILED="$temporary_root/postgres-failed-$network_mode" \
   FAKE_HEALTH_MODE="${3:-allowed}" \
   FAKE_DISABLE_MODE="${4:-allowed}" \
@@ -111,6 +117,7 @@ wait_line="$(line_number 'sleep 15' "$allowed_log")"
 pull_line="$(line_number 'pull api migrate web' "$allowed_log")"
 migration_database_line="$(grep -n -F 'up -d --wait postgres' "$allowed_log" | sed -n '2p' | cut -d: -f1)"
 migrate_line="$(line_number 'run --rm --no-deps migrate' "$allowed_log")"
+preview_init_line="$(line_number 'run --rm --no-deps screen-preview-storage-init' "$allowed_log")"
 workload_line="$(line_number 'up -d --no-deps --no-build api web' "$allowed_log")"
 proxy_line="$(line_number 'up -d --no-deps --no-build --force-recreate proxy' "$allowed_log")"
 inspect_line="$(line_number 'inspect --format' "$allowed_log")"
@@ -127,12 +134,15 @@ disable_line="$(line_number 'maintenance-admission --disable' "$allowed_log")"
 [[ "$pull_line" -lt "$migration_database_line" ]]
 [[ "$migration_database_line" -lt "$migrate_line" ]]
 [[ "$migrate_line" -lt "$workload_line" ]]
+[[ "$migrate_line" -lt "$preview_init_line" ]]
+[[ "$preview_init_line" -lt "$workload_line" ]]
 [[ "$workload_line" -lt "$proxy_line" ]]
 [[ "$proxy_line" -lt "$inspect_line" ]]
 [[ "$inspect_line" -lt "$validate_line" ]]
 [[ "$validate_line" -lt "$health_line" ]]
 [[ "$health_line" -lt "$disable_line" ]]
 [[ "$(grep -Fc 'up -d --wait postgres' "$allowed_log")" == 3 ]]
+[[ "$(grep -Fc 'run --rm --no-deps screen-preview-storage-init' "$allowed_log")" == 1 ]]
 extra_output="$temporary_root/extra.out"
 ! run_deploy extra "$extra_output" || { echo 'expected extra proxy network to fail deployment' >&2; exit 1; }
 grep -F 'Proxy has an unexpected Docker network attachment.' "$extra_output"
@@ -158,5 +168,12 @@ grep -Fq 'maintenance-admission --disable' "$health_log"
 disable_output="$temporary_root/disable.out"
 ! run_deploy allowed "$disable_output" allowed fail || { echo 'expected maintenance disable failure to fail deployment' >&2; exit 1; }
 grep -F 'Could not disable maintenance admission after a failed deployment.' "$disable_output"
+
+preview_init_output="$temporary_root/preview-init-failed.out"
+! run_deploy preview-init-fail "$preview_init_output" allowed allowed allowed fail || { echo 'expected preview storage initialization failure to fail deployment' >&2; exit 1; }
+preview_init_log="$temporary_root/commands-preview-init-fail.log"
+grep -Fq 'run --rm --no-deps screen-preview-storage-init' "$preview_init_log"
+if grep -Fq 'up -d --no-deps --no-build api web' "$preview_init_log"; then exit 1; fi
+grep -Fq 'maintenance-admission --disable' "$preview_init_log"
 
 echo 'deploy-images tests passed'
