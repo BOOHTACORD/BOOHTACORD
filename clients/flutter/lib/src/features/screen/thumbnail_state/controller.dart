@@ -34,6 +34,8 @@ class ScreenThumbnailController {
   LocalVideoTrack? track;
   int revision = 0;
   int? busy;
+  bool hasCapturedFirstFrame = false;
+  int initialCaptureFailureCount = 0;
   ScreenThumbnailCaptureResult? lastLoggedResult;
   String? leaseId;
   Future<void>? cleanup;
@@ -49,9 +51,8 @@ class ScreenThumbnailController {
     this.track = track;
     await stopped;
     if (revision != startRevision || !identical(this.track, track)) return;
-    timer = Timer.periodic(const Duration(seconds: 4), (_) {
-      unawaited(sample(room, track));
-    });
+    hasCapturedFirstFrame = false;
+    initialCaptureFailureCount = 0;
     unawaited(sample(room, track));
   }
 
@@ -61,8 +62,32 @@ class ScreenThumbnailController {
     timer = null;
     track = null;
     busy = null;
+    hasCapturedFirstFrame = false;
+    initialCaptureFailureCount = 0;
     lastLoggedResult = null;
     return _invalidatePreview();
+  }
+
+  void scheduleNextSample(
+    Room room,
+    LocalVideoTrack track,
+    ScreenThumbnailCaptureResult result,
+  ) {
+    if (!identical(this.track, track) || !isSharing()) return;
+    if (result == ScreenThumbnailCaptureResult.captured) {
+      hasCapturedFirstFrame = true;
+      initialCaptureFailureCount = 0;
+    } else if (!hasCapturedFirstFrame) {
+      initialCaptureFailureCount++;
+    }
+    timer?.cancel();
+    timer = Timer(
+      screenThumbnailCaptureDelay(
+        hasCapturedFirstFrame: hasCapturedFirstFrame,
+        initialFailureCount: initialCaptureFailureCount,
+      ),
+      () => unawaited(sample(room, track)),
+    );
   }
 
   Future<void> changeLease(String? value) {

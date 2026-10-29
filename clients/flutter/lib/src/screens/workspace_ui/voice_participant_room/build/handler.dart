@@ -55,14 +55,17 @@ extension WorkspaceVoiceParticipantRoomBuildAction
           const SizedBox(height: 16),
           LayoutBuilder(
             builder: (context, gridConstraints) {
-              final minWidth = MediaQuery.textScalerOf(context)
-                  .scale(136)
-                  .clamp(160.0, 320.0);
-              final columns =
+              final textScale = MediaQuery.textScalerOf(context)
+                  .scale(1)
+                  .clamp(1.0, 2.0)
+                  .toDouble();
+              final minWidth = 280 * textScale;
+              final fittingColumns =
                   ((gridConstraints.maxWidth + 12) / (minWidth + 12)).floor();
-              return renderVoiceParticipantRoomParticipantsGrid(
-                columns < 1 ? 1 : columns,
-              );
+              final columns = fittingColumns
+                  .clamp(1, participants.length + 1)
+                  .toInt();
+              return renderVoiceParticipantRoomParticipantsGrid(columns);
             },
           ),
         ],

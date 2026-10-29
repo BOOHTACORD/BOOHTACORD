@@ -1,9 +1,26 @@
 import 'dart:async';
+import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:image/image.dart' as image;
 
 const maxScreenThumbnailBytes = 14 * 1024;
+const maxScreenThumbnailWidth = 480;
+const maxScreenThumbnailHeight = 320;
+const screenThumbnailCaptureInterval = Duration(seconds: 30);
+const screenThumbnailInitialRetryInterval = Duration(seconds: 1);
+const screenThumbnailInitialRetryLimit = 10;
+const _thumbnailScaleFactors = [1.0, 2 / 3, 1 / 2, 1 / 3, 1 / 4, 1 / 5];
+const _thumbnailQualities = [82, 74, 66, 60];
+
+Duration screenThumbnailCaptureDelay({
+  required bool hasCapturedFirstFrame,
+  required int initialFailureCount,
+}) =>
+    !hasCapturedFirstFrame &&
+        initialFailureCount < screenThumbnailInitialRetryLimit
+    ? screenThumbnailInitialRetryInterval
+    : screenThumbnailCaptureInterval;
 
 enum ScreenThumbnailCaptureResult {
   cancelled,
@@ -50,12 +67,36 @@ Uint8List? screenThumbnailForIdentity(
 Uint8List? encodeScreenThumbnail(Uint8List frame) {
   final decoded = image.decodeImage(frame);
   if (decoded == null) return null;
-  for (final (width, quality) in [(160, 45), (128, 35), (96, 25)]) {
-    final resized = image.copyResize(decoded, width: width);
-    final encoded = Uint8List.fromList(
-      image.encodeJpg(resized, quality: quality),
+
+  final scale = math.min(
+    1.0,
+    math.min(
+      maxScreenThumbnailWidth / decoded.width,
+      maxScreenThumbnailHeight / decoded.height,
+    ),
+  );
+  final boundedWidth = math.max(1, (decoded.width * scale).round());
+  final widths = <int>{
+    for (final factor in _thumbnailScaleFactors)
+      math.max(1, (boundedWidth * factor).round()),
+  };
+
+  for (final width in widths) {
+    final height = math.max(
+      1,
+      (decoded.height * width / decoded.width).round(),
     );
-    if (validScreenThumbnail(encoded)) return encoded;
+    if (width > maxScreenThumbnailWidth || height > maxScreenThumbnailHeight) {
+      continue;
+    }
+    final resized = image.copyResize(decoded, width: width, height: height);
+    final qualities = width <= 160 ? const [45] : _thumbnailQualities;
+    for (final quality in qualities) {
+      final encoded = Uint8List.fromList(
+        image.encodeJpg(resized, quality: quality),
+      );
+      if (validScreenThumbnail(encoded)) return encoded;
+    }
   }
   return null;
 }

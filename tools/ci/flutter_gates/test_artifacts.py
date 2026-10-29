@@ -9,8 +9,10 @@ from . import artifacts
 
 class ArtifactTests(unittest.TestCase):
     def test_mandatory_visual_inventory_keeps_all_uiux_capture_scenarios(self):
-        self.assertEqual(161, len(artifacts.VISUALS))
+        self.assertEqual(163, len(artifacts.VISUALS))
         self.assertEqual(len(artifacts.VISUALS), len(set(artifacts.VISUALS)))
+        self.assertIn('flutter-participant-cards-stream-and-voice.png', artifacts.VISUALS)
+        self.assertIn('flutter-participant-cards-mobile-large-text.png', artifacts.VISUALS)
         self.assertIn('guild-member-voice-channel.png', artifacts.VISUALS)
         self.assertIn('guild-member-screen-sharing.png', artifacts.VISUALS)
         parity = [name for name in artifacts.VISUALS if name.startswith('parity-')]

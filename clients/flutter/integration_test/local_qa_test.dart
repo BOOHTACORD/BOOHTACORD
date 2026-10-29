@@ -225,6 +225,11 @@ void main() {
     }
     state.showChannels();
     await tester.pumpAndSettle();
+    final openNavigation = find.byTooltip('Открыть навигацию');
+    if (openNavigation.evaluate().isNotEmpty) {
+      await tester.tap(openNavigation);
+      await tester.pumpAndSettle();
+    }
     final channelForFavorites = state.topology!.categories
         .expand((category) => category.channels)
         .firstWhere((channel) => channel.name == 'Native QA Text');

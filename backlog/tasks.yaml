@@ -453,6 +453,11 @@ tasks:
     requirements: [REQ-UI-01, REQ-AUDIO-01]
     depends_on: [FV2-027, T-022]
     evidence: [noise-suppression-state-tests, native-noise-suppression-smoke, QA-304]
+  - id: FV2-060
+    title: Flutter voice participant cards show inline screen previews
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-VOICE-01, REQ-SCREEN-01, REQ-SCREEN-03]
+    depends_on: [FV2-035, T-037, T-051]
+    evidence: [flutter-screen-participant-card-tests, flutter-screen-thumbnail-quality-tests, flutter-screen-thumbnail-cadence-tests, flutter-screen-participant-card-native-acceptance, flutter-full-suite, android-debug-build, macos-debug-build]
   - id: FV2-046
     title: Flutter microphone gain presentation while AGC is enabled
     requirements: [REQ-UI-01, REQ-UI-02, REQ-AUDIO-01]
