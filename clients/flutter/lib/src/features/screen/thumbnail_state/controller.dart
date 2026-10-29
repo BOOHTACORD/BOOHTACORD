@@ -53,6 +53,10 @@ class ScreenThumbnailController {
     if (revision != startRevision || !identical(this.track, track)) return;
     hasCapturedFirstFrame = false;
     initialCaptureFailureCount = 0;
+    final activeLease = leaseId;
+    if (activeLease != null && isSharing()) {
+      unawaited(previewUploader.start(activeLease));
+    }
     unawaited(sample(room, track));
   }
 
@@ -90,10 +94,16 @@ class ScreenThumbnailController {
     );
   }
 
-  Future<void> changeLease(String? value) {
-    if (leaseId == value) return cleanup ?? Future<void>.value();
+  Future<void> changeLease(String? value) async {
+    if (leaseId == value) {
+      await cleanup;
+      return;
+    }
     leaseId = value;
-    return _invalidatePreview();
+    await _invalidatePreview();
+    if (value != null && track != null && isSharing()) {
+      await previewUploader.start(value);
+    }
   }
 
   Future<void> _invalidatePreview() {

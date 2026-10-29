@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:boohtacord_desktop/src/features/screen/rollout/policy.dart';
 import 'package:boohtacord_desktop/src/features/screen/rollout/publish_plan.dart';
 import 'package:boohtacord_desktop/src/features/screen/profile/quality.dart';
@@ -33,7 +32,7 @@ void main() {
     var requests = 0;
     final api = ApiClient(client: MockClient((_) async { requests++; throw StateError('must not request'); }));
     final sender = LatestScreenPreviewUploader(ScreenPreviewClient(api.transport), enabled: false);
-    sender.offer('11111111-1111-4111-8111-111111111111', Uint8List.fromList([255, 216, 1, 255, 217]));
+    await sender.start('11111111-1111-4111-8111-111111111111');
     await sender.stop(); expect(requests, 0);
   });
   test('disabled reader rejects hints before accessing the Room or transport', () {

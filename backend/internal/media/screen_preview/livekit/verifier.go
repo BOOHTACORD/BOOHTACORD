@@ -18,7 +18,10 @@ var (
 	ErrNoPublication = screenpreview.ErrNoPublication
 )
 
-type Config struct{ URL, APIKey, APISecret string }
+type Config struct {
+	URL, APIKey, APISecret, PreviewRoot string
+	HTTPTransport                       http.RoundTripper
+}
 type Client struct {
 	config     Config
 	httpClient *http.Client
@@ -29,7 +32,7 @@ func New(config Config) (Client, error) {
 	if err != nil || endpoint.Host == "" || endpoint.Scheme != "http" && endpoint.Scheme != "https" || config.APIKey == "" || config.APISecret == "" {
 		return Client{}, ErrUnavailable
 	}
-	return Client{config: config, httpClient: &http.Client{Timeout: 3 * time.Second}}, nil
+	return Client{config: config, httpClient: &http.Client{Timeout: 3 * time.Second, Transport: config.HTTPTransport}}, nil
 }
 
 func (client Client) CurrentTrack(ctx context.Context, channelID, leaseID string) (string, error) {

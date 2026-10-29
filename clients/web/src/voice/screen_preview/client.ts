@@ -27,14 +27,6 @@ export async function beginScreenPreview(leaseId: string, request: ScreenPreview
   return body.generation_id
 }
 
-export async function uploadScreenPreview(leaseId: string, generationId: string, revision: number, bytes: Uint8Array, request: ScreenPreviewRequest = fetch): Promise<void> {
-  if (!validScreenThumbnail(bytes) || bytes.byteLength > maxScreenPreviewBytes || !Number.isSafeInteger(revision) || revision < 1) return
-  const response = await request(`${apiBaseUrl}/voice/leases/${encodeURIComponent(leaseId)}/screen-previews/v1/${encodeURIComponent(generationId)}`, {
-    ...init('PUT', { 'content-type': 'image/jpeg', 'X-Screen-Preview-Revision': String(revision) }), body: bytes as BodyInit,
-  })
-  if (!response.ok) throw new Error('Private screen preview upload failed')
-}
-
 export async function readScreenPreview(hint: ScreenPreviewHint, afterRevision: number, request: ScreenPreviewRequest = fetch): Promise<ScreenPreviewFrame | null> {
   const query = new URLSearchParams({ after_revision: String(afterRevision) })
   const response = await request(`${apiBaseUrl}/voice/screen-previews/v1/leases/${encodeURIComponent(hint.leaseId)}/${encodeURIComponent(hint.generationId)}?${query}`, init('GET'))

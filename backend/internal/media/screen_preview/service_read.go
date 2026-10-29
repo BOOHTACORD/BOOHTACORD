@@ -20,13 +20,13 @@ func (service Service) Read(ctx context.Context, principal Principal, leaseID, g
 	currentSID, err := service.publications.CurrentTrack(ctx, channelID, leaseID)
 	if err != nil {
 		if errors.Is(err, ErrNoPublication) {
-			_ = service.store.Invalidate(leaseID, generationID)
+			service.retire(ctx, ActiveGeneration{LeaseID: leaseID, GenerationID: generationID, ChannelID: channelID, TrackSID: trackSID})
 			return Preview{}, ErrNotFound
 		}
 		return Preview{}, ErrUnavailable
 	}
 	if currentSID != trackSID {
-		_ = service.store.Invalidate(leaseID, generationID)
+		service.retire(ctx, ActiveGeneration{LeaseID: leaseID, GenerationID: generationID, ChannelID: channelID, TrackSID: trackSID})
 		return Preview{}, ErrNotFound
 	}
 	body, revision, found, err := service.store.Read(leaseID, generationID)
@@ -34,26 +34,10 @@ func (service Service) Read(ctx context.Context, principal Principal, leaseID, g
 		return Preview{}, err
 	}
 	if !found {
-		return Preview{}, ErrNotFound
+		return Preview{}, ErrNoUpdate
 	}
 	if revision <= after {
 		return Preview{Revision: revision}, ErrNoUpdate
 	}
 	return Preview{JPEG: body, Revision: revision}, nil
-}
-
-func (service Service) Invalidate(ctx context.Context, principal Principal, leaseID, generationID string) error {
-	if !validID(leaseID) || !validID(generationID) {
-		return ErrInvalidInput
-	}
-	if _, err := service.authority.AuthorizeUploader(ctx, principal, leaseID); err != nil {
-		return err
-	}
-	if err := service.store.Invalidate(leaseID, generationID); err != nil {
-		return err
-	}
-	if service.hints != nil {
-		service.hints.Invalidated(ctx, leaseID, generationID)
-	}
-	return nil
 }

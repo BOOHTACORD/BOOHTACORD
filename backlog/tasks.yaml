@@ -133,6 +133,11 @@ tasks:
     requirements: [REQ-SCREEN-01, REQ-SCREEN-02, REQ-SCREEN-03, REQ-SCREEN-04]
     depends_on: [T-031, T-036]
     evidence: [screen-preview-v1-api-contract, screen-preview-server-tests, screen-preview-client-acceptance, screen-preview-20-publisher-load]
+  - id: T-079
+    title: LiveKit Egress captures private screen previews every 30 seconds
+    requirements: [REQ-SCREEN-01, REQ-SCREEN-02, REQ-SCREEN-03, REQ-SCREEN-04, REQ-SECURITY-02]
+    depends_on: [T-037]
+    evidence: [screen-preview-egress-unit-tests, screen-preview-egress-real-stack, screen-preview-20-publisher-load, evidence/media/server-screen-previews-2026-10-29.json]
   - id: T-038
     title: Flutter screen sender telemetry reliability (GitHub #325)
     requirements: [REQ-SCREEN-01, REQ-SCREEN-02, REQ-SCREEN-03, REQ-SCREEN-04]

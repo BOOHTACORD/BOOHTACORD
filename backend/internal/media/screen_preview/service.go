@@ -7,11 +7,11 @@ import (
 	"github.com/google/uuid"
 )
 
-func New(authority Authority, publications PublicationVerifier, store Store, hints ...HintPublisher) (Service, error) {
-	if authority == nil || publications == nil || store == nil {
+func New(authority Authority, publications PublicationVerifier, store Store, capturer Capturer, hints ...HintPublisher) (Service, error) {
+	if authority == nil || publications == nil || store == nil || capturer == nil {
 		return Service{}, ErrUnavailable
 	}
-	service := Service{authority: authority, publications: publications, store: store}
+	service := Service{authority: authority, publications: publications, store: store, capturer: capturer}
 	if len(hints) > 0 {
 		service.hints = hints[0]
 	}
@@ -28,47 +28,88 @@ func (service Service) Begin(ctx context.Context, principal Principal, leaseID s
 	}
 	trackSID, err := service.publications.CurrentTrack(ctx, channelID, leaseID)
 	if err != nil {
+		if errors.Is(err, ErrNoPublication) {
+			service.retireCurrent(ctx, leaseID)
+		}
 		return Generation{}, publicationError(err)
 	}
-	generation, err := service.store.Begin(leaseID, trackSID)
-	if err != nil {
-		return Generation{}, err
+
+	previousID, previousChannelID, previousTrack, hadPrevious := service.store.Current(leaseID)
+	generationID := ""
+	if hadPrevious && previousChannelID == channelID && previousTrack == trackSID {
+		if err := service.store.Renew(leaseID, previousID); err == nil {
+			generationID = previousID
+		}
 	}
-	return Generation{SchemaVersion: SchemaVersion, GenerationID: generation, ExpiresAfterSeconds: int(PreviewTTL.Seconds()), MinimumIntervalSeconds: int(UploadInterval.Seconds())}, nil
+	if generationID == "" {
+		generationID, err = service.store.Begin(leaseID, channelID, trackSID)
+		if err != nil {
+			return Generation{}, err
+		}
+	}
+	if hadPrevious && previousID != generationID {
+		_ = service.capturer.Stop(ctx, leaseID, previousID, previousTrack)
+		if service.hints != nil {
+			service.hints.Invalidated(ctx, leaseID, previousID)
+		}
+	}
+	if err := service.capturer.Ensure(ctx, channelID, leaseID, generationID, trackSID); err != nil {
+		_ = service.store.Invalidate(leaseID, generationID)
+		_ = service.capturer.Stop(ctx, leaseID, generationID, trackSID)
+		return Generation{}, ErrUnavailable
+	}
+	currentTrackSID, err := service.publications.CurrentTrack(ctx, channelID, leaseID)
+	if err != nil || currentTrackSID != trackSID {
+		_ = service.store.Invalidate(leaseID, generationID)
+		_ = service.capturer.Stop(ctx, leaseID, generationID, trackSID)
+		if service.hints != nil {
+			service.hints.Invalidated(ctx, leaseID, generationID)
+		}
+		if err != nil {
+			return Generation{}, publicationError(err)
+		}
+		return Generation{}, ErrStaleGeneration
+	}
+	return Generation{
+		SchemaVersion: SchemaVersion, GenerationID: generationID,
+		ExpiresAfterSeconds: int(PreviewTTL.Seconds()), MinimumIntervalSeconds: int(CaptureInterval.Seconds()),
+	}, nil
 }
 
-func (service Service) Upload(ctx context.Context, principal Principal, leaseID, generationID string, revision uint64, body []byte) error {
-	if !validID(leaseID) || !validID(generationID) || revision == 0 {
+func (service Service) retireCurrent(ctx context.Context, leaseID string) {
+	generationID, channelID, trackSID, found := service.store.Current(leaseID)
+	if !found {
+		return
+	}
+	service.retire(ctx, ActiveGeneration{LeaseID: leaseID, GenerationID: generationID, ChannelID: channelID, TrackSID: trackSID})
+}
+
+// Upload is retained as a compatibility route for older clients. Frames are now
+// captured by LiveKit Egress and never accepted from a client request body.
+func (Service) Upload(context.Context, Principal, string, string, uint64, []byte) error {
+	return ErrServerManaged
+}
+
+func (service Service) Invalidate(ctx context.Context, principal Principal, leaseID, generationID string) error {
+	if !validID(leaseID) || !validID(generationID) {
 		return ErrInvalidInput
 	}
-	channelID, err := service.authority.AuthorizeUploader(ctx, principal, leaseID)
+	if _, err := service.authority.AuthorizeUploader(ctx, principal, leaseID); err != nil {
+		return err
+	}
+	trackSID, err := service.store.Track(leaseID, generationID)
 	if err != nil {
 		return err
 	}
-	trackSID, err := service.store.Reserve(leaseID, generationID, revision)
-	if err != nil {
+	if err := service.store.Invalidate(leaseID, generationID); err != nil {
 		return err
 	}
-	currentSID, err := service.publications.CurrentTrack(ctx, channelID, leaseID)
-	if err != nil {
-		if errors.Is(err, ErrNoPublication) {
-			_ = service.store.Invalidate(leaseID, generationID)
-			return ErrNotFound
-		}
-		return ErrUnavailable
-	}
-	if currentSID != trackSID {
-		_ = service.store.Invalidate(leaseID, generationID)
-		return ErrStaleGeneration
-	}
-	if err := ValidateJPEG(body); err != nil {
-		return err
-	}
-	if err := service.store.Commit(leaseID, generationID, revision, body); err != nil {
-		return err
-	}
+	stopErr := service.capturer.Stop(ctx, leaseID, generationID, trackSID)
 	if service.hints != nil {
-		service.hints.Updated(ctx, leaseID, generationID, revision)
+		service.hints.Invalidated(ctx, leaseID, generationID)
+	}
+	if stopErr != nil {
+		return ErrUnavailable
 	}
 	return nil
 }

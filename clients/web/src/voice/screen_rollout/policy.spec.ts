@@ -32,7 +32,6 @@ describe('independent immutable screen feature switches', () => {
     const request = vi.fn()
     const sender = new LatestScreenPreviewUploader(request, false)
     await sender.start('11111111-1111-4111-8111-111111111111')
-    sender.offer(new Uint8Array([255, 216, 1, 255, 217]))
     await sender.stop()
     expect(request).not.toHaveBeenCalled()
   })

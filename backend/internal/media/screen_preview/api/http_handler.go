@@ -10,7 +10,6 @@ import (
 
 type Operations interface {
 	Begin(context.Context, screenpreview.Principal, string) (screenpreview.Generation, error)
-	Upload(context.Context, screenpreview.Principal, string, string, uint64, []byte) error
 	Read(context.Context, screenpreview.Principal, string, string, uint64) (screenpreview.Preview, error)
 	Invalidate(context.Context, screenpreview.Principal, string, string) error
 }

@@ -10,6 +10,6 @@ import (
 	eventhub "voice-platform/backend/internal/realtime/event_hub"
 )
 
-func ConfigureScreenPreviewRoutes(mux *http.ServeMux, database *pgxpool.Pool, sessions session.Service, privateURL, apiKey, apiSecret string, store screenpreview.Store, events *eventhub.Hub) error {
-	return screenpreviewapp.ConfigureRoutes(mux, database, sessions, privateURL, apiKey, apiSecret, store, events)
+func ConfigureScreenPreviewRoutes(mux *http.ServeMux, database *pgxpool.Pool, sessions session.Service, privateURL, apiKey, apiSecret, previewRoot string, store screenpreview.Store, events *eventhub.Hub) (screenpreview.Service, error) {
+	return screenpreviewapp.ConfigureRoutes(mux, database, sessions, privateURL, apiKey, apiSecret, previewRoot, store, events)
 }

@@ -3,8 +3,8 @@ package screenpreviewlivekit
 import (
 	"context"
 	"errors"
+	"io"
 	"net/http"
-	"net/http/httptest"
 	"strings"
 	"testing"
 
@@ -14,13 +14,12 @@ import (
 func TestCurrentTrackRequiresExactActiveScreenPublication(t *testing.T) {
 	channelID, leaseID := uuid.NewString(), uuid.NewString()
 	var requestPath, authorization string
-	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+	transport := roundTripFunc(func(request *http.Request) (*http.Response, error) {
 		requestPath, authorization = request.URL.Path, request.Header.Get("Authorization")
-		writer.Header().Set("Content-Type", "application/json")
-		_, _ = writer.Write([]byte(`{"participants":[{"identity":"voice-lease:` + leaseID + `","state":"ACTIVE","tracks":[{"sid":"screen-track-1","type":"VIDEO","source":"SCREEN_SHARE","muted":false}]}]}`))
-	}))
-	defer server.Close()
-	client, err := New(Config{URL: server.URL, APIKey: "api-key", APISecret: "api-secret"})
+		body := `{"participants":[{"identity":"voice-lease:` + leaseID + `","state":"ACTIVE","tracks":[{"sid":"screen-track-1","type":"VIDEO","source":"SCREEN_SHARE","muted":false}]}]}`
+		return jsonResponse(request, body), nil
+	})
+	client, err := New(Config{URL: "http://livekit.test", APIKey: "api-key", APISecret: "api-secret", HTTPTransport: transport})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -42,9 +41,8 @@ func TestCurrentTrackFailsClosedForMissingMutedOrAmbiguousPublication(t *testing
 	}
 	for name, payload := range cases {
 		t.Run(name, func(t *testing.T) {
-			server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, _ *http.Request) { _, _ = writer.Write([]byte(payload)) }))
-			defer server.Close()
-			client, err := New(Config{URL: server.URL, APIKey: "api-key", APISecret: "api-secret"})
+			transport := roundTripFunc(func(request *http.Request) (*http.Response, error) { return jsonResponse(request, payload), nil })
+			client, err := New(Config{URL: "http://livekit.test", APIKey: "api-key", APISecret: "api-secret", HTTPTransport: transport})
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -56,7 +54,8 @@ func TestCurrentTrackFailsClosedForMissingMutedOrAmbiguousPublication(t *testing
 }
 
 func TestCurrentTrackRejectsInvalidIdentifiersAndUnavailableService(t *testing.T) {
-	client, err := New(Config{URL: "http://127.0.0.1:1", APIKey: "api-key", APISecret: "api-secret"})
+	transport := roundTripFunc(func(*http.Request) (*http.Response, error) { return nil, errors.New("offline") })
+	client, err := New(Config{URL: "http://livekit.test", APIKey: "api-key", APISecret: "api-secret", HTTPTransport: transport})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -65,5 +64,14 @@ func TestCurrentTrackRejectsInvalidIdentifiersAndUnavailableService(t *testing.T
 	}
 	if _, err := client.CurrentTrack(context.Background(), uuid.NewString(), uuid.NewString()); !errors.Is(err, ErrUnavailable) {
 		t.Fatalf("unavailable service error = %v", err)
+	}
+}
+
+func jsonResponse(request *http.Request, body string) *http.Response {
+	return &http.Response{
+		StatusCode: http.StatusOK,
+		Header:     http.Header{"Content-Type": []string{"application/json"}},
+		Body:       io.NopCloser(strings.NewReader(body)),
+		Request:    request,
 	}
 }

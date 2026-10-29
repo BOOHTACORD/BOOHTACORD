@@ -11,6 +11,14 @@ include:
   - ./livekit/compose.yaml
 
 services:
+  screen-preview-storage-init:
+    image: busybox:1.37.0
+    command: ["sh", "-ec", "mkdir -p /var/lib/voice-platform/screen-previews && chmod 0777 /var/lib/voice-platform/screen-previews"]
+    volumes:
+      - screen-previews-data:/var/lib/voice-platform/screen-previews
+    networks: [private]
+    restart: "no"
+
   postgres:
     image: postgres:17.6-alpine
     environment:
@@ -42,6 +50,7 @@ services:
       LIVEKIT_PUBLIC_WS_URL: ${LIVEKIT_PUBLIC_WS_URL:?set LIVEKIT_PUBLIC_WS_URL in .env}
       LIVEKIT_PRIVATE_HTTP_URL: ${LIVEKIT_PRIVATE_HTTP_URL:-http://livekit:7880}
       ATTACHMENTS_DIRECTORY: /var/lib/voice-platform/attachments
+      SCREEN_PREVIEW_DIRECTORY: /var/lib/voice-platform/screen-previews
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-}
       OTEL_INGEST_AUTH: ${OTEL_INGEST_AUTH:-}
       CLIENT_UPDATE_CATALOG_PATH: /etc/boohtacord/client-updates/catalog.json
@@ -50,8 +59,11 @@ services:
     depends_on:
       migrate:
         condition: service_completed_successfully
+      screen-preview-storage-init:
+        condition: service_completed_successfully
     volumes:
       - attachments-data:/var/lib/voice-platform/attachments
+      - screen-previews-data:/var/lib/voice-platform/screen-previews
       - ./client-updates:/etc/boohtacord/client-updates:ro
     networks: [private, telemetry-egress]
     logging: *json-log-rotation
@@ -93,5 +105,6 @@ networks:
 volumes:
   postgres-data:
   attachments-data:
+  screen-previews-data:
   caddy-data:
   caddy-config:

@@ -22,9 +22,9 @@ import (
 	"voice-platform/backend/internal/identity/password"
 	previewmemory "voice-platform/backend/internal/media/screen_preview/memory"
 	presencememory "voice-platform/backend/internal/media/screen_viewer_presence/memory"
+	notificationmetrics "voice-platform/backend/internal/notifications/observe_delivery"
 	centralexport "voice-platform/backend/internal/observability/central_export"
 	httpmetrics "voice-platform/backend/internal/observability/http_metrics"
- notificationmetrics "voice-platform/backend/internal/notifications/observe_delivery"
 	installation "voice-platform/backend/internal/observability/installation"
 	dependencies "voice-platform/backend/internal/observability/observe_dependencies"
 	ratelimit "voice-platform/backend/internal/security/rate_limit"
@@ -110,10 +110,11 @@ func Run(ctx context.Context) (result error) {
 	resources.Add(func(context.Context) error { return screenViewers.Close() })
 	updates := clientupdates.NewStore(configuration.ClientUpdateCatalogPath, configuration.ClientUpdateAllowedHosts, metrics)
 	updates.Start(ctx)
-	handler, err := routes(database, configuration, events, metrics, updates, usage, previews, screenViewers)
+	handler, screenPreviewService, err := routes(database, configuration, events, metrics, updates, usage, previews, screenViewers)
 	if err != nil {
 		return err
 	}
+	resources.Add(screenPreviewService.Start(ctx))
 	// Storage route composition has now created the same private file directory used by downloads.
 	supportWorker, supportErr := supportbridge.NewWorker(ctx, database, configuration.AttachmentRoot, os.Getenv("PRODUCT_SUPPORT_ENDPOINT"), events)
 	if supportErr != nil {
@@ -128,9 +129,13 @@ func Run(ctx context.Context) (result error) {
 	resources.Add(dependencies.Start(ctx, configuration.MediaSnapshot, space).Stop)
 	resources.Add(workerruntime.StartVoice(ctx, database, configuration, metrics, events))
 	notificationTelemetry := notificationmetrics.NewRuntime()
- if err := metrics.RegisterCollector(notificationmetrics.NewCollector(database));err!=nil{return err}
- if err := metrics.RegisterCollector(notificationTelemetry);err!=nil{return err}
- stopNotifications, err := notificationroutes.StartDelivery(ctx, database, configuration, events, notificationTelemetry)
+	if err := metrics.RegisterCollector(notificationmetrics.NewCollector(database)); err != nil {
+		return err
+	}
+	if err := metrics.RegisterCollector(notificationTelemetry); err != nil {
+		return err
+	}
+	stopNotifications, err := notificationroutes.StartDelivery(ctx, database, configuration, events, notificationTelemetry)
 	if err != nil {
 		return err
 	}

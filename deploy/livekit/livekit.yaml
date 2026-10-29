@@ -1,6 +1,8 @@
 port: 7880
 bind_addresses: ["0.0.0.0"]
 prometheus_port: 6789
+redis:
+  address: redis:6379
 rtc:
   tcp_port: 7882
   port_range_start: 50000

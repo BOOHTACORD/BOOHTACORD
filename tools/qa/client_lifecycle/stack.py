@@ -47,10 +47,10 @@ class Stack:
             'OTEL_EXPORTER_OTLP_TRACES_ENDPOINT': f'http://{self.owner}-tempo:4318/v1/traces',
         }
 
-    def container(self, role, image, *args, network=True, command=()):
+    def container(self, role, image, *args, network=True, command=(), memory='1g'):
         name = self.owner+'-'+role
         run('docker', 'run', '-d', '--name', name, '--label', LABEL+'='+self.owner,
-            '--cpus=2', '--memory=1g', '--network', self.owner if network else 'host',
+            '--cpus=2', '--memory='+memory, '--network', self.owner if network else 'host',
             *args, image, *command, stdout=subprocess.DEVNULL)
         self.resources.append(('container', name))
 

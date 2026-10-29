@@ -57,7 +57,6 @@ export function bindLiveKitScreenPreview(
     if (requestedLease !== leaseId) return
     stopCapture = captureLocalScreenThumbnails(track, (bytes) => {
       viewer.viewer.setThumbnail(participantId, bytes)
-      if (leaseId) uploader.offer(bytes)
     })
     if (requestedLease) void uploader.start(requestedLease).catch(() => undefined)
   }

@@ -8,7 +8,8 @@ from tools.release.bundle.manifest import require
 SOURCE_PATHS = ("backend", "clients/web", "contracts", "deploy", "tools", ".node-version", "Taskfile.yml",
                 "clients/flutter/packages/flutter_webrtc/common/rnnoise/upstream")
 TOPOLOGY_PATHS = ("deploy/compose.yaml", "deploy/operators.yaml", "deploy/caddy/Caddyfile",
-                  "deploy/livekit/compose.yaml", "deploy/livekit/livekit.yaml", "deploy/client-updates/catalog.json")
+                  "deploy/livekit/compose.yaml", "deploy/livekit/livekit.yaml", "deploy/livekit/egress.yaml",
+                  "deploy/client-updates/catalog.json")
 RUNTIME_PATHS = (*TOPOLOGY_PATHS,
                  "tools/release/archive", "tools/release/bundle", "tools/release/install", "tools/release/rollback",
                  "tools/release/rollout/deploy-images.sh", "tools/release/rollout/assert-proxy-networks.sh",
