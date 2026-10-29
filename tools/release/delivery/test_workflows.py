@@ -15,6 +15,19 @@ class DeliveryWorkflowTests(unittest.TestCase):
     def test_current_delivery_graph(self):
         check(self.workflows)
 
+    def test_route_proof_retention_is_exact_and_cannot_be_skipped_or_read_other_paths(self):
+        for mutation in ('name','path','missing','retention','skip','credential','extra'):
+            broken=copy.deepcopy(self.workflows)
+            steps=broken['deploy-production.yaml']['jobs']['route']['steps'];upload=steps[4]
+            if mutation=='name':upload['with']['name']='unbound-proof'
+            if mutation=='path':upload['with']['path']='.env'
+            if mutation=='missing':upload['with']['if-no-files-found']='ignore'
+            if mutation=='retention':upload['with']['retention-days']='1'
+            if mutation=='skip':upload['if']='false'
+            if mutation=='credential':upload['env']={'KEY':'${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}'}
+            if mutation=='extra':steps.append({'run':'echo unexpected'})
+            with self.subTest(mutation=mutation),self.assertRaises(ValueError):check(broken)
+
     def test_installer_cannot_cancel_another_writer(self):
         broken = copy.deepcopy(self.workflows)
         broken['deploy-production.yaml']['jobs']['install']['concurrency']['cancel-in-progress'] = 'true'

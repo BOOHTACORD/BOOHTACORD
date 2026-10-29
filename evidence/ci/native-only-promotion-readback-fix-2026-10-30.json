@@ -18,8 +18,8 @@
     "focused": "9new focused boundary/archive/record methods PASS, then routing writer integration and workflow retention guard added.",
     "Windows": {
       "python": "3.12.10",
-      "command": "python -m unittest tools.release.windows_promotion.test_ci tools.release.windows_promotion.test_deployment tools.release.windows_promotion.test_endpoint tools.release.windows_promotion.test_intent tools.release.windows_promotion.test_release tools.release.windows_promotion.test_review tools.release.windows_promotion.test_source tools.release.windows_promotion.test_workflow tools.release.windows_promotion.noop_readback.test_entrypoint tools.release.windows_promotion.noop_readback.test_boundaries tools.release.windows_promotion.noop_readback.test_archive tools.release.delivery.test_routing tools.release.delivery.routing_proof.test_record tools.release.delivery.routing_proof.test_writer tools.release.delivery.test_provenance tools.release.delivery.test_receipt tools.release.delivery.test_artifact_zip",
-      "passed": 47,
+      "command": "python -m unittest tools.release.windows_promotion.test_ci tools.release.windows_promotion.test_deployment tools.release.windows_promotion.test_endpoint tools.release.windows_promotion.test_intent tools.release.windows_promotion.test_release tools.release.windows_promotion.test_review tools.release.windows_promotion.test_source tools.release.windows_promotion.test_workflow tools.release.windows_promotion.noop_readback.test_entrypoint tools.release.windows_promotion.noop_readback.test_boundaries tools.release.windows_promotion.noop_readback.test_archive tools.release.delivery.test_routing tools.release.delivery.routing_proof.test_record tools.release.delivery.routing_proof.test_writer tools.release.delivery.test_provenance tools.release.delivery.test_receipt tools.release.delivery.test_artifact_zip tools.release.delivery.test_workflows",
+      "passed": 57,
       "failed": 0,
       "skipped": 0
     },
@@ -32,7 +32,8 @@
       "skipped": 0
     },
     "workflow": "Reviewed full action commits: OK,37workflows/2localactions; route permissions remain read-only with no production credentials.",
-    "proofs": "Real ZIP/hash/ownership fixtures; source/run/attempt/repository/status/impact boundaries, archive shape/traversal/symlink/compression/size/JSON and missing required receipt fail closed. Native-only path never reads catalog or claims deployment PASS."
+    "proofs": "Real ZIP/hash/ownership fixtures; source/run/attempt/repository/status/impact boundaries, archive shape/traversal/symlink/compression/size/JSON and missing required receipt fail closed. Native-only path never reads catalog or claims deployment PASS.",
+    "workflow_graph_integration": "Existing exact4-step graph correctly rejected the unregistered fifth upload step (1localERROR retained). Exact5-step allowlist now requires the full reviewed proof retention step;7negative mutations reject names/paths/missing/retention/skip/credentials/extras. Combined13workflow tests PASS."
   },
   "source_LF_SHA256": {
     ".github/workflows/deploy-production.yaml": "c1051eabaea628a9746c80c6b4f9419ac2bf6482810e9f37d5dfbb595c97e87d",
@@ -47,14 +48,18 @@
     "tools/release/windows_promotion/noop_readback/test_boundaries.py": "027de1564f52e7ca3bac9c16e82e25e7a01e763617dafdd489c2960217707279",
     "tools/release/windows_promotion/noop_readback/test_entrypoint.py": "6f046a1bc722fbaad5342d1f926c29b4f6728817f75bda6c0358cf9ea8ed0a16",
     "tools/release/windows_promotion/noop_readback/test_support.py": "166210045835c497de512528fef449db4b399c453eccaecf0c080cbee71630ec",
-    "tools/release/windows_promotion/noop_readback/verify.py": "c2b0f4fddc95204752d805c9a99ebc44610deb989c78d07f17096d324b9182bc"
+    "tools/release/windows_promotion/noop_readback/verify.py": "c2b0f4fddc95204752d805c9a99ebc44610deb989c78d07f17096d324b9182bc",
+    "tools/verify/workflows/release_routing.py": "b656b43600bf10983bae952a729267b914d2a299859242715ea7f9a146effeb4",
+    "tools/release/delivery/test_workflows.py": "cd27e676696d6595c0202a1d19542e821dc967600d04f3d0fe479a47f67e6027"
   },
   "log_LF_SHA256": {
     "noop610-final-counterexample-red.log": "eb1a7b294110165f056ef663da05bd5e4d3db4e19da0be9496c8f2e432659943",
-    "noop610-green-windows.log": "61df941b1c236c73fa6c748c0070285b19d23a610c4172daedf404eefba228c0",
+    "noop610-green-windows.log": "cafd2b429f179bf38b5162d810bb08703756d14f8f2de17f9fb06cf09f6b4be2",
     "noop610-green-linux-transport.log": "ca2dbe2988ead00ace4cf8eece6641b3224dd1726a0bbf80df26a9477ea400b5",
     "noop610-windows-nearest-platform-diagnostic.log": "29f577e6218ef51185592c2b318854cb9ac3a6a418cd0b2910861af2c4235fb6",
-    "noop610-linux-mounted-checkout-diagnostic.log": "ee3d2cfef8cc7fdf3d7477432158f88063a45d65be49722be85cc1280e3d491c"
+    "noop610-linux-mounted-checkout-diagnostic.log": "ee3d2cfef8cc7fdf3d7477432158f88063a45d65be49722be85cc1280e3d491c",
+    "noop610-workflow-shape-red.log": "f8a54e29cda639c7e23e7a2b67f12662c53c8986bafc0f646976142aab15ed26",
+    "noop610-workflow-shape-green.log": "b533aa2c4b2b9fd1be479ee78bca68a04e1f6aa6655b241233b4aef17f5c5b5c"
   },
   "limits": [
     "Full final-source hosted CI and a qualifying automatic native-only workflow remain pending;610 stays OPEN.",
@@ -76,6 +81,6 @@
       "log_LF_SHA256": "af999d254df29385271553e7ea75cf4e878ecc73174e3ddb8af4b0cf64ee6a5a"
     },
     "source_unchanged_by_rebase_before_leaf_routing": true,
-    "leaf_routing_refinement": "Producer record and typed tests physically moved into delivery/routing_proof; only import edges changed. Consumer remains windows_promotion/noop_readback. Final47Windows/14Linux and6integration checks PASS."
+    "leaf_routing_refinement": "Producer proof/typed tests live in delivery/routing_proof; consumer in windows_promotion/noop_readback. Final57Windows/14Linux and6integration checks PASS; strict graph separately approves only exact fifth retention step."
   }
 }

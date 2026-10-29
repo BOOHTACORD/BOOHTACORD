@@ -27,7 +27,7 @@ def check(build, deploy, gates):
     require(route.get('permissions') == {'contents': 'read', 'actions': 'read'}, 'Route needs only metadata read permission')
     require(route.get('runs-on') == GITHUB_LINUX, 'Route must run on a GitHub-hosted Linux runner')
     steps = route.get('steps', [])
-    require(len(steps) == 4 and steps[0] == {'uses': 'actions/checkout@v7', 'with': {'persist-credentials': 'false'}}, 'Route checkout/actions must remain bounded')
+    require(len(steps) == 5 and steps[0] == {'uses': 'actions/checkout@v7', 'with': {'persist-credentials': 'false'}}, 'Route checkout/actions must remain bounded')
     require(steps[1] == {'uses': 'actions/setup-python@v7', 'with': {'python-version': python_input(ROOT)}}
             and steps[2] == {'name': 'Verify selected Python interpreter',
                              'run': 'python -m tools.ci.toolchains.runtime python'},
@@ -37,6 +37,12 @@ def check(build, deploy, gates):
             'Route may only execute the read-only producer metadata verifier')
     require(reader.get('env') == {'BUILD_RUN_ID': '${{ github.event.workflow_run.id }}',
                                   'GITHUB_TOKEN': '${{ secrets.GITHUB_TOKEN }}'}, 'Route must not receive signing/SSH secrets')
+    require(steps[4] == {'name': 'Retain source-bound trusted producer route',
+                        'uses': 'actions/upload-artifact@v7',
+                        'with': {'name': 'trusted-route-${{ github.run_id }}-${{ github.run_attempt }}',
+                                 'path': '.out/delivery-route/route.json',
+                                 'if-no-files-found': 'error', 'retention-days': '30'}},
+            'Route may only retain its exact public controller-attempt proof')
     require(route.get('outputs') == {'has_bundle': '${{ steps.route.outputs.has_bundle }}'}, 'Only verified route can gate install')
     for guard in TRUST:
         require(guard in route.get('if', ''), 'Untrusted producer must not enter route verification')
