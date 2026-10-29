@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "issue": 607,
+  "pull_request": 608,
+  "status": "PASS_SOURCEBOUND_MASTER_NATIVE_QUALITY",
+  "source_revision": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0",
+  "workflow_run_id": 40969157119,
+  "attempt": 1,
+  "jobs": [
+    {
+      "id": 123781218547,
+      "name": "changes",
+      "conclusion": "success"
+    },
+    {
+      "id": 123781313852,
+      "name": "flutter / macos",
+      "conclusion": "success"
+    },
+    {
+      "id": 123781313859,
+      "name": "flutter / dart",
+      "conclusion": "success"
+    },
+    {
+      "id": 123781313917,
+      "name": "flutter / android-kotlin",
+      "conclusion": "success"
+    },
+    {
+      "id": 123781313999,
+      "name": "windows / windows-native-unit",
+      "conclusion": "success"
+    },
+    {
+      "id": 123781314009,
+      "name": "flutter / android",
+      "conclusion": "success"
+    },
+    {
+      "id": 123781314109,
+      "name": "windows / windows-build",
+      "conclusion": "success"
+    },
+    {
+      "id": 123784964185,
+      "name": "windows / windows-gui-sfu",
+      "conclusion": "success"
+    },
+    {
+      "id": 123785136685,
+      "name": "flutter / flutter",
+      "conclusion": "success"
+    },
+    {
+      "id": 123788089975,
+      "name": "windows / windows",
+      "conclusion": "success"
+    },
+    {
+      "id": 123788168456,
+      "name": "native-required",
+      "conclusion": "success"
+    }
+  ],
+  "native_candidate": {
+    "status": "PENDING",
+    "run_id": 40973416581,
+    "source_revision": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+    "includes_607_via_parent": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0"
+  },
+  "server_delivery": "NOT_REQUIRED_BY_VERIFIED_PATH_SELECTION",
+  "promotion_readback": {
+    "status": "FAIL_TRACKED_SEPARATELY",
+    "issue": 610,
+    "run_id": 40969659339
+  },
+  "limits": [
+    "Native master CI is not physical Android/Windows/iOS acceptance or a production recovering-banner cause claim.",
+    "Public Web/API remain at the verifiedde4c source; no server delivery for3a65 is asserted.",
+    "Trusted611 native artifact, exact bytes/signature and source binding remain pending."
+  ]
+}
