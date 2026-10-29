@@ -2,6 +2,7 @@ import '../../../participant_name/component.dart';
 import '../../../voice_participant_account_id/component.dart';
 import '../../../voice_participant_strip/component.dart';
 import '../../../native_bindings.dart';
+import '../../../../../features/voice/viewer_pending/recovery.dart';
 import '../../lifecycle/context.dart';
 
 extension VoiceRoomEndedScreenRenderer on WorkspaceVoiceRoomStateContext {
@@ -14,6 +15,11 @@ extension VoiceRoomEndedScreenRenderer on WorkspaceVoiceRoomStateContext {
     List<RemoteParticipant> participants,
   ) => VoiceScreenEndedView(
     connecting: selectedScreenPublication != null,
+    recoveryExhausted: pendingScreenViewerRecoveryExhausted(
+      state.voice,
+      selectedScreenPublication,
+    ),
+    onRecoveryRetry: state.voice.retryRemoteScreenViewerRecovery,
     choices: [
       if (localScreenTrack != null)
         VoiceScreenChoice.local(

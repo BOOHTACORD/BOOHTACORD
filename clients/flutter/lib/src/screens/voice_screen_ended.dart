@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme.dart';
+import '../features/voice/viewer_pending/presentation.dart';
 import 'voice_screen_selection_rail.dart';
 import 'voice_viewer_layout.dart';
 
@@ -12,6 +13,8 @@ class VoiceScreenEndedView extends StatelessWidget {
     required this.onScreenSelected,
     required this.onReturnToParticipants,
     this.connecting = false,
+    this.recoveryExhausted = false,
+    this.onRecoveryRetry,
   });
 
   final List<VoiceScreenChoice> choices;
@@ -19,20 +22,17 @@ class VoiceScreenEndedView extends StatelessWidget {
   final ValueChanged<String?> onScreenSelected;
   final VoidCallback onReturnToParticipants;
   final bool connecting;
+  final bool recoveryExhausted;
+  final VoidCallback? onRecoveryRetry;
 
   @override
   Widget build(BuildContext context) => VoiceViewerLayout(
     stage: ColoredBox(
       color: GcColors.streamCanvas,
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Text(
-            connecting ? 'Подключаемся к демонстрации…' : 'Демонстрация завершена. Выберите другую вручную или вернитесь к участникам.',
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: GcColors.muted, fontSize: 14),
-          ),
-        ),
+      child: ScreenViewerPendingStatus(
+        connecting: connecting,
+        recoveryExhausted: recoveryExhausted,
+        onRecoveryRetry: onRecoveryRetry,
       ),
     ),
     diagnostics: const SizedBox.shrink(),

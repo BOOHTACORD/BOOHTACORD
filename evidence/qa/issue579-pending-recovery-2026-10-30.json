@@ -1,0 +1,153 @@
+{
+  "issue": 579,
+  "at_utc": "2026-10-29T22:19:59.503142+00:00",
+  "status": "PASS_LOCAL_ONLY_HOSTED_AND_PHYSICAL_PENDING",
+  "base": "134382700eed2408644695e5298e64e60d3abf59",
+  "route": "Flutter features/voice/viewer_pending; native composition voice_room/build/ended_screen",
+  "platform": "Windows / Flutter3.47.7 / Dart3.13.5 / frameworkabaf9c523780a608bd46686fd5e53740a07077f8",
+  "invariant": "A still-published/no-track viewer exposes explicit guarded retry after exhausted recovery only for the same publication, participant and selection. Initial, ended, replaced and in-flight states do not inherit a stale retry.",
+  "command": "cd clients/flutter; flutter test --no-pub test/features/voice/viewer_pending test/screen_viewer_recovery_deadline_test.dart test/screen_viewer_recovery_state_test.dart test/screen_frame_gate_recovery_test.dart test/screen_frame_gate_test.dart test/video_track_renderer_stream_lifecycle_test.dart test/screen_video_renderer_ownership_test.dart test/screen_fullscreen_renderer_gate_test.dart test/voice_screen_ended_test.dart test/screen_viewer_subscription_failure_test.dart --reporter expanded",
+  "mandatory_when": "No-track screen fallback, selection/publication ownership, recovery presentation or manual retry wiring changes",
+  "result": {
+    "qualified_RED": "Production fallback1FAIL/3PASS: exhausted controller after30virtual seconds still lacks hit-testable retry. Fixture/setup exceptions absent.",
+    "GREEN": "Final29PASS/0skip:12new composition/presentation cases and17existing recovery/renderer/ended/subscription regressions.",
+    "analysis": "Exact4targets: No issues found, exit0.",
+    "policies": "6policy tests PASS; native parity scenarios/path/platform/honest-evidence validator PASS.",
+    "capture": "Four native-resolution Flutter component PNGs with real Inter/MaterialIcons at390/1440px,100/200percent text;5presentation tests PASS. All4images visually inspected: complete error/retry, no clipped text or overlap; pointer and keyboard callback assertions pass.",
+    "capture_retention": "Ignored .out/issue579/captures; hashes below. Custom capture env intentionally separate from finite CI capture inventory; no new standard publisher names or baseline approvals."
+  },
+  "limits": [
+    "This fixes confirmed pending/retry presentation; first-frame transport/codec/renderer root cause is UNKNOWN.",
+    "Paired physical Android-to-Windows first decoded/presented frame, stop/restart and repeatedWatch on corrected candidate remain NOT_RUN; issue579 remains OPEN.",
+    "Generic real-stack feature/native gates are pending release-agent execution; missing iOS/macOS hardware or runner stays BLOCKED/NOT_RUN, not PASS.",
+    "No production fault/load, native session/permission/network change, media quality or audibility claim;43consolidations untouched.",
+    "First optional capture helper attempt was interrupted while awaiting filesystem IO inside fake async; helper now uses synchronous file IO plus tester.runAsync like existing repository capture helper. That interrupted attempt is diagnostic only."
+  ],
+  "source_LF_SHA256": {
+    "clients/flutter/lib/src/features/voice/viewer_pending/presentation.dart": "ab4c16fb1e4048eb41d7d7c3a52320b30d6cd2b4fdba8e7034ab024a4487c3d3",
+    "clients/flutter/lib/src/features/voice/viewer_pending/recovery.dart": "b88a5974709961dbf0cf96790d43f6f84a086b360d1182761fd9e719253c39cf",
+    "clients/flutter/lib/src/screens/voice_screen_ended.dart": "7926133062181b8540097403ffa2118382a4dab8ba53ffc4c37c04944e01935e",
+    "clients/flutter/lib/src/screens/workspace_ui/voice_room/build/ended_screen/handler.dart": "84ecf391e58e22243c2dd96c1306db138b5befd152ba0646ea037045a0691259",
+    "clients/flutter/test/features/voice/viewer_pending/capture.dart": "3c9895de655363bc3ef450fd82105885949f738091c1bcd09016355dd64dc080",
+    "clients/flutter/test/features/voice/viewer_pending/support.dart": "f387c2ae0a76db0322bfe9247964afa19b72267ecc105790d9699cc72627ce84",
+    "clients/flutter/test/features/voice/viewer_pending/fallback_test.dart": "7541bc999a8cfb37925b24c47e0d57784faf49139d0693abd1cc0e4ec045278e",
+    "clients/flutter/test/features/voice/viewer_pending/presentation_test.dart": "ff8cc9c72bd79581e5067ea2c6769dc349bfcf4a1fa96d838b57d9efe96fa8d9",
+    "tools/qa/local_features/features.json": "ffa574302ed69bb516c28359fecdac18a0fa9eab2113d41594ce941f817ed43e"
+  },
+  "log_LF_SHA256": {
+    "fallback-red.log": "cbdd013495f65d57fd740fce47320236bfacca5fb175e81e1808c559dcc1c3d7",
+    "final-nearest-green.log": "42e49da220d6c895c5aee46eb5948eae1237b8ac8f861ad54a2b5474532ed566",
+    "final-analyze.log": "9e6e0772be1b3640bcde4faf8b726adadaf47071bb600d2825de48f15cae3187",
+    "capture-green.log": "1e2c7b016ac9175899fcf07b46b782679da29965a74703961e5d4b3500c9e3a9"
+  },
+  "capture_SHA256": {
+    "pending-1440-1.png": "fed2bd8c4051faffad99584e9191229a96fed6fe8e9399d0b2600d70b875af40",
+    "pending-1440-2.png": "01027b857d0b8b0dc48fcc9efc53c87cb2eec4076acc1f4f5c9759ca232796de",
+    "pending-390-1.png": "47fcc4a64eafecee92b8d918f23039fe730febb2b2533318156b762520746295",
+    "pending-390-2.png": "a2854d3e5c1861d0ba49e976c684ad68bf48383baba433c02e4d1fed5374f5c4"
+  },
+  "integration": {
+    "original_qualified_base": "e104028f97e1877fff21df02d002a0c3bfb3ed68",
+    "original_packet": "a992906329208cd62e7f7e9945c708505aa75bb9",
+    "rebased_onto": "134382700eed2408644695e5298e64e60d3abf59",
+    "core579_source_and_tests_unchanged": true,
+    "registry_merge": [
+      "voice.flutter: retained both appended test lists",
+      "voice.parity_review.scope: retained both appended review scopes",
+      "screen.flutter: retained both appended test lists",
+      "screen.parity_review.scope: retained both appended review scopes",
+      "shell.flutter: retained both appended test lists",
+      "shell.parity_review.issue: latest review579, retained609 scope",
+      "shell.parity_review.scope: retained both appended review scopes"
+    ],
+    "combined_source_native_checks": {
+      "tests": {
+        "command": "cd clients/flutter; flutter test --no-pub test/features/voice/viewer_pending test/screen_viewer_recovery_deadline_test.dart test/screen_viewer_recovery_state_test.dart test/screen_frame_gate_recovery_test.dart test/screen_frame_gate_test.dart test/video_track_renderer_stream_lifecycle_test.dart test/screen_video_renderer_ownership_test.dart test/screen_fullscreen_renderer_gate_test.dart test/voice_screen_ended_test.dart test/screen_viewer_subscription_failure_test.dart --reporter expanded",
+        "passed": 29,
+        "failed": 0,
+        "skipped": 0,
+        "log_LF_SHA256": "49f96c1ddc0fabc4944fa5ffb239b8458bb0b89a371da767f8b4ead28fd86e78"
+      },
+      "analysis": {
+        "command": "flutter analyze --no-pub --no-fatal-infos lib/src/features/voice/viewer_pending lib/src/screens/voice_screen_ended.dart lib/src/screens/workspace_ui/voice_room/build/ended_screen/handler.dart test/features/voice/viewer_pending",
+        "exit_code": 0,
+        "result": "No issues found",
+        "log_LF_SHA256": "668e1cfe29cf21efde267493f1b8f7ee119ae5a613000d5e3880f17bc1c7e84b"
+      }
+    },
+    "feature_policy": {
+      "command": "python -m unittest tools.qa.local_features.test_policy",
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0
+    },
+    "client_parity": "PASS: unique scenarios, paths, platform decisions and honest evidence states"
+  },
+  "prior_integrations": [
+    {
+      "original_qualified_base": "e104028f97e1877fff21df02d002a0c3bfb3ed68",
+      "original_packet": "a992906329208cd62e7f7e9945c708505aa75bb9",
+      "rebased_onto": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0",
+      "core579_source_and_tests_unchanged": true,
+      "registry_merge": [],
+      "combined_source_native_checks": {
+        "tests": {
+          "command": "cd clients/flutter; flutter test --no-pub test/features/voice/viewer_pending test/screen_viewer_recovery_deadline_test.dart test/screen_viewer_recovery_state_test.dart test/screen_frame_gate_recovery_test.dart test/screen_frame_gate_test.dart test/video_track_renderer_stream_lifecycle_test.dart test/screen_video_renderer_ownership_test.dart test/screen_fullscreen_renderer_gate_test.dart test/voice_screen_ended_test.dart test/screen_viewer_subscription_failure_test.dart --reporter expanded",
+          "passed": 29,
+          "failed": 0,
+          "skipped": 0,
+          "log_LF_SHA256": "8a0030be33b5ea4540a180a4aafb94464872a684a30d6d73014a4e4c51aeabe9"
+        },
+        "analysis": {
+          "command": "flutter analyze --no-pub --no-fatal-infos lib/src/features/voice/viewer_pending lib/src/screens/voice_screen_ended.dart lib/src/screens/workspace_ui/voice_room/build/ended_screen/handler.dart test/features/voice/viewer_pending",
+          "exit_code": 0,
+          "result": "No issues found",
+          "log_LF_SHA256": "d14029c29a13f08d4f28e6ebedb4ce940fbc105898e74283715c6044555dfd6d"
+        }
+      },
+      "feature_policy": {
+        "command": "python -m unittest tools.qa.local_features.test_policy",
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      "client_parity": "PASS: unique scenarios, paths, platform decisions and honest evidence states"
+    },
+    {
+      "original_qualified_base": "e104028f97e1877fff21df02d002a0c3bfb3ed68",
+      "original_packet": "a992906329208cd62e7f7e9945c708505aa75bb9",
+      "rebased_onto": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+      "core579_source_and_tests_unchanged": true,
+      "registry_merge": [
+        "voice.flutter: retained both appended test lists",
+        "voice.parity_review.scope: retained both appended review scopes",
+        "screen.flutter: retained both appended test lists",
+        "screen.parity_review.scope: retained both appended review scopes",
+        "shell.flutter: retained both appended test lists",
+        "shell.parity_review.scope: retained both appended review scopes"
+      ],
+      "combined_source_native_checks": {
+        "tests": {
+          "command": "cd clients/flutter; flutter test --no-pub test/features/voice/viewer_pending test/screen_viewer_recovery_deadline_test.dart test/screen_viewer_recovery_state_test.dart test/screen_frame_gate_recovery_test.dart test/screen_frame_gate_test.dart test/video_track_renderer_stream_lifecycle_test.dart test/screen_video_renderer_ownership_test.dart test/screen_fullscreen_renderer_gate_test.dart test/voice_screen_ended_test.dart test/screen_viewer_subscription_failure_test.dart --reporter expanded",
+          "passed": 29,
+          "failed": 0,
+          "skipped": 0,
+          "log_LF_SHA256": "8f9e7324d3bc67470432208f12d5620712f4c79ae2f39c33c500f15b4460e4c0"
+        },
+        "analysis": {
+          "command": "flutter analyze --no-pub --no-fatal-infos lib/src/features/voice/viewer_pending lib/src/screens/voice_screen_ended.dart lib/src/screens/workspace_ui/voice_room/build/ended_screen/handler.dart test/features/voice/viewer_pending",
+          "exit_code": 0,
+          "result": "No issues found",
+          "log_LF_SHA256": "2279c3dd463351181187137b8c12ec19233c8fcedc2bc12a18cf8d5da710a42f"
+        }
+      },
+      "feature_policy": {
+        "command": "python -m unittest tools.qa.local_features.test_policy",
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      "client_parity": "PASS: unique scenarios, paths, platform decisions and honest evidence states"
+    }
+  ]
+}
