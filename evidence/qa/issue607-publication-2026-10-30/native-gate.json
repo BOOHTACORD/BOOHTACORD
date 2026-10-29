@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "issue": 607,
+  "pull_request": 608,
+  "source_revision": "102a58be35980dc6c657973258b4a67a85cf79ce",
+  "source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "status": "BLOCKED_NATIVE_RUNTIME",
+  "command": "python -m tools.qa.local_features.run --feature connection_status --feature auth --feature screen --feature telemetry --feature voice --platform android --platform ios --base de4c30b26bc61aeac5c885ae805634a082eefe5e --real-stack",
+  "runner": "Windows11/Python3.12; original canonical module with bare-flutter resolution adapter to already-prepared official Flutter3.47.7 Dart3.13.5 entrypoint.",
+  "stages": [
+    {
+      "name": "flutter-unit",
+      "status": "PASS"
+    },
+    {
+      "name": "flutter-component-captures",
+      "status": "PASS"
+    },
+    {
+      "name": "android-runtime",
+      "status": "BLOCKED"
+    },
+    {
+      "name": "ios-runtime",
+      "status": "BLOCKED"
+    }
+  ],
+  "full_flutter_unit": {
+    "passed": 1692,
+    "skipped": 3,
+    "failed": 0
+  },
+  "selected_component_tests": {
+    "passed": 333,
+    "skipped": 1,
+    "failed": 0
+  },
+  "report_sha256": "4c72d2b466c570de4f3b9e2f788ffca8b3489e63dca44c3f591d81a26edb23dd",
+  "logs_sha256": {
+    "flutter-unit.log": "b0317a8284227be998024f4d968314ac833cb034256fc09d3e3d92d70a4bc92c",
+    "flutter-component-captures.log": "ce7994b0f0fca90c5673a9e6cbd00ea356f7efb57d0816286fee6356fd7fa004"
+  },
+  "adapter_sha256": "86cf18bfd8aa3734efe9331bf9f56ecfc602fdc6f1880bf7ec5e10c165a9e37e",
+  "selected_capture_count": 167,
+  "visual_review": "NOT_RUN",
+  "blockers": [
+    "No dedicated BOOHTACORD_QA emulator/CLI; physical phone intentionally not selected.",
+    "iOS Simulator/xcrun unavailable on Windows."
+  ],
+  "diagnostics": [
+    "First selection rejected because overlapping registered features auth/screen/telemetry/voice also require selection; corrected without policy changes.",
+    "First canonical Windows invocation could not resolve bare flutter.bat, so unit/component stages were BLOCKED. Original report20261030-013657 retained.",
+    "First CLI-adapter attempt lacked repository Python import path; retained as harness diagnostic before executing tests."
+  ],
+  "limits": [
+    "No native runtime, fixed582 Send, actual579 firstdecode, production607 cause or media acceptance claimed.",
+    "Skipped platform cases and unreviewed167-image gallery remain explicit; no baseline approval.",
+    "No source/gate/pin change, simulator creation, physical device action or local service/container mutation."
+  ]
+}
