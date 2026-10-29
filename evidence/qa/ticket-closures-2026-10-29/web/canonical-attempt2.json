@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "kind": "canonical-local-features-second-attempt",
+  "source": "d05922d7475b6e8f7774f72b9884a3517a747f9c diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "status": "FAIL",
+  "supervisor": {
+    "kind": "fresh-canonical-check-exit",
+    "started_at": "2026-10-29T21:14:36.051362+00:00",
+    "finished_at": "2026-10-29T21:25:54.543905+00:00",
+    "source_revision": "d05922d7475b6e8f7774f72b9884a3517a747f9c",
+    "exit_code": 1,
+    "summary": [
+      "report=/var/tmp/boohtacord-qa-close-5925815800ab2026/repo/.out/local-features/20261030-001437/index.html",
+      "status=FAIL"
+    ]
+  },
+  "stages": [
+    {
+      "name": "web-unit",
+      "status": "PASS"
+    },
+    {
+      "name": "web-build",
+      "status": "PASS"
+    },
+    {
+      "name": "web-accessibility",
+      "status": "PASS"
+    },
+    {
+      "name": "web-auth_session_retention",
+      "status": "PASS"
+    },
+    {
+      "name": "web-chat_rhythm",
+      "status": "PASS"
+    },
+    {
+      "name": "web-connection_status",
+      "status": "PASS"
+    },
+    {
+      "name": "web-conversation_action_disclosure",
+      "status": "PASS"
+    },
+    {
+      "name": "web-dm_starter",
+      "status": "PASS"
+    },
+    {
+      "name": "web-mentions_inbox",
+      "status": "PASS"
+    },
+    {
+      "name": "web-message_social",
+      "status": "PASS"
+    },
+    {
+      "name": "web-mini_player",
+      "status": "PASS"
+    },
+    {
+      "name": "web-password_generation",
+      "status": "PASS"
+    },
+    {
+      "name": "web-password_reset_visibility",
+      "status": "PASS"
+    },
+    {
+      "name": "web-quick_jump_people",
+      "status": "PASS"
+    },
+    {
+      "name": "web-screen_profile",
+      "status": "PASS"
+    },
+    {
+      "name": "web-screen_share_ui",
+      "status": "PASS"
+    },
+    {
+      "name": "web-search_dates",
+      "status": "PASS"
+    },
+    {
+      "name": "web-search_presentation",
+      "status": "PASS"
+    },
+    {
+      "name": "web-search_sessions",
+      "status": "PASS"
+    },
+    {
+      "name": "web-voice_disconnect_notice",
+      "status": "PASS"
+    },
+    {
+      "name": "web-voice_interface",
+      "status": "PASS"
+    },
+    {
+      "name": "web-real-stack-1440",
+      "status": "PASS"
+    },
+    {
+      "name": "web-real-stack-393",
+      "status": "FAIL"
+    }
+  ],
+  "pass_stages": 22,
+  "fail_stages": 1,
+  "original_report_sha256": "4b3f26e170a539658aaed00a7c2aa8a0ad8f95198f0fdb214fec8a429f51c205",
+  "screenshots": 593,
+  "visual_review": "NOT_RUN",
+  "real_stack_1440": {
+    "status": "PASS",
+    "source_revision": "d05922d7475b6e8f7774f72b9884a3517a747f9c",
+    "original_report_sha256": "2b910b4c1af4e169752307a0b4e56b581a63814ab7d4d088b18c7f21aa77012a",
+    "owned_resources_removed": true,
+    "persisted_after_restart": true,
+    "elapsed_seconds": 167.85
+  },
+  "real_stack_393": {
+    "status": "FAIL",
+    "failure_stage": "fixture_build_before_browser",
+    "classification": "INFRASTRUCTURE_REGISTRY_METADATA_EOF",
+    "excerpt": "gcr.io/distroless/static-debian12:nonroot: HEAD source metadata request returned EOF",
+    "stage_log_sha256": "63bfd1d402cef8598bf0eca2c8e5609643fc1060170c4dd41bcdccae9bb69b15",
+    "remaining_owned_resources": {
+      "containers": 0,
+      "networks": 0,
+      "images": 0
+    }
+  },
+  "recovery": {
+    "kind": "owned-qa-base-cache-pull",
+    "image": "gcr.io/distroless/static-debian12:nonroot",
+    "started_at": "2026-10-29T21:27:07.002686+00:00",
+    "finished_at": "2026-10-29T21:27:08.417966+00:00",
+    "exit_code": 0,
+    "source_or_pin_or_daemon_setting_changed": false,
+    "repo_digests": [
+      "gcr.io/distroless/static-debian12@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab"
+    ]
+  },
+  "source_pin_stage_limit_or_daemon_settings_changed": false,
+  "prior_failure": "canonical-attempt1.json",
+  "next_action": "Repeat the unchanged canonical native command after exact existing base image is locally available"
+}
