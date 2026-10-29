@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "kind": "web-closure-source-and-pr-ci",
+  "issues": [
+    580,
+    581
+  ],
+  "pull_request": 605,
+  "source": {
+    "pr_head": "d05922d7475b6e8f7774f72b9884a3517a747f9c",
+    "test_merge": "d6e778d5fddd372a36da548c87bd7b6f618a4cac",
+    "merged_master": "4cdc3dc8b69e210dc83e47714287562eab9f4f86",
+    "tree": "ebeac23a5fc9b9d989318f2d80e7f353faf5033c",
+    "trees_equal": true,
+    "verified_via": "GitHub REST git/commits for all three exact SHAs"
+  },
+  "pr_ci": {
+    "run_id": 40949385552,
+    "run_attempt": 1,
+    "head_sha": "d05922d7475b6e8f7774f72b9884a3517a747f9c",
+    "status": "completed",
+    "conclusion": "success",
+    "updated_at": "2026-10-29T20:43:38Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40949385552",
+    "jobs": [
+      {
+        "id": 123714040332,
+        "name": "changes",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123714040746,
+        "name": "contracts / contracts",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123714124315,
+        "name": "flutter / macos",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123714124365,
+        "name": "flutter / android",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123714124401,
+        "name": "actual / runtime (lifecycle)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123714124405,
+        "name": "frontend / browser (browser-content)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123714124448,
+        "name": "frontend / fast",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123714124450,
+        "name": "backend / database",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123714124456,
+        "name": "frontend / sfu",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123714124457,
+        "name": "actual / runtime (next)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123714124490,
+        "name": "frontend / browser (browser-conversations)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123714124560,
+        "name": "flutter / dart",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123714124681,
+        "name": "backend / load",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123714124767,
+        "name": "flutter / android-kotlin",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123714124799,
+        "name": "frontend / browser (browser-voice)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123714124801,
+        "name": "frontend / browser (browser-shell)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123714124809,
+        "name": "backend / static",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123714126659,
+        "name": "windows",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 123717028723,
+        "name": "backend / backend",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123717385261,
+        "name": "frontend / frontend",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123720532265,
+        "name": "flutter / flutter",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123720534316,
+        "name": "actual / actual-acceptance",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123720677593,
+        "name": "ci-required",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "summary": {
+      "success": 22,
+      "skipped": 1,
+      "failure": 0
+    },
+    "legitimate_skip": "Windows profile path-filtered by existing source-impact route; no Windows-native acceptance claimed"
+  },
+  "headed_runtime": {
+    "evidence_commit": "a535c3af52f04446f12567a7198e7f2bdc1ea702",
+    "evidence_directory": "evidence/qa/ticket-closures-2026-10-29/web",
+    "source_revision": "d05922d7475b6e8f7774f72b9884a3517a747f9c",
+    "source_tree": "ebeac23a5fc9b9d989318f2d80e7f353faf5033c",
+    "status": "PASS",
+    "platform": "Linux headed Chromium153 in WSL on the Windows PC; actual Go/PostgreSQL, no response mocks",
+    "actual_download_events": 12,
+    "formats": [
+      "PNG",
+      "JPEG",
+      "GIF"
+    ],
+    "scopes": [
+      "TEXT",
+      "DM"
+    ],
+    "screenshots_inspected": 12,
+    "owned_resources_removed": true
+  },
+  "remaining_gates_at_recording": [
+    "canonical local_features --real-stack from root tester",
+    "exact-master Build server failed-jobs retry",
+    "successful automatic trusted delivery with retained receipt and public source readback"
+  ],
+  "preservation": "Historical SQL/Web/native failures and all 43 consolidation decisions remain intact. This record is additive evidence only, not implementation source or a production mutation."
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "exact-master-ci-infrastructure-failure",
+  "issues": [
+    580,
+    581
+  ],
+  "pull_request": 605,
+  "checked_at": "2026-10-29T20:51:39Z",
+  "source_revision": "4cdc3dc8b69e210dc83e47714287562eab9f4f86",
+  "source_tree": "ebeac23a5fc9b9d989318f2d80e7f353faf5033c",
+  "workflow": {
+    "run_id": 40951848716,
+    "run_attempt": 1,
+    "name": "Build server",
+    "status": "completed",
+    "conclusion": "failure",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40951848716/attempts/1"
+  },
+  "failed_job": {
+    "id": 123721826334,
+    "name": "backend / load",
+    "step": "Run complete load backend profile"
+  },
+  "failure_classification": "INFRASTRUCTURE_DEPENDENCY_DOWNLOAD_BEFORE_FIXTURE_START",
+  "error_excerpt": [
+    "go: github.com/pion/ice/v4@v4.2.7: read \"https://proxy.golang.org/github.com/pion/ice/v4/@v/v4.2.7.zip\": stream error: stream ID 621; INTERNAL_ERROR; received from peer",
+    "process \"/bin/sh -c go mod download\" did not complete successfully: exit code: 1"
+  ],
+  "artifact": {
+    "id": 12931682651,
+    "name": "backend-load-smoke-4cdc3dc8b69e210dc83e47714287562eab9f4f86-40951848716-1",
+    "size_in_bytes": 942,
+    "digest": "sha256:408a6d16ce4f776696f6b18ee07451ec5bf68e0a7cf69503547db736a19ec660",
+    "actual_zip_sha256_verified": true
+  },
+  "report": {
+    "schema_version": 1,
+    "outcome": "FAIL",
+    "target_capacity": "NOT_RUN",
+    "failure_stage": "fixture_start",
+    "owned_resources_removed": true,
+    "cleanup_failures": 0,
+    "remaining_owned_resource_count": 0
+  },
+  "job_summary": {
+    "success": 11,
+    "failure": 3,
+    "skipped": [
+      "bundle"
+    ],
+    "dependent_failures": [
+      "backend / backend",
+      "server-quality"
+    ]
+  },
+  "retry_policy": "One failed-jobs retry through the existing GitHub Actions workflow after completed run; preserve source, all gates and this failed attempt.",
+  "scope": "Hosted disposable CI only. No production SQL, production fault/load traffic, manual deployment, physical device or local Docker control."
+}
