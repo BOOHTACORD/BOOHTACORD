@@ -1,0 +1,173 @@
+{
+  "native_final_state": {
+    "status": "PASS_SCOPED_FINAL_NATIVE_STATE",
+    "empty_composer": true,
+    "pending_own_payload_semantics_visible": false,
+    "main_pane": {
+      "drawer_closed": true,
+      "main_header_bound_to_toolbar": true,
+      "main_header_bounds": [
+        191,
+        345,
+        714,
+        409
+      ],
+      "toolbar_actions_bounds": [
+        911,
+        333,
+        1046,
+        468
+      ],
+      "unique_main_history_bounds": [
+        0,
+        480,
+        1080,
+        2101
+      ],
+      "unique_empty_composer_bounds": [
+        23,
+        2124,
+        1058,
+        2276
+      ],
+      "recovery_banner_present": true,
+      "retry_connection_control_present": true,
+      "guard_is_not_live_authenticated_read_proof": true
+    },
+    "media": {
+      "microphone_FGS": false,
+      "screen_FGS": false,
+      "projection_null": true,
+      "voice_connected_UI": false,
+      "active_room_is_approved": "NOT_APPLICABLE_IDLE"
+    },
+    "cleanup_only_Refresh_count": 1,
+    "primary_JPEG_GIF_Refresh_count": 0,
+    "native_session_or_base_URL_changed": false,
+    "native_cookie_extracted": false
+  },
+  "producer_session": {
+    "at_utc": "2026-10-29T19:23:34.106215+00:00",
+    "phase": "revoke",
+    "alias": "",
+    "IDs_bodies_cookie_private": true,
+    "configured_native_URL": "UNOBSERVED",
+    "preexisting_snapshotted_records_unchanged": 45,
+    "own_session_revoked_live_false": true,
+    "status": "PASS_SCOPED_PEER_CONTROL_OR_EXACT_OWN_CLEANUP",
+    "native_exit": 0,
+    "finished_at_utc": "2026-10-29T19:23:34.452393+00:00",
+    "HTTP": [
+      {
+        "alias": "own B session guard",
+        "method": "GET",
+        "HTTP": 200,
+        "at_utc": "2026-10-29T19:23:34.125241+00:00",
+        "response_bytes": 91,
+        "finished_at_utc": "2026-10-29T19:23:34.193815+00:00"
+      },
+      {
+        "alias": "prior owned pair record preservation",
+        "method": "GET",
+        "HTTP": 200,
+        "at_utc": "2026-10-29T19:23:34.209334+00:00",
+        "response_bytes": 16469,
+        "finished_at_utc": "2026-10-29T19:23:34.295947+00:00"
+      },
+      {
+        "alias": "revoke only own new B session",
+        "method": "POST",
+        "HTTP": 204,
+        "at_utc": "2026-10-29T19:23:34.311978+00:00",
+        "response_bytes": 0,
+        "finished_at_utc": "2026-10-29T19:23:34.370577+00:00"
+      },
+      {
+        "alias": "live own session revoked readback",
+        "method": "GET",
+        "HTTP": 200,
+        "at_utc": "2026-10-29T19:23:34.386680+00:00",
+        "response_bytes": 24,
+        "finished_at_utc": "2026-10-29T19:23:34.451894+00:00"
+      }
+    ],
+    "native_skips": 0
+  },
+  "own_challenge_delete": {
+    "at_utc": "2026-10-29T19:23:28.017793+00:00",
+    "phase": "delete-challenge",
+    "alias": "",
+    "IDs_bodies_cookie_private": true,
+    "configured_native_URL": "UNOBSERVED",
+    "own_B_challenge_tombstone_blank_attachments_empty": true,
+    "status": "PASS_SCOPED_PEER_CONTROL_OR_EXACT_OWN_CLEANUP",
+    "native_exit": 0,
+    "finished_at_utc": "2026-10-29T19:23:28.272685+00:00",
+    "HTTP": [
+      {
+        "alias": "own B session guard",
+        "method": "GET",
+        "HTTP": 200,
+        "at_utc": "2026-10-29T19:23:28.035322+00:00",
+        "response_bytes": 91,
+        "finished_at_utc": "2026-10-29T19:23:28.097899+00:00"
+      },
+      {
+        "alias": "exact owned control message read",
+        "method": "GET",
+        "HTTP": 200,
+        "at_utc": "2026-10-29T19:23:28.113423+00:00",
+        "response_bytes": 6816,
+        "finished_at_utc": "2026-10-29T19:23:28.150960+00:00"
+      },
+      {
+        "alias": "delete only own B challenge",
+        "method": "DELETE",
+        "HTTP": 204,
+        "at_utc": "2026-10-29T19:23:28.166479+00:00",
+        "response_bytes": 0,
+        "finished_at_utc": "2026-10-29T19:23:28.204570+00:00"
+      },
+      {
+        "alias": "exact owned control message read",
+        "method": "GET",
+        "HTTP": 200,
+        "at_utc": "2026-10-29T19:23:28.220591+00:00",
+        "response_bytes": 6766,
+        "finished_at_utc": "2026-10-29T19:23:28.272185+00:00"
+      }
+    ],
+    "native_skips": 0
+  },
+  "native_reply_tombstone": {
+    "at_utc": "2026-10-29T19:22:52.269849+00:00",
+    "phase": "native-tombstone",
+    "alias": "native-reply",
+    "IDs_bodies_cookie_private": true,
+    "configured_native_URL": "UNOBSERVED",
+    "native_author_message_tombstone_blank_attachments_empty": true,
+    "status": "PASS_SCOPED_PEER_CONTROL_OR_EXACT_OWN_CLEANUP",
+    "native_exit": 0,
+    "finished_at_utc": "2026-10-29T19:22:52.398970+00:00",
+    "HTTP": [
+      {
+        "alias": "own B session guard",
+        "method": "GET",
+        "HTTP": 200,
+        "at_utc": "2026-10-29T19:22:52.286355+00:00",
+        "response_bytes": 91,
+        "finished_at_utc": "2026-10-29T19:22:52.344426+00:00"
+      },
+      {
+        "alias": "exact owned control message read",
+        "method": "GET",
+        "HTTP": 200,
+        "at_utc": "2026-10-29T19:22:52.359441+00:00",
+        "response_bytes": 6816,
+        "finished_at_utc": "2026-10-29T19:22:52.398970+00:00"
+      }
+    ],
+    "native_skips": 0
+  },
+  "own_device_files_removed": 2
+}

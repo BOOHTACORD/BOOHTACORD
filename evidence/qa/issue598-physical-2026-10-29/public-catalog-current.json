@@ -1,0 +1,33 @@
+{
+  "at_utc": "2026-10-29T19:24:16.095150+00:00",
+  "expected_source_revision": "f370396c468d26588cb934f8262b2ee7f4801044",
+  "source_catalog_sha256": "93fad894cbee438f42dad99ce9558134011422c07ab6f8f1ea9045e406a99fbf",
+  "authenticated": false,
+  "mutation_count": 0,
+  "TLS_verification": "default",
+  "redirects_allowed": false,
+  "raw_bodies_retained": false,
+  "scope": "public Windows/Android catalog; historical old-Windows-client update acceptance NOT_RUN",
+  "windows": {
+    "status": "PASS",
+    "url": "https://v.bootybay.ru/api/v1/client-updates?platform=windows&distribution=direct&channel=stable&arch=x64",
+    "catalog_revision": 29,
+    "source_catalog_sha256": "09837a270a876a3bd7862364c3a39859970d86a99165537415311a814317fa1b",
+    "policy_sha256": "f0cff6cc5f682770f991f23b15269f9f42d619e1f1c245299bbc81b4d6394694",
+    "cache_control_no_store": true,
+    "nosniff": true,
+    "content_type_json": true,
+    "age_seconds": null
+  },
+  "android": {
+    "http": 200,
+    "cache_control": "no-store",
+    "nosniff": "nosniff",
+    "body_sha256": "96796e69f55230a86ba6e71b4f90c747b9048bdd26fd0b2ad315ff882e24ae79",
+    "path": "/api/v1/client-updates?platform=android&distribution=direct&channel=stable&arch=arm64",
+    "catalog_revision": 29,
+    "state": "published",
+    "status": "PASS_SCOPED"
+  },
+  "status": "PASS_SCOPED"
+}

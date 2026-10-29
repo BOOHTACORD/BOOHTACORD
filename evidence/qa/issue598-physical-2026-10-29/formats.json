@@ -1,0 +1,477 @@
+{
+  "jpeg": {
+    "native_visual_review": {
+      "status": "PASS_PHYSICAL_OWN_JPEG_CARD_SCOPED",
+      "capture_SHA256": "1771ec118bf4d9dc7e1ca48b104d3ad02c60e042cc9514c5d32b351f11d28891",
+      "source_resolution": [
+        1080,
+        2340
+      ],
+      "root_source_resolution_inspection": true,
+      "painted_own_preview": true,
+      "filename_and_774byte_caption_download_visible": true,
+      "filename_ellipsized_on_narrow_caption": true,
+      "exact_filename_semantics_visible": true,
+      "empty_composer_no_pending_chip": true,
+      "recovery_banner_visible": true,
+      "history_refresh_count": 0,
+      "reveal_swipes_before_frame": 4,
+      "passive_visibility_NOT_proven": true,
+      "diagnostic": "First reveal controller exhausted because Flutter exposes the preview as a named clickable View, not ImageView. Actual source-resolution frame has the painted image and exact named open control. No retry of Send or history Refresh occurred.",
+      "pixels_and_names_private": true
+    },
+    "pixel_counterexample": {
+      "status": "PASS_KNOWN_NATIVE_PATTERN",
+      "source_resolution": [
+        1080,
+        2340
+      ],
+      "card_preview_bounds": [
+        172,
+        1283,
+        897,
+        1688
+      ],
+      "max_channel_errors": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "tolerance_RGB": 14,
+      "negative_wrong_palette_rejected": true,
+      "ICC_converted_to_sRGB": true,
+      "capture_SHA256": "a06b1a2865b7f15a74a64b0dbad2c504e746cdc9c857af84e50971e265ecdee2",
+      "format": "jpeg",
+      "no_image_or_frame_render_claim_beyond_this_card": true
+    },
+    "protected_peer_bytes": {
+      "at_utc": "2026-10-29T19:16:10.632598+00:00",
+      "phase": "read",
+      "format": "JPEG",
+      "IDs_names_payloads_private": true,
+      "approved_API_origin": "https://v.bootybay.ru",
+      "configured_native_URL": "UNOBSERVED",
+      "native_author_and_existing_pair_guarded": true,
+      "original_HTTP": 200,
+      "original_SHA256": "cc2a68f90df1e554d644f61c67ae12f96aa2c8a042477110d6d2e3ab089df15c",
+      "source_SHA256_match": true,
+      "original_bytes": 774,
+      "decoded_format": "JPEG",
+      "decoded_pixels": [
+        64,
+        48
+      ],
+      "decoded_frames": 1,
+      "preview_HTTP": 200,
+      "preview_SHA256": "92bae122f970d9f80feed2ce664eccc76666ac7d5b87fe5030c8e1f6cb56b31e",
+      "preview_pixels": [
+        64,
+        48
+      ],
+      "preview_format": "PNG",
+      "preview_four_region_max_channel_errors": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "preview_first_frame_known_pattern": true,
+      "GIF_animation_or_native_viewer_NOT_claimed": true,
+      "status": "PASS_SCOPED_NATIVE_FORMAT_BYTES_DECODE_PREVIEW_OR_REVOCATION",
+      "native_exit": 0,
+      "finished_at_utc": "2026-10-29T19:16:10.925938+00:00",
+      "HTTP": [
+        {
+          "alias": "own B session guard",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-29T19:16:10.651120+00:00",
+          "response_bytes": 91,
+          "finished_at_utc": "2026-10-29T19:16:10.694707+00:00"
+        },
+        {
+          "alias": "owned native image message observer",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-29T19:16:10.709727+00:00",
+          "response_bytes": 16376,
+          "finished_at_utc": "2026-10-29T19:16:10.752398+00:00"
+        }
+      ],
+      "attachment_HTTP": [
+        {
+          "alias": "jpeg original",
+          "HTTP": 200,
+          "response_bytes": 774,
+          "content_type": "application/octet-stream",
+          "at_utc": "2026-10-29T19:16:10.805065+00:00"
+        },
+        {
+          "alias": "jpeg preview",
+          "HTTP": 200,
+          "response_bytes": 153,
+          "content_type": "image/png",
+          "at_utc": "2026-10-29T19:16:10.924435+00:00"
+        }
+      ],
+      "native_skips": 0
+    },
+    "native_delete": {
+      "status": "PASS_SCOPED_EXACT_OWN_NATIVE_DELETE",
+      "alias": "jpeg",
+      "exact_API_author_ID_body_attachment_guarded": true,
+      "preexisting_ID_excluded": true,
+      "exact_named_payload_row_bounds": [
+        34,
+        1083,
+        1046,
+        1921
+      ],
+      "cleanup_reveal_swipes": 0,
+      "delete_attempts": 1,
+      "confirmation_used": true,
+      "main_pane_after": {
+        "drawer_closed": true,
+        "main_header_bound_to_toolbar": true,
+        "main_header_bounds": [
+          191,
+          345,
+          714,
+          409
+        ],
+        "toolbar_actions_bounds": [
+          911,
+          333,
+          1046,
+          468
+        ],
+        "unique_main_history_bounds": [
+          0,
+          480,
+          1080,
+          2101
+        ],
+        "unique_empty_composer_bounds": [
+          23,
+          2124,
+          1058,
+          2276
+        ],
+        "recovery_banner_present": true,
+        "retry_connection_control_present": true,
+        "guard_is_not_live_authenticated_read_proof": true
+      },
+      "media_unchanged": true
+    },
+    "tombstone": {
+      "at_utc": "2026-10-29T19:22:06.284419+00:00",
+      "phase": "native-tombstone",
+      "alias": "jpeg",
+      "IDs_bodies_cookie_private": true,
+      "configured_native_URL": "UNOBSERVED",
+      "native_author_message_tombstone_blank_attachments_empty": true,
+      "status": "PASS_SCOPED_PEER_CONTROL_OR_EXACT_OWN_CLEANUP",
+      "native_exit": 0,
+      "finished_at_utc": "2026-10-29T19:22:06.470241+00:00",
+      "HTTP": [
+        {
+          "alias": "own B session guard",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-29T19:22:06.300936+00:00",
+          "response_bytes": 91,
+          "finished_at_utc": "2026-10-29T19:22:06.366787+00:00"
+        },
+        {
+          "alias": "exact owned control message read",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-29T19:22:06.382811+00:00",
+          "response_bytes": 6867,
+          "finished_at_utc": "2026-10-29T19:22:06.470241+00:00"
+        }
+      ],
+      "native_skips": 0
+    },
+    "protected_peer_revocation": {
+      "at_utc": "2026-10-29T19:22:06.659504+00:00",
+      "phase": "revocation",
+      "format": "JPEG",
+      "IDs_names_payloads_private": true,
+      "approved_API_origin": "https://v.bootybay.ru",
+      "configured_native_URL": "UNOBSERVED",
+      "original_HTTP_after_native_delete": 404,
+      "preview_HTTP_after_native_delete": 404,
+      "protected_URL_access_revoked_for_authorized_peer": true,
+      "status": "PASS_SCOPED_NATIVE_FORMAT_BYTES_DECODE_PREVIEW_OR_REVOCATION",
+      "native_exit": 0,
+      "finished_at_utc": "2026-10-29T19:22:06.860290+00:00",
+      "HTTP": [
+        {
+          "alias": "own B session guard",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-29T19:22:06.677010+00:00",
+          "response_bytes": 91,
+          "finished_at_utc": "2026-10-29T19:22:06.724566+00:00"
+        }
+      ],
+      "attachment_HTTP": [
+        {
+          "alias": "jpeg original",
+          "HTTP": 404,
+          "response_bytes": 133,
+          "content_type": "application/json; charset=utf-8",
+          "at_utc": "2026-10-29T19:22:06.804715+00:00"
+        },
+        {
+          "alias": "jpeg preview",
+          "HTTP": 404,
+          "response_bytes": 158,
+          "content_type": "application/json; charset=utf-8",
+          "at_utc": "2026-10-29T19:22:06.859790+00:00"
+        }
+      ],
+      "native_skips": 0
+    }
+  },
+  "gif": {
+    "native_visual_review": {
+      "status": "PASS_PHYSICAL_OWN_GIF_CARD_SCOPED",
+      "capture_SHA256": "b8b7f8208d5a9538d01ad0d005bd3afeb8bd8c7b45202e9fe62da1cf53ba7536",
+      "source_resolution": [
+        1080,
+        2340
+      ],
+      "root_source_resolution_inspection": true,
+      "painted_own_preview": true,
+      "filename_and_205byte_caption_download_visible": true,
+      "filename_ellipsized_on_narrow_caption": true,
+      "exact_filename_open_control_semantics_visible": true,
+      "empty_composer_no_pending_chip": true,
+      "recovery_banner_visible": true,
+      "history_refresh_count": 0,
+      "reveal_swipes_before_frame": 1,
+      "passive_visibility_NOT_proven": true,
+      "primary_frame_limit": "Immediately after Send only a 22px ancestor strip of the new row was visible. Its merged filename semantics alone do not prove painted-image visibility. The separately reviewed full card followed one explicit swipe.",
+      "native_GIF_animation": "NOT_RUN; verified original 2 codec frames and painted first-frame card only",
+      "pixels_and_names_private": true
+    },
+    "pixel_counterexample": {
+      "status": "PASS_KNOWN_NATIVE_PATTERN",
+      "source_resolution": [
+        1080,
+        2340
+      ],
+      "card_preview_bounds": [
+        172,
+        1283,
+        897,
+        1688
+      ],
+      "max_channel_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tolerance_RGB": 14,
+      "negative_wrong_palette_rejected": true,
+      "ICC_converted_to_sRGB": true,
+      "capture_SHA256": "c4b9a2ce7bc933b69cca5badd68169322eb69d397ac72971641319e97e00d8fe",
+      "format": "gif",
+      "no_image_or_frame_render_claim_beyond_this_card": true
+    },
+    "protected_peer_bytes": {
+      "at_utc": "2026-10-29T19:19:36.247630+00:00",
+      "phase": "read",
+      "format": "GIF",
+      "IDs_names_payloads_private": true,
+      "approved_API_origin": "https://v.bootybay.ru",
+      "configured_native_URL": "UNOBSERVED",
+      "native_author_and_existing_pair_guarded": true,
+      "original_HTTP": 200,
+      "original_SHA256": "307057a156b56cdc8042d2ecee09b258a204769ede03f3c0f2f2a01d585c594b",
+      "source_SHA256_match": true,
+      "original_bytes": 205,
+      "decoded_format": "GIF",
+      "decoded_pixels": [
+        32,
+        32
+      ],
+      "decoded_frames": 2,
+      "preview_HTTP": 200,
+      "preview_SHA256": "288da035f5b70351391b255d84b112025c124ee55fdc663ec329193be15ce805",
+      "preview_pixels": [
+        32,
+        32
+      ],
+      "preview_format": "PNG",
+      "preview_four_region_max_channel_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "preview_first_frame_known_pattern": true,
+      "GIF_animation_or_native_viewer_NOT_claimed": true,
+      "status": "PASS_SCOPED_NATIVE_FORMAT_BYTES_DECODE_PREVIEW_OR_REVOCATION",
+      "native_exit": 0,
+      "finished_at_utc": "2026-10-29T19:19:36.523916+00:00",
+      "HTTP": [
+        {
+          "alias": "own B session guard",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-29T19:19:36.266146+00:00",
+          "response_bytes": 91,
+          "finished_at_utc": "2026-10-29T19:19:36.316201+00:00"
+        },
+        {
+          "alias": "owned native image message observer",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-29T19:19:36.331215+00:00",
+          "response_bytes": 16852,
+          "finished_at_utc": "2026-10-29T19:19:36.377255+00:00"
+        }
+      ],
+      "attachment_HTTP": [
+        {
+          "alias": "gif original",
+          "HTTP": 200,
+          "response_bytes": 205,
+          "content_type": "application/octet-stream",
+          "at_utc": "2026-10-29T19:19:36.427303+00:00"
+        },
+        {
+          "alias": "gif preview",
+          "HTTP": 200,
+          "response_bytes": 107,
+          "content_type": "image/png",
+          "at_utc": "2026-10-29T19:19:36.522413+00:00"
+        }
+      ],
+      "native_skips": 0
+    },
+    "native_delete": {
+      "status": "PASS_SCOPED_EXACT_OWN_NATIVE_DELETE",
+      "alias": "gif",
+      "exact_API_author_ID_body_attachment_guarded": true,
+      "preexisting_ID_excluded": true,
+      "exact_named_payload_row_bounds": [
+        34,
+        1241,
+        1046,
+        2079
+      ],
+      "cleanup_reveal_swipes": 0,
+      "delete_attempts": 1,
+      "confirmation_used": true,
+      "main_pane_after": {
+        "drawer_closed": true,
+        "main_header_bound_to_toolbar": true,
+        "main_header_bounds": [
+          191,
+          345,
+          714,
+          409
+        ],
+        "toolbar_actions_bounds": [
+          911,
+          333,
+          1046,
+          468
+        ],
+        "unique_main_history_bounds": [
+          0,
+          480,
+          1080,
+          2101
+        ],
+        "unique_empty_composer_bounds": [
+          23,
+          2124,
+          1058,
+          2276
+        ],
+        "recovery_banner_present": true,
+        "retry_connection_control_present": true,
+        "guard_is_not_live_authenticated_read_proof": true
+      },
+      "media_unchanged": true
+    },
+    "tombstone": {
+      "at_utc": "2026-10-29T19:21:05.004931+00:00",
+      "phase": "native-tombstone",
+      "alias": "gif",
+      "IDs_bodies_cookie_private": true,
+      "configured_native_URL": "UNOBSERVED",
+      "native_author_message_tombstone_blank_attachments_empty": true,
+      "status": "PASS_SCOPED_PEER_CONTROL_OR_EXACT_OWN_CLEANUP",
+      "native_exit": 0,
+      "finished_at_utc": "2026-10-29T19:21:05.377026+00:00",
+      "HTTP": [
+        {
+          "alias": "own B session guard",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-29T19:21:05.022452+00:00",
+          "response_bytes": 91,
+          "finished_at_utc": "2026-10-29T19:21:05.304422+00:00"
+        },
+        {
+          "alias": "exact owned control message read",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-29T19:21:05.319443+00:00",
+          "response_bytes": 7009,
+          "finished_at_utc": "2026-10-29T19:21:05.376526+00:00"
+        }
+      ],
+      "native_skips": 0
+    },
+    "protected_peer_revocation": {
+      "at_utc": "2026-10-29T19:21:05.587435+00:00",
+      "phase": "revocation",
+      "format": "GIF",
+      "IDs_names_payloads_private": true,
+      "approved_API_origin": "https://v.bootybay.ru",
+      "configured_native_URL": "UNOBSERVED",
+      "original_HTTP_after_native_delete": 404,
+      "preview_HTTP_after_native_delete": 404,
+      "protected_URL_access_revoked_for_authorized_peer": true,
+      "status": "PASS_SCOPED_NATIVE_FORMAT_BYTES_DECODE_PREVIEW_OR_REVOCATION",
+      "native_exit": 0,
+      "finished_at_utc": "2026-10-29T19:21:05.794376+00:00",
+      "HTTP": [
+        {
+          "alias": "own B session guard",
+          "method": "GET",
+          "HTTP": 200,
+          "at_utc": "2026-10-29T19:21:05.604955+00:00",
+          "response_bytes": 91,
+          "finished_at_utc": "2026-10-29T19:21:05.652581+00:00"
+        }
+      ],
+      "attachment_HTTP": [
+        {
+          "alias": "gif original",
+          "HTTP": 404,
+          "response_bytes": 133,
+          "content_type": "application/json; charset=utf-8",
+          "at_utc": "2026-10-29T19:21:05.732728+00:00"
+        },
+        {
+          "alias": "gif preview",
+          "HTTP": 404,
+          "response_bytes": 158,
+          "content_type": "application/json; charset=utf-8",
+          "at_utc": "2026-10-29T19:21:05.794376+00:00"
+        }
+      ],
+      "native_skips": 0
+    }
+  }
+}
