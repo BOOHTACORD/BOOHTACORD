@@ -1,13 +1,11 @@
 import '../layout_policy/derive.dart';
-import '../../../../features/realtime/lifecycle/status.dart';
-import '../../../../features/notifications/settings/notice.dart';
+import 'editing_shell/handler.dart';
 import 'back_guard/handler.dart';
 import 'search_overlay/handler.dart';
 import 'pinned_layer/handler.dart';
 import 'mobile_layers/handler.dart';
 import 'swipe_navigation/handler.dart';
 import 'desktop_layers/handler.dart';
-import '../../voice_dock/component.dart';
 import '../../native_bindings.dart';
 
 import '../lifecycle/context.dart';
@@ -83,21 +81,7 @@ extension WorkspaceScreenStateBuildAction on WorkspaceScreenStateContext {
                   fullScreenSearch,
                   constraints,
                 );
-          final primaryContent = compact && widget.state.voiceChannel != null
-              ? Column(
-                  children: [
-                    Expanded(child: content),
-                    WorkspaceVoiceDock(state: widget.state, compact: true),
-                  ],
-                )
-              : content;
-          final shellContent = Column(
-            children: [
-              RealtimeRecoveryStatus(controller: widget.state.realtime),
-              RemoteNotificationNotice(controller:widget.state.remoteNotifications),
-              Expanded(child: primaryContent),
-            ],
-          );
+          final shellContent = renderWorkspaceEditingShell(content, compact);
           final mobileGestures =
               compact &&
               (defaultTargetPlatform == TargetPlatform.iOS ||
