@@ -15,7 +15,7 @@ export function shouldOpenSearchShortcut(event: SearchShortcutEvent, launcher: u
   if (event.key.toLowerCase() !== 'k' || (!event.ctrlKey && !event.metaKey) || event.altKey || event.shiftKey || event.repeat || event.isComposing) return false
   const target = event.target as ShortcutTarget
   if (target?.closest?.('input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"], [role="searchbox"]')) return false
-  const dialog = target?.closest?.('[role="dialog"]')
+  const dialog = target?.closest?.('dialog, [role="dialog"]')
   if (!dialog) return true
   const trigger = launcher as ShortcutTarget
   return Boolean(trigger && (target === trigger || trigger.contains?.(target)) &&

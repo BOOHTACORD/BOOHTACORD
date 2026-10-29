@@ -14,14 +14,16 @@
 
 Create `clients/web/src/search/navigation_shortcut.spec.ts` with typed DOM-shaped
 targets for the owned button and descendant, a different navigation control,
-an input, ordinary and nested content dialogs. Test both Ctrl and Meta modifiers.
+an input, ordinary and nested content dialogs, including implicit native HTML
+dialogs without an explicit role attribute. Test both Ctrl and Meta modifiers.
 
 ```sh
 cd clients/web
 npm test -- --run src/search/navigation_shortcut.spec.ts src/search/search_shortcut.spec.ts
 ```
 
-- [ ] Require owned drawer button/descendant RED while all existing editing/dialog guards pass.
+- [x] Require owned drawer button/descendant RED while all existing editing/dialog guards pass.
+- [x] Retain native HTML dialog RED and cover both implicit/explicit dialog ancestors.
 
 ### Task 2: Narrowly authorize the launcher
 

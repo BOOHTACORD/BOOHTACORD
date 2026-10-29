@@ -44,4 +44,11 @@ describe('owned search launcher inside navigation dialog', () => {
       expect(shouldOpenSearchShortcut({ ...c.event(c.launcher), ...flags }, c.launcher)).toBe(false)
     }
   })
+
+  it('keeps native HTML dialog controls blocked without an explicit role attribute', () => {
+    const c = context()
+    const nativeDialog = {}
+    const control = { closest: (s: string) => s.split(',').map(value => value.trim()).includes('dialog') ? nativeDialog : null }
+    expect(shouldOpenSearchShortcut(c.event(control), c.launcher)).toBe(false)
+  })
 })

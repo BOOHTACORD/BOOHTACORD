@@ -12,8 +12,8 @@
     "clients/web/src/conversation/protected_image_viewer.spec.ts": "e5a5f51beed04b10a6a4eeffbfd8035e8efbd81537472cb2455da5162c5627b6",
     "clients/web/src/conversation/protected_image_preview/viewer_download.spec.ts": "366dac8d5f94140031f37d0f84e608e7ae4cef6dc5409ba8168f1006caacaad7",
     "clients/web/src/search/SearchLauncher.vue": "84e3f5dad5d473ae37adfb7386c31b03cc0fd5a01df0ab5602eb9bc69df80ffb",
-    "clients/web/src/search/search_shortcut.ts": "0bf4bc063c31e3844f8e46aed85015b66172a1072819da984a607a20d1532fcf",
-    "clients/web/src/search/navigation_shortcut.spec.ts": "6b84d01c10cad5f0c81f32f159ee9a775106efada45863827ea000ff43da568b",
+    "clients/web/src/search/search_shortcut.ts": "19df0003df86f72aafb048b539de7f71bce9c42d04f0b0d722c1602b683437e5",
+    "clients/web/src/search/navigation_shortcut.spec.ts": "a4c7e2b4a91db6b24db8646be19eb8eb772f4b86e6a7e9612901b33c80d0b1ec",
     "tools/qa/local_features/features.json": "8f02e7cffd5c4ed6be1cc9954afbfa98f6f458ca80605250b9e1f3da61fbc3f6"
   },
   "platform": "Windows / Node24.18.0 / npm11.16.0 / Vitest5.0.1",
@@ -40,8 +40,8 @@
       "invariant": "All Web unit behavior and complete production typechecking/build retained",
       "command": "npm test -- --run; VITE_PUBLIC_ORIGIN=https://localhost:4810 npm run build",
       "mandatory_when": "Before PR/handoff",
-      "GREEN": "502 files /1716 tests PASS; production build exit0",
-      "unit_SHA256": "05b8ab595bce63318ca829a8358d96baced0524735c455fe65651cbaf0395680",
+      "GREEN": "502 files /1717 tests PASS; prior-source production build exit0; final-source build/runtime pending",
+      "unit_SHA256": "bdcfcd307f1990636ba8716ed62d803c3db3e0fef61d4207c702dfd34e13eaf0",
       "build_SHA256": "6e756a4877fccfe5529a6a4e77d6a9934da17b35684334fae5ed20572e7b6721"
     },
     {
@@ -49,6 +49,15 @@
       "command": "python -m unittest tools.verify.client_parity.test_policy tools.qa.local_features.test_policy; python -m tools.verify.client_parity.run --base f370396c468d26588cb934f8262b2ee7f4801044",
       "mandatory_when": "Shared chat behavior changes",
       "GREEN": "6 policy tests PASS and parity validation PASS"
+    },
+    {
+      "invariant": "Implicit native HTML dialogs retain the same shortcut fence as explicit role=dialog.",
+      "command": "npm test -- --run src/search/navigation_shortcut.spec.ts src/search/search_shortcut.spec.ts src/search/search_return_focus.spec.ts src/search/quick_jump.spec.ts",
+      "mandatory_when": "Search shortcut target/dialog ownership changes",
+      "RED": "1 native-dialog unit fails/4 pass; full-app headed Chromium153 source89cf65a87929fd99b8ba059a77e0ce9defbe7755 opens search behind actual image dialog.",
+      "RED_SHA256": "4c7e6a5ec82524bc6d3da86bab6237689414de9a677c87430e447743265d9a82",
+      "GREEN": "12 nearest tests PASS/0skip; full unit1717 PASS/0skip",
+      "GREEN_SHA256": "c2e4d0e11bd1a9cac8085bc80be519b3a97450a36645d71c9ba9c6c22a8c855f"
     }
   ],
   "retained_diagnostics": [
