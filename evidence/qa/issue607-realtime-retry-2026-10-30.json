@@ -60,6 +60,25 @@
         "result": "No issues found",
         "log_LF_SHA256": "f425a9a14934d628e50ddc68c10ad0824a28b3d1194d8593c15703f6424f192e"
       }
+    },
+    "source_inventory_refresh": {
+      "prior_head": "5cc70bdc620064816c0910425d30bb8300d98fe4",
+      "ci_run_id": 40966193610,
+      "run_attempt": 1,
+      "failed_job": 123771207489,
+      "failed_test": "SignalCatalogTest.test_checked_in_inventory_matches_current_sources",
+      "diagnosis": "Existing catalog retained the pre-fix connect.dart producer fingerprint in two source entries.",
+      "command": "python -m tools.observability.signal_catalog.build",
+      "review": "Only two producer SHA256 values changed, both for lifecycle/connect.dart; signal definitions, counts and delivery claims unchanged.",
+      "native_check": {
+        "command": "python -m unittest tools.observability.signal_catalog.test_build",
+        "passed": 9,
+        "failed": 0,
+        "skipped": 0
+      },
+      "catalog_LF_SHA256": "082d9286a055b826cee5996f515e407acf5520c6d3aa9540c5276c23dcfcf617",
+      "gates_weakened": false,
+      "product_source_changed": false
     }
   }
 }
