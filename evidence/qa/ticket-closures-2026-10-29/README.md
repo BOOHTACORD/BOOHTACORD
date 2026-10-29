@@ -43,3 +43,11 @@ Native Android/Windows media, GIF preview animation and global capacity/security
 acceptance are not inferred from these Web results. Microphone/voice counters
 cover the admin navigation page. Canonical local_features and final PR605 CI /
 delivery are separate receipts and must pass before closing #580/#581.
+
+Final targeted Web closure is recorded in `web/closure-result.json`. All 23 canonical automated
+stages pass, including owned real stacks 1440/393; exact-master Build 40954061417
+and automatic Deploy 40955588855 pass. Fresh public source/health are in
+`web/public-final605.json`; source/schema/migration inventory/volume readback is
+in `delivery605.json`. The earlier scope and failed-attempt reports retain their
+recording-time status. The full canonical gallery remains REVIEW_REQUIRED; only
+the 12 changed-flow images are declared visually reviewed. No baseline was approved.

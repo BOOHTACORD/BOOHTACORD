@@ -1,0 +1,278 @@
+{
+  "schema_version": 1,
+  "kind": "canonical-local-features-final",
+  "status": "PASS_AUTOMATED_GATES",
+  "source_revision": "d05922d7475b6e8f7774f72b9884a3517a747f9c",
+  "source_tree": "ebeac23a5fc9b9d989318f2d80e7f353faf5033c",
+  "source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "command": "./tools/qa/local_features/check.sh --feature chat --feature auth --feature connection_status --feature screen --feature voice --platform web --base 87a0bdccbfc1d9194de6015ac3aea78d66726ac1 --real-stack",
+  "supervisor": {
+    "kind": "fresh-canonical-check-exit",
+    "started_at": "2026-10-29T21:27:51.772941+00:00",
+    "finished_at": "2026-10-29T21:41:52.400052+00:00",
+    "source_revision": "d05922d7475b6e8f7774f72b9884a3517a747f9c",
+    "exit_code": 0,
+    "summary": [
+      "report=/var/tmp/boohtacord-qa-close-5925815800ab2026/repo/.out/local-features/20261030-002752/index.html",
+      "status=REVIEW_REQUIRED"
+    ]
+  },
+  "run": "20261030-002752",
+  "original_report_sha256": "c8b8919cf0d8ea71358322296ea5cb9fd55c047b09cc449c8a71b1ed5e89f1db",
+  "features": [
+    "auth",
+    "chat",
+    "connection_status",
+    "screen",
+    "voice"
+  ],
+  "platforms": [
+    "web"
+  ],
+  "stages": [
+    {
+      "name": "web-unit",
+      "status": "PASS"
+    },
+    {
+      "name": "web-build",
+      "status": "PASS"
+    },
+    {
+      "name": "web-accessibility",
+      "status": "PASS"
+    },
+    {
+      "name": "web-auth_session_retention",
+      "status": "PASS"
+    },
+    {
+      "name": "web-chat_rhythm",
+      "status": "PASS"
+    },
+    {
+      "name": "web-connection_status",
+      "status": "PASS"
+    },
+    {
+      "name": "web-conversation_action_disclosure",
+      "status": "PASS"
+    },
+    {
+      "name": "web-dm_starter",
+      "status": "PASS"
+    },
+    {
+      "name": "web-mentions_inbox",
+      "status": "PASS"
+    },
+    {
+      "name": "web-message_social",
+      "status": "PASS"
+    },
+    {
+      "name": "web-mini_player",
+      "status": "PASS"
+    },
+    {
+      "name": "web-password_generation",
+      "status": "PASS"
+    },
+    {
+      "name": "web-password_reset_visibility",
+      "status": "PASS"
+    },
+    {
+      "name": "web-quick_jump_people",
+      "status": "PASS"
+    },
+    {
+      "name": "web-screen_profile",
+      "status": "PASS"
+    },
+    {
+      "name": "web-screen_share_ui",
+      "status": "PASS"
+    },
+    {
+      "name": "web-search_dates",
+      "status": "PASS"
+    },
+    {
+      "name": "web-search_presentation",
+      "status": "PASS"
+    },
+    {
+      "name": "web-search_sessions",
+      "status": "PASS"
+    },
+    {
+      "name": "web-voice_disconnect_notice",
+      "status": "PASS"
+    },
+    {
+      "name": "web-voice_interface",
+      "status": "PASS"
+    },
+    {
+      "name": "web-real-stack-1440",
+      "status": "PASS"
+    },
+    {
+      "name": "web-real-stack-393",
+      "status": "PASS"
+    }
+  ],
+  "stage_log_sha256": {
+    "web-unit": "8221fff5e07c2633ec19c22b572f86e39492990420fa4cfbce1c6663042d26fc",
+    "web-build": "7aced25d6b0a0ae044863af8057e5bdc7226ef7d29348c3c6adf05e871e6ed18",
+    "web-accessibility": "562cd5f1d83fc887f105418345016aeb133b223568ea1b2049d18d8c9c4f76c6",
+    "web-auth_session_retention": "e1b8aece1eb1df45a6b049358dfe90d6829fcb4a210e9ddfcea4e5140033497f",
+    "web-chat_rhythm": "e331f65df320ad9fe3dea8201d187436382e9674eee2c6b7cd39f23fb475f990",
+    "web-connection_status": "0da01c19b343bec3723261c070993ddab7257d3639b33b1f6e8455ae76cf0beb",
+    "web-conversation_action_disclosure": "bb843c94cf4d76725ebc3cbd7dcf039008524e09c55a2118a0df570935f921fe",
+    "web-dm_starter": "4e04abbaf296ff406d9e3785512af26bde325592e03043557d8c840ab69949c4",
+    "web-mentions_inbox": "a6a5ae3383bb5ce4e7a7bea3f085445e5b15b4a13589a1b6ab78562893ed47e8",
+    "web-message_social": "bf2bc060bcc2ae3df737b915477e81a4d3f9075880f85475e47ad6e6d5dd5402",
+    "web-mini_player": "79e2e94dc1ee787f8b4b9e72ebc836f04b60738227fa7588dfc517d30fa7f4d6",
+    "web-password_generation": "753ba42894f58a20e82d581109556b65ad4246bfcaeed8df9106fc72e0df62d2",
+    "web-password_reset_visibility": "4bf87cda4ccae521f4f531a49659bf0471f3286d0283a6b23950dabc6a0b0347",
+    "web-quick_jump_people": "968b4dc03a02563a74fda391ae3a5e9f7ee35c1c09d952cabf086d9d753e6fe6",
+    "web-screen_profile": "4123d40803b41f5309112db53ff3903263e79a831e7f2f6d65c5ac9a78a1f938",
+    "web-screen_share_ui": "81067393618f4fe8bd08ad12d6f6cf0c3644504ad34114c58c9a26a4f4825eff",
+    "web-search_dates": "0d915b1c5bddd9be3dd35b73e8f9b42674868088fdd0c1699de8e7578b9a65b1",
+    "web-search_presentation": "1f6f0b0c6212b69485a0f832c4978b7c9653b7545071e8b7f9e1fb936f7deb19",
+    "web-search_sessions": "973237f61003fa8d29261e55c28d99075290a87ae6267d583874ca27b3eb4863",
+    "web-voice_disconnect_notice": "f0556309a02306f2931a065ccc5cf0474d21c4c472d6e749fda1cd0803dc6b3d",
+    "web-voice_interface": "bbc5148a5e134f498d67202603444adfb2fae05f4ccaec8d545abb379341dde1",
+    "web-real-stack-1440": "c2edd35041002ddb1e469ad36b392e936bc758427ffcf9fb2f688aa8d6ce9a79",
+    "web-real-stack-393": "43e580decb4c94df88bb517e387b1dc912501688fa4b80f3db44ebe5dcd0f6ca"
+  },
+  "real_stack": {
+    "1440": {
+      "status": "PASS",
+      "source_revision": "d05922d7475b6e8f7774f72b9884a3517a747f9c",
+      "original_report_sha256": "c4b1078dab625b221a70d4ef5ac1c6353f7ed544a9ed08e26f8c0160d8a76199",
+      "owned_resources_removed": true,
+      "persisted_after_restart": true,
+      "elapsed_seconds": 166.51,
+      "catalog_captures": [
+        {
+          "catalog_slot": "D01",
+          "after": {
+            "path": ".out/client-lifecycle/1440/channel-text.png",
+            "sha256": "41f1713d7c0f094ed3b885e2d71af76707ce3767b8b4d39e09704082735c6968",
+            "raster": "2880x1800"
+          }
+        },
+        {
+          "catalog_slot": "D02",
+          "after": {
+            "path": ".out/client-lifecycle/1440/channel-text-actions.png",
+            "sha256": "a77e1ae7dabaab9b4339adb89dd2c827f8c3ac0deb3136f5b6560f0f85ffb017",
+            "raster": "2880x1800"
+          }
+        },
+        {
+          "catalog_slot": "D03",
+          "after": {
+            "path": ".out/client-lifecycle/1440/dm-list.png",
+            "sha256": "1c559696074a5d57046ac05801aee61294d5c25def286d95ac0f63e576e97224",
+            "raster": "2880x1800"
+          }
+        },
+        {
+          "catalog_slot": "D15",
+          "after": {
+            "path": ".out/client-lifecycle/1440/voice-prejoin.png",
+            "sha256": "6f60bbd91bcbafbb7416c84f01852cced2c5fa542f4ead58a0cf368edc740090",
+            "raster": "2880x1800"
+          }
+        },
+        {
+          "catalog_slot": "D18",
+          "after": {
+            "path": ".out/client-lifecycle/1440/channel-log.png",
+            "sha256": "f475145cdb4c9e4cc78a5a241aaed414d571ecaa5e0a05fb8467eeeb032fdd10",
+            "raster": "2880x1800"
+          }
+        }
+      ],
+      "api_image_id": "sha256:960412e792584fc2c94c8491c82a88055d9595f39ba3ef70545fbf36b91c6063"
+    },
+    "393": {
+      "status": "PASS",
+      "source_revision": "d05922d7475b6e8f7774f72b9884a3517a747f9c",
+      "original_report_sha256": "5a1f3064a4b92c2f7070c590cf4d6f6662abbf77c29d5b2a8a261b3a19672163",
+      "owned_resources_removed": true,
+      "persisted_after_restart": true,
+      "elapsed_seconds": 165.26,
+      "catalog_captures": [
+        {
+          "catalog_slot": "M01",
+          "after": {
+            "path": ".out/client-lifecycle/393/navigation-overlay.png",
+            "sha256": "13e86ad5efb97c77c9290bfdbf4f7a649f8f59947402d799d06de0163da50944",
+            "raster": "1179x2556"
+          }
+        },
+        {
+          "catalog_slot": "M02",
+          "after": {
+            "path": ".out/client-lifecycle/393/channel-text.png",
+            "sha256": "82e4cd1db146f38749e7f3c2f146c5eee84be3b7fda2255179c5d26265b25d05",
+            "raster": "1179x2556"
+          }
+        },
+        {
+          "catalog_slot": "M03",
+          "after": {
+            "path": ".out/client-lifecycle/393/channel-text-actions.png",
+            "sha256": "2c27e4d8d2b9ea4c9a4d252d837357b3e87f52f48f97db5fa019d5e8b28482ab",
+            "raster": "1179x2556"
+          }
+        },
+        {
+          "catalog_slot": "M22",
+          "after": {
+            "path": ".out/client-lifecycle/393/voice-prejoin.png",
+            "sha256": "1b0a08a4ed68a48acb6a794423954884bd7637dab36bf3b1e7380233633148ff",
+            "raster": "1179x2556"
+          }
+        },
+        {
+          "catalog_slot": "M23",
+          "after": {
+            "path": ".out/client-lifecycle/393/channel-log.png",
+            "sha256": "fdb9d85fd0e8647c19b117efa76588a658d3cc35da678267004f56cd6b2e9a41",
+            "raster": "1179x2556"
+          }
+        }
+      ],
+      "api_image_id": "sha256:3ef29c1aa870b2f17a94d90d8dce14dc7588bae80d4de1039ff31e7297b66c69"
+    }
+  },
+  "gallery": {
+    "original_status": "REVIEW_REQUIRED",
+    "original_visual_review": "NOT_RUN",
+    "screenshots": 662,
+    "status": "REVIEW_REQUIRED",
+    "new_baseline_approved": false
+  },
+  "targeted_changed_view_review": {
+    "status": "PASS_SCOPED_CHANGED_VIEWS",
+    "reviewed_screenshots": 12,
+    "evidence_commit": "a535c3af52f04446f12567a7198e7f2bdc1ea702",
+    "record": "captures.json",
+    "scope": "The root tester inspected all 12 changed-flow full-app screenshots at source resolution. The full canonical gallery is not declared visually approved."
+  },
+  "preserved_failed_attempts": [
+    "canonical-attempt1.json",
+    "canonical-attempt2.json"
+  ],
+  "limits": [
+    "Linux Web/WSL on the Windows PC; not physical Android, iOS or Windows-native acceptance.",
+    "No production fault/load/SQL work, source changes, pin changes, timeout changes or screenshot baseline approval.",
+    "Gallery REVIEW_REQUIRED is preserved; targeted bug closure does not close aggregate visual/media/capacity gates."
+  ]
+}

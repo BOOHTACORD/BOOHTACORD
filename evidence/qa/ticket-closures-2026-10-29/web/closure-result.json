@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "kind": "targeted-web-bug-closure-acceptance",
+  "issues": [
+    580,
+    581
+  ],
+  "status": "PASS_MERGED_HOSTED_DELIVERED_TARGETED_WEB",
+  "checked_at": "2026-10-29T21:42:29.831498+00:00",
+  "pull_request": 605,
+  "pr_head": "d05922d7475b6e8f7774f72b9884a3517a747f9c",
+  "merged_source": "4cdc3dc8b69e210dc83e47714287562eab9f4f86",
+  "source_tree": "ebeac23a5fc9b9d989318f2d80e7f353faf5033c",
+  "source_provenance": "source-pr-ci.json",
+  "acceptance": {
+    "issue580": {
+      "navigation_cases": 6,
+      "widths": [
+        1440,
+        800,
+        390
+      ],
+      "modifiers": [
+        "Control",
+        "Meta"
+      ],
+      "escape_visible_focus": true,
+      "editor_ime_unrelated_and_native_dialog_guards": "PASS",
+      "dm_dedup_and_navigation": "PASS",
+      "no_automatic_voice_join_or_microphone_admin_navigation": true
+    },
+    "issue581": {
+      "scope_format_cases": 6,
+      "scopes": [
+        "TEXT",
+        "DM"
+      ],
+      "formats": [
+        "PNG",
+        "JPEG",
+        "GIF"
+      ],
+      "actual_download_events": 12,
+      "controls": [
+        "viewer",
+        "card"
+      ],
+      "original_bytes_hash_format_filename_match": true,
+      "protected_acl_and_tombstones": "PASS"
+    }
+  },
+  "focused_regressions": "RED on previous behavior, GREEN on final source; retained runner source and hashes in a535c3af.",
+  "web_unit_tests_passed": 1717,
+  "pr_ci": {
+    "run_id": 40949385552,
+    "successful_jobs": 22,
+    "path_filtered_windows_skip": 1
+  },
+  "exact_master": {
+    "build_run_id": 40954061417,
+    "successful_jobs": 15,
+    "native_run_id": 40951848940,
+    "native_successful_jobs": 7,
+    "native_path_filtered_windows_skip": 1
+  },
+  "canonical": {
+    "receipt": "canonical-final.json",
+    "command_exit_code": 0,
+    "pass_stages": 23,
+    "real_stack_widths": [
+      1440,
+      393
+    ],
+    "owned_resources_removed": true
+  },
+  "visual": {
+    "targeted_changed_view_screenshots_reviewed": 12,
+    "record": "captures.json",
+    "evidence_commit": "a535c3af52f04446f12567a7198e7f2bdc1ea702",
+    "full_canonical_gallery": "REVIEW_REQUIRED",
+    "new_baseline_approved": false
+  },
+  "delivery": {
+    "workflow_run_id": 40955588855,
+    "receipt": "../delivery605.json",
+    "summary": "delivery605-summary.json",
+    "public_final": "public-final605.json",
+    "source_health_migration_inventory_volumes": "VERIFIED",
+    "human_approval": "NOT_ASSERTED"
+  },
+  "preserved_failures": [
+    "master-attempt1-infra.json",
+    "master-attempt2-receipt-boundary.json",
+    "canonical-attempt1.json",
+    "canonical-attempt2.json"
+  ],
+  "limits": [
+    "Linux headed Chromium153/WSL plus canonical Linux Web runtime; not physical Android/iOS or Windows-native acceptance.",
+    "GIF original bytes preserved; GIF preview animation is not accepted by this record.",
+    "No aggregate visual/media/capacity gate is closed; voice/microphone counters from targeted runner cover admin navigation only.",
+    "No source/gate/pin/stage-limit weakening or new screenshot baseline; all 43 consolidation decisions preserved."
+  ],
+  "issue_state_changes": "GitHub comments and completed-state transitions occur after this receipt is published."
+}
