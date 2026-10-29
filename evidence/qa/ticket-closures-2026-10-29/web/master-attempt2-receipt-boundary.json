@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "kind": "master-partial-retry-receipt-boundary",
+  "issues": [
+    580,
+    581
+  ],
+  "pull_request": 605,
+  "source_revision": "4cdc3dc8b69e210dc83e47714287562eab9f4f86",
+  "workflow": {
+    "run_id": 40951848716,
+    "run_attempt": 2,
+    "status": "completed",
+    "conclusion": "failure",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40951848716/attempts/2",
+    "retry": "One authorized failed-jobs retry; no source or gate changes"
+  },
+  "actual_profile_outcome": {
+    "job_id": 123724967495,
+    "name": "backend / load",
+    "status": "PASS",
+    "receipt": {
+      "artifact_id": 12931039694,
+      "digest": "sha256:5debf82abd37bd23869f5508772f5cef9bd4a841c8249f208a3b5cf74f26ba45",
+      "actual_zip_sha256_verified": true,
+      "source_revision": "4cdc3dc8b69e210dc83e47714287562eab9f4f86",
+      "run_id": 40951848716,
+      "run_attempt": 2
+    }
+  },
+  "blocking_gate": {
+    "job_id": 123727778600,
+    "name": "backend / backend",
+    "step": "Require every successful exact-source backend profile",
+    "status": "FAIL",
+    "exception": "Incomplete, foreign or unsuccessful backend evidence",
+    "download_pattern": "backend-part-4cdc3dc8b69e210dc83e47714287562eab9f4f86-40951848716-2-*",
+    "downloaded_profiles": [
+      "load"
+    ],
+    "missing_current_attempt_profiles": [
+      "static",
+      "database"
+    ],
+    "prior_successful_profiles_attempt": 1
+  },
+  "diagnosis": "Failed-only retry retains successful job conclusions from attempt1 but does not republish static/database profile artifacts for attempt2. The existing current-attempt-only fan-in correctly rejects the incomplete receipt set. Actual load retry passes; delivery is blocked before bundle creation.",
+  "production_delivery": "NOT_RUN",
+  "source_or_gate_weakening": false,
+  "proposed_next_action": "One fresh FULL execution of the existing Build server workflow on unchanged master, producing all profiles and receipts in the same attempt. Requires delegated authorization beyond the single failed-jobs retry.",
+  "native_master": {
+    "run_id": 40951848940,
+    "run_attempt": 1,
+    "head_sha": "4cdc3dc8b69e210dc83e47714287562eab9f4f86",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40951848940",
+    "jobs": [
+      {
+        "id": 123721723173,
+        "name": "changes",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123721814641,
+        "name": "flutter / android",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123721814659,
+        "name": "flutter / dart",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123721814708,
+        "name": "flutter / android-kotlin",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123721815083,
+        "name": "flutter / macos",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123721816645,
+        "name": "windows",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 123728145515,
+        "name": "flutter / flutter",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123728262571,
+        "name": "native-required",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "legitimate_skip": "Windows profile filtered by existing source-impact routing; no Windows-native acceptance claim"
+  },
+  "preservation": "Historical attempt1 infrastructure failure is retained separately in master-attempt1-infra.json. No production traffic, SQL, user attachments or manual install was used."
+}
