@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "kind": "verified-signed-android-candidate",
+  "issue": 582,
+  "pull_request": 611,
+  "status": "PASS_CANDIDATE_PHYSICAL_PENDING",
+  "source_revision": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+  "workflow_run_id": 40973416581,
+  "run_attempt": 1,
+  "release_mode": "candidate",
+  "stable_publication_requested": false,
+  "human_environment_approval": "NOT_ASSERTED",
+  "application_id": "ru.boohtacord.app",
+  "version": "1.0.47+83",
+  "version_code": 2083,
+  "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+  "independent_signature_verification": {
+    "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+    "build_tools": "36.0.0",
+    "version_code": 2083
+  },
+  "apk_name": "BOOHTACORD-android-v1.0.47-arm64-v8a.apk",
+  "apk_sha256": "14fc53a05c2e92314f964147bb1e1c6331513fe4e87ff09daaf8a9910da60d42",
+  "apk_bytes": 20917139,
+  "apk_artifact": {
+    "id": 12942671472,
+    "name": "BOOHTACORD-master-signed-apks-d9f15abb995cffaa7375975543ae934ad8be2d0d-40973416581-1",
+    "size_in_bytes": 61178454,
+    "url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/artifacts/12942671472",
+    "archive_download_url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/artifacts/12942671472/zip",
+    "expired": false,
+    "created_at": "2026-10-29T23:48:35Z",
+    "expires_at": "2026-11-28T23:48:32Z",
+    "updated_at": "2026-10-29T23:48:35Z",
+    "digest": "sha256:81b25746bfd4f93e8142a606415121bfd099682d4e6068b28817f7d98f105eed",
+    "workflow_run": {
+      "id": 40973416581,
+      "repository_id": 1398599178,
+      "head_repository_id": 1398599178,
+      "head_branch": "master",
+      "head_sha": "d9f15abb995cffaa7375975543ae934ad8be2d0d"
+    }
+  },
+  "contract_artifact": {
+    "id": 12942566799,
+    "name": "native-release-android-d9f15abb995cffaa7375975543ae934ad8be2d0d-40973416581-1",
+    "size_in_bytes": 1698,
+    "url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/artifacts/12942566799",
+    "archive_download_url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/artifacts/12942566799/zip",
+    "expired": false,
+    "created_at": "2026-10-29T23:48:37Z",
+    "expires_at": "2026-11-28T23:48:36Z",
+    "updated_at": "2026-10-29T23:48:37Z",
+    "digest": "sha256:b3dc1d544f88440cd2d76ded679df4743fb707650a845ff6825d6704238467de",
+    "workflow_run": {
+      "id": 40973416581,
+      "repository_id": 1398599178,
+      "head_repository_id": 1398599178,
+      "head_branch": "master",
+      "head_sha": "d9f15abb995cffaa7375975543ae934ad8be2d0d"
+    }
+  },
+  "actual_zip_digest_verified": true,
+  "manifest_sha256": "837886616b2bc3bffc9142abc6e0d601647b304ae7f5a212be1b00081ccb150a",
+  "all_manifest_and_SHA256SUMS_entries_verified": true,
+  "contracts_verified_against_exact_Git_blobs": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+  "next": "Root-owned ordinary replacement install, physical positive Send+PC receiver/voice/draft/selection evidence; no data clear or permission grant",
+  "original_verified_receipt_sha256": "ce239e842ada2dced65cdd85a80b5f956226b2c6965ee2ee3a07a0d88b02dc13",
+  "includes607_by_verified_parent": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0",
+  "verification_adapter": "Complete official asset validation uses exact source Git contract blobs, avoiding Windows working-copy CRLF; source/run/attempt and actual bytes remain mandatory.",
+  "diagnostic": "The initial local raw-checkout contract comparison rejected CRLF bytes; exact Git blobs and official complete asset validation then passed. No artifact or gate modified."
+}

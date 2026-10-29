@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "issue": 607,
+  "status": "PASS_ACCEPTANCE_READY_FOR_CLOSURE",
+  "at_utc": "2026-10-29T23:54:16.221643+00:00",
+  "fix_pull_request": 608,
+  "fix_merge": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0",
+  "trusted_installed_candidate_source": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+  "apk_sha256": "14fc53a05c2e92314f964147bb1e1c6331513fe4e87ff09daaf8a9910da60d42",
+  "candidate_run_id": 40973416581,
+  "candidate_run_attempt": 1,
+  "apk_artifact_id": 12942671472,
+  "criteria": {
+    "first_and_timer_open_failure_retry": "PASS_RETAINED_REGRESSION",
+    "connecting_release_and_stale_scope_manual_ready_fences": "PASS_19_NEAREST_TESTS",
+    "actual_isolated_HTTP503_WebSocket101_ready_recovery": "PASS_AUTOMATIC_OPEN2_ATTEMPT0_NO_PENDING_TIMERS",
+    "final_source_CI": "PASS_27_PR608_JOBS_AND_11_MASTER_NATIVE_JOBS",
+    "trusted_candidate_and_ordinary_installed_hash_source_binding": "PASS_ROOT_INDEPENDENT_INSTALL_RECEIPT"
+  },
+  "candidate_evidence_path": "evidence/qa/issue582-publication-2026-10-30/followup611/candidate/",
+  "global_gates": {
+    "62": "open",
+    "240": "open",
+    "303": "open"
+  },
+  "limits": [
+    "No production fault injected or required; separately observed old recovering banners are not causally attributed to607.",
+    "Actual socket fixture is isolated Dart network recovery, not Go ACL/auth acceptance.",
+    "Physical582final visual/geometry/draft/selection/Send/PCreceipt,579firstdecode and609incoming behavior remain separate pending gates.",
+    "Generic Android/iOS simulator runtime BLOCKED and full galleries NOT_RUN remain explicit; no media/capacity/audibility claim."
+  ]
+}
