@@ -1220,6 +1220,8 @@
       "clients/web/src/direct*",
       "clients/flutter/lib/src/features/conversation/*",
       "clients/flutter/lib/src/features/attachments/*",
+      "clients/flutter/lib/src/features/direct/send_state/**",
+      "clients/flutter/lib/src/features/direct/edit_state/delete.dart",
       "clients/web/src/search/*",
       "clients/flutter/lib/src/screens/workspace_ui/message_action_menu/*",
       "clients/flutter/lib/src/screens/workspace_ui/direct_message_action_menu/*",
@@ -1258,6 +1260,7 @@
       "test/features/workspace/dm_drafts/widget_test.dart",
       "test/clipboard_paste_edit_generation_test.dart",
       "test/message_attachment_composer_test.dart",
+      "test/direct_send_hydration/",
       "test/workspace_screen_test.dart",
       "test/web_parity/message_policy_test.dart",
       "test/search_scope_touch_test.dart",
@@ -1347,6 +1350,17 @@
           "clients/web/tests/search_sessions/live-context.browser.spec.ts"
         ],
         "scope": "Shared TEXT/DM context refreshes protected revisions and immediately redacts delete hints; session/conversation/generation guards prevent stale responses. Component HTTP fixtures are separate from real-stack/live acceptance."
+      },
+      "attachment_send_hydration_598": {
+        "issue": 598,
+        "focused": [
+          "clients/flutter/test/direct_send_hydration/"
+        ],
+        "captures": [
+          "dm-attachment-send-jpeg.png",
+          "dm-attachment-send-gif.png"
+        ],
+        "scope": "Own DM JPEG/GIF attachment-only Send without realtime: minimal POST receipt is hydrated through existing author/client-scoped canonical history, with exact message/DM/session correlation, known201 checking-only retry and newer/tombstone precedence. Production conversation rows and explicit Send produce deterministic fixture captures. Web and backend receipt/ACL contracts are unchanged; signed Android/iOS physical acceptance remains NOT_RUN until a new candidate is tested."
       },
       "image_viewer_revocation_589": {
         "issue": 589,

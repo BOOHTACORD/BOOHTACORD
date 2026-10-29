@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "issues": [
+    598,
+    249
+  ],
+  "source_base": "754b5997ad100cb00300373f29ab88bda4ed267d",
+  "checks": [
+    {
+      "protects": "Both named synthetic own-message JPEG/GIF captures are required; unknown captures remain rejected.",
+      "command": "python -m unittest tools.ci.flutter_gates.test_recent_bug_artifacts tools.ci.flutter_gates.test_artifacts tools.ci.flutter_gates.test_notification_artifacts",
+      "platform": "Windows / Python 3.12.10",
+      "mandatory_when": "Flutter CI visual inventory changes and every applicable hosted Dart profile.",
+      "result": "PASS",
+      "tests": 8,
+      "skips": 0,
+      "counterexample": "Requiring the two captures before adding them to the finite inventory failed the subset assertion.",
+      "red_log_sha256": "abc4ce7a34e4b4852c9e386e551f1b6746cb3757f24e5beb38ffbd1f10f97baf",
+      "green_log_sha256": "2646a65513708427dbed1736bff11df0bcfb4b6356984bcacf773d4e46a658e8",
+      "capture_count_before": 161,
+      "capture_count_after": 163
+    },
+    {
+      "protects": "Fresh source-bound finite captures and all unchanged Dart/Android/Kotlin/macOS operations remain mandatory.",
+      "command": "python -m unittest tools.ci.artifact_policy.test_capture_inventory tools.ci.flutter_gates.test_profiles tools.ci.flutter_gates.test_execution",
+      "platform": "Windows / Python 3.12.10",
+      "mandatory_when": "Capture publication inventory or native profile execution changes.",
+      "result": "PASS",
+      "tests": 20,
+      "skips": 0,
+      "log_sha256": "b0072113171e7d65fcf8e11c36f4e66508f902917c5a5984dffb9c435ba2b0c3"
+    },
+    {
+      "protects": "The new distributed acceptance binary has distinct build 83; all native identities match the shared pubspec.",
+      "command": "python -m pytest tools/build/test_client_identity.py -q",
+      "identity_readback_command": "python -c \"from tools.build.client_identity import load; print({p:load(p)['native_build'] for p in ('android','windows','ios','macos')})\"",
+      "platform": "Windows / Python 3.12.10",
+      "mandatory_when": "Building the new signed native acceptance candidate.",
+      "result": "PASS",
+      "tests": 3,
+      "skips": 0,
+      "native_build": "83",
+      "native_release_order": 62,
+      "web_identity_unchanged": true
+    }
+  ],
+  "catalog_content": {
+    "path": "deploy/client-updates/catalog.json",
+    "normalized_lf_sha256": "93fad894cbee438f42dad99ce9558134011422c07ab6f8f1ea9045e406a99fbf",
+    "all_source_entries_unchanged": true,
+    "promotion_performed": false
+  },
+  "limits": "These local checks do not prove hosted CI, deployment, physical Android rendering or historical old-Windows-client update acceptance."
+}

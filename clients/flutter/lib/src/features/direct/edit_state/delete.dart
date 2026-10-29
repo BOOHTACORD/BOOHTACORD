@@ -7,6 +7,7 @@ extension ConversationDeleteDirect on ConversationController {
     if (message.id.startsWith('optimistic:')) {
       if (message.sendStatus != MessageSendStatus.failed) return;
       pendingDirectSends.remove(message.clientMessageId);
+      directSendReceipts.remove(message.clientMessageId);
       blockedSendRetries.remove(message.clientMessageId);
       sendRetryIds.removeWhere((_, id) => id == message.clientMessageId);
       directMessageHistory = directMessageHistory

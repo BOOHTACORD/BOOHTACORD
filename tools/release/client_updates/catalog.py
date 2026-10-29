@@ -98,7 +98,8 @@ def mutate(path, expected_revision, selector, state, target, *, allow_new_select
         document["catalog_revision"] += 1; validate(document)
         payload = json.dumps(document, indent=2, ensure_ascii=False) + "\n"
         with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=path.parent, delete=False) as stream:
-            stream.write(payload); stream.flush(); os.fsync(stream.fileno()); temporary = Path(stream.name)
+            stream.write(payload); stream.flush(); os.chmod(stream.name, 0o644)
+            os.fsync(stream.fileno()); temporary = Path(stream.name)
         os.replace(temporary, path)
         return document
 

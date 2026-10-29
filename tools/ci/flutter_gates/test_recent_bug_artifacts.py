@@ -10,7 +10,8 @@ class RecentBugCaptureTests(unittest.TestCase):
             f'admin-search-{scale}-{inset}.png'
             for scale in (1.0, 1.3, 2.0) for inset in (0.0, 300.0)
         } | {'search-scope-48dp.png', 'revoked-image-pending-false.png',
-             'revoked-image-pending-true.png'}
+             'revoked-image-pending-true.png', 'dm-attachment-send-jpeg.png',
+             'dm-attachment-send-gif.png'}
         self.assertTrue(required <= set(VISUALS))
         complete('flutter', dict.fromkeys(VISUALS))
         for name in required:

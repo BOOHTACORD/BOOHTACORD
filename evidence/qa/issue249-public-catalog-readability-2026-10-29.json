@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "kind": "issue249-public-catalog-readability-regression",
+  "status": "PASS_SOURCE_REGRESSION_PRODUCTION_CONFIRMATION_PENDING",
+  "source_base": "754b5997ad100cb00300373f29ab88bda4ed267d",
+  "route": "split_first -> tools/release/install/public_catalog; atomic publisher leaf and unavoidable native archive/CI bindings",
+  "production_cause": "PREDICTED_PERMISSION_CHAIN_NOT_CONFIRMED_RUNTIME_METADATA",
+  "production_before_fix": {
+    "status": "READ_ONLY_PUBLIC_DIAGNOSTIC",
+    "requests": 2,
+    "rows": [
+      {
+        "utc": "2026-10-29T04:55:26.643622+00:00",
+        "platform": "windows",
+        "path": "/api/v1/client-updates?platform=windows&distribution=direct&channel=stable&arch=x64",
+        "HTTP": 503,
+        "Cache_Control": "no-store",
+        "Content_Type": "application/json",
+        "error": "client update catalog unavailable",
+        "error_code": null,
+        "body_SHA256": "69b8d6546cc240f213b1aef294ed2b5f87e0aa967cba9430c5d3c416e101cc85",
+        "bounded": true,
+        "no_cookie_or_auth_sent": true,
+        "redirects_followed": false,
+        "TLS_default_verification": true
+      },
+      {
+        "utc": "2026-10-29T04:55:26.686687+00:00",
+        "platform": "android",
+        "path": "/api/v1/client-updates?platform=android&distribution=direct&channel=stable&arch=arm64",
+        "HTTP": 503,
+        "Cache_Control": "no-store",
+        "Content_Type": "application/json",
+        "error": "client update catalog unavailable",
+        "error_code": null,
+        "body_SHA256": "69b8d6546cc240f213b1aef294ed2b5f87e0aa967cba9430c5d3c416e101cc85",
+        "bounded": true,
+        "no_cookie_or_auth_sent": true,
+        "redirects_followed": false,
+        "TLS_default_verification": true
+      }
+    ],
+    "runtime_mutations": 0,
+    "source_edits": 0,
+    "limits": "Only endpoint status/error/hash; not deployed config/source, full release identity or installation acceptance"
+  },
+  "checks": [
+    {
+      "invariant": "Verified signed public catalog is readable by nonroot without relaxing installer/private environment modes",
+      "command": "python -B -m unittest tools.release.install.public_catalog.test_prepare tools.release.client_updates.test_permissions -v",
+      "platform": "Linux/Python3.12.15-slim; private umask077; actual uid65532 read control",
+      "mandatory_when": "Before deploying installer/publication changes affecting the nonroot client catalog mount",
+      "RED": {
+        "tests_run": 9,
+        "failure_events": 10,
+        "exit": 1,
+        "log_SHA256": "8f261d9eb340801b01754c2b2c476c09226d2c9166901889f5d293c5f71b0462",
+        "probe": {
+          "uid": 65532,
+          "directory_mode": "0o700",
+          "after_prepare_readable": false,
+          "after_atomic_publish_mode": "0o600",
+          "after_atomic_publish_readable": false,
+          "private_environment_readable": false,
+          "actual_source_extractor_and_publisher": true
+        },
+        "probe_SHA256": "37b08c52c3dbf637249e68da3f354cc7c4759c8e638ecd73191f5a31d19cae31"
+      },
+      "GREEN": {
+        "tests_run": 9,
+        "failures": 0,
+        "skips": 0,
+        "exit": 0,
+        "log_SHA256": "a0599f5c99eadcfc7928455c3e8623d9b133350533ecd0c5eec59a6d9addafba",
+        "probe": {
+          "uid": 65532,
+          "directory_mode": "0o755",
+          "after_prepare_readable": true,
+          "after_atomic_publish_mode": "0o644",
+          "after_atomic_publish_readable": true,
+          "private_environment_readable": false,
+          "actual_source_extractor_and_publisher": true
+        },
+        "probe_SHA256": "d1d45c071a4eb0d6a26c08c476f11a014f0307fb72d87d3adc5c02d2ae6cdc87"
+      }
+    },
+    {
+      "invariant": "Private runtime/archive/order and revision/identity/lock/other-entry publisher controls remain unchanged",
+      "command": "python -B -m unittest tools.release.install.test_runtime tools.release.install.test_install_order tools.release.archive.test_extract; exact8 test_catalog functions through stdlib unittest adapter",
+      "platform": "Same second disposable Linux container; sufficient3GiBtmpfs for unchanged2GiB reserve fixture",
+      "mandatory_when": "Before accepting the permission repair as a release boundary change",
+      "result": "PASS15/0skip",
+      "log_SHA256": "92e987171d29014b76b3f9d9f3025e21646fab556896e7d02c01bd8ebd8ca91f"
+    },
+    {
+      "invariant": "Actual versioned source catalog satisfies Go runtime validation and both exact native policies return200/no-store; startup/reload/security contracts retained",
+      "command": "go test -json -count=1 ./internal/client_updates/catalog",
+      "platform": "Windows native Go1.26.4; actual deploy/client-updates/catalog.json; allowedhosts v.bootybay.ru,github.com",
+      "mandatory_when": "Before accepting a catalog availability source fix or claiming source catalog validity",
+      "result": {
+        "top_level_PASS": 14,
+        "subtest_PASS": 2,
+        "skips": 0,
+        "failures": 0,
+        "actual_source_test": "TestSourceCatalogLoadsForNativeSelectors/windows and /android",
+        "test_names": [
+          "TestInstallArtifactBindsPublisherPayloadToPolicy",
+          "TestHandlerServesPublicPolicyWithSecurityHeaders",
+          "TestHandlerReportsColdStartUnavailable",
+          "TestParseValidCatalog",
+          "TestParseRejectsUnknownField",
+          "TestParseRejectsUnsafeURL",
+          "TestParseRejectsOversizedCatalog",
+          "TestSelectReturnsExactPolicy",
+          "TestValidateSelectorRejectsUnsupportedPair",
+          "TestSourceCatalogLoadsForNativeSelectors/windows",
+          "TestSourceCatalogLoadsForNativeSelectors/android",
+          "TestSourceCatalogLoadsForNativeSelectors",
+          "TestStoreRejectsRevisionReuseWithDifferentBytes",
+          "TestStoreRejectsRevisionRollback",
+          "TestStoreKeepsLastValidSnapshot",
+          "TestStoreWithoutValidSnapshotIsUnavailable"
+        ],
+        "log_SHA256": "2215f497ab7b6f21eecf88857dd5acff0541a6726ace2e53d5d33a4a1307c037"
+      }
+    },
+    {
+      "invariant": "Both runtime.tar.gz and current-controller installer-driver include the new nested module, and hosted CI executes new tests",
+      "command": "python -B -m unittest tools.build.server.test_runtime_inputs -v",
+      "platform": "Windows Python3.12.10 plus exact Git archive source edges",
+      "mandatory_when": "Before building signed runtime/controller artifacts with the new import",
+      "result": "PASS2/0skip",
+      "log_SHA256": "2d4b326d1040610d35bb8a1a25668e89b715b639fc0a2fa1637cdc8b2843ddc7",
+      "runtime_prefix": "tools/release/install",
+      "driver_prefix": "tools/release/install",
+      "module": "tools/release/install/public_catalog/prepare.py",
+      "archive_behavior": "Both selected subtree prefixes are passed recursively to git archive; no allowlist change",
+      "hosted_command": "python3 -m unittest tools.release.install.public_catalog.test_prepare tools.release.client_updates.test_permissions",
+      "hosted_step_unconditional": true,
+      "hosted_result": "NOT_RUN_BY_THIS_WORKER_ROOT_WILL_BIND_CURRENT_HEAD"
+    }
+  ],
+  "source_catalog_bytes_unchanged": true,
+  "source_catalog_LF_SHA256": "93fad894cbee438f42dad99ce9558134011422c07ab6f8f1ea9045e406a99fbf",
+  "source_file_hashes": {
+    "tools/release/install/public_catalog/prepare.py": "669bb2711114535714fff24d708390ab3626c7441296f22292b4656354669b83",
+    "tools/release/install/public_catalog/test_prepare.py": "4b5b7d3bbb06840efce42171d1ad442bb60c3eb57c2e342ecd98bfa368b944df",
+    "tools/release/install/runtime.py": "74d0b8a9be8d2db982451417b0cd71b6303e98a4623f908e94ff8f34c0e19855",
+    "tools/release/client_updates/catalog.py": "6a8bc968397f12488709ea0aa212f4738427e45fd19ebd1d8cafe93ff81ed021",
+    "tools/release/client_updates/test_permissions.py": "47e82be3c178cc07ce27e8aaef426c62d241b4d5e3428492d9d3171374567b25",
+    "tools/build/server/test_runtime_inputs.py": "2d6e28e643185f2357fbe2a0a002802f46b53daade84359de632465fcf24e99d",
+    "backend/internal/client_updates/catalog/source_catalog_test.go": "c34aed789111bd1188296c914a2475cbc20e6644210a66bef630b44483cc23e4",
+    ".github/workflows/ci-contracts.yaml": "ba2f1159e49016dd70d5266d21a2a034806a9adf2f8c16847e2594ae2e0622a9",
+    "docs/superpowers/plans/2026-10-29-update-catalog-availability.md": "221fa5707a331c335dbca8d4ab48ee4fa5d1d63f6b54b0cfa8c852660ffed5ae"
+  },
+  "Python_source_and_test_max_lines": 117,
+  "Go_source_test_lines": 66,
+  "source_target_revision_content_substitution": false,
+  "no_relaxed_URL_validation_or_revision_guard": true,
+  "container_image": "python:3.12.15-slim",
+  "container_repo_digests": [
+    "python@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704"
+  ],
+  "containers_sequential": 2,
+  "containers_removed": true,
+  "Q_service_config_volume_actions": 0,
+  "production_mutations_by_worker": 0,
+  "new_Git_PR_CI_deploy_actions_by_worker": 0,
+  "retained_controller_diagnostics": [
+    {
+      "kind": "128MiB testtmpfs blocked unchanged2GiB reserve guard",
+      "log_SHA256": "5fb7f53aeee44f9d54885135e72b6a830728dd20170232ae5bf221193a13ac49",
+      "resolution": "Root-authorized second sequential test container3GiBtmpfs/256MiBmemory; product guard unchanged"
+    },
+    {
+      "kind": "Windows POSIX installer controls lack fcntl",
+      "log_SHA256": "71bb6bfdb98473db30d01950b37d57b4189eac296c122dc69e2b600123bbf9bc",
+      "resolution": "POSIX controls exercised successfully in Linux; no platform acceptance inferred"
+    },
+    {
+      "kind": "Pytest namespace collection rejected relative test imports",
+      "log_SHA256": "beac820e0de8366f3b0547fe7bfaa880b44df70b6a3daec54f9a4a357c9bdcb6",
+      "resolution": "Absolute package imports; current Windows pytest10PASS and Linux focused suite9PASS",
+      "retry_log_SHA256": "c0c5cddeb7d767f6d1a2eb02a4cbf75043c74215101b033e6ed21256c87e581d"
+    }
+  ],
+  "limits": [
+    "Mechanism reproduced with real source extractor/publisher and uid65532; production file/mount permissions and deployed parse outcome remain UNOBSERVED",
+    "No source catalog replacement or r61-to-r52 promotion; all runtime catalog bytes and other entries remain unchanged by the worker",
+    "Host .env and private installer directories remain private; only public catalog mount0755/file0644 changed",
+    "Root owns current-head CI/PR/merge/approved signed delivery and fresh post-deploy selector readback",
+    "HTTP200 after deployment, full QA249/old-client installation/platform/media acceptance are NOT_RUN here"
+  ],
+  "source_file_hash_scheme": "source_file_hashes binds raw working-copy bytes used by local commands; Windows CRLF can differ from Git checkout LF",
+  "normalized_LF_source_file_hashes": {
+    "tools/release/install/public_catalog/prepare.py": "669bb2711114535714fff24d708390ab3626c7441296f22292b4656354669b83",
+    "tools/release/install/public_catalog/test_prepare.py": "4b5b7d3bbb06840efce42171d1ad442bb60c3eb57c2e342ecd98bfa368b944df",
+    "tools/release/install/runtime.py": "8d5073a2488cd5620de248fe0fa21a8d90e4e3769d8764db66f0f6324ee31ee6",
+    "tools/release/client_updates/catalog.py": "6c8e569193fd684c2bfb081c462924f6028f89818447f588a5195e8969ce6993",
+    "tools/release/client_updates/test_permissions.py": "47e82be3c178cc07ce27e8aaef426c62d241b4d5e3428492d9d3171374567b25",
+    "tools/build/server/test_runtime_inputs.py": "4e0263caff9fbf3da73f8249607301d83bd3c1ae21616a129d15d3b7fa37b82a",
+    "backend/internal/client_updates/catalog/source_catalog_test.go": "c34aed789111bd1188296c914a2475cbc20e6644210a66bef630b44483cc23e4",
+    ".github/workflows/ci-contracts.yaml": "4026e20778f17c8a4b07e2826c48c9e471b762a90ae9e7d539df7fdd928cb6d9",
+    "docs/superpowers/plans/2026-10-29-update-catalog-availability.md": "221fa5707a331c335dbca8d4ab48ee4fa5d1d63f6b54b0cfa8c852660ffed5ae"
+  }
+}
