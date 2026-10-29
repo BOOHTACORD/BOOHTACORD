@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "issue": 582,
+  "kind": "strict-synthetic-capture-inventory-integration",
+  "status": "PASS_LOCAL_HOSTED_PENDING",
+  "at_utc": "2026-10-29T22:02:30.989348+00:00",
+  "base_source": "f289e05fe5c14bdb7bf3dfb00e7aea391006daaf",
+  "pull_request": 606,
+  "trigger": "Full Dart profile passed but publication rejected two new synthetic PNGs absent from the exact mandatory inventory.",
+  "prior_CI": {
+    "run_id": 40960600485,
+    "attempt": 1,
+    "job_id": 123752138998,
+    "profile": "PASS",
+    "capture_publication": "FAIL",
+    "native_application_assertion_failure": false
+  },
+  "approved_exact_filenames": [
+    "issue582-android-landscape-ime.png",
+    "issue582-iOS-landscape-ime.png"
+  ],
+  "inventory": {
+    "previous_count": 165,
+    "current_count": 167,
+    "all_previous_entries_preserved": true,
+    "both_new_captures_mandatory": true,
+    "unknown_platform_private_and_case_alias_rejected": true
+  },
+  "RED": {
+    "command": "python -m unittest tools.ci.flutter_gates.test_issue582_capture_inventory tools.ci.flutter_gates.test_artifacts",
+    "tests": 8,
+    "failures": 2,
+    "reason": "Expected producer filenames absent; mandatory count167 differs from165",
+    "log_sha256": "1f53666030203f7c8a81e0d2eae79e0c562323c08d81ff2e1f63d2b76ddff700"
+  },
+  "GREEN": {
+    "command": "python -m unittest tools.ci.flutter_gates.test_issue582_capture_inventory tools.ci.flutter_gates.test_artifacts tools.ci.artifact_policy.test_capture_inventory tools.ci.artifact_policy.test_publication tools.ci.artifact_policy.test_run tools.ci.artifact_policy.test_publication_context",
+    "tests": 34,
+    "failures": 0,
+    "skips": 0,
+    "log_sha256": "db428def10cc647824f5f6c16351832e99c5dbd549ca992b2da7d7e7560951ef"
+  },
+  "source_LF_SHA256": {
+    "tools/ci/flutter_gates/recent_bug_visuals.py": "a6f839c4cd1ecefcd527936a617404f9998aa347b2e3e10e955de1d4405fa49d",
+    "tools/ci/flutter_gates/test_artifacts.py": "d5df36d8a8f56e1b9b76f4071b0fdccbe0dde4ab4ce18d32d523286f6b4688c5",
+    "tools/ci/flutter_gates/test_issue582_capture_inventory.py": "c4c6e970e01721257162d36f6ffeafa3a7f3f1b5b08d279dea24beef543c5509"
+  },
+  "implementation_source_and_original_evidence_hashes_unchanged": true,
+  "preserved_guards": [
+    "exact mandatory set",
+    "fresh run marker",
+    "source/run/attempt/context identity",
+    "JSON privacy",
+    "portable paths and symlink rejection",
+    "size and entry bounds",
+    "byte/hash integrity"
+  ],
+  "boundaries": [
+    "No Flutter implementation, source pins, workflow conditions or continue-on-error changes.",
+    "No screenshot baseline approval or native positive acceptance inferred.",
+    "Fresh full hosted CI and approved-certificate candidate remain required; issue582 stays open."
+  ]
+}
