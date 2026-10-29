@@ -1,0 +1,20 @@
+{
+  "kind": "source-only-livekit-network-revalidation",
+  "observed_at": "2026-10-29",
+  "status": "PASS",
+  "source_base": "b4d31188b56d61f8a6b6c4ed26ba29d5f528a3c8",
+  "historical_evidence": "evidence/media/livekit-network-config-2026-10-07.json",
+  "change": "T-079 adds private Redis and LiveKit Egress services for server-managed screen previews. Both use the existing private application network; Egress also uses the private telemetry-egress network. The existing LiveKit metrics listener is reachable from the same private-network peer set, which now includes redis, egress, and screen-preview-storage-init. Listener ports, the dedicated internal livekit-metrics network, scrape target and bounded metric allowlist remain unchanged. Historical deployment evidence remains immutable.",
+  "physical_acceptance": "NOT_RUN; source-only topology validation does not prove runtime service readiness, production network exposure, screen capture, or capacity.",
+  "checks": [
+    "LiveKit network model, private metrics peer set, artifact hashes and focused topology regressions PASS."
+  ],
+  "repository_artifacts": {
+    "deploy/compose.yaml": "sha256:28ad401aad1cd00e9a76ad234ad29d5bb6cf67af6d9a09bcd4a9a8c6b02e520d",
+    "deploy/livekit/compose.yaml": "sha256:a51ba0a72105e7b50e3be0201e85c31d1f0adc043290470b7cd78eb0f734669d",
+    "deploy/livekit/egress.yaml": "sha256:0ed81d9f14f640e3609d3e7d974fe72f4f2fd475c7ef5e40468e40b51adeeedf",
+    "deploy/livekit/livekit.yaml": "sha256:32b7b8fac35f34a16f9641334bd2d83e244692b98db853dc6bf25bfd2180bfc7",
+    "tools/verify/livekit_network_config/check.py": "sha256:18d62c853ddfd719f9701698a8002bd5e682865bc851feace38cb940ec69545a",
+    "tools/verify/livekit_network_config/test_model.py": "sha256:3daf78f7ef0209195993c97b985e4620ea72f25cb4e7a7e6dd654486b96742fa"
+  }
+}

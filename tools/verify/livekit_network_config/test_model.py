@@ -45,7 +45,8 @@ class LiveKitNetworkConfigTests(unittest.TestCase):
             "api", "postgres", "web", "proxy", "migrate", "bootstrap-admin",
             "recover-admin", "recover-last-admin-access", "maintenance-admission",
             "cleanup-stale-staging", "cleanup-unattached-attachments",
-            "cleanup-hidden-attachments", "prometheus",
+            "cleanup-hidden-attachments", "prometheus", "redis", "egress",
+            "screen-preview-storage-init",
         })
 
     def test_checked_in_compose_and_prometheus_files_match_the_model(self):
