@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "kind": "verified-signed-android-candidate",
+  "issue": 582,
+  "pull_request": 606,
+  "status": "PASS_CANDIDATE_PHYSICAL_PENDING",
+  "source_revision": "de4c30b26bc61aeac5c885ae805634a082eefe5e",
+  "workflow_run_id": 40965177708,
+  "run_attempt": 1,
+  "release_mode": "candidate",
+  "stable_publication_requested": false,
+  "human_environment_approval": "NOT_ASSERTED",
+  "application_id": "ru.boohtacord.app",
+  "version": "1.0.47+83",
+  "version_code": 2083,
+  "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+  "independent_signature_verification": {
+    "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+    "build_tools": "36.0.0",
+    "version_code": 2083
+  },
+  "apk_name": "BOOHTACORD-android-v1.0.47-arm64-v8a.apk",
+  "apk_sha256": "f63613dd0dc92cca96737dd8235fed728c422da959228008bf6ff3e6b2afbaca",
+  "apk_bytes": 20917139,
+  "apk_artifact": {
+    "id": 12939500252,
+    "name": "BOOHTACORD-master-signed-apks-de4c30b26bc61aeac5c885ae805634a082eefe5e-40965177708-1",
+    "size_in_bytes": 61177352,
+    "url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/artifacts/12939500252",
+    "archive_download_url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/artifacts/12939500252/zip",
+    "expired": false,
+    "created_at": "2026-10-29T22:42:33Z",
+    "expires_at": "2026-11-28T22:42:30Z",
+    "updated_at": "2026-10-29T22:42:33Z",
+    "digest": "sha256:4ca6e2f72b12b871e16bb4f52d085873976d3f368a14557c2297d9d5de90c38d",
+    "workflow_run": {
+      "id": 40965177708,
+      "repository_id": 1398599178,
+      "head_repository_id": 1398599178,
+      "head_branch": "master",
+      "head_sha": "de4c30b26bc61aeac5c885ae805634a082eefe5e"
+    }
+  },
+  "contract_artifact": {
+    "id": 12938803518,
+    "name": "native-release-android-de4c30b26bc61aeac5c885ae805634a082eefe5e-40965177708-1",
+    "size_in_bytes": 1698,
+    "url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/artifacts/12938803518",
+    "archive_download_url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/artifacts/12938803518/zip",
+    "expired": false,
+    "created_at": "2026-10-29T22:42:34Z",
+    "expires_at": "2026-11-28T22:42:33Z",
+    "updated_at": "2026-10-29T22:42:34Z",
+    "digest": "sha256:82247865ff97130012d38d19e6c3ef16518bc584333341e73df04bd9d6adda68",
+    "workflow_run": {
+      "id": 40965177708,
+      "repository_id": 1398599178,
+      "head_repository_id": 1398599178,
+      "head_branch": "master",
+      "head_sha": "de4c30b26bc61aeac5c885ae805634a082eefe5e"
+    }
+  },
+  "actual_zip_digest_verified": true,
+  "manifest_sha256": "50eca9448f3bd6c54fe3f837944537441065d01ff553461cc5750638b149061f",
+  "all_manifest_and_SHA256SUMS_entries_verified": true,
+  "next": "Root-owned ordinary replacement install, physical positive Send+PC receiver/voice/draft/selection evidence; no data clear or permission grant",
+  "physical_acceptance": "PENDING_ROOT_OWNED_SEND_AND_PEER_RECEIPT",
+  "handoff": "Verified arm64 APK and original manifests copied to the root-owned ignored candidate606 directory; no phone/UI action by release agent."
+}
