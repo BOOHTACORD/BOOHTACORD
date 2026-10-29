@@ -9,8 +9,15 @@ export interface SearchShortcutEvent {
   target: unknown
 }
 
-export function shouldOpenSearchShortcut(event: SearchShortcutEvent): boolean {
+type ShortcutTarget = { closest?: (selectors: string) => unknown; contains?: (target: unknown) => boolean } | null
+
+export function shouldOpenSearchShortcut(event: SearchShortcutEvent, launcher: unknown = null): boolean {
   if (event.key.toLowerCase() !== 'k' || (!event.ctrlKey && !event.metaKey) || event.altKey || event.shiftKey || event.repeat || event.isComposing) return false
-  const target = event.target as { closest?: (selectors: string) => unknown } | null
-  return !target?.closest?.('input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"], [role="searchbox"], [role="dialog"]')
+  const target = event.target as ShortcutTarget
+  if (target?.closest?.('input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"], [role="searchbox"]')) return false
+  const dialog = target?.closest?.('dialog, [role="dialog"]')
+  if (!dialog) return true
+  const trigger = launcher as ShortcutTarget
+  return Boolean(trigger && (target === trigger || trigger.contains?.(target)) &&
+    dialog === trigger.closest?.('#nav-sidebar[role="dialog"]'))
 }

@@ -10,7 +10,7 @@ let returnFocus: HTMLElement | null = null
 function openSearch(): void { returnFocus = document.activeElement as HTMLElement | null; emit('open') }
 function onKeydown(event: KeyboardEvent): void {
   if (event.key === 'Escape' && props.active) { emit('close'); return }
-  if (shouldOpenSearchShortcut(event)) { event.preventDefault(); openSearch() }
+  if (shouldOpenSearchShortcut(event, trigger.value)) { event.preventDefault(); openSearch() }
 }
 watch(() => props.active, (active, wasActive) => {
   if (wasActive && !active) void nextTick(() => {

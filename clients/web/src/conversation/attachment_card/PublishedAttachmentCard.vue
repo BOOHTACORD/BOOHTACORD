@@ -28,6 +28,7 @@ function byteLabel(sizeBytes: number): string {
         v-if="showPreview"
         :name="props.attachment.originalName"
         :preview-url="props.previewUrl"
+        :download-url="props.downloadUrl"
       >
         <img
           v-if="!failedPreview"
