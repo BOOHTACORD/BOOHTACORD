@@ -1,0 +1,69 @@
+import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
+import { api, login, expect, status, channel, openNavigation } from '../../tools/qa/client_lifecycle/request.mjs'
+import { digest, format, statuses, viewer } from './runtime_downloads.mjs'
+export async function images(browser,admin,input,report,fixture) {
+  const contexts=[]
+  async function client(name) {
+    const context=await browser.newContext({ignoreHTTPSErrors:true,acceptDownloads:true,viewport:{width:1440,height:900}})
+    contexts.push(context);const page=await context.newPage();page.setDefaultTimeout(15000)
+    if(name)await login(page,name,input.password)
+    return {context,page}
+  }
+  report.images=[];report.cleanup=[]
+  try {
+    const sender=await client('qa_sender'),peer=await client('qa_peer'),outsider=await client('qa_outsider'),anonymous=await client()
+    const dm=await api(sender.page,'/direct-messages','POST',{participant_id:fixture.ids[1]});status(dm,201)
+    await sender.page.reload();await expect(sender.page.getByTestId('app-shell')).toBeVisible()
+    const fixtures=JSON.parse(readFileSync(new URL('fixtures/metadata.json',import.meta.url)))
+    for(const scope of ['TEXT','DM']) {
+      const prefix=scope==='TEXT'?`/channels/${fixture.channel}`:`/direct-messages/${dm.body.id}`
+      if(scope==='TEXT')await channel(sender.page,'ClosureText')
+      else {
+        await openNavigation(sender.page);await sender.page.getByRole('button',{name:'Личные',exact:true}).click()
+        await sender.page.locator('.direct-message-navigation .channel-button').filter({hasText:'qa_peer'}).click()
+      }
+      let sends=0
+      const observer=r=>{if(r.method()==='POST'&&new URL(r.url()).pathname==='/api/v1'+prefix+'/messages')sends++}
+      sender.page.on('request',observer)
+      for(const expected of fixtures) {
+        const row={scope,format:expected.format,status:'RUNNING'};report.images.push(row)
+        const bytes=readFileSync(new URL('fixtures/'+expected.filename,import.meta.url))
+        assert.equal(digest(bytes),expected.sha256);assert.equal(format(bytes),expected.format)
+        const before=sends
+        await sender.page.locator(scope==='TEXT'?'#message-attachments':'#dm-attachments').setInputFiles({name:expected.filename,mimeType:expected.mime,buffer:bytes})
+        await expect(sender.page.locator('.attachment-picker [data-upload-status="done"]')).toHaveCount(1)
+        assert.equal(sends,before);row.no_auto_send=true
+        const waiting=sender.page.waitForResponse(r=>r.request().method()==='POST'&&new URL(r.url()).pathname==='/api/v1'+prefix+'/messages')
+        await sender.page.getByRole('button',{name:'Отправить сообщение',exact:true}).click()
+        const response=await waiting;assert.equal(response.status(),201);assert.equal(sends,before+1);const message=await response.json()
+        let attachment
+        try {
+          const history=await api(sender.page,prefix+'/messages?at='+message.id+'&limit=20');status(history,200)
+          const published=history.body.messages.find(value=>value.id===message.id)
+          assert.equal(published.attachments.length,1)
+          attachment=prefix+'/attachments/'+published.attachments[0].id
+          await viewer(sender.page,input,expected,row)
+          row.author=await statuses(sender.context,attachment);assert.deepEqual(row.author,[200,200])
+          row.peer=await statuses(peer.context,attachment);assert.deepEqual(row.peer,[200,200])
+          row.outsider=await statuses(outsider.context,attachment);assert.deepEqual(row.outsider,scope==='DM'?[404,404]:[200,200])
+          row.third_admin=await statuses(admin.context(),attachment);assert.deepEqual(row.third_admin,scope==='DM'?[404,404]:[200,200])
+          row.anonymous=await statuses(anonymous.context,attachment);assert.deepEqual(row.anonymous,[401,401])
+        } finally {
+          const removed=await api(sender.page,prefix+'/messages/'+message.id,'DELETE');status(removed,204)
+          report.cleanup.push({scope,http:removed.status})
+        }
+        row.deleted=[]
+        for(const context of [sender.context,peer.context,outsider.context,admin.context()])row.deleted.push(await statuses(context,attachment))
+        for(const values of row.deleted)assert.deepEqual(values,[404,404])
+        assert.deepEqual(await statuses(anonymous.context,attachment),[401,401])
+        const tombstone=await api(sender.page,prefix+'/messages?at='+message.id+'&limit=20');status(tombstone,200)
+        const deleted=tombstone.body.messages.find(value=>value.id===message.id)
+        assert.equal(deleted.body,'');assert.deepEqual(deleted.attachments,[]);row.tombstone_cleared=true
+        row.status='PASS'
+      }
+      sender.page.off('request',observer)
+    }
+    report.download_tempfiles_remaining=0
+  } finally { for(const context of contexts)await context.close() }
+}

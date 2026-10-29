@@ -1,0 +1,8 @@
+import os
+from pathlib import Path
+import subprocess
+base=Path('/var/tmp/boohtacord-qa-tools-5925815800ab2026')
+root=Path('/var/tmp/boohtacord-qa-close-5925815800ab2026/repo')
+env=dict(os.environ,PATH=str(base/'bin')+':'+str(base/'node-v24.18.0-linux-x64/bin')+':'+os.environ['PATH'],DOCKER_HOST='unix:///var/run/docker.sock',DOCKER_CONTEXT='default',DOCKER_CONFIG=str(base/'docker-config'),DOCKER_BUILDKIT='1')
+result=subprocess.run(['bash','./tools/qa/local_features/check.sh',*[value for feature in ['chat','auth','connection_status','screen','voice'] for value in ['--feature',feature]],'--platform','web','--base','87a0bdccbfc1d9194de6015ac3aea78d66726ac1','--real-stack'],cwd=root,env=env)
+raise SystemExit(result.returncode)

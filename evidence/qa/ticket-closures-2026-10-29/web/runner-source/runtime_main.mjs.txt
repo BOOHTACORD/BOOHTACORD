@@ -1,0 +1,38 @@
+import assert from 'node:assert/strict'
+import { readFileSync, writeFileSync } from 'node:fs'
+import { chromium, login, api, status, expect } from '../../tools/qa/client_lifecycle/request.mjs'
+import { navigation } from './runtime_navigation.mjs'
+import { images } from './runtime_images.mjs'
+const input=JSON.parse(readFileSync(process.env.QA_INPUT,'utf8'))
+assert.equal(process.env.QA_ORIGIN,'https://localhost:4810')
+const browser=await chromium.launch({headless:false,args:['--no-sandbox']})
+const report={status:'FAIL',browser:browser.version(),platform:process.platform,headed:true,voiceJoins:0,microphoneCalls:0}
+let stage='login',page
+try {
+  const context=await browser.newContext({ignoreHTTPSErrors:true,viewport:{width:1440,height:900},acceptDownloads:true})
+  await context.addInitScript(()=>{globalThis.qaMicCalls=0;const old=navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);navigator.mediaDevices.getUserMedia=(...args)=>{globalThis.qaMicCalls++;return old(...args)}})
+  context.on('request',r=>{if(r.method()==='POST'&&/\/voice\/(join|leases)|\/voice-leases/.test(new URL(r.url()).pathname))report.voiceJoins++})
+  page=await context.newPage();page.setDefaultTimeout(15000)
+  await login(page,'qa_admin',input.password)
+  stage='fixture'
+  const category=await api(page,'/admin/categories','POST',{name:'ClosureLab'});status(category,201)
+  const channel=await api(page,`/admin/categories/${category.body.id}/channels`,'POST',{name:'ClosureText',kind:'TEXT'});status(channel,201)
+  const ids=[]
+  for(const login of ['qa_sender','qa_peer','qa_outsider']) {
+    const response=await api(page,'/auth/register','POST',{login,password:input.password});status(response,201);ids.push(response.body.id)
+  }
+  const fixture={channel:channel.body.id,category:category.body.id,ids}
+  await page.reload();await expect(page.getByTestId('app-shell')).toBeVisible()
+  stage='images';await images(browser,page,input,report,fixture)
+  stage='navigation';await navigation(page,input,report,fixture)
+  report.microphoneCalls=await page.evaluate(()=>globalThis.qaMicCalls)
+  assert.equal(report.voiceJoins,0);assert.equal(report.microphoneCalls,0)
+  report.status='PASS'
+} catch(error) {
+  report.failed_stage=stage;report.error=String(error).slice(0,1200)
+  if(page) await page.screenshot({path:input.directory+'/runtime-failure.png'}).catch(()=>{})
+  process.exitCode=1
+} finally {
+  writeFileSync(input.directory+'/browser-result.json',JSON.stringify(report,null,2)+'\n')
+  await browser.close()
+}

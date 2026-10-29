@@ -1,0 +1,31 @@
+import assert from 'node:assert/strict'
+import { api, expect, channel } from '../../tools/qa/client_lifecycle/request.mjs'
+export async function quickjump(page,report,fixture) {
+  await page.setViewportSize({width:1440,height:900})
+  const ids=[]
+  for(let repeat=0;repeat<2;repeat++) {
+    await page.locator('.guild-search-button').focus();await page.keyboard.press('Control+k')
+    await page.getByRole('group',{name:'Тип поиска'}).getByRole('button',{name:'Каналы и люди',exact:true}).click()
+    const quick=page.getByTestId('quick-jump-panel')
+    await quick.getByRole('searchbox',{name:'Найти канал или человека',exact:true}).fill('qa_peer')
+    const target=quick.getByRole('button').filter({hasText:'qa_peer'})
+    for(let i=0;i<5&&await target.count()===0;i++) {
+      const more=quick.getByRole('button',{name:'Показать ещё участников',exact:true})
+      if(!await more.isVisible())break
+      await more.click();await expect(more).toBeEnabled()
+    }
+    await expect(target).toHaveCount(1);await target.click();await expect(quick).toBeHidden()
+    const list=await api(page,'/direct-messages');assert.equal(list.status,200)
+    const dialogs=list.body.direct_messages.filter(dm=>dm.other_participant_id===fixture.ids[1])
+    assert.equal(dialogs.length,1);ids.push(dialogs[0].id)
+  }
+  assert.equal(ids[0],ids[1])
+  await page.locator('.guild-search-button').focus();await page.keyboard.press('Control+k')
+  await page.getByRole('group',{name:'Тип поиска'}).getByRole('button',{name:'Каналы и люди',exact:true}).click()
+  const quick=page.getByTestId('quick-jump-panel')
+  await quick.getByRole('searchbox',{name:'Найти канал или человека',exact:true}).fill('ClosureText')
+  await quick.getByRole('button',{name:'#ClosureText Текстовый канал',exact:true}).click()
+  await expect(quick).toBeHidden()
+  await expect(page.getByRole('heading',{name:'ClosureText',exact:true})).toBeVisible()
+  report.quickjump={member_then_existing_dm_single_result:true,dm_id_reused:true,channel_navigation:true}
+}

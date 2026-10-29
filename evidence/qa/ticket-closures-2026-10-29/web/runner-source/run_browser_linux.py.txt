@@ -1,0 +1,62 @@
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+
+ROOT=Path('/var/tmp/boohtacord-qa-close-5925815800ab2026/repo')
+SOURCE=Path('/mnt/c/Users/egkur/.codex/worktrees/close-qa-regressions/BOOHTACORD')
+BASE=Path('/var/tmp/boohtacord-qa-tools-5925815800ab2026')
+config=BASE/'docker-config'
+plugins=config/'cli-plugins'
+plugins.mkdir(parents=True,exist_ok=True)
+buildx=plugins/'docker-buildx'
+if not buildx.exists(): buildx.symlink_to(SOURCE/'.out/closure/sdk/docker-buildx')
+os.environ.update(PATH=str(BASE/'bin')+':'+str(BASE/'node-v24.18.0-linux-x64/bin')+':'+os.environ['PATH'],DOCKER_HOST='unix:///var/run/docker.sock',DOCKER_CONTEXT='default',DOCKER_CONFIG=str(config),DOCKER_BUILDKIT='1',VITE_PUBLIC_ORIGIN='https://localhost:4810')
+os.chdir(ROOT)
+assert subprocess.check_output(['git','status','--porcelain'],text=True).strip()==''
+subprocess.run(['git','read-tree','--reset','-u','d05922d7475b6e8f7774f72b9884a3517a747f9c'],check=True)
+subprocess.run(['git','update-ref','refs/heads/qa-runtime','d05922d7475b6e8f7774f72b9884a3517a747f9c'],check=True)
+assert subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()=='ebeac23a5fc9b9d989318f2d80e7f353faf5033c'
+sys.path.insert(0,str(ROOT))
+from tools.qa.client_lifecycle.stack import Stack as Base
+
+class Stack(Base):
+    def start(self):
+        self.preview=self.work/'screen-previews'
+        self.preview.mkdir()
+        self.preview.chmod(0o777)
+        self.environment['SCREEN_PREVIEW_DIRECTORY']='/screen-previews'
+        super().start()
+    def container(self,role,image,*args,**kwargs):
+        if role=='api': args=(*args,'-v',str(self.preview)+':/screen-previews')
+        super().container(role,image,*args,**kwargs)
+
+directory=ROOT/'.out/closure'
+directory.mkdir(exist_ok=True)
+for p in (SOURCE/'.out/closure').glob('runtime_*.mjs'):
+    shutil.copy2(p,directory/p.name)
+shutil.copytree(SOURCE/'.out/closure/fixtures',directory/'fixtures',dirs_exist_ok=True)
+subprocess.run(['npm','run','build'],cwd=ROOT/'clients/web',check=True,stdout=subprocess.DEVNULL)
+with tempfile.TemporaryDirectory(prefix='owned-closure-',dir=ROOT/'.out') as temporary:
+    stack=Stack(ROOT,Path(temporary))
+    report={'source_revision':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'status':'FAIL'}
+    try:
+        stack.start()
+        print('stage=owned-full-app-ready',flush=True)
+        private=Path(temporary)/'input.json'
+        private.write_text(json.dumps({'password':stack.password,'directory':str(directory)}))
+        private.chmod(0o600)
+        env=dict(os.environ,QA_INPUT=str(private),QA_ORIGIN='https://localhost:4810',QA_DB_OWNER=stack.owner)
+        result=subprocess.run(['xvfb-run','-a','--server-args=-screen 0 1600x1200x24','node',str(directory/'runtime_main.mjs')],env=env)
+        report['status']='PASS' if result.returncode==0 else 'FAIL'
+        report['api_image_id']=subprocess.check_output(['docker','image','inspect',stack.image,'--format','{{.Id}}'],text=True).strip()
+    finally:
+        stack.close()
+        report['owned_resources_removed']=True
+        (directory/'stack-result.json').write_text(json.dumps(report,indent=2)+'\n')
+        for p in directory.glob('*.json'): shutil.copy2(p,SOURCE/'.out/closure'/('linux-'+p.name))
+        for p in directory.glob('*.png'): shutil.copy2(p,SOURCE/'.out/closure'/p.name)
+    assert report['status']=='PASS', 'Runtime failure; see sanitized case report'

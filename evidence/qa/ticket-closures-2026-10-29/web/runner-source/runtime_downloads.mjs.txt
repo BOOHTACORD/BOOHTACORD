@@ -1,0 +1,52 @@
+import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import { expect } from '../../tools/qa/client_lifecycle/request.mjs'
+export const digest=bytes=>createHash('sha256').update(bytes).digest('hex')
+export function format(bytes) {
+  if(bytes.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10])))return 'PNG'
+  if(bytes[0]===255&&bytes[1]===216&&bytes[2]===255)return 'JPEG'
+  if(/^GIF8[79]a$/.test(bytes.subarray(0,6).toString()))return 'GIF'
+  return 'UNKNOWN'
+}
+export async function download(page,link,expected) {
+  const waiting=page.waitForEvent('download')
+  await link.click();const download=await waiting
+  try {
+    assert.equal(await download.failure(),null)
+    const bytes=readFileSync(await download.path())
+    assert.equal(digest(bytes),expected.sha256)
+    assert.equal(format(bytes),expected.format)
+    assert.equal(download.suggestedFilename(),expected.filename)
+    return {bytes:bytes.length,sha256:digest(bytes),format:format(bytes),filename:download.suggestedFilename(),actual_download_event:true}
+  } finally { await download.delete() }
+}
+export async function statuses(context,path) {
+  const results=[]
+  for(const suffix of ['','/preview']) {
+    const response=await context.request.get('https://localhost:4810/api/v1'+path+suffix)
+    results.push(response.status());await response.dispose()
+  }
+  return results
+}
+export async function viewer(page,input,expected,row) {
+  const opener=page.getByRole('button',{name:'Открыть изображение '+expected.filename,exact:true})
+  await opener.click()
+  const dialog=page.getByRole('dialog',{name:'Просмотр изображения '+expected.filename,exact:true})
+  const image=dialog.locator('img')
+  await expect(image).toBeVisible()
+  await expect.poll(()=>image.evaluate(img=>img.complete&&img.naturalWidth>0)).toBe(true)
+  row.preview_pixels=await image.evaluate(img=>[img.naturalWidth,img.naturalHeight])
+  assert.deepEqual(row.preview_pixels,expected.pixels)
+  for(const shortcut of ['Control+k','Meta+k']) {
+    await page.keyboard.press(shortcut)
+    await expect(dialog).toBeVisible()
+    await expect(page.locator('#search-aside-panel')).toBeHidden()
+  }
+  row.content_dialog_shortcuts_ignored=true
+  row.viewer=await download(page,dialog.getByRole('link',{name:'Скачать',exact:true}),expected)
+  await page.screenshot({path:input.directory+`/image-${row.scope}-${expected.format}.png`})
+  await page.keyboard.press('Escape');await expect(dialog).toBeHidden();await expect(opener).toBeFocused()
+  row.escape_focus_return=true
+  row.card=await download(page,page.locator('.attachment-card__download').filter({has:page.locator('svg')}).and(page.getByRole('link',{name:new RegExp('^Скачать '+expected.filename.replace('.','\\.')+',')})),expected)
+}

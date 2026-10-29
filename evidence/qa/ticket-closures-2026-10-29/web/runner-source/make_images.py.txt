@@ -1,0 +1,18 @@
+from pathlib import Path
+from PIL import Image, ImageDraw
+import hashlib,json
+root=Path(__file__).parent/'fixtures'
+root.mkdir(exist_ok=True)
+a=Image.new('RGB',(64,48),'#2244cc')
+ImageDraw.Draw(a).rectangle((0,0,31,47),fill='#ee5522')
+a.save(root/'closure.png')
+a.save(root/'closure.jpg',quality=92,subsampling=0)
+b=Image.new('RGB',(32,32),'#ee4422');c=Image.new('RGB',(32,32),'#11cc66')
+b.save(root/'closure.gif',save_all=True,append_images=[c],duration=250,loop=0)
+rows=[]
+for p in root.iterdir():
+    if p.suffix not in ['.png','.jpg','.gif']: continue
+    with Image.open(p) as im:
+        rows.append({'filename':p.name,'format':im.format,'mime':Image.MIME[im.format],'pixels':im.size,'frames':getattr(im,'n_frames',1),'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size})
+(root/'metadata.json').write_text(json.dumps(rows,indent=2)+'\n',encoding='utf-8')
+print(json.dumps(rows))

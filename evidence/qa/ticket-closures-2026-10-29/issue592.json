@@ -1,0 +1,79 @@
+{
+  "issue": 592,
+  "status": "PASS_MERGED_HOSTED_DELIVERED",
+  "pr": 604,
+  "head": "ec142dda1191faf2476afd7ec85d564b869eed35",
+  "tested_merge": "f4b5996d3eb6f3fc9a054df1d59bd6ceafd323d5",
+  "master": "87a0bdccbfc1d9194de6015ac3aea78d66726ac1",
+  "invariant": "Ordinary UPDATE/DELETE affect one user; support identity changes and support session INSERT/UPDATE remain forbidden with SQLSTATE 42501.",
+  "implementation": "Forward migration 0065; historical 0056 SHA256 e985172eba4f0f72756068b6c1930c7480695025ae22d86bf57f3b5702a8acc0 unchanged.",
+  "local": {
+    "platform": "Windows 11 + disposable PostgreSQL 17.6",
+    "server_version_num": 170006,
+    "red": "Two behavior tests fail with DELETE 0,nil; security fence test passes.",
+    "green": "Migration package: 9 top-level + 2 subtests pass; no skips.",
+    "command": "cd backend && go test -json -count=1 ./internal/database/migrate (TEST_DATABASE_URL points to owned disposable PostgreSQL17.6)"
+  },
+  "hosted": {
+    "run_id": 40946154287,
+    "attempt": 1,
+    "conclusion": "success",
+    "ci_required": "success",
+    "database_job": 123702010627,
+    "backend_fanin_job": 123705066742,
+    "actual_profiles": [
+      "lifecycle",
+      "next",
+      "sfu"
+    ],
+    "backend_test_completion_events": 1694,
+    "test_fail": 0,
+    "test_skip": 0,
+    "guard_tests": [
+      {
+        "test": "TestSupportServiceGuardAllowsOrdinaryDelete",
+        "status": "PASS"
+      },
+      {
+        "test": "TestSupportServiceGuardUpgradeAndRepeatedStartup",
+        "status": "PASS"
+      },
+      {
+        "test": "TestSupportServiceGuardRetainsIdentityAndSessionFences",
+        "status": "PASS"
+      }
+    ],
+    "artifact": {
+      "id": 12929626827,
+      "zip_sha256": "2f3722dd494e4148a525172745aed0d6f9c0b663725a05f18d42f71073eaf398",
+      "backend_jsonl_sha256": "79a0494058692e60e10a8d1bb60ad803c6a6b9796521c3609f5278a6ac51b382"
+    },
+    "path_filtered_jobs": [
+      "frontend",
+      "flutter",
+      "windows"
+    ],
+    "path_filtered_reason": "DB-only source packet; actual media/security/runtime gates executed."
+  },
+  "scope_limits": [
+    "No production SQL or account deletion API exercised.",
+    "No native device/media acceptance claimed by the SQL regression."
+  ],
+  "results": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40946154287",
+  "cleanup": "Disposable local PostgreSQL removed; no voice_it schemas remained; existing nine Windows QA services untouched.",
+  "delivery": {
+    "build_run_id": 40948226975,
+    "deploy_run_id": 40949776576,
+    "attempt": 1,
+    "conclusion": "success",
+    "artifact_id": 12931790609,
+    "artifact_zip_sha256": "d1d4e2b919d1c9498c727e14f92ce7f9fccdbec6bd3f41c5c3497b5f5fd349d3",
+    "original_receipt_sha256": "5fc96555ba5aedee107ee645d963a4cc9a07db7924a497d8b03e7ae72fee44c3",
+    "readback": "FRESH_READBACK_VERIFIED",
+    "health": "PASS",
+    "persistent_volumes": "PASS",
+    "migration_inventory_sha256": "b601a136043a9adcad627d19aa92d4f7ad1d7ae711bf44a1e8871e5f537c6382",
+    "schema_relation": "changed-with-migration-inventory",
+    "receipt": "delivery592.json"
+  }
+}

@@ -1,0 +1,34 @@
+import assert from 'node:assert/strict'
+import { expect, openNavigation, channel } from '../../tools/qa/client_lifecycle/request.mjs'
+import { quickjump } from './runtime_quickjump.mjs'
+export async function navigation(page,input,report,fixture) {
+  report.navigation=[]
+  for(const width of [1440,800,390]) {
+    await page.setViewportSize({width,height:900})
+    await channel(page,'ClosureText')
+    for(const modifier of ['Control','Meta']) {
+      await openNavigation(page)
+      const launcher=page.locator('.guild-search-button')
+      await launcher.focus();await expect(launcher).toBeFocused()
+      await page.keyboard.press(modifier+'+k')
+      await expect(page.getByTestId('search-panel')).toBeVisible()
+      await page.screenshot({path:input.directory+`/navigation-${width}-${modifier}.png`})
+      await page.keyboard.press('Escape')
+      await expect(page.getByTestId('search-panel')).toBeHidden()
+      const focusTarget=width>=1024?launcher:page.getByRole('button',{name:'Открыть навигацию',exact:true})
+      await expect(focusTarget).toBeFocused();await expect(focusTarget).toBeVisible()
+      report.navigation.push({width,modifier,opens:true,escape:true,focus_return:width>=1024?'launcher':'visible_navigation_toggle'})
+    }
+    await channel(page,'ClosureText')
+    const editor=page.locator('#message-body')
+    await editor.fill('QA unsent');await editor.focus();await page.keyboard.press('Control+k')
+    await expect(page.getByTestId('search-panel')).toBeHidden()
+    await expect(editor).toHaveValue('QA unsent');await editor.fill('')
+    await openNavigation(page)
+    const launcher=page.locator('.guild-search-button');await launcher.focus()
+    await launcher.evaluate(target=>target.dispatchEvent(new KeyboardEvent('keydown',{key:'k',ctrlKey:true,isComposing:true,bubbles:true})))
+    await expect(page.getByTestId('search-panel')).toBeHidden()
+  }
+  assert.equal(report.navigation.length,6)
+  await quickjump(page,report,fixture)
+}
