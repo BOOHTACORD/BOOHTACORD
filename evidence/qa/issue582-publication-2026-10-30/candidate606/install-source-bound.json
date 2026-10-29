@@ -1,0 +1,47 @@
+{
+  "at_utc": "2026-10-29T22:46:47.066924+00:00",
+  "source_revision": "de4c30b26bc61aeac5c885ae805634a082eefe5e",
+  "run_id": 40965177708,
+  "run_attempt": 1,
+  "artifact_id": 12939500252,
+  "apk_sha256": "f63613dd0dc92cca96737dd8235fed728c422da959228008bf6ff3e6b2afbaca",
+  "prior_apk_sha256": "2eace5a664b864d412590b96d1fc2b717919a1a560a1d5566e19700630f7981b",
+  "test_source_hashes_verified": 10,
+  "permissions_before": {
+    "android.permission.RECORD_AUDIO": {
+      "granted": true,
+      "flags": " USER_SET|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED"
+    },
+    "android.permission.POST_NOTIFICATIONS": {
+      "granted": true,
+      "flags": " USER_SET|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED"
+    }
+  },
+  "install_command": "adb -s <authorized-device> install -r <verified signed ARM64 APK>",
+  "data_clear": false,
+  "permission_grant_flag": false,
+  "status": "PASS_INSTALL_SOURCE_BINDING_PHYSICAL_SCENARIO_PENDING",
+  "replacement_install_success": true,
+  "fresh_installed_pull_matches_candidate": true,
+  "permissions_after": {
+    "android.permission.RECORD_AUDIO": {
+      "granted": true,
+      "flags": " USER_SET|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED"
+    },
+    "android.permission.POST_NOTIFICATIONS": {
+      "granted": true,
+      "flags": " USER_SET|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED"
+    }
+  },
+  "permission_grants_preserved": true,
+  "foreground_app_verified": true,
+  "version_code": 2083,
+  "version_code_limit": "Same code2083 as prior candidate; APK bytes, protected source contract and fresh installed pull distinguish them.",
+  "finished_at_utc": "2026-10-29T22:46:56.354452+00:00",
+  "original_receipt_sha256": "4fdb4452502d6a2d9e13e60a96847ae6410c5b32ef971d67f7c90f6f357d7009",
+  "independent_apksigner_log_sha256": "528bd95255d32207f484cbf8b124064d44bea9ca1943d44c0c3db629e063c7ee",
+  "observer": "Root physical tester independently verified, installed and freshly pulled device APK; release agent copied sanitized receipt only.",
+  "limits": [
+    "Source-bound installation proof only; actual fixed582 geometry/Send/PCreceipt/voice/draft/selection acceptance remains PENDING."
+  ]
+}

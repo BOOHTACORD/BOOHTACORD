@@ -368,5 +368,69 @@
     "No firstdecode579 or long native realtime banner cause established.",
     "Generic native/device gates remain pending; component and hosted CI are not physical acceptance.",
     "Earlier f289 dependency/publisher failures retained; no gate, source pin or screenshot baseline weakened."
-  ]
+  ],
+  "master_quality": {
+    "run_id": 40965165659,
+    "attempt": 1,
+    "source_revision": "de4c30b26bc61aeac5c885ae805634a082eefe5e",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 123767680210,
+        "name": "changes",
+        "conclusion": "success"
+      },
+      {
+        "id": 123767756916,
+        "name": "flutter / android",
+        "conclusion": "success"
+      },
+      {
+        "id": 123767756924,
+        "name": "windows / windows-native-unit",
+        "conclusion": "success"
+      },
+      {
+        "id": 123767756948,
+        "name": "flutter / android-kotlin",
+        "conclusion": "success"
+      },
+      {
+        "id": 123767756956,
+        "name": "flutter / macos",
+        "conclusion": "success"
+      },
+      {
+        "id": 123767757009,
+        "name": "windows / windows-build",
+        "conclusion": "success"
+      },
+      {
+        "id": 123767757057,
+        "name": "flutter / dart",
+        "conclusion": "success"
+      },
+      {
+        "id": 123770633537,
+        "name": "windows / windows-gui-sfu",
+        "conclusion": "success"
+      },
+      {
+        "id": 123773154510,
+        "name": "flutter / flutter",
+        "conclusion": "success"
+      },
+      {
+        "id": 123773815235,
+        "name": "windows / windows",
+        "conclusion": "success"
+      },
+      {
+        "id": 123773886698,
+        "name": "native-required",
+        "conclusion": "success"
+      }
+    ]
+  }
 }
