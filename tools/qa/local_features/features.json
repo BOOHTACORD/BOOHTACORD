@@ -169,7 +169,10 @@
       "test/realtime_scope/delivery_test.dart",
       "test/realtime_scope/retry_policy_test.dart",
       "test/workspace_connection_status_test.dart",
-      "test/voice_roster_state/app_composition_test.dart"
+      "test/voice_roster_state/app_composition_test.dart",
+      "test/realtime_scope/open_failure_test.dart",
+      "test/realtime_scope/late_failure_test.dart",
+      "test/realtime_scope/socket_recovery_integration_test.dart"
     ],
     "acceptance": {
       "recovery_panel": {
@@ -197,6 +200,12 @@
           "clients/flutter/test/admin_telemetry/api_test.dart"
         ],
         "scope": "Owned real Go/PostgreSQL/TLS runtime: durable TEXT/DM replay after socket closure, edits/deletes/social state, ordinary second account, reachable administrator telemetry; Android and iOS have separate runs. Physical media remains NOT_RUN."
+      },
+      "issue607": {
+        "focused": "clients/flutter/test/realtime_scope/open_failure_test.dart",
+        "cancellation": "clients/flutter/test/realtime_scope/late_failure_test.dart",
+        "actual_socket": "clients/flutter/test/realtime_scope/socket_recovery_integration_test.dart",
+        "scope": "Socket-open exceptions schedule one next bounded retry only after releasing connecting. Real owned loopback HTTP503 then WebSocket101/connection.ready requires automatic recovery. Closed session/server/installation/dispose boundaries do not retry. Not a production fault, Go ACL or native media acceptance."
       }
     },
     "parity": [
@@ -239,13 +248,13 @@
       }
     ],
     "parity_review": {
-      "issue": 582,
+      "issue": 607,
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to member rows; reconnect and retry policies remain unchanged. 2026-10-24 (#518): Flutter adds the Web-style independent connection recovery card, driven by existing chat/voice/roster state; Android/iOS share the widget and the native workspace smoke is recorded separately. 2026-10-25 (#554): Notification delivery capability uses existing realtime composition; chat/voice/roster retry and recovery policies are preserved. Web and shared Flutter local regressions passed; physical Android/iOS and provider delivery remain NOT_RUN. 2026-10-30 (#582): shared native short-landscape keyboard layout keeps recovery retry and existing connected voice/screen controls in one row; no action/capture callback changes. Android/iOS WorkspaceScreen geometry/draft/selection widgets and nearest123 workspace/navigation tests cover preservation. Vue unchanged; physical fixed APK, iOS/native media and capacity remain independent pending gates."
+      "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to member rows; reconnect and retry policies remain unchanged. 2026-10-24 (#518): Flutter adds the Web-style independent connection recovery card, driven by existing chat/voice/roster state; Android/iOS share the widget and the native workspace smoke is recorded separately. 2026-10-25 (#554): Notification delivery capability uses existing realtime composition; chat/voice/roster retry and recovery policies are preserved. Web and shared Flutter local regressions passed; physical Android/iOS and provider delivery remain NOT_RUN. 2026-10-30 (#582): shared native short-landscape keyboard layout keeps recovery retry and existing connected voice/screen controls in one row; no action/capture callback changes. Android/iOS WorkspaceScreen geometry/draft/selection widgets and nearest123 workspace/navigation tests cover preservation. Vue unchanged; physical fixed APK, iOS/native media and capacity remain independent pending gates. 2026-10-30 (#607): shared native Flutter catch recovery releases connecting before scheduling one backoff retry; current-scope checks, cursor, manual retry and protocol-ready reset preserved. Flutter19 nearest tests including actual owned Dart WebSocket503→101 PASS locally. Vue Web unchanged; production banners are observations, their exact cause and full physical/media QA remain unproven."
     }
   },
   "voice": {

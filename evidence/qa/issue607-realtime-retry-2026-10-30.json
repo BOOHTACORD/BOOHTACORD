@@ -1,0 +1,65 @@
+{
+  "issue": 607,
+  "status": "PASS_LOCAL_HOSTED_MASTER_DELIVERY_PENDING",
+  "base": "de4c30b26bc61aeac5c885ae805634a082eefe5e",
+  "platform": "Windows / Flutter3.47.7 / Dart3.13.5 / frameworkabaf9c523780a608bd46686fd5e53740a07077f8",
+  "invariant": "A failed current-scope socket-open releases connecting and schedules exactly one bounded retry; stale session/server/installation/dispose scopes never retry.",
+  "command": "cd clients/flutter; flutter test --no-pub test/realtime_scope --reporter expanded",
+  "mandatory_when": "Realtime lifecycle connect/retry/admission/session ownership changes",
+  "results": {
+    "qualified_RED": "Retained open_failure test:1FAIL/1PASS, retry expectedactive/actualnull; real standalone socket fixture also RED on missing retry.",
+    "GREEN": "19 lifecycle/delivery/retry tests PASS,0skip; actual loopback HttpServer returned503 then101; native Dart WebSocket reached connection.ready automatically, opens2, attempt0, no pending retry/ready timer.",
+    "cleanup": "Controller/subscription/socket/server closed in finally; no persistent owned service or external network fixture.",
+    "analysis": "flutter analyze --no-pub --no-fatal-infos lib/src/features/realtime/lifecycle/connect.dart test/realtime_scope: exit0"
+  },
+  "source_LF_SHA256": {
+    "clients/flutter/lib/src/features/realtime/lifecycle/connect.dart": "ef479e90fb2672bd3604bbee4ce01784ec4cd211fc37cb14fe8671074a4b949f",
+    "clients/flutter/test/realtime_scope/open_failure_test.dart": "32ce1c047689b3df89f5f95e75761ea8648fe83e4fbc1ec1859cb5fbc31914ba",
+    "clients/flutter/test/realtime_scope/late_failure_test.dart": "10a530a9613068fd78e4a805212476f1bbc82ea4621f2d17ba5abe50f18dc093",
+    "clients/flutter/test/realtime_scope/socket_recovery_integration_test.dart": "e2210bc988506e373cd4b2533cb57eba450b6b698bb6f7756ba262897dfd4b60",
+    "tools/qa/local_features/features.json": "d2806c25f0845f488b67a1f0e5f9e985bfe6e5bb62159909376a857b6c211d91"
+  },
+  "log_LF_SHA256": {
+    "open-red.log": "4420c4dc7de95333fb66c2b27caf0b5e1fc6fdc0c6bfc4fc52005bdb2f279d6f",
+    "real-socket-red.log": "00628675038b1f9119643d2d2ce5780a167795af4810756a6758a3c3a6a1474e",
+    "final-nearest-green.log": "05720f0ecac0f8be4b6bdf518aba888e239b232d0e5ae5eae3348d087a5e3929",
+    "analyze.log": "fe05a96813fd46018f923fe636e09b96296fd751431bf34d8d891001efa80ab5"
+  },
+  "limits": [
+    "Actual socket fixture is isolated Dart HttpServer/WebSocket, not Go backend auth/ACL acceptance.",
+    "No production fault/load, router/network setting or real payload logging.",
+    "Native Android/Windows long recovering banners observed separately; this cause is not proven for those production sessions.",
+    "Full physical/media/platform QA62/240/303 and43 consolidations untouched."
+  ],
+  "integration": {
+    "original_qualified_base": "4cdc3dc8b69e210dc83e47714287562eab9f4f86",
+    "original_packet": "58bd8f651d4bce3368bd51f7ea58eb6532854cbb",
+    "rebased_onto": "de4c30b26bc61aeac5c885ae805634a082eefe5e",
+    "core_realtime_source_and_tests_unchanged": true,
+    "registry_merge": [
+      {
+        "path": "connection_status.parity_review.issue",
+        "method": "latest review link607; prior scope retained"
+      },
+      {
+        "path": "connection_status.parity_review.scope",
+        "method": "preserved both appended review scopes"
+      }
+    ],
+    "combined_source_native_checks": {
+      "tests": {
+        "command": "flutter test --no-pub test/realtime_scope --reporter expanded",
+        "passed": 19,
+        "failed": 0,
+        "skipped": 0,
+        "log_LF_SHA256": "05720f0ecac0f8be4b6bdf518aba888e239b232d0e5ae5eae3348d087a5e3929"
+      },
+      "analysis": {
+        "command": "flutter analyze --no-pub --no-fatal-infos lib/src/features/realtime/lifecycle/connect.dart test/realtime_scope",
+        "exit_code": 0,
+        "result": "No issues found",
+        "log_LF_SHA256": "f425a9a14934d628e50ddc68c10ad0824a28b3d1194d8593c15703f6424f192e"
+      }
+    }
+  }
+}

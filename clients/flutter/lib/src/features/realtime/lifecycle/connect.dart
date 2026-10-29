@@ -30,6 +30,7 @@ extension RealtimeConnection on RealtimeController {
     );
     handshake = flow;
     flow.step('connect');
+    var failed = false;
     try {
       final opened = await flow.run(
         () => api.openRealtime(after: delivery.cursor),
@@ -58,9 +59,12 @@ extension RealtimeConnection on RealtimeController {
       );
     } catch (_) {
       flow.finish('failed', reason: 'network');
-      if (active()) scheduleRetry();
+      failed = true;
     } finally {
-      if (active()) connecting = false;
+      if (active()) {
+        connecting = false;
+        if (failed) scheduleRetry();
+      }
     }
   }
 }
