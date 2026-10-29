@@ -1,0 +1,67 @@
+{
+  "issue": 582,
+  "status": "PASS_SCOPED_SEND_PC_MEMBERSHIP_CLEANUP_VISUAL_FIX_PENDING",
+  "source_revision": "de4c30b26bc61aeac5c885ae805634a082eefe5e",
+  "apk_sha256": "f63613dd0dc92cca96737dd8235fed728c422da959228008bf6ff3e6b2afbaca",
+  "invariant": "Visible native Send with landscape Gboard delivers one owned DM fixture to actual PC Web receiver without losing SHARE_TEST membership; only that author-owned fixture is deleted.",
+  "commands": [
+    "python -X utf8 .out/issue582/send606/native.py prepare",
+    "Original2340x1080 PNG review before Send",
+    "Receiver arm + BEFORE roster using exact commands in pc-receiver/launch-control.md",
+    "python -X utf8 .out/issue582/send606/native.py send",
+    "Receiver DOM/server-author/AFTER same-room roster checks",
+    "python -X utf8 .out/issue582/send606/native.py restore",
+    "python -X utf8 .out/issue582/send606/cleanup.py",
+    "Receiver exact tombstone check without refresh"
+  ],
+  "platform": "Physical Samsung SM-A576B Android16/API36,density450,font1.0,Gboard; actual headed Linux Chromium under WSL/Xvfb on this physical Windows PC. Full production Web, not Windows native client.",
+  "mandatory_when": "Closing582 Send/PC receipt/voice-membership/cleanup facets or changing short native editing shell.",
+  "results": {
+    "Send_attempts": 1,
+    "Delete_attempts": 1,
+    "geometry_overlap_pixels": 0,
+    "native_draft_cleared": true,
+    "pc_fixture_visible": true,
+    "server_author_phone_bound": true,
+    "same_SHARE_TEST_presence_before_after": true,
+    "fixture_blank_tombstone_API_and_visible_Web": true,
+    "rotation_restored": "accelerometer_rotation1/user_rotation0",
+    "voice_returned_idle": true,
+    "root_visual_review": "All4phonePNG original1080x2340/2340x1080 plus received/deleted PC1600x1200 inspected. Gboard beginsy475; Send is fully visible aboveIME. Remaining voice-row3line wrap/roomellipsis is visualFAIL already routed to611."
+  },
+  "limits": [
+    "582 remainsOPEN until corrected611signed candidate rerun.",
+    "Voice lease equality NOT_RUN: public roster has no lease field; no Android securestorage extraction.",
+    "No audibility/mediaquality/Windows-native/iOS/whole localfeature gate claim.",
+    "No refresh/navigation was used on Web between Send and receipt/deletion.",
+    "43consolidation decisions untouched.",
+    "Control document is a historical snapshot of the root-owned context retained for611; its final own-session/browser/display cleanup remains pending root completion."
+  ],
+  "artifact_SHA256": {
+    "send606\\native.py": "639b7955d2a9243c1c5d24274b9ae47d3a6688c0a761792462b4058add56ef65",
+    "send606\\cleanup.py": "b7b4c6afe486d122c788f5ea7b7ade6fe911bbe3eaa35ec2e0b46c83acb9e857",
+    "send606\\native-delete.json": "a0b249ecf49a5ff60b53e812ba3c2ccb759c524369d71d1aa053d06dd0345d03",
+    "send606\\landscape-before-send.json": "92dd53ce872125d46e6b2422b2be3e113a113c03db80612f7155650ce0335c8d",
+    "send606\\landscape-after-send.json": "6fb5e99914635687fb1fd81cbacd85be653e6f380461523d85d192a565f97318",
+    "send606\\portrait-after-send.json": "f11b6fc2f455a5ae3f8f31bde3535faae48ab488596e0fe1fa710b05b1115b06",
+    "pc-receiver\\received-run606.json": "61578be5f42e21e2045111c8d6aea2131a9eda9f256aed3c5d3d9e9f448fe07f",
+    "pc-receiver\\roster-run606-before.json": "f61f92bc5fcfd4f56fed7489e4e2b6c259a2290149e3eb131e95cfb19903a0b0",
+    "pc-receiver\\roster-run606-after.json": "2758f827e8eaeb8a1ebe435be628e026b5cbd1378aa1616d134738bc36b8ae8c",
+    "pc-receiver\\deleted-run606.json": "b0ee28d4577c7e3f45070fb3cae9da6f84b0fad454a041af245169374b89be1b",
+    "pc-receiver\\tombstone-run606.json": "54c994a231954ccf548ac485d5a977b53476556321ae1bc3105a6fbe8c5f0fc8",
+    "pc-receiver\\launch-control.md": "bbc1092f7988f8776a2f265313183374e8a3eea701893a5b35d3ed0295f34c6b"
+  },
+  "image_SHA256": {
+    "send606\\landscape-before-send.png": "a4d3131397a10a6fb45dff2163a805a27bf57499053bc0a09a7338ee3e75bc65",
+    "send606\\landscape-after-send.png": "f7e3c7655c2da0bde6aa7a02a0659e9ab70ca6696af6302c9245465be45ae969",
+    "send606\\portrait-after-send.png": "a12f706401e487162ccf9543b24deb8d8a8571c1001a4ce37181ab108a566f51",
+    "send606\\portrait-cleaned.png": "66676f2afd0675fe3df09c8bed821b0eea3881a9c87dd686a5397b17d7a00e58",
+    "pc-receiver\\private\\received-run606.png": "b56a31ba0055e66e49caec8be0549bda6c4e12b20c2065d300aafcb339fbecdc",
+    "pc-receiver\\private\\deleted-run606-deleted.png": "ebcc001032bda41b8763a7735dfee5fb6da1d75e3d0c3aac71893336117e9293"
+  },
+  "original_receipt_sha256": "52ab10962e599b48f8bca3dd0737c404f1e8545d5b9cda508bf00f3cb2ac52bd",
+  "copied_at_utc": "2026-10-29T23:27:00.433403+00:00",
+  "overall582_acceptance": "PENDING_CORRECTED611_SIGNED_PHYSICAL_RERUN",
+  "source_owner": "Root phone tester plus owned browser receiver; release agent copied sanitized evidence only.",
+  "receiver_control_document_sha256": "bbc1092f7988f8776a2f265313183374e8a3eea701893a5b35d3ed0295f34c6b"
+}
