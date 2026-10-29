@@ -3,8 +3,10 @@ import '../../support_contact/publication.dart';
 import 'history_list/handler.dart';
 import 'composer_region/handler.dart';
 import '../../error_banner/component.dart';
-import '../../header/component.dart';
-import '../../header/conversation_actions.dart';
+import 'header_region/handler.dart';
+
+import 'package:boohtacord_desktop/src/features/workspace/short_viewport/policy.dart';
+
 import '../../native_bindings.dart';
 
 import '../lifecycle/context.dart';
@@ -47,71 +49,62 @@ extension WorkspaceDirectConversationStateBuildAction
             bottomLeft: Radius.circular(12),
             bottomRight: Radius.circular(12),
           );
-    return Column(
-      children: [
-        WorkspaceHeader(
-          icon: Icons.person_outline,
-          title: widget.state.directDisplayName(widget.conversation),
-          subtitle: widget.state.isSupportConversation(widget.conversation)
-              ? 'Поддержка этого сервера'
-              : 'Личный диалог',
-          mobileConversationLayout: true,
-          onToggleNavigation: widget.onToggleNavigation,
-          trailing: ConversationHeaderActions(
-            state: widget.state,
-            direct: true,
-            busy: widget.state.loadingDirectMessages,
-            onRefresh: () =>
-                widget.state.openDirectConversation(widget.conversation),
-          ),
-        ),
-        if (widget.state.isSupportConversation(widget.conversation))
-          SupportPublicationNotice(
-            state: widget.state,
-            conversation: widget.conversation,
-          ),
-        if (widget.state.error != null)
-          WorkspaceErrorBanner(message: widget.state.error!),
-        Expanded(
-          child: widget.state.loadingDirectMessages
-              ? const Center(child: CircularProgressIndicator())
-              : widget.state.directMessageHistory.isEmpty
-              ? RefreshIndicator(
-                  onRefresh: () =>
-                      widget.state.openDirectConversation(widget.conversation),
-                  child: ListView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.45,
-                        child: Center(
-                          child: Text(
-                            widget.state.isSupportConversation(
-                                  widget.conversation,
-                                )
-                                ? supportPrompt
-                                : 'Начните диалог с ${widget.conversation.displayName}',
-                            style: const TextStyle(color: GcColors.muted),
+    return LayoutBuilder(
+      builder: (context, constraints) => Column(
+        children: [
+          if (!shortNativeEditingViewport(context) ||
+              constraints.maxHeight >= 160 ||
+              widget.state.isSupportConversation(widget.conversation))
+            renderDirectConversationHeader(),
+          if (widget.state.isSupportConversation(widget.conversation))
+            SupportPublicationNotice(
+              state: widget.state,
+              conversation: widget.conversation,
+            ),
+          if (widget.state.error != null)
+            WorkspaceErrorBanner(message: widget.state.error!),
+          Expanded(
+            child: widget.state.loadingDirectMessages
+                ? const Center(child: CircularProgressIndicator())
+                : widget.state.directMessageHistory.isEmpty
+                ? RefreshIndicator(
+                    onRefresh: () => widget.state.openDirectConversation(
+                      widget.conversation,
+                    ),
+                    child: ListView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.45,
+                          child: Center(
+                            child: Text(
+                              widget.state.isSupportConversation(
+                                    widget.conversation,
+                                  )
+                                  ? supportPrompt
+                                  : 'Начните диалог с ${widget.conversation.displayName}',
+                              style: const TextStyle(color: GcColors.muted),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                  )
+                : renderDirectConversationHistoryList(
+                    compact,
+                    directHistoryHeaderCount,
+                    hasOlderDirectCursor,
+                    olderDirectHistoryError,
                   ),
-                )
-              : renderDirectConversationHistoryList(
-                  compact,
-                  directHistoryHeaderCount,
-                  hasOlderDirectCursor,
-                  olderDirectHistoryError,
-                ),
-        ),
-        if (!widget.state.supportPublicationBlocked(widget.conversation))
-          renderDirectConversationComposerRegion(
-            compact,
-            composerBorderRadius,
-            compactComposerActions,
           ),
-      ],
+          if (!widget.state.supportPublicationBlocked(widget.conversation))
+            renderDirectConversationComposerRegion(
+              compact,
+              composerBorderRadius,
+              compactComposerActions,
+            ),
+        ],
+      ),
     );
   }
 }

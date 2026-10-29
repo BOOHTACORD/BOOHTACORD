@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../workspace/short_viewport/policy.dart';
+
 import 'controller.dart';
 
 class RealtimeRecoveryStatus extends StatelessWidget {
@@ -11,6 +13,37 @@ class RealtimeRecoveryStatus extends StatelessWidget {
     builder: (_, _) {
       if (controller.connected || controller.attempt == 0)
         return const SizedBox.shrink();
+      if (shortNativeEditingViewport(context)) {
+        return Material(
+          color: Theme.of(context).colorScheme.surfaceContainerHigh,
+          child: Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Semantics(
+                    liveRegion: true,
+                    child: Text(
+                      controller.attempt >= 5
+                          ? 'Сервер пока недоступен'
+                          : 'Восстанавливаем подключение…',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ),
+              IconButton(
+                tooltip: 'Повторить подключение',
+                onPressed: controller.connecting || controller.socket != null
+                    ? null
+                    : controller.retryNow,
+                icon: const Icon(Icons.refresh),
+              ),
+            ],
+          ),
+        );
+      }
       return Material(
         color: Theme.of(context).colorScheme.surfaceContainerHigh,
         child: Padding(
