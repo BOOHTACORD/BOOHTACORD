@@ -1,0 +1,162 @@
+{
+  "source": "de4c30b26bc61aeac5c885ae805634a082eefe5e",
+  "apk_sha256": "f63613dd0dc92cca96737dd8235fed728c422da959228008bf6ff3e6b2afbaca",
+  "cases": [
+    {
+      "stage": "portrait-voice-before",
+      "raster": [
+        1080,
+        2340
+      ],
+      "send": [
+        923,
+        1820,
+        1058,
+        1955
+      ],
+      "leave": [
+        911,
+        2141,
+        1046,
+        2276
+      ],
+      "overlap_pixels": 0,
+      "draft_length": 0,
+      "draft_matches_fixture": false,
+      "voice_UI": "approved SHARE_TEST connected",
+      "screenshot_sha256": "052791eebbe0eec630f68fe03d2bfea164d853149d9d2932802d4e0f234e25f9",
+      "ime_visually_shown": false,
+      "root_original_resolution_review": true
+    },
+    {
+      "stage": "portrait-voice-ime",
+      "raster": [
+        1080,
+        2340
+      ],
+      "send": [
+        923,
+        1010,
+        1058,
+        1145
+      ],
+      "leave": [
+        911,
+        1331,
+        1046,
+        1466
+      ],
+      "overlap_pixels": 0,
+      "draft_length": 18,
+      "draft_matches_fixture": true,
+      "voice_UI": "approved SHARE_TEST connected",
+      "screenshot_sha256": "84dc162f580151c4b54dbe9d5050acb374f3637abf530aa9f95c212be987a19b",
+      "ime_visually_shown": true,
+      "root_original_resolution_review": true
+    },
+    {
+      "stage": "landscape-voice-ime",
+      "raster": [
+        2340,
+        1080
+      ],
+      "send": [
+        2183,
+        303,
+        2318,
+        438
+      ],
+      "leave": [
+        2194,
+        116,
+        2329,
+        251
+      ],
+      "overlap_pixels": 0,
+      "draft_length": 18,
+      "draft_matches_fixture": true,
+      "voice_UI": "approved SHARE_TEST connected",
+      "screenshot_sha256": "b3239585df997c4169249281407a63d5126d7125b3b8debf7e6dd2c05f459356",
+      "ime_visually_shown": true,
+      "root_original_resolution_review": true
+    },
+    {
+      "stage": "landscape-voice-ime-hidden",
+      "raster": [
+        2340,
+        1080
+      ],
+      "send": [
+        2183,
+        560,
+        2318,
+        695
+      ],
+      "leave": [
+        2171,
+        881,
+        2306,
+        1016
+      ],
+      "overlap_pixels": 0,
+      "draft_length": 18,
+      "draft_matches_fixture": true,
+      "voice_UI": "approved SHARE_TEST connected",
+      "screenshot_sha256": "629897e510a7001fbb1d44cd06ce1400946a0bacab78e5ccda80163408dcdce0",
+      "ime_visually_shown": false,
+      "root_original_resolution_review": true
+    },
+    {
+      "stage": "portrait-voice-restored",
+      "raster": [
+        1080,
+        2340
+      ],
+      "send": [
+        923,
+        1820,
+        1058,
+        1955
+      ],
+      "leave": [
+        911,
+        2141,
+        1046,
+        2276
+      ],
+      "overlap_pixels": 0,
+      "draft_length": 18,
+      "draft_matches_fixture": true,
+      "voice_UI": "approved SHARE_TEST connected",
+      "screenshot_sha256": "0159c5b62f3c1905000f97c5957519634d6b9086d5dac6e22fba98b5cf53d420",
+      "ime_visually_shown": false,
+      "root_original_resolution_review": true
+    }
+  ],
+  "cleanup": [
+    "only owned draft cleared",
+    "returned to initial idle voice state"
+  ],
+  "status": "FAIL_VISUAL_OVERALL_ACCEPTANCE_PENDING",
+  "IME_visibility_authority": "Original-resolution native PNG review; dumpsys heuristic diagnostic only",
+  "rotation_after": {
+    "accelerometer_rotation": "1",
+    "user_rotation": "0"
+  },
+  "original_receipt_sha256": "708805b68f6c0d6e3c36ea4414b1489e3732e72f73e352e321e63b0f7d825b03",
+  "scoped_geometry_status": "PASS_SCOPED_GEOMETRY",
+  "visual_review": {
+    "observer": "Root physical tester; all5original PNGs reviewed",
+    "status": "FAIL",
+    "affected_screenshot": "fixed606-landscape-voice-ime.png",
+    "affected_screenshot_sha256": "b3239585df997c4169249281407a63d5126d7125b3b8debf7e6dd2c05f459356",
+    "observation": "Healthy realtime leaves a blank expanded left half; connected voice with measured RTT6ms is squeezed to three lines and the room label ellipsized.",
+    "followup": "Separate582 source/candidate required; original first-fix fixture had retry attempt1/no measured RTT."
+  },
+  "limits": [
+    "Geometric non-overlap, own draft and voice UI preservation pass; this does not override the observed visual failure.",
+    "Actual Send/PCpeer receipt and final fixed candidate acceptance are not established by this geometry packet.",
+    "IME visibility comes from root image review; stale dumpsys booleans intentionally excluded.",
+    "No latency/SLO, audibility, current607 behavior or firstdecode579 claim. Raw screenshots remain private."
+  ]
+}

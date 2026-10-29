@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "issue": 607,
+  "pull_request": 608,
+  "merged_source": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0",
+  "tested_tree": "d08084beccbc1dec2268865ec63a5941989858bd",
+  "final_ci": {
+    "run_id": 40966966274,
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "head_revision": "102a58be35980dc6c657973258b4a67a85cf79ce",
+    "tested_merge": "8993ba9a36d0db1a3ccca3ca9644c1598f13beb1",
+    "jobs": [
+      {
+        "id": 123774441896,
+        "name": "changes",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774442256,
+        "name": "contracts / contracts",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774514788,
+        "name": "windows / windows-build",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774514856,
+        "name": "backend / static",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774514864,
+        "name": "windows / windows-native-unit",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774514910,
+        "name": "frontend / fast",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774514937,
+        "name": "frontend / sfu",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774514964,
+        "name": "actual / runtime (sfu)",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774514973,
+        "name": "backend / database",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774514978,
+        "name": "flutter / macos",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774514985,
+        "name": "backend / load",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774514991,
+        "name": "flutter / android",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774515022,
+        "name": "flutter / android-kotlin",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774515055,
+        "name": "actual / runtime (next)",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774515060,
+        "name": "flutter / dart",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774515087,
+        "name": "actual / runtime (lifecycle)",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774515094,
+        "name": "frontend / browser (browser-voice)",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774515139,
+        "name": "frontend / browser (browser-shell)",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774515194,
+        "name": "frontend / browser (browser-content)",
+        "conclusion": "success"
+      },
+      {
+        "id": 123774515478,
+        "name": "frontend / browser (browser-conversations)",
+        "conclusion": "success"
+      },
+      {
+        "id": 123776866994,
+        "name": "backend / backend",
+        "conclusion": "success"
+      },
+      {
+        "id": 123777094778,
+        "name": "frontend / frontend",
+        "conclusion": "success"
+      },
+      {
+        "id": 123777923898,
+        "name": "windows / windows-gui-sfu",
+        "conclusion": "success"
+      },
+      {
+        "id": 123779600077,
+        "name": "flutter / flutter",
+        "conclusion": "success"
+      },
+      {
+        "id": 123779865904,
+        "name": "actual / actual-acceptance",
+        "conclusion": "success"
+      },
+      {
+        "id": 123780927021,
+        "name": "windows / windows",
+        "conclusion": "success"
+      },
+      {
+        "id": 123780994245,
+        "name": "ci-required",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "status": "PASS_FINAL_CI_AND_MERGE_DELIVERY_AND_CANDIDATE_PENDING",
+  "limits": [
+    "Canonical native unit1692PASS/3skip and components333PASS/1skip retained separately; Android/iOS runtime BLOCKED and167-image gallery NOT_RUN.",
+    "No causal attribution for separately observed production native recovering banners.",
+    "Trusted candidate and source-bound standard delivery remain pending; issue607 remains open.",
+    "No source/gate/pin weakening; original inventory failure/cancelled run40966193610 retained in source evidence."
+  ]
+}
