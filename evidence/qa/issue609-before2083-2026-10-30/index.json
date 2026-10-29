@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "issue": 609,
+  "at_utc": "2026-10-29T22:45:20.147297+00:00",
+  "source_revision": "f370396c468d26588cb934f8262b2ee7f4801044",
+  "version_code": 2083,
+  "status": "CONFIRMED_SCOPED_OLD_NATIVE_UI_OBSERVATION",
+  "records": {
+    "passive-dm-scroll-control-before2083.json": {
+      "bytes": 3384,
+      "sha256": "213f9d71158d07f92604408c763fce8ed1508c52a9fce6df3b6ba93a20e7428b"
+    },
+    "history-boundary-strict-before2083.json": {
+      "bytes": 1262,
+      "sha256": "1a5ef095ea345fda26f109ee125bec478d1c255d70e46d905c9f584bc99a64dd"
+    }
+  },
+  "private_evidence_hashes": {
+    "passive-before-scroll-control.png": {
+      "bytes": 304438,
+      "sha256": "72589fc675df4cd0dedf8641f6689ecf2008dbe48723cf16f994a273edac42fc"
+    },
+    "passive-after-scroll-control.png": {
+      "bytes": 290635,
+      "sha256": "809754b1e307bb38cf48e0f0bd09b3b7c8c2f710a368223ef9c8e58231d17f22"
+    },
+    "passive_dm_scroll_control.py": {
+      "bytes": 7087,
+      "sha256": "d708e3245304d4915927fb9c740056afa2442b0edeba1dc5e7def9f76ecc1f11"
+    },
+    "prepare_passive_scroll_control.py": {
+      "bytes": 1404,
+      "sha256": "fb7025307d385a9d2a19c44dba4ca41dbb457b80ff4686724cb1a03eaa2f6661"
+    }
+  },
+  "observation": "Foreground DM and latest-history boundary qualified; one owned incoming POST201 remained absent in the visible UI for18.265s; one vertical scroll revealed that exact fixture without navigation or refresh.",
+  "cleanup": "Only the owned fixture deleted204 with blank tombstone readback and only the new probe session revoked; root retains private device ownership.",
+  "limits": [
+    "UI appearance and a single observed polling bound; no calibrated latency, SLO, WebSocket transport or firstdelivery timing claim.",
+    "Old signed2083/f370 only. Does not attribute behavior to current master, candidate606, fix607 or pending579.",
+    "Earlier ambiguous passive/history probes are DIAGNOSTIC/NOT_OBSERVED only and establish no product failure or boundary PASS.",
+    "Raw IDs, bodies, screenshots and executable script remain private; only sanitized receipts and hashes published.",
+    "No source, production fault/load, phone controller or PC session action performed by release agent."
+  ]
+}

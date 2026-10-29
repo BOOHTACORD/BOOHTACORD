@@ -1,0 +1,94 @@
+{
+  "at_utc": "2026-10-29T22:40:49.731722+00:00",
+  "source": "f370396c468d26588cb934f8262b2ee7f4801044",
+  "version_code": 2083,
+  "fixture_SHA256": "0b1f0700c2aabd3d311218eecc457e9082dae2892d6639a6958b5cdd158ab38c",
+  "POST_attempts": 1,
+  "UI_navigation_or_refresh_after_POST": 0,
+  "status": "NOT_OBSERVED_WITHIN_BOUNDED_UI_POLL",
+  "native_passive_fixture_visible": false,
+  "observed_UI_poll_upper_ms": 18265,
+  "one_scroll_after_passive_poll_revealed_fixture": true,
+  "only_owned_fixture_deleted_blank_tombstone": true,
+  "only_owned_new_session_revoked": true,
+  "HTTP": [
+    {
+      "alias": "one owned MEMBER normal login",
+      "method": "POST",
+      "HTTP": 204,
+      "at_utc": "2026-10-29T22:40:56.485625+00:00",
+      "response_bytes": 0,
+      "finished_at_utc": "2026-10-29T22:40:56.620152+00:00"
+    },
+    {
+      "alias": "own B session guard",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-29T22:40:56.634656+00:00",
+      "response_bytes": 91,
+      "finished_at_utc": "2026-10-29T22:40:56.665665+00:00"
+    },
+    {
+      "alias": "existing own pair binding",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-29T22:40:56.679668+00:00",
+      "response_bytes": 978,
+      "finished_at_utc": "2026-10-29T22:40:56.709812+00:00"
+    },
+    {
+      "alias": "one own B fixture",
+      "method": "POST",
+      "HTTP": 201,
+      "at_utc": "2026-10-29T22:40:59.246172+00:00",
+      "response_bytes": 321,
+      "finished_at_utc": "2026-10-29T22:40:59.302236+00:00"
+    },
+    {
+      "alias": "resolve only new owned fixture",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-29T22:41:24.185319+00:00",
+      "response_bytes": 16876,
+      "finished_at_utc": "2026-10-29T22:41:24.222819+00:00"
+    },
+    {
+      "alias": "delete only own new B fixture",
+      "method": "DELETE",
+      "HTTP": 204,
+      "at_utc": "2026-10-29T22:41:24.237823+00:00",
+      "response_bytes": 0,
+      "finished_at_utc": "2026-10-29T22:41:24.314354+00:00"
+    },
+    {
+      "alias": "own tombstone readback",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-29T22:41:24.330853+00:00",
+      "response_bytes": 6767,
+      "finished_at_utc": "2026-10-29T22:41:24.376373+00:00"
+    },
+    {
+      "alias": "revoke only new owned B session",
+      "method": "POST",
+      "HTTP": 204,
+      "at_utc": "2026-10-29T22:41:24.390382+00:00",
+      "response_bytes": 0,
+      "finished_at_utc": "2026-10-29T22:41:24.422883+00:00"
+    },
+    {
+      "alias": "own revocation readback",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-29T22:41:24.436886+00:00",
+      "response_bytes": 24,
+      "finished_at_utc": "2026-10-29T22:41:24.459893+00:00"
+    }
+  ],
+  "finished_at_utc": "2026-10-29T22:41:24.459893+00:00",
+  "limits": [
+    "Passive visible incoming UI only, not an instrumented proof of WebSocket transport or calibrated latency. Old2083 baseline, not corrected607/582 acceptance. Screenshot requires original-resolution review; raw fixture/IDs stay private. No voice join, browser/nativePC input or network fault."
+  ],
+  "original_receipt_sha256": "54fe2a25f283488132f4f05380d141addd883c9a0b41f4aca4a93482408296a7",
+  "root_visual_review": "Root physical tester inspected original-resolution Before/After PNGs; foreground DM and drawer exclusion were qualified before this probe."
+}
