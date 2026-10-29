@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "issue": 582,
+  "pull_request": 611,
+  "merged_source": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+  "tested_tree": "251b052591f35ec50aacb4ad61c7a78aa7d91b9e",
+  "parent_and_607_merge": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0",
+  "final_ci": {
+    "run_id": 40971347197,
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "head_revision": "f798972d84dc8fb5a7f39a641384f2e36b490771",
+    "tested_merge": "46e9ce9fbd2d077576c5b64dba3e0bac03b9ff73",
+    "jobs": [
+      {
+        "id": 123788581226,
+        "name": "changes",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788581773,
+        "name": "contracts / contracts",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788661480,
+        "name": "frontend / fast",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788661494,
+        "name": "frontend / browser (browser-conversations)",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788661512,
+        "name": "frontend / sfu",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788661542,
+        "name": "windows / windows-native-unit",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788661578,
+        "name": "backend / database",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788661584,
+        "name": "actual / runtime (sfu)",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788661597,
+        "name": "flutter / android-kotlin",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788661618,
+        "name": "frontend / browser (browser-voice)",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788661636,
+        "name": "frontend / browser (browser-content)",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788661657,
+        "name": "flutter / android",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788661681,
+        "name": "flutter / dart",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788661693,
+        "name": "flutter / macos",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788661699,
+        "name": "backend / load",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788661717,
+        "name": "actual / runtime (next)",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788661734,
+        "name": "backend / static",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788661750,
+        "name": "actual / runtime (lifecycle)",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788661846,
+        "name": "frontend / browser (browser-shell)",
+        "conclusion": "success"
+      },
+      {
+        "id": 123788661919,
+        "name": "windows / windows-build",
+        "conclusion": "success"
+      },
+      {
+        "id": 123791024726,
+        "name": "backend / backend",
+        "conclusion": "success"
+      },
+      {
+        "id": 123791267025,
+        "name": "frontend / frontend",
+        "conclusion": "success"
+      },
+      {
+        "id": 123792043170,
+        "name": "windows / windows-gui-sfu",
+        "conclusion": "success"
+      },
+      {
+        "id": 123793511887,
+        "name": "flutter / flutter",
+        "conclusion": "success"
+      },
+      {
+        "id": 123793641913,
+        "name": "actual / actual-acceptance",
+        "conclusion": "success"
+      },
+      {
+        "id": 123795005378,
+        "name": "windows / windows",
+        "conclusion": "success"
+      },
+      {
+        "id": 123795070673,
+        "name": "ci-required",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "candidate_dispatch": {
+    "kind": "authorized-protected-native-candidate",
+    "platform": "android",
+    "source_revision": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+    "pull_request": 611,
+    "http": 204,
+    "ref": "master",
+    "dry_run": true,
+    "workflow_id": 371496531,
+    "workflow_path": ".github/workflows/android-release.yaml",
+    "stable_publication_requested": false,
+    "human_environment_approval": "NOT_ASSERTED",
+    "at_utc": "2026-10-29T23:28:50.536940+00:00"
+  },
+  "candidate_run_id": 40973416581,
+  "status": "PASS_FINAL_CI_AND_MERGE_SIGNED_ARTIFACT_AND_PHYSICAL_PENDING",
+  "limits": [
+    "No actual signed artifact SHA asserted before protected build completes and is independently verified.",
+    "Canonical local native unit1698/3skip and components706/1skip pass; Android/iOS runtime remains BLOCKED and167-image gallery NOT_RUN.",
+    "Source606 Send/PCreceipt/cleanup qualification is separate;606 overall visualFAIL remains historical evidence.",
+    "Corrected611physical full geometry/visual/draft/selection/Send/PCreceipt/cleanup remain root-owned pending gates;582 stays open.",
+    "Source ancestry includes merged607; no production banner cause, media quality, iOS hardware or Windows-native579 acceptance inferred."
+  ]
+}
