@@ -131,6 +131,7 @@ temporary_env=''
 delivery_phase migration_started
 "${compose[@]}" run --rm --no-deps migrate
 delivery_phase migration_completed
+"${compose[@]}" run --rm --no-deps screen-preview-storage-init
 delivery_phase services_started
 "${compose[@]}" up -d --no-deps --no-build api web
 "${compose[@]}" up -d --no-deps --no-build --force-recreate proxy
