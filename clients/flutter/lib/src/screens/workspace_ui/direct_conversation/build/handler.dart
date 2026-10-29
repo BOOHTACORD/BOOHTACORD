@@ -4,6 +4,7 @@ import 'history_list/handler.dart';
 import 'composer_region/handler.dart';
 import '../../error_banner/component.dart';
 import 'header_region/handler.dart';
+import '../follow_latest/handler.dart';
 
 import 'package:boohtacord_desktop/src/features/workspace/short_viewport/policy.dart';
 
@@ -23,6 +24,7 @@ mixin WorkspaceDirectConversationStateBuildBinding
 extension WorkspaceDirectConversationStateBuildAction
     on WorkspaceDirectConversationStateContext {
   Widget executeWorkspaceDirectConversationStateBuild(BuildContext context) {
+    scheduleDirectFollowLatest();
     if (!widget.state.loadingDirectMessages &&
         widget.state.directMessageHistory.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
