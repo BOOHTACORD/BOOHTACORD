@@ -24,10 +24,11 @@ Before staging, inspect status, changed sizes and the precise diff. Stage only n
 
 ### Task 2: Distinguish the new signed acceptance candidate
 
-Files: `clients/flutter/pubspec.yaml`, `contracts/client-build.json`.
+Files: `clients/flutter/pubspec.yaml`, `contracts/client-build.json`, `clients/flutter/lib/src/app_version.dart`.
 
 - [ ] Follow `docs/clients/versions.md`: change the shared Flutter build from `1.0.47+82` to `1.0.47+83` for the new distributed QA binary.
 - [ ] Change each native identity to `native_build: "83"`, `release_order: 62`, and its corresponding `*-r62` release ID. Preserve Web identity and the complete production update catalog byte for byte. This prepares a distinct candidate; it does not publish or promote a release.
+- [ ] Keep the profile label fallback build synchronized with pubspec at83. Preserve the existing profile test that independently reads pubspec; do not weaken its equality assertion. Register its shell regression and preserve honest platform runtime states.
 - [ ] Run `python -m pytest tools/build/test_client_identity.py -q`, native source/manifest tests, and `tools/verify/contracts/verify-contracts.ps1`. Require success before staging.
 
 ### Task 3: Record the shared chat platform decision
