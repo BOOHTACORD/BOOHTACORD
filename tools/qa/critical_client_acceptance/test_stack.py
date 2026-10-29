@@ -15,7 +15,8 @@ class LoopbackTransportTests(unittest.TestCase):
                     patch('tools.qa.critical_client_acceptance.stack.ports_available'), \
                     patch('tools.qa.critical_client_acceptance.stack.ready'), \
                     patch('tools.qa.critical_client_acceptance.stack.Base.start'), \
-                    patch('tools.qa.critical_client_acceptance.stack.subprocess.run', return_value=type('Result', (), {'returncode': 0, 'stdout': 'service ready'})()), \
+                    patch('tools.qa.critical_client_acceptance.stack.subprocess.run', return_value=type('Result', (), {'returncode': 0, 'stdout': '', 'stderr': 'service ready'})()), \
+                    patch('tools.qa.critical_client_acceptance.stack.time.sleep'), \
                     patch.object(stack, 'container') as container:
                 stack.start()
             config = (work/'livekit.yaml').read_text()

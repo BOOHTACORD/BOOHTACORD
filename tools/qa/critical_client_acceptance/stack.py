@@ -66,7 +66,7 @@ redis:
                        memory='2g')
         for _ in range(150):
             logs = subprocess.run(('docker', 'logs', self.owner+'-egress'), capture_output=True, text=True)
-            if logs.returncode == 0 and 'service ready' in logs.stdout:
+            if logs.returncode == 0 and 'service ready' in (logs.stdout or '') + (logs.stderr or ''):
                 break
             time.sleep(.2)
         else:
