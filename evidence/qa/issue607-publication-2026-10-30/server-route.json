@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "issue": 607,
+  "pull_request": 608,
+  "kind": "native-only-server-path-selection",
+  "status": "PASS_SERVER_RELEASE_NOT_REQUIRED_BY_PATHS",
+  "source_revision": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0",
+  "workflow": {
+    "run_id": 40969157228,
+    "attempt": 1,
+    "conclusion": "success",
+    "artifact_id": 12939233383,
+    "artifact_bytes": 399,
+    "artifact_zip_sha256": "6ae4aff8e05ddad90fc8ae2f984983ebb482dd1f68218793261680733b69b8ea",
+    "actual_zip_digest_verified": true,
+    "jobs": [
+      {
+        "id": 123781219285,
+        "name": "changes",
+        "conclusion": "success"
+      },
+      {
+        "id": 123781289642,
+        "name": "contracts / contracts",
+        "conclusion": "success"
+      },
+      {
+        "id": 123781291031,
+        "name": "backend",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 123781291788,
+        "name": "web",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 123782724625,
+        "name": "server-quality",
+        "conclusion": "success"
+      },
+      {
+        "id": 123782807523,
+        "name": "bundle",
+        "conclusion": "skipped"
+      }
+    ]
+  },
+  "quality_receipt": {
+    "jobs": {
+      "backend": "skipped",
+      "changes": "success",
+      "contracts": "success",
+      "web": "skipped"
+    },
+    "map_sha256": "cf501bbb879dadec880c4fb53ccfc8b63d793408fc9d526c8538c3a8001082cf",
+    "run_attempt": "1",
+    "run_id": "40969157228",
+    "schema_version": 1,
+    "scope": "server",
+    "server_release_impact": false,
+    "source_revision": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0",
+    "status": "PASS"
+  },
+  "public_web_api": {
+    "kind": "fresh-public-source-and-health",
+    "at_utc": "2026-10-29T22:58:36.039989+00:00",
+    "source_revision": "de4c30b26bc61aeac5c885ae805634a082eefe5e",
+    "release": {
+      "http": 200,
+      "cache_control": "no-store",
+      "sha256": "22b9d756e767c8245bdb539994a5807f99bcb5bf2ddd1a26103d48d84ca9cb72",
+      "receipt": {
+        "schema_version": 1,
+        "application_family": "boohtacord",
+        "platform": "web",
+        "distribution": "browser",
+        "channel": "stable",
+        "arch": "any",
+        "release_id": "web-browser-stable-r61",
+        "release_order": 61,
+        "version": "1.0.47",
+        "native_build": null,
+        "architecture": "any",
+        "build_info_sha256": "70ffd35bfb8a6eebc088dfefb5ed9bd7549fd48e8398fb2be0d283bf12ac1e4b",
+        "source_revision": "de4c30b26bc61aeac5c885ae805634a082eefe5e",
+        "signature_evidence": "oci_attestation",
+        "download_available": true
+      }
+    },
+    "health": {
+      "http": 200,
+      "cache_control": null,
+      "sha256": "6489d6d7a33c5d40e18fc61eeb6c34c341279ee61816394dde5189aa4ad8fae5"
+    },
+    "scope": "Read-only HTTPS; no authenticated browser, SQL, fault or load traffic."
+  },
+  "native_candidate": "PENDING_NEXT582_FOLLOWUP_PROTECTED_BUILD",
+  "limits": [
+    "No server bundle or production delivery is asserted for3a65; backend/web/bundle skips are legitimate by existing selection.",
+    "Public Web/API remain at previously verifiedde4c because the607 packet changes Flutter only.",
+    "No manual deployment or full server dispatch performed; gates/pins/selection unchanged.",
+    "Native artifact, physical/device facets and observed production banner cause remain separate pending evidence."
+  ]
+}
