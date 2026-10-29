@@ -1,0 +1,40 @@
+{
+  "source": "f370396c468d26588cb934f8262b2ee7f4801044",
+  "version_code": 2083,
+  "at_utc": "2026-10-29T22:26:24.440367+00:00",
+  "long_press_replacement_control": true,
+  "cases": [
+    {
+      "stage": "landscape-before2083",
+      "owned_draft_preserved": true,
+      "SHA256": "40e52856daadd1babff0197cad0e8626e29f3d77da9f56c689fe7f41790437dc"
+    },
+    {
+      "stage": "landscape-back-before2083",
+      "owned_draft_preserved": true,
+      "SHA256": "87e1e94c79b9d66b2b1be435fcf8b3e2c098013a5df83b1bf7d7da219858c576"
+    },
+    {
+      "stage": "portrait-restored-before2083",
+      "owned_draft_preserved": true,
+      "SHA256": "16605c0b3d64b78c6f1751eb5f2d6e43c086d10e11548909c4cbb686d7c776b4"
+    }
+  ],
+  "Send_attempts": 0,
+  "status": "PASS_SELECTION_ROTATION_BACK_SCOPED",
+  "full_selection_preserved_by_exact_replacement": true,
+  "after_replacement_length": 1,
+  "only_owned_draft_cleared_voice_idle": true,
+  "rotation_after": {
+    "accelerometer_rotation": "1",
+    "user_rotation": "0"
+  },
+  "limits": [
+    "Native touch selection, system rotation and one Back; no active voice or Send. IME re-show preserving an existing selection was not exercised. Images require source-resolution review before assigning IME/selection visual PASS.",
+    "The older ADB Shift injection failed its harness precondition; it is not a product bug or a qualified baseline."
+  ],
+  "finished_at_utc": "2026-10-29T22:26:48.059861+00:00",
+  "original_receipt_sha256": "ead7a4956c8aefcc26781b245ba382d26bcb6a97b091b3eb8f2ad49b9e921b05",
+  "root_visual_review": "All source-sized seed/repeat/rotation/Back captures reviewed by root physical tester; full native highlight retained.",
+  "scope": "BEFORE preservation baseline on old signed2083/f370. Native longpress and exact whole-selection replacement; no fixed582 acceptance or Send."
+}
