@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "kind": "pr606-android-profile-dependency-failure",
+  "issue": 582,
+  "pull_request": 606,
+  "pr_head": "f289e05fe5c14bdb7bf3dfb00e7aea391006daaf",
+  "tested_merge": "298ef5e2c6eb182f56aea44ebdfc3c69d858c3a3",
+  "source_tree": "1e34873d74934cf11bb2bae2db8b2fa616cf5e24",
+  "pr_and_test_merge_trees_equal": true,
+  "workflow": {
+    "run_id": 40960600485,
+    "run_attempt": 1,
+    "job_id": 123752139055,
+    "job_name": "flutter / android",
+    "job_status": "completed",
+    "job_conclusion": "failure",
+    "run_status_at_recording": "in_progress",
+    "failed_at_utc": "2026-10-29T21:48:16Z"
+  },
+  "failure_stage": "Gradle Flutter plugin-loader configuration before Dart/application compile",
+  "classification": "DEPENDENCY_RESOLUTION_FAILURE",
+  "dependencies": [
+    "org.jetbrains.kotlin:kotlin-stdlib:2.2.21",
+    "org.jetbrains.kotlin:kotlin-gradle-plugin-api:2.2.21",
+    "org.jetbrains.kotlin:kotlin-gradle-plugins-bom:2.2.21"
+  ],
+  "observed_repository": "https://plugins.gradle.org/m2/",
+  "error_excerpt": [
+    "Error resolving plugin [id: 'dev.flutter.flutter-plugin-loader', version: '1.0.0']",
+    "Could not find org.jetbrains.kotlin:kotlin-stdlib:2.2.21.",
+    "Could not parse POM for kotlin-gradle-plugin:2.2.21 because kotlin-gradle-plugins-bom:2.2.21 was not found."
+  ],
+  "retained_profile": {
+    "artifact": {
+      "id": 12934249384,
+      "name": "flutter-part-flutter-298ef5e2c6eb182f56aea44ebdfc3c69d858c3a3-40960600485-1-android",
+      "size_in_bytes": 179,
+      "url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/artifacts/12934249384",
+      "archive_download_url": "https://api.github.com/repos/Egkurilov/BOOHTACORD/actions/artifacts/12934249384/zip",
+      "expired": false,
+      "created_at": "2026-10-29T21:48:18Z",
+      "expires_at": "2026-11-28T21:48:17Z",
+      "updated_at": "2026-10-29T21:48:18Z",
+      "digest": "sha256:accf2a73ce855acebef050eed8c256224685349472f3fffee3af5be8beeed20b",
+      "workflow_run": {
+        "id": 40960600485,
+        "repository_id": 1398599178,
+        "head_repository_id": 1398599178,
+        "head_branch": "codex/fix-android-landscape-send-582",
+        "head_sha": "f289e05fe5c14bdb7bf3dfb00e7aea391006daaf"
+      }
+    },
+    "actual_zip_sha256_verified": true,
+    "actual_zip_sha256": "accf2a73ce855acebef050eed8c256224685349472f3fffee3af5be8beeed20b",
+    "file": "android.json",
+    "contents": {
+      "status": "FAIL",
+      "profile": "android"
+    },
+    "contents_sha256": "814f54764e1c4081bd67cc3d27ef354867d28af0f2ae87f868ce37b5ef42ae6e"
+  },
+  "repository_check": {
+    "at_utc": "2026-10-29T21:50:32.592871+00:00",
+    "runner": "Windows PC; this does not reconstruct the failed hosted runner network state",
+    "stdlib_and_plugin_api": {
+      "plugin_portal_http": 200,
+      "maven_central_http": 200,
+      "matching_pom_hashes_across_repositories": true
+    },
+    "stdlib_pom_sha256": "cf31f923196c63aedecd0a57c24269bd3702a4e47c0bf0bd64b5ada5de522272",
+    "plugin_api_pom_sha256": "9bd45783982e175eee9faad45f5ff7415c96aeb6aef2e7cf8e3508afb639d617"
+  },
+  "inference": "Pinned dependencies exist and the Android source packet does not change Gradle/repositories; a transient hosted dependency-resolution failure is likely. Same-source retry is required to confirm recovery.",
+  "retry": {
+    "decision": "One complete same-source CI rerun after completion",
+    "reason": "Flutter fan-in downloads current-attempt-only profile artifacts, so partial retry cannot reconstruct a complete receipt set",
+    "source_or_gate_or_pin_change": false
+  },
+  "acceptance": "Fixed physical Android and PC receipt remain pending; issue582 stays open."
+}
