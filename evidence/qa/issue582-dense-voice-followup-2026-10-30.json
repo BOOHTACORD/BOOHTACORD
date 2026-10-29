@@ -1,0 +1,62 @@
+{
+  "issue": 582,
+  "at_utc": "2026-10-29T23:09:17.097252+00:00",
+  "status": "PASS_LOCAL_FOLLOWUP_NATIVE_SIGNED_RERUN_PENDING",
+  "base": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0",
+  "route": "workspace_screen/build/editing_shell; realtime/lifecycle/status visibility edge",
+  "prior_native": {
+    "source": "de4c30b26bc61aeac5c885ae805634a082eefe5e",
+    "apk_SHA256": "f63613dd0dc92cca96737dd8235fed728c422da959228008bf6ff3e6b2afbaca",
+    "artifact_id": 12939500252,
+    "geometry": "PASS all5states; draft18chars and sampled SHARE_TEST voice preserved",
+    "visual": "FAIL healthy invisible recovery still reserved half width, live6ms status wrapped3lines and room ellipsized",
+    "evidence_commit": "a103854e68d86d272e2083758f8b88c3648f24cb"
+  },
+  "invariant": "Only visible recovery reserves width. Healthy/attempt0 voice uses the row; warning allows voice two thirds. Status, room/count, RTT and unchanged48dp controls stay readable and Send/Leave stay disjoint above IME.",
+  "platform": "Windows Flutter3.47.7 / Dart3.13.5 / frameworkabaf9c523780a608bd46686fd5e53740a07077f8; simulated Android/iOS widgets",
+  "mandatory_when": "Recovery visibility, short native editing shell, voice status/RTT layout or native keyboard geometry changes",
+  "focused_command": "cd clients/flutter; flutter test --no-pub test/features/workspace/short_viewport/measured_status_test.dart --reporter expanded",
+  "nearest_command": "cd clients/flutter; flutter test --no-pub test/features/workspace/short_viewport test/features/workspace/dm_drafts/widget_test.dart test/workspace_screen_test.dart test/workspace_navigation_text_scale_test.dart test/workspace_connection_status_test.dart --reporter expanded",
+  "results": {
+    "RED": "Final exact6-case fixture fails6/6 on pinned original3a65 production files. Counterexample runner restores both fixed files byte-for-byte in finally; not a gate relaxation.",
+    "GREEN": "6focused PASS;136nearest PASS,0skip; exact3-target analysis No issues found.",
+    "fixtures": "Actual WorkspaceScreen,2340x1080/DPR2.8125,left82/top84 padding AND viewPadding,IME605; realInter/MaterialIcons; typed empty room yields1participant;6ms is fixture value modeling observed metric, not a measured latency/SLO.",
+    "visual": "12finalBefore/After PNGs form4byte-identical groups. All4unique images inspected at original2340x1080, covering all12. Before: blank half/status3lines/roomellipsis and narrow-height overflow. After: healthy/initial full-width voice; warning plus full status/room/count/RTT and48dp actions; no clipping/overlap.",
+    "policies": "6policy tests PASS +parityvalidatorPASS. Added exact editing-shell edge to voice feature; screen/shell/connection_status/voice scenarios updated while preserving607 and unrelated platform decisions.",
+    "discovery": "6new standard *_test.dart widget cases; helper files are not test entrypoints. No test deletion. Capture uses custom BOOHTACORD_QA582_STATUS_CAPTURE_DIR only; finite167standardCIproducer names unchanged."
+  },
+  "source_LF_SHA256": {
+    "clients/flutter/lib/src/features/realtime/lifecycle/status.dart": "413043369ec77fd38cece3704de475578d45f7df7cb273c829e132de5560d514",
+    "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/editing_shell/handler.dart": "0de7bd516783ffdb0e88750bae3fe8665743e3e631fd46bc18af53e23a76d4ca",
+    "clients/flutter/test/features/workspace/short_viewport/measured_status_test.dart": "80b2189123b4219c0bf37855a8ebda5d9028a87ce319a3606e835c4a3548b302",
+    "clients/flutter/test/features/workspace/short_viewport/status_capture.dart": "7ad41382510d396a4ab2596e8236a0525895ea87323323d7daafd8b29f82ce29",
+    "clients/flutter/test/features/workspace/short_viewport/status_room.dart": "71475da649742c22265d9e30e50f574f48d796c2b2cdf965424ec19d90ce75cf",
+    "tools/qa/local_features/features.json": "f364d0e1a0a742f102007d0e50799b3150d9946f2cb80f42e5d1fa87e6233b6b"
+  },
+  "log_LF_SHA256": {
+    "measured-final-counterexample-red.log": "92f9d0a894552c77ec0555022f6bc205c9a66889c8e5cad8721fae5086bd71f7",
+    "measured-final-green.log": "7dee9ad0cba513a42921217d3202d71e19671d0bb0fc059cb1d045fa83966b11",
+    "final-nearest-green.log": "ec5c4b1365aca8a2986863fec2ac54476fc25511f02b3042535168f026ba912a",
+    "final-analyze.log": "6d95bf3d3af341bbfd8a4b46948940008064f8b93ca7d2a0e1a0cc4e2b2e9062"
+  },
+  "capture_SHA256": {
+    "before-real\\android-healthy.png": "efbc747774e87dec1824a660728ad60950560a7f914274f354910917344c8408",
+    "before-real\\android-initial.png": "efbc747774e87dec1824a660728ad60950560a7f914274f354910917344c8408",
+    "before-real\\android-recovering.png": "417b27204af55049a8e1db05c79cc1d9b5e864ec7a118bdec9f9e9d6b5078dce",
+    "before-real\\iOS-healthy.png": "efbc747774e87dec1824a660728ad60950560a7f914274f354910917344c8408",
+    "before-real\\iOS-initial.png": "efbc747774e87dec1824a660728ad60950560a7f914274f354910917344c8408",
+    "before-real\\iOS-recovering.png": "417b27204af55049a8e1db05c79cc1d9b5e864ec7a118bdec9f9e9d6b5078dce",
+    "after-real\\android-healthy.png": "7f94077284e750f66c4cd20e87c94c7c15e92d25e97a5282d0eb4aed2c965f1c",
+    "after-real\\android-initial.png": "7f94077284e750f66c4cd20e87c94c7c15e92d25e97a5282d0eb4aed2c965f1c",
+    "after-real\\android-recovering.png": "3bc5c075fb549f16a0e88f9f146c69e985b025c77ef9114ad65c11c711b3dc33",
+    "after-real\\iOS-healthy.png": "7f94077284e750f66c4cd20e87c94c7c15e92d25e97a5282d0eb4aed2c965f1c",
+    "after-real\\iOS-initial.png": "7f94077284e750f66c4cd20e87c94c7c15e92d25e97a5282d0eb4aed2c965f1c",
+    "after-real\\iOS-recovering.png": "3bc5c075fb549f16a0e88f9f146c69e985b025c77ef9114ad65c11c711b3dc33"
+  },
+  "limits": [
+    "Corrected signed APK, physical final geometry/selection/draft/Send+PCreceipt and cleanup are PENDING;582 remains OPEN.",
+    "Full local-feature/native runner and missing iOS runtime remain independent BLOCKED/NOT_RUN gates; widget platform override does not prove iOS hardware.",
+    "Earlier fixture cleanup diagnostic changed debug platform override until final line reset; final136 tests and exact analysis pass. Earlier captures missing SafeArea.padding/room count remain diagnostic; finalBefore/After use faithful metrics.",
+    "No media quality/capacity/audibility, production fault, server schema/contract or43consolidation claim."
+  ]
+}

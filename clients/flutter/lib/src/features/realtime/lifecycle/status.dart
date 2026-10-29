@@ -7,12 +7,15 @@ import 'controller.dart';
 class RealtimeRecoveryStatus extends StatelessWidget {
   const RealtimeRecoveryStatus({super.key, required this.controller});
   final RealtimeController controller;
+  static bool isVisible(RealtimeController controller) =>
+      !controller.connected && controller.attempt != 0;
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
     animation: controller,
     builder: (_, _) {
-      if (controller.connected || controller.attempt == 0)
+      if (!isVisible(controller)) {
         return const SizedBox.shrink();
+      }
       if (shortNativeEditingViewport(context)) {
         return Material(
           color: Theme.of(context).colorScheme.surfaceContainerHigh,

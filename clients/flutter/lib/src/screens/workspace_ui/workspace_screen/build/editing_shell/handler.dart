@@ -9,6 +9,9 @@ import '../../lifecycle/context.dart';
 extension WorkspaceEditingShell on WorkspaceScreenStateContext {
   Column renderWorkspaceEditingShell(Widget content, bool compact) {
     final voice = compact && widget.state.voiceChannel != null;
+    final recoveryVisible = RealtimeRecoveryStatus.isVisible(
+      widget.state.realtime,
+    );
     final inline =
         voice &&
         shortNativeEditingViewport(context) &&
@@ -28,12 +31,14 @@ extension WorkspaceEditingShell on WorkspaceScreenStateContext {
         if (inline)
           Row(
             children: [
-              Expanded(
-                child: RealtimeRecoveryStatus(
-                  controller: widget.state.realtime,
+              if (recoveryVisible)
+                Expanded(
+                  child: RealtimeRecoveryStatus(
+                    controller: widget.state.realtime,
+                  ),
                 ),
-              ),
               Expanded(
+                flex: recoveryVisible ? 2 : 1,
                 child: WorkspaceVoiceDock(state: widget.state, compact: true),
               ),
             ],
