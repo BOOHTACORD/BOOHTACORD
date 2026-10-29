@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "status": "PASS_VERIFIED_APPROVED_INSTALL",
+  "merged_source": "b4d31188b56d61f8a6b6c4ed26ba29d5f528a3c8",
+  "tested_tree": "f2141cabe3c631eb8692e7fd6fd06b76ac7f21ca",
+  "producer": {
+    "run_id": 40839323065,
+    "run_attempt": 1,
+    "source_revision": "b4d31188b56d61f8a6b6c4ed26ba29d5f528a3c8",
+    "status": "PASS_BUILD_WITH_CURRENT_ATTEMPT_BUNDLE",
+    "artifact": {
+      "id": 12882836914,
+      "name": "server-b4d31188b56d61f8a6b6c4ed26ba29d5f528a3c8-40839323065-1",
+      "digest": "sha256:ae239264eeb7b5cd44c8515ddfbc3600e31ae906637a1b614bfece4fdc981957",
+      "size_in_bytes": 89086063
+    },
+    "bundle_bytes_independently_downloaded_by_observer": false,
+    "actual_build_and_upload_steps_successful": true
+  },
+  "deployment": {
+    "run_id": 40840487249,
+    "run_attempt": 1,
+    "controller_revision": "b4d31188b56d61f8a6b6c4ed26ba29d5f528a3c8",
+    "actual_install_step": {
+      "name": "Install exact trusted retained bundle",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 5,
+      "started_at": "2026-10-29T08:12:50Z",
+      "completed_at": "2026-10-29T08:14:29Z"
+    },
+    "source_binding": "Must be proven by validated delivery producer receipt, not deploy head_sha alone"
+  },
+  "retained_receipt": {
+    "status": "PASS_VERIFIED_RETAINED_DELIVERY",
+    "source_revision": "b4d31188b56d61f8a6b6c4ed26ba29d5f528a3c8",
+    "producer_run_id": 40839323065,
+    "producer_attempt": 1,
+    "deploy_run_id": 40840487249,
+    "deploy_attempt": 1,
+    "receipt_artifact_id": 12883055562,
+    "receipt_ZIP_bytes": 1497,
+    "receipt_ZIP_SHA256": "be6d8e3aa98f9065d6302d380966cea88a66bc0e89268df400482d7d79b289cf",
+    "receipt_JSON_SHA256": "f272727da964eff26f244f218a9bfda0a1c3b574e4cd491d4fe6cb9a58fee9c9",
+    "schema_relation": "unchanged",
+    "schema_SHA256": "6cf3c8acd5b6e345ee17df03f15d9f8e6f59e07b31ecc0cbaecde571f616bb81",
+    "four_persistent_volume_hashes_valid": true,
+    "running_image_source_matches": true,
+    "actual_install_step_success": true,
+    "readback_checked_at": "2026-10-29T08:14:27.705968+00:00",
+    "ack_within_original_install": true,
+    "present_runtime_state": "NOT_RECHECKED_BY_ARCHIVED_RECEIPT",
+    "catalog_HTTP_status": "NOT_RUN_ROOT_COMMAND_REQUIRED",
+    "whole_QA_gate_closed": false
+  },
+  "master_native_job_count": 11,
+  "master_native_jobs_all_success": true,
+  "public_catalog_after": {
+    "at_utc": "2026-10-29T08:15:27.484913+00:00",
+    "expected_source_revision": "b4d31188b56d61f8a6b6c4ed26ba29d5f528a3c8",
+    "source_catalog_sha256": "93fad894cbee438f42dad99ce9558134011422c07ab6f8f1ea9045e406a99fbf",
+    "authenticated": false,
+    "mutation_count": 0,
+    "TLS_verification": "default",
+    "redirects_allowed": false,
+    "raw_bodies_retained": false,
+    "scope": "public Windows/Android catalog; historical old-Windows-client update acceptance NOT_RUN",
+    "windows": {
+      "status": "PASS",
+      "url": "https://v.bootybay.ru/api/v1/client-updates?platform=windows&distribution=direct&channel=stable&arch=x64",
+      "catalog_revision": 29,
+      "source_catalog_sha256": "09837a270a876a3bd7862364c3a39859970d86a99165537415311a814317fa1b",
+      "policy_sha256": "f0cff6cc5f682770f991f23b15269f9f42d619e1f1c245299bbc81b4d6394694",
+      "cache_control_no_store": true,
+      "nosniff": true,
+      "content_type_json": true,
+      "age_seconds": null
+    },
+    "android": {
+      "http": 200,
+      "cache_control": "no-store",
+      "nosniff": "nosniff",
+      "body_sha256": "96796e69f55230a86ba6e71b4f90c747b9048bdd26fd0b2ad315ff882e24ae79",
+      "path": "/api/v1/client-updates?platform=android&distribution=direct&channel=stable&arch=arm64",
+      "catalog_revision": 29,
+      "state": "published",
+      "status": "PASS_SCOPED"
+    },
+    "status": "PASS_SCOPED"
+  },
+  "physical_android": "NOT_RUN_NO_CONNECTED_DEVICE",
+  "whole_QA249_closed": false
+}

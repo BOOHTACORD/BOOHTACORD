@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "scope": "PR599 implementation and approved delivery; physical gates remain open",
+  "pull_request": {
+    "number": 599,
+    "merged": true,
+    "merge_commit_sha": "b4d31188b56d61f8a6b6c4ed26ba29d5f528a3c8",
+    "html_url": "https://github.com/Egkurilov/BOOHTACORD/pull/599"
+  },
+  "ci": {
+    "id": 40836380333,
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "3cdd2817164a0316edddd3e90e2bfe6473bd26a9",
+    "event": "pull_request",
+    "html_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40836380333"
+  },
+  "ci_jobs": [
+    {
+      "id": 123322013014,
+      "name": "changes",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322013781,
+      "name": "contracts / contracts",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322098503,
+      "name": "flutter / android",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322098509,
+      "name": "flutter / dart",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322098537,
+      "name": "flutter / macos",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322098559,
+      "name": "flutter / android-kotlin",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322098564,
+      "name": "backend / database",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322098611,
+      "name": "frontend / sfu",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322098626,
+      "name": "actual / runtime (next)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322098649,
+      "name": "windows / windows-build",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322098652,
+      "name": "windows / windows-native-unit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322098653,
+      "name": "actual / runtime (sfu)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322098661,
+      "name": "frontend / browser (browser-shell)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322098664,
+      "name": "backend / static",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322098677,
+      "name": "frontend / browser (browser-conversations)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322098717,
+      "name": "actual / runtime (lifecycle)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322098733,
+      "name": "backend / load",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322098756,
+      "name": "frontend / browser (browser-content)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322098765,
+      "name": "frontend / browser (browser-voice)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123322098789,
+      "name": "frontend / fast",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123323901795,
+      "name": "backend / backend",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123324213851,
+      "name": "frontend / frontend",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123325128393,
+      "name": "windows / windows-gui-sfu",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123325461576,
+      "name": "actual / actual-acceptance",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123326392602,
+      "name": "flutter / flutter",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123327681717,
+      "name": "windows / windows",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123327768626,
+      "name": "ci-required",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "required_check": {
+    "id": 123327768626,
+    "app_id": 15368,
+    "check_suite_id": 110690652495,
+    "conclusion": "success"
+  },
+  "master_native": {
+    "id": 40839323048,
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "b4d31188b56d61f8a6b6c4ed26ba29d5f528a3c8",
+    "event": "push",
+    "html_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40839323048"
+  },
+  "postgres_witness": {
+    "value": 170006,
+    "meaning": "PostgreSQL 17.6",
+    "log_line": "2026-10-29T07:36:12.0890350Z Disposable PostgreSQL 170006 verified"
+  },
+  "limits": [
+    "Physical signed Android candidate NOT_RUN: adb devices -l returned no devices at final observation",
+    "Original old Windows 1.0.32 to 1.0.38 client acceptance NOT_RUN",
+    "No 43 test consolidation decisions applied"
+  ]
+}

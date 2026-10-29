@@ -1,0 +1,35 @@
+{
+  "status": "ROOT_VISUAL_REVIEW_PASS_SCOPED",
+  "binding": {
+    "pr": 599,
+    "head": "3cdd2817164a0316edddd3e90e2bfe6473bd26a9",
+    "base": "cfda847b6d608f38e4b785ffca0da1fdb6a5dd30",
+    "source": "5990d4caf66ea57d4a72a1f8e4447a58d3233493",
+    "tested_tree": "f2141cabe3c631eb8692e7fd6fd06b76ac7f21ca",
+    "run_id": 40836380333,
+    "run_attempt": 1,
+    "check_suite_id": 110690652495,
+    "event": "pull_request",
+    "workflow": ".github/workflows/ci.yaml",
+    "ci_required_app_id": 15368
+  },
+  "package_artifact_id": 12880753975,
+  "capture_count": 165,
+  "images": [
+    {
+      "name": "dm-attachment-send-jpeg.png",
+      "sha256": "79342045896d439afab9ae9f9d55d37685fdf9301ed86905877e1b939c81fdaa",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "dm-attachment-send-gif.png",
+      "sha256": "2e8e96a547938db5c861e46f2dd5829dbd36aae2df6b2b0f427d20f3e060fb5a",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "observations": "Both source-resolution390x844 hosted frames show painted colored own image cards, correct synthetic filenames/sizes and download controls, empty composer and no pending chip or visible clipping. Hosted fixed timestamp00:00 differs from local03:00 by renderer timezone; layout is preserved.",
+  "physical_acceptance": "NOT_RUN",
+  "animation_acceptance": "NOT_RUN"
+}

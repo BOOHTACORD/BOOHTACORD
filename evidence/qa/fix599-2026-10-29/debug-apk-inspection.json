@@ -1,0 +1,72 @@
+{
+  "status": "PASS_SCOPED",
+  "binding": {
+    "pr": 599,
+    "head": "3cdd2817164a0316edddd3e90e2bfe6473bd26a9",
+    "base": "cfda847b6d608f38e4b785ffca0da1fdb6a5dd30",
+    "source": "5990d4caf66ea57d4a72a1f8e4447a58d3233493",
+    "tested_tree": "f2141cabe3c631eb8692e7fd6fd06b76ac7f21ca",
+    "run_id": 40836380333,
+    "run_attempt": 1,
+    "check_suite_id": 110690652495,
+    "event": "pull_request",
+    "workflow": ".github/workflows/ci.yaml",
+    "ci_required_app_id": 15368
+  },
+  "kind": "CI_DEBUG_APK_BYTES",
+  "application_id": "ru.boohtacord.app",
+  "version": "1.0.47+83",
+  "release_id": "android-direct-stable-r62",
+  "release_order": 62,
+  "actual": {
+    "certificate_sha256": "71d1290dff7f73a5f9d7db3a90d675baa9cc92cb9c53b8cb5a71338a225c4225",
+    "build_tools": "36.0.0",
+    "version_code": 83
+  },
+  "abis": [
+    "arm64-v8a",
+    "armeabi-v7a",
+    "x86_64"
+  ],
+  "hosted_build_tools": "37.0.0",
+  "observer_build_tools": "36.0.0",
+  "diagnostic": "Original controller compared local observer build-tools version to hosted builder version; signer and versioncode must match, observer version is separately recorded.",
+  "contracts_verified": 20,
+  "measured": {
+    "LICENSE-RNNoise.txt": {
+      "bytes": 1581,
+      "sha256": "e2f59ff41d9d03adc3dcf3deff170f8c8cf4a6eb4a9b174762a7656d23200ffa"
+    },
+    "app-debug.apk": {
+      "bytes": 126268667,
+      "sha256": "ff535803688247dc8e8bf28e6ace40e3e109f173595ef4f9180d84f7a338fff7"
+    },
+    "rnnoise-component.cdx.json": {
+      "bytes": 823,
+      "sha256": "0426bb951827495adc912304b4c500ea553ee2ddce89e3cc807e0e2521539d06"
+    },
+    "artifact-manifest.json": {
+      "bytes": 4217,
+      "sha256": "aca45a7febaf1c08db0f9666860c5dcedd58413933363ca2551aff3cc8945018"
+    },
+    "SHA256SUMS": {
+      "bytes": 348,
+      "sha256": "c00f7ad2a47b34eb9e1c723c8590ec0d86924a087acac20ada0f5412d8cf1be3"
+    }
+  },
+  "verifier_blobs": {
+    "tools/ci/flutter_gates/artifacts.py": "23fee90886c9c89fa5bb878c2eaf05310dbc0fde",
+    "tools/build/android/signature.py": "61579a0fa6f266c762ee2b2564fea69217387db9",
+    "tools/ci/native/process.py": "9a7b34fb9c22ebd1d9c784dc668fe8321784a854"
+  },
+  "artifact_id": 12880559947,
+  "manifest_sha256": "aca45a7febaf1c08db0f9666860c5dcedd58413933363ca2551aff3cc8945018",
+  "helper_sha256": "0a6a88ea43939b9ded937a5e817c2e41aa972ce22e25681028c1b8f01c06cc49",
+  "installed_or_restarted": false,
+  "release_signer_acceptance": "NOT_APPLICABLE_DEBUG",
+  "physical_acceptance": "NOT_RUN",
+  "limits": [
+    "Public signer inspection uses local Java21/Android build-tools36; hosted build uses separately verified Java17",
+    "Debug APK is not the postmerge signed QA candidate; no installability assertion"
+  ]
+}

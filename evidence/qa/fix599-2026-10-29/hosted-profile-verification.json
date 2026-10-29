@@ -1,0 +1,56 @@
+{
+  "status": "PASS_SCOPED",
+  "binding": {
+    "pr": 599,
+    "head": "3cdd2817164a0316edddd3e90e2bfe6473bd26a9",
+    "base": "cfda847b6d608f38e4b785ffca0da1fdb6a5dd30",
+    "source": "5990d4caf66ea57d4a72a1f8e4447a58d3233493",
+    "tested_tree": "f2141cabe3c631eb8692e7fd6fd06b76ac7f21ca",
+    "run_id": 40836380333,
+    "run_attempt": 1,
+    "check_suite_id": 110690652495,
+    "event": "pull_request",
+    "workflow": ".github/workflows/ci.yaml",
+    "ci_required_app_id": 15368
+  },
+  "source_verifier_blobs": {
+    "tools/ci/flutter_gates/results.py": "d700610667ba6ff9e2e7e643f4772e083e018029",
+    "tools/ci/flutter_gates/profiles.py": "de92842477ccd0a7bdd538b0e246696928acf184",
+    "tools/ci/flutter_gates/artifacts.py": "23fee90886c9c89fa5bb878c2eaf05310dbc0fde",
+    "tools/ci/flutter_gates/recent_bug_visuals.py": "0aac80da2295f0a94845413c6cc9bbf4e679156f",
+    "tools/ci/artifact_policy/captures.py": "e41b104fcac53252a3f56905d3bcac1875c32d17",
+    "tools/ci/artifact_policy/capture_data.py": "8489d7ea68c3948dda0394597467872f742b58ad",
+    "tools/verify/macos_unit/events.py": "2312a7f0c9e66c95de4560d1137b97bdfaadbf62",
+    "tools/verify/android_unit/inventory.py": "5b53202d976eb68fa4e9a60ad77d2723aa064f5c",
+    "tools/verify/android_unit/results.py": "4504f73e088b4e8009e7c83ebdbbc64e14bb8e00",
+    "tools/ci/backend_gates/results.py": "eaa3d136667c629b22da8f54f5fe6cc9d4c8bc22"
+  },
+  "native_profiles": [
+    "android",
+    "android-kotlin",
+    "dart",
+    "macos"
+  ],
+  "captures_verified": 165,
+  "publisher": {
+    "capture_files": 165,
+    "excluded_non_capture_files": 0,
+    "kind": "synthetic-capture-publication",
+    "profile_status": "PASS",
+    "schema_version": 1,
+    "upstream_status": "success"
+  },
+  "macos_tests": 8,
+  "macos_skipped": 0,
+  "android_kotlin_tests": {
+    "legacy": 51,
+    "builtin": 51
+  },
+  "go_tests": {
+    "pass": 1677,
+    "skip": 0,
+    "fail": 0
+  },
+  "physical_acceptance": "NOT_RUN",
+  "helper_sha256": "9125b20c618819b1d016db7d11f8bd87dcc02a2b1efb40f2a9aeb7cce99f8992"
+}
