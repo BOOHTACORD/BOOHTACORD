@@ -21,10 +21,11 @@ func (hints *testHints) Invalidated(_ context.Context, lease, generation string)
 	hints.lease, hints.generation = lease, generation
 }
 
-func TestUploadAndInvalidationPublishMetadataHints(t *testing.T) {
+func TestServerCaptureAndInvalidationPublishMetadataHints(t *testing.T) {
 	hints := &testHints{}
 	lease := uuid.NewString()
-	service, err := New(testAuthority{owner: true, channel: uuid.NewString()}, &testPublication{track: "track"}, &testStore{}, hints)
+	store, capture := &testStore{}, &captureStub{frame: CaptureFrame{Fingerprint: "frame-1", JPEG: validCaptureJPEG(t)}}
+	service, err := New(testAuthority{owner: true, viewer: true, channel: uuid.NewString()}, &testPublication{track: "track"}, store, capture, hints)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -32,11 +33,11 @@ func TestUploadAndInvalidationPublishMetadataHints(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := service.Upload(context.Background(), Principal{}, lease, generation.GenerationID, 1, testJPEG(t, 32, 32)); err != nil {
+	if err := service.PollCaptures(context.Background()); err != nil {
 		t.Fatal(err)
 	}
 	if hints.updates != 1 || hints.lease != lease || hints.generation != generation.GenerationID || hints.revision != 1 {
-		t.Fatalf("upload hint = %+v", hints)
+		t.Fatalf("server capture hint = %+v", hints)
 	}
 	if err := service.Invalidate(context.Background(), Principal{}, lease, generation.GenerationID); err != nil {
 		t.Fatal(err)

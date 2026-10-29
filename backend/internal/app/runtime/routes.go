@@ -33,7 +33,7 @@ import (
 	reserve "voice-platform/backend/internal/storage/reserve_upload_space"
 )
 
-func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *eventhub.Hub, metrics *httpmetrics.Recorder, updates clientupdates.Provider, usage *observeusage.Tracker, previews screenpreview.Store, screenViewers *presencememory.Store) (http.Handler, error) {
+func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *eventhub.Hub, metrics *httpmetrics.Recorder, updates clientupdates.Provider, usage *observeusage.Tracker, previews screenpreview.Store, screenViewers *presencememory.Store) (http.Handler, screenpreview.Service, error) {
 	if events != nil {
 		key := configuration.CausalKey
 		if configuration.CentralTelemetry == nil {
@@ -53,10 +53,10 @@ func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *
 	guildroutes.Register(mux, database, sessionService, events, lifecycle)
 	authorizationroutes.ConfigureRolePermissionRoutes(mux, database, sessionService, events)
 	if err := mediaroutes.ConfigureMediaRevocationRoutes(mux, database, authorizelivekitsignal.Config{APIKey: configuration.LiveKitAPIKey, APISecret: configuration.LiveKitAPISecret}, maintenanceService); err != nil {
-		return nil, fmt.Errorf("configure media admission: %w", err)
+		return nil, screenpreview.Service{}, fmt.Errorf("configure media admission: %w", err)
 	}
 	if err := observabilityroutes.RegisterVoiceMediaMetrics(metrics, configuration.MediaSnapshot); err != nil {
-		return nil, err
+		return nil, screenpreview.Service{}, err
 	}
 	observabilityroutes.ConfigureStatusRoutes(mux, maintenanceService, metrics)
 	channelsroutes.ConfigureChannelRoutes(mux, database, sessionService, events)
@@ -65,13 +65,13 @@ func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *
 	if err := storageroutes.ConfigureStorageRoutes(mux, database, sessionService, configuration.AttachmentRoot, configuration.UploadLimiter, configuration.UploadAccountLimiter, configuration.UploadDeploymentLimiter, configuration.UploadAdmissionLimiter, metrics, func(space reserve.Space, manager *reserve.Manager) {
 		observabilityroutes.ConfigureReadinessRoutes(mux, database, sessionService, configuration.MediaSnapshot, space, manager)
 	}); err != nil {
-		return nil, fmt.Errorf("configure attachment routes: %w", err)
+		return nil, screenpreview.Service{}, fmt.Errorf("configure attachment routes: %w", err)
 	}
 	if err := identityroutes.ConfigureProfileAdminRoutes(mux, database, sessionService, configuration, events); err != nil {
-		return nil, fmt.Errorf("configure profile routes: %w", err)
+		return nil, screenpreview.Service{}, fmt.Errorf("configure profile routes: %w", err)
 	}
 	if err := archivetextroutes.Register(mux, database, sessionService, events, configuration.AttachmentRoot); err != nil {
-		return nil, err
+		return nil, screenpreview.Service{}, err
 	}
 	messagesocialroutes.Register(mux, database, sessionService, events)
 	mediaroutes.ConfigureVoiceLeaseRoutes(mux, database, sessionService, maintenanceService)
@@ -81,14 +81,15 @@ func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *
 	observabilityroutes.ConfigureInstallationRoutes(mux, sessionService, configuration)
 	mediaroutes.ConfigureAdminVoiceRoutes(mux, database, sessionService)
 	mediaroutes.ConfigureMediaCredentialRoutes(mux, database, sessionService, configuration.CredentialSigner)
-	if err := mediaroutes.ConfigureScreenPreviewRoutes(mux, database, sessionService, configuration.LiveKitPrivateHTTPURL, configuration.LiveKitAPIKey, configuration.LiveKitAPISecret, previews, events); err != nil {
-		return nil, fmt.Errorf("configure private screen previews: %w", err)
+	previewService, err := mediaroutes.ConfigureScreenPreviewRoutes(mux, database, sessionService, configuration.LiveKitPrivateHTTPURL, configuration.LiveKitAPIKey, configuration.LiveKitAPISecret, configuration.ScreenPreviewRoot, previews, events)
+	if err != nil {
+		return nil, screenpreview.Service{}, fmt.Errorf("configure private screen previews: %w", err)
 	}
 	if err := mediaroutes.ConfigureScreenViewerPresenceRoutes(mux, database, sessionService, configuration.LiveKitPrivateHTTPURL, configuration.LiveKitAPIKey, configuration.LiveKitAPISecret, screenViewers, events); err != nil {
-		return nil, fmt.Errorf("configure screen viewer presence: %w", err)
+		return nil, screenpreview.Service{}, fmt.Errorf("configure screen viewer presence: %w", err)
 	}
 	if err := mediaroutes.ConfigureScreenDescriptorRoutes(mux, database, sessionService, configuration.PublicOrigin, configuration.LiveKitPrivateHTTPURL, configuration.LiveKitAPIKey, configuration.LiveKitAPISecret); err != nil {
-		return nil, fmt.Errorf("configure screen profile descriptor updates: %w", err)
+		return nil, screenpreview.Service{}, fmt.Errorf("configure screen profile descriptor updates: %w", err)
 	}
-	return installationapi.Headers(requestid.Middleware(httpmetrics.LoggingMiddleware(slog.Default(), metrics.Middleware(tracehttp.Middleware(otel.Tracer("boohtacord/api"), mux, configuration.OriginMiddleware(mux)), mux))), configuration.CentralTelemetry), nil
+	return installationapi.Headers(requestid.Middleware(httpmetrics.LoggingMiddleware(slog.Default(), metrics.Middleware(tracehttp.Middleware(otel.Tracer("boohtacord/api"), mux, configuration.OriginMiddleware(mux)), mux))), configuration.CentralTelemetry), previewService, nil
 }

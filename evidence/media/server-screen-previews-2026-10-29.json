@@ -1,0 +1,41 @@
+{
+  "id": "server-screen-previews-2026-10-29",
+  "task": "T-079 / LiveKit Egress captures private screen previews every 30 seconds",
+  "status": "PARTIAL",
+  "observed_at": "2026-10-29",
+  "source_base_commit": "165b88dae5ffb99fec5024f8c03b2fbe787c5e9c",
+  "change": "The authenticated API starts track-scoped LiveKit ParticipantEgress jobs that overwrite a private JPEG every 30 seconds. The API normalizes and keeps only the latest bounded frame in memory, publishes metadata-only realtime hints, and serves the frame through the existing lease/channel ACL. Client uploads are disabled; Web and Flutter send lease heartbeats and retain local immediate previews. Revocation, stop and lease expiry stop Egress and remove the private files. Per-lease locks keep slow Egress control calls for one publisher from blocking another publisher's snapshots. Egress reconciliation retries after a LiveKit startup race, ambiguous Egress-start responses remain stoppable, and an already prepared shared volume no longer requires chmod by the non-root API user.",
+  "checks": [
+    {
+      "name": "backend_screen_preview_unit_tests",
+      "result": "PASS_LOCAL",
+      "detail": "Go screen-preview, LiveKit Egress, in-memory store, API, runtime configuration and route tests passed; the race detector also passed. Coverage includes the 30-second Egress output request, idempotent job ensure, per-lease concurrency isolation, cleanup after an ambiguous Egress-start response, shared-volume permissions, retry after a transient startup reconciliation failure, bounded JPEG normalization, metadata-only hints, ACL reads, cleanup and lease expiry without frame-driven lease renewal."
+    },
+    {
+      "name": "web_unit_build_and_browser_scenarios",
+      "result": "PASS_LOCAL",
+      "detail": "The selected local-feature run passed Web unit tests, production build, and all selected browser scenarios including screen profile, screen share UI and voice interface. Report: .out/local-features/20261029-113730/report.json. The critical scenario now additionally asserts that the server preview URL changes after the 30-second capture interval and disappears after unpublish; those new assertions await real-stack execution. The report's real-stack stages failed before the volume permission fix and are not counted as acceptance."
+    },
+    {
+      "name": "flutter_focused_tests",
+      "result": "PASS_LOCAL",
+      "detail": "Focused Flutter screen-preview client, stop lifecycle and thumbnail state tests passed (6 tests) using the local Flutter SDK workaround. Android emulator runtime was attempted but the bundled emulator reported an incompatible processor and did not boot."
+    },
+    {
+      "name": "contracts_and_traceability",
+      "result": "PARTIAL",
+      "detail": "The screen-preview PowerShell contract assertions and requirement traceability passed. Full OpenAPI lint/parity could not run because this host lacks openapi_spec_validator and jsonschema Python packages."
+    },
+    {
+      "name": "api_egress_real_stack",
+      "result": "NOT_RUN",
+      "detail": "The disposable API passed startup after fixing permissions on the pre-provisioned private volume; Redis and LiveKit started. Pulling the pinned livekit/egress:v1.14.1 image did not finish during the local run, so Egress service readiness, two-client snapshot delivery, 30-second refresh and unpublish cleanup remain unverified. The interrupted disposable stack was cleaned up."
+    },
+    {
+      "name": "publisher_load_and_capacity",
+      "result": "NOT_RUN",
+      "detail": "No publisher load run or hardware capacity measurement was performed."
+    }
+  ],
+  "limitation": "Unit tests and client checks do not prove Egress runtime behavior or capacity. The local API startup validated the non-root shared-volume permission fix, but server-side frame production must remain unverified until the pinned Egress image can run in the paired real-stack scenario."
+}

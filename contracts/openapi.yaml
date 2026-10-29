@@ -4123,7 +4123,7 @@
     "/api/v1/voice/leases/{leaseID}/screen-previews/v1": {
       "post": {
         "operationId": "beginScreenPreviewGeneration",
-        "description": "Session-authenticated owner of an active voice lease only. The server verifies the caller's lease/session and the exact current unmuted LiveKit ScreenShare track, then mints an in-memory generation bound to that track SID. Requires trusted Origin. Generation expires after 15 seconds; no image or room/participant claim is accepted here.",
+        "description": "Session-authenticated owner of an active voice lease only. The server verifies the caller's lease/session and the exact current unmuted LiveKit ScreenShare track, then starts or renews a server-side LiveKit Egress capture. Egress writes a private JPEG snapshot every 30 seconds; clients never upload image bytes. Generation expires after 90 seconds without renewal. Requires trusted Origin.",
         "parameters": [
           {
             "name": "leaseID",
@@ -4145,7 +4145,7 @@
           }
         ],
         "responses": {
-          "201": { "description": "Server-minted ephemeral publication generation", "headers": { "Cache-Control": { "schema": { "const": "private, no-store, max-age=0" } },
+          "201": { "description": "Server-owned Egress capture generation; first image is produced on its 30-second cadence.", "headers": { "Cache-Control": { "schema": { "const": "private, no-store, max-age=0" } },
               "X-Request-ID": {"$ref": "#/components/headers/RequestID"} }, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ScreenPreviewGeneration" } } } },
           "400": { "description": "Invalid lease identifier", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },
             "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
@@ -4155,7 +4155,7 @@
             "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
           "429": { "description": "Generation request rate limited", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },
             "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
-          "503": { "description": "Database, bounded memory cache or private LiveKit RoomService unavailable", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },
+          "503": { "description": "Database, bounded memory cache, private LiveKit RoomService or Egress unavailable.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },
             "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
           "403": {
             "description": "Origin rejected before dispatch",
@@ -4203,7 +4203,7 @@
     "/api/v1/voice/leases/{leaseID}/screen-previews/v1/{generationID}": {
       "put": {
         "operationId": "uploadScreenPreviewJPEG",
-        "description": "Authenticated current owner of the exact server-minted generation and verified current LiveKit screen track only. Raw JPEG body is bounded to 14 KiB and decoded with width <=160, height <=320 and <=51,200 pixels; at most one upload per four seconds. Requires trusted Origin. Data remains in private process memory for at most 15 seconds.",
+        "description": "Deprecated compatibility route. Screenshot bytes are captured by server-side LiveKit Egress and are never accepted from clients. Returns 410 PREVIEW_SERVER_MANAGED. Requires trusted Origin.",
         "parameters": [
           {
             "name": "leaseID",
@@ -4224,15 +4224,6 @@
             }
           },
           {
-            "name": "X-Screen-Preview-Revision",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "minimum": 1
-            }
-          },
-          {
             "name": "Origin",
             "in": "header",
             "schema": {
@@ -4242,58 +4233,17 @@
             "description": "Exact configured PUBLIC_ORIGIN (scheme, host and port; no path or trailing slash). Required on every public mutation, including login, registration, reset and logout. This is the server CSRF boundary; no CSRF token header is accepted."
           }
         ],
-        "requestBody": { "required": true, "content": { "image/jpeg": { "schema": { "type": "string", "format": "binary", "maxLength": 14336 } } } },
         "responses": {
-          "204": { "description": "Latest validated JPEG accepted; response contains no image data",
-            "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
-          "400": { "description": "Invalid revision or JPEG", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },
-            "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
-          "401": { "description": "No active session", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },
-            "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
-          "404": { "description": "Caller is not the current publisher or generation is unavailable", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },
-            "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
-          "409": { "description": "Generation or revision is stale", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },
-            "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
-          "413": { "description": "Body exceeds 14 KiB",
-            "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}},
-            "x-empty-body-possible": true },
-          "415": { "description": "Only image/jpeg is accepted",
-            "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}},
-            "x-empty-body-possible": true },
-          "429": { "description": "Upload interval or bounded inflight limit exceeded", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },
-            "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
-          "503": { "description": "Database or private LiveKit RoomService unavailable", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },
-            "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
-          "403": {
-            "description": "Origin rejected before dispatch",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            },
-            "headers": {
-              "X-Request-ID": {
-                "$ref": "#/components/headers/RequestID"
-              }
-            }
-          },
-          "500": {
-            "description": "Internal failure; request-ID generation or session lookup can fail before dispatch with an empty body.",
-            "x-empty-body-possible": true,
-            "headers": {
-              "X-Request-ID": {
-                "$ref": "#/components/headers/RequestID"
-              }
-            }
-          }
+          "401": { "description": "No active session", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
+          "403": { "description": "Origin rejected before dispatch", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
+          "410": { "description": "Client image uploads are disabled; the server captures snapshots from LiveKit Egress.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } }, "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
+          "500": { "description": "Internal failure; request-ID generation or session lookup can fail before dispatch with an empty body.", "x-empty-body-possible": true, "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} }
         },
         "security": [{"SessionCookie": []}]
       },
       "delete": {
         "operationId": "invalidateScreenPreviewGeneration",
-        "description": "Authenticated current owner only. Clears the matching generation from process memory immediately; an old generation cannot clear a newer one. Requires trusted Origin.",
+        "description": "Authenticated current owner only. Clears the matching generation from process memory and stops its LiveKit Egress capture; an old generation cannot clear a newer one. Requires trusted Origin.",
         "parameters": [
           {
             "name": "leaseID",
@@ -4408,7 +4358,7 @@
     "/api/v1/voice/screen-previews/v1/leases/{leaseID}/{generationID}": {
       "get": {
         "operationId": "readPrivateScreenPreviewJPEG",
-        "description": "Authenticated viewer with an active lease in the same open voice channel as the current publisher. Server rechecks both session-bound leases and the exact LiveKit ScreenShare track. Administrators receive no additional access. Response is private/no-store and never uses a signed public URL. Unknown future hints may be ignored by clients.",
+        "description": "Authenticated viewer with an active lease in the same open voice channel as the current publisher. Server rechecks both session-bound leases and the exact LiveKit ScreenShare track. Administrators receive no additional access. Response is private/no-store and never uses a signed public URL. JPEG bytes are normalized and bounded to 14 KiB in process memory; clients poll metadata hints and fetch through this ACL-protected endpoint.",
         "parameters": [
           { "name": "leaseID", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
           { "name": "generationID", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
@@ -10809,7 +10759,7 @@
       "ScreenPreviewGeneration": {
         "type": "object", "additionalProperties": false,
         "required": ["schema_version", "generation_id", "expires_after_seconds", "minimum_interval_seconds"],
-        "properties": { "schema_version": { "const": 1 }, "generation_id": { "type": "string", "format": "uuid" }, "expires_after_seconds": { "const": 15 }, "minimum_interval_seconds": { "const": 4 } }
+        "properties": { "schema_version": { "const": 1 }, "generation_id": { "type": "string", "format": "uuid" }, "expires_after_seconds": { "const": 90 }, "minimum_interval_seconds": { "const": 30 } }
       },
       "ScreenPreviewHint": {
         "type": "object", "additionalProperties": false,

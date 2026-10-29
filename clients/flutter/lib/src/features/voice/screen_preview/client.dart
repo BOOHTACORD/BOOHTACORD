@@ -29,25 +29,6 @@ class ScreenPreviewClient {
     return body['generation_id'] as String;
   });
 
-  Future<void> upload(
-    String leaseId,
-    String generationId,
-    int revision,
-    Uint8List jpeg,
-  ) => transport.run(() async {
-    if (!_isUuid(leaseId) || !_isUuid(generationId) || revision < 1 ||
-        !validScreenPreviewJpeg(jpeg)) return;
-    final headers = await transport.headers(accept: 'application/json');
-    headers['content-type'] = 'image/jpeg';
-    headers['x-screen-preview-revision'] = '$revision';
-    final response = await transport.raw.put(
-      transport.uri('/voice/leases/$leaseId/screen-previews/v1/$generationId'),
-      headers: headers,
-      body: jpeg,
-    ).timeout(const Duration(seconds: 3));
-    await transport.checked(response, acceptedStatuses: {204});
-  });
-
   Future<void> invalidate(String leaseId, String generationId) =>
       transport.run(() async {
         if (!_isUuid(leaseId) || !_isUuid(generationId)) return;

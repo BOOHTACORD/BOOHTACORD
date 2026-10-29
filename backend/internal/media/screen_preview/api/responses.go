@@ -27,6 +27,8 @@ func writeFailure(writer http.ResponseWriter, request *http.Request, err error) 
 	case errors.Is(err, screenpreview.ErrRateLimited):
 		status, code = http.StatusTooManyRequests, "PREVIEW_RATE_LIMITED"
 		writer.Header().Set("Retry-After", "4")
+	case errors.Is(err, screenpreview.ErrServerManaged):
+		status, code = http.StatusGone, "PREVIEW_SERVER_MANAGED"
 	case errors.Is(err, screenpreview.ErrNoUpdate):
 		writer.WriteHeader(http.StatusNoContent)
 		return

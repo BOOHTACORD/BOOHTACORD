@@ -1,38 +1,40 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'client.dart';
 import '../../screen/rollout/policy.dart';
 
-/// Keeps at most one upload in flight and one newest captured frame queued.
+/// Keeps the server-owned LiveKit Egress capture alive. Screenshot bytes stay local.
 class LatestScreenPreviewUploader {
-  LatestScreenPreviewUploader(this.client, {bool? enabled})
-      : enabled = enabled ?? const ScreenMediaRollout().jpegPreview;
+  LatestScreenPreviewUploader(
+    this.client, {
+    bool? enabled,
+    DateTime Function()? now,
+    Duration refreshInterval = const Duration(seconds: 30),
+  }) : enabled = enabled ?? const ScreenMediaRollout().jpegPreview,
+       _now = now ?? DateTime.now,
+       _refreshInterval = refreshInterval;
+
   final ScreenPreviewClient client;
   final bool enabled;
-  String? _lease, _generation;
-  int _epoch = 0, _revision = 0;
-  Uint8List? _pending;
-  Future<void>? _running, _beginning, _stopping;
+  final DateTime Function() _now;
+  final Duration _refreshInterval;
 
-  void offer(String lease, Uint8List jpeg) {
-    if (!enabled) return;
-    if (!validScreenPreviewJpeg(jpeg)) return;
-    if (_lease != lease) _switchLease(lease);
-    if (_generation == null && _beginning == null) {
-      _beginning = _begin(lease, _epoch);
-    }
-    _pending = Uint8List.fromList(jpeg);
-    _drain();
-  }
+  Timer? _refreshTimer;
+  String? _lease, _generation;
+  DateTime? _lastBeginAt;
+  int _epoch = 0;
+  Future<void>? _beginning, _stopping;
 
   void _switchLease(String lease) {
     final oldLease = _lease, oldGeneration = _generation;
     final epoch = ++_epoch;
     _lease = lease;
     _generation = null;
-    _revision = 0;
-    _pending = null;
+    _lastBeginAt = null;
+    _refreshTimer?.cancel();
+    _refreshTimer = Timer.periodic(_refreshInterval, (_) {
+      if (_lease == lease) unawaited(start(lease).catchError((_) {}));
+    });
     if (oldLease != null && oldGeneration != null) {
       unawaited(client.invalidate(oldLease, oldGeneration).catchError((_) {}));
     }
@@ -40,19 +42,36 @@ class LatestScreenPreviewUploader {
   }
 
   Future<void> _begin(String lease, int epoch) async {
+    _lastBeginAt = _now();
     try {
       final generation = await client.begin(lease);
       if (epoch != _epoch || lease != _lease) {
         await client.invalidate(lease, generation).catchError((_) {});
         return;
       }
+      final previous = _generation;
       _generation = generation;
-      _drain();
+      if (previous != null && previous != generation) {
+        await client.invalidate(lease, previous).catchError((_) {});
+      }
     } catch (_) {
-      // A later four-second capture retries generation creation.
+      // The next 30-second screen sample retries the server lease request.
     } finally {
       if (epoch == _epoch) _beginning = null;
     }
+  }
+
+  Future<void> start(String lease) async {
+    if (!enabled) return;
+    if (_lease != lease) {
+      _switchLease(lease);
+    } else if (_beginning == null &&
+        (_generation == null ||
+            _lastBeginAt == null ||
+            _now().difference(_lastBeginAt!) >= _refreshInterval)) {
+      _beginning = _begin(lease, _epoch);
+    }
+    await _beginning;
   }
 
   Future<void> stop() {
@@ -69,37 +88,15 @@ class LatestScreenPreviewUploader {
 
   Future<void> _stop() async {
     final lease = _lease, generation = _generation;
-    final epoch = ++_epoch;
+    ++_epoch;
     _lease = _generation = null;
-    _pending = null;
-    final running = _running, beginning = _beginning;
-    await running?.catchError((_) {});
+    _refreshTimer?.cancel();
+    _refreshTimer = null;
+    _lastBeginAt = null;
+    final beginning = _beginning;
     await beginning?.catchError((_) {});
     if (lease != null && generation != null) {
       await client.invalidate(lease, generation).catchError((_) {});
-    }
-    if (epoch == _epoch) _revision = 0;
-  }
-
-  void _drain() {
-    if (_running != null || _generation == null || _pending == null) return;
-    _running = _uploadLatest().whenComplete(() {
-      _running = null;
-      _drain();
-    });
-  }
-
-  Future<void> _uploadLatest() async {
-    while (_pending != null && _generation != null) {
-      final epoch = _epoch, lease = _lease!, generation = _generation!;
-      final jpeg = _pending!;
-      _pending = null;
-      try {
-        await client.upload(lease, generation, ++_revision, jpeg);
-      } catch (_) {
-        // The next sampled frame is the bounded latest-state retry.
-      }
-      if (epoch != _epoch) return;
     }
   }
 }

@@ -1,12 +1,8 @@
 package screenpreview
 
 import (
-	"bytes"
 	"context"
 	"errors"
-	"image"
-	"image/color"
-	"image/jpeg"
 	"testing"
 
 	"github.com/google/uuid"
@@ -45,8 +41,9 @@ func TestPreviewRequiresCurrentPublicationAndSeparateViewerPermission(t *testing
 	authority := testAuthority{owner: true, viewer: false, channel: uuid.NewString()}
 	publication := &testPublication{track: "live-track-a"}
 	cache := &testStore{}
+	capture := &captureStub{frame: CaptureFrame{Fingerprint: "frame-1", JPEG: validCaptureJPEG(t)}}
 
-	service, err := New(authority, publication, cache)
+	service, err := New(authority, publication, cache, capture)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -55,13 +52,10 @@ func TestPreviewRequiresCurrentPublicationAndSeparateViewerPermission(t *testing
 	if err != nil || generation.SchemaVersion != 1 {
 		t.Fatalf("generation = %+v, err = %v", generation, err)
 	}
-	frame := image.NewRGBA(image.Rect(0, 0, 2, 2))
-	frame.Set(0, 0, color.RGBA{R: 255, A: 255})
-	var encoded bytes.Buffer
-	if err := jpeg.Encode(&encoded, frame, &jpeg.Options{Quality: 30}); err != nil {
-		t.Fatal(err)
+	if err := service.Upload(context.Background(), Principal{AccountID: uuid.NewString()}, lease, generation.GenerationID, 1, capture.frame.JPEG); !errors.Is(err, ErrServerManaged) {
+		t.Fatalf("client JPEG upload error = %v", err)
 	}
-	if err := service.Upload(context.Background(), Principal{AccountID: uuid.NewString()}, lease, generation.GenerationID, 1, encoded.Bytes()); err != nil {
+	if err := service.PollCaptures(context.Background()); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := service.Read(context.Background(), Principal{}, lease, generation.GenerationID, 0); !errors.Is(err, ErrDenied) {
@@ -69,7 +63,7 @@ func TestPreviewRequiresCurrentPublicationAndSeparateViewerPermission(t *testing
 	}
 	service.authority = testAuthority{viewer: true, channel: authority.channel}
 	preview, err := service.Read(context.Background(), Principal{}, lease, generation.GenerationID, 0)
-	if err != nil || preview.Revision != 1 || !bytes.Equal(preview.JPEG, encoded.Bytes()) {
+	if err != nil || preview.Revision != 1 || ValidateJPEG(preview.JPEG) != nil {
 		t.Fatalf("preview = %+v, err = %v", preview, err)
 	}
 	if _, err := service.Read(context.Background(), Principal{}, lease, generation.GenerationID, 1); !errors.Is(err, ErrNoUpdate) {
@@ -85,7 +79,7 @@ func TestDeniedUploaderAndUnavailablePublicationNeverCreateGeneration(t *testing
 	cache := &testStore{}
 
 	publication := &testPublication{track: "track"}
-	service, err := New(testAuthority{channel: uuid.NewString()}, publication, cache)
+	service, err := New(testAuthority{channel: uuid.NewString()}, publication, cache, &captureStub{})
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -5,10 +5,16 @@ $read = $openApi.paths.'/api/v1/voice/screen-previews/v1/leases/{leaseID}/{gener
 if ($null -eq $begin -or $begin.operationId -ne 'beginScreenPreviewGeneration' -or $begin.description -notmatch 'exact current unmuted LiveKit ScreenShare track') {
     throw 'Screen preview generation must be minted only for a server-verified current publisher.'
 }
-if ($null -eq $upload -or $upload.requestBody.content.'image/jpeg'.schema.maxLength -ne 14336 -or
-    $upload.parameters.name -notcontains 'X-Screen-Preview-Revision' -or
-    $null -eq $upload.responses.'413' -or $null -eq $upload.responses.'415') {
-    throw 'Screen preview upload must have a versioned bounded JPEG and revision contract.'
+if ($null -eq $begin -or $begin.description -notmatch 'LiveKit Egress capture' -or
+    $begin.description -notmatch 'every 30 seconds' -or
+    $openApi.components.schemas.ScreenPreviewGeneration.properties.expires_after_seconds.const -ne 90 -or
+    $openApi.components.schemas.ScreenPreviewGeneration.properties.minimum_interval_seconds.const -ne 30) {
+	throw 'Screen preview generations must describe a renewable server Egress capture with 30-second snapshots.'
+}
+if ($null -eq $upload -or $null -ne $upload.requestBody -or
+    $upload.parameters.name -contains 'X-Screen-Preview-Revision' -or
+    $null -eq $upload.responses.'410' -or $upload.description -notmatch 'never accepted from clients') {
+	throw 'Client JPEG uploads must be disabled in favor of server-side LiveKit Egress capture.'
 }
 if ($null -eq $invalidate -or $invalidate.operationId -ne 'invalidateScreenPreviewGeneration') {
     throw 'Screen preview generation must expose explicit invalidation.'

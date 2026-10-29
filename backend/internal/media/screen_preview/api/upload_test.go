@@ -10,7 +10,7 @@ import (
 	screenpreview "voice-platform/backend/internal/media/screen_preview"
 )
 
-func TestUploadRejectsOversizedAndNonJPEGBodiesBeforeService(t *testing.T) {
+func TestUploadRouteRejectsClientFramesWithoutReadingOrForwardingTheBody(t *testing.T) {
 	ops := &operationsStub{}
 	mux := http.NewServeMux()
 	RegisterRoutes(mux, authStub{}, ops)
@@ -21,8 +21,8 @@ func TestUploadRejectsOversizedAndNonJPEGBodiesBeforeService(t *testing.T) {
 	request.Header.Set("X-Screen-Preview-Revision", "1")
 	response := httptest.NewRecorder()
 	mux.ServeHTTP(response, request)
-	if response.Code != http.StatusRequestEntityTooLarge || ops.uploads != 0 {
-		t.Fatalf("oversized upload = %d, calls=%d", response.Code, ops.uploads)
+	if response.Code != http.StatusGone || ops.uploads != 0 {
+		t.Fatalf("legacy upload = %d, calls=%d", response.Code, ops.uploads)
 	}
 	assertPrivateHeaders(t, response)
 	request = httptest.NewRequest(http.MethodPut, path, bytes.NewReader([]byte("<svg/>")))
@@ -31,15 +31,15 @@ func TestUploadRejectsOversizedAndNonJPEGBodiesBeforeService(t *testing.T) {
 	request.Header.Set("X-Screen-Preview-Revision", "1")
 	response = httptest.NewRecorder()
 	mux.ServeHTTP(response, request)
-	if response.Code != http.StatusUnsupportedMediaType || ops.uploads != 0 {
-		t.Fatalf("wrong MIME = %d, calls=%d", response.Code, ops.uploads)
+	if response.Code != http.StatusGone || ops.uploads != 0 {
+		t.Fatalf("legacy upload with wrong MIME = %d, calls=%d", response.Code, ops.uploads)
 	}
 	request = httptest.NewRequest(http.MethodPut, path, bytes.NewReader([]byte("")))
 	request.AddCookie(&http.Cookie{Name: session.CookieName, Value: "valid-session"})
 	request.Header.Set("Content-Type", "image/jpeg")
 	response = httptest.NewRecorder()
 	mux.ServeHTTP(response, request)
-	if response.Code != http.StatusBadRequest || ops.uploads != 0 {
-		t.Fatalf("missing revision = %d, calls=%d", response.Code, ops.uploads)
+	if response.Code != http.StatusGone || ops.uploads != 0 {
+		t.Fatalf("legacy upload without revision = %d, calls=%d", response.Code, ops.uploads)
 	}
 }

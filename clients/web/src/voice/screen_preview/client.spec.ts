@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { apiBaseUrl } from '../../config/runtime'
-import { beginScreenPreview, readScreenPreview, uploadScreenPreview, type ScreenPreviewHint, type ScreenPreviewRequest } from './client'
+import { beginScreenPreview, readScreenPreview, type ScreenPreviewHint, type ScreenPreviewRequest } from './client'
 import { LatestScreenPreviewReader } from './reader'
 import { LatestScreenPreviewUploader } from './uploader'
 
@@ -14,14 +14,6 @@ describe('private screen preview client', () => {
     const request = vi.fn(async () => Response.json({ schema_version: 1, generation_id: generation }))
     await expect(beginScreenPreview(lease, request)).resolves.toBe(generation)
     expect(request).toHaveBeenCalledWith(`${apiBaseUrl}/voice/leases/${lease}/screen-previews/v1`, expect.objectContaining({ method: 'POST', credentials: 'same-origin', cache: 'no-store' }))
-  })
-
-  it('uploads bounded JPEGs with monotonic revision metadata only', async () => {
-    const request = vi.fn<ScreenPreviewRequest>(async () => new Response(null, { status: 204 }))
-    await uploadScreenPreview(lease, generation, 7, jpeg, request)
-    const init = request.mock.calls[0]![1]
-    expect(init.headers).toMatchObject({ 'content-type': 'image/jpeg', 'X-Screen-Preview-Revision': '7' })
-    expect(init.cache).toBe('no-store')
   })
 
   it('reads protected JPEG bytes and honors no-update responses', async () => {
@@ -45,35 +37,23 @@ describe('private screen preview client', () => {
     reader.clear()
   })
 
-  it('uploads only the newest queued frame while bounding concurrency', async () => {
-    let finishFirst!: () => void
-    let firstStarted!: () => void
-    let secondStarted!: () => void
-    const firstRequest = new Promise<void>(resolve => { finishFirst = resolve })
-    const firstSeen = new Promise<void>(resolve => { firstStarted = resolve })
-    const secondSeen = new Promise<void>(resolve => { secondStarted = resolve })
-    const uploaded: number[] = []
-    let uploadCount = 0
+  it('refreshes the server-owned capture every 30 seconds without uploading frames', async () => {
+    const methods: string[] = []
     const request: ScreenPreviewRequest = async (_input, init) => {
-      if (init.method === 'POST') return Response.json({ schema_version: 1, generation_id: generation })
-      if (init.method === 'DELETE') return new Response(null, { status: 204 })
-      uploaded.push((init.body as Uint8Array)[2]!)
-      uploadCount++
-      if (uploadCount === 1) { firstStarted(); await firstRequest }
-      if (uploadCount === 2) secondStarted()
-      return new Response(null, { status: 204 })
+      methods.push(init.method!)
+      return init.method === 'POST'
+        ? Response.json({ schema_version: 1, generation_id: generation })
+        : new Response(null, { status: 204 })
     }
     const uploader = new LatestScreenPreviewUploader(request)
-    await uploader.start(lease)
-    const frame = (marker: number) => new Uint8Array([0xff, 0xd8, marker, 0xff, 0xd9])
-    uploader.offer(frame(1))
-    await firstSeen
-    uploader.offer(frame(2))
-    uploader.offer(frame(3))
-    finishFirst()
-    await secondSeen
-    await uploader.stop()
-    expect(uploaded).toEqual([1, 3])
+    vi.useFakeTimers()
+    try {
+      await uploader.start(lease)
+      await vi.advanceTimersByTimeAsync(30_000)
+      await vi.waitFor(() => expect(methods).toEqual(['POST', 'POST']))
+      await uploader.stop()
+      expect(methods).toEqual(['POST', 'POST', 'DELETE'])
+    } finally { vi.useRealTimers() }
   })
 
   it('makes concurrent stop callers wait for generation invalidation', async () => {

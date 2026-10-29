@@ -528,7 +528,13 @@
       "clients/web/src/voice/screen_preview/reader_visibility_control.ts",
       "evidence/qa/web-stream-card-preview-quality-2026-10-28.md",
       "clients/flutter/lib/src/screens/workspace_ui/voice_participant_card/**",
-      "clients/flutter/lib/src/screens/workspace_ui/voice_participant_room/**"
+      "clients/flutter/lib/src/screens/workspace_ui/voice_participant_room/**",
+      "backend/internal/app/media_routes/screen_preview/**",
+      "deploy/livekit/**",
+      "deploy/compose.yaml",
+      "clients/web/src/voice/screen_preview/**",
+      "clients/flutter/lib/src/features/voice/screen_preview/**",
+      "clients/flutter/lib/src/features/screen/thumbnail_state/**"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",
@@ -675,7 +681,7 @@
           "clients/web/src/voice/screen_preview/reader_visibility.spec.ts",
           "backend/internal/media/screen_preview/jpeg_test.go"
         ],
-        "scope": "Web voice roster places a live stream thumbnail inside its participant card and fills the matching voice-only card with a 16:9 voice status panel. Cards stay equal in size on desktop and 200% mobile text, use real avatars with initials fallback, left-align names, and size mute icons to status text. The preview shows a persistent centered play affordance, a top-right live badge, and a top-left caption from known mode/target-profile metadata or a generic fallback. Clicking the inline preview opens the existing viewer. Real API/SFU acceptance waits for a decoded inline thumbnail before selecting the stream. Profile captions describe the configured target, not measured FPS. No physical capture or media QoE claim. Visual review of 876×656 desktop and 390×740 at 200% text confirms equal cards, a centered persistent play glyph, and a source caption that truncates before the live badge. The real-stack thumbnail is synthetic and proves decode/lifecycle only. The Web cards use an 18rem-per-participant width cap; a larger 480px JPEG preview is preferred at quality 0.6 and falls back to smaller frames within the existing 14 KiB contract. The publisher retries up to ten times at one-second intervals until the first drawable frame, then refreshes every 30 seconds. Visible cards poll at that interval; an empty initial response retries up to three times at one-second intervals before returning to the 30-second poll cadence. Source-resolution visual review of the 876×656 capture shows two equal 405px cards with a 16:9 inline preview about 228px tall; at 390×740 with 200% text the cards stack without horizontal overflow. JPEG encoding tries quality 0.82, 0.74, 0.66, then 0.6 at each full preview size before reducing dimensions, preserving the existing 14 KiB cap."
+        "scope": "Web voice roster places a live stream thumbnail inside its participant card and fills the matching voice-only card with a 16:9 voice status panel. Cards stay equal in size on desktop and 200% mobile text, use real avatars with initials fallback, left-align names, and size mute icons to status text. The preview shows a persistent centered play affordance, a top-right live badge, and a top-left caption from known mode/target-profile metadata or a generic fallback. Clicking the inline preview opens the existing viewer. Real API/SFU acceptance waits for a decoded inline thumbnail before selecting the stream. Profile captions describe the configured target, not measured FPS. No physical capture or media QoE claim. Visual review of 876×656 desktop and 390×740 at 200% text confirms equal cards, a centered persistent play glyph, and a source caption that truncates before the live badge. The real-stack thumbnail is synthetic and proves decode/lifecycle only. The Web cards use an 18rem-per-participant width cap; a larger 480px JPEG preview is preferred at quality 0.6 and falls back to smaller frames within the existing 14 KiB contract. The publisher retries up to ten times at one-second intervals until the first drawable frame, then refreshes every 30 seconds. Visible cards poll at that interval; an empty initial response retries up to three times at one-second intervals before returning to the 30-second poll cadence. Source-resolution visual review of the 876×656 capture shows two equal 405px cards with a 16:9 inline preview about 228px tall; at 390×740 with 200% text the cards stack without horizontal overflow. JPEG encoding tries quality 0.82, 0.74, 0.66, then 0.6 at each full preview size before reducing dimensions, preserving the existing 14 KiB cap. Server-side snapshot source is tracked separately in server_screen_previews."
       },
       "screen_watchers": {
         "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
@@ -734,6 +740,22 @@
           "clients/flutter/test/screen_scope/thumbnail_test.dart"
         ],
         "scope": "Flutter voice participant cards match the Web stream-card design: equal responsive cards show a large 16:9 inline screen preview with a persistent play affordance, live badge and configured profile caption, while voice-only participants get a matching voice-status panel. Tapping the preview opens the existing viewer. Thumbnails use the existing 14 KiB JPEG contract, target up to 480×320, prefer higher JPEG quality before reducing dimensions, retry the initial capture at one-second intervals, then refresh every 30 seconds. Receiver event hints update previews promptly and the fallback poll follows the same 30-second cadence. Widget and local-stack checks prove presentation and lifecycle only; no physical media-quality claim."
+      },
+      "server_screen_previews": {
+        "focused": [
+          "backend/internal/media/screen_preview/server_capture_test.go",
+          "backend/internal/media/screen_preview/livekit/egress_test.go",
+          "backend/internal/media/screen_preview/memory/store_test.go",
+          "backend/internal/media/screen_preview/api/upload_test.go",
+          "backend/internal/media/screen_preview/jpeg_test.go",
+          "tools/qa/critical_client_acceptance/screen_share_ui.mjs",
+          "clients/web/src/voice/screen_preview/uploader_shutdown.spec.ts",
+          "clients/web/src/voice/screen_preview/client.spec.ts",
+          "clients/flutter/test/screen_preview_client_test.dart",
+          "clients/flutter/test/screen_preview_sender_stop_test.dart",
+          "clients/flutter/test/screen_scope/thumbnail_test.dart"
+        ],
+        "scope": "LiveKit Egress captures the active screen-share track on the server every 30 seconds into an isolated private volume. The API exposes only the current bounded JPEG through the existing session, lease and channel ACL; clients never upload screenshot bytes. Stop/revoke and lease expiry stop Egress and remove ephemeral snapshots. The pinned real-stack browser scenario verifies two-client initial delivery, a refreshed server thumbnail after the 30-second capture interval, and thumbnail cleanup after unpublish; backend tests verify denied reads and Egress stop/lease-expiry cleanup. Unit tests and synthetic frames do not prove Egress runtime or capture capacity; the real Egress refresh and publisher/load evidence remain NOT_RUN until measured."
       }
     },
     "parity": [

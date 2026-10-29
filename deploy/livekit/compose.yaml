@@ -5,6 +5,17 @@ x-json-log-rotation: &json-log-rotation
     max-file: "3"
 
 services:
+  redis:
+    image: redis:7.4.12-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no", "--protected-mode", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    networks: [private]
+    logging: *json-log-rotation
+
   livekit:
     image: livekit/livekit-server:v1.13.7
     entrypoint: ["/bin/sh", "-ec"]
@@ -33,6 +44,9 @@ services:
       LIVEKIT_API_KEY: ${LIVEKIT_API_KEY:?set LIVEKIT_API_KEY in .env}
       LIVEKIT_API_SECRET: ${LIVEKIT_API_SECRET:?set LIVEKIT_API_SECRET in .env}
       LIVEKIT_NODE_IP: ${LIVEKIT_NODE_IP:?set LIVEKIT_NODE_IP in .env}
+    depends_on:
+      redis:
+        condition: service_healthy
     ports:
       - "7882:7882/tcp"
       - "50000-50100:50000-50100/udp"
@@ -42,4 +56,24 @@ services:
       private:
         aliases: [livekit]
       livekit-metrics: {}
+    logging: *json-log-rotation
+
+  egress:
+    image: livekit/egress:v1.14.1
+    environment:
+      EGRESS_CONFIG_FILE: /etc/egress.yaml
+      LIVEKIT_API_KEY: ${LIVEKIT_API_KEY:?set LIVEKIT_API_KEY in .env}
+      LIVEKIT_API_SECRET: ${LIVEKIT_API_SECRET:?set LIVEKIT_API_SECRET in .env}
+    depends_on:
+      redis:
+        condition: service_healthy
+      livekit:
+        condition: service_started
+      screen-preview-storage-init:
+        condition: service_completed_successfully
+    volumes:
+      - ./egress.yaml:/etc/egress.yaml:ro
+      - screen-previews-data:/var/lib/voice-platform/screen-previews
+    networks: [private, telemetry-egress]
+    restart: unless-stopped
     logging: *json-log-rotation

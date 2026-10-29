@@ -7,9 +7,12 @@ import (
 )
 
 const (
-	SchemaVersion  = 1
-	PreviewTTL     = 15 * time.Second
-	UploadInterval = 4 * time.Second
+	SchemaVersion                 = 1
+	PreviewTTL                    = 90 * time.Second
+	UploadInterval                = 4 * time.Second
+	CaptureInterval               = 30 * time.Second
+	CapturePollInterval           = time.Second
+	CaptureReconcileRetryInterval = 5 * time.Second
 )
 
 var (
@@ -22,6 +25,7 @@ var (
 	ErrRateLimited     = errors.New("screen preview rate limited")
 	ErrCapacity        = errors.New("screen preview capacity reached")
 	ErrStaleGeneration = errors.New("screen preview generation superseded")
+	ErrServerManaged   = errors.New("screen preview frames are captured by the server")
 )
 
 type Principal struct {
@@ -35,13 +39,33 @@ type Authority interface {
 type PublicationVerifier interface {
 	CurrentTrack(context.Context, string, string) (string, error)
 }
+type Capturer interface {
+	Ensure(context.Context, string, string, string, string) error
+	Stop(context.Context, string, string, string) error
+	Latest(context.Context, string, string) (CaptureFrame, error)
+	Active() []CaptureSession
+}
+type CaptureFrame struct {
+	Fingerprint string
+	JPEG        []byte
+}
+type CaptureSession struct {
+	LeaseID, GenerationID string
+}
 type Store interface {
-	Begin(string, string) (string, error)
+	Begin(string, string, string) (string, error)
+	Current(string) (string, string, string, bool)
+	Renew(string, string) error
+	Active() []ActiveGeneration
+	Capture(string, string, string, []byte) (uint64, bool, error)
 	Track(string, string) (string, error)
 	Reserve(string, string, uint64) (string, error)
 	Commit(string, string, uint64, []byte) error
 	Read(string, string) ([]byte, uint64, bool, error)
 	Invalidate(string, string) error
+}
+type ActiveGeneration struct {
+	LeaseID, GenerationID, ChannelID, TrackSID string
 }
 type HintPublisher interface {
 	Updated(context.Context, string, string, uint64)
@@ -51,6 +75,7 @@ type Service struct {
 	authority    Authority
 	publications PublicationVerifier
 	store        Store
+	capturer     Capturer
 	hints        HintPublisher
 }
 type Generation struct {

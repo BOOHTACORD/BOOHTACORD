@@ -3,6 +3,8 @@ package runtimeconfig
 import (
 	"fmt"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strings"
 	admitlogin "voice-platform/backend/internal/identity/admit_login"
 	centralexport "voice-platform/backend/internal/observability/central_export"
@@ -39,14 +41,14 @@ type Config struct {
 	TelemetryAuth                                                                string
 	CausalKey                                                                    string
 	CentralTelemetry                                                             *centralexport.Runtime
-	AttachmentRoot                                                               string
+	AttachmentRoot, ScreenPreviewRoot                                            string
 	TrustedProxyCIDRs                                                            []string
 	RealtimeConnectionLimiter                                                    *admitconnection.Limiter
 	UploadAdmissionLimiter                                                       *admitupload.Limiter
 }
 
 func Load(getenv func(string) string) (Config, error) {
-	configuration := Config{PublicOrigin: getenv("PUBLIC_ORIGIN"), AttachmentRoot: getenv("ATTACHMENTS_DIRECTORY"), TrustedProxyCIDRs: splitHosts(getenv("TRUSTED_PROXY_CIDRS"))}
+	configuration := Config{PublicOrigin: getenv("PUBLIC_ORIGIN"), AttachmentRoot: getenv("ATTACHMENTS_DIRECTORY"), ScreenPreviewRoot: getenv("SCREEN_PREVIEW_DIRECTORY"), TrustedProxyCIDRs: splitHosts(getenv("TRUSTED_PROXY_CIDRS"))}
 	var err error
 	if _, err := notificationAvailability(getenv("NOTIFICATION_WEB_ENABLED")); err != nil {
 		return Config{}, fmt.Errorf("NOTIFICATION_WEB_ENABLED must be true or false")
@@ -77,6 +79,9 @@ func Load(getenv func(string) string) (Config, error) {
 	}
 	if configuration.AttachmentRoot == "" {
 		return Config{}, fmt.Errorf("ATTACHMENTS_DIRECTORY is required")
+	}
+	if configuration.ScreenPreviewRoot == "" {
+		configuration.ScreenPreviewRoot = filepath.Join(os.TempDir(), "boohtacord-screen-previews")
 	}
 	configuration.TelemetryEndpoint = getenv("OTEL_EXPORTER_OTLP_TRACES_ENDPOINT")
 	if configuration.TelemetryEndpoint == "" {

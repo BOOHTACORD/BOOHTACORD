@@ -32,9 +32,6 @@ extension ScreenThumbnailSample on ScreenThumbnailController {
           final identity = room.localParticipant?.identity;
           if (identity == null) return;
           thumbnails[identity] = thumbnail;
-          if (previewLease != null) {
-            previewUploader.offer(previewLease, thumbnail);
-          }
           changed();
         },
         isActive: active,
