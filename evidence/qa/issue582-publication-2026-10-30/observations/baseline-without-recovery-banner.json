@@ -1,0 +1,149 @@
+{
+  "source": "f370396c468d26588cb934f8262b2ee7f4801044",
+  "apk_sha256": "2eace5a664b864d412590b96d1fc2b717919a1a560a1d5566e19700630f7981b",
+  "cases": [
+    {
+      "stage": "portrait-voice-before",
+      "raster": [
+        1080,
+        2340
+      ],
+      "send": [
+        923,
+        1820,
+        1058,
+        1955
+      ],
+      "leave": [
+        911,
+        2141,
+        1046,
+        2276
+      ],
+      "overlap_pixels": 0,
+      "draft_length": 0,
+      "draft_matches_fixture": false,
+      "voice_UI": "approved SHARE_TEST connected",
+      "screenshot_sha256": "66bef35237e262e6546e71ab4714689e9f5e3e7c96f55c685ca38834cb857901",
+      "ime_visually_shown": false,
+      "source_sized_visual_review": "PASS_ROOT_OBSERVER"
+    },
+    {
+      "stage": "portrait-voice-ime",
+      "raster": [
+        1080,
+        2340
+      ],
+      "send": [
+        923,
+        1010,
+        1058,
+        1145
+      ],
+      "leave": [
+        911,
+        1331,
+        1046,
+        1466
+      ],
+      "overlap_pixels": 0,
+      "draft_length": 18,
+      "draft_matches_fixture": true,
+      "voice_UI": "approved SHARE_TEST connected",
+      "screenshot_sha256": "057c962ae55e89a2c1d6b4068b290c7cf9293fa6926edcb83209afd012a842b8",
+      "ime_visually_shown": true,
+      "source_sized_visual_review": "PASS_ROOT_OBSERVER"
+    },
+    {
+      "stage": "landscape-voice-ime",
+      "raster": [
+        2340,
+        1080
+      ],
+      "send": [
+        2183,
+        264,
+        2318,
+        399
+      ],
+      "leave": [
+        2171,
+        318,
+        2306,
+        453
+      ],
+      "overlap_pixels": 9963,
+      "draft_length": 18,
+      "draft_matches_fixture": true,
+      "voice_UI": "approved SHARE_TEST connected",
+      "screenshot_sha256": "9707d7f4db141c72c58d588c75858ab178d2d3bf12dcaf208a259028767c1ccc",
+      "ime_visually_shown": true,
+      "source_sized_visual_review": "PASS_ROOT_OBSERVER"
+    },
+    {
+      "stage": "landscape-voice-ime-hidden",
+      "raster": [
+        2340,
+        1080
+      ],
+      "send": [
+        2183,
+        560,
+        2318,
+        695
+      ],
+      "leave": [
+        2171,
+        881,
+        2306,
+        1016
+      ],
+      "overlap_pixels": 0,
+      "draft_length": 18,
+      "draft_matches_fixture": true,
+      "voice_UI": "approved SHARE_TEST connected",
+      "screenshot_sha256": "a76311827877587c40fd828410189e61a5633848632c128f1628520034367841",
+      "ime_visually_shown": false,
+      "source_sized_visual_review": "PASS_ROOT_OBSERVER"
+    },
+    {
+      "stage": "portrait-voice-restored",
+      "raster": [
+        1080,
+        2340
+      ],
+      "send": [
+        923,
+        1820,
+        1058,
+        1955
+      ],
+      "leave": [
+        911,
+        2141,
+        1046,
+        2276
+      ],
+      "overlap_pixels": 0,
+      "draft_length": 18,
+      "draft_matches_fixture": true,
+      "voice_UI": "approved SHARE_TEST connected",
+      "screenshot_sha256": "fe5ee01b6c888be963009c30b8f55edcb097b6c097aa4a147b58537fd61704ef",
+      "ime_visually_shown": false,
+      "source_sized_visual_review": "PASS_ROOT_OBSERVER"
+    }
+  ],
+  "cleanup": [
+    "only owned draft cleared",
+    "returned to initial idle voice state"
+  ],
+  "status": "FAIL_OVERLAP",
+  "rotation_after": {
+    "accelerometer_rotation": "1",
+    "user_rotation": "0"
+  },
+  "original_receipt_sha256": "8ba2e764a6a90c9e90c73b415c52967c939b91c97530553a0d33c708e1eb9651",
+  "recovering_banner_present": false,
+  "IME_basis": "Inspected original-resolution images. Stale dumpsys boolean excluded from this published copy.",
+  "scope": "Second qualified physical RED on old signed2083/sourcef370; not current master or fixed candidate acceptance. Voice observations are UI only; no audio claim."
+}

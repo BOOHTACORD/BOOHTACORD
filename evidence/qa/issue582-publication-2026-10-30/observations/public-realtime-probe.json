@@ -1,0 +1,40 @@
+{
+  "at_utc": "2026-10-29T22:04:01.400610+00:00",
+  "origin": "https://v.bootybay.ru",
+  "platform": "Windows Python3 / websocket-client1.9.2",
+  "HTTP": [
+    {
+      "step": "public health prerequisite",
+      "status": 200
+    },
+    {
+      "step": "own normal MEMBER login",
+      "status": 204
+    },
+    {
+      "step": "own account binding",
+      "status": 200
+    },
+    {
+      "step": "revoke only new owned session",
+      "status": 204
+    },
+    {
+      "step": "own session revocation readback",
+      "status": 200
+    }
+  ],
+  "TLS_default_validation": true,
+  "redirects": false,
+  "proxy_environment_present": false,
+  "scope": "One owned MEMBER session, read-only authenticated realtime handshake; no native-client or common ICE-route claim.",
+  "owned_account_verified": true,
+  "upgrade_status": 101,
+  "connection_ready": true,
+  "status": "PASS_SCOPED_PROTOCOL",
+  "observed_ready_ms": 63,
+  "own_session_revoked": true,
+  "finished_at_utc": "2026-10-29T22:04:01.887129+00:00",
+  "original_receipt_sha256": "3e84ff5bcdbddac06c32e155884c6ee1ea56c5f9d8be0333f545f06cb939c251",
+  "timing_scope": "Single observed63ms; not calibrated latency, an SLO or a cross-client/ICE route claim."
+}
