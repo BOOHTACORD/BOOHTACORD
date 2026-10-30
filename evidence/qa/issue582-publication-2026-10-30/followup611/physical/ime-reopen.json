@@ -1,0 +1,130 @@
+{
+  "source_revision": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+  "apk_sha256": "14fc53a05c2e92314f964147bb1e1c6331513fe4e87ff09daaf8a9910da60d42",
+  "status": "PASS_SCOPED_IME_HIDE_SHOW_DRAFT_GEOMETRY",
+  "Send_attempts": 0,
+  "only_owned_draft_cleared_voice_idle": true,
+  "rotation_after": {
+    "accelerometer_rotation": "1",
+    "user_rotation": "0"
+  },
+  "cases": [
+    {
+      "stage": "reopen-landscape-initial-ime",
+      "raster": [
+        2340,
+        1080
+      ],
+      "send": [
+        2183,
+        301,
+        2318,
+        436
+      ],
+      "leave": [
+        2194,
+        87,
+        2329,
+        222
+      ],
+      "overlap_pixels": 0,
+      "draft_matches": true,
+      "draft_length": 18,
+      "SHA256": "889b0655d7f409d890dd0d624e7e4f7ee718b9f8deaf3c06f8f42cb87f6894ae"
+    },
+    {
+      "stage": "reopen-landscape-hidden",
+      "raster": [
+        2340,
+        1080
+      ],
+      "send": [
+        2183,
+        560,
+        2318,
+        695
+      ],
+      "leave": [
+        2171,
+        881,
+        2306,
+        1016
+      ],
+      "overlap_pixels": 0,
+      "draft_matches": true,
+      "draft_length": 18,
+      "SHA256": "98e219c72409c03c772082708b3f085c6ff7a13e807cdc18168436d5da86ed57"
+    },
+    {
+      "stage": "reopen-landscape-shown",
+      "raster": [
+        2340,
+        1080
+      ],
+      "send": [
+        2183,
+        301,
+        2318,
+        436
+      ],
+      "leave": [
+        2194,
+        87,
+        2329,
+        222
+      ],
+      "overlap_pixels": 0,
+      "draft_matches": true,
+      "draft_length": 18,
+      "SHA256": "cbdda63513e418b3321d45a5926fb845f04574658279058133b8f9c24265f294"
+    },
+    {
+      "stage": "reopen-portrait-restored",
+      "raster": [
+        1080,
+        2340
+      ],
+      "send": [
+        923,
+        1820,
+        1058,
+        1955
+      ],
+      "leave": [
+        911,
+        2141,
+        1046,
+        2276
+      ],
+      "overlap_pixels": 0,
+      "draft_matches": true,
+      "draft_length": 18,
+      "SHA256": "5c0a01bfeaeb68838fdb8c3fe87042c45adb42e0d9042c32d4ae3b9a5ec7fd16"
+    },
+    {
+      "stage": "reopen-portrait-shown",
+      "raster": [
+        1080,
+        2340
+      ],
+      "send": [
+        923,
+        1010,
+        1058,
+        1145
+      ],
+      "leave": [
+        911,
+        1331,
+        1046,
+        1466
+      ],
+      "overlap_pixels": 0,
+      "draft_matches": true,
+      "draft_length": 18,
+      "SHA256": "bdf1ec6e935852c538500983a27fcc8d9fe3461c5db78eafec66401c27aad51f"
+    }
+  ],
+  "landscape_IME_reopen_draft_guard": true,
+  "scope": "Qualified final611 physical cycles; original full-image reviews and unresolved variants are in closure-receipt.json"
+}

@@ -1,0 +1,139 @@
+{
+  "issue": 582,
+  "status": "PASS_SCOPED_ISSUE582_PHYSICAL_CLOSURE_COMPLETE",
+  "at_utc": "2026-10-30T00:14:30.663801+00:00",
+  "candidate": {
+    "source_revision": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+    "signed_run_id": 40973416581,
+    "attempt": 1,
+    "artifact_id": 12942671472,
+    "installed_APK_SHA256": "14fc53a05c2e92314f964147bb1e1c6331513fe4e87ff09daaf8a9910da60d42",
+    "version_code": 2083,
+    "certificate_SHA256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+    "ordinary_install_and_fresh_pull": true,
+    "same_version_code_is_not_build_identity": true,
+    "permissions_grants_AND_flags_preserved": true,
+    "independent_test_source_blob_hashes": 5
+  },
+  "platform": "Physical Samsung SM-A576B Android16/API36,density450,font1.0,realGboard;2340x1080 landscape/1080x2340portrait. Receiver: actual full production Web, new Linux headed Chromium in WSL2/Xvfb on this Windows11 PC; not Windows native client.",
+  "sets": [
+    {
+      "protects": "Native composer/Send/Leave remain visible/disjoint above keyboard; connected voice status, room/count and RTT readable; draft survives rotation and IME hide/show.",
+      "command": "python -X utf8 .out/issue582/final611/physical.py; then qualified phased python -X utf8 .out/issue582/final611/reopen.py prepare|show|finish; original PNG review",
+      "platform": "Physical Samsung/realGboard",
+      "mandatory_when": "Closing582 layout/draft facet or changing native short editing layout",
+      "result": "PASS across seven distinct states from qualified cycles:portrait,portraitIME,landscapeIME,landscapehidden,landscapere-shown,portraitrestored,portraitre-shown. All5reopen states retain the same18char own draft/SHARE_TEST UI; overlap0, no clipping/roomellipsis/blank half. Two initial stops are controller diagnostics retained below.",
+      "where": [
+        "geometry.json (qualified first4 states; controller stops before re-show)",
+        "reopen.json",
+        "18-image hash manifest below"
+      ]
+    },
+    {
+      "protects": "Native full selection survives activevoice rotation,Back and portrait restore.",
+      "command": "python -X utf8 .out/issue582/final611/selection.py seed|control|repeat|run; original five PNG review",
+      "platform": "Physical Samsung native touch selection/Gboard",
+      "mandatory_when": "Closing582 selection facet or changing responsive editor lifecycle",
+      "result": "PASS:actual longpress qualified by exact single-character replacement; reselect then three states preserve full highlight/draft; final replacement exactly1char. Send0. Own draftclear/explicitLeave/rotationrestored.",
+      "where": [
+        "selection.json",
+        "selection-seed/repeat/landscape-ime/landscape-back/portrait-restored.png hashes"
+      ]
+    },
+    {
+      "protects": "One visible native Send reaches actual PC receiver without losing voice membership.",
+      "command": "python -X utf8 .out/issue582/send611/native.py prepare|send; receiver run611 arm/GET roster/DOM+author checks per pc-receiver/launch-control.md",
+      "platform": "Physical Samsung + actual headed Linux production Web on this PC",
+      "mandatory_when": "Closing582 hit-test/PC receipt/membership facet",
+      "result": "PASS:Send1; Send[2183,301,2318,436],Leave[2194,87,2329,222],overlap0, Gboardstarts475. Draftempty; actual rendered fixture and exactly1server record bound to phone author. Phone present in SAME SHARE_TEST before/after Send, BEFORE deliberateLeave.",
+      "where": [
+        "send611/landscape-before-send.json",
+        "send611/landscape-after-send.json",
+        "pc-receiver/verdict-run611.json",
+        "pc-receiver/roster-run611-before/after.json"
+      ]
+    },
+    {
+      "protects": "Only owned fixture/session/resources are removed and phone returns to initial state.",
+      "command": "python -X utf8 .out/issue582/send611/native.py restore; python -X utf8 .out/issue582/send611/cleanup.py; receiver tombstone+owned shutdown checks; python -X utf8 .out/issue582/final611/final_state.py",
+      "platform": "Same physical phone + same original B browser session",
+      "mandatory_when": "Every owned fixture acceptance run",
+      "result": "PASS:authorDelete1+confirmation; exactAPIblanktombstone/attachments[] and visibleWebtombstone withoutrefresh. Phone14fc stillinstalled,emptydraft,foregroundownDM,voiceidle,MediaProjectionnull,rotation1/0,Mic+NotifygrantsANDflagsunchanged. ONLY newBsessionlogout204; browser/Node862/Xvfb143 cleared; unrelatedWindows/apps/X0 untouched.",
+      "where": [
+        "send611/native-delete.json",
+        "final-state.json",
+        "pc-receiver/deleted-run611.json",
+        "pc-receiver/shutdown-result.json",
+        "pc-receiver/cleanup-verification.json"
+      ]
+    }
+  ],
+  "native_regression": "Retained source-bound nearest tests and pinned-original counterexamples in PR606/611.611finalCI40971347197 all27SUCCESS, signed40973416581/1SUCCESS; master-nativequality all11SUCCESS separately retained by release agent. No tests removed/skip gates weakened.",
+  "controller_diagnostics": {
+    "first_and_trace_repeat": "FAIL_OR_BLOCKED stopped BEFORE touching already-focused field afterBack: enabledtrue/clickablefalse/focusabletrue/focusedtrue. Sameguardtrace at tap(edit) qualified by explicit metadata in reopen.json; not application failure. Both original raw receipts retained; both ownedcleanupPASS.",
+    "qualification": "Phased touch accepts ONLY currently observed enabled/focusable android.widget.EditText in foregroundownedDM with exact own draft; target center separated fromSend. Real PNG proves keyboardopened; no product gate weakened."
+  },
+  "root_visual_review": "All18listedPNG individually inspected ORIGINAL resolution:7geometry states,5selection,4nativeSend/cleanup,2actualWebreceipt/deletion. These are physical/runtime images; earlier component captures remain separate.",
+  "limits": [
+    "Scoped582closure only; broad #62/#240/#303 and all unexecuted platform/security/media gates remainOPEN.",
+    "IME re-show with pre-existing noncollapsed selection NOT_RUN; draftIMEre-show and selectionrotation/Back are separately proven.",
+    "Natural gravity sensor rotation NOT_RUN; approved system rotation settings used.",
+    "Public roster has no lease field: leaseequalityNOT_RUN. No hearing/mediaquality/FPS/capacity/SLO claim.",
+    "Receiver is Linux Chromium underWSL2, not nativeWindowsChrome/client; no Windows GUI input performed.",
+    "Raw identities/fixturebodies/IDs/PNGs kept locally only; public evidence contains safe receipts/hashes.43consolidation decisions untouched."
+  ],
+  "artifact_SHA256": {
+    "final611\\install.json": "daf12255fb97e75656b6b085b0621dfd614a043cf980959969e2a6097f3ef864",
+    "final611\\final-state.json": "37d2b3a16ad08a4836cf09777582bb55eb0e1286321361d1e0ce0d1bcf652c1a",
+    "final611\\geometry.json": "490b34dc440b88cea8d02e53b94ae87b61785f10d79ebf8f22bb331aeca6d1e1",
+    "final611\\reopen.json": "cf6856855e63982044e7f9048b069c536e763c7646bb2b94d7b525ab95c5aa81",
+    "final611\\selection.json": "b46a7cb287e70008a87b8256590f4d439d1e9191d4d7b2f6283db41833e44a08",
+    "final611\\physical.py": "47426239cec4cdc690d04233e6f70946856fecc58b711689b0ce8d06e200cc9a",
+    "final611\\selection.py": "da2c86cb1acae291f23d802e2abbf2f246d6b96716c520a4a37ac04bf4ff0384",
+    "final611\\reopen.py": "d9445f47ecd860f4c60abaa02fc6ed1fbf1bfc94c70e73b2f23763a2d76d7a48",
+    "final611\\final_state.py": "697ec872be6ef103854c72f40dc338b239b207dea7f05ae4255ae74318ab66ac",
+    "final611-geometry2\\geometry.json": "d6bbc562c1db806374bb6512268a64f8de265138469f8e116fd2b667fd4a504a",
+    "send611\\native.py": "eab63d228a008936ecb7d7d5ad5237941ab4c4d3338389df85c30f9d27117e1c",
+    "send611\\cleanup.py": "757a9c334bf1e9f6093ffd8ce5fd1294e9bf74ca5f9a159b27cd0ca521f0b8d1",
+    "send611\\native-delete.json": "1092df470e7928cb198c1ed8a947339ae88ccb3ce26a5ef3b1b7710c5188f7e6",
+    "send611\\landscape-before-send.json": "edabf023cbb86a5f60611b69a27f2e1b1f38fb2b594481eee1be48262129b057",
+    "send611\\landscape-after-send.json": "d53b065b0403014d76e5e1a84bc6192bfcb50734f1da60a7ac72eb8ef40e7186",
+    "send611\\portrait-after-send.json": "4af65546b8f90851b1d8a6c2746e278b0ebf032d8c6bfb63423557304cf9e30a",
+    "pc-receiver\\verdict-run611.json": "ce0dcf2a2bba50c9436f13d69b09a13c0573fbce4dad7fcb3fecfa2d292c4930",
+    "pc-receiver\\received-run611.json": "545ff95f3db3eb3141d3ad993730c53a24846d4d3333837a4d0e77a88ad2104d",
+    "pc-receiver\\roster-run611-before.json": "fd4ed832ad61cfd61321ab8cb0a8c4f96d296f141758f5fba68d2d9019835f09",
+    "pc-receiver\\roster-run611-after.json": "7c7aee5427955031bd44b5e3f4c67de11e3eac01c70ad948aa5d478d8bcff748",
+    "pc-receiver\\deleted-run611.json": "d02aa3fde67cad55d93df8d94c4048b896adda1c09ce639b1b6604de848d573a",
+    "pc-receiver\\tombstone-run611.json": "54c994a231954ccf548ac485d5a977b53476556321ae1bc3105a6fbe8c5f0fc8",
+    "pc-receiver\\shutdown-result.json": "1ad17c2295ea144b64fa57527e6a57d76cde821cb6f7f9a13d04bb106d9e1fb4",
+    "pc-receiver\\cleanup-verification.json": "ca51a84a7de82cc4d87f7633fcc1bfd678216d5e6baddbe90b79e3cfa47ae54e",
+    "pc-receiver\\launch-control.md": "a00a98205c8d3b2596f06e853a49d8a6a1b9022fe41fff5031baa2465c366946"
+  },
+  "image_SHA256": {
+    "final611\\geometry-portrait-before.png": "9a31af641d336dbc3b0f3983e7659713ab78e1d0a1a3dbeab003eb1eb6b37f1f",
+    "final611\\geometry-portrait-ime.png": "012c7694a4cce143cc57624743236588d595b6e3aa1e22fd26f7435eee59b66e",
+    "final611\\reopen-landscape-initial-ime.png": "889b0655d7f409d890dd0d624e7e4f7ee718b9f8deaf3c06f8f42cb87f6894ae",
+    "final611\\reopen-landscape-hidden.png": "98e219c72409c03c772082708b3f085c6ff7a13e807cdc18168436d5da86ed57",
+    "final611\\reopen-landscape-shown.png": "cbdda63513e418b3321d45a5926fb845f04574658279058133b8f9c24265f294",
+    "final611\\reopen-portrait-restored.png": "5c0a01bfeaeb68838fdb8c3fe87042c45adb42e0d9042c32d4ae3b9a5ec7fd16",
+    "final611\\reopen-portrait-shown.png": "bdf1ec6e935852c538500983a27fcc8d9fe3461c5db78eafec66401c27aad51f",
+    "final611\\selection-seed.png": "54c067cbda25b6aaaec50e296acf1ee8677e39250d30ea499a7ed376faba3763",
+    "final611\\selection-repeat.png": "49862a5403f9a1b1dd5fa8c04c73cf64f2a0ea8b55035b6f6dd3ba0fe2e3b13e",
+    "final611\\selection-landscape-ime.png": "627dc01dc3d734b88230db4a0d1f8ad7b2d8470ed49432142cb7bee689bee61d",
+    "final611\\selection-landscape-back.png": "455ab791326746ec16e0ac984e9647b2b921b8ce304250d4d0af308017426adf",
+    "final611\\selection-portrait-restored.png": "0fb276f2932cff1faf8f84003aa9e7a358613448f6f7e0c3528424f090d5b347",
+    "send611\\landscape-before-send.png": "9213c9e2ccce056d4eb9a217879469ed86efdad8b78bcea5ceea268b5227903f",
+    "send611\\landscape-after-send.png": "8ba56a2317ecd8653008ae5e9d35049544b8a3d651d964b80da464c4a9180379",
+    "send611\\portrait-after-send.png": "c5d667cbb711deb0e53081bcfa68c46e0b02da67166568ba94e758c4b843a378",
+    "send611\\portrait-cleaned.png": "0db5f0b575359f45d56f8650e301c1a91b979d682ec42fb1e4a1e51ae972373c",
+    "pc-receiver\\private\\received-run611.png": "489d66ddd0023ee27f8113578c8afe70431559567573905748e8a2b48df89f52",
+    "pc-receiver\\private\\deleted-run611-deleted.png": "048a4781b682b3309bf2be62ced3723c182edad742f2aae19318f211d61e704c"
+  },
+  "publication": {
+    "original_sanitized_receipt_sha256": "a747aca4c44356f0e81b621acb23d38983db15929d871ac57cbd394f6ca75a7f",
+    "actual_25_artifact_and_18_private_png_hashes_verified": true,
+    "candidate_matches_trusted_signed_packet": true,
+    "visual_review_owner": "Root, individually reviewed all18original-resolution runtime images",
+    "private_media_bodies_identities_and_sessions_published": false
+  }
+}
