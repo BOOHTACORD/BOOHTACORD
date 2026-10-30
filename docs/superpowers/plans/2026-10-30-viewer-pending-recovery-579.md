@@ -32,3 +32,11 @@ Stop: tested source/evidence handoff to release_closure; root resumes physical
 phone/PC testing. Hosted CI/merge/artifacts belong to that agent. #579 remains
 OPEN until its source-bound paired physical criteria pass. macOS/iOS media,
 audibility and43 consolidation decisions remain outside this packet.
+# PR614 dependency ownership repair
+
+The mandatory Dart edge verifier rejected feature presentation importing an application widget.
+Move the existing ScreenRecoveryRetry declaration verbatim into viewer_pending/retry.dart,
+retain the old application path as a one-line compatibility export, and use a relative feature import.
+Preserve constructor, callback, semantics, visuals and existing callers; never relax the dependency guard.
+Retain original guard RED, nearest29/dependency/analysis GREEN and four identical real-font captures.
+Run canonical local_features/full CI on the final head; paired native579 acceptance stays pending.

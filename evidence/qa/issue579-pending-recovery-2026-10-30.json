@@ -24,7 +24,7 @@
     "First optional capture helper attempt was interrupted while awaiting filesystem IO inside fake async; helper now uses synchronous file IO plus tester.runAsync like existing repository capture helper. That interrupted attempt is diagnostic only."
   ],
   "source_LF_SHA256": {
-    "clients/flutter/lib/src/features/voice/viewer_pending/presentation.dart": "ab4c16fb1e4048eb41d7d7c3a52320b30d6cd2b4fdba8e7034ab024a4487c3d3",
+    "clients/flutter/lib/src/features/voice/viewer_pending/presentation.dart": "a4c142c807cf91d219d25ccf07c8e3f00862addde606940d65d0096ba1ab7a7d",
     "clients/flutter/lib/src/features/voice/viewer_pending/recovery.dart": "b88a5974709961dbf0cf96790d43f6f84a086b360d1182761fd9e719253c39cf",
     "clients/flutter/lib/src/screens/voice_screen_ended.dart": "7926133062181b8540097403ffa2118382a4dab8ba53ffc4c37c04944e01935e",
     "clients/flutter/lib/src/screens/workspace_ui/voice_room/build/ended_screen/handler.dart": "84ecf391e58e22243c2dd96c1306db138b5befd152ba0646ea037045a0691259",
@@ -32,7 +32,9 @@
     "clients/flutter/test/features/voice/viewer_pending/support.dart": "f387c2ae0a76db0322bfe9247964afa19b72267ecc105790d9699cc72627ce84",
     "clients/flutter/test/features/voice/viewer_pending/fallback_test.dart": "7541bc999a8cfb37925b24c47e0d57784faf49139d0693abd1cc0e4ec045278e",
     "clients/flutter/test/features/voice/viewer_pending/presentation_test.dart": "ff8cc9c72bd79581e5067ea2c6769dc349bfcf4a1fa96d838b57d9efe96fa8d9",
-    "tools/qa/local_features/features.json": "ffa574302ed69bb516c28359fecdac18a0fa9eab2113d41594ce941f817ed43e"
+    "tools/qa/local_features/features.json": "ffa574302ed69bb516c28359fecdac18a0fa9eab2113d41594ce941f817ed43e",
+    "clients/flutter/lib/src/features/voice/viewer_pending/retry.dart": "2ecdb7f7e0d9e32cddd7f4b34f502bfb75f416db0e339af03d8975d788ccbbd3",
+    "clients/flutter/lib/src/widgets/screen_recovery_retry.dart": "62b39793bde669bd89871ebb1940b36c2b8e96e7fb2f13b0f478858d4ab598f8"
   },
   "log_LF_SHA256": {
     "fallback-red.log": "cbdd013495f65d57fd740fce47320236bfacca5fb175e81e1808c559dcc1c3d7",
@@ -50,7 +52,7 @@
     "original_qualified_base": "e104028f97e1877fff21df02d002a0c3bfb3ed68",
     "original_packet": "a992906329208cd62e7f7e9945c708505aa75bb9",
     "rebased_onto": "134382700eed2408644695e5298e64e60d3abf59",
-    "core579_source_and_tests_unchanged": true,
+    "core579_source_and_tests_unchanged": "At rebase all8 unchanged; repair changes only presentation import, moves existing widget verbatim and preserves other7 core/test blobs.",
     "registry_merge": [
       "voice.flutter: retained both appended test lists",
       "voice.parity_review.scope: retained both appended review scopes",
@@ -149,5 +151,80 @@
       },
       "client_parity": "PASS: unique scenarios, paths, platform decisions and honest evidence states"
     }
-  ]
+  ],
+  "dependency_guard_repair": {
+    "original_source": "beeed8f71b3804a85dab12eecd8063d1c8fbec16",
+    "hosted_failed_run": 40988561569,
+    "hosted_failed_job": 123845194428,
+    "reason": "Feature presentation imported application UI widget; mandatory dependency guard retained.",
+    "old_source_guard_RED_log_SHA256": "5389c5701b2078553e5803de6bc027116f706466ff4979c55e57a35753ab40d3",
+    "move": {
+      "from": "clients/flutter/lib/src/widgets/screen_recovery_retry.dart",
+      "to": "clients/flutter/lib/src/features/voice/viewer_pending/retry.dart",
+      "bytes": 480,
+      "original_and_new_exact_SHA256": "2ecdb7f7e0d9e32cddd7f4b34f502bfb75f416db0e339af03d8975d788ccbbd3",
+      "compatibility": "Old application-widget path exports the moved declaration; feature presentation uses relative import.",
+      "preserved": "Constructor/callback/semantics/style/ordinary callers and all tests unchanged; no allowlist or dependency guard relaxation."
+    },
+    "final_local_checks": {
+      "dependency_guard": {
+        "exit_code": 0,
+        "log_SHA256": "39f203390e748ec573fdc41447904562e08099eccf061bf3f1d15a819fd0381e"
+      },
+      "nearest": {
+        "passed": 29,
+        "failed": 0,
+        "skipped": 0,
+        "log_SHA256": "7850430e272c274628d3c302040cd0bdd60d6ac4a7b792bd9825055c939f3adc"
+      },
+      "analysis": {
+        "result": "No issues found",
+        "exit_code": 0,
+        "log_SHA256": "3db1cd3b73a42a2e5531d417416cf735b1d33b76d700ad80ef9e7e54e566b60e"
+      },
+      "policy": {
+        "passed": 4,
+        "failed": 0,
+        "log_SHA256": "354e6f000f8bd44ea19c4d6e1c66f37502399f7b2408f1d48f779949b0d9b738"
+      },
+      "parity": {
+        "exit_code": 0,
+        "log_SHA256": "d6812c2fd398963f865946921cae59985a29d05741b493e90a4a346c41d3469e"
+      }
+    },
+    "visual": {
+      "status": "PASS_FOUR_REAL_FONT_BEFORE_AFTER_IDENTICAL",
+      "captures": [
+        {
+          "name": "pending-1440-1.png",
+          "bytes": 19823,
+          "SHA256": "fed2bd8c4051faffad99584e9191229a96fed6fe8e9399d0b2600d70b875af40",
+          "before_after_byte_identical": true
+        },
+        {
+          "name": "pending-1440-2.png",
+          "bytes": 29531,
+          "SHA256": "01027b857d0b8b0dc48fcc9efc53c87cb2eec4076acc1f4f5c9759ca232796de",
+          "before_after_byte_identical": true
+        },
+        {
+          "name": "pending-390-1.png",
+          "bytes": 15260,
+          "SHA256": "47fcc4a64eafecee92b8d918f23039fe730febb2b2533318156b762520746295",
+          "before_after_byte_identical": true
+        },
+        {
+          "name": "pending-390-2.png",
+          "bytes": 26119,
+          "SHA256": "a2854d3e5c1861d0ba49e976c684ad68bf48383baba433c02e4d1fed5374f5c4",
+          "before_after_byte_identical": true
+        }
+      ],
+      "prior_diagnostic": "First comparison used only custom capture env, omitting BOOHTACORD_VISUAL_CAPTURE_DIR required by the existing real-font loader; captures differ because fonts were not loaded. Retained privately; no product defect or baseline approval.",
+      "capture_scope": "Custom579capture env only writes these4; standard env loads existing real fonts in this selected test; normal167CI inventory unchanged."
+    },
+    "visual_observation": "Release agent inspected all4 ORIGINAL repaired captures: 390/1440 widths,100/200percent; full bounded-error text/retry caption and footer/return action readable/in bounds, no clipping; all4 byte-identical to root-reviewed original captures.",
+    "canonical_full_CI": "PENDING_ON_FINAL_METADATA_HEAD",
+    "physical579": "PENDING_KEEP_OPEN"
+  }
 }

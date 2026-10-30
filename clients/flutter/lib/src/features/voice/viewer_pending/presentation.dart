@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../theme.dart';
-import '../../../widgets/screen_recovery_retry.dart';
+import 'retry.dart';
 
 class ScreenViewerPendingStatus extends StatelessWidget {
   const ScreenViewerPendingStatus({
