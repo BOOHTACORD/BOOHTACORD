@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "issue": 609,
+  "pull_request": 613,
+  "status": "FAIL_ACTUAL_LIFECYCLE_FULL_SAME_SOURCE_RETRY_PENDING",
+  "head_revision": "5f1e40aacd821c25db8419ff68371215bd5e56e2",
+  "base_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+  "run_id": 40981731999,
+  "run_attempt": 1,
+  "failed_job": {
+    "id": 123823357767,
+    "name": "actual / runtime (lifecycle)",
+    "conclusion": "failure"
+  },
+  "retained_artifact": {
+    "id": 12945725786,
+    "bytes": 665,
+    "sha256": "9b699f1cf5613eaceb9d52fa794f7403aaeaa7ff24a21e0e7f46b5ba26da8292",
+    "actual_zip_sha256_verified": true
+  },
+  "actual_public_result": {
+    "diagnostics": [],
+    "failure_geometry": {
+      "dockCoversStage": false,
+      "dockHeight": 112,
+      "height": 160,
+      "visibleHeight": 132
+    },
+    "failure_stage": "screen-share-short-height",
+    "failure_type": "ValueError",
+    "job": "runtime",
+    "map_sha256": "4f0f7a3b261feefcbf8429d44f598146dc54c1404224d172d8d8d4e6c1bec8d3",
+    "operation": 3,
+    "operations": [
+      {
+        "index": 0,
+        "seconds": 0.401
+      },
+      {
+        "index": 1,
+        "seconds": 0.902
+      },
+      {
+        "index": 2,
+        "seconds": 160.093
+      }
+    ],
+    "owned_resources_removed": true,
+    "owner": "qa-client-8b2cbb88da781161",
+    "physical_acceptance": "NOT_RUN",
+    "port_namespace": "disposable-github-hosted-vm/40981731999/1/runtime/8b2cbb88da781161",
+    "profile": "lifecycle",
+    "release_acceptance": "NOT_RUN",
+    "run_attempt": "1",
+    "run_id": "40981731999",
+    "schema_version": 1,
+    "scope": "automatic-PR-real-runtime",
+    "seconds": 309.101,
+    "source_revision": "4351e5c9545d6ff09d1e1fb75af527953621c5b8",
+    "status": "FAIL"
+  },
+  "comparison_to_passed_master612": {
+    "clients/web": true,
+    "tools/ci/actual_acceptance": true,
+    "tools/qa/critical_client_acceptance": true,
+    "tools/qa/client_lifecycle": true
+  },
+  "diagnosis": {
+    "status": "EXACT_FAILED_PREDICATE_UNKNOWN",
+    "spatial_geometry_meets_existing_predicate": true,
+    "last_finite_stage_marker": "screen-share-short-height",
+    "limitation": "The unchanged original controller performs frame-advance, screenshots and later preview/refresh/viewer assertions before another retained marker. The public artifact does not identify which assertion failed.",
+    "not_inferred": [
+      "Infrastructure failure",
+      "Flutter609 cause",
+      "Native579 cause",
+      "Geometry predicate failure",
+      "Production/media/platform defect"
+    ]
+  },
+  "private_job_log_LF_SHA256": "17a93d79b8abb3fe033fb46600a22b17c0ec0622cf38429443765f192f7dbc59",
+  "next": "Finish preserving complete attempt1, then one full unchanged-source retry; do not weaken gate or current-attempt evidence requirements.",
+  "limits": [
+    "This executed FAIL remains retained even if retry passes; no cherry-picked successful profile replaces final full CI.",
+    "Original controller ran only in disposable hosted VM; owned cleanup true. Release agent performed no production fault/load/browser/device action.",
+    "Root signed physical609 acceptance remains pending;609 staysOPEN."
+  ]
+}
