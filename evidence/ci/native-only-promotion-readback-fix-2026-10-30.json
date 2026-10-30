@@ -1,0 +1,86 @@
+{
+  "issue": 610,
+  "status": "PASS_LOCAL_FINAL_CI_AND_QUALIFYING_WORKFLOW_PENDING",
+  "base": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+  "route": "windows_promotion/noop_readback; trusted routing proof/composition edges",
+  "invariant": "Only exact successful route/skipped install, current trusted producer and independently verified source-bound master quality impactfalse may return NOT_RUN. Required real delivery receipt and archived acknowledgement checks remain mandatory.",
+  "mandatory_when": "Producer route proof, readback no-op classification, source/run/attempt or master-quality artifact verification changes",
+  "baseline": {
+    "run_id": 40969659339,
+    "attempt": 1,
+    "trace_artifact": 12939303284,
+    "actual_zip_sha256": "c770ef282c5c43c629d32c28fe11c638a17ca0d766704c8088f6b6e52248c6f9",
+    "immutable_failure_evidence": "b73bac10235e577920e814aa66515d8b8018acc4",
+    "source_revision": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0"
+  },
+  "results": {
+    "RED": "Final entrypoint fixture against pinned3a65 production readback:1FAIL/1PASS, FAIL!=NOT_RUN; no setup errors. Fixed production bytes restored exactly in finally.",
+    "focused": "9new focused boundary/archive/record methods PASS, then routing writer integration and workflow retention guard added.",
+    "Windows": {
+      "python": "3.12.10",
+      "command": "python -m unittest tools.release.windows_promotion.test_ci tools.release.windows_promotion.test_deployment tools.release.windows_promotion.test_endpoint tools.release.windows_promotion.test_intent tools.release.windows_promotion.test_release tools.release.windows_promotion.test_review tools.release.windows_promotion.test_source tools.release.windows_promotion.test_workflow tools.release.windows_promotion.noop_readback.test_entrypoint tools.release.windows_promotion.noop_readback.test_boundaries tools.release.windows_promotion.noop_readback.test_archive tools.release.delivery.test_routing tools.release.delivery.routing_proof.test_record tools.release.delivery.routing_proof.test_writer tools.release.delivery.test_provenance tools.release.delivery.test_receipt tools.release.delivery.test_artifact_zip tools.release.delivery.test_workflows",
+      "passed": 57,
+      "failed": 0,
+      "skipped": 0
+    },
+    "Linux": {
+      "python": "3.12.15",
+      "platform": "Ubuntu WSL2, official private pinned interpreter",
+      "command": "python -m unittest tools.release.windows_promotion.noop_readback.test_entrypoint tools.release.windows_promotion.noop_readback.test_boundaries tools.release.windows_promotion.noop_readback.test_archive tools.release.delivery.routing_proof.test_record tools.release.delivery.routing_proof.test_writer tools.release.delivery.test_artifact_download",
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0
+    },
+    "workflow": "Reviewed full action commits: OK,37workflows/2localactions; route permissions remain read-only with no production credentials.",
+    "proofs": "Real ZIP/hash/ownership fixtures; source/run/attempt/repository/status/impact boundaries, archive shape/traversal/symlink/compression/size/JSON and missing required receipt fail closed. Native-only path never reads catalog or claims deployment PASS.",
+    "workflow_graph_integration": "Existing exact4-step graph correctly rejected the unregistered fifth upload step (1localERROR retained). Exact5-step allowlist now requires the full reviewed proof retention step;7negative mutations reject names/paths/missing/retention/skip/credentials/extras. Combined13workflow tests PASS."
+  },
+  "source_LF_SHA256": {
+    ".github/workflows/deploy-production.yaml": "c1051eabaea628a9746c80c6b4f9419ac2bf6482810e9f37d5dfbb595c97e87d",
+    "tools/release/delivery/routing.py": "5560a2a9cc5836f62077b95da0f206e9611d5f3c6f3801fe52704aad8fba4c15",
+    "tools/release/delivery/routing_proof/record.py": "634a2e2425db5e6618251939ec4355dc804655649b9ec42f5f0aec0b1b9efc40",
+    "tools/release/delivery/routing_proof/test_record.py": "31e9c8d590d0b9267d574938a5b4353579b08bff229612b12dbb02f16e1844a3",
+    "tools/release/delivery/routing_proof/test_writer.py": "1d9998615b1ba18d5c2f4a39635286f88f08e1cb14015f2ba36cf522bbdcaa39",
+    "tools/release/windows_promotion/readback.py": "0cc38f7620ebeb5bc26528a674c36a92bb72ec59af749a3476c0b24116a31b84",
+    "tools/release/windows_promotion/test_workflow.py": "aeff0f0f81eb8f167cc6a77e9bba244ca46392079105e46dadfa52e13b0fdc9b",
+    "tools/release/windows_promotion/noop_readback/artifact.py": "cffb9df7713e7ec48fbff321ea40e515eb0cef35647cbb756c1195d4f49591d8",
+    "tools/release/windows_promotion/noop_readback/test_archive.py": "d95218c2f1fad06fca8b536e5ec7a0ab8985af6d4b670dbbb903a3e99351dfa1",
+    "tools/release/windows_promotion/noop_readback/test_boundaries.py": "027de1564f52e7ca3bac9c16e82e25e7a01e763617dafdd489c2960217707279",
+    "tools/release/windows_promotion/noop_readback/test_entrypoint.py": "6f046a1bc722fbaad5342d1f926c29b4f6728817f75bda6c0358cf9ea8ed0a16",
+    "tools/release/windows_promotion/noop_readback/test_support.py": "166210045835c497de512528fef449db4b399c453eccaecf0c080cbee71630ec",
+    "tools/release/windows_promotion/noop_readback/verify.py": "c2b0f4fddc95204752d805c9a99ebc44610deb989c78d07f17096d324b9182bc",
+    "tools/verify/workflows/release_routing.py": "b656b43600bf10983bae952a729267b914d2a299859242715ea7f9a146effeb4",
+    "tools/release/delivery/test_workflows.py": "cd27e676696d6595c0202a1d19542e821dc967600d04f3d0fe479a47f67e6027"
+  },
+  "log_LF_SHA256": {
+    "noop610-final-counterexample-red.log": "eb1a7b294110165f056ef663da05bd5e4d3db4e19da0be9496c8f2e432659943",
+    "noop610-green-windows.log": "cafd2b429f179bf38b5162d810bb08703756d14f8f2de17f9fb06cf09f6b4be2",
+    "noop610-green-linux-transport.log": "ca2dbe2988ead00ace4cf8eece6641b3224dd1726a0bbf80df26a9477ea400b5",
+    "noop610-windows-nearest-platform-diagnostic.log": "29f577e6218ef51185592c2b318854cb9ac3a6a418cd0b2910861af2c4235fb6",
+    "noop610-linux-mounted-checkout-diagnostic.log": "ee3d2cfef8cc7fdf3d7477432158f88063a45d65be49722be85cc1280e3d491c",
+    "noop610-workflow-shape-red.log": "f8a54e29cda639c7e23e7a2b67f12662c53c8986bafc0f646976142aab15ed26",
+    "noop610-workflow-shape-green.log": "b533aa2c4b2b9fd1be479ee78bca68a04e1f6aa6655b241233b4aef17f5c5b5c"
+  },
+  "limits": [
+    "Full final-source hosted CI and a qualifying automatic native-only workflow remain pending;610 stays OPEN.",
+    "Earlier Windows51-method attempt retained50PASS/1environmentERROR: existing Linux-only artifact_download uses O_NOFOLLOW absent on Windows; that production code/test was not changed or relaxed.",
+    "Earlier full Linux attempt against mounted Windows worktree retained3environmentERRORS: Windows.git pointer and missing PyYAML. Native transport/new boundaries then passed14/14 in Linux; Windows existing package/workflow cases passed47/47.",
+    "Historical no-op runs without the new trusted route proof remain fail-closed; no retrospective PASS, deployment or catalog-read claim.",
+    "No application/controller/media/signing/source-identity/ACL/gate weakening, production SQL/fault/load or manual deployment.582candidate priority and physical249/579 gates preserved."
+  ],
+  "integration": {
+    "original_packet": "5c8fb208598e4242d49e0c0fef5c1e37fd94065d",
+    "original_qualified_base": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0",
+    "rebased_onto": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+    "all8merged611_product_packet_files_preserved": true,
+    "post_rebase_tests": {
+      "command": "python -m unittest tools.release.windows_promotion.noop_readback.test_entrypoint tools.release.delivery.routing_proof.test_writer tools.release.windows_promotion.test_workflow",
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "log_LF_SHA256": "af999d254df29385271553e7ea75cf4e878ecc73174e3ddb8af4b0cf64ee6a5a"
+    },
+    "source_unchanged_by_rebase_before_leaf_routing": true,
+    "leaf_routing_refinement": "Producer proof/typed tests live in delivery/routing_proof; consumer in windows_promotion/noop_readback. Final57Windows/14Linux and6integration checks PASS; strict graph separately approves only exact fifth retention step."
+  }
+}
