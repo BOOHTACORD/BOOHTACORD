@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "issue": 579,
+  "pull_request": 614,
+  "source_revision": "beeed8f71b3804a85dab12eecd8063d1c8fbec16",
+  "run_id": 40988561569,
+  "run_attempt": 1,
+  "status": "completed",
+  "conclusion": "cancelled",
+  "jobs": [
+    {
+      "id": 123845194113,
+      "name": "changes",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123845194428,
+      "name": "contracts / contracts",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 123845245733,
+      "name": "flutter / dart",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123845245756,
+      "name": "flutter / android",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123845245795,
+      "name": "flutter / macos",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123845245809,
+      "name": "windows / windows-build",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123845245826,
+      "name": "flutter / android-kotlin",
+      "status": "completed",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 123845245855,
+      "name": "windows / windows-native-unit",
+      "status": "completed",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 123845245862,
+      "name": "backend / load",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123845245866,
+      "name": "frontend / sfu",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123845245871,
+      "name": "backend / static",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123845245876,
+      "name": "backend / database",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123845245880,
+      "name": "frontend / browser (browser-voice)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123845245893,
+      "name": "frontend / browser (browser-content)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123845245908,
+      "name": "frontend / fast",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123845245912,
+      "name": "frontend / browser (browser-conversations)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123845245916,
+      "name": "actual / runtime (sfu)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123845245920,
+      "name": "actual / runtime (next)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123845245925,
+      "name": "frontend / browser (browser-shell)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123845245947,
+      "name": "actual / runtime (lifecycle)",
+      "status": "completed",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 123846724692,
+      "name": "frontend / frontend",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123846897781,
+      "name": "backend / backend",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123848044729,
+      "name": "windows / windows-gui-sfu",
+      "status": "completed",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 123848558062,
+      "name": "flutter / flutter",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 123848812953,
+      "name": "windows / windows",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 123848852381,
+      "name": "actual / actual-acceptance",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 123848922899,
+      "name": "ci-required",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "counts": {
+    "success": 18,
+    "failure": 5,
+    "cancelled": 4
+  },
+  "diagnosis": "Mandatory contracts failed feature→application UI dependency. Four in-flight jobs were cancelled by normal source-update concurrency; downstream fan-ins failed. Original failures/cancellations retained separately from repaired full run.",
+  "repair_source": "c04bbd4f3d1d1982c19067daed0b8159cafae38f",
+  "repaired_full_CI": 40989565645,
+  "behaviour_or_guard_weakened": false
+}
