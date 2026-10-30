@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS_SCOPED_WEB_VIEWER_DELETION",
+  "scope": "One owned PNG per TEXT and existing DM; both authorized MEMBER sides; actual full UI; root-reviewed originals",
+  "wholeIssue131Closed": false,
+  "fullI131C5OrAllImageAcceptanceClaim": false,
+  "platform": {
+    "host": "Windows 11",
+    "execution": "WSL2 Ubuntu / fresh headed Linux Chromium",
+    "browser": "153.0.8010.12",
+    "normalTLS": true,
+    "ignoreHTTPSErrors": false,
+    "perProcessPrivateNSSOnly": true,
+    "nativeWindowsOrPhone": false
+  },
+  "provenance": {
+    "source": {
+      "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+      "source_tree": "f411320399273c487152f389d6c03019e0d391c3",
+      "archive_SHA256": "a313b3bd76076bf0e556facdb9deaa175993f4776a07fdc0190dc697100e3a67"
+    },
+    "origin": "https://localhost:4810",
+    "handoffSha256": "22a682062b37dcf580fe7cb179b01dde75a4b5a4f8b54156b8a1a933877d2cef",
+    "actualAPIImage": "sha256:85e05e181c4f1a9b147721f7d64250f2010ebee08f7d778fb7f12e640d73b04b",
+    "PG": "170006",
+    "oldNineGuard": true,
+    "TLS": {
+      "CA_SHA256": "3f8362234daaf88b9322820ef17c318a169bf468ac5a256ab32318c574d8281a",
+      "leaf_DER_SHA256": "19a330b975755369d6df542d7f441a157e970b7a851be6d6c2df09d5febe1ad6",
+      "leaf_SAN_exact": "DNS:localhost",
+      "hostname_mismatch_rejected": true,
+      "unmodified_global_trust_rejects_this_CA": true,
+      "per_process_NSS_CA_only": true
+    },
+    "freshPreflight": {
+      "webHTTP": 200,
+      "sessionHTTP": 200,
+      "normalTLS": true,
+      "ignoreHTTPSErrors": false,
+      "servedHTMLSha256": "69c6330117c3c4d005a51d46b3caf4d4e05694a4c72699a930b48627e3f6fb51"
+    },
+    "runnerHashesFile": "attempt3/runner-hashes.json",
+    "immutableFinalReceipt": "attempt3/receipt.json",
+    "immutableFinalReceiptSHA256": "2248e02de3915de852200972b3fab72a0ef9468a24d082c45f394fe9b64b4b36"
+  },
+  "results": {
+    "TEXTTypedAssertions": "45/45 PASS",
+    "DMTypedAssertions": "45/45 PASS",
+    "twoAuthorizedSidesEachScope": true,
+    "normalUIFileInputAndOneSendPerScope": true,
+    "actualDesktopAuthorUIDeleteAndNativeConfirmation": true,
+    "authorDELETEPerScope": 204,
+    "fallbackDeleteInFinalRun": false,
+    "bothViewersOpenAtDelete": true,
+    "staleImagePixelsDisappear": true,
+    "oldBlobStillFetchableAfterDelete": false,
+    "actualTombstonesVisible": true,
+    "authorizedOriginalAndPreviewBeforeDelete": [
+      200,
+      200
+    ],
+    "authorizedOriginalAndPreviewAfterDelete": [
+      404,
+      404
+    ],
+    "DMOutsiderBeforeDelete": [
+      404,
+      404
+    ],
+    "publicTEXTOutsiderBeforeDelete": [
+      200,
+      200
+    ],
+    "anonymousBeforeDelete": [
+      401,
+      401
+    ],
+    "originalByteSHAOnBothAuthorizedSides": "cb94358c5a3f85c21b3b8a9038bc4e2a75a35e771ffbb98ce9d15c3adbd9bfdd",
+    "narrowViewport": "390x844; both participants and both scopes",
+    "wideViewport": "1440x1000 author; both scopes",
+    "noRefreshOrNavigationAfterDelete": true,
+    "matchingDeletionRealtimeFramesPerParticipant": 1
+  },
+  "focus": {
+    "normalEscapeRestoresExistingOpener": true,
+    "postDeletionFocusedTag": "BODY",
+    "postDeletionOpenDialogCount": 0,
+    "postDeletionMeaning": "No modal trap; opener was removed.",
+    "postDeletionFocusFallbackPASS": false
+  },
+  "blobAssertionGlossary": {
+    "immutableRawNames": [
+      "author_old_blob_revoked",
+      "peer_old_blob_revoked"
+    ],
+    "measuredPredicate": "oldBlobReadable = fetch(previous blob URL).ok; network error returns false",
+    "actual": false,
+    "expected": false,
+    "meaning": "Old blob URL is no longer fetchable.",
+    "runnerEdge": "viewer_case.mjs:41",
+    "runnerSHA256": "6608836fd1bc26f676ce6f6af1bd8479fff1b7f7151a68f3ef99e7a613b470e9",
+    "immutableReceiptChanged": false
+  },
+  "visual": {
+    "rootReviewedOriginalCount": 10,
+    "wideCount": 2,
+    "narrowCount": 8,
+    "review": "root-original-review.json",
+    "reviewSHA256": "f9d9aef42dfa74d818622d211c5d6785fc1c80dda4a1e8c88c0bec908d3150bd",
+    "observations": "Images fully visible; Download/Close/footer in bounds. After deletion overlays/images gone, exact tombstones visible, composers unobstructed.",
+    "privateOriginalLocation": "attempt3/private/; paths/dimensions/hashes in immutable receipt",
+    "newBaselineApproved": false
+  },
+  "cleanup": {
+    "allBrowserAttempts": 3,
+    "diagnosticRetries": 2,
+    "totalOwnedImageMessageFixtures": 6,
+    "exactBlankTombstonesAndAttachmentsArrayZero": 6,
+    "totalOwnNormalMemberSessions": 9,
+    "logout204AndAuthenticatedFalse": 9,
+    "finalUIOnlyDeletes": 2,
+    "finalFallbackDeletes": 0,
+    "ownRunnerProcessCount": 0,
+    "ownXvfbDisplay147ProcessCount": 0,
+    "ownedDisplaySocketAbsent": true,
+    "ownedDisplayLockAbsent": true,
+    "finalWrapperExitCode": 0,
+    "ownedBrowserCloseAwaited": true,
+    "infrastructureCleanupNotPerformed": true,
+    "verifiedAt": "2026-10-30T01:29:09.045Z"
+  },
+  "diagnostics": [
+    {
+      "run": "attempt1",
+      "status": "HARNESS_FAILURE_BEFORE_QUALIFIED_UI_DELETE",
+      "preserved": true,
+      "details": "Desktop runner selected mobile-only disclosure; DM control navigation count raced render; all exact fixtures and sessions cleaned."
+    },
+    {
+      "run": "attempt2",
+      "status": "HARNESS_FAILURE_BEFORE_QUALIFIED_UI_DELETE",
+      "preserved": true,
+      "details": "Foreground and navigation guard fixed; actual source conversation.css:80 confirmed desktop disclosure display:none. All exact fixtures/sessions cleaned."
+    },
+    {
+      "run": "attempt3",
+      "status": "PASS_SCOPED",
+      "details": "Native desktop hover action -> Delete -> real confirmation. No gate weakening; no more retries."
+    }
+  ],
+  "limits": [
+    "Only this isolated stack attempt4, source6dd; no production fixtures, phone/Windows GUI, source/CI/release edits or old-nine mutations.",
+    "Actual normal image download event/OS chooser, other formats, full privacy/admin/revoke matrix, screen reader and broader #131 gates are not claimed.",
+    "Root owns issue publication and infrastructure cleanup; browser agent did not stop the stack."
+  ]
+}

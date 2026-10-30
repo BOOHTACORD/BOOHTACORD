@@ -1,0 +1,102 @@
+{
+  "status": "PASS_SCOPED_ACTUAL_BROWSER_ORIGINAL_VISUAL_REVIEW",
+  "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+  "receipt_SHA256": "2248e02de3915de852200972b3fab72a0ef9468a24d082c45f394fe9b64b4b36",
+  "reviewed_by": "root",
+  "resolution": "All10 ORIGINAL:2wide1440x1000,8narrow390x844",
+  "observations": [
+    "TEXT/DM author-wide and both narrow authorized viewers show complete orange-blue64x48fixture, readable Download/Close/header/footer, no viewport overflow.",
+    "After actual author UI deletion, both authorized TEXT/DM viewers close and image pixels disappear; exact tombstones remain visible, editors stay usable.",
+    "Escape/focus assertions apply before deletion while opener exists. After deletion, BODY focus is connected/no open dialog; no fallback-focus/assistive-reader claim."
+  ],
+  "assertion_glossary": {
+    "*_old_blob_revoked": "Misnamed immutable assertion compares actual oldBlobReadable(fetch(blob).ok or false on failure) with false. Result means old blob NOT_FETCHABLE, not revoked=false."
+  },
+  "ACL_bounds": "Authorized200 before,404 after; publicTEXT outsider200, foreignDM outsider404; anonymous401.",
+  "verified_captures": [
+    {
+      "path": "private/TEXT-author-wide-before.png",
+      "SHA256": "5868b171ee415622cfc54d71878ef53234f9db9612b839f26d2c1eb5aa753390",
+      "raster": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "private/TEXT-author-narrow-before.png",
+      "SHA256": "e45654f68ce3c37314ed12b37d08a025ced291b8e17c384fd7eadd783640f4f3",
+      "raster": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "private/TEXT-peer-narrow-before.png",
+      "SHA256": "1a2bf769c48be660cee39db920344bcdef80b7b0df253e1943a2df5d7062eb2a",
+      "raster": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "private/TEXT-author-narrow-after-delete.png",
+      "SHA256": "01a317e694dfe010bdb238f4969c9559904d2bdc57a86de0846809680f41984a",
+      "raster": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "private/TEXT-peer-narrow-after-delete.png",
+      "SHA256": "e7b31c968f238e6213fa4da350d6ce9f8d5ade181d927ff457db55de98e82624",
+      "raster": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "private/DM-author-wide-before.png",
+      "SHA256": "a150640405c408716f0d3e706c155e346397bb353058287d36a579eecc03d381",
+      "raster": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "path": "private/DM-author-narrow-before.png",
+      "SHA256": "cf5624a5c0cb874ae88d48db89ada9d461af8228ebbc2c23213f31e831d42ec6",
+      "raster": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "private/DM-peer-narrow-before.png",
+      "SHA256": "aba93f3c2524d961bf850086635796e36052b935ebe669906b47f736d17fb4bb",
+      "raster": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "private/DM-author-narrow-after-delete.png",
+      "SHA256": "adf6d796c61a92032b279f6a3540a75bbc7c6b5e7def6cdfd45319de3e6fa964",
+      "raster": [
+        390,
+        844
+      ]
+    },
+    {
+      "path": "private/DM-peer-narrow-after-delete.png",
+      "SHA256": "4192c0b1bf9605c0b0d2714f8e2328219c4101a7c66b6d3e0f6b660e60fff019",
+      "raster": [
+        390,
+        844
+      ]
+    }
+  ],
+  "limits": [
+    "Only isolated actual LinuxChromium153/WSL/source6dd; nativeWindows/phone/Apple/media/audibility NOT_RUN.",
+    "#131 remainsOPEN; not blanket gate closure. Prior2harness diagnostic attempts stay retained with own cleanup. Infrastructure cleanup/process absence remains a separate receipt."
+  ]
+}

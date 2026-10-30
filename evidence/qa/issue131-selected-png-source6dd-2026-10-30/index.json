@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "issue": 131,
+  "status": "PASS_SELECTED_PNG_FACET_ONLY_FULL_ISSUE_OPEN",
+  "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+  "source_tree": "f411320399273c487152f389d6c03019e0d391c3",
+  "platform": {
+    "host": "Windows 11",
+    "execution": "WSL2 Ubuntu / fresh headed Linux Chromium",
+    "browser": "153.0.8010.12",
+    "normalTLS": true,
+    "ignoreHTTPSErrors": false,
+    "perProcessPrivateNSSOnly": true,
+    "nativeWindowsOrPhone": false
+  },
+  "root_runner_reported_assertions": {
+    "TEXT": 45,
+    "DM": 45,
+    "failed": 0
+  },
+  "actual_private_original_png_hashes_verified": 10,
+  "root_original_visual_review": true,
+  "actual_final_private_receipt_hash_verified": true,
+  "actual_safe_infra_proof_hashes_verified": 12,
+  "actual_source_readiness_handoff_hash_verified": true,
+  "source_readiness_current": "REMOVED_AFTER_GUARDED_CLEANUP",
+  "safe_records": {
+    "verdict.json": {
+      "original_raw_SHA256": "58aa91c66bf0a8a12f9fec4a8de2d0b975b74f6483aa996fb37e727e5e544117",
+      "published_Git_LF_SHA256": "58aa91c66bf0a8a12f9fec4a8de2d0b975b74f6483aa996fb37e727e5e544117",
+      "bytes": 6154
+    },
+    "commands-and-glossary.md": {
+      "original_raw_SHA256": "0e73cfe7a09badecb29bac3db04e9cec2e27330cf6ae021794b6ea90378c3f99",
+      "published_Git_LF_SHA256": "0e73cfe7a09badecb29bac3db04e9cec2e27330cf6ae021794b6ea90378c3f99",
+      "bytes": 6580
+    },
+    "root-original-review.json": {
+      "original_raw_SHA256": "f9d9aef42dfa74d818622d211c5d6785fc1c80dda4a1e8c88c0bec908d3150bd",
+      "published_Git_LF_SHA256": "18e0b55d2f5a5f8519f1b18bf5f1d88053d814fb96f595d95829b1ee7438a80b",
+      "bytes": 3543
+    },
+    "cleanup-verification.json": {
+      "original_raw_SHA256": "5fd66fd9531d02c4567f111a9f45e6bbbaa1eb131c9bcfe345368e264cbe531d",
+      "published_Git_LF_SHA256": "5fd66fd9531d02c4567f111a9f45e6bbbaa1eb131c9bcfe345368e264cbe531d",
+      "bytes": 294
+    },
+    "infrastructure-cleanup.json": {
+      "original_raw_SHA256": "53dc8aa9cc771d7e200fd2bf9e46d21bd8fee656ad258c19b51da3658f00bb6c",
+      "published_Git_LF_SHA256": "8bb5e56ab87f927003f7e85bde28abf6cdd5c5c8bb215e3bc4bc09fd5a83ed42",
+      "bytes": 5974
+    }
+  },
+  "infra_safe_proof_hash_index": {
+    "safe-proofs\\before.json": "406a968ef50fd1ab78e56b5c3c379df10d01ae43658cbaa7868e24b3fa368043",
+    "safe-proofs\\browser-prefix.json": "814306fef543af43673d44f07489b85f356eb8c51c7c07c189ae97ffc0a92c95",
+    "safe-proofs\\cleanup-guard.json": "61ede4c6e8223b43297c3cfc9c512256dc6ae595a35f8a6d2c4e51a7ae0417e8",
+    "safe-proofs\\cleanup.json": "1cd9f8ec68f9959a790106de3051cedd8db1e1aea8c22acb182e74aa5559bcbc",
+    "safe-proofs\\fixture-setup.json": "851fad4b65763ea6875218b95cd0ad90351c2f866118c42d6cf335bcc76e09cb",
+    "safe-proofs\\health1.json": "a460f1d227a5fee7b54e7f024f48e3eb37e98930528e527295cb6d7eb0440a21",
+    "safe-proofs\\health2.json": "4c0b33d8198136e6ab0d7201aec590ea134bfd58006bb3c0318f915d435acac5",
+    "safe-proofs\\holder.json": "6e4ee5df51a3306abba9b718e81ba9908c980d22c6844944066fe57f605b4d28",
+    "safe-proofs\\pre-cleanup.json": "eea267e99482119d845dcdb151a292595c839cdb7f959e17d0e57482f3c616e8",
+    "safe-proofs\\readiness.json": "e9aa93f7fcda83474f5ced52d0aa488b45a512840ee4b0077faf2be2cd9316fa",
+    "safe-proofs\\source.json": "90beeb11b953321145e3f0263f85d76ce3eb3e6676ca50dc149eea848e2ee58d",
+    "safe-proofs\\TLS-probe.json": "f55e30aab569c8cdde273af7dcc3d09ba58ccd4426d7a2af68fecd2ab9966636"
+  },
+  "blob_observation": "fetch(previous blob URL).ok isfalse; this means old blob NOT_FETCHABLE. Misnamed raw assertion labels were not rewritten.",
+  "focus_scope": "Ordinary Escape restores an existing opener; after deletion BODY/no modal trap only. Post-delete focus fallback NOT_RUN.",
+  "preserved_diagnostics": "Two browser harness failures and the after-cleanup CLI formatting false are retained/explained; exact data/hash equality and owner cleanup passed.",
+  "limits": [
+    "Only bounded PNG TEXT/DM viewer deletion and specified URL ACL assertions; fullC5/131 remainsOPEN.",
+    "Actual OS chooser/download event, all formats, full admin/revoke/privacy matrix, screen reader/native platforms and media/audibility remainNOT_RUN.",
+    "Root/browser/infra agents executed acceptance/cleanup; release agent verified hashes and publishes safe data only.",
+    "No raw private PNG, fixture body, account/conversationID, credentials, cookies or private packets exported."
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "issue": 131,
+  "criterion": "Browser44; infrastructure cleanup witness only; does not close aggregate issue131",
+  "status": "PASS_GUARDED_DISPOSABLE_STACK_CLEANUP",
+  "at_epoch": 1793323919.0268028,
+  "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+  "owner": "qa-client-d0a7ab0071093508",
+  "pre_deletion_proofs_preserved_and_hash_verified": {
+    "readiness.json": "e9aa93f7fcda83474f5ced52d0aa488b45a512840ee4b0077faf2be2cd9316fa",
+    "TLS-probe.json": "f55e30aab569c8cdde273af7dcc3d09ba58ccd4426d7a2af68fecd2ab9966636",
+    "fixture-setup.json": "851fad4b65763ea6875218b95cd0ad90351c2f866118c42d6cf335bcc76e09cb",
+    "source.json": "90beeb11b953321145e3f0263f85d76ce3eb3e6676ca50dc149eea848e2ee58d",
+    "browser-prefix.json": "814306fef543af43673d44f07489b85f356eb8c51c7c07c189ae97ffc0a92c95",
+    "health1.json": "a460f1d227a5fee7b54e7f024f48e3eb37e98930528e527295cb6d7eb0440a21",
+    "health2.json": "4c0b33d8198136e6ab0d7201aec590ea134bfd58006bb3c0318f915d435acac5",
+    "holder.json": "6e4ee5df51a3306abba9b718e81ba9908c980d22c6844944066fe57f605b4d28",
+    "before.json": "406a968ef50fd1ab78e56b5c3c379df10d01ae43658cbaa7868e24b3fa368043"
+  },
+  "source_readiness_handoff_SHA256": "22a682062b37dcf580fe7cb179b01dde75a4b5a4f8b54156b8a1a933877d2cef",
+  "own_resources_removed": [
+    {
+      "kind": "container",
+      "name": "qa-client-d0a7ab0071093508-proxy",
+      "owner_label_verified": true
+    },
+    {
+      "kind": "container",
+      "name": "qa-client-d0a7ab0071093508-api",
+      "owner_label_verified": true
+    },
+    {
+      "kind": "image",
+      "name": "qa-client-d0a7ab0071093508-api:6dd79c244e6c",
+      "owner_label_verified": true
+    },
+    {
+      "kind": "container",
+      "name": "qa-client-d0a7ab0071093508-tempo",
+      "owner_label_verified": true
+    },
+    {
+      "kind": "container",
+      "name": "qa-client-d0a7ab0071093508-db",
+      "owner_label_verified": true
+    },
+    {
+      "kind": "network",
+      "name": "qa-client-d0a7ab0071093508",
+      "owner_label_verified": true
+    }
+  ],
+  "all_own_container_network_image_volume_labels_absent": true,
+  "holder": {
+    "PID": 1073,
+    "creation_ticks_and_exact_command_guarded": true,
+    "original_process_exited": true,
+    "exec_session": 11731,
+    "observed_exec_exit_code": 0,
+    "release_method": "Only current private cleanup.request; no process/globalWSL kill"
+  },
+  "Windows_nine": {
+    "actual_before_after_records_equal": true,
+    "all_nine_running": true,
+    "before_SHA256": "f6f382af00d7b301b6a562492f954cf1e22f8e2297d22d71c6b862afe16710fe",
+    "after_cleanup_SHA256": "f6f382af00d7b301b6a562492f954cf1e22f8e2297d22d71c6b862afe16710fe",
+    "compared_fields": [
+      "ID",
+      "started",
+      "running",
+      "image",
+      "config_SHA256"
+    ],
+    "historical_CLI_formatting_bug": "guard_windows prints equality as mode==after, so modeafter-cleanup/handoff stdout false is a formatting defect. The separate equality assertion passed and raw JSON records/hashes are identical. Historical diagnostics were not rewritten."
+  },
+  "global_CA_NSS_unchanged_after_cleanup": true,
+  "browser_process_cleanup_reference": {
+    "path": "issue582/pc-receiver/viewer6dd-20261030/cleanup-verification.json",
+    "SHA256": "5fd66fd9531d02c4567f111a9f45e6bbbaa1eb131c9bcfe345368e264cbe531d",
+    "runner_Node_Xvfb_display_socket_lock_absent": true,
+    "wrapper_exit_code": 0
+  },
+  "private_data_exported": false,
+  "UI_tests_run_by_this_agent": false,
+  "commands": [
+    "wsl.exe -d Ubuntu --exec python3 /mnt/c/Users/egkur/.codex/worktrees/android-landscape-send/BOOHTACORD/.out/qa-viewer-isolated-2026-10-30/safe_cleanup.py",
+    "python -X utf8 .out/qa-viewer-isolated-2026-10-30/guard_windows.py after-cleanup",
+    "write_stdin session11731 observed exit0"
+  ],
+  "mandatory_when": "After bounded isolated browser acceptance before publishing cleanup/closure claims",
+  "where": ".out/qa-viewer-isolated-2026-10-30/cleanup-verdict.json and safe-proofs/",
+  "limits": [
+    "Readiness PASS is historical; current isolated stack has been deliberately removed.",
+    "No product source, phone, Windows GUI, production, router/network/DNS, global Docker or WSL stop/change.",
+    "Native platform/media/audibility/load gates remain independent NOT_RUN/BLOCKED."
+  ],
+  "safe_artifact_SHA256": {
+    "safe-proofs\\before.json": "406a968ef50fd1ab78e56b5c3c379df10d01ae43658cbaa7868e24b3fa368043",
+    "safe-proofs\\browser-prefix.json": "814306fef543af43673d44f07489b85f356eb8c51c7c07c189ae97ffc0a92c95",
+    "safe-proofs\\cleanup-guard.json": "61ede4c6e8223b43297c3cfc9c512256dc6ae595a35f8a6d2c4e51a7ae0417e8",
+    "safe-proofs\\cleanup.json": "1cd9f8ec68f9959a790106de3051cedd8db1e1aea8c22acb182e74aa5559bcbc",
+    "safe-proofs\\fixture-setup.json": "851fad4b65763ea6875218b95cd0ad90351c2f866118c42d6cf335bcc76e09cb",
+    "safe-proofs\\health1.json": "a460f1d227a5fee7b54e7f024f48e3eb37e98930528e527295cb6d7eb0440a21",
+    "safe-proofs\\health2.json": "4c0b33d8198136e6ab0d7201aec590ea134bfd58006bb3c0318f915d435acac5",
+    "safe-proofs\\holder.json": "6e4ee5df51a3306abba9b718e81ba9908c980d22c6844944066fe57f605b4d28",
+    "safe-proofs\\pre-cleanup.json": "eea267e99482119d845dcdb151a292595c839cdb7f959e17d0e57482f3c616e8",
+    "safe-proofs\\readiness.json": "e9aa93f7fcda83474f5ced52d0aa488b45a512840ee4b0077faf2be2cd9316fa",
+    "safe-proofs\\source.json": "90beeb11b953321145e3f0263f85d76ce3eb3e6676ca50dc149eea848e2ee58d",
+    "safe-proofs\\TLS-probe.json": "f55e30aab569c8cdde273af7dcc3d09ba58ccd4426d7a2af68fecd2ab9966636"
+  },
+  "cleanup_helper_SHA256": {
+    "cleanup.py": "da79ca1ad555bf56637a189ebc7241c18cb8d9e752ee502d20df2451c3ff432d",
+    "safe_cleanup.py": "e3e3c858027f018beb877315d946cd158c891c945c6b6c2c88f75be8dbd47685",
+    "guard_windows.py": "f2fd294c1d2822aecab870ca3983dec740d1006bfb3f2e332fcf8c8e31b2ace5",
+    "finalize_cleanup.py": "d7f0af7d199c27902d654493592281280de884354ff62bc77b5d3ab96890a908"
+  }
+}
