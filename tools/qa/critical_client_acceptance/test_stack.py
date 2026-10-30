@@ -41,5 +41,7 @@ class LoopbackTransportTests(unittest.TestCase):
             self.assertIn(('--publish', '127.0.0.1:4880:4880/tcp'), pairs)
             self.assertIn(('--publish', '127.0.0.1:4881:4881/tcp'), pairs)
             self.assertIn(('--publish', '127.0.0.1:4882:4882/udp'), pairs)
+            self.assertEqual(calls['sfu'].kwargs['command'],
+                             ('--config', '/qa.yaml', '--node-ip', '127.0.0.1'))
             self.assertIn(f'{stack.preview_root}:/screen-previews', calls['egress'].args)
             self.assertEqual(calls['egress'].kwargs['memory'], '2g')
