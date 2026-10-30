@@ -53,7 +53,7 @@ const listenerParticipantCards = () => h('main', { class: 'voice-room', style: '
     selectedScreenStreamId: null,
     selfAccountId: 'local-user',
     selfName: 'Pistol121',
-    selfDeafened: false,
+    selfDeafened: params.has('deafened'),
     selfMicrophoneMuted: !params.has('unmuted'),
     selfMicrophoneUnavailable: false,
     selfSpeaking: false,

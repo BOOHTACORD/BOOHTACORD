@@ -82,7 +82,7 @@ describe('voice-room visual status and screen presentation', () => {
     expect(participants).not.toContain('Смотреть экран')
     expect(styles).toContain('.participant-screen-preview')
     expect(styles).toContain('aspect-ratio: 16 / 9')
-    expect(styles).toContain('height: .75rem')
+    expect(styles).toContain('width: 1rem; height: 1rem')
     expect(rail).toContain('<h3>Демонстрации в канале</h3>')
     expect(rail).toContain('stream.thumbnailUrl')
     expect(viewer).toContain('<ScreenViewerRail')

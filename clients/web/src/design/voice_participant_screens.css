@@ -94,19 +94,24 @@
 .participant-voice-placeholder svg { width: 20px; height: 20px; flex: 0 0 20px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
 .participant-card-info { position: relative; display: flex; min-width: 0; min-height: 80px; align-self: stretch; align-items: center; gap: 10px; padding: 10px 12px; }
 .voice-room .voice-participant-volumes .participant-card-info .avatar.lg { width: 40px; height: 40px; flex: 0 0 40px; font-size: .9375rem; }
-.participant-card-copy { display: grid; min-width: 0; flex: 1 1 0; align-content: center; justify-items: start; gap: 3px; }
+.participant-card-copy { display: grid; min-width: 0; flex: 1 1 auto; align-content: center; justify-items: start; gap: 3px; }
 .participant-card-name-row { display: flex; width: 100%; min-width: 0; align-items: center; gap: 4px; }
 .voice-room .voice-participant-volumes .participant-card-info .participant-name { width: auto; min-width: 0; max-width: 100%; flex: 1 1 auto; margin: 0; overflow: hidden; font-size: .9375rem; line-height: 1.35; text-align: left; text-overflow: ellipsis; white-space: nowrap; }
-.participant-card-actions { position: relative; z-index: 2; display: flex; flex: 0 0 32px; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
-.voice-room .voice-participant-volumes .participant-card-status { display: grid; width: 20px; height: 20px; flex: 0 0 20px; place-items: center; margin: 0; }
+.participant-card-actions { position: absolute; top: 50%; right: 6px; z-index: 2; display: flex; width: 32px; height: 32px; flex: 0 0 32px; flex-direction: column; align-items: center; justify-content: center; gap: 4px; transform: translateY(-50%); }
+.voice-room .voice-participant-volumes .participant-card-status { display: inline-flex; width: auto; min-width: 20px; height: 20px; flex: 0 0 auto; align-items: center; justify-content: center; margin: 0; font-size: 1rem; }
 .voice-room .voice-participant-volumes .participant-card-status .voice-person-state { display: grid; width: 100%; height: 100%; place-items: center; }
-.voice-room .voice-participant-volumes .participant-card-status .voice-person-state-icon { width: .75rem; height: .75rem; flex: 0 0 .75rem; }
+.voice-room .voice-participant-volumes .participant-card-status .voice-person-state-icon { width: 1rem; height: 1rem; flex: 0 0 1rem; stroke-width: 1.8; }
 .participant-card-actions .participant-volume { position: relative; top: auto; right: auto; z-index: 2; width: auto; margin: 0; }
 .participant-card-actions .participant-volume[open] { z-index: 4; }
-.voice-room .voice-participant-volumes .participant-card-actions .participant-volume summary { display: grid; width: 32px; height: 32px; place-items: center; border: 1px solid rgb(255 255 255 / 16%); border-radius: var(--gc-radius-sm); color: var(--gc-text-primary); background: rgb(15 16 22 / 82%); font-size: .875rem; line-height: 1; list-style: none; }
+.voice-room .voice-participant-volumes .participant-card-actions .participant-volume summary { display: grid; width: 32px; height: 32px; place-items: center; border: 1px solid rgb(255 255 255 / 16%); border-radius: var(--gc-radius-sm); color: var(--gc-text-primary); background: rgb(15 16 22 / 82%); font-size: .875rem; line-height: 1; list-style: none; opacity: 0; transition: opacity 120ms ease; }
 .voice-room .voice-participant-volumes .participant-card-actions .participant-volume summary::-webkit-details-marker { display: none; }
+.voice-room .voice-participant-volumes .participant:hover .participant-card-actions .participant-volume summary,
+.voice-room .voice-participant-volumes .participant:focus-within .participant-card-actions .participant-volume summary,
+.voice-room .voice-participant-volumes .participant-card-actions .participant-volume[open] summary { opacity: 1; }
 .voice-room .voice-participant-volumes .participant-card-actions .participant-volume summary:hover { background: var(--gc-surface-hover); }
+.voice-room .voice-participant-volumes .participant-card-actions .participant-volume summary:focus-visible { outline: 2px solid var(--gc-accent); outline-offset: 2px; }
 .participant-card-actions .participant-volume label { z-index: 1; }
+@media (prefers-reduced-motion: reduce) { .voice-room .voice-participant-volumes .participant-card-actions .participant-volume summary { transition: none; } }
 .voice-room .voice-participant-volumes .participant--streaming.talking { border-color: var(--gc-success); }
 .voice-room .voice-participant-volumes .participant--voice-only.talking { border-color: var(--gc-success); }
 .voice-room .voice-participant-volumes .participant-card-info .participant-watcher-indicator { justify-self: start; padding: 3px 7px; }
