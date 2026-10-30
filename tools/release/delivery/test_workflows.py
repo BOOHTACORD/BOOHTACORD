@@ -4,6 +4,7 @@ from pathlib import Path
 import yaml
 from tools.verify.action_pins.policy import normalized
 from tools.verify.workflows.delivery import check
+from tools.release.delivery.phases import LIMITS
 
 
 class DeliveryWorkflowTests(unittest.TestCase):
@@ -14,6 +15,13 @@ class DeliveryWorkflowTests(unittest.TestCase):
 
     def test_current_delivery_graph(self):
         check(self.workflows)
+
+    def test_install_jobs_cover_the_full_bounded_delivery_budget(self):
+        for workflow in ('deploy-production.yaml', 'install-retained-release.yaml'):
+            with self.subTest(workflow=workflow):
+                timeout = int(self.workflows[workflow]['jobs']['install']['timeout-minutes'])
+                self.assertEqual(50, timeout)
+                self.assertLess(sum(LIMITS.values()) + 120, timeout * 60)
 
     def test_route_proof_retention_is_exact_and_cannot_be_skipped_or_read_other_paths(self):
         for mutation in ('name','path','missing','retention','skip','credential','extra'):

@@ -7,7 +7,7 @@ import tempfile
 import time
 import unittest
 from unittest.mock import Mock, patch
-from .commands import execute, stop, ExecutionFailed
+from .commands import execute, stop, ExecutionFailed, MAX_COMMAND_TIMEOUT_SECONDS
 
 
 class DeliveryCommandTests(unittest.TestCase):
@@ -53,9 +53,14 @@ class DeliveryCommandTests(unittest.TestCase):
                 self.fail('Owned descendant survived the command timeout')
 
     def test_invalid_time_or_output_bounds_do_not_start_a_command(self):
-        for timeout, limit in [(0, 0), (float('nan'), 0), (901, 0), (1, -1), (1, 65537)]:
+        for timeout, limit in [(0, 0), (float('nan'), 0), (MAX_COMMAND_TIMEOUT_SECONDS + 1, 0), (1, -1), (1, 65537)]:
             with self.subTest(timeout=timeout, limit=limit), self.assertRaises(ValueError):
                 execute([sys.executable, '-c', 'raise SystemExit(99)'], timeout, capture_limit=limit)
+
+    def test_extended_finite_deadline_is_accepted(self):
+        result = execute([sys.executable, '-c', 'print("bounded",end="")'],
+                         MAX_COMMAND_TIMEOUT_SECONDS, capture_limit=16)
+        self.assertEqual(b'bounded', result)
 
     def test_failed_cleanup_does_not_expose_the_command_in_timeout_exception(self):
         process = Mock(pid=123, wait=Mock(side_effect=subprocess.TimeoutExpired(['private-canary'], 2)))

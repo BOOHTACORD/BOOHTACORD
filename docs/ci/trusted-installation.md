@@ -31,10 +31,11 @@ pending release. The workflow's production environment admission does not by
 itself prove that a human reviewer approved it; receipts say `NOT_ASSERTED`.
 
 Transport stages have separate finite limits: current-source observation 45 s,
-forward-history check 10 s, bundle SCP 300 s, driver SCP 60 s, remote installation
+forward-history check 10 s, bundle SCP 1800 s, driver SCP 60 s, remote installation
 600 s and fresh readback 45 s. Metadata/download operations also have fixed
-limits, and both callers have a 30-minute job ceiling. SSH uses strict pinned host
-verification, batch mode, one connection attempt and bounded connection/liveness
+limits, and both callers have a 50-minute job ceiling to leave room for the longer
+slow-link bundle transfer and the unchanged install/readback budgets. SSH uses
+strict pinned host verification, batch mode, one connection attempt and bounded connection/liveness
 settings. Each attempt uses a private random staging directory, avoiding partial
 transport collisions between retries of the same source. Only acknowledged
 transport copies are removed; retained releases and persistent volumes remain.
