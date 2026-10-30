@@ -2,7 +2,7 @@
   "id": "server-screen-previews-2026-10-29",
   "task": "T-079 / LiveKit Egress captures private screen previews every 30 seconds",
   "status": "PARTIAL",
-  "observed_at": "2026-10-29",
+  "observed_at": "2026-10-30",
   "source_base_commit": "165b88dae5ffb99fec5024f8c03b2fbe787c5e9c",
   "change": "The authenticated API starts track-scoped LiveKit ParticipantEgress jobs that overwrite a private JPEG every 30 seconds. The API normalizes and keeps only the latest bounded frame in memory, publishes metadata-only realtime hints, and serves the frame through the existing lease/channel ACL. Client uploads are disabled; Web and Flutter send lease heartbeats and retain local immediate previews. Revocation, stop and lease expiry stop Egress and remove the private files. Per-lease locks keep slow Egress control calls for one publisher from blocking another publisher's snapshots. Egress reconciliation retries after a LiveKit startup race, ambiguous Egress-start responses remain stoppable, and an already prepared shared volume no longer requires chmod by the non-root API user.",
   "checks": [
@@ -14,12 +14,12 @@
     {
       "name": "web_unit_build_and_browser_scenarios",
       "result": "PASS_LOCAL",
-      "detail": "The selected local-feature run passed Web unit tests, production build, and all selected browser scenarios including screen profile, screen share UI and voice interface. Report: .out/local-features/20261029-113730/report.json. The critical scenario now additionally asserts that the server preview URL changes after the 30-second capture interval and disappears after unpublish; those new assertions await real-stack execution. The report's real-stack stages failed before the volume permission fix and are not counted as acceptance."
+      "detail": "The selected local-feature run passed Web unit tests, production build, and selected browser scenarios. The critical two-client API/SFU/Egress real-stack run now also passed: listener decoded the server-generated participant-card JPEG, observed a new capture after 28,060 ms, and confirmed it disappeared after unpublish. Browser report: .out/server-screen-previews-20261030-retry/1440/browser.json; visual capture: .out/server-screen-previews-20261030-retry/1440/screen-share-listener-participant-cards.png."
     },
     {
       "name": "flutter_focused_tests",
       "result": "PASS_LOCAL",
-      "detail": "Focused Flutter screen-preview client, stop lifecycle and thumbnail state tests passed (6 tests) using the local Flutter SDK workaround. Android emulator runtime was attempted but the bundled emulator reported an incompatible processor and did not boot."
+      "detail": "Focused Flutter screen-preview client, stop lifecycle and thumbnail state tests passed (6 tests). The complete Flutter unit suite passed (1,685 tests), component captures passed (307 tests), and visual review confirmed the participant card composition. Android emulator runtime also passed on emulator-5554 for auth, authenticated workspace, profile/audio/admin panels and logout; media acceptance remains NOT_RUN. Runtime report: .out/local-features/20261030-162811/android-runtime-amd64-retry/runtime.json."
     },
     {
       "name": "contracts_and_traceability",
@@ -28,14 +28,24 @@
     },
     {
       "name": "api_egress_real_stack",
-      "result": "NOT_RUN",
-      "detail": "The disposable API passed startup after fixing permissions on the pre-provisioned private volume; Redis and LiveKit started. Pulling the pinned livekit/egress:v1.14.1 image did not finish during the local run, so Egress service readiness, two-client snapshot delivery, 30-second refresh and unpublish cleanup remain unverified. The interrupted disposable stack was cleaned up."
+      "result": "PASS_LOCAL",
+      "detail": "Disposable API + LiveKit SFU + Egress real-stack acceptance passed with two browser clients and real API/SFU signaling. For this Apple Silicon host the pinned livekit/egress:v1.14.1 image was run as linux/amd64 under QEMU using a process-local test-runner platform injection. Server-produced JPEG appeared in the listener participant card and decoded; a subsequent capture was observed after 28,060 ms; unpublish removed the preview. Voice remained connected. Source was a synthetic canvas and quiet oscillator; OS capture picker, hardware media quality and capacity are NOT_RUN. Report: .out/server-screen-previews-20261030-retry/1440/browser.json."
+    },
+    {
+      "name": "flutter_android_runtime",
+      "result": "PASS_LOCAL",
+      "detail": "Flutter native runtime passed on emulator-5554 with mocks=false for auth, authenticated workspace, profile/audio/admin panels and logout. Media remains NOT_RUN and this was not a physical device. Report: .out/local-features/20261030-162811/android-runtime-amd64-retry/runtime.json."
     },
     {
       "name": "publisher_load_and_capacity",
       "result": "NOT_RUN",
       "detail": "No publisher load run or hardware capacity measurement was performed."
+    },
+    {
+      "name": "critical_stack_loopback_ice",
+      "result": "PASS_LOCAL",
+      "detail": "Added loopback node-ip to the disposable critical-acceptance LiveKit SFU after the real-stack client could not establish ICE; focused test passed: python3 -m unittest tools.qa.critical_client_acceptance.test_stack."
     }
   ],
-  "limitation": "Unit tests and client checks do not prove Egress runtime behavior or capacity. The local API startup validated the non-root shared-volume permission fix, but server-side frame production must remain unverified until the pinned Egress image can run in the paired real-stack scenario."
+  "limitation": "The real-stack result verifies server-side periodic JPEG generation and delivery from a synthetic browser canvas through API, LiveKit SFU and Egress, including refresh and cleanup. It does not validate OS screen-picker capture, physical-device media behavior, visual/audio quality, production capacity or load. Contracts/traceability remain PARTIAL because optional OpenAPI validation dependencies are unavailable on this host; publisher load/capacity remains NOT_RUN."
 }
