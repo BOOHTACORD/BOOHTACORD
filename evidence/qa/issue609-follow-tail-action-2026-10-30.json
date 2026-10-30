@@ -1,0 +1,84 @@
+{
+  "issue": 609,
+  "status": "PASS_LOCAL_ALL_SOURCE_FACETS_SIGNED_PHYSICAL_PENDING",
+  "at_utc": "2026-10-30T00:35:14.017122+00:00",
+  "base": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+  "prior_partial_source": "c7c8f0c5018f170f4b6c80ae99a270db298a608d",
+  "route": "direct/follow_latest controller+viewport; direct_conversation scoped activity/build adapter",
+  "scope": "Completes issue609 source row2 with an explicit К последним сообщениям action while preserving older-history anchor/draft/selection. Automatic append-at-latest and its cancellation/restore fences remain.",
+  "sets": [
+    {
+      "protects": "Incoming append at latest becomes visibly rendered; manual old position and draft stay put.",
+      "command": "flutter test --no-pub test/features/workspace/direct_follow_latest/append_test.dart --reporter expanded",
+      "platform": "Windows Flutter3.47.7/Dart3.13.5 actual shared widgets/realInter",
+      "mandatory_when": "Incoming DM history append/follow changes or609 closure",
+      "result": "Pinned original d9 build/context:1expectedFAIL1PASS. Final actual widget assertion checks extentAfter and body viewport bounds.",
+      "where": "lint-final-counterexamples/append-original-red.log; action-authoritative-nearest.log"
+    },
+    {
+      "protects": "Older-history visible SelectableText anchor,draft and selection are stable; pointer/ShiftTab+Enter/Space reaches latest and hides action.",
+      "command": "flutter test --no-pub test/features/workspace/direct_follow_latest/jump_test.dart --reporter expanded",
+      "platform": "Same shared Flutter widgets,390x844 at100/200% text scale; synthetic tester keyboard/touch, not physical OS input",
+      "mandatory_when": "Older-history/jump/scroll widget changes or609 row2 acceptance",
+      "result": "Pinned c7c8 original4files:6expectedFAIL because action absent. Final6casesPASS; ordinary pointer and real focus traversal/Enter/Space; visible anchor top stable within1logicalpx; editor TextEditingValue preserved.",
+      "where": "lint-final-counterexamples/action-original-red.log; action-authoritative-nearest.log"
+    },
+    {
+      "protects": "Queued auto/manual corrections cannot override a newer scroll/session/pair/history; prepend/replacement history and short voice/IME controls preserve behavior.",
+      "command": "flutter test --no-pub test/features/workspace/direct_follow_latest/fences_test.dart test/features/workspace/direct_follow_latest/short_voice_test.dart --reporter expanded",
+      "platform": "Windows shared widget engine; Android/iOS platform overrides for real WorkspaceScreen metrics2340x1080,DPR2.8125,padding82/84,IME605,typed FakeRoom1participant/fixture6ms",
+      "mandatory_when": "Async correction admission, viewport/action layout, orientation/IME changes",
+      "result": "8preservation casesPASS. A usable history footer owns its action space; tiny history hides action rather than covering editor. Send/Leave hit-testable/disjoint/aboveIME, draft/selection exact. No real media/6ms latency claim.",
+      "where": "action-authoritative-nearest.log"
+    }
+  ],
+  "nearest_command": "cd clients/flutter; flutter test --no-pub test/features/workspace/direct_follow_latest test/features/workspace/short_viewport test/features/workspace/dm_drafts/widget_test.dart test/workspace_screen_test.dart test/workspace_navigation_text_scale_test.dart test/workspace_connection_status_test.dart --reporter expanded",
+  "results": {
+    "focused": "16final cases PASS; 152nearest PASS,0skip. Exact6-target analysis No issues found.",
+    "counterexamples": "Final tests against two pinned original scopes:append1FAIL1PASS; action6FAIL. All4temporarily written fixed files restored byte-for-byte.",
+    "policies": "9policy/baselinePASS; all7covered features selected; unrelated feature records and all existing platform decisions preserved.",
+    "visual": "All8PNG reviewed ORIGINAL390x844. Original incoming40 hidden below composer→visible at latest. Original older mode has no action; final footer shows readable arrow/caption100% and wrapped200% with no editor overlap. Anchor top unchanged; jumped views show complete40, action gone and editor selection intact. These are component images, not signed/device acceptance.",
+    "discovery": "Four standard *_test.dart entrypoints in leaf,16cases; helper files are not tests. Optional API injection added only to the existing short-view fixture. Custom609capture env only; no new standard167producer names and no test deletions."
+  },
+  "source_LF_SHA256": {
+    "clients/flutter/lib/src/features/direct/follow_latest/controller.dart": "83ff201c6c2484d517bc2e5ccfb2dc13030d4ebb34be780240d6cf8c9b924b77",
+    "clients/flutter/lib/src/features/direct/follow_latest/viewport.dart": "8ea63bb88890af53f75ca88bd285f5994a14611c29f6e0f886616f0ee013209a",
+    "clients/flutter/lib/src/screens/workspace_ui/direct_conversation/follow_latest/handler.dart": "d5a35b276670578d9d59e5461fd1494ca70768d8bf40d1b8b9623e583d44e545",
+    "clients/flutter/lib/src/screens/workspace_ui/direct_conversation/lifecycle/context.dart": "c18b0581b7a841cf923f7eca253a1b73dba926ed5edfef12e597b724a85ca83f",
+    "clients/flutter/lib/src/screens/workspace_ui/direct_conversation/build/handler.dart": "dcba97eb01d4b025e7c683b9c3b981bad41dbb99f6690a3006338dfc70169616",
+    "clients/flutter/test/features/workspace/direct_follow_latest/append_test.dart": "56b07f2f935e798f5aeaec5f8078a7639f1d536848b39e3c4a83772b39d03857",
+    "clients/flutter/test/features/workspace/direct_follow_latest/fences_test.dart": "dfa3396b9c713cca9918d734a88360e04785015889967d9c41fd2f806a5e57b4",
+    "clients/flutter/test/features/workspace/direct_follow_latest/fixture.dart": "7aa8434c7c4e8b9dcb77d9028ba592384d461db3c36a8c5e3d10b902b57d97e9",
+    "clients/flutter/test/features/workspace/direct_follow_latest/capture.dart": "ccf70b7989238cafe117951a1a20a06d6446ba23e98f2a423f3fb0e6b5b0141e",
+    "clients/flutter/test/features/workspace/direct_follow_latest/jump_test.dart": "258b527006099cd00343e40870f9d2e324b9c3b2fbc5f5ed4e323cdb07af1183",
+    "clients/flutter/test/features/workspace/direct_follow_latest/short_voice_test.dart": "f0a578cf18ce4d2bd6279da349389f36e3d19d717908d16de088fa7b5c61f48a",
+    "clients/flutter/test/features/workspace/short_viewport/support.dart": "50d588a9c5eb874e8a98301d54c7f8c68f193053dbfd69788babb739a81e3245",
+    "tools/qa/local_features/features.json": "2e5efa146580dca403da43b59aedacb89e308aa24e3437f47d299b65f7bba452"
+  },
+  "log_LF_SHA256": {
+    "action-authoritative-nearest.log": "9efc1d688a41d77f5ab4127d45f66860728e1959ce9d51feb2d7ac8bc7219318",
+    "action-authoritative-analyze.log": "b9d6f1b44eb1c5b393b68aaa827d5433cb757df96e8148381377f0cfc3fd377d",
+    "action-policy.log": "a21b85187d4fe2e28b3a2fdb4d6412d3ec3075cac0f5f73ba546db541320f903",
+    "action-registry-verified.log": "bbe54b2b2fc3e5438df4fa22b756c712cf50b3e27c9deacb93d971e092e3fb30",
+    "lint-final-counterexamples\\append-original-red.log": "5eca259e54cc45a009bf7a5e54be4cc4590278219064bf640a39a33e9ee3a9c4",
+    "lint-final-counterexamples\\action-original-red.log": "73b60e875e2d0b13f585f25631499d31d520064a06b66bed2e7a45e9f639bfa9",
+    "lint-final-counterexamples\\final-counterexamples.json": "229073a536f23cdc0a707ccdb312a86044786353d99c7e66ccf48a9cf596db33"
+  },
+  "capture_SHA256": {
+    "lint-final-counterexamples\\append-original-before\\incoming.png": "a704e94f43de6ef9bcafb8181f5fd2126e5f16c4ca7c7e920d59142835e35ef2",
+    "lint-final-counterexamples\\action-original-before\\older-1.0.png": "13d6ab67482cd3ebee069d752aaa1813b22cf6188ed8570c6a30be218737337e",
+    "lint-final-counterexamples\\action-original-before\\older-2.0.png": "b715154eaba65baae4a2a650967e6a9dde5c43dc76b7b0a2978a4f91d74ef7a3",
+    "action-final-images\\incoming.png": "cb5ca1698e3249f94eb2c13f4f3ce203abf4683492ad604615241d5dd4053b3c",
+    "action-final-images\\older-1.0.png": "803d00db1c224f9864ad134f7f6b607a6071c4f48797c6caca9dc418adc0f170",
+    "action-final-images\\older-2.0.png": "3ab72140ebd81a49fb877cbc52d381e91503fc5989beaa57e7a685252bd665e7",
+    "action-final-images\\jumped-1.0.png": "7209526b56440f49a7e375c8439b2fb50450f6eeb24ca76977d13d06eb18a65b",
+    "action-final-images\\jumped-2.0.png": "f3d232a96d64fad98491878714774284d9e281535ad0e8314482b604d4838729"
+  },
+  "limits": [
+    "609 remainsOPEN until final signedAndroid source-bound incoming-at-latest AND older-history explicit action succeed with owned cleanup.",
+    "Canonical gate/CI/signed delivery must rerun on final action commit; prior c7c8 native1706/component590 results are historical PARTIAL only.",
+    "Full gallery review, absent Android/iOS QA simulators and all broad platform/security/media gates remain independent NOT_RUN/BLOCKED; no golden approval.",
+    "First action prototype keyed viewport by account and reset logout offset; retained existing fence caught it and final viewport keeps its child identity. First anchor probe ignored SelectableText.rich and failed precondition; final probe measures actual visible SelectableText. Earlier analyzer5INFO fixed with braces; finalNoIssues log authoritative.",
+    "No Web implementation/protocol/ACL/schema, production fault, audibility/capacity/SLO or43consolidation change."
+  ]
+}

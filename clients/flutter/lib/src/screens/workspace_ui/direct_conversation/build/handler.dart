@@ -66,38 +66,40 @@ extension WorkspaceDirectConversationStateBuildAction
           if (widget.state.error != null)
             WorkspaceErrorBanner(message: widget.state.error!),
           Expanded(
-            child: widget.state.loadingDirectMessages
-                ? const Center(child: CircularProgressIndicator())
-                : widget.state.directMessageHistory.isEmpty
-                ? RefreshIndicator(
-                    onRefresh: () => widget.state.openDirectConversation(
-                      widget.conversation,
-                    ),
-                    child: ListView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.45,
-                          child: Center(
-                            child: Text(
-                              widget.state.isSupportConversation(
-                                    widget.conversation,
-                                  )
-                                  ? supportPrompt
-                                  : 'Начните диалог с ${widget.conversation.displayName}',
-                              style: const TextStyle(color: GcColors.muted),
+            child: wrapDirectHistoryJump(
+              widget.state.loadingDirectMessages
+                  ? const Center(child: CircularProgressIndicator())
+                  : widget.state.directMessageHistory.isEmpty
+                  ? RefreshIndicator(
+                      onRefresh: () => widget.state.openDirectConversation(
+                        widget.conversation,
+                      ),
+                      child: ListView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.sizeOf(context).height * 0.45,
+                            child: Center(
+                              child: Text(
+                                widget.state.isSupportConversation(
+                                      widget.conversation,
+                                    )
+                                    ? supportPrompt
+                                    : 'Начните диалог с ${widget.conversation.displayName}',
+                                style: const TextStyle(color: GcColors.muted),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                    )
+                  : renderDirectConversationHistoryList(
+                      compact,
+                      directHistoryHeaderCount,
+                      hasOlderDirectCursor,
+                      olderDirectHistoryError,
                     ),
-                  )
-                : renderDirectConversationHistoryList(
-                    compact,
-                    directHistoryHeaderCount,
-                    hasOlderDirectCursor,
-                    olderDirectHistoryError,
-                  ),
+            ),
           ),
           if (!widget.state.supportPublicationBlocked(widget.conversation))
             renderDirectConversationComposerRegion(

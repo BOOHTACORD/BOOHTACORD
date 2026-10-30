@@ -1,7 +1,7 @@
 {
   "issue": 609,
   "at_utc": "2026-10-29T23:41:28.255306+00:00",
-  "status": "PASS_LOCAL_CORRECTED_SIGNED_PHYSICAL_PENDING",
+  "status": "HISTORICAL_PARTIAL_AUTOFOLLOW_ONLY",
   "base": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
   "route": "direct/follow_latest; direct_conversation/follow_latest → lifecycle/context + build edge",
   "invariant": "An incoming append becomes visible when already at latest. Historical/manual position, unsent draft, replacement/prepended history, newer scroll choice, logout, DM navigation and stale history callbacks are preserved/fenced.",
@@ -51,10 +51,13 @@
     "after\\incoming.png": "cb5ca1698e3249f94eb2c13f4f3ce203abf4683492ad604615241d5dd4053b3c"
   },
   "limits": [
+    "Historical c7c8 source receipt: explicit older-history jump action is absent in that source; row2 not complete. Original logs/hashes remain unchanged.",
     "609 staysOPEN until corrected signedAPK passive receipt succeeds on physical device.",
     "Canonical7feature/native runtime and hosted CI are pending release-agent handoff; absent devices/gates cannot be calledPASS.",
     "Initial open, pagination/scroll checkpoint restore and TEXT behavior are unchanged; unknown asynchronous attachment-resize behavior is outside this append packet.",
     "Earlier capture helper compilation diagnostic missingValueKey import is retained; final8/135/analyze logs are authoritative. Initial2-feature selection diagnostic was corrected to all7without weakeningpolicy.",
     "No transport-cause/SLO/provider notification/media quality/production fault or43consolidation claim."
-  ]
+  ],
+  "source_revision": "c7c8f0c5018f170f4b6c80ae99a270db298a608d",
+  "superseded_by": "evidence/qa/issue609-follow-tail-action-2026-10-30.json"
 }

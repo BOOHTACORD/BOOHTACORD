@@ -23,7 +23,10 @@ Future<void> loadTailFonts() async {
       .load();
 }
 
-Future<void> captureTail(WidgetTester tester) async {
+Future<void> captureTail(
+  WidgetTester tester, {
+  String name = 'incoming',
+}) async {
   if (captureDirectory.isEmpty) return;
   final boundary = tester.renderObject<RenderRepaintBoundary>(
     find.byKey(const ValueKey('qa609-surface')),
@@ -38,7 +41,7 @@ Future<void> captureTail(WidgetTester tester) async {
     }
   });
   Directory(captureDirectory).createSync(recursive: true);
-  final target = File('$captureDirectory/incoming.png');
+  final target = File('$captureDirectory/$name.png');
   expect(target.existsSync(), isFalse);
   target.writeAsBytesSync(bytes!);
 }

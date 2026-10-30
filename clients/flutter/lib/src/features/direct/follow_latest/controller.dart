@@ -35,21 +35,43 @@ class DirectHistoryTailFollower {
         scroll.position.extentAfter > 24) {
       return;
     }
-    void correct(int remaining, double expectedOffset) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (generation != _generation ||
-            !active() ||
-            !scroll.hasClients ||
-            scroll.position.isScrollingNotifier.value ||
-            (scroll.offset - expectedOffset).abs() > 1) {
-          return;
-        }
-        if (scroll.position.extentAfter <= 1) return;
-        scroll.jumpTo(scroll.position.maxScrollExtent);
-        if (remaining > 1) correct(remaining - 1, scroll.offset);
-      });
-    }
+    _correct(scroll, active, generation, 8, scroll.offset);
+  }
 
-    correct(8, scroll.offset);
+  void jumpToLatest({
+    required ScrollController scroll,
+    required bool Function() active,
+  }) {
+    final generation = ++_generation;
+    if (!active() ||
+        !scroll.hasClients ||
+        !scroll.position.hasContentDimensions) {
+      return;
+    }
+    scroll.jumpTo(scroll.position.maxScrollExtent);
+    _correct(scroll, active, generation, 8, scroll.offset);
+  }
+
+  void _correct(
+    ScrollController scroll,
+    bool Function() active,
+    int generation,
+    int remaining,
+    double expectedOffset,
+  ) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (generation != _generation ||
+          !active() ||
+          !scroll.hasClients ||
+          scroll.position.isScrollingNotifier.value ||
+          (scroll.offset - expectedOffset).abs() > 1) {
+        return;
+      }
+      if (scroll.position.extentAfter <= 1) return;
+      scroll.jumpTo(scroll.position.maxScrollExtent);
+      if (remaining > 1) {
+        _correct(scroll, active, generation, remaining - 1, scroll.offset);
+      }
+    });
   }
 }

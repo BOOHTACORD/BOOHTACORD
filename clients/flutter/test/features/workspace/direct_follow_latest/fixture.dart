@@ -16,15 +16,16 @@ const pair = DirectConversation(
   displayName: 'Peer',
   unreadCount: 0,
 );
-DirectChatMessage message(int index) => DirectChatMessage(
-  id: 'message-$index',
-  directMessageId: pair.id,
-  authorId: 'peer',
-  body: 'Incoming fixture $index',
-  createdAt: DateTime.utc(2026, 10, 30).add(Duration(minutes: index)),
-  deleted: false,
-  revision: 1,
-);
+DirectChatMessage message(int index, {String dmId = 'owned-pair'}) =>
+    DirectChatMessage(
+      id: 'message-$index',
+      directMessageId: dmId,
+      authorId: 'peer',
+      body: 'Incoming fixture $index',
+      createdAt: DateTime.utc(2026, 10, 30).add(Duration(minutes: index)),
+      deleted: false,
+      revision: 1,
+    );
 
 class ReadApi extends ApiClient {
   @override
@@ -40,7 +41,7 @@ class Harness {
   final state = AppState(ReadApi());
   final list = find.byKey(const ValueKey('direct-message-messages'));
   ScrollController get scroll => tester.widget<ListView>(list).controller!;
-  Future<void> mount() async {
+  Future<void> mount({double textScale = 1}) async {
     await loadTailFonts();
     ComposerDraftMemory.clear();
     ConversationScrollMemory.clear();
@@ -53,6 +54,11 @@ class Harness {
     await tester.pumpWidget(
       MaterialApp(
         theme: guildTheme(),
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: TextScaler.linear(textScale)),
+          child: child!,
+        ),
         home: RepaintBoundary(
           key: const ValueKey('qa609-surface'),
           child: Scaffold(

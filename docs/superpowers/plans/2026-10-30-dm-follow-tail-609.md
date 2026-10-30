@@ -19,3 +19,8 @@ Hard limits: ≤120 lines/file; target ≤8 production/direct test files per lea
 No protocol/ACL/schema changes, no production faults/load, no test deletion.
 Stop for signed611 physical acceptance as soon as its packet is available.
 609 stays OPEN until a corrected signed APK passes actual passive receipt.
+
+Follow-up required by issue609 acceptance row2: while reading old history keep
+the visible anchor/draft/selection and expose a keyboard/touch action to latest.
+Add actual widget RED before a bounded scoped history-viewport action. Preserve
+short-height editor/voice geometry and the existing automatic-follow fences.

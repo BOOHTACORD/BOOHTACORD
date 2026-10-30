@@ -2,8 +2,8 @@ import 'package:boohtacord_desktop/src/app_state.dart';
 import 'package:boohtacord_desktop/src/models.dart';
 import 'package:boohtacord_desktop/src/services/api_client.dart';
 
-AppState shortEditorState() {
-  final state = AppState(ApiClient());
+AppState shortEditorState({ApiClient? api}) {
+  final state = AppState(api ?? ApiClient());
   const dm = DirectConversation(
     id: 'qa-dm',
     participantId: 'qa-peer',
