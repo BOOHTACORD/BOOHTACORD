@@ -1,0 +1,214 @@
+{
+  "run": {
+    "id": 40981731999,
+    "run_attempt": 1,
+    "head_sha": "5f1e40aacd821c25db8419ff68371215bd5e56e2",
+    "path": ".github/workflows/ci.yaml",
+    "event": "pull_request",
+    "head_branch": "codex/fix-android-dm-follow-tail-609",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40981731999",
+    "created_at": "2026-10-30T00:45:56Z",
+    "updated_at": "2026-10-30T01:01:28Z"
+  },
+  "source_revision": "5f1e40aacd821c25db8419ff68371215bd5e56e2",
+  "tested_merge": "4351e5c9545d6ff09d1e1fb75af527953621c5b8",
+  "jobs": [
+    {
+      "id": 123823304600,
+      "name": "changes",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123823304884,
+      "name": "contracts / contracts",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123823357677,
+      "name": "actual / runtime (next)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123823357712,
+      "name": "frontend / fast",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123823357766,
+      "name": "windows / windows-build",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123823357767,
+      "name": "actual / runtime (lifecycle)",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 123823357775,
+      "name": "flutter / android-kotlin",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123823357776,
+      "name": "actual / runtime (sfu)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123823357783,
+      "name": "backend / static",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123823357794,
+      "name": "windows / windows-native-unit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123823357849,
+      "name": "frontend / sfu",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123823357884,
+      "name": "flutter / dart",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123823357938,
+      "name": "flutter / android",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123823358001,
+      "name": "backend / database",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123823358030,
+      "name": "frontend / browser (browser-voice)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123823358050,
+      "name": "frontend / browser (browser-content)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123823358068,
+      "name": "frontend / browser (browser-conversations)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123823358080,
+      "name": "frontend / browser (browser-shell)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123823358118,
+      "name": "flutter / macos",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123823358124,
+      "name": "backend / load",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123825049942,
+      "name": "frontend / frontend",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123825304239,
+      "name": "backend / backend",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123825426002,
+      "name": "actual / actual-acceptance",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 123825760735,
+      "name": "windows / windows-gui-sfu",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123827375968,
+      "name": "flutter / flutter",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123828190437,
+      "name": "windows / windows",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123828259599,
+      "name": "ci-required",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "failure": {
+    "job_id": 123823357767,
+    "profile": "lifecycle",
+    "status": "FAIL",
+    "last_finite_marker": "screen-share-short-height",
+    "exact_failing_predicate": "UNKNOWN",
+    "spatial_geometry_meets_threshold": true,
+    "actual_retained_artifact_id": 12945725786,
+    "actual_retained_zip_sha256": "9b699f1cf5613eaceb9d52fa794f7403aaeaa7ff24a21e0e7f46b5ba26da8292",
+    "owned_resources_removed": true,
+    "immutable_evidence": "96843ce63f293f4122b808d3d1ffd4ee3484a5a9"
+  },
+  "scope": "One full unchanged-source retry; preserve all failed results and current-attempt requirements.",
+  "schema_version": 1,
+  "issue": 609,
+  "pull_request": 613,
+  "status": "FAILED_COMPLETE_ATTEMPT1_FULL_UNCHANGED_SOURCE_RETRY_DISPATCHED",
+  "retry_dispatch": {
+    "status": "RETRY_DISPATCHED",
+    "pull_request": 613,
+    "source_revision": "5f1e40aacd821c25db8419ff68371215bd5e56e2",
+    "run_id": 40981731999,
+    "retained_attempt": 1,
+    "requested": "all_jobs",
+    "http": 201,
+    "at_utc": "2026-10-30T01:02:03.125077+00:00"
+  },
+  "limits": [
+    "Lifecycle FAIL and dependent actual fan-in/ci-required FAIL remain retained; exact failed downstream assertion remains UNKNOWN.",
+    "All24 other jobs passed, including WindowsGUI/native, macOS, Android/Kotlin, Dart, Web/PostgreSQL/next/SFU.",
+    "Full attempt2 must pass all required jobs with current-attempt artifacts before merge; no source, pin, timeout or gate was weakened.",
+    "No signed corrected609 physical acceptance or broad platform/media claim."
+  ]
+}
