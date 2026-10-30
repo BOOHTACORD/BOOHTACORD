@@ -1,0 +1,220 @@
+{
+  "run": {
+    "id": 40975562192,
+    "run_attempt": 1,
+    "head_sha": "4643f10d89398c2e5b2bfe98a36497c8b844d995",
+    "path": ".github/workflows/ci.yaml",
+    "event": "pull_request",
+    "head_branch": "codex/fix-native-only-readback-610",
+    "status": "completed",
+    "conclusion": "failure",
+    "html_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40975562192",
+    "created_at": "2026-10-29T23:48:05Z",
+    "updated_at": "2026-10-30T00:05:38Z"
+  },
+  "source_revision": "4643f10d89398c2e5b2bfe98a36497c8b844d995",
+  "expected_test_merge": "e30dec9a8f66f3670f463b58dd9fbd04f174a4c0",
+  "jobs": [
+    {
+      "id": 123802996961,
+      "name": "contracts / contracts",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123802997413,
+      "name": "changes",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123803058168,
+      "name": "windows / windows-native-unit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123803058186,
+      "name": "flutter / dart",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123803058241,
+      "name": "flutter / android-kotlin",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123803058242,
+      "name": "windows / windows-build",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123803058276,
+      "name": "actual / runtime (lifecycle)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123803058283,
+      "name": "backend / load",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123803058293,
+      "name": "frontend / fast",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123803058295,
+      "name": "actual / runtime (next)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123803058362,
+      "name": "frontend / browser (browser-shell)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123803058377,
+      "name": "backend / database",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123803058381,
+      "name": "flutter / macos",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 123803058386,
+      "name": "flutter / android",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123803058393,
+      "name": "frontend / sfu",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123803058427,
+      "name": "frontend / browser (browser-voice)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123803058438,
+      "name": "frontend / browser (browser-content)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123803058440,
+      "name": "backend / static",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123803058542,
+      "name": "frontend / browser (browser-conversations)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123803059009,
+      "name": "actual / runtime (sfu)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123805007494,
+      "name": "backend / backend",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123805091677,
+      "name": "frontend / frontend",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123806176195,
+      "name": "windows / windows-gui-sfu",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123807387772,
+      "name": "actual / actual-acceptance",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123807528841,
+      "name": "flutter / flutter",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 123808759152,
+      "name": "windows / windows",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123808819677,
+      "name": "ci-required",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "failure": {
+    "job_id": 123803058381,
+    "phase": "official pinned Flutter SDK bootstrap before macOS native tests",
+    "installer_exit_code": 28,
+    "cache_restore": "aborted",
+    "classification": "INFRASTRUCTURE_SETUP_FAILURE",
+    "downstream_job_id": 123807528841,
+    "downstream_result": "Missing current macOS result rejected by mandatory native fan-in"
+  },
+  "retry": "One full same-source retry authorized; no gate/source modification",
+  "transport": {
+    "run_id": 40975562222,
+    "status": "success",
+    "scope": "Existing retained master network transport acceptance; distinct from complete current-source CI"
+  },
+  "schema_version": 1,
+  "issue": 610,
+  "pull_request": 612,
+  "status": "FAIL_INFRASTRUCTURE_RETRY_PENDING",
+  "log_LF_SHA256": {
+    "pr612-attempt1-mac.log": "d96ee4aec24714093ada5def87583e2f7fa0381c94355935fdcb36bb6e752d01",
+    "pr612-attempt1-fan.log": "8af952cd370a40286b7a8176e6f43bab34bc42a1b0d7ccbf5417add9caee9f3f"
+  },
+  "full_retry_dispatch": {
+    "status": "RETRY_DISPATCHED",
+    "pull_request": 612,
+    "source_revision": "4643f10d89398c2e5b2bfe98a36497c8b844d995",
+    "run_id": 40975562192,
+    "retained_attempt": 1,
+    "requested": "all_jobs",
+    "http": 201,
+    "at_utc": "2026-10-30T00:06:47.153314+00:00"
+  },
+  "limits": [
+    "No final-source full hosted CI PASS yet;612 remains unmerged.",
+    "Installer exit28 and aborted cache restore occurred before macOS native tests; no product/native failure inferred.",
+    "Exact5-step graph registration failure on earlier e892 source remains retained separately; final source4643 corrected registration without weakening the allowlist.",
+    "Raw logs stay private; no credentials, runtime UI or deployment action in this receipt."
+  ]
+}
