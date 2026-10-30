@@ -234,6 +234,40 @@ test('listener room embeds the stream preview in an equal-sized participant card
   await page.screenshot({ path: info.outputPath('listener-participant-cards-390x200.png') })
 })
 
+test('participant volume controls stay clear of the live badge, close outside and keep mic state compact', async ({ page }) => {
+  await open(page, 'participant-cards', 876, 100, 656)
+  const streamCard = page.locator('.participant--streaming')
+  const details = streamCard.locator('.participant-volume')
+  const trigger = details.locator('summary')
+  const overlap = await trigger.evaluate(element => {
+    const a = element.getBoundingClientRect()
+    const b = element.closest('.participant')!.querySelector<HTMLElement>('.participant-screen-preview__live')!.getBoundingClientRect()
+    return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top
+  })
+  expect(overlap).toBe(false)
+
+  const status = streamCard.locator('.participant-card-status')
+  await expect(status).toHaveAttribute('aria-label', 'Микрофон выключен')
+  await expect(status).toHaveText('')
+
+  await trigger.click()
+  await expect(details).toHaveAttribute('open', '')
+  const slider = details.getByRole('slider')
+  await slider.click()
+  await expect(details).toHaveAttribute('open', '')
+  await page.locator('.voice-room header h1').click()
+  await expect(details).not.toHaveAttribute('open', '')
+
+  const mutedNameTop = await streamCard.locator('.participant-name').evaluate(element => element.getBoundingClientRect().top)
+  await open(page, 'participant-cards&unmuted', 876, 100, 656)
+  const unmutedCard = page.locator('.participant--streaming')
+  const unmutedStatus = unmutedCard.locator('.participant-card-status')
+  await expect(unmutedStatus).toHaveAttribute('aria-label', 'В голосовом канале')
+  await expect(unmutedStatus).toHaveText('')
+  const unmutedNameTop = await unmutedCard.locator('.participant-name').evaluate(element => element.getBoundingClientRect().top)
+  expect(Math.abs(unmutedNameTop - mutedNameTop)).toBeLessThanOrEqual(1)
+})
+
 test('participant overlay wraps a four-member roster into a compact grid', async ({ page }, info) => {
   await page.route(/\/api\/v1\/members\/[^/]+\/avatar(?:\?.*)?$/, route => route.fulfill({
     status: 200,

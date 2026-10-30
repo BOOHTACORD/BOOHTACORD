@@ -92,18 +92,22 @@
 .participant-screen-preview.is-selected { box-shadow: inset 0 0 0 2px var(--gc-accent); }
 .participant-voice-placeholder { color: var(--gc-text-muted); background: var(--gc-surface-raised); font-size: var(--gc-text-caption); }
 .participant-voice-placeholder svg { width: 20px; height: 20px; flex: 0 0 20px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
-.participant-card-info { display: flex; min-width: 0; min-height: 72px; align-self: stretch; align-items: center; gap: 10px; padding: 10px 12px; }
+.participant-card-info { position: relative; display: flex; min-width: 0; min-height: 80px; align-self: stretch; align-items: center; gap: 10px; padding: 10px 12px; }
 .voice-room .voice-participant-volumes .participant-card-info .avatar.lg { width: 40px; height: 40px; flex: 0 0 40px; font-size: .9375rem; }
-.participant-card-copy { display: grid; min-width: 0; align-content: center; justify-items: start; gap: 3px; }
+.participant-card-copy { display: grid; min-width: 0; flex: 1 1 0; align-content: center; justify-items: start; gap: 3px; }
 .voice-room .voice-participant-volumes .participant-card-info .participant-name { width: 100%; max-width: 100%; margin: 0; overflow: hidden; font-size: .9375rem; line-height: 1.35; text-align: left; text-overflow: ellipsis; white-space: nowrap; }
-.voice-room .voice-participant-volumes .participant-card-info .participant-status { min-height: 0; margin: 0; font-size: .75rem; line-height: 1.4; text-align: left; }
-.voice-room .voice-participant-volumes .participant-card-info .voice-person-state { justify-content: flex-start; }
-.voice-room .voice-participant-volumes .participant-card-info .voice-person-state-icon { width: .75rem; height: .75rem; flex: 0 0 .75rem; }
+.participant-card-actions { position: relative; z-index: 2; display: flex; flex: 0 0 32px; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+.voice-room .voice-participant-volumes .participant-card-status { display: grid; width: 24px; height: 24px; place-items: center; margin: 0; }
+.voice-room .voice-participant-volumes .participant-card-status .voice-person-state { display: grid; width: 100%; height: 100%; place-items: center; }
+.voice-room .voice-participant-volumes .participant-card-status .voice-person-state-icon { width: .75rem; height: .75rem; flex: 0 0 .75rem; }
+.participant-card-actions .participant-volume { position: relative; top: auto; right: auto; z-index: 2; width: auto; margin: 0; }
+.participant-card-actions .participant-volume[open] { z-index: 4; }
+.voice-room .voice-participant-volumes .participant-card-actions .participant-volume summary { display: grid; width: 32px; height: 32px; place-items: center; border: 1px solid rgb(255 255 255 / 16%); border-radius: var(--gc-radius-sm); color: var(--gc-text-primary); background: rgb(15 16 22 / 82%); font-size: .875rem; line-height: 1; list-style: none; }
+.voice-room .voice-participant-volumes .participant-card-actions .participant-volume summary::-webkit-details-marker { display: none; }
+.voice-room .voice-participant-volumes .participant-card-actions .participant-volume summary:hover { background: var(--gc-surface-hover); }
+.participant-card-actions .participant-volume label { z-index: 1; }
 .voice-room .voice-participant-volumes .participant--streaming.talking { border-color: var(--gc-success); }
 .voice-room .voice-participant-volumes .participant--voice-only.talking { border-color: var(--gc-success); }
-.voice-room .voice-participant-volumes .participant--streaming .participant-volume,
-.voice-room .voice-participant-volumes .participant--voice-only .participant-volume { top: 8px; right: 8px; }
-.voice-room .voice-participant-volumes .participant-volume summary { border: 1px solid rgb(255 255 255 / 16%); color: var(--gc-text-primary); background: rgb(15 16 22 / 82%); }
 .voice-room .voice-participant-volumes .participant-card-info .participant-watcher-indicator { justify-self: start; padding: 3px 7px; }
 .participant-watcher-indicator { display: inline-flex; align-items: center; gap: 5px; border-radius: var(--gc-radius-full); padding: 4px 8px; color: var(--gc-accent-text); background: var(--gc-surface-selected); font-size: var(--gc-text-caption); font-weight: var(--gc-weight-medium); }
 .participant-watcher-indicator svg { width: 14px; height: 14px; flex: 0 0 14px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
