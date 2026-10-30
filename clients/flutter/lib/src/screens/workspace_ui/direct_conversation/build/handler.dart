@@ -4,6 +4,7 @@ import 'history_list/handler.dart';
 import 'composer_region/handler.dart';
 import '../../error_banner/component.dart';
 import 'header_region/handler.dart';
+import '../follow_latest/handler.dart';
 
 import 'package:boohtacord_desktop/src/features/workspace/short_viewport/policy.dart';
 
@@ -23,6 +24,7 @@ mixin WorkspaceDirectConversationStateBuildBinding
 extension WorkspaceDirectConversationStateBuildAction
     on WorkspaceDirectConversationStateContext {
   Widget executeWorkspaceDirectConversationStateBuild(BuildContext context) {
+    scheduleDirectFollowLatest();
     if (!widget.state.loadingDirectMessages &&
         widget.state.directMessageHistory.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -64,38 +66,40 @@ extension WorkspaceDirectConversationStateBuildAction
           if (widget.state.error != null)
             WorkspaceErrorBanner(message: widget.state.error!),
           Expanded(
-            child: widget.state.loadingDirectMessages
-                ? const Center(child: CircularProgressIndicator())
-                : widget.state.directMessageHistory.isEmpty
-                ? RefreshIndicator(
-                    onRefresh: () => widget.state.openDirectConversation(
-                      widget.conversation,
-                    ),
-                    child: ListView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.sizeOf(context).height * 0.45,
-                          child: Center(
-                            child: Text(
-                              widget.state.isSupportConversation(
-                                    widget.conversation,
-                                  )
-                                  ? supportPrompt
-                                  : 'Начните диалог с ${widget.conversation.displayName}',
-                              style: const TextStyle(color: GcColors.muted),
+            child: wrapDirectHistoryJump(
+              widget.state.loadingDirectMessages
+                  ? const Center(child: CircularProgressIndicator())
+                  : widget.state.directMessageHistory.isEmpty
+                  ? RefreshIndicator(
+                      onRefresh: () => widget.state.openDirectConversation(
+                        widget.conversation,
+                      ),
+                      child: ListView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.sizeOf(context).height * 0.45,
+                            child: Center(
+                              child: Text(
+                                widget.state.isSupportConversation(
+                                      widget.conversation,
+                                    )
+                                    ? supportPrompt
+                                    : 'Начните диалог с ${widget.conversation.displayName}',
+                                style: const TextStyle(color: GcColors.muted),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                    )
+                  : renderDirectConversationHistoryList(
+                      compact,
+                      directHistoryHeaderCount,
+                      hasOlderDirectCursor,
+                      olderDirectHistoryError,
                     ),
-                  )
-                : renderDirectConversationHistoryList(
-                    compact,
-                    directHistoryHeaderCount,
-                    hasOlderDirectCursor,
-                    olderDirectHistoryError,
-                  ),
+            ),
           ),
           if (!widget.state.supportPublicationBlocked(widget.conversation))
             renderDirectConversationComposerRegion(

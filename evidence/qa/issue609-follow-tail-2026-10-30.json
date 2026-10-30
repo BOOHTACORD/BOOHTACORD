@@ -1,0 +1,63 @@
+{
+  "issue": 609,
+  "at_utc": "2026-10-29T23:41:28.255306+00:00",
+  "status": "HISTORICAL_PARTIAL_AUTOFOLLOW_ONLY",
+  "base": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+  "route": "direct/follow_latest; direct_conversation/follow_latest → lifecycle/context + build edge",
+  "invariant": "An incoming append becomes visible when already at latest. Historical/manual position, unsent draft, replacement/prepended history, newer scroll choice, logout, DM navigation and stale history callbacks are preserved/fenced.",
+  "before_physical": {
+    "source": "de4c30b26bc61aeac5c885ae805634a082eefe5e",
+    "APK_SHA256": "f63613dd0dc92cca96737dd8235fed728c422da959228008bf6ff3e6b2afbaca",
+    "result": "FAIL: own latest-boundary fixture absent during18.344s passive UI poll, one scroll reveals. Own fixture deleted and short-lived own B session revoked. Source-bound physical receipt retained separately."
+  },
+  "commands": {
+    "focused": "cd clients/flutter; flutter test --no-pub test/features/workspace/direct_follow_latest --reporter expanded",
+    "nearest": "cd clients/flutter; flutter test --no-pub test/features/workspace/direct_follow_latest test/features/workspace/dm_drafts/widget_test.dart test/workspace_screen_test.dart test/workspace_navigation_text_scale_test.dart test/workspace_connection_status_test.dart --reporter expanded",
+    "counterexample": "python -X utf8 .out/issue609/counterexample.py; pins original d9f15a build/context and restores fixed bytes in finally",
+    "analyze": "flutter analyze --no-pub lib/src/features/direct/follow_latest lib/src/screens/workspace_ui/direct_conversation/follow_latest lib/src/screens/workspace_ui/direct_conversation/lifecycle/context.dart lib/src/screens/workspace_ui/direct_conversation/build/handler.dart test/features/workspace/direct_follow_latest",
+    "policy": "python -m unittest tools.qa.local_features.test_policy tools.qa.local_features.test_baseline",
+    "canonical_required": "./tools/qa/local_features/check.sh --feature auth --feature chat --feature connection_status --feature screen --feature shell --feature support --feature voice --base d9f15abb995cffaa7375975543ae934ad8be2d0d --real-stack"
+  },
+  "platform": "Windows11 Flutter3.47.7/Dart3.13.5; actual shared Flutter WorkspaceDirectConversation widgets,390x844, realInter/MaterialIcons. No corrected signed/native runtime acceptance yet.",
+  "mandatory_when": "Closing609 or changing native DM append/follow, historical checkpoint restoration or delayed UI correction admission.",
+  "results": {
+    "RED": "Final8case suite against original source:1expected incoming visibility failure,7preservation PASS. Both fixed sources restored byte-for-byte.",
+    "GREEN": "8focused PASS;135nearest PASS,0skip; exact5-target analysis No issues found.",
+    "policy": "9PASS; all7covered features selected, unrelated feature records and existing platform decisions byte-value preserved.",
+    "visual": "Original390x844 Before/After reviewed: before shows fixture39 with incoming40 hidden beneath composer; after shows complete fixture40 above unchanged composer/header. These are component captures, not physical Android evidence.",
+    "discovery": "Two standard *_test.dart entrypoints,8cases. Capture/fixture helpers are not test entrypoints. Custom BOOHTACORD_QA609_CAPTURE_DIR only; no new finite167standardCI PNG producer names. No tests deleted."
+  },
+  "source_LF_SHA256": {
+    "clients/flutter/lib/src/features/direct/follow_latest/controller.dart": "35a152c4000c9a063dd9f6b5d455ce9b707f9fe010184bd8bbf5f76a80ae2713",
+    "clients/flutter/lib/src/screens/workspace_ui/direct_conversation/follow_latest/handler.dart": "adca0c08d651fe1f47f617a6d43ae64fee07e86fa7e270589c49d72b7bcc2c88",
+    "clients/flutter/lib/src/screens/workspace_ui/direct_conversation/lifecycle/context.dart": "c18b0581b7a841cf923f7eca253a1b73dba926ed5edfef12e597b724a85ca83f",
+    "clients/flutter/lib/src/screens/workspace_ui/direct_conversation/build/handler.dart": "32f049d5f49437d03a5de52e864e7316383682249075bf2577224e95b613e76d",
+    "clients/flutter/test/features/workspace/direct_follow_latest/append_test.dart": "56b07f2f935e798f5aeaec5f8078a7639f1d536848b39e3c4a83772b39d03857",
+    "clients/flutter/test/features/workspace/direct_follow_latest/fences_test.dart": "dfa3396b9c713cca9918d734a88360e04785015889967d9c41fd2f806a5e57b4",
+    "clients/flutter/test/features/workspace/direct_follow_latest/fixture.dart": "11f00310f22407763c27643e0de262582b26feaa61ee29aba10eb4f41f1008c9",
+    "clients/flutter/test/features/workspace/direct_follow_latest/capture.dart": "e5e9031b58141d04e1c41f447e8b36a9eb4918cadaa911e3254014d32d84fb8d",
+    "tools/qa/local_features/features.json": "2cb74352d936d791d29ffbb5444cb0707e4aa8bf018ac82ca6cad52dc4520edd"
+  },
+  "logs_LF_SHA256": {
+    "counterexample-final-red.log": "9c74c654e0e7c2ecdd8343ecc0377bebbbcbb3b2e953c315fc5e8306d77536a9",
+    "focused-real-green.log": "20b47f7c9acbdc7ed743c767cd8b9b888bd103d29f174a27cb411eaa903aceca",
+    "final-nearest-green.log": "d3b13d52eb3fceafb368d3d4f7c9a77537582262087ceafd09bca614ec6d0520",
+    "final-analyze.log": "0a6a583d52853aef1071432f8b62b248883ea3b1f093b8156ce7ecc55f2da1f4",
+    "policy.log": "25e4a656871a9a10a79e9caba5749c6a22ee516d1906a2fb667ae35b023b46cd",
+    "registry-verified.log": "bbe54b2b2fc3e5438df4fa22b756c712cf50b3e27c9deacb93d971e092e3fb30"
+  },
+  "capture_SHA256": {
+    "before\\incoming.png": "a704e94f43de6ef9bcafb8181f5fd2126e5f16c4ca7c7e920d59142835e35ef2",
+    "after\\incoming.png": "cb5ca1698e3249f94eb2c13f4f3ce203abf4683492ad604615241d5dd4053b3c"
+  },
+  "limits": [
+    "Historical c7c8 source receipt: explicit older-history jump action is absent in that source; row2 not complete. Original logs/hashes remain unchanged.",
+    "609 staysOPEN until corrected signedAPK passive receipt succeeds on physical device.",
+    "Canonical7feature/native runtime and hosted CI are pending release-agent handoff; absent devices/gates cannot be calledPASS.",
+    "Initial open, pagination/scroll checkpoint restore and TEXT behavior are unchanged; unknown asynchronous attachment-resize behavior is outside this append packet.",
+    "Earlier capture helper compilation diagnostic missingValueKey import is retained; final8/135/analyze logs are authoritative. Initial2-feature selection diagnostic was corrected to all7without weakeningpolicy.",
+    "No transport-cause/SLO/provider notification/media quality/production fault or43consolidation claim."
+  ],
+  "source_revision": "c7c8f0c5018f170f4b6c80ae99a270db298a608d",
+  "superseded_by": "evidence/qa/issue609-follow-tail-action-2026-10-30.json"
+}

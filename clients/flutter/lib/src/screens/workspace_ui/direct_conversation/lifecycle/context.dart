@@ -1,6 +1,7 @@
 import '../../native_bindings.dart';
 import '../../../../services/conversation_scroll_memory.dart';
 import '../../../../services/conversation_scroll_restore.dart';
+import '../../../../features/direct/follow_latest/controller.dart';
 
 import 'widget.dart';
 
@@ -13,6 +14,7 @@ abstract class WorkspaceDirectConversationStateContext
   final workspaceAttachmentComposerKey =
       GlobalKey<MessageAttachmentComposerState>();
   final workspaceScroll = ScrollController();
+  final workspaceTailFollower = DirectHistoryTailFollower();
   final Map<String, GlobalKey> workspaceDirectMessageKeys = {};
   int workspaceScrollMemoryEpoch = 0;
   ConversationScrollPosition? workspacePendingScroll;
