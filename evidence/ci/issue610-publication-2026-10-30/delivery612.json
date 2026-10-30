@@ -1,0 +1,533 @@
+{
+  "schema_version": 1,
+  "issue": 610,
+  "pull_request": 612,
+  "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+  "status": "PASS_REAL_DELIVERY_NATIVE_ONLY_QUALIFICATION_PENDING",
+  "build": {
+    "run_id": 40979505705,
+    "run_attempt": 1,
+    "jobs": [
+      {
+        "id": 123815735476,
+        "name": "changes",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123815808234,
+        "name": "contracts / contracts",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123815808236,
+        "name": "backend / database",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123815808355,
+        "name": "backend / load",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123815808372,
+        "name": "backend / static",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123815808402,
+        "name": "web / browser (browser-content)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123815808414,
+        "name": "web / browser (browser-conversations)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123815808444,
+        "name": "web / sfu",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123815808446,
+        "name": "web / fast",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123815808462,
+        "name": "web / browser (browser-voice)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123815808480,
+        "name": "web / browser (browser-shell)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123817829082,
+        "name": "web / frontend",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123817903198,
+        "name": "backend / backend",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123817975032,
+        "name": "server-quality",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123818045157,
+        "name": "bundle",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "native_master": {
+    "run_id": 40979505678,
+    "run_attempt": 1,
+    "jobs": [
+      {
+        "id": 123815735112,
+        "name": "changes",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123815790872,
+        "name": "windows / windows-build",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123815790974,
+        "name": "flutter / android",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123815790993,
+        "name": "windows / windows-native-unit",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123815790999,
+        "name": "flutter / macos",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123815791047,
+        "name": "flutter / dart",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123815791097,
+        "name": "flutter / android-kotlin",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123818062918,
+        "name": "windows / windows-gui-sfu",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123819807776,
+        "name": "flutter / flutter",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123821379579,
+        "name": "windows / windows",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123821441808,
+        "name": "native-required",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "deploy": {
+    "run_id": 40980532015,
+    "run_attempt": 1,
+    "jobs": [
+      {
+        "id": 123819168918,
+        "name": "route",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123819245821,
+        "name": "install",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "artifacts": {
+    "quality": {
+      "id": 12943998943,
+      "bytes": 392,
+      "sha256": "10fe472164d01547a431598c7303d9ef81b27e590310ed9dfe1d5cbd92baa9b1"
+    },
+    "route": {
+      "id": 12944601520,
+      "bytes": 395,
+      "sha256": "78faf221a13e5e8c9ed71234ceeb05821eca58303410679fd852c2ac2ae1ac90"
+    },
+    "delivery": {
+      "id": 12944203159,
+      "bytes": 1499,
+      "sha256": "90f3c00bdb32c7296ca702badabc0eb663140e181c72b89e0c8a344a823257ae"
+    },
+    "observer": {
+      "id": 12944079574,
+      "bytes": 595,
+      "sha256": "df645078a2364d0ef835bf9574de85ed6a4c3b08450655b3c8ae37df293e71fb"
+    }
+  },
+  "observer": {
+    "run_id": 40980750560,
+    "run_attempt": 1,
+    "workflow_conclusion": "success"
+  },
+  "actual_all_four_retained_zip_sha256_verified": true,
+  "server_quality": {
+    "jobs": {
+      "backend": "success",
+      "changes": "success",
+      "contracts": "success",
+      "web": "success"
+    },
+    "map_sha256": "cf501bbb879dadec880c4fb53ccfc8b63d793408fc9d526c8538c3a8001082cf",
+    "run_attempt": "1",
+    "run_id": "40979505705",
+    "schema_version": 1,
+    "scope": "server",
+    "server_release_impact": true,
+    "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+    "status": "PASS"
+  },
+  "trusted_route": {
+    "controller": {
+      "event": "workflow_run",
+      "revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+      "run_attempt": 1,
+      "run_id": 40980532015
+    },
+    "kind": "trusted-producer-route",
+    "producer": {
+      "format_version": 2,
+      "has_bundle": true,
+      "run_attempt": 1,
+      "run_id": 40979505705,
+      "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933"
+    },
+    "repository": "Egkurilov/BOOHTACORD",
+    "schema_version": 1,
+    "server_release_impact": true,
+    "status": "PASS"
+  },
+  "original_receipt_sha256": "c18b0e36f03b1a1f15e2d5fb814e6a5bcb29fecf6710050b795154a48e369f3f",
+  "receipt": {
+    "checked_at": "2026-10-30T00:36:24.458432+00:00",
+    "delivery": {
+      "controller_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+      "kind": "delivery-phases",
+      "phases": [
+        {
+          "elapsed_seconds": 3.498718,
+          "exit_code": null,
+          "failure_code": null,
+          "limit_seconds": 45,
+          "phase": "current_revision",
+          "status": "PASS"
+        },
+        {
+          "elapsed_seconds": 0.003577,
+          "exit_code": null,
+          "failure_code": null,
+          "limit_seconds": 10,
+          "phase": "history",
+          "status": "PASS"
+        },
+        {
+          "elapsed_seconds": 12.55075,
+          "exit_code": null,
+          "failure_code": null,
+          "limit_seconds": 900,
+          "phase": "transfer_bundle",
+          "status": "PASS"
+        },
+        {
+          "elapsed_seconds": 3.874486,
+          "exit_code": null,
+          "failure_code": null,
+          "limit_seconds": 60,
+          "phase": "transfer_driver",
+          "status": "PASS"
+        },
+        {
+          "elapsed_seconds": 60.768604,
+          "exit_code": null,
+          "failure_code": null,
+          "limit_seconds": 600,
+          "phase": "remote_install",
+          "status": "PASS"
+        },
+        {
+          "elapsed_seconds": 4.764776,
+          "exit_code": null,
+          "failure_code": null,
+          "limit_seconds": 45,
+          "phase": "readback",
+          "status": "PASS"
+        }
+      ],
+      "readback": {
+        "checked_at": "2026-10-30T00:36:24.295826+00:00",
+        "controller_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+        "health": "PASS",
+        "kind": "installed-source-readback",
+        "migration_inventory_sha256": "b601a136043a9adcad627d19aa92d4f7ad1d7ae711bf44a1e8871e5f537c6382",
+        "persistent_volumes": "PASS",
+        "previous_source_revision": "de4c30b26bc61aeac5c885ae805634a082eefe5e",
+        "rollout": {
+          "durations": {
+            "admission_enable_seconds": 2,
+            "health_seconds": 0,
+            "maintenance_request_to_disable_seconds": 47,
+            "maintenance_seconds": 45,
+            "migration_seconds": 1,
+            "rollout_seconds": 49,
+            "services_to_health_seconds": 24
+          },
+          "events": [
+            {
+              "phase": "rollout_started",
+              "unix_seconds": 1793320528
+            },
+            {
+              "phase": "maintenance_requested",
+              "unix_seconds": 1793320530
+            },
+            {
+              "phase": "maintenance_enabled",
+              "unix_seconds": 1793320532
+            },
+            {
+              "phase": "migration_started",
+              "unix_seconds": 1793320549
+            },
+            {
+              "phase": "migration_completed",
+              "unix_seconds": 1793320550
+            },
+            {
+              "phase": "services_started",
+              "unix_seconds": 1793320551
+            },
+            {
+              "phase": "health_started",
+              "unix_seconds": 1793320575
+            },
+            {
+              "phase": "health_passed",
+              "unix_seconds": 1793320575
+            },
+            {
+              "phase": "maintenance_disabled",
+              "unix_seconds": 1793320577
+            },
+            {
+              "phase": "rollout_completed",
+              "unix_seconds": 1793320577
+            }
+          ],
+          "resolution_seconds": 1,
+          "status": "PASS"
+        },
+        "running_images": {
+          "api": "sha256:c3b6d85f0311e10e0332182e1ece2a0e446b642d5ef9fd086f984fddd41b0181",
+          "web": "sha256:97c6bbb7625a4e9ba7fa93f6e1ed590e48a552d6e831e81b5e0251df381d96a5"
+        },
+        "schema_relation": "unchanged",
+        "schema_sha256": "1b12225b731fb0cea1cb2ab435e365c0c2af70237a94aa2c81338c2f422a0541",
+        "schema_version": 1,
+        "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+        "sources": {
+          "api": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+          "web": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933"
+        },
+        "status": "PASS",
+        "volumes": {
+          "attachments-data": "911317405d0c2cf37b7c23548c2f16a8ee4b77a73c2b2ffdcc39c90be028bf64",
+          "caddy-config": "7ecf607102e99e0177606c9c9b0a9c29e3dea3d3ab18175fdb12dbf84270761d",
+          "caddy-data": "01272a9bd5801e4dace822335ae94586b78b363aefd86f3464fdaef3b33b3ef2",
+          "postgres-data": "806af398ecef90b7e8c8186b7b747ef06d897c0de032f11bcec347a2f27c23f3"
+        }
+      },
+      "schema_version": 1,
+      "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+      "status": "PASS"
+    },
+    "human_approval": "NOT_ASSERTED",
+    "kind": "production-delivery",
+    "producer": {
+      "digest": "sha256:7a3b6d9461db3b3bb860d4e7f7f070bcd4cf69170847088c9054d7e55333a2bc",
+      "format_version": 2,
+      "id": 12944612382,
+      "name": "server-6dd79c244e6cbd69bcfbd38a3fcb5727508e0933-40979505705-1",
+      "run_attempt": 1,
+      "run_id": 40979505705,
+      "size_in_bytes": 89139240,
+      "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933"
+    },
+    "remote_completion": "FRESH_READBACK_VERIFIED",
+    "schema_version": 1,
+    "stages": {
+      "controller": "success",
+      "download": "success",
+      "install": "success",
+      "producer": "success",
+      "recheck": "success",
+      "ssh": "success"
+    },
+    "status": "PASS"
+  },
+  "observer_trace": {
+    "candidate_ci": {
+      "status": "NOT_RUN"
+    },
+    "deployment": {
+      "acknowledgement": "ARCHIVED_VERIFIED_DEPLOYMENT",
+      "checked_at": "2026-10-30T00:36:24.295826+00:00",
+      "producer_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40979505705",
+      "run_attempt": 1,
+      "run_id": 40980532015,
+      "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+      "status": "PASS",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40980532015"
+    },
+    "endpoint": {
+      "status": "NOT_RUN"
+    },
+    "human_review": "NOT_ASSERTED",
+    "issue_249": "https://github.com/Egkurilov/BOOHTACORD/issues/249",
+    "merge": {
+      "status": "NOT_RUN"
+    },
+    "physical_acceptance": "NOT_RUN",
+    "reason": "no_matching_windows_promotion_intent",
+    "release": {
+      "status": "NOT_RUN"
+    },
+    "review_pr": {
+      "status": "NOT_RUN"
+    },
+    "schema_version": 1,
+    "scope": "source-pr-ci-merge-deploy-catalog",
+    "source": {
+      "status": "NOT_RUN"
+    },
+    "status": "NOT_RUN"
+  },
+  "public_before": {
+    "kind": "fresh-public-source-and-health",
+    "at_utc": "2026-10-30T00:25:28.403571+00:00",
+    "source_revision": "de4c30b26bc61aeac5c885ae805634a082eefe5e",
+    "release": {
+      "http": 200,
+      "cache_control": "no-store",
+      "sha256": "22b9d756e767c8245bdb539994a5807f99bcb5bf2ddd1a26103d48d84ca9cb72",
+      "receipt": {
+        "schema_version": 1,
+        "application_family": "boohtacord",
+        "platform": "web",
+        "distribution": "browser",
+        "channel": "stable",
+        "arch": "any",
+        "release_id": "web-browser-stable-r61",
+        "release_order": 61,
+        "version": "1.0.47",
+        "native_build": null,
+        "architecture": "any",
+        "build_info_sha256": "70ffd35bfb8a6eebc088dfefb5ed9bd7549fd48e8398fb2be0d283bf12ac1e4b",
+        "source_revision": "de4c30b26bc61aeac5c885ae805634a082eefe5e",
+        "signature_evidence": "oci_attestation",
+        "download_available": true
+      }
+    },
+    "health": {
+      "http": 200,
+      "cache_control": null,
+      "sha256": "6489d6d7a33c5d40e18fc61eeb6c34c341279ee61816394dde5189aa4ad8fae5"
+    },
+    "scope": "Read-only HTTPS; no authenticated browser, SQL, fault or load traffic."
+  },
+  "public_after": {
+    "kind": "fresh-public-source-and-health",
+    "at_utc": "2026-10-30T00:37:53.525102+00:00",
+    "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+    "release": {
+      "http": 200,
+      "cache_control": "no-store",
+      "sha256": "446908476ede61a9887ade1e5f241a2fbf916a51043f0c78eaf03154cb64d49b",
+      "receipt": {
+        "schema_version": 1,
+        "application_family": "boohtacord",
+        "platform": "web",
+        "distribution": "browser",
+        "channel": "stable",
+        "arch": "any",
+        "release_id": "web-browser-stable-r61",
+        "release_order": 61,
+        "version": "1.0.47",
+        "native_build": null,
+        "architecture": "any",
+        "build_info_sha256": "70ffd35bfb8a6eebc088dfefb5ed9bd7549fd48e8398fb2be0d283bf12ac1e4b",
+        "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+        "signature_evidence": "oci_attestation",
+        "download_available": true
+      }
+    },
+    "health": {
+      "http": 200,
+      "cache_control": null,
+      "sha256": "6489d6d7a33c5d40e18fc61eeb6c34c341279ee61816394dde5189aa4ad8fae5"
+    },
+    "scope": "Read-only HTTPS; no authenticated browser, SQL, fault or load traffic."
+  },
+  "limits": [
+    "Native master11, Build server15 and automatic real delivery PASS; no missing real receipt was bypassed.",
+    "Observer correctly returned NOT_RUN/no_matching_windows_promotion_intent after verifying archived real delivery; no Windows stable promotion asserted.",
+    "A legitimate later server_release_impactfalse automatic route is still required before closing610.",
+    "Human approval NOT_ASSERTED; no manual deployment, production SQL/fault/load or physical/native media acceptance claim."
+  ]
+}
