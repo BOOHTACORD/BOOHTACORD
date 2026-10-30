@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { ScreenViewerController, type ScreenViewerStream } from './screen_viewer_controller'
 
@@ -12,6 +12,8 @@ function stream(id: string, hasAudio = true, calls: string[] = []): ScreenViewer
     video: { setSubscribed: vi.fn((subscribed: boolean) => calls.push(`${id}:video:${subscribed}`)), track: { attach: vi.fn(), detach: vi.fn() } },
   }
 }
+
+afterEach(() => { vi.unstubAllGlobals() })
 
 describe('screen viewer controller', () => {
   it('detaches and unsubscribes the old screen before subscribing to the selected one', () => {
@@ -36,6 +38,25 @@ describe('screen viewer controller', () => {
     expect(calls.indexOf('alice:video:false')).toBeLessThan(calls.indexOf('bob:video:true'))
     expect(calls.indexOf('alice:audio:false')).toBeLessThan(calls.indexOf('bob:audio:true'))
     expect(controller.selectedId).toBe('bob')
+  })
+
+  it('keeps the last preview thumbnail when the viewer returns to participant cards', () => {
+    const objectUrls = { createObjectURL: vi.fn(() => 'blob:alice-preview'), revokeObjectURL: vi.fn() }
+    vi.stubGlobal('URL', objectUrls)
+    const selected = stream('alice')
+    const controller = new ScreenViewerController(() => [selected])
+    const thumbnail = new Uint8Array([0xff, 0xd8, 0xff, 0xd9])
+
+    controller.setThumbnail('alice', thumbnail)
+    controller.select('alice', {} as HTMLVideoElement, {} as HTMLAudioElement)
+    controller.clear()
+
+    expect(controller.selectedId).toBeNull()
+    expect(controller.cards()[0]?.thumbnailUrl).toBe('blob:alice-preview')
+    expect(objectUrls.revokeObjectURL).not.toHaveBeenCalled()
+
+    controller.stop()
+    expect(objectUrls.revokeObjectURL).toHaveBeenCalledWith('blob:alice-preview')
   })
 
   it('clears the selection when the selected remote stream disappears', () => {

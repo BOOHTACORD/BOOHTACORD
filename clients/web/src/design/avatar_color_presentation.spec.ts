@@ -8,7 +8,6 @@ const consumers = [
   '../workspace/WorkspaceMembersPanel.vue',
   '../workspace/GuildPresenceGroup.vue',
   '../workspace/MemberPopover.vue',
-  '../voice/ScreenViewerRail.vue',
   '../voice/VoiceParticipantVolumes.vue',
   '../voice/VoiceRoomRoster.vue',
 ]

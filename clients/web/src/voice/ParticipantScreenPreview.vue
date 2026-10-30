@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import type { ScreenViewerCard } from './screen_viewer_controller'
-import { avatarBackground, avatarForeground } from '../design/avatar_color'
 import { screenPreviewLeaseForParticipant } from './screen_preview/participant_leases'
 import { screenPreviewCardVisibility } from './screen_preview/visibility'
 
@@ -32,7 +31,6 @@ function observePreview(): void {
 watch([preview, leaseId], observePreview, { flush: 'post' })
 onBeforeUnmount(stopObserving)
 
-const initials = computed(() => props.screen.participantName.trim().slice(0, 2).toLocaleUpperCase('ru-RU') || 'У')
 const caption = computed(() => {
   const mode = props.screen.descriptor?.mode
   const profile = props.screen.targetProfile
@@ -54,15 +52,14 @@ const caption = computed(() => {
     @click="emit('select', screen.id)"
   >
     <img v-if="screen.thumbnailUrl" class="participant-screen-preview__image" :src="screen.thumbnailUrl" alt="">
-    <span
-      v-else
-      class="participant-screen-preview__empty"
-      :style="{ backgroundColor: avatarBackground(screen.accountId ?? screen.participantId), color: avatarForeground(screen.accountId ?? screen.participantId) }"
-      aria-hidden="true"
-    >{{ initials }}</span>
+    <span v-else class="screen-preview-placeholder" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+      <span class="screen-preview-placeholder__title">Трансляция идёт</span>
+      <span class="screen-preview-placeholder__hint">Предпросмотр скоро появится</span>
+    </span>
     <span class="participant-screen-preview__caption">{{ caption }}</span>
     <span class="participant-screen-preview__live"><span aria-hidden="true"></span>ЭФИР</span>
-    <span class="participant-screen-preview__play" aria-hidden="true">
+    <span v-if="screen.thumbnailUrl" class="participant-screen-preview__play" aria-hidden="true">
       <svg viewBox="0 0 24 24"><path d="m9 6 10 6-10 6z" /></svg>
     </span>
   </button>
