@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "issue": 579,
+  "status": "PASS_SCOPED_WINDOWS_CANDIDATE_CLEANUP_PAIRED_MEDIA_BLOCKED",
+  "at_utc": "2026-10-30T20:12:00.229427+00:00",
+  "source_revision": "a97030059fcddd5d76b9b256007144d507f4b279",
+  "candidate_PE_SHA256": "6c3ae09741afc95c8856c5f66491dfb3b7dd4e590b0f0092cd5cffa766061de9",
+  "supersedes_only": "Security-modal/own-candidate-cleanup fields of prior preliminary checkpoint; prior snapshot remains immutable history.",
+  "manual_security_resolution": {
+    "user_direct_reply": "Manual popup closed",
+    "absent_in_fresh_root_candidate_capture": true,
+    "actual_human_rule_choice": "NOT_COLLECTED_NOT_ASSERTED",
+    "agent_clicked_security_buttons": false,
+    "agent_changed_security_settings": false
+  },
+  "root_cleanup_sequence": [
+    "Fresh candidate modal absent, connected1/microphone muted observed",
+    "Actual own Leave, then later native UI voice NotConnected and QA room empty observed",
+    "Supported Sky AltF4 for own candidate, then fresh window list and CIM absence readback"
+  ],
+  "confirmed_after": {
+    "voice_UI_not_connected": true,
+    "SHARE_TEST_room_UI_empty": true,
+    "candidate_window_absent": true,
+    "candidate_executable_process_absent": true,
+    "owned_wrong_path_r61_instance_absent": true,
+    "original_user_r61_process_and_creation_equal": true,
+    "original_user_r61_PE_SHA256_unchanged": true,
+    "candidate_PE_bytes_unchanged": true
+  },
+  "window_readback": {
+    "candidate_window_absent": true,
+    "original_window_present": true,
+    "security_permission_actions_by_agent": 0
+  },
+  "paired_media": {
+    "phone": "UNAVAILABLE",
+    "first_decoded_presented_frame": "BLOCKED",
+    "stop_restart": "BLOCKED",
+    "repeated_Watch": "BLOCKED"
+  },
+  "sets": [
+    {
+      "protects": "Honor manual security decision without agent bypass",
+      "command": "Root direct user reply plus fresh supported UI observation",
+      "platform": "Physical Windows11 candidate r62",
+      "mandatory_when": "Resuming input after security popup",
+      "result": "Modal absent; human rule choice not collected; agent security actions0",
+      "where": "Root cleanup receipt/capture hashes"
+    },
+    {
+      "protects": "Leave and close only the owned candidate while preserving original process",
+      "command": "Root observed Leave\u2192NotConnected/empty room\u2192Sky AltF4\u2192fresh list+CIM/hash readback",
+      "platform": "Same source-bound candidate and original legacy process",
+      "mandatory_when": "Own candidate cleanup",
+      "result": "PASS_SCOPED_CLEANUP; original process/creation/PE and candidate bytes unchanged",
+      "where": "Root cleanup/window receipts"
+    }
+  ],
+  "limits": [
+    "Cleanup PASS is separate from paired media acceptance;579 staysOPEN and all3original criteria remain unchecked.",
+    "No phone/publication/firstframe/stoprestart/repeatedWatch PASS is claimed.",
+    "Observed voice cleanup is native UI plus candidate process/window absence; no additional server lease/media or audibility assertion.",
+    "Manual firewall rule choice is NOT_COLLECTED_NOT_ASSERTED; no agent Allow/Cancel/security-settings action.",
+    "Root performed UI cleanup. Release agent only verifies receipts and2exact JPEG files without rendering/export.",
+    "No raw image,private process path,PID/window identifiers,account/chat contents,credentials or cookies are published."
+  ]
+}
