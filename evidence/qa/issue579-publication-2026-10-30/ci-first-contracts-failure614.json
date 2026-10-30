@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "issue": 579,
+  "pull_request": 614,
+  "source_revision": "beeed8f71b3804a85dab12eecd8063d1c8fbec16",
+  "run_id": 40988561569,
+  "run_attempt": 1,
+  "job_id": 123845194428,
+  "status": "FAIL_SOURCE_DEPENDENCY_LAYER",
+  "qualified_diagnostic": [
+    "2026-10-30T01:56:27.4642442Z RuntimeError: clients/flutter/lib/src/features/voice/viewer_pending/presentation.dart: a feature owner depends on application UI: clients/flutter/lib/src/widgets/screen_recovery_retry.dart",
+    "2026-10-30T01:56:27.4700379Z     run(sys.executable, \"-m\", \"tools.verify.dependencies.dart\")",
+    "2026-10-30T01:56:27.5246974Z subprocess.CalledProcessError: Command '['/opt/hostedtoolcache/Python/3.12.15/x64/bin/python', '-m', 'tools.verify.dependencies.dart']' returned non-zero exit status 1.",
+    "2026-10-30T01:56:27.9535983Z ##[error]Process completed with exit code 1."
+  ],
+  "passed_behaviour_is_independent": "29nearest and canonical1726PASS/3skip +403componentsPASS; native simulatorBLOCKED",
+  "action": "Feature-to-application-widget edge must be removed; guard must not be weakened. Product source unchanged pending root ownership decision.",
+  "whole_issue": "OPEN_PHYSICAL_PENDING"
+}
