@@ -10,6 +10,13 @@ ROOT=Path(__file__).resolve().parents[3]
 class WorkflowTests(unittest.TestCase):
     def documents(self):return {p.name:yaml.load(p.read_text(),Loader=yaml.BaseLoader) for p in (ROOT/'.github/workflows').glob('*.yaml')}
     def test_actual_graph(self):validate(self.documents())
+    def test_route_retains_an_immutable_controller_attempt_proof_without_production_secrets(self):
+        route=self.documents()['deploy-production.yaml']['jobs']['route']
+        uploads=[step for step in route['steps'] if step.get('with',{}).get('name')=='trusted-route-${{ github.run_id }}-${{ github.run_attempt }}']
+        self.assertEqual(len(uploads),1)
+        self.assertEqual(uploads[0]['with']['path'],'.out/delivery-route/route.json')
+        self.assertEqual(uploads[0]['with']['if-no-files-found'],'error')
+        self.assertEqual(route['permissions'],{'contents':'read','actions':'read'})
     def test_no_combined_write_scopes_ci_skip_automerge_or_mutating_readback(self):
         for change in ('scopes','ci','needs','automerge','readback','intent'):
             d=self.documents();jobs=d['promote-windows-client-update.yaml']['jobs']

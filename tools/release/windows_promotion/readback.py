@@ -10,6 +10,7 @@ from .api import GitHub
 from .ci_proof import validate
 from .prepare import git_bytes
 from .review import MARKER
+from .noop_readback.verify import probe
 
 
 def main():
@@ -21,9 +22,12 @@ def main():
     try:
         value=os.environ['DEPLOY_RUN_ID'];intent.require(re.fullmatch('[1-9][0-9]{0,19}',value))
         api=GitHub();run=api.read('/actions/runs/'+value);intent.require(run['id']==int(value))
+        jobs=api.jobs(run['id']);noop=probe(api,run,jobs)
+        if noop is not None:
+            trace.update(status='NOT_RUN',reason=noop['reason'],deployment=noop);return
         stage='deployment'
         receipt=deployment.receipt(api,run);producer=api.read(f'/actions/runs/{receipt["producer"]["run_id"]}')
-        trace['deployment']=deployment.proof(run,api.jobs(run['id']),receipt,producer)
+        trace['deployment']=deployment.proof(run,jobs,receipt,producer)
         source=trace['deployment']['source_revision']
         stage='source'
         catalog_raw=git_bytes('show',source+':'+intent.PATH);intent.require(len(catalog_raw)<=262144);catalog=json.loads(catalog_raw)

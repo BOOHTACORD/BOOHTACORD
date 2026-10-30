@@ -55,6 +55,8 @@ def main():
     if run.get('id') != int(run_id):
         raise ValueError('Producer run differs from request')
     result = decision(run, reader.collection('jobs'), repository)
+    from .routing_proof.record import publish
+    publish(run, result, os.environ)
     with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as stream:
         stream.write(''.join(f'{key}={str(value).lower() if type(value) is bool else value}\n'
                              for key, value in result.items()))
