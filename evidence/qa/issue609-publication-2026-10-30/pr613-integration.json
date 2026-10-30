@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "issue": 609,
+  "pull_request": 613,
+  "status": "PASS_FINAL_PARITY_POLICY_CANONICAL_AND_CI_PENDING",
+  "source_revision": "5f1e40aacd821c25db8419ff68371215bd5e56e2",
+  "base_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+  "root_complete_source": "fa7129742645902879324f59d9821d41291bda29",
+  "source_verification": {
+    "all13_final_Git_blob_fingerprints_verified": true,
+    "all12_Dart_test_fingerprints_and_entire_Flutter_tree_unchanged": true,
+    "all_platform_decisions_unchanged": true,
+    "changed_review_scope": "support",
+    "old_scope_prefix_preserved": true,
+    "final_registry_LF_SHA256": "2c6a5651528b799513aa8d0cff4db16546803cac4e8122df9c19e6e73d3a4929",
+    "exact_c7c8_counterexample_reachable": true
+  },
+  "final_head_parity": {
+    "command": "python -m tools.verify.client_parity.run --base 6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+    "exit_code": 0,
+    "result": "PASS"
+  },
+  "final_head_policy": {
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0
+  },
+  "retained_prior_validation": {
+    "head": "b1f17defdcd6b475c7c2a1c68e898d695b5d9bc7",
+    "local_and_hosted_parity": "FAIL unchanged support review; required verifier and decisions were preserved",
+    "hosted_run_id": 40981278012,
+    "hosted_contracts_job": 123821670366,
+    "hosted_run_conclusion": "cancelled by standard concurrency after source update; failed contracts log retained",
+    "native_status": "BLOCKED",
+    "native_source": "b1f17defdcd6b475c7c2a1c68e898d695b5d9bc7 diff-sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native_stages": [
+      {
+        "name": "flutter-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "flutter-component-captures",
+        "status": "PASS"
+      },
+      {
+        "name": "android-runtime",
+        "status": "BLOCKED"
+      },
+      {
+        "name": "ios-runtime",
+        "status": "BLOCKED"
+      }
+    ],
+    "full_unit": {
+      "passed": 1714,
+      "failed": 0,
+      "skipped": 3
+    },
+    "selected_components": {
+      "passed": 598,
+      "failed": 0,
+      "skipped": 0
+    },
+    "captures": 167,
+    "full_gallery_visual_review": "NOT_RUN",
+    "native_report_sha256": "660e4d7c51193bad84459fee8adbf4ab5992db3826e367c8aae820c0821f0f1f"
+  },
+  "retained_fingerprint_preflight": {
+    "head": "30b7d0bb7c89c10f7bc748fe99d2acdf7906fd5e",
+    "status": "FAIL_METADATA_FINGERPRINT_ONLY",
+    "native_runtime_started": false,
+    "incorrect_workingcopy_CRLF_sha256": "ce28f3b0b330fba31856b3f3ceded4b63e30a3478093c5ef617aa607da0e485d",
+    "correct_Git_LF_sha256": "2c6a5651528b799513aa8d0cff4db16546803cac4e8122df9c19e6e73d3a4929",
+    "superseded_hosted_run": 40981603540,
+    "hosted_conclusion": "cancelled"
+  },
+  "log_LF_SHA256": {
+    "client-parity609-before-registration.log": "cec54d071adf6035ac7bb642748124a1ee031eef64a4184df9b40e2c8e7945a5",
+    "client-parity609-final-head.log": "87cc4c10629b0137de14b6c6bf27e868c8c4334c88dea486e8f22555381956d7",
+    "policy609-final-head.log": "5713bf16be5937f7f25bee97045d727a219d9d20c3b0103b7dcfb5b81b618b7b",
+    "pr613-original-contracts.log": "76d202b99d655795790bf68ecd4b2c25b27d591dfd8d62c9b162fb74a53f0500"
+  },
+  "final_hosted_CI": {
+    "run_id": 40981731999,
+    "run_attempt": 1,
+    "status": "PENDING"
+  },
+  "limits": [
+    "Final canonical and hosted CI remain pending; no final-source runtime/native/media acceptance claim.",
+    "Missing dedicated Android/iOS simulators and full gallery review remain BLOCKED/NOT_RUN.",
+    "Earlier c7c8 partial and b1 action/native runs do not replace final-source checks.",
+    "609 staysOPEN until source-bound signed latest/older-action physical acceptance and owned cleanup."
+  ]
+}
