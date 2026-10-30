@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "issue": 609,
+  "pull_request": 613,
+  "source_revision": "5f1e40aacd821c25db8419ff68371215bd5e56e2",
+  "source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "status": "BLOCKED_NATIVE_RUNTIME",
+  "command": "python -m tools.qa.local_features.run --feature auth --feature chat --feature connection_status --feature screen --feature shell --feature support --feature voice --platform android --platform ios --base 6dd79c244e6cbd69bcfbd38a3fcb5727508e0933 --real-stack",
+  "runner": "Windows11/Python3.12; unchanged canonical module with bare-flutter resolution adapter to prepared official Flutter3.47.7/Dart3.13.5.",
+  "features": [
+    "auth",
+    "chat",
+    "connection_status",
+    "screen",
+    "shell",
+    "support",
+    "voice"
+  ],
+  "stages": [
+    {
+      "name": "flutter-unit",
+      "status": "PASS"
+    },
+    {
+      "name": "flutter-component-captures",
+      "status": "PASS"
+    },
+    {
+      "name": "android-runtime",
+      "status": "BLOCKED"
+    },
+    {
+      "name": "ios-runtime",
+      "status": "BLOCKED"
+    }
+  ],
+  "full_flutter_unit": {
+    "passed": 1714,
+    "failed": 0,
+    "skipped": 3
+  },
+  "selected_component_tests": {
+    "passed": 598,
+    "failed": 0,
+    "skipped": 0
+  },
+  "report_sha256": "a96c5d6ef671630bfad67d83b479715e34cf012f08b1a292b96c43b4603e8013",
+  "logs_sha256": {
+    "flutter-unit.log": "e886186e1d1589655c06f447ab7e9dcfef07544a6fc12e87793972bbaf707e86",
+    "flutter-component-captures.log": "6ff49c815d92aceb29a7b25f3e99d948eea8208c6a025142ceaba96f762fbd0c"
+  },
+  "selected_capture_count": 167,
+  "full_gallery_visual_review": "NOT_RUN",
+  "final_head_client_parity": {
+    "exit_code": 0,
+    "result": "PASS",
+    "source_registry_Git_LF_SHA256": "2c6a5651528b799513aa8d0cff4db16546803cac4e8122df9c19e6e73d3a4929"
+  },
+  "final_head_policy_and_baseline": {
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0
+  },
+  "blockers": [
+    "Dedicated BOOHTACORD_QA Android emulator unavailable; physical phone intentionally excluded.",
+    "iOS Simulator/xcrun unavailable on Windows."
+  ],
+  "limits": [
+    "Full167 standard capture gallery is retained but not visually approved; no baseline changed.",
+    "Eight root-reviewed actual issue609 Before/After component images remain separately scoped; they do not certify device/media.",
+    "Previous c7c8 partial and b1 prior-metadata native runs are historical and do not replace this final-source check.",
+    "Corrected signed Android latest/older-action/short-voice-IME physical acceptance remains pending;609 staysOPEN.",
+    "No phone/browser/receiver/container/network/production action performed by this check."
+  ]
+}
