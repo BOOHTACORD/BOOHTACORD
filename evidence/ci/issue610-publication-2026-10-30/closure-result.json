@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "issue": 610,
+  "status": "CLOSED_COMPLETED_ACTUAL_NATIVE_ONLY_AND_REAL_DELIVERY_QUALIFIED",
+  "closed_at": "2026-10-30T01:20:11Z",
+  "closure_comment": "https://github.com/Egkurilov/BOOHTACORD/issues/610#issuecomment-6512560939",
+  "controller_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+  "full_source_CI": {
+    "run_id": 40975562192,
+    "attempt": 2,
+    "success_jobs": 27
+  },
+  "native_only_qualification": {
+    "producer_source": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0",
+    "producer_run": 40969157228,
+    "producer_attempt": 2,
+    "deploy_run": 40984740602,
+    "deploy_attempt": 1,
+    "route": "SUCCESS",
+    "install": "SKIPPED",
+    "observer_run": 40984771575,
+    "observer_attempt": 1,
+    "observer_workflow": "SUCCESS",
+    "trace": "NOT_RUN/native_only_no_server_release",
+    "immutable_evidence": "d66dea4667e9d3f25a04809598bc0bc2d6b5e3a1"
+  },
+  "required_real_install": {
+    "deploy_run": 40980532015,
+    "receipt_status": "PASS",
+    "archived_acknowledgement": "VERIFIED",
+    "evidence": "801e6d1d8103a6010a0b756e9630fa96c62d1bd9"
+  },
+  "historical_failed_readback": {
+    "run_id": 40969659339,
+    "attempt": 1,
+    "conclusion": "failure",
+    "reclassified": false
+  },
+  "limits": [
+    "Scoped CI orchestration only; no physical Windows249, Android609 or generic media/native/platform gate closure.",
+    "No server install/catalog read on the qualifying no-op; public server remained6dd with HTTP200health.",
+    "No fake commit/impact override, manual deployment, production SQL/fault/load or human approval claim."
+  ]
+}
