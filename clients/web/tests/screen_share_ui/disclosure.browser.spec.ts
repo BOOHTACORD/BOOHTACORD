@@ -174,6 +174,14 @@ test('listener room embeds the stream preview in an equal-sized participant card
   await expect(voiceOnlyCard.locator('.participant-voice-placeholder')).toBeVisible()
   await expect(streamCard.locator('.participant-card-info .participant-name')).toHaveCSS('text-align', 'left')
   await expect(voiceOnlyCard.locator('.participant-card-info .participant-name')).toHaveCSS('text-align', 'left')
+  for (const card of [streamCard, voiceOnlyCard]) {
+    const muteNameCenterOffset = await card.locator('.participant-card-status').evaluate(element => {
+      const icon = element.querySelector<SVGElement>('.voice-person-state-icon')!.getBoundingClientRect()
+      const name = element.closest('.participant-card-info')!.querySelector<HTMLElement>('.participant-name')!.getBoundingClientRect()
+      return Math.abs(icon.top + icon.height / 2 - (name.top + name.height / 2))
+    })
+    expect(muteNameCenterOffset).toBeLessThanOrEqual(1)
+  }
   await expect.poll(() => page.evaluate(() => (window as any).__screenUI.isPreviewVisible())).toBe(true)
   const desktopGeometry = await cards.evaluateAll(elements => elements.map(element => {
     const rect = element.getBoundingClientRect()

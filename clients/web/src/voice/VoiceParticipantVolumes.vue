@@ -64,12 +64,14 @@ onBeforeUnmount(() => {
       <div class="participant-card-info">
         <span class="avatar lg" :style="{ backgroundColor: avatarBackground(participant.accountId ?? participant.id), color: avatarForeground(participant.accountId ?? participant.id) }" aria-hidden="true"><img v-if="avatarUrl(participant.accountId)" :src="avatarUrl(participant.accountId)" alt=""><template v-else>{{ initial(participant.name) }}</template></span>
         <div class="participant-card-copy">
-          <span class="participant-name">{{ participant.name || 'Участник' }}</span>
+          <div class="participant-card-name-row">
+            <span class="participant-name">{{ participant.name || 'Участник' }}</span>
+            <VoiceParticipantStatus class="participant-card-status" compact :microphone-muted="participant.microphoneMuted" :speaking="participant.speaking" />
+          </div>
           <span v-if="watchesSelectedScreen(participant.id)" class="participant-watcher-indicator" role="img" :aria-label="watcherLabel()" :title="watcherLabel()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.2-6 9.5-6 9.5 6 9.5 6-3.2 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg><span>Смотрит</span></span>
         </div>
-        <div class="participant-card-actions">
-          <VoiceParticipantStatus class="participant-card-status" compact :microphone-muted="participant.microphoneMuted" :speaking="participant.speaking" />
-          <details v-if="participant.accountId" class="participant-volume">
+        <div v-if="participant.accountId" class="participant-card-actions">
+          <details class="participant-volume">
             <summary :aria-label="`Настройки громкости ${participant.name || 'участника'}`" title="Настройки участника">•••</summary>
             <label>Громкость · {{ participant.volume }}%<input :aria-label="`Громкость участника ${participant.name || 'участника'}`" :aria-valuetext="`${participant.volume} процентов`" type="range" min="0" max="200" step="1" :value="participant.volume" @input="emit('setVolume', participant.id, Number(($event.target as HTMLInputElement).value))"></label>
           </details>
@@ -85,11 +87,11 @@ onBeforeUnmount(() => {
       <div class="participant-card-info">
         <span class="avatar lg" :style="{ backgroundColor: avatarBackground(selfAccountId ?? selfName ?? 'Вы'), color: avatarForeground(selfAccountId ?? selfName ?? 'Вы') }" aria-hidden="true"><img v-if="avatarUrl(selfAccountId)" :src="avatarUrl(selfAccountId)" alt=""><template v-else>{{ initial(selfName ?? 'Вы') }}</template></span>
         <div class="participant-card-copy">
-          <span class="participant-name">{{ selfDisplayName(selfName) }}</span>
+          <div class="participant-card-name-row">
+            <span class="participant-name">{{ selfDisplayName(selfName) }}</span>
+            <VoiceParticipantStatus class="participant-card-status" compact :deafened="selfDeafened" :microphone-muted="selfMicrophoneMuted" :microphone-unavailable="selfMicrophoneUnavailable" :speaking="selfSpeaking" />
+          </div>
           <span v-if="selfAccountId && viewingRemoteScreen() && screenWatcherIds.includes(selfAccountId)" class="participant-watcher-indicator" role="img" :aria-label="watcherLabel()" :title="watcherLabel()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.2-6 9.5-6 9.5 6 9.5 6-3.2 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg><span>Смотрит</span></span>
-        </div>
-        <div class="participant-card-actions">
-          <VoiceParticipantStatus class="participant-card-status" compact :deafened="selfDeafened" :microphone-muted="selfMicrophoneMuted" :microphone-unavailable="selfMicrophoneUnavailable" :speaking="selfSpeaking" />
         </div>
       </div>
     </article>
