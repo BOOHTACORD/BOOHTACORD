@@ -1,0 +1,489 @@
+{
+  "schema_version": 1,
+  "issue": 579,
+  "pull_request": 614,
+  "status": "PASS_FINAL_FULL_CI_PHYSICAL_PENDING",
+  "head_revision": "c04bbd4f3d1d1982c19067daed0b8159cafae38f",
+  "base_revision": "134382700eed2408644695e5298e64e60d3abf59",
+  "tested_synthetic_merge": "8cb79f6664d29da3a68b89ba8ab92ab3df31b312",
+  "tested_tree": "99d3157338a599fa8795e56ad702468cb24593ad",
+  "CI": {
+    "run_id": 40989565645,
+    "run_attempt": 2,
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 123854387610,
+        "name": "changes",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854387900,
+        "name": "contracts / contracts",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854441341,
+        "name": "actual / runtime (sfu)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854441388,
+        "name": "windows / windows-native-unit",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854441403,
+        "name": "flutter / android",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854441410,
+        "name": "actual / runtime (lifecycle)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854441417,
+        "name": "flutter / macos",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854441427,
+        "name": "frontend / fast",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854441435,
+        "name": "frontend / sfu",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854441441,
+        "name": "frontend / browser (browser-shell)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854441444,
+        "name": "backend / load",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854441457,
+        "name": "frontend / browser (browser-content)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854441466,
+        "name": "actual / runtime (next)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854441489,
+        "name": "backend / database",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854441510,
+        "name": "flutter / dart",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854441520,
+        "name": "frontend / browser (browser-voice)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854441523,
+        "name": "windows / windows-build",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854441579,
+        "name": "frontend / browser (browser-conversations)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854441599,
+        "name": "backend / static",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123854441667,
+        "name": "flutter / android-kotlin",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123856209353,
+        "name": "backend / backend",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123856388244,
+        "name": "frontend / frontend",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123857170140,
+        "name": "windows / windows-gui-sfu",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123857735451,
+        "name": "flutter / flutter",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123858407392,
+        "name": "actual / actual-acceptance",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123859509497,
+        "name": "windows / windows",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123859563403,
+        "name": "ci-required",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "current_attempt_artifacts": [
+    {
+      "id": 12950630011,
+      "name": "triage-pr-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2",
+      "bytes": 748,
+      "API_digest": "sha256:a92f21ec45e4a3d1a221344489b45811c207f3dfd8d108b902374c4d8aad8b61",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12950420299,
+      "name": "desktop-recovery-windows-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2",
+      "bytes": 402,
+      "API_digest": "sha256:1e29713480655b8ae520316668d2d859392985fdf303895ea9f1bac0ce2d9c30",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12950095084,
+      "name": "BOOHTACORD-windows-x64-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2",
+      "bytes": 29799486,
+      "API_digest": "sha256:befcfee86721b4c4fe1208dddb8298d420b9c0448f3bec9acd97b30878d755f9",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949971591,
+      "name": "screen-setup-windows-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2",
+      "bytes": 363435,
+      "API_digest": "sha256:b87ba40d85becc88343c95d644f3ea06a0845e0df80c53b3775fdcb3ec3e3991",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949955670,
+      "name": "uiux-flutter-visual-review-flutter-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2",
+      "bytes": 9003511,
+      "API_digest": "sha256:25cb09d9c5381d0496f0a144b54603d700e6557ca08324b4a4750f33870905ed",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949900818,
+      "name": "boohtacord-android-debug-apk-flutter-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2",
+      "bytes": 125067755,
+      "API_digest": "sha256:7c2e913f91c160dfab0f716b655328002aea5190813963485bbb15fa5061f260",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949862032,
+      "name": "actual-lifecycle-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2",
+      "bytes": 17942332,
+      "API_digest": "sha256:febd850f05c3b165ed37ea697fb9644db6dcf54070f91fe7b1524bc3ccf70a03",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949740612,
+      "name": "web-part-web-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2-fast",
+      "bytes": 488,
+      "API_digest": "sha256:335e8a1d176e7b3dc977da802bf3608e6bf5bed0544ffe8578d335e95e12e1cf",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949726237,
+      "name": "web-part-web-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2-browser-shell",
+      "bytes": 418,
+      "API_digest": "sha256:bc0c559baac15f6c0fb863547ef4850417257b03763cd6f413ce12207a03013f",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949701618,
+      "name": "backend-part-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2-load",
+      "bytes": 362,
+      "API_digest": "sha256:92e5ccc4a72c2eec9c04733b234b37e38bb0f9b572575ef0ca400f6ed4b17458",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949656601,
+      "name": "web-visual-web-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2-browser-conversations",
+      "bytes": 10155000,
+      "API_digest": "sha256:27ca337b35117a58cce46db4d5e19c2c3c263ba87ea05ecd259dae42a5575d63",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949646619,
+      "name": "web-part-web-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2-browser-conversations",
+      "bytes": 498,
+      "API_digest": "sha256:5323d3671ef3558de7fc6338ee53891fbafeaa651f23c48385c982c5cfd6215e",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949598107,
+      "name": "windows-acceptance-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2",
+      "bytes": 360,
+      "API_digest": "sha256:92067c2531d5ea106890866a322630e4abf1d8071706f80b71c9291689c5cf42",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949582222,
+      "name": "web-part-web-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2-sfu-network",
+      "bytes": 439,
+      "API_digest": "sha256:c3f3d6f342d38501dd35783cb3213978ea08dd7bb3e8d33da4091f28c37aba13",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949527212,
+      "name": "actual-sfu-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2",
+      "bytes": 1226,
+      "API_digest": "sha256:8938a998f00f3e92c98226bd3604a6af2fe33a402cf29cde77107eff4248c7a1",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949457208,
+      "name": "web-fan-in-web-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2",
+      "bytes": 482,
+      "API_digest": "sha256:fe77548dadca4035a950782dd72d828acb61e68d9aceea7401024c999410bce1",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949413028,
+      "name": "web-sfu-web-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2-sfu-network",
+      "bytes": 4923,
+      "API_digest": "sha256:9a6b7e1d13d50a634efe6b31f38e64c9be4d68b14618679ab7517550f2fdfc41",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949398195,
+      "name": "backend-load-smoke-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2",
+      "bytes": 25569,
+      "API_digest": "sha256:af6dd5230757621fb127b3243d9a97bfbac0d9a3fd0abee0fb0f9da867b45d64",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949328326,
+      "name": "web-visual-web-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2-browser-shell",
+      "bytes": 1646950,
+      "API_digest": "sha256:0ed89ac2f509c173ffab00626e5f93b5f1c35b717cbed974c6e461ff9ce1471f",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949262764,
+      "name": "web-visual-web-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2-browser-voice",
+      "bytes": 11396810,
+      "API_digest": "sha256:63924a88042f81fe41925bda3dde021a2a34c561a6bcb27e4b0bf3c57a582ece",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949258859,
+      "name": "actual-next-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2",
+      "bytes": 428095,
+      "API_digest": "sha256:3bac61cf3f57ab0ab268bab4ce7ba2ddbbab972b867bf44523f17a8fc271c9ef",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12949178212,
+      "name": "web-part-web-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2-browser-voice",
+      "bytes": 510,
+      "API_digest": "sha256:a9671931a8e6d101280bacfe8bd8df92fa66a4884d85620d0521fb09f3951f34",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12948968572,
+      "name": "web-visual-web-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2-browser-content",
+      "bytes": 6094537,
+      "API_digest": "sha256:df70fbfe5601f0f2a2886e9766bf92afa9b23a8742722f2690dea370ef8b1b9c",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12948954522,
+      "name": "flutter-part-flutter-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2-android-kotlin",
+      "bytes": 442,
+      "API_digest": "sha256:a3562c910b29818dab60edcdb0179d0a07095806cacafc3b95ffbf85b456ae32",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12948894745,
+      "name": "android-unit-flutter-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2",
+      "bytes": 18033,
+      "API_digest": "sha256:98b4cdbe303110ad40eee8cf120858e34351110bd516caa7ea688a2c0d063667",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12948889472,
+      "name": "windows-transfer-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2",
+      "bytes": 3905,
+      "API_digest": "sha256:1af274f715c9e96372090f5c97616fad5927bc675beab33d8093370fe146e89c",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12948888786,
+      "name": "backend-events-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2",
+      "bytes": 154952,
+      "API_digest": "sha256:74158fcaa1697097fcf75f1cf07ff67a9caf72e06584e8fa9230cb76d305b999",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12948868316,
+      "name": "backend-part-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2-static",
+      "bytes": 319,
+      "API_digest": "sha256:9d43f131b0aabd5d0c900f0fa33bb7e742f0baa54746d47e6ffcbdfbaf6ee7d2",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12948864571,
+      "name": "flutter-part-flutter-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2-dart",
+      "bytes": 8607,
+      "API_digest": "sha256:447ebdf0587a6a109aaa937708e3af845f166e7273a5018ce093e2227ff04c75",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12948834242,
+      "name": "backend-fan-in-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2",
+      "bytes": 365,
+      "API_digest": "sha256:0cc31559a7c364cbd0e836d3f591831bf8840f957b4141bd80640051b523dd6a",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12948829031,
+      "name": "web-part-web-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2-browser-content",
+      "bytes": 434,
+      "API_digest": "sha256:b930433693e11ae2e5fa22e1abba9236a11f3c0fb22fe4d57538e60fcd182938",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12948818873,
+      "name": "backend-part-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2-database",
+      "bytes": 370,
+      "API_digest": "sha256:90ae6081e649b6df2f2a2fb285b15827ce71d81d2ec0426d3492a732a343e35f",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12948789782,
+      "name": "flutter-part-flutter-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2-android",
+      "bytes": 748,
+      "API_digest": "sha256:dd737e67c4a19b4919c88cf6bcb8330cc46be94bed22d4d080f82492f8398367",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12948774845,
+      "name": "BOOHTACORD-windows-installer-x64-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2",
+      "bytes": 65515019,
+      "API_digest": "sha256:ac8f46eb1d3e3956431a6727096712896b1fcebcfb83c869ebf020a172324026",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12948694195,
+      "name": "macos-unit-flutter-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2",
+      "bytes": 1200,
+      "API_digest": "sha256:5994a7a75b9c2bd842cf1bcec5fa943b89a0f2abe6289610123c8cfb5f87c6db",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    },
+    {
+      "id": 12948509875,
+      "name": "flutter-part-flutter-8cb79f6664d29da3a68b89ba8ab92ab3df31b312-40989565645-2-macos",
+      "bytes": 422,
+      "API_digest": "sha256:1a8a5afea398802a92214744d627d3fa2e23751e646474af901392c21028ac2a",
+      "ownership_verified": true,
+      "actual_ZIP_download_not_claimed": true
+    }
+  ],
+  "preserved_history": {
+    "original_dependency_failure": "bb02d6d680ca4197792c6cc9c4b1caa4b83eb60b",
+    "original_run_cancelled_snapshot": "81c5d3fd93ffda46168c62bd964fb4138021c1e5",
+    "first_final_source_next_failure": "9a74986d32db15d4ea7a71852b7f2d79d61d04a7",
+    "complete_final_source_attempt1": "b83b921d70a22f5b13f36d3815517e5b406d3e89",
+    "retry_dispatched_at": "2026-10-30T02:23:27.025768+00:00",
+    "retry_scope": "all_jobs; unchanged c04 source/pins/timeouts/guards; no third blind retry"
+  },
+  "canonical": "Final c04 unit1726PASS/3skip,components403PASS/0skip; dedicatedAndroid/iOSruntimeBLOCKED/fullgalleryNOT_RUN, source/hash proof in B81c5d3fd9",
+  "no_auto_closure_guard": {
+    "issue579": "freshOPEN",
+    "body_and_all_two_commit_messages": "No issue579 closing syntax",
+    "physical_firstframe_stoprestart_repeatedWatch": "PENDING"
+  },
+  "limits": [
+    "Final complete retry passed without erasing the initial next FAIL UNKNOWN or weakening gates.",
+    "Hosted Windows/SFU and component retry UI checks do not replace source-bound paired Android→Windows native firstframe/stoprestart/repeatedWatch/voice acceptance.",
+    "Protected Windows candidate, merge and standard delivery are subsequent steps;579 remainsOPEN."
+  ]
+}
