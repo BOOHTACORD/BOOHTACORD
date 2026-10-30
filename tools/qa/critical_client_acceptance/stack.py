@@ -46,7 +46,7 @@ webhook:
                        '--publish', '127.0.0.1:4881:4881/tcp',
                        '--publish', '127.0.0.1:4882:4882/udp',
                        '-v', str(config)+':/qa.yaml:ro', network=True,
-                       command=('--config', '/qa.yaml'))
+                       command=('--config', '/qa.yaml', '--node-ip', '127.0.0.1'))
         ready('http://127.0.0.1:4880')
         egress_config = self.work/'egress.yaml'
         egress_config.write_text(f'''log_level: info
