@@ -433,6 +433,11 @@ tasks:
     requirements: [REQ-CHAT-01, REQ-CHAT-02]
     depends_on: [FV2-038, T-040, T-044, T-051]
     evidence: [flutter-attachment-composer-tests, flutter-full-suite, flutter-changed-file-analysis, android-debug-build, macos-debug-build, windows-ci-release-build, android-ci-debug-build, QA-296]
+  - id: WEB-VOICE-001
+    title: Keep Web voice participant card controls compact and unobstructed
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-VOICE-01, REQ-SCREEN-01]
+    depends_on: [T-022, T-030]
+    evidence: [clients/web/tests/screen_share_ui/disclosure.browser.spec.ts, web-participant-card-controls-local-acceptance, web-participant-card-controls-ci]
   - id: FV2-041
     title: Flutter voice participant volume menu alignment
     requirements: [REQ-UI-01, REQ-UI-02, REQ-VOICE-01]
