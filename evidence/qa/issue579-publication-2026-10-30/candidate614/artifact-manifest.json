@@ -1,0 +1,283 @@
+{
+  "application_id": "boohtacord_desktop",
+  "architectures": [
+    "x64"
+  ],
+  "audio_component": {
+    "license": "LICENSE-RNNoise.txt",
+    "model_sha256": "f0cdb52b30501aab489f90fedbc7a023c719d91b337db2da7f26fc3036556b95",
+    "msvc_overlay_sha256": "e55494df7d9e18b3d146cdff0c668f616c43e8c0a43bb6572bd005926d382b7e",
+    "sbom": "rnnoise-component.cdx.json",
+    "source_commit": "cdf196b1e9de2f8ff1003328ebf9a4316477429d"
+  },
+  "contracts": {
+    "client-build.json": "506889219fea012dcef02be8abb139607b4b85c101d24fcdbcf013a59e772a5d",
+    "client-release-catalog.schema.json": "817c3108a8877db68f3b077dbd360a7bac71be69f4e2ac2634d1b2d61abb879a",
+    "client-update-evaluator.fixtures.json": "e9ff57e00822952f8d12f7bf888fcc7a67e4c4e7494a0709520be2a8fcb3a0e2",
+    "desktop-update-artifact.schema.json": "eee039b94592e908e1c20e7e3c284394b7e9b270fe75248dd5ee123a4d2dded4",
+    "mobile-client-contract.md": "8d41df10fead96b5926ad4b01a87daedb19daff13d6d4ff297186f7e165599da",
+    "notification-payload-v1.schema.json": "419b5a88cb8e92ae7ca409dd21a8460660da1b25eb85a703773ddfa477bc6dcc",
+    "notification-policy-v1.fixtures.json": "f6511ee4bea9e5829b7e0ddd34b5a616ad69a83229893e797b9040fbfefe0348",
+    "notification-relay-signature-v1.fixtures.json": "042563da590090b9c2d44a74db6c5ff27bcfc295ed093b7a6f85996d8edb3529",
+    "notification-relay-v1.openapi.json": "95679945a0b27817a36ca511c1e1a9ec1effb4a50f8371af5780b7d892121d4e",
+    "openapi.yaml": "56d1792606f3c33b87474139b8ec2be4bd41146dd0a99f90a686827c85d672f1",
+    "realtime.schema.json": "5cd1002db32f6dd470a79d3abe125eb596cf9890fb740b98cb0ba63d991dca16",
+    "release-manifest.schema.json": "c7f7c2c5c27b805be96dab09f108e1fd43f663e1c6cf5bf75cd4e497f36cd04f",
+    "screen-share-profile-v1.catalog.json": "da191fc6833d55ffce6acc40b8d7f120c4ecb4e1fe630f57aedc283048824bf5",
+    "screen-share-profile-v1.fixtures.json": "8f27945bc4b67de976e979d8f0ddff7461ce1c059d9046b883849138c838338b",
+    "screen-share-profile-v1.schema.json": "de5b2ffbb6504b3ae8bd6cc9079cf3e129126dc7bc02f6a7faeefdbe4e454965",
+    "screen-share-publisher-lifecycle-v1.fixtures.json": "8168646853c3b0eab8471990329275037ab5050c7381010fd06b70f4a733d0fe",
+    "screen-share-sfu-smoke-evidence-v1.schema.json": "62772f176332024c73261ec486dfbc247377cde1b98e0f63e3f52cabe1add4a5",
+    "telemetry-flow-v1.fixtures.json": "a9f852e742e1ef00cb2893d42684535c3a9e1c6c5d0e55f2ecee7ea46e64a67f",
+    "telemetry-flow-v1.json": "e868df2d5de1de60168fa8a313feb1a7123a8f979b6149cba69aba414fa90711",
+    "voice-audio-profile.json": "f90a48330dd22634edb9d2c9d11e48afc32dbe3cf886140b1c14feca40ca5cf5"
+  },
+  "files": {
+    "BOOHTACORDRecovery.exe": {
+      "bytes": 350720,
+      "sha256": "ec42fdef4dc1f9df47449f90cba9bbe3fec88e931b5fb338249652c65ec9753f"
+    },
+    "FLAC.dll": {
+      "bytes": 483328,
+      "sha256": "c0498038842c4f78b22770b72a1cf8bcee3cd2653fa58533a6b1f8a01d9b679a"
+    },
+    "LICENSE-RNNoise.txt": {
+      "bytes": 1612,
+      "sha256": "0bb95d752b966f69fea022227297ad49fdb4464eb45f1c1fff494a435bfbeaa5"
+    },
+    "LICENSE-Velopack.txt": {
+      "bytes": 1111,
+      "sha256": "03281b7debf1730d5b2a2cdfb6f98c542edcd965867453686bfe6d1177bc134e"
+    },
+    "boohtacord_desktop.exe": {
+      "bytes": 957952,
+      "sha256": "6c3ae09741afc95c8856c5f66491dfb3b7dd4e590b0f0092cd5cffa766061de9"
+    },
+    "boohtacord_desktop.exp": {
+      "bytes": 1504,
+      "sha256": "4ad3e7fa008f0a6d8f18026554efbb4518a0ea577f4fed8c2a1a1d1162e75c78"
+    },
+    "boohtacord_desktop.lib": {
+      "bytes": 3090,
+      "sha256": "1eae9ee4c4670cb19d5f3a946d761ab6f8e51edc5bcf27cce329e54b3059fcfd"
+    },
+    "clipboard_plugin.dll": {
+      "bytes": 129024,
+      "sha256": "2ac315e55a0322d17d100d5de3e305f164281ed77a191949f5c318671b1c6ee9"
+    },
+    "concrt140.dll": {
+      "bytes": 324208,
+      "sha256": "2405355f0a58067b258f8df33c327e3a3d716eaac5a3a5aebb757842d85bd376"
+    },
+    "connectivity_plus_plugin.dll": {
+      "bytes": 102912,
+      "sha256": "c0384eebc995ee6a4e68ce64e187d2a79f73ef8f757f3a4d851975a5dc381cae"
+    },
+    "dartjni.dll": {
+      "bytes": 59904,
+      "sha256": "cd4aa4d96ed560653d9c94ed1d2cb70d5d99f9ee3fd911fa4afa07753be42c50"
+    },
+    "data/app.so": {
+      "bytes": 14238600,
+      "sha256": "000232868fabc96b279a911c91c5ff8fe01da4c245bcf3bed9b723cb2b57938d"
+    },
+    "data/flutter_assets/AssetManifest.bin": {
+      "bytes": 565,
+      "sha256": "5f20c3dd836e379fc69518a09981509343a329bf06a804b5ac3314b1d1265d98"
+    },
+    "data/flutter_assets/FontManifest.json": {
+      "bytes": 280,
+      "sha256": "996d8a068f0d41fd1c05b8047837cc710d54e52ac5c37b1bfe36600b9f0eac3b"
+    },
+    "data/flutter_assets/NOTICES.Z": {
+      "bytes": 120869,
+      "sha256": "deeca8a51954a79e0d843f8532a67bd550aa06bbbb97945a2fa7d57b5d727969"
+    },
+    "data/flutter_assets/NativeAssetsManifest.json": {
+      "bytes": 45,
+      "sha256": "9548a31e4a048135c1d94f919328bfb62ae2c7bb3cab96557c7941daa97776cb"
+    },
+    "data/flutter_assets/assets/branding/brand.png": {
+      "bytes": 5177,
+      "sha256": "f2e91a6ddab0f4556572d8111ca959065e2d009f62ef23e67f3bf2894c5a2864"
+    },
+    "data/flutter_assets/assets/emoji/emoji_full_catalog.json": {
+      "bytes": 333696,
+      "sha256": "ea67a76971c44cd9334d5a11b8490c8087ff711343337f735d73646776e12946"
+    },
+    "data/flutter_assets/assets/fonts/InterVariable.ttf": {
+      "bytes": 879708,
+      "sha256": "f87caf5cdc61c6acb34dcdf6ae38909f6bef73cc86ee5da3691601a54cd6a314"
+    },
+    "data/flutter_assets/assets/licenses/rnnoise.txt": {
+      "bytes": 1849,
+      "sha256": "76ed76e5e90a01e28ed4ba8146ece9ecb5f6b193f426da34dc090be871b5fac4"
+    },
+    "data/flutter_assets/assets/licenses/unicode-emoji.txt": {
+      "bytes": 277,
+      "sha256": "fcb69f163c4eaafa3d8164650440503dcafddd2950b86b8b6e4449bcaa373c95"
+    },
+    "data/flutter_assets/assets/updates/publisher.pub": {
+      "bytes": 83,
+      "sha256": "fd08ce8ee3761c3276d3d7651994066542125fe79b31661c17502a42f093f916"
+    },
+    "data/flutter_assets/fonts/MaterialIcons-Regular.otf": {
+      "bytes": 15196,
+      "sha256": "9f592c3909229eca792c33edbc307c8bc55a080980187e06f17dd778f4a716ce"
+    },
+    "data/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": {
+      "bytes": 257628,
+      "sha256": "67c44fe9183b002e79dde7f6977e2988661c9a3e4a3c5fce968787efdbed823c"
+    },
+    "data/flutter_assets/shaders/ink_sparkle.frag": {
+      "bytes": 21856,
+      "sha256": "1fe8436a743884cb65078fe8c7b38e18f5365f2a2961270916f426fd13c604af"
+    },
+    "data/flutter_assets/shaders/stretch_effect.frag": {
+      "bytes": 17616,
+      "sha256": "bc7599dbbbaab310efe41520574138d21fb18a88c8fe4495ed79315309336f6f"
+    },
+    "data/icudtl.dat": {
+      "bytes": 864880,
+      "sha256": "325a86063d26334c2eabe1743cea073b612540fbf3d8fc2ef0b5708e3763a8c7"
+    },
+    "file_selector_windows_plugin.dll": {
+      "bytes": 111616,
+      "sha256": "6d65f1167ca3b25ae78dd11586c88aa002262fa241e0781e883818b5315ff69e"
+    },
+    "firebase_core_plugin.lib": {
+      "bytes": 1236004,
+      "sha256": "9d5d05c09a9c7fba83516946453e0305fefef68cde23e5014a4b5c77c8909a85"
+    },
+    "flutter_local_notifications_windows.dll": {
+      "bytes": 91136,
+      "sha256": "6b2c4fffd7e4eb27e76bcac0a8d9562181e542d10026e84a003ff72c2aba0e66"
+    },
+    "flutter_secure_storage_windows_plugin.dll": {
+      "bytes": 159744,
+      "sha256": "3e8468c3f1f471898267f82a624b81c6bd1ef956b3df5daaaddd9661c29a6085"
+    },
+    "flutter_soloud_plugin.dll": {
+      "bytes": 1111040,
+      "sha256": "0d7ec82fa38805874df11b894e20e6593beed2ffd21fde88834310edbe9ce255"
+    },
+    "flutter_webrtc_plugin.dll": {
+      "bytes": 660992,
+      "sha256": "260665685dd327d49b19e259a185ad886953f83ef73afaaa9fb1d3d15e973ea2"
+    },
+    "flutter_windows.dll": {
+      "bytes": 21274112,
+      "sha256": "7b03815958c49d72385be497fbd0eb1bb2ae27d24989d6c9aee83eafbd93e9d3"
+    },
+    "libwebrtc.dll": {
+      "bytes": 20538880,
+      "sha256": "dfdbcc9670618ac4c3696d7e232aac2fe8034ef202f46d732a6828ccfcb017dd"
+    },
+    "livekit_client_plugin.dll": {
+      "bytes": 176640,
+      "sha256": "70de2be57cc1cfc6f44b25b45dae3fc1727828a638203ca35735f94330c3957e"
+    },
+    "msvcp140.dll": {
+      "bytes": 557728,
+      "sha256": "0f885b509a685d2bbfa652fed26b5fb31d88fbdab0a978c641d1c7b8aa460aa9"
+    },
+    "msvcp140_1.dll": {
+      "bytes": 35952,
+      "sha256": "bfad5aef4c63a669e3c140655cdfdf395b6c979b400a447bd5dcb65ed8826c3d"
+    },
+    "msvcp140_2.dll": {
+      "bytes": 280200,
+      "sha256": "3ea06f0ee098b4823cb79599df3780e7f23cce52c19aac31d2a0d47efe33a5e9"
+    },
+    "msvcp140_atomic_wait.dll": {
+      "bytes": 50304,
+      "sha256": "640b2aefced484d0368eea5bdd06addd0658a3a70a49256e560d6923b404a479"
+    },
+    "msvcp140_codecvt_ids.dll": {
+      "bytes": 31872,
+      "sha256": "f2069a52880ec885ee7f0511186100eb7fada0411a2b4948fafea7735b878a18"
+    },
+    "ogg.dll": {
+      "bytes": 30208,
+      "sha256": "aad3763723ba548a885fcb9e750d7092970c16234fd4c5d021135b8b89753d3b"
+    },
+    "opus.dll": {
+      "bytes": 460288,
+      "sha256": "1072b0b1f2f50835b48f6428a793b03b417009afe8311bdca595f73a12cb1581"
+    },
+    "record_windows_plugin.dll": {
+      "bytes": 216064,
+      "sha256": "9cffd5e0c8cc5fc5cf9c285c4e9ae04589c10c9dc14acb5a5442a1e80243070c"
+    },
+    "rnnoise-component.cdx.json": {
+      "bytes": 1018,
+      "sha256": "744d313555579461c847508971950196f9b99775af9f3c180ad0a10696d1f615"
+    },
+    "screen_retriever_windows_plugin.dll": {
+      "bytes": 119296,
+      "sha256": "0b1e4955a6cc4c39e073a94fd7d9c2dd1b4636de7434450599c785e84116af33"
+    },
+    "url_launcher_windows_plugin.dll": {
+      "bytes": 98304,
+      "sha256": "95e8ce2b7dc52a486d7b171e30ac4f487a9db99083a2b7d019b92d628cb653f9"
+    },
+    "vccorlib140.dll": {
+      "bytes": 352384,
+      "sha256": "19839407c3fdbc824e5bce189bf68ddf8097f12ec28b757797ffa0415c144ddd"
+    },
+    "vcruntime140.dll": {
+      "bytes": 124544,
+      "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+    },
+    "vcruntime140_1.dll": {
+      "bytes": 49792,
+      "sha256": "1f2d41c4aa5db0bc33ebf7b66d72943a817d7ce6cbe880502a9403823633093f"
+    },
+    "vcruntime140_threads.dll": {
+      "bytes": 38528,
+      "sha256": "219915cf20822f34d5e7c1fdd4e21ae7f3396881096c51036225fb8f84b47afa"
+    },
+    "velopack_libc.dll": {
+      "bytes": 2691072,
+      "sha256": "3387c5f362501374b2f2d942466c3ec565ac573ec24e3d6e7679c0b8e7828b12"
+    },
+    "vorbis.dll": {
+      "bytes": 737792,
+      "sha256": "adbd21ba4d265995cff8172a5762ca41d6fce13b49a275edea1581aad34b98c1"
+    },
+    "vorbisenc.dll": {
+      "bytes": 563200,
+      "sha256": "1b2134d5035c3be889bd7b14eaaa3ea530dd1c7765295605513bcd2e156a51ee"
+    },
+    "vorbisfile.dll": {
+      "bytes": 36864,
+      "sha256": "3ea75ed11a88f12d46333b3848fc849e05ed730bf5cd3346502d499440435b2b"
+    },
+    "window_manager_plugin.dll": {
+      "bytes": 130048,
+      "sha256": "e304b506db08516a82755d8830a65b9d460d1b39943b9ae96cd21f2ee2f21058"
+    }
+  },
+  "platform": "windows",
+  "release_id": "windows-direct-stable-r62",
+  "release_order": 62,
+  "schema_version": 1,
+  "signing": {
+    "status": "unsigned"
+  },
+  "source_dirty": false,
+  "source_revision": "a97030059fcddd5d76b9b256007144d507f4b279",
+  "toolchains": {
+    "buildx": "0.37.1",
+    "buildx_linux_amd64_sha256": "9447199cdb435f25880548343c128a4b6650e8891ee598905d8d29d39a8e359b",
+    "compose": "5.5.0",
+    "compose_linux_amd64_sha256": "c57ab918abd5b05ca7e7d0f275875dd1330a695074f309dc9eab1b49efafcd4b",
+    "dart": "3.13.5",
+    "flutter": "3.47.7",
+    "go": "1.26.4",
+    "node": "24.18.0",
+    "postgres": "17.6",
+    "task": "3.53.1"
+  },
+  "version": "1.0.47+83"
+}

@@ -1,0 +1,55 @@
+{
+  "issue": 579,
+  "pull_request": 614,
+  "status": "PASS_SOURCEBOUND_CANDIDATE_PHYSICAL_PENDING",
+  "source_revision": "a97030059fcddd5d76b9b256007144d507f4b279",
+  "public_mirrors_are_UTF8_LF": true,
+  "original_documents": "Original bytes remain in protected artifacts and private handoff; CRLF originals reconstruct exactly by LF\u2192CRLF, original SHA retained.",
+  "files": {
+    "artifact-manifest.json": {
+      "original_raw_SHA256": "b0dc4f76fb1dfd9694937d2edf44c0e1ca7934836bb81efac6751099df60dc46",
+      "published_Git_LF_SHA256": "8e86d48d85753a7df1fa0a6f535efeefb95dc734ac537e2b3ee301be406c37f8",
+      "original_line_endings": "CRLF",
+      "bytes": 11678
+    },
+    "SHA256SUMS": {
+      "original_raw_SHA256": "7ae1d14ceefcff843fd1bb3cffe681c94a1ca0b2a62c381b3b2a8abb6f93efd3",
+      "published_Git_LF_SHA256": "859c8995b36c8d4612f0ecfe3f32646e2d73d0e4faf50820c91387fe8a18f2df",
+      "original_line_endings": "CRLF",
+      "bytes": 489
+    },
+    "source.json": {
+      "original_raw_SHA256": "110bbfe42d12e0e57f4f80e3c619c76d550a126fa8a76ba700ddb71e874cd32b",
+      "published_Git_LF_SHA256": "1d3ed904026c330194e1d7d940cc34e2e09defdf02285b64768af3d9978c2d8e",
+      "original_line_endings": "CRLF",
+      "bytes": 700
+    },
+    "contract.json": {
+      "original_raw_SHA256": "e221c62dc78d288de1b5bbe6c4bed87aa420a5df77302a53e5b8590a30ad4ec8",
+      "published_Git_LF_SHA256": "6fdcc3f9ea359ab070a8970dc9e1fd00e51529beec462e545c60ea427e8a4b53",
+      "original_line_endings": "CRLF",
+      "bytes": 1802
+    },
+    "public-server-context.json": {
+      "original_raw_SHA256": "f232f9ec358980cee43cff234aabb09499ec48fc45fdaa221cb4eafb196596a3",
+      "published_Git_LF_SHA256": "f232f9ec358980cee43cff234aabb09499ec48fc45fdaa221cb4eafb196596a3",
+      "original_line_endings": "LF",
+      "bytes": 1885
+    }
+  },
+  "all_six_outer_assets_and_complete_inner_inventory_verified": true,
+  "source_Git_LF_fingerprints_verified": 11,
+  "contract_Git_Windows_checkout_files_verified": 20,
+  "preserved_initial_diagnostic": {
+    "kind": "LOCAL_RAW_GIT_LF_ASSERTION",
+    "raw_Git_LF_hash_matches": 0,
+    "native_Git_Windows_checkout_hash_matches": 20,
+    "reverse_LF_equivalence": 20,
+    "interpretation": "One exact platform checkout policy for all20files; no mixed allowlist, artifact/source/project gate change."
+  },
+  "actual_PE_signing": "unsigned; official candidate contract permits unsigned. Not a code-signed/physical acceptance claim.",
+  "limits": [
+    "No Windows application launch, installation, user-profile/session action or physical media acceptance.",
+    "First decoded frame, stop/restart and repeatedWatch remain root-owned pending gates; issue579 stays open."
+  ]
+}

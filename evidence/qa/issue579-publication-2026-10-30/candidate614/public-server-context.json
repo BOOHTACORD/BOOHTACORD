@@ -1,0 +1,52 @@
+{
+  "kind": "fresh-public-source-and-health",
+  "at_utc": "2026-10-30T03:02:55.804059+00:00",
+  "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+  "release": {
+    "http": 200,
+    "cache_control": "no-store",
+    "sha256": "446908476ede61a9887ade1e5f241a2fbf916a51043f0c78eaf03154cb64d49b",
+    "receipt": {
+      "schema_version": 1,
+      "application_family": "boohtacord",
+      "platform": "web",
+      "distribution": "browser",
+      "channel": "stable",
+      "arch": "any",
+      "release_id": "web-browser-stable-r61",
+      "release_order": 61,
+      "version": "1.0.47",
+      "native_build": null,
+      "architecture": "any",
+      "build_info_sha256": "70ffd35bfb8a6eebc088dfefb5ed9bd7549fd48e8398fb2be0d283bf12ac1e4b",
+      "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+      "signature_evidence": "oci_attestation",
+      "download_available": true
+    }
+  },
+  "health": {
+    "http": 200,
+    "cache_control": null,
+    "sha256": "6489d6d7a33c5d40e18fc61eeb6c34c341279ee61816394dde5189aa4ad8fae5",
+    "body": {
+      "status": "ok"
+    }
+  },
+  "scope": "Read-only HTTPS; no authenticated browser, SQL, fault or load traffic.",
+  "native_candidate_source": "a97030059fcddd5d76b9b256007144d507f4b279",
+  "server_delivery_for_native_candidate": {
+    "Build_server": 40993167248,
+    "Deploy_production": 40993580938,
+    "observer": 40993609031,
+    "server_release_impact": false,
+    "install": "SKIPPED_NATIVE_ONLY"
+  },
+  "API_source_context": {
+    "last_trusted_remote_source": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+    "delivery_run": 40980532015,
+    "delivery_run_attempt": 1,
+    "public_health_exposes_revision": false,
+    "fresh_API_revision": "NOT_OBSERVABLE_FROM_PUBLIC_HEALTH",
+    "scope": "Last trusted running API/Web image revision readback, distinguished from this fresh public HTTP200 observation."
+  }
+}
