@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "issue": 609,
+  "pull_request": 613,
+  "status": "MERGED_EXACT_TESTED_TREE_SIGNED_CANDIDATE_PENDING",
+  "head_revision": "5f1e40aacd821c25db8419ff68371215bd5e56e2",
+  "base_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+  "tested_synthetic_merge": "4351e5c9545d6ff09d1e1fb75af527953621c5b8",
+  "tested_tree": "3a034ad719b3a578b8135d63903223db194e5b50",
+  "merged_revision": "134382700eed2408644695e5298e64e60d3abf59",
+  "actual_merged_tree_matches_tested": true,
+  "actual_merge_parent_matches_base": true,
+  "final_CI": {
+    "run_id": 40981731999,
+    "attempt": 2,
+    "success_jobs": 27,
+    "skipped_jobs": 0,
+    "evidence": "b8da16f7f89bbd1de1e3a9b7cb5370fcabebc72a"
+  },
+  "closure_guard": {
+    "issue609_after_merge": "OPEN",
+    "body_and_all6_full_commit_messages_no_autoclose609": true,
+    "branch_deletion_disabled": true,
+    "exact_c7c8_counterexample_reachable_in_retained_branch": true
+  },
+  "protected_candidate": {
+    "platform": "android",
+    "workflow_id": 371496531,
+    "workflow_path": ".github/workflows/android-release.yaml",
+    "source_revision": "134382700eed2408644695e5298e64e60d3abf59",
+    "http": 204,
+    "dry_run": true,
+    "stable_publication_requested": false,
+    "human_environment_approval": "NOT_ASSERTED",
+    "at_utc": "2026-10-30T01:26:12.845239+00:00"
+  },
+  "automatic_runs": [
+    {
+      "id": 40985840599,
+      "name": "Android Release",
+      "event": "workflow_dispatch"
+    },
+    {
+      "id": 40985807149,
+      "name": "Build server",
+      "event": "push"
+    },
+    {
+      "id": 40985807072,
+      "name": "Native master quality",
+      "event": "push"
+    },
+    {
+      "id": 40985806854,
+      "name": "pages build and deployment",
+      "event": "dynamic"
+    }
+  ],
+  "limits": [
+    "Candidate build/artifact/certificate verification and physical latest/older-action/short-voice-IME acceptance pending;609 staysOPEN.",
+    "No native device/phone/browser/PCinput or manual deployment performed by release agent.",
+    "Generic Android/iOS simulator runtime remainsBLOCKED and fullgalleryNOT_RUN; no broader platform/media gate closure."
+  ]
+}
