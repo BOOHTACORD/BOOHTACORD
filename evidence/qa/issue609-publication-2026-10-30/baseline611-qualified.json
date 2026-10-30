@@ -1,0 +1,352 @@
+{
+  "issue": 609,
+  "status": "QUALIFIED_SIGNED611_BEFORE609_NATIVE_COUNTEREXAMPLES",
+  "phone": "Samsung SM-A576B Android16/API36",
+  "source_revision": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+  "apk_SHA256": "14fc53a05c2e92314f964147bb1e1c6331513fe4e87ff09daaf8a9910da60d42",
+  "protects": "Incoming-at-latest visibility; older reader anchor/draft preservation plus explicit jump availability.",
+  "commands": [
+    "python -X utf8 .out/issue609/latest.py baseline611-latest-draft .out/issue582/final611/install.json",
+    "python -X utf8 .out/issue609/older.py baseline611-older-qualified .out/issue582/final611/install.json"
+  ],
+  "mandatory_when": "Signed final609 incoming and older-history physical acceptance; these are baseline RED, not fixed-source PASS.",
+  "where": "Local root-owned .out/issue609/runs/<tag>/result.json and source-sized private PNGs; safe receipts/hashes may be published additively.",
+  "records": [
+    {
+      "tag": "baseline611-latest-draft",
+      "receipt_SHA256": "f425ff87c27bfecef8a7459b0c126cf19b6500a124f6bff2bc723fdac3707a0c",
+      "result": {
+        "status": "FAIL_INCOMING_LATEST",
+        "at_utc": "2026-10-30T00:57:30.204694+00:00",
+        "source_revision": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+        "apk_sha256": "14fc53a05c2e92314f964147bb1e1c6331513fe4e87ff09daaf8a9910da60d42",
+        "POST_attempts": 1,
+        "DELETE_attempts": 1,
+        "native_Send_attempts": 0,
+        "native_jump_attempts": 0,
+        "UI_inputs_after_POST_before_poll_capture": 0,
+        "captures": [
+          {
+            "name": "latest-before",
+            "raster": [
+              1080,
+              2340
+            ],
+            "SHA256": "5e67fd012d5d0e5b7103ebd8e9cebd3f17c281de134e9db803dac4ac3bc16513"
+          },
+          {
+            "name": "latest-incoming",
+            "raster": [
+              1080,
+              2340
+            ],
+            "SHA256": "5e67fd012d5d0e5b7103ebd8e9cebd3f17c281de134e9db803dac4ac3bc16513"
+          },
+          {
+            "name": "latest-after-failed-poll-one-scroll-control",
+            "raster": [
+              1080,
+              2340
+            ],
+            "SHA256": "84fd61b31923e01edfccefe556af2b7dbcc29444c552e40b7e3dea43a715da31"
+          }
+        ],
+        "boundary_samples": [
+          {
+            "swipe": 1,
+            "unchanged": false,
+            "before_SHA256": "f455f59bd614ec9e1446d1cf746f29285df96df0431c2fdf56983f756849d149",
+            "after_SHA256": "9ab4de2bd633270cb52770afadb05a779bbd8c2548af6e6c192d23d51c7e17a4"
+          },
+          {
+            "swipe": 2,
+            "unchanged": false,
+            "before_SHA256": "9ab4de2bd633270cb52770afadb05a779bbd8c2548af6e6c192d23d51c7e17a4",
+            "after_SHA256": "84799386e1e9fcf5fc85c781f8201b93b34c5a85aac3e7b2d12e47d056fedce7"
+          },
+          {
+            "swipe": 3,
+            "unchanged": false,
+            "before_SHA256": "84799386e1e9fcf5fc85c781f8201b93b34c5a85aac3e7b2d12e47d056fedce7",
+            "after_SHA256": "66176d3b590c75a24bccd5d6bff586f5057c4990b6a12972d6093073bf2ab4e2"
+          },
+          {
+            "swipe": 4,
+            "unchanged": true,
+            "before_SHA256": "66176d3b590c75a24bccd5d6bff586f5057c4990b6a12972d6093073bf2ab4e2",
+            "after_SHA256": "66176d3b590c75a24bccd5d6bff586f5057c4990b6a12972d6093073bf2ab4e2"
+          },
+          {
+            "swipe": 5,
+            "unchanged": true,
+            "before_SHA256": "66176d3b590c75a24bccd5d6bff586f5057c4990b6a12972d6093073bf2ab4e2",
+            "after_SHA256": "66176d3b590c75a24bccd5d6bff586f5057c4990b6a12972d6093073bf2ab4e2"
+          }
+        ],
+        "created_HTTP": 201,
+        "exact_incoming_passively_visible": false,
+        "poll_upper_ms": 18250,
+        "draft_preserved": true,
+        "jump_hidden_at_latest": true,
+        "one_later_scroll_control_reveals_fixture": true,
+        "only_owned_fixture_deleted_blank_tombstone": true,
+        "only_new_owned_session_revoked": true,
+        "HTTP": [
+          {
+            "alias": "owned MEMBER login",
+            "method": "POST",
+            "HTTP": 204,
+            "at_utc": "2026-10-30T00:58:27.025482+00:00",
+            "response_bytes": 0,
+            "finished_at_utc": "2026-10-30T00:58:27.109507+00:00"
+          },
+          {
+            "alias": "own B session guard",
+            "method": "GET",
+            "HTTP": 200,
+            "at_utc": "2026-10-30T00:58:27.126022+00:00",
+            "response_bytes": 91,
+            "finished_at_utc": "2026-10-30T00:58:27.166025+00:00"
+          },
+          {
+            "alias": "existing own pair binding",
+            "method": "GET",
+            "HTTP": 200,
+            "at_utc": "2026-10-30T00:58:27.180530+00:00",
+            "response_bytes": 978,
+            "finished_at_utc": "2026-10-30T00:58:27.237551+00:00"
+          },
+          {
+            "alias": "preexisting message exclusion",
+            "method": "GET",
+            "HTTP": 200,
+            "at_utc": "2026-10-30T00:58:27.252061+00:00",
+            "response_bytes": 16814,
+            "finished_at_utc": "2026-10-30T00:58:27.293569+00:00"
+          },
+          {
+            "alias": "one own incoming fixture",
+            "method": "POST",
+            "HTTP": 201,
+            "at_utc": "2026-10-30T00:58:27.309071+00:00",
+            "response_bytes": 321,
+            "finished_at_utc": "2026-10-30T00:58:27.358086+00:00"
+          },
+          {
+            "alias": "resolve only new own fixture",
+            "method": "GET",
+            "HTTP": 200,
+            "at_utc": "2026-10-30T00:58:52.251184+00:00",
+            "response_bytes": 16833,
+            "finished_at_utc": "2026-10-30T00:58:52.284207+00:00"
+          },
+          {
+            "alias": "delete only own new fixture",
+            "method": "DELETE",
+            "HTTP": 204,
+            "at_utc": "2026-10-30T00:58:52.299707+00:00",
+            "response_bytes": 0,
+            "finished_at_utc": "2026-10-30T00:58:52.331724+00:00"
+          },
+          {
+            "alias": "exact blank tombstone",
+            "method": "GET",
+            "HTTP": 200,
+            "at_utc": "2026-10-30T00:58:52.349724+00:00",
+            "response_bytes": 6766,
+            "finished_at_utc": "2026-10-30T00:58:52.373236+00:00"
+          },
+          {
+            "alias": "logout only new owned session",
+            "method": "POST",
+            "HTTP": 204,
+            "at_utc": "2026-10-30T00:58:52.387742+00:00",
+            "response_bytes": 0,
+            "finished_at_utc": "2026-10-30T00:58:52.413744+00:00"
+          },
+          {
+            "alias": "own revocation readback",
+            "method": "GET",
+            "HTTP": 200,
+            "at_utc": "2026-10-30T00:58:52.428250+00:00",
+            "response_bytes": 24,
+            "finished_at_utc": "2026-10-30T00:58:52.448753+00:00"
+          }
+        ],
+        "only_owned_draft_cleared_voice_idle": true,
+        "finished_at_utc": "2026-10-30T00:59:04.083187+00:00",
+        "limits": [
+          "Exact incoming visibility within bounded UI polling; not calibrated latency, raw WebSocket transport or an SLO.",
+          "Own draft preserved; native text-selection across append NOT_RUN.",
+          "No native Send, voice join, Windows/browser input, production fault or refresh."
+        ]
+      },
+      "visual_review": {
+        "reviewed_by": "root",
+        "resolution": "ORIGINAL1080x2340",
+        "observation": "Before and passive poll are byte-identical; original latest incoming is below viewport; exactly one later scroll exposes full exact new body, existing draft remains."
+      }
+    },
+    {
+      "tag": "baseline611-older-qualified",
+      "receipt_SHA256": "fa0ae98dd9914678c3fbbadf2c851510b125f58af936e322adc51bc1fe27abd1",
+      "result": {
+        "status": "FAIL_MISSING_EXPLICIT_NATIVE_JUMP_ACTION",
+        "at_utc": "2026-10-30T00:56:18.386657+00:00",
+        "source_revision": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+        "apk_sha256": "14fc53a05c2e92314f964147bb1e1c6331513fe4e87ff09daaf8a9910da60d42",
+        "POST_attempts": 1,
+        "DELETE_attempts": 1,
+        "native_Send_attempts": 0,
+        "native_jump_attempts": 0,
+        "captures": [
+          {
+            "name": "older-before",
+            "raster": [
+              1080,
+              2340
+            ],
+            "SHA256": "9c5bd1a559e6ea8237ca24839948d718731007187a0863ea3b4b125cfd6f7b3d"
+          },
+          {
+            "name": "older-incoming",
+            "raster": [
+              1080,
+              2340
+            ],
+            "SHA256": "9c5bd1a559e6ea8237ca24839948d718731007187a0863ea3b4b125cfd6f7b3d"
+          }
+        ],
+        "anchor_before_top": 1633,
+        "created_HTTP": 201,
+        "poll_upper_ms": 14672,
+        "incoming_passively_visible_while_older": false,
+        "anchor_after_top": 1633,
+        "anchor_preserved": true,
+        "draft_preserved": true,
+        "jump_action_available": false,
+        "only_owned_fixture_deleted_blank_tombstone": true,
+        "only_new_owned_session_revoked": true,
+        "HTTP": [
+          {
+            "alias": "owned MEMBER login",
+            "method": "POST",
+            "HTTP": 204,
+            "at_utc": "2026-10-30T00:56:39.172378+00:00",
+            "response_bytes": 0,
+            "finished_at_utc": "2026-10-30T00:56:39.263404+00:00"
+          },
+          {
+            "alias": "own B session guard",
+            "method": "GET",
+            "HTTP": 200,
+            "at_utc": "2026-10-30T00:56:39.287406+00:00",
+            "response_bytes": 91,
+            "finished_at_utc": "2026-10-30T00:56:39.312904+00:00"
+          },
+          {
+            "alias": "existing own pair binding",
+            "method": "GET",
+            "HTTP": 200,
+            "at_utc": "2026-10-30T00:56:39.338435+00:00",
+            "response_bytes": 978,
+            "finished_at_utc": "2026-10-30T00:56:39.367943+00:00"
+          },
+          {
+            "alias": "preexisting message exclusion",
+            "method": "GET",
+            "HTTP": 200,
+            "at_utc": "2026-10-30T00:56:39.387449+00:00",
+            "response_bytes": 16815,
+            "finished_at_utc": "2026-10-30T00:56:39.421452+00:00"
+          },
+          {
+            "alias": "one own incoming fixture",
+            "method": "POST",
+            "HTTP": 201,
+            "at_utc": "2026-10-30T00:56:39.445478+00:00",
+            "response_bytes": 320,
+            "finished_at_utc": "2026-10-30T00:56:39.500478+00:00"
+          },
+          {
+            "alias": "resolve only new own fixture",
+            "method": "GET",
+            "HTTP": 200,
+            "at_utc": "2026-10-30T00:56:57.312943+00:00",
+            "response_bytes": 16833,
+            "finished_at_utc": "2026-10-30T00:56:57.365957+00:00"
+          },
+          {
+            "alias": "delete only own new fixture",
+            "method": "DELETE",
+            "HTTP": 204,
+            "at_utc": "2026-10-30T00:56:57.380463+00:00",
+            "response_bytes": 0,
+            "finished_at_utc": "2026-10-30T00:56:57.411468+00:00"
+          },
+          {
+            "alias": "exact blank tombstone",
+            "method": "GET",
+            "HTTP": 200,
+            "at_utc": "2026-10-30T00:56:57.425968+00:00",
+            "response_bytes": 6766,
+            "finished_at_utc": "2026-10-30T00:56:57.459988+00:00"
+          },
+          {
+            "alias": "logout only new owned session",
+            "method": "POST",
+            "HTTP": 204,
+            "at_utc": "2026-10-30T00:56:57.474491+00:00",
+            "response_bytes": 0,
+            "finished_at_utc": "2026-10-30T00:56:57.501498+00:00"
+          },
+          {
+            "alias": "own revocation readback",
+            "method": "GET",
+            "HTTP": 200,
+            "at_utc": "2026-10-30T00:56:57.515997+00:00",
+            "response_bytes": 24,
+            "finished_at_utc": "2026-10-30T00:56:57.538500+00:00"
+          }
+        ],
+        "only_owned_draft_cleared_voice_idle": true,
+        "finished_at_utc": "2026-10-30T00:57:09.241401+00:00",
+        "limits": [
+          "Bounded UI visibility and exact owned fixture; not calibrated latency or raw WebSocket transport proof.",
+          "Native selection across action NOT_RUN; text draft and visible old-row anchor are checked.",
+          "No native Send, voice join, browser/Windows input or production fault."
+        ]
+      },
+      "visual_review": {
+        "reviewed_by": "root",
+        "resolution": "ORIGINAL1080x2340",
+        "observation": "Before and incoming are byte-identical older history; timestamp/author/deleted-row position and own draft remain; no jump action in native UI."
+      }
+    }
+  ],
+  "controller_SHA256": {
+    "latest.py": "6173c534af7de6fb7c27f490594fb5ea879744ad6722d92bbedf0e62e3738494",
+    "older.py": "d669121d5c04db80660f5aabd7d0ac69af3e1b38c42aa3b91ef87aa6a7801e1e",
+    "native_guard.py": "f485cb9d48e9e783fc83b72498e2cbdb805523522ab07ecc78b7595b9f0398c0",
+    "owned_peer.py": "f304b15d7c9585168ef5b874f7edf3faefcc892ed42b7243916a918884ec3d53"
+  },
+  "diagnostic": {
+    "first_older_preflight": "No POST/DELETE/Send; expected older-row descendants were a single combined Android content-desc. Snapshot verified merged semantics; exact content SHA anchors now guard unique fully-visible old rows. Initial failure retained, not attributed to app.",
+    "first_result_SHA256": "66c8087e404fda2343f465ee9e441a8b1286f4c0037437870feeb8cb28a2f5db"
+  },
+  "limits": [
+    "611/d9/14fc already includes582/607, does not include609. No acceptance claim for candidate613.",
+    "Bounded UI polling only; no calibrated latency/transport or media/audibility guarantee.",
+    "No Windows/browser input, native Send, voice join, refresh or production fault.",
+    "Private fixtures, account/conversation IDs, cookies, credentials and raw private PNGs are excluded from publication. Broad gates remain independently OPEN/NOT_RUN/BLOCKED."
+  ],
+  "publication": {
+    "original_safe_summary_SHA256": "c88908c43c2d2f0ddd37781aa66e705571b3ed4bd34d9222deef883108bfc955",
+    "actual_result_hashes_verified": 2,
+    "actual_private_png_hashes_verified": 5,
+    "actual_controller_hashes_verified": 4,
+    "visual_review_owner": "Root, all5original1080x2340 images individually reviewed",
+    "raw_private_media_bodies_identifiers_and_sessions_published": false,
+    "scope": "Qualified signed611 baseline RED; not final613 acceptance, latency/SLO or transport diagnosis."
+  }
+}
