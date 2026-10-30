@@ -407,7 +407,7 @@
     ],
     "parity_review": {
       "issue": 579,
-      "web_only_follow_up": "PR #620: Web-only participant-card microphone alignment; streaming and voice-only card regression checks cover the presentation. Flutter, iOS and Android UI and platform decisions are unchanged.",
+      "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged.",
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "platform_exception",
@@ -695,7 +695,7 @@
         "focused": [
           "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts"
         ],
-        "scope": "In the Web participant-card browser fixture, the compact microphone state icon is centered with the participant name on both streaming and voice-only cards. Mute state changes preserve name geometry; volume-menu placement cannot move the microphone icon vertically. Browser presentation coverage only; no native/media claim."
+        "scope": "In the Web participant-card browser fixture, the compact microphone state icon is centered with the participant name on both streaming and voice-only cards. The volume button overlays the status position on hover without reserving horizontal space. Mute and deafen SVGs render at 16px. Browser presentation coverage only; no native/media claim."
       },
       "listener_participant_cards": {
         "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
@@ -933,7 +933,7 @@
     ],
     "parity_review": {
       "issue": 579,
-      "web_only_follow_up": "PR #620: Web-only participant-card microphone alignment; streaming and voice-only card regression checks cover the presentation. Flutter, iOS and Android UI and platform decisions are unchanged.",
+      "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged.",
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "platform_exception",
@@ -1827,7 +1827,7 @@
     ],
     "parity_review": {
       "issue": 579,
-      "web_only_follow_up": "PR #620: Web-only participant-card microphone alignment; streaming and voice-only card regression checks cover the presentation. Flutter, iOS and Android UI and platform decisions are unchanged.",
+      "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged.",
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",

@@ -242,7 +242,7 @@ test('listener room embeds the stream preview in an equal-sized participant card
   await page.screenshot({ path: info.outputPath('listener-participant-cards-390x200.png') })
 })
 
-test('participant volume controls stay clear of the live badge, close outside and keep mic state compact', async ({ page }) => {
+test('participant volume controls overlay compact mute state on hover, close outside and keep mute/deafen icons crisp', async ({ page }, info) => {
   await open(page, 'participant-cards', 876, 100, 656)
   const streamCard = page.locator('.participant--streaming')
   const details = streamCard.locator('.participant-volume')
@@ -257,6 +257,25 @@ test('participant volume controls stay clear of the live badge, close outside an
   const status = streamCard.locator('.participant-card-status')
   await expect(status).toHaveAttribute('aria-label', 'Микрофон выключен')
   await expect(status).toHaveText('')
+
+  const statusIcon = status.locator('.voice-person-state-icon')
+  const controlAlignment = await trigger.evaluate(element => {
+    const trigger = element.getBoundingClientRect()
+    const icon = element.closest('.participant')!.querySelector<HTMLElement>('.participant-card-status .voice-person-state-icon')!.getBoundingClientRect()
+    return {
+      horizontal: Math.abs(trigger.left + trigger.width / 2 - (icon.left + icon.width / 2)),
+      vertical: Math.abs(trigger.top + trigger.height / 2 - (icon.top + icon.height / 2)),
+    }
+  })
+  expect(controlAlignment.horizontal).toBeLessThanOrEqual(1)
+  expect(controlAlignment.vertical).toBeLessThanOrEqual(1)
+  await expect(trigger).toHaveCSS('opacity', '0')
+  await trigger.hover()
+  await expect(trigger).toHaveCSS('opacity', '1')
+  await page.screenshot({ path: info.outputPath('participant-volume-overlays-mute.png') })
+
+  const sharpIcon = await statusIcon.evaluate(element => ({ width: getComputedStyle(element).width, height: getComputedStyle(element).height }))
+  expect(sharpIcon).toEqual({ width: '16px', height: '16px' })
 
   await trigger.click()
   await expect(details).toHaveAttribute('open', '')
@@ -274,6 +293,13 @@ test('participant volume controls stay clear of the live badge, close outside an
   await expect(unmutedStatus).toHaveText('')
   const unmutedNameTop = await unmutedCard.locator('.participant-name').evaluate(element => element.getBoundingClientRect().top)
   expect(Math.abs(unmutedNameTop - mutedNameTop)).toBeLessThanOrEqual(1)
+
+  await open(page, 'participant-cards&deafened', 876, 100, 656)
+  const deafenedStatus = page.locator('.participant-self .participant-card-status')
+  await expect(deafenedStatus).toHaveAttribute('aria-label', 'Звук и микрофон выключены')
+  await expect(deafenedStatus.locator('.voice-person-state-icon')).toHaveCount(2)
+  const deafenIconSizes = await deafenedStatus.locator('.voice-person-state-icon').evaluateAll(elements => elements.map(element => ({ width: getComputedStyle(element).width, height: getComputedStyle(element).height })))
+  expect(deafenIconSizes).toEqual([{ width: '16px', height: '16px' }, { width: '16px', height: '16px' }])
 })
 
 test('participant overlay wraps a four-member roster into a compact grid', async ({ page }, info) => {
