@@ -1,0 +1,56 @@
+{
+  "issue": 582,
+  "source_revision": "de4c30b26bc61aeac5c885ae805634a082eefe5e",
+  "apk_sha256": "f63613dd0dc92cca96737dd8235fed728c422da959228008bf6ff3e6b2afbaca",
+  "status": "PASS_SCOPED_ACTIVE_VOICE_SELECTION_FINAL611_PENDING",
+  "invariant": "A native whole-word selection and draft survive portrait-to-landscape, Gboard Back and portrait restore while native SHARE_TEST UI remains connected.",
+  "commands": [
+    "python -X utf8 .out/issue582/selection606/selection.py seed",
+    "Original portrait seed PNG review",
+    "python -X utf8 .out/issue582/selection606/selection.py control",
+    "python -X utf8 .out/issue582/selection606/selection.py repeat",
+    "Original repeat PNG review",
+    "python -X utf8 .out/issue582/selection606/selection.py run",
+    "Original three rotation/Back PNG review"
+  ],
+  "platform": "Physical Samsung SM-A576B Android16/API36,font1.0,Gboard; signed606de4c/f636 verified on device at each phase.",
+  "mandatory_when": "Closing582 draft/selection preservation facets or changing native keyboard/orientation shell.",
+  "results": {
+    "Send_attempts": 0,
+    "seed_full_selection_replacement_control": true,
+    "after_rotation_Back_full_selection_replacement_control": true,
+    "replacement_length": 1,
+    "native_connected_SHARE_TEST_in_all3states": true,
+    "server_phone_present_before": true,
+    "server_phone_absent_after_explicitLeave": true,
+    "owned_draft_cleared_voice_idle_rotation_restored": true,
+    "visual_review": "All5PNG original1080x2340/2340x1080 inspected. Complete highlight remains across3states. Seed/repeat include real native selection toolbar. LandscapeIME still has previously routed voice-wrap/roomellipsis visualFAIL; not final582PASS."
+  },
+  "image_SHA256": {
+    "selection-landscape-back.png": "4804959503c6baac602afc2dfa420de051f37d05053a29b4525544dcf278ad66",
+    "selection-landscape-ime.png": "13c7161621775840bda7b56ba17c902a3f7d898cb709801e87f0579ad8f552c5",
+    "selection-portrait-restored.png": "f7fcc38a338f2cfe791fa2524e882e3e7c4ad760761cf55c840958ca16606b62",
+    "selection-repeat.png": "b486ab090fcfc741ca9242868a949e102fe8f41a0088528aeb7e018ec36a2b1c",
+    "selection-seed.png": "142b172570f526c6d9142c683a04ec755deb9fb1dd77d39585a7cdc38477fac0"
+  },
+  "artifact_SHA256": {
+    "physical.py": "47426239cec4cdc690d04233e6f70946856fecc58b711689b0ce8d06e200cc9a",
+    "selection.py": "da2c86cb1acae291f23d802e2abbf2f246d6b96716c520a4a37ac04bf4ff0384",
+    "selection.json": "451940f2ed09c51c340dd95e3282ab16f0c149015bfd2ce9249f08e956ee1e85",
+    "roster-selection606-before.json": "505c91e9284cbe1b5bcde7fdbd20bb75b9376e66bb8abf1c16b8076dbe9ae489",
+    "roster-selection606-after-cleanup.json": "6e8cef6ba254cabb861a9209f8a5327f937ff7fede3801d156c25f4ea1deddf8"
+  },
+  "limits": [
+    "Corrected611signedphysicalrepeat pending;582OPEN.",
+    "IME re-show with pre-existing selection NOT_RUN; draft IME re-show is separate final geometry scenario.",
+    "Server before/after spans explicitLeave cleanup; continuous per-state membership is nativeUI evidence, not an independent public lease proof.",
+    "No Send/audibility/whole platform/media gate claim;43consolidation decisions untouched."
+  ],
+  "publication": {
+    "sanitized_source_sha256": "6ce41c310558b5f6c0523b6dc5752c04dc2582dd31b05292a2395390cc7d530c",
+    "actual_five_private_png_hashes_verified": true,
+    "visual_review_owner": "Root, all5images at original resolution",
+    "source_scope": "Historical606 only;611 final acceptance remains independent",
+    "raw_media_and_private_body_or_identifiers_published": false
+  }
+}
