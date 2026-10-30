@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "issue": 582,
+  "pull_request": 611,
+  "source_revision": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+  "status": "PASS_NATIVE_MASTER_AND_NATIVE_ONLY_SERVER_ROUTE",
+  "server_quality_artifact": {
+    "id": 12940709640,
+    "bytes": 399,
+    "sha256": "435e1c5d0c2c520f9ea2036fc062ac3ff28f42828d50bae282098cd33d3db713",
+    "actual_zip_sha256_verified": true
+  },
+  "native_master": {
+    "run_id": 40973407417,
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 123795470817,
+        "name": "changes",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123795530808,
+        "name": "windows / windows-native-unit",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123795530838,
+        "name": "flutter / dart",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123795530849,
+        "name": "windows / windows-build",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123795530871,
+        "name": "flutter / android",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123795530880,
+        "name": "flutter / android-kotlin",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123795530913,
+        "name": "flutter / macos",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123798580699,
+        "name": "windows / windows-gui-sfu",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123800352111,
+        "name": "flutter / flutter",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123801231186,
+        "name": "windows / windows",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123801311549,
+        "name": "native-required",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "server_build": {
+    "run_id": 40973407563,
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "automatic_deploy": {
+    "run_id": 40973905968,
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 123797118868,
+        "name": "route",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123797198316,
+        "name": "install",
+        "status": "completed",
+        "conclusion": "skipped"
+      }
+    ],
+    "reason": "Verified source-bound server_release_impactfalse; production install correctly skipped"
+  },
+  "separate_observer_failure": {
+    "run_id": 40973936564,
+    "run_attempt": 1,
+    "conclusion": "failure",
+    "issue": 610,
+    "scope": "Old no-op observer requires absent deployment receipt; separate bounded CI fix PR612 pending"
+  },
+  "limits": [
+    "No server deployment occurred for this native-only source; Web/API remain on independently verified prior server source until a later actual release.",
+    "Protected signed Android candidate/install evidence retained separately; final611 physical acceptance still pending root receipt.",
+    "No human environment approval or stable client promotion asserted; no production mutation/fault/load."
+  ],
+  "server_quality": {
+    "jobs": {
+      "backend": "skipped",
+      "changes": "success",
+      "contracts": "success",
+      "web": "skipped"
+    },
+    "map_sha256": "cf501bbb879dadec880c4fb53ccfc8b63d793408fc9d526c8538c3a8001082cf",
+    "run_attempt": "1",
+    "run_id": "40973407563",
+    "schema_version": 1,
+    "scope": "server",
+    "server_release_impact": false,
+    "source_revision": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+    "status": "PASS"
+  }
+}
