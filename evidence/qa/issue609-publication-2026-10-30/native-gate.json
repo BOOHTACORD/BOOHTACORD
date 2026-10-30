@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "issue": 609,
+  "source_revision": "c7c8f0c5018f170f4b6c80ae99a270db298a608d",
+  "source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "status": "BLOCKED_NATIVE_RUNTIME",
+  "command": "python -m tools.qa.local_features.run --feature auth --feature chat --feature connection_status --feature screen --feature shell --feature support --feature voice --platform android --platform ios --base d9f15abb995cffaa7375975543ae934ad8be2d0d --real-stack",
+  "runner": "Windows11/Python3.12; canonical module with bare-flutter resolution adapter to prepared official Flutter3.47.7/Dart3.13.5.",
+  "features": [
+    "auth",
+    "chat",
+    "connection_status",
+    "screen",
+    "shell",
+    "support",
+    "voice"
+  ],
+  "stages": [
+    {
+      "name": "flutter-unit",
+      "status": "PASS"
+    },
+    {
+      "name": "flutter-component-captures",
+      "status": "PASS"
+    },
+    {
+      "name": "android-runtime",
+      "status": "BLOCKED"
+    },
+    {
+      "name": "ios-runtime",
+      "status": "BLOCKED"
+    }
+  ],
+  "full_flutter_unit": {
+    "passed": 1706,
+    "failed": 0,
+    "skipped": 3
+  },
+  "selected_component_tests": {
+    "passed": 590,
+    "failed": 0,
+    "skipped": 0
+  },
+  "policy_and_baseline": {
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0
+  },
+  "report_sha256": "4e91001c4d12798dfdb8a711d3f269a7a31d5183f5818446877e3b1239e2e160",
+  "logs_sha256": {
+    "flutter-unit.log": "ab62959e13148be994618ddcadac7306ea7262c1908522d560622407f67f74e8",
+    "flutter-component-captures.log": "1c376ff2ac718d32b7d0c2d232a48eab75675d2f3cb95f9a2d4df2b437274490"
+  },
+  "selected_capture_count": 167,
+  "visual_review": "NOT_RUN",
+  "blockers": [
+    "Dedicated BOOHTACORD_QA Android emulator unavailable; physical phone intentionally excluded.",
+    "iOS Simulator/xcrun unavailable on Windows."
+  ],
+  "limits": [
+    "Full standard capture gallery has not been visually approved; no baseline changed.",
+    "Root-reviewed issue609 original390x844 Before/After component images remain separately scoped.",
+    "Corrected signedAPK passive receipt and Android/iOS runtime remain pending;609 staysOPEN.",
+    "No phone/browser/receiver/container/network/production action performed by this check."
+  ]
+}
