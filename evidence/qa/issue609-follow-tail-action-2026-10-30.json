@@ -53,7 +53,7 @@
     "clients/flutter/test/features/workspace/direct_follow_latest/jump_test.dart": "258b527006099cd00343e40870f9d2e324b9c3b2fbc5f5ed4e323cdb07af1183",
     "clients/flutter/test/features/workspace/direct_follow_latest/short_voice_test.dart": "f0a578cf18ce4d2bd6279da349389f36e3d19d717908d16de088fa7b5c61f48a",
     "clients/flutter/test/features/workspace/short_viewport/support.dart": "50d588a9c5eb874e8a98301d54c7f8c68f193053dbfd69788babb739a81e3245",
-    "tools/qa/local_features/features.json": "2e5efa146580dca403da43b59aedacb89e308aa24e3437f47d299b65f7bba452"
+    "tools/qa/local_features/features.json": "ce28f3b0b330fba31856b3f3ceded4b63e30a3478093c5ef617aa607da0e485d"
   },
   "log_LF_SHA256": {
     "action-authoritative-nearest.log": "9efc1d688a41d77f5ab4127d45f66860728e1959ce9d51feb2d7ac8bc7219318",
@@ -86,10 +86,24 @@
     "qualified_counterexample_base": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
     "merged_master": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
     "merge_commit": "d8727a81dbb8f3ee972400e2361c14422a0dcf51",
-    "all13_source_LF_fingerprints_unchanged": true,
+    "at_merge_all13_source_LF_fingerprints_unchanged": true,
+    "final_all12_Dart_test_LF_fingerprints_unchanged": true,
     "entire_Flutter_tree_unchanged": true,
     "original_c7c8_exact_counterexample_reachable": true,
     "canonical_required_command": "python -m tools.qa.local_features.run --feature auth --feature chat --feature connection_status --feature screen --feature shell --feature support --feature voice --platform android --platform ios --base 6dd79c244e6cbd69bcfbd38a3fcb5727508e0933 --real-stack",
     "integration_scope": "CI-only merged master; no Dart, test, registry, platform decision or screenshot baseline change."
+  },
+  "parity_review_registration": {
+    "reason": "Mandatory source-bound client_parity rejected unchanged support review; local and hosted failures retained.",
+    "changed_feature": "support",
+    "old_scope_prefix_preserved": true,
+    "all_platform_decisions_preserved": true,
+    "no_Dart_test_or_capture_change": true,
+    "previous_registry_LF_SHA256": "2e5efa146580dca403da43b59aedacb89e308aa24e3437f47d299b65f7bba452",
+    "final_registry_LF_SHA256": "ce28f3b0b330fba31856b3f3ceded4b63e30a3478093c5ef617aa607da0e485d",
+    "prior_local_failure_log_LF_SHA256": "cec54d071adf6035ac7bb642748124a1ee031eef64a4184df9b40e2c8e7945a5",
+    "prior_hosted_contracts_run": 40981278012,
+    "prior_hosted_contracts_job": 123821670366,
+    "validation": "Final source-bound parity verifier and canonical/full CI must run after registration."
   }
 }
