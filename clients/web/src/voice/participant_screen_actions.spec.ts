@@ -34,6 +34,18 @@ describe('voice participant screen actions', () => {
     expect(styles).toContain('aspect-ratio: 16 / 9')
   })
 
+  it('shows a Discord-style loading message instead of initials until a screen thumbnail arrives', () => {
+    const preview = source('./ParticipantScreenPreview.vue')
+    const rail = source('./ScreenViewerRail.vue')
+
+    expect(preview).toContain('Трансляция идёт')
+    expect(rail).toContain('Трансляция идёт')
+    expect(preview).toContain('Предпросмотр скоро появится')
+    expect(preview).not.toContain('initials')
+    expect(rail).not.toContain('initials')
+    expect(preview).toContain('screen.thumbnailUrl')
+  })
+
   it('resolves a watch action by the verified LiveKit participant identity', async () => {
     const { findParticipantScreen } = await import('./find_participant_screen')
     const streams = [

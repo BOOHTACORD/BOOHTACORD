@@ -206,6 +206,15 @@ test('listener room embeds the stream preview in an equal-sized participant card
   await expect(fallbackPreview.locator('.participant-screen-preview__caption')).toHaveText('Демонстрация экрана')
   await expect(fallbackPreview.locator('.participant-screen-preview__play')).toHaveCSS('opacity', '1')
 
+  await open(page, 'participant-cards&no-thumbnail', 876, 100, 656)
+  const loadingPreview = page.getByTestId('participant-screen-preview')
+  await expect(loadingPreview.locator('.screen-preview-placeholder__title')).toHaveText('Трансляция идёт')
+  await expect(loadingPreview.locator('.screen-preview-placeholder__hint')).toHaveText('Предпросмотр скоро появится')
+  await expect(loadingPreview.locator('.screen-preview-placeholder')).toBeVisible()
+  await expect(loadingPreview.locator('.participant-screen-preview__image')).toHaveCount(0)
+  await expect(loadingPreview.locator('.participant-screen-preview__play')).toHaveCount(0)
+  await page.screenshot({ path: info.outputPath('listener-preview-loading-876x656.png') })
+
   await open(page, 'participant-cards', 390, 200, 740)
   const mobileCards = page.getByTestId('participant-card')
   const mobilePreview = page.getByTestId('participant-screen-preview')

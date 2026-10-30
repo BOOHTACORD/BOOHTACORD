@@ -63,7 +63,7 @@ export class ScreenViewerController {
   }
   setAudioMuted(muted: boolean): void { this.lifecycle.setAudioMuted(muted) }
   setAudioVolume(percent: number): void { this.lifecycle.setAudioVolume(percent) }
-  clear(): void { this.clearThumbnails(); this.setWatchers([]); this.lifecycle.clear(); void this.watcherRefresh() }
+  clear(): void { this.setWatchers([]); this.lifecycle.clear(); void this.watcherRefresh() }
   stop(): void { this.watcherRefresh = async () => undefined; this.clearThumbnails(); this.setWatchers([]); this.setOwnerWatchers([]); this.lifecycle.stop(); this.listeners.clear() }
   reconcile(): void {
     const previousId = this.selectedId

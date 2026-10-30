@@ -26,7 +26,7 @@ describe('screen viewer reference composition', () => {
     const styles = source('../design/voice_viewer_reference.css')
 
     expect(viewer).toContain('screen-cards stream-rail')
-    expect(viewer).toContain('stream-avatar')
+    expect(viewer).toContain('screen-preview-placeholder')
     expect(viewer).toContain('participantName')
     expect(viewer).toContain('aria-pressed')
     expect(viewer).toContain('stream.thumbnailUrl')
