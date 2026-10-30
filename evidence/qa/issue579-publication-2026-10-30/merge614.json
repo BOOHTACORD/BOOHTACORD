@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "issue": 579,
+  "pull_request": 614,
+  "status": "MERGED_EXACT_TESTED_TREE_NATIVE_CANDIDATE_PENDING",
+  "head_revision": "c04bbd4f3d1d1982c19067daed0b8159cafae38f",
+  "base_revision": "134382700eed2408644695e5298e64e60d3abf59",
+  "merge_revision": "a97030059fcddd5d76b9b256007144d507f4b279",
+  "merge_parent": "134382700eed2408644695e5298e64e60d3abf59",
+  "merge_tree": "99d3157338a599fa8795e56ad702468cb24593ad",
+  "tested_synthetic_merge": "8cb79f6664d29da3a68b89ba8ab92ab3df31b312",
+  "tested_tree_equal": true,
+  "full_CI": {
+    "run_id": 40989565645,
+    "run_attempt": 2,
+    "successful_jobs": 27,
+    "evidence_commit": "88e772b4d520b062d18bf86fcdbfdd66e5a6368f"
+  },
+  "issue579_fresh_postmerge": "OPEN",
+  "automatic_runs": {
+    "Build_server": 40993167248,
+    "Native_master_quality": 40993167339
+  },
+  "protected_candidate": {
+    "platform": "windows",
+    "run_id": 40993187039,
+    "run_attempt": 1,
+    "source_revision": "a97030059fcddd5d76b9b256007144d507f4b279",
+    "dispatch_UTC": "2026-10-30T02:41:51.207468+00:00",
+    "dry_run": true,
+    "stable_publication_requested": false,
+    "human_environment_approval": "NOT_ASSERTED",
+    "status": "IN_PROGRESS_ARTIFACT_VERIFICATION_PENDING"
+  },
+  "limits": [
+    "Merge/runtime quality is distinct from future protected artifact verification and paired physical acceptance.",
+    "Original dependency FAIL and first repaired-source next FAIL UNKNOWN retained; full same-source attempt2 passed all gates.",
+    "No manual deployment, device/UI action or issue579 closure."
+  ]
+}
