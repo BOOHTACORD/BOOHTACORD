@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "issue": 609,
+  "pull_request": 613,
+  "source_revision": "134382700eed2408644695e5298e64e60d3abf59",
+  "status": "PASS_NATIVE_MASTER_AND_NATIVE_ONLY_SERVER_ROUTE_PHYSICAL_PENDING",
+  "native_master": {
+    "run": {
+      "id": 40985807072,
+      "name": "Native master quality",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "134382700eed2408644695e5298e64e60d3abf59",
+      "run_attempt": 1,
+      "html_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40985807072"
+    },
+    "jobs": [
+      {
+        "id": 123836425715,
+        "name": "changes",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123836482886,
+        "name": "flutter / android-kotlin",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123836482897,
+        "name": "windows / windows-native-unit",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123836482981,
+        "name": "windows / windows-build",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123836482982,
+        "name": "flutter / macos",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123836482987,
+        "name": "flutter / dart",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123836483100,
+        "name": "flutter / android",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123839171701,
+        "name": "windows / windows-gui-sfu",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123840392931,
+        "name": "flutter / flutter",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123841536578,
+        "name": "windows / windows",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123841602184,
+        "name": "native-required",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "build_jobs": [
+    {
+      "id": 123836425451,
+      "name": "changes",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123836489421,
+      "name": "contracts / contracts",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123836491098,
+      "name": "backend",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 123836491237,
+      "name": "web",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 123837738358,
+      "name": "server-quality",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123837831891,
+      "name": "bundle",
+      "status": "completed",
+      "conclusion": "skipped"
+    }
+  ],
+  "delivery_runs": [
+    {
+      "id": 40986272470,
+      "name": "Windows promotion catalog readback",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "134382700eed2408644695e5298e64e60d3abf59",
+      "run_attempt": 1,
+      "html_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40986272470"
+    },
+    {
+      "id": 40986245117,
+      "name": "Deploy production",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "134382700eed2408644695e5298e64e60d3abf59",
+      "run_attempt": 1,
+      "html_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40986245117"
+    },
+    {
+      "id": 40985807149,
+      "name": "Build server",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "134382700eed2408644695e5298e64e60d3abf59",
+      "run_attempt": 1,
+      "html_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40985807149"
+    }
+  ],
+  "deploy_jobs": [
+    {
+      "id": 123837848345,
+      "name": "route",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123837904313,
+      "name": "install",
+      "status": "completed",
+      "conclusion": "skipped"
+    }
+  ],
+  "verified_artifacts": [
+    {
+      "id": 12946544124,
+      "name": "quality-master-server-134382700eed2408644695e5298e64e60d3abf59-40985807149-1",
+      "bytes": 400,
+      "sha256": "1d11c272fb4c8dc2333d029c521e26c83c17f24b6e38be684593db7e05fe7837",
+      "actual_ZIP_SHA256_verified": true
+    },
+    {
+      "id": 12946952630,
+      "name": "trusted-route-40986245117-1",
+      "bytes": 394,
+      "sha256": "781c62dba1fe538c973c52783761956270eefcd6510146c9b00440d91637521a",
+      "actual_ZIP_SHA256_verified": true
+    },
+    {
+      "id": 12947256251,
+      "name": "windows-promotion-readback-134382700eed2408644695e5298e64e60d3abf59-40986272470-1",
+      "bytes": 732,
+      "sha256": "04010559c78aec471b95129029dc2d6bc5b680196048df4663d5d4d0b42bc7fb",
+      "actual_ZIP_SHA256_verified": true
+    }
+  ],
+  "quality": {
+    "jobs": {
+      "backend": "skipped",
+      "changes": "success",
+      "contracts": "success",
+      "web": "skipped"
+    },
+    "map_sha256": "cf501bbb879dadec880c4fb53ccfc8b63d793408fc9d526c8538c3a8001082cf",
+    "run_attempt": "1",
+    "run_id": "40985807149",
+    "schema_version": 1,
+    "scope": "server",
+    "server_release_impact": false,
+    "source_revision": "134382700eed2408644695e5298e64e60d3abf59",
+    "status": "PASS"
+  },
+  "route": {
+    "controller": {
+      "event": "workflow_run",
+      "revision": "134382700eed2408644695e5298e64e60d3abf59",
+      "run_attempt": 1,
+      "run_id": 40986245117
+    },
+    "kind": "trusted-producer-route",
+    "producer": {
+      "format_version": 2,
+      "has_bundle": false,
+      "run_attempt": 1,
+      "run_id": 40985807149,
+      "source_revision": "134382700eed2408644695e5298e64e60d3abf59"
+    },
+    "repository": "Egkurilov/BOOHTACORD",
+    "schema_version": 1,
+    "server_release_impact": false,
+    "status": "PASS"
+  },
+  "observer": {
+    "candidate_ci": {
+      "status": "NOT_RUN"
+    },
+    "deployment": {
+      "controller_revision": "134382700eed2408644695e5298e64e60d3abf59",
+      "master_quality_artifact": {
+        "actual_zip_digest_verified": true,
+        "bytes": 400,
+        "id": 12946544124,
+        "name": "quality-master-server-134382700eed2408644695e5298e64e60d3abf59-40985807149-1",
+        "sha256": "1d11c272fb4c8dc2333d029c521e26c83c17f24b6e38be684593db7e05fe7837"
+      },
+      "producer_run_attempt": 1,
+      "producer_run_id": 40985807149,
+      "reason": "native_only_no_server_release",
+      "route_artifact": {
+        "actual_zip_digest_verified": true,
+        "bytes": 394,
+        "id": 12946952630,
+        "name": "trusted-route-40986245117-1",
+        "sha256": "781c62dba1fe538c973c52783761956270eefcd6510146c9b00440d91637521a"
+      },
+      "run_attempt": 1,
+      "run_id": 40986245117,
+      "server_release_impact": false,
+      "source_revision": "134382700eed2408644695e5298e64e60d3abf59",
+      "status": "NOT_RUN"
+    },
+    "endpoint": {
+      "status": "NOT_RUN"
+    },
+    "human_review": "NOT_ASSERTED",
+    "issue_249": "https://github.com/Egkurilov/BOOHTACORD/issues/249",
+    "merge": {
+      "status": "NOT_RUN"
+    },
+    "physical_acceptance": "NOT_RUN",
+    "reason": "native_only_no_server_release",
+    "release": {
+      "status": "NOT_RUN"
+    },
+    "review_pr": {
+      "status": "NOT_RUN"
+    },
+    "schema_version": 1,
+    "scope": "source-pr-ci-merge-deploy-catalog",
+    "source": {
+      "status": "NOT_RUN"
+    },
+    "status": "NOT_RUN"
+  },
+  "limits": [
+    "Server-impact=false; install intentionally skipped. No new server deployment or catalog promotion occurred.",
+    "This is exact merged-source CI/routing evidence, not signed physical609 acceptance. Previous full CI first-attempt failure retained separately.",
+    "Protected Android candidate and physical latest/draft/older-anchor/explicit-action/short-voice-IME acceptance remain separate."
+  ]
+}
