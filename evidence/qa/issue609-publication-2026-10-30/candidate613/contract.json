@@ -1,0 +1,104 @@
+{
+  "assets": {
+    "BOOHTACORD-android-v1.0.47-arm64-v8a.apk": {
+      "bytes": 20921907,
+      "sha256": "1fb4f547ebeaead45d8c024ecf10f718bd517c84494c70aeeebb7ba57789c567"
+    },
+    "BOOHTACORD-android-v1.0.47-armeabi-v7a.apk": {
+      "bytes": 18809871,
+      "sha256": "8dd0afd66806e5d4ff59c368e92c1c7c9c9e9dfb6224a1c2f0fa5fb28c54f067"
+    },
+    "BOOHTACORD-android-v1.0.47-x86_64.apk": {
+      "bytes": 22285693,
+      "sha256": "32463241b9c4a1b19ae08c9516406b5d66fa7dbc21b05295be9c6f5815b5dbe1"
+    },
+    "LICENSE-RNNoise.txt": {
+      "bytes": 1581,
+      "sha256": "e2f59ff41d9d03adc3dcf3deff170f8c8cf4a6eb4a9b174762a7656d23200ffa"
+    },
+    "SHA256SUMS": {
+      "bytes": 588,
+      "sha256": "8276a20714ebf183fb2f0dc1194e3fa51d0f62865ee26357595200e0a9f170dd"
+    },
+    "artifact-manifest.json": {
+      "bytes": 5444,
+      "sha256": "81df27bd2891419e142b6c6967a7096fa2d8a1266e68f23f3aed70ae5178d423"
+    },
+    "rnnoise-component.cdx.json": {
+      "bytes": 823,
+      "sha256": "0426bb951827495adc912304b4c500ea553ee2ddce89e3cc807e0e2521539d06"
+    }
+  },
+  "execution": {
+    "run_attempt": "1",
+    "run_id": "40985840599"
+  },
+  "identity": {
+    "arch": "any",
+    "channel": "stable",
+    "distribution": "direct",
+    "native_build": "83",
+    "platform": "android",
+    "release_id": "android-direct-stable-r62",
+    "release_order": 62,
+    "version": "1.0.47"
+  },
+  "manifest_sha256": "81df27bd2891419e142b6c6967a7096fa2d8a1266e68f23f3aed70ae5178d423",
+  "notarization": "NOT_RUN",
+  "platform": "android",
+  "release_mode": "candidate",
+  "repository": "Egkurilov/BOOHTACORD",
+  "schema_version": 1,
+  "signing": {
+    "apks": {
+      "BOOHTACORD-android-v1.0.47-arm64-v8a.apk": {
+        "build_tools": "37.0.0",
+        "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+        "size": {
+          "apk_bytes": 20921907,
+          "architectures": [
+            "arm64-v8a"
+          ],
+          "native_bytes": 40579792,
+          "native_compressed_bytes": 18037806
+        },
+        "version_code": 2083
+      },
+      "BOOHTACORD-android-v1.0.47-armeabi-v7a.apk": {
+        "build_tools": "37.0.0",
+        "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+        "size": {
+          "apk_bytes": 18809871,
+          "architectures": [
+            "armeabi-v7a"
+          ],
+          "native_bytes": 32158216,
+          "native_compressed_bytes": 15925713
+        },
+        "version_code": 1083
+      },
+      "BOOHTACORD-android-v1.0.47-x86_64.apk": {
+        "build_tools": "37.0.0",
+        "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+        "size": {
+          "apk_bytes": 22285693,
+          "architectures": [
+            "x86_64"
+          ],
+          "native_bytes": 46404512,
+          "native_compressed_bytes": 19401675
+        },
+        "version_code": 4083
+      }
+    },
+    "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+    "status": "signed"
+  },
+  "source_event": "workflow_dispatch",
+  "source_ref": "refs/heads/master",
+  "source_revision": "134382700eed2408644695e5298e64e60d3abf59",
+  "status": "PASS",
+  "tag": "android-v1.0.47",
+  "tag_verified": false,
+  "trigger_revision": "134382700eed2408644695e5298e64e60d3abf59"
+}
