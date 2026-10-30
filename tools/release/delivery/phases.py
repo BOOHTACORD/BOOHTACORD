@@ -1,9 +1,9 @@
 """Finite delivery stages with public timing, not command output or credentials."""
 import re
 import time
-from .commands import execute, ExecutionFailed
+from .commands import execute, ExecutionFailed, MAX_COMMAND_TIMEOUT_SECONDS
 
-LIMITS = {'current_revision': 45, 'history': 10, 'transfer_bundle': 900,
+LIMITS = {'current_revision': 45, 'history': 10, 'transfer_bundle': MAX_COMMAND_TIMEOUT_SECONDS,
           'transfer_driver': 60, 'remote_install': 600, 'readback': 45}
 
 

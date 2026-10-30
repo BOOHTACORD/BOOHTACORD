@@ -6,6 +6,8 @@ import signal
 import subprocess
 import time
 
+MAX_COMMAND_TIMEOUT_SECONDS = 1800
+
 
 class ExecutionFailed(RuntimeError):
     def __init__(self, code, returncode=None):
@@ -42,7 +44,8 @@ def _stop(process):
 def execute(argv, timeout, *, stdin=None, capture_limit=0):
     if (os.name != 'posix' or not isinstance(argv, list) or not argv
             or any(not isinstance(arg, str) or not arg or '\0' in arg for arg in argv)
-            or type(timeout) not in (int, float) or not math.isfinite(timeout) or not 0 < timeout <= 900
+            or type(timeout) not in (int, float) or not math.isfinite(timeout)
+            or not 0 < timeout <= MAX_COMMAND_TIMEOUT_SECONDS
             or type(capture_limit) is not int or not 0 <= capture_limit <= 65536):
         raise ValueError('Invalid bounded delivery command')
     process = None
