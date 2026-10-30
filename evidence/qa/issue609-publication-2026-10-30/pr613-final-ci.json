@@ -1,0 +1,421 @@
+{
+  "schema_version": 1,
+  "issue": 609,
+  "pull_request": 613,
+  "status": "PASS_FINAL_FULL_CI_SIGNED_PHYSICAL_PENDING",
+  "head_revision": "5f1e40aacd821c25db8419ff68371215bd5e56e2",
+  "base_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+  "tested_synthetic_merge": "4351e5c9545d6ff09d1e1fb75af527953621c5b8",
+  "tested_tree": "3a034ad719b3a578b8135d63903223db194e5b50",
+  "CI": {
+    "run_id": 40981731999,
+    "run_attempt": 2,
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 123828504095,
+        "name": "changes",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828504350,
+        "name": "contracts / contracts",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828569656,
+        "name": "backend / static",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828569677,
+        "name": "frontend / sfu",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828569721,
+        "name": "windows / windows-native-unit",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828569735,
+        "name": "flutter / android",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828569765,
+        "name": "backend / load",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828569766,
+        "name": "backend / database",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828569778,
+        "name": "windows / windows-build",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828569805,
+        "name": "flutter / dart",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828569821,
+        "name": "actual / runtime (next)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828569828,
+        "name": "flutter / macos",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828569832,
+        "name": "frontend / browser (browser-voice)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828569844,
+        "name": "flutter / android-kotlin",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828569853,
+        "name": "frontend / fast",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828569884,
+        "name": "frontend / browser (browser-content)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828569885,
+        "name": "actual / runtime (lifecycle)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828569910,
+        "name": "actual / runtime (sfu)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828569930,
+        "name": "frontend / browser (browser-shell)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123828569999,
+        "name": "frontend / browser (browser-conversations)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123830403349,
+        "name": "frontend / frontend",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123830406522,
+        "name": "backend / backend",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123832204326,
+        "name": "actual / actual-acceptance",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123832410520,
+        "name": "flutter / flutter",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123833415364,
+        "name": "windows / windows-gui-sfu",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123835643077,
+        "name": "windows / windows",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123835701017,
+        "name": "ci-required",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "current_attempt_artifacts": [
+      {
+        "id": 12946816944,
+        "name": "screen-setup-windows-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2",
+        "bytes": 356464,
+        "digest": "sha256:76ec924981395849ae549fa1ed21caa4cde2b3bb7e0401b41ac499d2d86008cf"
+      },
+      {
+        "id": 12946785077,
+        "name": "flutter-part-flutter-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2-android",
+        "bytes": 749,
+        "digest": "sha256:4c1ebf856c0a44414b2053d5a361c210f7ca603791d9e12013250aa93dde080e"
+      },
+      {
+        "id": 12946685637,
+        "name": "android-unit-flutter-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2",
+        "bytes": 18010,
+        "digest": "sha256:1d18ec04b1bcf1deead599c03e0ee39780f0ed5f0ec0a98339095d57894c3ab1"
+      },
+      {
+        "id": 12946645139,
+        "name": "uiux-flutter-visual-review-flutter-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2",
+        "bytes": 9001885,
+        "digest": "sha256:f33e423be372b32a577b711a3a85d9489675d4c6dec4589df0df2090524aa920"
+      },
+      {
+        "id": 12946540270,
+        "name": "web-visual-web-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2-browser-shell",
+        "bytes": 1646953,
+        "digest": "sha256:11eb2362a0ade29b4431bea1dc2279cef7bd85ff94c9d85da0707a220ba3bf25"
+      },
+      {
+        "id": 12946402615,
+        "name": "BOOHTACORD-windows-x64-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2",
+        "bytes": 29795801,
+        "digest": "sha256:81a48fd84c1ee2cef28f3da43c5662981ad6e706416e738c93efccf8058ee8c7"
+      },
+      {
+        "id": 12946400799,
+        "name": "backend-part-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2-database",
+        "bytes": 367,
+        "digest": "sha256:5d01203c9c15a01a01aec2be956a1a87364a61d2f443f2eb0b28975858366ec2"
+      },
+      {
+        "id": 12946362589,
+        "name": "windows-transfer-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2",
+        "bytes": 3913,
+        "digest": "sha256:d8efd82e9b5fa7b65c8756a0fb8aa648a5e18eaf6f4d8d097fdb4350dd311fc1"
+      },
+      {
+        "id": 12946281093,
+        "name": "actual-next-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2",
+        "bytes": 420502,
+        "digest": "sha256:19a73a1aea8e8cdcdfbc95a64d11c840d6df95215000e20b41cc5a29ed176199"
+      },
+      {
+        "id": 12946147999,
+        "name": "actual-lifecycle-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2",
+        "bytes": 17806986,
+        "digest": "sha256:92d0875a92e8ca530519e83b61ddced21020fb26d0b2d0ad99c868a2fb3bfc47"
+      },
+      {
+        "id": 12946144803,
+        "name": "windows-acceptance-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2",
+        "bytes": 362,
+        "digest": "sha256:4bf35a7b0969ed5de7708da501ed26bfc541ad14ba1d3b1fba8d43144d2c0c97"
+      },
+      {
+        "id": 12946129951,
+        "name": "triage-pr-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2",
+        "bytes": 750,
+        "digest": "sha256:624b9a8336feadf749f5753205a1f433f5ecd876dafcc1e6a00bd3af06686f1f"
+      },
+      {
+        "id": 12946078971,
+        "name": "BOOHTACORD-windows-installer-x64-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2",
+        "bytes": 65506515,
+        "digest": "sha256:1eec8d2a6eabe26eeb7e739ab9663ea1875e53e43f19d3587c2499bc8a30d116"
+      },
+      {
+        "id": 12946024226,
+        "name": "desktop-recovery-windows-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2",
+        "bytes": 402,
+        "digest": "sha256:1c4147b57197d7b56172fb2b29800997a98f44b0338c83652c698290059525bc"
+      },
+      {
+        "id": 12945973701,
+        "name": "boohtacord-android-debug-apk-flutter-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2",
+        "bytes": 125062155,
+        "digest": "sha256:a9b5c2bae4bc51ba2025e258166a829668b5120f2f7732949876e2ab6436b277"
+      },
+      {
+        "id": 12945906755,
+        "name": "web-part-web-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2-fast",
+        "bytes": 489,
+        "digest": "sha256:fab6113e58a8e67ac07f84396411322b146e90a20bb88168673e754f903ef7ee"
+      },
+      {
+        "id": 12945884264,
+        "name": "flutter-part-flutter-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2-android-kotlin",
+        "bytes": 445,
+        "digest": "sha256:ec635c5b660651f90111802152b3ea6333c253928c5293f40dce488da201cba9"
+      },
+      {
+        "id": 12945873293,
+        "name": "web-part-web-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2-sfu-network",
+        "bytes": 440,
+        "digest": "sha256:020cdda0fdc6c4bf5f80d7d24bb93799202168af0a9470cc1e5696d170db3f77"
+      },
+      {
+        "id": 12945838303,
+        "name": "web-visual-web-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2-browser-content",
+        "bytes": 6098765,
+        "digest": "sha256:cbabf1e83df6b22d63f1c2f411c722fb3ddea01d902231d19e7fb2fba6b34952"
+      },
+      {
+        "id": 12945833373,
+        "name": "web-sfu-web-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2-sfu-network",
+        "bytes": 4973,
+        "digest": "sha256:abbda50e4672e1ddb0d12c42939da4a852ebb11211911f260a6e16383d57fc17"
+      },
+      {
+        "id": 12945793241,
+        "name": "web-part-web-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2-browser-conversations",
+        "bytes": 497,
+        "digest": "sha256:1a37509d31bd2c8bef00e35c5c04da5d075cc21fdd6a504bc81894eb9954f730"
+      },
+      {
+        "id": 12945718806,
+        "name": "web-part-web-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2-browser-shell",
+        "bytes": 418,
+        "digest": "sha256:0231247fa2a5befd154187d32995a3181778293e06f616fca9704fdbe563e6a8"
+      },
+      {
+        "id": 12945687954,
+        "name": "web-visual-web-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2-browser-voice",
+        "bytes": 11436157,
+        "digest": "sha256:c5fa2abe1a0b3962cc744b7ee429c2c540fa610cc5912c34dcda0c7c49252f09"
+      },
+      {
+        "id": 12945633647,
+        "name": "web-visual-web-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2-browser-conversations",
+        "bytes": 10203201,
+        "digest": "sha256:bc1cfca3fe522dfc2e31eb2ce2d4dc2d2a3c50d0a4259121cf62578e92befd7c"
+      },
+      {
+        "id": 12945617815,
+        "name": "actual-sfu-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2",
+        "bytes": 1227,
+        "digest": "sha256:10150e98cf2381c32d881676c9cf0cb6b445e7d785067b52023a5db7ee62c763"
+      },
+      {
+        "id": 12945614223,
+        "name": "backend-load-smoke-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2",
+        "bytes": 25710,
+        "digest": "sha256:96df0c73ff87ba1380be7cf932029e444c0ccfb176cba2b4cdf851c88d99f679"
+      },
+      {
+        "id": 12945498248,
+        "name": "web-fan-in-web-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2",
+        "bytes": 481,
+        "digest": "sha256:7e93b2e8fcbc700ea96e3f19c29db751a43debd7b5a5554efa0abf8417b568a1"
+      },
+      {
+        "id": 12945454415,
+        "name": "web-part-web-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2-browser-content",
+        "bytes": 433,
+        "digest": "sha256:75d0a9360308df11ba72ef0991bc498034386bf282ef52e2d6a5936f50d6f079"
+      },
+      {
+        "id": 12945434620,
+        "name": "backend-part-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2-load",
+        "bytes": 359,
+        "digest": "sha256:b418595fe6a802387dad923cb88fb34a2a0126f9696a20dd7d9f75ac8d0213a7"
+      },
+      {
+        "id": 12945408438,
+        "name": "backend-fan-in-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2",
+        "bytes": 360,
+        "digest": "sha256:32f977ecda070741ec7344ed0dfa25cdd076f8ada6db331acd4908ee242b6cfa"
+      },
+      {
+        "id": 12945368310,
+        "name": "flutter-part-flutter-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2-macos",
+        "bytes": 427,
+        "digest": "sha256:1feafc5b4d89e4eb4b74b73b4eca87be8a7e11f78265bbf97f04e6efee512323"
+      },
+      {
+        "id": 12945362803,
+        "name": "backend-part-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2-static",
+        "bytes": 319,
+        "digest": "sha256:2816c3070c32f0b9ea09aac2c1b7771f78058907cd4830b2009129de18b48a64"
+      },
+      {
+        "id": 12945354597,
+        "name": "backend-events-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2",
+        "bytes": 156243,
+        "digest": "sha256:e81ceb51746b6f3e3a9b38aefbfa054bb35e1d5ec86e0c4fdcd1ef1aba0245d2"
+      },
+      {
+        "id": 12945079355,
+        "name": "web-part-web-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2-browser-voice",
+        "bytes": 509,
+        "digest": "sha256:0ce5e59fd61c3e777fa9d367c3675a10ea74aaa6eb9a44c88a3dec6a2b163abd"
+      },
+      {
+        "id": 12944994889,
+        "name": "flutter-part-flutter-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2-dart",
+        "bytes": 8617,
+        "digest": "sha256:fe168130df09c37c6849bde605f86c6101cd665f4724b45532463d26d3da71ad"
+      },
+      {
+        "id": 12944844559,
+        "name": "macos-unit-flutter-4351e5c9545d6ff09d1e1fb75af527953621c5b8-40981731999-2",
+        "bytes": 1206,
+        "digest": "sha256:9facc17910df28bd937962b4500a09998fa51d4b50453938f1c1e5d68032e247"
+      }
+    ]
+  },
+  "source_verification": {
+    "all13_Git_blob_fingerprints_verified": true,
+    "all12_Dart_test_blobs_equal_root_fa": true,
+    "entire_Flutter_tree_equal_root_fa": true,
+    "registry_LF_SHA256": "2c6a5651528b799513aa8d0cff4db16546803cac4e8122df9c19e6e73d3a4929"
+  },
+  "issue_closure_guard": {
+    "body_Refs609": true,
+    "body_and_all6_full_commit_messages_no_autoclose609": true,
+    "merge_title_will_reference_PR613_only": true,
+    "delete_branch_on_merge": false,
+    "c7c8_exact_counterexample_reachable": true
+  },
+  "native_gate_evidence": "9b2723114194b4dd45cd67c8d7cecd042c68c8e2",
+  "prior_actual_failure_evidence": "96843ce63f293f4122b808d3d1ffd4ee3484a5a9",
+  "complete_prior_attempt_and_full_retry_evidence": "86981fb6ca5bda1f3257b07153b03e9f32c34172",
+  "qualified_physical_baseline611_evidence": "b6c8a7fe8bbb0de64657d2e3ff0430e2151648ac",
+  "limits": [
+    "First attempt executed lifecycle FAIL remains retained with exact failing predicate UNKNOWN; no source/pin/timeout/gate changed before full retry.",
+    "All27 required final attempt jobs SUCCESS; no skipped gate or cherry-picked profiles.",
+    "Dedicated generic Android/iOS runtime staysBLOCKED; full167capture gallery NOT_RUN; component results do not certify native hardware.",
+    "609 staysOPEN until corrected trusted signed latest/older-action/short-voice-IME physical acceptance and cleanup."
+  ]
+}
