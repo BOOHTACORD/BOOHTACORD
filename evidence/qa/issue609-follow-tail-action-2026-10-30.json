@@ -80,5 +80,16 @@
     "Full gallery review, absent Android/iOS QA simulators and all broad platform/security/media gates remain independent NOT_RUN/BLOCKED; no golden approval.",
     "First action prototype keyed viewport by account and reset logout offset; retained existing fence caught it and final viewport keeps its child identity. First anchor probe ignored SelectableText.rich and failed precondition; final probe measures actual visible SelectableText. Earlier analyzer5INFO fixed with braces; finalNoIssues log authoritative.",
     "No Web implementation/protocol/ACL/schema, production fault, audibility/capacity/SLO or43consolidation change."
-  ]
+  ],
+  "integration": {
+    "original_complete_action_source": "fa7129742645902879324f59d9821d41291bda29",
+    "qualified_counterexample_base": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+    "merged_master": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+    "merge_commit": "d8727a81dbb8f3ee972400e2361c14422a0dcf51",
+    "all13_source_LF_fingerprints_unchanged": true,
+    "entire_Flutter_tree_unchanged": true,
+    "original_c7c8_exact_counterexample_reachable": true,
+    "canonical_required_command": "python -m tools.qa.local_features.run --feature auth --feature chat --feature connection_status --feature screen --feature shell --feature support --feature voice --platform android --platform ios --base 6dd79c244e6cbd69bcfbd38a3fcb5727508e0933 --real-stack",
+    "integration_scope": "CI-only merged master; no Dart, test, registry, platform decision or screenshot baseline change."
+  }
 }
