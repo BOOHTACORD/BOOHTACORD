@@ -1,0 +1,49 @@
+{
+  "issue": 579,
+  "pull_request": 614,
+  "status": "FAIL_ACTUAL_NEXT_CAUSE_UNKNOWN",
+  "head_revision": "c04bbd4f3d1d1982c19067daed0b8159cafae38f",
+  "tested_synthetic_merge": "8cb79f6664d29da3a68b89ba8ab92ab3df31b312",
+  "tested_tree": "99d3157338a599fa8795e56ad702468cb24593ad",
+  "run_id": 40989565645,
+  "run_attempt": 1,
+  "failed_job": 123849043856,
+  "retained_artifact": {
+    "id": 12948677902,
+    "bytes": 75660,
+    "sha256": "9e0a7f4e2560c24bc7f3723c4035e3f4984a4a19fd8521369b48f155574d0139",
+    "actual_zip_digest_verified": true
+  },
+  "diagnostic_hashes_verified": [
+    {
+      "path": "diagnostics/next-controller.json",
+      "sha256": "bf1eabd59f5094f2dc071706e32f99887e758d43566e57909ee3018091ff890b"
+    },
+    {
+      "path": "diagnostics/next-browser.json",
+      "sha256": "a0929217cb403bc1ad6dba8f73ae2c8a87f8f965f8998c0245c32fbc3c9d4e6a"
+    },
+    {
+      "path": "diagnostics/next-dom.json",
+      "sha256": "698d2e75ca76b2ec8eaa6bc22e11d8dce802a2d749cc7bae52a6237e0c42acc9"
+    },
+    {
+      "path": "diagnostics/next-browser.png",
+      "sha256": "4f33c162c3f784af3b79b29ce8cb26100f2111b01a9a1dc0d46d639fb11828af"
+    }
+  ],
+  "raw_PNG_published": false,
+  "original_PNG_inspection": "Release agent viewed original1440x900; primary admin remains in voice room; diagnostics capture the primary page rather than the failed secondary login context.",
+  "unchanged_since_master134_trees": {
+    "clients/web": "168d712f9a962f99300f0ec975a4728246c818b4",
+    "tools/qa/next_client_acceptance": "f6d0e51265d2f440d4599317af67dbc158362b3d",
+    "tools/qa/client_lifecycle": "2cdbfba6b5947354454c9d5bc17bdb2870f98c62"
+  },
+  "interpretation": "Failure reaches navigation/cache_acl.mjs:13 awaiting secondary member login. Generic Error/other, browser connected/page open. Exact assertion/predicate and root cause UNKNOWN; no Flutter579/609/transport attribution or unproven infrastructure label.",
+  "next": "Retain complete attempt; one full unchanged-source retry after completion; do not relax source, pins, timeout or gates.",
+  "limits": [
+    "Original FAIL and cleanup remain immutable even if retry passes.",
+    "No production/browser/device actions; all actual runner work occurred in its owned hosted disposable VM.",
+    "Physical579 remains pending;609 completed scoped acceptance is independent."
+  ]
+}
