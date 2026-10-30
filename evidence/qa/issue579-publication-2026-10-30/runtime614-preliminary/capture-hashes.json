@@ -1,0 +1,44 @@
+{
+  "captures": [
+    {
+      "alias": "capture-1",
+      "SHA256": "174bcfc9950542a2ae48e45ad13cd67ba9d38379fc0d83a5703590546b5a2e5b",
+      "actual_encoding": "JPEG",
+      "stored_suffix": ".png",
+      "dimensions": [
+        1331,
+        1155
+      ],
+      "source_exe_SHA256": "9540d2b1f7f18af24186a585b104ae98bffa401083ca2d8dbdb5dcaf7bcd50ea",
+      "scope": "legacy-r61-diagnostic"
+    },
+    {
+      "alias": "capture-2",
+      "SHA256": "528d76da75add4f50453df9855ffc3bd6465738c67164b95511f94bd5a334fb3",
+      "actual_encoding": "JPEG",
+      "stored_suffix": ".png",
+      "dimensions": [
+        1432,
+        896
+      ],
+      "source_exe_SHA256": "6c3ae09741afc95c8856c5f66491dfb3b7dd4e590b0f0092cd5cffa766061de9",
+      "scope": "candidate-r62"
+    },
+    {
+      "alias": "capture-3",
+      "SHA256": "bf2d559b96335d6379e5b77a2269aa2c7c365dd9543c567eb411c4393b218ff8",
+      "actual_encoding": "JPEG",
+      "stored_suffix": ".png",
+      "dimensions": [
+        1432,
+        896
+      ],
+      "source_exe_SHA256": "6c3ae09741afc95c8856c5f66491dfb3b7dd4e590b0f0092cd5cffa766061de9",
+      "scope": "candidate-r62"
+    }
+  ],
+  "raw_media_published": false,
+  "independent_raw_media_reread_by_release_agent": true,
+  "provenance": "Root captured/reviewed evidence. Release agent verified immutable JSON hashes and all3exact private capture hashes/JPEG encodings/dimensions without rendering/export. Manifest names are logical aliases, not raw paths.",
+  "collector_diagnostic": "Initial PNG-header assertion failed before write. Actual raw encoding is JPEG despite .png suffix; raw bytes were not converted or rewritten. This is a collector diagnostic, not a product/image failure."
+}

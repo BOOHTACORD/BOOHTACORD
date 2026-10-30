@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "issue": 579,
+  "at_utc": "2026-10-30T04:32:53.320605+00:00",
+  "status": "BLOCKED_PAIRED_NATIVE_AND_PENDING_SECURITY_MODAL",
+  "source_revision": "a97030059fcddd5d76b9b256007144d507f4b279",
+  "candidate_PE_SHA256": "6c3ae09741afc95c8856c5f66491dfb3b7dd4e590b0f0092cd5cffa766061de9",
+  "identity": {
+    "arch": "x64",
+    "channel": "stable",
+    "distribution": "direct",
+    "native_build": "83",
+    "platform": "windows",
+    "release_id": "windows-direct-stable-r62",
+    "release_order": 62,
+    "version": "1.0.47"
+  },
+  "signing": {
+    "status": "unsigned"
+  },
+  "protected_run": {
+    "run_id": 40993187039,
+    "run_attempt": 1
+  },
+  "sourcebound_launch": {
+    "status": "PASS_LAUNCH_ONLY",
+    "owner": "root",
+    "method": "Supported Sky process:<preverified executable> plus root CIM/executable-hash readback",
+    "process_path_and_fresh_PE_bound": true,
+    "application_UI_rendered": true,
+    "existing_account_reused_by_application": true,
+    "authentication_dialog_automated": false
+  },
+  "voice_UI": {
+    "root_selected_existing_QA_room": true,
+    "root_selected_connect_without_microphone": true,
+    "observed_behind_Windows_Firewall_modal": "Connected label,one participant,microphone muted",
+    "unobstructed_transport_or_media_PASS": false
+  },
+  "paired_acceptance": {
+    "phone": "UNAVAILABLE_EXPLICIT_USER_REPORT",
+    "first_decoded_frame": "BLOCKED",
+    "first_presented_frame": "BLOCKED",
+    "stop_restart": "BLOCKED",
+    "repeated_Watch": "BLOCKED",
+    "phone_actions": 0,
+    "screen_publications": 0,
+    "Watch_attempts": 0
+  },
+  "security_modal": {
+    "manual_user_decision": "PENDING",
+    "root_input_after_hard_ComputerUse_deny": "STOPPED",
+    "Allow_actions": 0,
+    "Cancel_actions": 0,
+    "security_settings_actions": 0,
+    "agent_security_bypass": false
+  },
+  "cleanup": {
+    "extra_owned_legacy_instance_closed_by_root_supported_UI_and_absent_on_readback": true,
+    "original_user_process_and_EXE_unchanged": true,
+    "candidate_still_running_at_receipt": true,
+    "candidate_room_leave_and_close": "PENDING_MANUAL_MODAL_COMPLETION",
+    "full_cleanup": "NOT_CLAIMED",
+    "screen_share_attempts": 0,
+    "chat_messages_sent": 0,
+    "files_uploaded": 0,
+    "stable_install_or_promotion": false
+  },
+  "sets": [
+    {
+      "protects": "Correct candidate identity rather than installed legacy binary",
+      "command": "Root supported Sky process:<preverified executable>; root CIM/hash readback",
+      "platform": "Physical Windows11 native r62",
+      "mandatory_when": "Before native579 runtime claims",
+      "result": "PASS_SOURCEBOUND_LAUNCH_ONLY",
+      "where": "Immutable root runtime receipt and preflight hash below"
+    },
+    {
+      "protects": "Do not infer usable transport/media from an occluded UI label",
+      "command": "Root visible UI observation only; input STOP at Windows Firewall security prompt",
+      "platform": "Same candidate behind security modal",
+      "mandatory_when": "Before voice/media acceptance",
+      "result": "UI_OBSERVATION_ONLY; manual decision PENDING",
+      "where": "Root capture manifest hashes below"
+    },
+    {
+      "protects": "Actual paired firstframe,stoprestart,reWatch acceptance",
+      "command": "NOT_RUN: user reports physical phone unavailable",
+      "platform": "Physical Android\u2192Windows pair",
+      "mandatory_when": "579 physical closure",
+      "result": "BLOCKED; no phone/publication/Watch actions",
+      "where": "This bounded checkpoint"
+    },
+    {
+      "protects": "Preserve original process and report unfinished own-session cleanup",
+      "command": "Root supported UI closed only extra legacy instance; candidate leave/close waits for manual modal completion",
+      "platform": "Same physical Windows host",
+      "mandatory_when": "After QA launch/join",
+      "result": "Original unchanged; candidate cleanup PENDING",
+      "where": "Root preliminary receipt"
+    }
+  ],
+  "launch_diagnostic": {
+    "raw_path_attempt_started_legacy_instance": true,
+    "supported_process_prefix_retry_started_verified_r62": true,
+    "exact_wrong_path_cause": "UNKNOWN",
+    "source_inspection": "No authored redirect found in selected a970 startup edges; opaque SDK/plugin/launch resolution not proven."
+  },
+  "limits": [
+    "Issue579 staysOPEN; no checkbox/closure/newCI/deploy request accompanies this record.",
+    "Source-bound launch and occluded voice labels do not prove first frame,transport,media quality,audibility or a platform-wide PASS.",
+    "Candidate leave/close and full cleanup remain PENDING; do not infer cleanup from removal of the extra wrong-path legacy instance.",
+    "No raw JPEG,private executable/process path,PID/window identifier,account/chat content,credentials or cookies are published.",
+    "Root executed UI/runtime/preflight; release agent only verified JSON hashes and creates this safe projection."
+  ]
+}
