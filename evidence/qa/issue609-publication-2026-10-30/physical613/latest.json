@@ -1,0 +1,163 @@
+{
+  "status": "PASS_SCOPED_NATIVE_INCOMING_LATEST_DRAFT",
+  "at_utc": "2026-10-30T01:52:12.140170+00:00",
+  "source_revision": "134382700eed2408644695e5298e64e60d3abf59",
+  "apk_sha256": "1fb4f547ebeaead45d8c024ecf10f718bd517c84494c70aeeebb7ba57789c567",
+  "POST_attempts": 1,
+  "DELETE_attempts": 1,
+  "native_Send_attempts": 0,
+  "native_jump_attempts": 0,
+  "UI_inputs_after_POST_before_poll_capture": 0,
+  "captures": [
+    {
+      "name": "latest-before",
+      "raster": [
+        1080,
+        2340
+      ],
+      "SHA256": "0235f1cf5387f6f21e0752f02d3eab46179e406b8d3867b232ddab268fe98ba5"
+    },
+    {
+      "name": "latest-incoming",
+      "raster": [
+        1080,
+        2340
+      ],
+      "SHA256": "8b6d05b28a04ded40e01cff47a6096ee8417493aea69c9bb1d35b9d436ac3f41"
+    }
+  ],
+  "boundary_samples": [
+    {
+      "swipe": 1,
+      "unchanged": false,
+      "before_SHA256": "eefb7a699aca853b840a11147dd5a58c75b82265011da0008e3b05cb95ec0648",
+      "after_SHA256": "12e8ea7753e3b2d73d3dfdb14e95b192a93fdbaea640999788ca978ffc56486d"
+    },
+    {
+      "swipe": 2,
+      "unchanged": false,
+      "before_SHA256": "12e8ea7753e3b2d73d3dfdb14e95b192a93fdbaea640999788ca978ffc56486d",
+      "after_SHA256": "f8c5c5ce5d353f865b098f5a84fee8b700f596f644be9b8050ec601c4249e28c"
+    },
+    {
+      "swipe": 3,
+      "unchanged": false,
+      "before_SHA256": "f8c5c5ce5d353f865b098f5a84fee8b700f596f644be9b8050ec601c4249e28c",
+      "after_SHA256": "734943a11173c196dd3d9a9d1692043dae9e0ef154e4c20b26c9f3cc437c337a"
+    },
+    {
+      "swipe": 4,
+      "unchanged": false,
+      "before_SHA256": "734943a11173c196dd3d9a9d1692043dae9e0ef154e4c20b26c9f3cc437c337a",
+      "after_SHA256": "f7e2e46d6485339d273f6f655f6e65b7561ba4fdadf6e2943cf172b42a01c40f"
+    },
+    {
+      "swipe": 5,
+      "unchanged": true,
+      "before_SHA256": "f7e2e46d6485339d273f6f655f6e65b7561ba4fdadf6e2943cf172b42a01c40f",
+      "after_SHA256": "f7e2e46d6485339d273f6f655f6e65b7561ba4fdadf6e2943cf172b42a01c40f"
+    },
+    {
+      "swipe": 6,
+      "unchanged": true,
+      "before_SHA256": "f7e2e46d6485339d273f6f655f6e65b7561ba4fdadf6e2943cf172b42a01c40f",
+      "after_SHA256": "f7e2e46d6485339d273f6f655f6e65b7561ba4fdadf6e2943cf172b42a01c40f"
+    }
+  ],
+  "created_HTTP": 201,
+  "exact_incoming_passively_visible": true,
+  "poll_upper_ms": 2641,
+  "draft_preserved": true,
+  "jump_hidden_at_latest": true,
+  "only_owned_fixture_deleted_blank_tombstone": true,
+  "only_new_owned_session_revoked": true,
+  "HTTP": [
+    {
+      "alias": "owned MEMBER login",
+      "method": "POST",
+      "HTTP": 204,
+      "at_utc": "2026-10-30T01:53:17.175909+00:00",
+      "response_bytes": 0,
+      "finished_at_utc": "2026-10-30T01:53:17.277942+00:00"
+    },
+    {
+      "alias": "own B session guard",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-30T01:53:17.292442+00:00",
+      "response_bytes": 91,
+      "finished_at_utc": "2026-10-30T01:53:17.315445+00:00"
+    },
+    {
+      "alias": "existing own pair binding",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-30T01:53:17.331451+00:00",
+      "response_bytes": 978,
+      "finished_at_utc": "2026-10-30T01:53:17.358960+00:00"
+    },
+    {
+      "alias": "preexisting message exclusion",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-30T01:53:17.373470+00:00",
+      "response_bytes": 16814,
+      "finished_at_utc": "2026-10-30T01:53:17.404489+00:00"
+    },
+    {
+      "alias": "one own incoming fixture",
+      "method": "POST",
+      "HTTP": 201,
+      "at_utc": "2026-10-30T01:53:17.420499+00:00",
+      "response_bytes": 321,
+      "finished_at_utc": "2026-10-30T01:53:17.496509+00:00"
+    },
+    {
+      "alias": "resolve only new own fixture",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-30T01:53:20.676976+00:00",
+      "response_bytes": 16833,
+      "finished_at_utc": "2026-10-30T01:53:20.704975+00:00"
+    },
+    {
+      "alias": "delete only own new fixture",
+      "method": "DELETE",
+      "HTTP": 204,
+      "at_utc": "2026-10-30T01:53:20.720478+00:00",
+      "response_bytes": 0,
+      "finished_at_utc": "2026-10-30T01:53:20.765494+00:00"
+    },
+    {
+      "alias": "exact blank tombstone",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-30T01:53:20.781000+00:00",
+      "response_bytes": 6766,
+      "finished_at_utc": "2026-10-30T01:53:20.808515+00:00"
+    },
+    {
+      "alias": "logout only new owned session",
+      "method": "POST",
+      "HTTP": 204,
+      "at_utc": "2026-10-30T01:53:20.823019+00:00",
+      "response_bytes": 0,
+      "finished_at_utc": "2026-10-30T01:53:20.851024+00:00"
+    },
+    {
+      "alias": "own revocation readback",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-30T01:53:20.865029+00:00",
+      "response_bytes": 24,
+      "finished_at_utc": "2026-10-30T01:53:20.886529+00:00"
+    }
+  ],
+  "only_owned_draft_cleared_voice_idle": true,
+  "finished_at_utc": "2026-10-30T01:53:32.639573+00:00",
+  "limits": [
+    "Exact incoming visibility within bounded UI polling; not calibrated latency, raw WebSocket transport or an SLO.",
+    "Own draft preserved; native text-selection across append NOT_RUN.",
+    "No native Send, voice join, Windows/browser input, production fault or refresh."
+  ]
+}

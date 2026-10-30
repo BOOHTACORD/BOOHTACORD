@@ -1,0 +1,44 @@
+{
+  "at_utc": "2026-10-30T01:51:05.167671+00:00",
+  "source_revision": "134382700eed2408644695e5298e64e60d3abf59",
+  "run_id": 40985840599,
+  "run_attempt": 1,
+  "artifact_id": 12947667510,
+  "apk_sha256": "1fb4f547ebeaead45d8c024ecf10f718bd517c84494c70aeeebb7ba57789c567",
+  "prior_apk_sha256": "14fc53a05c2e92314f964147bb1e1c6331513fe4e87ff09daaf8a9910da60d42",
+  "certificate_sha256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+  "independently_verified_test_source_hashes": 13,
+  "includes_merged610_and607_by_ancestry": true,
+  "permissions_before": {
+    "android.permission.RECORD_AUDIO": {
+      "granted": true,
+      "flags": " USER_SET|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED"
+    },
+    "android.permission.POST_NOTIFICATIONS": {
+      "granted": true,
+      "flags": " USER_SET|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED"
+    }
+  },
+  "install_command": "adb -s <authorized-device> install -r <verified signed ARM64 APK>",
+  "data_clear": false,
+  "permission_grant_flag": false,
+  "status": "PASS_INSTALL_SOURCE_BINDING_PHYSICAL_SCENARIO_PENDING",
+  "approved_Flutter_source": "fa7129742645902879324f59d9821d41291bda29",
+  "entire_Flutter_tree_matches_approved": "09f170b4fbe900feee4dd373281b09a09f96d640",
+  "replacement_install_success": true,
+  "fresh_installed_pull_matches_candidate": true,
+  "permissions_after": {
+    "android.permission.RECORD_AUDIO": {
+      "granted": true,
+      "flags": " USER_SET|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED"
+    },
+    "android.permission.POST_NOTIFICATIONS": {
+      "granted": true,
+      "flags": " USER_SET|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED"
+    }
+  },
+  "permission_grants_and_flags_preserved": true,
+  "foreground_app_verified": true,
+  "version_code": 2083,
+  "finished_at_utc": "2026-10-30T01:51:13.865466+00:00"
+}

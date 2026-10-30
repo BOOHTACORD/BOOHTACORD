@@ -1,0 +1,197 @@
+{
+  "issue": 609,
+  "status": "PASS_SCOPED_SIGNED_SAMSUNG_ALL_ISSUE609_FACETS",
+  "source_revision": "134382700eed2408644695e5298e64e60d3abf59",
+  "apk_SHA256": "1fb4f547ebeaead45d8c024ecf10f718bd517c84494c70aeeebb7ba57789c567",
+  "device": "Samsung SM-A576B Android16/API36, physical USB device, Gboard, default100% font/density450",
+  "source_binding": "Ordinary adb install -r, no data clear/-g/-d. Root independent cert/manifest/contract/run+attempt/protected assets/13GitLF source hashes; entire Flutter tree matches approved fa712974. Fresh installed pull SHA and final on-device SHA match.",
+  "sets": [
+    {
+      "protects": "Incoming DM at latest becomes fully visible without UI input and preserves nonempty own draft.",
+      "command": "python -X utf8 .out/issue609/latest.py final613-latest-draft .out/issue609/final613/install.json",
+      "platform": "Actual signed Android Samsung/Gboard/production existing owned pair",
+      "mandatory_when": "Incoming follow-tail changes or609 row1 closure",
+      "result": "PASS:6boundary swipes,last2unchanged;exact incoming visible first bounded UI poll2641ms,0inputs afterPOST,18char draft preserved;no nativeSend.",
+      "where": "runs/final613-latest-draft/result.json and2private ORIGINAL PNGs"
+    },
+    {
+      "protects": "Reading older history keeps visible old-row anchor and draft; explicit native action reaches exact new incoming.",
+      "command": "python -X utf8 .out/issue609/older.py final613-older-jump .out/issue609/final613/install.json",
+      "platform": "Same actual signed Android/device/pair",
+      "mandatory_when": "Older-history/jump/scroll changes or609 row2 closure",
+      "result": "PASS:anchor physicaly993->993,draft18chars exact;no unsolicited jump in bounded14953ms UI poll. Root reviewed Before+incoming then approved exactly1tap on freshly observed action. Exact incoming becomes fullyvisible,action hides,draft preserved.",
+      "where": "runs/final613-older-jump/result.json and3private ORIGINAL PNGs"
+    },
+    {
+      "protects": "Follow/jump footer cannot cover Send/Leave/voice status during Gboard and rotation.",
+      "command": "Join only approved SHARE_TEST via guarded native observed drawer, reopen ownDM; python -X utf8 .out/issue609/final613/physical.py",
+      "platform": "Same Samsung,actual LiveKit voiceUI/Gboard,portrait+2340x1080landscape",
+      "mandatory_when": "New DM footer/viewport or short voice/IME layout changes",
+      "result": "PASS:7states,Send/Leave overlap0,full status+SHARE_TEST+count+RTT readable;18char draft survives hide/show/rotation;newaction hides in both tiny-landscapeIME states;no Send.",
+      "where": "final613/geometry.json and7private ORIGINAL PNGs"
+    },
+    {
+      "protects": "Exact own fixture/session cleanup and restoration of device state.",
+      "command": "python -X utf8 .out/issue609/final_phone_state.py .out/issue609/final613/install.json final613-final-phone-state",
+      "platform": "Same physical device and normal owned MEMBER HTTPS sessions",
+      "mandatory_when": "After each physical mutation and before issue closure",
+      "result": "PASS:2newincoming fixtures exact DELETE204->blank tombstones/attachments[];2newB sessions logout204->authenticatedfalse;onlyown drafts cleared;phonevoiceidle/Projectionnull/portraitrotation1,0/permissiongrants+flagsunchanged;installedSHA still1fb4.",
+      "where": "Both native result.json HTTP aliases and final613-final-phone-state.json"
+    }
+  ],
+  "baseline_counterexamples": {
+    "safe_summary": "baseline611-qualified-summary.json",
+    "SHA256": "c88908c43c2d2f0ddd37781aa66e705571b3ed4bd34d9222deef883108bfc955",
+    "source": "d9f15abb995cffaa7375975543ae934ad8be2d0d",
+    "apk": "14fc53a05c2e92314f964147bb1e1c6331513fe4e87ff09daaf8a9910da60d42",
+    "result": "Same physical device:latest+draft RED18.250s no visible incoming->one scroll reveals;older anchor/draft retained but explicit action absent. Both owned cleanupsPASS. First older harness precondition0POST retained."
+  },
+  "typed_source_regressions": "16focused/152nearest0skip,exact-target analysisNoIssues; pinned original d9 append1FAIL1PASS and c7c8 action6FAIL with byte-exact restoration; final12Dart/test hashes unchanged through merged134. Source/canonical/CI proofs retained separately by releaseagent.",
+  "visual_review": {
+    "reviewed_by": "root",
+    "resolution": "All13 ORIGINAL PNGs,1080x2340portrait/2340x1080landscape",
+    "observations": [
+      "Before/latest incoming shifts history to fully visible exact body without UI input, editor draft remains.",
+      "Older Before/incoming keeps same author/time/deleted-row position and draft; footer clearly readable above editor. After1actualtap exact new incoming is fully visible, footer gone and draft same.",
+      "All7voice/IME views have readable full voice state,SHARE_TEST/participant/RTT and controls. Footer stays in its own space when usable; hides in tiny landscapeIME. Send/Leave remain separate and above actual Gboard."
+    ]
+  },
+  "verified_capture_hashes": [
+    {
+      "path": "runs\\final613-latest-draft\\latest-before.png",
+      "SHA256": "0235f1cf5387f6f21e0752f02d3eab46179e406b8d3867b232ddab268fe98ba5",
+      "raster": [
+        1080,
+        2340
+      ]
+    },
+    {
+      "path": "runs\\final613-latest-draft\\latest-incoming.png",
+      "SHA256": "8b6d05b28a04ded40e01cff47a6096ee8417493aea69c9bb1d35b9d436ac3f41",
+      "raster": [
+        1080,
+        2340
+      ]
+    },
+    {
+      "path": "runs\\final613-older-jump\\older-before.png",
+      "SHA256": "d67adffc04fd8bc08c78ac814ea0229aad078294b4b21e6d28a44df9605f2a76",
+      "raster": [
+        1080,
+        2340
+      ]
+    },
+    {
+      "path": "runs\\final613-older-jump\\older-incoming.png",
+      "SHA256": "95b44cd4a9a72c66fa5bdb699488f3de9b1dac5afa801cbfd80af531aff8a041",
+      "raster": [
+        1080,
+        2340
+      ]
+    },
+    {
+      "path": "runs\\final613-older-jump\\older-after-jump.png",
+      "SHA256": "76e2824b122289167bfebbcb77092881f5834e4a164cbe01d95293ef67e55d3d",
+      "raster": [
+        1080,
+        2340
+      ]
+    },
+    {
+      "path": "final613\\geometry-portrait-before.png",
+      "SHA256": "fd9e8856db2ab8df07d5e797adc9382642cc999d4b46df3a603422af2ed90c1a",
+      "raster": [
+        1080,
+        2340
+      ]
+    },
+    {
+      "path": "final613\\geometry-portrait-ime.png",
+      "SHA256": "fa4afadc1de93d29d8431fff12a0496dfdc6c374e3c31aa042a8b9ff73ea0858",
+      "raster": [
+        1080,
+        2340
+      ]
+    },
+    {
+      "path": "final613\\geometry-landscape-ime.png",
+      "SHA256": "4b902cbd2b441434321b49ff2d30c50b612a738445e90a1e43748e86841ff15b",
+      "raster": [
+        2340,
+        1080
+      ]
+    },
+    {
+      "path": "final613\\geometry-landscape-back.png",
+      "SHA256": "bc444393dea61079e973c55b22b17d56000f32628683387b65f794e8e2362657",
+      "raster": [
+        2340,
+        1080
+      ]
+    },
+    {
+      "path": "final613\\geometry-landscape-ime-reshown.png",
+      "SHA256": "d357c892e156f1a883e55fcaeaf8261f826b4fe122b106568fc96fcea257d427",
+      "raster": [
+        2340,
+        1080
+      ]
+    },
+    {
+      "path": "final613\\geometry-portrait-restored.png",
+      "SHA256": "9b180b1cea7a029c5eab68340ea9f85941a4c8a85b4eaf3c42f2eb3279a41d7d",
+      "raster": [
+        1080,
+        2340
+      ]
+    },
+    {
+      "path": "final613\\geometry-portrait-ime-reshown.png",
+      "SHA256": "9f0d6e187967c6b99ff6a0cc737c87df7ed35dd0407889ac468f291c9810f258",
+      "raster": [
+        1080,
+        2340
+      ]
+    },
+    {
+      "path": "final613\\preflight.png",
+      "SHA256": "8d5a202d4298be8d339281dfa94e38e51fc14db708332d90b3cda0f358c937de",
+      "raster": [
+        1080,
+        2340
+      ]
+    }
+  ],
+  "artifact_SHA256": {
+    "final613\\install.json": "807b6566c96a74eedc1ddd158184b6f73d3cd65f0bf8c08f200f6118afbcd119",
+    "runs\\final613-latest-draft\\result.json": "c61833ac7a4df6fb07814f05f22199af6c70ee31d2ae5046d2862051679020f8",
+    "runs\\final613-older-jump\\result.json": "c0864e9c8b9d22122b7da9d551e961d613188a54bfc3378b95fddcdad96d025a",
+    "final613\\geometry.json": "88bc41e85e34956b4e059e3319c4409f9be6702d4ca4f4eaff66dcf32540321e",
+    "final613-final-phone-state.json": "0a60fff51f62caf8fc5a0ddc243b1277596e5ff1abe74682fe162078524d6b68"
+  },
+  "controller_SHA256": {
+    "latest.py": "6173c534af7de6fb7c27f490594fb5ea879744ad6722d92bbedf0e62e3738494",
+    "older.py": "d669121d5c04db80660f5aabd7d0ac69af3e1b38c42aa3b91ef87aa6a7801e1e",
+    "native_guard.py": "f485cb9d48e9e783fc83b72498e2cbdb805523522ab07ecc78b7595b9f0398c0",
+    "owned_peer.py": "f304b15d7c9585168ef5b874f7edf3faefcc892ed42b7243916a918884ec3d53",
+    "final613/install.py": "be49b538dc571a8a0e97b2d9efad3ddd4bcb46c4e6d119d6e132cbab64f174e4",
+    "final613/physical.py": "6db35ac95b90dd4fd1c0e910a4225fc6e84c65163e84260f762008a8cc463754",
+    "final_phone_state.py": "7662b1dda89c333b24bf62e2020a2bc4e168dee7e1ff07d5e02012974dc908dc"
+  },
+  "backend_context": {
+    "where": "candidate/public-candidate613.json",
+    "SHA256": "4839b912cbc1465d642883fe982f5cff7e657c4f80893cce925f93a621833941",
+    "fresh_public_Web_source": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+    "fresh_public_API_health": "HTTP200/statusok; API revision NOT PUBLISHED by health",
+    "last_trusted_remote_API_source": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933; previous deploy40980532015, distinguished from fresh health",
+    "native134_delivery": "native-only installSKIP; no claim that API source134 was deployed"
+  },
+  "limits": [
+    "UI poll2641ms and14953ms are observed bounds, not calibrated latency/SLO or direct transport timing.",
+    "Physical text draft and old-row anchor proved; native selection across jump NOT_RUN. Typed widget selection/keyboard cases are separate.",
+    "Voice UI/layout only: audibility/media quality/capacity/nativeWindows/Apple NOT_RUN; no production fault/load or43consolidation.",
+    "Canonical missing Android/iOS simulator targets and full gallery remain BLOCKED/NOT_RUN independently; actual signed Samsung proof closes only narrow609 criteria.",
+    "FirstPR613 lifecycle CI attemptFAIL UNKNOWN remains immutable; complete same-source attempt2all27PASS/master11/protectedAndroid6 proofs separate.",
+    "Raw13PNGs,privatefixtures/IDs/credentials/cookies/APK files excluded from public JSON; publish only safe receipts/hashes."
+  ]
+}

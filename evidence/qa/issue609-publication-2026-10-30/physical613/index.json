@@ -1,0 +1,52 @@
+{
+  "issue": 609,
+  "status": "PASS_SCOPED_ACCEPTANCE_READY_FOR_CLOSURE",
+  "source_revision": "134382700eed2408644695e5298e64e60d3abf59",
+  "apk_SHA256": "1fb4f547ebeaead45d8c024ecf10f718bd517c84494c70aeeebb7ba57789c567",
+  "root_original_visual_reviews": 13,
+  "actual_private_PNG_hashes_and_dimensions_verified": 13,
+  "actual_safe_receipt_hashes_verified": 5,
+  "actual_controller_hashes_verified": 7,
+  "backend_context_hash_verified": true,
+  "files": {
+    "acceptance.json": {
+      "original_raw_SHA256": "20dda041a7ffeea5bf8f51a2c8d20f9b0a6ecdaacafa29a23aac987089914319",
+      "published_Git_LF_SHA256": "cf25a3445b17cdc105a05fe342a01eb0c7bbc745534dde76e09c281f49484d39",
+      "bytes": 10403
+    },
+    "install.json": {
+      "original_raw_SHA256": "807b6566c96a74eedc1ddd158184b6f73d3cd65f0bf8c08f200f6118afbcd119",
+      "published_Git_LF_SHA256": "8e01d0ef51d7b505f96ca7b36e67d092d04763d6f0b455ca0fc914bded2df403",
+      "bytes": 1869
+    },
+    "latest.json": {
+      "original_raw_SHA256": "c61833ac7a4df6fb07814f05f22199af6c70ee31d2ae5046d2862051679020f8",
+      "published_Git_LF_SHA256": "576fe90b65a9c743a898de9e3a83e22343f1ca5b93775f8880cff1e2f5833e96",
+      "bytes": 5302
+    },
+    "older-jump.json": {
+      "original_raw_SHA256": "c0864e9c8b9d22122b7da9d551e961d613188a54bfc3378b95fddcdad96d025a",
+      "published_Git_LF_SHA256": "4b88a985a499eb30b2409fb8dd9f1ef893ddec5983c3fec6c36a164cfefec71f",
+      "bytes": 4291
+    },
+    "geometry.json": {
+      "original_raw_SHA256": "88bc41e85e34956b4e059e3319c4409f9be6702d4ca4f4eaff66dcf32540321e",
+      "published_Git_LF_SHA256": "c3476e2362be7de3fb199dbde9077364732ceee549ae95026133b7e7c76d7e41",
+      "bytes": 3991
+    },
+    "final-phone-state.json": {
+      "original_raw_SHA256": "0a60fff51f62caf8fc5a0ddc243b1277596e5ff1abe74682fe162078524d6b68",
+      "published_Git_LF_SHA256": "43856f8d188be23eb0cc2c5d0640510190bc2d09bd3cd8322272b28f3677e628",
+      "bytes": 567
+    }
+  },
+  "scope": "Root executed actual device QA; release agent independently verified immutable artifacts and publishes safe JSON only.",
+  "limits": [
+    "UI poll2641ms and14953ms are observed bounds, not calibrated latency/SLO or direct transport timing.",
+    "Physical text draft and old-row anchor proved; native selection across jump NOT_RUN. Typed widget selection/keyboard cases are separate.",
+    "Voice UI/layout only: audibility/media quality/capacity/nativeWindows/Apple NOT_RUN; no production fault/load or43consolidation.",
+    "Canonical missing Android/iOS simulator targets and full gallery remain BLOCKED/NOT_RUN independently; actual signed Samsung proof closes only narrow609 criteria.",
+    "FirstPR613 lifecycle CI attemptFAIL UNKNOWN remains immutable; complete same-source attempt2all27PASS/master11/protectedAndroid6 proofs separate.",
+    "Raw13PNGs,privatefixtures/IDs/credentials/cookies/APK files excluded from public JSON; publish only safe receipts/hashes."
+  ]
+}

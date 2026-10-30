@@ -1,0 +1,144 @@
+{
+  "status": "PASS_SCOPED_NATIVE_OLDER_ANCHOR_DRAFT_EXPLICIT_ACTION",
+  "at_utc": "2026-10-30T01:53:53.489055+00:00",
+  "source_revision": "134382700eed2408644695e5298e64e60d3abf59",
+  "apk_sha256": "1fb4f547ebeaead45d8c024ecf10f718bd517c84494c70aeeebb7ba57789c567",
+  "POST_attempts": 1,
+  "DELETE_attempts": 1,
+  "native_Send_attempts": 0,
+  "native_jump_attempts": 1,
+  "captures": [
+    {
+      "name": "older-before",
+      "raster": [
+        1080,
+        2340
+      ],
+      "SHA256": "d67adffc04fd8bc08c78ac814ea0229aad078294b4b21e6d28a44df9605f2a76"
+    },
+    {
+      "name": "older-incoming",
+      "raster": [
+        1080,
+        2340
+      ],
+      "SHA256": "95b44cd4a9a72c66fa5bdb699488f3de9b1dac5afa801cbfd80af531aff8a041"
+    },
+    {
+      "name": "older-after-jump",
+      "raster": [
+        1080,
+        2340
+      ],
+      "SHA256": "76e2824b122289167bfebbcb77092881f5834e4a164cbe01d95293ef67e55d3d"
+    }
+  ],
+  "anchor_before_top": 993,
+  "created_HTTP": 201,
+  "poll_upper_ms": 14953,
+  "incoming_passively_visible_while_older": false,
+  "anchor_after_top": 993,
+  "anchor_preserved": true,
+  "draft_preserved": true,
+  "jump_action_available": true,
+  "jump_bounds_before_review": [
+    360,
+    1955,
+    1069,
+    2090
+  ],
+  "exact_incoming_visible_after_jump": true,
+  "jump_hidden_at_latest": true,
+  "draft_preserved_after_jump": true,
+  "only_owned_fixture_deleted_blank_tombstone": true,
+  "only_new_owned_session_revoked": true,
+  "HTTP": [
+    {
+      "alias": "owned MEMBER login",
+      "method": "POST",
+      "HTTP": 204,
+      "at_utc": "2026-10-30T01:54:15.079248+00:00",
+      "response_bytes": 0,
+      "finished_at_utc": "2026-10-30T01:54:15.199787+00:00"
+    },
+    {
+      "alias": "own B session guard",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-30T01:54:15.221795+00:00",
+      "response_bytes": 91,
+      "finished_at_utc": "2026-10-30T01:54:15.249331+00:00"
+    },
+    {
+      "alias": "existing own pair binding",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-30T01:54:15.272342+00:00",
+      "response_bytes": 978,
+      "finished_at_utc": "2026-10-30T01:54:15.307866+00:00"
+    },
+    {
+      "alias": "preexisting message exclusion",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-30T01:54:15.327880+00:00",
+      "response_bytes": 16814,
+      "finished_at_utc": "2026-10-30T01:54:15.360881+00:00"
+    },
+    {
+      "alias": "one own incoming fixture",
+      "method": "POST",
+      "HTTP": 201,
+      "at_utc": "2026-10-30T01:54:15.380884+00:00",
+      "response_bytes": 321,
+      "finished_at_utc": "2026-10-30T01:54:15.424799+00:00"
+    },
+    {
+      "alias": "resolve only new own fixture",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-30T01:55:23.760702+00:00",
+      "response_bytes": 16833,
+      "finished_at_utc": "2026-10-30T01:55:23.798711+00:00"
+    },
+    {
+      "alias": "delete only own new fixture",
+      "method": "DELETE",
+      "HTTP": 204,
+      "at_utc": "2026-10-30T01:55:23.813712+00:00",
+      "response_bytes": 0,
+      "finished_at_utc": "2026-10-30T01:55:23.870225+00:00"
+    },
+    {
+      "alias": "exact blank tombstone",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-30T01:55:23.885730+00:00",
+      "response_bytes": 6766,
+      "finished_at_utc": "2026-10-30T01:55:23.937761+00:00"
+    },
+    {
+      "alias": "logout only new owned session",
+      "method": "POST",
+      "HTTP": 204,
+      "at_utc": "2026-10-30T01:55:23.953771+00:00",
+      "response_bytes": 0,
+      "finished_at_utc": "2026-10-30T01:55:23.991284+00:00"
+    },
+    {
+      "alias": "own revocation readback",
+      "method": "GET",
+      "HTTP": 200,
+      "at_utc": "2026-10-30T01:55:24.006785+00:00",
+      "response_bytes": 24,
+      "finished_at_utc": "2026-10-30T01:55:24.031788+00:00"
+    }
+  ],
+  "only_owned_draft_cleared_voice_idle": true,
+  "finished_at_utc": "2026-10-30T01:55:35.883538+00:00",
+  "limits": [
+    "Bounded UI visibility and exact owned fixture; not calibrated latency or raw WebSocket transport proof.",
+    "Native selection across action NOT_RUN; text draft and visible old-row anchor are checked.",
+    "No native Send, voice join, browser/Windows input or production fault."
+  ]
+}
