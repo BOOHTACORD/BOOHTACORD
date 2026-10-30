@@ -1,0 +1,254 @@
+{
+  "schema_version": 1,
+  "issue": 610,
+  "pull_request": 612,
+  "status": "PASS_ACTUAL_NATIVE_ONLY_WORKFLOW_QUALIFICATION",
+  "controller_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+  "producer_source_revision": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0",
+  "producer": {
+    "id": 40969157228,
+    "run_attempt": 2,
+    "status": "completed",
+    "conclusion": "success",
+    "path": ".github/workflows/build-server.yaml",
+    "event": "push",
+    "head_branch": "master",
+    "jobs": [
+      {
+        "id": 123831515183,
+        "name": "changes",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123831587835,
+        "name": "contracts / contracts",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123831589611,
+        "name": "backend",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 123831591186,
+        "name": "web",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 123832895079,
+        "name": "server-quality",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123832987927,
+        "name": "bundle",
+        "status": "completed",
+        "conclusion": "skipped"
+      }
+    ]
+  },
+  "deploy": {
+    "id": 40984740602,
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+    "jobs": [
+      {
+        "id": 123833003134,
+        "name": "route",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123833082829,
+        "name": "install",
+        "status": "completed",
+        "conclusion": "skipped"
+      }
+    ]
+  },
+  "observer": {
+    "id": 40984771575,
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933"
+  },
+  "artifacts": {
+    "quality": {
+      "id": 12946432152,
+      "bytes": 399,
+      "sha256": "710d6afa6fed20e4b9c97e4a8fdb0fb81cd84257ae3847a82fe1a2dae3817f97"
+    },
+    "route": {
+      "id": 12946720856,
+      "bytes": 425,
+      "sha256": "8ddf00e37f2fe0c42b9ab4231c5a9c63eec759e65a4be034d8c69ffb6ae4ced6"
+    },
+    "trace": {
+      "id": 12946715619,
+      "bytes": 765,
+      "sha256": "32ba1a2eaa3d2a14043557245ba7eb39124cf072ff3338bd43ee10314c1e54e6"
+    }
+  },
+  "historical": {
+    "original_noop_deploy": {
+      "id": 40969629966,
+      "attempt": 1,
+      "conclusion": "success"
+    },
+    "original_failed_readback": {
+      "id": 40969659339,
+      "attempt": 1,
+      "conclusion": "failure"
+    },
+    "original_failure_evidence": "b73bac10235e577920e814aa66515d8b8018acc4",
+    "historical_runs_reclassified": false
+  },
+  "all_three_retained_actual_zip_sha256_independently_verified": true,
+  "actual_quality": {
+    "jobs": {
+      "backend": "skipped",
+      "changes": "success",
+      "contracts": "success",
+      "web": "skipped"
+    },
+    "map_sha256": "cf501bbb879dadec880c4fb53ccfc8b63d793408fc9d526c8538c3a8001082cf",
+    "run_attempt": "2",
+    "run_id": "40969157228",
+    "schema_version": 1,
+    "scope": "server",
+    "server_release_impact": false,
+    "source_revision": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0",
+    "status": "PASS"
+  },
+  "actual_trusted_route": {
+    "controller": {
+      "event": "workflow_run",
+      "revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+      "run_attempt": 1,
+      "run_id": 40984740602
+    },
+    "kind": "trusted-producer-route",
+    "producer": {
+      "format_version": 2,
+      "has_bundle": false,
+      "run_attempt": 2,
+      "run_id": 40969157228,
+      "source_revision": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0"
+    },
+    "repository": "Egkurilov/BOOHTACORD",
+    "schema_version": 1,
+    "server_release_impact": false,
+    "status": "PASS"
+  },
+  "actual_observer_trace": {
+    "candidate_ci": {
+      "status": "NOT_RUN"
+    },
+    "deployment": {
+      "controller_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+      "master_quality_artifact": {
+        "actual_zip_digest_verified": true,
+        "bytes": 399,
+        "id": 12946432152,
+        "name": "quality-master-server-3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0-40969157228-2",
+        "sha256": "710d6afa6fed20e4b9c97e4a8fdb0fb81cd84257ae3847a82fe1a2dae3817f97"
+      },
+      "producer_run_attempt": 2,
+      "producer_run_id": 40969157228,
+      "reason": "native_only_no_server_release",
+      "route_artifact": {
+        "actual_zip_digest_verified": true,
+        "bytes": 425,
+        "id": 12946720856,
+        "name": "trusted-route-40984740602-1",
+        "sha256": "8ddf00e37f2fe0c42b9ab4231c5a9c63eec759e65a4be034d8c69ffb6ae4ced6"
+      },
+      "run_attempt": 1,
+      "run_id": 40984740602,
+      "server_release_impact": false,
+      "source_revision": "3a65a3f67ae6fb2ac5b18d88b4ab351904f503e0",
+      "status": "NOT_RUN"
+    },
+    "endpoint": {
+      "status": "NOT_RUN"
+    },
+    "human_review": "NOT_ASSERTED",
+    "issue_249": "https://github.com/Egkurilov/BOOHTACORD/issues/249",
+    "merge": {
+      "status": "NOT_RUN"
+    },
+    "physical_acceptance": "NOT_RUN",
+    "reason": "native_only_no_server_release",
+    "release": {
+      "status": "NOT_RUN"
+    },
+    "review_pr": {
+      "status": "NOT_RUN"
+    },
+    "schema_version": 1,
+    "scope": "source-pr-ci-merge-deploy-catalog",
+    "source": {
+      "status": "NOT_RUN"
+    },
+    "status": "NOT_RUN"
+  },
+  "public_source_unchanged": {
+    "kind": "fresh-public-source-and-health",
+    "at_utc": "2026-10-30T01:16:41.030521+00:00",
+    "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+    "release": {
+      "http": 200,
+      "cache_control": "no-store",
+      "sha256": "446908476ede61a9887ade1e5f241a2fbf916a51043f0c78eaf03154cb64d49b",
+      "receipt": {
+        "schema_version": 1,
+        "application_family": "boohtacord",
+        "platform": "web",
+        "distribution": "browser",
+        "channel": "stable",
+        "arch": "any",
+        "release_id": "web-browser-stable-r61",
+        "release_order": 61,
+        "version": "1.0.47",
+        "native_build": null,
+        "architecture": "any",
+        "build_info_sha256": "70ffd35bfb8a6eebc088dfefb5ed9bd7549fd48e8398fb2be0d283bf12ac1e4b",
+        "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+        "signature_evidence": "oci_attestation",
+        "download_available": true
+      }
+    },
+    "health": {
+      "http": 200,
+      "cache_control": null,
+      "sha256": "6489d6d7a33c5d40e18fc61eeb6c34c341279ee61816394dde5189aa4ad8fae5"
+    },
+    "scope": "Read-only HTTPS; no authenticated browser, SQL, fault or load traffic."
+  },
+  "required_real_delivery_preserved": {
+    "immutable_evidence": "801e6d1d8103a6010a0b756e9630fa96c62d1bd9",
+    "deploy_run": 40980532015,
+    "receipt_verified": true
+  },
+  "qualification_method": "One full rerun of the original legitimate native-only producer under the current merged controller; no source commit, impact override, manual install or retrospective PASS.",
+  "final_source_CI": {
+    "run_id": 40975562192,
+    "attempt": 2,
+    "success_jobs": 27,
+    "evidence": "f1ebecc8a1eb5816800672f4668e9b6ae2e31c6c"
+  },
+  "limits": [
+    "No server installation or catalog endpoint read occurred on this no-op route; public server remains6dd.",
+    "The positive real-install path and required archived acknowledgement passed separately; missing/foreign/stale proof still fails closed in focused tests.",
+    "Physical Windows promotion249, Android609, media/native/platform gates and consolidation decisions are independent.",
+    "Human environment approval NOT_ASSERTED; no production SQL/fault/load or manual deployment."
+  ]
+}
