@@ -1,0 +1,348 @@
+{
+  "schema_version": 1,
+  "issue": 579,
+  "pull_request": 614,
+  "source_revision": "a97030059fcddd5d76b9b256007144d507f4b279",
+  "status": "PASS_NATIVE_MASTER_AND_NATIVE_ONLY_SERVER_ROUTE_PHYSICAL_PENDING",
+  "native_master": {
+    "run": {
+      "id": 40993167339,
+      "name": "Native master quality",
+      "head_sha": "a97030059fcddd5d76b9b256007144d507f4b279",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40993167339"
+    },
+    "jobs": [
+      {
+        "id": 123860108184,
+        "name": "changes",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123860171666,
+        "name": "windows / windows-build",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123860171674,
+        "name": "windows / windows-native-unit",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123860171704,
+        "name": "flutter / dart",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123860171768,
+        "name": "flutter / android-kotlin",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123860171790,
+        "name": "flutter / macos",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123860171807,
+        "name": "flutter / android",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123862405979,
+        "name": "windows / windows-gui-sfu",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123863280900,
+        "name": "flutter / flutter",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123864549737,
+        "name": "windows / windows",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 123864613518,
+        "name": "native-required",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "Build_server_jobs": [
+    {
+      "id": 123860107874,
+      "name": "changes",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123860171715,
+      "name": "contracts / contracts",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123860172610,
+      "name": "web",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 123860173010,
+      "name": "backend",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 123861353595,
+      "name": "server-quality",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123861414830,
+      "name": "bundle",
+      "status": "completed",
+      "conclusion": "skipped"
+    }
+  ],
+  "delivery_runs": [
+    {
+      "id": 40993609031,
+      "name": "Windows promotion catalog readback",
+      "head_sha": "a97030059fcddd5d76b9b256007144d507f4b279",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40993609031"
+    },
+    {
+      "id": 40993580938,
+      "name": "Deploy production",
+      "head_sha": "a97030059fcddd5d76b9b256007144d507f4b279",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40993580938"
+    },
+    {
+      "id": 40993167248,
+      "name": "Build server",
+      "head_sha": "a97030059fcddd5d76b9b256007144d507f4b279",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40993167248"
+    }
+  ],
+  "deploy_jobs": [
+    {
+      "id": 123861431699,
+      "name": "route",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123861498280,
+      "name": "install",
+      "status": "completed",
+      "conclusion": "skipped"
+    }
+  ],
+  "observer_jobs": [
+    {
+      "id": 123861518792,
+      "name": "readback",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "actual_verified_artifacts": [
+    {
+      "id": 12950208134,
+      "name": "quality-master-native-a97030059fcddd5d76b9b256007144d507f4b279-40993167339-1",
+      "bytes": 384,
+      "SHA256": "d0529e8bf9b1da70b32f8a167343398fa89140433cd8773f51584ac29e5f8a70",
+      "actual_ZIP_SHA256_verified": true
+    },
+    {
+      "id": 12950655975,
+      "name": "quality-master-server-a97030059fcddd5d76b9b256007144d507f4b279-40993167248-1",
+      "bytes": 400,
+      "SHA256": "2356ec2a7e1aba6d6fbdc745e3463d16ae12f7183c3f860cc2495e328c66aead",
+      "actual_ZIP_SHA256_verified": true
+    },
+    {
+      "id": 12950750637,
+      "name": "trusted-route-40993580938-1",
+      "bytes": 395,
+      "SHA256": "09345b1e94e9b749c276aaa5db5cef138fd3fd50eb209d4fa3292a809623893a",
+      "actual_ZIP_SHA256_verified": true
+    },
+    {
+      "id": 12949848971,
+      "name": "windows-promotion-readback-a97030059fcddd5d76b9b256007144d507f4b279-40993609031-1",
+      "bytes": 732,
+      "SHA256": "9c704a011f0ac5677b2fdfdf5425b743f1cb646d18c2771955390be34c01cc0c",
+      "actual_ZIP_SHA256_verified": true
+    }
+  ],
+  "server_quality": {
+    "jobs": {
+      "backend": "skipped",
+      "changes": "success",
+      "contracts": "success",
+      "web": "skipped"
+    },
+    "map_sha256": "cf501bbb879dadec880c4fb53ccfc8b63d793408fc9d526c8538c3a8001082cf",
+    "run_attempt": "1",
+    "run_id": "40993167248",
+    "schema_version": 1,
+    "scope": "server",
+    "server_release_impact": false,
+    "source_revision": "a97030059fcddd5d76b9b256007144d507f4b279",
+    "status": "PASS"
+  },
+  "native_quality": {
+    "flutter": true,
+    "jobs": {
+      "changes": "success",
+      "flutter": "success",
+      "windows": "success"
+    },
+    "map_sha256": "cf501bbb879dadec880c4fb53ccfc8b63d793408fc9d526c8538c3a8001082cf",
+    "run_attempt": "1",
+    "run_id": "40993167339",
+    "schema_version": 1,
+    "scope": "native",
+    "source_revision": "a97030059fcddd5d76b9b256007144d507f4b279",
+    "status": "PASS",
+    "windows": true
+  },
+  "route": {
+    "controller": {
+      "event": "workflow_run",
+      "revision": "a97030059fcddd5d76b9b256007144d507f4b279",
+      "run_attempt": 1,
+      "run_id": 40993580938
+    },
+    "kind": "trusted-producer-route",
+    "producer": {
+      "format_version": 2,
+      "has_bundle": false,
+      "run_attempt": 1,
+      "run_id": 40993167248,
+      "source_revision": "a97030059fcddd5d76b9b256007144d507f4b279"
+    },
+    "repository": "Egkurilov/BOOHTACORD",
+    "schema_version": 1,
+    "server_release_impact": false,
+    "status": "PASS"
+  },
+  "observer": {
+    "candidate_ci": {
+      "status": "NOT_RUN"
+    },
+    "deployment": {
+      "controller_revision": "a97030059fcddd5d76b9b256007144d507f4b279",
+      "master_quality_artifact": {
+        "actual_zip_digest_verified": true,
+        "bytes": 400,
+        "id": 12950655975,
+        "name": "quality-master-server-a97030059fcddd5d76b9b256007144d507f4b279-40993167248-1",
+        "sha256": "2356ec2a7e1aba6d6fbdc745e3463d16ae12f7183c3f860cc2495e328c66aead"
+      },
+      "producer_run_attempt": 1,
+      "producer_run_id": 40993167248,
+      "reason": "native_only_no_server_release",
+      "route_artifact": {
+        "actual_zip_digest_verified": true,
+        "bytes": 395,
+        "id": 12950750637,
+        "name": "trusted-route-40993580938-1",
+        "sha256": "09345b1e94e9b749c276aaa5db5cef138fd3fd50eb209d4fa3292a809623893a"
+      },
+      "run_attempt": 1,
+      "run_id": 40993580938,
+      "server_release_impact": false,
+      "source_revision": "a97030059fcddd5d76b9b256007144d507f4b279",
+      "status": "NOT_RUN"
+    },
+    "endpoint": {
+      "status": "NOT_RUN"
+    },
+    "human_review": "NOT_ASSERTED",
+    "issue_249": "https://github.com/Egkurilov/BOOHTACORD/issues/249",
+    "merge": {
+      "status": "NOT_RUN"
+    },
+    "physical_acceptance": "NOT_RUN",
+    "reason": "native_only_no_server_release",
+    "release": {
+      "status": "NOT_RUN"
+    },
+    "review_pr": {
+      "status": "NOT_RUN"
+    },
+    "schema_version": 1,
+    "scope": "source-pr-ci-merge-deploy-catalog",
+    "source": {
+      "status": "NOT_RUN"
+    },
+    "status": "NOT_RUN"
+  },
+  "fresh_public_Web_source_and_API_health": {
+    "kind": "fresh-public-source-and-health",
+    "at_utc": "2026-10-30T02:48:05.712736+00:00",
+    "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+    "release": {
+      "http": 200,
+      "cache_control": "no-store",
+      "sha256": "446908476ede61a9887ade1e5f241a2fbf916a51043f0c78eaf03154cb64d49b",
+      "receipt": {
+        "schema_version": 1,
+        "application_family": "boohtacord",
+        "platform": "web",
+        "distribution": "browser",
+        "channel": "stable",
+        "arch": "any",
+        "release_id": "web-browser-stable-r61",
+        "release_order": 61,
+        "version": "1.0.47",
+        "native_build": null,
+        "architecture": "any",
+        "build_info_sha256": "70ffd35bfb8a6eebc088dfefb5ed9bd7549fd48e8398fb2be0d283bf12ac1e4b",
+        "source_revision": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+        "signature_evidence": "oci_attestation",
+        "download_available": true
+      }
+    },
+    "health": {
+      "http": 200,
+      "cache_control": null,
+      "sha256": "6489d6d7a33c5d40e18fc61eeb6c34c341279ee61816394dde5189aa4ad8fae5"
+    },
+    "scope": "Read-only HTTPS; no authenticated browser, SQL, fault or load traffic."
+  },
+  "API_revision_scope": "Public health returns200 but exposes no API revision. Last trusted remote API6dd readback is historical Deploy40980532015/1; no fresh API-SHA claim.",
+  "limits": [
+    "Native-only impact=false; no server install or catalog promotion occurred for a970. No production SQL/schema/volume check was needed or performed by this no-op.",
+    "Merged native11/PR27/source proof is distinct from protected Windows artifact verification and paired native firstframe/stoprestart/repeatedWatch.",
+    "579 remainsOPEN; full gallery/simulator/native media/audibility gates remain independent."
+  ]
+}
