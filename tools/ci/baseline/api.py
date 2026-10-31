@@ -5,7 +5,7 @@ import re
 from urllib.error import HTTPError, URLError
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
-ROOT = 'https://api.github.com/repos/Egkurilov/BOOHTACORD'
+ROOT = 'https://api.github.com/repos/BOOHTACORD/BOOHTACORD'
 
 
 class NoRedirect(HTTPRedirectHandler):
