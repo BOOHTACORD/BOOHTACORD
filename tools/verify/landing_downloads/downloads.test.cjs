@@ -9,7 +9,7 @@ const fallback=published.windows;
 const parts=fallback.split('.').map(Number);parts[2]++;const newer=parts.join('.');
 const html=readFileSync(process.argv[2]||resolve(root,'index.html'),'utf8');
 const script=html.match(/<script>([\s\S]*?)<\/script>/)[1];
-const repo='https://github.com/Egkurilov/BOOHTACORD/releases/';
+const repo='https://github.com/BOOHTACORD/BOOHTACORD/releases/';
 async function run(online, advertised=newer) {
  const nodes=new Map();
  for(const m of html.matchAll(/<a\b([^>]+)>/g)) {

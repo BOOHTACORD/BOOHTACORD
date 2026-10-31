@@ -3,7 +3,7 @@ import json
 import re
 from tools.ci.runner_pool.routing import GITHUB_LINUX
 
-UPSTREAM = "github.repository == 'Egkurilov/BOOHTACORD'"
+UPSTREAM = "github.repository == 'BOOHTACORD/BOOHTACORD'"
 MASTER = UPSTREAM + " && github.ref == 'refs/heads/master'"
 QA_PUBLISH = "github.event_name == 'workflow_dispatch' && inputs.publish_qa && " + MASTER
 

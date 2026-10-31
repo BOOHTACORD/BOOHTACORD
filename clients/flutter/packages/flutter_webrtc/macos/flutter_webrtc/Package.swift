@@ -26,7 +26,7 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "WebRTC",
-            url: "https://github.com/Egkurilov/BOOHTACORD/releases/download/webrtc-m150-boohtacord-r2/WebRTC-macos.xcframework.zip",
+            url: "https://github.com/BOOHTACORD/BOOHTACORD/releases/download/webrtc-m150-boohtacord-r2/WebRTC-macos.xcframework.zip",
             checksum: "0617e131f303f4a76acbdcf4f9538fc1e359fc56e7ba1234f3e8bda40bc23de2"
         ),
         .target(

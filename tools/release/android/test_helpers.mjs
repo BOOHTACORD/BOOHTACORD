@@ -4,11 +4,11 @@ import os from 'node:os'
 import path from 'node:path'
 
 export const apiRoot = 'https://api.example.test'
-export const releasePath = '/repos/egkurilov/BOOHTACORD'
+export const releasePath = '/repos/BOOHTACORD/BOOHTACORD'
 export const release = {
   id: 73,
   tag_name: 'android-v1.0.15',
-  upload_url: 'https://uploads.example.test/repos/egkurilov/BOOHTACORD/releases/73/assets{?name,label}',
+  upload_url: 'https://uploads.example.test/repos/BOOHTACORD/BOOHTACORD/releases/73/assets{?name,label}',
 }
 export const json = (value, status = 200) => new Response(JSON.stringify(value), {
   status,

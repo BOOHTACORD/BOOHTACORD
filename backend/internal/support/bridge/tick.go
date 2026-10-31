@@ -39,7 +39,7 @@ func (w Worker) Tick(ctx context.Context) error {
 	if err = w.client.request(ctx, "GET", "/status", nil, &status); err != nil {
 		return err
 	}
-	if status.Version < 1 || status.Version > 1000000 || status.Repository != "Egkurilov/BOOHTACORD" {
+	if status.Version < 1 || status.Version > 1000000 || status.Repository != "BOOHTACORD/BOOHTACORD" {
 		return ErrGateway
 	}
 	if _, err = w.db.Exec(ctx, `UPDATE support_product_identity SET notice_version=GREATEST(notice_version,$1),repository_public=$2 WHERE singleton=true`, status.Version, status.Public); err != nil {

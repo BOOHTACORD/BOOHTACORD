@@ -1,7 +1,7 @@
 # Ordinary documentation-only CI routing proof
 
-[Run 39163108152](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39163108152),
-[disposable PR #413](https://github.com/Egkurilov/BOOHTACORD/pull/413),
+[Run 39163108152](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39163108152),
+[disposable PR #413](https://github.com/BOOHTACORD/BOOHTACORD/pull/413),
 head `319d371b36f9ef4958a8f4307e86776fdf39af0c`, tested merge
 `fef9d4b210eccf1460524fd555ca59ba2da39881`, base candidate
 `8138e220b6e7c9e812f17edb1aad49ec0a88519d`.

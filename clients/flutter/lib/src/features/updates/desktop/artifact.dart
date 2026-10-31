@@ -218,7 +218,7 @@ bool officialArtifactUrl(String raw) {
       (u.hasPort && u.port != 443)) {
     return false;
   }
-  final prefix = 'https://github.com/Egkurilov/BOOHTACORD/releases/download/';
+  final prefix = 'https://github.com/BOOHTACORD/BOOHTACORD/releases/download/';
   if (!raw.startsWith(prefix)) return false;
   final parts = raw.substring(prefix.length).split('/');
   return parts.length == 2 &&

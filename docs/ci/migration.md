@@ -22,7 +22,7 @@ Dependency IDs have been corrected against this collection.
 | D: cutover | #401/C19 plus owner #385 | Current workflow/trigger/permission/graph checks, tested configuration rollback candidate and owner protection readback |
 | E: observation | #402/C20, #401/C19 | 30+ qualified after observations, comparison limits, release verification, known risks and authenticated independent owner GO |
 
-Every issue is linked at `https://github.com/Egkurilov/BOOHTACORD/issues/<number>`.
+Every issue is linked at `https://github.com/BOOHTACORD/BOOHTACORD/issues/<number>`.
 Its implementation/evidence updates link the corresponding PRs. Recent code
 increments are #437/#439/#440/#441/#443/#444/#445/#446/#447/#449; the issue registry
 is a state collection, not a replacement for their immutable evidence.

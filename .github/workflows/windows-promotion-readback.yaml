@@ -20,7 +20,7 @@ permissions:
 jobs:
   readback:
     if: >-
-      github.repository == 'Egkurilov/BOOHTACORD' &&
+      github.repository == 'BOOHTACORD/BOOHTACORD' &&
       ((github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master') ||
        (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' &&
         github.event.workflow_run.head_branch == 'master' &&

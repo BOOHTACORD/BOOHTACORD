@@ -2,7 +2,7 @@
 import json
 from tools.ci.toolchains.spec import public_bytes
 
-MASTER_CACHE_WRITE = "github.repository == 'Egkurilov/BOOHTACORD' && github.event_name == 'push' && github.ref == 'refs/heads/master' && inputs.cache == 'true' && steps.sdk-cache.outputs.cache-hit != 'true'"
+MASTER_CACHE_WRITE = "github.repository == 'BOOHTACORD/BOOHTACORD' && github.event_name == 'push' && github.ref == 'refs/heads/master' && inputs.cache == 'true' && steps.sdk-cache.outputs.cache-hit != 'true'"
 BINDINGS = {'path': '${{ steps.metadata.outputs.cache_path }}',
             'key': '${{ steps.metadata.outputs.cache_key }}'}
 

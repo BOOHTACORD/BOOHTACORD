@@ -48,7 +48,7 @@ jobs:
   install:
     needs: route
     if: >-
-      github.repository == 'Egkurilov/BOOHTACORD' &&
+      github.repository == 'BOOHTACORD/BOOHTACORD' &&
       needs.route.outputs.has_bundle == 'true' &&
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.head_branch == 'master' &&

@@ -35,7 +35,7 @@ jobs:
           retention-days: 30
 
   macos:
-    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master' && inputs.full_build
+    if: github.repository == 'BOOHTACORD/BOOHTACORD' && github.ref == 'refs/heads/master' && inputs.full_build
     needs: checks
     runs-on: macos-26
     timeout-minutes: 60

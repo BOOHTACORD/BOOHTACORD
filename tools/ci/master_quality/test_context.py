@@ -5,7 +5,7 @@ from . import context
 
 class MasterContextTests(unittest.TestCase):
     def fixture(self):
-        return {'GITHUB_ACTIONS': 'true', 'GITHUB_REPOSITORY': 'Egkurilov/BOOHTACORD',
+        return {'GITHUB_ACTIONS': 'true', 'GITHUB_REPOSITORY': 'BOOHTACORD/BOOHTACORD',
                 'GITHUB_REF': 'refs/heads/master', 'GITHUB_EVENT_NAME': 'push',
                 'GITHUB_SHA': 'a' * 40, 'GITHUB_RUN_ID': '123', 'GITHUB_RUN_ATTEMPT': '1'}
 

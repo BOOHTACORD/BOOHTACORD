@@ -2,7 +2,7 @@
 
 Status: PASS for PostgreSQL/filesystem integration. Date: 2026-10-05. Issue: #90.
 Source merge: `7242d73dbbf4449f76be206c6fb7e9691e64b333`.
-[Native backend run](https://github.com/Egkurilov/BOOHTACORD/actions/runs/37360553088),
+[Native backend run](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37360553088),
 backend job `111934208226`: 1033 passed, 0 skipped, 0 failed; vet/build passed.
 Executor: GitHub Ubuntu 24.04 with disposable PostgreSQL 17.6.
 

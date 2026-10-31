@@ -27,7 +27,7 @@ class TriageTests(unittest.TestCase):
         self.assertEqual('checked_pr_merge_parent',binding(run,env,'a'*40,['c'*40,'b'*40]))
         with self.assertRaises(ValueError):binding(run,env,'a'*40,['c'*40,'d'*40])
 
-    def test_old_personal_repository_identity_cannot_bind_a_current_run(self):
-        run=dict(id=101,head_sha='b'*40,run_attempt=1,event='pull_request',repository={'full_name':'Egkurilov/BOOHTACORD'})
+    def test_foreign_repository_identity_cannot_bind_a_current_run(self):
+        run=dict(id=101,head_sha='b'*40,run_attempt=1,event='pull_request',repository={'full_name':'former-owner/BOOHTACORD'})
         env=dict(GITHUB_RUN_ID='101',GITHUB_RUN_ATTEMPT='1',GITHUB_EVENT_NAME='pull_request',GITHUB_REF='refs/pull/2/merge')
         with self.assertRaises(ValueError):binding(run,env,'a'*40,['c'*40,'b'*40])

@@ -13,13 +13,13 @@ class ProofTests(unittest.TestCase):
         branch='codex/windows-catalog-windows-v1.0.39-123';sha='a'*40
         old=[{'databaseId':8,'headSha':sha,'headBranch':branch,'event':'workflow_dispatch'}]
         command=Mock(side_effect=[CompletedProcess([],0,json.dumps(old)),CompletedProcess([],0),CompletedProcess([],0,json.dumps(old))])
-        with self.assertRaisesRegex(RuntimeError,'No CI run'):dispatch_and_wait(branch,sha,'Egkurilov/BOOHTACORD',
+        with self.assertRaisesRegex(RuntimeError,'No CI run'):dispatch_and_wait(branch,sha,'BOOHTACORD/BOOHTACORD',
             command=command,fresh=True,registration_attempts=1,sleep=lambda _:None)
 
     def test_run_attempt_source_and_required_job_are_mandatory(self):
         run={'id':8,'run_attempt':2,'path':'.github/workflows/ci.yaml','event':'workflow_dispatch','head_sha':'a'*40,
           'head_branch':'codex/windows-catalog-fixture','status':'completed','conclusion':'success',
-          'repository':{'full_name':'Egkurilov/BOOHTACORD'},'head_repository':{'full_name':'Egkurilov/BOOHTACORD'}}
+          'repository':{'full_name':'BOOHTACORD/BOOHTACORD'},'head_repository':{'full_name':'BOOHTACORD/BOOHTACORD'}}
         jobs=[{'name':'ci-required','status':'completed','conclusion':'success'}]
         validate(run,jobs,run['head_branch'],'a'*40,8,2)
         for change in ('sha','attempt','skip','foreign'):

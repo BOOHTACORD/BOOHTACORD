@@ -2,15 +2,15 @@
 
 Result: **PASS_NONRELEASE_NO_INSTALL** on 2026-10-19 Europe/Istanbul
 (events 2026-10-18 UTC), master `dab6a9b7b3b50a5862b35e9b5156a9bd5a3e90a0`.
-[PR #417](https://github.com/Egkurilov/BOOHTACORD/pull/417) changed five documentation/
+[PR #417](https://github.com/BOOHTACORD/BOOHTACORD/pull/417) changed five documentation/
 evidence files and no runtime/workflow files. The preceding runtime master signed
 producer 39168026909 completed successfully before this documentation merge.
 
 | Observed run | Exact outcomes |
 | --- | --- |
-| [Build server 39169856996](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39169856996) | changes SUCCESS; bare web/backend/contracts wrappers SKIPPED; bundle SKIPPED; zero retained artifacts |
-| [Deploy 39169872289](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39169872289) | read-only route SUCCESS; protected install SKIPPED |
-| [CI 39169856979](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39169856979) | changes/contracts/ci-required SUCCESS; four irrelevant components SKIPPED |
+| [Build server 39169856996](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39169856996) | changes SUCCESS; bare web/backend/contracts wrappers SKIPPED; bundle SKIPPED; zero retained artifacts |
+| [Deploy 39169872289](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39169872289) | read-only route SUCCESS; protected install SKIPPED |
+| [CI 39169856979](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39169856979) | changes/contracts/ci-required SUCCESS; four irrelevant components SKIPPED |
 
 The completed route job 117800625808 log explicitly reports
 `BUILD_RUN_ID: 39169856996`, checks out the recorded master revision and reports
@@ -22,7 +22,7 @@ observed producer. Complete latest job lists have unique IDs and correct run IDs
 The producer artifact API reports total_count=0. No raw job logs are committed.
 
 This closes the missing master non-release observation after the real wrapper-name
-correction in [PR #416](https://github.com/Egkurilov/BOOHTACORD/pull/416). Initial
+correction in [PR #416](https://github.com/BOOHTACORD/BOOHTACORD/pull/416). Initial
 routing/unit/rename/delete/force-push/fallback and full applicable CI evidence stay
 bound to #409/#416; no result is relabeled for a different source. The normal CI
 contracts gate remains unconditional even when Build server has no release impact.

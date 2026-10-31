@@ -46,7 +46,7 @@ fi
 workflow="$root/.github/workflows/qa08-active-upload.yaml"
 grep -Fq 'workflow_dispatch:' "$workflow"
 grep -Fq 'operator_ready:' "$workflow"
-grep -Fxq "    if: github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'" "$workflow"
+grep -Fxq "    if: github.repository == 'BOOHTACORD/BOOHTACORD' && github.ref == 'refs/heads/master'" "$workflow"
 grep -Fxq '    environment: production-diagnostics' "$workflow"
 grep -Fq 'tools.ops.operator.run sample' "$workflow"
 if grep -Eq '^  push:|^  pull_request:' "$workflow"; then

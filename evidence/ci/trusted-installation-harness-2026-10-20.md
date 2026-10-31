@@ -55,7 +55,7 @@ outcomes without assertion retries or treating an unrelated failure as PASS.
 PR #460 merged as `36d12a890b4aba59d8d10d96579d41f3dd6a3543`, tree
 `85efc80f873043abe98f07713d60c995aa266fde`. All 24 core CI jobs and the
 independent read-only transport check passed (25 checks). The exact manual
-`installation=true` run [39344397026](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39344397026),
+`installation=true` run [39344397026](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39344397026),
 job 118373400344, finished **FAIL before runtime**. Its first existing 42 rollback
 guards passed; the new guard step ran 17 tests with one import error:
 `ModuleNotFoundError: No module named 'yaml'` in `test_runtime_workflow`.
@@ -82,7 +82,7 @@ closure remain NOT_RUN/OPEN at this checkpoint.
 
 PR #461 merged as `edb6c71d30705cef56532af81fe734a213f7e9ce`, tree
 `f21e2735724ea312f1f258bb4bd183179fef96a7`, after all 25 checks passed.
-[Run 39346655478](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39346655478),
+[Run 39346655478](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39346655478),
 job 118380773873, completed **FAIL in the interrupted-install case**. Its guard
 suite passed; both full genuine QA builds passed OCI/import/smoke/sign/package and
 owned-storage cleanup. Source-qualified installation, upgrade and same-SHA retry

@@ -4,7 +4,7 @@ from .policy import request,remote_request
 
 
 def context(**updates):
-    return dict(dict(GITHUB_REPOSITORY='Egkurilov/BOOHTACORD',GITHUB_EVENT_NAME='workflow_dispatch',
+    return dict(dict(GITHUB_REPOSITORY='BOOHTACORD/BOOHTACORD',GITHUB_EVENT_NAME='workflow_dispatch',
                      GITHUB_REF='refs/heads/master',GITHUB_SHA='a'*40,GITHUB_RUN_ID='101',GITHUB_RUN_ATTEMPT='1',
                      GITHUB_ACTOR_ID='42',EXPECTED_SOURCE='b'*40,OPERATOR_DRY_RUN='true'),**updates)
 

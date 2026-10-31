@@ -4,7 +4,7 @@ Date: 2026-10-05; executor: GitHub Ubuntu 24.04 owned QA fixture.
 Issue: #81; measurement before enabling any snapshot cache.
 Source merge: `206414ab23296ee4191d32d5c707301654cb16ba`.
 Head: `89390adffe6f8aff29161f8e3dc3fb76c45855a1`.
-[Actual run](https://github.com/Egkurilov/BOOHTACORD/actions/runs/37354499156): PASS.
+[Actual run](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37354499156): PASS.
 
 | Virtual authenticated HTTP observers | RoomService calls | Calls/sec | HTTP p95 ms |
 |---|---|---|---|

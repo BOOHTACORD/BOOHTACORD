@@ -1,6 +1,6 @@
 # UI/UX 2026 visual regression inventory
 
-This inventory supports epic [#289](https://github.com/Egkurilov/BOOHTACORD/issues/289) and verification task [#302](https://github.com/Egkurilov/BOOHTACORD/issues/302). The machine-readable 41-slot screen catalog is [`clients/web/tests/uiux_2026/visual_matrix.json`](../../clients/web/tests/uiux_2026/visual_matrix.json); its Vitest contract ensures the desktop/mobile counts, fixture/test paths, viewport targets, expected behavior and owner field stay populated.
+This inventory supports epic [#289](https://github.com/BOOHTACORD/BOOHTACORD/issues/289) and verification task [#302](https://github.com/BOOHTACORD/BOOHTACORD/issues/302). The machine-readable 41-slot screen catalog is [`clients/web/tests/uiux_2026/visual_matrix.json`](../../clients/web/tests/uiux_2026/visual_matrix.json); its Vitest contract ensures the desktop/mobile counts, fixture/test paths, viewport targets, expected behavior and owner field stay populated.
 
 ## Reference archive status
 

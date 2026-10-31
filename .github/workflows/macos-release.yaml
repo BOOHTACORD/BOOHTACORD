@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   macos-release:
-    if: github.repository == 'Egkurilov/BOOHTACORD' && (startsWith(github.ref, 'refs/tags/macos-v') || (github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch' && inputs.dry_run))
+    if: github.repository == 'BOOHTACORD/BOOHTACORD' && (startsWith(github.ref, 'refs/tags/macos-v') || (github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch' && inputs.dry_run))
     environment: production
     permissions:
       contents: write

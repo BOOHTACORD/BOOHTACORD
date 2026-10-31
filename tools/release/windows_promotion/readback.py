@@ -17,7 +17,7 @@ def main():
     output=ROOT/'.out/windows-promotion-readback/trace.json';output.parent.mkdir(parents=True,exist_ok=True)
     trace={'schema_version':1,'scope':'source-pr-ci-merge-deploy-catalog','status':'FAIL',
         **{key:{'status':'NOT_RUN'} for key in ('source','release','candidate_ci','review_pr','merge','deployment','endpoint')},
-        'physical_acceptance':'NOT_RUN','human_review':'NOT_ASSERTED','issue_249':'https://github.com/Egkurilov/BOOHTACORD/issues/249'}
+        'physical_acceptance':'NOT_RUN','human_review':'NOT_ASSERTED','issue_249':'https://github.com/BOOHTACORD/BOOHTACORD/issues/249'}
     stage='deployment'
     try:
         value=os.environ['DEPLOY_RUN_ID'];intent.require(re.fullmatch('[1-9][0-9]{0,19}',value))

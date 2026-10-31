@@ -3,7 +3,7 @@
 Status: source settings, hotkey, edit and monitor/DPI recovery are implemented.
 Windows native checks and debug build pass; game/performance acceptance remains
 open. Issue:
-[#112](https://github.com/Egkurilov/BOOHTACORD/issues/112).
+[#112](https://github.com/BOOHTACORD/BOOHTACORD/issues/112).
 
 ## Existing component map
 

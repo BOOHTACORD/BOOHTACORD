@@ -20,7 +20,7 @@ def verify(directory,identity):
         path=directory/name;contract.require(path.is_file() and not path.is_symlink() and 0<path.stat().st_size<=95_000_000)
         assets[name]=dict(sha256=contract.digest(path),bytes=path.stat().st_size)
     contract.require(not any(p.is_file() and p.name not in NAMES for p in directory.iterdir()))
-    return dict(status='PASS',schema_version=1,repository='Egkurilov/BOOHTACORD',**identity,version=row['version'],
+    return dict(status='PASS',schema_version=1,repository='BOOHTACORD/BOOHTACORD',**identity,version=row['version'],
                 recipe_sha256=row['recipe_sha256'],assets=assets,physical_playback_smoke='NOT_RUN')
 
 

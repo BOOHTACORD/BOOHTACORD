@@ -5,7 +5,7 @@ import unittest
 from . import catalog, comparison
 
 SOURCE = 'a' * 40
-REPO = 'Egkurilov/BOOHTACORD'
+REPO = 'BOOHTACORD/BOOHTACORD'
 
 
 def fixture():

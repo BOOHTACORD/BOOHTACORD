@@ -9,7 +9,7 @@ from . import execution,contract
 
 def absent(path):
     token=os.environ.get('GITHUB_TOKEN','');contract.require(token)
-    request=Request('https://api.github.com/repos/Egkurilov/BOOHTACORD/'+path,headers={
+    request=Request('https://api.github.com/repos/BOOHTACORD/BOOHTACORD/'+path,headers={
         'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'})
     try:
         with urlopen(request,timeout=20):pass

@@ -1,6 +1,6 @@
 # UI/UX 2026 state matrix
 
-This matrix records the client-side state contract and deterministic fixtures for epic [#289](https://github.com/Egkurilov/BOOHTACORD/issues/289), especially [#296](https://github.com/Egkurilov/BOOHTACORD/issues/296) and [#299](https://github.com/Egkurilov/BOOHTACORD/issues/299). It describes presentation only; it does not change API, ACL, session, or media contracts.
+This matrix records the client-side state contract and deterministic fixtures for epic [#289](https://github.com/BOOHTACORD/BOOHTACORD/issues/289), especially [#296](https://github.com/BOOHTACORD/BOOHTACORD/issues/296) and [#299](https://github.com/BOOHTACORD/BOOHTACORD/issues/299). It describes presentation only; it does not change API, ACL, session, or media contracts.
 
 `Covered` means a deterministic test exercises the named state. `Partial` means the surface has domain-specific states that are not part of this issue's new HTTP fixture set. A simulated response is not evidence of a physical-device or production-service run.
 

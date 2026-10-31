@@ -5,7 +5,7 @@ import math
 import re
 from . import catalog
 
-REPOSITORY = 'Egkurilov/BOOHTACORD'
+REPOSITORY = 'BOOHTACORD/BOOHTACORD'
 SAMPLES = (1,2,3)
 
 

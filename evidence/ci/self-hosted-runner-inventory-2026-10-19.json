@@ -92,8 +92,8 @@
   ],
   "next_inputs": [],
   "source_urls": [
-    "https://github.com/Egkurilov/BOOHTACORD/settings/actions/runners",
-    "https://github.com/Egkurilov/BOOHTACORD/actions"
+    "https://github.com/BOOHTACORD/BOOHTACORD/settings/actions/runners",
+    "https://github.com/BOOHTACORD/BOOHTACORD/actions"
   ],
   "local_checks": "1147 canonical Python tests PASS (53.062s);32 focused runner-pool tests PASS after executable memory-proof regression;18 Node fixture and26 responsive tests previously PASS, browser source unchanged.",
   "rollout_gate": "Latest mastere738c370 included. One fresh5.5GiB Android job PASS in1726s including setup/upload; second pending. Old5GiB proof assertion missed during budget update, now tied to controller constant with executable regression test. Source-bound final full CI/proof pending.",
@@ -121,7 +121,7 @@
   },
   "pool_acceptance": {
     "status": "PASS",
-    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39324247882",
+    "run_url": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39324247882",
     "run_attempt": 1,
     "source_commit": "c8503f724624cf2f921ace9fdc69010d8953a82d",
     "checks": [
@@ -145,11 +145,11 @@
     "new_heavy_cpu_each": 3,
     "unchanged_heavy_memory_gib_each": 4,
     "preserved_dart_timeout_minutes": 20,
-    "timed_out_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39325508851/job/118311100763",
+    "timed_out_job_url": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39325508851/job/118311100763",
     "started_at_utc": "2026-10-19T21:28:19Z",
     "completed_at_utc": "2026-10-19T21:48:57Z",
     "reason": "The full Dart/app/vendor profile exceeded the existing 20-minute wall budget on two vCPU. Keep the complete tests and budget; allocate three vCPU per heavy slot within the eight-vCPU host.",
-    "pool_proof_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39331218419",
+    "pool_proof_url": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39331218419",
     "pool_proof_status": "PASS",
     "flutter_test_processes": 2,
     "test_process_reason": "test_core defaults to floor(numberOfProcessors / 2). Both native profiles and the immutable-source shadow control explicitly use two test processes in marked Linux guests; hosted/local commands retain SDK defaults.",
@@ -166,11 +166,11 @@
     "limit": "The canonical Linux CI run remains required; platform-dependent test counts differ."
   },
   "contract_fixture_fix": {
-    "failed_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39331849269/job/118331726640",
+    "failed_job_url": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39331849269/job/118331726640",
     "reason": "Vendor lock unit fixture assumed the SDK-default test argv in every runtime. It now explicitly exercises local and disposable contexts and asserts lock preparation precedes locked pub resolution, which precedes every vendor test."
   },
   "publisher_ack_fixture_fix": {
-    "failed_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39333752241/job/118337995628",
+    "failed_job_url": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39333752241/job/118337995628",
     "reason": "A background test thread could read the old nonce only after the next command was published, causing an unexpected timeout and late access to a removed temporary directory. The stale/failed-ACK unit case now uses a controlled clock and injects the matching failed response after command publication. Real HTTP and nonce round-trip checks remain separate.",
     "focused_tests": 10,
     "focused_status": "PASS"
@@ -185,7 +185,7 @@
     "sampled_cpu_counts": [
       3
     ],
-    "previous_probe_failure_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39333745399/job/118337972451",
+    "previous_probe_failure_url": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39333745399/job/118337972451",
     "previous_probe_failure_cause": "UNVERIFIED: the old pre-SQL resource assertion emitted no measured values. CPU remapping was observed, but an out-of-bound count was not captured.",
     "configuration_parser_check": "PASS: LXD accepted explicit single-core ranges 6-6 and 7-7 in a temporary profile, which was then deleted.",
     "changes": "Pin all four CPU sets; preserve strict memory/CPU/freshness assertions and emit their non-sensitive numeric diagnostics.",
@@ -193,7 +193,7 @@
   },
   "storage_and_lost_communication": {
     "status": "IN_PROGRESS",
-    "previous_ci_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39337652809",
+    "previous_ci_url": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39337652809",
     "failed_jobs": [
       118351944625,
       118351944711
@@ -215,12 +215,12 @@
   "four_cpu_trial": {
     "status": "FAIL",
     "reason": "The complete Dart job exceeded its unchanged 20-minute budget with three vCPU and two test processes. Increase CPU visibility to the reviewed four-vCPU baseline while metadata shares one CPU in each half. Memory and storage bounds stay unchanged.",
-    "previous_ci_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39342680160",
+    "previous_ci_url": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39342680160",
     "previous_dart_job": 118368432325,
     "annotation": "The job has exceeded the maximum execution time of 20m0s",
     "observed_live_oom_kill": 0,
     "observed_live_no_space_errors": 0,
-    "previous_pool_proof_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39342674466",
+    "previous_pool_proof_url": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39342674466",
     "previous_pool_proof_status": "PASS",
     "test_processes": 2,
     "heavy_cpu_each": 4,
@@ -234,7 +234,7 @@
   },
   "current_pool_acceptance": {
     "status": "PASS",
-    "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39346376232",
+    "run_url": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39346376232",
     "source_commit": "be94eb75daea0f5a0c0b6540ba785d1f045e254a",
     "heavy_cpu_each": 4,
     "heavy_memory_gib_each": 4,
@@ -250,14 +250,14 @@
   "observer_correction": {
     "status": "PASS",
     "focused_tests": 25,
-    "failed_android_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39346381098/job/118380462300",
+    "failed_android_job_url": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39346381098/job/118380462300",
     "observed_failure": "Host lxc exec status 143 triggered guest teardown while the GitHub job was still running. Origin of the signal remains UNVERIFIED.",
     "correction": "Use direct official LXD client and retain a guest through read-only status failures within the unchanged absolute lifetime bound; do not swallow shutdown.",
     "deployment": "All controller files updated; slot1/meta restarted. Slot2 current native Android diagnostic preserved through main pause, must restart before final proof."
   },
   "browser_matrix_correction": {
     "status": "PASS",
-    "failed_job_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/39346381098/job/118380462249",
+    "failed_job_url": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39346381098/job/118380462249",
     "cause": "One test iterated 16 viewport cases under a single 30-second budget; locator.evaluate timed out without a layout assertion failure.",
     "correction": "Parameterize all 16 cases with fresh contexts and the same 30-second per-test timeout. All assertions, viewports, large-text checks, keyboard and ARIA checks retained.",
     "controlled_latency_before": "FAIL: original combined test exceeded 30 seconds with Playwright slowMo 300 ms",

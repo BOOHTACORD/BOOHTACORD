@@ -27,7 +27,7 @@ while True:
  if row or time.monotonic()>=deadline:break
  time.sleep(2)
 if not row:sys.exit(75)
-issue=row[0];repo='repos/Egkurilov/BOOHTACORD'
+issue=row[0];repo='repos/BOOHTACORD/BOOHTACORD'
 def api(path,method='GET',data=None):
  args=['gh','api',path,'--method',method]
  if data is not None:args+=['--input','-']
@@ -41,7 +41,7 @@ if phase=='reply':
  comments=api(f'{repo}/issues/{issue}/comments?per_page=100')
  if not any(x.get('body')==text for x in comments):api(f'{repo}/issues/{issue}/comments','POST',{'body':text})
  body=api(f'{repo}/issues/{issue}')['body']
- urls=re.findall(r'https://github.com/Egkurilov/BOOHTACORD/releases/download/boohtacord-support-attachments/[^)\\s]+',body)
+ urls=re.findall(r'https://github.com/BOOHTACORD/BOOHTACORD/releases/download/boohtacord-support-attachments/[^)\\s]+',body)
  assert len(urls)==1
  with urllib.request.urlopen(urls[0],timeout=20) as response:content=response.read(1000)
  assert content==b'Synthetic public support QA file\\n'

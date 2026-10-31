@@ -1,7 +1,7 @@
 # Five critical software issues — actual acceptance
 
 Date: 2026-10-05. Executor/observer: Codex; synthetic owned fixtures only.
-Scope: #56, #64, #79, #80, #89. PR: [128](https://github.com/Egkurilov/BOOHTACORD/pull/128).
+Scope: #56, #64, #79, #80, #89. PR: [128](https://github.com/BOOHTACORD/BOOHTACORD/pull/128).
 Status: PASS for the isolated scenarios below. Native CI passed on the candidate;
 the compatible production rollback requirement of #89 remains NOT_RUN.
 
@@ -92,10 +92,10 @@ Keep #89 and QA-09/12 open until their original acceptance is fulfilled.
 - Python: 142 tests PASS, one existing platform skip.
 - Contracts, 39-requirement traceability, documentation links, workflow routing
   and single-writer topology checks PASS. Native CI receipts are recorded below.
-- [Autonomous GitHub acceptance](https://github.com/Egkurilov/BOOHTACORD/actions/runs/37344793739)
+- [Autonomous GitHub acceptance](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37344793739)
   PASS: real browser at 1440/1024, baseline, uploads and writer handover.
   Local disconnect after lease hint: 5/4 ms; server hint wait: 3858/3860 ms.
-- [Native GitHub CI](https://github.com/Egkurilov/BOOHTACORD/actions/runs/37344794829)
+- [Native GitHub CI](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37344794829)
   PASS: contracts, Go/PostgreSQL test/vet/build, full Web/audio/browser, Flutter
   analyze/tests/Android build modes/debug APK and Windows build inspection.
 - A later cold audio fixture startup exposed a module readiness timeout. The

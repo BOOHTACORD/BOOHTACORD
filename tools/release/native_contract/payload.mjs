@@ -14,7 +14,7 @@ export async function payload(contract,directory,context) {
   const manualMaster=contract.source_ref==='refs/heads/master'&&contract.source_event==='workflow_dispatch'
     &&contract.trigger_revision===contract.source_revision
   requireContract(contract.release_mode==='stable'&&contract.tag_verified===true&&(tagged||manualMaster))
-  requireContract(contract.schema_version===1&&contract.status==='PASS'&&contract.repository==='Egkurilov/BOOHTACORD')
+  requireContract(contract.schema_version===1&&contract.status==='PASS'&&contract.repository==='BOOHTACORD/BOOHTACORD')
   requireContract(['android','windows','macos'].includes(contract.platform)&&/^[0-9a-f]{40}$/.test(contract.source_revision))
   requireContract(contract.tag===`${contract.platform}-v${contract.identity.version}`&&/^\d+\.\d+\.\d+$/.test(contract.identity.version))
   requireContract(contract.repository===context.repository&&contract.source_revision===context.source_revision&&contract.tag===context.tag

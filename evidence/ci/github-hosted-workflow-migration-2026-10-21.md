@@ -26,13 +26,13 @@ services or unregister runners on that host.
 
 ## External acceptance
 
-- **PASS** — [PR #506 CI](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39620521386)
+- **PASS** — [PR #506 CI](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39620521386)
   passed all 26 jobs on commit `6e6f699ba4d42993704c744cf64a76223e1cd12f`.
   The hosted contract suite, Linux, Windows, Flutter, browser, backend, and
   runtime jobs all completed successfully.
-- **PASS** — [GitHub-hosted runner proof](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39620511796),
-  [dependency cache acceptance](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39620521391),
-  and [trusted-delivery acceptance](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39620521428)
+- **PASS** — [GitHub-hosted runner proof](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39620511796),
+  [dependency cache acceptance](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39620521391),
+  and [trusted-delivery acceptance](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39620521428)
   passed on the same commit.
 - **RESOLVED** — Earlier CI runs exposed two stale test fixtures: the operator
   hosted environment omitted `RUNNER_OS`, and a Flutter legacy test expected

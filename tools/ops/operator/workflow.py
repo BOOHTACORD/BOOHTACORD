@@ -5,7 +5,7 @@ from .policy import OPERATIONS,require
 JOBS={'audit':('audit-attachment-volume.yaml','audit'),'sample':('qa08-active-upload.yaml','sample'),
       'preflight':('qa11-preflight.yaml','inspect'),'probe':('qa11-preflight.yaml','probe'),
       'rollback':('rehearse-compatible-rollback.yaml','rehearse')}
-MASTER="github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'"
+MASTER="github.repository == 'BOOHTACORD/BOOHTACORD' && github.ref == 'refs/heads/master'"
 
 
 def validate(workflows):

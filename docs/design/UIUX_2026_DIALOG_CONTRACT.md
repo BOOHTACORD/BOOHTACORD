@@ -1,6 +1,6 @@
 # UI/UX 2026 dialogs and dangerous actions
 
-Scope: child issue [#298](https://github.com/Egkurilov/BOOHTACORD/issues/298). This inventory records the existing Web and Flutter interaction surfaces and the shared safety contract; it does not claim physical-device acceptance.
+Scope: child issue [#298](https://github.com/BOOHTACORD/BOOHTACORD/issues/298). This inventory records the existing Web and Flutter interaction surfaces and the shared safety contract; it does not claim physical-device acceptance.
 
 ## Inventory
 

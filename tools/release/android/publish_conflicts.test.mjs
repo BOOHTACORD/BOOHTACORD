@@ -54,7 +54,7 @@ test('runs the publisher CLI on the current platform and fails closed without it
     encoding: 'utf8',
     env: {
       ...process.env,
-      GITHUB_REPOSITORY: 'egkurilov/BOOHTACORD',
+      GITHUB_REPOSITORY: 'BOOHTACORD/BOOHTACORD',
       GITHUB_TOKEN: '',
     },
   })
