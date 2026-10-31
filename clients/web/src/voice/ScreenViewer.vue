@@ -25,18 +25,6 @@ const viewerElement = ref<HTMLElement | null>(null)
 const moreActions = ref<HTMLDetailsElement | null>(null)
 const auxiliaryPanel = ref<'streams' | 'participants' | null>(null)
 const auxiliaryTrigger = ref<HTMLElement | null>(null)
-const diagnosisToolsOpen = ref(false)
-const diagnosisTrigger = ref<HTMLButtonElement | null>(null)
-function closeDiagnosisTools(): void {
-  diagnosisToolsOpen.value = false
-  const trigger = diagnosisTrigger.value?.getClientRects().length ? diagnosisTrigger.value : moreActions.value?.querySelector('summary')
-  trigger?.focus(); revealStageControls()
-}
-function openDiagnosisTools(): void {
-  if (moreActions.value) moreActions.value.open = false
-  diagnosisToolsOpen.value = true
-  revealStageControls()
-}
 function togglePanel(panel: 'streams' | 'participants', event: MouseEvent): void {
   auxiliaryTrigger.value = event.currentTarget as HTMLElement
   auxiliaryPanel.value = auxiliaryPanel.value === panel ? null : panel
@@ -44,7 +32,6 @@ function togglePanel(panel: 'streams' | 'participants', event: MouseEvent): void
 function dismissPanels(event: PointerEvent): void {
   if (!(event.target instanceof Element)) return
   if (!event.target.closest('.screen-viewer-panels')) auxiliaryPanel.value = null
-  if (!event.target.closest('.screen-diagnosis, .screen-diagnosis-toggle')) diagnosisToolsOpen.value = false
 }
 const fullscreenActive = ref(false)
 const fullscreenFeedback = ref('')
@@ -87,7 +74,7 @@ function revealStageControls(): void {
   stageControlsVisible.value = true
   if (stageControlsHideTimer !== null) window.clearTimeout(stageControlsHideTimer)
   stageControlsHideTimer = window.setTimeout(() => {
-    if (!moreActions.value?.open && !diagnosisToolsOpen.value && !viewerElement.value?.querySelector('.stream-diagnostics[open]')) stageControlsVisible.value = false
+    if (!moreActions.value?.open && !viewerElement.value?.querySelector('.stream-diagnostics[open]')) stageControlsVisible.value = false
     stageControlsHideTimer = null
   }, 1800)
 }
@@ -114,9 +101,10 @@ watch(() => props.expanded, async () => {
   viewerElement.value?.querySelector<HTMLElement>(selector)?.focus({ preventScroll: true })
 })
 function handleKeydown(event: KeyboardEvent): void {
-  if (event.key === 'Escape' && (auxiliaryPanel.value || diagnosisToolsOpen.value)) {
-    if (diagnosisToolsOpen.value) closeDiagnosisTools()
-    else { auxiliaryPanel.value = null; auxiliaryTrigger.value?.focus({ preventScroll: true }) } event.preventDefault(); event.stopImmediatePropagation(); return
+  if (event.key === 'Escape' && auxiliaryPanel.value) {
+    auxiliaryPanel.value = null
+    auxiliaryTrigger.value?.focus({ preventScroll: true })
+    event.preventDefault(); event.stopImmediatePropagation(); return
   }
   if (event.key === 'Escape' && props.expanded) emit('update:expanded', false)
 }
@@ -188,13 +176,12 @@ async function toggleFullscreen(): Promise<void> {
           <div class="stream-toolbar-actions">
             <button v-if="ownScreenSharing" type="button" class="stream-tool-button stream-stop-screen-button" aria-label="Остановить свою трансляцию" title="Остановить свою трансляцию" @click="emit('stopScreen')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" /></svg><span>Остановить</span></button>
             <button type="button" class="stream-tool-button" :disabled="ended || !videoReady" :aria-label="videoPaused ? 'Продолжить видео' : 'Приостановить видео'" :aria-pressed="videoPaused" @click="toggleVideoPause"><svg viewBox="0 0 24 24" aria-hidden="true"><path v-if="videoPaused" d="m8 4 12 8-12 8Z"/><path v-else d="M8 4v16M16 4v16"/></svg></button>
-            <button type="button" ref="diagnosisTrigger" class="stream-tool-button screen-diagnosis-toggle" aria-label="Диагностика просмотра" :aria-expanded="diagnosisToolsOpen" @click="diagnosisToolsOpen = !diagnosisToolsOpen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4" /></svg></button>
             <ScreenReceiverDiagnosticsPanel @toggle="revealStageControls" :actual-video-quality="actualVideoQuality" :has-audio="selectedStream.hasAudio" :is-local="Boolean(selectedStream.isLocal)" :metrics="receiverMetrics" :sampled-at="receiverSampledAt" :target-profile="selectedStream.targetProfile" :descriptor="selectedStream.descriptor" :metadata-receipt-key="selectedStream.id" :sender-diagnostics="selectedStream.isLocal ? sourceDiagnostics : undefined" :profile-source="selectedStream.profileSource" :participant-name="selectedStream.participantName" :presented-fps="playbackFps" />
-            <details ref="moreActions" class="stream-more-actions" @toggle="revealStageControls"><summary class="stream-tool-button" aria-label="Дополнительные действия"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></summary><div class="stream-voice-return"><p class="gc-sr-only">{{ participantAudioMessage(deafened) }}</p><button class="stream-diagnosis-menu-action" type="button" @click="openDiagnosisTools">Диагностика просмотра</button><button v-if="ownScreenSharing" type="button" @click="changeQuality">Качество трансляции</button><button type="button" @click="emit('update:expanded', !expanded)">{{ expanded ? 'Вернуть в окно канала' : 'Развернуть на всю область' }}</button><button type="button" @click="stopWatching">К участникам</button></div></details>
+            <details ref="moreActions" class="stream-more-actions" @toggle="revealStageControls"><summary class="stream-tool-button" aria-label="Дополнительные действия"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></summary><div class="stream-voice-return" :class="{ 'stream-voice-return--viewer': !ownScreenSharing }"><p class="gc-sr-only">{{ participantAudioMessage(deafened) }}</p><button v-if="ownScreenSharing" type="button" @click="changeQuality">Качество трансляции</button><button class="stream-return-to-participants" type="button" aria-label="К участникам" title="К участникам" @click="stopWatching"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="gc-sr-only">К участникам</span></button></div></details>
           </div>
         </div>
       </div>
-      <DiagnosisPanel v-if="selectedStream" v-show="!mini && !videoPaused" :compact="!mini" :tools-open="diagnosisToolsOpen" @close-tools="closeDiagnosisTools" :selected-id="selectedId" :ended="ended" :has-audio="selectedStream.hasAudio" :local="Boolean(selectedStream.isLocal)" :publisher-paused="videoPaused || Boolean(selectedStream.videoMuted)" :autoplay-blocked="playbackBlocked" :subscription-failed="error === 'Не удалось подписаться на демонстрацию.'" :stage-visible="stageVisible" :video-ready="videoReady" :presented-fps="playbackFps" :presented-frames="presentedFrames" :sampled-at="receiverSampledAt" :metrics="receiverMetrics" :source="sourceDiagnostics" @refresh="refreshReceiverMetrics" @retry="retry(false)" @auto-retry="retry(true)" @choose="emit('clear')" />
+      <DiagnosisPanel v-if="selectedStream" v-show="!mini && !videoPaused" :compact="!mini" :selected-id="selectedId" :ended="ended" :has-audio="selectedStream.hasAudio" :local="Boolean(selectedStream.isLocal)" :publisher-paused="videoPaused || Boolean(selectedStream.videoMuted)" :autoplay-blocked="playbackBlocked" :subscription-failed="error === 'Не удалось подписаться на демонстрацию.'" :stage-visible="stageVisible" :video-ready="videoReady" :presented-fps="playbackFps" :presented-frames="presentedFrames" :sampled-at="receiverSampledAt" :metrics="receiverMetrics" :source="sourceDiagnostics" @refresh="refreshReceiverMetrics" @retry="retry(false)" @auto-retry="retry(true)" @choose="emit('clear')" />
       <p v-if="fullscreenFeedback" class="screen-fullscreen-feedback" role="status" aria-live="polite">{{ fullscreenFeedback }}</p>
       <p v-if="playbackFeedback" class="screen-fullscreen-feedback" role="status" aria-live="polite">{{ playbackFeedback }}</p>
     </div>
