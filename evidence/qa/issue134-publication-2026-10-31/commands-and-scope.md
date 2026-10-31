@@ -8,7 +8,7 @@ These are the executed helper basenames/options with private paths replaced by v
 python3 launcher.py global --profile "$FIXED_PRIVATE_PROFILE" --out "$NEW_OUTPUT/ce7-global-attempt1" --execute-owned
 python3 launcher.py idle --profile "$FIXED_PRIVATE_PROFILE" --out "$NEW_OUTPUT/ce7-idle-attempt1" --execute-owned --mode both
 python3 launcher.py controls --profile "$FIXED_PRIVATE_PROFILE" --out "$NEW_OUTPUT/ce7-controls-attempt1" --execute-owned
-node voice_launcher.mjs --profile "$FIXED_PRIVATE_PROFILE" --out "$NEW_OUTPUT/ce7-voice-provider-attempt1"
+xvfb-run -a --server-num=153 --server-args="-screen 0 1600x1200x24" node voice_launcher.mjs --profile "$FIXED_PRIVATE_PROFILE" --out "$NEW_OUTPUT/ce7-voice-provider-attempt1"
 node h2_scope_diagnostic.mjs --profile "$FIXED_PRIVATE_PROFILE" --out "$NEW_OUTPUT/ce7-h2-scope-attempt1" --execute-owned
 python3 launcher.py absolute --profile "$FIXED_PRIVATE_PROFILE" --out "$NEW_OUTPUT/ce7-absolute-attempt1" --execute-owned
 python3 launcher.py enospc --profile "$CHILD_PRIVATE_PROFILE" --out "$NEW_OUTPUT/ce7-enospc-child-attempt1" --execute-owned --provision
