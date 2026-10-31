@@ -35,11 +35,8 @@
 .stream-more-actions > summary { list-style: none; font-size: 1.375rem; line-height: 1; }
 .stream-more-actions > summary::-webkit-details-marker { display: none; }
 .stream-more-actions .stream-voice-return { position: absolute; z-index: 20; top: 40px; right: 0; left: auto; display: grid; width: 208px; min-height: 0; gap: 0; border: 1px solid var(--gc-border-subtle); border-radius: 10px; padding: 6px; background: var(--gc-surface-raised); box-shadow: var(--gc-shadow-popup); }
-.stream-more-actions .stream-voice-return--viewer { box-sizing: border-box; width: 50px; justify-items: center; }
 .stream-more-actions .stream-voice-return button { min-height: 36px; border: 0; border-radius: 6px; padding: 0 10px; color: var(--gc-text-secondary); background: transparent; text-align: left; }
 .stream-more-actions .stream-voice-return button:hover { color: var(--gc-text-primary); background: var(--gc-surface-hover); }
-.stream-more-actions .stream-voice-return .stream-return-to-participants { display: grid; width: 36px; min-width: 36px; height: 36px; min-height: 36px; justify-self: end; place-items: center; padding: 0; }
-.stream-more-actions .stream-voice-return--viewer .stream-return-to-participants { justify-self: center; }
 .stream-return-to-participants svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
 .voice-room .screen-rail-section { display: grid; min-height: 124px; height: auto; flex: 0 0 auto; grid-template-rows: auto 100px; gap: 8px; overflow: visible; }
 .voice-room .screen-rail-section h3 { position: static; display: block; width: auto; height: auto; overflow: visible; clip: auto; white-space: normal; }
