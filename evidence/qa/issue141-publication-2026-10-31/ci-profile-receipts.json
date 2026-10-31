@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "scope": "Source-bound hosted synthetic/native profiles; no physical media or installed-update acceptance is inferred.",
+  "profiles": [
+    {
+      "artifact_id": 13044285855,
+      "artifact_ZIP_SHA256": "89b6dfb4674854502f5668a73b0f513fb907710492ceda7ff85f7121f583b7db",
+      "source_revision": "942c358cdd903eaee708bc26eac05e126214206c",
+      "run_id": 41202831680,
+      "run_attempt": 1,
+      "file": "windows-acceptance.json",
+      "file_SHA256": "c8315551ed873ce8e053c9644cfd74ebb6c40b6bef7c493e943349ff346a05e4",
+      "value": {
+        "execution": {
+          "run_attempt": "1",
+          "run_id": "41202831680"
+        },
+        "gui_sfu": true,
+        "manifest_sha256": "489d187c6633ac93e4e43dd340bb39d32b5b5404a8a515c7c6c88ef106475061",
+        "recovery": true,
+        "source_revision": "942c358cdd903eaee708bc26eac05e126214206c",
+        "status": "PASS"
+      }
+    },
+    {
+      "artifact_id": 13044300869,
+      "artifact_ZIP_SHA256": "ce64b63925c0f6e1a916667ec7663ee0645b9aaecd4370979636555f9e7ac5f3",
+      "source_revision": "942c358cdd903eaee708bc26eac05e126214206c",
+      "run_id": 41202831680,
+      "run_attempt": 1,
+      "file": "windows-smoke.json",
+      "file_SHA256": "ee23fef149ee560dd10c1f26ee7ecfe3e2eea7e247f40dd44398bd503c435cbf",
+      "value": {
+        "schema_version": 1,
+        "status": "PASS",
+        "native_build": "83",
+        "elapsed_seconds": 124,
+        "real_monitor": true,
+        "real_flutter_relaunch": true,
+        "inherited_current_directory_released": true,
+        "whole_baseline_hashes_match": true,
+        "unicode_paths": true,
+        "synthetic_external_profile_retained": true,
+        "finished_transaction_replay_noop": true,
+        "one_shot_registration_removed": true,
+        "n_to_n1_ui_acceptance": "NOT_RUN"
+      }
+    },
+    {
+      "artifact_id": 13043705843,
+      "artifact_ZIP_SHA256": "4c9b22a5e1a6d3cd26f0b354e3cbe1d70e6b651efae23e59c66813904985f9ca",
+      "source_revision": "942c358cdd903eaee708bc26eac05e126214206c",
+      "run_id": 41202831680,
+      "run_attempt": 1,
+      "file": "android-kotlin.json",
+      "file_SHA256": "55581abff39827889b1752dbdca4dafb03094b3a19da4a9dd27e6809bd37c2fd",
+      "value": {
+        "artifacts": {},
+        "completed": [
+          "app-dependencies",
+          "kotlin-modes"
+        ],
+        "namespace": "flutter",
+        "profile": "android-kotlin",
+        "run_attempt": "1",
+        "run_id": "41202831680",
+        "schema_version": 1,
+        "sdk": {
+          "dart": "3.13.5",
+          "flutter": "3.47.7",
+          "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8"
+        },
+        "seconds": 585.046563358,
+        "source_revision": "942c358cdd903eaee708bc26eac05e126214206c",
+        "status": "PASS"
+      }
+    },
+    {
+      "artifact_id": 13043391418,
+      "artifact_ZIP_SHA256": "6db573129ed54bfaff14a4f3c67210bbb4d9815e3906cffa5c2b8ea1b2dc0e0f",
+      "source_revision": "942c358cdd903eaee708bc26eac05e126214206c",
+      "run_id": 41202831680,
+      "run_attempt": 1,
+      "file": "builtin/result.json",
+      "file_SHA256": "ed6703ef3980f69a5079189cc4fe9587d7e75695019bdabec33cc84e6209b466",
+      "value": {
+        "mode": "builtin",
+        "status": "PASS",
+        "classes": {
+          "boohtacord_voice_foreground": {
+            "ru.boohtacord.voice.start.AdmissionPolicyTest": 5
+          },
+          "livekit_client": {
+            "io.livekit.plugin.AudioResamplerTest": 11
+          },
+          "flutter_webrtc": {
+            "com.cloudwebrtc.webrtc.RemoteTrackRegistryTest": 1,
+            "com.cloudwebrtc.webrtc.ScreenCaptureConstraintsTest": 3,
+            "com.cloudwebrtc.webrtc.ScreenCaptureDimensionsTest": 6,
+            "com.cloudwebrtc.webrtc.ScreenCaptureFrameRateGateTest": 3,
+            "com.cloudwebrtc.webrtc.SurfaceProducerAvailabilityTest": 1,
+            "com.cloudwebrtc.webrtc.SurfaceReleaseBarrierTest": 3,
+            "com.cloudwebrtc.webrtc.VideoFrameDimensionsTest": 3,
+            "com.cloudwebrtc.webrtc.record.FrameCaptureGateTest": 2,
+            "com.cloudwebrtc.webrtc.record.FrameCapturerBufferTest": 1,
+            "com.cloudwebrtc.webrtc.screen.refresh.FrameTimestampTest": 2,
+            "com.cloudwebrtc.webrtc.screen.refresh.StationaryFrameRefreshTest": 9,
+            "com.cloudwebrtc.webrtc.utils.ConstraintsMapTest": 1
+          }
+        },
+        "tests": 51
+      }
+    },
+    {
+      "artifact_id": 13043391418,
+      "artifact_ZIP_SHA256": "6db573129ed54bfaff14a4f3c67210bbb4d9815e3906cffa5c2b8ea1b2dc0e0f",
+      "source_revision": "942c358cdd903eaee708bc26eac05e126214206c",
+      "run_id": 41202831680,
+      "run_attempt": 1,
+      "file": "legacy/result.json",
+      "file_SHA256": "033b8723dd00ee69d27861c612f1d1efe439ddfcbaeb2d9922d1a15c0d1ff4f4",
+      "value": {
+        "mode": "legacy",
+        "status": "PASS",
+        "classes": {
+          "boohtacord_voice_foreground": {
+            "ru.boohtacord.voice.start.AdmissionPolicyTest": 5
+          },
+          "livekit_client": {
+            "io.livekit.plugin.AudioResamplerTest": 11
+          },
+          "flutter_webrtc": {
+            "com.cloudwebrtc.webrtc.RemoteTrackRegistryTest": 1,
+            "com.cloudwebrtc.webrtc.ScreenCaptureConstraintsTest": 3,
+            "com.cloudwebrtc.webrtc.ScreenCaptureDimensionsTest": 6,
+            "com.cloudwebrtc.webrtc.ScreenCaptureFrameRateGateTest": 3,
+            "com.cloudwebrtc.webrtc.SurfaceProducerAvailabilityTest": 1,
+            "com.cloudwebrtc.webrtc.SurfaceReleaseBarrierTest": 3,
+            "com.cloudwebrtc.webrtc.VideoFrameDimensionsTest": 3,
+            "com.cloudwebrtc.webrtc.record.FrameCaptureGateTest": 2,
+            "com.cloudwebrtc.webrtc.record.FrameCapturerBufferTest": 1,
+            "com.cloudwebrtc.webrtc.screen.refresh.FrameTimestampTest": 2,
+            "com.cloudwebrtc.webrtc.screen.refresh.StationaryFrameRefreshTest": 9,
+            "com.cloudwebrtc.webrtc.utils.ConstraintsMapTest": 1
+          }
+        },
+        "tests": 51
+      }
+    },
+    {
+      "artifact_id": 13043540444,
+      "artifact_ZIP_SHA256": "9de219b01e742fc65d218d099b2b1897652a9e302c249bbfdfa4b6a6de4f7f52",
+      "source_revision": "942c358cdd903eaee708bc26eac05e126214206c",
+      "run_id": 41202831680,
+      "run_attempt": 1,
+      "file": "macos.json",
+      "file_SHA256": "15cf180bd066f63b8be58982b667bf05ebe4cc714038459298e3ca1d4d7365a1",
+      "value": {
+        "artifacts": {},
+        "completed": [
+          "app-dependencies",
+          "macos-platform-unit"
+        ],
+        "namespace": "flutter",
+        "profile": "macos",
+        "run_attempt": "1",
+        "run_id": "41202831680",
+        "schema_version": 1,
+        "sdk": {
+          "dart": "3.13.5",
+          "flutter": "3.47.7",
+          "framework_revision": "abaf9c523780a608bd46686fd5e53740a07077f8"
+        },
+        "seconds": 146.17128964100039,
+        "source_revision": "942c358cdd903eaee708bc26eac05e126214206c",
+        "status": "PASS"
+      }
+    },
+    {
+      "artifact_id": 13043666252,
+      "artifact_ZIP_SHA256": "1311e393e9329a4e186165d801227b9150ca691b406f9e31efd1546d91689cf3",
+      "source_revision": "942c358cdd903eaee708bc26eac05e126214206c",
+      "run_id": 41202831680,
+      "run_attempt": 1,
+      "file": "web-fan-in.json",
+      "file_SHA256": "ef5e9f82864648f982cb45d395b22f3492ad537f8e64783f1f44c2644f5eaf22",
+      "value": {
+        "checked_operations": 41,
+        "execution": {
+          "namespace": "web",
+          "run_attempt": "1",
+          "run_id": "41202831680"
+        },
+        "observed_profile_seconds": {
+          "browser-content": 215.952617,
+          "browser-conversations": 213.488083,
+          "browser-shell": 254.807313,
+          "browser-voice": 352.366242,
+          "fast": 102.589358,
+          "sfu-network": 277.018001
+        },
+        "plan_sha256": "eb0d1e6569ac52ff402fac7a9b9604ab4aa3ad69a795f727fd25291739032439",
+        "profiles": [
+          "browser-content",
+          "browser-conversations",
+          "browser-shell",
+          "browser-voice",
+          "fast",
+          "sfu-network"
+        ],
+        "source_revision": "942c358cdd903eaee708bc26eac05e126214206c",
+        "status": "PASS"
+      }
+    }
+  ]
+}

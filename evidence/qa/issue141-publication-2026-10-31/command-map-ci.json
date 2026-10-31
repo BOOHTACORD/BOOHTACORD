@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "rows": [
+    {
+      "protects": "Exact-head mandatory PostgreSQL17.6, Android/Kotlin, macOS, Windows native GUI/SFU and Web regression discovery; path-filtered PR skips cannot substitute.",
+      "command_argv": [
+        "gh",
+        "workflow",
+        "run",
+        "ci.yaml",
+        "--repo",
+        "Egkurilov/BOOHTACORD",
+        "--ref",
+        "codex/fix-history-edit-eviction-141"
+      ],
+      "invocation_kind": "Executable equivalent, not a second execution. Historical invocation was the authorized REST dispatch below.",
+      "historical_invocation": {
+        "method": "POST",
+        "path": "/repos/Egkurilov/BOOHTACORD/actions/workflows/ci.yaml/dispatches",
+        "body": {
+          "ref": "codex/fix-history-edit-eviction-141"
+        },
+        "http": 204
+      },
+      "platform": "Existing required GitHub-hosted Linux, macOS and Windows profiles",
+      "mandatory_when": "Before merge of frozen issue141 behavior source; no workflow/gate/skip changes.",
+      "result": "27/27 jobs SUCCESS,0 job skips; exact942c/run41202831680/attempt1. Conditional step skips remain authored.",
+      "where": [
+        {
+          "file": "final-ci-quality.json",
+          "SHA256": "4b930310abe7e45d34ec3c3335bf1ab138e2b60ad6e43afd794846a4e9a68e56"
+        },
+        {
+          "file": "ci-profile-receipts.json",
+          "SHA256": "5579e2311875fc327c7cab0924f64de356c13dcbae12bba603ca2fe052d78ce9"
+        },
+        {
+          "file": "ci-browser-content-selected.txt",
+          "SHA256": "31cd75d73ea603cab03916b774863720764cf7b2ee51ad338a88719589a4efd5"
+        },
+        {
+          "file": "ci-artifact-inventory.json",
+          "SHA256": "3c71ebbfaa919b8452e37fbc81345075038e3eddbfa98879594c6e80bb102be3"
+        }
+      ],
+      "run_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/41202831680"
+    }
+  ]
+}
