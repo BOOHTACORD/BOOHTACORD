@@ -1,6 +1,6 @@
 export interface WindowRange { start: number; end: number; top: number; rowsHeight: number; bottom: number }
 export interface HistoryRow { key: string; kind: 'date' | 'message'; messageId?: string; estimate: number; gap: number; hasAttachments?: boolean; grouped?: boolean }
-export type RenderedRow<T extends HistoryRow = HistoryRow> = T & { index: number; pinned: boolean }
+export type RenderedRow<T extends HistoryRow = HistoryRow> = T & { index: number; pinned: boolean; detached?: boolean }
 
 export function buildVirtualOffsets<T extends { key: string; estimate: number; gap: number }>(rows: readonly T[], measured: ReadonlyMap<string, number>): number[] {
   const offsets = new Array<number>(rows.length + 1)

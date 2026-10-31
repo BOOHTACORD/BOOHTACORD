@@ -1,0 +1,356 @@
+{
+  "schema_version": 1,
+  "issue": 141,
+  "status": "PASS_FOCUSED_SOURCE_REGRESSIONS_BROADER_GATES_PENDING",
+  "route": "conversation/history_window/editor_retention",
+  "branch": "codex/fix-history-edit-eviction-141",
+  "base_revision": "46e83f7655fb75c5acb29c91a439db551598cb40",
+  "source_binding": "Immutable commit containing this record; exact head is recorded by PR/CI/root runtime receipts. Content hashes below bind native inputs.",
+  "behavior": {
+    "server_message_cache_limit": 500,
+    "active_unsaved_controller_limit": 500,
+    "extra_DOM_pin_limit": 1,
+    "silent_unsaved_eviction": false,
+    "registry_stores_DOM_or_unmounted_Vue_instances": false,
+    "selection_state": "numeric start/end/direction only; focused editor retains keyedDOM",
+    "scope_reset": "channel/store/account/auth-memory epoch/empty/unmount; generation+entry identity+mounted-port token fences",
+    "default_DM_and_context_controller": "preserved optional-provider fallback",
+    "normal_history_markers": "detached rows have only data-retained-message-id; unchanged anchor/read/context selectors ignore them"
+  },
+  "production_files": {
+    "clients/web/src/conversation/MessageItem.vue": {
+      "working_bytes": 10121,
+      "Git_LF_bytes": 10002,
+      "lines": 119,
+      "LF_SHA256": "5a1c0ddc2afb77f4e4994bbfd239eb3d05ac93fcc8cf2308fe0d64c6bda4abdc"
+    },
+    "clients/web/src/conversation/TextHistoryList.vue": {
+      "working_bytes": 4982,
+      "Git_LF_bytes": 4928,
+      "lines": 54,
+      "LF_SHA256": "83f84fd5a77af61d1945a0a08068eb74b01a4cada2c852f7393aaa132f66d52d"
+    },
+    "clients/web/src/conversation/draft_memory.ts": {
+      "working_bytes": 1998,
+      "Git_LF_bytes": 1955,
+      "lines": 43,
+      "LF_SHA256": "c632029e416933a31ab43bc5fca2bdafcc1938216838cdf049a660ff8b79ad14"
+    },
+    "clients/web/src/conversation/history_window/use.ts": {
+      "working_bytes": 7632,
+      "Git_LF_bytes": 7531,
+      "lines": 101,
+      "LF_SHA256": "3385b3885712cd1fb509037ba08894019b8e80342f7c63c3240b2d9359b7d0fd"
+    },
+    "clients/web/src/conversation/history_window/use_text_history_list.ts": {
+      "working_bytes": 7860,
+      "Git_LF_bytes": 7759,
+      "lines": 101,
+      "LF_SHA256": "676455e7a157674118bb07e63492f8970ffa59728062f10ee8d847be91ed899d"
+    },
+    "clients/web/src/conversation/history_window/window.ts": {
+      "working_bytes": 2024,
+      "Git_LF_bytes": 1986,
+      "lines": 38,
+      "LF_SHA256": "6504bafb4910e056f17a59867e0b50217e0e14aaa97295ff6f8be63ccfc7a5d4"
+    },
+    "clients/web/src/conversation/history_window/editing_pin.ts": {
+      "working_bytes": 1841,
+      "Git_LF_bytes": 1841,
+      "lines": 31,
+      "LF_SHA256": "a0c571dc1e9cee50af2371fe2bd6be726a907e2a1ef317d6b41c419797a5f9a8"
+    },
+    "clients/web/src/conversation/history_window/editing_tabstops.ts": {
+      "working_bytes": 1132,
+      "Git_LF_bytes": 1132,
+      "lines": 22,
+      "LF_SHA256": "c2339fba32745cc1e1526544cde72a4f8f06f705c32f9190d5f2faba41306d3e"
+    },
+    "clients/web/src/conversation/history_window/editing_state/registry.ts": {
+      "working_bytes": 1361,
+      "Git_LF_bytes": 1361,
+      "lines": 31,
+      "LF_SHA256": "b44485ab051cf6dcffcb8a1e544bf118d48aa9d69c7aeac76d585da9185ef928"
+    },
+    "clients/web/src/conversation/history_window/editing_state/entry.ts": {
+      "working_bytes": 3468,
+      "Git_LF_bytes": 3468,
+      "lines": 63,
+      "LF_SHA256": "e4a33ad64302f32c13e809ebe4cd1a63f43df2daa4cd7776fd4b48e9e8bffeec"
+    },
+    "clients/web/src/conversation/history_window/editing_state/context.ts": {
+      "working_bytes": 1403,
+      "Git_LF_bytes": 1403,
+      "lines": 23,
+      "LF_SHA256": "5457f803a2249f87867ef8778dad3ebb60d5b45e51d31b7ab4d6923248a999d7"
+    }
+  },
+  "test_and_fixture_LF_SHA256": {
+    "clients/web/src/conversation/draft_epoch.spec.ts": "ba7bb138b8e4f3ee56091ab09713df64ef4883e22b0c05a1d18e39c4a09d581f",
+    "clients/web/src/conversation/history_window/editing_pin.spec.ts": "198085e92a8f32b8c2b47fc720e429adda9a6edd82daf0a415a3f41fa0088240",
+    "clients/web/src/conversation/history_window/editing_state/registry.spec.ts": "b0fe8a41b1c40670d9416f41bcd677a84034704811eba646378ecfc37519b446",
+    "clients/web/src/conversation/history_window/editing_state/async.spec.ts": "c6598ffc283c20a01502be651ed2c0cdcfe4a6d24e34b8c104358a2b15e15486",
+    "clients/web/tests/chat_rhythm/history_edit.html": "c2a0741efcc9db981e56f0492932a17b948aa97d9ef0ac87ded386ede516913f",
+    "clients/web/tests/chat_rhythm/history_edit.ts": "d843c8154fdd8e93b717f48f402c26a2aeba7215e2de895ade99bfe2346a9a13",
+    "clients/web/tests/chat_rhythm/history_edit_data.ts": "598f9a58ed4735c07a500286dfdfc49c10f172fc45c023fe55df6b12ce722a69",
+    "clients/web/tests/chat_rhythm/history_edit_eviction.browser.spec.ts": "40c202f3af719a57fdaefaa5957c23634319c49b57be6257fe6824319596ea33",
+    "clients/web/tests/chat_rhythm/history_edit_helpers.ts": "8cff80cca419cf090a5429f7ee032384534c9b6f007677b746191d6c99289477",
+    "clients/web/tests/chat_rhythm/history_edit_multiple.browser.spec.ts": "14fd57c6790ff351c45f88c9ef9fc4eba09d8867ebbab8920cbac2d9ce104397",
+    "clients/web/tests/chat_rhythm/history_edit_privacy.browser.spec.ts": "5bd293a27b90a4cc03f18d7e39219b8cbf08c8fa780b87df7e44e347f9e109cd",
+    "clients/web/tests/chat_rhythm/history_edit_state.browser.spec.ts": "fd703013b5f0778ea3bdfa9db81985b14175a859f98a77cfb3ccec9f8f66e26d"
+  },
+  "unchanged_vs_base_LF_SHA256": {
+    "clients/web/src/conversation/message_edit_controller.ts": "9155f3a9dc51bf602883f9cc6507313af066def7210d6f8f962ff7fd5a374145",
+    "clients/web/src/conversation/text_history.ts": "8a043283b49598ac8a5aaf61b85de3e8f82766df2963252ce64c67bd2031feef",
+    "clients/web/src/conversation/message_store.ts": "5d71c131ca346204f11189988c973c711e299043842f887d90cd0bf4b6006906",
+    "clients/web/src/conversation/message_client.ts": "126ace49c9f6f992b0b1a499e44291c3782903f684d21db2a324bef45ec54f94",
+    "clients/web/src/conversation/history_window/eviction.ts": "c091202fa0617cb8ad20fa45c3d59765a180c0a66b6aff2470431013a31b333f",
+    "clients/web/src/conversation/history_window/paging.ts": "27df4185a3a77c6fbdeaaaa553acd4b44c5e9ea6a9982124c6d6ce1da1775454",
+    "clients/web/src/conversation/history_window/merge.ts": "5fe168edba61d2592b2c4daee99bcdc2a7c26b76db1a5c53c94690bcea02a673",
+    "clients/web/src/conversation/history_window/timeline.ts": "3cd218fdf57bfe789157467233b0abbc37c74abaa073735f7119ef9c076ba607",
+    "clients/web/src/conversation/message_index/index.ts": "d3f381de5851e09c2262f634c14b70d76c4c015098ac4c9f6ab0e6af687cc4ea",
+    "clients/web/src/conversation/context_position/dom.ts": "bb4052ba3be30f09b78f069ace2521406c20badf1ee875907c7874901ab31e8c",
+    "clients/web/src/conversation/read_visibility.ts": "626d0753182054d8ac390f582f89505e7368e60b49ed11ddf4054fd05f6bf520",
+    "clients/web/src/conversation/use_visible_read.ts": "e9752fc5b41ffe21ce122068ec75577b6b3e3fa048feb429e9aa0316458512a3",
+    "clients/web/src/search/SearchMessageContext.vue": "33425c44e657b596f5a79e2d667a9784b65b2a858e47c539ca84fa1b24b85729",
+    "clients/web/src/search/search_context_controller.ts": "651ff2250bb89c5f770db9f3c2cd4f01dc1c57d606a2c5d2fa65cc9435daaa8e",
+    "clients/web/package.json": "a8f1157117334f4e334abce1edf9cab1b04c5fb9d1841c75aae3ebe449e00227",
+    "clients/web/package-lock.json": "52413dbf0a3a79c11afc3f7ec3c28bd173d29635401310f2aa3c00beb2ad17ff"
+  },
+  "checks": [
+    {
+      "protects": "Existing history/edit/conflict/draft behavior plus retained pin,500-state registry, selection, unbound ports and asynchronous reset ownership",
+      "command_argv": [
+        "npm",
+        "test",
+        "--",
+        "--run",
+        "src/conversation/history_window",
+        "src/conversation/message_edit_controller.spec.ts",
+        "src/conversation/edit_conflict_recovery.spec.ts",
+        "src/conversation/draft_memory.spec.ts",
+        "src/conversation/draft_epoch.spec.ts"
+      ],
+      "working_directory": "clients/web",
+      "platform": "Windows11/Node24.18.0/Vitest5.0.1",
+      "mandatory_when": "After editor lifetime changes",
+      "result": "34PASS/0skip",
+      "where": ".out/issue141/native-first-green.log",
+      "result_SHA256": "1284742104de6f88f0838e56a98053ca83ff697f9d0345772f448f877ba5666f"
+    },
+    {
+      "protects": "Full Web unit regression discovery",
+      "command_argv": [
+        "npm",
+        "test"
+      ],
+      "working_directory": "clients/web",
+      "platform": "Windows11/Node24.18.0/Vitest5.0.1",
+      "mandatory_when": "Before source handoff",
+      "result": "1731PASS/506files/0skip",
+      "where": ".out/issue141/full-web-unit.log",
+      "result_SHA256": "6477f5047a9b2e6015e4b6fb41e0d2a133f34e2ca34df08317f8c634e3e7aaab"
+    },
+    {
+      "protects": "Both editing drafts/caret/mentions survive scroll+eviction, focused DOM identity, oldest/newer edges, privacy reset, conflict/pending/deleted notices, detached Tab and visible500-state cap feedback",
+      "command_argv": [
+        "npx",
+        "playwright",
+        "test",
+        "-c",
+        "tests/chat_rhythm/playwright.config.ts",
+        "history_edit"
+      ],
+      "working_directory": "clients/web",
+      "platform": "Windows11/bundled Chromium/Playwright1.63.0; component fixtures1440/393",
+      "mandatory_when": "After UI state changes",
+      "result": "28PASS/0skip",
+      "where": ".out/issue141/component-final28.log",
+      "result_SHA256": "c186ded1d38cb12baf8df9c3be4bb37b9bc7fd7a7d34419c46ebae308b21e574"
+    },
+    {
+      "protects": "Retained regressions reject actual loss after eviction and after return while preserving both positive controls",
+      "command_argv": [
+        "npx",
+        "playwright",
+        "test",
+        "-c",
+        "tests/chat_rhythm/playwright.config.ts",
+        "history_edit_eviction",
+        "--grep",
+        "through eviction [123]$|positive control",
+        "--timeout",
+        "15000"
+      ],
+      "working_directory": ".out/issue141/retention-disabled-copy/clients/web",
+      "platform": "Windows11/isolated mutation copy",
+      "mandatory_when": "Before trusting regression sensitivity",
+      "result": "3semanticFAIL/2controlsPASS/0skip; expected exit1; original checkout unchanged",
+      "where": ".out/issue141/mutation-final.log",
+      "result_SHA256": "ccc52262ebb380c6215e1f199498250c1ea8c07e397df7d310b513c1e3b36fd7"
+    },
+    {
+      "protects": "Production Vue/TypeScript compiles with optional default bindings unchanged",
+      "command_argv": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "working_directory": "clients/web; VITE_PUBLIC_ORIGIN=https://example.invalid",
+      "platform": "Windows11/Node24.18.0/Vue3.5.43/TypeScript5.9.3",
+      "mandatory_when": "Before source handoff",
+      "result": "PASS; pre-existing chunk/dynamic-import warnings retained",
+      "where": ".out/issue141/build-freeze.log",
+      "result_SHA256": "7fbbb3a4e5a8f4079e8c8a9e1bef471a873cea4e77fd84644f5991e9d738b193"
+    },
+    {
+      "protects": "Feature coverage, native runtime/visual result honesty and owned POSIX process cleanup; client parity policy",
+      "command_argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "tools.qa.local_features.test_policy",
+        "tools.qa.local_features.test_baseline",
+        "tools.qa.local_features.test_stack",
+        "tools.qa.local_features.test_native",
+        "tools.qa.local_features.test_doctor",
+        "tools.qa.local_features.test_process",
+        "tools.verify.client_parity.test_policy"
+      ],
+      "working_directory": ".",
+      "platform": "WSL2Ubuntu/existing pinnedPython3.12.15 wrapper",
+      "mandatory_when": "After scenario registration",
+      "result": "22PASS",
+      "where": ".out/issue141/policy-pinned-linux312.log",
+      "result_SHA256": "9744bd7e536155599f5e93c360941ef9acd27f8e987e21d4526e66efe4071772"
+    },
+    {
+      "protects": "Changed common feature records all existing Web/iOS/Android decisions and exact native paths",
+      "command_argv": [
+        "python",
+        "-X",
+        "utf8",
+        "-m",
+        "tools.verify.client_parity.run",
+        "--base",
+        "46e83f7655fb75c5acb29c91a439db551598cb40"
+      ],
+      "working_directory": ".",
+      "platform": "Windows11/Python3.12",
+      "mandatory_when": "After registry edit",
+      "result": "PASS; previous decisions/platform rows preserved",
+      "where": ".out/issue141/parity-final.log",
+      "result_SHA256": "ea917dc9c6c8f8a4c67f58e53865c8ff8d41b303860fe779c496813409ea29d1"
+    },
+    {
+      "protects": "Existing server contracts/security/native route parity remain valid",
+      "command_argv": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/verify/contracts/verify-contracts.ps1"
+      ],
+      "working_directory": ".",
+      "platform": "Windows11/PowerShell/Go1.26.4/Python3.12",
+      "mandatory_when": "Before source handoff",
+      "result": "PASS;129public operations/4private exclusions",
+      "where": ".out/issue141/contracts-final.log",
+      "result_SHA256": "238b944fc7973726179accf9a2d02e6eacbc13d009a076f382fa0aa989ec8291"
+    }
+  ],
+  "mutation": {
+    "scope": "isolated source copy: disable TEXT controller provider and restore original default virtual pin ownership; original checkout untouched",
+    "copied_files": 1515,
+    "changes": {
+      "clients/web/src/conversation/history_window/editing_state/context.ts": {
+        "original_LF_SHA256": "5457f803a2249f87867ef8778dad3ebb60d5b45e51d31b7ab4d6923248a999d7",
+        "mutant_LF_SHA256": "87e574fe6b21cd417662b6d92cbbf0aa70679972147639a54f58e9dcc9637bde"
+      },
+      "clients/web/src/conversation/history_window/use_text_history_list.ts": {
+        "original_LF_SHA256": "676455e7a157674118bb07e63492f8970ffa59728062f10ee8d847be91ed899d",
+        "mutant_LF_SHA256": "c9655c332f700ca740c350b1adf9c39913b36c735931b760f94e9fbf1d295b1d"
+      }
+    }
+  },
+  "mutation_final_fixture_manifest_SHA256": "1e5d67cf0f6ec71c18f1097ff19338041a4460d165fa1afd269dd6dd8873d231",
+  "visual_review": {
+    "status": "PASS_SCOPED_COMPONENT_VISUAL_REVIEW",
+    "images": [
+      {
+        "name": "capacity-feedback-1440.png",
+        "SHA256": "b0d05389efebe9c34ef16ee54614753a68a5f098e53560ebd5775ba5471037e5",
+        "dimensions": [
+          1440,
+          900
+        ],
+        "original_resolution_review": true
+      },
+      {
+        "name": "detached-reading-1440.png",
+        "SHA256": "659f2d125426e61dfd7c6ccf865e65e591f1e3f2c0d79d6e5a2a103e7f10078a",
+        "dimensions": [
+          1440,
+          900
+        ],
+        "original_resolution_review": true
+      },
+      {
+        "name": "restored-editor-1440.png",
+        "SHA256": "a3eef2489970d7b9ff59d716fc44c607a1917a9f12a14c5c7602f09c06643d58",
+        "dimensions": [
+          1440,
+          900
+        ],
+        "original_resolution_review": true
+      },
+      {
+        "name": "restored-editor-393.png",
+        "SHA256": "d8e740e5486f50c1b531806943543d7cc7f6f92dd554d0e151c5ea329e1de4ed",
+        "dimensions": [
+          393,
+          900
+        ],
+        "original_resolution_review": true
+      }
+    ],
+    "observations": [
+      "Detached editor is outside layout; reading rows/control remain visible without overlap or horizontal overflow.",
+      "Restored1440 editor shows exact synthetic draft, mention chip and Save/Cancel without cropping.",
+      "Restored393 editor shows draft, mention and Save/Cancel within viewport; fixture controls/partial scrolled rows are not full AppShell acceptance.",
+      "Capacity UI shows a visible save/cancel explanation outside editing;500 retained controller states render only one message, with no editor opened or draft silently evicted."
+    ],
+    "scope": "Production component fixture, not built AppShell/real API/physical media; actual root before/after acceptance remains separate.",
+    "ResizeObserver_dev_warnings": "Retained in logs; historical cause/production impact UNKNOWN, no global observer rewrite."
+  },
+  "root_actual_before": {
+    "source": "46e83f7655fb75c5acb29c91a439db551598cb40",
+    "wide_and_narrow": "Each3mainsemanticFAIL/2controlsPASS in builtAppShell+realAPI normalTLS; root reviewed originals; no message mutations",
+    "wide_root_verdict_SHA256": "65a0b128a41ed72ddf783071da519f38c03eff6e654c73c155313dc877764ba2",
+    "actual_multi_return_verdict_SHA256": "2b9701209937612f25cc5451ea6988c83e5fe859320b954c1e3ace2be9b3082d",
+    "input_receipt_hashes_independently_read": true
+  },
+  "retained_failures_and_limits": {
+    "initial_component_harness_setup": "Wrong desktop compact-toggle locator/style timing; preserved diagnostic, not product verdict",
+    "first_fixed_component": "23PASS/4focusFAIL, then scoped pager focus preservation",
+    "second_fixed_component": "26PASS/1wrong expectation for removed newer control; corrected with stable focused pager precondition",
+    "Windows_full_profile_attempt": "80PASS/5FAIL:4actual-200percent viewport assertions observed379/709 vs390/720, plus1fixture-assignment readiness race fixed by explicit attached wait. Windows zoom remainsFAIL, not relabeled by Linux results.",
+    "Windows_POSIX_policy": "2setupERROR unsupportedos.killpg/SIGKILL; preserved; exact owned helpers laterCIMabsent0",
+    "Linux_default_policy": "Python3.14.4 supplemental22PASS; separate from pinned3.12.15 final",
+    "ResizeObserver_dev_warnings": "Retained current/historical Vite fixture observation; cause/production impactUNKNOWN; no global observer rewrite",
+    "historical_performance": "Prior20-dataset measurements remain dated; no fresh performance/INP/SLO or pure causal claim",
+    "registry_heap_observation": {
+      "raw_heap_before": 15193880,
+      "raw_heap_after500": 22314608,
+      "includes_test_and_mock_allocations": true,
+      "GC_calibrated": false,
+      "claim": "Native500-state fixture observation only; not a browser memory bound/SLO"
+    }
+  },
+  "pending": {
+    "canonical": "5features auth,connection_status,screen,voice,chat; --platformweb --real-stack, sequence after root performance windows",
+    "full_hosted_CI": "Exact source PostgreSQL17.6,Android,macOS,Windows and all current required routes",
+    "root_fixed_runtime": "Actual builtAppShell wide/narrow,Tier2multi/privacy/images/anchor andTier3same20datasets before/after plus ownedcleanup",
+    "merge_issue_closure": "HOLD until root finalacceptanceGO and exact-head CI"
+  },
+  "platform_scope": "Web only; no Android/iOS/native/physical media, capacity or blanket parent QA acceptance;43consolidation decisions untouched"
+}

@@ -1,4 +1,4 @@
-import { computed, nextTick, onMounted, ref, watch, type Ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue'
 import type { CurrentSession } from '../../identity/current_session'
 import { useAuthorDirectory } from '../../identity/author_directory'
 import { useMessageStore } from '../message_store'
@@ -8,12 +8,19 @@ import { isHistoryNearBottom, newestServerMessageId, newServerMessageCount } fro
 import { navigateToReplyTarget } from '../reply_context_navigation'
 import { buildTimeline } from './timeline'
 import { useHistoryWindow } from './use'
+import { provideHistoryEditors } from './editing_state/context'
+import { draftMemoryEpoch } from '../draft_memory'
 
 type Callbacks = { viewportChange: () => void; replyContext: (messageId: string) => void }
 export function useTextHistoryList(props: { channelId: string; session: CurrentSession | null }, emit: Callbacks, list: Ref<HTMLOListElement | null>) {
   const store = useMessageStore(), authors = useAuthorDirectory(), compact = ref(false)
+  const editors = provideHistoryEditors(), editorVersion = ref(0)
   const timeline = computed(() => buildTimeline(store.messages, store.historyLoaded, Boolean(store.nextCursor), compact.value))
-  const historyWindow = useHistoryWindow(timeline, list, computed(() => Boolean(store.nextCursor)), compact)
+  const historyWindow = useHistoryWindow(timeline, list, computed(() => Boolean(store.nextCursor)), compact, editors.has)
+  const scopeIdentity = computed(() => JSON.stringify([props.channelId, store.channelId, props.session?.accountId ?? null, draftMemoryEpoch()]))
+  const historyScope = computed(() => `${scopeIdentity.value}:${editorVersion.value}`)
+  watch([scopeIdentity, () => store.messages.length === 0], () => { historyWindow.clearPins(); editors.clear(); editorVersion.value++ }, { flush: 'sync' })
+  onBeforeUnmount(() => { historyWindow.clearPins(); editors.dispose() })
   const announceNew = createMessageLogAnnouncer(), announcement = ref(''), jumpCount = ref(0)
   const latestServerId = computed(() => newestServerMessageId(store.messages))
   let announcementVersion = 0
@@ -59,13 +66,23 @@ export function useTextHistoryList(props: { channelId: string; session: CurrentS
   }
   async function loadPage(load: () => Promise<boolean>): Promise<void> {
     const viewport = list.value, top = viewport?.getBoundingClientRect().top
+    const focusedControl = viewport?.querySelector<HTMLButtonElement>('[data-history-control] button:focus'), scope = historyScope.value
+    const restoreControl = () => {
+      if (scope !== historyScope.value || !focusedControl || !viewport?.isConnected || document.activeElement !== document.body) return
+      const bounds = viewport.getBoundingClientRect()
+      const visible = [...viewport.querySelectorAll<HTMLElement>('[data-message-id]')].find((row) => {
+        const rect = row.getBoundingClientRect(); return rect.bottom > bounds.top && rect.top < bounds.bottom
+      })?.querySelector<HTMLElement>('.message-row')
+      const target = focusedControl.isConnected ? focusedControl : visible ?? viewport.querySelector<HTMLElement>('[data-history-control] button:not(:disabled)')
+      target?.focus({ preventScroll: true })
+    }
     const anchor = [...(viewport?.querySelectorAll<HTMLElement>('[data-message-id]') ?? [])].find((item) => {
       const bounds = item.getBoundingClientRect(); return bounds.bottom > (top ?? 0) && bounds.top < (top ?? 0) + (viewport?.clientHeight ?? 0)
     })
     const anchorId = anchor?.dataset.messageId, anchorTop = anchor?.getBoundingClientRect().top
     const anchorOffset = anchorId ? historyWindow.offsetOf(anchorId) : undefined, channelId = props.channelId
     store.setHistoryAnchor(anchorId)
-    if (!await load()) return
+    if (!await load()) { await nextTick(); restoreControl(); return }
     const newOffset = anchorId ? historyWindow.offsetOf(anchorId) : undefined
     if (viewport && anchorOffset !== undefined && newOffset !== undefined) { viewport.scrollTop += newOffset - anchorOffset; historyWindow.syncScroll() }
     await nextTick()
@@ -75,9 +92,10 @@ export function useTextHistoryList(props: { channelId: string; session: CurrentS
       if (current) viewport.scrollTop += current.getBoundingClientRect().top - anchorTop
     }
     updateHistoryAnchor()
+    restoreControl()
     emit.viewportChange()
   }
   const loadOlder = () => loadPage(() => store.loadOlder())
   const loadNewer = () => loadPage(() => store.loadNewer())
-  return { store, timeline, announcement, jumpCount, historyWindow, onScroll, jumpToLatest, openReplyContext, replyPreview, loadOlder, loadNewer }
+  return { store, timeline, announcement, jumpCount, historyWindow, historyScope, onScroll, jumpToLatest, openReplyContext, replyPreview, loadOlder, loadNewer }
 }
