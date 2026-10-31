@@ -4,11 +4,12 @@ import type { CurrentSession } from '../identity/current_session'
 import MessageItem from './MessageItem.vue'
 import type { TextMessage } from './message_client'
 import { useTextHistoryList } from './history_window/use_text_history_list'
+import { vRetainedEditingPin } from './history_window/editing_tabstops'
 
 const props = defineProps<{ channelId: string; session: CurrentSession | null }>()
 const emit = defineEmits<{ reply: [message: TextMessage]; retry: [message: TextMessage]; replyContext: [messageId: string]; viewportChange: [] }>()
 const list = ref<HTMLOListElement | null>(null)
-const { store, timeline, announcement, jumpCount, historyWindow, onScroll, jumpToLatest, openReplyContext, replyPreview, loadOlder, loadNewer } = useTextHistoryList(
+const { store, timeline, announcement, jumpCount, historyWindow, historyScope, onScroll, jumpToLatest, openReplyContext, replyPreview, loadOlder, loadNewer } = useTextHistoryList(
   props, { viewportChange: () => emit('viewportChange'), replyContext: (id) => emit('replyContext', id) }, list)
 </script>
 
@@ -22,10 +23,11 @@ const { store, timeline, announcement, jumpCount, historyWindow, onScroll, jumpT
       <span v-if="store.olderError" class="state state-error" role="alert">{{ store.olderError }} <button type="button" :disabled="store.olderLoading" @click="loadOlder">Повторить</button></span>
     </li>
     <li role="presentation" v-if="historyWindow.range.value.start" class="virtual-spacer" aria-hidden="true" :style="{ height: `${historyWindow.topSpacer.value}px` }" />
-    <li role="presentation" v-for="entry in historyWindow.renderedRows.value" :key="entry.key" :data-virtual-key="entry.key" :data-message-id="entry.kind === 'message' ? entry.message.id : undefined"
+    <li role="presentation" v-for="entry in historyWindow.renderedRows.value" v-retained-editing-pin="Boolean(entry.detached)" :key="entry.key" :data-virtual-key="entry.key" :data-message-id="entry.kind === 'message' && !entry.detached ? entry.message.id : undefined" :data-retained-message-id="entry.kind === 'message' && entry.detached ? entry.message.id : undefined"
       :class="entry.kind === 'date' ? 'history-date' : ['virtual-row', { 'grouped-message': entry.grouped }]" :style="historyWindow.rowStyle(entry)">
       <template v-if="entry.kind === 'date'"><span v-if="entry.showStart" class="history-start" role="status" aria-label="Это начало истории.">Начало</span><time :datetime="entry.dateTime">{{ entry.dateLabel }}</time></template>
       <MessageItem v-else
+        :key="`${historyScope}:${entry.key}`"
         :message="entry.message"
         :grouped="entry.grouped"
         :reply-preview="replyPreview(entry.message)"

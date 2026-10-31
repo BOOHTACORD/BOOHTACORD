@@ -1,3 +1,5 @@
+import { ref } from 'vue'
+
 export interface StoredDraft<Reply, Attachment> {
   body: string
   replyTarget: Reply | null
@@ -6,7 +8,7 @@ export interface StoredDraft<Reply, Attachment> {
 }
 
 const memory = new Map<string, { revision: number; signature: string; draft: StoredDraft<unknown, unknown> }>()
-let epoch = 0
+const epoch = ref(0)
 let revision = 0
 
 export function draftKey(accountId: string, kind: 'CHANNEL' | 'DIRECT_MESSAGE', conversationId: string): string {
@@ -31,11 +33,11 @@ export function loadDraft<Reply, Attachment>(key: string): StoredDraft<Reply, At
     attachments: [...value.attachments] as Attachment[], mentionUserIds: [...value.mentionUserIds] } : null
 }
 
-export function draftMemoryEpoch(): number { return epoch }
+export function draftMemoryEpoch(): number { return epoch.value }
 export function draftRevision(key: string): number { return memory.get(key)?.revision ?? 0 }
 export function clearDraftIfRevision(key: string, expectedRevision: number): boolean {
   if (!expectedRevision || draftRevision(key) !== expectedRevision) return false
   memory.delete(key)
   return true
 }
-export function clearDraftMemory(): void { epoch++; memory.clear() }
+export function clearDraftMemory(): void { memory.clear(); epoch.value++ }

@@ -12,7 +12,7 @@ import { decorateMessageMentions } from './message_body/inline_mentions'
 import MentionPicker from './MentionPicker.vue'
 import TextMessageAttachments from './TextMessageAttachments.vue'
 import DirectMessageAttachments from '../direct_message/DirectMessageAttachments.vue'
-import { useMessageEditController, type EditResult } from './message_edit_controller'
+import { useHistoryMessageEditor, type EditResult } from './history_window/editing_state/context'
 import { handleMessageEditKeydown } from './message_edit_shortcuts'
 import { useMessageActionDisclosure } from './message_actions/disclosure'
 import SystemWelcomeMessage from './system_welcome/SystemWelcomeMessage.vue'
@@ -24,11 +24,12 @@ type RenderedMessage = Omit<TextMessage, 'channelId' | 'attachments' | 'mentionU
 const props = defineProps<{ message: RenderedMessage; grouped?: boolean; replyPreview?: string; canEdit: boolean; canDelete: boolean; retryDisabled?: boolean; mentionRecipient?: { id: string; displayName: string }; editMessage?: (body: string, mentionIds: string[], revision: number) => Promise<EditResult>; refreshMessage?: () => Promise<{ revision: number; deleted: boolean } | null> }>()
 const emit = defineEmits<{ remove: []; reply: []; retry: []; replyContext: [messageId: string]; editState: [editing: boolean] }>()
 onMounted(()=>markRendered(props.message));onUpdated(()=>markRendered(props.message))
-const editor = useMessageEditController({
+const editInput = ref<HTMLTextAreaElement | null>(null)
+const editor = useHistoryMessageEditor(props.message.id, {
   save: (body, ids, revision) => props.editMessage?.(body, ids, revision) ?? Promise.resolve({ kind: 'stale', message: 'Сообщение недоступно.' }),
   refresh: () => props.refreshMessage?.() ?? Promise.resolve(null),
-})
-const { editing, body, mentionUserIds: editingMentionIds, pending, needsRefresh, error: editError, notice: editNotice } = editor
+}, editInput)
+const { editing, body, mentionUserIds: editingMentionIds, pending, needsRefresh, error: editError, notice: editNotice, blockedReason } = editor
 watch(editing, (value) => emit('editState', value), { flush: 'sync' })
 const textChannelId = computed(() => props.message.channelId ?? '')
 const textAttachments = computed(() => props.message.attachments ?? [])
@@ -39,7 +40,6 @@ const mentionRecipients = computed(() => (props.message.mentionUserIds ?? []).ma
 const unmatchedMentionIds = computed(() => decorateMessageMentions(props.message.body, mentionRecipients.value).unmatchedIds)
 const compact = computed(() => Boolean(props.grouped && !editing.value))
 const avatarFailed = ref(false)
-const editInput = ref<HTMLTextAreaElement | null>(null)
 const { actionsOpen, actionsToggle, row, closeActions, onRowPointerDown, onRowPointerMove, onRowPointerEnd, onRowFocusOut } = useMessageActionDisclosure()
 watch(() => props.message.authorId, (id) => { void authors.ensure(id) }, { immediate: true })
 watch(() => props.message.mentionUserIds, (ids) => { for (const id of ids ?? []) void authors.ensure(id) }, { immediate: true })
@@ -84,6 +84,7 @@ function remove(): void {
         <span v-if="message.editedAt" class="message-time">изменено</span>
       </div>
       <span v-else class="gc-sr-only">{{ authorName }}<span v-if="message.editedAt">, изменено</span></span>
+      <p v-if="blockedReason" class="message-send-status" role="status">{{ blockedReason }}</p>
       <template v-if="editing">
         <textarea ref="editInput" v-model="body" :disabled="pending" aria-label="Изменённый текст сообщения" :aria-describedby="editError ? `message-edit-error-${message.id}` : undefined" @keydown="onEditKeydown" />
         <MentionPicker v-model="editingMentionIds" :self-id="message.authorId" :disabled="pending" :only-participant="mentionRecipient" />
