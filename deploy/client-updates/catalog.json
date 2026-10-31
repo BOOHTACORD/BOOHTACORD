@@ -1,14 +1,153 @@
 {
   "schema_version": 1,
-  "catalog_revision": 29,
+  "catalog_revision": 30,
   "application_family": "boohtacord",
   "entries": [
-    {"platform":"web","distribution":"browser","channel":"stable","arch":"any","state":"published","target":{"release_id":"web-browser-stable-r46","release_order":46,"version":"1.0.32","native_build":null,"priority":"normal","published_at":"2026-10-05T03:27:05Z","summary":"BOOHTACORD 1.0.32: быстрые клавиши голоса, причины отключения, настройки аудио и обновлённая админка.","release_notes_url":"https://github.com/Egkurilov/BOOHTACORD/releases","requirements":{"supported_arches":["any"]},"action":{"kind":"reload","url":null}}},
-    {"platform":"android","distribution":"direct","channel":"stable","arch":"arm64","state":"published","target":{"release_id":"android-direct-stable-r48","release_order":48,"version":"1.0.34","native_build":"67","priority":"normal","published_at":"2026-10-05T10:14:29Z","summary":"BOOHTACORD Android 1.0.34: исправлен вылет при включении микрофона в голосовом канале.","release_notes_url":"https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.34","requirements":{"supported_arches":["arm64"]},"action":{"kind":"open_download_page","url":"https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.34"}}},
-    {"platform":"android","distribution":"direct","channel":"stable","arch":"armv7","state":"published","target":{"release_id":"android-direct-stable-r48","release_order":48,"version":"1.0.34","native_build":"67","priority":"normal","published_at":"2026-10-05T10:14:29Z","summary":"BOOHTACORD Android 1.0.34: исправлен вылет при включении микрофона в голосовом канале.","release_notes_url":"https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.34","requirements":{"supported_arches":["armv7"]},"action":{"kind":"open_download_page","url":"https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.34"}}},
-    {"platform":"android","distribution":"direct","channel":"stable","arch":"x64","state":"published","target":{"release_id":"android-direct-stable-r48","release_order":48,"version":"1.0.34","native_build":"67","priority":"normal","published_at":"2026-10-05T10:14:29Z","summary":"BOOHTACORD Android 1.0.34: исправлен вылет при включении микрофона в голосовом канале.","release_notes_url":"https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.34","requirements":{"supported_arches":["x64"]},"action":{"kind":"open_download_page","url":"https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.34"}}},
-    {"platform":"windows","distribution":"direct","channel":"stable","arch":"x64","state":"published","target":{"release_id":"windows-direct-stable-r52","release_order":52,"version":"1.0.38","native_build":"71","priority":"normal","published_at":"2026-10-07T07:21:42Z","summary":"BOOHTACORD Windows 1.0.38 (build 71).","release_notes_url":"https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.38","requirements":{"supported_arches":["x64"]},"action":{"kind":"open_download_page","url":"https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.38"}}},
-    {"platform":"ios","distribution":"development","channel":"development","arch":"arm64","state":"unconfigured","target":null},
-    {"platform":"macos","distribution":"direct","channel":"stable","arch":"arm64","state":"unconfigured","target":null}
+    {
+      "platform": "web",
+      "distribution": "browser",
+      "channel": "stable",
+      "arch": "any",
+      "state": "published",
+      "target": {
+        "release_id": "web-browser-stable-r46",
+        "release_order": 46,
+        "version": "1.0.32",
+        "native_build": null,
+        "priority": "normal",
+        "published_at": "2026-10-05T03:27:05Z",
+        "summary": "BOOHTACORD 1.0.32: быстрые клавиши голоса, причины отключения, настройки аудио и обновлённая админка.",
+        "release_notes_url": "https://github.com/Egkurilov/BOOHTACORD/releases",
+        "requirements": {
+          "supported_arches": [
+            "any"
+          ]
+        },
+        "action": {
+          "kind": "reload",
+          "url": null
+        }
+      }
+    },
+    {
+      "platform": "android",
+      "distribution": "direct",
+      "channel": "stable",
+      "arch": "arm64",
+      "state": "published",
+      "target": {
+        "release_id": "android-direct-stable-r48",
+        "release_order": 48,
+        "version": "1.0.34",
+        "native_build": "67",
+        "priority": "normal",
+        "published_at": "2026-10-05T10:14:29Z",
+        "summary": "BOOHTACORD Android 1.0.34: исправлен вылет при включении микрофона в голосовом канале.",
+        "release_notes_url": "https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.34",
+        "requirements": {
+          "supported_arches": [
+            "arm64"
+          ]
+        },
+        "action": {
+          "kind": "open_download_page",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.34"
+        }
+      }
+    },
+    {
+      "platform": "android",
+      "distribution": "direct",
+      "channel": "stable",
+      "arch": "armv7",
+      "state": "published",
+      "target": {
+        "release_id": "android-direct-stable-r48",
+        "release_order": 48,
+        "version": "1.0.34",
+        "native_build": "67",
+        "priority": "normal",
+        "published_at": "2026-10-05T10:14:29Z",
+        "summary": "BOOHTACORD Android 1.0.34: исправлен вылет при включении микрофона в голосовом канале.",
+        "release_notes_url": "https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.34",
+        "requirements": {
+          "supported_arches": [
+            "armv7"
+          ]
+        },
+        "action": {
+          "kind": "open_download_page",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.34"
+        }
+      }
+    },
+    {
+      "platform": "android",
+      "distribution": "direct",
+      "channel": "stable",
+      "arch": "x64",
+      "state": "published",
+      "target": {
+        "release_id": "android-direct-stable-r48",
+        "release_order": 48,
+        "version": "1.0.34",
+        "native_build": "67",
+        "priority": "normal",
+        "published_at": "2026-10-05T10:14:29Z",
+        "summary": "BOOHTACORD Android 1.0.34: исправлен вылет при включении микрофона в голосовом канале.",
+        "release_notes_url": "https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.34",
+        "requirements": {
+          "supported_arches": [
+            "x64"
+          ]
+        },
+        "action": {
+          "kind": "open_download_page",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.34"
+        }
+      }
+    },
+    {
+      "platform": "windows",
+      "distribution": "direct",
+      "channel": "stable",
+      "arch": "x64",
+      "state": "published",
+      "target": {
+        "release_id": "windows-direct-stable-r63",
+        "release_order": 63,
+        "version": "1.0.48",
+        "native_build": "84",
+        "priority": "normal",
+        "published_at": "2026-10-31T15:12:40Z",
+        "summary": "BOOHTACORD Windows 1.0.48 build 84.",
+        "release_notes_url": "https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.48",
+        "requirements": {
+          "supported_arches": [
+            "x64"
+          ]
+        },
+        "action": {
+          "kind": "open_download_page",
+          "url": "https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.48"
+        }
+      }
+    },
+    {
+      "platform": "ios",
+      "distribution": "development",
+      "channel": "development",
+      "arch": "arm64",
+      "state": "unconfigured",
+      "target": null
+    },
+    {
+      "platform": "macos",
+      "distribution": "direct",
+      "channel": "stable",
+      "arch": "arm64",
+      "state": "unconfigured",
+      "target": null
+    }
   ]
 }
