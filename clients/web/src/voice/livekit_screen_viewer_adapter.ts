@@ -6,6 +6,8 @@ import { ScreenViewerController, type ScreenViewerPublication } from './screen_v
 import { bindLiveKitScreenViewerPresence } from './screen_viewer_presence'
 import { bindLiveKitRemoteVoiceEvents } from './livekit_remote_voice_events'
 import { replaceScreenPreviewParticipantLeases } from './screen_preview/participant_leases'
+import { streamStartChime } from './stream_start_runtime'
+import { VoiceParticipantSoundTracker } from './voice_participant_sound_tracker'
 
 export interface LiveKitScreenViewerRoom {
   name?: string
@@ -21,6 +23,10 @@ export interface LiveKitScreenViewerEvents {
   localTrackUnpublished: unknown
   participantConnected: unknown
   participantDisconnected: unknown
+  reconnecting?: unknown
+  signalReconnecting?: unknown
+  reconnected?: unknown
+  disconnected?: unknown
   trackMuted: unknown
   trackPublished: unknown
   trackSubscribed: unknown
@@ -41,6 +47,9 @@ export interface LiveKitScreenViewerBinding {
   refresh(): void
   participants: ReturnType<typeof bindLiveKitRemoteParticipants>
   remoteVoices: RemoteVoicePlaybackController
+  pauseVoiceParticipantSounds(): void
+  resetVoiceParticipantSounds(): void
+  seedVoiceParticipantSounds(): void
   setDeafened(deafened: boolean): void
   subscribeMicrophones(): void
   viewer: ScreenViewerController
@@ -56,6 +65,7 @@ export function bindLiveKitScreenViewer(
 ): LiveKitScreenViewerBinding {
   const registry = new LiveKitScreenRegistry(typeof window === 'undefined' ? '' : window.location.origin, room.name ?? '')
   const viewer = new ScreenViewerController(() => registry.streams())
+  const participantSounds = new VoiceParticipantSoundTracker((event) => streamStartChime.playVoiceEvent(event))
   const presence = bindLiveKitScreenViewerPresence(room, {
     localTrackPublished: events.localTrackPublished,
     localTrackUnpublished: events.localTrackUnpublished,
@@ -106,13 +116,22 @@ export function bindLiveKitScreenViewer(
   room.on(events.localTrackUnpublished, refresh)
   if (events.attributesChanged) room.on(events.attributesChanged, refresh)
   const subscribeMicrophones = () => room.remoteParticipants.forEach((participant) => participant.getTrackPublication(sources.microphone)?.setSubscribed?.(true))
-  room.on(events.participantConnected, () => { refresh(); void viewer.refreshWatchers() })
+  room.on(events.participantConnected, (participant: LiveKitRemoteParticipant) => {
+    participantSounds.participantConnected(participant.identity)
+    refresh()
+    void viewer.refreshWatchers()
+  })
   room.on(events.participantDisconnected, (participant: LiveKitRemoteParticipant) => {
+    participantSounds.participantDisconnected(participant.identity)
     voicePlayback.forget(participantId(participant))
     viewer.removeThumbnail(participantId(participant))
     refresh()
     void viewer.refreshWatchers()
   })
+  if (events.reconnecting) room.on(events.reconnecting, () => participantSounds.pause())
+  if (events.signalReconnecting) room.on(events.signalReconnecting, () => participantSounds.pause())
+  if (events.reconnected) room.on(events.reconnected, () => participantSounds.seed(room.remoteParticipants.keys()))
+  if (events.disconnected) room.on(events.disconnected, () => participantSounds.reset())
   room.on(events.trackUnpublished, (publication: ScreenViewerPublication & { source?: unknown }, participant: LiveKitRemoteParticipant) => {
     if (publication.source === sources.screenVideo) {
       viewer.removeThumbnail(participantId(participant))
@@ -127,10 +146,13 @@ export function bindLiveKitScreenViewer(
   })
   bindLiveKitRemoteVoiceEvents(room, events, sources, voicePlayback, participantId, accountId, refresh)
   return {
-    clear: () => { replaceScreenPreviewParticipantLeases([]); voicePlayback.clear(); presence.clear(); viewer.stop() },
+    clear: () => { participantSounds.reset(); replaceScreenPreviewParticipantLeases([]); voicePlayback.clear(); presence.clear(); viewer.stop() },
     refresh,
     participants: participantCards,
     remoteVoices: voicePlayback,
+    pauseVoiceParticipantSounds: () => participantSounds.pause(),
+    resetVoiceParticipantSounds: () => participantSounds.reset(),
+    seedVoiceParticipantSounds: () => participantSounds.seed(room.remoteParticipants.keys()),
     setDeafened: (deafened) => { voicePlayback.setDeafened(deafened); viewer.setDeafened(deafened) },
     subscribeMicrophones,
     viewer,

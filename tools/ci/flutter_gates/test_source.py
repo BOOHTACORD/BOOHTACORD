@@ -20,7 +20,8 @@ class SourceTests(unittest.TestCase):
         env = {'GITHUB_ACTIONS': 'true', 'GITHUB_REPOSITORY': 'BOOHTACORD/BOOHTACORD',
                'GITHUB_SHA': 'a' * 40, 'GITHUB_RUN_ID': '123', 'GITHUB_RUN_ATTEMPT': '1',
                'FLUTTER_EVIDENCE_NAMESPACE': 'flutter'}
-        for key, bad in [('GITHUB_ACTIONS', 'false'), ('GITHUB_REPOSITORY', 'fork/repo'),
+        for key, bad in [('GITHUB_ACTIONS', 'false'), ('GITHUB_REPOSITORY', 'Egkurilov/BOOHTACORD'),
+                         ('GITHUB_REPOSITORY', 'fork/repo'),
                          ('GITHUB_SHA', ''), ('GITHUB_RUN_ID', 'local'), ('GITHUB_RUN_ATTEMPT', '0'),
                          ('FLUTTER_EVIDENCE_NAMESPACE', '../another'), ('FLUTTER_EVIDENCE_NAMESPACE', '')]:
             with self.subTest(key=key), self.assertRaises(ValueError): source.context(dict(env, **{key: bad}))

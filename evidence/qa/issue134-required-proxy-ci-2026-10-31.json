@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "issue": 134,
+  "status": "PASS_LOCAL_VALIDATION_BINDING_HOSTED_NATIVE_AND_RUNTIME_PENDING",
+  "packet": "Required native Caddy regression integration only",
+  "parent_source": "ce7bbe0571174745acd27e8fc5727047f3bb5f29",
+  "runtime_identity": {
+    "API_source": "ce7bbe0571174745acd27e8fc5727047f3bb5f29",
+    "Caddy_source": "ce7bbe0571174745acd27e8fc5727047f3bb5f29",
+    "Web_source": "2b95ddd864da210d6fc2f050e69ce2d5d203186e",
+    "validation_followup_does_not_relabel_runtime": true
+  },
+  "protected_Git_objects_equal_to_parent": {
+    "backend": {
+      "Git_object": "5be223fd5e1664b7ca50d8129716a5233d431c8f",
+      "working_tracked_diff_empty": true
+    },
+    "deploy": {
+      "Git_object": "68d849ff6062fb685eec2038d0c02610e1c85c09",
+      "working_tracked_diff_empty": true
+    },
+    "clients/web": {
+      "Git_object": "9c54a05d6555379bdc2228f495d21b554cab69a2",
+      "working_tracked_diff_empty": true
+    },
+    "tools/toolchains.json": {
+      "Git_object": "1deefcb62ed712fe7024a38bb9d3b349bcd48433",
+      "working_tracked_diff_empty": true
+    }
+  },
+  "source_Git_LF_SHA256": {
+    ".github/workflows/ci-contracts.yaml": "6d9922a069b839cac743ddf600fd17bcc4fce3c0cbc522c5c10bd9371b9f8385",
+    "tools/qa/upload_proxy/ci.py": "a21febe82f858780962c6d574b09ed2b3cd7408c71e7a87913b3e114e928ffb4",
+    "tools/qa/upload_proxy/image.py": "be12b201887963101dc82c9910a2b48c54b8671f0116da3e2f588607e139a0cd",
+    "tools/qa/upload_proxy/pin.json": "233cc1a6e73e3a912d96a6afcfdc52207805ed3cb41a3a2f5d93e30daf8a3235",
+    "tools/qa/upload_proxy/test_ci.py": "bc5aa11854b36a21ebfabfe38bc61628a881ffa0d71cee687d0cf22372ff7ea1",
+    "tools/qa/upload_proxy/test_image.py": "65937407849c63a7f086b2d9f4aedc6e9d04b64021fead16ef404bbca183c9c8",
+    "tools/qa/upload_proxy/README.md": "202f8ef81a29913419010b4e896ab11361b053362bd323a1ce9b77357916f8b2",
+    "docs/superpowers/plans/2026-10-31-upload-read-deadline-134.md": "b53167a6f1f4990eea0c46cba94c3d31759f69fd34973e409aa3768f039640a0"
+  },
+  "pin": {
+    "image": "caddy@sha256:ae4458638da8e1a91aafffb231c5f8778e964bca650c8a8cb23a7e8ac557aa3c",
+    "compose_image": "caddy:2.10.0-alpine",
+    "repo_digest": "caddy@sha256:ae4458638da8e1a91aafffb231c5f8778e964bca650c8a8cb23a7e8ac557aa3c",
+    "platform": "linux/amd64",
+    "binary": "/usr/bin/caddy",
+    "binary_sha256": "ae87f566523d744731c0832d97b009b5cbdd69f5825e6e3c7de380c295a4ef68",
+    "version": "v2.10.0",
+    "embedded_go": "go1.24.2",
+    "max_binary_bytes": 80000000
+  },
+  "protection_mapping": [
+    {
+      "protects": "Full early408 delivery through actual pinned native Caddy; successful/slow progress and unrelated routes retain keepalive",
+      "command": "python -m tools.qa.upload_proxy.ci",
+      "platform": "GitHub hosted Ubuntu24.04 x64; Go1.26.4, pinned Caddy2.10.0 Linux binary with embeddedGo1.24.2",
+      "mandatory_when": "Every existing required contracts workflow invocation, including PR and protected server release validation; no if/continue/skip on native step",
+      "result": "PENDING_HOSTED_EXECUTION_ON_FINAL_HEAD",
+      "where": "upload-proxy-<checkout-sha>-<run>-<attempt>: summary.json and native/receipt.json + native/native-caddy-test.log; always retained, missing artifact fails"
+    },
+    {
+      "protects": "Required workflow discovery, empty/partial/missing/failed native result, extraction identity/hash and cleanup failure",
+      "command": "python -m unittest tools.qa.upload_proxy.test_image tools.qa.upload_proxy.test_ci tools.verify.action_pins.test_local tools.verify.action_pins.test_trust tools.ci.toolchains.test_workflows -v",
+      "platform": "Windows11 Python, mocked Docker/native controls only",
+      "mandatory_when": "Ordinary project Python regression discovery in required contracts checks",
+      "result": "PASS28_tests_0skip",
+      "where": {
+        "private_log": ".out/issue134/required-caddy-ci-unit.log",
+        "SHA256": "247287d6bdca050768d4609e18b440e28b39b96cc07d3c1059484a1d82c2900a"
+      }
+    }
+  ],
+  "local_policy_checks": {
+    "python -m tools.verify.action_pins.run": "PASS37workflows_2localActions",
+    "python -m tools.ci.toolchains.workflows": "PASS",
+    "python -m tools.ci.toolchains.auxiliary": "PASS",
+    "git diff --check": "PASS"
+  },
+  "prior_ce7_CI": {
+    "run_id": 41187205222,
+    "attempt": 1,
+    "conclusion": "success",
+    "jobs_successful": 27,
+    "scope_limitation": "This prior run predates the mandatory native-Caddy binding; final head full CI remains required"
+  },
+  "cleanup_policy": "Copy binary from unique labelled stopped network-none read-only container, never start it; verify exact ID/name/label/image/stopped state before non-force removal and absence readback. No images/volumes/networks removed. Temporary binary directory not uploaded. Actual native fixture stops only its own child process.",
+  "retained_history": "Original real socket REDs; timer classification prototype/race failures; qualified root normalTLS80s/noheaders failure718 and direct/client-close controls; native unchanged-Caddy and remove-close mutations remain retained. No prior FAIL upgraded to PASS.",
+  "release_gate": "HOLD: root complete real60/900s TLS/cleanup/progress/ENOSPC/voice-realtime criteria + final required CI + trusted delivery needed; issue134 remains open."
+}

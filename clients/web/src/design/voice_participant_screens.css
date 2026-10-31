@@ -27,7 +27,7 @@
 }
 .participant-screen-preview { cursor: pointer; padding: 0; }
 .participant-screen-preview:focus-visible { z-index: 1; outline: 2px solid var(--gc-focus); outline-offset: -3px; }
-.participant-screen-preview__image { display: block; width: 100%; height: 100%; object-fit: contain; }
+.participant-screen-preview__image { display: block; width: 100%; height: 100%; object-fit: cover; }
 .screen-preview-placeholder { display: flex; box-sizing: border-box; width: 100%; height: 100%; flex-direction: column; align-items: center; justify-content: center; gap: 7px; padding: 16px; color: var(--gc-text-secondary); background: var(--gc-stream-canvas); text-align: center; }
 .screen-preview-placeholder > svg { width: 28px; height: 28px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
 .screen-preview-placeholder__title { color: var(--gc-text-primary); font-size: .8125rem; font-weight: var(--gc-weight-semibold); line-height: 1.3; }
@@ -92,18 +92,28 @@
 .participant-screen-preview.is-selected { box-shadow: inset 0 0 0 2px var(--gc-accent); }
 .participant-voice-placeholder { color: var(--gc-text-muted); background: var(--gc-surface-raised); font-size: var(--gc-text-caption); }
 .participant-voice-placeholder svg { width: 20px; height: 20px; flex: 0 0 20px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
-.participant-card-info { display: flex; min-width: 0; min-height: 72px; align-self: stretch; align-items: center; gap: 10px; padding: 10px 12px; }
+.participant-card-info { position: relative; display: flex; min-width: 0; min-height: 80px; align-self: stretch; align-items: center; gap: 10px; padding: 10px 12px; }
 .voice-room .voice-participant-volumes .participant-card-info .avatar.lg { width: 40px; height: 40px; flex: 0 0 40px; font-size: .9375rem; }
-.participant-card-copy { display: grid; min-width: 0; align-content: center; justify-items: start; gap: 3px; }
-.voice-room .voice-participant-volumes .participant-card-info .participant-name { width: 100%; max-width: 100%; margin: 0; overflow: hidden; font-size: .9375rem; line-height: 1.35; text-align: left; text-overflow: ellipsis; white-space: nowrap; }
-.voice-room .voice-participant-volumes .participant-card-info .participant-status { min-height: 0; margin: 0; font-size: .75rem; line-height: 1.4; text-align: left; }
-.voice-room .voice-participant-volumes .participant-card-info .voice-person-state { justify-content: flex-start; }
-.voice-room .voice-participant-volumes .participant-card-info .voice-person-state-icon { width: .75rem; height: .75rem; flex: 0 0 .75rem; }
+.participant-card-copy { display: grid; min-width: 0; flex: 1 1 auto; align-content: center; justify-items: start; gap: 3px; }
+.participant-card-name-row { display: flex; position: relative; width: 100%; min-width: 0; align-items: center; gap: 4px; }
+.voice-room .voice-participant-volumes .participant-card-info .participant-name { width: auto; min-width: 0; max-width: 100%; flex: 1 1 auto; margin: 0; overflow: hidden; font-size: .9375rem; line-height: 1.35; text-align: left; text-overflow: ellipsis; white-space: nowrap; }
+.participant-card-actions { position: absolute; top: calc(50% + 4px); right: 0; z-index: 2; display: flex; width: 20px; height: 20px; flex: 0 0 20px; align-items: center; justify-content: center; transform: translateY(-50%); }
+.voice-room .voice-participant-volumes .participant-card-status { display: inline-flex; width: auto; min-width: 20px; height: 20px; flex: 0 0 auto; align-items: center; justify-content: center; margin: 0; font-size: 1rem; }
+.voice-room .voice-participant-volumes .participant-card-status .voice-person-state { display: grid; width: 100%; height: 100%; place-items: center; }
+.voice-room .voice-participant-volumes .participant-card-status .voice-person-state-icon { width: 1rem; height: 1rem; flex: 0 0 1rem; stroke-width: 1.8; }
+.participant-card-actions .participant-volume { position: relative; top: auto; right: auto; z-index: 2; width: 20px; height: 20px; margin: 0; }
+.participant-card-actions .participant-volume[open] { z-index: 4; }
+.voice-room .voice-participant-volumes .participant-card-actions .participant-volume summary { position: absolute; top: 50%; left: 50%; display: grid; width: 32px; height: 32px; place-items: center; border: 1px solid rgb(255 255 255 / 16%); border-radius: var(--gc-radius-sm); color: var(--gc-text-primary); background: rgb(15 16 22 / 82%); font-size: .875rem; line-height: 1; list-style: none; opacity: 0; transform: translate(-50%, -50%); transition: opacity 120ms ease; }
+.voice-room .voice-participant-volumes .participant-card-actions .participant-volume summary svg { width: 16px; height: 16px; fill: currentColor; }
+.voice-room .voice-participant-volumes .participant-card-actions .participant-volume summary::-webkit-details-marker { display: none; }
+.voice-room .voice-participant-volumes .participant:hover .participant-card-actions .participant-volume summary,
+.voice-room .voice-participant-volumes .participant:focus-within .participant-card-actions .participant-volume summary,
+.voice-room .voice-participant-volumes .participant-card-actions .participant-volume[open] summary { opacity: 1; }
+.voice-room .voice-participant-volumes .participant-card-actions .participant-volume summary:hover { background: var(--gc-surface-hover); }
+.voice-room .voice-participant-volumes .participant-card-actions .participant-volume summary:focus-visible { outline: 2px solid var(--gc-accent); outline-offset: 2px; }
+.participant-card-actions .participant-volume label { z-index: 1; }
+@media (prefers-reduced-motion: reduce) { .voice-room .voice-participant-volumes .participant-card-actions .participant-volume summary { transition: none; } }
 .voice-room .voice-participant-volumes .participant--streaming.talking { border-color: var(--gc-success); }
 .voice-room .voice-participant-volumes .participant--voice-only.talking { border-color: var(--gc-success); }
-.voice-room .voice-participant-volumes .participant--streaming .participant-volume,
-.voice-room .voice-participant-volumes .participant--voice-only .participant-volume { top: 8px; right: 8px; }
-.voice-room .voice-participant-volumes .participant-volume summary { border: 1px solid rgb(255 255 255 / 16%); color: var(--gc-text-primary); background: rgb(15 16 22 / 82%); }
-.voice-room .voice-participant-volumes .participant-card-info .participant-watcher-indicator { justify-self: start; padding: 3px 7px; }
-.participant-watcher-indicator { display: inline-flex; align-items: center; gap: 5px; border-radius: var(--gc-radius-full); padding: 4px 8px; color: var(--gc-accent-text); background: var(--gc-surface-selected); font-size: var(--gc-text-caption); font-weight: var(--gc-weight-medium); }
-.participant-watcher-indicator svg { width: 14px; height: 14px; flex: 0 0 14px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
+.participant-watcher-indicator { display: inline-flex; align-items: center; gap: 5px; border-radius: 0; padding: 0; color: var(--gc-text-secondary); background: transparent; font-size: var(--gc-text-caption); font-weight: var(--gc-weight-regular); line-height: 1.3; }
+.participant-watcher-indicator svg { width: 14px; height: 14px; flex: 0 0 14px; fill: none; stroke: var(--gc-accent-text); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }

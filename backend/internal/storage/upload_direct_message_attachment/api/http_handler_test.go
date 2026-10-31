@@ -41,7 +41,7 @@ func TestHandlerForwardsPrivateMultipartAndMapsFailures(t *testing.T) {
 		request.Header.Set("Content-Type", writer.FormDataContentType())
 		request.SetPathValue("directMessageID", "pair")
 		request = request.WithContext(sessionapi.WithPrincipal(request.Context(), authenticatesession.Principal{AccountID: "actor", Role: "ADMINISTRATOR"}))
-		response := httptest.NewRecorder()
+		response := newDeadlineRecorder()
 		NewHandler(uploader, &fakeFailureRecorder{}).ServeHTTP(response, request)
 		if response.Code != test.status || !strings.Contains(response.Body.String(), test.code) || strings.Contains(response.Body.String(), "private-key") || uploader.input.DirectMessageID != "pair" {
 			t.Fatalf("status=%d body=%q input=%#v", response.Code, response.Body.String(), uploader.input)

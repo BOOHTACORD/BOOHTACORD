@@ -44,4 +44,38 @@ describe('screen start sound', () => {
     expect(oscillator.disconnect).toHaveBeenCalledOnce()
     expect(gain.disconnect).toHaveBeenCalledOnce()
   })
+
+  it('keeps room-event sounds independently configurable from the stream-publication chime', () => {
+    const frequencies: number[] = []
+    const oscillator = () => ({
+      connect: vi.fn(), disconnect: vi.fn(), start: vi.fn(), stop: vi.fn(), onended: null as (() => void) | null,
+      frequency: { set value(value: number) { frequencies.push(value) } },
+    })
+    const context = {
+      state: 'running', currentTime: 2, destination: {},
+      createOscillator: oscillator,
+      createGain: () => ({ connect: vi.fn(), disconnect: vi.fn(), gain: { setValueAtTime: vi.fn(), exponentialRampToValueAtTime: vi.fn() } }),
+      resume: vi.fn().mockResolvedValue(undefined),
+    }
+    const storage = {
+      getItem: (key: string) => key === 'voice-screen-start-sound:v1' ? 'off' : null,
+      setItem: vi.fn(),
+    }
+    const chime = new StreamStartChime(() => context as never, storage)
+
+    expect(chime.enabled.value).toBe(false)
+    expect(chime.voiceEventsEnabled.value).toBe(true)
+    chime.activate()
+    chime.play()
+    chime.playVoiceEvent('participant-joined')
+    chime.playVoiceEvent('participant-left')
+    chime.playVoiceEvent('stream-view-started')
+    chime.playVoiceEvent('stream-view-stopped')
+
+    expect(frequencies).toEqual([784, 988, 659, 523, 880, 1175, 587])
+    chime.setVoiceEventsEnabled(false)
+    chime.playVoiceEvent('participant-joined')
+    expect(frequencies).toHaveLength(7)
+    expect(storage.setItem).toHaveBeenCalledWith('voice-room-event-sounds:v1', 'off')
+  })
 })

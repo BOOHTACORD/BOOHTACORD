@@ -5,6 +5,13 @@ from .network import get
 
 
 class MetadataRetryTests(unittest.TestCase):
+    def test_actions_metadata_uses_the_canonical_organization_api_root(self):
+        response=Mock();response.__enter__=Mock(return_value=response);response.__exit__=Mock(return_value=False);response.read.return_value=b'{}'
+        opener=Mock();opener.open.return_value=response
+        get('/actions/runs/101','token',opener)
+        self.assertEqual('https://api.github.com/repos/BOOHTACORD/BOOHTACORD/actions/runs/101',
+                         opener.open.call_args.args[0].full_url)
+
     def test_only_transient_get_has_two_attempts(self):
         response=Mock();response.__enter__=Mock(return_value=response);response.__exit__=Mock(return_value=False);response.read.return_value=b'{}'
         opener=Mock();opener.open.side_effect=[HTTPError('https://api.github.com',503,'temporary',{},None),response]

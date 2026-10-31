@@ -58,7 +58,7 @@ jobs:
       cancel-in-progress: false
     environment: production
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 50
     env:
       DEPLOY_SERVER_IP: 176.108.242.211
       SSH_USER: shaneque

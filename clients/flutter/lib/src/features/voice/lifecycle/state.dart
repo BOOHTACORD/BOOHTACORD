@@ -19,6 +19,8 @@ import '../volumes/telemetry.dart';
 import '../disconnect_notice/state.dart';
 import '../screen_viewer/selection_state.dart';
 import '../screen_viewer_presence/controller.dart';
+import '../voice_participant_sound_tracker.dart';
+import '../voice_room_event_sounds.dart';
 
 abstract class VoiceState extends ChangeNotifier
     with VoiceScreenViewerSelectionState {
@@ -68,6 +70,7 @@ abstract class VoiceState extends ChangeNotifier
   bool deafened = false;
   bool deafenChanging = false;
   bool voiceStreamSoundEnabled = true;
+  bool voiceRoomEventSoundsEnabled = true;
   bool voiceStreamStartNotice = false;
   AudioActivationMode audioActivationMode = AudioActivationMode.vad;
   int? pushToTalkKeyId;
@@ -111,6 +114,13 @@ abstract class VoiceState extends ChangeNotifier
   bool voiceConnectionStatsBusy = false;
   final VoiceStreamStartTracker voiceStreamStartTracker =
       VoiceStreamStartTracker();
+  late final VoiceParticipantSoundTracker voiceParticipantSoundTracker =
+      VoiceParticipantSoundTracker(
+        (event) => playVoiceRoomEventSound(
+          enabled: voiceRoomEventSoundsEnabled,
+          event: event,
+        ),
+      );
   ScreenThumbnailCaptureQueue get screenThumbnailCaptureQueue =>
       screen.captureQueue;
   String? get selectedAudioInputId => audio.selectedAudioInputId;

@@ -433,6 +433,11 @@ tasks:
     requirements: [REQ-CHAT-01, REQ-CHAT-02]
     depends_on: [FV2-038, T-040, T-044, T-051]
     evidence: [flutter-attachment-composer-tests, flutter-full-suite, flutter-changed-file-analysis, android-debug-build, macos-debug-build, windows-ci-release-build, android-ci-debug-build, QA-296]
+  - id: WEB-VOICE-001
+    title: Keep Web voice participant card controls compact and unobstructed
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-VOICE-01, REQ-SCREEN-01]
+    depends_on: [T-022, T-030]
+    evidence: [clients/web/tests/screen_share_ui/disclosure.browser.spec.ts, web-participant-card-controls-local-acceptance, web-participant-card-controls-ci]
   - id: FV2-041
     title: Flutter voice participant volume menu alignment
     requirements: [REQ-UI-01, REQ-UI-02, REQ-VOICE-01]
@@ -878,3 +883,8 @@ tasks:
     requirements: [REQ-DM-01, REQ-UI-01, REQ-UI-02, REQ-SECURITY-02, REQ-STORAGE-01]
     depends_on: [SP-001, T-052, T-054]
     evidence: [docs/adr/ADR-029-product-support-github-bridge.md, tests/support_gateway, evidence/qa/sp002-public-gateway-2026-10-22.json, evidence/qa/sp002-public-support-acceptance-2026-10-22.json]
+  - id: VC-001
+    title: Voice room participant and stream-view sound cues
+    requirements: [REQ-VOICE-01, REQ-SCREEN-01, REQ-UI-01]
+    depends_on: [T-022, T-030]
+    evidence: [clients/web/src/voice/voice_participant_sound_tracker.spec.ts, clients/web/src/voice/livekit_screen_viewer_adapter.spec.ts, clients/web/src/voice/voice_view_transition_sound.spec.ts, clients/flutter/test/features/voice/voice_participant_sound_tracker_test.dart, clients/flutter/test/features/voice/voice_room_event_sounds_test.dart, clients/flutter/test/workspace_screen_test.dart, tools/qa/local_features/features.json, evidence/qa/voice-room-event-sounds-2026-10-31.md]

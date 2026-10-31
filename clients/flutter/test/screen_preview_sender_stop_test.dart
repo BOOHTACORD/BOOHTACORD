@@ -64,4 +64,59 @@ void main() {
       expect(deletes, 1);
     },
   );
+
+  test('retries capture setup shortly after the screen publication becomes visible', () async {
+    const lease = 'd9428888-122b-4a50-8c5c-5b9393a4e5f1';
+    const generation = 'e35d15a4-6d8c-4a6e-a6b9-78de899631f8';
+    final retryStarted = Completer<void>();
+    var begins = 0;
+    final api = ApiClient(
+      client: MockClient((request) async {
+        if (request.method == 'POST') {
+          begins++;
+          if (begins == 1) return http.Response('{}', 404);
+          retryStarted.complete();
+          return http.Response(
+            jsonEncode({'schema_version': 1, 'generation_id': generation}),
+            201,
+          );
+        }
+        return http.Response('', 204);
+      }),
+    );
+    final sender = LatestScreenPreviewUploader(
+      ScreenPreviewClient(api.transport),
+    );
+
+    try {
+      await sender.start(lease);
+      await retryStarted.future.timeout(const Duration(seconds: 2));
+      expect(begins, 2);
+    } finally {
+      await sender.stop();
+    }
+  });
+
+  test('cancels a scheduled capture setup retry when sharing stops', () async {
+    const lease = 'd9428888-122b-4a50-8c5c-5b9393a4e5f1';
+    var begins = 0;
+    final api = ApiClient(
+      client: MockClient((request) async {
+        if (request.method == 'POST') {
+          begins++;
+          return http.Response('{}', 404);
+        }
+        return http.Response('', 204);
+      }),
+    );
+    final sender = LatestScreenPreviewUploader(
+      ScreenPreviewClient(api.transport),
+    );
+
+    await sender.start(lease);
+    await sender.stop();
+    await Future<void>.delayed(const Duration(milliseconds: 1100));
+
+    expect(begins, 1);
+  });
 }

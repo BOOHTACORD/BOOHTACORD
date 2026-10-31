@@ -6,6 +6,7 @@ import 'dart:ui' show SemanticsRole, Tristate;
 import 'package:boohtacord_desktop/src/app.dart';
 import 'package:boohtacord_desktop/src/app_state.dart';
 import 'package:boohtacord_desktop/src/features/voice/roster_state/phase.dart';
+import 'package:boohtacord_desktop/src/features/voice/stream_notice/preferences.dart';
 import 'package:boohtacord_desktop/src/features/authorization/permissions/model.dart';
 import 'package:boohtacord_desktop/src/models.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_screen.dart';
@@ -2987,6 +2988,42 @@ void main() {
             find.widgetWithText(
               CheckedPopupMenuItem<String>,
               'Сигнал новых трансляций',
+            ),
+          )
+          .checked,
+      isFalse,
+    );
+    expect(
+      tester
+          .widget<CheckedPopupMenuItem<String>>(
+            find.widgetWithText(
+              CheckedPopupMenuItem<String>,
+              'Звуки участников и просмотра',
+            ),
+          )
+          .checked,
+      isTrue,
+    );
+    await tester.tap(find.text('Звуки участников и просмотра'));
+    await tester.pumpAndSettle();
+    expect(state.voiceRoomEventSoundsEnabled, isFalse);
+    expect(
+      (await SharedPreferences.getInstance()).getBool(
+        'voice-room-event-sounds:v1',
+      ),
+      isFalse,
+    );
+    state.voice.voiceRoomEventSoundsEnabled = true;
+    await state.voice.loadVoiceRoomEventSoundPreference();
+    expect(state.voiceRoomEventSoundsEnabled, isFalse);
+    await tester.tap(find.byTooltip('Ещё настройки голоса'));
+    await tester.pumpAndSettle();
+    expect(
+      tester
+          .widget<CheckedPopupMenuItem<String>>(
+            find.widgetWithText(
+              CheckedPopupMenuItem<String>,
+              'Звуки участников и просмотра',
             ),
           )
           .checked,

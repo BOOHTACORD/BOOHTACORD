@@ -10,7 +10,7 @@ def check(workflows, action):
             ('deploy-production.yaml','automatic','${{ github.event.workflow_run.id }}',None),
             ('install-retained-release.yaml','retained','${{ inputs.build_run_id }}','${{ inputs.revision }}')):
         job=workflows[name]['jobs']['install']; steps=job.get('steps',[])
-        require(job.get('timeout-minutes')=='30' and len(steps)==4,'One bounded shared install path is required')
+        require(job.get('timeout-minutes')=='50' and len(steps)==4,'One bounded shared install path is required')
         require(steps[0].get('uses')=='actions/checkout@v7' and steps[0].get('with')=={
             'persist-credentials':'false','fetch-depth':'0'},'Only the current controller may be checked out')
         require(steps[1].get('uses')=='actions/setup-python@v7' and steps[1].get('with')=={

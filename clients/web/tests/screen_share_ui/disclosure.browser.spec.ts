@@ -174,6 +174,14 @@ test('listener room embeds the stream preview in an equal-sized participant card
   await expect(voiceOnlyCard.locator('.participant-voice-placeholder')).toBeVisible()
   await expect(streamCard.locator('.participant-card-info .participant-name')).toHaveCSS('text-align', 'left')
   await expect(voiceOnlyCard.locator('.participant-card-info .participant-name')).toHaveCSS('text-align', 'left')
+  for (const card of [streamCard, voiceOnlyCard]) {
+    const muteNameCenterOffset = await card.locator('.participant-card-status').evaluate(element => {
+      const icon = element.querySelector<SVGElement>('.voice-person-state-icon')!.getBoundingClientRect()
+      const name = element.closest('.participant-card-info')!.querySelector<HTMLElement>('.participant-name')!.getBoundingClientRect()
+      return Math.abs(icon.top + icon.height / 2 - (name.top + name.height / 2))
+    })
+    expect(muteNameCenterOffset).toBeLessThanOrEqual(1)
+  }
   await expect.poll(() => page.evaluate(() => (window as any).__screenUI.isPreviewVisible())).toBe(true)
   const desktopGeometry = await cards.evaluateAll(elements => elements.map(element => {
     const rect = element.getBoundingClientRect()
@@ -232,6 +240,83 @@ test('listener room embeds the stream preview in an equal-sized participant card
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
   await clean(page)
   await page.screenshot({ path: info.outputPath('listener-participant-cards-390x200.png') })
+})
+
+test('participant volume controls overlay mute state with a watcher badge, keep it aligned and close outside', async ({ page }, info) => {
+  await open(page, 'participant-cards&watching', 876, 100, 656)
+  const streamCard = page.locator('.participant--streaming')
+  const watcher = streamCard.locator('.participant-watcher-indicator')
+  await expect(watcher).toHaveText('Смотрит')
+  const watcherStyle = await watcher.evaluate(element => ({ background: getComputedStyle(element).backgroundColor, padding: getComputedStyle(element).padding, radius: getComputedStyle(element).borderRadius }))
+  expect(watcherStyle).toEqual({ background: 'rgba(0, 0, 0, 0)', padding: '0px', radius: '0px' })
+  const details = streamCard.locator('.participant-volume')
+  const trigger = details.locator('summary')
+  const overlap = await trigger.evaluate(element => {
+    const a = element.getBoundingClientRect()
+    const b = element.closest('.participant')!.querySelector<HTMLElement>('.participant-screen-preview__live')!.getBoundingClientRect()
+    return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top
+  })
+  expect(overlap).toBe(false)
+
+  const status = streamCard.locator('.participant-card-status')
+  await expect(status).toHaveAttribute('aria-label', 'Микрофон выключен')
+  await expect(status).toHaveText('')
+
+  const statusIcon = status.locator('.voice-person-state-icon')
+  const controlAlignment = await trigger.evaluate(element => {
+    const trigger = element.getBoundingClientRect()
+    const icon = element.closest('.participant')!.querySelector<HTMLElement>('.participant-card-status .voice-person-state-icon')!.getBoundingClientRect()
+    return {
+      horizontal: Math.abs(trigger.left + trigger.width / 2 - (icon.left + icon.width / 2)),
+      vertical: trigger.top + trigger.height / 2 - (icon.top + icon.height / 2),
+    }
+  })
+  expect(controlAlignment.horizontal).toBeLessThanOrEqual(1)
+  expect(Math.abs(controlAlignment.vertical - 4)).toBeLessThanOrEqual(1)
+  await expect(trigger).toHaveCSS('opacity', '0')
+  await trigger.hover()
+  await expect(trigger).toHaveCSS('opacity', '1')
+  await page.screenshot({ path: info.outputPath('participant-volume-overlays-mute.png') })
+
+  const sharpIcon = await statusIcon.evaluate(element => ({ width: getComputedStyle(element).width, height: getComputedStyle(element).height }))
+  expect(sharpIcon).toEqual({ width: '16px', height: '16px' })
+
+  await trigger.click()
+  await expect(details).toHaveAttribute('open', '')
+  const slider = details.getByRole('slider')
+  await slider.click()
+  await expect(details).toHaveAttribute('open', '')
+  await page.locator('.voice-room header h1').click()
+  await expect(details).not.toHaveAttribute('open', '')
+
+  const mutedNameTop = await streamCard.locator('.participant-name').evaluate(element => element.getBoundingClientRect().top)
+  await open(page, 'participant-cards&unmuted&watching', 876, 100, 656)
+  const unmutedCard = page.locator('.participant--streaming')
+  const unmutedStatus = unmutedCard.locator('.participant-card-status')
+  await expect(unmutedStatus).toHaveAttribute('aria-label', 'В голосовом канале')
+  await expect(unmutedStatus).toHaveText('')
+  const unmutedNameTop = await unmutedCard.locator('.participant-name').evaluate(element => element.getBoundingClientRect().top)
+  expect(Math.abs(unmutedNameTop - mutedNameTop)).toBeLessThanOrEqual(1)
+
+  await open(page, 'participant-cards&deafened', 876, 100, 656)
+  const deafenedStatus = page.locator('.participant-self .participant-card-status')
+  await expect(deafenedStatus).toHaveAttribute('aria-label', 'Звук и микрофон выключены')
+  await expect(deafenedStatus.locator('.voice-person-state-icon')).toHaveCount(2)
+  const deafenIconSizes = await deafenedStatus.locator('.voice-person-state-icon').evaluateAll(elements => elements.map(element => ({ width: getComputedStyle(element).width, height: getComputedStyle(element).height })))
+  expect(deafenIconSizes).toEqual([{ width: '16px', height: '16px' }, { width: '16px', height: '16px' }])
+})
+
+test('participant volume button sits slightly below the mute icon when the watcher badge adds a row', async ({ page }) => {
+  await open(page, 'participant-cards&watching', 876, 100, 656)
+  const streamCard = page.locator('.participant--streaming')
+  const trigger = streamCard.locator('.participant-volume summary')
+  const alignment = await trigger.evaluate(element => {
+    const triggerRect = element.getBoundingClientRect()
+    const iconRect = element.closest('.participant')!.querySelector<HTMLElement>('.participant-card-status .voice-person-state-icon')!.getBoundingClientRect()
+    return triggerRect.top + triggerRect.height / 2 - (iconRect.top + iconRect.height / 2)
+  })
+  expect(alignment).toBeGreaterThanOrEqual(3)
+  expect(alignment).toBeLessThanOrEqual(5)
 })
 
 test('participant overlay wraps a four-member roster into a compact grid', async ({ page }, info) => {

@@ -35,7 +35,13 @@ func NewHandler(uploader Uploader, failures FailureRecorder) http.Handler {
 			writeError(writer, request, 500, "INTERNAL", "Не удалось загрузить вложение")
 			return
 		}
-		request, cleanup := uploadrequest.WithLimits(request, uploadMaximumDuration, uploadIdleDuration)
+		request, cleanup, err := uploadrequest.WithLimits(writer, request, uploadMaximumDuration, uploadIdleDuration)
+		if err != nil {
+			failures.UploadFailed("internal")
+			writer.Header().Set("Connection", "close")
+			writeError(writer, request, http.StatusInternalServerError, "INTERNAL", "Не удалось загрузить вложение")
+			return
+		}
 		defer cleanup()
 		defer request.Body.Close()
 		request.Body = http.MaxBytesReader(writer, request.Body, maxRequestBytes)

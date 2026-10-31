@@ -30,8 +30,19 @@ func sourceKey(request *http.Request, trusted []*net.IPNet) string {
 	if !isTrusted(peer, trusted) {
 		return peer.String()
 	}
-	forwarded := request.Header.Get("X-Forwarded-For")
-	if forwarded == "" || len(forwarded) > maxForwardedHeaderBytes {
+	fields := request.Header.Values("X-Forwarded-For")
+	if len(fields) == 0 || len(fields) > maxForwardedHops {
+		return peer.String()
+	}
+	bytes := len(fields) - 1
+	for _, value := range fields {
+		if len(value) > maxForwardedHeaderBytes-bytes {
+			return peer.String()
+		}
+		bytes += len(value)
+	}
+	forwarded := strings.Join(fields, ",")
+	if forwarded == "" {
 		return peer.String()
 	}
 	hops := strings.Split(forwarded, ",")

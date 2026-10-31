@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "production-transfer-timeout",
+  "observed_at": "2026-10-30T17:45:02Z",
+  "source_revision": "ec5d9251c4c024610f03eb8b568e26186445a6ed",
+  "build_run_id": 41097853192,
+  "producer_artifact_bytes": 89141360,
+  "deploy_run_id": 41099256618,
+  "deploy_attempt": 1,
+  "delivery_status": "FAIL",
+  "failed_phase": "transfer_bundle",
+  "failure_code": "timeout",
+  "phase_limit_seconds": 900,
+  "job_elapsed_seconds": 904.511,
+  "remote_install_started": false,
+  "readback_status": "NOT_RUN",
+  "assessment": "The protected source-bound build and artifact checks passed. The bundle transfer exhausted its bounded SCP deadline before installation; no production readback was recorded.",
+  "remediation_under_review": {
+    "bundle_transfer_limit_seconds": 1800,
+    "automatic_and_retained_install_job_timeout_minutes": 50,
+    "install_and_readback_limits_changed": false
+  }
+}
