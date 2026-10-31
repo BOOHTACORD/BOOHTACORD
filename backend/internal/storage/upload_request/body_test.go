@@ -13,7 +13,10 @@ import (
 func TestIdleDeadlineClosesBlockedBodyAndCancelsRequest(t *testing.T) {
 	request := httptest.NewRequest("POST", "/", nil)
 	request.Body = &blockingReader{closed: make(chan struct{})}
-	bounded, cleanup := WithLimits(request, time.Second, 10*time.Millisecond)
+	bounded, cleanup, err := WithLimits(newDeadlineRecorder(), request, time.Second, 10*time.Millisecond)
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer cleanup()
 	defer bounded.Body.Close()
 	read := make(chan error, 1)
@@ -30,7 +33,10 @@ func TestIdleDeadlineClosesBlockedBodyAndCancelsRequest(t *testing.T) {
 
 func TestProgressResetsIdleDeadline(t *testing.T) {
 	request := httptest.NewRequest("POST", "/", io.NopCloser(strings.NewReader("payload")))
-	bounded, cleanup := WithLimits(request, time.Second, time.Second)
+	bounded, cleanup, err := WithLimits(newDeadlineRecorder(), request, time.Second, time.Second)
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer cleanup()
 	body, err := io.ReadAll(bounded.Body)
 	if err != nil || string(body) != "payload" {

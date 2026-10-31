@@ -25,7 +25,7 @@ func TestHandlerStreamsFileForCurrentPrincipalAndPathChannel(t *testing.T) {
 	request.Header.Set("Content-Type", contentType)
 	request.SetPathValue("channelID", "channel-1")
 	request = request.WithContext(sessionapi.WithPrincipal(request.Context(), authenticatesession.Principal{AccountID: "user-1"}))
-	recorder := httptest.NewRecorder()
+	recorder := newDeadlineRecorder()
 	NewHandler(uploader, failures).ServeHTTP(recorder, request)
 	if recorder.Code != http.StatusCreated || len(failures.reasons) != 0 || uploader.input.ActorID != "user-1" || uploader.input.ChannelID != "channel-1" || uploader.input.OriginalName != "image.png" || !strings.Contains(recorder.Body.String(), `"id":"attachment-1"`) {
 		t.Fatalf("status = %d, input = %#v, body = %q", recorder.Code, uploader.input, recorder.Body.String())
@@ -37,7 +37,7 @@ func TestHandlerRejectsMissingFilePart(t *testing.T) {
 	request := httptest.NewRequest(http.MethodPost, "/api/v1/channels/channel-1/attachments", body)
 	request.Header.Set("Content-Type", contentType)
 	request = request.WithContext(sessionapi.WithPrincipal(request.Context(), authenticatesession.Principal{AccountID: "user-1"}))
-	recorder, failures := httptest.NewRecorder(), &fakeFailureRecorder{}
+	recorder, failures := newDeadlineRecorder(), &fakeFailureRecorder{}
 	NewHandler(&fakeUploader{}, failures).ServeHTTP(recorder, request)
 	if recorder.Code != http.StatusBadRequest || !strings.Contains(recorder.Body.String(), `"VALIDATION_FAILED"`) || !equalReasons(failures.reasons, []string{"invalid_multipart"}) {
 		t.Fatalf("status = %d, body = %q", recorder.Code, recorder.Body.String())
@@ -62,7 +62,7 @@ func TestHandlerRecordsBoundedUploadFailureReasons(t *testing.T) {
 			request.Header.Set("Content-Type", contentType)
 			request.SetPathValue("channelID", "channel-1")
 			request = request.WithContext(sessionapi.WithPrincipal(request.Context(), authenticatesession.Principal{AccountID: "user-1"}))
-			recorder, failures := httptest.NewRecorder(), &fakeFailureRecorder{}
+			recorder, failures := newDeadlineRecorder(), &fakeFailureRecorder{}
 			NewHandler(&fakeUploader{err: test.err}, failures).ServeHTTP(recorder, request)
 			if recorder.Code != test.status || !equalReasons(failures.reasons, []string{test.reason}) || strings.Contains(recorder.Body.String(), "private-name.png") {
 				t.Fatalf("status = %d, reasons = %#v, body = %q", recorder.Code, failures.reasons, recorder.Body.String())

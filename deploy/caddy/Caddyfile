@@ -8,6 +8,19 @@
 			Permissions-Policy "camera=(), geolocation=(), payment=(), usb=()"
 		}
 
+		@upload_http1 {
+			method POST
+			path_regexp upload_http1 ^/api/v1/(channels|direct-messages)/[^/]+/attachments$
+			expression `{http.request.proto}.startsWith("HTTP/1.")`
+		}
+		reverse_proxy @upload_http1 api:8080 {
+			@upload_timeout status 408
+			handle_response @upload_timeout {
+				header Connection close
+				copy_response
+			}
+		}
+
 		@api path /api /api/*
 		reverse_proxy @api api:8080
 
