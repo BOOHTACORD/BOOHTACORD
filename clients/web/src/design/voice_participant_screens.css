@@ -27,7 +27,7 @@
 }
 .participant-screen-preview { cursor: pointer; padding: 0; }
 .participant-screen-preview:focus-visible { z-index: 1; outline: 2px solid var(--gc-focus); outline-offset: -3px; }
-.participant-screen-preview__image { display: block; width: 100%; height: 100%; object-fit: contain; }
+.participant-screen-preview__image { display: block; width: 100%; height: 100%; object-fit: cover; }
 .screen-preview-placeholder { display: flex; box-sizing: border-box; width: 100%; height: 100%; flex-direction: column; align-items: center; justify-content: center; gap: 7px; padding: 16px; color: var(--gc-text-secondary); background: var(--gc-stream-canvas); text-align: center; }
 .screen-preview-placeholder > svg { width: 28px; height: 28px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
 .screen-preview-placeholder__title { color: var(--gc-text-primary); font-size: .8125rem; font-weight: var(--gc-weight-semibold); line-height: 1.3; }
