@@ -9,7 +9,6 @@ import (
 	"time"
 
 	sessionapi "voice-platform/backend/internal/identity/authenticate_session/api"
-	"voice-platform/backend/internal/security/request_id"
 	authorize "voice-platform/backend/internal/storage/authorize_text_attachment"
 	finalize "voice-platform/backend/internal/storage/finalize_staged_text_attachment"
 	reserve "voice-platform/backend/internal/storage/reserve_upload_space"
@@ -38,7 +37,13 @@ func NewHandler(uploader Uploader, failures FailureRecorder) http.Handler {
 			writeError(writer, request, http.StatusInternalServerError, "INTERNAL", "Не удалось загрузить вложение")
 			return
 		}
-		request, cleanup := uploadrequest.WithLimits(request, uploadMaximumDuration, uploadIdleDuration)
+		request, cleanup, err := uploadrequest.WithLimits(writer, request, uploadMaximumDuration, uploadIdleDuration)
+		if err != nil {
+			failures.UploadFailed("internal")
+			writer.Header().Set("Connection", "close")
+			writeError(writer, request, http.StatusInternalServerError, "INTERNAL", "Не удалось загрузить вложение")
+			return
+		}
 		defer cleanup()
 		defer request.Body.Close()
 		request.Body = http.MaxBytesReader(writer, request.Body, maxRequestBytes)
@@ -108,10 +113,4 @@ func NewHandler(uploader Uploader, failures FailureRecorder) http.Handler {
 func isTooLarge(err error) bool {
 	var maxBytesError *http.MaxBytesError
 	return errors.Is(err, writeupload.ErrTooLarge) || errors.Is(err, io.ErrUnexpectedEOF) || errors.As(err, &maxBytesError)
-}
-
-func writeError(writer http.ResponseWriter, request *http.Request, status int, code, message string) {
-	writer.Header().Set("Content-Type", "application/json; charset=utf-8")
-	writer.WriteHeader(status)
-	_ = json.NewEncoder(writer).Encode(map[string]any{"error": map[string]string{"code": code, "message": message, "request_id": requestid.From(request.Context())}})
 }

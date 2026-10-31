@@ -1,0 +1,271 @@
+{
+  "schema_version": 1,
+  "issue": 134,
+  "status": "PASS_LOCAL_NATIVE_NETWORK_AND_RACE_INDEPENDENT_RUNTIME_CI_DELIVERY_PENDING",
+  "base_revision": "2b95ddd864da210d6fc2f050e69ce2d5d203186e",
+  "recorded_at_utc": "2026-10-31T08:29:39.297439+00:00",
+  "route": "storage/upload_request/read_deadline",
+  "backlog": "T-044",
+  "source_Git_LF_SHA256": {
+    "backend/internal/storage/upload_direct_message_attachment/api/deadline_writer_test.go": "d63af2abf1ef13788154a74175a5964cbcbc88285eaa64270ad63c698262c272",
+    "backend/internal/storage/upload_direct_message_attachment/api/http_handler.go": "af567526502aba59a8a07fedf455c1a1342ad71a7d725d938749e2aa0f55b418",
+    "backend/internal/storage/upload_direct_message_attachment/api/http_handler_test.go": "70087f9895285c92234aa4e028eb8664356aa72eec35ffd9030c1ef7e05a87b0",
+    "backend/internal/storage/upload_request/body.go": "9649b6206a6c584df43fecc9e4abfe2d9b1ef791b8d1b0b20fd7eed90757040e",
+    "backend/internal/storage/upload_request/body_test.go": "c6b0035d52cd86ccd2fafe5875847ce61749f673acb3f063ec94394fa12d5c01",
+    "backend/internal/storage/upload_request/deadline_helpers_test.go": "b3aca3406928cc89046ac0c125791a6686f22875ade7616d45c1269a295c808e",
+    "backend/internal/storage/upload_request/lifecycle.go": "e4b582bef4faa57eaafa9f4090b5810a0d1b95991bac8b55f9176f571956031e",
+    "backend/internal/storage/upload_request/policy_errors_test.go": "6a2d38d96dbf0bae3c186cbd659f4ee3351ffb5d02c807c60a74923c84286cfa",
+    "backend/internal/storage/upload_request/read_deadline.go": "15445b947ae615bb0e14f5c2895bee1bc8b8aeb6b68af579b467fb66f7786e1e",
+    "backend/internal/storage/upload_request/socket_cancellation_test.go": "eecc3a25bede7848796d5fca29cf5210101f2a4ab4060aa44bb8777208745039",
+    "backend/internal/storage/upload_request/socket_helpers_test.go": "2b809a2d08284707f34d7d7d6c055ff9b7f3e2eed55645dded455e6b6aaa3f15",
+    "backend/internal/storage/upload_request/socket_keepalive_test.go": "990da43f74db0f798926cde1299a6a957a18ca77fa27a20f1707b38bedc69128",
+    "backend/internal/storage/upload_request/socket_progress_test.go": "eddb7983708f3d58087f1bffd66cdbb62772e8d705faf908c11addaa66c86704",
+    "backend/internal/storage/upload_request/socket_test.go": "fce2a0c72d68185e5a488ec3c7a99338925939305ab0d43ac499951386f4215f",
+    "backend/internal/storage/upload_text_attachment/api/deadline_writer_test.go": "a0184ba0e4cf576fc442d0ad90b8b1cd4e2a9453a6120c4d0dcb59ed12ac1d47",
+    "backend/internal/storage/upload_text_attachment/api/http_handler.go": "12ebcb9dfa48946c0fdea037976427e02e97fb72baadf2d830f8d4fcbc426b2d",
+    "backend/internal/storage/upload_text_attachment/api/http_handler_test.go": "4a2c3e88b8cd11bb30012b758a580f00978e6d3f9a351512d0ab611754635558",
+    "backend/internal/storage/upload_text_attachment/api/http_response.go": "fcebd0fddb8f9b2ac01923b612e489d2ca158a64804ebf17089afc8a89d06a2b"
+  },
+  "source_fingerprint_scope": "18 changed production/test Go files; this evidence file is excluded from its own hashes",
+  "preservation": {
+    "idle_seconds": 60,
+    "maximum_seconds": 900,
+    "account_cap": 2,
+    "global_cap": 16,
+    "size_ACL_CSRF_Origin_security_metrics_proxy_policy": "UNCHANGED",
+    "global_TimeoutHandler": false,
+    "TEXT_writeError_verbatim_SHA256": "341893d0de366c1c21156a7d1dee5c6ab1786c574051a3e15677919be4b773f1"
+  },
+  "before_fix": {
+    "source_revision": "2b95ddd864da210d6fc2f050e69ce2d5d203186e",
+    "status": "CONFIRMED_REAL_HTTP1_RED_BEFORE_IMPLEMENTATION",
+    "old_nearest_tests": {
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0
+    },
+    "new_socket_regression": {
+      "failed": 4,
+      "policy_ms": 40,
+      "observation_bound_ms": 600,
+      "client_disconnect_cleanup": true
+    },
+    "production_Git_LF_SHA256": {
+      "backend/internal/storage/upload_request/body.go": "ffb3de1162a15ae72b0fb8b3173863e765e5afd64d5a2d3b1f8278a3fd87c5c1",
+      "backend/internal/storage/upload_text_attachment/api/http_handler.go": "84dec941e33641b0e730330288475ca1d98a83a5546513067ec6a74a6deafe78",
+      "backend/internal/storage/upload_direct_message_attachment/api/http_handler.go": "c6cb2924cfca2567a1be77443488cf23a7b48af3bb71054966c3de22864adac5"
+    },
+    "original_test_Git_LF_SHA256": {
+      "backend/internal/storage/upload_request/socket_test.go": "fce2a0c72d68185e5a488ec3c7a99338925939305ab0d43ac499951386f4215f",
+      "backend/internal/storage/upload_request/socket_helpers_test.go": "2925d987d13f5d187e81a43bddc0ff957110a15ff5d1a8e9de3d003c89933d48"
+    },
+    "log_SHA256": {
+      "baseline-nearest.log": "5d0434af4303a68741b6a355a5f955962280e007f2f95e052c19076a23aaab4e",
+      "socket-before-fix-red.log": "a9310ea6bbf9fb8e3311a76f9ca418b1c88aa126b223a9060ed970d3ef8cb1da"
+    }
+  },
+  "root_TLS_Caddy_baseline": {
+    "status": "QUALIFIED_FAIL_NO_FIX",
+    "source_revision": "2b95ddd864da210d6fc2f050e69ce2d5d203186e",
+    "receipt_SHA256": "9dd0611eaf888c1bd3f8fec7212097555e1fd87eff07041edcf760deae0fbcf3",
+    "receipt_hash_independently_verified": true,
+    "root_observed_no_response_seconds": [
+      80.3935,
+      80.3913
+    ],
+    "idle_policy_seconds": 60,
+    "before_controller_abort": {
+      "inflight": 2,
+      "reserved_bytes": 50000000,
+      "staging_files": 2,
+      "staging_bytes": 16384,
+      "age_seconds": 80.796
+    },
+    "after_disconnect": "All five aggregates0; actor authorization confirmed by root; fixture bodies/IDs remain private"
+  },
+  "final_native": {
+    "Windows": {
+      "Go": "1.26.4",
+      "status": "PASS",
+      "log": "timer-owned-final-windows.log"
+    },
+    "Linux_WSL2": {
+      "Go": "1.26.4",
+      "CGO": 1,
+      "race": true,
+      "status": "PASS",
+      "passed_events": 26,
+      "failed": 0,
+      "skipped": 0,
+      "log": "timer-owned-final-race-linux.log"
+    },
+    "scope": [
+      "actual HTTP1 sockets idle/absolute x zero/partial",
+      "parent cancellation separately classified",
+      "slow valid progress beyond idle with repeated reads",
+      "absolute end despite progress",
+      "next non-upload body on same keep-alive connection",
+      "policy actor/cause before native read cancels parent",
+      "unrelated OS/network/read failures negative controls",
+      "stale idle callback after fresh progress",
+      "both actual handler call edges and failclosed unsupported writer",
+      "existing per-account/global admission tests"
+    ]
+  },
+  "final_mutations": {
+    "status": "QUALIFIED_FINAL_SOURCE_MUTATION_RED_RESTORED_BYTE_EXACT",
+    "cases": [
+      {
+        "mutation": "mutation-final-no-interrupt.log",
+        "exit_code": 1,
+        "failed_cases": 5,
+        "log_SHA256": "cc2cec01efd8dc6f5a3a1f0f159bab1c72b2de4a8bed7711e13a92440e8f47a8",
+        "fixed_source_SHA256": "15445b947ae615bb0e14f5c2895bee1bc8b8aeb6b68af579b467fb66f7786e1e"
+      },
+      {
+        "mutation": "mutation-final-native-before-cause.log",
+        "exit_code": 1,
+        "failed_cases": 1,
+        "log_SHA256": "7d8df3768459b5e4a6e8aaf784e82d5a930f5187926841fe0deb3f814eda17b8",
+        "fixed_source_SHA256": "e4b582bef4faa57eaafa9f4090b5810a0d1b95991bac8b55f9176f571956031e"
+      }
+    ]
+  },
+  "preserved_intermediate_failures": [
+    {
+      "log": "socket-first-green.log",
+      "actual_status": "FAIL; initial future-deadline prototype misclassified one timeout as201"
+    },
+    {
+      "log": "classification-before-fix-red.log",
+      "actual_status": "Qualified deterministic prototype classification RED"
+    },
+    {
+      "log": "nearest-race-linux.log",
+      "actual_status": "FAIL; native read cancelled parent before timeout cause, prototype rejected"
+    },
+    {
+      "log": "stale-idle-callback-before-fix-red.log",
+      "actual_status": "Qualified stale callback RED"
+    },
+    {
+      "log": "nearest-race.log",
+      "actual_status": "BLOCKED_SETUP WindowsCGO disabled; no test ran"
+    }
+  ],
+  "logs": {
+    "baseline-nearest.log": {
+      "bytes": 676,
+      "SHA256": "5d0434af4303a68741b6a355a5f955962280e007f2f95e052c19076a23aaab4e"
+    },
+    "classification-before-fix-red.log": {
+      "bytes": 975,
+      "SHA256": "542416c9222022cd2f75962447726138caf2adfb48a242d88b5b748ae6b70637"
+    },
+    "classification-race-diagnostic.log": {
+      "bytes": 7414,
+      "SHA256": "b718697fcabb1bcee39534655c94e71a82863dc44070c9003eacdb8b00dcb6b4"
+    },
+    "first-nearest-handlers-green.log": {
+      "bytes": 3742,
+      "SHA256": "17880863248feaae8d3e46e3e01ad907c431e4a1419ba7ab2dc43d73a003f2f4"
+    },
+    "mutation-context-cause-only.log": {
+      "bytes": 986,
+      "SHA256": "4de44eaad35a9edfbfb8244c9c8e84b988af8c9062abe1a3bf0f4da98f7892f1"
+    },
+    "mutation-final-native-before-cause.log": {
+      "bytes": 338,
+      "SHA256": "7d8df3768459b5e4a6e8aaf784e82d5a930f5187926841fe0deb3f814eda17b8"
+    },
+    "mutation-final-no-interrupt.log": {
+      "bytes": 1329,
+      "SHA256": "cc2cec01efd8dc6f5a3a1f0f159bab1c72b2de4a8bed7711e13a92440e8f47a8"
+    },
+    "mutation-no-socket-deadline.log": {
+      "bytes": 1329,
+      "SHA256": "2b82e1dc1a51e54d3575180e18ac3785f23ddf7d583b2e2a1a01484a9ed0519d"
+    },
+    "nearest-final-windows.log": {
+      "bytes": 4408,
+      "SHA256": "387be9199485f0dc05918c0927f4806c27b67483596105beac1c9e872f5cc49d"
+    },
+    "nearest-race-linux-final.log": {
+      "bytes": 4272,
+      "SHA256": "b18dc162811409ec6f4cd99f409194844f0ab92de65d3ea4f5390497e9519758"
+    },
+    "nearest-race-linux-final2.log": {
+      "bytes": 4408,
+      "SHA256": "bb701d107e4d41192d6390f987f367e95111812ea2f82c3ed0628f3416ce0685"
+    },
+    "nearest-race-linux.log": {
+      "bytes": 5031,
+      "SHA256": "ad583a50b051f277f89e8053b0f90390a1d8ee614d18c0b27141b0dba0c0f272"
+    },
+    "nearest-race.log": {
+      "bytes": 61,
+      "SHA256": "efbaaa186877615a34aa378f6626efcda5e4a58b300d3b7a5ce2d569dcae8cb0"
+    },
+    "network-lifecycle-green.log": {
+      "bytes": 2362,
+      "SHA256": "ffb65898956f91a76e2520805525c48925f38f0289443c2ca21d6e903f849a20"
+    },
+    "parent-cancel-classification-green.log": {
+      "bytes": 2362,
+      "SHA256": "f7eb08b6996273dd51f3bf77489100b7739f3966ff3e38226577c0a38068632d"
+    },
+    "socket-and-classification-green.log": {
+      "bytes": 1832,
+      "SHA256": "ce23e0fdb97266434702db8e53c9afac28a09000ecca5cbbe3e8d8f13e5ae04a"
+    },
+    "socket-before-fix-red.log": {
+      "bytes": 1346,
+      "SHA256": "a9310ea6bbf9fb8e3311a76f9ca418b1c88aa126b223a9060ed970d3ef8cb1da"
+    },
+    "socket-first-green.log": {
+      "bytes": 1119,
+      "SHA256": "7ac000e2c41dd8ffb38209be66907d3d1f9c5151889d1092f5bfbda9604f3e93"
+    },
+    "stale-idle-callback-before-fix-red.log": {
+      "bytes": 290,
+      "SHA256": "a141d86fb487206d0a4f11fcd718f01258cdd5588838511f992b7c56fe7f7b7b"
+    },
+    "timer-owned-final-race-linux.log": {
+      "bytes": 3892,
+      "SHA256": "b0505746d3906350957fb5be6685669fee38f2c629c475451fed8274b46ad211"
+    },
+    "timer-owned-final-windows.log": {
+      "bytes": 3892,
+      "SHA256": "030e0cb6d49958c694cdbeefef519bba900f02bc7b8cdd64c7d07ebc5c48a522"
+    }
+  },
+  "sets": [
+    {
+      "protects": "Stalled reads actually unblock at route policy",
+      "command": "go test ./internal/storage/upload_request -count=1 -v",
+      "platform": "Windows11 Go1.26.4 and WSL2Linux pinnedGo1.26.4",
+      "mandatory_when": "Upload deadline/cancellation changes",
+      "result": "PASS on final timer-owned source; source-before-fix and mutation controls FAIL as expected"
+    },
+    {
+      "protects": "Concurrency safety, timeout actor ordering and next-request isolation",
+      "command": "CGO_ENABLED=1 GOTOOLCHAIN=go1.26.4 go test -race ./internal/storage/upload_request ./internal/storage/admit_upload ./internal/storage/upload_text_attachment/api ./internal/storage/upload_direct_message_attachment/api -count=1 -v",
+      "platform": "UbuntuWSL2 Linuxx64 GCC15.2.0",
+      "mandatory_when": "Timers/context/socket ownership changes",
+      "result": "PASS 26 passed events/0failed/0skip"
+    }
+  ],
+  "pending": {
+    "full_backend_static": "PENDING dependency fetch; intermediate unbound run not claimed final source proof",
+    "full_hosted_CI_PostgreSQL17_6_Android_macOS": "PENDING",
+    "real_60s_900s_TLS_Caddy_resource_cleanup_progress_concurrency_ENOSPC_voice_realtime": "PENDING_ROOT_INDEPENDENT_RUNTIME",
+    "trusted_master_delivery": "PENDING",
+    "issue_closure": "FORBIDDEN_UNTIL_ALL_ORIGINAL_CRITERIA_PASS"
+  },
+  "limits": [
+    "Short40ms/120ms native tests do not replace real60s/900s runtime.",
+    "No UI/ADB/network/router/security settings, production fault/load or private credentials used by release agent.",
+    "Prior prototype/host setup failures retained; no weakened deadline, caps, timeout gates or policies.",
+    "Root owns isolated real stack and independent acceptance; issue references only until its final verdict."
+  ]
+}
