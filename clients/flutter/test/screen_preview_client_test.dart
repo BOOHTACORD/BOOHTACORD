@@ -68,6 +68,25 @@ void main() {
     );
   });
 
+  test('waits for a cold server-managed Egress start beyond a short request timeout', () async {
+    const lease = 'd9428888-122b-4a50-8c5c-5b9393a4e5f1';
+    const generation = 'e35d15a4-6d8c-4a6e-a6b9-78de899631f8';
+    final api = ApiClient(
+      client: MockClient((request) async {
+        await Future<void>.delayed(const Duration(seconds: 4));
+        return http.Response(
+          jsonEncode({'schema_version': 1, 'generation_id': generation}),
+          201,
+        );
+      }),
+    );
+
+    await expectLater(
+      ScreenPreviewClient(api.transport).begin(lease),
+      completion(generation),
+    );
+  });
+
   test(
     'sender refreshes only the server-owned capture lease every 30 seconds',
     () async {

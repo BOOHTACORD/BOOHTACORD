@@ -11,7 +11,7 @@ from . import network
 from .alerts import detect
 from .triage import binding,classify,require
 
-REPOSITORY='Egkurilov/BOOHTACORD'
+REPOSITORY='BOOHTACORD/BOOHTACORD'
 SCOPES={'pr':'ci.yaml','server':'build-server.yaml','native':'native-master.yaml'}
 
 
@@ -79,7 +79,7 @@ def markdown(row):
           'First start delay seconds: '+str(row.get('first_start_delay_seconds','unknown'))+
           '; completed-job execution seconds: '+str(row.get('completed_execution_seconds','unknown'))+
           '; retry count: '+str(row.get('retry_count','unknown'))+'; pure queue time: unknown.',
-          '[Sanitized evidence and jobs]('+str(row.get('url','https://github.com/Egkurilov/BOOHTACORD/actions'))+')',
+          '[Sanitized evidence and jobs]('+str(row.get('url','https://github.com/BOOHTACORD/BOOHTACORD/actions'))+')',
           'Selected gates: '+', '.join(row.get('selected_gates',[])),
           'Confirmed flake: UNKNOWN; reruns do not authorize ignored failures.','']
     for failure in row.get('failures',[]):
