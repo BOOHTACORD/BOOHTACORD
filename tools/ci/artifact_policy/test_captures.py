@@ -49,7 +49,7 @@ class CapturePackageTests(unittest.TestCase):
             root = Path(tmp).resolve(); captures.pack(self.fixture(root), root / 'package', identity())
             for key, value in [('source_revision', 'b' * 40), ('run_id', '124'), ('run_attempt', '2'),
                                ('namespace', 'foreign'), ('profile', 'browser-voice'),
-                               ('repository', 'Egkurilov/BOOHTACORD'), ('repository', 'fork/repo')]:
+                               ('repository', 'former-owner/BOOHTACORD'), ('repository', 'fork/repo')]:
                 expected = identity(); expected[key] = value
                 with self.subTest(field=key), self.assertRaises(ValueError): captures.verify(root / 'package', expected)
 

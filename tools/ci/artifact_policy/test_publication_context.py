@@ -24,7 +24,7 @@ class PublicationContextTests(unittest.TestCase):
 
     def test_local_self_hosted_fork_or_non_linux_input_is_rejected_before_git(self):
         cases = [('GITHUB_ACTIONS', 'false'), ('RUNNER_ENVIRONMENT', 'self-hosted'),
-                 ('GITHUB_REPOSITORY', 'Egkurilov/BOOHTACORD'),
+                 ('GITHUB_REPOSITORY', 'former-owner/BOOHTACORD'),
                  ('GITHUB_REPOSITORY', 'foreign/repo'), ('RUNNER_OS', 'macOS')]
         for field, value in cases:
             with self.subTest(field=field):
