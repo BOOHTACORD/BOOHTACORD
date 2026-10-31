@@ -5,7 +5,7 @@ from . import publication_context
 
 def environment():
     return {'GITHUB_ACTIONS': 'true', 'RUNNER_ENVIRONMENT': 'github-hosted',
-            'RUNNER_OS': 'Linux', 'GITHUB_REPOSITORY': 'Egkurilov/BOOHTACORD',
+            'RUNNER_OS': 'Linux', 'GITHUB_REPOSITORY': 'BOOHTACORD/BOOHTACORD',
             'GITHUB_SHA': 'a' * 40, 'GITHUB_RUN_ID': '123', 'GITHUB_RUN_ATTEMPT': '2',
             'WEB_NAMESPACE': 'web', 'FLUTTER_EVIDENCE_NAMESPACE': 'flutter'}
 
@@ -17,13 +17,14 @@ class PublicationContextTests(unittest.TestCase):
             calls.append(args)
             return 'a' * 40 if args == ('rev-parse', 'HEAD') else ''
         result = publication_context.checked(environment(), 'web', 'browser-shell', git=git)
-        self.assertEqual({'repository': 'Egkurilov/BOOHTACORD', 'source_revision': 'a' * 40,
+        self.assertEqual({'repository': 'BOOHTACORD/BOOHTACORD', 'source_revision': 'a' * 40,
                           'run_id': '123', 'run_attempt': '2', 'namespace': 'web',
                           'component': 'web', 'profile': 'browser-shell', 'platform': 'linux'}, result)
         self.assertEqual([('rev-parse', 'HEAD'), ('status', '--porcelain', '--untracked-files=no')], calls)
 
     def test_local_self_hosted_fork_or_non_linux_input_is_rejected_before_git(self):
         cases = [('GITHUB_ACTIONS', 'false'), ('RUNNER_ENVIRONMENT', 'self-hosted'),
+                 ('GITHUB_REPOSITORY', 'Egkurilov/BOOHTACORD'),
                  ('GITHUB_REPOSITORY', 'foreign/repo'), ('RUNNER_OS', 'macOS')]
         for field, value in cases:
             with self.subTest(field=field):

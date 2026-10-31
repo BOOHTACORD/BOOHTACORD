@@ -10,7 +10,7 @@ PNG = b'\x89PNG\r\n\x1a\n\0\0\0\rIHDR' + (1).to_bytes(4, 'big') * 2 + b'\x08\x06
 
 
 def identity():
-    return {'repository': 'Egkurilov/BOOHTACORD', 'source_revision': 'a' * 40,
+    return {'repository': 'BOOHTACORD/BOOHTACORD', 'source_revision': 'a' * 40,
             'run_id': '123', 'run_attempt': '1', 'namespace': 'web',
             'component': 'web', 'profile': 'browser-shell', 'platform': 'linux'}
 
@@ -48,7 +48,8 @@ class CapturePackageTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp).resolve(); captures.pack(self.fixture(root), root / 'package', identity())
             for key, value in [('source_revision', 'b' * 40), ('run_id', '124'), ('run_attempt', '2'),
-                               ('namespace', 'foreign'), ('profile', 'browser-voice'), ('repository', 'fork/repo')]:
+                               ('namespace', 'foreign'), ('profile', 'browser-voice'),
+                               ('repository', 'Egkurilov/BOOHTACORD'), ('repository', 'fork/repo')]:
                 expected = identity(); expected[key] = value
                 with self.subTest(field=key), self.assertRaises(ValueError): captures.verify(root / 'package', expected)
 
