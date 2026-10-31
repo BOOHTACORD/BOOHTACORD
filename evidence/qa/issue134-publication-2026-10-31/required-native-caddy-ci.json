@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "issue": 134,
+  "status": "PASS_REQUIRED_HOSTED_NATIVE_CADDY_REGRESSION_FULL_CI_RUNTIME_PENDING",
+  "PR": 622,
+  "source_head": "4a0f2582d58e521fa79d4905d124345185138b54",
+  "tested_merge": "84fd3cba1a37b86bc3ea99399c1b5318671bbc9e",
+  "identical_Git_tree": "7c953bd322663624b52dd724f687550d49a9c16d",
+  "run": {
+    "id": 41189266493,
+    "attempt": 1,
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/41189266493",
+    "job": "contracts / contracts",
+    "step": "Require native pinned Caddy upload timeout delivery"
+  },
+  "artifact": {
+    "id": 13038380971,
+    "name": "upload-proxy-84fd3cba1a37b86bc3ea99399c1b5318671bbc9e-41189266493-1",
+    "ZIP_bytes": 2653,
+    "actual_downloaded_ZIP_SHA256": "4f5c063b64ee41f96b31650082885ff4572e2d3978a709cea3301211af58d4c8",
+    "original_file_SHA256": {
+      "summary.json": "a9f7941634b090c904fda0bf2cfcf14c3a277399f5f2c95bccc1239116cfee93",
+      "native/receipt.json": "1584ddbad37027a413b7fb3a8c59ccd93462588565312f5e1d56cdd5aa4ceba9",
+      "native/native-caddy-test.log": "56c63b738864a15e680b6e809d65315845ae0a4dc5d7624fd205906daa8615be"
+    }
+  },
+  "independently_verified": {
+    "actual_ZIP_digest": true,
+    "source_run_attempt": true,
+    "entire_PR_and_tested_merge_tree_equal": true,
+    "all_six_test_Git_blob_fingerprints": true,
+    "production_Caddyfile_Git_blob_fingerprint": true,
+    "native_log_fingerprint": true,
+    "approved_image_binary_and_embedded_Go_pin": true,
+    "all12_PASS_0FAIL_0SKIP": true,
+    "owned_extraction_container_cleanup": true
+  },
+  "protection_mapping": {
+    "protects": "Real frontend early upload408/code and peer EOF without client abort; successful/slow-progress uploads and unrelated routes keep reusable connections",
+    "command": "python -m tools.qa.upload_proxy.ci",
+    "platform": "Required GitHub-hosted Ubuntu24.04 x64, Go1.26.4, pinned Caddy2.10.0 native Linux/amd64 binary with embeddedGo1.24.2",
+    "mandatory_when": "Every existing required contracts workflow invocation; unconditional step, no skip/continue",
+    "where": "Always retained artifact summary.json + native/receipt.json + log; original safe JSON copies adjacent"
+  },
+  "actual_runtime_identity": {
+    "API": "ce7bbe0571174745acd27e8fc5727047f3bb5f29",
+    "Caddy": "ce7bbe0571174745acd27e8fc5727047f3bb5f29",
+    "Web": "2b95ddd864da210d6fc2f050e69ce2d5d203186e",
+    "backend_deploy_Web_toolchains_objects_equal_to_validation_head": true
+  },
+  "limits": [
+    "Scaled40ms/300ms loopback HTTP1 protocol fixture, admin/TLS disabled; not true60s/900s TLS acceptance",
+    "Full CI still running; root runtime ENOSPC/real duration/voice-realtime verdict pending",
+    "Original2b95 baseline and718 TLS delivery failures remain FAIL history",
+    "No merge, production delivery or issue134 closure authorised by this partial result"
+  ]
+}

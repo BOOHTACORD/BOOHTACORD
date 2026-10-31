@@ -1,0 +1,23 @@
+{
+  "kind": "native-pinned-caddy-upload-proxy-regression",
+  "status": "PASS",
+  "exit_code": 0,
+  "Go": "go version go1.26.4 linux/amd64",
+  "Caddy": "v2.10.0",
+  "Caddy_binary_SHA256": "ae87f566523d744731c0832d97b009b5cbdd69f5825e6e3c7de380c295a4ef68",
+  "production_Caddyfile_Git_LF_SHA256": "7f475f605c8169238367b80b73e59c721ca7113ebb50b405f4903fa537838bc4",
+  "test_source_SHA256": {
+    "backend_test.go": "13b63a5f444a0dcb0783d999c2f5ad4d7f891b4278f0a5bdcf5cb79c407a3be3",
+    "delivery_test.go": "bd5af86f43bbab216a12def21235e5d209f9e70e40f34230e9ed028b7cb6dbf5",
+    "fixture_test.go": "2748fb4118794affbe836163240ed512c86adfe1ed7bcc1e663fb4746b1fea53",
+    "native_test.go": "d37299cc2147a56bc73ccfcf2c5ac62f61d00e1eb75f91dfe9a295d9eeea7524",
+    "scope_test.go": "6839dfdc823d6dc8ba8d6db83f99995378e7c3ae7d8316b9de0c17a45bec8abf",
+    "socket_test.go": "4b2e317dca666435c3f49ecab1db6558d0cee3022151c81d9f152a711b9ee34b"
+  },
+  "log_SHA256": "56c63b738864a15e680b6e809d65315845ae0a4dc5d7624fd205906daa8615be",
+  "passed_events": 12,
+  "failed_events": 0,
+  "skipped_events": 0,
+  "scope": "Owned loopback HTTP1 native Caddy/Go fixtures, admin and TLS disabled, isolated XDG/temp state; no MAIN service/profile/CA/accounts",
+  "limits": "Scaled40ms idle/300ms maximum; not real60s/900s TLS acceptance"
+}
