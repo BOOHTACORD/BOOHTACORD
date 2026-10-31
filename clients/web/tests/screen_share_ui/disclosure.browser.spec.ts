@@ -242,9 +242,13 @@ test('listener room embeds the stream preview in an equal-sized participant card
   await page.screenshot({ path: info.outputPath('listener-participant-cards-390x200.png') })
 })
 
-test('participant volume controls overlay compact mute state on hover, close outside and keep mute/deafen icons crisp', async ({ page }, info) => {
-  await open(page, 'participant-cards', 876, 100, 656)
+test('participant volume controls overlay mute state with a watcher badge, keep it aligned and close outside', async ({ page }, info) => {
+  await open(page, 'participant-cards&watching', 876, 100, 656)
   const streamCard = page.locator('.participant--streaming')
+  const watcher = streamCard.locator('.participant-watcher-indicator')
+  await expect(watcher).toHaveText('Смотрит')
+  const watcherStyle = await watcher.evaluate(element => ({ background: getComputedStyle(element).backgroundColor, padding: getComputedStyle(element).padding, radius: getComputedStyle(element).borderRadius }))
+  expect(watcherStyle).toEqual({ background: 'rgba(0, 0, 0, 0)', padding: '0px', radius: '0px' })
   const details = streamCard.locator('.participant-volume')
   const trigger = details.locator('summary')
   const overlap = await trigger.evaluate(element => {
@@ -264,11 +268,11 @@ test('participant volume controls overlay compact mute state on hover, close out
     const icon = element.closest('.participant')!.querySelector<HTMLElement>('.participant-card-status .voice-person-state-icon')!.getBoundingClientRect()
     return {
       horizontal: Math.abs(trigger.left + trigger.width / 2 - (icon.left + icon.width / 2)),
-      vertical: Math.abs(trigger.top + trigger.height / 2 - (icon.top + icon.height / 2)),
+      vertical: trigger.top + trigger.height / 2 - (icon.top + icon.height / 2),
     }
   })
   expect(controlAlignment.horizontal).toBeLessThanOrEqual(1)
-  expect(controlAlignment.vertical).toBeLessThanOrEqual(1)
+  expect(Math.abs(controlAlignment.vertical - 4)).toBeLessThanOrEqual(1)
   await expect(trigger).toHaveCSS('opacity', '0')
   await trigger.hover()
   await expect(trigger).toHaveCSS('opacity', '1')
@@ -286,7 +290,7 @@ test('participant volume controls overlay compact mute state on hover, close out
   await expect(details).not.toHaveAttribute('open', '')
 
   const mutedNameTop = await streamCard.locator('.participant-name').evaluate(element => element.getBoundingClientRect().top)
-  await open(page, 'participant-cards&unmuted', 876, 100, 656)
+  await open(page, 'participant-cards&unmuted&watching', 876, 100, 656)
   const unmutedCard = page.locator('.participant--streaming')
   const unmutedStatus = unmutedCard.locator('.participant-card-status')
   await expect(unmutedStatus).toHaveAttribute('aria-label', 'В голосовом канале')
@@ -300,6 +304,19 @@ test('participant volume controls overlay compact mute state on hover, close out
   await expect(deafenedStatus.locator('.voice-person-state-icon')).toHaveCount(2)
   const deafenIconSizes = await deafenedStatus.locator('.voice-person-state-icon').evaluateAll(elements => elements.map(element => ({ width: getComputedStyle(element).width, height: getComputedStyle(element).height })))
   expect(deafenIconSizes).toEqual([{ width: '16px', height: '16px' }, { width: '16px', height: '16px' }])
+})
+
+test('participant volume button sits slightly below the mute icon when the watcher badge adds a row', async ({ page }) => {
+  await open(page, 'participant-cards&watching', 876, 100, 656)
+  const streamCard = page.locator('.participant--streaming')
+  const trigger = streamCard.locator('.participant-volume summary')
+  const alignment = await trigger.evaluate(element => {
+    const triggerRect = element.getBoundingClientRect()
+    const iconRect = element.closest('.participant')!.querySelector<HTMLElement>('.participant-card-status .voice-person-state-icon')!.getBoundingClientRect()
+    return triggerRect.top + triggerRect.height / 2 - (iconRect.top + iconRect.height / 2)
+  })
+  expect(alignment).toBeGreaterThanOrEqual(3)
+  expect(alignment).toBeLessThanOrEqual(5)
 })
 
 test('participant overlay wraps a four-member roster into a compact grid', async ({ page }, info) => {

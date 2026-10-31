@@ -67,14 +67,14 @@ onBeforeUnmount(() => {
           <div class="participant-card-name-row">
             <span class="participant-name">{{ participant.name || 'Участник' }}</span>
             <VoiceParticipantStatus class="participant-card-status" compact :microphone-muted="participant.microphoneMuted" :speaking="participant.speaking" />
+            <div v-if="participant.accountId" class="participant-card-actions">
+              <details class="participant-volume">
+                <summary :aria-label="`Настройки громкости ${participant.name || 'участника'}`" title="Настройки участника"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></summary>
+                <label>Громкость · {{ participant.volume }}%<input :aria-label="`Громкость участника ${participant.name || 'участника'}`" :aria-valuetext="`${participant.volume} процентов`" type="range" min="0" max="200" step="1" :value="participant.volume" @input="emit('setVolume', participant.id, Number(($event.target as HTMLInputElement).value))"></label>
+              </details>
+            </div>
           </div>
           <span v-if="watchesSelectedScreen(participant.id)" class="participant-watcher-indicator" role="img" :aria-label="watcherLabel()" :title="watcherLabel()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.2-6 9.5-6 9.5 6 9.5 6-3.2 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg><span>Смотрит</span></span>
-        </div>
-        <div v-if="participant.accountId" class="participant-card-actions">
-          <details class="participant-volume">
-            <summary :aria-label="`Настройки громкости ${participant.name || 'участника'}`" title="Настройки участника">•••</summary>
-            <label>Громкость · {{ participant.volume }}%<input :aria-label="`Громкость участника ${participant.name || 'участника'}`" :aria-valuetext="`${participant.volume} процентов`" type="range" min="0" max="200" step="1" :value="participant.volume" @input="emit('setVolume', participant.id, Number(($event.target as HTMLInputElement).value))"></label>
-          </details>
         </div>
       </div>
     </article>
