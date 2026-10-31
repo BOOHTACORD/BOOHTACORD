@@ -1,0 +1,342 @@
+{
+  "schema_version": 1,
+  "issue": 138,
+  "status": "PASS_LOCAL_NATIVE_RED_GREEN_MUTATION_HOSTED_AND_ROOT_RUNTIME_PENDING",
+  "route": "backend/internal/security/rate_limit/source",
+  "workflow_class": "small_direct",
+  "base": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2",
+  "base_tree_equals_root_baseline4a0": true,
+  "branch": "codex/fix-forwarded-fields-138",
+  "change": "Only source.go collects ordered Header.Values after trusted-peer early return; checks field count and aggregate bytes including commas BEFORE bounded join, then uses existing hop guard/right-to-left nearest-untrusted walk",
+  "approved_plan_original_SHA256": "78e4d326840e800451bf714599504a45f9b9c35aae2348e9e29ec7352edd6088",
+  "source_test_plan_Git_LF_SHA256": {
+    "backend/internal/security/rate_limit/source.go": "3592de3793691ca6b739f31cf947791dfaec9405690aa45ac86244b9125ebcba",
+    "backend/internal/security/rate_limit/source_fields_test.go": "aa56a8f3ca1a22bc3a243980f1567ec2fecc6642b950414d1dfc1c78876c7adc",
+    "backend/internal/security/rate_limit/source_limits_test.go": "cb0636ca1e93ff9e2774e0dd0e8f08ea5873d59ee0bc47763bc6ef24b0044b03",
+    "backend/internal/security/rate_limit/source_wire_test.go": "a54b4bee2db89f1a5165e510d3bd04fc662a0495b2da227f9aef2da88d14bc05",
+    "docs/superpowers/plans/2026-10-31-forwarded-fields-138.md": "23edc334d5b09605c2fca95d93032d7dcf82644ad4e4361519d082b26242ccd7"
+  },
+  "source_test_lines": {
+    "backend/internal/security/rate_limit/source.go": 78,
+    "backend/internal/security/rate_limit/source_fields_test.go": 59,
+    "backend/internal/security/rate_limit/source_limits_test.go": 58,
+    "backend/internal/security/rate_limit/source_wire_test.go": 53
+  },
+  "preserved": [
+    "untrusted/unknown immediate peer handling before forwarding work",
+    "single-field valid/empty/malformed/ignored-left semantics",
+    "IPv4/mapped/IPv6 canonicalization",
+    "native source10/300 policy and account/KDF/quota/ACL/Origin/CSRF rules",
+    "trusted CIDR config/defaults and failclosed invalidCIDR",
+    "standardCaddy sanitization/API-admin isolation",
+    "issue134 route deadlines/proxy delivery bytes",
+    "43 consolidation decisions and unrelated gates"
+  ],
+  "checks": {
+    "baseline": {
+      "stage": "BEFORE_ANY_SOURCE_OR_NEW_TEST_EDIT",
+      "source_commit": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2",
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "-count=3",
+        "./internal/security/rate_limit"
+      ],
+      "Go": "go version go1.26.4 windows/amd64",
+      "source_actual_SHA256": "f2acf749674bab5f5d67588c877573dd6b65c44d919481c944c7b5ba8a87006c",
+      "source_Git_LF_SHA256": "9a0d02d4e9c7b5eb015c9357d3f959fb6a8853f92cafff6d4411e97c410ae813",
+      "exit_code": 0,
+      "original_top_level_PASS_events": 18,
+      "skips": 0,
+      "log_SHA256": "b1c3c4793dee61c27d16c278c899f8281a0d017d5c7a5a26b05ab1d35a8738b2"
+    },
+    "before_fix_RED": {
+      "stage": "QUALIFIED_SEMANTIC_RED_BEFORE_PRODUCT_EDIT",
+      "base": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2",
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "-count=1",
+        "-run",
+        "^TestSourceKey(RepeatedFields|OrderedFields|LiteralHTTP1)",
+        "./internal/security/rate_limit"
+      ],
+      "platform": "Go1.26.4 Windows amd64 supplemental non-race",
+      "exit_code": 1,
+      "source_actual_SHA256": "f2acf749674bab5f5d67588c877573dd6b65c44d919481c944c7b5ba8a87006c",
+      "test_Git_LF_SHA256": {
+        "source_fields_test.go": "aa56a8f3ca1a22bc3a243980f1567ec2fecc6642b950414d1dfc1c78876c7adc",
+        "source_limits_test.go": "cb0636ca1e93ff9e2774e0dd0e8f08ea5873d59ee0bc47763bc6ef24b0044b03",
+        "source_wire_test.go": "a54b4bee2db89f1a5165e510d3bd04fc662a0495b2da227f9aef2da88d14bc05"
+      },
+      "fail_events": [
+        "TestSourceKeyRepeatedFieldsNearestBoundary",
+        "TestSourceKeyOrderedFieldsMatchCombined/leading_empty",
+        "TestSourceKeyOrderedFieldsMatchCombined/trailing_empty",
+        "TestSourceKeyOrderedFieldsMatchCombined/trusted_walk_bad",
+        "TestSourceKeyOrderedFieldsMatchCombined/ignored_bad_left",
+        "TestSourceKeyOrderedFieldsMatchCombined/ordered_boundary",
+        "TestSourceKeyOrderedFieldsMatchCombined",
+        "TestSourceKeyRepeatedFieldsAggregateBytes/bytes4097/form0",
+        "TestSourceKeyRepeatedFieldsAggregateBytes",
+        "TestSourceKeyRepeatedFieldsAggregateHops/hops33/layout0/form0",
+        "TestSourceKeyRepeatedFieldsAggregateHops/hops33/layout1/form0",
+        "TestSourceKeyRepeatedFieldsAggregateHops",
+        "TestSourceKeyLiteralHTTP1RetainsOrderedFields/separate",
+        "TestSourceKeyLiteralHTTP1RetainsOrderedFields"
+      ],
+      "pass_events": [
+        "TestSourceKeyOrderedFieldsMatchCombined/missing",
+        "TestSourceKeyOrderedFieldsMatchCombined/empty",
+        "TestSourceKeyOrderedFieldsMatchCombined/all_empty",
+        "TestSourceKeyOrderedFieldsMatchCombined/all_trusted",
+        "TestSourceKeyOrderedFieldsMatchCombined/IPv4_mapped",
+        "TestSourceKeyOrderedFieldsMatchCombined/IPv6_normalized",
+        "TestSourceKeyOrderedFieldsMatchCombined/two_trusted_CIDRs",
+        "TestSourceKeyOrderedFieldsMatchCombined/untrusted_direct",
+        "TestSourceKeyOrderedFieldsMatchCombined/invalid_peer",
+        "TestSourceKeyRepeatedFieldsAggregateBytes/bytes4096/form0",
+        "TestSourceKeyRepeatedFieldsAggregateBytes/bytes4096/form1",
+        "TestSourceKeyRepeatedFieldsAggregateBytes/bytes4097/form1",
+        "TestSourceKeyRepeatedFieldsAggregateHops/hops32/layout0/form0",
+        "TestSourceKeyRepeatedFieldsAggregateHops/hops32/layout0/form1",
+        "TestSourceKeyRepeatedFieldsAggregateHops/hops32/layout1/form0",
+        "TestSourceKeyRepeatedFieldsAggregateHops/hops32/layout1/form1",
+        "TestSourceKeyRepeatedFieldsAggregateHops/hops33/layout0/form1",
+        "TestSourceKeyRepeatedFieldsAggregateHops/hops33/layout1/form1",
+        "TestSourceKeyLiteralHTTP1RetainsOrderedFields/combined"
+      ],
+      "skips": 0,
+      "log_SHA256": "e7a9bcea35ce2db1cae80025e7ca818fe262eac63065b1694c1283341d218f43"
+    },
+    "Windows_green": {
+      "status": "PASS",
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "-count=3",
+        "./internal/security/rate_limit"
+      ],
+      "platform": "Windows Go1.26.4 supplemental non-race",
+      "top_level_PASS_events": 33,
+      "all_test_PASS_events": 117,
+      "fail": 0,
+      "skip": 0,
+      "log_SHA256": "ce5925623bab5726f168a94dd9c2ea0a633897550a5775e088416c8385f635a4"
+    },
+    "Linux_CGO1_race_and_config": {
+      "rate-limit-race.jsonl": {
+        "status": "PASS",
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu",
+          "--cd",
+          "<repo>/backend",
+          "--exec",
+          "/usr/bin/env",
+          "GOTOOLCHAIN=go1.26.4",
+          "CGO_ENABLED=1",
+          "/usr/bin/go",
+          "test",
+          "-json",
+          "-p=2",
+          "-race",
+          "-count=3",
+          "-timeout=3m",
+          "./internal/security/rate_limit"
+        ],
+        "PASS_events": 117,
+        "top_level_PASS": 33,
+        "skips": 0,
+        "exit_code": 0,
+        "log_SHA256": "9922e99e4603bb9d9c06235e6e2ceeb0d9a304f62d0c378a00a74b72e01cc22a"
+      },
+      "config.jsonl": {
+        "status": "PASS",
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu",
+          "--cd",
+          "<repo>/backend",
+          "--exec",
+          "/usr/bin/env",
+          "GOTOOLCHAIN=go1.26.4",
+          "CGO_ENABLED=1",
+          "/usr/bin/go",
+          "test",
+          "-json",
+          "-count=1",
+          "./internal/config/runtime"
+        ],
+        "PASS_events": 11,
+        "top_level_PASS": 5,
+        "skips": 0,
+        "exit_code": 0,
+        "log_SHA256": "c5a43a23021261bfb160095d8f7e1ca1d266e762fc1ef934d96b6db7cfef801f"
+      }
+    },
+    "mutation": {
+      "status": "QUALIFIED_SEMANTIC_MUTATION_FAIL_FIXED_BYTES_UNCHANGED",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu",
+        "--cd",
+        "<repo>/backend",
+        "--exec",
+        "/usr/bin/env",
+        "GOTOOLCHAIN=go1.26.4",
+        "CGO_ENABLED=1",
+        "/usr/bin/go",
+        "test",
+        "-json",
+        "-p=2",
+        "-race",
+        "-count=3",
+        "-timeout=3m",
+        "-overlay",
+        "<repo>/.out/issue138/mutation-first-field/overlay.json",
+        "-run",
+        "^TestSourceKey(RepeatedFields|OrderedFields|LiteralHTTP1)",
+        "./internal/security/rate_limit"
+      ],
+      "exit_code": 1,
+      "mutated_edge": "Header.Values\u2192one-element Header.Get; all other source unchanged",
+      "fixed_source_SHA256": "3592de3793691ca6b739f31cf947791dfaec9405690aa45ac86244b9125ebcba",
+      "mutant_source_SHA256": "69ad60e4db94c7f83fae0201ccf8794519d4375154504ef3cb31f73e8135968c",
+      "log_SHA256": "f52bdd395886c2964cc722221a4b5a2422a03bdf049680a38a8d7be92535b13f",
+      "required_failed_top_levels": {
+        "TestSourceKeyRepeatedFieldsNearestBoundary": 3,
+        "TestSourceKeyRepeatedFieldsAggregateBytes": 3,
+        "TestSourceKeyRepeatedFieldsAggregateHops": 3,
+        "TestSourceKeyLiteralHTTP1RetainsOrderedFields": 3
+      },
+      "all_failed_events": 42,
+      "all_passed_events": 57,
+      "skips": 0,
+      "original_fixed_bytes_unchanged": true
+    },
+    "static": {
+      "vet": {
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu",
+          "--cd",
+          "<repo>/backend",
+          "--exec",
+          "/usr/bin/env",
+          "GOTOOLCHAIN=go1.26.4",
+          "CGO_ENABLED=1",
+          "/usr/bin/go",
+          "vet",
+          "./..."
+        ],
+        "exit_code": 0,
+        "log_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "build": {
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu",
+          "--cd",
+          "<repo>/backend",
+          "--exec",
+          "/usr/bin/env",
+          "GOTOOLCHAIN=go1.26.4",
+          "CGO_ENABLED=1",
+          "/usr/bin/go",
+          "build",
+          "./..."
+        ],
+        "exit_code": 0,
+        "log_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "contracts": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/verify/contracts/verify-contracts.ps1"
+      ],
+      "exit_code": 0,
+      "log_SHA256": "160336f0a083cac4fece7bff6b58f1322521da31fef4ae32499c6eda534a3c7e",
+      "status": "PASS"
+    }
+  },
+  "protection_mapping": [
+    {
+      "protects": "Existing6top-level source/Middleware/store-cap semantics",
+      "command": "GOTOOLCHAIN=local go test -json -count=3 ./internal/security/rate_limit",
+      "platform": "Windows Go1.26.4 supplemental non-race, workdir <repo>/backend",
+      "mandatory_when": "Before new tests/product edit",
+      "result": "PASS18 original top-level events,0skip",
+      "where": "checks.baseline; raw private .out/issue138/baseline-original-tests/go-test.jsonl hash above"
+    },
+    {
+      "protects": "Ordered repeated fields, aggregate4096/4097 and32/33 across2/32/33fields, actual literalHTTP1 split vscombined",
+      "command": "GOTOOLCHAIN=local go test -json -count=1 -run '^TestSourceKey(RepeatedFields|OrderedFields|LiteralHTTP1)' ./internal/security/rate_limit",
+      "platform": "Windows Go1.26.4, workdir <repo>/backend; owned loopback real net/http + raw TCP wire, no containers/realIPs",
+      "mandatory_when": "Before product edit",
+      "result": "QUALIFIED_RED14failed/19passed,0skip; no compile/setup failure accepted",
+      "where": "checks.before_fix_RED + exact log/test/source hashes"
+    },
+    {
+      "protects": "Final fixed source, originaltests and native race behavior",
+      "command": "GOTOOLCHAIN=go1.26.4 CGO_ENABLED=1 go test -json -p=2 -race -count=3 -timeout=3m ./internal/security/rate_limit",
+      "platform": "Ubuntu WSL Linux/amd64 pinnedGo1.26.4 with real CGO1; workdir <repo>/backend",
+      "mandatory_when": "Final source before freeze",
+      "result": "PASS117 events/33top-level,0FAIL/0SKIP/0datarace",
+      "where": "checks.Linux_CGO1_race_and_config.rate-limit-race.jsonl; source/test hashes above"
+    },
+    {
+      "protects": "Invalid trustCIDR rejects and source10/300 defaults preserved",
+      "command": "GOTOOLCHAIN=go1.26.4 CGO_ENABLED=1 go test -json -count=1 ./internal/config/runtime",
+      "platform": "Same pinned Linux Go, workdir <repo>/backend",
+      "mandatory_when": "Source resolver trust edge change",
+      "result": "PASS11 events,0skip incl exact TestLoadRejectsInvalidTrustedProxyCIDR and TestLoginSourceLimitMatchesADR003",
+      "where": "checks.Linux_CGO1_race_and_config.config.jsonl"
+    },
+    {
+      "protects": "Reject old first-field behavior rather than mirroring the fixed implementation",
+      "command": "GOTOOLCHAIN=go1.26.4 CGO_ENABLED=1 go test -json -p=2 -race -count=3 -timeout=3m -overlay \"$MUTATION_OVERLAY\" -run '^TestSourceKey(RepeatedFields|OrderedFields|LiteralHTTP1)' ./internal/security/rate_limit",
+      "platform": "Same pinned Linux Go; overlay replaces only Header.Values with one-element Header.Get, checkout unchanged",
+      "mandatory_when": "Before final source freeze",
+      "result": "QUALIFIED42semanticFAIL/57PASS/0skip; nearest/aggregatebytes/hops/wire each3fail; fixedbytes unchanged",
+      "where": "checks.mutation; fixed/mutant/log SHA256 retained"
+    },
+    {
+      "protects": "Module compile/static and existing API contracts",
+      "command": [
+        "GOTOOLCHAIN=go1.26.4 CGO_ENABLED=1 go vet ./...",
+        "GOTOOLCHAIN=go1.26.4 CGO_ENABLED=1 go build ./...",
+        "pwsh -NoProfile -File tools/verify/contracts/verify-contracts.ps1"
+      ],
+      "platform": "Linux Go backend for vet/build; Windows PowerShell/Python native contract script at repo root",
+      "mandatory_when": "Before freeze/PR",
+      "result": "PASS all exit0",
+      "where": "checks.static + checks.contracts"
+    }
+  ],
+  "root_fresh_historical_RED_original_SHA256": "12603e249e495e700e80e11698f05a7bc300b9080c00eeed17b5c62762ea3274",
+  "historical_counterexample": "https://github.com/Egkurilov/BOOHTACORD/blob/e2dac43964b65abc33393a4fa02d0fd722057dc4/evidence/qa/open-issues-2026-10-27/isolated-proxy-source/README.md",
+  "runtime_gate": "PENDING root exact-source isolated API/Caddy primary/literalwire matrices with trustedP and actualuntrustedA/B, unchanged policy and noaccounts/KDF; no merge/closure until actual complete verdict+cleanup",
+  "hosted_gate": "PENDING actual required profiles on final head; no localnative result substitutes",
+  "limits": [
+    "Conditional defect behind a trusted forwarder with repeatedXFF; standard public Caddy bypass NOT proven",
+    "Native HTTP1 wire uses documentation addresses and owned127loopback; no public/private realQA IPs exported",
+    "No production network/fault/load/UI/device actions; no rootfixture controls or old9containers touched",
+    "No requirements/backlog/OpenAPI/trust/compose/toolchain/workflow change"
+  ],
+  "required_local_parameters": {
+    "<repo>": "Final candidate isolated checkout, working directory as declared per row; no production configuration",
+    "MUTATION_OVERLAY": "Absolute path to retained generated .out/issue138/mutation-first-field/overlay.json with a single first-field shadow source; Linux path when using WSL. Already generated and executed; never substitutes product source."
+  }
+}
