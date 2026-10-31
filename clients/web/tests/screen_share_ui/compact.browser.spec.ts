@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-test('stream viewer keeps diagnostics and full-area expand out of the menu and iconizes return to participants', async ({ page }, info) => {
+test('stream viewer keeps return to participants visible in the bottom toolbar', async ({ page }, info) => {
   for (const width of [390, 1440]) {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls&watching-remote&single-stream')
@@ -19,15 +19,9 @@ test('stream viewer keeps diagnostics and full-area expand out of the menu and i
     await expect(controls.getByRole('button', { name: 'Диагностика просмотра', exact: true })).toHaveCount(0)
     await expect(controls.getByRole('button', { name: 'Развернуть на весь экран', exact: true })).toBeVisible()
 
-    const more = controls.locator('.stream-more-actions > summary')
-    await more.click()
-    await expect(controls.getByRole('button', { name: 'Диагностика просмотра', exact: true })).toHaveCount(0)
-    await expect(controls.getByRole('button', { name: 'Развернуть на всю область', exact: true })).toHaveCount(0)
-
-    const menu = controls.locator('.stream-voice-return')
-    await expect(menu).toBeVisible()
-    expect((await menu.boundingBox())!.width).toBeLessThanOrEqual(64)
-    const returnButton = controls.getByRole('button', { name: 'К участникам', exact: true })
+    const returnButton = controls.locator('.stream-toolbar-actions').getByRole('button', { name: 'К участникам', exact: true })
+    await expect(returnButton).toBeVisible()
+    await expect(controls.locator('.stream-more-actions')).toHaveCount(0)
     await expect(returnButton).toHaveAttribute('title', 'К участникам')
     await expect(returnButton.locator('svg')).toHaveCount(1)
     await expect(returnButton.locator('.gc-sr-only')).toHaveText('К участникам')
@@ -36,6 +30,24 @@ test('stream viewer keeps diagnostics and full-area expand out of the menu and i
     await returnButton.click()
     expect(await page.evaluate(() => (window as any).__screenUI.events)).toContain('clear')
   }
+})
+
+test('owner keeps return to participants in the toolbar and quality controls in overflow', async ({ page }) => {
+  await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls&single-stream')
+  await page.evaluate(() => {
+    const canvas = document.createElement('canvas'); canvas.width = 1280; canvas.height = 720
+    canvas.getContext('2d')!.fillRect(0, 0, 1280, 720)
+    const video = document.querySelector('video')!; video.srcObject = canvas.captureStream(1); void video.play()
+  })
+  await expect(page.locator('.screen-loading-state')).not.toBeVisible()
+  await page.locator('.screen-stage').hover()
+  const controls = page.getByRole('group', { name: 'Управление просмотром' })
+  const returnButton = controls.locator('.stream-toolbar-actions').getByRole('button', { name: 'К участникам', exact: true })
+  await expect(returnButton).toBeVisible()
+  await controls.locator('.stream-more-actions > summary').click()
+  const menu = controls.locator('.stream-voice-return')
+  await expect(menu.getByRole('button', { name: 'Качество трансляции', exact: true })).toBeVisible()
+  await expect(menu.getByRole('button', { name: 'К участникам', exact: true })).toHaveCount(0)
 })
 
 for (const width of [390, 1440]) {
@@ -73,7 +85,7 @@ for (const width of [390, 1440]) {
     await page.getByLabel('Дополнительные действия', { exact: true }).click()
     await expect(controls.getByRole('button', { name: 'Диагностика просмотра', exact: true })).toHaveCount(0)
     await expect(controls.getByRole('button', { name: 'Развернуть на всю область', exact: true })).toHaveCount(0)
-    await expect(controls.getByRole('button', { name: 'К участникам', exact: true })).toHaveAttribute('title', 'К участникам')
+    await expect(controls.locator('.stream-toolbar-actions').getByRole('button', { name: 'К участникам', exact: true })).toHaveAttribute('title', 'К участникам')
   })
 }
 
