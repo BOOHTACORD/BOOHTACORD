@@ -23,6 +23,7 @@ func nativeProxyFixture(t *testing.T) string {
 		t.Fatal(err)
 	}
 	config := strings.ReplaceAll(string(input), "{$PUBLIC_HOST:localhost}", "http://"+address)
+	config = strings.Replace(config, "http://"+address+" {", "http://"+address+" {\n bind 127.0.0.1", 1)
 	config = strings.ReplaceAll(config, "api:8080", strings.TrimPrefix(backend.URL, "http://"))
 	config = "{\n admin off\n auto_https off\n}\n" + config
 	directory := t.TempDir()
