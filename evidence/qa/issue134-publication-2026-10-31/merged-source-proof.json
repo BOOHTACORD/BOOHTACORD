@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "issue": 134,
+  "PR": 622,
+  "status": "PASS_MERGED_SOURCE_TREE_EQUALS_FINAL_REQUIRED_TESTED_TREE",
+  "merged_source": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2",
+  "merged_at": "2026-10-31T10:10:08Z",
+  "final_PR_head": "4a0f2582d58e521fa79d4905d124345185138b54",
+  "tested_synthetic_merge": "84fd3cba1a37b86bc3ea99399c1b5318671bbc9e",
+  "all_three_entire_trees": "7c953bd322663624b52dd724f687550d49a9c16d",
+  "fresh_premerge_base": "2b95ddd864da210d6fc2f050e69ce2d5d203186e",
+  "required_CI": {
+    "run_id": 41189266493,
+    "attempt": 1,
+    "all_jobs_SUCCESS": 27,
+    "job_skips": 0
+  },
+  "actual_runtime_source": "ce7bbe0571174745acd27e8fc5727047f3bb5f29",
+  "actual_Web_source": "2b95ddd864da210d6fc2f050e69ce2d5d203186e",
+  "protected_Git_objects_equal_actual_runtime": {
+    "backend": "5be223fd5e1664b7ca50d8129716a5233d431c8f",
+    "deploy": "68d849ff6062fb685eec2038d0c02610e1c85c09",
+    "clients/web": "9c54a05d6555379bdc2228f495d21b554cab69a2",
+    "tools/toolchains.json": "1deefcb62ed712fe7024a38bb9d3b349bcd48433"
+  },
+  "runtime_root_verdict_v2_original_SHA256": "724858f803af308d82095aee0578ffbd273732b624de73bfa41b8d5c613909f5",
+  "immutable_runtime_proof": "https://github.com/Egkurilov/BOOHTACORD/blob/f09fc07431e9521deb2907fdd7657774e59ae02f/evidence/qa/issue134-publication-2026-10-31/runtime-acceptance.json",
+  "fresh_issue_after_merge": "OPEN/reopened with10originaluncheckedrows; no automatic close was used",
+  "scope": "Original isolated issue134 acceptance plus final CI and merged source; production delivery and physical audio are not claimed; automatic delivery tracked separately",
+  "parent_QA_and_unrelated_gates": "unchanged"
+}
