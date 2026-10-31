@@ -1,0 +1,85 @@
+{
+  "private_parameters": "<owned-checkout> and <owned-pinned-tools> mean the separately provisioned disposable local fixture only. Its runtime containers/images/networks/volumes are now REMOVED. These are not production replay parameters.",
+  "rows": [
+    {
+      "protects": "All mandatory selected Web feature discovery plus real Go/API/SFU browser acceptance at both native viewport profiles",
+      "command_argv": [
+        "./tools/qa/local_features/check.sh",
+        "--feature",
+        "auth",
+        "--feature",
+        "connection_status",
+        "--feature",
+        "screen",
+        "--feature",
+        "voice",
+        "--feature",
+        "chat",
+        "--platform",
+        "web",
+        "--base",
+        "46e83f7655fb75c5acb29c91a439db551598cb40",
+        "--real-stack"
+      ],
+      "working_directory": "<owned-checkout-attempt1-or-attempt2>",
+      "environment": {
+        "PATH_prefix": [
+          "<owned-pinned-tools>/bin",
+          "<owned-pinned-tools>/node-v24.18.0-linux-x64/bin"
+        ],
+        "DOCKER_HOST": "unix:///var/run/docker.sock",
+        "DOCKER_CONTEXT": "default",
+        "DOCKER_CONFIG": "<owned-private-docker-config>",
+        "BOOHTACORD_QA_OWNER": "distinct validated qa-client-16hex per attempt"
+      },
+      "platform": "Windows11 host/WSL2Ubuntu; Python3.12.15,Node24.18.0,project Playwright1.63.0",
+      "mandatory_when": "Web behavior/feature registration changes; all five features selected by unchanged source coverage policy",
+      "result": "Both full commands exit1:21 stagesPASS,2 nativeFAIL each; four width casesFAIL. No third run.",
+      "where": "attempts.json",
+      "SHA256": "07f05232a85ed609b815c83c9a2d50375b93920dc203670cee6904aea29c1489"
+    },
+    {
+      "protects": "Exact native preview refresh and media/connection lifecycle assertions on the actual owned stack",
+      "command_argv_by_width": [
+        [
+          "python3",
+          "-m",
+          "tools.qa.client_lifecycle.run",
+          "--critical",
+          "--portable-proxy",
+          "--width",
+          "1440"
+        ],
+        [
+          "python3",
+          "-m",
+          "tools.qa.client_lifecycle.run",
+          "--critical",
+          "--portable-proxy",
+          "--width",
+          "393"
+        ]
+      ],
+      "working_directory": "<owned-checkout>",
+      "platform": "Pinned Linux runtime; source-resolved canonical native subprocess argv",
+      "mandatory_when": "--platform web --real-stack in the canonical check",
+      "result": "Initial owner video and receiver thumbnail decode; img.src unchanged through45000ms, both widths in both attempts",
+      "where": "attempts.json/private_native_log_SHA256",
+      "SHA256": "07f05232a85ed609b815c83c9a2d50375b93920dc203670cee6904aea29c1489"
+    },
+    {
+      "protects": "Read-only producer filesystem advancement/OCI identity diagnostics without changing primary assertions or publishing frames",
+      "command_argv": [
+        "<owned-pinned-tools>/bin/python3",
+        "<owned-helper>/passive_preview_monitor_v2.py"
+      ],
+      "working_directory": "<owned-fixture>",
+      "platform": "WSL2Ubuntu/Python3.12.15/localUnixDocker only",
+      "mandatory_when": "Authorized bounded diagnosis of reproduced canonical failure, not a replacement gate",
+      "result": "Observer exit0 after native cleanup; limited evidence only",
+      "where": "passive-observation.json",
+      "SHA256": "87a9b7b6876bb4546611914921876a1f30ec52ca32ef09136e99ed5f58c95ab1",
+      "executed_helper_SHA256": "1af8a1971cf10d64ac329689d3b90e67eff3ac048caeadadc6ecc276b9b85a1d"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "status": "PASS_OWNED_CLEANUP_WITH_CANONICAL_FAIL_PRESERVED",
+  "attempts": [
+    {
+      "attempt": 1,
+      "owned_resources_after": {
+        "container": 0,
+        "network": 0,
+        "image": 0,
+        "volume": 0
+      },
+      "existing_container_count": 16,
+      "existing_containers_equal": true,
+      "global_CA_NSS_equal": true,
+      "tracked_source_clean": true
+    },
+    {
+      "attempt": 2,
+      "owned_resources_after": {
+        "container": 0,
+        "network": 0,
+        "image": 0,
+        "volume": 0
+      },
+      "existing_container_count": 16,
+      "existing_containers_equal": true,
+      "global_CA_NSS_equal": true,
+      "tracked_source_clean": true
+    }
+  ],
+  "Windows_original9_before_and_after_both_attempts_equal": true,
+  "monitor_v2_exit": 0,
+  "diagnostics": [
+    "Read-only Windows initial guard used ps-a and rejected a count including stopped matches; corrected to existing running-only ps-q recipe without mutation.",
+    "Passive observerv1 used generic dockerinspect while API image existed before same-named container; KeyError retained. Separate observerv2 used explicit container inspect. Primary native command unchanged.",
+    "A late read-only log probe after cleanup returned No such container; not a product failure."
+  ],
+  "existing_container_equality_scope": "Relative to each attempt start; not a claim that every foreign service is healthy. A separate root fixture daemon-stop incident occurred between attempts and is investigated independently.",
+  "no_manual_production_operations": true,
+  "no_source_or_timeout_or_assertion_change": true
+}

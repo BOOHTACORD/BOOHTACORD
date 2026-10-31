@@ -1,0 +1,369 @@
+{
+  "status": "FAIL_REPRODUCED_FOUR_NATIVE_WIDTH_CASES",
+  "source": "942c358cdd903eaee708bc26eac05e126214206c",
+  "base": "46e83f7655fb75c5acb29c91a439db551598cb40",
+  "attempts": [
+    {
+      "attempt": 1,
+      "source": "942c358cdd903eaee708bc26eac05e126214206c",
+      "exit_code": 1,
+      "seconds": 881.9027395248413,
+      "status": "FAIL",
+      "stage_counts": {
+        "PASS": 21,
+        "FAIL": 2
+      },
+      "stages": [
+        {
+          "name": "web-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "web-build",
+          "status": "PASS"
+        },
+        {
+          "name": "web-accessibility",
+          "status": "PASS"
+        },
+        {
+          "name": "web-auth_session_retention",
+          "status": "PASS"
+        },
+        {
+          "name": "web-chat_rhythm",
+          "status": "PASS"
+        },
+        {
+          "name": "web-connection_status",
+          "status": "PASS"
+        },
+        {
+          "name": "web-conversation_action_disclosure",
+          "status": "PASS"
+        },
+        {
+          "name": "web-dm_starter",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mentions_inbox",
+          "status": "PASS"
+        },
+        {
+          "name": "web-message_social",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mini_player",
+          "status": "PASS"
+        },
+        {
+          "name": "web-password_generation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-password_reset_visibility",
+          "status": "PASS"
+        },
+        {
+          "name": "web-quick_jump_people",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_profile",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_share_ui",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_dates",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_presentation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_sessions",
+          "status": "PASS"
+        },
+        {
+          "name": "web-voice_disconnect_notice",
+          "status": "PASS"
+        },
+        {
+          "name": "web-voice_interface",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-1440",
+          "status": "FAIL"
+        },
+        {
+          "name": "web-real-stack-393",
+          "status": "FAIL"
+        }
+      ],
+      "report_SHA256": "c3f3aad4cea2e73be4dbb180268b42ceaa294154ad7ccf2c90ad7499b6556457",
+      "private_native_log_SHA256": {
+        "web-real-stack-1440.log": "2498627a712f03feeae9aa6f9a4b14925f1cfadeada2b0343a3fa31ad65acd02",
+        "web-real-stack-393.log": "373648120aa485350df63d8ed1e4f6cfb22a94785f13ae0deb8baa29af257878"
+      },
+      "runner_SHA256": {
+        "tools/qa/local_features/run.py": "510dcd3060c0159f24d44c46d80ef0245cccb2ad51d5d0a5ea84915d3b897028",
+        "tools/qa/local_features/stack.py": "46917a1110899ceefc02a4f4d32d85ec6bc09cc4fa234aacd174d812d1716d3a",
+        "tools/qa/client_lifecycle/run.py": "5382438c6b1b34de9e37f748f2d4356f645edb3759f05fb7d5ce4f97dbcc593f",
+        "tools/qa/client_lifecycle/scenario.mjs": "485b5d294e53d9c6f50c3186c1bd0ff02c95fb7676a311e0f5a3032624b8cad3",
+        "tools/qa/critical_client_acceptance/media.mjs": "52afac3335b59da0347292cea79f91067de176b73c5ae09a000557656a9fa9ca",
+        "tools/qa/critical_client_acceptance/screen_share_ui.mjs": "60fcf79555e298620b647f50f1b72da353fccbe116e6d2695830d3f3de8aa0d9"
+      },
+      "cases": [
+        {
+          "width": 1440,
+          "oracle": "protected participant thumbnail img.src must change after initial valid thumbnail",
+          "timeout_ms": 45000,
+          "poll_interval_ms": 1000,
+          "result": "FAIL_SAME_BLOB",
+          "prior_phases": [
+            "sender preview decoded frames",
+            "short viewport continued frames",
+            "initial receiver participant thumbnail decoded"
+          ]
+        },
+        {
+          "width": 393,
+          "oracle": "protected participant thumbnail img.src must change after initial valid thumbnail",
+          "timeout_ms": 45000,
+          "poll_interval_ms": 1000,
+          "result": "FAIL_SAME_BLOB",
+          "prior_phases": [
+            "sender preview decoded frames",
+            "short viewport continued frames",
+            "initial receiver participant thumbnail decoded"
+          ]
+        }
+      ],
+      "cleanup": {
+        "owned_resources_after": {
+          "container": 0,
+          "network": 0,
+          "image": 0,
+          "volume": 0
+        },
+        "existing_container_count": 16,
+        "existing_containers_equal": true,
+        "global_CA_NSS_equal": true,
+        "tracked_source_clean": true
+      }
+    },
+    {
+      "attempt": 2,
+      "source": "942c358cdd903eaee708bc26eac05e126214206c",
+      "exit_code": 1,
+      "seconds": 854.6247451305389,
+      "status": "FAIL",
+      "stage_counts": {
+        "PASS": 21,
+        "FAIL": 2
+      },
+      "stages": [
+        {
+          "name": "web-unit",
+          "status": "PASS"
+        },
+        {
+          "name": "web-build",
+          "status": "PASS"
+        },
+        {
+          "name": "web-accessibility",
+          "status": "PASS"
+        },
+        {
+          "name": "web-auth_session_retention",
+          "status": "PASS"
+        },
+        {
+          "name": "web-chat_rhythm",
+          "status": "PASS"
+        },
+        {
+          "name": "web-connection_status",
+          "status": "PASS"
+        },
+        {
+          "name": "web-conversation_action_disclosure",
+          "status": "PASS"
+        },
+        {
+          "name": "web-dm_starter",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mentions_inbox",
+          "status": "PASS"
+        },
+        {
+          "name": "web-message_social",
+          "status": "PASS"
+        },
+        {
+          "name": "web-mini_player",
+          "status": "PASS"
+        },
+        {
+          "name": "web-password_generation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-password_reset_visibility",
+          "status": "PASS"
+        },
+        {
+          "name": "web-quick_jump_people",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_profile",
+          "status": "PASS"
+        },
+        {
+          "name": "web-screen_share_ui",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_dates",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_presentation",
+          "status": "PASS"
+        },
+        {
+          "name": "web-search_sessions",
+          "status": "PASS"
+        },
+        {
+          "name": "web-voice_disconnect_notice",
+          "status": "PASS"
+        },
+        {
+          "name": "web-voice_interface",
+          "status": "PASS"
+        },
+        {
+          "name": "web-real-stack-1440",
+          "status": "FAIL"
+        },
+        {
+          "name": "web-real-stack-393",
+          "status": "FAIL"
+        }
+      ],
+      "report_SHA256": "bcf9d819f78b457b432c1a11acbc27b6b0640d717c93b6c6cf3e8a67a14b1266",
+      "private_native_log_SHA256": {
+        "web-real-stack-1440.log": "5867854a925a6cb4e39a5c5c7121a842a4cb74298b3e5873d414f61e3c952f03",
+        "web-real-stack-393.log": "551911d065efcef660fb0552d206da1b4fd194f1a17631a1977d56253f531303"
+      },
+      "runner_SHA256": {
+        "tools/qa/local_features/run.py": "510dcd3060c0159f24d44c46d80ef0245cccb2ad51d5d0a5ea84915d3b897028",
+        "tools/qa/local_features/stack.py": "46917a1110899ceefc02a4f4d32d85ec6bc09cc4fa234aacd174d812d1716d3a",
+        "tools/qa/client_lifecycle/run.py": "5382438c6b1b34de9e37f748f2d4356f645edb3759f05fb7d5ce4f97dbcc593f",
+        "tools/qa/client_lifecycle/scenario.mjs": "485b5d294e53d9c6f50c3186c1bd0ff02c95fb7676a311e0f5a3032624b8cad3",
+        "tools/qa/critical_client_acceptance/media.mjs": "52afac3335b59da0347292cea79f91067de176b73c5ae09a000557656a9fa9ca",
+        "tools/qa/critical_client_acceptance/screen_share_ui.mjs": "60fcf79555e298620b647f50f1b72da353fccbe116e6d2695830d3f3de8aa0d9"
+      },
+      "cases": [
+        {
+          "width": 1440,
+          "oracle": "protected participant thumbnail img.src must change after initial valid thumbnail",
+          "timeout_ms": 45000,
+          "poll_interval_ms": 1000,
+          "result": "FAIL_SAME_BLOB",
+          "prior_phases": [
+            "sender preview decoded frames",
+            "short viewport continued frames",
+            "initial receiver participant thumbnail decoded"
+          ]
+        },
+        {
+          "width": 393,
+          "oracle": "protected participant thumbnail img.src must change after initial valid thumbnail",
+          "timeout_ms": 45000,
+          "poll_interval_ms": 1000,
+          "result": "FAIL_SAME_BLOB",
+          "prior_phases": [
+            "sender preview decoded frames",
+            "short viewport continued frames",
+            "initial receiver participant thumbnail decoded"
+          ]
+        }
+      ],
+      "cleanup": {
+        "owned_resources_after": {
+          "container": 0,
+          "network": 0,
+          "image": 0,
+          "volume": 0
+        },
+        "existing_container_count": 16,
+        "existing_containers_equal": true,
+        "global_CA_NSS_equal": true,
+        "tracked_source_clean": true
+      }
+    }
+  ],
+  "unchanged_native_helpers": {
+    "tools/qa/local_features/run.py": {
+      "source_LF_SHA256": "510dcd3060c0159f24d44c46d80ef0245cccb2ad51d5d0a5ea84915d3b897028",
+      "base_LF_SHA256": "510dcd3060c0159f24d44c46d80ef0245cccb2ad51d5d0a5ea84915d3b897028",
+      "equal": true
+    },
+    "tools/qa/local_features/stack.py": {
+      "source_LF_SHA256": "46917a1110899ceefc02a4f4d32d85ec6bc09cc4fa234aacd174d812d1716d3a",
+      "base_LF_SHA256": "46917a1110899ceefc02a4f4d32d85ec6bc09cc4fa234aacd174d812d1716d3a",
+      "equal": true
+    },
+    "tools/qa/client_lifecycle/run.py": {
+      "source_LF_SHA256": "5382438c6b1b34de9e37f748f2d4356f645edb3759f05fb7d5ce4f97dbcc593f",
+      "base_LF_SHA256": "5382438c6b1b34de9e37f748f2d4356f645edb3759f05fb7d5ce4f97dbcc593f",
+      "equal": true
+    },
+    "tools/qa/client_lifecycle/scenario.mjs": {
+      "source_LF_SHA256": "485b5d294e53d9c6f50c3186c1bd0ff02c95fb7676a311e0f5a3032624b8cad3",
+      "base_LF_SHA256": "485b5d294e53d9c6f50c3186c1bd0ff02c95fb7676a311e0f5a3032624b8cad3",
+      "equal": true
+    },
+    "tools/qa/critical_client_acceptance/media.mjs": {
+      "source_LF_SHA256": "52afac3335b59da0347292cea79f91067de176b73c5ae09a000557656a9fa9ca",
+      "base_LF_SHA256": "52afac3335b59da0347292cea79f91067de176b73c5ae09a000557656a9fa9ca",
+      "equal": true
+    },
+    "tools/qa/critical_client_acceptance/screen_share_ui.mjs": {
+      "source_LF_SHA256": "60fcf79555e298620b647f50f1b72da353fccbe116e6d2695830d3f3de8aa0d9",
+      "base_LF_SHA256": "60fcf79555e298620b647f50f1b72da353fccbe116e6d2695830d3f3de8aa0d9",
+      "equal": true
+    }
+  },
+  "unchanged_trees": {
+    "backend": {
+      "base_tree": "6d6feda141aa382084a27bfd25985c0e889f7bc9",
+      "source_tree": "6d6feda141aa382084a27bfd25985c0e889f7bc9",
+      "equal": true
+    },
+    "deploy": {
+      "base_tree": "68d849ff6062fb685eec2038d0c02610e1c85c09",
+      "source_tree": "68d849ff6062fb685eec2038d0c02610e1c85c09",
+      "equal": true
+    },
+    "clients/web/src/voice": {
+      "base_tree": "8d3105779667a4f9a297feea9d0e2579fea8abf0",
+      "source_tree": "8d3105779667a4f9a297feea9d0e2579fea8abf0",
+      "equal": true
+    }
+  },
+  "history_change_causal_claim": false
+}

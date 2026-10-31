@@ -1,0 +1,99 @@
+{
+  "status": "OBSERVED_OWN_FILESYSTEM_AND_SAFE_LOG_CATEGORIES_CAUSE_UNKNOWN",
+  "source": "942c358cdd903eaee708bc26eac05e126214206c",
+  "producer_identity": [
+    {
+      "width": 1440,
+      "configured_image": "livekit/egress:v1.14.1",
+      "actual_image_id": "sha256:bf2b648b947349c3e9ff7aa8c718f00378d5c06af7624652a3653318e00333ce",
+      "RepoDigests": [
+        "livekit/egress@sha256:bf2b648b947349c3e9ff7aa8c718f00378d5c06af7624652a3653318e00333ce"
+      ],
+      "OS": "linux",
+      "architecture": "amd64",
+      "CI_image_equality": "NOT_YET_VERIFIED"
+    },
+    {
+      "width": 393,
+      "configured_image": "livekit/egress:v1.14.1",
+      "actual_image_id": "sha256:bf2b648b947349c3e9ff7aa8c718f00378d5c06af7624652a3653318e00333ce",
+      "RepoDigests": [
+        "livekit/egress@sha256:bf2b648b947349c3e9ff7aa8c718f00378d5c06af7624652a3653318e00333ce"
+      ],
+      "OS": "linux",
+      "architecture": "amd64",
+      "CI_image_equality": "NOT_YET_VERIFIED"
+    }
+  ],
+  "phases": [
+    {
+      "phase_index": 1,
+      "first_sample_unix_seconds": 1793455869.4313793,
+      "last_sample_unix_seconds": 1793455915.2697723,
+      "samples": 8,
+      "files": [
+        {
+          "file_key_SHA256": "051927e13be80bd1967e003f7eb4b187089c6103e05a41c7899a814c09eda023",
+          "first_observed_unix_seconds": 1793455869.4313793,
+          "last_observed_unix_seconds": 1793455915.2697723,
+          "observation_span_seconds": 45.83839297294617,
+          "distinct_mtime_and_content_versions": 1,
+          "observed_versions": [
+            {
+              "mtime_ns": 1793455862313756161,
+              "bytes": 5714,
+              "content_SHA256": "2eb51696e8e40d6e39dc601a31fe41c9f17d1536a611f9dc3655a724441cdd3c"
+            }
+          ]
+        }
+      ],
+      "egress_safe_categories": {
+        "egress": 1507,
+        "failed": 3,
+        "pipeline": 2,
+        "not enough cpu": 1,
+        "error": 2,
+        "service ready": 1
+      }
+    },
+    {
+      "phase_index": 2,
+      "first_sample_unix_seconds": 1793455965.4161527,
+      "last_sample_unix_seconds": 1793456056.3518164,
+      "samples": 14,
+      "files": [
+        {
+          "file_key_SHA256": "e66f9211428a12466e47fc385019b4746aa54e5e2866c1b3dd0e311715610044",
+          "first_observed_unix_seconds": 1793456015.484958,
+          "last_observed_unix_seconds": 1793456056.3518164,
+          "observation_span_seconds": 40.86685848236084,
+          "distinct_mtime_and_content_versions": 1,
+          "observed_versions": [
+            {
+              "mtime_ns": 1793456012454458785,
+              "bytes": 6079,
+              "content_SHA256": "68faa2744906946bc495bd3bd451a2424a88a33cb0f399d3c1eceb0b9e4e0a9e"
+            }
+          ]
+        }
+      ],
+      "egress_safe_categories": {
+        "egress": 832,
+        "not enough cpu": 1,
+        "error": 2,
+        "service ready": 1,
+        "failed": 3,
+        "pipeline": 2
+      }
+    }
+  ],
+  "raw_passive_JSONL_SHA256": "befed4078d57736cd3241d3ff857b80639493131b72714f9509cd3b637e4b981",
+  "raw_payloads_retained": false,
+  "limits": [
+    "The observer does not retain protected GET revision headers, after_revision, hint delivery, client visibility or blob-apply events.",
+    "No import/hint/client-apply cause is proved.",
+    "not enough cpu/error/failed categories do not bind an error to a particular preview request or prove job termination.",
+    "Egress job lifecycle/termination status and decoded-frame counters after initial phase were not retained.",
+    "Installed default browser currently reports Google Chrome for Testing153.0.8010.12; launcher did not receive an explicit override from these wrappers."
+  ]
+}
