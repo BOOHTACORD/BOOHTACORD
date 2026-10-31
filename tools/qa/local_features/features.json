@@ -699,7 +699,7 @@
         "focused": [
           "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts"
         ],
-        "scope": "In the Web participant-card browser fixture, the compact microphone state icon is centered with the participant name on both streaming and voice-only cards. The volume button overlays the status position on hover without reserving horizontal space. Mute and deafen SVGs render at 16px. Browser presentation coverage only; no native/media claim."
+        "scope": "In the Web participant-card browser fixture, the compact microphone state icon stays aligned with the participant name, including when the watcher label adds a second row. The volume menu control overlays the status position 4px lower on hover without reserving horizontal space. The watcher uses a quiet inline label, and mute/deafen SVGs render at 16px. Browser presentation coverage only; no native/media claim."
       },
       "listener_participant_cards": {
         "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
