@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "issue": 579,
+  "status": "CLOSED_COMPLETED_AFTER_SCOPED_PHYSICAL_ACCEPTANCE",
+  "state": "closed",
+  "state_reason": "completed",
+  "closed_at": "2026-10-31T07:34:37Z",
+  "url": "https://github.com/Egkurilov/BOOHTACORD/issues/579",
+  "original_criteria_checked": 3,
+  "issue_body_preserved_except_three_original_checkmarks": true,
+  "criteria": [
+    "- [x] Source-bound установленный Windows candidate принимает эту физическую Android-публикацию с первым decoded/presented кадром.",
+    "- [x] Stop/restart и повторный Watch завершаются показом либо bounded error; голос не теряется.",
+    "- [x] Сохранены nearest renderer/subscription regression и paired physical evidence, без секретов/SDP/содержимого чатов."
+  ],
+  "evidence_commit": "c822b85afcd07f3e13242b3aa3cfc378e500e890",
+  "evidence_url": "https://github.com/Egkurilov/BOOHTACORD/tree/c822b85afcd07f3e13242b3aa3cfc378e500e890/evidence/qa/issue579-paired-native-2026-10-31",
+  "comment_url": "https://github.com/Egkurilov/BOOHTACORD/issues/579#issuecomment-6540671343",
+  "original_root_receipt_SHA256": "20e3d0024231539ec00176ba90c97e5ae6d95c4c784d859b13462f829f90edb2",
+  "original_foreground_cleanup_SHA256": "91b65ec081bf7753bc1c3604820710563a1d976a2da195ffca0b0655512a1a94",
+  "scope": "Exact physical Android134 signed APK1fb4 and deployed/executed protected Windows614 native portable r62 PE6c3a; first stationary frame, actual source motion, sender stop/restart and explicit StopViewing/manual Watch; voice UI/membership preserved.",
+  "original_installed_r61_upgraded": false,
+  "stable_promotion": false,
+  "original_defect_cause": "UNKNOWN",
+  "generic_Android_iOS_targets": "BLOCKED",
+  "full_gallery": "NOT_RUN",
+  "human_audibility": "NOT_RUN",
+  "source_code_changes_new_CI_deploy_or_runtime_actions_by_release_agent": false,
+  "foreground_supplement": "Root package-scoped activity-services readback reports zero active foreground services after explicit leave; public file is UTF8LF semantic copy, original raw hash retained; root receipt is unchanged."
+}
