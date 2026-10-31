@@ -1,0 +1,15 @@
+# Issue579 paired native acceptance, 2026-10-31
+
+Exact pair: signed Android134 on Samsung SM-A576B/API36, and protected native Windows614 portable r62 on Windows11. Both source revisions, artifact provenance and current hashes are in acceptance.json and manifest-proof.json. Installed legacy r61 remained unchanged. This packet does not accept an installer/updater or promote stable.
+
+The six sets in acceptance.json map each invariant to its actual command/action, platform, mandatory condition, observed result and capture aliases. Root alone operated the physical pair and reviewed all24 originals; the release agent performed independent read-only hash/raster/source/manifest verification. Raw account UI, private paths/IDs, SDP, credentials and chat content are not published.
+
+- First Watch: stationary Settings/Display pixels were visibly presented before source motion, with VP8/libvpx received1FPS/decoded1FPS and590x1280 in native statistics.
+- Actual read-only scroll changed the native pixels. Sender stop removed the publication while both clients retained voice connection/membership. Restart automatically restored the new publication; this is separate from explicit manual Watch.
+- Explicit StopViewing returned to the grid with a live publication. A new manual Watch then presented stationary source pixels and native decoded1FPS. New-publication freshness was separately shown by source-top-cycle2 and cycle2-fresh-source-top, not the rejected-gesture diagnostic.
+- The cycle2-after-source-motion original preliminary phase was incorrect: the controller rejected before gesture. Its bytes/hash/phase remain retained and it is DIAGNOSTIC_ONLY. cycle2-republication-before-watch actually shows automatic recovery, not a second manual Watch.
+- Presented counter is unavailable; visibly presented pixels are the direct evidence. Instantaneous FPS and configured720p15 are not latency, capacity, throughput or quality guarantees. Voice preservation is UI/membership, not audibility or unchanged lease identity.
+- Historical29 renderer/subscription tests passed with zero failed/skipped; exact retained log and source hashes were rechecked, not rerun. Final fullCI40989565645/2 all27 passed. Earlier dependency FAIL and next-login FAIL UNKNOWN remain linked by release-context.json.
+- Final sender stop leaves MediaProjection null; both participants left and room is empty; microphone preference, rotation and grants/flags were restored; owned portable receiver closed; original installed r61 process and bytes remain unchanged.
+
+Original defect cause remains UNKNOWN; this acceptance does not attribute the repair solely to a Windows codec. Generic Android/iOS targets remain BLOCKED, full gallery NOT_RUN, human audibility NOT_RUN, other platform/security/load gates and43 consolidation decisions unchanged. Public Web2b95 context is distinct from native sources; health200 does not establish a fresh API revision. release-context.json is the immutable pre-verdict checkpoint; acceptance.json supplies the subsequent paired verdict.

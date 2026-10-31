@@ -1,0 +1,289 @@
+{
+  "root_original_reviews": 24,
+  "release_agent_independent_hash_format_raster_checks": 24,
+  "raw_media_published": false,
+  "captures": [
+    {
+      "mime": "image/jpeg",
+      "raster": [
+        1432,
+        896
+      ],
+      "SHA256": "bd26c54c23024cac225f7d3b7dc8d697603eee27c0277eff4b5742e29978084c",
+      "at_utc": "2026-10-31T07:15:24.582Z",
+      "phase": "Androidpublicationdetected;beforeWatch;voice2",
+      "alias": "cycle1-before-watch",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "mime": "image/jpeg",
+      "raster": [
+        1432,
+        896
+      ],
+      "SHA256": "461421bd06984fa0c40bc69ab5209e9edefe673c30ad1565c162e94f60019b5b",
+      "at_utc": "2026-10-31T07:15:50.677Z",
+      "watch_requested_at_utc": "2026-10-31T07:15:24.582Z",
+      "alias": "cycle1-first-check",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "mime": "image/jpeg",
+      "raster": [
+        1432,
+        896
+      ],
+      "SHA256": "6d6115aa84f1ccc8bfdcead16251e68656a61c219ec61f882847928083800a13",
+      "at_utc": "2026-10-31T07:16:51.859Z",
+      "observed_receiver_resolution": "590x1280",
+      "received_rate": "1FPS",
+      "decoded_rate": "1FPS",
+      "codec": "video/VP8",
+      "decoder": "libvpx",
+      "presented_counter": "NOT_AVAILABLE",
+      "visual_source": "Settings Display visibly presented",
+      "alias": "cycle1-stationary-native-stats",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "mime": "image/jpeg",
+      "raster": [
+        1432,
+        896
+      ],
+      "SHA256": "ac1bd43395126ea103c77fb45714797ac643136fbd5f704b876695cc3e02d3dc",
+      "at_utc": "2026-10-31T07:17:55.073Z",
+      "phase": "actual source list scroll; native renderer still active",
+      "alias": "cycle1-after-source-motion",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "mime": "image/jpeg",
+      "raster": [
+        1432,
+        896
+      ],
+      "SHA256": "dee926a81c6c4eb571902491847f81bd08a6a2bffafa1e3beb4c67e7898b2eed",
+      "at_utc": "2026-10-31T07:18:52.919Z",
+      "phase": "Android publication stop; voice expected preserved",
+      "alias": "cycle1-sender-stopped",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "mime": "image/jpeg",
+      "raster": [
+        1432,
+        896
+      ],
+      "SHA256": "62fa2228e6350a19588defefedc2e92ddfc601a3687b241c161a96927f8ced78",
+      "at_utc": "2026-10-31T07:20:49.687Z",
+      "phase": "publisherrestart; beforesecondWatch",
+      "alias": "cycle2-republication-before-watch",
+      "metadata_correction": "Publication restart had already automatically restored native viewing; this is not evidence of a second manual Watch. Explicit manual Watch is separately proven by cycle2-explicit-rewatch-*.",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "mime": "image/jpeg",
+      "raster": [
+        1432,
+        896
+      ],
+      "SHA256": "23b1a311e0914ed6c8a6d0d66accf05d48e3f432f0221ec10a38799052b6b12a",
+      "at_utc": "2026-10-31T07:21:28.372Z",
+      "phase": "automatic restart recovery; fresh source moved from bottom toward top",
+      "alias": "cycle2-after-source-motion",
+      "metadata_correction": "Controller scroll precondition failed before gesture because Display title was collapsed. No source movement occurred for this diagnostic capture. Fresh motion is proved only by source-top-cycle2 and cycle2-fresh-source-top.",
+      "acceptance_role": "DIAGNOSTIC_ONLY_NO_GESTURE"
+    },
+    {
+      "mime": "image/jpeg",
+      "raster": [
+        1432,
+        896
+      ],
+      "SHA256": "c3e2b6b11290f6ff14339315a86924fc34b7661f5280b52029cd6025296691d4",
+      "at_utc": "2026-10-31T07:22:26.976Z",
+      "phase": "new publication presents changed source rather than previous texture",
+      "alias": "cycle2-fresh-source-top",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "mime": "image/jpeg",
+      "raster": [
+        1432,
+        896
+      ],
+      "SHA256": "7b80a4e3013a1c0dbb61a9fc3871127c1a3642390fdeadd0a38758b7dcfbdfb6",
+      "at_utc": "2026-10-31T07:23:23.574Z",
+      "phase": "receiverStopViewing; publisher remains active; voice expected2",
+      "alias": "cycle2-explicit-stop-view",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "mime": "image/jpeg",
+      "raster": [
+        1432,
+        896
+      ],
+      "SHA256": "fc6d739b80e172d2ee2e2ee65ba3938fb13e23d77e5c83a229b2975797deee0a",
+      "at_utc": "2026-10-31T07:24:18.348Z",
+      "watch_requested_at_utc": "2026-10-31T07:23:41.733Z",
+      "phase": "stationary source; explicit new receiver Watch after StopViewing",
+      "alias": "cycle2-explicit-rewatch-presented",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "mime": "image/jpeg",
+      "raster": [
+        1432,
+        896
+      ],
+      "SHA256": "e9f412a3c0deab016e4da9ef25fdd4f963d39254ba64856336e324d71d588091",
+      "at_utc": "2026-10-31T07:25:36.526Z",
+      "received_rate": "1FPS",
+      "decoded_rate": "1FPS",
+      "receiver_resolution": "590x1280",
+      "codec": "video/VP8",
+      "decoder": "libvpx",
+      "presented_counter": "NOT_AVAILABLE",
+      "alias": "cycle2-explicit-rewatch-native-stats",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "mime": "image/jpeg",
+      "raster": [
+        1432,
+        896
+      ],
+      "SHA256": "4ebf8d67ac63013057ca3833dc6d4927321f2cda5182bfc782ff444ddc72eb56",
+      "at_utc": "2026-10-31T07:28:08.956Z",
+      "observation": "Both participants remain connected to SHARE_TEST; publication and watch control absent after sender stop.",
+      "alias": "cycle2-sender-stopped",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "mime": "image/jpeg",
+      "raster": [
+        1432,
+        896
+      ],
+      "SHA256": "3fb3b7aefe820171248696eaba8ec23c345a82960510d6a471ec47953a5bd6d1",
+      "at_utc": "2026-10-31T07:28:23.076Z",
+      "observation": "Native client is not connected; SHARE_TEST now contains only Android sender.",
+      "alias": "cleanup-windows-left",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "mime": "image/jpeg",
+      "raster": [
+        1432,
+        896
+      ],
+      "SHA256": "56d24484987fd342861f290eeec214b07ff22fb5a6b9a9bbb00641523f13bcc4",
+      "at_utc": "2026-10-31T07:28:51.326Z",
+      "observation": "Both QA endpoints left SHARE_TEST; native client not connected, room empty.",
+      "alias": "cleanup-room-empty",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "SHA256": "80bc158476d333fecfbc54f7104e71ad5029196144f7fa1887a6a990f4ffc08c",
+      "raster": [
+        1080,
+        2340
+      ],
+      "alias": "source-display-before",
+      "mime": "image/png",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "SHA256": "045a3078cc36497d5f3d65d3d0f5ec39196b216eb3c3ceaaf5d90745ece7a437",
+      "raster": [
+        1080,
+        2340
+      ],
+      "alias": "projection-consent-before",
+      "mime": "image/png",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "SHA256": "ee3c08b490bb6189dc3393854b639a2ab0ff680933e8f31679df0debccc6d703",
+      "raster": [
+        1080,
+        2340
+      ],
+      "alias": "source-stationary-cycle1",
+      "mime": "image/png",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "SHA256": "0a117f9596c27f0d1e565e890e9df0fbbcfc7f90f8b3e0a3834b438367eb8526",
+      "raster": [
+        1080,
+        2340
+      ],
+      "alias": "source-motion-cycle1",
+      "mime": "image/png",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "SHA256": "7a63916e072e4bcd0674a6ec00290dc146fe0111c33a4406c4d8249ac00c4c80",
+      "raster": [
+        1080,
+        2340
+      ],
+      "alias": "sender-stopped-cycle1",
+      "mime": "image/png",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "SHA256": "f982db7ad6b9045ce4f2d22ff9d25c7fb3755b27dd5a1a621954aa1040b73569",
+      "raster": [
+        1080,
+        2340
+      ],
+      "alias": "source-stationary-cycle2",
+      "mime": "image/png",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "SHA256": "847a1834f769962d3d5ecb19fb4c98335ebdc1e7cfcd31739aeb8da3904e754a",
+      "raster": [
+        1080,
+        2340
+      ],
+      "alias": "source-top-cycle2",
+      "mime": "image/png",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "SHA256": "bf570b5a743c140cea5bfb6d9e7749360f6d64eaf7f78e11d34df6a1cc7977bc",
+      "raster": [
+        1080,
+        2340
+      ],
+      "alias": "sender-stopped-cycle2",
+      "mime": "image/png",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "SHA256": "77370ca63db7b461abe0026e8ef098f34068b5a1215ce921fc06ce912be5f046",
+      "raster": [
+        1080,
+        2340
+      ],
+      "alias": "cleanup-phone-microphone-restored",
+      "mime": "image/png",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    },
+    {
+      "SHA256": "6bc6d376874fc239cd09c600904c3b7debd34f0fad4c40de108881424ce34e6c",
+      "raster": [
+        1080,
+        2340
+      ],
+      "alias": "cleanup-phone-idle",
+      "mime": "image/png",
+      "acceptance_role": "ROOT_REVIEWED_SUPPORTING_EVIDENCE"
+    }
+  ]
+}

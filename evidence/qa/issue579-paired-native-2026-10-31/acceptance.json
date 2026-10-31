@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "issue": 579,
+  "status": "PASS_SCOPED_SOURCEBOUND_PAIRED_NATIVE_ACCEPTANCE",
+  "recorded_at_utc": "2026-10-31T07:31:08.293358+00:00",
+  "verified_at_utc": "2026-10-31T07:32:53.954121+00:00",
+  "criteria_verbatim": [
+    "- [ ] Source-bound установленный Windows candidate принимает эту физическую Android-публикацию с первым decoded/presented кадром.",
+    "- [ ] Stop/restart и повторный Watch завершаются показом либо bounded error; голос не теряется.",
+    "- [ ] Сохранены nearest renderer/subscription regression и paired physical evidence, без секретов/SDP/содержимого чатов."
+  ],
+  "criteria_verdicts": [
+    "PASS_FIRST_DECODED_AND_PRESENTED_PHYSICAL_FRAME",
+    "PASS_STOP_RESTART_EXPLICIT_REWATCH_VOICE_UI_PRESERVED",
+    "PASS_RETAINED_SOURCEBOUND_NEAREST_REGRESSION_AND_PAIRED_PHYSICAL_EVIDENCE"
+  ],
+  "candidate_binding": {
+    "Android": {
+      "source_revision": "134382700eed2408644695e5298e64e60d3abf59",
+      "APK_SHA256": "1fb4f547ebeaead45d8c024ecf10f718bd517c84494c70aeeebb7ba57789c567",
+      "certificate_SHA256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+      "version_code": 2083,
+      "platform": "Samsung SM-A576B Android16/API36",
+      "current_device_binding": "Root reports fresh actual installed APK unchanged; release agent did not use ADB"
+    },
+    "Windows": {
+      "source_revision": "a97030059fcddd5d76b9b256007144d507f4b279",
+      "PE_SHA256": "6c3ae09741afc95c8856c5f66491dfb3b7dd4e590b0f0092cd5cffa766061de9",
+      "portable_SHA256": "386581041d224f1b95e73f2c4e2c181cfef30c800ac27945ec1bba9863f45f16",
+      "identity": {
+        "arch": "x64",
+        "channel": "stable",
+        "distribution": "direct",
+        "native_build": "83",
+        "platform": "windows",
+        "release_id": "windows-direct-stable-r62",
+        "release_order": 62,
+        "version": "1.0.47"
+      },
+      "PE_signing": {
+        "status": "unsigned"
+      },
+      "current_runtime_binding": "Root owns fresh native GUI/process verification; pre-existing approved portable candidate, no new build/install/promotion"
+    }
+  },
+  "native_runtime": {
+    "distribution": "Protected verified portable, unpacked/deployed and actually executed on this physical Windows host",
+    "all56files_freshly_verified": true,
+    "PE_signing": "unsigned",
+    "stable_promotion": false,
+    "original_installed_r61_changed": false,
+    "acceptance_interpretation": "Owner confirms the approved protected native portable candidate was unpacked/deployed and physically executed; criterion text is preserved; no installer/update or stable rollout is asserted."
+  },
+  "source_content": "Android Settings Display only, app-only projection; read-only scrolling; no Settings value changed",
+  "sets": [
+    {
+      "protects": "First physical Android publication is decoded and visibly presented before any source motion",
+      "command": "Android phone.py start; tap Начать трансляцию; app-only consent Далее -> Настройки; native SHARE_TEST -> Смотреть -> Статистика via Sky",
+      "platform": "Samsung SM-A576B Android16/API36 -> native Windows11 x64 portable r62",
+      "mandatory_when": "Issue579 first-frame closure criterion; renderer/subscription/native receiver changes",
+      "result": "PASS: actual stationary Settings Display pixels; VP8/libvpx; received1FPS and decoded1FPS;590x1280",
+      "evidence": [
+        "cycle1-first-check",
+        "cycle1-stationary-native-stats",
+        "source-stationary-cycle1"
+      ]
+    },
+    {
+      "protects": "Renderer consumes fresh frames rather than retaining an old texture",
+      "command": "python phone.py scroll bottom source-motion-cycle1; observe native receiver; after restart python phone.py scroll top source-top-cycle2; observe again",
+      "platform": "Same physical pair and exact candidates",
+      "mandatory_when": "Issue579 physical acceptance",
+      "result": "PASS: native changes from top Display to lower list, then new publication changes from lower list to top Display",
+      "evidence": [
+        "cycle1-after-source-motion",
+        "source-motion-cycle1",
+        "cycle2-fresh-source-top",
+        "source-top-cycle2"
+      ]
+    },
+    {
+      "protects": "Sender stop/restart ends viewing cleanly and restores actual image while voice remains connected",
+      "command": "adb shell am start -W -n ru.boohtacord.app/.MainActivity; python phone.py stop; native observe; repeat app-only Start; native observe",
+      "platform": "Same physical pair and exact candidates",
+      "mandatory_when": "Issue579 second closure criterion",
+      "result": "PASS: both sender stops remove publication/watch control; voice remains connected in SHARE_TEST with2 participants; restart automatically presents new publication",
+      "evidence": [
+        "sender-stopped-cycle1",
+        "cycle1-sender-stopped",
+        "cycle2-republication-before-watch",
+        "sender-stopped-cycle2",
+        "cycle2-sender-stopped"
+      ]
+    },
+    {
+      "protects": "Explicit repeated Watch after StopViewing produces decoded and presented frame",
+      "command": "Native reveal viewer controls -> Прекратить просмотр -> grid with live publication -> Смотреть -> Статистика; source remains stationary",
+      "platform": "Native Windows11 receiver / physical Android sender",
+      "mandatory_when": "Issue579 second closure criterion",
+      "result": "PASS: new manual Watch shows top Display actual pixels and decoded1FPS/VP8/libvpx590x1280",
+      "evidence": [
+        "cycle2-explicit-stop-view",
+        "cycle2-explicit-rewatch-presented",
+        "cycle2-explicit-rewatch-native-stats"
+      ]
+    },
+    {
+      "protects": "Renderer/subscription ownership, recovery deadline, generation and failure protections",
+      "command": "cd clients/flutter; flutter test --no-pub test/features/voice/viewer_pending test/screen_viewer_recovery_deadline_test.dart test/screen_viewer_recovery_state_test.dart test/screen_frame_gate_recovery_test.dart test/screen_frame_gate_test.dart test/video_track_renderer_stream_lifecycle_test.dart test/screen_video_renderer_ownership_test.dart test/screen_fullscreen_renderer_gate_test.dart test/voice_screen_ended_test.dart test/screen_viewer_subscription_failure_test.dart --reporter expanded",
+      "platform": "Flutter source a970300; historical native project test execution",
+      "mandatory_when": "Issue579 third closure criterion; relevant renderer/subscription changes",
+      "result": "PASS historical29passed/0failed/0skipped, retained log hash freshly verified,11 exact Git source fingerprints; no rerun claimed",
+      "evidence": [
+        "https://github.com/Egkurilov/BOOHTACORD/blob/a97030059fcddd5d76b9b256007144d507f4b279/evidence/qa/issue579-pending-recovery-2026-10-30.json",
+        "https://github.com/Egkurilov/BOOHTACORD/blob/88e772b4d520b062d18bf86fcdbfdd66e5a6368f/evidence/qa/issue579-publication-2026-10-30/pr614-final-ci.json"
+      ]
+    },
+    {
+      "protects": "Candidate identity and removal of QA-owned runtime effects",
+      "command": "python -X utf8 .out/issue579/paired-20261031/verify_final.py; Sky leave/capture/Alt_L+F4/list_windows",
+      "platform": "Physical Android and Windows host",
+      "mandatory_when": "Every physical QA packet completion",
+      "result": "PASS:56 native distribution files; installedAPK SHA equal protected signed Android134;24 original raster hashes/formats; room empty; Projection null; mic preference restored; owned native PID gone; originalr61 remains",
+      "evidence": [
+        "runtime-summary.json",
+        "cleanup-phone-microphone-restored",
+        "cleanup-phone-idle",
+        "cleanup-room-empty"
+      ]
+    }
+  ],
+  "image_review": {
+    "originals_reviewed": 24,
+    "Windows": {
+      "count": 14,
+      "actual_format": "JPEG",
+      "raster": [
+        1432,
+        896
+      ],
+      "method": "Automatically displayed original Sky captures inspected at native source resolution"
+    },
+    "Android": {
+      "count": 10,
+      "actual_format": "PNG",
+      "raster": [
+        1080,
+        2340
+      ],
+      "method": "view_image detail original, visual observation of matching top/lower Settings, app-only consent, voice connected stop states, restored mic alone and final empty/disconnected room"
+    },
+    "visual_observations": "First image contains Display light/dark cards and brightness rows; lower source shows screen timeout/Edge/navigation rows. Both changes are visibly reproduced in native receiver. Stop states show voice2/no screen; final room empty. No visual baseline accepted or changed."
+  },
+  "capture_metadata_corrections": [
+    {
+      "alias": "cycle2-republication-before-watch",
+      "original_label_preserved": true,
+      "correction": "Publication restart had already automatically restored native viewing; this is not evidence of a second manual Watch. Explicit manual Watch is separately proven by cycle2-explicit-rewatch-*."
+    },
+    {
+      "alias": "cycle2-after-source-motion",
+      "original_label_preserved": true,
+      "correction": "Controller scroll precondition failed before gesture because Display title was collapsed. No source movement occurred for this diagnostic capture. Fresh motion is proved only by source-top-cycle2 and cycle2-fresh-source-top."
+    }
+  ],
+  "controller_diagnostics_retained": [
+    "Initial componentless SystemUI focus format rejected by helper before input; exact observed package parsing corrected.",
+    "Virtual display null focus rejected by old single-focus guard; corrected to observed physical Display0 with top focused Display0.",
+    "Nested scrollables rejected before gesture; qualified actual unique Settings RecyclerView.",
+    "Collapsed title scroll guard rejected before gesture; exact focused DisplaySettingsActivity and observed RecyclerView used for next fresh gesture.",
+    "After context compaction get_window called with wrong argument name, then its returned Window mistaken for capture state; corrected via official API to get_window_state, no input occurred before fresh screenshot."
+  ],
+  "independent_verification": {
+    "root_handoff_receipt_hash": true,
+    "all_integrity_files": 5,
+    "capture_hash_format_raster_checks": 24,
+    "Windows_distribution_files": 56,
+    "Windows_source_Git_LF_fingerprints": 11,
+    "contracts_Git_LF_and_Windows_checkout_fingerprints": 20,
+    "historical_nearest_log_hash": true,
+    "immutable_context_links_verified": 7,
+    "physical_visual_observations": "Root reviewed all24 ORIGINAL captures; release agent independently checked hashes/format/raster and source/artifact/criteria consistency; release agent performed no GUI/ADB or new tests."
+  },
+  "public_context": {
+    "checked_at_utc": "2026-10-31T07:07:53.046963+00:00",
+    "normal_TLS": true,
+    "Web_receipt_response": {
+      "HTTP": 200,
+      "SHA256": "98a8e7ebfb3614cc5142a53d2d518096a01f3348ae1d1bc5ef35d968f3682b01",
+      "cache_control": "no-store"
+    },
+    "Web_receipt": {
+      "schema_version": 1,
+      "application_family": "boohtacord",
+      "platform": "web",
+      "distribution": "browser",
+      "channel": "stable",
+      "arch": "any",
+      "release_id": "web-browser-stable-r61",
+      "release_order": 61,
+      "version": "1.0.47",
+      "native_build": null,
+      "architecture": "any",
+      "build_info_sha256": "70ffd35bfb8a6eebc088dfefb5ed9bd7549fd48e8398fb2be0d283bf12ac1e4b",
+      "source_revision": "2b95ddd864da210d6fc2f050e69ce2d5d203186e",
+      "signature_evidence": "oci_attestation",
+      "download_available": true
+    },
+    "observed_Web_source_revision": "2b95ddd864da210d6fc2f050e69ce2d5d203186e",
+    "API_health_response": {
+      "HTTP": 200,
+      "SHA256": "6489d6d7a33c5d40e18fc61eeb6c34c341279ee61816394dde5189aa4ad8fae5",
+      "cache_control": null
+    },
+    "API_health_status": "ok",
+    "fresh_API_revision": "NOT_OBSERVED_FROM_PUBLIC_HEALTH",
+    "historical_last_trusted_remote_API_source": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+    "historical_API_readback_run": 40980532015,
+    "historical_API_readback_scope": "2026-10-30 deployment readback only; does not establish current API revision",
+    "a970_delivery": "Historical trusted native-only impact=false/installSKIP; current public reads do not imply server revisiona970."
+  },
+  "limits": [
+    "Scope is this exact Android134 + deployed native portable Windows614 pair and two publication cycles. Original Oct27 defect cause remains UNKNOWN; no sole Windows codec cause/fix claim.",
+    "Original installed r61 was not upgraded; installer/updater/stable rollout acceptance is not claimed. Original issue criterion preserved without weakening.",
+    "Screen profile label720p15FPS is configuration only; observed receiver590x1280 and instantaneous1/2FPS counters are not throughput, quality, capacity or latency SLO.",
+    "Presented counter is unavailable; actual visibly presented pixels are direct evidence, unknown counter is never converted to zero.",
+    "Voice preservation is both client connection UI and room membership, not audible sound or unchanged server lease identity. Human audibility remains NOT_RUN.",
+    "Chrome was not used as receiver this packet; prior Chrome comparison remains historical.",
+    "Generic Android/iOS runtime targets remain BLOCKED, full galleryNOT_RUN; Apple/security/load gates and43consolidation decisions untouched.",
+    "No production fault/load, router, Docker or network change; no chat/message/attachment fixtures created; no secrets,SDP,session data or chat content exported."
+  ],
+  "preserved_history": "Original Oct27 defect and oldr61 baseline retained; original causeUNKNOWN, no sole codec attribution. Prior controller/CI failures and prior phone-unavailable checkpoint remain historical, not erased by this scoped pass."
+}

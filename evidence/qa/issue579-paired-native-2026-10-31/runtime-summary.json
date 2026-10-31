@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "at_utc": "2026-10-31T07:30:17.776013+00:00",
+  "status": "PASS_FINAL_SOURCE_AND_CLEANUP_VERIFIED",
+  "manifest_files_verified": 56,
+  "Windows_source": "a97030059fcddd5d76b9b256007144d507f4b279",
+  "Windows_PE_SHA256": "6c3ae09741afc95c8856c5f66491dfb3b7dd4e590b0f0092cd5cffa766061de9",
+  "Android_source": "134382700eed2408644695e5298e64e60d3abf59",
+  "Android_installed_APK_SHA256": "1fb4f547ebeaead45d8c024ecf10f718bd517c84494c70aeeebb7ba57789c567",
+  "version_code": 2083,
+  "APK_verification": "Fresh device sha256sum of exact pm-path base.apk, equal protected signed candidate previously independently pulled and certified",
+  "permission_grants_and_flags_preserved": true,
+  "permissions_after": {
+    "android.permission.RECORD_AUDIO": {
+      "granted": true,
+      "flags": " USER_SET|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED"
+    },
+    "android.permission.POST_NOTIFICATIONS": {
+      "granted": true,
+      "flags": " USER_SET|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED"
+    }
+  },
+  "rotation_after": {
+    "accelerometer_rotation": "1",
+    "user_rotation": "0"
+  },
+  "phone_voice_idle": true,
+  "MediaProjection_null": true,
+  "SHARE_TEST_empty": true,
+  "phone_microphone_preference_restored_before_leaving_alone": true,
+  "original_rasters_hashes_and_formats_verified": 24,
+  "secrets_and_chat_content_exported": false,
+  "raw_captures_public": false,
+  "owned_candidate_window_and_process_absent_after_supported_UI_close": true,
+  "original_installed_r61_preserved": {
+    "retained": true,
+    "PE_SHA256": "9540d2b1f7f18af24186a585b104ae98bffa401083ca2d8dbdb5dcaf7bcd50ea"
+  },
+  "source_path_binding": "Root observed exact approved distribution process before close; no process identifiers/paths exported"
+}

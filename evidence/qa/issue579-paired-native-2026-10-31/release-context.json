@@ -1,0 +1,241 @@
+{
+  "schema_version": 1,
+  "issue": 579,
+  "packet": "paired-native-20261031-release-context",
+  "prepared_at_utc": "2026-10-31T07:07:53.046963+00:00",
+  "status": "CONTEXT_READY_PAIRED_ROOT_VERDICT_PENDING",
+  "issue_refresh": {
+    "state": "open",
+    "updated_at": "2026-10-30T20:14:15Z",
+    "url": "https://github.com/Egkurilov/BOOHTACORD/issues/579",
+    "criteria_verbatim": [
+      "- [ ] Source-bound установленный Windows candidate принимает эту физическую Android-публикацию с первым decoded/presented кадром.",
+      "- [ ] Stop/restart и повторный Watch завершаются показом либо bounded error; голос не теряется.",
+      "- [ ] Сохранены nearest renderer/subscription regression и paired physical evidence, без секретов/SDP/содержимого чатов."
+    ],
+    "body_UTF8_SHA256": "0d0d24ac69eafb733dae9627b41d2923851ca83c57810b530c1f0eefa25ea6fc"
+  },
+  "exact_pair": {
+    "Android": {
+      "source_revision": "134382700eed2408644695e5298e64e60d3abf59",
+      "APK_SHA256": "1fb4f547ebeaead45d8c024ecf10f718bd517c84494c70aeeebb7ba57789c567",
+      "certificate_SHA256": "394e369de2d566b4897493ee498da2f27745e514c49ca88c6489b0b0a811212b",
+      "version_code": 2083,
+      "platform": "Samsung SM-A576B Android16/API36",
+      "current_device_binding": "Root reports fresh actual installed APK unchanged; release agent did not use ADB"
+    },
+    "Windows": {
+      "source_revision": "a97030059fcddd5d76b9b256007144d507f4b279",
+      "PE_SHA256": "6c3ae09741afc95c8856c5f66491dfb3b7dd4e590b0f0092cd5cffa766061de9",
+      "portable_SHA256": "386581041d224f1b95e73f2c4e2c181cfef30c800ac27945ec1bba9863f45f16",
+      "identity": {
+        "arch": "x64",
+        "channel": "stable",
+        "distribution": "direct",
+        "native_build": "83",
+        "platform": "windows",
+        "release_id": "windows-direct-stable-r62",
+        "release_order": 62,
+        "version": "1.0.47"
+      },
+      "PE_signing": {
+        "status": "unsigned"
+      },
+      "current_runtime_binding": "Root owns fresh native GUI/process verification; pre-existing approved portable candidate, no new build/install/promotion"
+    }
+  },
+  "prior_nearest_regression": {
+    "command": "cd clients/flutter; flutter test --no-pub test/features/voice/viewer_pending test/screen_viewer_recovery_deadline_test.dart test/screen_viewer_recovery_state_test.dart test/screen_frame_gate_recovery_test.dart test/screen_frame_gate_test.dart test/video_track_renderer_stream_lifecycle_test.dart test/screen_video_renderer_ownership_test.dart test/screen_fullscreen_renderer_gate_test.dart test/voice_screen_ended_test.dart test/screen_viewer_subscription_failure_test.dart --reporter expanded",
+    "result": {
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0,
+      "log_SHA256": "7850430e272c274628d3c302040cd0bdd60d6ac4a7b792bd9825055c939f3adc"
+    },
+    "analysis": {
+      "result": "No issues found",
+      "exit_code": 0,
+      "log_SHA256": "3db1cd3b73a42a2e5531d417416cf735b1d33b76d700ad80ef9e7e54e566b60e"
+    },
+    "dependency_guard": {
+      "exit_code": 0,
+      "log_SHA256": "39f203390e748ec573fdc41447904562e08099eccf061bf3f1d15a819fd0381e"
+    },
+    "scope": "Historical source-bound renderer/subscription/generation/fallback tests; not paired physical proof",
+    "retained_log_verification": {
+      "recorded_SHA256": "7850430e272c274628d3c302040cd0bdd60d6ac4a7b792bd9825055c939f3adc",
+      "local_retained_file_present": true,
+      "tests_rerun": false,
+      "actual_local_SHA256_matches": true
+    },
+    "source_fingerprints_verified": 11,
+    "source_record_Git_SHA256": "fd4599acaaea8bcf9dde2b49e031b9ce804f56354a16a8fc52cd8fc6c1d4bcd4",
+    "source_record_url": "https://github.com/Egkurilov/BOOHTACORD/blob/a97030059fcddd5d76b9b256007144d507f4b279/evidence/qa/issue579-pending-recovery-2026-10-30.json"
+  },
+  "canonical": {
+    "status": "BLOCKED_NATIVE_RUNTIME",
+    "full_unit": {
+      "passed": 1726,
+      "failed": 0,
+      "skipped": 3
+    },
+    "selected_components": {
+      "passed": 403,
+      "failed": 0,
+      "skipped": 0
+    },
+    "stages": [
+      {
+        "name": "flutter-unit",
+        "status": "PASS"
+      },
+      {
+        "name": "flutter-component-captures",
+        "status": "PASS"
+      },
+      {
+        "name": "android-runtime",
+        "status": "BLOCKED"
+      },
+      {
+        "name": "ios-runtime",
+        "status": "BLOCKED"
+      }
+    ],
+    "full_gallery": "NOT_RUN"
+  },
+  "fresh_GitHub_run_readbacks": {
+    "CI614": {
+      "id": 40989565645,
+      "source_revision": "c04bbd4f3d1d1982c19067daed0b8159cafae38f",
+      "run_attempt": 2,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40989565645"
+    },
+    "native614": {
+      "id": 40993167339,
+      "source_revision": "a97030059fcddd5d76b9b256007144d507f4b279",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40993167339"
+    },
+    "Windows614": {
+      "id": 40993187039,
+      "source_revision": "a97030059fcddd5d76b9b256007144d507f4b279",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40993187039"
+    },
+    "Android613": {
+      "id": 40985840599,
+      "source_revision": "134382700eed2408644695e5298e64e60d3abf59",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/40985840599"
+    }
+  },
+  "tested_merge": {
+    "head": "c04bbd4f3d1d1982c19067daed0b8159cafae38f",
+    "synthetic_merge": "8cb79f6664d29da3a68b89ba8ab92ab3df31b312",
+    "tree": "99d3157338a599fa8795e56ad702468cb24593ad",
+    "actual_Windows_merge_tree_equal": true
+  },
+  "immutable_hash_links": {
+    "final_CI": {
+      "commit": "88e772b4d520b062d18bf86fcdbfdd66e5a6368f",
+      "path": "evidence/qa/issue579-publication-2026-10-30/pr614-final-ci.json",
+      "Git_blob_SHA256": "05469666e1c9ce9f317413367993338ffdc8bc0aac755417456aa0e1689d95e6",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/blob/88e772b4d520b062d18bf86fcdbfdd66e5a6368f/evidence/qa/issue579-publication-2026-10-30/pr614-final-ci.json"
+    },
+    "canonical": {
+      "commit": "81c5d3fd93ffda46168c62bd964fb4138021c1e5",
+      "path": "evidence/qa/issue579-publication-2026-10-30/native-repaired-final614.json",
+      "Git_blob_SHA256": "bc8f0343565cf28af5b20528b1b3423689940ed39f86683b2a519bddd7d610a5",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/blob/81c5d3fd93ffda46168c62bd964fb4138021c1e5/evidence/qa/issue579-publication-2026-10-30/native-repaired-final614.json"
+    },
+    "master_quality_and_route": {
+      "commit": "7a39d0033352a24fe74a728a110fa25f3ac30124",
+      "path": "evidence/qa/issue579-publication-2026-10-30/master-quality614.json",
+      "Git_blob_SHA256": "0ac0ec0a79ba1dc035c2a8178808c6bd965d7ed64d98f993020b07885724fe59",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/blob/7a39d0033352a24fe74a728a110fa25f3ac30124/evidence/qa/issue579-publication-2026-10-30/master-quality614.json"
+    },
+    "Windows_candidate": {
+      "commit": "ae27659d9590fffd7be73254098b7db37864c7bc",
+      "path": "evidence/qa/issue579-publication-2026-10-30/candidate614/verified-candidate.json",
+      "Git_blob_SHA256": "390521986a2ab68606a14822f340537b37eeb8dfb20b0ec3dd0beb5f6be6c194",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/blob/ae27659d9590fffd7be73254098b7db37864c7bc/evidence/qa/issue579-publication-2026-10-30/candidate614/verified-candidate.json"
+    },
+    "Android_candidate": {
+      "commit": "8f32a5e086b4a0b79e4f4f492325d400bec45568",
+      "path": "evidence/qa/issue609-publication-2026-10-30/candidate613/verified-candidate.json",
+      "Git_blob_SHA256": "50cc99fabbb548936c9647f5a917c0589cef151ebb51136dc77422610a7f2c1c",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/blob/8f32a5e086b4a0b79e4f4f492325d400bec45568/evidence/qa/issue609-publication-2026-10-30/candidate613/verified-candidate.json"
+    },
+    "prior_next_FAIL_UNKNOWN": {
+      "commit": "9a74986d32db15d4ea7a71852b7f2d79d61d04a7",
+      "path": "evidence/qa/issue579-publication-2026-10-30/ci-final-source-attempt1-next/index.json",
+      "Git_blob_SHA256": "daa842cefe3a5cbfb4382d21d6b4d0357c6fb3a37d12f5c6cb416a2866a93d1a",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/blob/9a74986d32db15d4ea7a71852b7f2d79d61d04a7/evidence/qa/issue579-publication-2026-10-30/ci-final-source-attempt1-next/index.json"
+    },
+    "original_dependency_FAIL": {
+      "commit": "bb02d6d680ca4197792c6cc9c4b1caa4b83eb60b",
+      "path": "evidence/qa/issue579-publication-2026-10-30/ci-first-contracts-failure614.json",
+      "Git_blob_SHA256": "eaefc70c6f1be48cf9913af52ec2f29e8a9a5c8b48ba806d0ff067b29dec6770",
+      "url": "https://github.com/Egkurilov/BOOHTACORD/blob/bb02d6d680ca4197792c6cc9c4b1caa4b83eb60b/evidence/qa/issue579-publication-2026-10-30/ci-first-contracts-failure614.json"
+    }
+  },
+  "preserved_failures": {
+    "original_dependency_FAIL": "Known feature-to-application UI edge, repaired by verbatim480byte move and compatibility export; guard preserved.",
+    "final_source_attempt1_next": "FAIL UNKNOWN; secondary member login Error/other; actual artifact/hash/cleanup retained. Full unchanged-source attempt2all27PASS; no source/pin/timeout/gate relaxation.",
+    "prior_launch_resolution": "Initial legacy wrong-path launch remains diagnostic; supported process prefix later bound r62, exact wrong-path cause UNKNOWN."
+  },
+  "public_context": {
+    "checked_at_utc": "2026-10-31T07:07:53.046963+00:00",
+    "normal_TLS": true,
+    "Web_receipt_response": {
+      "HTTP": 200,
+      "SHA256": "98a8e7ebfb3614cc5142a53d2d518096a01f3348ae1d1bc5ef35d968f3682b01",
+      "cache_control": "no-store"
+    },
+    "Web_receipt": {
+      "schema_version": 1,
+      "application_family": "boohtacord",
+      "platform": "web",
+      "distribution": "browser",
+      "channel": "stable",
+      "arch": "any",
+      "release_id": "web-browser-stable-r61",
+      "release_order": 61,
+      "version": "1.0.47",
+      "native_build": null,
+      "architecture": "any",
+      "build_info_sha256": "70ffd35bfb8a6eebc088dfefb5ed9bd7549fd48e8398fb2be0d283bf12ac1e4b",
+      "source_revision": "2b95ddd864da210d6fc2f050e69ce2d5d203186e",
+      "signature_evidence": "oci_attestation",
+      "download_available": true
+    },
+    "observed_Web_source_revision": "2b95ddd864da210d6fc2f050e69ce2d5d203186e",
+    "API_health_response": {
+      "HTTP": 200,
+      "SHA256": "6489d6d7a33c5d40e18fc61eeb6c34c341279ee61816394dde5189aa4ad8fae5",
+      "cache_control": null
+    },
+    "API_health_status": "ok",
+    "fresh_API_revision": "NOT_OBSERVED_FROM_PUBLIC_HEALTH",
+    "historical_last_trusted_remote_API_source": "6dd79c244e6cbd69bcfbd38a3fcb5727508e0933",
+    "historical_API_readback_run": 40980532015,
+    "historical_API_readback_scope": "2026-10-30 deployment readback only; does not establish current API revision",
+    "a970_delivery": "Historical trusted native-only impact=false/installSKIP; current public reads do not imply server revisiona970."
+  },
+  "limits": [
+    "All prior automated/component results remain historical; no tests/CI/deploy/merge were started for this refresh.",
+    "Generic Android/iOS simulator targets remainBLOCKED and full galleryNOT_RUN. Physical pair acceptance awaits root evidence for all3currentcriteria.",
+    "No freshAPIrevision is derived from health; no authenticated request/SQL/fault/load was performed.",
+    "No GUI,ADB,application launch/close,settings or runtime ownership action by release agent.",
+    "No source/issue checkbox/state change or native firstframe/stoprestart/reWatch/voice-preservation PASS is asserted by this context."
+  ]
+}
