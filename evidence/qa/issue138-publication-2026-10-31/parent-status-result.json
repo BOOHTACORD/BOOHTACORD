@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "status": "PASS_BOUNDED_PARENT_STATUS_REFLECTION",
+  "parent_issue": 240,
+  "parent_state": "open",
+  "updated_children": [
+    {
+      "case": "I240.C2",
+      "issue": 134,
+      "status": "PASS",
+      "source": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2",
+      "evidence": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/closure-result.json"
+    },
+    {
+      "case": "I240.C6",
+      "issue": 138,
+      "status": "PASS",
+      "source": "46e83f7655fb75c5acb29c91a439db551598cb40",
+      "evidence": "https://github.com/Egkurilov/BOOHTACORD/blob/63730efcc051ce7616494b0066980ecd3e13789e/evidence/qa/issue138-publication-2026-10-31/closure-result.json"
+    }
+  ],
+  "changed_original_checkbox_rows": [
+    {
+      "before": "- [ ] [#134 — остановившиеся uploads](https://github.com/Egkurilov/BOOHTACORD/issues/134): на изолированном API+PostgreSQL выполнить TEXT/DM multipart upload с остановкой body, медленной передачей, cancel/disconnect, ошибкой writer и превышением account/global concurrency. Проверить timeout/status/Retry-After, освобождение слотов/reservations/temp files и новую успешную загрузку. Приложить SHA, HTTP outcomes и агрегированные counters; не использовать production нагрузку.",
+      "after": "- [x] [#134 — остановившиеся uploads](https://github.com/Egkurilov/BOOHTACORD/issues/134): на изолированном API+PostgreSQL выполнить TEXT/DM multipart upload с остановкой body, медленной передачей, cancel/disconnect, ошибкой writer и превышением account/global concurrency. Проверить timeout/status/Retry-After, освобождение слотов/reservations/temp files и новую успешную загрузку. Приложить SHA, HTTP outcomes и агрегированные counters; не использовать production нагрузку."
+    },
+    {
+      "before": "- [ ] [#138 — доверенные proxy headers](https://github.com/Egkurilov/BOOHTACORD/issues/138): на изолированном Compose проверить прямой peer, доверенный proxy, недоверенный spoofed X-Forwarded-For, цепочки, malformed/oversized header и fallback к peer. Приложить безопасный config audit и HTTP/outcome matrix; реальные IP и сетевые credentials не прикладывать.",
+      "after": "- [x] [#138 — доверенные proxy headers](https://github.com/Egkurilov/BOOHTACORD/issues/138): на изолированном Compose проверить прямой peer, доверенный proxy, недоверенный spoofed X-Forwarded-For, цепочки, malformed/oversized header и fallback к peer. Приложить безопасный config audit и HTTP/outcome matrix; реальные IP и сетевые credentials не прикладывать."
+    }
+  ],
+  "all_other_original_body_text_unchanged": true,
+  "dated_historical_FAIL_sections_preserved": true,
+  "unresolved_137_I240_C5_and_other_gates_unchanged": true,
+  "parent131": {
+    "state": "open",
+    "matching_direct_child_rows_found": 0,
+    "mutated": false
+  },
+  "parent_comment": "https://github.com/Egkurilov/BOOHTACORD/issues/240#issuecomment-6542506678",
+  "blanket_QA_acceptance": false,
+  "decisions43_unchanged": true
+}
