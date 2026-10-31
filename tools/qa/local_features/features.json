@@ -407,7 +407,7 @@
     ],
     "parity_review": {
       "issue": 579,
-      "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged.",
+      "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged. PR #625 (2026-10-31): Web stream-viewer overflow removes the dedicated diagnostics and duplicate full-area expand actions, and opens the participant roster with an accessible people icon. Focused browser regressions cover the menu, roster action, playback and fullscreen; Flutter/iOS/Android behavior and platform decisions are unchanged.",
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "platform_exception",
@@ -689,7 +689,11 @@
       "issue348": {
         "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
         "actual": "tools/qa/critical_client_acceptance/screen_share_ui.mjs",
-        "scope": "Compact launch, optional capabilities/sender/receiver diagnostics, selected versus confirmed configuration versus measured output; unsupported/cancel/focus/clipboard, 320/390/1024/1440 and 200% text. Owned real API/SFU source-publish-view-stop checks decoded frames in the owner's preview and receiver, keeps the preview visible in a 208px-high room, and stops the owner's broadcast from the viewer; failure/reconnect journeys. No physical Chrome picker, hardware audio, native or media QoE claim. Viewer diagnosis keeps publisher-audio status stable while video receiver samples vary, keeps the last successful receiver observation through transient missing/failed getStats reads until its freshness window expires, treats a silent local preview as expected, and lets viewers collapse the add-audio guidance."
+        "focused": [
+          "clients/web/tests/screen_share_ui/compact.browser.spec.ts",
+          "clients/web/src/voice/voice_room_presentation.spec.ts"
+        ],
+        "scope": "Compact launch, optional capabilities/sender/receiver diagnostics, selected versus confirmed configuration versus measured output; unsupported/cancel/focus/clipboard, 320/390/1024/1440 and 200% text. Owned real API/SFU source-publish-view-stop checks decoded frames in the owner's preview and receiver, keeps the preview visible in a 208px-high room, and stops the owner's broadcast from the viewer; failure/reconnect journeys. No physical Chrome picker, hardware audio, native or media QoE claim. Viewer diagnosis preserves playback/recovery status and keeps publisher-audio state stable while video receiver samples vary; local capture/measurement tools stay optional. The viewer toolbar omits its separate diagnostics affordance and duplicate full-area expand action, while the return-to-participants action is an accessible icon."
       },
       "participant_card_mute_alignment": {
         "focused": [
@@ -933,7 +937,7 @@
     ],
     "parity_review": {
       "issue": 579,
-      "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged.",
+      "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged. PR #625 (2026-10-31): the Web stream-viewer overflow menu removes the dedicated diagnostics and duplicate full-area expand actions, and opens the participant roster with an accessible people icon. Focused browser regressions cover the menu, roster action, playback and fullscreen; Flutter/iOS/Android behavior and existing platform decisions are unchanged.",
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "platform_exception",
@@ -1827,7 +1831,7 @@
     ],
     "parity_review": {
       "issue": 579,
-      "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged.",
+      "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged. PR #625 (2026-10-31): Web stream-viewer overflow removes the dedicated diagnostics and duplicate full-area expand actions, and opens the participant roster with an accessible people icon. Focused browser regressions cover the menu, roster action, playback and fullscreen; Flutter/iOS/Android behavior and platform decisions are unchanged.",
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",

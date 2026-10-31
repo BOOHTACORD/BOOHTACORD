@@ -1,5 +1,43 @@
 import { expect, test } from '@playwright/test'
 
+test('stream viewer keeps diagnostics and full-area expand out of the menu and iconizes return to participants', async ({ page }, info) => {
+  for (const width of [390, 1440]) {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls&watching-remote&single-stream')
+    await page.evaluate(() => {
+      const canvas = document.createElement('canvas'); canvas.width = 1280; canvas.height = 720
+      const context = canvas.getContext('2d')!; context.fillStyle = '#142f40'; context.fillRect(0, 0, 1280, 720)
+      context.fillStyle = '#c4e4ff'; context.font = '48px sans-serif'; context.fillText('Тестовая трансляция', 80, 360)
+      const video = document.querySelector('video')!; video.srcObject = canvas.captureStream(1); void video.play()
+    })
+    await expect(page.locator('.screen-loading-state')).not.toBeVisible()
+    const stage = page.locator('.screen-stage')
+    await stage.hover()
+
+    const controls = page.getByRole('group', { name: 'Управление просмотром' })
+    await expect(controls).toHaveCSS('opacity', '1')
+    await expect(controls.getByRole('button', { name: 'Диагностика просмотра', exact: true })).toHaveCount(0)
+    await expect(controls.getByRole('button', { name: 'Развернуть на весь экран', exact: true })).toBeVisible()
+
+    const more = controls.locator('.stream-more-actions > summary')
+    await more.click()
+    await expect(controls.getByRole('button', { name: 'Диагностика просмотра', exact: true })).toHaveCount(0)
+    await expect(controls.getByRole('button', { name: 'Развернуть на всю область', exact: true })).toHaveCount(0)
+
+    const menu = controls.locator('.stream-voice-return')
+    await expect(menu).toBeVisible()
+    expect((await menu.boundingBox())!.width).toBeLessThanOrEqual(64)
+    const returnButton = controls.getByRole('button', { name: 'К участникам', exact: true })
+    await expect(returnButton).toHaveAttribute('title', 'К участникам')
+    await expect(returnButton.locator('svg')).toHaveCount(1)
+    await expect(returnButton.locator('.gc-sr-only')).toHaveText('К участникам')
+    await page.screenshot({ path: info.outputPath(`viewer-actions-${width}.png`) })
+
+    await returnButton.click()
+    expect(await page.evaluate(() => (window as any).__screenUI.events)).toContain('clear')
+  }
+})
+
 for (const width of [390, 1440]) {
   test(`compact viewer gives video the available height at ${width}px`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 900 })
@@ -32,11 +70,10 @@ for (const width of [390, 1440]) {
     await stage.hover()
     await expect(controls).toHaveCSS('opacity', '1')
     await page.screenshot({ path: info.outputPath(`compact-controls-${width}.png`) })
-    if (width < 720) await page.getByLabel('Дополнительные действия', { exact: true }).click()
-    await page.getByRole('button', { name: 'Диагностика просмотра', exact: true }).click()
-    await expect(page.getByText('Снять минуту измерений', { exact: true })).toBeVisible()
-    await page.getByRole('button', { name: 'Закрыть диагностику', exact: true }).click()
-    await expect(page.getByText('Снять минуту измерений', { exact: true })).not.toBeVisible()
+    await page.getByLabel('Дополнительные действия', { exact: true }).click()
+    await expect(controls.getByRole('button', { name: 'Диагностика просмотра', exact: true })).toHaveCount(0)
+    await expect(controls.getByRole('button', { name: 'Развернуть на всю область', exact: true })).toHaveCount(0)
+    await expect(controls.getByRole('button', { name: 'К участникам', exact: true })).toHaveAttribute('title', 'К участникам')
   })
 }
 

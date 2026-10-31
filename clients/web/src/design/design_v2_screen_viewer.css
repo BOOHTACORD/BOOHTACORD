@@ -35,8 +35,12 @@
 .stream-more-actions > summary { list-style: none; font-size: 1.375rem; line-height: 1; }
 .stream-more-actions > summary::-webkit-details-marker { display: none; }
 .stream-more-actions .stream-voice-return { position: absolute; z-index: 20; top: 40px; right: 0; left: auto; display: grid; width: 208px; min-height: 0; gap: 0; border: 1px solid var(--gc-border-subtle); border-radius: 10px; padding: 6px; background: var(--gc-surface-raised); box-shadow: var(--gc-shadow-popup); }
+.stream-more-actions .stream-voice-return--viewer { box-sizing: border-box; width: 50px; justify-items: center; }
 .stream-more-actions .stream-voice-return button { min-height: 36px; border: 0; border-radius: 6px; padding: 0 10px; color: var(--gc-text-secondary); background: transparent; text-align: left; }
 .stream-more-actions .stream-voice-return button:hover { color: var(--gc-text-primary); background: var(--gc-surface-hover); }
+.stream-more-actions .stream-voice-return .stream-return-to-participants { display: grid; width: 36px; min-width: 36px; height: 36px; min-height: 36px; justify-self: end; place-items: center; padding: 0; }
+.stream-more-actions .stream-voice-return--viewer .stream-return-to-participants { justify-self: center; }
+.stream-return-to-participants svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
 .voice-room .screen-rail-section { display: grid; min-height: 124px; height: auto; flex: 0 0 auto; grid-template-rows: auto 100px; gap: 8px; overflow: visible; }
 .voice-room .screen-rail-section h3 { position: static; display: block; width: auto; height: auto; overflow: visible; clip: auto; white-space: normal; }
 .voice-room .screen-cards.stream-rail { display: flex; height: 100px; min-height: 100px; align-items: stretch; gap: 12px; overflow-x: auto; overflow-y: hidden; padding: 2px; }
@@ -119,7 +123,6 @@
 .screen-viewer--compact .screen-stage-actions { left: 12px; right: 12px; bottom: 12px; width: max-content; margin-left: auto; max-width: calc(100% - 24px); }
 .voice-room .screen-viewer--compact .stream-quality-row { display: contents; }
 .screen-viewer--compact .stream-toolbar-actions { display: contents; }
-.stream-diagnosis-menu-action { display: none; }
 .screen-viewer--compact .stream-more-actions .stream-voice-return { top: auto; bottom: calc(100% + 12px); }
 .screen-viewer--compact .screen-stage-label { max-width: 100%; height: auto; min-height: 32px; flex-wrap: wrap; }
 .screen-viewer--compact .screen-stage-label small { font-size: 0.6875rem; font-weight: 400; color: var(--gc-text-secondary); }
@@ -156,9 +159,8 @@
   .screen-viewer--compact .screen-stage-action { min-height: 44px; }
   .screen-viewer--compact .screen-stage-actions { gap: 2px; }
   .screen-viewer--compact .screen-stage-action { width: 44px; min-width: 44px; padding: 0; }
-  .screen-viewer--compact .screen-stage-action > span, .screen-viewer--compact .screen-diagnosis-toggle { display: none; }
+  .screen-viewer--compact .screen-stage-action > span { display: none; }
   .screen-viewer--compact .stream-diagnostics > summary { width: 44px; height: 44px; min-height: 44px; border: 0; padding: 0; }
-  .stream-diagnosis-menu-action { display: block; }
   .screen-diagnosis--compact { top: 112px; bottom: 140px; }
 }
 
