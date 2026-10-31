@@ -46,7 +46,7 @@ jobs:
       - name: Verify native API, PostgreSQL and SFU before rebuilding clients
         run: python -m tools.qa.desktop_updates.windows_stack
   installed-update:
-    if: github.event_name == 'workflow_dispatch' && inputs.publish_qa && github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'workflow_dispatch' && inputs.publish_qa && github.repository == 'BOOHTACORD/BOOHTACORD' && github.ref == 'refs/heads/master'
     environment: production
     needs: native-stack
     runs-on: windows-2022

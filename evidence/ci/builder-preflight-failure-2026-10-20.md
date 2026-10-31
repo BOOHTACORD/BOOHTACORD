@@ -2,7 +2,7 @@
 
 ## Original observation (not a successful release)
 
-Protected master producer [39374816147](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39374816147)
+Protected master producer [39374816147](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39374816147)
 at `88f42cfae324826f73e7b55810ee10f510b7f4f7`, attempt1, passed all13 quality
 jobs, then ran bundle job118476420742 from09:38:49 to09:40:25UTC after review.
 The bundle step failed. Verified-release upload was skipped; no installation

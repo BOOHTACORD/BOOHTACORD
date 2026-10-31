@@ -5,8 +5,8 @@ from .policy import request
 
 
 def run():return dict(id=101,head_sha='a'*40,run_attempt=1,event='workflow_dispatch',head_branch='master',
-                      path='.github/workflows/rehearse-compatible-rollback.yaml',repository={'full_name':'Egkurilov/BOOHTACORD'},
-                      head_repository={'full_name':'Egkurilov/BOOHTACORD'},actor={'id':42})
+                      path='.github/workflows/rehearse-compatible-rollback.yaml',repository={'full_name':'BOOHTACORD/BOOHTACORD'},
+                      head_repository={'full_name':'BOOHTACORD/BOOHTACORD'},actor={'id':42})
 
 
 def plan():return request('rollback',context(PREVIOUS_SOURCE='c'*40,OBSERVERS_CONFIRMED='two-browsers-ready'))

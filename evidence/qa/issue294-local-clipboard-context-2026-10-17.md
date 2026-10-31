@@ -1,6 +1,6 @@
 # Issue #294: preserve editing context during delayed Flutter clipboard paste
 
-Date: 2026-10-17. Issue: https://github.com/Egkurilov/BOOHTACORD/issues/294
+Date: 2026-10-17. Issue: https://github.com/BOOHTACORD/BOOHTACORD/issues/294
 Base: `43d0c491575f83f03d72bb7355392ce82f56d998`; branch: `codex/issue-294-local-paste`.
 Backlog leaf FV2-008; dependencies FV2-007/T-040/T-041/T-050/T-051 reviewed.
 Platform: macOS arm64, Flutter3.47.7/Dart3.13.5. Scope: one composer regression;

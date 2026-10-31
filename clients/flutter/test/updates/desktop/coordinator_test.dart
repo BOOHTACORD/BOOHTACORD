@@ -76,7 +76,7 @@ void main() {
         'distribution': 'direct',
         'channel': 'stable',
         'package_type': 'velopack_nupkg',
-        'download_url': 'https://github.com/Egkurilov/BOOHTACORD/releases/download/windows-v1.0.2/app.nupkg',
+        'download_url': 'https://github.com/BOOHTACORD/BOOHTACORD/releases/download/windows-v1.0.2/app.nupkg',
         'size': 10,
         'sha256': crypto.sha256.convert(List<int>.filled(10, 7)).toString(),
         'min_os_version': '10.0',

@@ -9,13 +9,13 @@ import { publishSdk } from './publish.mjs'
 async function fixture(fn) {
   const directory=await mkdtemp(path.join(tmpdir(),'sdk-publish-'))
   try {
-    const contract={status:'PASS',schema_version:1,repository:'Egkurilov/BOOHTACORD',builder_revision:'a'.repeat(40),run_id:'101',run_attempt:'1',
+    const contract={status:'PASS',schema_version:1,repository:'BOOHTACORD/BOOHTACORD',builder_revision:'a'.repeat(40),run_id:'101',run_attempt:'1',
       version:'webrtc-m150-boohtacord-r3',recipe_sha256:'b'.repeat(64),physical_playback_smoke:'NOT_RUN',assets:{}}
     for(const name of ['SHA256SUMS','WebRTC-macos.xcframework.zip','sdk-manifest.json']) {
       const data=Buffer.from('synthetic fixture '+name);await writeFile(path.join(directory,name),data)
       contract.assets[name]={bytes:data.length,sha256:createHash('sha256').update(data).digest('hex')}
     }
-    const context={sha:'a'.repeat(40),repo:{owner:'Egkurilov',repo:'BOOHTACORD'},eventName:'workflow_dispatch',ref:'refs/heads/master'}
+    const context={sha:'a'.repeat(40),repo:{owner:'BOOHTACORD',repo:'BOOHTACORD'},eventName:'workflow_dispatch',ref:'refs/heads/master'}
     const calls=[];let release
     const github={rest:{repos:{
       getReleaseByTag:async()=>{calls.push('lookup');throw Object.assign(new Error('absent'),{status:404})},

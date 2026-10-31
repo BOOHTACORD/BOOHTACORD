@@ -23,7 +23,7 @@ def wait_envelope(source, seconds):
     revision = os.environ.get('QA_ENVELOPE_REVISION', '')
     if not re.fullmatch('[a-f0-9]{40}', revision):
         raise ValueError('Exact immutable envelope fixture revision required')
-    url = ('https://raw.githubusercontent.com/Egkurilov/BOOHTACORD/' + revision +
+    url = ('https://raw.githubusercontent.com/BOOHTACORD/BOOHTACORD/' + revision +
            '/evidence/fixtures/desktop-updates/windows-' + source + '.json')
     deadline = time.monotonic() + seconds
     print('WAITING_FOR_OWNER_SIGNED_ENVELOPE source=' + source, flush=True)

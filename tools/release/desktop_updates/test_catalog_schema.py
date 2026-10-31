@@ -12,7 +12,7 @@ def catalog(**extra):
                   native_build='79', priority='normal', published_at='2026-10-15T00:00:00Z',
                   summary='QA schema fixture', release_notes_url=None,
                   requirements={'supported_arches': ['arm64']},
-                  action={'kind': 'open_download_page', 'url': 'https://github.com/Egkurilov/BOOHTACORD/releases'},
+                  action={'kind': 'open_download_page', 'url': 'https://github.com/BOOHTACORD/BOOHTACORD/releases'},
                   **extra)
     return dict(schema_version=1, catalog_revision=2, application_family='boohtacord',
                 entries=[dict(platform='macos', distribution='direct', channel='beta',

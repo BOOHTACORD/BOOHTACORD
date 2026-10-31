@@ -262,7 +262,7 @@ the distribution build was cancelled by a newer master push. Attempt 2 was also
 cancelled during Flutter SDK setup by a newer master push. Attempt 3 passed app/
 vendor tests, analysis, release-publisher tests, and the Windows x64 distribution
 build; the 25.9 MB artifact was retained —
-[workflow run](https://github.com/Egkurilov/BOOHTACORD/actions/runs/37190446718).
+[workflow run](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37190446718).
 Native Windows drag/window-control acceptance is still required before closing
 FV2-018.
 

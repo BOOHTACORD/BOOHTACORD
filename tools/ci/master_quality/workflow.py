@@ -2,7 +2,7 @@
 from tools.ci.runner_pool.routing import GITHUB_LINUX
 from tools.ci.toolchains.auxiliary import ROOT, python_input
 
-MASTER = "github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'"
+MASTER = "github.repository == 'BOOHTACORD/BOOHTACORD' && github.ref == 'refs/heads/master'"
 PR_SCOPE = "github.event_name != 'workflow_dispatch' || github.ref != 'refs/heads/master'"
 EXECUTION = '${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}'
 

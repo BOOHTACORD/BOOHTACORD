@@ -10,7 +10,7 @@ PNG = b'\x89PNG\r\n\x1a\n\0\0\0\rIHDR' + (1).to_bytes(4, 'big') * 2 + b'\x08\x06
 
 
 def identity():
-    return {'repository': 'Egkurilov/BOOHTACORD', 'source_revision': 'a' * 40,
+    return {'repository': 'BOOHTACORD/BOOHTACORD', 'source_revision': 'a' * 40,
             'run_id': '123', 'run_attempt': '1', 'namespace': 'web',
             'component': 'web', 'profile': 'browser-shell', 'platform': 'linux'}
 

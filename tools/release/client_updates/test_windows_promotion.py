@@ -62,9 +62,9 @@ class WindowsPromotionTests(unittest.TestCase):
                      "release_id": "windows-direct-stable-r52", "release_order": 52,
                      "version": "1.0.38", "native_build": "71", "priority": "normal",
                      "published_at": "2026-10-07T07:21:42Z", "summary": "old",
-                     "release_notes_url": "https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.38",
+                     "release_notes_url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/windows-v1.0.38",
                      "requirements": {"supported_arches": ["x64"]},
-                     "action": {"kind": "open_download_page", "url": "https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.38"},
+                     "action": {"kind": "open_download_page", "url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/windows-v1.0.38"},
                  }},
                 {"platform": "android", "distribution": "direct", "channel": "stable",
                  "arch": "arm64", "state": "unconfigured", "target": None},
@@ -73,10 +73,10 @@ class WindowsPromotionTests(unittest.TestCase):
         release, archive, manifest, sums = make_release(tmp_path)
 
         with self.assertRaisesRegex(ValueError, "revision"):
-            promote(catalog, 28, release, archive, manifest, sums, "Egkurilov/BOOHTACORD")
+            promote(catalog, 28, release, archive, manifest, sums, "BOOHTACORD/BOOHTACORD")
         self.assertEqual(json.loads(catalog.read_text(encoding="utf-8"))["catalog_revision"], 29)
 
-        promote(catalog, 29, release, archive, manifest, sums, "Egkurilov/BOOHTACORD")
+        promote(catalog, 29, release, archive, manifest, sums, "BOOHTACORD/BOOHTACORD")
 
         document = load(catalog)
         self.assertEqual(document["catalog_revision"], 30)
@@ -85,9 +85,9 @@ class WindowsPromotionTests(unittest.TestCase):
             "version": "1.0.39", "native_build": "72", "priority": "normal",
             "published_at": "2026-10-08T10:00:00Z",
             "summary": "BOOHTACORD Windows 1.0.39 build 72.",
-            "release_notes_url": "https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.39",
+            "release_notes_url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/windows-v1.0.39",
             "requirements": {"supported_arches": ["x64"]},
-            "action": {"kind": "open_download_page", "url": "https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.39"},
+            "action": {"kind": "open_download_page", "url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/windows-v1.0.39"},
         })
         self.assertEqual(document["entries"][1]["state"], "unconfigured")
 
@@ -96,14 +96,14 @@ class WindowsPromotionTests(unittest.TestCase):
         sums.write_text("0" * 64 + "  " + archive.name + "\n", encoding="utf-8")
 
         with self.assertRaisesRegex(ValueError, "checksum"):
-            verify_release(release, archive, manifest, sums, "Egkurilov/BOOHTACORD")
+            verify_release(release, archive, manifest, sums, "BOOHTACORD/BOOHTACORD")
 
     def test_prerelease_is_rejected_even_with_valid_assets(self):
         release, archive, manifest, sums = make_release(temporary_path(self))
         release["prerelease"] = True
 
         with self.assertRaisesRegex(ValueError, "published stable"):
-            verify_release(release, archive, manifest, sums, "Egkurilov/BOOHTACORD")
+            verify_release(release, archive, manifest, sums, "BOOHTACORD/BOOHTACORD")
 
     def test_repeating_promotion_for_current_release_is_a_noop(self):
         catalog = temporary_path(self) / "catalog.json"
@@ -113,8 +113,8 @@ class WindowsPromotionTests(unittest.TestCase):
             "state": "unconfigured", "target": None}]}), encoding="utf-8")
         release, archive, manifest, sums = make_release(catalog.parent)
 
-        promote(catalog, 29, release, archive, manifest, sums, "Egkurilov/BOOHTACORD")
-        repeated = promote(catalog, 30, release, archive, manifest, sums, "Egkurilov/BOOHTACORD")
+        promote(catalog, 29, release, archive, manifest, sums, "BOOHTACORD/BOOHTACORD")
+        repeated = promote(catalog, 30, release, archive, manifest, sums, "BOOHTACORD/BOOHTACORD")
 
         self.assertEqual(repeated["catalog_revision"], 30)
 

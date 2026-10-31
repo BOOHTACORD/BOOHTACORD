@@ -38,7 +38,7 @@ def read_api(path):
     comparison.require(bool(token))
     headers = {'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json',
                'X-GitHub-Api-Version': '2022-11-28', 'User-Agent': 'boohtacord-native-shadow'}
-    request = Request('https://api.github.com/repos/Egkurilov/BOOHTACORD' + path, headers=headers)
+    request = Request('https://api.github.com/repos/BOOHTACORD/BOOHTACORD' + path, headers=headers)
     try:
         with urlopen(request, timeout=30) as response: data = response.read(4 * 1024 * 1024 + 1)
     except (HTTPError, URLError, TimeoutError):

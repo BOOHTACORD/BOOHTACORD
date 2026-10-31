@@ -14,26 +14,26 @@ class ReleaseTests(unittest.TestCase):
             directory,context=fixture(Path(name),'windows');tag=context['tag']
             release={'tag_name':tag,'draft':False,'prerelease':False,'published_at':'2026-10-19T00:00:00Z',
               'assets':[{'name':p.name,'state':'uploaded','size':p.stat().st_size,'digest':'sha256:'+digest(p.read_bytes()),
-                'browser_download_url':f'https://github.com/Egkurilov/BOOHTACORD/releases/download/{tag}/{p.name}'}
+                'browser_download_url':f'https://github.com/BOOHTACORD/BOOHTACORD/releases/download/{tag}/{p.name}'}
                 for p in directory.iterdir()]}
             archive=next(directory.glob('*.zip'));manifest=directory/'artifact-manifest.json';sums=directory/'SHA256SUMS'
-            self.assertEqual(verify_release(release,archive,manifest,sums,'Egkurilov/BOOHTACORD')['version'],context['identity']['version'])
+            self.assertEqual(verify_release(release,archive,manifest,sums,'BOOHTACORD/BOOHTACORD')['version'],context['identity']['version'])
             release['assets'].pop()
-            with self.assertRaises(ValueError):verify_release(release,archive,manifest,sums,'Egkurilov/BOOHTACORD')
+            with self.assertRaises(ValueError):verify_release(release,archive,manifest,sums,'BOOHTACORD/BOOHTACORD')
 
     def test_legacy_zip_aliases_and_qa_markers_are_not_promotion_payloads(self):
         from tools.release.client_updates.test_windows_promotion_security import fixture as legacy
         for member in ('data//alias.exe','C:/foreign.exe','CI-PURPOSE.JSON','nested/trailing .'):
             with tempfile.TemporaryDirectory() as name:
                 _,release,archive,manifest,sums=legacy(Path(name),member)
-                with self.subTest(member=member),self.assertRaises(ValueError):verify_release(release,archive,manifest,sums,'Egkurilov/BOOHTACORD')
+                with self.subTest(member=member),self.assertRaises(ValueError):verify_release(release,archive,manifest,sums,'BOOHTACORD/BOOHTACORD')
 
     def test_tag_source_and_whole_asset_inventory_are_rechecked(self):
         from .release_proof import fingerprint,verify
         with tempfile.TemporaryDirectory() as name:
             directory,context=fixture(Path(name),'windows');tag=context['tag']
             rows=[{'id':index+1,'name':p.name,'state':'uploaded','size':p.stat().st_size,'digest':'sha256:'+digest(p.read_bytes()),
-                'browser_download_url':f'https://github.com/Egkurilov/BOOHTACORD/releases/download/{tag}/{p.name}'}
+                'browser_download_url':f'https://github.com/BOOHTACORD/BOOHTACORD/releases/download/{tag}/{p.name}'}
                 for index,p in enumerate(directory.iterdir())]
             release={'tag_name':tag,'draft':False,'prerelease':False,'assets':rows}
             proof={'tag':tag,'source_revision':context['source_revision'],'asset_inventory_sha256':fingerprint(release),

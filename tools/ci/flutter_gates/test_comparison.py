@@ -8,8 +8,8 @@ from .test_results import record
 def fixtures():
     sha = 'a' * 40
     run = {'id': 123, 'run_attempt': 1, 'head_sha': sha,
-           'repository': {'full_name': 'Egkurilov/BOOHTACORD'},
-           'head_repository': {'full_name': 'Egkurilov/BOOHTACORD'},
+           'repository': {'full_name': 'BOOHTACORD/BOOHTACORD'},
+           'head_repository': {'full_name': 'BOOHTACORD/BOOHTACORD'},
            'path': '.github/workflows/flutter-ci-shadow.yaml', 'event': 'workflow_dispatch'}
     jobs = []
     def job(name, minutes, runner):

@@ -5,8 +5,8 @@ from .ci_proof import validate_run
 
 def observations():
     run = {'id': 101, 'head_sha': 'a' * 40, 'status': 'completed', 'conclusion': 'success',
-           'repository': {'full_name': 'Egkurilov/BOOHTACORD'},
-           'head_repository': {'full_name': 'Egkurilov/BOOHTACORD'},
+           'repository': {'full_name': 'BOOHTACORD/BOOHTACORD'},
+           'head_repository': {'full_name': 'BOOHTACORD/BOOHTACORD'},
            'path': '.github/workflows/ci.yaml', 'event': 'push', 'head_branch': 'master'}
     jobs = {'total_count': 3, 'jobs': [
         {'id': i + 1, 'run_id': 101, 'name': name, 'status': 'completed', 'conclusion': 'success'}

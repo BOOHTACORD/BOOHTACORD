@@ -4,7 +4,7 @@
   "kind": "github-source-and-actions-migration",
   "status": "BLOCKED",
   "observed_at": "2026-09-30T19:54:40Z",
-  "github_repository": "https://github.com/Egkurilov/BOOHTACORD",
+  "github_repository": "https://github.com/BOOHTACORD/BOOHTACORD",
   "source_revision": "e8f4f53d5b516f3e1df1b3bf7eba3594f6f0461f",
   "source_tree": "c90b11efe7c0d8f1f25070b6bf7729e0d0203776",
   "migration": "GitVerse master was fetched first. Seventeen tags and master were pushed to GitHub. A separate clone excluded historical artifacts/android/*.apk Git blobs larger than GitHub's 100 MiB object limit; the source tree at master is unchanged. Original history and binaries remain in GitVerse.",
@@ -18,25 +18,25 @@
     "contracts": "PASS"
   },
   "github_runs": {
-    "ci": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/36768313515",
-    "deploy": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/36766500191",
-    "windows": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/36768313076"
+    "ci": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/36768313515",
+    "deploy": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/36766500191",
+    "windows": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/36768313076"
   },
   "github_ci": {
-    "run": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/36768313515",
+    "run": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/36768313515",
     "result": "PASS",
     "jobs": {"contracts": "success", "backend": "success", "frontend": "success", "publish": "success"},
     "workflow_registration": "Ten top-level GitHub workflows are active in the Actions API."
   },
   "github_deploy": {
-    "run": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/36766500191",
+    "run": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/36766500191",
     "source_revision": "27bc282928a9e7aee614b2168546ce4fadc1b05f",
     "result": "PASS",
     "jobs": {"backend": "success", "frontend": "success", "release_guard": "success", "deploy": "success"},
     "observed_host": "voice-platform-api, web and proxy containers were running on 176.108.242.211; PostgreSQL was healthy."
   },
   "windows_ci": {
-    "run": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/36768313076",
+    "run": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/36768313076",
     "source_revision": "1a315bfcf3ed9d6aa09af0826f1e37ec3668f1dd",
     "result": "PASS",
     "checks": "Flutter tests, Android publisher tests, analyze and Windows release build succeeded."

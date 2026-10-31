@@ -14,19 +14,19 @@ class BrokerTests(unittest.TestCase):
     def test_status_is_preserved_without_provider_error_body(self):
         for status in (403,404,410,429,500):
             with self.subTest(status=status),patch.object(broker.subprocess,'run',return_value=self.response(status,{'message':'provider-private-canary'})):
-                with self.assertRaises(broker.GitHubError) as caught:broker.api('repos/Egkurilov/BOOHTACORD/issues/17')
+                with self.assertRaises(broker.GitHubError) as caught:broker.api('repos/BOOHTACORD/BOOHTACORD/issues/17')
                 self.assertEqual(status,caught.exception.status)
                 self.assertNotIn('private-canary',str(caught.exception))
 
     def test_successful_response_parses_included_headers(self):
         with patch.object(broker.subprocess,'run',return_value=self.response(200,{'number':17})):
-            self.assertEqual({'number':17},broker.api('repos/Egkurilov/BOOHTACORD/issues/17'))
+            self.assertEqual({'number':17},broker.api('repos/BOOHTACORD/BOOHTACORD/issues/17'))
 
     def test_only_absence_with_accessible_repository_means_deleted(self):
         for status in (404,410):
             with self.subTest(status=status),patch.object(broker,'api',side_effect=[broker.GitHubError(status),{'private':False}]) as api:
                 self.assertEqual({'exists':False},broker.execute({'operation':'issue','issue':17},'/unused'))
-                self.assertEqual('repos/Egkurilov/BOOHTACORD',api.call_args.args[0])
+                self.assertEqual('repos/BOOHTACORD/BOOHTACORD',api.call_args.args[0])
         for status in (403,429,500,None):
             with self.subTest(status=status),patch.object(broker,'api',side_effect=broker.GitHubError(status)):
                 with self.assertRaises(broker.GitHubError):broker.execute({'operation':'issue','issue':17},'/unused')

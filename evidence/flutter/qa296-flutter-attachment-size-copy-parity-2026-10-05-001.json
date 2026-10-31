@@ -45,7 +45,7 @@
       "name": "Windows CI build",
       "command": "GitHub Actions workflow run 37342383959 — windows / windows",
       "result": "PASS",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/37342383959",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37342383959",
       "artifact": "BOOHTACORD-windows-x64-d8089587b7c4bd8dbe3db623ff590c19bb3f2339",
       "observation": "Windows app/vendor tests, analyzer and x64 Release build/inspection passed. The artifact is present and unexpired through 2026-11-04."
     },
@@ -53,13 +53,13 @@
       "name": "Spec traceability verifier in CI contracts job",
       "command": "pwsh -File tools/verify/spec_traceability/verify-spec-traceability.ps1",
       "result": "PASS",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/37342383959",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37342383959",
       "observation": "The successful contracts job invokes the project-owned spec_traceability verifier through tools/ci/native/contracts.py. A direct local invocation was unavailable because PowerShell Core (`pwsh`) is not installed."
     },
     {
       "name": "GitHub CI for implementation commit",
       "result": "PASS",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/37342383959",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37342383959",
       "observation": "Contracts, Flutter and Windows jobs completed successfully for d8089587b7c4bd8dbe3db623ff590c19bb3f2339; backend/frontend jobs were correctly skipped because no corresponding files changed."
     },
     {

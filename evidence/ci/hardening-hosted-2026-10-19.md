@@ -1,7 +1,7 @@
 # #386 hosted candidate regression, 2026-10-19
 
 This is scoped candidate evidence, not complete CICD-12 or epic acceptance.
-[PR #420](https://github.com/Egkurilov/BOOHTACORD/pull/420) head
+[PR #420](https://github.com/BOOHTACORD/BOOHTACORD/pull/420) head
 `cc32d1d80ae72a2bc56a6128838c00e3f9513e75`, actual checkout
 `bbad9e072076f723b478dffb1efbec2350d5a7af`, tested base
 `a6d725bd40d7a3c7c2c53d9877d3ccbf12e5c773`, tree
@@ -12,11 +12,11 @@ these results do not attest that later application source.
 
 | Actual workflow | Result |
 | --- | --- |
-| [CI 39171014369](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39171014369) | seven SUCCESS checks: selector, contracts, backend, Web, Flutter/Android, Windows and ci-required |
-| [Signed rollback 39171014344](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39171014344) | SUCCESS, actual isolated signed releases and two browser observers |
-| [Next client 39171014459](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39171014459) | SUCCESS, actual uploads, unread/context/ACL and voice retention |
-| [SFU 39171014421](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39171014421) | SUCCESS, actual API/PostgreSQL/RoomService; no media capacity claim |
-| [Lifecycle 39171014347](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39171014347) | SUCCESS execution; additional lifecycle captures not manually reviewed here |
+| [CI 39171014369](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39171014369) | seven SUCCESS checks: selector, contracts, backend, Web, Flutter/Android, Windows and ci-required |
+| [Signed rollback 39171014344](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39171014344) | SUCCESS, actual isolated signed releases and two browser observers |
+| [Next client 39171014459](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39171014459) | SUCCESS, actual uploads, unread/context/ACL and voice retention |
+| [SFU 39171014421](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39171014421) | SUCCESS, actual API/PostgreSQL/RoomService; no media capacity claim |
+| [Lifecycle 39171014347](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39171014347) | SUCCESS execution; additional lifecycle captures not manually reviewed here |
 
 All eleven exact-head checks were complete and successful, with no omitted page.
 The adjacent JSON retains job IDs and immutable source bindings. Local checks at

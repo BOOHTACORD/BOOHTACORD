@@ -1,6 +1,6 @@
 # Flutter stream viewing across navigation — 2026-10-24
 
-**Source:** Web PR [#452](https://github.com/Egkurilov/BOOHTACORD/pull/452), issue #349. Flutter follow-up: PR #572.
+**Source:** Web PR [#452](https://github.com/BOOHTACORD/BOOHTACORD/pull/452), issue #349. Flutter follow-up: PR #572.
 **Base:** `4b8a48e6540207e4e0082ed735af8a0700d687a0` (`master`).
 
 ## Scope

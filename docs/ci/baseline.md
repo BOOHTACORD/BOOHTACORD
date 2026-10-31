@@ -1,6 +1,6 @@
 # CI/CD baseline (CICD-01, #383; parent #382)
 
-The collector performs only GETs against Actions metadata in `Egkurilov/BOOHTACORD`.
+The collector performs only GETs against Actions metadata in `BOOHTACORD/BOOHTACORD`.
 It never dispatches/reruns workflows, reads logs, downloads artifacts, changes production,
 or reads runner credentials. An optional `GITHUB_TOKEN` can increase the public API quota;
 use a read-only token. No interactive authentication is needed.

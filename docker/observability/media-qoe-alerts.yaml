@@ -10,7 +10,7 @@ groups:
     annotations:
       summary: MediaClientLossSustained
       description: Windowed client loss above 2% over 5m with >=0.1 known samples/s, sustained3m. Diagnostic candidate, not agreed production SLO or packet-weighted loss.
-      runbook_url: https://github.com/Egkurilov/BOOHTACORD/blob/master/docs/operations/media-qoe.md
+      runbook_url: https://github.com/BOOHTACORD/BOOHTACORD/blob/master/docs/operations/media-qoe.md
   - alert: MediaClientTargetDiscrepancy
     expr: (sum by(platform,direction,stage) (rate(boohtacord_media_fps_target_ratio_sum{age_provenance="known",state="playing"}[5m])) / sum by(platform,direction,stage) (rate(boohtacord_media_fps_target_ratio_count{age_provenance="known",state="playing"}[5m])) < 0.9) and on(platform,direction,stage) (sum by(platform,direction,stage) (rate(boohtacord_media_fps_target_ratio_count{age_provenance="known",state="playing"}[5m])) >= 0.1) and on(platform,direction) ((time() - max by(platform,direction) (boohtacord_media_report_received_seconds) < 60) and on(platform,direction) (max by(platform,direction) (boohtacord_media_sample_age_known) == 1) and on(platform,direction) (max by(platform,direction) (boohtacord_media_sample_age_seconds) < 60) and on(platform,direction) (max by(platform,direction) (boohtacord_media_sample_age_at_receipt_seconds) <= 5))
     for: 3m
@@ -20,7 +20,7 @@ groups:
     annotations:
       summary: MediaClientTargetDiscrepancy
       description: Paired per-stage actual/target mean below0.9, >=0.1 samples/s, sustained3m. Static/paused/no-subscriber/moving-source context is unknown; no root-cause or paging inference.
-      runbook_url: https://github.com/Egkurilov/BOOHTACORD/blob/master/docs/operations/media-qoe.md
+      runbook_url: https://github.com/BOOHTACORD/BOOHTACORD/blob/master/docs/operations/media-qoe.md
   - alert: MediaClientSenderCPUReports
     expr: (sum by(platform,direction) (rate(boohtacord_media_adaptation_reports_total{direction="sender",reason="cpu",age_provenance="known",state="playing"}[5m])) / sum by(platform,direction) (rate(boohtacord_media_adaptation_reports_total{direction="sender",age_provenance="known",state="playing"}[5m])) > 0.5) and on(platform,direction) ((time() - max by(platform,direction) (boohtacord_media_report_received_seconds) < 60) and on(platform,direction) (max by(platform,direction) (boohtacord_media_sample_age_known) == 1) and on(platform,direction) (max by(platform,direction) (boohtacord_media_sample_age_seconds) < 60) and on(platform,direction) (max by(platform,direction) (boohtacord_media_sample_age_at_receipt_seconds) <= 5))
     for: 5m
@@ -30,7 +30,7 @@ groups:
     annotations:
       summary: MediaClientSenderCPUReports
       description: More than half recent sender reports name CPU adaptation, sustained5m. Client reason is not measured encoder CPU saturation.
-      runbook_url: https://github.com/Egkurilov/BOOHTACORD/blob/master/docs/operations/media-qoe.md
+      runbook_url: https://github.com/BOOHTACORD/BOOHTACORD/blob/master/docs/operations/media-qoe.md
   - alert: MediaClientTelemetryStale
     expr: (max(boohtacord_incident_livekit_snapshot{stat="screen_streams"}) > 0) and on() (max(boohtacord_incident_last_successful{operation="livekit_snapshot"}) == 1) and on() ((time() - max(boohtacord_incident_last_success_timestamp_seconds{operation="livekit_snapshot"})) < 45) and on() ((time() - max(boohtacord_incident_api_collection_timestamp_seconds)) < 45) unless on() (max(boohtacord_media_report_received_seconds) > time() - 60)
     for: 3m
@@ -40,4 +40,4 @@ groups:
     annotations:
       summary: MediaClientTelemetryStale
       description: 'LiveKit private snapshot has active screens but no client receipt within60s, sustained3m. Requires #5 snapshot bridge/native scrape; otherwise unknown and absent. Active screen does not prove subscriber or visible viewer.'
-      runbook_url: https://github.com/Egkurilov/BOOHTACORD/blob/master/docs/operations/media-qoe.md
+      runbook_url: https://github.com/BOOHTACORD/BOOHTACORD/blob/master/docs/operations/media-qoe.md

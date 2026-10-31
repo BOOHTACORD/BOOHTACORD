@@ -62,7 +62,7 @@ def main():
     after=source.read_bytes()
     if target['catalog_revision']==revision:
         (OUT/'trace.json').write_text(json.dumps({'status':'NO_CHANGE','source_revision':base,'catalog_revision':revision,
-            'physical_acceptance':'NOT_RUN','issue_249':'https://github.com/Egkurilov/BOOHTACORD/issues/249'})+'\n')
+            'physical_acceptance':'NOT_RUN','issue_249':'https://github.com/BOOHTACORD/BOOHTACORD/issues/249'})+'\n')
         outputs(changed='false');return
     observed=json.loads(manifest.read_text())
     from .api import GitHub

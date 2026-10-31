@@ -4,7 +4,7 @@ Date: 2026-10-21
 
 Branch: `codex/flutter-screen-audience`
 
-Reference: [PR #448](https://github.com/Egkurilov/BOOHTACORD/pull/448)
+Reference: [PR #448](https://github.com/BOOHTACORD/BOOHTACORD/pull/448)
 
 ## Result
 

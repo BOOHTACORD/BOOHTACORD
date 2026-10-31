@@ -7,7 +7,7 @@ persistent-data preservation.** This closes the live-rehearsal gap tracked by
 
 ## Exact source and runtime
 
-The accepted [native Linux run](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39130446602/job/117684347504)
+The accepted [native Linux run](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39130446602/job/117684347504)
 checks PR head `640073fd8826dd3bed013037093e13adb5385d66`; its actual synthetic
 merge checkout is `e89396a771da78b1342c34230d7a12ef7b4b4e04`, tree
 `92c65501a4f3b01ff6bc2d3ced3a3cd880c7d494`. Its parents are master
@@ -110,7 +110,7 @@ responsive-layout PASS. QA-12's banner/enforcement/data requirements pass.
 
 Capture hashes and review observations are in the JSON. The source PNGs remain
 in ignored `.out/issue60/native-accepted` and in the
-[accepted artifact](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39130446602/artifacts/12137129327)
+[accepted artifact](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39130446602/artifacts/12137129327)
 with 30-day Actions retention. Generated media is not staged in Git.
 
 ## Verification and cleanup

@@ -38,7 +38,7 @@ class ReleaseBoundaryTests(unittest.TestCase):
     def test_foreign_producer_cannot_emit_receipt_or_leak_response_fields(self):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / 'output'
-            env = {'GITHUB_REPOSITORY': 'Egkurilov/BOOHTACORD', 'BUILD_RUN_ID': '123',
+            env = {'GITHUB_REPOSITORY': 'BOOHTACORD/BOOHTACORD', 'BUILD_RUN_ID': '123',
                    'GITHUB_TOKEN': 'synthetic-session-canary', 'GITHUB_OUTPUT': str(output)}
             response = {'head_sha': 'a' * 40, 'head_repository': {'full_name': 'foreign/repo'},
                         'private_payload': 'synthetic-message-canary'}

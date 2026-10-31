@@ -53,7 +53,7 @@ runs:
         REQUESTED_CHANNEL: ${{ inputs.channel }}
       run: '"$BOOHTACORD_CI_PYTHON" -m tools.ci.flutter_setup.run install'
     - name: Save the public SDK only from the trusted master push
-      if: github.repository == 'Egkurilov/BOOHTACORD' && github.event_name == 'push' && github.ref == 'refs/heads/master' && inputs.cache == 'true' && steps.sdk-cache.outputs.cache-hit != 'true'
+      if: github.repository == 'BOOHTACORD/BOOHTACORD' && github.event_name == 'push' && github.ref == 'refs/heads/master' && inputs.cache == 'true' && steps.sdk-cache.outputs.cache-hit != 'true'
       uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25
       with:
         path: ${{ steps.metadata.outputs.cache_path }}

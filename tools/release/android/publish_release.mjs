@@ -9,7 +9,7 @@ export async function publishGitHubRelease({
   body,
   assets,
   token,
-  owner = 'egkurilov',
+  owner = 'BOOHTACORD',
   repo = 'BOOHTACORD',
   apiRoot = defaultApiRoot,
   fetchImpl = fetch,

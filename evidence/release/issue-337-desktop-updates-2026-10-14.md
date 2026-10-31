@@ -391,10 +391,10 @@ OS gates above pass. Unit tests and native compilation do not replace them.
   and validator before a bounded full retry. Its regression failed before the fix
   and passed afterwards. Desktop-focused suite: 27 PASS.
 - Local tools/contracts suite: 442 PASS, OpenAPI parity: 19 PASS. CI run
-  [38649725893](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38649725893)
+  [38649725893](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/38649725893)
   passed contracts, Linux backend, Vue, Flutter/vendor tests and analysis.
 - Signed Android candidate run
-  [38649718967](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38649718967)
+  [38649718967](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/38649718967)
   PASS. All three retained APKs were independently checked with apksigner/aapt:
   original release certificate, `ru.boohtacord.app`, 1.0.43, expected ABI version
   codes 1078/2078/4078, full source-bound manifest hashes. No new Android key.
@@ -407,7 +407,7 @@ OS gates above pass. Unit tests and native compilation do not replace them.
   tests cover the exact version and rejection of a different version. The native
   recovery component gate remains pending packaging; no fabricated ACK is used.
 - Separate autonomous lifecycle run
-  [38649725629](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38649725629)
+  [38649725629](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/38649725629)
   FAIL: no `roster-unavailable` event observed within 15 seconds after stopping the
   owned SFU. This failure was retained without weakening the check. Its cause has
   not been established by a baseline reproduction.
@@ -422,7 +422,7 @@ This section supersedes the earlier pending Windows packaging and locked-Mac
 status. It does not certify the full installed upgrade gates.
 
 - Windows component gate PASS at `8cffb9fa8d7f324dcfce700e68b79ad85bf473ed`,
-  [run 38687983343](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38687983343),
+  [run 38687983343](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/38687983343),
   job 116267141330. The shipping monitor used its actual 120-second deadline,
   restored every retained real Flutter app file, launched that executable, kept
   the synthetic external profile intact, removed its RunOnce registration and
@@ -482,7 +482,7 @@ status. It does not certify the full installed upgrade gates.
   rejection. The rebuilt isolated beta78 is awaiting native Keychain permission
   for another live attempt.
 - Fresh full Windows job 116269703551 in
-  [run 38688760886](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38688760886)
+  [run 38688760886](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/38688760886)
   PASS: native compile, required DLL dependency graph, per-user Setup and full
   NUPKG. Retained source merge SHA `7c9474df66fa9912af51fc333d756616a5e69758`.
   Downloaded artifacts 11951762001, 11952181829, 11951537139; archive hashes and
@@ -577,7 +577,7 @@ status. It does not certify the full installed upgrade gates.
   misleading empty-room state. This is local evidence; the new Linux CI
   journey has not yet run and earlier failed runs remain FAIL.
 - Full source-30ad2bfc CI
-  [38739317432](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38739317432)
+  [38739317432](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/38739317432)
   PASS across contracts, backend, Vue, Flutter and Windows. The Windows job
   built the real app, per-user installer and full package, and passed the
   native absent-replacement recovery/relaunch component gate. This does not
@@ -785,17 +785,17 @@ status. It does not certify the full installed upgrade gates.
 
 ## Sandboxed macOS launch failure and document handoff (2026-10-15)
 
-- Full CI [38794373579](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38794373579)
+- Full CI [38794373579](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/38794373579)
   passes for `b2495833`: contracts, backend, Vue, Flutter/Android and Windows
   packaging plus actual recovery/relaunch. Independent browser acceptance
-  [38794373277](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38794373277)
+  [38794373277](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/38794373277)
   passes on attempt 2; attempt 1 failed before a journey with Chromium
   `ERR_NETWORK_CHANGED`. The first failure is retained, not treated as an app
   behavior pass. Signed Android candidates also pass.
 - Ordinary macOS `b2495833` package passes all source/manifest digests. iOS
   device Release compiles, unsigned; no IPA or TestFlight upload is claimed.
 - Fresh immutable beta-only macOS 1.0.44 (79) package from `b2495833`:
-  [QA release](https://github.com/Egkurilov/BOOHTACORD/releases/tag/qa337-macos-1.0.44-beta-b2495833a99984c25795a990de5869d4068464cb),
+  [QA release](https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/qa337-macos-1.0.44-beta-b2495833a99984c25795a990de5869d4068464cb),
   47,472,021 bytes, SHA256
   `b41841ce02fa4f15862a74d1722f0320fc8deb513c6d9edd2a9165cfee72de2e`.
   Published bytes, ZIP CRC, strict nested codesign, bundle version, local

@@ -1,7 +1,7 @@
 """Fixed operator capabilities and exact public, non-shell input contracts."""
 import re
 
-REPO='Egkurilov/BOOHTACORD'
+REPO='BOOHTACORD/BOOHTACORD'
 OPERATIONS={
     'audit':('audit-attachment-volume.yaml','production-diagnostics','read-only','read-only-observation',180),
     'sample':('qa08-active-upload.yaml','production-diagnostics','read-only','upload-in-progress',240),

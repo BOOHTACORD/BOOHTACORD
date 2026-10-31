@@ -1,7 +1,7 @@
 """Allowlisted public scheduling metadata. No actors, payloads, logs or input values."""
 import re
 
-REPO = 'Egkurilov/BOOHTACORD'
+REPO = 'BOOHTACORD/BOOHTACORD'
 RUN_FIELDS = ('id', 'head_sha', 'path', 'event', 'status', 'conclusion', 'run_attempt',
               'created_at', 'run_started_at')
 JOB_FIELDS = ('id', 'name', 'status', 'conclusion', 'created_at', 'started_at', 'completed_at')

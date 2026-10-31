@@ -77,7 +77,7 @@ def identity(value):
               'component', 'profile', 'platform'}
     require(isinstance(value, dict) and set(value) == fields
             and all(isinstance(item, str) for item in value.values()))
-    require(value['repository'] == 'Egkurilov/BOOHTACORD'
+    require(value['repository'] == 'BOOHTACORD/BOOHTACORD'
             and re.fullmatch('[0-9a-f]{40}', value['source_revision'])
             and re.fullmatch('[1-9][0-9]{0,19}', value['run_id'])
             and re.fullmatch('[1-9][0-9]{0,3}', value['run_attempt'])

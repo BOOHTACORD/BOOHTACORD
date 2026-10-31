@@ -20,8 +20,8 @@ IDENTITY={'run_id':'123','run_attempt':'1'}
 def fixture():
     run={'id':123,'run_attempt':1,'head_sha':SOURCE,'head_branch':'master',
          'event':'workflow_dispatch','path':'.github/workflows/backend-ci-shadow.yaml',
-         'repository':{'full_name':'Egkurilov/BOOHTACORD'},
-         'head_repository':{'full_name':'Egkurilov/BOOHTACORD'}}
+         'repository':{'full_name':'BOOHTACORD/BOOHTACORD'},
+         'head_repository':{'full_name':'BOOHTACORD/BOOHTACORD'}}
     def time(seconds):
         return f'2026-10-20T00:{seconds//60:02}:{seconds%60:02}Z'
     rows=[]

@@ -9,7 +9,7 @@ from . import network
 
 SHA = 'a' * 40
 CONTROLLER = 'b' * 40
-ENV = {'GITHUB_REPOSITORY': 'Egkurilov/BOOHTACORD', 'BUILD_RUN_ID': '123',
+ENV = {'GITHUB_REPOSITORY': 'BOOHTACORD/BOOHTACORD', 'BUILD_RUN_ID': '123',
        'REQUESTED_REVISION': SHA, 'GITHUB_TOKEN': 'secret-token-canary'}
 
 

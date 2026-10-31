@@ -30,7 +30,7 @@ def compare(run,jobs,needs,legacy,parts,fanin):
         source=run['head_sha'];run_id=run['id'];attempt=run['run_attempt']
         require(isinstance(source,str) and re.fullmatch('[0-9a-f]{40}',source)
                 and type(run_id) is int and run_id>0 and type(attempt) is int and attempt>0)
-        require(run['repository']['full_name']==run['head_repository']['full_name']=='Egkurilov/BOOHTACORD'
+        require(run['repository']['full_name']==run['head_repository']['full_name']=='BOOHTACORD/BOOHTACORD'
                 and run['event']=='workflow_dispatch' and run['head_branch']=='master'
                 and run['path']=='.github/workflows/backend-ci-shadow.yaml')
         require(set(needs)=={'legacy','profiles'} and all(v.get('result')=='success' for v in needs.values()))

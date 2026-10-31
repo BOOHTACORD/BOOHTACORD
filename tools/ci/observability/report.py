@@ -22,7 +22,7 @@ def analyze(cohorts):
             rerun_rate=sum(r.get('run_attempt',1)>1 for r in runs)/len(runs) if runs else None,
             confirmed_flake_rate=None,required_green_seconds=None,queue_seconds=None)
         for run in runs:
-            row=classify(run,run['jobs']);url='https://github.com/Egkurilov/BOOHTACORD/actions/runs/'+str(run['id'])
+            row=classify(run,run['jobs']);url='https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/'+str(run['id'])
             observations.append(dict(run_id=run['id'],source_revision=run['head_sha'],source_kind='API workflow head; tested PR merge not verified',
                                      cohort=cohort,outcome=row['outcome'],url=url,confirmed_flake='UNKNOWN'))
             for failure in row['failures']:

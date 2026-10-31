@@ -43,7 +43,7 @@ class WindowsPromotionSecurityTests(unittest.TestCase):
             sums.write_text(line + "\n" + line + "\n", encoding="utf-8")
 
             with self.assertRaisesRegex(ValueError, "duplicate checksum"):
-                promote(catalog, 9, release, archive, manifest, sums, "Egkurilov/BOOHTACORD")
+                promote(catalog, 9, release, archive, manifest, sums, "BOOHTACORD/BOOHTACORD")
             self.assertEqual(catalog.read_bytes(), original)
 
     def test_malicious_checksum_path_fails_before_catalog_write(self):
@@ -55,7 +55,7 @@ class WindowsPromotionSecurityTests(unittest.TestCase):
                             + raw[1] + "\n", encoding="utf-8")
 
             with self.assertRaisesRegex(ValueError, "unexpected assets"):
-                promote(catalog, 9, release, archive, manifest, sums, "Egkurilov/BOOHTACORD")
+                promote(catalog, 9, release, archive, manifest, sums, "BOOHTACORD/BOOHTACORD")
             self.assertEqual(catalog.read_bytes(), original)
 
     def test_zip_path_traversal_fails_before_catalog_write(self):
@@ -64,7 +64,7 @@ class WindowsPromotionSecurityTests(unittest.TestCase):
             original = catalog.read_bytes()
 
             with self.assertRaisesRegex(ValueError, "unsafe path"):
-                promote(catalog, 9, release, archive, manifest, sums, "Egkurilov/BOOHTACORD")
+                promote(catalog, 9, release, archive, manifest, sums, "BOOHTACORD/BOOHTACORD")
             self.assertEqual(catalog.read_bytes(), original)
 
 

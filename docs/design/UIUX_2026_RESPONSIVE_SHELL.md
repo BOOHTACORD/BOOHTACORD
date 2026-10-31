@@ -27,4 +27,4 @@ Web Playwright covers 320×640, 375×812, 390×844, 393×852, 430×932, 600×900
 
 Flutter workspace geometry covers 320×640, 360×800, 375×812, 390×844, 430×932, 600×900, 840×390, 1024×768, 1280×800, 1440×900 and 1920×1080. A separate Android widget test simulates a 280 px IME with 24 px top/bottom view padding and verifies the composer, voice dock, draft, channel and connected voice remain available.
 
-Automated geometry is not physical acceptance. iOS Safari, Android system keyboard, macOS/Windows window resize and actual device media behavior remain in [issue #303](https://github.com/Egkurilov/BOOHTACORD/issues/303) until device evidence is recorded.
+Automated geometry is not physical acceptance. iOS Safari, Android system keyboard, macOS/Windows window resize and actual device media behavior remain in [issue #303](https://github.com/BOOHTACORD/BOOHTACORD/issues/303) until device evidence is recorded.

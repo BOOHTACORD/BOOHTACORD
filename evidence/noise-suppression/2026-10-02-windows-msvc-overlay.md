@@ -3,7 +3,7 @@
 ```yaml
 status: PARTIAL
 gate: Flutter Windows Release build with native RNNoise enabled
-failed_run: https://github.com/Egkurilov/BOOHTACORD/actions/runs/36991122856
+failed_run: https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/36991122856
 failed_revision: 1c2bc0a
 root_cause: MSVC rejects C99 variable-length scratch arrays in pinned RNNoise pitch.c and celt_lpc.c
 repository_fix: b81128b adds CMake-generated compiler-only overlays that replace only the VLA declarations with stack-allocation calls; pinned upstream source and model remain unchanged

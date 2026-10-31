@@ -11,7 +11,7 @@ def promote(catalog, revision, release, envelope, package, public_key, *, arch, 
     payload=verify(envelope,package,public_key,openssl)
     if payload['arch'] not in (arch,'any'):raise ValueError('Selector architecture mismatch')
     tag=payload['download_url'].split('/')[-2]
-    expected='https://github.com/Egkurilov/BOOHTACORD/releases/tag/'+tag
+    expected='https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/'+tag
     if (release.get('draft') is not False or release.get('prerelease') is not False
             or not release.get('published_at') or release.get('tag_name')!=tag
             or release.get('html_url')!=expected):raise ValueError('Release is not published at the selected immutable tag')

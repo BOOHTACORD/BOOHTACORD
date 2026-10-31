@@ -12,7 +12,7 @@ from .contract import require
 def context():
     source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     require(os.environ.get('GITHUB_ACTIONS')=='true' and os.environ.get('RUNNER_ENVIRONMENT')=='github-hosted'
-            and os.environ.get('GITHUB_REPOSITORY')=='Egkurilov/BOOHTACORD'
+            and os.environ.get('GITHUB_REPOSITORY')=='BOOHTACORD/BOOHTACORD'
             and os.environ.get('GITHUB_EVENT_NAME')=='workflow_dispatch' and os.environ.get('GITHUB_SHA')==source)
     run=os.environ.get('GITHUB_RUN_ID','');attempt=os.environ.get('GITHUB_RUN_ATTEMPT','')
     require(re.fullmatch('[0-9a-f]{40}',source) and re.fullmatch('[1-9][0-9]*',run) and re.fullmatch('[1-9][0-9]*',attempt))
