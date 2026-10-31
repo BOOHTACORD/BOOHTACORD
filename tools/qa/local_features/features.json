@@ -937,7 +937,7 @@
     ],
     "parity_review": {
       "issue": 579,
-      "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged. PR #625 (2026-10-31): the Web stream-viewer overflow menu removes the dedicated diagnostics and duplicate full-area expand actions, and opens the participant roster with an accessible people icon. Focused browser regressions cover the menu, roster action, playback and fullscreen; Flutter/iOS/Android behavior and existing platform decisions are unchanged.",
+      "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged. PR #625 (2026-10-31): the Web stream-viewer overflow menu removes the dedicated diagnostics and duplicate full-area expand actions, and opens the participant roster with an accessible people icon. Focused browser regressions cover the menu, roster action, playback and fullscreen; Flutter/iOS/Android behavior and existing platform decisions are unchanged. PR #626 (2026-10-31): Web participant stream previews use object-fit: cover to fill the card. This is a CSS-only browser presentation change; Flutter/iOS/Android preview behavior and platform decisions are unchanged.",
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "platform_exception",
