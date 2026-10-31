@@ -1,0 +1,166 @@
+{
+  "checked_at": "2026-10-31T10:23:36.387401+00:00",
+  "delivery": {
+    "controller_revision": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2",
+    "kind": "delivery-phases",
+    "phases": [
+      {
+        "elapsed_seconds": 3.518426,
+        "exit_code": null,
+        "failure_code": null,
+        "limit_seconds": 45,
+        "phase": "current_revision",
+        "status": "PASS"
+      },
+      {
+        "elapsed_seconds": 0.003595,
+        "exit_code": null,
+        "failure_code": null,
+        "limit_seconds": 10,
+        "phase": "history",
+        "status": "PASS"
+      },
+      {
+        "elapsed_seconds": 119.960942,
+        "exit_code": null,
+        "failure_code": null,
+        "limit_seconds": 1800,
+        "phase": "transfer_bundle",
+        "status": "PASS"
+      },
+      {
+        "elapsed_seconds": 3.572584,
+        "exit_code": null,
+        "failure_code": null,
+        "limit_seconds": 60,
+        "phase": "transfer_driver",
+        "status": "PASS"
+      },
+      {
+        "elapsed_seconds": 63.938896,
+        "exit_code": null,
+        "failure_code": null,
+        "limit_seconds": 600,
+        "phase": "remote_install",
+        "status": "PASS"
+      },
+      {
+        "elapsed_seconds": 4.270387,
+        "exit_code": null,
+        "failure_code": null,
+        "limit_seconds": 45,
+        "phase": "readback",
+        "status": "PASS"
+      }
+    ],
+    "readback": {
+      "checked_at": "2026-10-31T10:23:36.213328+00:00",
+      "controller_revision": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2",
+      "health": "PASS",
+      "kind": "installed-source-readback",
+      "migration_inventory_sha256": "b601a136043a9adcad627d19aa92d4f7ad1d7ae711bf44a1e8871e5f537c6382",
+      "persistent_volumes": "PASS",
+      "previous_source_revision": "2b95ddd864da210d6fc2f050e69ce2d5d203186e",
+      "rollout": {
+        "durations": {
+          "admission_enable_seconds": 3,
+          "health_seconds": 0,
+          "maintenance_request_to_disable_seconds": 50,
+          "maintenance_seconds": 47,
+          "migration_seconds": 2,
+          "rollout_seconds": 51,
+          "services_to_health_seconds": 25
+        },
+        "events": [
+          {
+            "phase": "rollout_started",
+            "unix_seconds": 1793442158
+          },
+          {
+            "phase": "maintenance_requested",
+            "unix_seconds": 1793442159
+          },
+          {
+            "phase": "maintenance_enabled",
+            "unix_seconds": 1793442162
+          },
+          {
+            "phase": "migration_started",
+            "unix_seconds": 1793442179
+          },
+          {
+            "phase": "migration_completed",
+            "unix_seconds": 1793442181
+          },
+          {
+            "phase": "services_started",
+            "unix_seconds": 1793442182
+          },
+          {
+            "phase": "health_started",
+            "unix_seconds": 1793442207
+          },
+          {
+            "phase": "health_passed",
+            "unix_seconds": 1793442207
+          },
+          {
+            "phase": "maintenance_disabled",
+            "unix_seconds": 1793442209
+          },
+          {
+            "phase": "rollout_completed",
+            "unix_seconds": 1793442209
+          }
+        ],
+        "resolution_seconds": 1,
+        "status": "PASS"
+      },
+      "running_images": {
+        "api": "sha256:1f6dd983711ab1ec17501a6198fc0df743ac1194674dd7d38bc073608cf81de8",
+        "web": "sha256:f0bfefaabefe81f0435d31606898fa44800f449e45ecb222d4bfff49ef694950"
+      },
+      "schema_relation": "unchanged",
+      "schema_sha256": "1b12225b731fb0cea1cb2ab435e365c0c2af70237a94aa2c81338c2f422a0541",
+      "schema_version": 1,
+      "source_revision": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2",
+      "sources": {
+        "api": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2",
+        "web": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2"
+      },
+      "status": "PASS",
+      "volumes": {
+        "attachments-data": "911317405d0c2cf37b7c23548c2f16a8ee4b77a73c2b2ffdcc39c90be028bf64",
+        "caddy-config": "7ecf607102e99e0177606c9c9b0a9c29e3dea3d3ab18175fdb12dbf84270761d",
+        "caddy-data": "01272a9bd5801e4dace822335ae94586b78b363aefd86f3464fdaef3b33b3ef2",
+        "postgres-data": "806af398ecef90b7e8c8186b7b747ef06d897c0de032f11bcec347a2f27c23f3"
+      }
+    },
+    "schema_version": 1,
+    "source_revision": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2",
+    "status": "PASS"
+  },
+  "human_approval": "NOT_ASSERTED",
+  "kind": "production-delivery",
+  "producer": {
+    "digest": "sha256:8bdbb08512bc2df4272b0b0e23f8784daa74092f0fb8e5a4c5d89893d6cea31b",
+    "format_version": 2,
+    "id": 13039341313,
+    "name": "server-d7cc1d381fffebf6ec095b1e9486b41bc145c3b2-41191641416-1",
+    "run_attempt": 1,
+    "run_id": 41191641416,
+    "size_in_bytes": 89145360,
+    "source_revision": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2"
+  },
+  "remote_completion": "FRESH_READBACK_VERIFIED",
+  "schema_version": 1,
+  "stages": {
+    "controller": "success",
+    "download": "success",
+    "install": "success",
+    "producer": "success",
+    "recheck": "success",
+    "ssh": "success"
+  },
+  "status": "PASS"
+}

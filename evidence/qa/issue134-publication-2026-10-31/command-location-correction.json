@@ -1,0 +1,509 @@
+{
+  "schema_version": 1,
+  "issue": 134,
+  "packet": "REPORT_ONLY_COMMAND_LOCATION_CORRECTION",
+  "status": "PASS_REPORT_ONLY_COMMAND_LOCATION_CORRECTION_ROOT_REVIEWED",
+  "supersedes_only": "Generic descriptive command/where entries of runtime-acceptance.json; previous receipt bytes, source, PASS behavior, merge and closure unchanged",
+  "previous_runtime_acceptance_Git_LF_SHA256": "ed015c540a765e8c18abbaee40c73749ba0ee344ad8da9e5599e7307290307d4",
+  "required_parameters": {
+    "<repo>": "Exact final4a0/tested84fd or mergedd7cc tree-equivalent checked out repository",
+    "<harness>": "Retained source-bound issue134-sidecar-20261031 helper directory; frozen9common modules/H2/provider hashes in runtime-runner-hashes.json",
+    "<owned-profile>": "Mandatory freshly provisioned, normalTLS, exact source/image/owner/DB/observer private main fixture profile; not an arbitrary URL or production profile. Removed after original run; unavailable now.",
+    "<owned-child-profile>": "Mandatory separate owned childDB/API/Caddy/boundedtmpfs with same frozen source and explicit fault authorisation; removed after original run.",
+    "<new-out>": "New unique absent owned output directory per command; never overwrite priorattempts",
+    "<pinned-node24.18.0>": "Verified Node24.18.0 Linux executable used by root",
+    "<infra-harness>": "Retained exact guarded infrastructure helper directory, matching helper SHA before execution; no global cleanup commands"
+  },
+  "current_fixture_state": "REMOVED_AFTER_ACCEPTANCE; all private fixture parameters are mandatory for runtime provenance templates. They are not arbitrary production URLs. This report launches no commands; the CI replay-equivalent also has a mandatory reviewed-ref/source guard.",
+  "outer_runtime_wrapper": [
+    "wsl.exe",
+    "-d",
+    "Ubuntu",
+    "--exec"
+  ],
+  "protects_command_platform_mandatory_result_where": [
+    {
+      "suite": "native upload socket and lifecycle",
+      "protects": "Real blocked reads, policy actor ordering, cancellation, progress, next keepalive and both HTTP callers",
+      "command_argv": [
+        "go",
+        "test",
+        "-race",
+        "./internal/storage/upload_request",
+        "./internal/storage/admit_upload",
+        "./internal/storage/upload_text_attachment/api",
+        "./internal/storage/upload_direct_message_attachment/api",
+        "-count=1",
+        "-v"
+      ],
+      "platform": "Pinned Linux Go1.26.4/CGO1; workdir <repo>/backend",
+      "mandatory_when": "Before source freeze; original source baseline RED retained",
+      "result": "PASS26 events/0skip on final backend tree; qualified mutations remain FAIL",
+      "where": [
+        {
+          "file": "evidence/qa/issue134-upload-read-deadline-2026-10-31.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/4a0f2582d58e521fa79d4905d124345185138b54/evidence/qa/issue134-upload-read-deadline-2026-10-31.json",
+          "section": "final_native, final_mutations, logs and sets[1]; before_fix remains qualified historical RED",
+          "Git_LF_SHA256": "07cb2578b7f90278fb7c09033558ed239672943c61068424bca9e2271bff08fe"
+        }
+      ],
+      "environment": {
+        "CGO_ENABLED": "1",
+        "GOTOOLCHAIN": "go1.26.4"
+      }
+    },
+    {
+      "suite": "mandatory native Caddy early408",
+      "protects": "Actual native pinned Caddy frontend delivery/EOF plus scope and valid-progress keepalive",
+      "command_argv": [
+        "python",
+        "-m",
+        "tools.qa.upload_proxy.ci"
+      ],
+      "platform": "Required hosted Ubuntu24.04 x64, Go1.26.4, Caddy2.10.0/embeddedGo1.24.2",
+      "mandatory_when": "Every existing required contracts workflow invocation; no optional skip",
+      "result": "PASS12/0FAIL/0SKIP; owned extraction cleanup verified",
+      "where": [
+        {
+          "file": "required-native-caddy-ci.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/required-native-caddy-ci.json",
+          "Git_LF_SHA256": "09bd184893481c7dc594b562504bab9f329b53ff2d0f12946182b63371f796ad"
+        },
+        {
+          "file": "required-native-caddy-summary.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/required-native-caddy-summary.json",
+          "Git_LF_SHA256": "a9f7941634b090c904fda0bf2cfcf14c3a277399f5f2c95bccc1239116cfee93"
+        },
+        {
+          "file": "required-native-caddy-receipt.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/required-native-caddy-receipt.json",
+          "Git_LF_SHA256": "1584ddbad37027a413b7fb3a8c59ccd93462588565312f5e1d56cdd5aa4ceba9"
+        }
+      ],
+      "run_URL": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/41189266493",
+      "artifact_ID": 13038380971
+    },
+    {
+      "suite": "global concurrency",
+      "protects": "Global16/account2 before reservation, ninth actor429/Retry-After1 and retry201",
+      "command_argv": [
+        "python3",
+        "<harness>/launcher.py",
+        "global",
+        "--profile",
+        "<owned-profile>",
+        "--out",
+        "<new-out>",
+        "--execute-owned"
+      ],
+      "platform": "Windows11 host via Ubuntu WSL, isolated actual Linux Go1.26.4/Caddy2.10.0/PostgreSQL17.6, normal TLS",
+      "mandatory_when": "Original #134 criteria1/2; fresh authorised main fixture/source and actor ledger required",
+      "result": "PASS16 active/400000000 disk reserved; both overflow429 and retry201",
+      "where": [
+        {
+          "file": "runtime-idle-global-controls.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/runtime-idle-global-controls.json",
+          "Git_LF_SHA256": "552a0239da6c56f4b592f507648ee826fc8f2fa9a6133cdfa19cd2faf946612c"
+        }
+      ],
+      "result_section": "ce7-global-attempt1"
+    },
+    {
+      "suite": "idle zero and partial body",
+      "protects": "Both real routes receive complete408/UPLOAD_TIMEOUT with all5 aggregates0 before client abort",
+      "command_argv": [
+        "python3",
+        "<harness>/launcher.py",
+        "idle",
+        "--profile",
+        "<owned-profile>",
+        "--out",
+        "<new-out>",
+        "--execute-owned",
+        "--mode",
+        "both"
+      ],
+      "platform": "Windows11 host via Ubuntu WSL, isolated actual Linux Go1.26.4/Caddy2.10.0/PostgreSQL17.6, normal TLS",
+      "mandatory_when": "Original criterion1; native60s, no clientclose workaround",
+      "result": "PASS4 cases, normal TLS, native60s unchanged",
+      "where": [
+        {
+          "file": "runtime-idle-global-controls.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/runtime-idle-global-controls.json",
+          "Git_LF_SHA256": "552a0239da6c56f4b592f507648ee826fc8f2fa9a6133cdfa19cd2faf946612c"
+        }
+      ],
+      "result_section": "ce7-idle-attempt1"
+    },
+    {
+      "suite": "disconnect/cancel/slow progress",
+      "protects": "HTTP1 disconnect/LINGER0 cancellation, account2 and valid75s progressing201",
+      "command_argv": [
+        "python3",
+        "<harness>/launcher.py",
+        "controls",
+        "--profile",
+        "<owned-profile>",
+        "--out",
+        "<new-out>",
+        "--execute-owned"
+      ],
+      "platform": "Windows11 host via Ubuntu WSL, isolated actual Linux Go1.26.4/Caddy2.10.0/PostgreSQL17.6, normal TLS",
+      "mandatory_when": "Original criteria2/3; both TEXT and DM",
+      "result": "PASS all controls; normal progress+retry retained",
+      "where": [
+        {
+          "file": "runtime-idle-global-controls.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/runtime-idle-global-controls.json",
+          "Git_LF_SHA256": "552a0239da6c56f4b592f507648ee826fc8f2fa9a6133cdfa19cd2faf946612c"
+        }
+      ],
+      "result_section": "ce7-controls-attempt1"
+    },
+    {
+      "suite": "additional HTTP2 scope",
+      "protects": "Actualh2 complete408 without Connection and same authenticated h2 session reuse",
+      "command_argv": [
+        "<pinned-node24.18.0>",
+        "<harness>/h2_scope_diagnostic.mjs",
+        "--profile",
+        "<owned-profile>",
+        "--out",
+        "<new-out>",
+        "--execute-owned"
+      ],
+      "platform": "Windows11 host via Ubuntu WSL, isolated actual Linux Go1.26.4/Caddy2.10.0/PostgreSQL17.6, normal TLS; Node24.18.0 stdlib http2",
+      "mandatory_when": "Preservation control for HTTP1-only Caddy response rule; does not replace H1/900",
+      "result": "PASS2 complete408, before/afterGET200/binding, resources0",
+      "where": [
+        {
+          "file": "runtime-http2-scope.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/runtime-http2-scope.json",
+          "Git_LF_SHA256": "f90b55a4e070a6ab8c91185fcf7553e7b5ab5c596a04a02a48af58434039b2b5"
+        }
+      ],
+      "runner_SHA256": "64adf9efaa84f794851b17f9b3bbf41043dcda3a6117e268ef6e75b0e1a09883"
+    },
+    {
+      "suite": "real voice SDK provider start",
+      "protects": "Actual source-bound RTC SDK/lease/RoomService witness, no mocks or audio-quality claim",
+      "command_argv": [
+        "/usr/bin/xvfb-run",
+        "-a",
+        "--server-num=153",
+        "--server-args=-screen 0 1600x1200x24",
+        "<pinned-node24.18.0>",
+        "<harness>/voice_launcher.mjs",
+        "--profile",
+        "<owned-profile>",
+        "--out",
+        "<new-out>"
+      ],
+      "platform": "Windows11 host via Ubuntu WSL, isolated actual Linux Go1.26.4/Caddy2.10.0/PostgreSQL17.6, normal TLS; owned Chromium/Xvfb, no microphone",
+      "mandatory_when": "Provider qualified before/through actual900; private profile must bind source, provider, Web lock, NSS and observer",
+      "result": "PASS90 actual SDK/same-lease/SFU samples across real900; later normal Leave/logout qualified",
+      "where": [
+        {
+          "file": "runtime-absolute-qualified.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/runtime-absolute-qualified.json",
+          "Git_LF_SHA256": "28546b5fb28ab8636f955e3e45f5781dc4b51ef80d30c80b8100d5075c224229"
+        },
+        {
+          "file": "runtime-provider-cleanup-qualified.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/runtime-provider-cleanup-qualified.json",
+          "Git_LF_SHA256": "539a507723ef8c9d17d3f506692e5f8f719a5384ee899a2388c36bd314ff1390"
+        },
+        {
+          "file": "runtime-runner-hashes.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/runtime-runner-hashes.json",
+          "Git_LF_SHA256": "b3c3ef6e8aa034d4bbc3b787bb41d7e832e7e95a76306b1b54f351aac6ee6624"
+        }
+      ],
+      "provider_SHA256": "a64e2e210129f8dbd94da0db6576aa9dad4557a3aba6f2869758ad6d8f7e0ccb"
+    },
+    {
+      "suite": "normal provider Leave and own logout",
+      "protects": "Existing provider receives its guarded control write, performs real UI Leave/logout and exits",
+      "command_argv": [
+        "python3",
+        "-c",
+        "from pathlib import Path;import json,os,sys;p=Path(sys.argv[1]);d=json.loads(p.read_text());f=Path(d['voice_control_file']);assert f.parent==p.parent and not f.exists();fd=os.open(f,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600);os.write(fd,json.dumps({'action':'leave'}).encode());os.close(fd)",
+        "<owned-profile>"
+      ],
+      "platform": "Same owned Ubuntu WSL provider; Windows historical outer wrapper was wsl.exe -d Ubuntu --exec",
+      "mandatory_when": "After all actual900 samples and before main session/infra cleanup; active source-qualified owned fixture required",
+      "result": "PASS UILeave204/logout204/revocation/exactprocessabsence/exit0",
+      "where": [
+        {
+          "file": "runtime-provider-cleanup-qualified.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/runtime-provider-cleanup-qualified.json",
+          "Git_LF_SHA256": "539a507723ef8c9d17d3f506692e5f8f719a5384ee899a2388c36bd314ff1390"
+        }
+      ],
+      "command_provenance": "Executable parameterized equivalent control-write, not verbatim historical outer shell/private path. Historical root executed the same body with literal private profile after a quoting-only SyntaxError/no write. No reexecution in this report correction."
+    },
+    {
+      "suite": "real absolute900 and protected realtime",
+      "protects": "Absolute maximum despite20s progress; complete408/resources0 and actualWS+SDK lifetime",
+      "command_argv": [
+        "python3",
+        "<harness>/launcher.py",
+        "absolute",
+        "--profile",
+        "<owned-profile>",
+        "--out",
+        "<new-out>",
+        "--execute-owned"
+      ],
+      "platform": "Windows11 host via Ubuntu WSL, isolated actual Linux Go1.26.4/Caddy2.10.0/PostgreSQL17.6, normal TLS",
+      "mandatory_when": "Original criteria1/4; native900 and idle60 unchanged; actual930watchdog not a PASS substitute",
+      "result": "PASS TEXT900.00484/DM900.00392,46writes,maxgap20.00058,46/46WS through902s,90SDKsamples, retry201",
+      "where": [
+        {
+          "file": "runtime-absolute-qualified.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/runtime-absolute-qualified.json",
+          "Git_LF_SHA256": "28546b5fb28ab8636f955e3e45f5781dc4b51ef80d30c80b8100d5075c224229"
+        }
+      ]
+    },
+    {
+      "suite": "actual isolated ENOSPC",
+      "protects": "Real bounded child-only tmpfs writer fault,500INTERNAL/resources0/unfill+retry201",
+      "command_argv": [
+        "python3",
+        "<harness>/launcher.py",
+        "enospc",
+        "--profile",
+        "<owned-child-profile>",
+        "--out",
+        "<new-out>",
+        "--execute-owned",
+        "--provision"
+      ],
+      "platform": "Windows11 host via Ubuntu WSL, isolated actual Linux Go1.26.4/Caddy2.10.0/PostgreSQL17.6, normal TLS; fresh separate childDB/API/Caddy/tmpfs",
+      "mandatory_when": "Original criterion2; exactly2 ordinary child MEMBER, unchanged2GiB floor, no host/main/persistent filling",
+      "result": "PASS realfreeblocks0, bothroutes500INTERNAL, cleanup0/retry201, own sessions revoked",
+      "where": [
+        {
+          "file": "runtime-enospc-qualified.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/runtime-enospc-qualified.json",
+          "Git_LF_SHA256": "a684617410bee8b361c9621661e8c619883534f741f380fe66ce29aa41dab175"
+        },
+        {
+          "file": "runtime-infra-cleanup.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/runtime-infra-cleanup.json",
+          "Git_LF_SHA256": "084c1e14913f0835deaedde5a2e0569f7b377760aa5ecf59c2e0fa1ac476eebb"
+        }
+      ]
+    },
+    {
+      "suite": "normal application upload and session cleanup",
+      "protects": "Author positive original200/hash\u2192delete\u2192blanktombstone/original404; all own sessions revoked",
+      "command_argv": [
+        "python3",
+        "<harness>/launcher.py",
+        "cleanup",
+        "--profile",
+        "<owned-profile>",
+        "--out",
+        "<new-out>",
+        "--execute-owned"
+      ],
+      "platform": "Windows11 host via Ubuntu WSL, isolated actual Linux Go1.26.4/Caddy2.10.0/PostgreSQL17.6, normal TLS",
+      "mandatory_when": "After providerLeave/logout; before infra teardown",
+      "result": "PASS12ce7 records cleaned,14ledger includes2 prior718;9mainlogout204/revoked;all5resources0",
+      "where": [
+        {
+          "file": "runtime-application-cleanup.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/runtime-application-cleanup.json",
+          "Git_LF_SHA256": "d8265a5d2779565879f8ff317ac3a78c24262e15cdeba89675def95545df2936"
+        }
+      ]
+    },
+    {
+      "suite": "owned main infrastructure cleanup",
+      "protects": "Exact labels/images/PIDcreation/keyfile guards; remove only owned namespace after normal cleanup",
+      "command_argv": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu",
+        "-u",
+        "root",
+        "--",
+        "python3",
+        "<infra-harness>/cleanup_ce7_keys_complete.py",
+        "--root-authorized-exact-ce7-cleanup"
+      ],
+      "platform": "Ubuntu WSL guarded owner-only infrastructure controller",
+      "mandatory_when": "Only after zero liveDB links/leases/SFU/5uploadaggregates, normal UI/app/session cleanup and explicit root GO",
+      "result": "PASS namespace/keys/holder absent; old9Config/image/start and globalCA/NSS unchanged",
+      "where": [
+        {
+          "file": "runtime-infra-cleanup.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/runtime-infra-cleanup.json",
+          "Git_LF_SHA256": "084c1e14913f0835deaedde5a2e0569f7b377760aa5ecf59c2e0fa1ac476eebb"
+        }
+      ],
+      "helper_SHA256": "402ab7f68ee7bb549a4c1b2b54578452a1e1714597d50343e8846ad2e997ef3c",
+      "executed_receipt_SHA256": "c61bd9da67d54403798601e52a73ae21f96e630285dd834e8f9a4d7ce03655b6"
+    },
+    {
+      "suite": "owned ENOSPC child infrastructure cleanup",
+      "protects": "Remove only exact child namespace/holder/keys without touching live main SDK",
+      "command_argv": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu",
+        "-u",
+        "root",
+        "--",
+        "python3",
+        "<infra-harness>/enospc-child/cleanup_child.py",
+        "--root-authorized-only-child-cleanup"
+      ],
+      "platform": "Same guarded Ubuntu WSL owner-only controller",
+      "mandatory_when": "After child normal uploads/sessions cleanup and explicit root GO; main may still be in900run",
+      "result": "PASS childresources0, holderexit0, main+old9unchanged; finalbothnamespace0",
+      "where": [
+        {
+          "file": "runtime-enospc-qualified.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/runtime-enospc-qualified.json",
+          "Git_LF_SHA256": "a684617410bee8b361c9621661e8c619883534f741f380fe66ce29aa41dab175"
+        },
+        {
+          "file": "runtime-infra-cleanup.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/runtime-infra-cleanup.json",
+          "Git_LF_SHA256": "084c1e14913f0835deaedde5a2e0569f7b377760aa5ecf59c2e0fa1ac476eebb"
+        }
+      ],
+      "helper_SHA256": "74af1aacd114e8bf085d15f92cb057b01adbe4c61b7fe16ba1243125eb7e6ae2",
+      "executed_receipt_SHA256": "4f77be7fc8a04c50953a1cdd0adc222a5499012e7c2e943633cee26e925adf1b",
+      "final_child_receipt_SHA256": "b5188eb2539dd4873846eba11e656ff650707374ce8bbc87a30f0d6c649d299a"
+    },
+    {
+      "suite": "native static and required contracts checks",
+      "protects": "Backend vet/build and native API/contract parity; these commands alone do not launch Android/macOS profiles",
+      "command_argv": [
+        [
+          "go",
+          "vet",
+          "./..."
+        ],
+        [
+          "go",
+          "build",
+          "./..."
+        ],
+        [
+          "python",
+          "-m",
+          "tools.ci.receipts.run",
+          "contracts"
+        ]
+      ],
+      "platform": "Static: pinned LinuxGo1.26.4 CGO0 workdir<repo>/backend; contracts: required hosted Ubuntu24.04/Pwsh at repository root",
+      "mandatory_when": "Final exact source before merge; CI PR622 workflow CI eventpull_request head4a0/testedmerge84fd",
+      "result": "PASS native vet/build exit0 and required contracts job in final CI; full-profile invocation is the next separate row",
+      "where": [
+        {
+          "file": "final-ci-quality.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/final-ci-quality.json",
+          "Git_LF_SHA256": "9904b3027ee8cf7f08897d8e7f41dc5697b77a9d32c4878af9fe95109ce2fbab"
+        },
+        {
+          "file": "merged-source-proof.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/merged-source-proof.json",
+          "Git_LF_SHA256": "260df950def667028451ecb164c6e67f05a13cc5ad9c07fd8d95f09b0eff8e93"
+        },
+        {
+          "file": "command-location-correction.json",
+          "section": "retained_native_static_receipt (exact original receipt and log hashes)"
+        }
+      ],
+      "actual_workflow": {
+        "path": ".github/workflows/ci.yaml",
+        "workflow_id": 371491554,
+        "event": "pull_request",
+        "PR": 622,
+        "head": "4a0f2582d58e521fa79d4905d124345185138b54",
+        "checkout": "84fd3cba1a37b86bc3ea99399c1b5318671bbc9e",
+        "run_id": 41189266493,
+        "attempt": 1,
+        "URL": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/41189266493"
+      }
+    },
+    {
+      "suite": "final exact-source full hosted profile invocation",
+      "protects": "Actual PostgreSQL17.6, Android/Kotlin, macOS and all remaining required hosted profiles on the final source",
+      "command_argv": [
+        "gh",
+        "workflow",
+        "run",
+        "ci.yaml",
+        "--repo",
+        "Egkurilov/BOOHTACORD",
+        "--ref",
+        "master"
+      ],
+      "command_provenance": "Executable supported existing-workflow replay equivalent, NOT the historical #134 trigger and NOT executed by this report correction. No workflow inputs are required/supplied; workflow_dispatch without a trusted diff selects the full profile.",
+      "replay_ref_binding": {
+        "ref": "master",
+        "required_reviewed_source_at_this_record": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2",
+        "must_verify_ref_before_any_replay": true,
+        "reason": "Merged master tree equals historical final4a0 tested tree. If master advances this example no longer replays #134 and must not be attributed to it."
+      },
+      "platform": "Existing GitHub-hosted CI workflow .github/workflows/ci.yaml, id371491554; declared platform SDKs",
+      "mandatory_when": "Final exact-source platform-gate acceptance; a local contracts command is insufficient",
+      "result": "Historical actual #134 full CI run41189266493/1:27SUCCESS/0jobskip; historical event was pull_request PR622, not this replay command",
+      "where": [
+        {
+          "file": "final-ci-quality.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/final-ci-quality.json",
+          "Git_LF_SHA256": "9904b3027ee8cf7f08897d8e7f41dc5697b77a9d32c4878af9fe95109ce2fbab"
+        },
+        {
+          "file": "merged-source-proof.json",
+          "immutable_URL": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/merged-source-proof.json",
+          "Git_LF_SHA256": "260df950def667028451ecb164c6e67f05a13cc5ad9c07fd8d95f09b0eff8e93"
+        }
+      ],
+      "actual_historical_trigger": {
+        "event": "pull_request",
+        "PR": 622,
+        "branch": "codex/fix-upload-read-deadline-134",
+        "head_sha": "4a0f2582d58e521fa79d4905d124345185138b54",
+        "checkout_sha": "84fd3cba1a37b86bc3ea99399c1b5318671bbc9e",
+        "run_id": 41189266493,
+        "attempt": 1,
+        "URL": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/41189266493"
+      }
+    }
+  ],
+  "unchanged_original_root_v2_SHA256": "724858f803af308d82095aee0578ffbd273732b624de73bfa41b8d5c613909f5",
+  "unchanged_closure": "https://github.com/Egkurilov/BOOHTACORD/blob/16114f31c23582734eab83f927a674b6fe0b91a8/evidence/qa/issue134-publication-2026-10-31/closure-result.json",
+  "no_product_or_runtime_actions": true,
+  "review": "Root accepted all14 proposed suites; final CI invocation is now a separate executable replay-equivalent row, not implied by local vet/build/contracts. No runtime or CI reexecution.",
+  "retained_native_static_receipt": {
+    "original_SHA256": "a1276f9f3292cc44fd5d92eb8daf6020d8a06001eceecb631940788a233a1c04",
+    "value": {
+      "source_revision": "718768c242a5e14293f2255e86f4961b449a0771",
+      "platform": "WSL2Ubuntu Linuxx64",
+      "Go": "1.26.4",
+      "CGO": 0,
+      "tracked_source_clean_before_after": true,
+      "operations": [
+        {
+          "command": "go vet ./...",
+          "exit_code": 0,
+          "log_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "command": "go build ./...",
+          "exit_code": 0,
+          "log_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "status": "PASS"
+    }
+  }
+}

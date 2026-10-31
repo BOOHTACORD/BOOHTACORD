@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "issue": 134,
+  "status": "PASS_EXISTING_AUTOMATIC_PRODUCTION_DELIVERY_AND_VERIFIED_READBACK",
+  "source_revision": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2",
+  "separate_from_original_isolated_issue_acceptance": true,
+  "producer": {
+    "workflow": "Build server",
+    "run_id": 41191641416,
+    "attempt": 1,
+    "event": "push",
+    "artifact_id": 13039341313,
+    "artifact_bytes": 89145360,
+    "artifact_ZIP_SHA256": "8bdbb08512bc2df4272b0b0e23f8784daa74092f0fb8e5a4c5d89893d6cea31b",
+    "metadata_matches_actual_delivery_producer": true
+  },
+  "delivery": {
+    "workflow": "Deploy production",
+    "run_id": 41192309958,
+    "attempt": 1,
+    "event": "workflow_run",
+    "artifact_id": 13040035146,
+    "actual_downloaded_receipt_ZIP_bytes": 1502,
+    "actual_downloaded_receipt_ZIP_SHA256": "9e8ecd9b6141ddd3bc57cf1077ab72257c1072f2511f63ecf8dd0558a6b31d70",
+    "original_receipt_SHA256": "9a1ea4e19f0c534a7cacbf226261224a76b39831d7e02c73b0605f8f357b892b",
+    "all_six_trusted_stages": "success",
+    "remote_completion": "FRESH_READBACK_VERIFIED",
+    "checked_at": "2026-10-31T10:23:36.213328+00:00"
+  },
+  "independently_checked_readback": {
+    "API_source": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2",
+    "Web_source": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2",
+    "health": "PASS",
+    "persistent_volumes": "PASS",
+    "schema_relation": "unchanged",
+    "migration_inventory_SHA256": "b601a136043a9adcad627d19aa92d4f7ad1d7ae711bf44a1e8871e5f537c6382",
+    "schema_SHA256": "1b12225b731fb0cea1cb2ab435e365c0c2af70237a94aa2c81338c2f422a0541",
+    "running_image_digests": {
+      "api": "sha256:1f6dd983711ab1ec17501a6198fc0df743ac1194674dd7d38bc073608cf81de8",
+      "web": "sha256:f0bfefaabefe81f0435d31606898fa44800f449e45ecb222d4bfff49ef694950"
+    },
+    "volume_identity_hashes": {
+      "attachments-data": "911317405d0c2cf37b7c23548c2f16a8ee4b77a73c2b2ffdcc39c90be028bf64",
+      "caddy-config": "7ecf607102e99e0177606c9c9b0a9c29e3dea3d3ab18175fdb12dbf84270761d",
+      "caddy-data": "01272a9bd5801e4dace822335ae94586b78b363aefd86f3464fdaef3b33b3ef2",
+      "postgres-data": "806af398ecef90b7e8c8186b7b747ef06d897c0de032f11bcec347a2f27c23f3"
+    }
+  },
+  "independent_public_Web_readback": {
+    "checked_at_utc": "2026-10-31T10:26:26.806342+00:00",
+    "public_URL": "https://v.bootybay.ru/release-receipt.json",
+    "HTTP": 200,
+    "default_TLS_verification": true,
+    "redirects_followed": false,
+    "body_SHA256": "a6bef4401ad58f3afcaabf48a83f6f475e8aadf27137c1ab04727de036975e75",
+    "value": {
+      "schema_version": 1,
+      "application_family": "boohtacord",
+      "platform": "web",
+      "distribution": "browser",
+      "channel": "stable",
+      "arch": "any",
+      "release_id": "web-browser-stable-r61",
+      "release_order": 61,
+      "version": "1.0.47",
+      "native_build": null,
+      "architecture": "any",
+      "build_info_sha256": "70ffd35bfb8a6eebc088dfefb5ed9bd7549fd48e8398fb2be0d283bf12ac1e4b",
+      "source_revision": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2",
+      "signature_evidence": "oci_attestation",
+      "download_available": true
+    }
+  },
+  "verification_scope": "Agent downloaded and digest-verified the retained delivery receipt ZIP, matched producer archive ID/name/size/digest to GitHub API, checked fresh installed-source/health/migration inventory/volume readback, and fetched public Web receipt through default TLS without redirects. The89MB producer archive itself was downloaded/digest-verified by the existing trusted delivery workflow; agent did not redownload that large archive.",
+  "human_approval": "NOT_ASSERTED",
+  "actions": "Existing automatic workflows only; no manual deployment/production SQL/fault/load/login/device/UI operation by this verification packet",
+  "unrelated_QA_or_physical_audio_claim": false,
+  "nonce_values_removed_from_public_projection": true
+}
