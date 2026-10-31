@@ -225,3 +225,13 @@ Source718 remains the immutable backend/native prior scope. Root confirmed direc
 - [x] Add only a POST/exact TEXT-DM path/HTTP1.x request match and upstream408 response handler setting frontend Connection:close before copy_response in deploy/caddy/Caddyfile. No global duplex/timeouts, no valid-upload closing or cap changes.
 - [x] Run native Caddy GREEN, retain config/binary/test/log fingerprints and scope/progress/keep-alive controls, then compare source-before-fix again as a qualified mutation.
 - [ ] Freeze and hand off a new exact immutable source before any MAIN reload. Root reruns all real TLS duration/cleanup/concurrency/ENOSPC/realtime criteria; full CI repeats on the final new head.
+
+### Task5: Required native proxy regression discovery
+
+Root approved this validation-only integration after ce7. Do not change backend, deploy, clients/web or tools/toolchains.json. Runtime remains actual APIce7/Caddyce7/Web2b95; prove those whole trees equal the final validation head without relabelling actual runtime or repeating15minutes for CI-only changes.
+
+- [x] Add an unconditional `python -m tools.qa.upload_proxy.ci` step after Compose validation in existing required contracts job; always retain source/run/attempt native receipts and logs, including failures.
+- [x] Pin the approved Caddy2.10.0 image manifest, Linux binary SHA and embedded Go1.24.2. Extract only from a unique stopped/labelled/no-network container, fail closed on identity/hash/state mismatch, and remove only that validated container without force or image pruning.
+- [x] Reject absent/partial/skipped native suites and cleanup failure; keep the actual12-case native fixture unchanged. Run focused wrapper/discovery/Actions/trust/toolchain tests before committing.
+- [x] Document protects -> command -> platform -> mandatory trigger -> result location in tools/qa/upload_proxy/README.md. Local mocked extraction checks and actual hosted execution remain separately labelled.
+- [ ] Commit explicit validation paths and send immutable head plus backend/deploy/Web/toolchain tree equality to root. Repeat full CI including PostgreSQL17.6/Android/macOS and the new actual native Caddy step; verify retained artifact source/counts/cleanup. Merge and issue closure still await root complete runtime PASS.

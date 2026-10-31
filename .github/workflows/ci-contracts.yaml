@@ -97,6 +97,17 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Validate Compose interpolation without starting services
         run: docker compose --env-file .env.example -f deploy/compose.yaml config --quiet
+      - name: Require native pinned Caddy upload timeout delivery
+        timeout-minutes: 12
+        run: python -m tools.qa.upload_proxy.ci
+      - name: Retain mandatory native upload proxy regression
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: upload-proxy-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/ci/upload-proxy/
+          if-no-files-found: error
+          retention-days: 30
       - name: Verify private OTLP egress wiring
         shell: pwsh
         run: ./tools/verify/otel_egress/verify-otel-egress.ps1
