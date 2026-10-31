@@ -1,0 +1,54 @@
+{
+  "status": "PASS_FINAL_ISSUE134_OWNED_MAIN_AND_CHILD_INFRA_CLEANUP",
+  "source_sha": "ce7bbe0571174745acd27e8fc5727047f3bb5f29",
+  "main8_containers_3APIimages_network_removed": true,
+  "child8_containers_network_previously_removed": true,
+  "main_Caddy_root_intermediate_leaf_privatekeys_directory_absent": true,
+  "main_LKprivatekey_file_absent": true,
+  "child_LKprivatekey_file_absent": true,
+  "Linux_global_CA_NSS_unchanged": true,
+  "original9_ID_start_image_fullConfig_equal": true,
+  "original9_before_SHA256": "f6f382af00d7b301b6a562492f954cf1e22f8e2297d22d71c6b862afe16710fe",
+  "original9_after_SHA256": "f6f382af00d7b301b6a562492f954cf1e22f8e2297d22d71c6b862afe16710fe",
+  "precleanup_9sessions_provider_leases_SFU_uploads0_verified": true,
+  "retired_own_BINbytes_disposed_only_with_owned_tmpfs_no_manual_unlink": true,
+  "executed_cleanup_helper_SHA256": "402ab7f68ee7bb549a4c1b2b54578452a1e1714597d50343e8846ad2e997ef3c",
+  "legacy91a4_immutable": true,
+  "safe_artifacts_SHA256": {
+    "main-cleanup-executed.json": "c61bd9da67d54403798601e52a73ae21f96e630285dd834e8f9a4d7ce03655b6",
+    "main-final-precleanup-readonly.json": "1de45feca1d08b545522ba0331569ce96dacf1c93a776a5b0dce341591d4d586",
+    "main-expanded-cleanup-review.json": "d2b1cede721906b3e8af4e13abec926fe8e2a34fda49ff90795e2ab3dc871399",
+    "cleanup-ce7-expanded-LKkeyfile.diff": "6d1786397f9f9cc056ad9c256c964bfd0411053e86994605b70092327992efc8",
+    "windows-nine-ce7-main-cleanup-before.json": "f6f382af00d7b301b6a562492f954cf1e22f8e2297d22d71c6b862afe16710fe",
+    "windows-nine-ce7-main-cleanup-after.json": "f6f382af00d7b301b6a562492f954cf1e22f8e2297d22d71c6b862afe16710fe"
+  },
+  "child_cleanup_receipt_SHA256": "b5188eb2539dd4873846eba11e656ff650707374ce8bbc87a30f0d6c649d299a",
+  "all_product_SQL_writes_by_infra": 0,
+  "production_router_WindowsUI_or_globalDocker_WSL_stops": false,
+  "owned_namespaces_remaining_counts": [
+    {
+      "container": 0,
+      "network": 0,
+      "image": 0,
+      "volume": 0
+    },
+    {
+      "container": 0,
+      "network": 0,
+      "image": 0,
+      "volume": 0
+    }
+  ],
+  "original_receipt_SHA256": "b4018f793d7be9333fc20822c00c75b46c6cdba562c3ff00688f33779444c601",
+  "owned_holders": {
+    "main": {
+      "exact_PID_creation_ended": true,
+      "exec_exit_code": 0
+    },
+    "child": {
+      "exact_PID_creation_ended": true,
+      "exec_exit_code": 0
+    }
+  },
+  "current_runtime_state": "Both owned isolated QA namespaces removed AFTER completed runtime acceptance; readiness/SDK observations are historical before normal Leave/cleanup"
+}

@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "issue": 134,
+  "PR": 622,
+  "status": "PASS_ORIGINAL_ISOLATED_RUNTIME_CRITERIA_FINAL_CI_MERGE_PENDING",
+  "validation_head": "4a0f2582d58e521fa79d4905d124345185138b54",
+  "tested_merge": "84fd3cba1a37b86bc3ea99399c1b5318671bbc9e",
+  "tested_tree": "7c953bd322663624b52dd724f687550d49a9c16d",
+  "actual_runtime_identity": {
+    "API": "ce7bbe0571174745acd27e8fc5727047f3bb5f29",
+    "Caddy": "ce7bbe0571174745acd27e8fc5727047f3bb5f29",
+    "Web": "2b95ddd864da210d6fc2f050e69ce2d5d203186e",
+    "whole_backend_deploy_Web_toolchain_trees_equal_validation_head": true,
+    "do_not_relabel_runtime_to_validation_head": true
+  },
+  "platform": "Windows11 host; isolated WSL Ubuntu Linux Go1.26.4 PostgreSQL17.6 native Caddy2.10.0; actual SDK LiveKit witness in owned Chromium.",
+  "original10criteria": [
+    {
+      "verbatim": "- [ ] Добавить маршрутные ограничения длительности/отсутствия прогресса чтения upload; корректно прерывать блокирующее чтение при timeout/cancel.",
+      "result": "PASS",
+      "proof": "Deadline native/source + runtime-idle-global-controls.json + runtime-absolute-qualified.json"
+    },
+    {
+      "verbatim": "- [ ] Ввести per-account и глобальный лимиты одновременно выполняющихся загрузок, применяемые до дорогой работы и резервирования.",
+      "result": "PASS",
+      "proof": "Existing admission source preserved; runtime-idle-global-controls.json account2/global16 overflow429/retry201"
+    },
+    {
+      "verbatim": "- [ ] Гарантировать освобождение слотов, резервов и временных файлов на всех ошибочных путях.",
+      "result": "PASS",
+      "proof": "runtime-idle-global-controls.json + runtime-enospc-qualified.json + runtime-application-cleanup.json"
+    },
+    {
+      "verbatim": "- [ ] Согласовать ограничения API и Caddy, описать их в runbook; сохранить допустимую медленную передачу с прогрессом.",
+      "result": "PASS",
+      "proof": "Source runbook/API/Caddy + real75s controls + runtime-http2-scope.json"
+    },
+    {
+      "verbatim": "- [ ] Добавить агрегаты inflight uploads, reserved bytes и возраста незавершённых операций без account ID, filename или cookie в labels.",
+      "result": "PASS",
+      "proof": "Existing bounded aggregate instrumentation preserved; all5 numeric resource snapshots; no new metric labels"
+    },
+    {
+      "verbatim": "- [ ] На изолированном стенде незавершённое тело и частичный multipart завершаются в пределах выбранной политики, резервы/временные файлы/слоты освобождаются.",
+      "result": "PASS",
+      "proof": "runtime-idle-global-controls.json + runtime-absolute-qualified.json resources0 BEFORE client abort"
+    },
+    {
+      "verbatim": "- [ ] Проверены отключение клиента, отмена, ошибка записи на диск и конкурентные запросы сверх лимита.",
+      "result": "PASS",
+      "proof": "runtime-idle-global-controls.json disconnect/cancel/global/account + runtime-enospc-qualified.json"
+    },
+    {
+      "verbatim": "- [ ] Медленная корректная передача с прогрессом работает в документированных пределах.",
+      "result": "PASS",
+      "proof": "runtime-idle-global-controls.json actual75s progress201 both routes"
+    },
+    {
+      "verbatim": "- [ ] После timeout новые загрузки снова принимаются; voice/realtime не получают общего принудительного timeout.",
+      "result": "PASS",
+      "proof": "runtime-absolute-qualified.json actual902s protectedWS/SDK/lease/SFU + retry201"
+    },
+    {
+      "verbatim": "- [ ] В PR приложены regression tests и сетевой результат PASS/FAIL/NOT_RUN с SHA; нагрузку не выполнять на production.",
+      "result": "PASS",
+      "proof": "Final full CI27SUCCESS + nativeCaddy12PASS + actual routed network PASS, all source-bound"
+    }
+  ],
+  "protects_command_platform_mandatory_result_where": [
+    {
+      "protects": "Actual stalled HTTP1 request body is interrupted",
+      "command": "Focused native real server/socket regression, baseline RED then fixed GREEN",
+      "platform": "Native Go1.26.4",
+      "mandatory_when": "Before any implementation and after exact source change",
+      "result": "PASS_SCOPED_ORIGINAL_ISSUE134",
+      "where": "Adjacent runtime safe receipts; final-ci-quality.json; required-native-caddy-ci.json; exact source evidence"
+    },
+    {
+      "protects": "Zero-body and partial multipart obey idle timeout with complete resource release",
+      "command": "New private-profile harness baseline-idle and idle, TEXT and DM through normal TLS/Caddy",
+      "platform": "Isolated actual Go/Caddy/PostgreSQL17.6",
+      "mandatory_when": "Issue134 criterion1",
+      "result": "PASS_SCOPED_ORIGINAL_ISSUE134",
+      "where": "Adjacent runtime safe receipts; final-ci-quality.json; required-native-caddy-ci.json; exact source evidence"
+    },
+    {
+      "protects": "Absolute upload maximum is enforced despite continued valid progress",
+      "command": "absolute, TEXT+DM progress every20s through actual900s deadline, guard930s",
+      "platform": "Same isolated exact-source stack",
+      "mandatory_when": "Issue134 criterion1, independent of idle",
+      "result": "PASS_SCOPED_ORIGINAL_ISSUE134",
+      "where": "Adjacent runtime safe receipts; final-ci-quality.json; required-native-caddy-ci.json; exact source evidence"
+    },
+    {
+      "protects": "Slow valid uploads remain usable and retry succeeds after timeout",
+      "command": "controls, real progress every25s and201 after at least75s, then fresh upload201",
+      "platform": "Same isolated exact-source stack",
+      "mandatory_when": "Issue134 criteria3/4",
+      "result": "PASS_SCOPED_ORIGINAL_ISSUE134",
+      "where": "Adjacent runtime safe receipts; final-ci-quality.json; required-native-caddy-ci.json; exact source evidence"
+    },
+    {
+      "protects": "Disconnect/cancel and true writer failure release all resources",
+      "command": "controls and enospc; bounded owned tmpfs child, no host disk filling",
+      "platform": "Same exact source; separate owned bounded fault fixture",
+      "mandatory_when": "Issue134 criterion2",
+      "result": "PASS_SCOPED_ORIGINAL_ISSUE134",
+      "where": "Adjacent runtime safe receipts; final-ci-quality.json; required-native-caddy-ci.json; exact source evidence"
+    },
+    {
+      "protects": "Per-account2 and global16 caps remain enforced before expensive work",
+      "command": "global, nine ordinary authorized MEMBER actors, hold16; excess429/Retry-After1, free and retry201",
+      "platform": "Same isolated exact-source stack",
+      "mandatory_when": "Issue134 criterion2",
+      "result": "PASS_SCOPED_ORIGINAL_ISSUE134",
+      "where": "Adjacent runtime safe receipts; final-ci-quality.json; required-native-caddy-ci.json; exact source evidence"
+    },
+    {
+      "protects": "Upload deadlines do not impose a global timeout on realtime or voice",
+      "command": "Protected WebSocket and real isolated LiveKit voice lease over upload timeout/actual900s window",
+      "platform": "Same isolated exact-source API/Caddy and real pinned LiveKit",
+      "mandatory_when": "Issue134 criterion4",
+      "result": "PASS_SCOPED_ORIGINAL_ISSUE134",
+      "where": "Adjacent runtime safe receipts; final-ci-quality.json; required-native-caddy-ci.json; exact source evidence"
+    },
+    {
+      "protects": "Native discovery and mandatory platform/security/SQL CI remain valid",
+      "command": "Nearest native tests/race and complete required GitHub CI on final exact head",
+      "platform": "PostgreSQL17.6, Android, macOS and remaining mandatory hosted jobs",
+      "mandatory_when": "Issue134 criterion5, before merge and closure",
+      "result": "PASS_SCOPED_ORIGINAL_ISSUE134",
+      "where": "Adjacent runtime safe receipts; final-ci-quality.json; required-native-caddy-ci.json; exact source evidence"
+    }
+  ],
+  "policy": {
+    "idle_seconds": 60,
+    "absolute_seconds": 900,
+    "per_account_concurrency": 2,
+    "global_concurrency": 16,
+    "max_attachment_and_disk_reservation_bytes": 25000000,
+    "reservation_is_RAM": false,
+    "ACL_CSRF_Origin_filesize_metrics_realtime_policy": "preserved"
+  },
+  "independent_checks": {
+    "all_six_actual_results_original_SHA256_and_source_TLS": true,
+    "idle4complete408_with_preabort_resources0": true,
+    "global16_account2_reject429_retry201": true,
+    "real75s_slow_progress201": true,
+    "real900s46progress_maxgap_under60_complete408_preabort_resources0": true,
+    "protectedWS46pings_pongs_902s_and_actualSDK90samples": true,
+    "ENOSPC_actual_bounded_child_500INTERNAL_retry201_no_host_fault": true,
+    "normal12new14ledger_upload_cleanup_9main_sessions_revoked": true,
+    "provider_UILeave_revoke_exact_process_absence": true,
+    "main_child_infra_keys_holders_absent_old9_CA_NSS_same": true,
+    "frozen_nine_common_modules_six_runs_current_MATCH": true,
+    "finalCI27success_0jobskip_nativeCaddy12PASS": true
+  },
+  "preserved_failures_and_UNKNOWN": [
+    "current2b95 blocked idle reads",
+    "718 backend cleanup but Caddy complete response missing",
+    "native deadline ordering mutations",
+    "earlier provider controller failure primary cause UNKNOWN",
+    "child bootstrap and namespace controller corrections"
+  ],
+  "root_verdict_v2_original_SHA256": "724858f803af308d82095aee0578ffbd273732b624de73bfa41b8d5c613909f5",
+  "final_quality_immutable_reference": "https://github.com/Egkurilov/BOOHTACORD/blob/6dbbb0c2319fd952ac709a820a3dd607a9f170b7/evidence/qa/issue134-publication-2026-10-31/final-ci-quality.json",
+  "safe_adjacent_file_SHA256": {
+    "root-final-verdict-safe.json": "50f5d9f7814acc72696a0c24abbac5d52da7b6d1cebb37592f82487653149a93",
+    "runtime-idle-global-controls.json": "552a0239da6c56f4b592f507648ee826fc8f2fa9a6133cdfa19cd2faf946612c",
+    "runtime-absolute-qualified.json": "ef681b54d353516f023f47eb7445279315649ea17678e36ba47117604ed20120",
+    "runtime-enospc-qualified.json": "60a23ff4dba2122b1e91b8248d3142602f16c2a7884f2dc51d307a70345b4da9",
+    "runtime-provider-cleanup-qualified.json": "539a507723ef8c9d17d3f506692e5f8f719a5384ee899a2388c36bd314ff1390",
+    "runtime-application-cleanup.json": "d8265a5d2779565879f8ff317ac3a78c24262e15cdeba89675def95545df2936",
+    "runtime-infra-cleanup.json": "084c1e14913f0835deaedde5a2e0569f7b377760aa5ecf59c2e0fa1ac476eebb",
+    "runtime-http2-scope.json": "f90b55a4e070a6ab8c91185fcf7553e7b5ab5c596a04a02a48af58434039b2b5",
+    "runtime-runner-hashes.json": "b3c3ef6e8aa034d4bbc3b787bb41d7e832e7e95a76306b1b54f351aac6ee6624"
+  },
+  "current_isolated_environment_state": "REMOVED_AFTER_ACCEPTANCE; previous readiness/connection observations are historical",
+  "limits": [
+    "Original isolated #134 acceptance only; parentQA/unrelatedgates/43decisions unchanged",
+    "No production fault/load or production deployment claim; standard automatic delivery tracked separately after merge",
+    "No physical audio/native media/hearing/platform-wide capacity or latency SLO claim",
+    "No private profiles/tokens/cookies/bodies/account IDs/raw logs/attachments/images published"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "status": "PASS_ROOT_INDEPENDENT_REAL_900S_QUALIFICATION",
+  "actual_source_sha": "ce7bbe0571174745acd27e8fc5727047f3bb5f29",
+  "result_SHA256": "adbd553e3b87590265c52efa44f683500b2029336c2bb7f2bb29e8d33f7a4e49",
+  "native_absolute_seconds": 900,
+  "native_idle_seconds": 60,
+  "controller_930_guard_fired": false,
+  "cases": [
+    {
+      "scope": "TEXT",
+      "response": {
+        "status": 408,
+        "code": "UPLOAD_TIMEOUT",
+        "retry_after": null
+      },
+      "elapsed_seconds": 900.0048405859852,
+      "successful_progress_count": 46,
+      "max_inter_progress_seconds": 20.000465486955363,
+      "final_idle_gap_seconds": 0.004457056988030672
+    },
+    {
+      "scope": "DM",
+      "response": {
+        "status": 408,
+        "code": "UPLOAD_TIMEOUT",
+        "retry_after": null
+      },
+      "elapsed_seconds": 900.003920727002,
+      "successful_progress_count": 46,
+      "max_inter_progress_seconds": 20.00057996797841,
+      "final_idle_gap_seconds": 0.005841140053234994
+    }
+  ],
+  "all_five_resources_zero_before_client_abort": true,
+  "protected_WebSocket": {
+    "upgrade_HTTP": 101,
+    "uptime_seconds": 902.559045602975,
+    "pings_sent": 46,
+    "pongs_received": 46,
+    "last_pong_age_seconds": 1.5716290830168873,
+    "remote_closed": false,
+    "close_code": null,
+    "error_type": null,
+    "live": true
+  },
+  "actual_voice_all_samples_qualified": true,
+  "sample_count": 90,
+  "max_voice_heartbeat_age_seconds": 2.132,
+  "normal_retry_201_both_routes": "source_enforced_then_PASS",
+  "physical_audio_quality": "NOT_APPLICABLE"
+}

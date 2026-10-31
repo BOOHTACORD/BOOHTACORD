@@ -1,0 +1,35 @@
+{
+  "status": "MATCH_NINE_COMMON_MODULES_SIX_RUNS_AND_CURRENT_BYTES",
+  "common_modules_SHA256": {
+    "absolute.py": "401ec1c1bb88a1cc4311cf56f7e37543a1518e7278569ab8085e18a5cbb0e14d",
+    "controls.py": "8a073c6e526a90da5592c0f6e39d294d46d09193898446d6314cd766bce0b5e3",
+    "fixtures.py": "18b974ab69ca422ad442547611f3479c56e360a21df0ed78ea1ea1958cb0575f",
+    "idle.py": "6c76c0c6ccf24789afeab3a3036d0a01fd3abe8168ce19d15950fbc209678474",
+    "launcher.py": "06980b8e7cc9e1bd8dc40141f74a03a49caf56d7bca8d0ffac2f0999ad1851c6",
+    "realtime.py": "6bc9f961fb02830c90fddf2bbcebe963afab90d1ce7c7d0795889ca146436267",
+    "rebind.py": "e657390209f101f3d280b45a8428388656cb06c7285a2863f1add0b49fe80b3b",
+    "runtime.py": "4793e12fd9d68762e47cab395035a4e9a9fc87ab26859c712feac3e673c61672",
+    "wire.py": "3d6a43194952451ff38872d865d3ddb9c180dc2780fdafbb02b50cdf837ebd0c"
+  },
+  "actual_run_hash_receipts": {
+    "ce7-global-attempt1": "ab47df5740d102993579935fc3142925188985f3ccaa90068edc991b0df4c4fa",
+    "ce7-idle-attempt1": "ab47df5740d102993579935fc3142925188985f3ccaa90068edc991b0df4c4fa",
+    "ce7-controls-attempt1": "ab47df5740d102993579935fc3142925188985f3ccaa90068edc991b0df4c4fa",
+    "ce7-absolute-attempt1": "a373ae1d03b0ec4014d7cab9db6495160d39cc7e698c83c8f621b665c892f62a",
+    "ce7-enospc-child-attempt1": "a373ae1d03b0ec4014d7cab9db6495160d39cc7e698c83c8f621b665c892f62a",
+    "ce7-main-cleanup-attempt1": "a373ae1d03b0ec4014d7cab9db6495160d39cc7e698c83c8f621b665c892f62a"
+  },
+  "additional_h2_runner": {
+    "basename": "h2_scope_diagnostic.mjs",
+    "SHA256": "64adf9efaa84f794851b17f9b3bbf41043dcda3a6117e268ef6e75b0e1a09883"
+  },
+  "approved_real_SDK_provider": {
+    "basename": "voice_provider.a64-approved-ce7-immutable.mjs",
+    "SHA256": "a64e2e210129f8dbd94da0db6576aa9dad4557a3aba6f2869758ad6d8f7e0ccb"
+  },
+  "command_documents_original_SHA256": {
+    "COMMANDS.md": "5294e80aa8003a8be122f159a79b165dd2452612cfba84080fc7735f2bec3be3",
+    "HTTP2-SCOPE.md": "23bc114042a4310af8d397ce501914ff04e26854b3b08cf69b931a86a7e20bc0"
+  },
+  "limits": "Hashes prove exact helper bytes, not runtime by themselves. Materialized results/qualified receipts establish actual outcomes; historical pre-run NOT_RUN instructions are not final status."
+}

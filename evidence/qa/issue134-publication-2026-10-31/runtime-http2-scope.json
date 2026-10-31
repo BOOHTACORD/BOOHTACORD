@@ -1,0 +1,76 @@
+{
+  "status": "PASS_ADDITIONAL_HTTP2_SCOPE_CONTROL",
+  "actual_source_sha": "ce7bbe0571174745acd27e8fc5727047f3bb5f29",
+  "original_result_SHA256": "6a93f730b544a14dcf2710d727c50ad5fdb2553f4f8d436146670f5e3ba17503",
+  "ALPN": "h2",
+  "normal_TLS": true,
+  "same_h2_session_protected_GETs": true,
+  "before_principals": [
+    {
+      "status": 200,
+      "MEMBER": true,
+      "own_principal": true,
+      "no_connection_header": true
+    },
+    {
+      "status": 200,
+      "MEMBER": true,
+      "own_principal": true,
+      "no_connection_header": true
+    }
+  ],
+  "after_principals": [
+    {
+      "status": 200,
+      "MEMBER": true,
+      "own_principal": true,
+      "no_connection_header": true
+    },
+    {
+      "status": 200,
+      "MEMBER": true,
+      "own_principal": true,
+      "no_connection_header": true
+    }
+  ],
+  "responses": [
+    {
+      "scope": "TEXT",
+      "body_bytes": 185,
+      "body_complete": true,
+      "status": 408,
+      "elapsed_to_headers_seconds": 60.032537285005674,
+      "connection_header_present": false,
+      "content_length": "185",
+      "elapsed_seconds": 60.04031801299425,
+      "body_sha256": "3070ac3b309434c9af9adf333a16686a76a6621850346e2497de36c39934f054",
+      "code": "UPLOAD_TIMEOUT",
+      "closed": true,
+      "rst_code": 0
+    },
+    {
+      "scope": "DM",
+      "body_bytes": 185,
+      "body_complete": true,
+      "status": 408,
+      "elapsed_to_headers_seconds": 60.01019271003315,
+      "connection_header_present": false,
+      "content_length": "185",
+      "elapsed_seconds": 60.01468222704716,
+      "body_sha256": "d58b418432caa02c6c3eba7b23810cda3dd5a3fbfaa64c1efd1259a05e92b1b4",
+      "code": "UPLOAD_TIMEOUT",
+      "closed": true,
+      "rst_code": 0
+    }
+  ],
+  "final_before_controller_abort": {
+    "inflight": 0,
+    "reserved_bytes": 0,
+    "oldest_seconds": 0,
+    "staging_files": 0,
+    "staging_bytes": 0
+  },
+  "qualifies_H1_or_900": false,
+  "runner_basename": "h2_scope_diagnostic.mjs",
+  "runner_SHA256": "64adf9efaa84f794851b17f9b3bbf41043dcda3a6117e268ef6e75b0e1a09883"
+}

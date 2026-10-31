@@ -1,0 +1,72 @@
+{
+  "status": "PASS_ROOT_FULL_ORIGINAL_ISSUE134_ACCEPTANCE_AND_CLEANUP",
+  "issue": 134,
+  "PR": 622,
+  "actual_runtime_source_sha": "ce7bbe0571174745acd27e8fc5727047f3bb5f29",
+  "final_PR_source_sha": "4a0f2582d58e521fa79d4905d124345185138b54",
+  "identity_scope": "Runtime ce7; complete backend/deploy/Web/toolchain trees equal to final4a0 validation-only commit; do not relabel actual runtime.",
+  "platform": "Windows11 host; isolated WSL Ubuntu Linux Go1.26.4 PostgreSQL17.6 native Caddy2.10.0; actual SDK LiveKit witness in owned Chromium.",
+  "original_acceptance": {
+    "unfinished_zero_body_and_partial_multipart_both_routes": true,
+    "disconnect_cancel_disk_write_fault_and_account_global_concurrency": true,
+    "valid_slow_progress_75s_both_routes": true,
+    "native_900s_progress_continues_full_response_before_controller_abort": true,
+    "all_five_aggregates_zero_and_retry_201": true,
+    "protected_WebSocket_and_actual_SDK_same_lease_SFU_survive_900s": true,
+    "source_bound_native_RED_GREEN_and_mutation_tests": true,
+    "final_required_hosted_CI_PASS": true,
+    "normal_application_session_upload_cleanup": true,
+    "owned_infrastructure_keys_holders_removed_original9_preserved": true
+  },
+  "commands": [
+    "launcher.py global",
+    "launcher.py idle --mode both",
+    "launcher.py controls",
+    "h2_scope_diagnostic.mjs",
+    "launcher.py absolute",
+    "launcher.py enospc --provision",
+    "provider normal UI Leave and own logout",
+    "launcher.py cleanup",
+    "reviewed owned-only main and child cleanup helpers"
+  ],
+  "runtime_results_SHA256": {
+    "ce7-global-attempt1": "62f2a924d70659a9ce85d5df63a7801f45a033ce7160d5979e5f5786eb2020f8",
+    "ce7-idle-attempt1": "dd99ef7a656fb6eef695504e6ca0b24f6ea3bb0faf186f0c2e07739940152611",
+    "ce7-controls-attempt1": "58c106fcd6aeb35a05fd5d5354ae69b8ba92f71e28444ac1404a5830dc266d7b",
+    "ce7-absolute-attempt1": "adbd553e3b87590265c52efa44f683500b2029336c2bb7f2bb29e8d33f7a4e49",
+    "ce7-enospc-child-attempt1": "bfc964f7e428d2e6efe83e0d0b4d1c5964b9d37b0ba5416763cac833ae207798",
+    "ce7-main-cleanup-attempt1": "041333ae0e8fcc7d6db954fc3c0e3fd341bc74c28850c731627049deff1a600f"
+  },
+  "additional_HTTP2_result_SHA256": "6a93f730b544a14dcf2710d727c50ad5fdb2553f4f8d436146670f5e3ba17503",
+  "root_qualification_receipts_SHA256": {
+    "absolute": "ef681b54d353516f023f47eb7445279315649ea17678e36ba47117604ed20120",
+    "ENOSPC": "60a23ff4dba2122b1e91b8248d3142602f16c2a7884f2dc51d307a70345b4da9",
+    "provider_cleanup": "539a507723ef8c9d17d3f506692e5f8f719a5384ee899a2388c36bd314ff1390",
+    "main_application_cleanup": "041333ae0e8fcc7d6db954fc3c0e3fd341bc74c28850c731627049deff1a600f"
+  },
+  "final_infra_cleanup_SHA256": "b4018f793d7be9333fc20822c00c75b46c6cdba562c3ff00688f33779444c601",
+  "all_nine_common_runner_modules_frozen": true,
+  "CI": {
+    "run_id": 41189266493,
+    "run_attempt": 1,
+    "head_sha": "4a0f2582d58e521fa79d4905d124345185138b54",
+    "fresh_root_API_verified_all_27_jobs": "SUCCESS",
+    "job_skips": 0
+  },
+  "preserved_prior_failures": [
+    "current2b95 blocked idle reads",
+    "718 backend cleanup but Caddy complete response missing",
+    "native deadline ordering mutations",
+    "earlier provider controller failure primary cause UNKNOWN",
+    "child bootstrap and namespace controller corrections"
+  ],
+  "scope_limits": [
+    "No production fault or load",
+    "No physical audibility or platform media claim",
+    "No QA parent or unrelated gate closure",
+    "No 43 consolidation changes"
+  ],
+  "original_receipt_SHA256": "724858f803af308d82095aee0578ffbd273732b624de73bfa41b8d5c613909f5",
+  "superseded_v1_receipt_SHA256": "4a121b27d5deb4f4d0053823761b5b5618abcaf54a979e8262bc1bde8f4be76b",
+  "metadata_correction": "v2 corrects only executed HTTP2 helper basename to h2_scope_diagnostic.mjs; every runtime assertion/status/hash is unchanged"
+}

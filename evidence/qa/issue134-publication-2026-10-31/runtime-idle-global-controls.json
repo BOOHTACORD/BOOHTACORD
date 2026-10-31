@@ -1,0 +1,248 @@
+{
+  "ce7-global-attempt1": {
+    "source_sha": "ce7bbe0571174745acd27e8fc5727047f3bb5f29",
+    "fixture_created_source_sha": "2b95ddd864da210d6fc2f050e69ce2d5d203186e",
+    "normal_TLS": true,
+    "status": "PASS",
+    "result": {
+      "actor_count": 9,
+      "global_limit": 16,
+      "account_limit": 2,
+      "saturated": {
+        "inflight": 16,
+        "reserved_bytes": 400000000,
+        "oldest_seconds": 0.803873803,
+        "staging_files": 16,
+        "staging_bytes": 131072,
+        "free_blocks": 1048544
+      },
+      "ninth_actor_active_before": 0,
+      "rejected": [
+        {
+          "scope": "TEXT",
+          "status": 429,
+          "code": "UPLOAD_CONCURRENCY_LIMITED",
+          "retry_after": "1"
+        },
+        {
+          "scope": "DM",
+          "status": 429,
+          "code": "UPLOAD_CONCURRENCY_LIMITED",
+          "retry_after": "1"
+        }
+      ],
+      "retry": [
+        {
+          "scope": "TEXT",
+          "status": 201
+        },
+        {
+          "scope": "DM",
+          "status": 201
+        }
+      ],
+      "status": "PASS_REAL_GLOBAL16_BOTH_ROUTES",
+      "final_resources": {
+        "inflight": 0,
+        "reserved_bytes": 0,
+        "oldest_seconds": 0.0,
+        "staging_files": 0,
+        "staging_bytes": 0,
+        "free_blocks": 1048574
+      }
+    },
+    "final_five_aggregates": {
+      "inflight": 0,
+      "reserved_bytes": 0,
+      "oldest_seconds": 0.0,
+      "staging_files": 0,
+      "staging_bytes": 0
+    },
+    "original_result_SHA256": "62f2a924d70659a9ce85d5df63a7801f45a033ce7160d5979e5f5786eb2020f8"
+  },
+  "ce7-idle-attempt1": {
+    "source_sha": "ce7bbe0571174745acd27e8fc5727047f3bb5f29",
+    "fixture_created_source_sha": "2b95ddd864da210d6fc2f050e69ce2d5d203186e",
+    "normal_TLS": true,
+    "status": "PASS",
+    "result": {
+      "native_idle_seconds": 60,
+      "observation_guard_seconds": 80,
+      "cases": [
+        {
+          "scope": "TEXT",
+          "mode": "zero",
+          "response": {
+            "status": 408,
+            "code": "UPLOAD_TIMEOUT",
+            "retry_after": null
+          },
+          "elapsed_seconds": 60.003983867005445,
+          "successful_progress_count": 0,
+          "max_inter_progress_seconds": 0,
+          "final_idle_gap_seconds": 60.003983867005445,
+          "resources_restored_before_controller_abort": {
+            "inflight": 0,
+            "reserved_bytes": 0,
+            "oldest_seconds": 0.0,
+            "staging_files": 0,
+            "staging_bytes": 0,
+            "free_blocks": 1048574
+          }
+        },
+        {
+          "scope": "DM",
+          "mode": "zero",
+          "response": {
+            "status": 408,
+            "code": "UPLOAD_TIMEOUT",
+            "retry_after": null
+          },
+          "elapsed_seconds": 60.00444788695313,
+          "successful_progress_count": 0,
+          "max_inter_progress_seconds": 0,
+          "final_idle_gap_seconds": 60.00444788695313,
+          "resources_restored_before_controller_abort": {
+            "inflight": 0,
+            "reserved_bytes": 0,
+            "oldest_seconds": 0.0,
+            "staging_files": 0,
+            "staging_bytes": 0,
+            "free_blocks": 1048574
+          }
+        },
+        {
+          "scope": "TEXT",
+          "mode": "partial",
+          "response": {
+            "status": 408,
+            "code": "UPLOAD_TIMEOUT",
+            "retry_after": null
+          },
+          "elapsed_seconds": 60.004924895009026,
+          "successful_progress_count": 1,
+          "max_inter_progress_seconds": 0,
+          "final_idle_gap_seconds": 60.00340060296003,
+          "resources_restored_before_controller_abort": {
+            "inflight": 0,
+            "reserved_bytes": 0,
+            "oldest_seconds": 0.0,
+            "staging_files": 0,
+            "staging_bytes": 0,
+            "free_blocks": 1048572
+          }
+        },
+        {
+          "scope": "DM",
+          "mode": "partial",
+          "response": {
+            "status": 408,
+            "code": "UPLOAD_TIMEOUT",
+            "retry_after": null
+          },
+          "elapsed_seconds": 60.005377765977755,
+          "successful_progress_count": 1,
+          "max_inter_progress_seconds": 0,
+          "final_idle_gap_seconds": 60.00395306502469,
+          "resources_restored_before_controller_abort": {
+            "inflight": 0,
+            "reserved_bytes": 0,
+            "oldest_seconds": 0.0,
+            "staging_files": 0,
+            "staging_bytes": 0,
+            "free_blocks": 1048572
+          }
+        }
+      ],
+      "before_controller_abort": {
+        "inflight": 0,
+        "reserved_bytes": 0,
+        "oldest_seconds": 0.0,
+        "staging_files": 0,
+        "staging_bytes": 0,
+        "free_blocks": 1048572
+      },
+      "status": "PASS_NATIVE_IDLE_TEXT_DM"
+    },
+    "final_five_aggregates": {
+      "inflight": 0,
+      "reserved_bytes": 0,
+      "oldest_seconds": 0.0,
+      "staging_files": 0,
+      "staging_bytes": 0
+    },
+    "original_result_SHA256": "dd99ef7a656fb6eef695504e6ca0b24f6ea3bb0faf186f0c2e07739940152611"
+  },
+  "ce7-controls-attempt1": {
+    "source_sha": "ce7bbe0571174745acd27e8fc5727047f3bb5f29",
+    "fixture_created_source_sha": "2b95ddd864da210d6fc2f050e69ce2d5d203186e",
+    "normal_TLS": true,
+    "status": "PASS",
+    "result": {
+      "disconnect_modes": [
+        {
+          "scope": "TEXT",
+          "mode": "actual_HTTP1_LINGER0_cancel_no_reader_reference",
+          "resources_restored": true
+        },
+        {
+          "scope": "DM",
+          "mode": "actual_HTTP1_LINGER0_cancel_no_reader_reference",
+          "resources_restored": true
+        }
+      ],
+      "progress": [
+        {
+          "scope": "TEXT",
+          "response": {
+            "status": 201,
+            "code": null,
+            "retry_after": null
+          },
+          "elapsed_seconds": 75.00691718002781,
+          "successful_progress_count": 4,
+          "max_inter_progress_seconds": 25.00277584203286,
+          "final_idle_gap_seconds": 0.002855507016647607
+        },
+        {
+          "scope": "DM",
+          "response": {
+            "status": 201,
+            "code": null,
+            "retry_after": null
+          },
+          "elapsed_seconds": 75.0054589319625,
+          "successful_progress_count": 4,
+          "max_inter_progress_seconds": 25.000470966042485,
+          "final_idle_gap_seconds": 0.003333027008920908
+        }
+      ],
+      "same_account_2_rejects_both_routes": true,
+      "after_disconnect": {
+        "inflight": 0,
+        "reserved_bytes": 0,
+        "oldest_seconds": 0.0,
+        "staging_files": 0,
+        "staging_bytes": 0,
+        "free_blocks": 1048570
+      },
+      "final_resources": {
+        "inflight": 0,
+        "reserved_bytes": 0,
+        "oldest_seconds": 0.0,
+        "staging_files": 0,
+        "staging_bytes": 0,
+        "free_blocks": 1048552
+      },
+      "status": "PASS_ACCOUNT_DISCONNECT_CANCEL_PROGRESS"
+    },
+    "final_five_aggregates": {
+      "inflight": 0,
+      "reserved_bytes": 0,
+      "oldest_seconds": 0.0,
+      "staging_files": 0,
+      "staging_bytes": 0
+    },
+    "original_result_SHA256": "58c106fcd6aeb35a05fd5d5354ae69b8ba92f71e28444ac1404a5830dc266d7b"
+  }
+}
