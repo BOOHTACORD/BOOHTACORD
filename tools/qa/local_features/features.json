@@ -617,6 +617,8 @@
       "deploy/compose.yaml",
       "clients/web/src/voice/screen_preview/**",
       "clients/flutter/lib/src/features/voice/screen_preview/**",
+      "clients/flutter/test/screen_preview_client_test.dart",
+      "clients/flutter/test/screen_preview_sender_stop_test.dart",
       "clients/flutter/lib/src/features/screen/thumbnail_state/**"
     ],
     "web": [
@@ -660,6 +662,8 @@
       "test/voice_viewer_participants_panel_test.dart",
       "test/voice_participant_stream_cards_test.dart",
       "test/screen_thumbnail_test.dart",
+      "test/screen_preview_client_test.dart",
+      "test/screen_preview_sender_stop_test.dart",
       "test/features/workspace/short_viewport/measured_status_test.dart",
       "test/features/voice/viewer_pending/fallback_test.dart",
       "test/features/voice/viewer_pending/presentation_test.dart"
@@ -854,7 +858,7 @@
           "clients/flutter/test/screen_preview_sender_stop_test.dart",
           "clients/flutter/test/screen_scope/thumbnail_test.dart"
         ],
-        "scope": "LiveKit Egress captures the active screen-share track on the server every 30 seconds into an isolated private volume. The API exposes only the current bounded JPEG through the existing session, lease and channel ACL; clients never upload screenshot bytes. Stop/revoke and lease expiry stop Egress and remove ephemeral snapshots. The pinned real-stack browser scenario verifies two-client initial delivery, a refreshed server thumbnail after the 30-second capture interval, and thumbnail cleanup after unpublish; backend tests verify denied reads and Egress stop/lease-expiry cleanup. Unit tests and synthetic frames do not prove Egress runtime or capture capacity; the real Egress refresh and publisher/load evidence remain NOT_RUN until measured."
+      "scope": "LiveKit Egress captures the active screen-share track on the server every 30 seconds into an isolated private volume. Flutter desktop and mobile clients allow a slow Egress start and retry transient publication-not-ready responses with bounded backoff; stopping sharing cancels pending retries. The API exposes only the current bounded JPEG through the existing session, lease and channel ACL; clients never upload screenshot bytes. Stop/revoke and lease expiry stop Egress and remove ephemeral snapshots. The pinned real-stack browser scenario verifies two-client initial delivery, a refreshed server thumbnail after the 30-second capture interval, and thumbnail cleanup after unpublish; backend tests verify denied reads and Egress stop/lease-expiry cleanup. Unit tests and synthetic frames do not prove Egress runtime or capture capacity; Android/macOS publisher-to-Web acceptance and publisher/load evidence remain NOT_RUN until measured."
       },
       "issue579_pending_recovery": {
         "focused": [
