@@ -1,0 +1,63 @@
+{
+  "status": "PASS_ROOT_FULL_ORIGINAL_ISSUE138_ACCEPTANCE_AND_CLEANUP",
+  "issue": 138,
+  "PR": 623,
+  "actual_runtime_and_final_source_sha": "ae37adf43304316ef5002369661bc420df456571",
+  "baseline_source_sha": "4a0f2582d58e521fa79d4905d124345185138b54",
+  "original_acceptance": {
+    "untrusted_peer_XFF_does_not_change_key": true,
+    "actual_standard_Caddy_keeps_distinct_real_client_budgets": true,
+    "direct_API_trusted_chains_untrusted_intermediate_IPv4_IPv6_and_invalid_fields": true,
+    "invalid_CIDR_configuration_rejected_native_and_bounded_fail_closed": true,
+    "resolver_and_native_literal_HTTP1_regressions_plus_actual_Caddy_proof_with_source": true
+  },
+  "source_preservation": "One production file source.go; existing immediate-peer trust, right-to-left boundary, quota10/300/maxSources10000 and private deployment unchanged; normal Go1.26.4 native tests/race/config/mutation/vet/build/contracts passed.",
+  "runtime": {
+    "normal_cases": 124,
+    "literal_wire_cases": 43,
+    "total": 167,
+    "baseline_known_differences": 22,
+    "fixed_differences": 0,
+    "identical_preregistration_and_all20_runner_fingerprints": true,
+    "only_actual_API_process_image_binary_changed": true,
+    "counter_deltas": {
+      "HTTP400": 100,
+      "HTTP429": 67,
+      "KDF_work": 0,
+      "account_admission": 0,
+      "store_saturation": 0
+    },
+    "DB_unchanged": true
+  },
+  "CI": {
+    "run_id": 41192680878,
+    "run_attempt": 1,
+    "event": "workflow_dispatch",
+    "head_sha": "ae37adf43304316ef5002369661bc420df456571",
+    "fresh_root_GitHub_API_all27_jobs": "SUCCESS",
+    "job_skips": 0,
+    "platforms": [
+      "PostgreSQL17.6",
+      "Android",
+      "macOS",
+      "Windows"
+    ]
+  },
+  "receipts_SHA256": {
+    "baseline_result": "0825c8bcad167d5f1f337bae9c8cd0e2b1d9adb4d389eb093f4281b925eeb735",
+    "baseline_root_qualified": "370ecfe09eb6ab1493c77acc3f69055f9558bc4ce0f44f3e4a1c2c452f28c3ec",
+    "fixed_result": "630d0ac519b6033725b773be6aa0a05016de9a2e4a1720f974d5edd70473b2ff",
+    "fixed_root_qualified": "2d6740ea3e4e83a3f47850d801e12c11604bf9dd4e5c562bf28ac1d66919c0e3",
+    "infra_final_cleanup": "0c2deb933bfa7a8497adcbb414d50bfa920341ebdd1dee44a8a5bfb4ceb98283"
+  },
+  "mandatory_when": "Any ordered forwarded-field/source-boundary change; full native/actual Caddy matrix and required hosted gates before merge/closure.",
+  "current_fixture": "REMOVED_AFTER_ACCEPTANCE",
+  "scope_limits": [
+    "One actual trusted P and two actual untrusted peer namespaces; multiple-CIDR and IPv6 are native logical resolver/header cases, no physical multiple-proxy or IPv6 transport claim.",
+    "Malformed one-byte login requests only; no authentication/ACL bypass claim.",
+    "Startup dummy KDFcount1 recorded; per-request KDF/account/store deltas0.",
+    "No production faults/load, no parentQA blanket closure, no43 consolidation changes."
+  ],
+  "preserved_controller_failure": "First fresh preflight expected absoluteKDF0; native package-init dummyHash work1 proven; owned cleanup then corrected stable baseline1/requestdelta0. No probes ran during failed preflight.",
+  "original_root_verdict_SHA256": "138eaafd5397d1e8b0d57aca30593db1c4419af6a1ded007154fd4680d7e39aa"
+}

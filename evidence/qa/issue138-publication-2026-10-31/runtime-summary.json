@@ -1,0 +1,90 @@
+{
+  "status": "PASS_FIXED167_0DISCREPANCIES_BASELINE22KNOWN_DIFFERENCES_RETAINED",
+  "baseline_source": "4a0f2582d58e521fa79d4905d124345185138b54",
+  "fixed_source": "ae37adf43304316ef5002369661bc420df456571",
+  "runtime": {
+    "normal_cases": 124,
+    "literal_wire_cases": 43,
+    "total": 167,
+    "baseline_known_differences": 22,
+    "fixed_differences": 0,
+    "identical_preregistration_and_all20_runner_fingerprints": true,
+    "only_actual_API_process_image_binary_changed": true,
+    "counter_deltas": {
+      "HTTP400": 100,
+      "HTTP429": 67,
+      "KDF_work": 0,
+      "account_admission": 0,
+      "store_saturation": 0
+    },
+    "DB_unchanged": true
+  },
+  "original_results_SHA256": {
+    "baseline_result": "0825c8bcad167d5f1f337bae9c8cd0e2b1d9adb4d389eb093f4281b925eeb735",
+    "baseline_root_qualified": "370ecfe09eb6ab1493c77acc3f69055f9558bc4ce0f44f3e4a1c2c452f28c3ec",
+    "fixed_result": "630d0ac519b6033725b773be6aa0a05016de9a2e4a1720f974d5edd70473b2ff",
+    "fixed_root_qualified": "2d6740ea3e4e83a3f47850d801e12c11604bf9dd4e5c562bf28ac1d66919c0e3",
+    "infra_final_cleanup": "0c2deb933bfa7a8497adcbb414d50bfa920341ebdd1dee44a8a5bfb4ceb98283"
+  },
+  "preregistration_SHA256_identical": "a9081e7b30aef07fb04ad913d3560156aa307d76db0dcbffba3cb6b703a71760",
+  "all20_runner_hashes_identical": {
+    "matrix_http.go": "e850c03015a17340992031006f7f0f2cc75ba3659df17abf74759d323d2b7804",
+    "matrix_main.go": "06c88db927e9bb6f06ee64d2f430794d227a5ef213fe678343f82aced4534b3f",
+    "matrix_metrics.go": "b2846fb04a752eb5281790287d35feac2c57b213a5ba59b37e1a743415a4c220",
+    "matrix_peers.go": "8a6b8f863c12417f17bcf81a7f103e5d0940dd146f78d8e1b175ba80d664a190",
+    "matrix_trusted_boundary.go": "e78c947b57a08322514b6e3a50d86d14d41d9617f8397eedf871c14176c3d3ef",
+    "matrix_trusted_budget.go": "eab1583f7fdb24b7b4cb65aaab8f874f7d87bacd3fff290c28544b14cebffefb",
+    "shared_config.go": "30577bcecb0515c267585838059488cea0d68e93e84ddab15efc81c333a17a7d",
+    "shared_edges.go": "b4eba00f748e660fe6bb53d77486fe7c42b7fac234440960f49cd2aacb75888a",
+    "shared_result.go": "94903a131ec0166f70dd40192a9de3202ace4c6e0f80e7eb374bd3a6d3437d30",
+    "shared_types.go": "8a9ad53cd2d10827cddeda13f330e29397abfb38eccc7ad03e893368d7ed3d40",
+    "wire_cases.go": "bd0fa9aaf624433a46c0ec3f5a5e86c77d498b6daad76a97172772737d9e5251",
+    "wire_http.go": "b57794c8457cfca94418c6525ed710f525816249a592633dad93ce85b12342a5",
+    "wire_main.go": "a1b8ebf7bff6bd4593e833953f0f3227474f29bada403e9cd2c1904e47f875a6",
+    "control_execute.py": "e81b18bd6b78e9beeb1389e2585c322aaf069e6ac6976fb8b84f95bdb136643a",
+    "control_profile.py": "d10549eb060137ee642e2f6ad75d4d3b373a0027f9ad3740e34c02130535e351",
+    "run_proxy138.py": "0f5f5696adbaa8b8f02540538517f286eae5d5e913b22afcfaad133748bf941d",
+    "proxy_matrix": "7eb6ad98d8d6f945119e8ccc9bb4f667d10d673ba35550fe63626c4d29cc9c2e",
+    "proxy_wire": "6ff457f58f88e206fd3fc2a7748b0e473d289b0d36bf91c91d6489eac288ec47",
+    "observe138.py": "17c1902e211723741f5d80e2a7e355314394cc87b72cf471e79c3a7f08430fff",
+    "guard138.py": "3459bca328064d5e03a0971922a390b3e0c950d3b54e0faceb8900aa2021d93d"
+  },
+  "phase_transition": {
+    "API_only_replacement_between_baseline_and_fixed": {
+      "prior_result_SHA256": "0825c8bcad167d5f1f337bae9c8cd0e2b1d9adb4d389eb093f4281b925eeb735",
+      "previous_source_sha": "4a0f2582d58e521fa79d4905d124345185138b54",
+      "new_source_sha": "ae37adf43304316ef5002369661bc420df456571",
+      "process_image_binary_changed": true,
+      "same_peers_Caddy_CA_policy": true
+    },
+    "in_memory_counters_reset_as_new_API_source_phase": true,
+    "in_test_limiter_or_clock_reset": false,
+    "other_owner_peers_Caddy_CA_policy_fingerprints_unchanged": true
+  },
+  "resolved_observed_code_changes": {
+    "prior_bad400_to_correct429": 18,
+    "prior_empty_or_malformed_left429_to_correct400": 4
+  },
+  "startup_dummy_KDF_count": 1,
+  "per_request_KDF_account_store_saturation_deltas": 0,
+  "fixed_elapsed_seconds_observed": 159.15,
+  "unchanged_source_window_seconds": 300,
+  "scope_limits": [
+    "One actual trusted P and two actual untrusted peer namespaces; multiple-CIDR and IPv6 are native logical resolver/header cases, no physical multiple-proxy or IPv6 transport claim.",
+    "Malformed one-byte login requests only; no authentication/ACL bypass claim.",
+    "Startup dummy KDFcount1 recorded; per-request KDF/account/store deltas0.",
+    "No production faults/load, no parentQA blanket closure, no43 consolidation changes."
+  ],
+  "original_concrete_phase_files": [
+    "preregistration.json",
+    "phase-untrustedA.json",
+    "phase-frontA.json",
+    "phase-frontB.json",
+    "phase-directB.json",
+    "phase-trusted.json",
+    "phase-observe.json",
+    "phase-wire.json",
+    "result.json"
+  ],
+  "raw_requests_bodies_real_addresses_profiles": "PRIVATE_NOT_EXPORTED"
+}

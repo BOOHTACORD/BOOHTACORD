@@ -1,0 +1,256 @@
+{
+  "status": "EXACT_EXECUTABLE_ARGV_AND_CONCRETE_RESULT_MAP",
+  "source": "ae37adf43304316ef5002369661bc420df456571",
+  "private_parameters": {
+    "<helpers>": "Retained source-bound root helpers;20 unchanged hashes in runtime-summary.json",
+    "<owned-baseline-profile>": "Provisioned private baseline4a0 fixture, never arbitrary production URL",
+    "<owned-fixed-profile>": "New ae37 source-bound private profile after root-approved API-only replacement; same PAB/Caddy/CA/policy",
+    "<new-baseline-out>": "New unique absent output child",
+    "<new-fixed-out>": "New unique absent output child",
+    "<baseline-result>": "Qualified original baseline-network-attempt1/result.json with declared hash",
+    "<infra-helpers>": "Exact retained guarded cleanup helper directory; only original owner inventories allowed",
+    "<repo>": "Exact frozen checked-out source for native commands; WSL Linux path when declared"
+  },
+  "current_fixture": "REMOVED_AFTER_ACCEPTANCE; provenance templates require mandatory owned private parameters. This publication executes nothing.",
+  "suites": [
+    {
+      "suite": "native resolver preservation and race",
+      "command_argv": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu",
+        "--cd",
+        "<repo>/backend",
+        "--exec",
+        "/usr/bin/env",
+        "GOTOOLCHAIN=go1.26.4",
+        "CGO_ENABLED=1",
+        "/usr/bin/go",
+        "test",
+        "-json",
+        "-p=2",
+        "-race",
+        "-count=3",
+        "-timeout=3m",
+        "./internal/security/rate_limit"
+      ],
+      "platform": "Pinned Linux Go1.26.4 CGO1 via WSL, repository backend",
+      "mandatory_when": "Final source before freeze",
+      "result": "PASS117 events/33top-level,0skip/0race",
+      "where": {
+        "file": "native-and-CI.json",
+        "section": "native_checks.Linux_CGO1_race_and_config.rate-limit-race.jsonl",
+        "SHA256": "f25ea3dfcb916867407139759e561b2d22ede4a66bf8f2fc5debaf1464447ea2"
+      }
+    },
+    {
+      "suite": "invalid CIDR and unchanged10/300 config",
+      "command_argv": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu",
+        "--cd",
+        "<repo>/backend",
+        "--exec",
+        "/usr/bin/env",
+        "GOTOOLCHAIN=go1.26.4",
+        "CGO_ENABLED=1",
+        "/usr/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "./internal/config/runtime"
+      ],
+      "platform": "Same native Linux runtime",
+      "mandatory_when": "Trust/source resolver edge changes",
+      "result": "PASS11 events including exact invalidCIDR/default source-limit tests",
+      "where": {
+        "file": "native-and-CI.json",
+        "section": "native_checks.Linux_CGO1_race_and_config.config.jsonl",
+        "SHA256": "f25ea3dfcb916867407139759e561b2d22ede4a66bf8f2fc5debaf1464447ea2"
+      }
+    },
+    {
+      "suite": "qualified semantic first-field mutation",
+      "command_argv": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu",
+        "--cd",
+        "<repo>/backend",
+        "--exec",
+        "/usr/bin/env",
+        "GOTOOLCHAIN=go1.26.4",
+        "CGO_ENABLED=1",
+        "/usr/bin/go",
+        "test",
+        "-json",
+        "-p=2",
+        "-race",
+        "-count=3",
+        "-timeout=3m",
+        "-overlay",
+        "<repo>/.out/issue138/mutation-first-field/overlay.json",
+        "-run",
+        "^TestSourceKey(RepeatedFields|OrderedFields|LiteralHTTP1)",
+        "./internal/security/rate_limit"
+      ],
+      "platform": "Pinned Linux CGO1 race overlay, actual checkout unchanged",
+      "mandatory_when": "Before source freeze; semantic negative control",
+      "result": "Expected42semanticFAIL/57PASS/0skip; fixedbytes unchanged",
+      "where": {
+        "file": "native-and-CI.json",
+        "section": "native_checks.mutation",
+        "SHA256": "f25ea3dfcb916867407139759e561b2d22ede4a66bf8f2fc5debaf1464447ea2"
+      }
+    },
+    {
+      "suite": "module static and existing contracts",
+      "command_argv": [
+        [
+          "wsl.exe",
+          "-d",
+          "Ubuntu",
+          "--cd",
+          "<repo>/backend",
+          "--exec",
+          "/usr/bin/env",
+          "GOTOOLCHAIN=go1.26.4",
+          "CGO_ENABLED=1",
+          "/usr/bin/go",
+          "vet",
+          "./..."
+        ],
+        [
+          "wsl.exe",
+          "-d",
+          "Ubuntu",
+          "--cd",
+          "<repo>/backend",
+          "--exec",
+          "/usr/bin/env",
+          "GOTOOLCHAIN=go1.26.4",
+          "CGO_ENABLED=1",
+          "/usr/bin/go",
+          "build",
+          "./..."
+        ],
+        [
+          "pwsh",
+          "-NoProfile",
+          "-File",
+          "tools/verify/contracts/verify-contracts.ps1"
+        ]
+      ],
+      "platform": "Linux Go1.26.4 + Windows native PowerShell/Python contract check",
+      "mandatory_when": "Before source freeze/PR",
+      "result": "All exit0; no additional tests in publication",
+      "where": {
+        "file": "native-and-CI.json",
+        "section": "native_checks.static and native_checks.contracts",
+        "SHA256": "f25ea3dfcb916867407139759e561b2d22ede4a66bf8f2fc5debaf1464447ea2"
+      }
+    },
+    {
+      "suite": "actual complete normal124 plus literal43 baseline",
+      "command_argv": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu",
+        "--exec",
+        "python3",
+        "<helpers>/run_proxy138.py",
+        "--profile",
+        "<owned-baseline-profile>",
+        "--out",
+        "<new-baseline-out>",
+        "--expect",
+        "baseline",
+        "--execute-owned"
+      ],
+      "platform": "Windows11 host, Ubuntu WSL, actual Linux Go1.26.4/PostgreSQL17.6/Caddy2.10, normal TLS; one actual trustedP/two untrustedA/B",
+      "mandatory_when": "Baseline before approved API-only source switch; fixed after exact ae37 binding, unchanged prereg/runner hashes; profiles mandatory",
+      "result": "Baseline22known differences retained",
+      "where": {
+        "file": "runtime-summary.json",
+        "section": "runtime and original_results_SHA256",
+        "SHA256": "48c89bc3eab965e86db5fb4370fc218432b1886e6a05173eb32c7431413c0db2"
+      },
+      "driver_subresults": "The one executed controller invokes all phase-*.json entries listed in runtime-summary.json; no invented standalone phase command."
+    },
+    {
+      "suite": "actual complete normal124 plus literal43 fixed",
+      "command_argv": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu",
+        "--exec",
+        "python3",
+        "<helpers>/run_proxy138.py",
+        "--profile",
+        "<owned-fixed-profile>",
+        "--out",
+        "<new-fixed-out>",
+        "--expect",
+        "fixed",
+        "--prior-result",
+        "<baseline-result>",
+        "--execute-owned"
+      ],
+      "platform": "Windows11 host, Ubuntu WSL, actual Linux Go1.26.4/PostgreSQL17.6/Caddy2.10, normal TLS; one actual trustedP/two untrustedA/B",
+      "mandatory_when": "Baseline before approved API-only source switch; fixed after exact ae37 binding, unchanged prereg/runner hashes; profiles mandatory",
+      "result": "PASS167/167, counters100HTTP400/67HTTP429 and KDF/account/saturation deltas0",
+      "where": {
+        "file": "runtime-summary.json",
+        "section": "runtime and original_results_SHA256",
+        "SHA256": "48c89bc3eab965e86db5fb4370fc218432b1886e6a05173eb32c7431413c0db2"
+      },
+      "driver_subresults": "The one executed controller invokes all phase-*.json entries listed in runtime-summary.json; no invented standalone phase command."
+    },
+    {
+      "suite": "complete required hosted profile",
+      "command_argv": [
+        "gh",
+        "workflow",
+        "run",
+        "ci.yaml",
+        "--repo",
+        "Egkurilov/BOOHTACORD",
+        "--ref",
+        "codex/fix-forwarded-fields-138"
+      ],
+      "platform": "Existing GitHub-hosted workflow id371491554, declared pinned SDKs",
+      "mandatory_when": "Exact frozen ae37 ref binding before dispatch; no inputs supplied; full platform gates before merge",
+      "result": "Actual workflow_dispatch41192680878/1:27SUCCESS/0jobskip",
+      "where": {
+        "file": "native-and-CI.json",
+        "section": "full_hosted_profile",
+        "SHA256": "f25ea3dfcb916867407139759e561b2d22ede4a66bf8f2fc5debaf1464447ea2"
+      },
+      "command_provenance": "Supported executable CLI equivalent of actual REST POST actions/workflows/ci.yaml/dispatches {ref:codex/fix-forwarded-fields-138}, HTTP204. Not a second run; source ref was checked equal ae37 before the original dispatch."
+    },
+    {
+      "suite": "owned exact fixed fixture cleanup",
+      "command_argv": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu",
+        "-u",
+        "root",
+        "--",
+        "python3",
+        "<infra-helpers>/cleanup_fixed138.py",
+        "--root-authorized-exact-fixed138-cleanup"
+      ],
+      "platform": "Ubuntu WSL guarded owner-only infrastructure helper",
+      "mandatory_when": "Only after complete fixed matrix and root GO, exact helperSHA2bf892... checked; current fixture now removed",
+      "result": "PASS all owned resources/keys/holder absent,5030 free,old9 and CA/NSS unchanged",
+      "where": {
+        "file": "cleanup-summary.json",
+        "section": "all fields",
+        "SHA256": "606a1604334163ce337ddf04e0dffe91132bef8ebd34961db186bb676fb26aad"
+      },
+      "helper_SHA256": "2bf892014862f93377a8aac97bf050b25da6be337760645352e65395a0c8f120"
+    }
+  ]
+}

@@ -1,0 +1,625 @@
+{
+  "status": "PASS_EXACT_SOURCE_NATIVE_AND_FULL_HOSTED",
+  "source_sha": "ae37adf43304316ef5002369661bc420df456571",
+  "native_source_evidence": "https://github.com/Egkurilov/BOOHTACORD/blob/ae37adf43304316ef5002369661bc420df456571/evidence/qa/issue138-forwarded-fields-2026-10-31.json",
+  "source_test_Git_LF_SHA256": {
+    "backend/internal/security/rate_limit/source.go": "3592de3793691ca6b739f31cf947791dfaec9405690aa45ac86244b9125ebcba",
+    "backend/internal/security/rate_limit/source_fields_test.go": "aa56a8f3ca1a22bc3a243980f1567ec2fecc6642b950414d1dfc1c78876c7adc",
+    "backend/internal/security/rate_limit/source_limits_test.go": "cb0636ca1e93ff9e2774e0dd0e8f08ea5873d59ee0bc47763bc6ef24b0044b03",
+    "backend/internal/security/rate_limit/source_wire_test.go": "a54b4bee2db89f1a5165e510d3bd04fc662a0495b2da227f9aef2da88d14bc05",
+    "docs/superpowers/plans/2026-10-31-forwarded-fields-138.md": "23edc334d5b09605c2fca95d93032d7dcf82644ad4e4361519d082b26242ccd7"
+  },
+  "native_checks": {
+    "baseline": {
+      "stage": "BEFORE_ANY_SOURCE_OR_NEW_TEST_EDIT",
+      "source_commit": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2",
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "-count=3",
+        "./internal/security/rate_limit"
+      ],
+      "Go": "go version go1.26.4 windows/amd64",
+      "source_actual_SHA256": "f2acf749674bab5f5d67588c877573dd6b65c44d919481c944c7b5ba8a87006c",
+      "source_Git_LF_SHA256": "9a0d02d4e9c7b5eb015c9357d3f959fb6a8853f92cafff6d4411e97c410ae813",
+      "exit_code": 0,
+      "original_top_level_PASS_events": 18,
+      "skips": 0,
+      "log_SHA256": "b1c3c4793dee61c27d16c278c899f8281a0d017d5c7a5a26b05ab1d35a8738b2"
+    },
+    "before_fix_RED": {
+      "stage": "QUALIFIED_SEMANTIC_RED_BEFORE_PRODUCT_EDIT",
+      "base": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2",
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "-count=1",
+        "-run",
+        "^TestSourceKey(RepeatedFields|OrderedFields|LiteralHTTP1)",
+        "./internal/security/rate_limit"
+      ],
+      "platform": "Go1.26.4 Windows amd64 supplemental non-race",
+      "exit_code": 1,
+      "source_actual_SHA256": "f2acf749674bab5f5d67588c877573dd6b65c44d919481c944c7b5ba8a87006c",
+      "test_Git_LF_SHA256": {
+        "source_fields_test.go": "aa56a8f3ca1a22bc3a243980f1567ec2fecc6642b950414d1dfc1c78876c7adc",
+        "source_limits_test.go": "cb0636ca1e93ff9e2774e0dd0e8f08ea5873d59ee0bc47763bc6ef24b0044b03",
+        "source_wire_test.go": "a54b4bee2db89f1a5165e510d3bd04fc662a0495b2da227f9aef2da88d14bc05"
+      },
+      "fail_events": [
+        "TestSourceKeyRepeatedFieldsNearestBoundary",
+        "TestSourceKeyOrderedFieldsMatchCombined/leading_empty",
+        "TestSourceKeyOrderedFieldsMatchCombined/trailing_empty",
+        "TestSourceKeyOrderedFieldsMatchCombined/trusted_walk_bad",
+        "TestSourceKeyOrderedFieldsMatchCombined/ignored_bad_left",
+        "TestSourceKeyOrderedFieldsMatchCombined/ordered_boundary",
+        "TestSourceKeyOrderedFieldsMatchCombined",
+        "TestSourceKeyRepeatedFieldsAggregateBytes/bytes4097/form0",
+        "TestSourceKeyRepeatedFieldsAggregateBytes",
+        "TestSourceKeyRepeatedFieldsAggregateHops/hops33/layout0/form0",
+        "TestSourceKeyRepeatedFieldsAggregateHops/hops33/layout1/form0",
+        "TestSourceKeyRepeatedFieldsAggregateHops",
+        "TestSourceKeyLiteralHTTP1RetainsOrderedFields/separate",
+        "TestSourceKeyLiteralHTTP1RetainsOrderedFields"
+      ],
+      "pass_events": [
+        "TestSourceKeyOrderedFieldsMatchCombined/missing",
+        "TestSourceKeyOrderedFieldsMatchCombined/empty",
+        "TestSourceKeyOrderedFieldsMatchCombined/all_empty",
+        "TestSourceKeyOrderedFieldsMatchCombined/all_trusted",
+        "TestSourceKeyOrderedFieldsMatchCombined/IPv4_mapped",
+        "TestSourceKeyOrderedFieldsMatchCombined/IPv6_normalized",
+        "TestSourceKeyOrderedFieldsMatchCombined/two_trusted_CIDRs",
+        "TestSourceKeyOrderedFieldsMatchCombined/untrusted_direct",
+        "TestSourceKeyOrderedFieldsMatchCombined/invalid_peer",
+        "TestSourceKeyRepeatedFieldsAggregateBytes/bytes4096/form0",
+        "TestSourceKeyRepeatedFieldsAggregateBytes/bytes4096/form1",
+        "TestSourceKeyRepeatedFieldsAggregateBytes/bytes4097/form1",
+        "TestSourceKeyRepeatedFieldsAggregateHops/hops32/layout0/form0",
+        "TestSourceKeyRepeatedFieldsAggregateHops/hops32/layout0/form1",
+        "TestSourceKeyRepeatedFieldsAggregateHops/hops32/layout1/form0",
+        "TestSourceKeyRepeatedFieldsAggregateHops/hops32/layout1/form1",
+        "TestSourceKeyRepeatedFieldsAggregateHops/hops33/layout0/form1",
+        "TestSourceKeyRepeatedFieldsAggregateHops/hops33/layout1/form1",
+        "TestSourceKeyLiteralHTTP1RetainsOrderedFields/combined"
+      ],
+      "skips": 0,
+      "log_SHA256": "e7a9bcea35ce2db1cae80025e7ca818fe262eac63065b1694c1283341d218f43"
+    },
+    "Windows_green": {
+      "status": "PASS",
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "-count=3",
+        "./internal/security/rate_limit"
+      ],
+      "platform": "Windows Go1.26.4 supplemental non-race",
+      "top_level_PASS_events": 33,
+      "all_test_PASS_events": 117,
+      "fail": 0,
+      "skip": 0,
+      "log_SHA256": "ce5925623bab5726f168a94dd9c2ea0a633897550a5775e088416c8385f635a4"
+    },
+    "Linux_CGO1_race_and_config": {
+      "rate-limit-race.jsonl": {
+        "status": "PASS",
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu",
+          "--cd",
+          "<repo>/backend",
+          "--exec",
+          "/usr/bin/env",
+          "GOTOOLCHAIN=go1.26.4",
+          "CGO_ENABLED=1",
+          "/usr/bin/go",
+          "test",
+          "-json",
+          "-p=2",
+          "-race",
+          "-count=3",
+          "-timeout=3m",
+          "./internal/security/rate_limit"
+        ],
+        "PASS_events": 117,
+        "top_level_PASS": 33,
+        "skips": 0,
+        "exit_code": 0,
+        "log_SHA256": "9922e99e4603bb9d9c06235e6e2ceeb0d9a304f62d0c378a00a74b72e01cc22a"
+      },
+      "config.jsonl": {
+        "status": "PASS",
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu",
+          "--cd",
+          "<repo>/backend",
+          "--exec",
+          "/usr/bin/env",
+          "GOTOOLCHAIN=go1.26.4",
+          "CGO_ENABLED=1",
+          "/usr/bin/go",
+          "test",
+          "-json",
+          "-count=1",
+          "./internal/config/runtime"
+        ],
+        "PASS_events": 11,
+        "top_level_PASS": 5,
+        "skips": 0,
+        "exit_code": 0,
+        "log_SHA256": "c5a43a23021261bfb160095d8f7e1ca1d266e762fc1ef934d96b6db7cfef801f"
+      }
+    },
+    "mutation": {
+      "status": "QUALIFIED_SEMANTIC_MUTATION_FAIL_FIXED_BYTES_UNCHANGED",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu",
+        "--cd",
+        "<repo>/backend",
+        "--exec",
+        "/usr/bin/env",
+        "GOTOOLCHAIN=go1.26.4",
+        "CGO_ENABLED=1",
+        "/usr/bin/go",
+        "test",
+        "-json",
+        "-p=2",
+        "-race",
+        "-count=3",
+        "-timeout=3m",
+        "-overlay",
+        "<repo>/.out/issue138/mutation-first-field/overlay.json",
+        "-run",
+        "^TestSourceKey(RepeatedFields|OrderedFields|LiteralHTTP1)",
+        "./internal/security/rate_limit"
+      ],
+      "exit_code": 1,
+      "mutated_edge": "Header.Values→one-element Header.Get; all other source unchanged",
+      "fixed_source_SHA256": "3592de3793691ca6b739f31cf947791dfaec9405690aa45ac86244b9125ebcba",
+      "mutant_source_SHA256": "69ad60e4db94c7f83fae0201ccf8794519d4375154504ef3cb31f73e8135968c",
+      "log_SHA256": "f52bdd395886c2964cc722221a4b5a2422a03bdf049680a38a8d7be92535b13f",
+      "required_failed_top_levels": {
+        "TestSourceKeyRepeatedFieldsNearestBoundary": 3,
+        "TestSourceKeyRepeatedFieldsAggregateBytes": 3,
+        "TestSourceKeyRepeatedFieldsAggregateHops": 3,
+        "TestSourceKeyLiteralHTTP1RetainsOrderedFields": 3
+      },
+      "all_failed_events": 42,
+      "all_passed_events": 57,
+      "skips": 0,
+      "original_fixed_bytes_unchanged": true
+    },
+    "static": {
+      "vet": {
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu",
+          "--cd",
+          "<repo>/backend",
+          "--exec",
+          "/usr/bin/env",
+          "GOTOOLCHAIN=go1.26.4",
+          "CGO_ENABLED=1",
+          "/usr/bin/go",
+          "vet",
+          "./..."
+        ],
+        "exit_code": 0,
+        "log_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "build": {
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu",
+          "--cd",
+          "<repo>/backend",
+          "--exec",
+          "/usr/bin/env",
+          "GOTOOLCHAIN=go1.26.4",
+          "CGO_ENABLED=1",
+          "/usr/bin/go",
+          "build",
+          "./..."
+        ],
+        "exit_code": 0,
+        "log_SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "contracts": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/verify/contracts/verify-contracts.ps1"
+      ],
+      "exit_code": 0,
+      "log_SHA256": "160336f0a083cac4fece7bff6b58f1322521da31fef4ae32499c6eda534a3c7e",
+      "status": "PASS"
+    }
+  },
+  "full_hosted_profile": {
+    "source": "ae37adf43304316ef5002369661bc420df456571",
+    "run": {
+      "id": 41192680878,
+      "attempt": 1,
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "full_jobs": [
+      {
+        "id": 124512490562,
+        "name": "changes",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512490758,
+        "name": "contracts / contracts",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512523317,
+        "name": "actual / runtime (lifecycle)",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512523324,
+        "name": "flutter / macos",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512523326,
+        "name": "backend / database",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512523336,
+        "name": "actual / runtime (next)",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512523338,
+        "name": "windows / windows-native-unit",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512523343,
+        "name": "flutter / dart",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512523345,
+        "name": "windows / windows-build",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512523348,
+        "name": "actual / runtime (sfu)",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512523352,
+        "name": "frontend / sfu",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512523359,
+        "name": "frontend / fast",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512523375,
+        "name": "flutter / android",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512523385,
+        "name": "backend / static",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512523412,
+        "name": "backend / load",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512523421,
+        "name": "flutter / android-kotlin",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512523475,
+        "name": "frontend / browser (browser-shell)",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512523489,
+        "name": "frontend / browser (browser-content)",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512523496,
+        "name": "frontend / browser (browser-conversations)",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124512523500,
+        "name": "frontend / browser (browser-voice)",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124513786957,
+        "name": "backend / backend",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124514091355,
+        "name": "frontend / frontend",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124514180054,
+        "name": "windows / windows-gui-sfu",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124514816419,
+        "name": "actual / actual-acceptance",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124515051838,
+        "name": "flutter / flutter",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124515584133,
+        "name": "windows / windows",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      },
+      {
+        "id": 124515628058,
+        "name": "ci-required",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 41192680878
+      }
+    ],
+    "normal_PR_run": {
+      "id": 41192573373,
+      "attempt": 1,
+      "event": "pull_request",
+      "jobs": [
+        {
+          "id": 124512166835,
+          "name": "changes",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 41192573373
+        },
+        {
+          "id": 124512166963,
+          "name": "contracts / contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 41192573373
+        },
+        {
+          "id": 124512210522,
+          "name": "backend / load",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 41192573373
+        },
+        {
+          "id": 124512210577,
+          "name": "actual / runtime (next)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 41192573373
+        },
+        {
+          "id": 124512210584,
+          "name": "actual / runtime (sfu)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 41192573373
+        },
+        {
+          "id": 124512210596,
+          "name": "actual / runtime (lifecycle)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 41192573373
+        },
+        {
+          "id": 124512210620,
+          "name": "backend / database",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 41192573373
+        },
+        {
+          "id": 124512210675,
+          "name": "backend / static",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 41192573373
+        },
+        {
+          "id": 124512211204,
+          "name": "flutter",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_id": 41192573373
+        },
+        {
+          "id": 124512211304,
+          "name": "frontend",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_id": 41192573373
+        },
+        {
+          "id": 124512211492,
+          "name": "windows",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_id": 41192573373
+        },
+        {
+          "id": 124513270009,
+          "name": "backend / backend",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 41192573373
+        },
+        {
+          "id": 124514371429,
+          "name": "actual / actual-acceptance",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 41192573373
+        },
+        {
+          "id": 124514409156,
+          "name": "ci-required",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 41192573373
+        }
+      ]
+    },
+    "artifacts": [
+      {
+        "id": 13039931465,
+        "name": "backend-events-ae37adf43304316ef5002369661bc420df456571-41192680878-1",
+        "size_in_bytes": 159379,
+        "digest": "sha256:a92fbbbfb1419883659e974d4d1f8ba33c23efc138caca9dd7502fffe8812245"
+      },
+      {
+        "id": 13039856969,
+        "name": "backend-fan-in-ae37adf43304316ef5002369661bc420df456571-41192680878-1",
+        "size_in_bytes": 365,
+        "digest": "sha256:0783916beb1ae0e758914a8ebd4c7eaeb4abf2cb044eb8be644cde43c6db5217"
+      },
+      {
+        "id": 13039771802,
+        "name": "backend-part-ae37adf43304316ef5002369661bc420df456571-41192680878-1-database",
+        "size_in_bytes": 371,
+        "digest": "sha256:bd182a2307979592c3dfa10d55fc9226536d47be9c9db5a0e1bbab89a6695127"
+      },
+      {
+        "id": 13039597169,
+        "name": "upload-proxy-ae37adf43304316ef5002369661bc420df456571-41192680878-1",
+        "size_in_bytes": 2651,
+        "digest": "sha256:ee85548f7cd51832a686bce1c04d69870749f37ff1386a6d46b5bf746e42b67d"
+      },
+      {
+        "id": 13039442799,
+        "name": "macos-unit-flutter-ae37adf43304316ef5002369661bc420df456571-41192680878-1",
+        "size_in_bytes": 1208,
+        "digest": "sha256:e1787d6bc6c50ba9c451878e921493cfa48e987d8fb157d45456e3a9e379de24"
+      },
+      {
+        "id": 13039262252,
+        "name": "flutter-part-flutter-ae37adf43304316ef5002369661bc420df456571-41192680878-1-macos",
+        "size_in_bytes": 426,
+        "digest": "sha256:7f3d5f18a2909a3d3065addc9ba659228995bf3fe43ca41f83d8a72c9838c3cf"
+      },
+      {
+        "id": 13039053042,
+        "name": "flutter-part-flutter-ae37adf43304316ef5002369661bc420df456571-41192680878-1-android",
+        "size_in_bytes": 745,
+        "digest": "sha256:ac67b1540245d1d66408db4b22860f17002ec8329b15978287bf16422e7e6bb9"
+      },
+      {
+        "id": 13039598402,
+        "name": "flutter-part-flutter-ae37adf43304316ef5002369661bc420df456571-41192680878-1-android-kotlin",
+        "size_in_bytes": 441,
+        "digest": "sha256:3c9ebf994544d3fbf1452b4a30a2b799121e5555c8715136bd0ff0148ac61105"
+      }
+    ]
+  },
+  "typed_actual_events": {
+    "backend_PASS": 1741,
+    "backend_skip": 0,
+    "rate_limit_PASS": 39,
+    "new_named_top_levels_executed": [
+      "TestSourceKeyRepeatedFieldsNearestBoundary",
+      "TestSourceKeyOrderedFieldsMatchCombined",
+      "TestSourceKeyRepeatedFieldsAggregateBytes",
+      "TestSourceKeyRepeatedFieldsAggregateHops",
+      "TestSourceKeyLiteralHTTP1RetainsOrderedFields"
+    ],
+    "backend_JSONL_SHA256": "9b0f9471d4b3c854023a3a856238b9fe3294917600bb225eee76eb5001e6d9c9",
+    "Darwin_actual_tests": 8,
+    "Darwin_skip": 0,
+    "Darwin_JSONL_SHA256": "c8a60caafffed7bcbb37d140f6766d009b66c3147d77084a634755c11319e982",
+    "mandatory_current_Caddy12PASS_owned_cleanup": true
+  },
+  "scope": "Normal PR profile14 jobs has11SUCCESS/3legitimate path skips; separate exact-source workflow_dispatch27SUCCESS/0jobskip establishes requested platform gates. No old #134 platform PASS transferred; debug artifacts not device/media acceptance."
+}

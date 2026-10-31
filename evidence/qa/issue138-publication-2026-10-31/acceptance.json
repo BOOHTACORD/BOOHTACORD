@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "issue": 138,
+  "PR": 623,
+  "status": "PASS_ORIGINAL_SCOPED_CRITERIA_NATIVE_CI_RUNTIME_CLEANUP_MERGE_PENDING",
+  "actual_fixed_source": "ae37adf43304316ef5002369661bc420df456571",
+  "baseline_actual_source": "4a0f2582d58e521fa79d4905d124345185138b54",
+  "baseline_whole_tree_equals_master_base": "d7cc1d381fffebf6ec095b1e9486b41bc145c3b2",
+  "source_tree": "94e106f6c03943770eb4e012a927c922d4bae0a7",
+  "original10_rows": [
+    {
+      "wording": "- [ ] Вынести определение клиентского адреса в единый тестируемый модуль и задать явные trusted proxy CIDR.",
+      "result": "PASS",
+      "where": "native-and-CI.json + runtime-summary.json"
+    },
+    {
+      "wording": "- [ ] Если непосредственный peer недоверенный, игнорировать forwarding-заголовки и использовать адрес peer.",
+      "result": "PASS",
+      "where": "native-and-CI.json + runtime-summary.json"
+    },
+    {
+      "wording": "- [ ] Для доверенной цепочки определить и документировать алгоритм поиска границы доверия, не выбирая безусловно крайний левый адрес.",
+      "result": "PASS",
+      "where": "runtime-summary.json + command-map.json; unchanged trust walk"
+    },
+    {
+      "wording": "- [ ] Нормализовать IPv4/IPv6 и безопасно обрабатывать пустые, повреждённые и многозначные заголовки; не разрешать неограниченную стоимость разбора.",
+      "result": "PASS",
+      "where": "native-and-CI.json + runtime-summary.json;4096/4097,32/33 and IPv4/IPv6 logical"
+    },
+    {
+      "wording": "- [ ] Сохранить запрет внешней публикации API в стандартном развёртывании; документировать дополнительный upstream proxy и fail-safe конфигурацию.",
+      "result": "PASS",
+      "where": "runtime-summary.json + cleanup-summary.json; API/admin unpublished and Caddy defenses preserved"
+    },
+    {
+      "wording": "- [ ] Недоверенный peer с подставленным XFF не меняет ключ лимитера.",
+      "result": "PASS",
+      "where": "runtime-summary.json untrustedA preservation"
+    },
+    {
+      "wording": "- [ ] Через стандартный Caddy ключ отражает реального клиента, а не один адрес proxy для всех пользователей.",
+      "result": "PASS",
+      "where": "runtime-summary.json frontA/frontB distinct clients"
+    },
+    {
+      "wording": "- [ ] Проверены прямой API, один/несколько доверенных proxy, недоверенный промежуточный узел, IPv4/IPv6 и некорректные заголовки.",
+      "result": "PASS",
+      "where": "native-and-CI.json and runtime-summary.json direct/trusted/logical IPv6/invalid fields"
+    },
+    {
+      "wording": "- [ ] Ошибочная конфигурация доверия не приводит к молчаливому разрешению произвольного адреса.",
+      "result": "PASS",
+      "where": "native-and-CI.json exact invalidCIDR test; runtime bounded fallback"
+    },
+    {
+      "wording": "- [ ] Тесты resolver и интеграция с Caddy приложены с SHA/конфигурацией; реальные IP и credentials не публикуются в evidence.",
+      "result": "PASS",
+      "where": "command-map.json + all source/nativeCI/runtime/cleanup hashes"
+    }
+  ],
+  "original5_acceptance": {
+    "untrusted_peer_XFF_does_not_change_key": true,
+    "actual_standard_Caddy_keeps_distinct_real_client_budgets": true,
+    "direct_API_trusted_chains_untrusted_intermediate_IPv4_IPv6_and_invalid_fields": true,
+    "invalid_CIDR_configuration_rejected_native_and_bounded_fail_closed": true,
+    "resolver_and_native_literal_HTTP1_regressions_plus_actual_Caddy_proof_with_source": true
+  },
+  "root_final_original_SHA256": "138eaafd5397d1e8b0d57aca30593db1c4419af6a1ded007154fd4680d7e39aa",
+  "supporting_file_SHA256": {
+    "root-verdict-safe.json": "ad9298da56ed29085eaae867646e1a7b93868ca117ed7b75deca0065a4fc1177",
+    "native-and-CI.json": "f25ea3dfcb916867407139759e561b2d22ede4a66bf8f2fc5debaf1464447ea2",
+    "runtime-summary.json": "48c89bc3eab965e86db5fb4370fc218432b1886e6a05173eb32c7431413c0db2",
+    "cleanup-summary.json": "606a1604334163ce337ddf04e0dffe91132bef8ebd34961db186bb676fb26aad",
+    "command-map.json": "22b7cb40dc8178e03ca7d972af654a4ac5723f3ef9a12e0a39a2c1b5cc8e4aee"
+  },
+  "limits": [
+    "One actual trusted P and two actual untrusted peer namespaces; multiple-CIDR and IPv6 are native logical resolver/header cases, no physical multiple-proxy or IPv6 transport claim.",
+    "Malformed one-byte login requests only; no authentication/ACL bypass claim.",
+    "Startup dummy KDFcount1 recorded; per-request KDF/account/store deltas0.",
+    "No production faults/load, no parentQA blanket closure, no43 consolidation changes."
+  ],
+  "current_fixture": "REMOVED_AFTER_ACCEPTANCE",
+  "historical_FAILs_and_controller_correction_preserved": {
+    "old0724_100normal18wire": "Retained immutable e2dac43964b65abc33393a4fa02d0fd722057dc4 evidence",
+    "current4a0_baseline167": "22 known-family differences retained with raw hash; fixed zero",
+    "preflight": "First fresh preflight expected absoluteKDF0; native package-init dummyHash work1 proven; owned cleanup then corrected stable baseline1/requestdelta0. No probes ran during failed preflight."
+  },
+  "production_or_parentQA_or_physical_audio_claim": false
+}

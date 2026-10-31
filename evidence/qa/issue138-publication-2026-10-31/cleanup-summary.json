@@ -1,0 +1,47 @@
+{
+  "status": "PASS_FINAL_OWNED138_RUNTIME_KEYS_HOLDER_PORT_CLEANUP",
+  "source_sha": "ae37adf43304316ef5002369661bc420df456571",
+  "baseline_source_sha": "4a0f2582d58e521fa79d4905d124345185138b54",
+  "actual_fixed_API_binary_SHA256": "6b2a3871dfdff1d37975831dc47c54de6c70440c6bfc84839837aa03916cb8a4",
+  "exact_holder_PIDcreation_absent": true,
+  "holder_identity_SHA256": "86e04baf990ed33c11e40df186a369afafcf586653dc405d16cfff6041ea389c",
+  "holder_exec_exit_code": 0,
+  "no_Linux_or_Windows_TCP5030_listener": true,
+  "Linux_loopback5030_bind_available": true,
+  "private_LKkeyfile_ENVsnapshot_absent": true,
+  "P_tmpfs_CAprivatekeys_disposed_with_exact_P_container": true,
+  "candidate_image_removed_only_after_API": true,
+  "original9_IDstartimageConfig_same": true,
+  "original9_before_SHA256": "f6f382af00d7b301b6a562492f954cf1e22f8e2297d22d71c6b862afe16710fe",
+  "original9_after_SHA256": "f6f382af00d7b301b6a562492f954cf1e22f8e2297d22d71c6b862afe16710fe",
+  "host_global_CA_NSSsame": true,
+  "baseline_fixed_profiles_results_source_failures_preserved": true,
+  "reviewed_executed_cleanup_helper_SHA256": "2bf892014862f93377a8aac97bf050b25da6be337760645352e65395a0c8f120",
+  "full_private_execution_receipt_SHA256": "bc8f36fb9bf787c0266be2f09fc0c20e2004807573b454de3045155fd0c161c1",
+  "safe_execution_receipt_SHA256": "9348e62085897e259816ab3fa04520473793638e78506e23ac12b0585caac6a4",
+  "safe_artifacts_SHA256": {
+    "final-precleanup-readonly.json": "35239b0e52340fad56caed335ebb6addb6dc4abbf58f89abc96524310509e3a4",
+    "windows-nine-final-cleanup-before.json": "f6f382af00d7b301b6a562492f954cf1e22f8e2297d22d71c6b862afe16710fe",
+    "windows-nine-final-cleanup-after.json": "f6f382af00d7b301b6a562492f954cf1e22f8e2297d22d71c6b862afe16710fe",
+    "windows-port5030-after-cleanup.json": "d49f04e0dee77b9cdd75b71997c9490ebccdb7684688d3040c954bf6ff7399eb",
+    "native-startup-preflight-controller-failure.json": "82990ff04a3d135472d89d099398141c4a789d1b942c20f2783b1cc4f5844374",
+    "native-startup-guard-correction.json": "3d9809b96028c40694197682863dcafff8204c540c5fbd82bf96218178e02427"
+  },
+  "manual_SQL_writes_or_untracked_global_Docker_WSL_stops": false,
+  "owner_resource_counts_after": [
+    {
+      "container": 0,
+      "network": 0,
+      "image": 0,
+      "volume": 0
+    },
+    {
+      "container": 0,
+      "network": 0,
+      "image": 0,
+      "volume": 0
+    }
+  ],
+  "original_cleanup_receipt_SHA256": "0c2deb933bfa7a8497adcbb414d50bfa920341ebdd1dee44a8a5bfb4ceb98283",
+  "current_fixture": "REMOVED_AFTER_ACCEPTANCE"
+}
