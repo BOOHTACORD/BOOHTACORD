@@ -68,6 +68,7 @@ class VoiceController extends VoiceState {
   final Future<void> Function(Room, MediaDevice) audioOutputDeviceSetter;
   final Map<String, RemoteTrackPublication> screenThumbnailPublications = {};
   static const voiceStreamSoundPreferenceKey = 'voice-screen-start-sound:v1';
+  static const voiceRoomEventSoundPreferenceKey = 'voice-room-event-sounds:v1';
   @override
   void dispose() {
     unawaited(microphoneForeground.dispose());
@@ -90,6 +91,7 @@ class VoiceController extends VoiceState {
     screenThumbnailPublications.clear();
     stopVoiceConnectionStatsPolling();
     clearVoiceStreamNotice(resetTracker: true, notify: false);
+    voiceParticipantSoundTracker.reset();
     unawaited(disposeVoiceEvents());
     unawaited(room?.disconnect());
     unawaited(pendingRoom?.disconnect());

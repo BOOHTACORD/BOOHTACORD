@@ -51,7 +51,12 @@ extension VoiceAdmissionJoin on VoiceController {
       );
       check();
       leaseId = admittedLease;
-      await prepareVoiceAudio(ticket, revision, admittedLease, disconnectGeneration);
+      await prepareVoiceAudio(
+        ticket,
+        revision,
+        admittedLease,
+        disconnectGeneration,
+      );
       candidate = createRoom(voiceRoomOptions());
       pendingRoom = candidate;
       bindVoiceRoomEvents(candidate);
@@ -79,6 +84,11 @@ extension VoiceAdmissionJoin on VoiceController {
       if (!listenerOnly) ActionScope.current?.step('microphone');
       await enableVoiceMicrophone(candidate, listenerOnly, ticket, revision);
       check();
+      voiceParticipantSoundTracker.seed(
+        candidate.remoteParticipants.values.map(
+          (participant) => participant.identity,
+        ),
+      );
       startVoiceConnectionStatsPolling(candidate);
       observeVoiceStreamStarts(candidate);
       connected = true;

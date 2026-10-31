@@ -42,7 +42,9 @@ extension VoiceEventsConnection on VoiceController {
         return;
       }
       if (leaseId != null) disconnect.bind(leaseId!, voiceChannel?.id ?? '');
-      disconnect.transport('Не удалось восстановить голосовое соединение после $voiceReconnectAttemptLimit попыток. Подключитесь ещё раз.');
+      disconnect.transport(
+        'Не удалось восстановить голосовое соединение после $voiceReconnectAttemptLimit попыток. Подключитесь ещё раз.',
+      );
       showVoiceDisconnect();
       unawaited(leaveVoice(explicit: false));
     });
@@ -53,6 +55,7 @@ extension VoiceEventsConnection on VoiceController {
         return;
       }
       voicePhase = VoicePhase.reconnecting;
+      voiceParticipantSoundTracker.pause();
       stopVoiceConnectionStatsPolling();
       voicePingMs = null;
       observeVoiceStreamStarts(room);
@@ -65,6 +68,7 @@ extension VoiceEventsConnection on VoiceController {
         return;
       }
       voicePhase = VoicePhase.reconnecting;
+      voiceParticipantSoundTracker.pause();
       stopVoiceConnectionStatsPolling();
       voicePingMs = null;
       observeVoiceStreamStarts(room);
@@ -73,9 +77,12 @@ extension VoiceEventsConnection on VoiceController {
     listener.on<RoomReconnectedEvent>((_) {
       if (!owns() || disconnect.notice != null) return;
       if (!identical(this.room, room)) return;
-      voicePhase = listenerOnly
-          ? VoicePhase.listener
-          : VoicePhase.connected;
+      voicePhase = listenerOnly ? VoicePhase.listener : VoicePhase.connected;
+      voiceParticipantSoundTracker.seed(
+        room.remoteParticipants.values.map(
+          (participant) => participant.identity,
+        ),
+      );
       startVoiceConnectionStatsPolling(room);
       observeVoiceStreamStarts(room);
       subscribeCurrentRemoteVoiceTracks(room);
@@ -96,6 +103,7 @@ extension VoiceEventsConnection on VoiceController {
     });
     listener.on<RoomDisconnectedEvent>((event) {
       if (!owns()) return;
+      voiceParticipantSoundTracker.reset();
       if (!identical(this.room, room) || voicePhase == VoicePhase.leaving) {
         return;
       }
