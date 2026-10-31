@@ -216,3 +216,12 @@ Files: this plan and evidence/qa/issue134-upload-read-deadline-2026-10-31.json.
 ### Recorded design refinements
 
 The first future-native-deadline prototype and its classification race failures are retained, not accepted. Final code uses one timer-owned policy actor, capability check before reading, a past native deadline only for actual interruption, and a request-local atomic classification marker. The first cancellation/timeout actor wins under the body mutex; stale idle callbacks return without mutating fresh progress. Final Windows native and pinned Go1.26.4 Linux race tests pass. Full backend static dependency setup, hosted PostgreSQL/Android/macOS CI and real TLS/Caddy durations remain separate pending gates.
+
+### Task4: Qualified proxy delivery follow-up
+
+Source718 remains the immutable backend/native prior scope. Root confirmed direct real-route408 at60.02s but default keep-alive TLS/Caddy0bytes at80s; explicit CLIENT Connection:close is a diagnostic control, not the production fix.
+
+- [x] Add tools/qa/upload_proxy/run.py and six typed Go overlay test/helper files. Require the actual pinned Caddy2.10.0 binary/SHA; no skip or fake proxy. Run the existing production Caddyfile unchanged and retain native RED.
+- [x] Add only a POST/exact TEXT-DM path/HTTP1.x request match and upstream408 response handler setting frontend Connection:close before copy_response in deploy/caddy/Caddyfile. No global duplex/timeouts, no valid-upload closing or cap changes.
+- [x] Run native Caddy GREEN, retain config/binary/test/log fingerprints and scope/progress/keep-alive controls, then compare source-before-fix again as a qualified mutation.
+- [ ] Freeze and hand off a new exact immutable source before any MAIN reload. Root reruns all real TLS duration/cleanup/concurrency/ENOSPC/realtime criteria; full CI repeats on the final new head.

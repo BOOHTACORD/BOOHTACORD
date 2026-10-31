@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "issue": 134,
+  "status": "PASS_LOCAL_NATIVE_PINNED_CADDY_FULL_RUNTIME_AND_FINAL_CI_PENDING",
+  "prior_implementation_source": "718768c242a5e14293f2255e86f4961b449a0771",
+  "recorded_at_utc": "2026-10-31T09:00:20.187808+00:00",
+  "route": "proxy/upload_response/early408",
+  "production_change": "Only HTTP1.x POST exact TEXT/DM attachment request routes with upstream408 set frontend Connection:close before copy_response; all other responses use existing reverse proxy behavior",
+  "native_Caddy": {
+    "version": "2.10.0",
+    "embedded_Go": "go1.24.2",
+    "binary_SHA256": "ae87f566523d744731c0832d97b009b5cbdd69f5825e6e3c7de380c295a4ef68",
+    "approved_image_ID": "sha256:ae4458638da8e1a91aafffb231c5f8778e964bca650c8a8cb23a7e8ac557aa3c",
+    "binary_handoff_original_SHA256": "1b4ef8b4424ba89d97a9a8ee5879847e16901bd91f388767b95f29ea1f87b2f2",
+    "actual_immutable_binary_verified": true
+  },
+  "production_Caddyfile": {
+    "before_Git_LF_SHA256": "ce430111a48c93cd198d7f1b54bfc3c2ee979b0b01c7b3acf405a27f8870cc88",
+    "after_Git_LF_SHA256": "7f475f605c8169238367b80b73e59c721ca7113ebb50b405f4903fa537838bc4"
+  },
+  "source_Git_LF_SHA256": {
+    "tools/qa/upload_proxy/backend_test.go": "13b63a5f444a0dcb0783d999c2f5ad4d7f891b4278f0a5bdcf5cb79c407a3be3",
+    "tools/qa/upload_proxy/delivery_test.go": "bd5af86f43bbab216a12def21235e5d209f9e70e40f34230e9ed028b7cb6dbf5",
+    "tools/qa/upload_proxy/fixture_test.go": "1c195a24b43ca917b7424b9135d92e473b7c90e8a78d64082215d8e847787a1b",
+    "tools/qa/upload_proxy/native_test.go": "d37299cc2147a56bc73ccfcf2c5ac62f61d00e1eb75f91dfe9a295d9eeea7524",
+    "tools/qa/upload_proxy/README.md": "4e305719c94e9c9ee9627203b292bea2e5535e93d0198cfe171e5596488342c8",
+    "tools/qa/upload_proxy/run.py": "cd69d2768f1b4a7b31a08290dd9627cbcf85a4480f8e12060e429e40f0c984b2",
+    "tools/qa/upload_proxy/scope_test.go": "6839dfdc823d6dc8ba8d6db83f99995378e7c3ae7d8316b9de0c17a45bec8abf",
+    "tools/qa/upload_proxy/socket_test.go": "4b2e317dca666435c3f49ecab1db6558d0cee3022151c81d9f152a711b9ee34b"
+  },
+  "backend_18_original_source_test_fingerprints_unchanged": {
+    "backend/internal/storage/upload_direct_message_attachment/api/deadline_writer_test.go": "d63af2abf1ef13788154a74175a5964cbcbc88285eaa64270ad63c698262c272",
+    "backend/internal/storage/upload_direct_message_attachment/api/http_handler.go": "af567526502aba59a8a07fedf455c1a1342ad71a7d725d938749e2aa0f55b418",
+    "backend/internal/storage/upload_direct_message_attachment/api/http_handler_test.go": "70087f9895285c92234aa4e028eb8664356aa72eec35ffd9030c1ef7e05a87b0",
+    "backend/internal/storage/upload_request/body.go": "9649b6206a6c584df43fecc9e4abfe2d9b1ef791b8d1b0b20fd7eed90757040e",
+    "backend/internal/storage/upload_request/body_test.go": "c6b0035d52cd86ccd2fafe5875847ce61749f673acb3f063ec94394fa12d5c01",
+    "backend/internal/storage/upload_request/deadline_helpers_test.go": "b3aca3406928cc89046ac0c125791a6686f22875ade7616d45c1269a295c808e",
+    "backend/internal/storage/upload_request/lifecycle.go": "e4b582bef4faa57eaafa9f4090b5810a0d1b95991bac8b55f9176f571956031e",
+    "backend/internal/storage/upload_request/policy_errors_test.go": "6a2d38d96dbf0bae3c186cbd659f4ee3351ffb5d02c807c60a74923c84286cfa",
+    "backend/internal/storage/upload_request/read_deadline.go": "15445b947ae615bb0e14f5c2895bee1bc8b8aeb6b68af579b467fb66f7786e1e",
+    "backend/internal/storage/upload_request/socket_cancellation_test.go": "eecc3a25bede7848796d5fca29cf5210101f2a4ab4060aa44bb8777208745039",
+    "backend/internal/storage/upload_request/socket_helpers_test.go": "2b809a2d08284707f34d7d7d6c055ff9b7f3e2eed55645dded455e6b6aaa3f15",
+    "backend/internal/storage/upload_request/socket_keepalive_test.go": "990da43f74db0f798926cde1299a6a957a18ca77fa27a20f1707b38bedc69128",
+    "backend/internal/storage/upload_request/socket_progress_test.go": "eddb7983708f3d58087f1bffd66cdbb62772e8d705faf908c11addaa66c86704",
+    "backend/internal/storage/upload_request/socket_test.go": "fce2a0c72d68185e5a488ec3c7a99338925939305ab0d43ac499951386f4215f",
+    "backend/internal/storage/upload_text_attachment/api/deadline_writer_test.go": "a0184ba0e4cf576fc442d0ad90b8b1cd4e2a9453a6120c4d0dcb59ed12ac1d47",
+    "backend/internal/storage/upload_text_attachment/api/http_handler.go": "12ebcb9dfa48946c0fdea037976427e02e97fb72baadf2d830f8d4fcbc426b2d",
+    "backend/internal/storage/upload_text_attachment/api/http_handler_test.go": "4a2c3e88b8cd11bb30012b758a580f00978e6d3f9a351512d0ab611754635558",
+    "backend/internal/storage/upload_text_attachment/api/http_response.go": "fcebd0fddb8f9b2ac01923b612e489d2ca158a64804ebf17089afc8a89d06a2b"
+  },
+  "qualified_root_comparison": {
+    "original_receipt_SHA256": "c87cf1b5294d21d0e372757327560bc96018cba603a5e70a3b37aacd444f4c74",
+    "independently_hash_verified": true,
+    "source": "718768c242a5e14293f2255e86f4961b449a0771",
+    "direct_API": {
+      "TEXT_headers_seconds": 60.00196,
+      "TEXT_body_complete_seconds": 60.02347,
+      "DM_headers_seconds": 60.0018,
+      "DM_body_complete_seconds": 60.01768,
+      "both_status": 408,
+      "both_code": "UPLOAD_TIMEOUT",
+      "both_body_bytes": 185
+    },
+    "TLS_Caddy_default_client_keepalive": {
+      "TEXT_and_DM_status": "FAIL_NO_HEADERS_OR_BYTES_AT80_93_SECONDS",
+      "five_backend_aggregates_zero_before_abort": true
+    },
+    "explicit_client_close_protocol_control": {
+      "scope": "DIAGNOSTIC_ONLY_NOT_CLOSURE_WORKAROUND",
+      "TEXT_body_complete_seconds": 60.01697,
+      "DM_body_complete_seconds": 60.02149,
+      "both_status": 408,
+      "both_code": "UPLOAD_TIMEOUT"
+    },
+    "all_request_fixtures_cleaned": true
+  },
+  "native_records": {
+    "native-proxy-before-fix-red": {
+      "kind": "native-pinned-caddy-upload-proxy-regression",
+      "status": "FAIL",
+      "exit_code": 1,
+      "Go": "go version go1.26.4 linux/amd64",
+      "Caddy": "v2.10.0",
+      "Caddy_binary_SHA256": "ae87f566523d744731c0832d97b009b5cbdd69f5825e6e3c7de380c295a4ef68",
+      "production_Caddyfile_Git_LF_SHA256": "ce430111a48c93cd198d7f1b54bfc3c2ee979b0b01c7b3acf405a27f8870cc88",
+      "test_source_SHA256": {
+        "backend_test.go": "13b63a5f444a0dcb0783d999c2f5ad4d7f891b4278f0a5bdcf5cb79c407a3be3",
+        "delivery_test.go": "7158f99ed08afad6c91664ede0f10611228fe05835d3618ae9546b6fa80e2cd6",
+        "fixture_test.go": "1c195a24b43ca917b7424b9135d92e473b7c90e8a78d64082215d8e847787a1b",
+        "native_test.go": "d37299cc2147a56bc73ccfcf2c5ac62f61d00e1eb75f91dfe9a295d9eeea7524",
+        "scope_test.go": "6839dfdc823d6dc8ba8d6db83f99995378e7c3ae7d8316b9de0c17a45bec8abf",
+        "socket_test.go": "4b2e317dca666435c3f49ecab1db6558d0cee3022151c81d9f152a711b9ee34b"
+      },
+      "log_SHA256": "acaa1ad65bf261aadf55cfec61cde3808eacfc371754b8c8d70fb428f17d8841",
+      "passed_events": 7,
+      "failed_events": 5,
+      "skipped_events": 0,
+      "scope": "Owned loopback HTTP1 native Caddy/Go fixtures, admin and TLS disabled, isolated XDG/temp state; no MAIN service/profile/CA/accounts",
+      "limits": "Scaled40ms idle/300ms maximum; not real60s/900s TLS acceptance"
+    },
+    "native-proxy-first-candidate": {
+      "kind": "native-pinned-caddy-upload-proxy-regression",
+      "status": "PASS",
+      "exit_code": 0,
+      "Go": "go version go1.26.4 linux/amd64",
+      "Caddy": "v2.10.0",
+      "Caddy_binary_SHA256": "ae87f566523d744731c0832d97b009b5cbdd69f5825e6e3c7de380c295a4ef68",
+      "production_Caddyfile_Git_LF_SHA256": "7f475f605c8169238367b80b73e59c721ca7113ebb50b405f4903fa537838bc4",
+      "test_source_SHA256": {
+        "backend_test.go": "13b63a5f444a0dcb0783d999c2f5ad4d7f891b4278f0a5bdcf5cb79c407a3be3",
+        "delivery_test.go": "7158f99ed08afad6c91664ede0f10611228fe05835d3618ae9546b6fa80e2cd6",
+        "fixture_test.go": "1c195a24b43ca917b7424b9135d92e473b7c90e8a78d64082215d8e847787a1b",
+        "native_test.go": "d37299cc2147a56bc73ccfcf2c5ac62f61d00e1eb75f91dfe9a295d9eeea7524",
+        "scope_test.go": "6839dfdc823d6dc8ba8d6db83f99995378e7c3ae7d8316b9de0c17a45bec8abf",
+        "socket_test.go": "4b2e317dca666435c3f49ecab1db6558d0cee3022151c81d9f152a711b9ee34b"
+      },
+      "log_SHA256": "acc8f54f144fbad9ae1f764cb3e0771420c3228bf31baff96560f48e74df9455",
+      "passed_events": 12,
+      "failed_events": 0,
+      "skipped_events": 0,
+      "scope": "Owned loopback HTTP1 native Caddy/Go fixtures, admin and TLS disabled, isolated XDG/temp state; no MAIN service/profile/CA/accounts",
+      "limits": "Scaled40ms idle/300ms maximum; not real60s/900s TLS acceptance"
+    },
+    "native-proxy-peer-close-green": {
+      "kind": "native-pinned-caddy-upload-proxy-regression",
+      "status": "PASS",
+      "exit_code": 0,
+      "Go": "go version go1.26.4 linux/amd64",
+      "Caddy": "v2.10.0",
+      "Caddy_binary_SHA256": "ae87f566523d744731c0832d97b009b5cbdd69f5825e6e3c7de380c295a4ef68",
+      "production_Caddyfile_Git_LF_SHA256": "7f475f605c8169238367b80b73e59c721ca7113ebb50b405f4903fa537838bc4",
+      "test_source_SHA256": {
+        "backend_test.go": "13b63a5f444a0dcb0783d999c2f5ad4d7f891b4278f0a5bdcf5cb79c407a3be3",
+        "delivery_test.go": "bd5af86f43bbab216a12def21235e5d209f9e70e40f34230e9ed028b7cb6dbf5",
+        "fixture_test.go": "1c195a24b43ca917b7424b9135d92e473b7c90e8a78d64082215d8e847787a1b",
+        "native_test.go": "d37299cc2147a56bc73ccfcf2c5ac62f61d00e1eb75f91dfe9a295d9eeea7524",
+        "scope_test.go": "6839dfdc823d6dc8ba8d6db83f99995378e7c3ae7d8316b9de0c17a45bec8abf",
+        "socket_test.go": "4b2e317dca666435c3f49ecab1db6558d0cee3022151c81d9f152a711b9ee34b"
+      },
+      "log_SHA256": "827430442ccebe4e443643e452ea3aeff676259c41648f3cb37da764eb1adaaf",
+      "passed_events": 12,
+      "failed_events": 0,
+      "skipped_events": 0,
+      "scope": "Owned loopback HTTP1 native Caddy/Go fixtures, admin and TLS disabled, isolated XDG/temp state; no MAIN service/profile/CA/accounts",
+      "limits": "Scaled40ms idle/300ms maximum; not real60s/900s TLS acceptance"
+    },
+    "native-proxy-mutation-no-response-close": {
+      "kind": "native-pinned-caddy-upload-proxy-regression",
+      "status": "FAIL",
+      "exit_code": 1,
+      "Go": "go version go1.26.4 linux/amd64",
+      "Caddy": "v2.10.0",
+      "Caddy_binary_SHA256": "ae87f566523d744731c0832d97b009b5cbdd69f5825e6e3c7de380c295a4ef68",
+      "production_Caddyfile_Git_LF_SHA256": "e2c5f7e5fd50148ece05b3c138637c3824e62ac937fd8383239b9565f96c98bd",
+      "test_source_SHA256": {
+        "backend_test.go": "13b63a5f444a0dcb0783d999c2f5ad4d7f891b4278f0a5bdcf5cb79c407a3be3",
+        "delivery_test.go": "bd5af86f43bbab216a12def21235e5d209f9e70e40f34230e9ed028b7cb6dbf5",
+        "fixture_test.go": "1c195a24b43ca917b7424b9135d92e473b7c90e8a78d64082215d8e847787a1b",
+        "native_test.go": "d37299cc2147a56bc73ccfcf2c5ac62f61d00e1eb75f91dfe9a295d9eeea7524",
+        "scope_test.go": "6839dfdc823d6dc8ba8d6db83f99995378e7c3ae7d8316b9de0c17a45bec8abf",
+        "socket_test.go": "4b2e317dca666435c3f49ecab1db6558d0cee3022151c81d9f152a711b9ee34b"
+      },
+      "log_SHA256": "19267e7a7aa55b3d6b30e32e87f79b4b3ea11ded285552120e686f75b1157bfa",
+      "passed_events": 7,
+      "failed_events": 5,
+      "skipped_events": 0,
+      "scope": "Owned loopback HTTP1 native Caddy/Go fixtures, admin and TLS disabled, isolated XDG/temp state; no MAIN service/profile/CA/accounts",
+      "limits": "Scaled40ms idle/300ms maximum; not real60s/900s TLS acceptance"
+    }
+  },
+  "required_command": "GOTOOLCHAIN=go1.26.4 python3 -m tools.qa.upload_proxy.run --caddy .out/issue134/native-caddy/caddy --sha256 ae87f566523d744731c0832d97b009b5cbdd69f5825e6e3c7de380c295a4ef68 --output .out/issue134/native-proxy-peer-close-green",
+  "sets": [
+    {
+      "protects": "Timed-out clients get a complete response and peer closure despite stalled frontend body",
+      "command": "Native pinned Caddy fixture default HTTP1 keepalive, TEXT/DM x zero/partial8192B ->40ms backend policy ->read full408+code then actual TCP EOF without clientclose",
+      "platform": "LinuxWSL2 Caddy2.10.0/embeddedGo1.24.2 + backendGo1.26.4",
+      "mandatory_when": "Upload route proxy response policy or lifecycle changes",
+      "result": "Qualified original-config4FAIL; fixed4PASS including actual server peerEOF; remove only frontend close header ->4FAIL again"
+    },
+    {
+      "protects": "Successful/slow and unrelated requests keep their reusable connections",
+      "command": "Native actual Caddy complete TEXT/DM success,150ms progress with40msidle,nonupload408,wrongmethod,suffixpath; send next request on same connection",
+      "platform": "Same exact native fixture",
+      "mandatory_when": "Response-close policy changes",
+      "result": "All7positive/control PASS; no global duplex/timeouts or all-upload close policy"
+    }
+  ],
+  "preservation": {
+    "production_policies_seconds": [
+      60,
+      900
+    ],
+    "concurrency_caps": [
+      2,
+      16
+    ],
+    "backend_code": "UNCHANGED_FROM718",
+    "global_TimeoutHandler": false,
+    "global_Caddy_duplex_or_timeout": false,
+    "successful_uploads_closed": false,
+    "HTTP2_affected_by_new_rule": false,
+    "ACL_filesize_security_metrics": "UNCHANGED",
+    "MAIN_runtime_reload_by_release_agent": false
+  },
+  "procedure_diagnostics_retained": [
+    "Initial mutation preparation rejected CRLF exact-line assertion before any write; native mutation then used explicit LF normalization and restored original raw bytes exactly."
+  ],
+  "pending": {
+    "new_immutable_source_handoff": "PENDING",
+    "real_60s_900s_normal_TLS_full_root_acceptance": "PENDING",
+    "final_new_head_full_CI_PostgreSQL_Android_macOS": "PENDING",
+    "merge_and_delivery": "HOLD_UNTIL_ROOT_RUNTIME_AND_CI_PASS",
+    "issue_closure": "FORBIDDEN_UNTIL_ALL_ORIGINAL_CRITERIA_PASS"
+  },
+  "limits": [
+    "Owned short HTTP1 loopback fixture is distinct from normalTLS60s/900s full-stack acceptance.",
+    "The fixture API uses the exact existing upload_request implementation with owned constant payloads; actual TEXT/DM ACL and resource integration belongs to independent root acceptance.",
+    "Root source718/native CI and its real TLS FAIL are historical partial scope, not a completed issue.",
+    "No MAIN containers/ports/keys/accounts/CA/trust changes; only native children created by each fixture were stopped and reaped."
+  ]
+}

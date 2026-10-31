@@ -20,8 +20,12 @@ read deadline while the handler still owns the writer. A queued callback cannot
 alter the next keep-alive request. No global TimeoutHandler, server-wide upload
 ReadTimeout, write deadline or WebSocket lifetime limit is installed.
 
-The existing Caddy reverse proxy and its separate realtime/media routes remain
-unchanged. The API owns these upload budgets. Mandatory release verification
+Caddy closes only HTTP1.x POST TEXT/DM attachment responses with upstream408,
+after copying the authoritative API response. This avoids frontend unread-body
+draining before the timeout response; the peer then closes without a client
+abort. Successful uploads, other statuses/routes and HTTP2 retain existing
+behavior. There is no global duplex/timeout change; realtime/media routes are
+unchanged. The API owns the60s/900s budgets. Mandatory release verification
 must use normal TLS through Caddy and observe the actual408/code on the client
 with its frontend body still unfinished; backend resource release alone does
 not prove that the proxy delivered the response. Test direct API separately if
