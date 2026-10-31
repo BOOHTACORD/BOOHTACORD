@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "issue": 138,
+  "status": "CLOSED_COMPLETED_FRESH_GITHUB_READBACK",
+  "state": "closed",
+  "state_reason": "completed",
+  "closed_at": "2026-10-31T10:56:32Z",
+  "original10_wording_preserved_and_checked": true,
+  "PR": 623,
+  "merged_source": "46e83f7655fb75c5acb29c91a439db551598cb40",
+  "tested_head_and_actual_fixed_runtime": "ae37adf43304316ef5002369661bc420df456571",
+  "tested_synthetic": "559e84d3af2dba9181690e2c4c4742d5998c1a0a",
+  "all_three_entire_Git_tree": "94e106f6c03943770eb4e012a927c922d4bae0a7",
+  "actual_baseline_source": "4a0f2582d58e521fa79d4905d124345185138b54",
+  "runtime_counts": {
+    "normal": 124,
+    "literal": 43,
+    "total": 167,
+    "discrepancies": 0
+  },
+  "final_CI": {
+    "run": 41192680878,
+    "attempt": 1,
+    "jobs_success": 27,
+    "job_skips": 0
+  },
+  "normal_PR_CI": {
+    "run": 41192573373,
+    "success": 11,
+    "legitimate_path_skip": 3
+  },
+  "closing_comment": "https://github.com/Egkurilov/BOOHTACORD/issues/138#issuecomment-6542489915",
+  "immutable_acceptance": "https://github.com/Egkurilov/BOOHTACORD/blob/75288250f8d2b78f0e822685656d622d40b2f4fa/evidence/qa/issue138-publication-2026-10-31/acceptance.json",
+  "root_verdict_original_SHA256": "138eaafd5397d1e8b0d57aca30593db1c4419af6a1ded007154fd4680d7e39aa",
+  "cleanup_original_SHA256": "0c2deb933bfa7a8497adcbb414d50bfa920341ebdd1dee44a8a5bfb4ceb98283",
+  "scope": "Conditional trusted-forwarder ordered-field hardening; one actual trustedP/two untrusted peers plus native logical IPv6/multiple-CIDR cases. No public Caddy exploit/physical multi-proxy/IPv6 transport/credential bypass/blanket parentQA claim. Existing automatic delivery monitored separately."
+}
