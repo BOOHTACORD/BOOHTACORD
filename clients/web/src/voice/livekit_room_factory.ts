@@ -16,16 +16,19 @@ import { bindLiveKitScreenMetadata } from './screen_profile_metadata/livekit_bin
 
 export function wireLiveKitRoom(
   room: VoiceRoom,
-  viewer: Pick<ReturnType<typeof bindLiveKitScreenViewer>, 'clear' | 'refresh' | 'subscribeMicrophones'>,
+  viewer: Pick<ReturnType<typeof bindLiveKitScreenViewer>, 'clear' | 'refresh' | 'subscribeMicrophones' | 'seedVoiceParticipantSounds' | 'resetVoiceParticipantSounds'>,
 ): VoiceRoom {
   const connect = room.connect.bind(room)
   const disconnect = room.disconnect.bind(room)
   room.connect = async (url, token, options) => {
+    viewer.resetVoiceParticipantSounds()
     await connect(url, token, { ...options, autoSubscribe: false })
+    viewer.seedVoiceParticipantSounds()
     viewer.subscribeMicrophones()
     viewer.refresh()
   }
   room.disconnect = async () => {
+    viewer.resetVoiceParticipantSounds()
     await room.stopScreenPreview?.()
     await room.clearScreenProfileMetadata?.().catch(() => undefined)
     const microphoneCleanup = room.disposeMicrophone?.()
@@ -46,6 +49,10 @@ export async function defaultLiveKitRoomFactory(): Promise<VoiceRoom> {
     localTrackUnpublished: RoomEvent.LocalTrackUnpublished,
     participantConnected: RoomEvent.ParticipantConnected,
     participantDisconnected: RoomEvent.ParticipantDisconnected,
+    reconnecting: RoomEvent.Reconnecting,
+    signalReconnecting: RoomEvent.SignalReconnecting,
+    reconnected: RoomEvent.Reconnected,
+    disconnected: RoomEvent.Disconnected,
     trackPublished: RoomEvent.TrackPublished,
     trackMuted: RoomEvent.TrackMuted,
     trackSubscribed: RoomEvent.TrackSubscribed,

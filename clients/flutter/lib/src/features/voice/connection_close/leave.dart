@@ -52,6 +52,7 @@ extension VoiceConnectionCloseLeave on VoiceController {
     stopVoiceConnectionStatsPolling();
     voicePhase = VoicePhase.leaving;
     clearVoiceStreamNotice(resetTracker: true, notify: false);
+    voiceParticipantSoundTracker.reset();
     pushToTalkPressed = false;
     notifyListeners();
     await stopScreen;

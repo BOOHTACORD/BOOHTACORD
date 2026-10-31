@@ -28,4 +28,32 @@ extension VoiceStreamNoticePreferences on VoiceController {
       // Keep the current-session preference even if persistence fails.
     }
   }
+
+  Future<void> loadVoiceRoomEventSoundPreference() async {
+    try {
+      final preferences = await SharedPreferences.getInstance();
+      voiceRoomEventSoundsEnabled =
+          preferences.getBool(
+            VoiceController.voiceRoomEventSoundPreferenceKey,
+          ) ??
+          true;
+    } catch (_) {
+      // The in-memory default remains enabled when preferences are unavailable.
+    }
+  }
+
+  Future<void> setVoiceRoomEventSoundsEnabled(bool enabled) async {
+    if (voiceRoomEventSoundsEnabled == enabled) return;
+    voiceRoomEventSoundsEnabled = enabled;
+    notifyListeners();
+    try {
+      final preferences = await SharedPreferences.getInstance();
+      await preferences.setBool(
+        VoiceController.voiceRoomEventSoundPreferenceKey,
+        enabled,
+      );
+    } catch (_) {
+      // Keep the current-session preference even if persistence fails.
+    }
+  }
 }

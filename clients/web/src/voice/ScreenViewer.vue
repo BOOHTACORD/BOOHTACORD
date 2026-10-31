@@ -16,6 +16,8 @@ import { createScreenFullscreenControls } from './screen_fullscreen_controls'
 import { useScreenPlaybackQuality } from './screen_playback_quality'
 import { useScreenReceiverDiagnostics } from './use_screen_receiver_diagnostics'
 import { buildScreenClientReport, startScreenClientReporting, webPlatform } from './screen_client_reporter'
+import { streamStartChime } from './stream_start_runtime'
+import { voiceViewTransitionSound } from './voice_view_transition_sound'
 const props = withDefaults(defineProps<{ audioMuted: boolean; cards: ScreenViewerCard[]; deafened: boolean; ended: boolean; error: string | null; expanded: boolean; mini?: boolean; ownScreenSharing?: boolean; participants: VoiceVolumeParticipant[]; screenWatcherIds?: string[]; selfAccountId?: string; selfMicrophoneMuted: boolean; selfMicrophoneUnavailable: boolean; selfName: string | null; selfSpeaking: boolean; selectedAudioVolume: number; selectedId: string | null; sourceDiagnostics?:ScreenDiagnostics }>(), { screenWatcherIds: () => [] })
 const emit = defineEmits<{ changeQuality: []; clear: []; retry: [automatic?: boolean]; select: [id: string, video: HTMLVideoElement | null, audio: HTMLAudioElement | null]; setAudioVolume: [percent: number]; stopScreen: []; toggleAudio: []; 'update:expanded': [expanded: boolean] }>()
 const video = ref<HTMLVideoElement | null>(null)
@@ -60,7 +62,25 @@ async function toggleVideoPause(): Promise<void> {
     if (generation === playbackRequestGeneration) { videoPaused.value = false; videoPlaybackBlocked.value = false; playbackFeedback.value = '' }
   } catch (cause) { if (generation === playbackRequestGeneration) reportPlaybackError(cause) }
 }
-function select(id: string): void { if (auxiliaryPanel.value) void nextTick(() => auxiliaryTrigger.value?.focus()); auxiliaryPanel.value = null; if (id === props.selectedId) return; requestedSelectionId=id;videoPlaybackBlocked.value=false;audioPlaybackBlocked.value=false;markScreenSelected(video.value);emit('select',id,video.value,audio.value);playFromGesture() }
+function select(id: string): void {
+  if (auxiliaryPanel.value) void nextTick(() => auxiliaryTrigger.value?.focus())
+  auxiliaryPanel.value = null
+  if (id === props.selectedId) return
+  const previous = selectedStream.value ? { id: selectedStream.value.id, isLocal: Boolean(selectedStream.value.isLocal) } : null
+  const next = props.cards.find((stream) => stream.id === id)
+  const sound = voiceViewTransitionSound(previous, next ? { id: next.id, isLocal: Boolean(next.isLocal) } : null)
+  if (sound) streamStartChime.playVoiceEvent(sound)
+  requestedSelectionId=id
+  videoPlaybackBlocked.value=false
+  audioPlaybackBlocked.value=false
+  markScreenSelected(video.value)
+  emit('select',id,video.value,audio.value)
+  playFromGesture()
+}
+function clearViewing(): void {
+  if (selectedStream.value && !selectedStream.value.isLocal) streamStartChime.playVoiceEvent('stream-view-stopped')
+  emit('clear')
+}
 function retry(automatic=false): void {
   playbackFeedback.value = ''
   if(!automatic&&playbackBlocked.value){markScreenSelected(video.value);if(videoPlaybackBlocked.value)resetVideoFrame();playFromGesture();return}
@@ -89,7 +109,7 @@ async function stopWatching(): Promise<void> {
       return
     }
   }
-  emit('clear')
+  clearViewing()
 }
 function selectStream(id: string): void { select(id) }
 defineExpose({ selectStream })
@@ -144,7 +164,7 @@ async function toggleFullscreen(): Promise<void> {
 <template>
   <section ref="viewerElement" class="screen-viewer stream-wrap" :class="{ 'screen-viewer--compact': !mini }" aria-label="Демонстрация экрана">
     <ScreenMiniToolbar v-if="mini && selectedId" :name="selectedStream?.participantName ?? 'Демонстрация'" :paused="videoPaused" :ended="ended" :ready="videoReady" :has-audio="Boolean(selectedStream?.hasAudio && !selectedStream.isLocal)" :muted="audioMuted || selectedAudioVolume === 0" :deafened="deafened"
-    @pause="toggleVideoPause" @audio="emit('toggleAudio');audioPlaybackBlocked && playFromGesture()" @expand="emit('update:expanded', true)" @close="emit('clear')" />
+    @pause="toggleVideoPause" @audio="emit('toggleAudio');audioPlaybackBlocked && playFromGesture()" @expand="emit('update:expanded', true)" @close="clearViewing" />
     <div ref="stage" class="screen-stage" :class="{ 'screen-stage--waiting': !selectedStream }" @pointermove="revealStageControls" @pointerdown="revealStageControls">
       <p v-if="error" class="state state-error" role="alert">{{ error }}</p>
       <p v-if="ended" class="state" role="status">{{ mini ? 'Трансляция завершена' : 'Демонстрация завершена. Выберите другую вручную или вернитесь к участникам.' }}</p>
@@ -182,7 +202,7 @@ async function toggleFullscreen(): Promise<void> {
           </div>
         </div>
       </div>
-      <DiagnosisPanel v-if="selectedStream" v-show="!mini && !videoPaused" :compact="!mini" :selected-id="selectedId" :ended="ended" :has-audio="selectedStream.hasAudio" :local="Boolean(selectedStream.isLocal)" :publisher-paused="videoPaused || Boolean(selectedStream.videoMuted)" :autoplay-blocked="playbackBlocked" :subscription-failed="error === 'Не удалось подписаться на демонстрацию.'" :stage-visible="stageVisible" :video-ready="videoReady" :presented-fps="playbackFps" :presented-frames="presentedFrames" :sampled-at="receiverSampledAt" :metrics="receiverMetrics" :source="sourceDiagnostics" @refresh="refreshReceiverMetrics" @retry="retry(false)" @auto-retry="retry(true)" @choose="emit('clear')" />
+      <DiagnosisPanel v-if="selectedStream" v-show="!mini && !videoPaused" :compact="!mini" :selected-id="selectedId" :ended="ended" :has-audio="selectedStream.hasAudio" :local="Boolean(selectedStream.isLocal)" :publisher-paused="videoPaused || Boolean(selectedStream.videoMuted)" :autoplay-blocked="playbackBlocked" :subscription-failed="error === 'Не удалось подписаться на демонстрацию.'" :stage-visible="stageVisible" :video-ready="videoReady" :presented-fps="playbackFps" :presented-frames="presentedFrames" :sampled-at="receiverSampledAt" :metrics="receiverMetrics" :source="sourceDiagnostics" @refresh="refreshReceiverMetrics" @retry="retry(false)" @auto-retry="retry(true)" @choose="clearViewing" />
       <p v-if="fullscreenFeedback" class="screen-fullscreen-feedback" role="status" aria-live="polite">{{ fullscreenFeedback }}</p>
       <p v-if="playbackFeedback" class="screen-fullscreen-feedback" role="status" aria-live="polite">{{ playbackFeedback }}</p>
     </div>

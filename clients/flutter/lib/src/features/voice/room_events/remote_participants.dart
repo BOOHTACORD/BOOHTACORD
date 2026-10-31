@@ -15,7 +15,11 @@ extension VoiceEventsRemoteParticipants on VoiceController {
     EventsListener<RoomEvent> listener,
     bool Function() owns,
   ) {
-    listener.on<ParticipantConnectedEvent>((_) {
+    listener.on<ParticipantConnectedEvent>((event) {
+      if (!owns()) return;
+      voiceParticipantSoundTracker.participantConnected(
+        event.participant.identity,
+      );
       logRemoteVoiceState(
         room,
         ScreenShareDiagnosticEvent.remoteParticipantConnected,
@@ -24,6 +28,9 @@ extension VoiceEventsRemoteParticipants on VoiceController {
     });
     listener.on<ParticipantDisconnectedEvent>((event) {
       if (!owns()) return;
+      voiceParticipantSoundTracker.participantDisconnected(
+        event.participant.identity,
+      );
       logRemoteVoiceState(
         room,
         ScreenShareDiagnosticEvent.remoteParticipantDisconnected,

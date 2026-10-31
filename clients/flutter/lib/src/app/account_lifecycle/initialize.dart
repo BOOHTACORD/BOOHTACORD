@@ -18,6 +18,7 @@ extension AppAccountInitialization on AppOwners {
   Future<void> initializePlatform() async {
     final ticket = session.scope.capture();
     await voice.loadVoiceStreamSoundPreference();
+    await voice.loadVoiceRoomEventSoundPreference();
     if (!ticket.isActive) return;
     await nativeNotifications.initialize();
     if (!ticket.isActive) return;
@@ -42,7 +43,9 @@ extension AppAccountInitialization on AppOwners {
       if (!ticket.isActive) return;
     }
     await restoreScreenPreferences();
-    if (!ticket.isActive || session.user?.accountId != account.accountId) return;
+    if (!ticket.isActive || session.user?.accountId != account.accountId) {
+      return;
+    }
     await voice.loadAudioPreferences(account.accountId);
     if (!ticket.isActive || audioDevices.nativeBootstrap == null) return;
     // macOS creates its AudioEngine device module lazily. Bootstrap it after
