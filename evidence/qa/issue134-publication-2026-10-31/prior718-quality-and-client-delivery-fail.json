@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "issue": 134,
+  "status": "HISTORICAL_SOURCE718_QUALITY_PASS_CLIENT_TLS_DELIVERY_FAIL",
+  "source_revision": "718768c242a5e14293f2255e86f4961b449a0771",
+  "pull_request": 622,
+  "workflow": {
+    "run_id": 41185096724,
+    "attempt": 1,
+    "event": "workflow_dispatch",
+    "status": "completed",
+    "conclusion": "success",
+    "all27_jobs_success": true,
+    "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/41185096724"
+  },
+  "jobs": [
+    {
+      "id": 124490314373,
+      "name": "changes",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490314585,
+      "name": "contracts / contracts",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490349322,
+      "name": "windows / windows-build",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490349325,
+      "name": "flutter / dart",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490349336,
+      "name": "windows / windows-native-unit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490349337,
+      "name": "actual / runtime (sfu)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490349353,
+      "name": "flutter / android-kotlin",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490349368,
+      "name": "flutter / macos",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490349377,
+      "name": "backend / database",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490349384,
+      "name": "frontend / browser (browser-shell)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490349391,
+      "name": "frontend / browser (browser-conversations)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490349404,
+      "name": "frontend / sfu",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490349411,
+      "name": "frontend / browser (browser-voice)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490349412,
+      "name": "actual / runtime (lifecycle)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490349447,
+      "name": "frontend / fast",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490349457,
+      "name": "backend / static",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490349458,
+      "name": "frontend / browser (browser-content)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490349460,
+      "name": "actual / runtime (next)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490349521,
+      "name": "backend / load",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124490349586,
+      "name": "flutter / android",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124491406695,
+      "name": "backend / backend",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124491881619,
+      "name": "frontend / frontend",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124491887497,
+      "name": "windows / windows-gui-sfu",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124492561599,
+      "name": "actual / actual-acceptance",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124492659859,
+      "name": "flutter / flutter",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124493285814,
+      "name": "windows / windows",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 124493326082,
+      "name": "ci-required",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "actual_retained_artifacts_verified": [
+    {
+      "id": 13036623319,
+      "name": "backend-part-718768c242a5e14293f2255e86f4961b449a0771-41185096724-1-database",
+      "bytes": 366,
+      "actual_zip_SHA256": "90f4668534d0ada48617922e9ce32900ead55763f44e0faacfbfa4359ebdc4bb",
+      "source_revision": "718768c242a5e14293f2255e86f4961b449a0771",
+      "status": "PASS",
+      "profile": "database",
+      "execution": {
+        "run_attempt": "1",
+        "run_id": "41185096724"
+      },
+      "operations": [
+        "go:database-preflight",
+        "go:test:all:uncached",
+        "go:no-skip",
+        "telemetry:two-installation-runtime"
+      ],
+      "ZIP_digest_and_JSON_verified": true
+    },
+    {
+      "id": 13036452474,
+      "name": "backend-fan-in-718768c242a5e14293f2255e86f4961b449a0771-41185096724-1",
+      "bytes": 359,
+      "actual_zip_SHA256": "2041410ea96d50f7cc6d1a111cc8ce32a03bd68ea0d793b5a1598b61c9f20c8f",
+      "source_revision": "718768c242a5e14293f2255e86f4961b449a0771",
+      "status": "PASS",
+      "profile": "backend-fan-in",
+      "execution": {
+        "run_attempt": "1",
+        "run_id": "41185096724"
+      },
+      "operations": 12,
+      "ZIP_digest_and_JSON_verified": true
+    },
+    {
+      "id": 13036748526,
+      "name": "flutter-part-flutter-718768c242a5e14293f2255e86f4961b449a0771-41185096724-1-android",
+      "bytes": 745,
+      "actual_zip_SHA256": "6caa744a0e78c5275b271ff22bca8ca49241768adab638cc4580f3f065bf1699",
+      "source_revision": "718768c242a5e14293f2255e86f4961b449a0771",
+      "status": "PASS",
+      "profile": "android",
+      "execution": {
+        "run_id": "41185096724",
+        "run_attempt": "1"
+      },
+      "operations": [
+        "app-dependencies",
+        "debug-apk"
+      ],
+      "ZIP_digest_and_JSON_verified": true
+    },
+    {
+      "id": 13036434699,
+      "name": "flutter-part-flutter-718768c242a5e14293f2255e86f4961b449a0771-41185096724-1-android-kotlin",
+      "bytes": 442,
+      "actual_zip_SHA256": "722f948aec953c0e83f827d959584d61c9885f7dc1b887a72f1d2f34e0c3ee86",
+      "source_revision": "718768c242a5e14293f2255e86f4961b449a0771",
+      "status": "PASS",
+      "profile": "android-kotlin",
+      "execution": {
+        "run_id": "41185096724",
+        "run_attempt": "1"
+      },
+      "operations": [
+        "app-dependencies",
+        "kotlin-modes"
+      ],
+      "ZIP_digest_and_JSON_verified": true
+    },
+    {
+      "id": 13035928094,
+      "name": "flutter-part-flutter-718768c242a5e14293f2255e86f4961b449a0771-41185096724-1-macos",
+      "bytes": 424,
+      "actual_zip_SHA256": "c04b4e6961ca62cafcd1182e91159e730253b79f69e4b483d7731452f9f6a9f1",
+      "source_revision": "718768c242a5e14293f2255e86f4961b449a0771",
+      "status": "PASS",
+      "profile": "macos",
+      "execution": {
+        "run_id": "41185096724",
+        "run_attempt": "1"
+      },
+      "operations": [
+        "app-dependencies",
+        "macos-platform-unit"
+      ],
+      "ZIP_digest_and_JSON_verified": true
+    },
+    {
+      "id": 13036177752,
+      "name": "macos-unit-flutter-718768c242a5e14293f2255e86f4961b449a0771-41185096724-1",
+      "bytes": 1204,
+      "actual_zip_SHA256": "81cdc6d8f8cfc1028389f0a121c8a9ca57039b6a6a308d0619d0a1b1081bd70c",
+      "status": "PASS",
+      "platform": "darwin",
+      "typed_machine_test_count": 8,
+      "failed": 0,
+      "skipped": 0,
+      "physical_media": "NOT_RUN",
+      "ZIP_digest_and_extraction_verified": true,
+      "reader_diagnostic": "Generic Go-event reader encountered a Flutter log array after extraction; typed machine events and result.json independently verified8success/0skip."
+    }
+  ],
+  "local_full_backend_static": {
+    "source_revision": "718768c242a5e14293f2255e86f4961b449a0771",
+    "Go": "1.26.4",
+    "platform": "UbuntuWSL2 Linuxx64",
+    "CGO": 0,
+    "tracked_source_clean_before_after": true,
+    "commands": [
+      {
+        "command": "go vet ./...",
+        "exit_code": 0
+      },
+      {
+        "command": "go build ./...",
+        "exit_code": 0
+      }
+    ]
+  },
+  "root_qualified_comparison": {
+    "source_revision": "718768c242a5e14293f2255e86f4961b449a0771",
+    "original_receipt_SHA256": "c87cf1b5294d21d0e372757327560bc96018cba603a5e70a3b37aacd444f4c74",
+    "actual_routes": "TEXT and DM with same actors/policies",
+    "direct_API": "Complete408/UPLOAD_TIMEOUT185bytes about60.02s",
+    "TLS_Caddy_default_keepalive": "FAIL zero headers/bytes/status through80.93s while all five backend aggregates were already zero",
+    "client_Connection_close_control": "Complete408/code about60.02s; diagnostic only, not accepted workaround"
+  },
+  "subsequent_candidate": {
+    "source_revision": "ce7bbe0571174745acd27e8fc5727047f3bb5f29",
+    "backend_tree_equal_to718": "5be223fd5e1664b7ca50d8129716a5233d431c8f",
+    "Caddy_Git_LF_SHA256": "7f475f605c8169238367b80b73e59c721ca7113ebb50b405f4903fa537838bc4",
+    "native_pinned_Caddy": "12PASS/0fail/0skip including actual peerEOF and progress/scope controls",
+    "final_full_CI": 41187205222,
+    "final_full_CI_status": "PENDING",
+    "root_real_TLS_60s_900s_status": "PENDING",
+    "merge_delivery": "HOLD",
+    "issue_state": "OPEN"
+  },
+  "limits": [
+    "This record preserves successful prior-source CI and its separate failed real TLS delivery. It does not accept the later candidate.",
+    "No prior CI PASS replaces final-head PostgreSQL/Android/macOS or root full-duration runtime.",
+    "MacOS8 are actual Darwin unit results; physical media NOT_RUN.",
+    "Only public workflow metadata, safe aggregates and hashes are published; no raw machine PIDs/logs, images, private sessions/fixtures or artifact temporary URLs."
+  ]
+}
