@@ -7,7 +7,8 @@ rtc:
   tcp_port: 7882
   port_range_start: 50000
   port_range_end: 50100
-  use_external_ip: true
+  # LIVEKIT_NODE_IP is passed explicitly by the container; do not query STUN.
+  use_external_ip: false
 keys:
   __LIVEKIT_API_KEY__: __LIVEKIT_API_SECRET__
 webhook:

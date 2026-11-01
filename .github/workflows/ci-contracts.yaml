@@ -135,7 +135,9 @@ jobs:
         shell: pwsh
         run: ./tools/verify/compose_images/verify-compose-images.ps1
       - name: Test proxy network deployment guard
-        run: bash tools/release/rollout/deploy-images.test.sh
+        run: |
+          python3 -m unittest tools.release.rollout.test_livekit_node_ip_config
+          bash tools/release/rollout/deploy-images.test.sh
       - name: Test all negative release boundaries in ordinary CI
         if: ${{ !inputs.release_receipt }}
         run: bash tools/ci/release_guards/test-negative-boundaries.sh

@@ -39,11 +39,21 @@ def validate(livekit, deploy, observability_compose, prometheus, alerts):
     tcp = rtc.get("tcp_port")
     if not (isinstance(start, int) and isinstance(end, int) and 1 <= start <= end <= 65535):
         raise ValueError("invalid configured UDP range")
-    if not (isinstance(tcp, int) and 1 <= tcp <= 65535 and rtc.get("use_external_ip") is True):
-        raise ValueError("TCP fallback or external IP advertisement is not explicitly configured")
-
     services = deploy.get("services", {})
     server = services.get("livekit", {})
+    environment = server.get("environment", {})
+    node_ip_value = environment.get("LIVEKIT_NODE_IP") if isinstance(environment, dict) else None
+    command = server.get("command", "")
+    command_text = "\n".join(command) if isinstance(command, list) else str(command)
+    explicit_node_ip = (
+        isinstance(node_ip_value, str)
+        and node_ip_value.startswith("${LIVEKIT_NODE_IP:?")
+        and '--node-ip "$${LIVEKIT_NODE_IP}"' in command_text
+    )
+    if not (isinstance(tcp, int) and 1 <= tcp <= 65535 and
+            rtc.get("use_external_ip") is False and explicit_node_ip):
+        raise ValueError("TCP fallback or explicit node IP is not configured")
+
     mappings = [_port_mapping(port) for port in server.get("ports", [])]
     if not any(protocol == "udp" and host == (start, end) and target == (start, end)
                for host, target, protocol in mappings):
