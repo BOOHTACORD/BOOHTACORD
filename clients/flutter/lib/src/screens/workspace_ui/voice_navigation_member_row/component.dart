@@ -44,6 +44,7 @@ class WorkspaceVoiceNavigationMemberRow extends StatelessWidget {
             avatarUrl: member?.avatarUrl,
             radius: 12,
             backgroundColor: workspaceVoiceAvatarColor(accountId ?? name),
+            fallbackText: _voiceNavigationInitials(name),
           ),
           const SizedBox(width: 8),
           Expanded(
@@ -101,4 +102,14 @@ class WorkspaceVoiceNavigationMemberRow extends StatelessWidget {
       ),
     );
   }
+}
+
+String _voiceNavigationInitials(String name) {
+  final letters = RegExp(r'\p{L}', unicode: true);
+  final initials = name.runes
+      .map(String.fromCharCode)
+      .where((letter) => letters.hasMatch(letter))
+      .take(2)
+      .join();
+  return initials.isEmpty ? 'У' : initials.toUpperCase();
 }

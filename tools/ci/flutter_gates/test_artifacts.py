@@ -9,7 +9,7 @@ from . import artifacts
 
 class ArtifactTests(unittest.TestCase):
     def test_mandatory_visual_inventory_keeps_all_uiux_capture_scenarios(self):
-        self.assertEqual(169, len(artifacts.VISUALS))
+        self.assertEqual(171, len(artifacts.VISUALS))
         self.assertEqual(len(artifacts.VISUALS), len(set(artifacts.VISUALS)))
         self.assertIn('flutter-listener-room-web-parity.png', artifacts.VISUALS)
         self.assertIn('flutter-participant-cards-stream-and-voice.png', artifacts.VISUALS)
@@ -37,6 +37,8 @@ class ArtifactTests(unittest.TestCase):
         self.assertIn('flutter-channel-favorites-mobile-393x852.png', artifacts.VISUALS)
         self.assertIn('flutter-connection-status-desktop-320x380.png', artifacts.VISUALS)
         self.assertIn('flutter-connection-status-mobile-320x380.png', artifacts.VISUALS)
+        self.assertIn('flutter-sidebar-channel-scroll-300x640.png', artifacts.VISUALS)
+        self.assertIn('flutter-sidebar-after-voice-leave-300x640.png', artifacts.VISUALS)
         for channel in ('text-channel', 'dm-conversation'):
             for profile, size in (('mobile', '393x852'), ('mobile-large-text', '393x852'), ('desktop', '1440x900')):
                 self.assertIn(f'flutter-{channel}-{profile}-{size}.png', artifacts.VISUALS)

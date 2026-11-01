@@ -29,7 +29,10 @@ createApp({ setup() { return () => h('div', { class: 'app-frame' }, [h('div', { 
     h('div', { class: 'nav-drawer' }, [
       h(WorkspaceSidebarTabs, { class: 'sidebar-tabs', active: active.value, onSelect: value => { active.value = value } }),
       h('div', { class: 'nav-content', tabindex: 0, 'aria-label': 'Список бесед' }, [active.value === 'channels'
-        ? h(ChannelNavigation, { accountId, selectedChannelId: selected.value, activeVoiceChannelId: 'channel-1-1', topology: { revision: 1, categories }, voiceRosters: rosters, voicePresence: { channelId: 'channel-1-1', memberCount: 1, members: [{ id: 'self', name: 'Вы', microphoneMuted: false, microphoneUnavailable: false, speaking: true, isSpeaking: true, screenSharing: false, self: true }] }, permissions,
+        ? h(ChannelNavigation, { accountId, selectedChannelId: selected.value, activeVoiceChannelId: 'channel-1-1', topology: { revision: 1, categories }, voiceRosters: rosters, voicePresence: { channelId: 'channel-1-1', memberCount: 2, members: [
+          { id: 'voice-0', name: 'Стример', microphoneMuted: true, microphoneUnavailable: false, speaking: false, isSpeaking: false, screenSharing: true, self: false },
+          { id: 'self', name: 'Вы', microphoneMuted: false, microphoneUnavailable: false, speaking: true, isSpeaking: true, screenSharing: false, self: true },
+        ] }, permissions,
           onSelect: channel => { selected.value = channel.id; result.value = channel.id }, onDeleteChannel: channel => { result.value = `action:${channel.id}` }, onCreateInCategory: category => { result.value = `create:${category.id}` } })
         : h(DirectMessageNavigation, { directMessages: dms, error: null, loading: false, selectedDirectMessageId: selectedDM.value, onSelect: id => { selectedDM.value = id; result.value = id } })]),
     ]),
