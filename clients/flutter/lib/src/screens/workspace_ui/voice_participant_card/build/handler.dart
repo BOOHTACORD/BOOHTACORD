@@ -26,10 +26,10 @@ extension WorkspaceVoiceParticipantCardBuildAction
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: GcColors.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: presentation.isSpeaking ? GcColors.success : GcColors.border,
-          width: presentation.isSpeaking ? 2 : 1,
+          width: 2,
         ),
       ),
       child: Column(

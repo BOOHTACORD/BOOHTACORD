@@ -24,6 +24,8 @@ xcrun simctl create 'BOOHTACORD QA iPhone' com.apple.CoreSimulator.SimDeviceType
 
 `check.sh` sets the SDK/JDK/QA Docker context for its child processes; no shell-profile edits are needed. Create an Android AVD named `BOOHTACORD_QA…` and an iOS Simulator named `BOOHTACORD QA…`. The runner starts a stopped QA AVD without snapshots, and boots the dedicated iOS target. Runtime checks reject physical phones and unrelated emulators. Android uses temporary loopback reverses for HTTPS (4810) and SFU ICE/TCP (4881), removed after the run. Existing mappings are never overwritten. This enables a scoped emulator media path; it does not establish physical-device UDP/QoE acceptance. Mobile TLS accepts only the exact ephemeral certificate for localhost:4810 inside the integration-test entrypoint.
 
+If the host-native LiveKit Egress image is unavailable or broken, set `BOOHTACORD_QA_EGRESS_PLATFORM=linux/amd64` for the run. Only Egress is emulated; the API build and other services keep the host-native platform.
+
 ## Each feature
 
 ```sh

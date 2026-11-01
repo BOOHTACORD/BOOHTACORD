@@ -89,6 +89,34 @@ for (const width of [390, 1440]) {
   })
 }
 
+test('pausing and resuming a stream controls its video and audio together', async ({ page }) => {
+  await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls&watching-remote&single-stream')
+  await page.evaluate(() => {
+    const canvas = document.createElement('canvas'); canvas.width = 1280; canvas.height = 720
+    const context = canvas.getContext('2d')!; context.fillStyle = '#142f40'; context.fillRect(0, 0, 1280, 720)
+    const video = document.querySelector('video')!
+    video.srcObject = canvas.captureStream(1)
+    void video.play()
+
+    const audio = document.querySelector('audio')!
+    const playback = { paused: false, pauseCalls: 0, playCalls: 0 }
+    Object.defineProperty(audio, 'paused', { configurable: true, get: () => playback.paused })
+    audio.pause = () => { playback.paused = true; playback.pauseCalls += 1 }
+    audio.play = () => { playback.paused = false; playback.playCalls += 1; return Promise.resolve() }
+    ;(window as any).__screenUI.audioPlayback = playback
+  })
+  await expect(page.locator('.screen-loading-state')).not.toBeVisible()
+  await page.locator('.screen-stage').hover()
+  await page.getByRole('button', { name: 'Приостановить трансляцию', exact: true }).click()
+  await expect.poll(() => page.locator('video').evaluate(element => (element as HTMLVideoElement).paused)).toBe(true)
+  await expect.poll(() => page.evaluate(() => (window as any).__screenUI.audioPlayback)).toEqual({ paused: true, pauseCalls: 1, playCalls: 0 })
+
+  await page.getByRole('button', { name: 'Продолжить трансляцию', exact: true }).click()
+  await expect.poll(() => page.locator('video').evaluate(element => (element as HTMLVideoElement).paused)).toBe(false)
+  await expect.poll(() => page.evaluate(() => (window as any).__screenUI.audioPlayback)).toEqual({ paused: false, pauseCalls: 1, playCalls: 1 })
+})
+
+
 test('compact viewer keeps the stream stage visible in a wide 208px viewport', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 208 })
   await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls&single-stream')

@@ -2013,21 +2013,14 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    final status = find.text('Звук и микрофон выключены');
     final card = find.byKey(const ValueKey('voice-participant-card:self'));
     final statusIcon = find.descendant(
       of: card,
       matching: find.byIcon(Icons.headset_off),
     );
     expect(statusIcon, findsOneWidget);
-    expect(
-      tester.renderObject<RenderParagraph>(status).didExceedMaxLines,
-      isFalse,
-    );
-    expect(
-      tester.getRect(status).left,
-      greaterThan(tester.getRect(statusIcon).right),
-    );
+    expect(find.text('Звук и микрофон выключены'), findsNothing);
+    expect(find.byTooltip('Звук и микрофон выключены'), findsOneWidget);
 
     await tester.pumpWidget(const SizedBox.shrink());
     state.dispose();
@@ -2051,7 +2044,8 @@ void main() {
     await tester.pumpWidget(MaterialApp(home: WorkspaceScreen(state: state)));
     await tester.pumpAndSettle();
 
-    expect(find.text('Микрофон недоступен'), findsNWidgets(2));
+    expect(find.text('Микрофон недоступен'), findsOneWidget);
+    expect(find.byTooltip('Микрофон недоступен'), findsOneWidget);
     expect(find.textContaining('подключены как слушатель'), findsOneWidget);
     expect(find.byTooltip('Повторить включение микрофона'), findsOneWidget);
     expect(tester.takeException(), isNull);

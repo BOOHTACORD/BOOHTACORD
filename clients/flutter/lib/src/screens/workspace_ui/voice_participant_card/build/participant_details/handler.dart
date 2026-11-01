@@ -1,4 +1,6 @@
 import '../../../native_bindings.dart';
+import '../../../search_avatar_foreground/component.dart';
+import '../../../voice_avatar_color/component.dart';
 import '../../lifecycle/context.dart';
 
 extension VoiceParticipantCardParticipantDetailsRenderer
@@ -12,9 +14,24 @@ extension VoiceParticipantCardParticipantDetailsRenderer
         .clamp(1.0, 2.0)
         .toDouble();
     final displayName = name;
+    final avatarSeed = avatarIdentity ?? previewIdentity;
+    final statusIcon = deafened
+        ? Icons.headset_off
+        : muted || microphoneUnavailable
+        ? Icons.mic_off
+        : presentation.isSpeaking
+        ? Icons.graphic_eq
+        : Icons.mic;
+    final statusColor = deafened || muted
+        ? GcColors.danger
+        : microphoneUnavailable
+        ? GcColors.warning
+        : presentation.isSpeaking
+        ? GcColors.success
+        : GcColors.textSecondary;
 
     return Padding(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -23,93 +40,62 @@ extension VoiceParticipantCardParticipantDetailsRenderer
             name: name,
             avatarUrl: avatarUrl,
             radius: 20,
-            fallbackFontSize: 18,
+            backgroundColor: workspaceVoiceAvatarColor(avatarSeed),
+            fallbackText: name.trim().isEmpty
+                ? '?'
+                : name.trim().characters.take(2).toString().toUpperCase(),
+            fallbackColor: workspaceSearchAvatarForeground(avatarSeed),
+            fallbackFontSize: 16,
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 10),
           Expanded(
             child: SizedBox(
-              height: 70 * textScale,
+              height: 60 * textScale,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: 19 * textScale,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Tooltip(
-                        message: name,
-                        child: Text(
-                          displayName,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14,
-                            height: 1.15,
-                            fontWeight: FontWeight.w500,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Tooltip(
+                          message: name,
+                          child: Text(
+                            displayName,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              height: 1.35,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 3 * textScale),
-                  SizedBox(
-                    height: 32 * textScale,
-                    child: Row(
-                      children: [
-                        Icon(
-                          deafened
-                              ? Icons.headset_off
-                              : muted || microphoneUnavailable
-                              ? Icons.mic_off
-                              : presentation.isSpeaking
-                              ? Icons.graphic_eq
-                              : Icons.mic,
-                          size: 12 * textScale,
-                          color: deafened
-                              ? GcColors.danger
-                              : microphoneUnavailable
-                              ? GcColors.warning
-                              : muted
-                              ? GcColors.danger
-                              : presentation.isSpeaking
-                              ? GcColors.success
-                              : GcColors.textSecondary,
+                      const SizedBox(width: 4),
+                      Semantics(
+                        label: presentation.label,
+                        child: Tooltip(
+                          message: presentation.label,
+                          child: Icon(statusIcon, size: 16, color: statusColor),
                         ),
-                        const SizedBox(width: 5),
-                        Expanded(
-                          child: Text(
-                            presentation.label,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: presentation.isSpeaking
-                                  ? GcColors.success
-                                  : GcColors.muted,
-                              fontSize: 12,
-                              height: 1.15,
-                            ),
-                          ),
+                      ),
+                    ],
+                  ),
+                  if (watchingScreen)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 3),
+                      child: Text(
+                        'Смотрит трансляцию',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: GcColors.textSecondary,
+                          fontSize: 11 * textScale,
+                          height: 1.15,
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 2 * textScale),
-                  SizedBox(
-                    height: 14 * textScale,
-                    child: watchingScreen
-                        ? Text(
-                            'Смотрит трансляцию',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: GcColors.muted,
-                              fontSize: 11,
-                              height: 1.15,
-                            ),
-                          )
-                        : null,
-                  ),
                 ],
               ),
             ),

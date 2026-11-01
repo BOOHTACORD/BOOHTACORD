@@ -14,9 +14,10 @@ abstract class WorkspaceVoiceParticipantCardContext extends StatelessWidget {
     this.watchingScreen = false,
     this.isLocal = false,
     this.onScreenTap,
+    this.avatarIdentity,
     this.previewIdentity = 'participant',
     this.previewThumbnail,
-    this.previewCaption = 'Экран',
+    this.previewCaption = '',
     this.microphoneUnavailable = false,
     this.deafened = false,
   });
@@ -31,6 +32,7 @@ abstract class WorkspaceVoiceParticipantCardContext extends StatelessWidget {
   final bool watchingScreen;
   final bool isLocal;
   final VoidCallback? onScreenTap;
+  final String? avatarIdentity;
   final String previewIdentity;
   final Uint8List? previewThumbnail;
   final String previewCaption;
