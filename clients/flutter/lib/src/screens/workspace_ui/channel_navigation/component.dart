@@ -199,7 +199,6 @@ class _WorkspaceChannelNavigationState
               channel: channel,
               selected: widget.state.selectedChannel?.id == channel.id,
               voiceConnected: widget.state.voiceChannel?.id == channel.id,
-              voiceParticipantCount: _voiceParticipantCount(channel),
               favorite: true,
               favoriteShortcut: true,
               showObjectMenu: false,
@@ -227,20 +226,6 @@ class _WorkspaceChannelNavigationState
           ),
       ],
     );
-  }
-
-  int? _voiceParticipantCount(GuildChannel channel) {
-    if (widget.state.voiceChannel?.id == channel.id) {
-      final room = widget.state.room;
-      if (room?.localParticipant != null) {
-        return room!.remoteParticipants.length + 1;
-      }
-    }
-    return widget.state.voiceRosters
-        ?.where((item) => item.channelId == channel.id)
-        .firstOrNull
-        ?.participants
-        .length;
   }
 
   Set<String> _allChannelIds(ChannelTopology? topology) =>

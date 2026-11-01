@@ -18,7 +18,6 @@ extension WorkspaceChannelRowStateBuildAction
     final channel = widget.channel;
     final selected = widget.selected;
     final voiceConnected = widget.voiceConnected;
-    final voiceParticipantCount = widget.voiceParticipantCount;
     final canManage = canDeleteChannel(state, channel);
     return MouseRegion(
       onEnter: (_) => workspaceMutateView(() => workspaceHovered = true),
@@ -65,7 +64,6 @@ extension WorkspaceChannelRowStateBuildAction
                     voiceConnected,
                     channel,
                     selected,
-                    voiceParticipantCount,
                     state,
                     showFavoriteButton:
                         widget.onFavoriteChanged != null &&
