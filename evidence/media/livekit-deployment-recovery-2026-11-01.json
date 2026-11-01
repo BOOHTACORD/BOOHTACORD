@@ -1,0 +1,28 @@
+{
+  "kind": "livekit-production-deployment-recovery",
+  "status": "PARTIAL",
+  "observed_at": "2026-11-01",
+  "production_observation": {
+    "workflow_run": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/41294250614",
+    "failed_attempts": [1, 2],
+    "delivery_phase": "installer_deployment",
+    "finding": "The guarded rollout ran the LiveKit private RoomService preflight while the existing LiveKit container was stopped. Both attempts failed before switching API or web containers; production container inspection confirmed the prior containers remained active and LiveKit remained stopped."
+  },
+  "change": "Start LiveKit through the release Compose configuration after enabling maintenance admission, wait for its Redis dependency and startup, then run the private RoomService preflight. If startup fails, rollout still exits before migrations or API/web switching and cleanup disables maintenance admission.",
+  "checks": [
+    {
+      "name": "Deployment rollout ordering and failure guard",
+      "result": "PASS",
+      "command": "bash tools/release/rollout/deploy-images.test.sh",
+      "observation": "The regression test verifies LiveKit starts and receives a startup wait before the private RoomService preflight. A simulated LiveKit startup failure stops the rollout before preflight, migration, or API/web switching and exercises maintenance cleanup."
+    }
+  ],
+  "production_acceptance": {
+    "status": "NOT_RUN",
+    "required": [
+      "PR checks pass and the change is merged to master.",
+      "The production deployment reaches a fresh readback.",
+      "LiveKit, Redis and Egress are running; roster and telemetry endpoints return successfully; web stream previews load."
+    ]
+  }
+}
