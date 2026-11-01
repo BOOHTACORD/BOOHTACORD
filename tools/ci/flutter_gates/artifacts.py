@@ -9,6 +9,7 @@ VISUALS = (
     'flutter-screen-audience-viewer-strip-1024x92@2x.png',
     'flutter-screen-viewer-transient-controls-1440x900.png',
     # Flutter participant-card inline stream and voice-only previews.
+    'flutter-listener-room-web-parity.png',
     'flutter-participant-cards-stream-and-voice.png',
     'flutter-participant-card-preview-pending.png',
     'flutter-participant-cards-mobile-large-text.png',
