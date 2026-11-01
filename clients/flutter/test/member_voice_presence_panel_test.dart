@@ -83,19 +83,19 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Комната Секрет'), findsOneWidget);
+      expect(find.text('Голосовой канал · Комната Секрет'), findsOneWidget);
       final voiceCaptionFinder = find.byKey(
         const ValueKey('member-voice-presence:account-2'),
       );
-      expect(tester.widget<Text>(voiceCaptionFinder).maxLines, 2);
+      expect(tester.widget<Text>(voiceCaptionFinder).maxLines, 1);
+      expect(
+        tester.widget<Text>(voiceCaptionFinder).overflow,
+        TextOverflow.ellipsis,
+      );
       final voiceCaption = tester.renderObject<RenderParagraph>(
         voiceCaptionFinder,
       );
-      expect(
-        voiceCaption.didExceedMaxLines,
-        isFalse,
-        reason: 'the voice channel caption should wrap instead of clipping',
-      );
+      expect(voiceCaption.didExceedMaxLines, isTrue);
       expect(find.byIcon(Icons.volume_up_outlined), findsOneWidget);
       expect(
         find.byTooltip('В голосовом канале «Комната Секрет»'),
@@ -128,7 +128,7 @@ void main() {
       state.voiceRoster.changed();
       await tester.pumpAndSettle();
 
-      expect(find.text('Комната Секрет'), findsOneWidget);
+      expect(find.text('Голосовой канал · Комната Секрет'), findsOneWidget);
       expect(find.byIcon(Icons.volume_up_outlined), findsNothing);
       expect(find.byIcon(Icons.desktop_windows_outlined), findsOneWidget);
       expect(
@@ -173,7 +173,7 @@ void main() {
       state.voiceRoster.changed();
       await tester.pumpAndSettle();
 
-      expect(find.text('Комната Секрет'), findsNothing);
+      expect(find.text('Голосовой канал · Комната Секрет'), findsNothing);
       expect(find.byIcon(Icons.desktop_windows_outlined), findsNothing);
       expect(find.byIcon(Icons.volume_up_outlined), findsNothing);
 
@@ -197,13 +197,13 @@ void main() {
       state.voiceRoster.changed();
       await tester.pumpAndSettle();
 
-      expect(find.text('Комната Секрет'), findsNothing);
+      expect(find.text('Голосовой канал · Комната Секрет'), findsNothing);
       expect(find.byIcon(Icons.desktop_windows_outlined), findsNothing);
 
       state.voiceRoster.phase = VoiceRosterPhase.unavailable;
       state.voiceRoster.changed();
       await tester.pumpAndSettle();
-      expect(find.text('Комната Секрет'), findsNothing);
+      expect(find.text('Голосовой канал · Комната Секрет'), findsNothing);
 
       state
         ..voiceRosters = const [

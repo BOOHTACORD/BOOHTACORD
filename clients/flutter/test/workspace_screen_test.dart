@@ -5561,7 +5561,7 @@ void main() {
     expect(FocusManager.instance.primaryFocus, same(returnFocus));
     await tester.tap(find.byTooltip('Открыть участников'));
     await tester.pumpAndSettle();
-    expect(find.text('УЧАСТНИКИ'), findsOneWidget);
+    expect(find.byKey(const ValueKey('members-panel-heading')), findsOneWidget);
     await tester.tap(find.byTooltip('Закрыть участников'));
     await tester.pumpAndSettle();
     expect(find.text('Добро пожаловать в #общий'), findsOneWidget);
@@ -5634,17 +5634,17 @@ void main() {
       findsNothing,
     );
     expect(
-      find.descendant(of: membersPanel, matching: find.text('В сети — 1')),
+      find.descendant(of: membersPanel, matching: find.text('В СЕТИ — 1')),
       findsOneWidget,
     );
     expect(
-      find.descendant(of: membersPanel, matching: find.text('Не в сети — 1')),
+      find.descendant(of: membersPanel, matching: find.text('НЕ В СЕТИ — 1')),
       findsOneWidget,
     );
     expect(
       find.descendant(
         of: membersPanel,
-        matching: find.text('Статус неизвестен — 1'),
+        matching: find.text('СТАТУС НЕИЗВЕСТЕН — 1'),
       ),
       findsOneWidget,
     );
@@ -5659,12 +5659,12 @@ void main() {
     expect(
       find.descendant(
         of: membersPanel,
-        matching: find.text('Статус неизвестен — 3'),
+        matching: find.text('СТАТУС НЕИЗВЕСТЕН — 3'),
       ),
       findsOneWidget,
     );
     expect(
-      find.descendant(of: membersPanel, matching: find.text('В сети — 1')),
+      find.descendant(of: membersPanel, matching: find.text('В СЕТИ — 1')),
       findsNothing,
     );
 
@@ -5674,7 +5674,7 @@ void main() {
     state.notifyListeners();
     await tester.pumpAndSettle();
     expect(
-      find.descendant(of: membersPanel, matching: find.text('В сети — 1')),
+      find.descendant(of: membersPanel, matching: find.text('В СЕТИ — 1')),
       findsOneWidget,
     );
     await tester.tap(find.text('Неизвестен'));

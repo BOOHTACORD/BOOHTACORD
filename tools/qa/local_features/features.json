@@ -1772,7 +1772,7 @@
         "focused": [
           "clients/flutter/test/member_voice_presence_panel_test.dart"
         ],
-        "scope": "Flutter guild-wide members panel maps the current voice roster to the channel name, changes the voice icon to a screen icon when screen_sharing is true, and hides the indicator for stale, unavailable, ambiguous, or empty roster state. At a 232 dp compact width, the channel caption omits the redundant voice prefix, uses up to two lines, and remains visible without overflow. Includes source-resolution widget captures; does not infer speaking or claim media quality."
+        "scope": "Flutter guild-wide members panel maps the current voice roster to the channel name, changes the voice icon to a screen icon when screen_sharing is true, and hides the indicator for stale, unavailable, ambiguous, or empty roster state. Match Web roster geometry: 16 dp horizontal panel inset, 32 dp avatars, 44 dp rows with 2 dp row gaps, 10 dp avatar-to-copy gap, and 16 dp between presence groups; uppercase group headings. Voice metadata is a single 11 dp line with 12 dp voice/stream icon and the full 'Голосовой канал · <name>' label, ellipsized at narrow widths; streaming uses the accent color. Fallback initials and colors follow the Web palette. Includes source-resolution widget captures; does not infer speaking or claim media quality."
       },
       "flutter_channel_favorites": {
         "focused": [
