@@ -39,12 +39,18 @@ class _WorkspaceConnectionStatusState extends State<WorkspaceConnectionStatus> {
   Timer? _ageTimer;
   DateTime _now = DateTime.now();
 
-  bool get _visible =>
-      !widget.chatConnected ||
-      widget.rosterPhase != VoiceRosterPhase.fresh ||
-      widget.voicePhase == VoicePhase.joining ||
-      widget.voicePhase == VoicePhase.reconnecting ||
-      widget.voicePhase == VoicePhase.error;
+  bool get _visible {
+    if (widget.chatConnected &&
+        (widget.voicePhase == VoicePhase.idle ||
+            widget.voicePhase == VoicePhase.leaving)) {
+      return false;
+    }
+    return !widget.chatConnected ||
+        widget.rosterPhase != VoiceRosterPhase.fresh ||
+        widget.voicePhase == VoicePhase.joining ||
+        widget.voicePhase == VoicePhase.reconnecting ||
+        widget.voicePhase == VoicePhase.error;
+  }
 
   @override
   void initState() {

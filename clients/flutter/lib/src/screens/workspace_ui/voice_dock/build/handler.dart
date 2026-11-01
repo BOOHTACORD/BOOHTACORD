@@ -28,8 +28,10 @@ extension WorkspaceVoiceDockBuildAction on WorkspaceVoiceDockContext {
           : compact
           ? const EdgeInsets.fromLTRB(12, 8, 12, 8)
           : const EdgeInsets.fromLTRB(14, 12, 14, 14),
-      decoration: const BoxDecoration(
-        color: GcColors.surface,
+      decoration: BoxDecoration(
+        color: workspaceConnected
+            ? GcColors.voiceConnectedSurface
+            : GcColors.surface,
         border: Border(top: BorderSide(color: GcColors.border)),
       ),
       child: inline

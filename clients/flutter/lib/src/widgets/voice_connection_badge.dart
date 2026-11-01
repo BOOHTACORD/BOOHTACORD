@@ -80,7 +80,10 @@ class VoiceConnectionBadge extends StatelessWidget {
                   Container(
                     width: 7,
                     height: 7,
-                    decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+                    decoration: BoxDecoration(
+                      color: color,
+                      shape: BoxShape.circle,
+                    ),
                   ),
                   const SizedBox(width: 7),
                   Text(
@@ -111,17 +114,18 @@ class VoiceQualityIndicator extends StatelessWidget {
     required this.quality,
     required this.pingMs,
     this.compact = false,
+    this.showPing = true,
   });
 
   final ConnectionQuality quality;
   final int? pingMs;
   final bool compact;
+  final bool showPing;
 
   @override
   Widget build(BuildContext context) {
     final color = switch (quality) {
-      ConnectionQuality.excellent || ConnectionQuality.good =>
-        GcColors.success,
+      ConnectionQuality.excellent || ConnectionQuality.good => GcColors.success,
       ConnectionQuality.poor => GcColors.warning,
       ConnectionQuality.lost => GcColors.danger,
       ConnectionQuality.unknown => GcColors.muted,
@@ -141,15 +145,17 @@ class VoiceQualityIndicator extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(icon, size: compact ? 17 : 16, color: color),
-              const SizedBox(width: 4),
-              Text(
-                pingLabel,
-                style: TextStyle(
-                  color: color,
-                  fontSize: compact ? 11 : 10,
-                  fontWeight: FontWeight.w600,
+              if (showPing) ...[
+                const SizedBox(width: 4),
+                Text(
+                  pingLabel,
+                  style: TextStyle(
+                    color: color,
+                    fontSize: compact ? 11 : 10,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
+              ],
             ],
           ),
         ),

@@ -11,6 +11,7 @@ import 'package:boohtacord_desktop/src/features/authorization/permissions/model.
 import 'package:boohtacord_desktop/src/models.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_screen.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/header/component.dart';
+import 'package:boohtacord_desktop/src/screens/workspace_ui/voice_navigation_members/component.dart';
 import 'package:boohtacord_desktop/src/services/api_client.dart';
 import 'package:boohtacord_desktop/src/services/composer_draft_memory.dart';
 import 'package:boohtacord_desktop/src/services/conversation_scroll_memory.dart';
@@ -24,7 +25,15 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:livekit_client/livekit_client.dart'
-    show MediaDevice, Room, RemoteParticipant;
+    show
+        LocalParticipant,
+        MediaDevice,
+        RemoteParticipant,
+        RemoteTrackPublication,
+        RemoteAudioTrack,
+        RemoteVideoTrack,
+        Room,
+        TrackSource;
 import 'package:livekit_client/src/proto/livekit_models.pb.dart' as lk;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -43,7 +52,6 @@ void main() {
     tester,
   ) async {
     debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
-    addTearDown(() => debugDefaultTargetPlatformOverride = null);
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = const Size(1440, 900);
     addTearDown(tester.view.reset);
@@ -2673,6 +2681,7 @@ void main() {
   testWidgets('channel categories collapse with a highlighted compact header', (
     tester,
   ) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = const Size(1440, 900);
     addTearDown(tester.view.reset);
@@ -2703,6 +2712,19 @@ void main() {
       const ValueKey('topology-object-menu-visibility:channel-1'),
     );
     expect(tester.widget<Visibility>(menuVisibility).visible, isFalse);
+    final createVisibility = find.byKey(
+      const ValueKey('category-create-visibility:category-1'),
+    );
+    expect(tester.widget<Visibility>(createVisibility).visible, isFalse);
+    final categoryFocus = tester.widget<FocusableActionDetector>(
+      find.byKey(const ValueKey('workspace-category-focus:category-1')),
+    );
+    categoryFocus.onShowFocusHighlight!(true);
+    await tester.pump();
+    expect(tester.widget<Visibility>(createVisibility).visible, isTrue);
+    categoryFocus.onShowFocusHighlight!(false);
+    await tester.pump();
+    expect(tester.widget<Visibility>(createVisibility).visible, isFalse);
     final channelFocus = tester.widget<FocusableActionDetector>(
       find.byKey(const ValueKey('workspace-channel-focus:channel-1')),
     );
@@ -2726,20 +2748,64 @@ void main() {
       SystemMouseCursors.click,
     );
     expect(categoryCursor.resolve(<WidgetState>{}), SystemMouseCursors.basic);
+    expect(find.text('Текстовые каналы'), findsOneWidget);
     expect(find.byTooltip('Свернуть раздел Текстовые каналы'), findsNothing);
-    await tester.tap(find.text('ТЕКСТОВЫЕ КАНАЛЫ'));
+    await tester.tap(find.text('Текстовые каналы'));
     await tester.pumpAndSettle();
     expect(
       find.byKey(const ValueKey('workspace-channel-row:channel-1')),
       findsNothing,
     );
     expect(find.byTooltip('Развернуть раздел Текстовые каналы'), findsNothing);
-    await tester.tap(find.text('ТЕКСТОВЫЕ КАНАЛЫ'));
+    await tester.tap(find.text('Текстовые каналы'));
     await tester.pumpAndSettle();
     expect(
       find.byKey(const ValueKey('workspace-channel-row:channel-1')),
       findsOneWidget,
     );
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    state.dispose();
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets('voice navigation matches Web participant order and identity', (
+    tester,
+  ) async {
+    final state = AppState(ApiClient());
+    state.user = const SessionUser(accountId: 'account-1', role: 'MEMBER');
+    state.profile = const OwnProfile(
+      accountId: 'account-1',
+      login: 'member',
+      displayName: 'Участник',
+      role: 'MEMBER',
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: guildTheme(),
+        home: Scaffold(
+          body: WorkspaceVoiceNavigationMembers(
+            state: state,
+            localParticipant: _NavigationLocalParticipant(),
+            remoteParticipants: const [_NavigationRemoteParticipant()],
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Участник · вы'), findsNothing);
+    expect(find.text('Участник'), findsOneWidget);
+    expect(find.text('Streamer'), findsOneWidget);
+    expect(
+      tester.getTopLeft(find.text('Streamer')).dy,
+      lessThan(tester.getTopLeft(find.text('Участник')).dy),
+    );
+    expect(find.byIcon(Icons.desktop_windows_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.mic_off_outlined), findsOneWidget);
+    expect(find.text('ST'), findsOneWidget);
+    expect(tester.takeException(), isNull);
 
     await tester.pumpWidget(const SizedBox.shrink());
     state.dispose();
@@ -2831,6 +2897,7 @@ void main() {
     state.audioActivationMode = AudioActivationMode.vad;
     state.microphoneMuted = false;
     state.microphoneUnavailable = false;
+    state.voice.voicePingMs = 42;
 
     await tester.pumpWidget(
       MaterialApp(
@@ -2843,6 +2910,9 @@ void main() {
     await tester.pumpAndSettle();
 
     final dock = find.byKey(const ValueKey('voice-dock'));
+    final dockDecoration =
+        tester.widget<Container>(dock).decoration! as BoxDecoration;
+    expect(dockDecoration.color, const Color(0xFF10191A));
     final connectedLabel = find.descendant(
       of: dock,
       matching: find.text('Голос подключён'),
@@ -2869,13 +2939,17 @@ void main() {
         of: dock,
         matching: find.byIcon(Icons.signal_cellular_alt_rounded),
       ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: dock, matching: find.text('42 мс')),
       findsNothing,
     );
     expect(
       find.descendant(
         of: dock,
         matching: find.bySemanticsLabel(
-          'Качество соединения: Нет данных · ping —',
+          'Качество соединения: Нет данных · ping 42 мс',
         ),
       ),
       findsOneWidget,
@@ -2896,7 +2970,7 @@ void main() {
             (widget) =>
                 widget is Semantics &&
                 widget.properties.label ==
-                    'Качество соединения: Нет данных · ping —',
+                    'Качество соединения: Нет данных · ping 42 мс',
           ),
         )
         .toList();
@@ -5831,8 +5905,9 @@ void main() {
           );
           await tester.pumpAndSettle();
           Future<void> capture(String surface) async {
+            final exception = tester.takeException();
             expect(
-              tester.takeException(),
+              exception,
               isNull,
               reason: '$surface $width x$scale',
             );
@@ -5929,142 +6004,143 @@ void main() {
       );
     }
   }
-  testWidgets('selected stream survives TEXT DM settings and end without pinning', (
-    t,
-  ) async {
-    const rtcEvents = MethodChannel('FlutterWebRTC.Event');
-    t.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-      rtcEvents,
-      (_) async => null,
-    );
-    addTearDown(
-      () => t.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+  testWidgets(
+    'selected stream survives TEXT DM settings and end without pinning',
+    (t) async {
+      const rtcEvents = MethodChannel('FlutterWebRTC.Event');
+      t.binding.defaultBinaryMessenger.setMockMethodCallHandler(
         rtcEvents,
-        null,
-      ),
-    );
-    t.view.devicePixelRatio = 1;
-    t.view.physicalSize = const Size(1440, 900);
-    addTearDown(t.view.reset);
-    await loadUiuxVisualCaptureFonts();
-    final root = GlobalKey();
-    final room = _PublishedScreenRoom();
-    // ignore: invalid_use_of_internal_member
-    final created = await RemoteParticipant.createFromInfo(
-      room: room,
-      info: lk.ParticipantInfo(
-        sid: 'sid',
-        identity: 'remote',
-        name: 'Streamer',
-        tracks: [
-          lk.TrackInfo(
-            sid: 'screen',
-            type: lk.TrackType.VIDEO,
-            source: lk.TrackSource.SCREEN_SHARE,
-            muted: false,
-          ),
-        ],
-      ),
-    );
-    room.members['remote'] = created.participant;
-    final state = _PublishedScreenState(room);
-    await state.initialize();
-    state.selectedChannel = _PortraitApi.voiceChannel;
-    state.voiceChannel = _PortraitApi.voiceChannel;
-    state.voicePhase = VoicePhase.connected;
-    await t.pumpWidget(
-      RepaintBoundary(
-        key: root,
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: guildTheme(),
-          builder: (context, child) => MediaQuery(
-            data: MediaQuery.of(context)
-                .copyWith(textScaler: const TextScaler.linear(2)),
-            child: child!,
-          ),
-          home: AnimatedBuilder(
-            animation: state,
-            builder: (_, _) => WorkspaceScreen(state: state),
+        (_) async => null,
+      );
+      addTearDown(
+        () => t.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+          rtcEvents,
+          null,
+        ),
+      );
+      t.view.devicePixelRatio = 1;
+      t.view.physicalSize = const Size(1440, 900);
+      addTearDown(t.view.reset);
+      await loadUiuxVisualCaptureFonts();
+      final root = GlobalKey();
+      final room = _PublishedScreenRoom();
+      // ignore: invalid_use_of_internal_member
+      final created = await RemoteParticipant.createFromInfo(
+        room: room,
+        info: lk.ParticipantInfo(
+          sid: 'sid',
+          identity: 'remote',
+          name: 'Streamer',
+          tracks: [
+            lk.TrackInfo(
+              sid: 'screen',
+              type: lk.TrackType.VIDEO,
+              source: lk.TrackSource.SCREEN_SHARE,
+              muted: false,
+            ),
+          ],
+        ),
+      );
+      room.members['remote'] = created.participant;
+      final state = _PublishedScreenState(room);
+      await state.initialize();
+      state.selectedChannel = _PortraitApi.voiceChannel;
+      state.voiceChannel = _PortraitApi.voiceChannel;
+      state.voicePhase = VoicePhase.connected;
+      await t.pumpWidget(
+        RepaintBoundary(
+          key: root,
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: guildTheme(),
+            builder: (context, child) => MediaQuery(
+              data: MediaQuery.of(context)
+                  .copyWith(textScaler: const TextScaler.linear(2)),
+              child: child!,
+            ),
+            home: AnimatedBuilder(
+              animation: state,
+              builder: (_, _) => WorkspaceScreen(state: state),
+            ),
           ),
         ),
-      ),
-    );
-    await t.pumpAndSettle();
-    (t.state(find.byType(WorkspaceScreen)) as dynamic)
-        .workspaceSelectVoiceScreen('remote');
-    await t.pump();
-    expect(find.byTooltip('Закрепить демонстрацию'), findsNothing);
-    await state.selectChannel(_PortraitApi.channel);
-    await t.pump(const Duration(milliseconds: 200));
-    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
-    await t.enterText(
-      find.byWidgetPredicate(
-        (w) =>
-            w is TextField && w.decoration?.hintText == 'Написать сообщение…',
-      ),
-      'Сохранённый черновик',
-    );
-    for (final size in [
-      const Size(1440, 900),
-      const Size(390, 480),
-      const Size(320, 480),
-    ]) {
-      for (final ime in [0.0, 180.0]) {
-        t.view.physicalSize = size;
-        t.view.viewInsets = FakeViewPadding(bottom: ime);
-        await t.pump(const Duration(milliseconds: 200));
-        expect(t.takeException(), isNull, reason: '$size IME$ime');
-        expect(find.text('Сохранённый черновик'), findsOneWidget);
-        if (ime > 0) {
-          await t.ensureVisible(find.byTooltip('Остановить просмотр'));
-          await t.pump();
+      );
+      await t.pumpAndSettle();
+      (t.state(find.byType(WorkspaceScreen)) as dynamic)
+          .workspaceSelectVoiceScreen('remote');
+      await t.pump();
+      expect(find.byTooltip('Закрепить демонстрацию'), findsNothing);
+      await state.selectChannel(_PortraitApi.channel);
+      await t.pump(const Duration(milliseconds: 200));
+      expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+      await t.enterText(
+        find.byWidgetPredicate(
+          (w) =>
+              w is TextField && w.decoration?.hintText == 'Написать сообщение…',
+        ),
+        'Сохранённый черновик',
+      );
+      for (final size in [
+        const Size(1440, 900),
+        const Size(390, 480),
+        const Size(320, 480),
+      ]) {
+        for (final ime in [0.0, 180.0]) {
+          t.view.physicalSize = size;
+          t.view.viewInsets = FakeViewPadding(bottom: ime);
+          await t.pump(const Duration(milliseconds: 200));
+          expect(t.takeException(), isNull, reason: '$size IME$ime');
+          expect(find.text('Сохранённый черновик'), findsOneWidget);
+          if (ime > 0) {
+            await t.ensureVisible(find.byTooltip('Остановить просмотр'));
+            await t.pump();
+          }
+          await captureUiuxBoundary(
+            t,
+            find.byKey(root),
+            fileName:
+                'parity-pinned-workspace-${size.width.toInt()}x${size.height.toInt()}-ime${ime.toInt()}-scale2.png',
+            pixelRatio: 1,
+          );
         }
-        await captureUiuxBoundary(
-          t,
-          find.byKey(root),
-          fileName:
-              'parity-pinned-workspace-${size.width.toInt()}x${size.height.toInt()}-ime${ime.toInt()}-scale2.png',
-          pixelRatio: 1,
-        );
       }
-    }
-    t.view.viewInsets = const FakeViewPadding();
-    t.view.physicalSize = const Size(393, 852);
-    await state.openDirectConversation(
-      const DirectConversation(
-        id: 'dm-1',
-        participantId: 'account-2',
-        displayName: 'Собеседник',
-        unreadCount: 0,
-      ),
-    );
-    await t.pump();
-    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
-    await captureUiuxBoundary(
-      t,
-      find.byKey(root),
-      fileName: 'flutter-screen-viewer-mini-player-mobile-393x852.png',
-      pixelRatio: 1,
-    );
-    state.toggleWorkspacePanel(WorkspacePanel.profile);
-    await t.pump();
-    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
-    await state.selectChannel(_PortraitApi.voiceChannel);
-    await t.pump();
-    expect(find.byTooltip('Приостановить видео'), findsNothing);
-    await state.selectChannel(_PortraitApi.channel);
-    await t.pump();
-    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
-    room.members.clear();
-    state.notifyListeners();
-    await t.pump();
-    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
-    expect(find.text('Демонстрация завершена'), findsOneWidget);
-    await t.pumpWidget(const SizedBox.shrink());
-    state.dispose();
-    await t.runAsync(room.dispose);
-  });
+      t.view.viewInsets = const FakeViewPadding();
+      t.view.physicalSize = const Size(393, 852);
+      await state.openDirectConversation(
+        const DirectConversation(
+          id: 'dm-1',
+          participantId: 'account-2',
+          displayName: 'Собеседник',
+          unreadCount: 0,
+        ),
+      );
+      await t.pump();
+      expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+      await captureUiuxBoundary(
+        t,
+        find.byKey(root),
+        fileName: 'flutter-screen-viewer-mini-player-mobile-393x852.png',
+        pixelRatio: 1,
+      );
+      state.toggleWorkspacePanel(WorkspacePanel.profile);
+      await t.pump();
+      expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+      await state.selectChannel(_PortraitApi.voiceChannel);
+      await t.pump();
+      expect(find.byTooltip('Приостановить видео'), findsNothing);
+      await state.selectChannel(_PortraitApi.channel);
+      await t.pump();
+      expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+      room.members.clear();
+      state.notifyListeners();
+      await t.pump();
+      expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+      expect(find.text('Демонстрация завершена'), findsOneWidget);
+      await t.pumpWidget(const SizedBox.shrink());
+      state.dispose();
+      await t.runAsync(room.dispose);
+    },
+  );
 }
 
 class _PublishedScreenRoom extends Room {
@@ -6072,6 +6148,55 @@ class _PublishedScreenRoom extends Room {
   @override
   UnmodifiableMapView<String, RemoteParticipant> get remoteParticipants =>
       UnmodifiableMapView(members);
+}
+
+class _NavigationLocalParticipant implements LocalParticipant {
+  @override
+  bool get isSpeaking => false;
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _NavigationRemoteParticipant implements RemoteParticipant {
+  const _NavigationRemoteParticipant();
+
+  @override
+  String get identity => 'navigation-peer';
+
+  @override
+  String? get metadata => 'account:account-2';
+
+  @override
+  String get name => 'Streamer';
+
+  @override
+  bool get isSpeaking => false;
+
+  @override
+  List<RemoteTrackPublication<RemoteAudioTrack>> get audioTrackPublications =>
+      const [];
+
+  @override
+  List<RemoteTrackPublication<RemoteVideoTrack>> get videoTrackPublications =>
+      const [_NavigationVideoPublication()];
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _NavigationVideoPublication
+    implements RemoteTrackPublication<RemoteVideoTrack> {
+  const _NavigationVideoPublication();
+
+  @override
+  bool get muted => false;
+
+  @override
+  TrackSource get source => TrackSource.screenShareVideo;
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 class _PublishedScreenState extends AppState {

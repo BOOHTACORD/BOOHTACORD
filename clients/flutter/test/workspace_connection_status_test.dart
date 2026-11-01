@@ -7,6 +7,86 @@ import 'package:flutter_test/flutter_test.dart';
 import 'uiux_2026/capture_support.dart';
 
 void main() {
+  testWidgets('only the channel list scrolls inside the workspace sidebar', (
+    tester,
+  ) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(300, 640);
+    addTearDown(tester.view.reset);
+    await loadUiuxVisualCaptureFonts();
+    final state = AppState(ApiClient());
+    addTearDown(state.dispose);
+    state.user = const SessionUser(accountId: 'account-1', role: 'MEMBER');
+    state.profile = const OwnProfile(
+      accountId: 'account-1',
+      login: 'qa',
+      displayName: 'QA',
+      role: 'MEMBER',
+    );
+    state.realtime.connected = true;
+    state.voiceRoster.voiceRosters = [];
+    state.voiceRoster.phase = VoiceRosterPhase.fresh;
+    state.voiceRoster.lastUpdatedAt = DateTime.now();
+    state.topology = ChannelTopology(
+      revision: 1,
+      categories: [
+        ChannelCategory(
+          id: 'category-main',
+          name: 'General',
+          channels: List.generate(
+            24,
+            (index) => GuildChannel(
+              id: 'text-$index',
+              name: 'Channel $index',
+              kind: ChannelKind.text,
+              admissionClosed: false,
+            ),
+          ),
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: guildTheme(),
+        home: Scaffold(
+          body: SizedBox(
+            width: 300,
+            height: 640,
+            child: RepaintBoundary(
+              key: const ValueKey('sidebar-channel-scroll-capture'),
+              child: WorkspaceSidebar(state: state),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(WorkspaceSidebar), findsOneWidget);
+    expect(find.byKey(const ValueKey('navigation-tabs')), findsOneWidget);
+    final header = find.byKey(const ValueKey('navigation-guild-header'));
+    final headerTop = tester.getTopLeft(header).dy;
+    final tabs = find.byKey(const ValueKey('navigation-tabs'));
+    final tabsTop = tester.getTopLeft(tabs).dy;
+    final footerHelp = find.byTooltip('Помощь и обратная связь');
+    final footerHelpTop = tester.getTopLeft(footerHelp).dy;
+    final list = find.byType(ListView);
+    await tester.drag(list, const Offset(0, -220));
+    await tester.pumpAndSettle();
+
+    expect(tester.getTopLeft(header).dy, headerTop);
+    expect(tester.getTopLeft(tabs).dy, tabsTop);
+    expect(tester.getTopLeft(footerHelp).dy, footerHelpTop);
+    expect(tester.takeException(), isNull);
+    await captureUiuxBoundary(
+      tester,
+      find.byKey(const ValueKey('sidebar-channel-scroll-capture')),
+      fileName: 'flutter-sidebar-channel-scroll-300x640.png',
+      pixelRatio: 1,
+    );
+  });
+
   testWidgets('sidebar reacts to the live connection controllers', (
     tester,
   ) async {
@@ -68,6 +148,12 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('Голос не подключён'), findsOneWidget);
+
+    state.voicePhase = VoicePhase.idle;
+    state.voiceRoster.phase = VoiceRosterPhase.unavailable;
+    state.voiceRoster.changed();
+    await tester.pump();
+    expect(find.byKey(const ValueKey('connection-status-card')), findsNothing);
   });
 
   testWidgets('shows independent connection states and retry actions', (
@@ -192,6 +278,38 @@ void main() {
 
     expect(find.byKey(const ValueKey('connection-status-card')), findsNothing);
   });
+
+  testWidgets(
+    'hides roster warning after leaving voice while chat is healthy',
+    (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: guildTheme(),
+          home: Scaffold(
+            body: SizedBox(
+              width: 280,
+              child: WorkspaceConnectionStatus(
+                chatConnected: true,
+                chatConnecting: false,
+                voicePhase: VoicePhase.idle,
+                rosterPhase: VoiceRosterPhase.unavailable,
+                rosterRetained: false,
+                lastUpdatedAt: DateTime.now(),
+                rosterCanRetry: true,
+                onRetryChat: () {},
+                onRetryRoster: () {},
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(
+        find.byKey(const ValueKey('connection-status-card')),
+        findsNothing,
+      );
+    },
+  );
 
   testWidgets('connection status card desktop visual capture', (tester) async {
     tester.view.devicePixelRatio = 1;

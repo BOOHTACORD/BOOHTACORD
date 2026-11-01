@@ -1629,6 +1629,8 @@
   "shell": {
     "paths": [
       "clients/web/src/channel/*",
+      "clients/web/tests/navigation_density/fixture.ts",
+      "clients/web/tests/navigation_density/navigation.browser.spec.ts",
       "clients/web/src/workspace/*",
       "clients/web/src/design/*",
       "clients/web/tests/navigation_density/navigation.browser.spec.ts",
@@ -1645,6 +1647,11 @@
       "clients/flutter/lib/src/screens/workspace_ui/header/**",
       "clients/flutter/lib/src/screens/workspace_ui/channel_row/**",
       "clients/flutter/lib/src/screens/workspace_ui/channel_navigation/**",
+      "clients/flutter/lib/src/screens/workspace_ui/category/build/category_header/**",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_navigation_members/**",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_navigation_member_row/**",
+      "clients/flutter/lib/src/screens/workspace_ui/connection_status/**",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_dock/build/**",
       "clients/flutter/lib/src/screens/workspace_ui/direct_message_navigation/**",
       "clients/flutter/lib/src/features/workspace/search/**"
     ],
@@ -1667,6 +1674,9 @@
       "test/features/workspace/quick_jump/workspace_navigation_test.dart",
       "test/workspace_navigation_text_scale_test.dart",
       "test/workspace_navigation_top_test.dart",
+      "test/workspace_screen_test.dart",
+      "test/workspace_connection_status_test.dart",
+      "test/widget_test.dart",
       "test/web_parity/presentation_test.dart",
       "test/member_voice_presence_panel_test.dart",
       "test/features/workspace/channel_favorites_preferences_test.dart",
@@ -1678,6 +1688,14 @@
       "test/features/voice/viewer_pending/presentation_test.dart"
     ],
     "acceptance": {
+      "voice_navigation_parity": {
+        "focused": [
+          "clients/web/tests/navigation_density/navigation.browser.spec.ts",
+          "clients/flutter/test/workspace_screen_test.dart",
+          "clients/flutter/test/workspace_connection_status_test.dart"
+        ],
+        "scope": "Web and Flutter sidebar parity: no duplicate channel search, remote-first participant order, concise self name, visible screen/microphone states, matching avatar initials/category casing, green connected dock, no roster warning after leaving voice, and Flutter scroll confined to the channel list while header, connection card, dock and footer stay fixed. UI/widget evidence only; native media acceptance remains separate."
+      },
       "issue292": {
         "native": "tools/qa/mobile_navigation/run_native.py",
         "target": "integration_test/mobile_navigation_qa_test.dart"

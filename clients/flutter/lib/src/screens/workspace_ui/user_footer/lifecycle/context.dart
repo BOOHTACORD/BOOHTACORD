@@ -5,7 +5,9 @@ abstract class WorkspaceUserFooterContext extends StatelessWidget {
     super.key,
     required this.state,
     this.onNavigate,
+    this.compact = false,
   });
   final AppState state;
   final VoidCallback? onNavigate;
+  final bool compact;
 }

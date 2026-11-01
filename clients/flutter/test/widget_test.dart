@@ -65,7 +65,7 @@ void main() {
         final drawer = find.byKey(const ValueKey('mobile-sidebar'));
         expect(find.byTooltip('Закрыть навигацию'), findsOneWidget);
         expect(
-          find.descendant(of: drawer, matching: find.text('GENERAL')),
+          find.descendant(of: drawer, matching: find.text('General')),
           findsOneWidget,
         );
         expect(
@@ -101,7 +101,7 @@ void main() {
         await tester.tap(find.text('Личные'));
         await tester.pumpAndSettle();
         expect(find.text('ЛИЧНЫЕ СООБЩЕНИЯ'), findsOneWidget);
-        expect(find.text('GENERAL'), findsNothing);
+        expect(find.text('General'), findsNothing);
 
         await tester.pumpWidget(const SizedBox.shrink());
         state.dispose();

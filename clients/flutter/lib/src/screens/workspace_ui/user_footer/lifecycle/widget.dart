@@ -7,5 +7,6 @@ class WorkspaceUserFooter extends WorkspaceUserFooterContext
     super.key,
     required super.state,
     super.onNavigate,
+    super.compact,
   });
 }
