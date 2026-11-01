@@ -1,0 +1,24 @@
+{
+  "kind": "source-only-livekit-network-revalidation",
+  "observed_at": "2026-11-01",
+  "status": "PASS",
+  "source_base": "3490f87a176aa6136cb61b2db86aa750ae63a5a1",
+  "historical_evidence": "evidence/media/livekit-network-config-2026-10-07.json",
+  "change": "T-079 now uses the explicitly configured LIVEKIT_NODE_IP for RTC candidates and disables STUN external-IP discovery. Production showed that the previous use_external_ip setting tried to resolve stun1.l.google.com and LiveKit exited; this source revalidation records the corrected network model while keeping historical deployment evidence immutable.",
+  "production_acceptance": "NOT_RUN; merge and deployment checks are pending. The source model does not prove that LiveKit Egress captures a browser or Flutter stream.",
+  "checks": [
+    "Explicit public node IP wiring and disabled STUN discovery are required by the LiveKit network model.",
+    "Focused LiveKit network and rollout regression tests PASS."
+  ],
+  "repository_artifacts": {
+    "deploy/compose.yaml": "sha256:28ad401aad1cd00e9a76ad234ad29d5bb6cf67af6d9a09bcd4a9a8c6b02e520d",
+    "deploy/livekit/compose.yaml": "sha256:a51ba0a72105e7b50e3be0201e85c31d1f0adc043290470b7cd78eb0f734669d",
+    "deploy/livekit/egress.yaml": "sha256:0ed81d9f14f640e3609d3e7d974fe72f4f2fd475c7ef5e40468e40b51adeeedf",
+    "deploy/livekit/livekit.yaml": "sha256:290a55022cbe8bfbb062830e869e55a307322c80cb8110a810b33c6d4760264f",
+    "tools/verify/livekit_network_config/check.py": "sha256:8dd5442c4cfd9e3b0e35058a2789bda727b453b9d37643e9a0b3c848847728ed",
+    "tools/verify/livekit_network_config/model.py": "sha256:445429766346ff8b999d9a51f2a9796eb6093fe229a8b4cd0d14bfd5ef0b67f8",
+    "tools/verify/livekit_network_config/fixtures.py": "sha256:c52b3fb6b2151e2c3f173d7014b6a2e7ec3d46d32e205cc827e9012615483be9",
+    "tools/verify/livekit_network_config/test_model.py": "sha256:5803f6c657d601aec3c5599ead3c6f3d92a0e94ab7c618dbd076ea1a8a093cb9",
+    "tools/release/rollout/test_livekit_node_ip_config.py": "sha256:daeecd86df45541c8d5079d7464bc9af16dcc806c57a03e46bec477840fa8548"
+  }
+}

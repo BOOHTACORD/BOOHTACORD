@@ -96,9 +96,14 @@ class LiveKitNetworkConfigTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "private network"):
             self.assert_valid()
 
-    def test_rejects_external_ip_advertisement_drift(self):
-        self.livekit["rtc"]["use_external_ip"] = False
-        with self.assertRaisesRegex(ValueError, "external IP"):
+    def test_rejects_stun_discovery_when_an_explicit_node_ip_is_required(self):
+        self.livekit["rtc"]["use_external_ip"] = True
+        with self.assertRaisesRegex(ValueError, "explicit node IP"):
+            self.assert_valid()
+
+    def test_rejects_missing_explicit_node_ip(self):
+        self.deploy["services"]["livekit"]["environment"].pop("LIVEKIT_NODE_IP")
+        with self.assertRaisesRegex(ValueError, "explicit node IP"):
             self.assert_valid()
 
     def test_rejects_tcp_fallback_mapping_drift(self):
