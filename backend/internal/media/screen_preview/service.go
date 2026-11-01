@@ -70,6 +70,16 @@ func (service Service) Begin(ctx context.Context, principal Principal, leaseID s
 		}
 		return Generation{}, ErrStaleGeneration
 	}
+	// Begin is also the publisher's periodic lease heartbeat. Re-announce an
+	// already captured revision so viewers that joined after the prior
+	// change-only hint can discover the current frame without waiting for the
+	// screen pixels to change.
+	if service.hints != nil {
+		_, revision, found, readErr := service.store.Read(leaseID, generationID)
+		if readErr == nil && found && revision > 0 {
+			service.hints.Updated(ctx, leaseID, generationID, revision)
+		}
+	}
 	return Generation{
 		SchemaVersion: SchemaVersion, GenerationID: generationID,
 		ExpiresAfterSeconds: int(PreviewTTL.Seconds()), MinimumIntervalSeconds: int(CaptureInterval.Seconds()),

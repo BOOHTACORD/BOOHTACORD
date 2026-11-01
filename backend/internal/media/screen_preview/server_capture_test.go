@@ -36,9 +36,9 @@ type hintsStub struct {
 	lastRevision         uint64
 }
 
-func (hints *hintsStub) Updated(context.Context, string, string, uint64) {
+func (hints *hintsStub) Updated(_ context.Context, _, _ string, revision uint64) {
 	hints.updated++
-	hints.lastRevision++
+	hints.lastRevision = revision
 }
 func (hints *hintsStub) Invalidated(context.Context, string, string) { hints.invalidated++ }
 
@@ -95,6 +95,42 @@ func TestServerFramesBecomeAuthorizedRevisionsAndNotifyViewers(t *testing.T) {
 	preview, err = service.Read(context.Background(), Principal{}, leaseID, generation.GenerationID, 1)
 	if err != nil || preview.Revision != 2 || ValidateJPEG(preview.JPEG) != nil || hints.updated != 2 {
 		t.Fatalf("second preview=%+v hint updates=%d err=%v", preview, hints.updated, err)
+	}
+}
+
+func TestBeginReannouncesExistingFrameForViewersThatJoinedLate(t *testing.T) {
+	channelID, leaseID := uuid.NewString(), uuid.NewString()
+	store := &testStore{}
+	capture := &captureStub{frame: CaptureFrame{Fingerprint: "same-frame", JPEG: validCaptureJPEG(t)}}
+	hints := &hintsStub{}
+	service, err := New(
+		testAuthority{owner: true, viewer: true, channel: channelID},
+		&testPublication{track: "screen-track"}, store, capture, hints,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	principal := Principal{AccountID: uuid.NewString()}
+	generation, err := service.Begin(context.Background(), principal, leaseID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := service.PollCaptures(context.Background()); err != nil {
+		t.Fatal(err)
+	}
+	if hints.updated != 1 || hints.lastRevision != 1 {
+		t.Fatalf("initial frame hint count=%d revision=%d", hints.updated, hints.lastRevision)
+	}
+
+	// A viewer may join after the immutable frame hint was delivered. The
+	// publisher's periodic Begin heartbeat must announce the current revision
+	// again even though the captured pixels have not changed.
+	refreshed, err := service.Begin(context.Background(), principal, leaseID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if refreshed.GenerationID != generation.GenerationID || hints.updated != 2 || hints.lastRevision != 1 {
+		t.Fatalf("heartbeat generation=%q hint count=%d revision=%d", refreshed.GenerationID, hints.updated, hints.lastRevision)
 	}
 }
 

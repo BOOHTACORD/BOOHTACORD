@@ -288,6 +288,7 @@
       "clients/flutter/lib/src/screens/workspace_ui/voice_dock/**",
       "clients/flutter/lib/src/screens/workspace_ui/voice_participant_card/**",
       "clients/flutter/lib/src/screens/workspace_ui/voice_participant_room/**",
+      "clients/flutter/test/voice_participant_stream_cards_test.dart",
       "clients/flutter/lib/src/screens/workspace_ui/voice_room/open_screen_fullscreen/**",
       "clients/flutter/lib/src/services/screen_thumbnail.dart",
       "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/editing_shell/handler.dart",
@@ -315,7 +316,9 @@
       "test/features/voice/viewer_pending/fallback_test.dart",
       "test/features/voice/viewer_pending/presentation_test.dart",
       "test/features/voice/voice_participant_sound_tracker_test.dart",
-      "test/features/voice/voice_room_event_sounds_test.dart"
+      "test/features/voice/voice_room_event_sounds_test.dart",
+      "test/voice_participant_stream_cards_test.dart",
+      "test/screen_preview_receiver_test.dart"
     ],
     "acceptance": {
       "issue59": {
@@ -356,6 +359,25 @@
           "clients/flutter/test/workspace_screen_test.dart"
         ],
         "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
+      },
+      "flutter_stream_preview_placeholder": {
+        "focused": [
+          "clients/flutter/test/voice_participant_stream_cards_test.dart"
+        ],
+        "scope": "A Flutter stream participant card with no received server preview shows the desktop icon and concise waiting copy, keeps its live/profile badges and remains tappable; the play affordance appears only with a received frame. Widget coverage is not a paired receiver/media acceptance claim."
+      },
+      "flutter_screen_preview_receiver": {
+        "focused": [
+          "clients/flutter/test/screen_preview_receiver_test.dart"
+        ],
+        "scope": "Flutter retains and loads an authorized server preview hint even before its LiveKit participant/publication event arrives, retries a briefly unreadable frame without advancing its revision, and reads only through the server ACL. Component coverage does not prove paired native/media acceptance."
+      },
+      "late_viewer_screen_preview_recovery": {
+        "focused": [
+          "backend/internal/media/screen_preview/server_capture_test.go",
+          "clients/flutter/test/screen_preview_receiver_test.dart"
+        ],
+        "scope": "The publisher heartbeat re-announces the latest unchanged snapshot revision so late voice-channel viewers can discover it; Flutter stores early hints and retries an initial empty response. Existing session/lease/channel authorization remains authoritative. Paired native publisher/viewer delivery is separate acceptance."
       },
       "voice_audio_ducking": {
         "focused": [
@@ -615,6 +637,10 @@
       "backend/internal/app/media_routes/screen_preview/**",
       "deploy/livekit/**",
       "deploy/compose.yaml",
+      "tools/release/rollout/deploy-images.sh",
+      "tools/release/rollout/deploy-images.test.sh",
+      "tools/release/rollout/deploy-images-rollback.test.sh",
+      "tools/qa/legacy_rollback/fake_docker.sh",
       "clients/web/src/voice/screen_preview/**",
       "clients/flutter/lib/src/features/voice/screen_preview/**",
       "clients/flutter/test/screen_preview_client_test.dart",
@@ -661,6 +687,7 @@
       "test/screen_viewer_transient_controls_test.dart",
       "test/voice_viewer_participants_panel_test.dart",
       "test/voice_participant_stream_cards_test.dart",
+      "test/screen_preview_receiver_test.dart",
       "test/screen_thumbnail_test.dart",
       "test/screen_preview_client_test.dart",
       "test/screen_preview_sender_stop_test.dart",

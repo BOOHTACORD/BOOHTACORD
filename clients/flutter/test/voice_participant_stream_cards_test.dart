@@ -13,6 +13,76 @@ import 'package:image/image.dart' as image;
 import 'uiux_2026/capture_support.dart';
 
 void main() {
+  testWidgets('stream card explains when its preview has not arrived yet', (
+    tester,
+  ) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(800, 520);
+    addTearDown(tester.view.reset);
+
+    final api = ApiClient(
+      client: MockClient((_) async => throw StateError('unexpected request')),
+    );
+    final state = AppState(api);
+    addTearDown(() {
+      state.dispose();
+      api.transport.raw.close();
+    });
+    var selected = 0;
+    final captureKey = GlobalKey();
+    await loadUiuxVisualCaptureFonts();
+
+    await tester.pumpWidget(
+      RepaintBoundary(
+        key: captureKey,
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: guildTheme(),
+          home: Scaffold(
+            body: Center(
+              child: SizedBox(
+                width: 360,
+                child: WorkspaceVoiceParticipantCard(
+                  state: state,
+                  name: 'Streamer',
+                  avatarUrl: null,
+                  muted: true,
+                  speaking: false,
+                  hasScreen: true,
+                  previewIdentity: 'stream-pending',
+                  previewCaption: 'Экран · 1080p · 60 FPS',
+                  onScreenTap: () => selected++,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final preview = find.byKey(
+      const ValueKey('voice-participant-preview:stream-pending'),
+    );
+    expect(find.text('Трансляция идёт'), findsOneWidget);
+    expect(find.text('Предпросмотр скоро появится'), findsOneWidget);
+    expect(find.byIcon(Icons.desktop_windows_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.play_circle_outline), findsNothing);
+    expect(find.text('ЭФИР'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await captureUiuxBoundary(
+      tester,
+      find.byKey(captureKey),
+      fileName: 'flutter-participant-card-preview-pending.png',
+      pixelRatio: 1,
+    );
+
+    await tester.tap(preview);
+    await tester.pump();
+    expect(selected, 1);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('voice-only preview wraps at narrow width and large text', (
     tester,
   ) async {
