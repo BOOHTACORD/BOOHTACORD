@@ -1,0 +1,64 @@
+{
+  "kind": "livekit-rtc-network-routability-repair",
+  "task": "T-022",
+  "observed_at": "2026-11-01",
+  "status": "PARTIAL",
+  "production_before_change": {
+    "source_revision": "65f140ed475fa97c0f9028a1a98c84bf1c57f7ca",
+    "livekit_container": "running",
+    "livekit_image": "livekit/livekit-server:v1.13.7",
+    "node_ip_matches_public_host": true,
+    "container_listeners": {
+      "api_tcp_7880": true,
+      "ice_tcp_7882": true
+    },
+    "docker_runtime_publications": {
+      "host_config_declares_udp_50000_50100": true,
+      "udp_50000_50100_mapped": false,
+      "host_config_declares_tcp_7882": true,
+      "tcp_7882_mapped": false,
+      "docker_port_output": "empty"
+    },
+    "livekit_networks": {
+      "private": "internal",
+      "livekit-metrics": "internal"
+    },
+    "external_tcp_7882": "connection_refused",
+    "host_firewall": {
+      "ufw": "inactive",
+      "firewalld": "inactive",
+      "nftables_service": "inactive"
+    }
+  },
+  "change": "Attach only LiveKit to a dedicated non-internal bridge network so Docker can publish its configured ICE/TCP and ICE/UDP ports. Keep the existing private API path and internal metrics network, and leave signaling and metrics ports unpublished.",
+  "checks": [
+    {
+      "name": "Focused LiveKit network policy tests",
+      "result": "PASS",
+      "command": "python3 -m unittest tools.verify.livekit_network_config.test_model.LiveKitNetworkConfigTests.test_private_metrics_scrape_and_udp_tcp_publication_are_wired tools.verify.livekit_network_config.test_model.LiveKitNetworkConfigTests.test_public_ice_ports_use_an_isolated_routable_network tools.verify.livekit_network_config.test_model.LiveKitNetworkConfigTests.test_rtc_network_is_routable_and_only_livekit_joins_it tools.verify.livekit_network_config.test_model.LiveKitNetworkConfigTests.test_metrics_listener_reachability_matches_documented_network_peers tools.verify.livekit_network_config.test_model.LiveKitNetworkConfigTests.test_checked_in_compose_peer_set_matches_private_listener_boundary",
+      "observation": "Five focused model and boundary tests pass."
+    },
+    {
+      "name": "Production port mapping after rollout",
+      "result": "NOT_RUN",
+      "observation": "Requires merge and deployment of the new routable bridge."
+    },
+    {
+      "name": "Paired external voice join",
+      "result": "NOT_RUN",
+      "observation": "Requires a real authenticated client joining through the public endpoint after rollout."
+    }
+  ],
+  "production_acceptance": "NOT_RUN; the configuration change must be deployed and ICE port publication re-read from the production Docker runtime. A real external voice join remains required to close the connection check.",
+  "repository_artifacts": {
+    "backlog/tasks.yaml": "sha256:917f98743bd8561c7e49ec29e2941f2422e25e54ff120da86edb431537394a1c",
+    "deploy/compose.yaml": "sha256:6125181f99552ebbb467ec3cacf5c732f144eb690d1b6f9672e6b1eb46596b32",
+    "deploy/livekit/compose.yaml": "sha256:8b03d82844dc282eabd4a358038edd552ed24ca02d5e794005cc377d92b3a4c9",
+    "tools/ci/select_changes/dependencies.json": "sha256:bb9c02fa9bfa6366cccff791d45035f113555c742d3abdf959566f3446e29da2",
+    "tools/ci/select_changes/test_routing.py": "sha256:ddf933f8fc287877e529a4dbf5ebcf7ae4fdffcf374f987f5f770b66315f53c2",
+    "tools/verify/livekit_network_config/check.py": "sha256:fbe81b00936415378ae5a3ae42a80fae48c94d5044d77ab3afda9ea2c3f7de33",
+    "tools/verify/livekit_network_config/fixtures.py": "sha256:b72b813af95feddca669ceab1a1cff345404b80fa4d66803c61dda924a6dad19",
+    "tools/verify/livekit_network_config/model.py": "sha256:025c11123bbe393fbfc622d70478edafbda7454b1fe81152a09597df7646b8aa",
+    "tools/verify/livekit_network_config/test_model.py": "sha256:9e911bddd038fff86b58a9bf060628c3b0c543ab1772487170999567fd876e21"
+  }
+}

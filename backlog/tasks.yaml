@@ -92,7 +92,7 @@ tasks:
     title: Voice admission, controls and recovery
     requirements: [REQ-VOICE-01, REQ-VOICE-02, REQ-VOICE-03, REQ-AUDIO-01]
     depends_on: [T-006, T-020]
-    evidence: [voice-integration-tests]
+    evidence: [voice-integration-tests, evidence/media/livekit-rtc-network-2026-11-01.json]
   - id: T-030
     title: Screen publication, viewer and diagnostics
     requirements: [REQ-SCREEN-01, REQ-SCREEN-02, REQ-SCREEN-03, REQ-SCREEN-04, REQ-CAPACITY-02]
