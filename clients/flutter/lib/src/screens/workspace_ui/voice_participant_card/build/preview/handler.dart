@@ -161,34 +161,45 @@ extension VoiceParticipantCardPreviewRenderer
   Widget _previewPending() => Container(
     color: Colors.black,
     alignment: Alignment.center,
-    padding: const EdgeInsets.symmetric(horizontal: 12),
-    child: const Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          Icons.desktop_windows_outlined,
-          size: 32,
-          color: GcColors.textSecondary,
-        ),
-        SizedBox(height: 8),
-        Text(
-          'Трансляция идёт',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    child: LayoutBuilder(
+      builder: (context, constraints) => FittedBox(
+        fit: BoxFit.scaleDown,
+        child: SizedBox(
+          width: constraints.maxWidth,
+          child: const Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.desktop_windows_outlined,
+                size: 32,
+                color: GcColors.textSecondary,
+              ),
+              SizedBox(height: 8),
+              Text(
+                'Трансляция идёт',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: 4),
+              Text(
+                'Предпросмотр скоро появится',
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: GcColors.textSecondary,
+                  fontSize: 12,
+                ),
+              ),
+            ],
           ),
         ),
-        SizedBox(height: 4),
-        Text(
-          'Предпросмотр скоро появится',
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
-          style: TextStyle(color: GcColors.textSecondary, fontSize: 12),
-        ),
-      ],
+      ),
     ),
   );
 }

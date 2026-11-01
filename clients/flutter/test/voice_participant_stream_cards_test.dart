@@ -83,6 +83,59 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('pending stream preview fits narrow cards with large text', (
+    tester,
+  ) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(320, 480);
+    addTearDown(tester.view.reset);
+
+    final api = ApiClient(
+      client: MockClient((_) async => throw StateError('unexpected request')),
+    );
+    final state = AppState(api);
+    addTearDown(() {
+      state.dispose();
+      api.transport.raw.close();
+    });
+    await loadUiuxVisualCaptureFonts();
+
+    await tester.pumpWidget(
+      MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: guildTheme(),
+        home: MediaQuery(
+          data: const MediaQueryData(
+            size: Size(320, 480),
+            textScaler: TextScaler.linear(2),
+          ),
+          child: Scaffold(
+            body: Center(
+              child: SizedBox(
+                width: 286,
+                child: WorkspaceVoiceParticipantCard(
+                  state: state,
+                  name: 'Streamer',
+                  avatarUrl: null,
+                  muted: true,
+                  speaking: false,
+                  hasScreen: true,
+                  previewIdentity: 'stream-pending-large-text',
+                  previewCaption: 'Экран · 1080p · 60 FPS',
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Трансляция идёт'), findsOneWidget);
+    expect(find.text('Предпросмотр скоро появится'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('voice-only preview wraps at narrow width and large text', (
     tester,
   ) async {
