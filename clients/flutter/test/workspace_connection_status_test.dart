@@ -71,6 +71,19 @@ void main() {
     final tabsTop = tester.getTopLeft(tabs).dy;
     final footerHelp = find.byTooltip('Помощь и обратная связь');
     final footerHelpTop = tester.getTopLeft(footerHelp).dy;
+
+    state.voicePhase = VoicePhase.error;
+    state.voice.voiceStatusDismissedAfterLeave = true;
+    state.notifyListeners();
+    await tester.pump();
+    expect(find.byKey(const ValueKey('connection-status-card')), findsNothing);
+    await captureUiuxBoundary(
+      tester,
+      find.byKey(const ValueKey('sidebar-channel-scroll-capture')),
+      fileName: 'flutter-sidebar-after-voice-leave-300x640.png',
+      pixelRatio: 1,
+    );
+
     final list = find.byType(ListView);
     await tester.drag(list, const Offset(0, -220));
     await tester.pumpAndSettle();
@@ -148,6 +161,20 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('Голос не подключён'), findsOneWidget);
+
+    state.voice.voiceStatusDismissedAfterLeave = true;
+    state.notifyListeners();
+    await tester.pump();
+    expect(find.byKey(const ValueKey('connection-status-card')), findsNothing);
+
+    state.voice.voiceStatusDismissedAfterLeave = false;
+    state.voicePhase = VoicePhase.joining;
+    state.notifyListeners();
+    await tester.pump();
+    expect(
+      find.byKey(const ValueKey('connection-status-card')),
+      findsOneWidget,
+    );
 
     state.voicePhase = VoicePhase.idle;
     state.voiceRoster.phase = VoiceRosterPhase.unavailable;

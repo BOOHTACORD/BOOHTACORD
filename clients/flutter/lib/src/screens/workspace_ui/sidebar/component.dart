@@ -65,8 +65,11 @@ class WorkspaceSidebar extends StatelessWidget {
                               state.realtime.connecting ||
                               state.realtime.socket != null,
                           voicePhase: state.voicePhase,
+                          voiceStatusDismissedAfterLeave:
+                              state.voice.voiceStatusDismissedAfterLeave,
                           rosterPhase: state.voiceRoster.phase,
-                          rosterRetained: state.voiceRoster.voiceRosters != null,
+                          rosterRetained:
+                              state.voiceRoster.voiceRosters != null,
                           lastUpdatedAt: state.voiceRoster.lastUpdatedAt,
                           rosterCanRetry: state.voiceRoster.canRetry,
                           onRetryChat: state.realtime.retryNow,

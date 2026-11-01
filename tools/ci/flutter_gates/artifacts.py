@@ -24,6 +24,8 @@ VISUALS = (
     # #518 Flutter connection recovery panel parity.
     'flutter-connection-status-desktop-320x380.png',
     'flutter-connection-status-mobile-320x380.png',
+    'flutter-sidebar-channel-scroll-300x640.png',
+    'flutter-sidebar-after-voice-leave-300x640.png',
     # #553 Flutter guild member voice and screen-sharing presence states.
     'guild-member-voice-channel.png',
     'guild-member-screen-sharing.png',

@@ -32,3 +32,24 @@ unverified.
 Overall local acceptance remains **BLOCKED** until the applicable iOS runtime
 can be exercised. Generated captures and logs are retained under `.out/` and
 are not tracked.
+
+## Follow-up: explicit voice exit and CI capture inventory
+
+Run: `.out/local-features/20261101-192008/`
+
+- Web unit/build/accessibility, selected browser suites, and real-stack at
+  1440px and 393px: **PASS**.
+- Flutter full unit/widget suite and component captures: **PASS**.
+- Android runtime: **PASS**.
+- iOS runtime: **BLOCKED**, still no Simulator device on this host.
+- Reviewed `images/flutter-captures/flutter-sidebar-after-voice-leave-300x640.png`
+  at 300×640. With a stale voice-error phase after explicit exit, the status
+  card is absent; the fixed guild header/search/tabs and profile footer remain
+  while navigation rows occupy the scroll area.
+- Registered both new Flutter sidebar captures in the mandatory CI visual
+  inventory. The missing inventory entry caused PR #640's Flutter artifact
+  publication job to fail after its Dart profile had passed.
+
+Local acceptance remains **BLOCKED** only for the unavailable iOS Simulator;
+Android and Web acceptance and the Flutter UI/widget evidence pass. The
+captured screenshots and full report remain in `.out/` and are not tracked.

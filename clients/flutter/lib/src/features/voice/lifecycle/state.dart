@@ -64,6 +64,7 @@ abstract class VoiceState extends ChangeNotifier
   }
 
   VoicePhase voicePhase = VoicePhase.idle;
+  bool voiceStatusDismissedAfterLeave = false;
   GuildChannel? voiceChannel;
   bool microphoneMuted = false;
   bool microphoneUnavailable = false;
