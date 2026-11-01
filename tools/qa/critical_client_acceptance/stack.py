@@ -1,4 +1,5 @@
 """Owned real SFU transport for independent connection fault acceptance."""
+import os
 import subprocess
 import time
 
@@ -57,7 +58,11 @@ redis:
   address: {self.owner}-redis:6379
 ''')
         egress_config.chmod(0o644)
-        self.container('egress', EGRESS_IMAGE,
+        egress_platform = os.environ.get('BOOHTACORD_QA_EGRESS_PLATFORM', '')
+        if egress_platform and egress_platform not in ('linux/amd64', 'linux/arm64'):
+            raise ValueError('Unsupported BOOHTACORD_QA_EGRESS_PLATFORM')
+        egress_platform_args = ('--platform='+egress_platform,) if egress_platform else ()
+        self.container('egress', EGRESS_IMAGE, *egress_platform_args,
                        '--env', 'EGRESS_CONFIG_FILE=/egress.yaml',
                        '--env', 'LIVEKIT_API_KEY=qa-only',
                        '--env', 'LIVEKIT_API_SECRET=qa-local-only-secret-12345',

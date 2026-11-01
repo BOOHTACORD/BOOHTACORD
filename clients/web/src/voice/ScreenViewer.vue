@@ -52,15 +52,27 @@ const {metrics:receiverMetrics,sampledAt:receiverSampledAt,refresh:refreshReceiv
 const adjustable = computed(() => Boolean(selectedStream.value?.hasAudio && selectedStream.value.accountId && !selectedStream.value.isLocal))
 const audioMessage = computed(() => selectedStream.value ? screenAudioMessage({ isLocal: Boolean(selectedStream.value.isLocal), hasAudio: selectedStream.value.hasAudio, adjustable: adjustable.value, deafened: props.deafened }) : '')
 function reportPlaybackError(cause:unknown,audioOutput=false):void {if(cause instanceof DOMException&&cause.name==='NotAllowedError'){if(audioOutput){audioPlaybackBlocked.value=true;playbackFeedback.value='Браузер заблокировал звук. Нажмите «Повторить» ещё раз после разрешения звука.';return}videoPlaybackBlocked.value=true;playbackFeedback.value='Браузер заблокировал воспроизведение. Нажмите «Повторить» после разрешения.'}}
-function playFromGesture():void {const generation=++playbackRequestGeneration;if(video.value && !videoPaused.value)void video.value.play().then(()=>{if(generation===playbackRequestGeneration){videoPlaybackBlocked.value=false;if(!audioPlaybackBlocked.value)playbackFeedback.value=''}}).catch(cause=>{if(generation===playbackRequestGeneration)reportPlaybackError(cause)});void audio.value?.play().then(()=>{if(generation===playbackRequestGeneration){audioPlaybackBlocked.value=false;if(!videoPlaybackBlocked.value)playbackFeedback.value=''}}).catch(cause=>{if(generation===playbackRequestGeneration)reportPlaybackError(cause,true)})}
+function playFromGesture(stream=selectedStream.value):void {
+  const generation=++playbackRequestGeneration
+  if(videoPaused.value)return
+  if(video.value)void video.value.play().then(()=>{if(generation===playbackRequestGeneration){videoPlaybackBlocked.value=false;if(!audioPlaybackBlocked.value)playbackFeedback.value=''}}).catch(cause=>{if(generation===playbackRequestGeneration)reportPlaybackError(cause)})
+  if(stream?.hasAudio&&!stream.isLocal&&audio.value)void audio.value.play().then(()=>{if(generation===playbackRequestGeneration){audioPlaybackBlocked.value=false;if(!videoPlaybackBlocked.value)playbackFeedback.value=''}}).catch(cause=>{if(generation===playbackRequestGeneration)reportPlaybackError(cause,true)})
+}
 async function toggleVideoPause(): Promise<void> {
   if (!video.value || props.ended) return
-  if (!videoPaused.value) { videoPaused.value = true; video.value.pause(); return }
+  if (!videoPaused.value) { playbackRequestGeneration += 1; videoPaused.value = true; video.value.pause(); audio.value?.pause(); return }
   const generation = ++playbackRequestGeneration
+  const audioPlayback = selectedStream.value?.hasAudio && !selectedStream.value.isLocal ? audio.value?.play() : undefined
   try {
     await video.value.play()
     if (generation === playbackRequestGeneration) { videoPaused.value = false; videoPlaybackBlocked.value = false; playbackFeedback.value = '' }
-  } catch (cause) { if (generation === playbackRequestGeneration) reportPlaybackError(cause) }
+    if (audioPlayback) {
+      try {
+        await audioPlayback
+        if (generation === playbackRequestGeneration) { audioPlaybackBlocked.value = false; if (!videoPlaybackBlocked.value) playbackFeedback.value = '' }
+      } catch (cause) { if (generation === playbackRequestGeneration) reportPlaybackError(cause, true) }
+    }
+  } catch (cause) { if (generation === playbackRequestGeneration) { audio.value?.pause(); reportPlaybackError(cause) } }
 }
 function select(id: string): void {
   if (auxiliaryPanel.value) void nextTick(() => auxiliaryTrigger.value?.focus())
@@ -71,11 +83,12 @@ function select(id: string): void {
   const sound = voiceViewTransitionSound(previous, next ? { id: next.id, isLocal: Boolean(next.isLocal) } : null)
   if (sound) streamStartChime.playVoiceEvent(sound)
   requestedSelectionId=id
+  videoPaused.value=false
   videoPlaybackBlocked.value=false
   audioPlaybackBlocked.value=false
   markScreenSelected(video.value)
   emit('select',id,video.value,audio.value)
-  playFromGesture()
+  playFromGesture(next)
 }
 function clearViewing(): void {
   if (selectedStream.value && !selectedStream.value.isLocal) streamStartChime.playVoiceEvent('stream-view-stopped')
@@ -117,8 +130,12 @@ function stageVisible():boolean {const box=stage.value?.getBoundingClientRect();
 watch(()=>props.selectedId,id=>{videoPaused.value=false;if(requestedSelectionId===id){requestedSelectionId=null;return}requestedSelectionId=null;playbackRequestGeneration+=1;videoPlaybackBlocked.value=false;audioPlaybackBlocked.value=false})
 watch(() => props.expanded, async () => {
   await nextTick()
-  const selector = props.mini ? '.screen-mini-actions button[aria-label="Развернуть на всю область"]' : props.ownScreenSharing ? '.stream-more-actions > summary' : '.stream-return-to-participants'
-  viewerElement.value?.querySelector<HTMLElement>(selector)?.focus({ preventScroll: true })
+  const target = props.mini
+    ? viewerElement.value?.querySelector<HTMLElement>('.screen-mini-actions button[aria-label="Развернуть на всю область"]')
+    : viewerElement.value?.querySelector<HTMLElement>('.stream-more-actions > summary')
+      ?? viewerElement.value?.querySelector<HTMLElement>('.stream-return-to-participants')
+      ?? viewerElement.value?.querySelector<HTMLElement>('.screen-stage-action')
+  target?.focus({ preventScroll: true })
 })
 function handleKeydown(event: KeyboardEvent): void {
   if (event.key === 'Escape' && auxiliaryPanel.value) {
@@ -195,7 +212,7 @@ async function toggleFullscreen(): Promise<void> {
           <p v-if="audioMessage" class="stream-audio-status gc-sr-only" role="status">{{ audioMessage }}</p>
           <div class="stream-toolbar-actions">
             <button v-if="ownScreenSharing" type="button" class="stream-tool-button stream-stop-screen-button" aria-label="Остановить свою трансляцию" title="Остановить свою трансляцию" @click="emit('stopScreen')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" /></svg><span>Остановить</span></button>
-            <button type="button" class="stream-tool-button" :disabled="ended || !videoReady" :aria-label="videoPaused ? 'Продолжить видео' : 'Приостановить видео'" :aria-pressed="videoPaused" @click="toggleVideoPause"><svg viewBox="0 0 24 24" aria-hidden="true"><path v-if="videoPaused" d="m8 4 12 8-12 8Z"/><path v-else d="M8 4v16M16 4v16"/></svg></button>
+            <button type="button" class="stream-tool-button" :disabled="ended || !videoReady" :aria-label="videoPaused ? 'Продолжить трансляцию' : 'Приостановить трансляцию'" :title="videoPaused ? 'Продолжить трансляцию' : 'Приостановить трансляцию'" :aria-pressed="videoPaused" @click="toggleVideoPause"><svg viewBox="0 0 24 24" aria-hidden="true"><path v-if="videoPaused" d="m8 4 12 8-12 8Z"/><path v-else d="M8 4v16M16 4v16"/></svg></button>
             <ScreenReceiverDiagnosticsPanel @toggle="revealStageControls" :actual-video-quality="actualVideoQuality" :has-audio="selectedStream.hasAudio" :is-local="Boolean(selectedStream.isLocal)" :metrics="receiverMetrics" :sampled-at="receiverSampledAt" :target-profile="selectedStream.targetProfile" :descriptor="selectedStream.descriptor" :metadata-receipt-key="selectedStream.id" :sender-diagnostics="selectedStream.isLocal ? sourceDiagnostics : undefined" :profile-source="selectedStream.profileSource" :participant-name="selectedStream.participantName" :presented-fps="playbackFps" />
             <details v-if="ownScreenSharing" ref="moreActions" class="stream-more-actions" @toggle="revealStageControls"><summary class="stream-tool-button" aria-label="Дополнительные действия"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></summary><div class="stream-voice-return"><p class="gc-sr-only">{{ participantAudioMessage(deafened) }}</p><button type="button" @click="changeQuality">Качество трансляции</button></div></details>
             <button class="stream-tool-button stream-return-to-participants" type="button" aria-label="К участникам" title="К участникам" @click="stopWatching"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="gc-sr-only">К участникам</span></button>

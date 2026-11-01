@@ -11,7 +11,8 @@ class LoopbackTransportTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             work = Path(directory)
             stack = Stack(work, work)
-            with patch('tools.qa.critical_client_acceptance.stack.local_docker'), \
+            with patch.dict('os.environ', {'BOOHTACORD_QA_EGRESS_PLATFORM': 'linux/amd64'}), \
+                    patch('tools.qa.critical_client_acceptance.stack.local_docker'), \
                     patch('tools.qa.critical_client_acceptance.stack.ports_available'), \
                     patch('tools.qa.critical_client_acceptance.stack.ready'), \
                     patch('tools.qa.critical_client_acceptance.stack.Base.start'), \
@@ -34,6 +35,7 @@ class LoopbackTransportTests(unittest.TestCase):
             calls = {call.args[0]: call for call in container.call_args_list}
             self.assertEqual(calls['redis'].args[:2], ('redis', REDIS_IMAGE))
             self.assertEqual(calls['egress'].args[:2], ('egress', EGRESS_IMAGE))
+            self.assertIn('--platform=linux/amd64', calls['egress'].args)
             args = calls['sfu'].args
             pairs = list(zip(args, args[1:]))
             self.assertEqual(args[:2], ('sfu', IMAGE))

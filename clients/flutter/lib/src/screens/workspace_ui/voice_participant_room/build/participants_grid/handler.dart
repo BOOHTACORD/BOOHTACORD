@@ -18,11 +18,11 @@ extension VoiceParticipantRoomParticipantsGridRenderer
           final availableWidth =
               (constraints.maxWidth - 12 * (crossAxisCount - 1)) /
               crossAxisCount;
-          final cardWidth = availableWidth.clamp(0.0, 360 * textScale);
+          final cardWidth = availableWidth.clamp(0.0, 280 * textScale);
           return Wrap(
             key: const ValueKey('voice-participant-grid'),
             alignment: WrapAlignment.center,
-            spacing: 12,
+            spacing: 16,
             runSpacing: 12,
             children: List.generate(
               participants.length + 1,
@@ -43,6 +43,7 @@ extension VoiceParticipantRoomParticipantsGridRenderer
             ? state.profile!.displayName
             : 'Вы',
         avatarUrl: state.profile?.avatarUrl,
+        avatarIdentity: state.user?.accountId ?? localIdentity ?? 'local',
         muted: state.microphoneMuted,
         microphoneUnavailable: state.microphoneUnavailable,
         deafened: state.deafened,
@@ -56,8 +57,7 @@ extension VoiceParticipantRoomParticipantsGridRenderer
         previewThumbnail: localIdentity == null
             ? null
             : state.screenThumbnails[localIdentity],
-        previewCaption:
-            'Экран · ${quality.resolution}p · ${quality.frameRate} FPS',
+        previewCaption: '${quality.resolution}p · ${quality.frameRate} FPS',
         onScreenTap: state.screenSharePhase == ScreenSharePhase.sharing
             ? () => onScreenSelected(null)
             : null,
@@ -78,6 +78,9 @@ extension VoiceParticipantRoomParticipantsGridRenderer
       state: state,
       name: workspaceParticipantName(participant),
       avatarUrl: workspaceParticipantMember(state, participant)?.avatarUrl,
+      avatarIdentity:
+          workspaceVoiceParticipantAccountId(participant) ??
+          participant.identity,
       muted: workspaceParticipantMuted(participant),
       speaking: participant.isSpeaking,
       volume: volume,
@@ -103,6 +106,6 @@ extension VoiceParticipantRoomParticipantsGridRenderer
 
 String _screenPreviewCaption(String trackName) {
   final match = RegExp(r'screenshare-(\d+)p-(\d+)fps').firstMatch(trackName);
-  if (match == null) return 'Экран';
-  return 'Экран · ${match.group(1)}p · ${match.group(2)} FPS';
+  if (match == null) return '';
+  return '${match.group(1)}p · ${match.group(2)} FPS';
 }

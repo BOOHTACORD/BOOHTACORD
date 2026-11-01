@@ -23,7 +23,7 @@ test('touch controls need no hover and remain above a resized keyboard viewport'
   await page.locator('[data-testid=participant-screen-preview]:visible').first().tap()
   await page.locator('video.screen-player').evaluate(v=>{(window as any).__originalVideo=v;(window as any).__originalStream=(v as HTMLVideoElement).srcObject})
   await navigate(page,'text');await page.setViewportSize({width:390,height:460});await geometry(page)
-  await page.getByRole('button',{name:'Приостановить видео',exact:true}).tap()
+  await page.getByRole('button',{name:'Приостановить трансляцию',exact:true}).tap()
   await page.getByRole('button',{name:'Выключить звук трансляции',exact:true}).tap()
   await page.locator('.composer textarea').fill('Текст рядом с трансляцией')
   await page.screenshot({path:info.outputPath('touch-short.png')})
