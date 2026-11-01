@@ -18,7 +18,7 @@ extension MembersPanelPopoverSurfaceRenderer
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Semantics(
+              Semantics(
                 key: ValueKey('members-panel-heading'),
                 header: true,
                 label: 'УЧАСТНИКИ',

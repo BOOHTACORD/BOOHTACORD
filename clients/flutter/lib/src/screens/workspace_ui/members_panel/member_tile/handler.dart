@@ -133,7 +133,7 @@ extension WorkspaceMembersPanelStateWorkspaceMemberTileAction
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            color: GcColors.textPrimary,
+                            color: GcColors.text,
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             height: 16 / 14,
