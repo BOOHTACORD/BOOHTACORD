@@ -376,7 +376,7 @@ void main() {
                     speaking: false,
                     hasScreen: true,
                     previewIdentity: 'stream-loading',
-                    previewCaption: '',
+                    previewCaption: '1080p · 60 FPS',
                   ),
                 ),
               ),
@@ -388,6 +388,7 @@ void main() {
 
       expect(find.text('Трансляция идёт'), findsOneWidget);
       expect(find.text('Предпросмотр скоро появится'), findsOneWidget);
+      expect(find.text('1080p · 60 FPS'), findsOneWidget);
       expect(find.textContaining('Экран'), findsNothing);
       expect(
         find.byKey(const ValueKey('participant-screen-preview-play')),
@@ -397,7 +398,7 @@ void main() {
       await captureUiuxBoundary(
         tester,
         find.byKey(captureKey),
-        fileName: 'flutter-participant-preview-loading.png',
+        fileName: 'flutter-participant-card-preview-pending.png',
         pixelRatio: 1,
       );
     },
