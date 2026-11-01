@@ -25,6 +25,9 @@ case "$command" in
   *' run --rm --no-deps screen-preview-storage-init '*)
     [[ "$(cat "$QA12_STATE/maintenance")" == on ]]
     ;;
+  *' up -d --wait egress '*)
+    [[ "$(cat "$QA12_STATE/maintenance")" == on ]]
+    ;;
   *' up -d --no-deps --no-build api web '*)
     [[ "$(cat "$QA12_STATE/maintenance")" == on ]]
     sed -n 's/^API_IMAGE=//p' "$QA12_PROJECT/.env" > "$QA12_STATE/running-api"

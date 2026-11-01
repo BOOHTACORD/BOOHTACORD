@@ -10,6 +10,7 @@ VISUALS = (
     'flutter-screen-viewer-transient-controls-1440x900.png',
     # Flutter participant-card inline stream and voice-only previews.
     'flutter-participant-cards-stream-and-voice.png',
+    'flutter-participant-card-preview-pending.png',
     'flutter-participant-cards-mobile-large-text.png',
     # #544: compact room and fullscreen viewer participant overlays.
     'voice-viewer-participants-room.png',

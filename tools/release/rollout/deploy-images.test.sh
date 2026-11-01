@@ -35,6 +35,11 @@ if [[ "$1" == "compose" && " $* " == *" run --rm --no-deps screen-preview-storag
   exit 1
 fi
 
+if [[ "$1" == "compose" && " $* " == *" up -d --wait egress "* && "${FAKE_EGRESS_MODE:-allowed}" == "fail" ]]; then
+  printf '%s\n' 'screen preview Egress failed to start' >&2
+  exit 1
+fi
+
 if [[ "$1" == "inspect" ]]; then
   [[ "${FAKE_NETWORK_MODE:-allowed}" != "extra" ]] || printf '%s\n' fluxer_fluxer
   printf '%s\n' voice-platform_edge voice-platform_private ''
@@ -79,6 +84,7 @@ run_deploy() {
   FAKE_NETWORK_MODE="$network_mode" \
   FAKE_POSTGRES_MODE="${5:-allowed}" \
   FAKE_PREVIEW_INIT_MODE="${6:-allowed}" \
+  FAKE_EGRESS_MODE="${7:-allowed}" \
   FAKE_POSTGRES_FAILED="$temporary_root/postgres-failed-$network_mode" \
   FAKE_HEALTH_MODE="${3:-allowed}" \
   FAKE_DISABLE_MODE="${4:-allowed}" \
@@ -118,6 +124,7 @@ pull_line="$(line_number 'pull api migrate web' "$allowed_log")"
 migration_database_line="$(grep -n -F 'up -d --wait postgres' "$allowed_log" | sed -n '2p' | cut -d: -f1)"
 migrate_line="$(line_number 'run --rm --no-deps migrate' "$allowed_log")"
 preview_init_line="$(line_number 'run --rm --no-deps screen-preview-storage-init' "$allowed_log")"
+egress_line="$(line_number 'up -d --wait egress' "$allowed_log")"
 workload_line="$(line_number 'up -d --no-deps --no-build api web' "$allowed_log")"
 proxy_line="$(line_number 'up -d --no-deps --no-build --force-recreate proxy' "$allowed_log")"
 inspect_line="$(line_number 'inspect --format' "$allowed_log")"
@@ -136,6 +143,8 @@ disable_line="$(line_number 'maintenance-admission --disable' "$allowed_log")"
 [[ "$migrate_line" -lt "$workload_line" ]]
 [[ "$migrate_line" -lt "$preview_init_line" ]]
 [[ "$preview_init_line" -lt "$workload_line" ]]
+[[ "$preview_init_line" -lt "$egress_line" ]]
+[[ "$egress_line" -lt "$workload_line" ]]
 [[ "$workload_line" -lt "$proxy_line" ]]
 [[ "$proxy_line" -lt "$inspect_line" ]]
 [[ "$inspect_line" -lt "$validate_line" ]]
@@ -143,6 +152,7 @@ disable_line="$(line_number 'maintenance-admission --disable' "$allowed_log")"
 [[ "$health_line" -lt "$disable_line" ]]
 [[ "$(grep -Fc 'up -d --wait postgres' "$allowed_log")" == 3 ]]
 [[ "$(grep -Fc 'run --rm --no-deps screen-preview-storage-init' "$allowed_log")" == 1 ]]
+[[ "$(grep -Fc 'up -d --wait egress' "$allowed_log")" == 1 ]]
 extra_output="$temporary_root/extra.out"
 ! run_deploy extra "$extra_output" || { echo 'expected extra proxy network to fail deployment' >&2; exit 1; }
 grep -F 'Proxy has an unexpected Docker network attachment.' "$extra_output"
@@ -175,5 +185,12 @@ preview_init_log="$temporary_root/commands-preview-init-fail.log"
 grep -Fq 'run --rm --no-deps screen-preview-storage-init' "$preview_init_log"
 if grep -Fq 'up -d --no-deps --no-build api web' "$preview_init_log"; then exit 1; fi
 grep -Fq 'maintenance-admission --disable' "$preview_init_log"
+
+egress_output="$temporary_root/egress-failed.out"
+! run_deploy egress-fail "$egress_output" allowed allowed allowed allowed fail || { echo 'expected Egress startup failure to fail deployment' >&2; exit 1; }
+egress_failed_log="$temporary_root/commands-egress-fail.log"
+grep -Fq 'up -d --wait egress' "$egress_failed_log"
+if grep -Fq 'up -d --no-deps --no-build api web' "$egress_failed_log"; then exit 1; fi
+grep -Fq 'maintenance-admission --disable' "$egress_failed_log"
 
 echo 'deploy-images tests passed'

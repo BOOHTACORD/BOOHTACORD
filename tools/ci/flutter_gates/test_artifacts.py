@@ -9,9 +9,10 @@ from . import artifacts
 
 class ArtifactTests(unittest.TestCase):
     def test_mandatory_visual_inventory_keeps_all_uiux_capture_scenarios(self):
-        self.assertEqual(167, len(artifacts.VISUALS))
+        self.assertEqual(168, len(artifacts.VISUALS))
         self.assertEqual(len(artifacts.VISUALS), len(set(artifacts.VISUALS)))
         self.assertIn('flutter-participant-cards-stream-and-voice.png', artifacts.VISUALS)
+        self.assertIn('flutter-participant-card-preview-pending.png', artifacts.VISUALS)
         self.assertIn('flutter-participant-cards-mobile-large-text.png', artifacts.VISUALS)
         self.assertIn('guild-member-voice-channel.png', artifacts.VISUALS)
         self.assertIn('guild-member-screen-sharing.png', artifacts.VISUALS)

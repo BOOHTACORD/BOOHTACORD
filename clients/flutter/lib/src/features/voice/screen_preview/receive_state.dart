@@ -1,8 +1,5 @@
 import 'dart:async';
 
-import 'package:livekit_client/livekit_client.dart'
-    hide ChatMessage, voiceReconnectAttemptLimit;
-
 import '../../../core/http/api_failure.dart';
 import '../../../services/screen_thumbnail.dart';
 import '../lifecycle/controller.dart';
@@ -12,21 +9,22 @@ import '../../screen/rollout/policy.dart';
 class ScreenPreviewGenerationState {
   ScreenPreviewGenerationState(this.generation, this.revision);
   String generation;
-  int revision, pending = 0;
+  int revision, pending = 0, initialReadFailures = 0;
   bool busy = false, poll = false;
   Timer? timer;
 }
 
 class ScreenPreviewReceiver {
   ScreenPreviewReceiver(this.owner, {bool? enabled})
-      : enabled = enabled ?? const ScreenMediaRollout().jpegPreview;
+    : enabled = enabled ?? const ScreenMediaRollout().jpegPreview;
   final VoiceController owner;
   final bool enabled;
   final states = <String, ScreenPreviewGenerationState>{};
+  static const _leaseRetryInterval = Duration(seconds: 1);
 
   void updated(String lease, String generation, int revision) {
     if (!enabled) return;
-    if (!_active(lease)) return;
+    if (owner.disposed || owner.leaseId == lease) return;
     var state = states[lease];
     if (state?.generation != generation) {
       _clear(lease);
@@ -57,24 +55,28 @@ class ScreenPreviewReceiver {
       state.timer?.cancel();
     }
     states.clear();
-    for (final lease in leases) { _clear(lease); }
+    for (final lease in leases) {
+      _clear(lease);
+    }
   }
 
-  bool _active(String lease) {
-    final room = owner.room;
-    final participant = room?.remoteParticipants['voice-lease:$lease'];
-    return !owner.disposed && owner.leaseId != lease && participant != null &&
-        participant.videoTrackPublications.any(
-          (track) => track.source == TrackSource.screenShareVideo,
-        );
-  }
+  bool _canRead(String lease) =>
+      !owner.disposed && owner.leaseId != null && owner.leaseId != lease;
 
   Future<void> _pump(String lease, ScreenPreviewGenerationState state) async {
     state.busy = true;
     try {
       while (identical(states[lease], state) &&
           (state.pending > state.revision || state.poll)) {
-        if (!_active(lease)) { invalidated(lease, state.generation); return; }
+        if (owner.disposed || owner.leaseId == lease) {
+          states.remove(lease);
+          state.timer?.cancel();
+          return;
+        }
+        // Realtime can deliver the preview hint before voice admission has
+        // installed the viewer lease. Keep it until the authenticated reader
+        // can fetch the server-managed frame.
+        if (!_canRead(lease)) break;
         final requested = state.pending;
         state.pending = state.revision;
         state.poll = false;
@@ -82,33 +84,56 @@ class ScreenPreviewReceiver {
           final frame = await ScreenPreviewClient(owner.api.transport)
               .read(lease, state.generation, state.revision);
           if (!identical(states[lease], state)) return;
-          if (frame != null && frame.revision > state.revision && _active(lease)) {
+          if (frame != null &&
+              frame.revision > state.revision &&
+              _canRead(lease)) {
             state.revision = frame.revision;
+            state.initialReadFailures = 0;
             owner.screenThumbnails['voice-lease:$lease'] = frame.jpeg;
             owner.notifyListeners();
           } else if (requested > state.revision) {
-            state.revision = requested;
+            // A hint can race the frame becoming readable. Keep its revision
+            // pending and retry; never advance the cursor without receiving
+            // the bytes for that revision.
+            state.pending = state.pending > requested
+                ? state.pending
+                : requested;
+            state.initialReadFailures++;
+            break;
           }
         } on ApiFailure catch (failure) {
-          if (failure.status == 401 || failure.status == 403 || failure.status == 404) {
+          if (failure.status == 401 ||
+              failure.status == 403 ||
+              failure.status == 404) {
             invalidated(lease, state.generation);
             return;
           }
-          if (!_active(lease)) { invalidated(lease, state.generation); return; }
+          state.pending = state.pending > requested ? state.pending : requested;
+          state.initialReadFailures++;
+          break;
         } catch (_) {
-          if (!_active(lease)) { invalidated(lease, state.generation); return; }
+          state.pending = state.pending > requested ? state.pending : requested;
+          state.initialReadFailures++;
+          break;
         }
       }
     } finally {
       state.busy = false;
       if (identical(states[lease], state)) {
         state.timer?.cancel();
-        state.timer = Timer(screenThumbnailCaptureInterval, () {
-          if (!identical(states[lease], state)) return;
-          if (!_active(lease)) { invalidated(lease, state.generation); return; }
-          state.poll = true;
-          unawaited(_pump(lease, state));
-        });
+        state.timer = Timer(
+          !_canRead(lease) ||
+                  (state.revision == 0 &&
+                      state.pending > state.revision &&
+                      state.initialReadFailures < 3)
+              ? _leaseRetryInterval
+              : screenThumbnailCaptureInterval,
+          () {
+            if (!identical(states[lease], state)) return;
+            state.poll = true;
+            unawaited(_pump(lease, state));
+          },
+        );
       }
     }
   }

@@ -84,10 +84,10 @@ extension VoiceParticipantCardPreviewRenderer
                     thumbnail,
                     fit: BoxFit.cover,
                     gaplessPlayback: true,
-                    errorBuilder: (_, _, _) => _emptyPreview(),
+                    errorBuilder: (_, _, _) => _previewPending(),
                   )
                 else
-                  _emptyPreview(),
+                  _previewPending(),
                 Positioned(
                   top: 8,
                   left: 8,
@@ -142,13 +142,14 @@ extension VoiceParticipantCardPreviewRenderer
                     ),
                   ),
                 ),
-                const Center(
-                  child: Icon(
-                    Icons.play_circle_outline,
-                    size: 40,
-                    color: Colors.white,
+                if (previewThumbnail != null)
+                  const Center(
+                    child: Icon(
+                      Icons.play_circle_outline,
+                      size: 40,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
               ],
             ),
           ),
@@ -157,13 +158,48 @@ extension VoiceParticipantCardPreviewRenderer
     );
   }
 
-  Widget _emptyPreview() => Container(
+  Widget _previewPending() => Container(
     color: Colors.black,
     alignment: Alignment.center,
-    child: const Icon(
-      Icons.desktop_windows_outlined,
-      size: 32,
-      color: GcColors.textSecondary,
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    child: LayoutBuilder(
+      builder: (context, constraints) => FittedBox(
+        fit: BoxFit.scaleDown,
+        child: SizedBox(
+          width: constraints.maxWidth,
+          child: const Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.desktop_windows_outlined,
+                size: 32,
+                color: GcColors.textSecondary,
+              ),
+              SizedBox(height: 8),
+              Text(
+                'Трансляция идёт',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: 4),
+              Text(
+                'Предпросмотр скоро появится',
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: GcColors.textSecondary,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     ),
   );
 }
