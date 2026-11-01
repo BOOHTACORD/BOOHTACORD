@@ -78,6 +78,18 @@
     },
     {
       "paths": [
+        "tools/verify/livekit_network_config/**"
+      ],
+      "gates": [
+        "contracts",
+        "backend",
+        "web"
+      ],
+      "server": true,
+      "native": false
+    },
+    {
+      "paths": [
         "contracts/**",
         ".github/**",
         "tools/ci/**",
@@ -134,7 +146,8 @@
     },
     {
       "paths": [
-        "evidence/media/livekit-network-config-*.json"
+        "evidence/media/livekit-network-config-*.json",
+        "evidence/media/livekit-rtc-network-*.json"
       ],
       "gates": [
         "contracts",

@@ -1,4 +1,4 @@
-"""Fail-closed checks for the repository's LiveKit network topology."""
+"""Fail-closed checks for the repository's LiveKit media and metrics boundaries."""
 from .metric_contract import validate_metric_contract
 
 
@@ -74,13 +74,27 @@ def validate(livekit, deploy, observability_compose, prometheus, alerts):
     if any(target[0] <= metrics_port <= target[1] for _, target, _ in mappings):
         raise ValueError("LiveKit metrics port must not publish to the host")
 
+    rtc_network_name = "livekit-rtc"
+    rtc_network = deploy.get("networks", {}).get(rtc_network_name, {})
+    if (not isinstance(rtc_network, dict)
+            or rtc_network.get("internal") is not False
+            or rtc_network.get("external", False) is not False
+            or rtc_network.get("driver") != "bridge"
+            or rtc_network_name not in _network_list(server)):
+        raise ValueError("public ICE ports require a routable dedicated RTC network")
+    all_services = list(services.items()) + list(
+        observability_compose.get("services", {}).items())
+    for name, service in all_services:
+        if name != "livekit" and rtc_network_name in _network_list(service):
+            raise ValueError("only LiveKit may join the dedicated RTC network")
+
     network_name = "livekit-metrics"
     network = deploy.get("networks", {}).get(network_name, {})
     if network.get("internal") is not True or network_name not in _network_list(server):
         raise ValueError("LiveKit metrics must use an internal dedicated network")
-    if set(_network_list(server)) != {"private", network_name} or deploy.get(
+    if set(_network_list(server)) != {"private", network_name, rtc_network_name} or deploy.get(
             "networks", {}).get("private", {}).get("internal") is not True:
-        raise ValueError("metrics port shares the internal private network; remove extra LiveKit networks")
+        raise ValueError("LiveKit must use private, dedicated metrics, and dedicated RTC networks")
     for name, service in services.items():
         if name != "livekit" and network_name in _network_list(service):
             raise ValueError("only LiveKit may join the dedicated metrics network")

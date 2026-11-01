@@ -101,6 +101,10 @@ networks:
         - subnet: ${PRIVATE_NETWORK_SUBNET:-172.30.254.0/24}
   livekit-metrics:
     internal: true
+  # LiveKit alone joins this routable bridge for its published ICE ports.
+  livekit-rtc:
+    driver: bridge
+    internal: false
 
 volumes:
   postgres-data:
