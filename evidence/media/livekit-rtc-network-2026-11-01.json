@@ -2,7 +2,7 @@
   "kind": "livekit-rtc-network-routability-repair",
   "task": "T-022",
   "observed_at": "2026-11-01",
-  "status": "PARTIAL",
+  "status": "PASS",
   "production_before_change": {
     "source_revision": "65f140ed475fa97c0f9028a1a98c84bf1c57f7ca",
     "livekit_container": "running",
@@ -30,6 +30,13 @@
       "nftables_service": "inactive"
     }
   },
+  "production_after_change": {
+    "observed_at": "2026-11-01",
+    "livekit_container": "running",
+    "udp_50000_50100_mapped": true,
+    "tcp_7882_mapped": true,
+    "tcp_7880_mapped": false
+  },
   "change": "Attach only LiveKit to a dedicated non-internal bridge network so Docker can publish its configured ICE/TCP and ICE/UDP ports. Keep the existing private API path and internal metrics network, and leave signaling and metrics ports unpublished.",
   "checks": [
     {
@@ -40,16 +47,28 @@
     },
     {
       "name": "Production port mapping after rollout",
-      "result": "NOT_RUN",
-      "observation": "Requires merge and deployment of the new routable bridge."
+      "result": "PASS",
+      "observation": "Read-only Docker inspection confirmed UDP 50000–50100 and TCP 7882 are published; TCP 7880 remains unpublished."
     },
     {
       "name": "Paired external voice join",
-      "result": "NOT_RUN",
-      "observation": "Requires a real authenticated client joining through the public endpoint after rollout."
+      "result": "PASS",
+      "observation": "Flutter macOS joined the deployed room while Web participants were present. The voice UI reported connected with 4 ms RTT. This is one successful join, not media-quality or capacity evidence."
     }
   ],
-  "production_acceptance": "NOT_RUN; the configuration change must be deployed and ICE port publication re-read from the production Docker runtime. A real external voice join remains required to close the connection check.",
+  "production_acceptance": "PASS for deployed ICE routing and one external Flutter macOS voice join. Audio quality, capacity, and physical Android/iOS acceptance remain unverified.",
+  "flutter_admission_follow_up": {
+    "cause": "Flutter disabled auto-subscribe but subscribed to microphone tracks only after Room.connect returned, while LiveKit subscriber-primary admission was waiting for the primary peer connection. The native 10-second ICE timeout also expired before this environment completed connection setup.",
+    "change": "Enable the initial LiveKit subscription, align native connection and peer-connection deadlines with Web at 20 seconds, then remove eager subscriptions for non-microphone tracks and unselected screen shares, including tracks that subscribe after Room.connect.",
+    "focused_flutter_tests": "PASS",
+    "targeted_static_analysis": "PASS",
+    "local_feature_runs": {
+      "native_android_with_linux_amd64_egress_fallback": "PASS",
+      "web_real_stack_with_linux_amd64_egress_fallback": "PASS",
+      "host_native_egress_image": "FAIL: image has no egress user; documented linux/amd64 fallback passes"
+    },
+    "limitations": "One macOS voice join was verified. This evidence does not claim physical Android/iOS media quality, screen-share quality, or capacity."
+  },
   "repository_artifacts": {
     "backlog/tasks.yaml": "sha256:917f98743bd8561c7e49ec29e2941f2422e25e54ff120da86edb431537394a1c",
     "deploy/compose.yaml": "sha256:6125181f99552ebbb467ec3cacf5c732f144eb690d1b6f9672e6b1eb46596b32",
@@ -59,6 +78,14 @@
     "tools/verify/livekit_network_config/check.py": "sha256:fbe81b00936415378ae5a3ae42a80fae48c94d5044d77ab3afda9ea2c3f7de33",
     "tools/verify/livekit_network_config/fixtures.py": "sha256:b72b813af95feddca669ceab1a1cff345404b80fa4d66803c61dda924a6dad19",
     "tools/verify/livekit_network_config/model.py": "sha256:025c11123bbe393fbfc622d70478edafbda7454b1fe81152a09597df7646b8aa",
-    "tools/verify/livekit_network_config/test_model.py": "sha256:9e911bddd038fff86b58a9bf060628c3b0c543ab1772487170999567fd876e21"
+    "tools/verify/livekit_network_config/test_model.py": "sha256:9e911bddd038fff86b58a9bf060628c3b0c543ab1772487170999567fd876e21",
+    "clients/flutter/lib/src/features/voice/admission/connect_options.dart": "sha256:e6597c0da009283b453c8e14ee756251cb070a3f3d378f99e47094bca5aec421",
+    "clients/flutter/lib/src/features/voice/admission/join.dart": "sha256:07c8b0d5f88209f18bd914c2fda0798a1e5430328476155fc32647981f8c6ecb",
+    "clients/flutter/lib/src/features/voice/remote_tracks/subscriptions.dart": "sha256:a43b951e146614ad492cf057788ee6eb67a4147c128571166cb902235c05a1db",
+    "clients/flutter/lib/src/features/voice/room_events/remote_tracks.dart": "sha256:b70051fc6f005be493526de81f8a795dd51493b96beb0c8140827d9da6137d63",
+    "clients/flutter/lib/src/features/voice/room_events/connection.dart": "sha256:9bbd22dc3a211bf838505af3b59aa4a24823a43d4945d8669d134cad7428ce0e",
+    "clients/flutter/test/voice_scope/admission_test.dart": "sha256:c5ad51d068b400985148bd701eeb2b494c92ce544c570bb43c22dd01002ecfc0",
+    "clients/flutter/test/screen_preview_capture_policy_test.dart": "sha256:c83584c2382b70b98cd6d20ef35a01cc3c81dc3ef3c3e520577ffee6f8d745bd",
+    "tools/qa/local_features/features.json": "sha256:178f4f3f224e43619eb4e2ea261291c913fc74461106cb6a0af893f4ff47e598"
   }
 }

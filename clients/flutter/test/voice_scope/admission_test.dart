@@ -9,6 +9,31 @@ import 'fakes.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  test(
+    'matches the web ICE deadline and enables initial subscriptions',
+    () async {
+      final h = VoiceHarness();
+      addTearDown(h.dispose);
+      h.api.credential.complete(('lease', credential));
+
+      final joining = h.owner.joinVoice(channel, listenerOnly: true);
+      await h.room.connectStarted.future;
+
+      expect(h.room.receivedConnectOptions?.autoSubscribe, isTrue);
+      expect(
+        h.room.receivedConnectOptions?.timeouts.connection,
+        const Duration(seconds: 20),
+      );
+      expect(
+        h.room.receivedConnectOptions?.timeouts.peerConnection,
+        const Duration(seconds: 20),
+      );
+
+      h.room.connecting.complete();
+      await joining;
+    },
+  );
+
   test('logout during credential request prevents Room creation', () async {
     final h = VoiceHarness();
     addTearDown(h.dispose);

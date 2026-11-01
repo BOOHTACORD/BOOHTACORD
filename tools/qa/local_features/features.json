@@ -295,6 +295,9 @@
       "clients/web/src/notification/NotificationSettings.vue",
       "clients/flutter/lib/src/app/account_lifecycle/initialize.dart",
       "clients/flutter/lib/src/features/voice/admission/join.dart",
+      "clients/flutter/lib/src/features/voice/admission/connect_options.dart",
+      "clients/flutter/lib/src/features/voice/remote_tracks/subscriptions.dart",
+      "clients/flutter/lib/src/features/voice/room_events/remote_tracks.dart",
       "clients/flutter/lib/src/features/voice/connection_close/leave.dart",
       "clients/flutter/lib/src/features/voice/room_events/connection.dart",
       "clients/flutter/lib/src/features/voice/room_events/remote_participants.dart",
@@ -371,6 +374,13 @@
           "clients/flutter/test/screen_preview_receiver_test.dart"
         ],
         "scope": "Flutter retains and loads an authorized server preview hint even before its LiveKit participant/publication event arrives, retries a briefly unreadable frame without advancing its revision, and reads only through the server ACL. Component coverage does not prove paired native/media acceptance."
+      },
+      "flutter_voice_admission": {
+        "focused": [
+          "clients/flutter/test/voice_scope/admission_test.dart",
+          "clients/flutter/test/screen_preview_capture_policy_test.dart"
+        ],
+        "scope": "Flutter establishes its initial LiveKit subscriber connection, then keeps microphone subscriptions and unsubscribes unselected screen tracks. Selecting a remote screen restores its video/audio subscription. macOS foreground voice join was verified against the owned LiveKit deployment; the test is not a physical Android/iOS media-quality or capacity claim."
       },
       "late_viewer_screen_preview_recovery": {
         "focused": [
