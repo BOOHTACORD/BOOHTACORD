@@ -6,14 +6,19 @@ import 'package:livekit_client/livekit_client.dart'
 import '../lifecycle/controller.dart';
 
 extension VoiceRemoteTracksSubscriptions on VoiceController {
-  void subscribeCurrentRemoteVoiceTracks(Room room) {
+  Future<void> syncRemoteVoiceSubscriptions(Room room) async {
+    final updates = <Future<void>>[];
     for (final participant in room.remoteParticipants.values) {
-      for (final publication in participant.audioTrackPublications.where(
-        (item) => shouldAutomaticallySubscribeRemoteTrack(item.source),
-      )) {
-        unawaited(setRemoteTrackSubscription(publication, true));
+      for (final publication in participant.trackPublications.values) {
+        final shouldSubscribe = shouldAutomaticallySubscribeRemoteTrack(
+          publication.source,
+        );
+        if (publication.subscribed != shouldSubscribe) {
+          updates.add(setRemoteTrackSubscription(publication, shouldSubscribe));
+        }
       }
     }
+    await Future.wait(updates);
   }
 
   Future<void> setRemoteTrackSubscription(
@@ -34,3 +39,8 @@ extension VoiceRemoteTracksSubscriptions on VoiceController {
 
 bool shouldAutomaticallySubscribeRemoteTrack(TrackSource source) =>
     source == TrackSource.microphone;
+
+bool shouldKeepRemoteTrackSubscribed(
+  TrackSource source, {
+  bool selectedScreenShare = false,
+}) => source == TrackSource.microphone || selectedScreenShare;

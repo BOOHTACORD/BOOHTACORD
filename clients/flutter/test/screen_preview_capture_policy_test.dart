@@ -4,27 +4,59 @@ import 'package:livekit_client/livekit_client.dart';
 import 'package:boohtacord_desktop/src/features/voice/remote_tracks/subscriptions.dart';
 
 void main() {
-  test('automatically subscribes to microphones but never screen video', () {
-    expect(shouldAutomaticallySubscribeRemoteTrack(TrackSource.microphone), isTrue);
-    expect(shouldAutomaticallySubscribeRemoteTrack(TrackSource.screenShareVideo), isFalse);
-    expect(shouldAutomaticallySubscribeRemoteTrack(TrackSource.screenShareAudio), isFalse);
+  test('voice keeps microphones and drops eager screen subscriptions', () {
+    expect(
+      shouldAutomaticallySubscribeRemoteTrack(TrackSource.microphone),
+      isTrue,
+    );
+    expect(
+      shouldAutomaticallySubscribeRemoteTrack(TrackSource.screenShareVideo),
+      isFalse,
+    );
+    expect(
+      shouldAutomaticallySubscribeRemoteTrack(TrackSource.screenShareAudio),
+      isFalse,
+    );
   });
 
-  test(
-    'captures a selected remote screen only after its video subscription exists',
-    () async {
-      var captures = 0;
-      await captureSelectedRemoteScreenThumbnail(
-        capture: () async => captures++,
-        source: TrackSource.screenShareVideo,
-        isRemoteVideoTrack: true,
-        participantIdentity: 'screen-owner',
-        selectedIdentity: 'screen-owner',
-      );
+  test('only the selected screen keeps its eager media subscription', () {
+    expect(shouldKeepRemoteTrackSubscribed(TrackSource.microphone), isTrue);
+    expect(
+      shouldKeepRemoteTrackSubscribed(TrackSource.screenShareVideo),
+      isFalse,
+    );
+    expect(
+      shouldKeepRemoteTrackSubscribed(TrackSource.screenShareAudio),
+      isFalse,
+    );
+    expect(
+      shouldKeepRemoteTrackSubscribed(
+        TrackSource.screenShareVideo,
+        selectedScreenShare: true,
+      ),
+      isTrue,
+    );
+    expect(
+      shouldKeepRemoteTrackSubscribed(
+        TrackSource.screenShareAudio,
+        selectedScreenShare: true,
+      ),
+      isTrue,
+    );
+  });
 
-      expect(captures, 1);
-    },
-  );
+  test('captures a selected remote screen only after its video subscription exists', () async {
+    var captures = 0;
+    await captureSelectedRemoteScreenThumbnail(
+      capture: () async => captures++,
+      source: TrackSource.screenShareVideo,
+      isRemoteVideoTrack: true,
+      participantIdentity: 'screen-owner',
+      selectedIdentity: 'screen-owner',
+    );
+
+    expect(captures, 1);
+  });
 
   test(
     'does not capture audio, local video, or an unselected screen',

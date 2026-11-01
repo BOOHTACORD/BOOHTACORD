@@ -74,7 +74,7 @@ extension VoiceEventsConnection on VoiceController {
       observeVoiceStreamStarts(room);
       notifyListeners();
     });
-    listener.on<RoomReconnectedEvent>((_) {
+    listener.on<RoomReconnectedEvent>((_) async {
       if (!owns() || disconnect.notice != null) return;
       if (!identical(this.room, room)) return;
       voicePhase = listenerOnly ? VoicePhase.listener : VoicePhase.connected;
@@ -85,7 +85,7 @@ extension VoiceEventsConnection on VoiceController {
       );
       startVoiceConnectionStatsPolling(room);
       observeVoiceStreamStarts(room);
-      subscribeCurrentRemoteVoiceTracks(room);
+      await syncRemoteVoiceSubscriptions(room);
       final selectedIdentity = selectedRemoteScreenViewerIdentity;
       if (selectedIdentity != null) {
         subscribeRemoteScreenForViewing(room, selectedIdentity);
