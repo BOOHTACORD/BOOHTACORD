@@ -5691,10 +5691,13 @@ void main() {
     expect(profilePopover, findsOneWidget);
     expect(find.text('@unknown'), findsOneWidget);
     final memberRow = find.ancestor(
-      of: find.text('Неизвестен'),
-      matching: find.byType(ListTile),
+      of: find.descendant(
+        of: membersPanel,
+        matching: find.text('Неизвестен'),
+      ),
+      matching: find.byType(InkWell),
     );
-    final rowRect = tester.getRect(memberRow);
+    final rowRect = tester.getRect(memberRow.first);
     final popoverRect = tester.getRect(profilePopover);
     expect(popoverRect.width, 288);
     expect(popoverRect.left, greaterThanOrEqualTo(8));
