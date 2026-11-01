@@ -25,7 +25,7 @@ extension WorkspaceVoiceParticipantRoomBuildAction
         padding: EdgeInsets.all(constraints.maxWidth < 600 ? 16 : 24),
         child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 792),
+            constraints: const BoxConstraints(maxWidth: 1200),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -87,11 +87,12 @@ extension WorkspaceVoiceParticipantRoomBuildAction
                         .scale(1)
                         .clamp(1.0, 2.0)
                         .toDouble();
-                    final minWidth = 280 * textScale;
+                    final minWidth = 256 * textScale;
                     final fittingColumns =
                         ((gridConstraints.maxWidth + 16) / (minWidth + 16))
                             .floor();
                     final columns = fittingColumns
+                        .clamp(1, 4)
                         .clamp(1, participants.length + 1)
                         .toInt();
                     return renderVoiceParticipantRoomParticipantsGrid(columns);

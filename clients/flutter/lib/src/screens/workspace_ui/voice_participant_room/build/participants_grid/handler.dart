@@ -16,7 +16,7 @@ extension VoiceParticipantRoomParticipantsGridRenderer
               .clamp(1.0, 2.0)
               .toDouble();
           final availableWidth =
-              (constraints.maxWidth - 12 * (crossAxisCount - 1)) /
+              (constraints.maxWidth - 16 * (crossAxisCount - 1)) /
               crossAxisCount;
           final cardWidth = availableWidth.clamp(0.0, 280 * textScale);
           return Wrap(

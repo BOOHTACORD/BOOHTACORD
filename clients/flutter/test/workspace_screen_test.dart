@@ -2322,6 +2322,21 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('Последний состав: 1'), findsOneWidget);
+    final voiceChannelRow = find.byKey(
+      const ValueKey('workspace-channel-row:voice-1'),
+    );
+    expect(voiceChannelRow, findsOneWidget);
+    expect(
+      find.descendant(
+        of: voiceChannelRow,
+        matching: find.text('1'),
+      ),
+      findsNothing,
+    );
+    expect(
+      find.byTooltip('Участников в голосовом канале: 1'),
+      findsNothing,
+    );
     expect(find.text('Мика'), findsNWidgets(2));
     expect(find.byTooltip('Показывает экран'), findsNWidgets(2));
     expect(find.text('Идёт трансляция'), findsOneWidget);
