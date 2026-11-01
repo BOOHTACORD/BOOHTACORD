@@ -80,8 +80,13 @@ fi
 grep -Fxq "API_IMAGE=$old_api" "$project_dir/.env"
 grep -Fxq "WEB_IMAGE=$old_web" "$project_dir/.env"
 [[ "$(grep -Fc -- '--ensure-postgres-alias' "$QA12_LOG")" == 2 ]]
+[[ "$(grep -Fc 'up -d --wait livekit' "$QA12_LOG")" == 2 ]]
 [[ "$(grep -Fc 'run --rm --no-deps screen-preview-storage-init' "$QA12_LOG")" == 2 ]]
 [[ "$(grep -Fc 'up -d --wait egress' "$QA12_LOG")" == 2 ]]
+first_livekit="$(grep -n -F 'up -d --wait livekit' "$QA12_LOG" | sed -n '1p' | cut -d: -f1)"
+first_livekit_preflight="$(grep -n -F 'livekit_private_path.py' "$QA12_LOG" | sed -n '1p' | cut -d: -f1)"
+second_livekit="$(grep -n -F 'up -d --wait livekit' "$QA12_LOG" | sed -n '2p' | cut -d: -f1)"
+second_livekit_preflight="$(grep -n -F 'livekit_private_path.py' "$QA12_LOG" | sed -n '2p' | cut -d: -f1)"
 first_migration="$(grep -n -F 'run --rm --no-deps migrate' "$QA12_LOG" | sed -n '1p' | cut -d: -f1)"
 first_preview_init="$(grep -n -F 'run --rm --no-deps screen-preview-storage-init' "$QA12_LOG" | sed -n '1p' | cut -d: -f1)"
 first_egress="$(grep -n -F 'up -d --wait egress' "$QA12_LOG" | sed -n '1p' | cut -d: -f1)"
@@ -92,6 +97,7 @@ second_egress="$(grep -n -F 'up -d --wait egress' "$QA12_LOG" | sed -n '2p' | cu
 second_services="$(grep -n -F 'up -d --no-deps --no-build api web' "$QA12_LOG" | sed -n '2p' | cut -d: -f1)"
 [[ "$first_migration" -lt "$first_preview_init" && "$first_preview_init" -lt "$first_egress" && "$first_egress" -lt "$first_services" ]]
 [[ "$second_migration" -lt "$second_preview_init" && "$second_preview_init" -lt "$second_egress" && "$second_egress" -lt "$second_services" ]]
+[[ "$first_livekit" -lt "$first_livekit_preflight" && "$second_livekit" -lt "$second_livekit_preflight" ]]
 [[ "$(sha256sum "$state_dir/postgres/"* "$state_dir/attachments/"*)" == "$before" ]]
 [[ "$(grep -c 'maintenance-admission --enable' "$QA12_LOG")" == 2 ]]
 [[ "$(grep -c 'maintenance-admission --disable' "$QA12_LOG")" == 2 ]]

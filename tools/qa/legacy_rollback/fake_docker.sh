@@ -13,6 +13,9 @@ fi
 case "$command" in
   *' up -d --wait postgres '*)
     ;;
+  *' up -d --wait livekit '*)
+    [[ "$(cat "$QA12_STATE/maintenance")" == on ]]
+    ;;
   *' maintenance-admission --enable '*)
     printf 'on\n' > "$QA12_STATE/maintenance"
     ;;

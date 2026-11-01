@@ -40,6 +40,11 @@ if [[ "$1" == "compose" && " $* " == *" up -d --wait egress "* && "${FAKE_EGRESS
   exit 1
 fi
 
+if [[ "$1" == "compose" && " $* " == *" up -d --wait livekit "* && "${FAKE_LIVEKIT_MODE:-allowed}" == "fail" ]]; then
+  printf '%s\n' 'LiveKit failed to start' >&2
+  exit 1
+fi
+
 if [[ "$1" == "inspect" ]]; then
   [[ "${FAKE_NETWORK_MODE:-allowed}" != "extra" ]] || printf '%s\n' fluxer_fluxer
   printf '%s\n' voice-platform_edge voice-platform_private ''
@@ -85,6 +90,7 @@ run_deploy() {
   FAKE_POSTGRES_MODE="${5:-allowed}" \
   FAKE_PREVIEW_INIT_MODE="${6:-allowed}" \
   FAKE_EGRESS_MODE="${7:-allowed}" \
+  FAKE_LIVEKIT_MODE="${8:-allowed}" \
   FAKE_POSTGRES_FAILED="$temporary_root/postgres-failed-$network_mode" \
   FAKE_HEALTH_MODE="${3:-allowed}" \
   FAKE_DISABLE_MODE="${4:-allowed}" \
@@ -119,6 +125,7 @@ PY_TIMINGS
 database_line="$(line_number 'up -d --wait postgres' "$allowed_log")"
 enable_line="$(line_number 'maintenance-admission --enable' "$allowed_log")"
 livekit_path_line="$(line_number 'livekit_private_path.py' "$allowed_log")"
+livekit_start_line="$(line_number 'up -d --wait livekit' "$allowed_log")"
 wait_line="$(line_number 'sleep 15' "$allowed_log")"
 pull_line="$(line_number 'pull api migrate web' "$allowed_log")"
 migration_database_line="$(grep -n -F 'up -d --wait postgres' "$allowed_log" | sed -n '2p' | cut -d: -f1)"
@@ -133,9 +140,10 @@ health_line="$(line_number 'curl -fsS --retry 5 --retry-connrefused https://v.bo
 disable_line="$(line_number 'maintenance-admission --disable' "$allowed_log")"
 
 [[ "$database_line" -lt "$enable_line" ]]
-[[ "$enable_line" -lt "$wait_line" ]]
 [[ "$enable_line" -lt "$livekit_path_line" ]]
-[[ "$livekit_path_line" -lt "$wait_line" ]]
+[[ "$enable_line" -lt "$livekit_start_line" ]]
+[[ "$livekit_start_line" -lt "$wait_line" ]]
+[[ "$wait_line" -lt "$livekit_path_line" ]]
 [[ "$wait_line" -lt "$pull_line" ]]
 [[ "$pull_line" -lt "$migrate_line" ]]
 [[ "$pull_line" -lt "$migration_database_line" ]]
@@ -153,6 +161,7 @@ disable_line="$(line_number 'maintenance-admission --disable' "$allowed_log")"
 [[ "$(grep -Fc 'up -d --wait postgres' "$allowed_log")" == 3 ]]
 [[ "$(grep -Fc 'run --rm --no-deps screen-preview-storage-init' "$allowed_log")" == 1 ]]
 [[ "$(grep -Fc 'up -d --wait egress' "$allowed_log")" == 1 ]]
+[[ "$(grep -Fc 'up -d --wait livekit' "$allowed_log")" == 1 ]]
 extra_output="$temporary_root/extra.out"
 ! run_deploy extra "$extra_output" || { echo 'expected extra proxy network to fail deployment' >&2; exit 1; }
 grep -F 'Proxy has an unexpected Docker network attachment.' "$extra_output"
@@ -192,5 +201,13 @@ egress_failed_log="$temporary_root/commands-egress-fail.log"
 grep -Fq 'up -d --wait egress' "$egress_failed_log"
 if grep -Fq 'up -d --no-deps --no-build api web' "$egress_failed_log"; then exit 1; fi
 grep -Fq 'maintenance-admission --disable' "$egress_failed_log"
+
+livekit_output="$temporary_root/livekit-failed.out"
+! run_deploy livekit-fail "$livekit_output" allowed allowed allowed allowed allowed fail || { echo 'expected LiveKit startup failure to fail deployment' >&2; exit 1; }
+livekit_failed_log="$temporary_root/commands-livekit-fail.log"
+grep -Fq 'up -d --wait livekit' "$livekit_failed_log"
+if grep -Fq 'livekit_private_path.py' "$livekit_failed_log"; then exit 1; fi
+if grep -Fq 'run --rm --no-deps migrate' "$livekit_failed_log"; then exit 1; fi
+grep -Fq 'maintenance-admission --disable' "$livekit_failed_log"
 
 echo 'deploy-images tests passed'
