@@ -361,7 +361,7 @@
           "clients/flutter/test/web_parity/voice_geometry_test.dart",
           "clients/flutter/test/workspace_screen_test.dart"
         ],
-        "scope": "Flutter presentation parity for #499–502; production widget matrix at 320/390/768/1024/1440 dp, scale 1/2, short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
+        "scope": "Flutter presentation parity for #499–502; connected voice participant cards use two columns through 720 dp, matching Web mobile, with 12 dp gaps through 600 dp and 16 dp above. Speaking outline follows the outer card bounds. Verify the registered 320/390/768/1024/1440 dp matrix at scale 1/2, including short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
       },
       "flutter_stream_preview_placeholder": {
         "focused": [
