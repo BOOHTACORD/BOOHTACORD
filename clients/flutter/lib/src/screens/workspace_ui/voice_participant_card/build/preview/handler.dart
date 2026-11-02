@@ -37,13 +37,19 @@ extension VoiceParticipantCardPreviewRenderer
                 ),
               );
               if (constraints.maxWidth < 320 || textScale > 1.35) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    icon,
-                    SizedBox(height: 4 * textScale),
-                    label,
-                  ],
+                return FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: SizedBox(
+                    width: constraints.maxWidth,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        icon,
+                        SizedBox(height: 4 * textScale),
+                        label,
+                      ],
+                    ),
+                  ),
                 );
               }
               return Row(
