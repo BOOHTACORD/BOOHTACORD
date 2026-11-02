@@ -15,15 +15,20 @@ extension VoiceParticipantRoomParticipantsGridRenderer
               .scale(1)
               .clamp(1.0, 2.0)
               .toDouble();
+          final viewportWidth = MediaQuery.sizeOf(context).width;
+          final compactViewport = viewportWidth <= 720;
+          final gap = viewportWidth <= 600 ? 12.0 : 16.0;
           final availableWidth =
-              (constraints.maxWidth - 16 * (crossAxisCount - 1)) /
+              (constraints.maxWidth - gap * (crossAxisCount - 1)) /
               crossAxisCount;
-          final cardWidth = availableWidth.clamp(0.0, 280 * textScale);
+          final cardWidth = compactViewport
+              ? availableWidth
+              : availableWidth.clamp(0.0, 280 * textScale);
           return Wrap(
             key: const ValueKey('voice-participant-grid'),
             alignment: WrapAlignment.center,
-            spacing: 16,
-            runSpacing: 12,
+            spacing: gap,
+            runSpacing: gap,
             children: List.generate(
               participants.length + 1,
               (index) =>

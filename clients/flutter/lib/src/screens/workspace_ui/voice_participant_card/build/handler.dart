@@ -27,17 +27,26 @@ extension WorkspaceVoiceParticipantCardBuildAction
       decoration: BoxDecoration(
         color: GcColors.surface,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: presentation.isSpeaking ? GcColors.success : GcColors.border,
-          width: 2,
-        ),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          renderVoiceParticipantCardPreview(),
-          renderVoiceParticipantCardDetails(context, presentation),
-        ],
+      child: DecoratedBox(
+        position: DecorationPosition.foreground,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: presentation.isSpeaking ? GcColors.success : GcColors.border,
+            width: 2,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(2),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              renderVoiceParticipantCardPreview(),
+              renderVoiceParticipantCardDetails(context, presentation),
+            ],
+          ),
+        ),
       ),
     );
   }
