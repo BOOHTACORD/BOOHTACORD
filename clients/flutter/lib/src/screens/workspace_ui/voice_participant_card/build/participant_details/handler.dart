@@ -30,87 +30,113 @@ extension VoiceParticipantCardParticipantDetailsRenderer
         ? GcColors.success
         : GcColors.textSecondary;
 
+    final volumeMenu = volume == null || onVolumeChanged == null
+        ? null
+        : ParticipantVolumeMenu(
+            warning: state.voiceVolumeWarning,
+            name: name,
+            volume: volume!,
+            onChanged: onVolumeChanged!,
+            onChangeEnd: () => unawaited(state.flushVoiceVolumes()),
+          );
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          AuthenticatedAvatar(
-            state: state,
-            name: name,
-            avatarUrl: avatarUrl,
-            radius: 20,
-            backgroundColor: workspaceVoiceAvatarColor(avatarSeed),
-            fallbackText: name.trim().isEmpty
-                ? '?'
-                : name.trim().characters.take(2).toString().toUpperCase(),
-            fallbackColor: workspaceSearchAvatarForeground(avatarSeed),
-            fallbackFontSize: 16,
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: SizedBox(
-              height: 60 * textScale,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final compact = constraints.maxWidth < 240;
+          final details = Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              AuthenticatedAvatar(
+                state: state,
+                name: name,
+                avatarUrl: avatarUrl,
+                radius: 20,
+                backgroundColor: workspaceVoiceAvatarColor(avatarSeed),
+                fallbackText: name.trim().isEmpty
+                    ? '?'
+                    : name.trim().characters.take(2).toString().toUpperCase(),
+                fallbackColor: workspaceSearchAvatarForeground(avatarSeed),
+                fallbackFontSize: 16,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: SizedBox(
+                  height: 60 * textScale,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Expanded(
-                        child: Tooltip(
-                          message: name,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Tooltip(
+                              message: name,
+                              child: Text(
+                                displayName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  height: 1.35,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          Semantics(
+                            label: presentation.label,
+                            child: Tooltip(
+                              message: presentation.label,
+                              child: Icon(
+                                statusIcon,
+                                size: 16,
+                                color: statusColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      if (watchingScreen)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 3),
                           child: Text(
-                            displayName,
+                            'Смотрит трансляцию',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              height: 1.35,
-                              fontWeight: FontWeight.w500,
+                            style: TextStyle(
+                              color: GcColors.textSecondary,
+                              fontSize: 11 * textScale,
+                              height: 1.15,
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 4),
-                      Semantics(
-                        label: presentation.label,
-                        child: Tooltip(
-                          message: presentation.label,
-                          child: Icon(statusIcon, size: 16, color: statusColor),
-                        ),
-                      ),
                     ],
                   ),
-                  if (watchingScreen)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 3),
-                      child: Text(
-                        'Смотрит трансляцию',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: GcColors.textSecondary,
-                          fontSize: 11 * textScale,
-                          height: 1.15,
-                        ),
-                      ),
-                    ),
-                ],
+                ),
               ),
-            ),
-          ),
-          if (volume != null && onVolumeChanged != null) ...[
-            const SizedBox(width: 8),
-            ParticipantVolumeMenu(
-              warning: state.voiceVolumeWarning,
-              name: name,
-              volume: volume!,
-              onChanged: onVolumeChanged!,
-              onChangeEnd: () => unawaited(state.flushVoiceVolumes()),
-            ),
-          ],
-        ],
+              if (volumeMenu != null && !compact) ...[
+                const SizedBox(width: 8),
+                volumeMenu,
+              ],
+            ],
+          );
+
+          if (volumeMenu == null || !compact) return details;
+          return Stack(
+            children: [
+              details,
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: volumeMenu,
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
