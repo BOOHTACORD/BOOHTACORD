@@ -8,6 +8,7 @@ import { unknownScreenDiagnostics, type ScreenDiagnostics } from './screen_diagn
 import type { ScreenShareState } from './screen_controls'
 import type { ScreenProfile } from './livekit_gateway'
 import type { ActiveVoiceSession, VoiceSession } from './voice_session'
+import type { VoiceRecoveryTarget } from './connection_state/recovery'
 
 interface Stoppable { stop(): void }
 
@@ -26,6 +27,7 @@ export function installVoiceConnectionLifecycle(
   volume: Stoppable,
   refreshAudioProcessingDiagnostics: () => void,
   terminal?: VoiceDisconnectState,
+  unexpectedDisconnect?: (target: VoiceRecoveryTarget) => void,
 ): void {
   let reconnect:((outcome:Outcome)=>void)|null=null
   session.setConnectionObserver({
@@ -43,8 +45,12 @@ export function installVoiceConnectionLifecycle(
     },
     disconnected: () => {
       reconnect?.('failed');reconnect=null
-      if (active.value) terminal?.bind(active.value.leaseId, active.value.channelId)
-      terminal?.transport()
+      const disconnected = active.value
+      const wasDeafened = deafened.value
+      const wasMuted = microphoneMuted.value
+      if (disconnected) terminal?.bind(disconnected.leaseId, disconnected.channelId)
+      const isTransport = !terminal?.notice.value && Boolean(disconnected && unexpectedDisconnect)
+      if (!isTransport) terminal?.transport()
       screenViewer.stop()
       volume.stop()
       active.value = null
@@ -55,8 +61,14 @@ export function installVoiceConnectionLifecycle(
       screenDiagnostics.value = unknownScreenDiagnostics()
       screenProfile.value = null
       screenState.value = 'IDLE'
-      state.value = terminal?.notice.value?.source === 'local' ? 'IDLE' : 'ERROR'
-      error.value = terminal?.notice.value?.source === 'local' ? null : terminal?.notice.value?.message ?? 'Голосовое соединение не восстановлено. Подключитесь снова вручную.'
+      state.value = isTransport ? 'RECONNECTING' : terminal?.notice.value?.source === 'local' ? 'IDLE' : 'ERROR'
+      error.value = isTransport || terminal?.notice.value?.source === 'local' ? null : terminal?.notice.value?.message ?? 'Голосовое соединение не восстановлено. Подключитесь снова вручную.'
+      if (isTransport && disconnected) unexpectedDisconnect?.({
+        channelId: disconnected.channelId,
+        leaseId: disconnected.leaseId,
+        joinMode: disconnected.listenerOnly || disconnected.microphone !== 'PUBLISHED' || wasMuted || wasDeafened ? 'listener' : 'with-microphone',
+        deafened: wasDeafened,
+      })
     },
   })
 }
