@@ -78,7 +78,7 @@ export class VoiceSessionAdmission {
         this.state.monitor.bind(
           joined.room,
           () => this.state.current()?.room === joined.room,
-          () => this.handleDisconnected(joined.room),
+          (reason) => this.handleDisconnected(joined.room, reason),
         )
         action?.span.setAttribute(
           'app.voice.mode',
@@ -97,7 +97,7 @@ export class VoiceSessionAdmission {
     })
   }
 
-  async handleDisconnected(room: ActiveVoiceSession['room']): Promise<void> {
+  async handleDisconnected(room: ActiveVoiceSession['room'], reason?: number): Promise<void> {
     const current = this.state.current()
     if (!current || current.room !== room) return
     try { await room.stopScreenPreview?.() } catch { /* Lease release follows settled local cleanup. */ }
@@ -107,7 +107,7 @@ export class VoiceSessionAdmission {
     this.state.setCurrent(null)
     telemetrySession.endMedia()
     this.state.deafen.reset()
-    this.state.monitor.notifyDisconnected()
+    this.state.monitor.notifyDisconnected(reason)
     await this.state.admission.release(current.leaseId).catch(() => undefined)
   }
 }
