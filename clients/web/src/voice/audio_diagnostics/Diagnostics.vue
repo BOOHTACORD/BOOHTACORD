@@ -15,8 +15,8 @@ const metric = (value: number | null | undefined, unit = '') => value == null ? 
 const flag = (value: boolean | null) => value === null ? 'неизвестно' : value ? 'да' : 'нет'
 </script>
 <template>
-  <details class="audio-processing-details">
-    <summary>Диагностика качества голоса</summary>
+  <section class="audio-processing-details audio-voice-diagnostics">
+    <h3>Качество голосового подключения</h3>
     <label>Профиль следующего подключения<select class="gc-field" :value="selected" :disabled="connected" @change="choose"><option v-for="profile in voiceAudioProfiles" :key="profile.id" :value="profile.id">{{ profile.maxBitrate / 1000 }} кбит/с — {{ profile.id }}</option></select></label>
     <p>64 и 96 кбит/с — кандидаты для A/B. Улучшение качества ещё не подтверждено.</p>
     <p>Запрошено: Opus, mono, 48 кГц, высокий приоритет, DTX и RED. Фактические параметры — ниже.</p>
@@ -38,5 +38,5 @@ const flag = (value: boolean | null) => value === null ? 'неизвестно' 
       <textarea v-if="exported" class="gc-field" aria-label="Отчёт без идентификаторов и уровней" readonly :value="text" rows="12" style="width: 100%" />
     </template>
     <p v-else>Статистика появляется после подключения и двух измерений. На неподдерживаемой платформе остаётся неизвестной.</p>
-  </details>
+  </section>
 </template>

@@ -5,7 +5,7 @@ import 'package:boohtacord_desktop/src/services/api_client.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/audio_settings_screen/component.dart';
 
 void main() {
-  testWidgets('advanced audio stays mounted while disclosure changes', (
+  testWidgets('common audio controls stay visible beside diagnostics', (
     t,
   ) async {
     final state = AppState(ApiClient());
@@ -23,25 +23,28 @@ void main() {
       ),
     );
     await t.pumpAndSettle();
-    expect(find.text('Автоматическая регулировка усиления'), findsNothing);
-    final section = find.byKey(const PageStorageKey('audio-settings-advanced'));
     await t.scrollUntilVisible(
-      section,
+      find.text('Автоматическая регулировка усиления'),
       150,
       scrollable: find.byType(Scrollable).first,
     );
-    await t.tap(find.text('Дополнительно'));
-    await t.pumpAndSettle();
     expect(find.text('Автоматическая регулировка усиления'), findsOneWidget);
-    final element = t.element(find.text('Автоматическая регулировка усиления'));
+    expect(find.text('Подавление эха'), findsOneWidget);
+    final control = t.element(find.text('Подавление эха'));
     await t.scrollUntilVisible(
-      section,
+      find.text('Диагностика качества голоса'),
       150,
       scrollable: find.byType(Scrollable).first,
     );
-    await t.tap(find.text('Дополнительно'));
+    await t.tap(find.text('Диагностика качества голоса'));
     await t.pumpAndSettle();
-    expect(element.mounted, true);
+    expect(find.text('Профиль следующего подключения'), findsOneWidget);
+    await t.scrollUntilVisible(
+      find.text('Подавление эха'),
+      150,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(control.mounted, true);
     expect(state.audioProcessing, isNotNull);
   });
 }

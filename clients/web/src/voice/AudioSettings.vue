@@ -5,14 +5,19 @@ import type { AudioSettingsState } from './audio_settings_store'
 import type { VoiceActivationMode } from './activation_store'
 import type { VoiceShortcutAction, VoiceShortcutBinding } from './voice_shortcut'
 import ShortcutSettings from './activation/ShortcutSettings.vue'
-import { noiseSuppressionFallbackLabel, type AudioProcessingDiagnostics } from './audio_processing_diagnostics'
+import {
+  noiseSuppressionFallbackLabel,
+  type AudioProcessingDiagnostics,
+} from './audio_processing_diagnostics'
 import { capturePttAssignment } from './ptt_key_capture'
+import { rnnoiseReleaseEnabled } from './noise_suppression/capabilities'
 import type { NoiseSuppressionMode } from './noise_suppression/types'
 import type { AudioProcessingOptions } from './livekit_gateway'
 import SensitivityControl from './microphone_processing/SensitivityControl.vue'
 import GainControl from './microphone_processing/GainControl.vue'
 import AudioDeviceCheck from './AudioDeviceCheck.vue'
 import ProcessingDetails from './ProcessingDetails.vue'
+import StreamStartSoundSetting from './StreamStartSoundSetting.vue'
 import { microphoneMeter } from './microphone_processing/runtime'
 import VoiceAudioDiagnostics from './audio_diagnostics/Diagnostics.vue'
 import type { VoiceAudioDiagnostics as AudioSnapshot } from './audio_diagnostics/model'
@@ -61,7 +66,21 @@ const selectedOutputLabel = computed(() => {
   return selected?.label.trim() || 'Системный динамик'
 })
 const deviceWarning = ref('')
-const lastNoiseMode = ref<NoiseSuppressionMode>(props.processing.noiseSuppressionMode === 'off' ? 'browser' : props.processing.noiseSuppressionMode)
+const noiseSuppressionStatus = computed(() => {
+  const runtime = props.processingDiagnostics.noiseSuppressionRuntime
+  if (runtime.status === 'error') return 'Обработка микрофона остановлена. Отправка звука выключена.'
+  if (props.processing.noiseSuppressionMode !== 'rnnoise' || runtime.requestedMode !== 'rnnoise') return ''
+  return {
+    idle: '',
+    initializing: 'Проверяем работу RNNoise…',
+    active: 'RNNoise активен.',
+    fallback: runtime.effectiveMode === 'browser'
+      ? `Включена стандартная обработка${noiseSuppressionFallbackLabel(runtime.fallbackReason) ? `: ${noiseSuppressionFallbackLabel(runtime.fallbackReason).toLowerCase()}` : ''}.`
+      : 'Резервный режим не подтверждён.',
+    unsupported: 'RNNoise недоступен на этом устройстве.',
+    error: '',
+  }[runtime.status]
+})
 let focusFrame: number | null = null
 function refreshDevices(): void { emit('load') }
 onMounted(() => { focusFrame = window.requestAnimationFrame(() => entry.value?.focus()); refreshDevices() })
@@ -88,14 +107,17 @@ function capturePttKey(event: KeyboardEvent): void {
 function setProcessing(key: 'autoGainControl' | 'echoCancellation', event: Event): void {
   emit('setProcessing', { ...props.processing, [key]: (event.target as HTMLInputElement).checked })
 }
-watch(() => props.processing.noiseSuppressionMode, (mode) => { if (mode !== 'off') lastNoiseMode.value = mode })
-function toggleNoise(): void { emit('setProcessing', { ...props.processing, noiseSuppressionMode: props.processing.noiseSuppressionMode === 'off' ? lastNoiseMode.value : 'off' }) }
+function setNoiseSuppressionMode(event: Event): void {
+  emit('setProcessing', {
+    ...props.processing,
+    noiseSuppressionMode: (event.target as HTMLSelectElement).value as NoiseSuppressionMode,
+  })
+}
 </script>
 
 <template>
   <section ref="entry" class="audio-settings" aria-label="Настройки аудио" tabindex="-1">
     <header class="audio-settings-heading"><h1>Настройки аудио</h1></header>
-    <details class="copy-help"><summary>О настройках аудио</summary><p>Настройки действуют на этом устройстве.</p></details>
     <p v-if="error" class="state state-error" role="alert">{{ error }}</p><p v-if="deviceWarning" class="state state-error" role="status">{{ deviceWarning }}</p>
     <div class="audio-settings-panel">
       <section class="audio-device-section"><header><h2>Устройства</h2><button class="audio-device-refresh gc-button gc-button--ghost" type="button" :disabled="state === 'LOADING'" @click="emit('load')">{{ state === 'LOADING' ? 'Ищем устройства…' : 'Обновить устройства' }}</button></header>
@@ -115,20 +137,26 @@ function toggleNoise(): void { emit('setProcessing', { ...props.processing, nois
       </section>
       <p v-if="microphoneMeter.clipping" class="state-error" role="status">Перегрузка: уменьшите громкость микрофона.</p>
       <p v-if="volumeWarning" class="state-error" role="status">{{ volumeWarning }}</p>
-      <p v-if="processingDiagnostics.noiseSuppressionRuntime.status === 'error'" class="state-error" role="alert">Ошибка обработки микрофона. Отправка звука выключена.</p>
-      <p v-else-if="processingDiagnostics.noiseSuppressionRuntime.status === 'initializing'" role="status">Подготавливаем фильтр…</p>
-      <p v-if="processingDiagnostics.noiseSuppressionRuntime.fallbackReason" role="status">Причина: {{ noiseSuppressionFallbackLabel(processingDiagnostics.noiseSuppressionRuntime.fallbackReason) }}.</p>
-      <details class="audio-advanced"><summary><span>Дополнительно</span><small>Обработка звука и быстрые клавиши</small></summary>
-      <div class="audio-advanced-content">
-      <ShortcutSettings :microphone-shortcut="microphoneShortcut" :deafen-shortcut="deafenShortcut" @reset-shortcuts="emit('resetShortcuts')" @set-shortcut="(action, binding) => emit('setShortcut', action, binding)" />
-      <section class="audio-processing-section" aria-labelledby="audio-processing-title"><h2 id="audio-processing-title">Обработка звука</h2>
+      <section class="audio-shortcuts-section">
+        <header><h2>Быстрые клавиши</h2><p>Микрофон и выключение звука</p></header>
+        <ShortcutSettings :microphone-shortcut="microphoneShortcut" :deafen-shortcut="deafenShortcut" @reset-shortcuts="emit('resetShortcuts')" @set-shortcut="(action, binding) => emit('setShortcut', action, binding)" />
+      </section>
+      <section class="audio-processing-section" aria-labelledby="audio-processing-title"><h2 id="audio-processing-title">Обработка микрофона</h2>
         <GainControl :agc="processing.autoGainControl" :show-clipping="false" />
-        <div class="audio-processing-row"><div>Шумоподавление<small>Уменьшает фоновый шум</small></div><button type="button" role="switch" aria-label="Шумоподавление" :aria-checked="processing.noiseSuppressionMode !== 'off'" @click="toggleNoise" /></div>
+        <label class="audio-processing-row"><span>Шумоподавление<small>Уменьшает фоновый шум</small></span><select class="gc-field" aria-label="Режим шумоподавления" :value="processing.noiseSuppressionMode" @change="setNoiseSuppressionMode"><option value="off">Выключено</option><option value="browser">Стандартное — WebRTC</option><option v-if="rnnoiseReleaseEnabled()" value="rnnoise">RNNoise — экспериментальное</option><option v-if="!rnnoiseReleaseEnabled() && processing.noiseSuppressionMode === 'rnnoise'" value="rnnoise" disabled>RNNoise — недоступен в этой сборке</option></select></label>
         <label class="audio-processing-row"><span>Подавление эха<small>Убирает обратный звук из динамиков</small></span><input type="checkbox" role="switch" :checked="processing.echoCancellation" @change="setProcessing('echoCancellation', $event)"></label>
         <label class="audio-processing-row"><span>Автоматическая громкость<small>Выравнивает уровень микрофона</small></span><input type="checkbox" role="switch" :checked="processing.autoGainControl" @change="setProcessing('autoGainControl', $event)"></label>
+        <StreamStartSoundSetting />
+        <p v-if="noiseSuppressionStatus" :class="processingDiagnostics.noiseSuppressionRuntime.status === 'error' ? 'state-error' : 'state'" :role="processingDiagnostics.noiseSuppressionRuntime.status === 'error' ? 'alert' : 'status'">{{ noiseSuppressionStatus }}</p>
       </section>
-      <ProcessingDetails :processing="processing" :diagnostics="processingDiagnostics" @set-processing="value => emit('setProcessing', value)" />
-      <AudioVolumeReset v-if="resetAudioVolumes" :reset="resetAudioVolumes" />
+      <section v-if="resetAudioVolumes" class="audio-playback-section">
+        <h2>Воспроизведение</h2>
+        <p>Громкость участников и демонстраций на этом устройстве.</p>
+        <AudioVolumeReset :reset="resetAudioVolumes" />
+      </section>
+      <details class="audio-advanced"><summary><span>Диагностика</span><small>Технические сведения об обработке и голосовом подключении</small></summary>
+      <div class="audio-advanced-content">
+      <ProcessingDetails :diagnostics="processingDiagnostics" />
       <VoiceAudioDiagnostics :connected="connected || audioProfileLocked === true" :diagnostics="actualAudioDiagnostics" />
       </div></details>
     </div>

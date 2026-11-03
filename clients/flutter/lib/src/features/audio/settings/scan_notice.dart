@@ -29,7 +29,6 @@ class AudioDeviceScanNotice extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     final color = switch (notice.tone) {
       AudioDeviceNoticeTone.pending => colors.primary,
-      AudioDeviceNoticeTone.success => Colors.green,
       AudioDeviceNoticeTone.warning => colors.error,
     };
     return Semantics(

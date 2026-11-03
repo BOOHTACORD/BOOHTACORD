@@ -15,7 +15,7 @@ async function open(page: Page, scene: string, scale = 100) {
   if (params.get('tab')) await page.getByRole('tab', { name: params.get('tab')!, exact: true }).click()
   if (scene.includes('section=guild')) await expect(page.getByLabel('Название гильдии', { exact: true })).toBeEnabled()
   if (scene.includes('section=roles')) await expect(page.getByRole('tab', { name: 'Пользователь', exact: true })).toBeVisible()
-  if (params.has('advanced')) await page.getByText('Дополнительно', { exact: true }).click()
+  if (params.has('advanced')) await page.getByText('Диагностика', { exact: true }).click()
   await page.evaluate(() => document.fonts.ready)
 }
 async function fit(page: Page) {
@@ -32,22 +32,25 @@ for (const width of [390, 1024, 1440]) for (const scene of scenes) test(`setting
   await page.screenshot({ path: info.outputPath(`${scene.replaceAll(/[&=]/g, '-')}.png`), fullPage: true })
   await expectAxeClear(page, 'main')
 })
-for (const width of [390,1024,1440]) for (const scale of [100,200]) test(`basic and advanced audio preserve values and expose warnings ${width}/${scale}`, async ({page},info)=>{
+for (const width of [390,1024,1440]) for (const scale of [100,200]) test(`audio essentials stay visible and diagnostics preserve values ${width}/${scale}`, async ({page},info)=>{
   await page.setViewportSize({width,height:900});await open(page,'audio',scale)
   const advanced=page.locator('.audio-advanced')
   await expect(advanced).not.toHaveAttribute('open','')
   await expect(page.getByRole('combobox',{name:/^Микрофон/})).toBeVisible()
-  await expect(page.getByRole('switch',{name:'Шумоподавление',exact:true})).not.toBeVisible()
+  await expect(page.locator('.audio-processing-values')).not.toBeVisible()
+  const noise=page.getByRole('combobox',{name:'Режим шумоподавления',exact:true});await expect(noise).toBeVisible()
+  await expect(page.getByRole('button',{name:/Назначить сочетание: микрофон/})).toBeVisible()
   const refresh=page.getByRole('button',{name:'Обновить устройства',exact:true});await expect(refresh).toHaveCSS('opacity','1')
   await page.getByRole('button',{name:'По нажатию',exact:true}).click();await expect(page.getByRole('button',{name:'Назначить PTT-клавишу'})).toBeVisible()
-  const summary=advanced.locator(':scope > summary');await summary.focus();await summary.press('Enter')
   const echo=page.getByRole('switch',{name:/Подавление эха/});await echo.uncheck()
   const gain=page.getByRole('slider',{name:/Громкость микрофона/});await gain.focus();await gain.press('Home');for(let i=0;i<145;i++)await gain.press('ArrowRight')
   const agc=page.getByRole('switch',{name:/Автоматическая громкость/});await agc.check();await expect(gain).toBeDisabled()
-  await summary.click();await page.evaluate(()=> (window as any).settingsFixture.microphoneFailure())
+  await noise.selectOption('off');await expect(noise).toHaveValue('off')
+  await noise.selectOption('browser');await expect(noise).toHaveValue('browser')
+  await page.evaluate(()=> (window as any).settingsFixture.microphoneFailure())
   await expect(page.getByRole('alert').filter({hasText:'Не удалось сохранить настройки микрофона.'})).toBeVisible()
   await expect(page.getByText('Перегрузка: уменьшите громкость микрофона.',{exact:true})).toBeVisible()
-  await summary.click();await expect(echo).not.toBeChecked();await expect(agc).toBeChecked();await agc.uncheck();await expect(gain).toHaveValue('145')
+  await expect(echo).not.toBeChecked();await expect(agc).toBeChecked();await agc.uncheck();await expect(gain).toHaveValue('145')
   await fit(page);await page.screenshot({path:info.outputPath('advanced-retained.png'),fullPage:true})
 })
 test('guild explicit save state, pending, cancellation and conflict never silently overwrite a draft',async({page})=>{
@@ -84,10 +87,10 @@ for(const width of [780,1440])test(`native browser zoom 200% keeps settings reac
   }
  })
 })
-test('microphone processing failure is visible while Advanced is closed',async({page})=>{
+test('microphone processing failure remains visible while diagnostics are closed',async({page})=>{
  await open(page,'audio&phase=processing-error')
  await expect(page.locator('.audio-advanced')).not.toHaveAttribute('open','')
- await expect(page.getByRole('alert')).toHaveText('Ошибка обработки микрофона. Отправка звука выключена.')
+ await expect(page.getByRole('alert')).toHaveText('Обработка микрофона остановлена. Отправка звука выключена.')
 })
 test('profile and password cancellation send no mutation; explicit name save exposes pending/error/result',async({page})=>{
  await open(page,'profile');const name=page.getByRole('textbox',{name:'Отображаемое имя',exact:true}),save=page.getByRole('button',{name:'Сохранить профиль',exact:true})
@@ -128,18 +131,17 @@ test('profile avatar removal stays inside the card at enlarged mobile text',asyn
   await page.screenshot({path:info.outputPath(`profile-avatar-removal-${width}.png`),fullPage:true})
  }
 })
-test('advanced shortcuts, device help and diagnostic restrictions remain keyboard reachable',async({page})=>{
+test('shortcuts stay visible while device help and diagnostics remain keyboard reachable',async({page})=>{
  await open(page,'audio');await page.getByText('О проверке устройств',{exact:true}).focus();await page.keyboard.press('Enter')
  await expect(page.locator('.audio-check-details')).toHaveAttribute('open','')
- const summary=page.locator('.audio-advanced > summary');await summary.click()
  const assign=page.getByRole('button',{name:'Назначить сочетание: микрофон',exact:true});await assign.click();await assign.press('Control+Shift+M')
  const value=await page.locator('.audio-shortcut-row').first().locator('small').innerText();expect(value).not.toBe('Не назначено')
- await summary.click();await summary.click();await expect(page.locator('.audio-shortcut-row').first().locator('small')).toHaveText(value)
- await page.getByText('Режим и диагностика обработки',{exact:true}).click()
- await page.getByRole('combobox',{name:/Режим шумоподавления/}).selectOption('off')
- await expect(page.getByRole('switch',{name:'Шумоподавление',exact:true})).toHaveAttribute('aria-checked','false')
- await page.getByRole('switch',{name:'Шумоподавление',exact:true}).click()
- await expect(page.getByRole('combobox',{name:/Режим шумоподавления/})).toHaveValue('browser')
+ await expect(page.locator('.audio-shortcut-row').first().locator('small')).toHaveText(value)
+ const noise=page.getByRole('combobox',{name:'Режим шумоподавления',exact:true})
+ await noise.selectOption('off');await expect(noise).toHaveValue('off')
+ await noise.selectOption('browser');await expect(noise).toHaveValue('browser')
+ await page.locator('.audio-advanced > summary').click()
+ await expect(page.locator('.audio-processing-values')).toBeVisible()
  await page.getByRole('button',{name:'Сбросить быстрые клавиши',exact:true}).click();await expect(page.locator('.audio-shortcut-row').first().locator('small')).toHaveText('Не назначено')
 })
 test('readiness details retain numbers and local actions, while freshness and failure remain outside',async({page},info)=>{
