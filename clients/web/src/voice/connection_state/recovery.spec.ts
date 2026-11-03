@@ -15,7 +15,7 @@ describe('long-lived voice recovery supervisor', () => {
     await vi.advanceTimersByTimeAsync(800)
     await vi.advanceTimersByTimeAsync(1600)
     expect(attempt).toHaveBeenCalledTimes(3)
-    expect(attempt.mock.calls.every(([value]: [VoiceRecoveryTarget]) => value === target)).toBe(true)
+    expect(attempt.mock.calls.every(call => call[0] === target)).toBe(true)
     expect(loop.active).toBe(false)
   })
 
