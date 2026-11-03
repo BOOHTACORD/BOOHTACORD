@@ -2117,7 +2117,7 @@ void main() {
     await tester.pump();
     final loadingStatus = find.text('Проверяем, кто сейчас в комнате…');
     expect(loadingStatus, findsOneWidget);
-    expect(find.text('Голосовой канал · проверяем состав'), findsOneWidget);
+    expect(find.text('Голосовой канал · проверяем состав'), findsNothing);
     expect(
       tester.getSemantics(loadingStatus).flagsCollection.isLiveRegion,
       isTrue,
@@ -2129,7 +2129,7 @@ void main() {
     await tester.pump();
     final errorStatus = find.text('Не удалось обновить состав комнаты.');
     expect(errorStatus, findsOneWidget);
-    expect(find.text('Голосовой канал · состав недоступен'), findsOneWidget);
+    expect(find.text('Голосовой канал · состав недоступен'), findsNothing);
     expect(
       tester.getSemantics(errorStatus).flagsCollection.isLiveRegion,
       isTrue,
@@ -2144,7 +2144,7 @@ void main() {
     state.voiceRoster.phase = VoiceRosterPhase.fresh;
     state.notifyListeners();
     await tester.pump();
-    expect(find.text('Голосовой канал · пока пусто'), findsOneWidget);
+    expect(find.text('Пока никого нет.'), findsOneWidget);
 
     state
       ..voiceRosters = const [
@@ -2162,7 +2162,7 @@ void main() {
       ]
       ..notifyListeners();
     await tester.pump();
-    expect(find.text('Голосовой канал · сейчас: 1'), findsOneWidget);
+    expect(find.text('Собеседник'), findsOneWidget);
 
     state
       ..selectedChannel = const GuildChannel(
@@ -2175,7 +2175,7 @@ void main() {
       ..voiceRosterError = 'Нет связи со списком голосовых каналов.'
       ..notifyListeners();
     await tester.pump();
-    expect(find.text('Голосовой канал · состав недоступен'), findsOneWidget);
+    expect(find.text('Голосовой канал · состав недоступен'), findsNothing);
     final closedNotice = find.text(
       'Вход в этот канал закрыт администратором. Отзыв media-доступа ещё подтверждается.',
     );
@@ -2369,9 +2369,9 @@ void main() {
     state.notifyListeners();
     await tester.pump();
 
-    expect(find.text('Подключаемся к голосовой комнате'), findsOneWidget);
+    expect(find.text('Входим в голос…'), findsOneWidget);
     final joiningTitle = find.ancestor(
-      of: find.text('Подключаемся к голосовой комнате'),
+      of: find.text('Входим в голос…'),
       matching: find.byWidgetPredicate(
         (widget) => widget is Semantics && widget.properties.liveRegion == true,
       ),
@@ -2379,9 +2379,9 @@ void main() {
     expect(joiningTitle, findsOneWidget);
     expect(
       tester.widget<Semantics>(joiningTitle).properties.label,
-      'Подключаемся к голосовой комнате',
+      'Входим в голос…',
     );
-    expect(find.text('Соединение устанавливается.'), findsOneWidget);
+    expect(find.text('Соединение устанавливается.'), findsNothing);
     expect(
       tester
           .widget<FilledButton>(
