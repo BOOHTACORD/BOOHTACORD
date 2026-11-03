@@ -34,7 +34,21 @@ export const useVoiceConnectionStore = defineStore('voice-connection', () => {
   const revocation = createVoiceConnectionRevocation({ terminal, session, active, state, error, deafened, microphoneMuted, microphonePermissionDenied, screenDiagnostics, screenProfile, screenState, screenViewer, volume, refreshAudioProcessingDiagnostics })
   const ownership=createControllerOwnership(async()=>{await revocation.disconnectLocal('TRANSFER');return !active.value})
   let accountID: string | null = null
-  const bindControllerAccount=(id:string)=>{const next=id||null;if(accountID!==next){recovery.cancel();accountID=next}ownership.bind(next)}
+  const bindControllerAccount = (id: string) => {
+    const next = id || null
+    if (accountID !== next) {
+      if (recovery.active) {
+        recovery.cancel()
+        // Invalidate any in-flight HTTP/media join before another account
+        // can inherit the old session's delayed response.
+        terminal.reset()
+        if (!active.value) { state.value = 'IDLE'; error.value = null }
+        void ownership.cancelPending()
+      }
+      accountID = next
+    }
+    ownership.bind(next)
+  }
   watch(active,current=>{if(!current&&state.value!=='JOINING') void ownership.release()})
   onScopeDispose(ownership.cancel)
 
