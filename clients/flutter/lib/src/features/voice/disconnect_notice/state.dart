@@ -22,5 +22,6 @@ class VoiceDisconnectState {
   }
   void local() { if (notice?.source != 'server') notice = VoiceDisconnectNotice('VOLUNTARY_LEAVE', 'local'); }
   void transport([String? message]) { notice ??= VoiceDisconnectNotice('TRANSPORT', 'transport', transportMessage: message); }
+  void clearTransportForRecovery() { if (notice?.source == 'transport') notice = null; }
   void selectChannel(String id) { if (notice != null && channelId != id) reset(); }
 }
