@@ -11,6 +11,7 @@ import 'package:boohtacord_desktop/src/features/authorization/permissions/model.
 import 'package:boohtacord_desktop/src/models.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_screen.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/header/component.dart';
+import 'package:boohtacord_desktop/src/screens/workspace_ui/voice_room/build/header_actions/component.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/voice_navigation_members/component.dart';
 import 'package:boohtacord_desktop/src/services/api_client.dart';
 import 'package:boohtacord_desktop/src/services/composer_draft_memory.dart';
@@ -2895,6 +2896,59 @@ void main() {
 
     await tester.pumpWidget(const SizedBox.shrink());
     state.dispose();
+  });
+
+  testWidgets('compact voice header keeps screen sharing launcher visible', (
+    tester,
+  ) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(960, 800);
+    addTearDown(tester.view.reset);
+    var shareStarts = 0;
+    var qualityOpens = 0;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Align(
+            alignment: Alignment.topRight,
+            child: VoiceRoomHeaderActions(
+              compact: true,
+              onSearch: () {},
+              onOpenMembers: () {},
+              onToggleShare: () => shareStarts++,
+              onConfigureShare: () => qualityOpens++,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    expect(
+      MediaQuery.sizeOf(tester.element(find.byType(VoiceRoomHeaderActions))).width,
+      960,
+    );
+    final shareLauncher = find.byTooltip('Начать демонстрацию экрана');
+    expect(shareLauncher, findsOneWidget);
+    await tester.tap(shareLauncher);
+    expect(shareStarts, 1);
+
+    await tester.tap(find.byTooltip('Другие действия'));
+    await tester.pumpAndSettle();
+    expect(find.text('Качество трансляции'), findsOneWidget);
+    expect(find.text('Начать демонстрацию'), findsNothing);
+    await tester.tap(find.text('Качество трансляции'));
+    expect(qualityOpens, 1);
+
+    tester.view.physicalSize = const Size(390, 844);
+    await tester.pumpAndSettle();
+    expect(find.byTooltip('Начать демонстрацию экрана'), findsNothing);
+    await tester.tap(find.byTooltip('Другие действия'));
+    await tester.pumpAndSettle();
+    final compactShareAction = find.text('Начать демонстрацию');
+    expect(compactShareAction, findsOneWidget);
+    await tester.tap(compactShareAction);
+    expect(shareStarts, 2);
   });
 
   testWidgets('voice dock reports accurate microphone actions in all states', (

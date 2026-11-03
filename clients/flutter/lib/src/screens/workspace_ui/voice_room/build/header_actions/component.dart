@@ -22,6 +22,7 @@ class VoiceRoomHeaderActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final showScreenShareInHeader = MediaQuery.sizeOf(context).width > 600;
     final actionSize = compact ? 44.0 : 48.0;
     final actionConstraints = BoxConstraints.tightFor(
       width: actionSize,
@@ -38,7 +39,8 @@ class VoiceRoomHeaderActions extends StatelessWidget {
             onPressed: onConfigureShare,
             icon: const Icon(Icons.tune),
           ),
-        if (!compact && (onToggleShare != null || shareBusy))
+        if (showScreenShareInHeader &&
+            (onToggleShare != null || shareBusy))
           IconButton(
             tooltip: shareBusy
                 ? 'Демонстрация экрана обновляется'
@@ -94,7 +96,13 @@ class VoiceRoomHeaderActions extends StatelessWidget {
                     children: [
                       Icon(Icons.search, size: 18),
                       SizedBox(width: 12),
-                      Text('Найти сообщение'),
+                      Flexible(
+                        child: Text(
+                          'Найти сообщение',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -105,7 +113,13 @@ class VoiceRoomHeaderActions extends StatelessWidget {
                     children: [
                       Icon(Icons.people_outline, size: 18),
                       SizedBox(width: 12),
-                      Text('К участникам'),
+                      Flexible(
+                        child: Text(
+                          'К участникам',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -116,11 +130,18 @@ class VoiceRoomHeaderActions extends StatelessWidget {
                     children: [
                       Icon(Icons.tune, size: 18),
                       SizedBox(width: 12),
-                      Text('Качество трансляции'),
+                      Flexible(
+                        child: Text(
+                          'Качество трансляции',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              if (compact && (onToggleShare != null || shareBusy))
+              if (!showScreenShareInHeader &&
+                  (onToggleShare != null || shareBusy))
                 PopupMenuItem(
                   value: 'toggle-share',
                   enabled: !shareBusy && onToggleShare != null,
@@ -133,12 +154,16 @@ class VoiceRoomHeaderActions extends StatelessWidget {
                         size: 18,
                       ),
                       const SizedBox(width: 12),
-                      Text(
-                        shareBusy
-                            ? 'Демонстрация экрана…'
-                            : sharing
-                            ? 'Остановить демонстрацию'
-                            : 'Начать демонстрацию',
+                      Flexible(
+                        child: Text(
+                          shareBusy
+                              ? 'Демонстрация экрана…'
+                              : sharing
+                              ? 'Остановить демонстрацию'
+                              : 'Начать демонстрацию',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ),
