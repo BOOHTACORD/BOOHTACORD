@@ -18,6 +18,7 @@ Duration voiceLongRecoveryDelay(int failures, {double? randomValue}) {
   if (jitter < 0 || jitter >= 1 || !jitter.isFinite) {
     throw RangeError.range(jitter, 0, 1, 'randomValue', 'must be < 1');
   }
-  final backoff = (1000 * (1 << failures.clamp(0, 5))).clamp(0, 30000);
+  final boundedFailures = failures < 0 ? 0 : math.min(failures, 5);
+  final backoff = math.min(1000 * (1 << boundedFailures), 30000);
   return Duration(milliseconds: (backoff * (0.8 + jitter * 0.4)).floor());
 }
