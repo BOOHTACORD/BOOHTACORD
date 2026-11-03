@@ -40,6 +40,7 @@ export '../volumes/change.dart';
 export '../volumes/apply.dart';
 export '../volumes/reset.dart';
 export '../connection_close/disconnect.dart';
+export '../connection_close/recovery.dart';
 export '../connection_close/leave.dart';
 
 class VoiceController extends VoiceState {
@@ -71,6 +72,7 @@ class VoiceController extends VoiceState {
   static const voiceRoomEventSoundPreferenceKey = 'voice-room-event-sounds:v1';
   @override
   void dispose() {
+    cancelVoiceRecovery();
     unawaited(microphoneForeground.dispose());
     unawaited(flushVoiceVolumes());
     cancelVoiceShortcuts(release: true);
