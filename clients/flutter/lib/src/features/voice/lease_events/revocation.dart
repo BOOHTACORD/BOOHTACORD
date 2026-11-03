@@ -18,6 +18,7 @@ extension VoiceLeaseEventsRevocation on VoiceController {
       );
     }
     final accepted = disconnect.server(revocation.leaseId, revocation.reason);
+    if (accepted) cancelVoiceRecovery();
     if (accepted && room == null && !voiceAdmissionPending) {
       showVoiceDisconnect();
       return;
@@ -41,6 +42,7 @@ extension VoiceLeaseEventsRevocation on VoiceController {
     if (this.leaseId != leaseId || room == null) return;
     disconnect.bind(leaseId, voiceChannel?.id ?? disconnect.channelId ?? '');
     disconnect.server(leaseId, reason);
+    cancelVoiceRecovery();
     final generation = disconnect.generation;
     final ticket = scope.capture();
     final closing = leaveVoice(explicit: false);
