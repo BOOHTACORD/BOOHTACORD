@@ -33,4 +33,4 @@ No baseline was approved. The Android runtime and complete visual-review gates r
 
 ## CI follow-up
 
-- PR #646's first CI run required explicit Web/iOS/Android regression notes for the common `shell`, `settings`, and `voice` feature paths. Those decisions are now recorded in the registry. The contract job must pass on the follow-up commit before merge.
+- PR #646's first CI run required explicit Web/iOS/Android regression notes for the common `shell`, `settings`, and `voice` feature paths. The next run accepted those decisions but found the checked-in `features.json` digest in the LiveKit network evidence had become stale. Refreshed that digest using the existing source-only revalidation field; no LiveKit/media runtime verification is claimed. The contract job must pass on the next commit before merge.
