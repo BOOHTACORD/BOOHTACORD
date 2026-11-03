@@ -9,6 +9,7 @@ import type { ScreenShareState } from './screen_controls'
 import type { ScreenProfile } from './livekit_gateway'
 import type { ActiveVoiceSession, VoiceSession } from './voice_session'
 import type { VoiceRecoveryTarget } from './connection_state/recovery'
+import { shouldRecoverVoiceDisconnect } from './disconnect_recovery_reason'
 
 interface Stoppable { stop(): void }
 
@@ -43,13 +44,13 @@ export function installVoiceConnectionLifecycle(
       reconnect?.(active.value&&!terminal?.notice.value?'completed':'cancelled');reconnect=null
       if (active.value && !terminal?.notice.value) state.value = active.value.microphone === 'PUBLISHED' ? 'CONNECTED' : 'LISTENER'
     },
-    disconnected: () => {
+    disconnected: (reason) => {
       reconnect?.('failed');reconnect=null
       const disconnected = active.value
       const wasDeafened = deafened.value
       const wasMuted = microphoneMuted.value
       if (disconnected) terminal?.bind(disconnected.leaseId, disconnected.channelId)
-      const isTransport = !terminal?.notice.value && Boolean(disconnected && unexpectedDisconnect)
+      const isTransport = !terminal?.notice.value && shouldRecoverVoiceDisconnect(reason) && Boolean(disconnected && unexpectedDisconnect)
       if (!isTransport) terminal?.transport()
       screenViewer.stop()
       volume.stop()
