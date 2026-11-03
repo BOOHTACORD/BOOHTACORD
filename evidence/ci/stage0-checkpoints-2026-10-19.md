@@ -48,7 +48,7 @@ The unchanged ordinary docs-only CI proof in closed-unmerged PR #413 completed i
 were explicitly skipped. This single observation is not a general p95 or billing
 claim. It also exposed GitHub's bare caller-name shape for skipped reusable jobs.
 The master producer decoder follow-up and actual no-release/no-install acceptance
-are tracked in [#416](https://github.com/Egkurilov/BOOHTACORD/pull/416) / #384; they are
+are tracked in [#416](https://github.com/BOOHTACORD/BOOHTACORD/pull/416) / #384; they are
 not attested by this earlier checkpoint. Keep #384 open until that proof exists.
 
 #385's code is merged, but required-status settings remain owner-managed and

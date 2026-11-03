@@ -72,7 +72,7 @@ tests:
       exp_annotations:
         summary: MediaClientLossSustained
         description: Windowed client loss above 2% over 5m with >=0.1 known samples/s, sustained3m. Diagnostic candidate, not agreed production SLO or packet-weighted loss.
-        runbook_url: https://github.com/Egkurilov/BOOHTACORD/blob/master/docs/operations/media-qoe.md
+        runbook_url: https://github.com/BOOHTACORD/BOOHTACORD/blob/master/docs/operations/media-qoe.md
 - name: loss_recovers
   interval: 1m
   input_series:

@@ -5,6 +5,15 @@ import '../../screen/rollout/policy.dart';
 
 /// Keeps the server-owned LiveKit Egress capture alive. Screenshot bytes stay local.
 class LatestScreenPreviewUploader {
+  static const _beginRetryDelays = <Duration>[
+    Duration(seconds: 1),
+    Duration(seconds: 2),
+    Duration(seconds: 4),
+    Duration(seconds: 8),
+    Duration(seconds: 16),
+    Duration(seconds: 30),
+  ];
+
   LatestScreenPreviewUploader(
     this.client, {
     bool? enabled,
@@ -20,9 +29,10 @@ class LatestScreenPreviewUploader {
   final Duration _refreshInterval;
 
   Timer? _refreshTimer;
+  Timer? _retryTimer;
   String? _lease, _generation;
   DateTime? _lastBeginAt;
-  int _epoch = 0;
+  int _epoch = 0, _retryAttempt = 0;
   Future<void>? _beginning, _stopping;
 
   void _switchLease(String lease) {
@@ -31,6 +41,9 @@ class LatestScreenPreviewUploader {
     _lease = lease;
     _generation = null;
     _lastBeginAt = null;
+    _retryAttempt = 0;
+    _retryTimer?.cancel();
+    _retryTimer = null;
     _refreshTimer?.cancel();
     _refreshTimer = Timer.periodic(_refreshInterval, (_) {
       if (_lease == lease) unawaited(start(lease).catchError((_) {}));
@@ -51,14 +64,29 @@ class LatestScreenPreviewUploader {
       }
       final previous = _generation;
       _generation = generation;
+      _retryAttempt = 0;
+      _retryTimer?.cancel();
+      _retryTimer = null;
       if (previous != null && previous != generation) {
         await client.invalidate(lease, previous).catchError((_) {});
       }
     } catch (_) {
-      // The next 30-second screen sample retries the server lease request.
+      _scheduleBeginRetry(lease, epoch);
     } finally {
       if (epoch == _epoch) _beginning = null;
     }
+  }
+
+  void _scheduleBeginRetry(String lease, int epoch) {
+    if (epoch != _epoch || lease != _lease || _retryTimer != null) return;
+    final delay = _beginRetryDelays[_retryAttempt];
+    if (_retryAttempt < _beginRetryDelays.length - 1) _retryAttempt++;
+    _retryTimer = Timer(delay, () {
+      _retryTimer = null;
+      if (epoch == _epoch && lease == _lease) {
+        unawaited(start(lease).catchError((_) {}));
+      }
+    });
   }
 
   Future<void> start(String lease) async {
@@ -92,6 +120,9 @@ class LatestScreenPreviewUploader {
     _lease = _generation = null;
     _refreshTimer?.cancel();
     _refreshTimer = null;
+    _retryTimer?.cancel();
+    _retryTimer = null;
+    _retryAttempt = 0;
     _lastBeginAt = null;
     final beginning = _beginning;
     await beginning?.catchError((_) {});

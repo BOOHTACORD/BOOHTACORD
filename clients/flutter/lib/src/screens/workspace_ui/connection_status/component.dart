@@ -12,6 +12,7 @@ class WorkspaceConnectionStatus extends StatefulWidget {
     required this.chatConnected,
     required this.chatConnecting,
     required this.voicePhase,
+    this.voiceStatusDismissedAfterLeave = false,
     required this.rosterPhase,
     required this.rosterRetained,
     required this.lastUpdatedAt,
@@ -23,6 +24,7 @@ class WorkspaceConnectionStatus extends StatefulWidget {
   final bool chatConnected;
   final bool chatConnecting;
   final VoicePhase voicePhase;
+  final bool voiceStatusDismissedAfterLeave;
   final VoiceRosterPhase rosterPhase;
   final bool rosterRetained;
   final DateTime? lastUpdatedAt;
@@ -39,12 +41,19 @@ class _WorkspaceConnectionStatusState extends State<WorkspaceConnectionStatus> {
   Timer? _ageTimer;
   DateTime _now = DateTime.now();
 
-  bool get _visible =>
-      !widget.chatConnected ||
-      widget.rosterPhase != VoiceRosterPhase.fresh ||
-      widget.voicePhase == VoicePhase.joining ||
-      widget.voicePhase == VoicePhase.reconnecting ||
-      widget.voicePhase == VoicePhase.error;
+  bool get _visible {
+    if (widget.chatConnected &&
+        (widget.voiceStatusDismissedAfterLeave ||
+            widget.voicePhase == VoicePhase.idle ||
+            widget.voicePhase == VoicePhase.leaving)) {
+      return false;
+    }
+    return !widget.chatConnected ||
+        widget.rosterPhase != VoiceRosterPhase.fresh ||
+        widget.voicePhase == VoicePhase.joining ||
+        widget.voicePhase == VoicePhase.reconnecting ||
+        widget.voicePhase == VoicePhase.error;
+  }
 
   @override
   void initState() {

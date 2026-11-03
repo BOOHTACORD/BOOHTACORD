@@ -17,7 +17,7 @@ if __package__:
 else:
     from diagnostics import capture as capture_health
 
-API = 'repos/Egkurilov/BOOHTACORD/actions/runners'
+API = 'repos/BOOHTACORD/BOOHTACORD/actions/runners'
 BASE = 'boohtacord-ci-base'
 RUNTIME = Path(os.environ.get('RUNTIME_DIRECTORY', '/run/boohtacord-ci'))
 LABELS = ['self-hosted', 'linux', 'x64', 'boohtacord-ci-ephemeral']

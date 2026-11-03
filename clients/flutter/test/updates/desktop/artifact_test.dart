@@ -65,7 +65,7 @@ void main() {
       'distribution': 'direct',
       'channel': 'stable',
       'package_type': 'velopack_nupkg',
-      'download_url': 'https://github.com/Egkurilov/BOOHTACORD/releases/download/windows-v1.0.2/boohtacord-1.0.2-full.nupkg',
+      'download_url': 'https://github.com/BOOHTACORD/BOOHTACORD/releases/download/windows-v1.0.2/boohtacord-1.0.2-full.nupkg',
       'size': 1024,
       'sha256': 'a' * 64,
       'min_os_version': '10.0.0',
@@ -157,10 +157,10 @@ void main() {
   test('arbitrary origins, credentials and path confusion are never installer sources', () async {
     for (final url in [
       'https://evil.test/app.nupkg',
-      'https://github.com.evil.test/Egkurilov/BOOHTACORD/releases/download/a/b',
-      'https://user:secret@github.com/Egkurilov/BOOHTACORD/releases/download/a/b',
-      'http://github.com/Egkurilov/BOOHTACORD/releases/download/a/b',
-      'https://github.com/Egkurilov/BOOHTACORD/releases/download/a/../b',
+      'https://github.com.evil.test/BOOHTACORD/BOOHTACORD/releases/download/a/b',
+      'https://user:secret@github.com/BOOHTACORD/BOOHTACORD/releases/download/a/b',
+      'http://github.com/BOOHTACORD/BOOHTACORD/releases/download/a/b',
+      'https://github.com/BOOHTACORD/BOOHTACORD/releases/download/a/../b',
     ]) {
       payload['download_url'] = url;
       await expectLater(

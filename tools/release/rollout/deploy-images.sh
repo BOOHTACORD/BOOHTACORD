@@ -112,8 +112,13 @@ else
 fi
 python3 "$script_dir/align-existing-private-network.py" "$project_dir" --ensure-postgres-alias
 [[ "$admission_enabled" -eq 1 ]] || enable_maintenance_admission
-python3 "$livekit_private_path_script" "$project_dir"
+# Start LiveKit before probing its private RoomService endpoint. This lets a
+# deployment recover a stopped LiveKit service instead of having the preflight
+# reject the release before it can bring the service back up. Compose also
+# waits for Redis because LiveKit declares it as a healthy dependency.
+"${compose[@]}" up -d --wait livekit
 sleep 15
+python3 "$livekit_private_path_script" "$project_dir"
 if [[ "$release_mode" == "registry-digest" ]]; then
   API_IMAGE="$api_image" WEB_IMAGE="$web_image" "${compose[@]}" pull api migrate web
 fi
@@ -132,6 +137,10 @@ delivery_phase migration_started
 "${compose[@]}" run --rm --no-deps migrate
 delivery_phase migration_completed
 "${compose[@]}" run --rm --no-deps screen-preview-storage-init
+# Server-managed screen previews require the LiveKit Egress worker and its
+# Redis/LiveKit dependencies. Keep this in the deployment path so API health
+# cannot pass while preview capture is silently unavailable.
+"${compose[@]}" up -d --wait egress
 delivery_phase services_started
 "${compose[@]}" up -d --no-deps --no-build api web
 "${compose[@]}" up -d --no-deps --no-build --force-recreate proxy

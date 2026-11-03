@@ -17,7 +17,7 @@ def rewrite_sums(directory):
 
 def fixture(root,platform):
     directory=root/'assets';directory.mkdir();identity=load(platform)
-    context={'repository':'Egkurilov/BOOHTACORD','platform':platform,'tag':platform+'-v'+identity['version'],
+    context={'repository':'BOOHTACORD/BOOHTACORD','platform':platform,'tag':platform+'-v'+identity['version'],
              'source_revision':output('git','rev-parse','HEAD'),'identity':identity,'execution':{'run_id':'local','run_attempt':'1'}}
     arches={'android':['arm64-v8a','armeabi-v7a','x86_64'],'windows':['x64'],'macos':['arm64','x86_64']}[platform]
     tag=context['tag']

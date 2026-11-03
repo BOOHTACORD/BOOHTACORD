@@ -28,7 +28,7 @@ Future<VerifiedInstallArtifact> testPackage(
       'distribution': 'direct',
       'channel': 'stable',
       'package_type': macos ? 'sparkle_zip' : 'velopack_nupkg',
-      'download_url': 'https://github.com/Egkurilov/BOOHTACORD/releases/download/test-v1.0.2/package.zip',
+      'download_url': 'https://github.com/BOOHTACORD/BOOHTACORD/releases/download/test-v1.0.2/package.zip',
       'size': bytes.length,
       'sha256': crypto.sha256.convert(bytes).toString(),
       'min_os_version': macos ? '13.0' : '10.0',

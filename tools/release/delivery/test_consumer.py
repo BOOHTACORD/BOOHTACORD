@@ -2,7 +2,7 @@
 import unittest
 from . import consumer
 
-REPO = 'Egkurilov/BOOHTACORD'
+REPO = 'BOOHTACORD/BOOHTACORD'
 SHA = 'a' * 40
 SOURCE = 'b' * 40
 

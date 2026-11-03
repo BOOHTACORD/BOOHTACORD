@@ -25,6 +25,7 @@ abstract final class GcColors {
   static const onAccent = Color(0xFFFFFFFF);
   static const success = Color(0xFF22C55E);
   static const successBackground = Color(0xFF19352F);
+  static const voiceConnectedSurface = Color(0xFF10191A);
   static const warning = Color(0xFFF59E0B);
   static const warningBackground = Color(0xFF3D3020);
   static const danger = Color(0xFFEF4444);

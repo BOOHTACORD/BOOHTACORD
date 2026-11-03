@@ -5,7 +5,7 @@ checks passed, including the protected GitHub Actions `ci-required` check.
 The tested merge and resulting master tree both equal
 `71299ea5de4fd1b047cc69e3339f82ba7c5f583e`.
 
-The single subsequent actual [run 39351839757](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39351839757),
+The single subsequent actual [run 39351839757](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39351839757),
 job `118397600099`, finished **FAIL**. Artifact `12234415451` was downloaded and
 checked against the authenticated size 878773 bytes and SHA-256
 `49a8e81e264b0b025528f9eca5ac64f7a7d04f0f95860489c05e9a168a029c47`.

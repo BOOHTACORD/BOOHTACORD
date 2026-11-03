@@ -29,9 +29,9 @@ for (const width of [1440, 780]) for (const surface of ['prejoin', 'audio', 'pro
       expect(form!.x + form!.width).toBeLessThanOrEqual(zoomed.width + 1)
     }
     if (surface === 'audio') {
-      const help = page.getByText('О настройках аудио', { exact: true })
+      const help = page.locator('.audio-check-details summary')
       await help.focus(); await help.press('Enter')
-      await expect(page.getByText('Настройки действуют на этом устройстве.', { exact: true })).toBeVisible()
+      await expect(page.getByText('Проверка локальная: она не подтверждает слышимость у другого участника.', { exact: true })).toBeVisible()
     }
     if (surface === 'chat' || surface === 'dm') {
       const trigger = page.getByRole('button', { name: 'Другие действия', exact: true })

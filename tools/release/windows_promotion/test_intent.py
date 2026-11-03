@@ -9,7 +9,7 @@ from . import intent
 
 def catalogs():
     target={'release_id':'windows-direct-stable-r53','release_order':53,'version':'1.0.39','native_build':'72',
-      'priority':'normal','action':{'kind':'open_download_page','url':'https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.39'}}
+      'priority':'normal','action':{'kind':'open_download_page','url':'https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/windows-v1.0.39'}}
     before={'schema_version':1,'catalog_revision':29,'application_family':'boohtacord','entries':[
       dict(zip(intent.SELECTOR,['windows','direct','stable','x64']),state='unconfigured',target=None),
       dict(zip(intent.SELECTOR,['android','direct','stable','arm64']),state='unconfigured',target=None)]}

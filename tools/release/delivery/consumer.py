@@ -6,7 +6,7 @@ from pathlib import Path
 from .commands import execute
 from .provenance import validate as producer
 
-REPOSITORY = 'Egkurilov/BOOHTACORD'
+REPOSITORY = 'BOOHTACORD/BOOHTACORD'
 WORKFLOWS = {'automatic': ('workflow_run', 'deploy-production.yaml'),
              'retained': ('workflow_dispatch', 'install-retained-release.yaml')}
 

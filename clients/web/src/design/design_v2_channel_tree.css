@@ -2,14 +2,11 @@
 .sidebar .sidebar-tabs { margin-bottom: 8px; }
 .channel-navigation .channel-navigation-actions { height: 36px; padding: 0 0 0 8px; }
 .channel-navigation .channel-navigation-actions > span { line-height: 1rem; }
-.channel-navigation .channel-search { display: block; margin: 4px 8px 8px; }
-.channel-navigation .channel-search input { width: 100%; min-height: 34px; padding: 0 10px; border: 1px solid var(--gc-border-subtle); border-radius: 8px; color: var(--gc-text-primary); background: var(--gc-surface-raised); }
 .channel-navigation .channel-row .channel-favorite-toggle { width: 28px; flex: 0 0 28px; border: 0; color: var(--gc-text-secondary); background: transparent; font-size: 1.0625rem; }
 .channel-navigation .channel-row .channel-favorite-toggle[aria-pressed='true'] { color: var(--gc-accent-text); }
 .channel-navigation .channel-favorites-title { flex: 1; text-align: left; }
 .channel-navigation .channel-favorite-link { width: 100%; }
 .channel-navigation .channel-favorite-parent { overflow: hidden; color: var(--gc-text-secondary); font-size: 0.6875rem; text-overflow: ellipsis; white-space: nowrap; }
-.channel-navigation .channel-search-empty { padding: 8px; color: var(--gc-text-secondary); }
 .channel-navigation .channel-navigation-actions button, .channel-navigation .channel-category-actions button { display: inline-flex; width: 36px; height: 36px; align-items: center; justify-content: center; border-radius: 8px; padding: 0; }
 .channel-navigation-actions button svg, .channel-category-actions button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
 .channel-category-actions button svg { width: 18px; height: 18px; }
@@ -32,10 +29,6 @@
 .channel-navigation .voice-member-row { min-height: 32px; padding-left: 36px; font-size: 0.8125rem; }
 .channel-navigation .voice-member-avatar { width: 22px; height: 22px; flex-basis: 22px; font-size: 0.5625rem; font-weight: 600; }
 .channel-navigation .voice-member-name { font-size: 0.8125rem; }
-.channel-navigation .voice-member-share { width: auto; min-width: 0; height: 14px; flex: 0 0 auto; border-radius: 6px; padding: 0 4px; color: #FF9AD5; background: #3D1831; font-size: 0.625rem; line-height: 0.875rem; font-weight: 600; }
-.channel-navigation .voice-member-share svg { display: none; }
-.channel-navigation .voice-member-share::after { content: 'ЭФИР'; }
-.channel-navigation .voice-member-row:has(.voice-member-share) .voice-person-state { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 @media (max-width: 1023px) {
   .sidebar.is-open .channel-navigation-actions { height: 44px; }
   .sidebar.is-open .channel-navigation-actions button, .sidebar.is-open .channel-category-actions button { width: 44px; height: 44px; margin: 0; }
@@ -44,7 +37,6 @@
   .sidebar.is-open .channel-navigation .channel-button { height: 44px; padding-inline: 10px; }
   .sidebar.is-open .channel-navigation .voice-member-list { margin: 0; gap: 0; padding: 0; }
   .sidebar.is-open .channel-navigation .voice-member-row { min-height: 36px; }
-  .sidebar.is-open .channel-navigation .voice-member-share { min-width: 0; height: 14px; border-radius: 6px; padding: 0 4px; color: #FF9AD5; background: #3D1831; }
 }
 @media (max-width: 1023px) {
   .channel-navigation .channel-row .channel-favorite-toggle,

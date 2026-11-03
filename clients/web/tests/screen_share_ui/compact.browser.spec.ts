@@ -1,5 +1,55 @@
 import { expect, test } from '@playwright/test'
 
+test('stream viewer keeps return to participants visible in the bottom toolbar', async ({ page }, info) => {
+  for (const width of [390, 1440]) {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls&watching-remote&single-stream')
+    await page.evaluate(() => {
+      const canvas = document.createElement('canvas'); canvas.width = 1280; canvas.height = 720
+      const context = canvas.getContext('2d')!; context.fillStyle = '#142f40'; context.fillRect(0, 0, 1280, 720)
+      context.fillStyle = '#c4e4ff'; context.font = '48px sans-serif'; context.fillText('Тестовая трансляция', 80, 360)
+      const video = document.querySelector('video')!; video.srcObject = canvas.captureStream(1); void video.play()
+    })
+    await expect(page.locator('.screen-loading-state')).not.toBeVisible()
+    const stage = page.locator('.screen-stage')
+    await stage.hover()
+
+    const controls = page.getByRole('group', { name: 'Управление просмотром' })
+    await expect(controls).toHaveCSS('opacity', '1')
+    await expect(controls.getByRole('button', { name: 'Диагностика просмотра', exact: true })).toHaveCount(0)
+    await expect(controls.getByRole('button', { name: 'Развернуть на весь экран', exact: true })).toBeVisible()
+
+    const returnButton = controls.locator('.stream-toolbar-actions').getByRole('button', { name: 'К участникам', exact: true })
+    await expect(returnButton).toBeVisible()
+    await expect(controls.locator('.stream-more-actions')).toHaveCount(0)
+    await expect(returnButton).toHaveAttribute('title', 'К участникам')
+    await expect(returnButton.locator('svg')).toHaveCount(1)
+    await expect(returnButton.locator('.gc-sr-only')).toHaveText('К участникам')
+    await page.screenshot({ path: info.outputPath(`viewer-actions-${width}.png`) })
+
+    await returnButton.click()
+    expect(await page.evaluate(() => (window as any).__screenUI.events)).toContain('clear')
+  }
+})
+
+test('owner keeps return to participants in the toolbar and quality controls in overflow', async ({ page }) => {
+  await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls&single-stream')
+  await page.evaluate(() => {
+    const canvas = document.createElement('canvas'); canvas.width = 1280; canvas.height = 720
+    canvas.getContext('2d')!.fillRect(0, 0, 1280, 720)
+    const video = document.querySelector('video')!; video.srcObject = canvas.captureStream(1); void video.play()
+  })
+  await expect(page.locator('.screen-loading-state')).not.toBeVisible()
+  await page.locator('.screen-stage').hover()
+  const controls = page.getByRole('group', { name: 'Управление просмотром' })
+  const returnButton = controls.locator('.stream-toolbar-actions').getByRole('button', { name: 'К участникам', exact: true })
+  await expect(returnButton).toBeVisible()
+  await controls.locator('.stream-more-actions > summary').click()
+  const menu = controls.locator('.stream-voice-return')
+  await expect(menu.getByRole('button', { name: 'Качество трансляции', exact: true })).toBeVisible()
+  await expect(menu.getByRole('button', { name: 'К участникам', exact: true })).toHaveCount(0)
+})
+
 for (const width of [390, 1440]) {
   test(`compact viewer gives video the available height at ${width}px`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 900 })
@@ -32,13 +82,40 @@ for (const width of [390, 1440]) {
     await stage.hover()
     await expect(controls).toHaveCSS('opacity', '1')
     await page.screenshot({ path: info.outputPath(`compact-controls-${width}.png`) })
-    if (width < 720) await page.getByLabel('Дополнительные действия', { exact: true }).click()
-    await page.getByRole('button', { name: 'Диагностика просмотра', exact: true }).click()
-    await expect(page.getByText('Снять минуту измерений', { exact: true })).toBeVisible()
-    await page.getByRole('button', { name: 'Закрыть диагностику', exact: true }).click()
-    await expect(page.getByText('Снять минуту измерений', { exact: true })).not.toBeVisible()
+    await page.getByLabel('Дополнительные действия', { exact: true }).click()
+    await expect(controls.getByRole('button', { name: 'Диагностика просмотра', exact: true })).toHaveCount(0)
+    await expect(controls.getByRole('button', { name: 'Развернуть на всю область', exact: true })).toHaveCount(0)
+    await expect(controls.locator('.stream-toolbar-actions').getByRole('button', { name: 'К участникам', exact: true })).toHaveAttribute('title', 'К участникам')
   })
 }
+
+test('pausing and resuming a stream controls its video and audio together', async ({ page }) => {
+  await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls&watching-remote&single-stream')
+  await page.evaluate(() => {
+    const canvas = document.createElement('canvas'); canvas.width = 1280; canvas.height = 720
+    const context = canvas.getContext('2d')!; context.fillStyle = '#142f40'; context.fillRect(0, 0, 1280, 720)
+    const video = document.querySelector('video')!
+    video.srcObject = canvas.captureStream(1)
+    void video.play()
+
+    const audio = document.querySelector('audio')!
+    const playback = { paused: false, pauseCalls: 0, playCalls: 0 }
+    Object.defineProperty(audio, 'paused', { configurable: true, get: () => playback.paused })
+    audio.pause = () => { playback.paused = true; playback.pauseCalls += 1 }
+    audio.play = () => { playback.paused = false; playback.playCalls += 1; return Promise.resolve() }
+    ;(window as any).__screenUI.audioPlayback = playback
+  })
+  await expect(page.locator('.screen-loading-state')).not.toBeVisible()
+  await page.locator('.screen-stage').hover()
+  await page.getByRole('button', { name: 'Приостановить трансляцию', exact: true }).click()
+  await expect.poll(() => page.locator('video').evaluate(element => (element as HTMLVideoElement).paused)).toBe(true)
+  await expect.poll(() => page.evaluate(() => (window as any).__screenUI.audioPlayback)).toEqual({ paused: true, pauseCalls: 1, playCalls: 0 })
+
+  await page.getByRole('button', { name: 'Продолжить трансляцию', exact: true }).click()
+  await expect.poll(() => page.locator('video').evaluate(element => (element as HTMLVideoElement).paused)).toBe(false)
+  await expect.poll(() => page.evaluate(() => (window as any).__screenUI.audioPlayback)).toEqual({ paused: false, pauseCalls: 1, playCalls: 1 })
+})
+
 
 test('compact viewer keeps the stream stage visible in a wide 208px viewport', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 208 })

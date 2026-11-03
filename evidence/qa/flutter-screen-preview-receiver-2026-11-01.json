@@ -1,0 +1,57 @@
+{
+  "id": "flutter-screen-preview-receiver-2026-11-01",
+  "task": "Flutter receives server-managed previews from Web and Flutter publishers",
+  "status": "PARTIAL",
+  "observed_at": "2026-11-01",
+  "source_base_commit": "2ff4ece2c75a068fc70b74a6673560294728cb2e",
+  "change": "Flutter retains authorized preview hints when they arrive before LiveKit publishes the remote participant, retries an initially empty preview response without advancing its revision, and reads the frame through the existing session/lease/channel ACL. The server re-announces an unchanged current revision when the publisher renews its capture lease so late viewers can discover a static or unchanged screen.",
+  "checks": [
+    {
+      "name": "flutter_receiver_and_card_tests",
+      "result": "PASS_LOCAL",
+      "detail": "The receiver loads a frame before LiveKit exposes the remote participant and retries a 204 response; participant-card placeholder and frame presentations pass."
+    },
+    {
+      "name": "backend_screen_preview_tests",
+      "result": "PASS_LOCAL",
+      "detail": "The screen-preview package tests pass, including re-announcing an unchanged current frame on the publisher heartbeat for late viewers."
+    },
+    {
+      "name": "flutter_full_unit_suite",
+      "result": "PASS_LOCAL",
+      "detail": "The local feature runner completed the Flutter unit suite successfully."
+    },
+    {
+      "name": "flutter_component_captures",
+      "result": "PASS_LOCAL",
+      "detail": "Component capture suite passed. Source-size review of flutter-participant-card-preview-pending.png (800x520) confirms centered waiting icon/copy, readable source/live badges, and no initials or play affordance before a frame arrives."
+    },
+    {
+      "name": "production_egress_inventory",
+      "result": "CONFIRMED_MISSING",
+      "detail": "Read-only Docker inventory on the configured production host showed LiveKit, API, Web, proxy and PostgreSQL containers, but no Redis or Egress container (running or stopped). The current deployment script initialized preview storage but never started the Egress service."
+    },
+    {
+      "name": "deployment_rollout_regressions",
+      "result": "PASS_LOCAL",
+      "detail": "Fake-Docker rollout tests verify Egress starts with Compose dependencies after storage initialization and before API/Web; an Egress startup failure stops the rollout before API/Web replacement. Rollback tests preserve data volumes and execute the same service order."
+    },
+    {
+      "name": "android_and_paired_media_runtime",
+      "result": "BLOCKED",
+      "detail": "The local runtime stack stopped before client/media acceptance because Docker could not start livekit/egress:v1.14.1: 'unable to find user egress: no matching entries in passwd file'. Production has no Egress service yet, and the fix is not deployed. Both Flutter-publisher-to-Web and Web-publisher-to-Flutter live delivery remain unverified on a running native/SFU stack."
+    },
+    {
+      "name": "flutter_test_recheck",
+      "result": "BLOCKED",
+      "detail": "Focused Flutter tests passed in the prior local feature run. A recheck in this turn could not start because the sandbox denied Flutter SDK cache writes under /opt/homebrew/share/flutter/bin/cache; no source-level Flutter failure was reported."
+    },
+    {
+      "name": "local_compose_layout_check",
+      "result": "BLOCKED",
+      "detail": "The local Docker executable has no Compose plugin ('docker compose' is unavailable), so the Compose layout checker could not run. Deployment shell tests passed; repository CI remains the Compose parser gate."
+    }
+  ],
+  "runtime_report": ".out/local-features/20261101-101854/index.html",
+  "limitation": "The root cause and rollout gap are confirmed, and deployment logic is fixed locally. Production rollout and paired publisher-to-viewer acceptance still need to run; the one-time startup may reconcile LiveKit and briefly reconnect voice clients. Unit and component checks do not establish native Flutter capture or live media delivery."
+}

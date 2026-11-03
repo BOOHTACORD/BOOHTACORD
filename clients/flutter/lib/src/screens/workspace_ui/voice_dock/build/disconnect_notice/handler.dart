@@ -69,6 +69,7 @@ extension VoiceDockDisconnectNoticeRenderer on WorkspaceVoiceDockContext {
               quality: state.voiceConnectionQuality,
               pingMs: state.voicePingMs,
               compact: compact,
+              showPing: false,
             )
           else
             Semantics(

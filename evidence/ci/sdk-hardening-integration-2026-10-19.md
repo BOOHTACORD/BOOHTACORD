@@ -10,7 +10,7 @@ verified with Git. Earlier cc32 acceptance remains separately frozen in
 
 ## Observed hosted results for 3efd07e0
 
-[CI 39176086072](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39176086072)
+[CI 39176086072](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39176086072)
 completed all seven core checks successfully: changes 117819065478, contracts
 117819065698, backend 117819099574, Flutter/Android 117819099586, frontend
 117819099666, Windows 117819099687 and ci-required 117824469537. Contracts ran all
@@ -21,11 +21,11 @@ The bare-Windows-bash failure from preceding SDK head 00ec7935 was fixed by
 resolving Git Bash explicitly; no WSL installation or weaker gate was used.
 
 Additional checks: bounded actual SFU
-[39176085963](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39176085963),
-lifecycle [39176085949](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39176085949)
+[39176085963](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39176085963),
+lifecycle [39176085949](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39176085949)
 and isolated signed rollback
-[39176086067](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39176086067) succeeded.
-**Next-client [39176086082](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39176086082)
+[39176086067](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39176086067) succeeded.
+**Next-client [39176086082](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39176086082)
 failed** waiting 20 s for the newly posted reply row, after uploads and protected
 unread checks passed. Therefore the combined candidate was not accepted or merged.
 

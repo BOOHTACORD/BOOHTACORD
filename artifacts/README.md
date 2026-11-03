@@ -7,9 +7,9 @@ Git содержит исходники и необходимые для сбо�
 
 | Результат | Где скачать | Срок |
 | --- | --- | --- |
-| Windows CI | [Flutter Windows CI](https://github.com/Egkurilov/BOOHTACORD/actions/workflows/flutter-windows.yaml) → успешный запуск → **Artifacts** → `BOOHTACORD-windows-x64-<commit SHA>` | 30 дней |
-| macOS CI | [Flutter macOS CI](https://github.com/Egkurilov/BOOHTACORD/actions/workflows/flutter-macos.yaml) → ручной успешный запуск → **Artifacts** → `BOOHTACORD-macos-universal-<commit SHA>` | 30 дней |
-| Будущие Android и macOS релизы | [GitHub Releases](https://github.com/Egkurilov/BOOHTACORD/releases) после отдельного релизного запуска | Пока опубликован релиз |
+| Windows CI | [Flutter Windows CI](https://github.com/BOOHTACORD/BOOHTACORD/actions/workflows/flutter-windows.yaml) → успешный запуск → **Artifacts** → `BOOHTACORD-windows-x64-<commit SHA>` | 30 дней |
+| macOS CI | [Flutter macOS CI](https://github.com/BOOHTACORD/BOOHTACORD/actions/workflows/flutter-macos.yaml) → ручной успешный запуск → **Artifacts** → `BOOHTACORD-macos-universal-<commit SHA>` | 30 дней |
+| Будущие Android и macOS релизы | [GitHub Releases](https://github.com/BOOHTACORD/BOOHTACORD/releases) после отдельного релизного запуска | Пока опубликован релиз |
 | Web/API | GHCR-образы с тегом точного commit SHA; production использует проверенные локальные digest | По политике реестра |
 
 Windows artifact содержит всю папку Flutter `Release`: EXE, DLL и `data/flutter_assets`.

@@ -1,7 +1,7 @@
 # Issue #294 clipboard context: follow-up acceptance plan
 
 Date: 2026-10-17 (Europe/Istanbul). Source: branch `codex/issue-294-local-paste`.
-Issue: https://github.com/Egkurilov/BOOHTACORD/issues/294
+Issue: https://github.com/BOOHTACORD/BOOHTACORD/issues/294
 The user authorized publishing this patch and scheduling checks; this plan does not authorize
 merge, release, deployment or closing the broader issue.
 

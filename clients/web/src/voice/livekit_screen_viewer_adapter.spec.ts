@@ -2,12 +2,44 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { bindLiveKitScreenViewer, type LiveKitScreenViewerRoom } from './livekit_screen_viewer_adapter'
 import type { RemoteVoiceTrack } from './remote_voice_playback'
+import { streamStartChime } from './stream_start_runtime'
 
 function publication(source?: string) {
   return { isMuted: false, setSubscribed: vi.fn(), source }
 }
 
 describe('LiveKit screen viewer adapter', () => {
+  it('plays participant cues after baseline, ignores service leases, and pauses during signal reconnect', () => {
+    const listeners = new Map<string, (...arguments_: any[]) => void>()
+    const alice = { identity: 'alice', metadata: 'account:alice', getTrackPublication: () => undefined }
+    const bob = { identity: 'bob', metadata: 'account:bob', getTrackPublication: () => undefined }
+    const lease = { identity: 'voice-lease:preview', metadata: '', getTrackPublication: () => undefined }
+    const room: LiveKitScreenViewerRoom = {
+      on: vi.fn((event: string, listener: (...arguments_: any[]) => void) => listeners.set(event, listener)),
+      remoteParticipants: new Map([[alice.identity, alice]]),
+    }
+    const sound = vi.spyOn(streamStartChime, 'playVoiceEvent').mockImplementation(() => undefined)
+    const binding = bindLiveKitScreenViewer(room, {
+      activeSpeakersChanged: 'active-speakers-changed', participantConnected: 'participant-connected',
+      participantDisconnected: 'participant-disconnected', localTrackPublished: 'local-track-published',
+      localTrackUnpublished: 'local-track-unpublished', reconnecting: 'reconnecting',
+      signalReconnecting: 'signal-reconnecting', reconnected: 'reconnected', disconnected: 'disconnected',
+      trackMuted: 'track-muted', trackPublished: 'track-published', trackSubscribed: 'track-subscribed',
+      trackUnmuted: 'track-unmuted', trackUnpublished: 'track-unpublished', trackUnsubscribed: 'track-unsubscribed',
+    }, { microphone: 'microphone', screenAudio: 'screen-audio', screenVideo: 'screen-video' })
+
+    binding.seedVoiceParticipantSounds()
+    listeners.get('participant-connected')!(lease)
+    listeners.get('signal-reconnecting')!()
+    listeners.get('participant-disconnected')!(alice)
+    listeners.get('reconnected')!()
+    listeners.get('participant-connected')!(bob)
+
+    expect(sound.mock.calls).toEqual([['participant-joined']])
+    binding.clear()
+    sound.mockRestore()
+  })
+
   it('reads the selected publisher audience using the viewer lease and the publisher lease', async () => {
     const viewerLeaseId = '11111111-1111-4111-8111-111111111111'
     const ownerLeaseId = '22222222-2222-4222-8222-222222222222'

@@ -32,7 +32,7 @@ class _AudioDeviceCheckState extends State<AudioDeviceCheck> {
   bool _inputActive = false;
   bool _inputBusy = false;
   bool _outputBusy = false;
-  String _inputState = 'Проверка микрофона выключена.';
+  String? _inputState;
   String? _outputState;
   int _inputGeneration = 0;
   int _outputGeneration = 0;
@@ -117,7 +117,7 @@ class _AudioDeviceCheckState extends State<AudioDeviceCheck> {
       setState(() {
         _inputActive = true;
         _level = 0;
-        _inputState = 'Говорите: индикатор показывает локальный уровень, звук не отправляется.';
+        _inputState = 'Говорите, чтобы увидеть уровень микрофона.';
       });
     } catch (cause) {
       if (generation == _inputGeneration) {
@@ -145,7 +145,7 @@ class _AudioDeviceCheckState extends State<AudioDeviceCheck> {
         _inputBusy = true;
         _inputActive = false;
         _level = 0;
-        _inputState = 'Проверка микрофона выключена.';
+        _inputState = null;
       });
     }
     try {
@@ -174,7 +174,7 @@ class _AudioDeviceCheckState extends State<AudioDeviceCheck> {
       );
       if (!mounted || generation != _outputGeneration) return;
       setState(
-        () => _outputState = 'Сигнал завершён. Если его не было слышно, проверьте системную громкость и динамик.',
+        () => _outputState = 'Сигнал воспроизведён. Если его не слышно, проверьте громкость динамика.',
       );
     } catch (cause) {
       if (!mounted || generation != _outputGeneration) return;
@@ -225,18 +225,24 @@ class _AudioDeviceCheckState extends State<AudioDeviceCheck> {
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
                   : const Icon(Icons.volume_up_outlined),
-              label: const Text('Проверить динамик'),
+              label: const Text('Тестовый звук'),
             ),
           ],
         ),
         const SizedBox(height: 10),
-        Semantics(
-          liveRegion: true,
-          child: Text(
-            _inputState,
-            style: const TextStyle(color: GcColors.textSecondary, fontSize: 13),
+        if (_inputState != null) ...[
+          const SizedBox(height: 10),
+          Semantics(
+            liveRegion: true,
+            child: Text(
+              _inputState!,
+              style: const TextStyle(
+                color: GcColors.textSecondary,
+                fontSize: 13,
+              ),
+            ),
           ),
-        ),
+        ],
         const SizedBox(height: 6),
         Semantics(
           label: 'Уровень микрофона',
@@ -261,10 +267,19 @@ class _AudioDeviceCheckState extends State<AudioDeviceCheck> {
             ),
           ),
         ],
-        const SizedBox(height: 8),
-        const Text(
-          'Проверка локальная: она не подтверждает слышимость у другого участника.',
-          style: TextStyle(color: GcColors.muted, fontSize: 12),
+        Material(
+          color: Colors.transparent,
+          child: ExpansionTile(
+            title: const Text('О проверке устройств'),
+            tilePadding: EdgeInsets.zero,
+            childrenPadding: const EdgeInsets.only(bottom: 12),
+            children: const [
+              Text(
+                'Проверка локальная: она не подтверждает слышимость у другого участника.',
+                style: TextStyle(color: GcColors.muted, fontSize: 12),
+              ),
+            ],
+          ),
         ),
       ],
     ),

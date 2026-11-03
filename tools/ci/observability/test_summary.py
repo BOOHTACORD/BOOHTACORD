@@ -11,7 +11,7 @@ class SummaryTests(unittest.TestCase):
         for scope,workflow,job,command in cases:
             with self.subTest(scope=scope):
                 run=dict(id=101,run_attempt=1,head_sha='a'*40,event='push',status='completed',conclusion='failure',
-                    path='.github/workflows/'+workflow,repository={'full_name':'Egkurilov/BOOHTACORD'})
+                    path='.github/workflows/'+workflow,repository={'full_name':'BOOHTACORD/BOOHTACORD'})
                 env=dict(GITHUB_RUN_ID='101',GITHUB_RUN_ATTEMPT='1',CI_GATE_OUTCOME='failure')
                 jobs=[dict(id=12,name=job,conclusion='failure',steps=[dict(number=5,name='Require exact quality',conclusion='failure')])]
                 row=observe(scope,env,run,jobs,'a'*40,[],{})
@@ -25,7 +25,7 @@ class SummaryTests(unittest.TestCase):
                 self.assertIn('/job/12',markdown(row));self.assertFalse(failure['retry_test'])
 
     def test_failed_or_missing_artifact_is_red_with_source_step_and_reproduction(self):
-        run=dict(id=101,run_attempt=1,head_sha='a'*40,event='push',path='.github/workflows/build-server.yaml',repository={'full_name':'Egkurilov/BOOHTACORD'})
+        run=dict(id=101,run_attempt=1,head_sha='a'*40,event='push',path='.github/workflows/build-server.yaml',repository={'full_name':'BOOHTACORD/BOOHTACORD'})
         env=dict(GITHUB_RUN_ID='101',GITHUB_RUN_ATTEMPT='1',CI_GATE_OUTCOME='failure')
         jobs=[dict(id=12,name='backend / tests',conclusion='failure',steps=[dict(number=3,name='Retain sensitive-value-must-not-appear',conclusion='failure')])]
         row=observe('server',env,run,jobs,'a'*40,[],{})
@@ -35,11 +35,11 @@ class SummaryTests(unittest.TestCase):
         row=observe('server',env,run,[],'a'*40,[],{});self.assertEqual('FAIL',row['outcome'])
 
     def test_wrong_source_never_produces_summary_pass(self):
-        run=dict(id=101,run_attempt=1,head_sha='b'*40,event='push',repository={'full_name':'Egkurilov/BOOHTACORD'})
+        run=dict(id=101,run_attempt=1,head_sha='b'*40,event='push',repository={'full_name':'BOOHTACORD/BOOHTACORD'})
         with self.assertRaises(ValueError):observe('server',dict(GITHUB_RUN_ID='101',GITHUB_RUN_ATTEMPT='1'),run,[],'a'*40,[],{})
 
     def test_cancelled_dependency_remains_red_without_claiming_a_master_defect(self):
-        run=dict(id=101,run_attempt=1,head_sha='a'*40,event='pull_request',path='.github/workflows/ci.yaml',repository={'full_name':'Egkurilov/BOOHTACORD'})
+        run=dict(id=101,run_attempt=1,head_sha='a'*40,event='pull_request',path='.github/workflows/ci.yaml',repository={'full_name':'BOOHTACORD/BOOHTACORD'})
         env=dict(GITHUB_RUN_ID='101',GITHUB_RUN_ATTEMPT='1',CI_GATE_OUTCOME='failure')
         row=observe('pr',env,run,[],'a'*40,[],{'backend':{'result':'cancelled'}})
         self.assertEqual('CANCELLED',row['outcome']);self.assertFalse(row['master_defect'])

@@ -50,7 +50,7 @@ try{
   await page.screenshot({path:input.directory+'/public-04-github-reply-mobile.png',fullPage:true})
   assert.equal(await postMessage({client_message_id:randomUUID(),body:marker+' follow-up'}),201)
   assert.equal(operator('followup').issue,live.issue)
-  report.github_publication='PASS';report.live_issue=`https://github.com/Egkurilov/BOOHTACORD/issues/${live.issue}`
+  report.github_publication='PASS';report.live_issue=`https://github.com/BOOHTACORD/BOOHTACORD/issues/${live.issue}`
   report.public_file_verified=live.public_file_verified;report.issue_reply_visible=true;report.followup_same_issue=true
   assert.equal(operator('close').closed,true)
  }

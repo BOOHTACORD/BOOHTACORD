@@ -290,7 +290,7 @@ void main() {
           connectOptions: const lk.ConnectOptions(autoSubscribe: false),
         ),
       );
-      await tester.tap(find.text('Подключиться без микрофона').last);
+      await tester.tap(find.text('Без микрофона').last);
       await waitFor(
         () =>
             state.room?.connectionState == lk.ConnectionState.connected &&

@@ -3,6 +3,7 @@ import 'package:livekit_client/livekit_client.dart';
 import '../../../models.dart';
 import '../lifecycle/controller.dart';
 import 'audio.dart';
+import 'connect_options.dart';
 import 'prepare.dart';
 import 'finalize.dart';
 import 'enable.dart';
@@ -51,7 +52,12 @@ extension VoiceAdmissionJoin on VoiceController {
       );
       check();
       leaseId = admittedLease;
-      await prepareVoiceAudio(ticket, revision, admittedLease, disconnectGeneration);
+      await prepareVoiceAudio(
+        ticket,
+        revision,
+        admittedLease,
+        disconnectGeneration,
+      );
       candidate = createRoom(voiceRoomOptions());
       pendingRoom = candidate;
       bindVoiceRoomEvents(candidate);
@@ -60,7 +66,7 @@ extension VoiceAdmissionJoin on VoiceController {
       await candidate.connect(
         result.$2.url,
         result.$2.token,
-        connectOptions: const ConnectOptions(autoSubscribe: false),
+        connectOptions: voiceConnectOptions(),
       );
       check();
       await refreshVoiceAudioAfterConnect(
@@ -73,12 +79,17 @@ extension VoiceAdmissionJoin on VoiceController {
       check();
       room = candidate;
       voiceChannel = channel;
-      subscribeCurrentRemoteVoiceTracks(candidate);
+      await syncRemoteVoiceSubscriptions(candidate);
       await applySavedVoiceVolumes(candidate);
       check();
       if (!listenerOnly) ActionScope.current?.step('microphone');
       await enableVoiceMicrophone(candidate, listenerOnly, ticket, revision);
       check();
+      voiceParticipantSoundTracker.seed(
+        candidate.remoteParticipants.values.map(
+          (participant) => participant.identity,
+        ),
+      );
       startVoiceConnectionStatsPolling(candidate);
       observeVoiceStreamStarts(candidate);
       connected = true;

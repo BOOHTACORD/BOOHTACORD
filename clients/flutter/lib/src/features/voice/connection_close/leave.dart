@@ -10,6 +10,7 @@ extension VoiceConnectionCloseLeave on VoiceController {
   Future<void> leaveVoice({bool explicit = true}) {
     if (explicit &&
         (room != null || voiceAdmissionPending || disconnect.notice != null)) {
+      voiceStatusDismissedAfterLeave = true;
       disconnect.local();
       error = null;
     }
@@ -52,6 +53,7 @@ extension VoiceConnectionCloseLeave on VoiceController {
     stopVoiceConnectionStatsPolling();
     voicePhase = VoicePhase.leaving;
     clearVoiceStreamNotice(resetTracker: true, notify: false);
+    voiceParticipantSoundTracker.reset();
     pushToTalkPressed = false;
     notifyListeners();
     await stopScreen;

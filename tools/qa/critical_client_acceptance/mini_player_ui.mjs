@@ -73,8 +73,8 @@ export async function miniPlayerInterface(sender, receiver, input, report, subsc
   await expect(receiver.locator('.composer textarea')).toHaveValue('')
   await receiver.screenshot({ path: input.directory + '/mini-player-dm.png' })
   console.log('stage=mini-player-text-dm-retained')
-  await mini.getByRole('button', { name: 'Приостановить видео', exact: true }).click()
-  await expect.poll(() => receiver.locator('video.screen-player').evaluate(v => v.paused && !document.querySelector('.screen-viewer audio').paused)).toBe(true)
+  await mini.getByRole('button', { name: 'Приостановить трансляцию', exact: true }).click()
+  await expect.poll(() => receiver.locator('video.screen-player').evaluate(v => v.paused && document.querySelector('.screen-viewer audio').paused)).toBe(true)
   await retained()
   await mini.getByRole('button', { name: 'Выключить звук трансляции', exact: true }).click()
   await expect.poll(() => receiver.locator('.screen-viewer audio').evaluate(audio => audio.muted)).toBe(true)
@@ -87,13 +87,13 @@ export async function miniPlayerInterface(sender, receiver, input, report, subsc
     await expect(receiver.getByTestId('voice-dock').locator('.voice-actions')).toBeVisible()
     await expect(receiver.locator('.voice-room-controls')).toBeHidden()
   } else await expect(receiver.locator('.voice-room-controls')).toBeVisible()
-  await expect(receiver.getByRole('button', { name: 'Продолжить видео', exact: true })).toBeVisible()
+  await expect(receiver.getByRole('button', { name: 'Продолжить трансляцию', exact: true })).toBeVisible()
   await expect(receiver.getByRole('button', { name: 'Включить звук трансляции', exact: true })).toBeVisible()
   assert.equal(await range.inputValue(), '65')
   await retained()
   await receiver.keyboard.press('Escape')
   await expect(mini).toBeVisible(); await safeChat()
-  await mini.getByRole('button', { name: 'Продолжить видео', exact: true }).click()
+  await mini.getByRole('button', { name: 'Продолжить трансляцию', exact: true }).click()
   await mini.getByRole('button', { name: 'Включить звук трансляции', exact: true }).click()
   await expect.poll(() => receiver.locator('video.screen-player').evaluate(v => !v.paused && !document.querySelector('.screen-viewer audio').muted)).toBe(true)
   const frames = await receiver.locator('video.screen-player').evaluate(v => v.getVideoPlaybackQuality().totalVideoFrames)
@@ -138,7 +138,7 @@ export async function miniPlayerInterface(sender, receiver, input, report, subsc
   console.log('stage=mini-player-controls-and-cleanup-accepted')
   report.mini_player_interface = { actual_api_sfu: true, source: 'synthetic canvas and quiet oscillator', text_and_dm_send: true,
     same_video_audio_tracks_and_peer_connections: true, no_extra_subscription_during_navigation: true,
-    pause_video_only: true, mute_and_volume_retained: true, expand_escape_returns_to_automatic_mini_player: true, explicit_stop_two_unsubscriptions: true,
+    pause_video_and_audio: true, mute_and_volume_retained: true, expand_escape_returns_to_automatic_mini_player: true, explicit_stop_two_unsubscriptions: true,
     composer_and_dock_clear: true, settings_retains_viewer: true, automatic_mini_player_logout_detaches_outputs_and_closes_peers: true, hardware_capture_and_qoe: 'NOT_RUN' }
   await receiver.evaluate(() => { delete window.__qaMiniIdentity; delete window.__qaLogoutMedia })
 }

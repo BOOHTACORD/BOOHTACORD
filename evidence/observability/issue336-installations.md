@@ -101,7 +101,7 @@ panels deduplicate process replicas rather than summing the same database gauge.
 ## Linux CI checkpoint
 
 PR #512, source `773022c92ddbba47990a1897b14b6a6520971bf0`,
-[run 39663120180](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39663120180):
+[run 39663120180](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39663120180):
 backend database profile PASS, including ordinary uncached Go/no-skip tests and
 both actual two-installation acceptance tests (32.949s). The runner used its
 normal readiness gate, with no diagnostic override. This establishes a complete

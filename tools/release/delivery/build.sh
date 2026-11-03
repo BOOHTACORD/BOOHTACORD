@@ -9,7 +9,7 @@ key="$(mktemp "${RUNNER_TEMP:?}/release-signing.XXXXXX")"
 trap 'rm -f "$key"' EXIT
 printf '%s\n' "$RELEASE_SIGNING_PRIVATE_KEY" > "$key"
 unset RELEASE_SIGNING_PRIVATE_KEY
-if [[ "${GITHUB_ACTIONS:-}" == true && "${GITHUB_REPOSITORY:-}" == Egkurilov/BOOHTACORD ]]; then
+if [[ "${GITHUB_ACTIONS:-}" == true && "${GITHUB_REPOSITORY:-}" == BOOHTACORD/BOOHTACORD ]]; then
   export BOOHTACORD_SERVER_CACHE_ROOT="$HOME/.cache/boohtacord-server-buildx-v1"
 fi
 python3 -m tools.build.server.run --checks .out/checks --signing-key "$key"

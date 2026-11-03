@@ -7,7 +7,7 @@ from tools.release.client_updates.catalog import SELECTOR, validate as catalog
 PATH='deploy/client-updates/catalog.json'
 DIRECTORY='deploy/client-updates/promotions/'
 KEY=('windows','direct','stable','x64')
-REPOSITORY='Egkurilov/BOOHTACORD'
+REPOSITORY='BOOHTACORD/BOOHTACORD'
 
 
 def require(value):

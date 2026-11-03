@@ -66,7 +66,7 @@ as dated evidence. Preserve older evidence as historical observations.
 
 ## Delivery result — 2026-10-02
 
-Implementation merged in [PR #11](https://github.com/Egkurilov/BOOHTACORD/pull/11).
+Implementation merged in [PR #11](https://github.com/BOOHTACORD/BOOHTACORD/pull/11).
 The [final staging record](../../../evidence/reorganization/2026-10-02-final-staging.json)
 and [production receipt](../../../evidence/reorganization/2026-10-02-production-delivery.json)
 bind native checks, measurements and signed delivery to their exact revisions.

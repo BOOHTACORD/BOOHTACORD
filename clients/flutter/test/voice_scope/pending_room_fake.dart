@@ -8,6 +8,7 @@ class PendingVoiceRoom with EventsEmittable<RoomEvent> implements Room {
   final connectStarted = Completer<void>();
   int disconnected = 0;
   bool connectCalled = false;
+  ConnectOptions? receivedConnectOptions;
   MediaDevice? selectedOutput;
   @override
   late RoomOptions roomOptions;
@@ -25,6 +26,7 @@ class PendingVoiceRoom with EventsEmittable<RoomEvent> implements Room {
     FastConnectOptions? fastConnectOptions,
   }) {
     connectCalled = true;
+    receivedConnectOptions = connectOptions;
     if (!connectStarted.isCompleted) connectStarted.complete();
     return connecting.future;
   }
@@ -45,7 +47,8 @@ class PendingVoiceRoom with EventsEmittable<RoomEvent> implements Room {
 
 class PendingMicrophone implements LocalParticipant {
   @override
-  LocalTrackPublication? getTrackPublicationBySource(TrackSource source) => null;
+  LocalTrackPublication? getTrackPublicationBySource(TrackSource source) =>
+      null;
   final enabled = <bool>[];
   final capture = Completer<void>();
   final started = Completer<void>();

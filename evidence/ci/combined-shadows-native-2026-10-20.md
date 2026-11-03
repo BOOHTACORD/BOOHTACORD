@@ -5,7 +5,7 @@ they do not close the remaining release, installation, operator or owner gates.
 Actual execution SHAs are preserved below and inside each original receipt.
 
 Implementation master: `d7a88aa51a0e6d265436df0e24a437a252332c80`
-([PR #489](https://github.com/Egkurilov/BOOHTACORD/pull/489)).
+([PR #489](https://github.com/BOOHTACORD/BOOHTACORD/pull/489)).
 CI39400762908 passed all17selectedjobs with2expectedskips; required
 118559128521/Actions15368 binds exacthead4d7ce86. Testedmergea115f31 and
 final squash have tree24654ac35cbf6f6261a644355eca0c4836d83180.

@@ -5,7 +5,7 @@ from tools.release.native_contract.tags import prepare
 class TagsTest(unittest.TestCase):
     def setUp(self):
         self.sha = 'a' * 40
-        self.env = dict(GITHUB_REPOSITORY='Egkurilov/BOOHTACORD',
+        self.env = dict(GITHUB_REPOSITORY='BOOHTACORD/BOOHTACORD',
                         GITHUB_EVENT_NAME='workflow_dispatch', GITHUB_REF='refs/heads/master',
                         GITHUB_SHA=self.sha)
 

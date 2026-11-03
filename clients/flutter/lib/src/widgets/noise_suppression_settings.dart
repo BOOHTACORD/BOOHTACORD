@@ -152,6 +152,10 @@ class NoiseSuppressionSettings extends StatelessWidget {
     final requestMatches = _requestMatches(runtime, requestedMode);
     final reasonText = requestMatches ? reason(runtime.failureReason) : '';
     final statusColor = _runtimeColor(colors, runtime, requestedMode);
+    final showRuntimeStatus =
+        (requestedMode == NoiseSuppressionMode.rnnoise &&
+            runtime.status != 'idle') ||
+        (_requestMatches(runtime, requestedMode) && runtime.status == 'error');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -197,63 +201,47 @@ class NoiseSuppressionSettings extends StatelessWidget {
             }
           },
         ),
-        const SizedBox(height: 8),
-        Text('Запрошено: ${label(processing.noiseSuppressionMode.name)}.'),
-        const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: statusColor.withAlpha(28),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Semantics(
+        if (showRuntimeStatus) ...[
+          const SizedBox(height: 8),
+          Semantics(
             key: const ValueKey('noise-suppression-runtime-status'),
             container: true,
             liveRegion: true,
-            label: [
-              runtimeTitle,
-              runtimeDetail,
-              if (reasonText.isNotEmpty) reasonText,
-            ].join('. '),
+            label: runtimeTitle,
             child: ExcludeSemantics(
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Icon(
                     _runtimeIcon(runtime, requestedMode),
                     color: statusColor,
-                    size: 20,
+                    size: 18,
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 8),
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          runtimeTitle,
-                          style: Theme.of(context).textTheme.titleSmall
-                              ?.copyWith(
-                                color: statusColor,
-                                fontWeight: FontWeight.w600,
-                              ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(runtimeDetail),
-                        if (reasonText.isNotEmpty) ...[
-                          const SizedBox(height: 4),
-                          Text(reasonText),
-                        ],
-                      ],
+                    child: Text(
+                      runtimeTitle,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: statusColor,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
           ),
-        ),
+        ],
         ExpansionTile(
-          title: const Text('Диагностика обработки'),
+          title: const Text('Сведения об обработке'),
+          tilePadding: EdgeInsets.zero,
+          childrenPadding: const EdgeInsets.only(
+            left: 12,
+            right: 12,
+            bottom: 12,
+          ),
           children: [
+            Text(runtimeDetail),
+            if (reasonText.isNotEmpty) Text(reasonText),
             Text(
               requestMatches
                   ? 'Состояние: $runtimeTitle; обработано кадров: ${runtime.processedFrames}; резервных кадров: ${runtime.fallbackFrames}.'
@@ -273,9 +261,7 @@ class NoiseSuppressionSettings extends StatelessWidget {
               const Text(
                 'Модель RNNoise: rnnoise-stock-v0.1. Время инициализации нативного DSP: недоступно.',
               ),
-            const Text(
-              'Capture AEC/AGC остаются независимыми. Нативный SDK не подтверждает акустическое качество.',
-            ),
+            const Text('Эти данные не оценивают качество звука.'),
           ],
         ),
       ],

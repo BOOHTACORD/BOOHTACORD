@@ -44,7 +44,7 @@
     {
       "name": "GitHub Actions cross-platform CI",
       "result": "PASS",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/37349925116",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37349925116",
       "observation": "Run 524 passed contracts/traceability, Flutter tests/analyzer, Android Kotlin build-mode verification and Debug APK build, plus Windows tests/analyzer and x64 Release distribution build. Unexpired artifacts: boohtacord-android-debug-apk (120465050 bytes) and BOOHTACORD-windows-x64-39c2e1126f9ecbfd6be8411decbc1df85652d9f0 (26107823 bytes), through 2026-11-04."
     },
     {
@@ -62,7 +62,7 @@
       "name": "Spec traceability verifier",
       "command": "pwsh -File tools/verify/spec_traceability/verify-spec-traceability.ps1",
       "result": "PASS",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/37349925116/job/111898395894",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37349925116/job/111898395894",
       "observation": "Local direct invocation was unavailable because pwsh is not installed; the contracts job successfully ran Verify API and requirement traceability through the project CI wrapper after the backlog update."
     }
   ],

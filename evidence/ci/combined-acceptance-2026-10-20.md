@@ -6,9 +6,9 @@ not authorize production execution or replace pending native/physical gates.
 
 ## Required aggregate triage (#402)
 
-[PR457](https://github.com/Egkurilov/BOOHTACORD/pull/457) merged normally under
+[PR457](https://github.com/BOOHTACORD/BOOHTACORD/pull/457) merged normally under
 the active strict `ci-required` ruleset. All 24 checks passed in
-[run39329606270](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39329606270).
+[run39329606270](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39329606270).
 The tested synthetic merge and final master have the identical Git tree
 `13e2e0b528c731c9c2f91806e7b40c3fd3c1cf87`. The actual triage ZIP/digest and
 source/run/attempt binding were verified independently. Three original red
@@ -23,8 +23,8 @@ Two different PR lifecycle controllers actually overlapped for **206 seconds**:
 
 | Workflow run | Job | Actual controller interval, UTC | Tested merge source |
 | --- | --- | --- | --- |
-| [39312750405](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39312750405) | 118266382286 | 19:40:04–19:48:13 | b648e0029c6e396bda1cebbeaf6520f555424789 |
-| [39311951333](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39311951333) | 118263610836 | 19:34:18–19:43:30 | 2593a2f8d8314d6abf96495f98c696694d2e4c07 |
+| [39312750405](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39312750405) | 118266382286 | 19:40:04–19:48:13 | b648e0029c6e396bda1cebbeaf6520f555424789 |
+| [39311951333](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39311951333) | 118263610836 | 19:34:18–19:43:30 | 2593a2f8d8314d6abf96495f98c696694d2e4c07 |
 
 Both actual profiles passed with different Docker owner/port namespaces and
 artifact identities, separate disposable hosted VMs/API/PostgreSQL stacks and
@@ -42,7 +42,7 @@ acceptance remain separate and explicitly NOT_RUN in these runtime receipts.
 
 ## Compatible rollback and cancellation boundary
 
-[Rollback39328262697](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39328262697)
+[Rollback39328262697](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39328262697)
 passed on harness `8add045642585429b1e573cea458fe5bcc72722b`, using real signed QA
 images labelled by their original current `3d22e9007db090e6a2159841506e0e377ae8b0a4`
 and previous `356d32c5ff6b661a747009ad93026c197bdd1b72` sources. Two browser

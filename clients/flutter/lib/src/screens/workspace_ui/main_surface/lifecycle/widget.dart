@@ -14,6 +14,7 @@ class WorkspaceMainSurface extends WorkspaceMainSurfaceContext
     required super.pinnedScreenIdentity,
     super.onToggleNavigation,
     super.onOpenMembers,
+    super.onSearch,
     super.onCapturePttKey,
     super.capturingPttKey = false,
     super.onCaptureVoiceShortcut,

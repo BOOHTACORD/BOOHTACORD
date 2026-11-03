@@ -4,7 +4,7 @@ Status: PASS. Date: 2026-10-05. Issue: #81.
 Executor: GitHub Ubuntu 24.04; owned Go/PostgreSQL/LiveKit fixture.
 Source merge: `c1a9041f379176fa7a27556552498fded39cfa8d`.
 Head: `ff834bc858589f51d4fbe692670838cd0c5de77f`.
-[Actual measurement](https://github.com/Egkurilov/BOOHTACORD/actions/runs/37364698318).
+[Actual measurement](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37364698318).
 
 | Virtual authenticated HTTP observers | Actual RoomService calls | Calls/sec | HTTP p95 ms |
 |---|---|---|---|

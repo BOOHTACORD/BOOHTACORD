@@ -8,7 +8,7 @@ import { publishContract } from './publisher.mjs'
 
 const apiRoot='https://api.example.test'
 const source='a'.repeat(40)
-const context={repository:'Egkurilov/BOOHTACORD',source_revision:source,tag:'android-v1.0.15',execution:{run_id:'12',run_attempt:'1'},
+const context={repository:'BOOHTACORD/BOOHTACORD',source_revision:source,tag:'android-v1.0.15',execution:{run_id:'12',run_attempt:'1'},
   source_ref:'refs/tags/android-v1.0.15',source_event:'push',trigger_revision:source}
 
 async function fixture(body) {
@@ -37,7 +37,7 @@ function server(asset,{lostCreate=false,lostUpload=false,lostPublish=false,forei
     if(p.endsWith('/releases')&&method==='POST') {
       const data=JSON.parse(init.body)
       assert.equal(data.draft,true);assert.equal(data.target_commitish,source)
-      release={id:73,...data,upload_url:apiRoot+'/repos/Egkurilov/BOOHTACORD/releases/73/assets{?name,label}'}
+      release={id:73,...data,upload_url:apiRoot+'/repos/BOOHTACORD/BOOHTACORD/releases/73/assets{?name,label}'}
       if(foreign)uploaded=[{name:'foreign.exe',size:1,digest:'sha256:'+'f'.repeat(64)}]
       if(lostCreate){lostCreate=false;throw new TypeError('lost response')}
       return json(release,201)

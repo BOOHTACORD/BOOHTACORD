@@ -63,7 +63,7 @@ The JSON contains the complete issue → PR → commit → evidence crosswalk. T
 
 ## Release review and exceptions
 
-Review of [#305](https://github.com/Egkurilov/BOOHTACORD/issues/305) and [the release protocol](../../docs/design/UIUX_2026_RELEASE_GATE.md) records **NO-GO / NOT_RUN** for release acceptance: real-user baseline/post-change measurements, sample size and named Web rollback owner remain absent. Automated task scripts are not user completion/time/error/backtracking measurements. This regression acceptance closes none of those release gates; retain the prior immutable Web artifact/revert-and-rebuild rollback path and complete cohort/owner approval separately.
+Review of [#305](https://github.com/BOOHTACORD/BOOHTACORD/issues/305) and [the release protocol](../../docs/design/UIUX_2026_RELEASE_GATE.md) records **NO-GO / NOT_RUN** for release acceptance: real-user baseline/post-change measurements, sample size and named Web rollback owner remain absent. Automated task scripts are not user completion/time/error/backtracking measurements. This regression acceptance closes none of those release gates; retain the prior immutable Web artifact/revert-and-rebuild rollback path and complete cohort/owner approval separately.
 
 Supported-Chrome system picker, physical microphone/system audio, dynamic video, media QoE/capacity and 1080p60 remain **NOT_RUN**, as explicitly permitted for named smoke gaps in #353. Synthetic canvas/audio and static decoded frames do not prove those capabilities. Original-tour comparison is **EXCEPTION_SOURCE_LOST** after the user's confirmation; current-master reproducibility replaces the lost pixels. There are no known P0/P1 blockers in the executed Web regression scope.
 

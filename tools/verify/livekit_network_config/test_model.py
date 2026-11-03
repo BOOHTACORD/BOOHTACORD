@@ -19,11 +19,42 @@ class LiveKitNetworkConfigTests(unittest.TestCase):
     def test_private_metrics_scrape_and_udp_tcp_publication_are_wired(self):
         self.assert_valid()
 
+    def test_public_ice_ports_use_an_isolated_routable_network(self):
+        self.assert_valid()
+        self.assertSetEqual(set(self.deploy["services"]["livekit"]["networks"]), {
+            "livekit-rtc", "private", "livekit-metrics",
+        })
+        self.assertEqual(self.deploy["networks"]["livekit-rtc"], {
+            "driver": "bridge", "internal": False,
+        })
+
+    def test_rtc_network_is_routable_and_only_livekit_joins_it(self):
+        self.deploy["networks"]["livekit-rtc"] = {"internal": True}
+        self.deploy["services"]["livekit"]["networks"].append("livekit-rtc")
+        with self.assertRaisesRegex(ValueError, "routable dedicated RTC network"):
+            self.assert_valid()
+
+        self.deploy["networks"]["livekit-rtc"] = {
+            "driver": "bridge", "internal": False, "external": True,
+        }
+        with self.assertRaisesRegex(ValueError, "routable dedicated RTC network"):
+            self.assert_valid()
+
+        self.deploy["networks"]["livekit-rtc"] = {"driver": "bridge", "internal": False}
+        self.deploy["services"]["api"]["networks"].append("livekit-rtc")
+        with self.assertRaisesRegex(ValueError, "only LiveKit may join"):
+            self.assert_valid()
+
+        self.deploy["services"]["api"]["networks"].remove("livekit-rtc")
+        self.observability_compose["services"]["prometheus"]["networks"].append("livekit-rtc")
+        with self.assertRaisesRegex(ValueError, "only LiveKit may join"):
+            self.assert_valid()
+
     def test_metrics_listener_reachability_matches_documented_network_peers(self):
         self.assertEqual(metrics_reachable_peers(self.deploy, self.observability_compose),
                          {"api", "postgres", "proxy", "prometheus"})
         self.deploy["services"]["livekit"]["networks"].append("edge")
-        with self.assertRaisesRegex(ValueError, "remove extra LiveKit networks"):
+        with self.assertRaisesRegex(ValueError, "dedicated RTC networks"):
             self.assert_valid()
 
     def test_allowed_livekit_metric_labels_are_all_bounded(self):
@@ -96,9 +127,14 @@ class LiveKitNetworkConfigTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "private network"):
             self.assert_valid()
 
-    def test_rejects_external_ip_advertisement_drift(self):
-        self.livekit["rtc"]["use_external_ip"] = False
-        with self.assertRaisesRegex(ValueError, "external IP"):
+    def test_rejects_stun_discovery_when_an_explicit_node_ip_is_required(self):
+        self.livekit["rtc"]["use_external_ip"] = True
+        with self.assertRaisesRegex(ValueError, "explicit node IP"):
+            self.assert_valid()
+
+    def test_rejects_missing_explicit_node_ip(self):
+        self.deploy["services"]["livekit"]["environment"].pop("LIVEKIT_NODE_IP")
+        with self.assertRaisesRegex(ValueError, "explicit node IP"):
             self.assert_valid()
 
     def test_rejects_tcp_fallback_mapping_drift(self):

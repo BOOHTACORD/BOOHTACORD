@@ -4,9 +4,9 @@
   "status": "PASS",
   "executed_at": "2026-10-01",
   "source": {
-    "failed_deploy_run": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/36843134662",
-    "failed_ci_run": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/36843901376",
-    "queued_android_release_run": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/36828830704",
+    "failed_deploy_run": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/36843134662",
+    "failed_ci_run": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/36843901376",
+    "queued_android_release_run": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/36828830704",
     "failure": "Deployment and CI release guards require a Flutter debug APK build absent from ci-flutter.yaml; Android Release then waits for an unavailable self-hosted Windows runner. No signed APK reached GitHub Releases."
   },
   "fix": "Build and retain a debug APK in the reusable Flutter CI workflow; build and retain three signed release APKs on a GitHub-hosted Ubuntu runner before publishing the release assets.",
@@ -36,15 +36,15 @@
     {
       "name": "Android debug APK workflow artifact",
       "status": "PASS",
-      "run": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/36847149661",
-      "artifact": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/36847149661/artifacts/11154965749",
+      "run": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/36847149661",
+      "artifact": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/36847149661/artifacts/11154965749",
       "observation": "CI #66 passed and uploaded boohtacord-android-debug-apk containing desktop/build/app/outputs/flutter-apk/app-debug.apk."
     },
     {
       "name": "Signed Android release APKs",
       "status": "PASS",
-      "run": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/36848919914",
-      "release": "https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.18",
+      "run": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/36848919914",
+      "release": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/android-v1.0.18",
       "artifacts": [
         {"name": "BOOHTACORD-android-v1.0.18-arm64-v8a.apk", "size_bytes": 39516517},
         {"name": "BOOHTACORD-android-v1.0.18-armeabi-v7a.apk", "size_bytes": 31054783},
@@ -55,7 +55,7 @@
     {
       "name": "Production deploy",
       "status": "PASS",
-      "run": "https://github.com/Egkurilov/BOOHTACORD/actions/runs/36847148950",
+      "run": "https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/36847148950",
       "observation": "Deploy #21 passed backend, frontend, release_guard, guarded rollout, pinned image verification, public /api/v1/health check, and attachment headroom audit."
     }
   ],

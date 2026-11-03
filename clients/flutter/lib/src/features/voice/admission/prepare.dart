@@ -63,6 +63,7 @@ extension VoiceAdmissionPrepare on VoiceController {
     selectedRemoteScreenViewerIdentity = null;
     transientScreenShareVolumes.clear();
     voicePhase = VoicePhase.joining;
+    voiceStatusDismissedAfterLeave = false;
     voicePingMs = null;
     voiceAdmissionPending = true;
     microphoneUnavailable = false;

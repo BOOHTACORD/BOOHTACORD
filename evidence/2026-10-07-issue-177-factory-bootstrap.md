@@ -1,7 +1,7 @@
 # Issue #177 — macOS audio factory bootstrap
 
 Date: 2026-10-07
-Source issue: https://github.com/Egkurilov/BOOHTACORD/issues/177
+Source issue: https://github.com/BOOHTACORD/BOOHTACORD/issues/177
 
 ## Checks
 

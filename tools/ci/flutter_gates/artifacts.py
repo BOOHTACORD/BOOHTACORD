@@ -9,7 +9,9 @@ VISUALS = (
     'flutter-screen-audience-viewer-strip-1024x92@2x.png',
     'flutter-screen-viewer-transient-controls-1440x900.png',
     # Flutter participant-card inline stream and voice-only previews.
+    'flutter-listener-room-web-parity.png',
     'flutter-participant-cards-stream-and-voice.png',
+    'flutter-participant-card-preview-pending.png',
     'flutter-participant-cards-mobile-large-text.png',
     # #544: compact room and fullscreen viewer participant overlays.
     'voice-viewer-participants-room.png',
@@ -22,6 +24,8 @@ VISUALS = (
     # #518 Flutter connection recovery panel parity.
     'flutter-connection-status-desktop-320x380.png',
     'flutter-connection-status-mobile-320x380.png',
+    'flutter-sidebar-channel-scroll-300x640.png',
+    'flutter-sidebar-after-voice-leave-300x640.png',
     # #553 Flutter guild member voice and screen-sharing presence states.
     'guild-member-voice-channel.png',
     'guild-member-screen-sharing.png',

@@ -131,7 +131,7 @@ class DesktopUpdatePanel extends StatelessWidget {
                       TextButton(
                         onPressed: () => launchUrl(
                           Uri.parse(
-                            'https://github.com/Egkurilov/BOOHTACORD/releases',
+                            'https://github.com/BOOHTACORD/BOOHTACORD/releases',
                           ),
                           mode: LaunchMode.externalApplication,
                         ),

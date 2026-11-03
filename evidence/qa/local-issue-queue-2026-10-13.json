@@ -4,7 +4,7 @@
     {
       "number": 42,
       "title": "FE-59/61 paired runtime — Android Emulator → macOS",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/42",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/42",
       "status": "BLOCKED",
       "evidence": "evidence/qa/issue42-paired-runtime-2026-10-12.json",
       "reason": "Native first frame, moving full-display timer, window resize and receiver reconnect PASS after the renderer fix. Sustained 15fps NOT_PASS (9.36fps/58s); app-only, normal stop, same published-master pair and physical/browser gates remain open."
@@ -12,7 +12,7 @@
     {
       "number": 53,
       "title": "QA-03 — DM/storage privacy",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/53",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/53",
       "status": "BLOCKED",
       "evidence": "evidence/qa/issue53-privacy-runtime-2026-10-12.json",
       "reason": "PostgreSQL privacy 20 tests + 3 subtests PASS; paired browsers create/edit/two deletes/unread/read PASS; third admin UI absence PASS. OS notifications and full third-party browser file denial remain open."
@@ -20,7 +20,7 @@
     {
       "number": 54,
       "title": "QA-05 — Authenticated browser E2E",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/54",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/54",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue54-local-browser-progress-2026-10-12.json",
       "reason": "Local real-stack Web runtime PASS at desktop/mobile sizes; OS/browser file/accessibility and production/Flutter populated roster criteria remain open."
@@ -28,49 +28,49 @@
     {
       "number": 55,
       "title": "QA-06 — POC-01",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/55",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/55",
       "status": "NOT_RUN"
     },
     {
       "number": 57,
       "title": "QA-07 — POC-02 и 15 FPS",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/57",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/57",
       "status": "NOT_RUN"
     },
     {
       "number": 58,
       "title": "QA-09 — Capacity",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/58",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/58",
       "status": "NOT_RUN"
     },
     {
       "number": 59,
       "title": "QA-10 — POC-03",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/59",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/59",
       "status": "NOT_RUN"
     },
     {
       "number": 60,
       "title": "QA-12 — Совместимый rollback",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/60",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/60",
       "status": "NOT_RUN"
     },
     {
       "number": 61,
       "title": "QA-14 — Решение о выпуске",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/61",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/61",
       "status": "NOT_RUN"
     },
     {
       "number": 62,
       "title": "QA-13 — Flutter parity и Android/device release",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/62",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/62",
       "status": "NOT_RUN"
     },
     {
       "number": 98,
       "title": "QA-13 — Задержка запуска macOS Debug",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/98",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/98",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue98-startup-runtime-2026-10-13.json",
       "close_eligible": false
@@ -78,19 +78,19 @@
     {
       "number": 131,
       "title": "QA — сводная runtime-приёмка реализованных функций",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/131",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/131",
       "status": "NOT_RUN"
     },
     {
       "number": 132,
       "title": "QA — Android screen share и фоновые потоки: runtime-приёмка #40 #42 #48 #49 #51 #86",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/132",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/132",
       "status": "NOT_RUN"
     },
     {
       "number": 154,
       "title": "[Tracing][UF-10] Сквозная приёмка user flow через реальные relay, Collector и Tempo",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/154",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/154",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue154-tracing-runtime-2026-10-13.json",
       "close_eligible": false
@@ -98,49 +98,49 @@
     {
       "number": 173,
       "title": "[ScreenShare][SS-17][P1] Провести физическую парную приёмку FPS, артефактов, задержки и звука",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/173",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/173",
       "status": "NOT_RUN"
     },
     {
       "number": 174,
       "title": "[ScreenShare][SS-18][P1] Нагрузочная приёмка: 10/20/30 участников, 4/10/20 стримов, churn и soak",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/174",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/174",
       "status": "NOT_RUN"
     },
     {
       "number": 184,
       "title": "[MacAudio][MA-07][P1] Провести физическую macOS приёмку и зафиксировать evidence Debug/Release",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/184",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/184",
       "status": "NOT_RUN"
     },
     {
       "number": 227,
       "title": "QA — runtime-приёмка screen-share implementation #158–#172",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/227",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/227",
       "status": "NOT_RUN"
     },
     {
       "number": 240,
       "title": "QA — runtime-приёмка реализаций #133–#141, #145–#153, #155, #157",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/240",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/240",
       "status": "NOT_RUN"
     },
     {
       "number": 241,
       "title": "[QA] Acceptance for OpenAPI, observability, media QoE, chat history, accessibility, social preview and on-call map",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/241",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/241",
       "status": "NOT_RUN"
     },
     {
       "number": 243,
       "title": "[QA] Backend load harness acceptance and capacity evidence for #8",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/243",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/243",
       "status": "NOT_RUN"
     },
     {
       "number": 247,
       "title": "[QA] Mini-player browser and Flutter acceptance for #94",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/247",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/247",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue247-mini-player-runtime-2026-10-12.json",
       "reason": "Real Web/Android mini-player acceptance recorded; final iOS result and limitations are in the linked runtime evidence."
@@ -148,13 +148,13 @@
     {
       "number": 249,
       "title": "[QA] Deploy and verify Windows update catalog for #223",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/249",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/249",
       "status": "NOT_RUN"
     },
     {
       "number": 251,
       "title": "QA: проверить избранные каналы и сворачивание категорий (#66)",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/251",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/251",
       "status": "PASS",
       "evidence": "evidence/qa/issue251-navigation-preferences-runtime-2026-10-12.json",
       "reason": "All browser checklist criteria PASS at 1440/393px with actual API/PostgreSQL/LiveKit; visible mobile voice dock inert defect fixed and actual Leave click verified. Eight app images inspected."
@@ -162,7 +162,7 @@
     {
       "number": 254,
       "title": "[QA] Проверить файлы беседы и ACL для TEXT/DM (#75)",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/254",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/254",
       "status": "PASS",
       "reason": "All 6 browser/API criteria PASS on published master 0183e48f at 1440/393px; mobile files menu and table fixed; 6 sanitized panel captures inspected.",
       "evidence": "evidence/qa/issue254-conversation-files-runtime-2026-10-12.json"
@@ -170,7 +170,7 @@
     {
       "number": 257,
       "title": "[QA] Проверить состояния разрешений и списка Audio Settings на macOS (#182)",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/257",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/257",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue257-macos-audio-settings-2026-10-12.json",
       "reason": "Debug/Release real macOS list and startup PASS; pending/denied/restricted/empty/bootstrap-failure and permission-refresh states NOT_RUN."
@@ -178,7 +178,7 @@
     {
       "number": 258,
       "title": "[QA] Выполнить PostgreSQL A/B-приёмку русского поиска (#77)",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/258",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/258",
       "status": "PASS",
       "evidence": "evidence/qa/issue258-russian-search-runtime-2026-10-12.json",
       "reason": "Actual disposable PostgreSQL 17.6 A/B measurements, 3 repetitions, 6 queries/config, plans/index sizes/resources; production configuration unchanged."
@@ -186,7 +186,7 @@
     {
       "number": 259,
       "title": "[QA] Проверить восстановление выбранных audio devices перед Join/reconnect на macOS (#181)",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/259",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/259",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue259-macos-audio-restore-2026-10-12.json",
       "reason": "Account-specific audio preferences and real joins/restarts PASS; selected physical routing, remote hearing, hotplug and native pre-Room ordering NOT_RUN."
@@ -194,7 +194,7 @@
     {
       "number": 264,
       "title": "[QA] Проверить inbox упоминаний и точный переход (#72)",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/264",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/264",
       "status": "PASS",
       "evidence": "evidence/qa/issue264-mentions-inbox-runtime-2026-10-12.json",
       "reason": "All 6 Web runtime criteria PASS at master 90870515; stale navigation and clipped loading/empty states fixed; 12 metadata-only captures inspected."
@@ -202,7 +202,7 @@
     {
       "number": 272,
       "title": "[VoiceRoster][VR-07][P1] QA/release: отказоустойчивость roster, ACL и приемка на Web + Flutter + production",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/272",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/272",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue272-roster-runtime-2026-10-13.json",
       "close_eligible": false
@@ -210,7 +210,7 @@
     {
       "number": 276,
       "title": "[QA] Проверить Flutter актуализацию имени и аватара (#65)",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/276",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/276",
       "status": "PASS",
       "evidence": "evidence/qa/issue276-native-profile-revision-runtime-2026-10-12.json",
       "reason": "Android+iOS actual runtime PASS; all profile ordering, avatar ACL and account boundaries; 14 final captures reviewed."
@@ -218,7 +218,7 @@
     {
       "number": 278,
       "title": "[QA] Verify accessible configured guild name in Flutter (#78)",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/278",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/278",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue278-guild-identity-runtime-2026-10-12.json",
       "reason": "Android/iOS configured name, Semantics, rename and account boundaries PASS; physical screen readers, notifications and desktop criteria NOT_RUN."
@@ -226,7 +226,7 @@
     {
       "number": 283,
       "title": "[QA] Browser/device acceptance for channel and DM quick jump (#78)",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/283",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/283",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue283-quick-jump-runtime-2026-10-12.json",
       "reason": "Web 14 observed rows at each width and native 7 observed rows/platform PASS after fixes; OS notifications, physical IME and released desktop remain NOT_RUN; literal initial quick-jump tab criterion PARTIAL."
@@ -234,25 +234,25 @@
     {
       "number": 287,
       "title": "[QA] Приёмка завершённого пакета roster, client features и native hardening",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/287",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/287",
       "status": "NOT_RUN"
     },
     {
       "number": 288,
       "title": "[Windows][bug] Escape не закрывает native диалог демонстрации экрана",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/288",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/288",
       "status": "NOT_RUN"
     },
     {
       "number": 289,
       "title": "[UIUX-2026][EPIC] Единый UI/UX BOOHTACORD — Web + Flutter desktop/mobile",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/289",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/289",
       "status": "NOT_RUN"
     },
     {
       "number": 291,
       "title": "[UIUX-2026][UX-02][P1] Адаптивный workspace shell: desktop density, resize и split panes",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/291",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/291",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue291-responsive-runtime-2026-10-12.json",
       "reason": "Web12-size matrix and physical macOS resize PASS. Windows, physical mobile browser/IME/system panels, active RTP and loaded-scroll acceptance remain NOT_RUN."
@@ -260,7 +260,7 @@
     {
       "number": 292,
       "title": "[UIUX-2026][UX-03][P1] Мобильная навигация: drawer, Back, контекст канала и восстановление состояния",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/292",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/292",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue292-mobile-navigation-runtime-2026-10-12.json",
       "reason": "Android/iOS navigation observed10 rows each and dirty-profile derivative4 each PASS. Physical Android Back/iOS route gesture, spoken reader, audible call and loaded history remain NOT_RUN."
@@ -268,7 +268,7 @@
     {
       "number": 293,
       "title": "[UIUX-2026][UX-04][P1] TEXT/DM: действия с сообщениями без hover, touch targets и единая toolbar",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/293",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/293",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue293-message-actions-runtime-2026-10-12.json",
       "reason": "Web320/393/1440 actual actions14 rows each and Android/iOS11 rows each PASS. Physical traversal and full native reaction/pin/attachment/scroll/swipe/retry acceptance remain NOT_RUN."
@@ -276,7 +276,7 @@
     {
       "number": 294,
       "title": "[UIUX-2026][UX-05][P2] DM, поиск и composer: mobile-first flow, пустые состояния и сохранение контекста",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/294",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/294",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue294-dm-composer-runtime-2026-10-12.json",
       "remaining": "Physical platform, spoken reader or approved visual-baseline acceptance remains open; see scoped evidence."
@@ -284,7 +284,7 @@
     {
       "number": 295,
       "title": "[UIUX-2026][UX-06][P1] Guild admin: единый контекст, вкладки и desktop/mobile оболочка",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/295",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/295",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue295-admin-runtime-2026-10-12.json",
       "remaining": "Physical platform, spoken reader or approved visual-baseline acceptance remains open; see scoped evidence."
@@ -292,7 +292,7 @@
     {
       "number": 297,
       "title": "[UIUX-2026][UX-08][P2] Личные настройки: информационная архитектура, формы и ясные save-state",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/297",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/297",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue297-settings-runtime-2026-10-12.json",
       "reason": "Actual physical macOS settings and emulator dirty-profile guards PASS. Required physical Android and live spoken-reader release acceptance remains NOT_RUN."
@@ -300,7 +300,7 @@
     {
       "number": 298,
       "title": "[UIUX-2026][UX-09][P1] Dialogs и bottom sheets: создание, подтверждение, опасные действия",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/298",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/298",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue298-dialogs-runtime-2026-10-12.json",
       "remaining": "Physical platform, spoken reader or approved visual-baseline acceptance remains open; see scoped evidence."
@@ -308,7 +308,7 @@
     {
       "number": 301,
       "title": "[UIUX-2026][UX-12][P1] Accessibility WCAG 2.2 AA + Flutter Semantics для ключевых сценариев",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/301",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/301",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue301-accessibility-runtime-2026-10-12.json",
       "remaining": "Physical platform, spoken reader or approved visual-baseline acceptance remains open; see scoped evidence."
@@ -316,7 +316,7 @@
     {
       "number": 302,
       "title": "[UIUX-2026][UX-13][P1] Автотесты UI/UX: viewport matrix, visual snapshots и сценарии E2E",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/302",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/302",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue302-visual-regression-runtime-2026-10-12.json",
       "remaining": "Physical platform, spoken reader or approved visual-baseline acceptance remains open; see scoped evidence."
@@ -324,19 +324,19 @@
     {
       "number": 303,
       "title": "[UIUX-2026][UX-14][P1] Физическая UX-приёмка macOS/Windows/Android/iOS и мобильного Web",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/303",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/303",
       "status": "NOT_RUN"
     },
     {
       "number": 305,
       "title": "[UIUX-2026][UX-16][P2] UX release gate: документация, метрики task success и план отката",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/305",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/305",
       "status": "NOT_RUN"
     },
     {
       "number": 325,
       "title": "Flutter screen sender telemetry runtime",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/325",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/325",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue325-sender-runtime-2026-10-13.json",
       "close_eligible": false
@@ -344,56 +344,56 @@
     {
       "number": 327,
       "title": "Web SDK trackName boundary and native publication profile",
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/327",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/327",
       "status": "PASS",
       "evidence": "evidence/qa/issue327-track-name-runtime-2026-10-13.json",
       "close_eligible": true
     },
     {
       "number": 328,
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/328",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/328",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue-batch-328-329-330-331-332-2026-10-13.json",
       "close_eligible": false
     },
     {
       "number": 329,
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/329",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/329",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue-batch-328-329-330-331-332-2026-10-13.json",
       "close_eligible": false
     },
     {
       "number": 330,
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/330",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/330",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue-batch-328-329-330-331-332-2026-10-13.json",
       "close_eligible": false
     },
     {
       "number": 331,
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/331",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/331",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue-batch-328-329-330-331-332-2026-10-13.json",
       "close_eligible": false
     },
     {
       "number": 332,
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/332",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/332",
       "status": "PARTIAL",
       "evidence": "evidence/qa/issue-batch-328-329-330-331-332-2026-10-13.json",
       "close_eligible": false
     },
     {
       "number": 333,
-      "url": "https://github.com/Egkurilov/BOOHTACORD/issues/333",
+      "url": "https://github.com/BOOHTACORD/BOOHTACORD/issues/333",
       "status": "VALIDATED_PUBLICATION_GUARDED",
       "evidence": "evidence/qa/issue333-mac-encoded-bounds-2026-10-13.json",
       "close_eligible_after_verified_publication": true
     }
   ],
   "ordering": "Batch5 #326:328metadata,329stageRCA,330captureboundary,331codecpolicy,332regression; linked333geometrydefect.",
-  "source": "https://github.com/Egkurilov/BOOHTACORD/issues",
+  "source": "https://github.com/BOOHTACORD/BOOHTACORD/issues",
   "closure_policy": "Only applicable runtime evidence can close a case; emulator/unit PASS does not establish physical-device or load acceptance.",
   "active_batch": [],
   "completed_batch": [

@@ -9,7 +9,7 @@ from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 from .source_gates import gate_names
 
-REPOSITORY = 'Egkurilov/BOOHTACORD'
+REPOSITORY = 'BOOHTACORD/BOOHTACORD'
 
 
 def require(value):

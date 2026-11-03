@@ -6,10 +6,13 @@ import 'dart:ui' show SemanticsRole, Tristate;
 import 'package:boohtacord_desktop/src/app.dart';
 import 'package:boohtacord_desktop/src/app_state.dart';
 import 'package:boohtacord_desktop/src/features/voice/roster_state/phase.dart';
+import 'package:boohtacord_desktop/src/features/voice/stream_notice/preferences.dart';
 import 'package:boohtacord_desktop/src/features/authorization/permissions/model.dart';
 import 'package:boohtacord_desktop/src/models.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_screen.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/header/component.dart';
+import 'package:boohtacord_desktop/src/screens/workspace_ui/voice_room/build/header_actions/component.dart';
+import 'package:boohtacord_desktop/src/screens/workspace_ui/voice_navigation_members/component.dart';
 import 'package:boohtacord_desktop/src/services/api_client.dart';
 import 'package:boohtacord_desktop/src/services/composer_draft_memory.dart';
 import 'package:boohtacord_desktop/src/services/conversation_scroll_memory.dart';
@@ -23,7 +26,15 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:livekit_client/livekit_client.dart'
-    show MediaDevice, Room, RemoteParticipant;
+    show
+        LocalParticipant,
+        MediaDevice,
+        RemoteParticipant,
+        RemoteTrackPublication,
+        RemoteAudioTrack,
+        RemoteVideoTrack,
+        Room,
+        TrackSource;
 import 'package:livekit_client/src/proto/livekit_models.pb.dart' as lk;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -42,7 +53,6 @@ void main() {
     tester,
   ) async {
     debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
-    addTearDown(() => debugDefaultTargetPlatformOverride = null);
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = const Size(1440, 900);
     addTearDown(tester.view.reset);
@@ -773,19 +783,23 @@ void main() {
     expect(find.text('Назначить PTT-клавишу'), findsOneWidget);
 
     await tester.scrollUntilVisible(
-      find.text('Дополнительно'),
-      120,
-      scrollable: audioScrollable,
-    );
-    await tester.tap(find.text('Дополнительно'));
-    await tester.pumpAndSettle();
-    await tester.scrollUntilVisible(
       find.text('Подавление эха'),
       160,
       scrollable: audioScrollable,
     );
     expect(find.text('Подавление эха'), findsOneWidget);
-    expect(find.textContaining('Нативный SDK не сообщает'), findsOneWidget);
+    expect(find.textContaining('Native SDK не подтверждает'), findsNothing);
+    await tester.scrollUntilVisible(
+      find.text('Диагностика качества голоса'),
+      160,
+      scrollable: audioScrollable,
+    );
+    await tester.tap(find.text('Диагностика качества голоса'));
+    await tester.pumpAndSettle();
+    expect(
+      find.text('Статистика появляется после подключения и двух измерений.'),
+      findsOneWidget,
+    );
 
     await tester.dragUntilVisible(
       find.text('Назначить PTT-клавишу'),
@@ -833,12 +847,7 @@ void main() {
     await tester.pumpWidget(MaterialApp(home: WorkspaceScreen(state: state)));
     await tester.pump(const Duration(milliseconds: 100));
 
-    final subtitle = find.text('Проверьте устройства перед разговором.');
-    expect(subtitle, findsOneWidget);
-    expect(
-      tester.renderObject<RenderParagraph>(subtitle).didExceedMaxLines,
-      isFalse,
-    );
+    expect(find.text('Проверьте устройства перед разговором.'), findsNothing);
     final devices = find.byKey(const ValueKey('audio-settings-device-card'));
     final activation = find.byKey(
       const ValueKey('audio-settings-activation-card'),
@@ -884,12 +893,6 @@ void main() {
     final shortcuts = find.byKey(
       const ValueKey('audio-settings-shortcuts-card'),
     );
-    final advanced = find.byKey(
-      const PageStorageKey('audio-settings-advanced'),
-    );
-    await tester.scrollUntilVisible(advanced, 160, scrollable: audioScrollable);
-    await tester.tap(find.text('Дополнительно'));
-    await tester.pumpAndSettle();
     await tester.scrollUntilVisible(
       shortcuts,
       160,
@@ -998,8 +1001,7 @@ void main() {
         findsNothing,
       );
       expect(find.text('Сбросить настройки аудио'), findsOneWidget);
-      expect(find.text('Дополнительно'), findsOneWidget);
-      expect(find.text('Диагностика качества голоса'), findsNothing);
+      expect(find.text('Дополнительно'), findsNothing);
       expect(tester.takeException(), isNull);
 
       await tester.pumpWidget(const SizedBox.shrink());
@@ -1010,7 +1012,7 @@ void main() {
   });
 
   testWidgets(
-    'audio processing keeps essentials visible and discloses advanced controls',
+    'audio settings expose common controls and keep technical details folded',
     (tester) async {
       addTearDown(() => debugDefaultTargetPlatformOverride = null);
       for (final scenario in [
@@ -1035,26 +1037,17 @@ void main() {
           of: find.byKey(const ValueKey('audio-settings-list')),
           matching: find.byType(Scrollable),
         );
-        final advanced = find.byKey(
-          const PageStorageKey('audio-settings-advanced'),
-        );
-        await tester.scrollUntilVisible(
-          advanced,
-          160,
-          scrollable: audioScrollable,
-        );
-        expect(find.text('Дополнительно'), findsOneWidget);
-        expect(find.text('Шумоподавление'), findsNothing);
-        expect(find.text('Подавление эха'), findsNothing);
-        expect(find.text('Диагностика качества голоса'), findsNothing);
-        final processingBefore = state.audioProcessing;
-        await tester.tap(find.text('Дополнительно'));
-        await tester.pumpAndSettle();
         await tester.scrollUntilVisible(
           find.text('Подавление эха'),
           160,
           scrollable: audioScrollable,
         );
+        expect(find.text('Дополнительно'), findsNothing);
+        expect(find.text('Шумоподавление'), findsOneWidget);
+        expect(find.text('Подавление эха'), findsOneWidget);
+        expect(find.text('Сведения об обработке'), findsOneWidget);
+        expect(find.textContaining('обработано кадров'), findsNothing);
+        final processingBefore = state.audioProcessing;
         expect(
           find.text('Автоматическая регулировка усиления'),
           findsOneWidget,
@@ -1062,8 +1055,17 @@ void main() {
         expect(find.text('Подавление эха'), findsOneWidget);
         expect(find.text('Громкость микрофона: 100%'), findsOneWidget);
         expect(find.text('Шумоподавление'), findsOneWidget);
-        expect(find.text('Диагностика обработки'), findsOneWidget);
-        expect(find.text('Диагностика качества голоса'), findsOneWidget);
+        expect(find.textContaining('обработано кадров'), findsNothing);
+        expect(
+          find.text(
+            'Статистика появляется после подключения и двух измерений.',
+          ),
+          findsNothing,
+        );
+        expect(
+          find.text('Эти данные не оценивают качество звука.'),
+          findsNothing,
+        );
         expect(state.audioProcessing, processingBefore);
         expect(tester.takeException(), isNull);
 
@@ -1092,23 +1094,7 @@ void main() {
     await tester.pumpWidget(MaterialApp(home: WorkspaceScreen(state: state)));
     await tester.pump(const Duration(milliseconds: 100));
 
-    final subtitle = find.byKey(const ValueKey('audio-settings-intro'));
-    expect(subtitle, findsOneWidget);
-    expect(tester.widget<Text>(subtitle).maxLines, isNull);
-    expect(
-      tester.renderObject<RenderParagraph>(subtitle).didExceedMaxLines,
-      isFalse,
-    );
-    expect(
-      tester.getTopLeft(subtitle).dy,
-      lessThan(
-        tester
-            .getTopLeft(
-              find.byKey(const ValueKey('audio-settings-device-card')),
-            )
-            .dy,
-      ),
-    );
+    expect(find.byKey(const ValueKey('audio-settings-intro')), findsNothing);
     final devices = find.byKey(const ValueKey('audio-settings-device-card'));
     final activation = find.byKey(
       const ValueKey('audio-settings-activation-card'),
@@ -1518,7 +1504,10 @@ void main() {
     expect(check.outputDeviceId, 'output-1');
     expect(check.outputDeviceLabel, 'USB speakers');
     expect(find.text('Проверить микрофон'), findsOneWidget);
-    expect(find.text('Проверить динамик'), findsOneWidget);
+    expect(find.text('Тестовый звук'), findsOneWidget);
+    expect(find.textContaining('Проверка локальная'), findsNothing);
+    await tester.tap(find.text('О проверке устройств'));
+    await tester.pumpAndSettle();
     expect(
       find.text(
         'Проверка локальная: она не подтверждает слышимость у другого участника.',
@@ -2012,21 +2001,14 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    final status = find.text('Звук и микрофон выключены');
     final card = find.byKey(const ValueKey('voice-participant-card:self'));
     final statusIcon = find.descendant(
       of: card,
       matching: find.byIcon(Icons.headset_off),
     );
     expect(statusIcon, findsOneWidget);
-    expect(
-      tester.renderObject<RenderParagraph>(status).didExceedMaxLines,
-      isFalse,
-    );
-    expect(
-      tester.getRect(status).left,
-      greaterThan(tester.getRect(statusIcon).right),
-    );
+    expect(find.text('Звук и микрофон выключены'), findsNothing);
+    expect(find.byTooltip('Звук и микрофон выключены'), findsOneWidget);
 
     await tester.pumpWidget(const SizedBox.shrink());
     state.dispose();
@@ -2050,7 +2032,8 @@ void main() {
     await tester.pumpWidget(MaterialApp(home: WorkspaceScreen(state: state)));
     await tester.pumpAndSettle();
 
-    expect(find.text('Микрофон недоступен'), findsNWidgets(2));
+    expect(find.text('Микрофон недоступен'), findsOneWidget);
+    expect(find.byTooltip('Микрофон недоступен'), findsOneWidget);
     expect(find.textContaining('подключены как слушатель'), findsOneWidget);
     expect(find.byTooltip('Повторить включение микрофона'), findsOneWidget);
     expect(tester.takeException(), isNull);
@@ -2114,7 +2097,7 @@ void main() {
     await tester.pump();
     final loadingStatus = find.text('Проверяем, кто сейчас в комнате…');
     expect(loadingStatus, findsOneWidget);
-    expect(find.text('Голосовой канал · проверяем состав'), findsOneWidget);
+    expect(find.text('Голосовой канал · проверяем состав'), findsNothing);
     expect(
       tester.getSemantics(loadingStatus).flagsCollection.isLiveRegion,
       isTrue,
@@ -2126,7 +2109,7 @@ void main() {
     await tester.pump();
     final errorStatus = find.text('Не удалось обновить состав комнаты.');
     expect(errorStatus, findsOneWidget);
-    expect(find.text('Голосовой канал · состав недоступен'), findsOneWidget);
+    expect(find.text('Голосовой канал · состав недоступен'), findsNothing);
     expect(
       tester.getSemantics(errorStatus).flagsCollection.isLiveRegion,
       isTrue,
@@ -2141,7 +2124,7 @@ void main() {
     state.voiceRoster.phase = VoiceRosterPhase.fresh;
     state.notifyListeners();
     await tester.pump();
-    expect(find.text('Голосовой канал · пока пусто'), findsOneWidget);
+    expect(find.text('Пока никого нет.'), findsOneWidget);
 
     state
       ..voiceRosters = const [
@@ -2159,7 +2142,7 @@ void main() {
       ]
       ..notifyListeners();
     await tester.pump();
-    expect(find.text('Голосовой канал · сейчас: 1'), findsOneWidget);
+    expect(find.text('Собеседник'), findsOneWidget);
 
     state
       ..selectedChannel = const GuildChannel(
@@ -2172,7 +2155,7 @@ void main() {
       ..voiceRosterError = 'Нет связи со списком голосовых каналов.'
       ..notifyListeners();
     await tester.pump();
-    expect(find.text('Голосовой канал · состав недоступен'), findsOneWidget);
+    expect(find.text('Голосовой канал · состав недоступен'), findsNothing);
     final closedNotice = find.text(
       'Вход в этот канал закрыт администратором. Отзыв media-доступа ещё подтверждается.',
     );
@@ -2187,7 +2170,7 @@ void main() {
       ),
       findsNothing,
     );
-    expect(find.text('Подключиться без микрофона'), findsNothing);
+    expect(find.text('Без микрофона'), findsNothing);
 
     state
       ..voiceChannel = state.selectedChannel
@@ -2311,17 +2294,26 @@ void main() {
     await tester.pumpWidget(MaterialApp(home: WorkspaceScreen(state: state)));
     await tester.pumpAndSettle();
 
-    expect(find.text('Вы не подключены'), findsOneWidget);
+    expect(find.text('Войти в голос'), findsOneWidget);
     expect(
       find.text(
         'Посмотрите, кто сейчас в комнате, и выберите удобный способ подключения.',
       ),
-      findsOneWidget,
+      findsNothing,
     );
-    expect(find.text('Последний состав: 1'), findsOneWidget);
+    expect(find.text('Последний состав: 1'), findsNothing);
+    final voiceChannelRow = find.byKey(
+      const ValueKey('workspace-channel-row:voice-1'),
+    );
+    expect(voiceChannelRow, findsOneWidget);
+    expect(
+      find.descendant(of: voiceChannelRow, matching: find.text('1')),
+      findsNothing,
+    );
+    expect(find.byTooltip('Участников в голосовом канале: 1'), findsNothing);
     expect(find.text('Мика'), findsNWidgets(2));
     expect(find.byTooltip('Показывает экран'), findsNWidgets(2));
-    expect(find.text('Идёт трансляция'), findsOneWidget);
+    expect(find.text('Идёт трансляция'), findsNothing);
     final navigationMic = find.descendant(
       of: find.byTooltip('Микрофон выключен'),
       matching: find.byIcon(Icons.mic_off_outlined),
@@ -2351,9 +2343,9 @@ void main() {
     state.notifyListeners();
     await tester.pump();
 
-    expect(find.text('Подключаемся к голосовой комнате'), findsOneWidget);
+    expect(find.text('Входим в голос…'), findsOneWidget);
     final joiningTitle = find.ancestor(
-      of: find.text('Подключаемся к голосовой комнате'),
+      of: find.text('Входим в голос…'),
       matching: find.byWidgetPredicate(
         (widget) => widget is Semantics && widget.properties.liveRegion == true,
       ),
@@ -2361,9 +2353,9 @@ void main() {
     expect(joiningTitle, findsOneWidget);
     expect(
       tester.widget<Semantics>(joiningTitle).properties.label,
-      'Подключаемся к голосовой комнате',
+      'Входим в голос…',
     );
-    expect(find.text('Соединение устанавливается.'), findsOneWidget);
+    expect(find.text('Соединение устанавливается.'), findsNothing);
     expect(
       tester
           .widget<FilledButton>(
@@ -2678,6 +2670,7 @@ void main() {
   testWidgets('channel categories collapse with a highlighted compact header', (
     tester,
   ) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = const Size(1440, 900);
     addTearDown(tester.view.reset);
@@ -2708,6 +2701,19 @@ void main() {
       const ValueKey('topology-object-menu-visibility:channel-1'),
     );
     expect(tester.widget<Visibility>(menuVisibility).visible, isFalse);
+    final createVisibility = find.byKey(
+      const ValueKey('category-create-visibility:category-1'),
+    );
+    expect(tester.widget<Visibility>(createVisibility).visible, isFalse);
+    final categoryFocus = tester.widget<FocusableActionDetector>(
+      find.byKey(const ValueKey('workspace-category-focus:category-1')),
+    );
+    categoryFocus.onShowFocusHighlight!(true);
+    await tester.pump();
+    expect(tester.widget<Visibility>(createVisibility).visible, isTrue);
+    categoryFocus.onShowFocusHighlight!(false);
+    await tester.pump();
+    expect(tester.widget<Visibility>(createVisibility).visible, isFalse);
     final channelFocus = tester.widget<FocusableActionDetector>(
       find.byKey(const ValueKey('workspace-channel-focus:channel-1')),
     );
@@ -2731,20 +2737,64 @@ void main() {
       SystemMouseCursors.click,
     );
     expect(categoryCursor.resolve(<WidgetState>{}), SystemMouseCursors.basic);
+    expect(find.text('Текстовые каналы'), findsOneWidget);
     expect(find.byTooltip('Свернуть раздел Текстовые каналы'), findsNothing);
-    await tester.tap(find.text('ТЕКСТОВЫЕ КАНАЛЫ'));
+    await tester.tap(find.text('Текстовые каналы'));
     await tester.pumpAndSettle();
     expect(
       find.byKey(const ValueKey('workspace-channel-row:channel-1')),
       findsNothing,
     );
     expect(find.byTooltip('Развернуть раздел Текстовые каналы'), findsNothing);
-    await tester.tap(find.text('ТЕКСТОВЫЕ КАНАЛЫ'));
+    await tester.tap(find.text('Текстовые каналы'));
     await tester.pumpAndSettle();
     expect(
       find.byKey(const ValueKey('workspace-channel-row:channel-1')),
       findsOneWidget,
     );
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    state.dispose();
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets('voice navigation matches Web participant order and identity', (
+    tester,
+  ) async {
+    final state = AppState(ApiClient());
+    state.user = const SessionUser(accountId: 'account-1', role: 'MEMBER');
+    state.profile = const OwnProfile(
+      accountId: 'account-1',
+      login: 'member',
+      displayName: 'Участник',
+      role: 'MEMBER',
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: guildTheme(),
+        home: Scaffold(
+          body: WorkspaceVoiceNavigationMembers(
+            state: state,
+            localParticipant: _NavigationLocalParticipant(),
+            remoteParticipants: const [_NavigationRemoteParticipant()],
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Участник · вы'), findsNothing);
+    expect(find.text('Участник'), findsOneWidget);
+    expect(find.text('Streamer'), findsOneWidget);
+    expect(
+      tester.getTopLeft(find.text('Streamer')).dy,
+      lessThan(tester.getTopLeft(find.text('Участник')).dy),
+    );
+    expect(find.byIcon(Icons.desktop_windows_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.mic_off_outlined), findsOneWidget);
+    expect(find.text('ST'), findsOneWidget);
+    expect(tester.takeException(), isNull);
 
     await tester.pumpWidget(const SizedBox.shrink());
     state.dispose();
@@ -2765,14 +2815,14 @@ void main() {
     final cardFinder = find.byKey(const ValueKey('voice-prejoin-card'));
     expect(
       tester.widget<Container>(cardFinder).padding,
-      const EdgeInsets.all(44),
+      const EdgeInsets.all(24),
     );
     final scrollFinder = find
         .ancestor(of: cardFinder, matching: find.byType(SingleChildScrollView))
         .first;
     expect(
       tester.widget<SingleChildScrollView>(scrollFinder).padding,
-      const EdgeInsets.all(72),
+      const EdgeInsets.fromLTRB(16, 64, 16, 40),
     );
     final icon = tester.widget<Container>(
       find.byKey(const ValueKey('voice-prejoin-icon')),
@@ -2783,10 +2833,7 @@ void main() {
       iconDecoration.border,
       Border.fromBorderSide(const BorderSide(color: GcColors.control)),
     );
-    expect(
-      tester.widget<Text>(find.text('Вы не подключены')).style?.fontSize,
-      24,
-    );
+    expect(tester.widget<Text>(find.text('Войти в голос')).style?.fontSize, 20);
 
     await tester.pumpWidget(const SizedBox.shrink());
     state.dispose();
@@ -2807,18 +2854,72 @@ void main() {
     final cardFinder = find.byKey(const ValueKey('voice-prejoin-card'));
     expect(
       tester.widget<Container>(cardFinder).padding,
-      const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
     );
     final scrollFinder = find
         .ancestor(of: cardFinder, matching: find.byType(SingleChildScrollView))
         .first;
     expect(
       tester.widget<SingleChildScrollView>(scrollFinder).padding,
-      const EdgeInsets.all(16),
+      const EdgeInsets.fromLTRB(16, 32, 16, 40),
     );
 
     await tester.pumpWidget(const SizedBox.shrink());
     state.dispose();
+  });
+
+  testWidgets('compact voice header keeps screen sharing launcher visible', (
+    tester,
+  ) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(960, 800);
+    addTearDown(tester.view.reset);
+    var shareStarts = 0;
+    var qualityOpens = 0;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Align(
+            alignment: Alignment.topRight,
+            child: VoiceRoomHeaderActions(
+              compact: true,
+              onSearch: () {},
+              onOpenMembers: () {},
+              onToggleShare: () => shareStarts++,
+              onConfigureShare: () => qualityOpens++,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    expect(
+      MediaQuery.sizeOf(tester.element(find.byType(VoiceRoomHeaderActions)))
+          .width,
+      960,
+    );
+    final shareLauncher = find.byTooltip('Начать демонстрацию экрана');
+    expect(shareLauncher, findsOneWidget);
+    await tester.tap(shareLauncher);
+    expect(shareStarts, 1);
+
+    await tester.tap(find.byTooltip('Другие действия'));
+    await tester.pumpAndSettle();
+    expect(find.text('Качество трансляции'), findsOneWidget);
+    expect(find.text('Начать демонстрацию'), findsNothing);
+    await tester.tap(find.text('Качество трансляции'));
+    expect(qualityOpens, 1);
+
+    tester.view.physicalSize = const Size(390, 844);
+    await tester.pumpAndSettle();
+    expect(find.byTooltip('Начать демонстрацию экрана'), findsNothing);
+    await tester.tap(find.byTooltip('Другие действия'));
+    await tester.pumpAndSettle();
+    final compactShareAction = find.text('Начать демонстрацию');
+    expect(compactShareAction, findsOneWidget);
+    await tester.tap(compactShareAction);
+    expect(shareStarts, 2);
   });
 
   testWidgets('voice dock reports accurate microphone actions in all states', (
@@ -2836,6 +2937,7 @@ void main() {
     state.audioActivationMode = AudioActivationMode.vad;
     state.microphoneMuted = false;
     state.microphoneUnavailable = false;
+    state.voice.voicePingMs = 42;
 
     await tester.pumpWidget(
       MaterialApp(
@@ -2848,6 +2950,9 @@ void main() {
     await tester.pumpAndSettle();
 
     final dock = find.byKey(const ValueKey('voice-dock'));
+    final dockDecoration =
+        tester.widget<Container>(dock).decoration! as BoxDecoration;
+    expect(dockDecoration.color, const Color(0xFF10191A));
     final connectedLabel = find.descendant(
       of: dock,
       matching: find.text('Голос подключён'),
@@ -2874,13 +2979,17 @@ void main() {
         of: dock,
         matching: find.byIcon(Icons.signal_cellular_alt_rounded),
       ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: dock, matching: find.text('42 мс')),
       findsNothing,
     );
     expect(
       find.descendant(
         of: dock,
         matching: find.bySemanticsLabel(
-          'Качество соединения: Нет данных · ping —',
+          'Качество соединения: Нет данных · ping 42 мс',
         ),
       ),
       findsOneWidget,
@@ -2901,7 +3010,7 @@ void main() {
             (widget) =>
                 widget is Semantics &&
                 widget.properties.label ==
-                    'Качество соединения: Нет данных · ping —',
+                    'Качество соединения: Нет данных · ping 42 мс',
           ),
         )
         .toList();
@@ -2987,6 +3096,42 @@ void main() {
             find.widgetWithText(
               CheckedPopupMenuItem<String>,
               'Сигнал новых трансляций',
+            ),
+          )
+          .checked,
+      isFalse,
+    );
+    expect(
+      tester
+          .widget<CheckedPopupMenuItem<String>>(
+            find.widgetWithText(
+              CheckedPopupMenuItem<String>,
+              'Звуки участников и просмотра',
+            ),
+          )
+          .checked,
+      isTrue,
+    );
+    await tester.tap(find.text('Звуки участников и просмотра'));
+    await tester.pumpAndSettle();
+    expect(state.voiceRoomEventSoundsEnabled, isFalse);
+    expect(
+      (await SharedPreferences.getInstance()).getBool(
+        'voice-room-event-sounds:v1',
+      ),
+      isFalse,
+    );
+    state.voice.voiceRoomEventSoundsEnabled = true;
+    await state.voice.loadVoiceRoomEventSoundPreference();
+    expect(state.voiceRoomEventSoundsEnabled, isFalse);
+    await tester.tap(find.byTooltip('Ещё настройки голоса'));
+    await tester.pumpAndSettle();
+    expect(
+      tester
+          .widget<CheckedPopupMenuItem<String>>(
+            find.widgetWithText(
+              CheckedPopupMenuItem<String>,
+              'Звуки участников и просмотра',
             ),
           )
           .checked,
@@ -3553,8 +3698,8 @@ void main() {
     await tester.pumpWidget(MaterialApp(home: WorkspaceScreen(state: state)));
     await tester.pumpAndSettle();
 
-    expect(find.text('Подключиться к голосу'), findsOneWidget);
-    expect(find.text('Подключиться без микрофона'), findsOneWidget);
+    expect(find.text('Войти'), findsOneWidget);
+    expect(find.text('Без микрофона'), findsOneWidget);
 
     await tester.pumpWidget(const SizedBox.shrink());
     state.dispose();
@@ -5456,7 +5601,7 @@ void main() {
     expect(FocusManager.instance.primaryFocus, same(returnFocus));
     await tester.tap(find.byTooltip('Открыть участников'));
     await tester.pumpAndSettle();
-    expect(find.text('УЧАСТНИКИ'), findsOneWidget);
+    expect(find.byKey(const ValueKey('members-panel-heading')), findsOneWidget);
     await tester.tap(find.byTooltip('Закрыть участников'));
     await tester.pumpAndSettle();
     expect(find.text('Добро пожаловать в #общий'), findsOneWidget);
@@ -5529,17 +5674,17 @@ void main() {
       findsNothing,
     );
     expect(
-      find.descendant(of: membersPanel, matching: find.text('В сети — 1')),
+      find.descendant(of: membersPanel, matching: find.text('В СЕТИ — 1')),
       findsOneWidget,
     );
     expect(
-      find.descendant(of: membersPanel, matching: find.text('Не в сети — 1')),
+      find.descendant(of: membersPanel, matching: find.text('НЕ В СЕТИ — 1')),
       findsOneWidget,
     );
     expect(
       find.descendant(
         of: membersPanel,
-        matching: find.text('Статус неизвестен — 1'),
+        matching: find.text('СТАТУС НЕИЗВЕСТЕН — 1'),
       ),
       findsOneWidget,
     );
@@ -5554,12 +5699,12 @@ void main() {
     expect(
       find.descendant(
         of: membersPanel,
-        matching: find.text('Статус неизвестен — 3'),
+        matching: find.text('СТАТУС НЕИЗВЕСТЕН — 3'),
       ),
       findsOneWidget,
     );
     expect(
-      find.descendant(of: membersPanel, matching: find.text('В сети — 1')),
+      find.descendant(of: membersPanel, matching: find.text('В СЕТИ — 1')),
       findsNothing,
     );
 
@@ -5569,7 +5714,7 @@ void main() {
     state.notifyListeners();
     await tester.pumpAndSettle();
     expect(
-      find.descendant(of: membersPanel, matching: find.text('В сети — 1')),
+      find.descendant(of: membersPanel, matching: find.text('В СЕТИ — 1')),
       findsOneWidget,
     );
     await tester.tap(find.text('Неизвестен'));
@@ -5586,10 +5731,10 @@ void main() {
     expect(profilePopover, findsOneWidget);
     expect(find.text('@unknown'), findsOneWidget);
     final memberRow = find.ancestor(
-      of: find.text('Неизвестен'),
-      matching: find.byType(ListTile),
+      of: find.descendant(of: membersPanel, matching: find.text('Неизвестен')),
+      matching: find.byType(InkWell),
     );
-    final rowRect = tester.getRect(memberRow);
+    final rowRect = tester.getRect(memberRow.first);
     final popoverRect = tester.getRect(profilePopover);
     expect(popoverRect.width, 288);
     expect(popoverRect.left, greaterThanOrEqualTo(8));
@@ -5800,11 +5945,8 @@ void main() {
           );
           await tester.pumpAndSettle();
           Future<void> capture(String surface) async {
-            expect(
-              tester.takeException(),
-              isNull,
-              reason: '$surface $width x$scale',
-            );
+            final exception = tester.takeException();
+            expect(exception, isNull, reason: '$surface $width x$scale');
             await captureUiuxBoundary(
               tester,
               find.byKey(root),
@@ -5898,142 +6040,143 @@ void main() {
       );
     }
   }
-  testWidgets('selected stream survives TEXT DM settings and end without pinning', (
-    t,
-  ) async {
-    const rtcEvents = MethodChannel('FlutterWebRTC.Event');
-    t.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-      rtcEvents,
-      (_) async => null,
-    );
-    addTearDown(
-      () => t.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+  testWidgets(
+    'selected stream survives TEXT DM settings and end without pinning',
+    (t) async {
+      const rtcEvents = MethodChannel('FlutterWebRTC.Event');
+      t.binding.defaultBinaryMessenger.setMockMethodCallHandler(
         rtcEvents,
-        null,
-      ),
-    );
-    t.view.devicePixelRatio = 1;
-    t.view.physicalSize = const Size(1440, 900);
-    addTearDown(t.view.reset);
-    await loadUiuxVisualCaptureFonts();
-    final root = GlobalKey();
-    final room = _PublishedScreenRoom();
-    // ignore: invalid_use_of_internal_member
-    final created = await RemoteParticipant.createFromInfo(
-      room: room,
-      info: lk.ParticipantInfo(
-        sid: 'sid',
-        identity: 'remote',
-        name: 'Streamer',
-        tracks: [
-          lk.TrackInfo(
-            sid: 'screen',
-            type: lk.TrackType.VIDEO,
-            source: lk.TrackSource.SCREEN_SHARE,
-            muted: false,
-          ),
-        ],
-      ),
-    );
-    room.members['remote'] = created.participant;
-    final state = _PublishedScreenState(room);
-    await state.initialize();
-    state.selectedChannel = _PortraitApi.voiceChannel;
-    state.voiceChannel = _PortraitApi.voiceChannel;
-    state.voicePhase = VoicePhase.connected;
-    await t.pumpWidget(
-      RepaintBoundary(
-        key: root,
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: guildTheme(),
-          builder: (context, child) => MediaQuery(
-            data: MediaQuery.of(context)
-                .copyWith(textScaler: const TextScaler.linear(2)),
-            child: child!,
-          ),
-          home: AnimatedBuilder(
-            animation: state,
-            builder: (_, _) => WorkspaceScreen(state: state),
+        (_) async => null,
+      );
+      addTearDown(
+        () => t.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+          rtcEvents,
+          null,
+        ),
+      );
+      t.view.devicePixelRatio = 1;
+      t.view.physicalSize = const Size(1440, 900);
+      addTearDown(t.view.reset);
+      await loadUiuxVisualCaptureFonts();
+      final root = GlobalKey();
+      final room = _PublishedScreenRoom();
+      // ignore: invalid_use_of_internal_member
+      final created = await RemoteParticipant.createFromInfo(
+        room: room,
+        info: lk.ParticipantInfo(
+          sid: 'sid',
+          identity: 'remote',
+          name: 'Streamer',
+          tracks: [
+            lk.TrackInfo(
+              sid: 'screen',
+              type: lk.TrackType.VIDEO,
+              source: lk.TrackSource.SCREEN_SHARE,
+              muted: false,
+            ),
+          ],
+        ),
+      );
+      room.members['remote'] = created.participant;
+      final state = _PublishedScreenState(room);
+      await state.initialize();
+      state.selectedChannel = _PortraitApi.voiceChannel;
+      state.voiceChannel = _PortraitApi.voiceChannel;
+      state.voicePhase = VoicePhase.connected;
+      await t.pumpWidget(
+        RepaintBoundary(
+          key: root,
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: guildTheme(),
+            builder: (context, child) => MediaQuery(
+              data: MediaQuery.of(context)
+                  .copyWith(textScaler: const TextScaler.linear(2)),
+              child: child!,
+            ),
+            home: AnimatedBuilder(
+              animation: state,
+              builder: (_, _) => WorkspaceScreen(state: state),
+            ),
           ),
         ),
-      ),
-    );
-    await t.pumpAndSettle();
-    (t.state(find.byType(WorkspaceScreen)) as dynamic)
-        .workspaceSelectVoiceScreen('remote');
-    await t.pump();
-    expect(find.byTooltip('Закрепить демонстрацию'), findsNothing);
-    await state.selectChannel(_PortraitApi.channel);
-    await t.pump(const Duration(milliseconds: 200));
-    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
-    await t.enterText(
-      find.byWidgetPredicate(
-        (w) =>
-            w is TextField && w.decoration?.hintText == 'Написать сообщение…',
-      ),
-      'Сохранённый черновик',
-    );
-    for (final size in [
-      const Size(1440, 900),
-      const Size(390, 480),
-      const Size(320, 480),
-    ]) {
-      for (final ime in [0.0, 180.0]) {
-        t.view.physicalSize = size;
-        t.view.viewInsets = FakeViewPadding(bottom: ime);
-        await t.pump(const Duration(milliseconds: 200));
-        expect(t.takeException(), isNull, reason: '$size IME$ime');
-        expect(find.text('Сохранённый черновик'), findsOneWidget);
-        if (ime > 0) {
-          await t.ensureVisible(find.byTooltip('Остановить просмотр'));
-          await t.pump();
+      );
+      await t.pumpAndSettle();
+      (t.state(find.byType(WorkspaceScreen)) as dynamic)
+          .workspaceSelectVoiceScreen('remote');
+      await t.pump();
+      expect(find.byTooltip('Закрепить демонстрацию'), findsNothing);
+      await state.selectChannel(_PortraitApi.channel);
+      await t.pump(const Duration(milliseconds: 200));
+      expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+      await t.enterText(
+        find.byWidgetPredicate(
+          (w) =>
+              w is TextField && w.decoration?.hintText == 'Написать сообщение…',
+        ),
+        'Сохранённый черновик',
+      );
+      for (final size in [
+        const Size(1440, 900),
+        const Size(390, 480),
+        const Size(320, 480),
+      ]) {
+        for (final ime in [0.0, 180.0]) {
+          t.view.physicalSize = size;
+          t.view.viewInsets = FakeViewPadding(bottom: ime);
+          await t.pump(const Duration(milliseconds: 200));
+          expect(t.takeException(), isNull, reason: '$size IME$ime');
+          expect(find.text('Сохранённый черновик'), findsOneWidget);
+          if (ime > 0) {
+            await t.ensureVisible(find.byTooltip('Остановить просмотр'));
+            await t.pump();
+          }
+          await captureUiuxBoundary(
+            t,
+            find.byKey(root),
+            fileName:
+                'parity-pinned-workspace-${size.width.toInt()}x${size.height.toInt()}-ime${ime.toInt()}-scale2.png',
+            pixelRatio: 1,
+          );
         }
-        await captureUiuxBoundary(
-          t,
-          find.byKey(root),
-          fileName:
-              'parity-pinned-workspace-${size.width.toInt()}x${size.height.toInt()}-ime${ime.toInt()}-scale2.png',
-          pixelRatio: 1,
-        );
       }
-    }
-    t.view.viewInsets = const FakeViewPadding();
-    t.view.physicalSize = const Size(393, 852);
-    await state.openDirectConversation(
-      const DirectConversation(
-        id: 'dm-1',
-        participantId: 'account-2',
-        displayName: 'Собеседник',
-        unreadCount: 0,
-      ),
-    );
-    await t.pump();
-    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
-    await captureUiuxBoundary(
-      t,
-      find.byKey(root),
-      fileName: 'flutter-screen-viewer-mini-player-mobile-393x852.png',
-      pixelRatio: 1,
-    );
-    state.toggleWorkspacePanel(WorkspacePanel.profile);
-    await t.pump();
-    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
-    await state.selectChannel(_PortraitApi.voiceChannel);
-    await t.pump();
-    expect(find.byTooltip('Приостановить видео'), findsNothing);
-    await state.selectChannel(_PortraitApi.channel);
-    await t.pump();
-    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
-    room.members.clear();
-    state.notifyListeners();
-    await t.pump();
-    expect(find.byTooltip('Приостановить видео'), findsOneWidget);
-    expect(find.text('Демонстрация завершена'), findsOneWidget);
-    await t.pumpWidget(const SizedBox.shrink());
-    state.dispose();
-    await t.runAsync(room.dispose);
-  });
+      t.view.viewInsets = const FakeViewPadding();
+      t.view.physicalSize = const Size(393, 852);
+      await state.openDirectConversation(
+        const DirectConversation(
+          id: 'dm-1',
+          participantId: 'account-2',
+          displayName: 'Собеседник',
+          unreadCount: 0,
+        ),
+      );
+      await t.pump();
+      expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+      await captureUiuxBoundary(
+        t,
+        find.byKey(root),
+        fileName: 'flutter-screen-viewer-mini-player-mobile-393x852.png',
+        pixelRatio: 1,
+      );
+      state.toggleWorkspacePanel(WorkspacePanel.profile);
+      await t.pump();
+      expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+      await state.selectChannel(_PortraitApi.voiceChannel);
+      await t.pump();
+      expect(find.byTooltip('Приостановить видео'), findsNothing);
+      await state.selectChannel(_PortraitApi.channel);
+      await t.pump();
+      expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+      room.members.clear();
+      state.notifyListeners();
+      await t.pump();
+      expect(find.byTooltip('Приостановить видео'), findsOneWidget);
+      expect(find.text('Демонстрация завершена'), findsOneWidget);
+      await t.pumpWidget(const SizedBox.shrink());
+      state.dispose();
+      await t.runAsync(room.dispose);
+    },
+  );
 }
 
 class _PublishedScreenRoom extends Room {
@@ -6041,6 +6184,55 @@ class _PublishedScreenRoom extends Room {
   @override
   UnmodifiableMapView<String, RemoteParticipant> get remoteParticipants =>
       UnmodifiableMapView(members);
+}
+
+class _NavigationLocalParticipant implements LocalParticipant {
+  @override
+  bool get isSpeaking => false;
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _NavigationRemoteParticipant implements RemoteParticipant {
+  const _NavigationRemoteParticipant();
+
+  @override
+  String get identity => 'navigation-peer';
+
+  @override
+  String? get metadata => 'account:account-2';
+
+  @override
+  String get name => 'Streamer';
+
+  @override
+  bool get isSpeaking => false;
+
+  @override
+  List<RemoteTrackPublication<RemoteAudioTrack>> get audioTrackPublications =>
+      const [];
+
+  @override
+  List<RemoteTrackPublication<RemoteVideoTrack>> get videoTrackPublications =>
+      const [_NavigationVideoPublication()];
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _NavigationVideoPublication
+    implements RemoteTrackPublication<RemoteVideoTrack> {
+  const _NavigationVideoPublication();
+
+  @override
+  bool get muted => false;
+
+  @override
+  TrackSource get source => TrackSource.screenShareVideo;
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 class _PublishedScreenState extends AppState {

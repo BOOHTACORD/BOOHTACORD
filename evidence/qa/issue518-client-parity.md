@@ -133,9 +133,9 @@ Android and Windows publish through their existing manual-master path.
 
 Public distribution evidence is kept separately by each immutable publisher:
 
-- Android: https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.45
-- Windows: https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.47
-- macOS: https://github.com/Egkurilov/BOOHTACORD/releases/tag/macos-v1.0.45
+- Android: https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/android-v1.0.45
+- Windows: https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/windows-v1.0.47
+- macOS: https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/macos-v1.0.45
 
 Each completed publisher retains source-bound contract/publication.json and
 verifies all public asset hashes; artifact-manifest.json and SHA256SUMS identify

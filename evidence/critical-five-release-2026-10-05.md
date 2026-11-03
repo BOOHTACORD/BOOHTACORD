@@ -17,7 +17,7 @@ unavailable physical/production acceptance gates. Primary checkout is untouched.
 
 ## Integration checks
 
-- PASS: [PR CI 37275447958](https://github.com/Egkurilov/BOOHTACORD/actions/runs/37275447958)
+- PASS: [PR CI 37275447958](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37275447958)
   at exact head `cbd08678458ec681627f137d53c27ea9c7016718`: contracts, backend,
   frontend, Flutter/Android and Windows. No failed job was bypassed.
 - PASS: complete local Go suite with an isolated PostgreSQL fixture, full Web
@@ -27,7 +27,7 @@ unavailable physical/production acceptance gates. Primary checkout is untouched.
   Dart import/feature-boundary and actual Chrome component checks.
 - PASS: analyzer has no errors or warnings; existing nonfatal info diagnostics
   remain. Windows CI builds the distribution; no physical Windows install claimed.
-- PASS: [server deployment 37277729917](https://github.com/Egkurilov/BOOHTACORD/actions/runs/37277729917)
+- PASS: [server deployment 37277729917](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37277729917)
   installs source `798cfcf7`. Read-only checks confirm API/web OCI revision,
   running containers, public health, signed release receipt and served audio assets.
 - PASS: deployed anonymous guild-profile endpoint contains exactly name/revision,
@@ -50,8 +50,8 @@ unavailable physical/production acceptance gates. Primary checkout is untouched.
 
 ## Android publication
 
-PASS: [signed Android release 1.0.33](https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.33),
-[release workflow 37277136670](https://github.com/Egkurilov/BOOHTACORD/actions/runs/37277136670).
+PASS: [signed Android release 1.0.33](https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/android-v1.0.33),
+[release workflow 37277136670](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37277136670).
 Downloaded all seven actual assets, checked their complete SHA256SUMS and manifest,
 then independently ran apksigner/aapt and ZIP/ELF inspection on every APK.
 

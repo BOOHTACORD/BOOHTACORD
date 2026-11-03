@@ -1,6 +1,6 @@
 # UI/UX 2026 accessibility inventory
 
-Scope: GitHub [#301](https://github.com/Egkurilov/BOOHTACORD/issues/301), key interaction scenarios shared by Web and Flutter. The machine-readable control/test map is [`clients/web/tests/accessibility/uiux_2026_inventory.json`](../../clients/web/tests/accessibility/uiux_2026_inventory.json). A catalog status of `PASS_SCOPED` means the listed automated cases pass; it does not mean that every control in the scenario or every platform is conformant. `PARTIAL` and `NOT_RUN` remain explicit.
+Scope: GitHub [#301](https://github.com/BOOHTACORD/BOOHTACORD/issues/301), key interaction scenarios shared by Web and Flutter. The machine-readable control/test map is [`clients/web/tests/accessibility/uiux_2026_inventory.json`](../../clients/web/tests/accessibility/uiux_2026_inventory.json). A catalog status of `PASS_SCOPED` means the listed automated cases pass; it does not mean that every control in the scenario or every platform is conformant. `PARTIAL` and `NOT_RUN` remain explicit.
 
 ## Controls, actions and automated coverage
 

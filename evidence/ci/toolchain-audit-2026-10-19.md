@@ -46,7 +46,7 @@ Initial hosted head `5209702d` / checkout `0d0de0b2` **FAIL** at the new Java ru
 assertion (Flutter job 117903902061, CI 39204358616). The setup action's cached
 label is 17.0.20+1, while the actual Eclipse Adoptium runtime property is
 17.0.20.1+1. The isolated read-only public-property probe
-[39204506116 / 117904298991](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39204506116/job/117904298991)
+[39204506116 / 117904298991](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39204506116/job/117904298991)
 confirms this exact value without publishing the rest of Java properties or user
 environment. The policy now pins the selection label and complete runtime value
 separately; no prefix/major-only comparison or ignored mismatch. The observed

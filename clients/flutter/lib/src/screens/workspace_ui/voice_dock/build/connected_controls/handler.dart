@@ -103,6 +103,12 @@ extension VoiceDockConnectedControlsRenderer on WorkspaceVoiceDockContext {
                     !state.voiceStreamSoundEnabled,
                   ),
                 );
+              case 'room-event-sounds':
+                unawaited(
+                  state.setVoiceRoomEventSoundsEnabled(
+                    !state.voiceRoomEventSoundsEnabled,
+                  ),
+                );
               case 'overlay':
                 state.setVoiceOverlayEnabled(!state.voiceOverlay.enabled);
               case 'speakers':
@@ -120,6 +126,11 @@ extension VoiceDockConnectedControlsRenderer on WorkspaceVoiceDockContext {
               value: 'sounds',
               checked: state.voiceStreamSoundEnabled,
               child: const Text('Сигнал новых трансляций'),
+            ),
+            CheckedPopupMenuItem(
+              value: 'room-event-sounds',
+              checked: state.voiceRoomEventSoundsEnabled,
+              child: const Text('Звуки участников и просмотра'),
             ),
             if (!kIsWeb && defaultTargetPlatform == TargetPlatform.windows) ...[
               CheckedPopupMenuItem(

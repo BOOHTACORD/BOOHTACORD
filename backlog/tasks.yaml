@@ -92,7 +92,7 @@ tasks:
     title: Voice admission, controls and recovery
     requirements: [REQ-VOICE-01, REQ-VOICE-02, REQ-VOICE-03, REQ-AUDIO-01]
     depends_on: [T-006, T-020]
-    evidence: [voice-integration-tests]
+    evidence: [voice-integration-tests, evidence/media/livekit-rtc-network-2026-11-01.json]
   - id: T-030
     title: Screen publication, viewer and diagnostics
     requirements: [REQ-SCREEN-01, REQ-SCREEN-02, REQ-SCREEN-03, REQ-SCREEN-04, REQ-CAPACITY-02]
@@ -137,7 +137,7 @@ tasks:
     title: LiveKit Egress captures private screen previews every 30 seconds
     requirements: [REQ-SCREEN-01, REQ-SCREEN-02, REQ-SCREEN-03, REQ-SCREEN-04, REQ-SECURITY-02]
     depends_on: [T-037]
-    evidence: [screen-preview-egress-unit-tests, screen-preview-egress-real-stack, screen-preview-20-publisher-load, evidence/media/server-screen-previews-2026-10-29.json]
+    evidence: [screen-preview-egress-unit-tests, screen-preview-egress-real-stack, screen-preview-20-publisher-load, evidence/media/server-screen-previews-2026-10-29.json, evidence/qa/flutter-screen-preview-receiver-2026-11-01.json, evidence/media/livekit-network-config-2026-11-01-explicit-node-ip.json, evidence/media/livekit-deployment-recovery-2026-11-01.json]
   - id: T-038
     title: Flutter screen sender telemetry reliability (GitHub #325)
     requirements: [REQ-SCREEN-01, REQ-SCREEN-02, REQ-SCREEN-03, REQ-SCREEN-04]
@@ -883,3 +883,8 @@ tasks:
     requirements: [REQ-DM-01, REQ-UI-01, REQ-UI-02, REQ-SECURITY-02, REQ-STORAGE-01]
     depends_on: [SP-001, T-052, T-054]
     evidence: [docs/adr/ADR-029-product-support-github-bridge.md, tests/support_gateway, evidence/qa/sp002-public-gateway-2026-10-22.json, evidence/qa/sp002-public-support-acceptance-2026-10-22.json]
+  - id: VC-001
+    title: Voice room participant and stream-view sound cues
+    requirements: [REQ-VOICE-01, REQ-SCREEN-01, REQ-UI-01]
+    depends_on: [T-022, T-030]
+    evidence: [clients/web/src/voice/voice_participant_sound_tracker.spec.ts, clients/web/src/voice/livekit_screen_viewer_adapter.spec.ts, clients/web/src/voice/voice_view_transition_sound.spec.ts, clients/flutter/test/features/voice/voice_participant_sound_tracker_test.dart, clients/flutter/test/features/voice/voice_room_event_sounds_test.dart, clients/flutter/test/workspace_screen_test.dart, tools/qa/local_features/features.json, evidence/qa/voice-room-event-sounds-2026-10-31.md]

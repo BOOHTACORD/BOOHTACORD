@@ -32,7 +32,7 @@ def main():
     if any(not 1 <= n <= 100 for n in counts.values()):
         parser.error('Each sample limit must be between 1 and 100')
     repository = Path(subprocess.check_output(['git', 'rev-parse', '--show-toplevel'], text=True).strip())
-    policy = {'sample_limits': counts, 'repository': 'Egkurilov/BOOHTACORD', 'schema_version': 1}
+    policy = {'sample_limits': counts, 'repository': 'BOOHTACORD/BOOHTACORD', 'schema_version': 1}
     manifest = args.cache / 'manifest.json'
     if manifest.exists():
         metadata = json.loads(manifest.read_text())

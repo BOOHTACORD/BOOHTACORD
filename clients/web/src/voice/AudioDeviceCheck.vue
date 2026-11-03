@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onBeforeUnmount, ref, watch } from 'vue'
-import { noiseSuppressionModeLabel, noiseSuppressionFallbackLabel } from './audio_processing_diagnostics'
 import type { AudioProcessingOptions } from './noise_suppression/types'
 import { playSpeakerCheck, startMicrophoneCheck, type MicrophoneCheck } from './audio_check'
 
@@ -56,8 +55,7 @@ async function toggleInput(): Promise<void> {
     removeEndedListener = started.onEnded(() => {
       if (version === generation) failInput()
     })
-    const runtime = started.processingState?.()
-    inputState.value = props.connected ? 'Индикатор показывает текущий выход микрофона звонка; состояние mute сохраняется.' : `Говорите: индикатор показывает локальный уровень. Выбрано: ${noiseSuppressionModeLabel(props.processing.noiseSuppressionMode)}; работает: ${noiseSuppressionModeLabel(runtime?.effectiveMode ?? 'unknown')}.${runtime?.fallbackReason ? ` Причина: ${noiseSuppressionFallbackLabel(runtime.fallbackReason)}.` : ''}`
+    inputState.value = props.connected ? 'Индикатор показывает уровень микрофона во время звонка.' : 'Говорите: индикатор показывает уровень микрофона.'
     timer = setInterval(() => { level.value = started.level() }, 100)
   } catch (cause) {
     if (version === generation) inputState.value = cause instanceof Error ? cause.message : 'Не удалось проверить микрофон. Проверьте разрешение и выбранное устройство.'
@@ -70,7 +68,7 @@ async function checkOutput(): Promise<void> {
   if (outputBusy.value) return
   outputBusy.value = true
   outputState.value = 'Воспроизводим короткий сигнал…'
-  try { await playSpeakerCheck(props.outputId); outputState.value = 'Сигнал завершён. Если его не было слышно, проверьте системную громкость и динамик.' }
+  try { await playSpeakerCheck(props.outputId); outputState.value = 'Сигнал воспроизведён. Если его не слышно, проверьте громкость и динамик.' }
   catch (cause) { outputState.value = cause instanceof Error ? cause.message : 'Не удалось воспроизвести сигнал.' }
   finally { outputBusy.value = false }
 }

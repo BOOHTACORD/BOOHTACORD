@@ -78,6 +78,15 @@ void main() {
           expect(tester.getSize(room).height, lessThanOrEqualTo(18));
           expect(
             find.descendant(of: dock, matching: find.text('6 мс')),
+            findsNothing,
+          );
+          expect(
+            find.descendant(
+              of: dock,
+              matching: find.bySemanticsLabel(
+                'Качество соединения: Нет данных · ping 6 мс',
+              ),
+            ),
             findsOneWidget,
           );
           final send = find.byTooltip('Отправить личное сообщение');

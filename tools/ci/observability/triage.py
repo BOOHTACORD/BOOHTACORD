@@ -67,7 +67,7 @@ def classify(run,jobs):
 
 
 def binding(run,env,source,parents):
-    require(re.fullmatch('[0-9a-f]{40}',source) and run.get('repository',{}).get('full_name')=='Egkurilov/BOOHTACORD'
+    require(re.fullmatch('[0-9a-f]{40}',source) and run.get('repository',{}).get('full_name')=='BOOHTACORD/BOOHTACORD'
             and str(run.get('id'))==env.get('GITHUB_RUN_ID') and str(run.get('run_attempt'))==env.get('GITHUB_RUN_ATTEMPT'))
     if run.get('head_sha')==source:return 'checked_checkout'
     require(run.get('event')==env.get('GITHUB_EVENT_NAME')=='pull_request'

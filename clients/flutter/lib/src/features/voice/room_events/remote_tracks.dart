@@ -23,7 +23,21 @@ extension VoiceEventsRemoteTracks on VoiceController {
     bindRemoteParticipantEvents(room, listener, owns);
     listener.on<TrackSubscribedEvent>((event) {
       if (!owns()) return;
-      if (!identical(this.room, room)) return;
+      if (!identical(this.room, room) && !identical(pendingRoom, room)) return;
+      final selectedScreenShare =
+          event.participant.identity == selectedRemoteScreenViewerIdentity &&
+          (event.publication.source == TrackSource.screenShareVideo ||
+              isScreenShareAudioPublication(
+                event.participant,
+                event.publication,
+              ));
+      if (!shouldKeepRemoteTrackSubscribed(
+        event.publication.source,
+        selectedScreenShare: selectedScreenShare,
+      )) {
+        unawaited(setRemoteTrackSubscription(event.publication, false));
+        return;
+      }
       if (event.publication.source == TrackSource.screenShareVideo &&
           event.track is RemoteVideoTrack) {
         logRemoteVoiceState(
@@ -88,6 +102,8 @@ extension VoiceEventsRemoteTracks on VoiceController {
           if (event.participant.identity ==
               selectedRemoteScreenViewerIdentity) {
             subscribeRemoteScreenForViewing(room, event.participant.identity);
+          } else {
+            unawaited(setRemoteTrackSubscription(event.publication, false));
           }
         } else if (event.participant.identity ==
                 selectedRemoteScreenViewerIdentity &&
@@ -96,6 +112,8 @@ extension VoiceEventsRemoteTracks on VoiceController {
               event.publication,
             )) {
           subscribeRemoteScreenAudioForViewing(event.publication);
+        } else {
+          unawaited(setRemoteTrackSubscription(event.publication, false));
         }
       }
       refreshRemoteVoiceNavigation(this, room, owns);

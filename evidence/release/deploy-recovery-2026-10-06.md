@@ -19,10 +19,10 @@ Commit 200fa07e636401f52ece43cba3b3408aa28f1b96 corrects only the stale expectat
   covering seven disconnect reasons at widths 1440 and 1024.
 - `npm test -- src/voice/disconnect_notice src/voice/controller_ownership` — 19 passed.
 - Local test runtime: Node.js 26.10.0, macOS arm64; CI uses pinned Node.js 24.18.0.
-- [CI](https://github.com/Egkurilov/BOOHTACORD/actions/runs/37423676236) — success.
-- [Build server](https://github.com/Egkurilov/BOOHTACORD/actions/runs/37423676272) — success
+- [CI](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37423676236) — success.
+- [Build server](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37423676272) — success
   for backend, contracts, web and the signed, smoke-tested bundle.
-- [Deploy production](https://github.com/Egkurilov/BOOHTACORD/actions/runs/37424658159) — success.
+- [Deploy production](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37424658159) — success.
   Installer log confirms: installed verified source revision
   `200fa07e636401f52ece43cba3b3408aa28f1b96` at 2026-10-06 09:37 Moscow time.
 

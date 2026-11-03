@@ -11,7 +11,7 @@ from . import source
 class SourceTests(unittest.TestCase):
     def test_tag_version_and_source_mismatch_fail(self):
         identity={'version':'1.2.3','native_build':'4'}
-        env={'GITHUB_REPOSITORY':'Egkurilov/BOOHTACORD','GITHUB_REF':'refs/tags/windows-v1.2.3',
+        env={'GITHUB_REPOSITORY':'BOOHTACORD/BOOHTACORD','GITHUB_REF':'refs/tags/windows-v1.2.3',
              'GITHUB_EVENT_NAME':'push',
              'GITHUB_SHA':'a'*40,'GITHUB_ACTIONS':'true','GITHUB_RUN_ID':'12','GITHUB_RUN_ATTEMPT':'1'}
         with patch.object(source,'load',return_value=identity),patch.object(source,'output',return_value='a'*40), \
@@ -41,7 +41,7 @@ class SourceTests(unittest.TestCase):
             with patch.object(source,'ROOT',root),patch.object(source,'output',side_effect=output), \
                  patch.object(source,'load',return_value={'version':'1.2.3','native_build':'4'}), \
                  patch.object(source.subprocess,'run',side_effect=run),patch.dict(os.environ,{
-                    'GITHUB_REPOSITORY':'Egkurilov/BOOHTACORD','GITHUB_REF':'refs/tags/windows-v1.2.3',
+                    'GITHUB_REPOSITORY':'BOOHTACORD/BOOHTACORD','GITHUB_REF':'refs/tags/windows-v1.2.3',
                     'GITHUB_EVENT_NAME':'push',
                     'GITHUB_SHA':revision,'GITHUB_ACTIONS':'true','GITHUB_RUN_ID':'12','GITHUB_RUN_ATTEMPT':'1'},clear=True):
                 self.assertEqual(source.preflight('windows')['source_revision'],revision)
@@ -55,7 +55,7 @@ class SourceTests(unittest.TestCase):
     def test_candidate_master_never_claims_a_verified_release_tag(self):
         with patch.object(source,'load',return_value={'version':'1.2.3','native_build':'4'}), \
              patch.object(source,'output',return_value='a'*40),patch.object(source.subprocess,'run'),patch.dict(os.environ,{
-                'GITHUB_REPOSITORY':'Egkurilov/BOOHTACORD','GITHUB_REF':'refs/heads/master','GITHUB_SHA':'a'*40,
+                'GITHUB_REPOSITORY':'BOOHTACORD/BOOHTACORD','GITHUB_REF':'refs/heads/master','GITHUB_SHA':'a'*40,
                 'GITHUB_EVENT_NAME':'workflow_dispatch','NATIVE_RELEASE_DRY_RUN':'true'},clear=True):
             value=source.preflight('android')
             self.assertEqual(value['release_mode'],'candidate');self.assertFalse(value['tag_verified'])
@@ -77,7 +77,7 @@ class SourceTests(unittest.TestCase):
             with patch.object(source,'ROOT',root),patch.object(source,'output',side_effect=output), \
                  patch.object(source,'load',return_value={'version':'1.2.3','native_build':'4'}), \
                  patch.object(source.subprocess,'run',side_effect=run),patch.dict(os.environ,{
-                    'GITHUB_REPOSITORY':'Egkurilov/BOOHTACORD','GITHUB_REF':'refs/heads/master',
+                    'GITHUB_REPOSITORY':'BOOHTACORD/BOOHTACORD','GITHUB_REF':'refs/heads/master',
                     'GITHUB_SHA':revision,'GITHUB_EVENT_NAME':'workflow_dispatch','NATIVE_RELEASE_DRY_RUN':'false',
                     'GITHUB_ACTIONS':'true','GITHUB_RUN_ID':'12','GITHUB_RUN_ATTEMPT':'1'},clear=True):
                 for platform in source.PLATFORMS:

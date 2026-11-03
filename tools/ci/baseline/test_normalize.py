@@ -11,7 +11,7 @@ class NormalizeTests(unittest.TestCase):
                'display_title': 'private text', 'html_url': 'https://private.example',
                'repository': {'private': True}, 'pull_requests': [{'body': 'private body'}]}
         result = normalize_run(raw)
-        self.assertEqual(result['url'], 'https://github.com/Egkurilov/BOOHTACORD/actions/runs/1')
+        self.assertEqual(result['url'], 'https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/1')
         self.assertEqual(result['ref_kind'], 'pull_request')
         for secret in ['secret', 'private', 'body', 'actor']:
             self.assertNotIn(secret, json.dumps(result))

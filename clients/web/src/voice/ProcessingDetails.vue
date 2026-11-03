@@ -1,21 +1,10 @@
 <script setup lang="ts">
 import { audioProcessingStatus, noiseSuppressionModeLabel, type AudioProcessingDiagnostics } from './audio_processing_diagnostics'
-import type { AudioProcessingOptions } from './livekit_gateway'
-import { rnnoiseReleaseEnabled } from './noise_suppression/capabilities'
-import type { NoiseSuppressionMode } from './noise_suppression/types'
-import StreamStartSoundSetting from './StreamStartSoundSetting.vue'
-defineProps<{ processing: AudioProcessingOptions; diagnostics: AudioProcessingDiagnostics }>()
-const emit = defineEmits<{ setProcessing: [processing: AudioProcessingOptions] }>()
+defineProps<{ diagnostics: AudioProcessingDiagnostics }>()
 </script>
 <template>
-  <details class="audio-processing-details">
-    <summary>Режим и диагностика обработки</summary>
-    <StreamStartSoundSetting />
-    <label>Режим шумоподавления<select class="gc-field" :value="processing.noiseSuppressionMode" @change="emit('setProcessing', { ...processing, noiseSuppressionMode: ($event.target as HTMLSelectElement).value as NoiseSuppressionMode })">
-      <option value="off">Выключено</option><option value="browser">Стандартное — браузер</option>
-      <option v-if="rnnoiseReleaseEnabled()" value="rnnoise">RNNoise — экспериментальное</option>
-      <option v-if="!rnnoiseReleaseEnabled() && processing.noiseSuppressionMode === 'rnnoise'" value="rnnoise" disabled>RNNoise — недоступен в этой сборке</option>
-    </select></label>
+  <section class="audio-processing-details">
+    <h3>Состояние обработки</h3>
     <dl class="audio-processing-values">
       <dt>Автоматическая громкость</dt><dd>{{ audioProcessingStatus(diagnostics.autoGainControl) }}</dd>
       <dt>Подавление эха</dt><dd>{{ audioProcessingStatus(diagnostics.echoCancellation) }}</dd>
@@ -29,5 +18,5 @@ const emit = defineEmits<{ setProcessing: [processing: AudioProcessingOptions] }
       <template v-if="diagnostics.noiseSuppressionRuntime.contextSampleRate"><dt>AudioContext</dt><dd>{{ diagnostics.noiseSuppressionRuntime.contextSampleRate }} Гц</dd></template>
       <template v-if="diagnostics.noiseSuppressionRuntime.processedFrames !== undefined"><dt>Кадры / ошибки</dt><dd>{{ diagnostics.noiseSuppressionRuntime.processedFrames }} / {{ diagnostics.noiseSuppressionRuntime.processorErrors ?? 0 }}</dd></template>
     </dl>
-  </details>
+  </section>
 </template>

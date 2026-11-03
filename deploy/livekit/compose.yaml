@@ -53,6 +53,7 @@ services:
     volumes:
       - ./livekit.yaml:/etc/livekit-template.yaml:ro
     networks:
+      livekit-rtc: {}
       private:
         aliases: [livekit]
       livekit-metrics: {}

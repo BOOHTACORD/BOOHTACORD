@@ -45,9 +45,6 @@ extension WorkspaceCategoryStateBuildAction on WorkspaceCategoryStateContext {
                   final roster = state.voiceRosters
                       ?.where((item) => item.channelId == channel.id)
                       .firstOrNull;
-                  final memberCount = localParticipant == null
-                      ? roster?.participants.length
-                      : room!.remoteParticipants.length + 1;
                   return Column(
                     children: [
                       WorkspaceChannelRow(
@@ -55,7 +52,6 @@ extension WorkspaceCategoryStateBuildAction on WorkspaceCategoryStateContext {
                         channel: channel,
                         selected: state.selectedChannel?.id == channel.id,
                         voiceConnected: state.voiceChannel?.id == channel.id,
-                        voiceParticipantCount: memberCount,
                         favorite: widget.favoriteIds.contains(channel.id),
                         onFavoriteChanged: widget.onFavoriteChanged == null
                             ? null

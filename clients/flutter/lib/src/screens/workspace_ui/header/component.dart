@@ -13,6 +13,7 @@ class WorkspaceHeader extends StatelessWidget {
     this.onBack,
     this.trailing,
     this.mobileConversationLayout = false,
+    this.hideSubtitleOnCompact = false,
   });
   final IconData icon;
   final String title;
@@ -22,6 +23,7 @@ class WorkspaceHeader extends StatelessWidget {
   final VoidCallback? onBack;
   final Widget? trailing;
   final bool mobileConversationLayout;
+  final bool hideSubtitleOnCompact;
   @override
   Widget build(BuildContext context) {
     final compact =
@@ -87,15 +89,17 @@ class WorkspaceHeader extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Text(
-                      subtitle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: GcColors.muted,
-                        fontSize: 12,
+                    if (subtitle.isNotEmpty &&
+                        !(compact && hideSubtitleOnCompact))
+                      Text(
+                        subtitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: GcColors.muted,
+                          fontSize: 12,
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),

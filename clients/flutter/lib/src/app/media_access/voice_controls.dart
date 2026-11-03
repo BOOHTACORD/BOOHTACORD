@@ -39,6 +39,11 @@ mixin AppVoiceControlsAccess on AppOwners {
   set voiceStreamSoundEnabled(bool value) =>
       voice.voiceStreamSoundEnabled = value;
 
+  bool get voiceRoomEventSoundsEnabled => voice.voiceRoomEventSoundsEnabled;
+
+  String? get selectedRemoteScreenViewerIdentity =>
+      voice.selectedRemoteScreenViewerIdentity;
+
   bool get voiceStreamStartNotice => voice.voiceStreamStartNotice;
 
   set voiceStreamStartNotice(bool value) =>
@@ -89,6 +94,9 @@ mixin AppVoiceControlsAccess on AppOwners {
 
   Future<void> setVoiceStreamSoundEnabled(bool enabled) =>
       voice.setVoiceStreamSoundEnabled(enabled);
+
+  Future<void> setVoiceRoomEventSoundsEnabled(bool enabled) =>
+      voice.setVoiceRoomEventSoundsEnabled(enabled);
 
   Future<void> setPushToTalkKey(int? keyId, String? label) =>
       voice.setPushToTalkKey(keyId, label);

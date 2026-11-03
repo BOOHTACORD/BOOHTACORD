@@ -37,10 +37,10 @@ The primary checkout retains existing uncommitted/untracked work.
 
 ## Automated acceptance
 
-[Full exact-source master CI](https://github.com/Egkurilov/BOOHTACORD/actions/runs/37257800695): PASS on e2b19dfe.
-[Frozen candidate CI](https://github.com/Egkurilov/BOOHTACORD/actions/runs/37256830533): PASS on the same source/tree.
-[Final server build gates](https://github.com/Egkurilov/BOOHTACORD/actions/runs/37259679296): PASS on c860642f.
-[Additional test-only CI](https://github.com/Egkurilov/BOOHTACORD/actions/runs/37259836134): PASS on 8891a5e8.
+[Full exact-source master CI](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37257800695): PASS on e2b19dfe.
+[Frozen candidate CI](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37256830533): PASS on the same source/tree.
+[Final server build gates](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37259679296): PASS on c860642f.
+[Additional test-only CI](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37259836134): PASS on 8891a5e8.
 The c860642f general CI was superseded by 8891a5e8; its cancellation is not PASS.
 The new fixed-chrome Android scroll regression also passed locally.
 
@@ -80,8 +80,8 @@ device, privacy, recovery, load and UI issues remain open; no 15 FPS/capacity cl
 
 ## Delivery and provenance
 
-[Android 1.0.32](https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.32)
-and [Windows 1.0.32](https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.32)
+[Android 1.0.32](https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/android-v1.0.32)
+and [Windows 1.0.32](https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/windows-v1.0.32)
 use clean e2b19dfe. All published bytes/SHA256SUMS/manifests match; Windows ZIP
 members, sizes and hashes match both embedded and external manifests.
 Android version codes: armv7 1046, arm64 2046, x64 4046. All three actual published
@@ -92,8 +92,8 @@ Immutable 1.0.30/1.0.31 artifacts are retained; identity defect rolled forward.
 
 Catalog CAS 19 to 24 promoted five verified r46 selectors only after publication;
 iOS/macOS remain unconfigured. c860642f changes only the catalog after e2b19dfe.
-[Canonical signed build](https://github.com/Egkurilov/BOOHTACORD/actions/runs/37259679296)
-and [production installation](https://github.com/Egkurilov/BOOHTACORD/actions/runs/37260016097): PASS.
+[Canonical signed build](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37259679296)
+and [production installation](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/37260016097): PASS.
 Read-only production verification: health OK, build-info 1.0.32/r46, source/body
 receipt hash, served RNNoise WASM/MIME/SBOM/license plus missing-asset 404 PASS.
 All five public selectors return revision 24/r46 with no-store and nosniff.

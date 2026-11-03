@@ -3,7 +3,7 @@
 Date: 2026-10-10  
 Status: presentation journey documented; platform runtime acceptance remains `NOT_RUN`.
 
-This flow maps the existing Web and Flutter voice/media lifecycle for issue [#300](https://github.com/Egkurilov/BOOHTACORD/issues/300). It does not change LiveKit, OS permission, screen-capture, or server contracts. The browser/OS owns its native microphone and screen picker prompts; the app reports the current join or publication state around those prompts.
+This flow maps the existing Web and Flutter voice/media lifecycle for issue [#300](https://github.com/BOOHTACORD/BOOHTACORD/issues/300). It does not change LiveKit, OS permission, screen-capture, or server contracts. The browser/OS owns its native microphone and screen picker prompts; the app reports the current join or publication state around those prompts.
 
 | Phase | User-facing state and next action | Web | Flutter |
 | --- | --- | --- | --- |

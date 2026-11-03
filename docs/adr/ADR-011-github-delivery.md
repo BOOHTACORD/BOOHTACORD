@@ -5,7 +5,7 @@
 
 ## Контекст
 
-Владелец создал `github.com/Egkurilov/BOOHTACORD` и потребовал перенести репозиторий, runners и инфраструктуру с GitVerse. До миграции GitVerse `master` имел доверенный deploy run #1653749 с проверенными локальными OCI digest, SBOM, provenance и health. Это историческое доказательство прежнего маршрута; оно не подтверждает новый GitHub run.
+Владелец создал `github.com/BOOHTACORD/BOOHTACORD` и потребовал перенести репозиторий, runners и инфраструктуру с GitVerse. До миграции GitVerse `master` имел доверенный deploy run #1653749 с проверенными локальными OCI digest, SBOM, provenance и health. Это историческое доказательство прежнего маршрута; оно не подтверждает новый GitHub run.
 
 ## Решение
 

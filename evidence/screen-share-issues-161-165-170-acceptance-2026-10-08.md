@@ -9,13 +9,13 @@ Each comment distinguishes existing automated checks from device, SDK/SFU, brows
 
 | Issue | Existing implementation / evidence | Acceptance comment |
 |---|---|---|
-| #161 | [PR #186](https://github.com/Egkurilov/BOOHTACORD/pull/186), [PR #201](https://github.com/Egkurilov/BOOHTACORD/pull/201), [publisher lifecycle verification](https://github.com/Egkurilov/BOOHTACORD/blob/master/evidence/screen-share-publisher-lifecycle/verification.md) | [comment](https://github.com/Egkurilov/BOOHTACORD/issues/161#issuecomment-6047860672) |
-| #165 | [PR #204](https://github.com/Egkurilov/BOOHTACORD/pull/204) | [comment](https://github.com/Egkurilov/BOOHTACORD/issues/165#issuecomment-6047861068) |
-| #166 | [PR #202](https://github.com/Egkurilov/BOOHTACORD/pull/202), [QA-319 capture-plan evidence](https://github.com/Egkurilov/BOOHTACORD/blob/master/evidence/flutter/qa319-flutter-desktop-screen-share-capture-plan-2026-10-07-001.json) | [comment](https://github.com/Egkurilov/BOOHTACORD/issues/166#issuecomment-6047861395) |
-| #167 | [PR #208](https://github.com/Egkurilov/BOOHTACORD/pull/208) | [comment](https://github.com/Egkurilov/BOOHTACORD/issues/167#issuecomment-6047861689) |
-| #168 | [PR #206](https://github.com/Egkurilov/BOOHTACORD/pull/206) | [comment](https://github.com/Egkurilov/BOOHTACORD/issues/168#issuecomment-6047862010) |
-| #169 | [PR #207](https://github.com/Egkurilov/BOOHTACORD/pull/207), [adaptation policy verification](https://github.com/Egkurilov/BOOHTACORD/blob/master/evidence/screen-share-adaptation/verification.md) | [comment](https://github.com/Egkurilov/BOOHTACORD/issues/169#issuecomment-6047862346) |
-| #170 | [PR #211](https://github.com/Egkurilov/BOOHTACORD/pull/211), [metadata evidence](https://github.com/Egkurilov/BOOHTACORD/blob/master/evidence/issue-170-screen-profile-metadata-2026-10-07.md) | [comment](https://github.com/Egkurilov/BOOHTACORD/issues/170#issuecomment-6047862697) |
+| #161 | [PR #186](https://github.com/BOOHTACORD/BOOHTACORD/pull/186), [PR #201](https://github.com/BOOHTACORD/BOOHTACORD/pull/201), [publisher lifecycle verification](https://github.com/BOOHTACORD/BOOHTACORD/blob/master/evidence/screen-share-publisher-lifecycle/verification.md) | [comment](https://github.com/BOOHTACORD/BOOHTACORD/issues/161#issuecomment-6047860672) |
+| #165 | [PR #204](https://github.com/BOOHTACORD/BOOHTACORD/pull/204) | [comment](https://github.com/BOOHTACORD/BOOHTACORD/issues/165#issuecomment-6047861068) |
+| #166 | [PR #202](https://github.com/BOOHTACORD/BOOHTACORD/pull/202), [QA-319 capture-plan evidence](https://github.com/BOOHTACORD/BOOHTACORD/blob/master/evidence/flutter/qa319-flutter-desktop-screen-share-capture-plan-2026-10-07-001.json) | [comment](https://github.com/BOOHTACORD/BOOHTACORD/issues/166#issuecomment-6047861395) |
+| #167 | [PR #208](https://github.com/BOOHTACORD/BOOHTACORD/pull/208) | [comment](https://github.com/BOOHTACORD/BOOHTACORD/issues/167#issuecomment-6047861689) |
+| #168 | [PR #206](https://github.com/BOOHTACORD/BOOHTACORD/pull/206) | [comment](https://github.com/BOOHTACORD/BOOHTACORD/issues/168#issuecomment-6047862010) |
+| #169 | [PR #207](https://github.com/BOOHTACORD/BOOHTACORD/pull/207), [adaptation policy verification](https://github.com/BOOHTACORD/BOOHTACORD/blob/master/evidence/screen-share-adaptation/verification.md) | [comment](https://github.com/BOOHTACORD/BOOHTACORD/issues/169#issuecomment-6047862346) |
+| #170 | [PR #211](https://github.com/BOOHTACORD/BOOHTACORD/pull/211), [metadata evidence](https://github.com/BOOHTACORD/BOOHTACORD/blob/master/evidence/issue-170-screen-profile-metadata-2026-10-07.md) | [comment](https://github.com/BOOHTACORD/BOOHTACORD/issues/170#issuecomment-6047862697) |
 
 ## Verification status
 

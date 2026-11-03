@@ -3,7 +3,7 @@ import re
 from datetime import datetime
 from uuid import UUID
 
-REPOSITORY='Egkurilov/BOOHTACORD'
+REPOSITORY='BOOHTACORD/BOOHTACORD'
 ASSET_TAG='boohtacord-support-attachments'
 MAX_FILE_BYTES=25_000_000
 

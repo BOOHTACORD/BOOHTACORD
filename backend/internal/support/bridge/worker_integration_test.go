@@ -62,7 +62,7 @@ func TestWorkerOnlyExportsNewConsentedSupportAndImportsReplyExactlyOnce(t *testi
 		}
 		switch r.URL.Path {
 		case "/support/v1/status":
-			json.NewEncoder(w).Encode(map[string]any{"notice_version": 1, "public": true, "repository": "Egkurilov/BOOHTACORD"})
+			json.NewEncoder(w).Encode(map[string]any{"notice_version": 1, "public": true, "repository": "BOOHTACORD/BOOHTACORD"})
 		case "/support/v1/messages":
 			var payload struct {
 				publication

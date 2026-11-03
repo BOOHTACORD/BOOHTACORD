@@ -142,7 +142,7 @@ describe('UIUX-2026 visual regression inventory', () => {
   it('catalogues all 41 desktop and mobile reference slots', () => {
     const matrix = JSON.parse(readFileSync(matrixPath, 'utf8')) as VisualMatrix
 
-    expect(matrix.issue).toBe('Egkurilov/BOOHTACORD#289')
+    expect(matrix.issue).toBe('BOOHTACORD/BOOHTACORD#289')
     expect(matrix.sourceArchiveStatus).toContain('41 PNG entries verified when the ignored archive is supplied')
     expect(matrix.sourceArchiveStatus).toContain('not tracked in clean checkouts')
     expect(matrix.expectedCount).toBe(41)

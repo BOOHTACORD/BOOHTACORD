@@ -20,42 +20,45 @@ class VoicePrejoinCard extends StatelessWidget {
   final AppState state;
   final GuildChannel channel;
   @override
-  Widget build(BuildContext context) => VoicePrejoinSurface(
-    children: [
-      VoicePrejoinHeading(joining: state.voicePhase == VoicePhase.joining),
-      const SizedBox(height: 16),
-      VoiceRosterPreview(state: state, channelId: channel.id),
-      if (state.voiceDisconnectNotice != null) ...[
+  Widget build(BuildContext context) {
+    return VoicePrejoinSurface(
+      children: [
+        VoicePrejoinHeading(joining: state.voicePhase == VoicePhase.joining),
         const SizedBox(height: 16),
-        VoiceDisconnectNoticeView(notice: state.voiceDisconnectNotice!),
-      ] else if (state.error != null) ...[
-        const SizedBox(height: 16),
-        Semantics(
-          liveRegion: true,
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: const Color(0xFF422830),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Text(
-              state.error!,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: GcColors.danger, fontSize: 13),
+        VoiceRosterPreview(state: state, channelId: channel.id, compact: true),
+        if (state.voiceDisconnectNotice != null) ...[
+          const SizedBox(height: 16),
+          VoiceDisconnectNoticeView(notice: state.voiceDisconnectNotice!),
+        ] else if (state.error != null) ...[
+          const SizedBox(height: 16),
+          Semantics(
+            liveRegion: true,
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xFF422830),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                state.error!,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: GcColors.danger, fontSize: 13),
+              ),
             ),
           ),
+        ],
+        const SizedBox(height: 24),
+        VoiceManualJoinActions(
+          joining: state.voicePhase == VoicePhase.joining,
+          leaving: state.voicePhase == VoicePhase.leaving,
+          admissionClosed: channel.admissionClosed,
+          notice: state.voiceDisconnectNotice,
+          onJoin: () => unawaited(state.joinVoice(channel)),
+          onListen: () =>
+              unawaited(state.joinVoice(channel, listenerOnly: true)),
         ),
       ],
-      const SizedBox(height: 24),
-      VoiceManualJoinActions(
-        joining: state.voicePhase == VoicePhase.joining,
-        leaving: state.voicePhase == VoicePhase.leaving,
-        admissionClosed: channel.admissionClosed,
-        notice: state.voiceDisconnectNotice,
-        onJoin: () => unawaited(state.joinVoice(channel)),
-        onListen: () => unawaited(state.joinVoice(channel, listenerOnly: true)),
-      ),
-    ],
-  );
+    );
+  }
 }

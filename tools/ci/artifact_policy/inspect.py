@@ -14,7 +14,7 @@ def main(arguments=None):
     for name in ('source-revision', 'run-id', 'run-attempt', 'namespace', 'component', 'profile', 'platform'):
         parser.add_argument('--' + name, required=True)
     args = parser.parse_args(arguments)
-    identity = {'repository': 'Egkurilov/BOOHTACORD', **{key: getattr(args, key) for key in
+    identity = {'repository': 'BOOHTACORD/BOOHTACORD', **{key: getattr(args, key) for key in
                 ('source_revision', 'run_id', 'run_attempt', 'namespace', 'component', 'profile', 'platform')}}
     try:
         value = archive.unpack(args.archive.absolute(), args.output.absolute(), identity, args.sha256, args.bytes)

@@ -13,13 +13,13 @@ The tests initially failed before implementation. Traceability: 39 indexed
 requirements PASS_INDEX_ONLY (approved Windows brief unavailable on this Mac).
 
 A real isolated GitHub Actions scheduler fixture was tested in disposable PR
-[#410](https://github.com/Egkurilov/BOOHTACORD/pull/410), closed **without merge**:
+[#410](https://github.com/BOOHTACORD/BOOHTACORD/pull/410), closed **without merge**:
 
-- [Negative run 39159662907](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39159662907):
+- [Negative run 39159662907](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39159662907):
   selector/contracts succeeded, selected backend fixture failed, three irrelevant
   jobs skipped, and actual `ci-required` failed. Its log contained the production
   validator's failure message.
-- [Positive run 39159738354](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39159738354):
+- [Positive run 39159738354](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39159738354):
   the same selected fixture succeeded, irrelevant jobs stayed skipped, and actual
   `ci-required` succeeded with the production validator's success message.
 

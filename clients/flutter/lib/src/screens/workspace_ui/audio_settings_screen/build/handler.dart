@@ -6,7 +6,7 @@ import '../../audio_device_shown_by_dropdown/component.dart';
 import '../../audio_settings_card/component.dart';
 import '../../header/component.dart';
 import '../../native_bindings.dart';
-import '../../../../widgets/noise_suppression_settings.dart';
+import '../../../../widgets/audio_processing_advanced_settings.dart';
 
 import '../lifecycle/context.dart';
 import '../handler_bindings.dart';
@@ -45,9 +45,7 @@ extension WorkspaceAudioSettingsScreenBuildAction
               WorkspaceHeader(
                 icon: Icons.tune,
                 title: 'Настройки аудио',
-                subtitle: compact
-                    ? ''
-                    : 'Проверьте устройства перед разговором.',
+                subtitle: '',
                 onBack: compact ? onBack : null,
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -74,78 +72,77 @@ extension WorkspaceAudioSettingsScreenBuildAction
                 ),
               ),
               Expanded(
-                child: ListView(
-                  key: const ValueKey('audio-settings-list'),
-                  padding: EdgeInsets.fromLTRB(
-                    compact ? 16 : 24,
-                    compact ? 24 : 32,
-                    compact ? 16 : 24,
-                    compact ? 48 : 32,
-                  ),
-                  children: [
-                    if (compact) ...[
-                      const Text(
-                        'Проверьте устройства перед разговором.',
-                        key: ValueKey('audio-settings-intro'),
-                        style: TextStyle(
-                          color: GcColors.muted,
-                          fontSize: 14,
-                          height: 20 / 14,
-                        ),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final useTwoColumns =
+                        MediaQuery.sizeOf(context).width >=
+                        GcLayout.mobileBreakpoint;
+                    final cards = <Widget>[
+                      renderAudioSettingsScreenDeviceSelection(
+                        compact,
+                        inputDevice,
+                        outputDevice,
                       ),
-                      const SizedBox(height: 16),
-                    ],
-                    renderAudioSettingsScreenDeviceSelection(
-                      compact,
-                      inputDevice,
-                      outputDevice,
-                    ),
-                    renderAudioSettingsScreenMicrophoneActivation(compact),
-                    if (const [
-                      'fallback',
-                      'error',
-                      'unsupported',
-                    ].contains(state.noiseSuppressionRuntime.status))
-                      Semantics(
-                        liveRegion: true,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          child: Text(
-                            state.noiseSuppressionRuntime.requestedMode !=
-                                    state.audioProcessing.noiseSuppressionMode
-                                ? 'Ожидание подтверждения настройки обработки микрофона.'
-                                : 'Обработка микрофона: ${NoiseSuppressionSettings.label(state.noiseSuppressionRuntime.effectiveMode)}. '
-                                      '${NoiseSuppressionSettings.reason(state.noiseSuppressionRuntime.failureReason)}',
-                            style: const TextStyle(color: GcColors.warning),
+                      renderAudioSettingsScreenMicrophoneActivation(compact),
+                      if (!state.usesTouchPushToTalk ||
+                          hardwareKeyboardAvailable)
+                        renderAudioSettingsScreenVoiceShortcuts(compact),
+                      renderAudioSettingsScreenMicrophoneProcessing(compact),
+                    ];
+                    final content = useTwoColumns
+                        ? Wrap(
+                            spacing: 20,
+                            children: [
+                              for (final card in cards)
+                                SizedBox(
+                                  width: (constraints.maxWidth - 20) / 2,
+                                  child: card,
+                                ),
+                            ],
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: cards,
+                          );
+                    return ListView(
+                      key: const ValueKey('audio-settings-list'),
+                      padding: EdgeInsets.fromLTRB(
+                        compact ? 16 : 24,
+                        compact ? 24 : 32,
+                        compact ? 16 : 24,
+                        compact ? 48 : 32,
+                      ),
+                      children: [
+                        content,
+                        WorkspaceAudioSettingsCard(
+                          cardKey: const ValueKey(
+                            'audio-settings-playback-card',
+                          ),
+                          title: 'Воспроизведение',
+                          subtitle: 'Громкость участников и демонстраций на этом устройстве.',
+                          compact: compact,
+                          child: AudioVolumeReset(
+                            reset: state.resetAudioVolumes,
+                            warning: state.voiceVolumeWarning,
                           ),
                         ),
-                      ),
-                    ExpansionTile(
-                      key: const PageStorageKey('audio-settings-advanced'),
-                      title: const Text('Дополнительно'),
-                      subtitle: const Text(
-                        'Обработка микрофона, сочетания клавиш и диагностика',
-                      ),
-                      tilePadding: EdgeInsets.zero,
-                      maintainState: true,
-                      children: [
-                        if (!state.usesTouchPushToTalk ||
-                            hardwareKeyboardAvailable)
-                          renderAudioSettingsScreenVoiceShortcuts(compact),
-                        renderAudioSettingsScreenMicrophoneProcessing(compact),
+                        WorkspaceAudioSettingsCard(
+                          cardKey: const ValueKey(
+                            'audio-settings-diagnostics-card',
+                          ),
+                          title: 'Диагностика',
+                          subtitle: 'Технические сведения доступны по запросу.',
+                          compact: compact,
+                          child: AudioProcessingAdvancedSettings(
+                            voiceConnected:
+                                state.voicePhase != VoicePhase.idle &&
+                                state.voicePhase != VoicePhase.error,
+                            voiceDiagnostics: state.voiceAudioDiagnostics,
+                          ),
+                        ),
                       ],
-                    ),
-                    WorkspaceAudioSettingsCard(
-                      cardKey: const ValueKey('audio-settings-playback-card'),
-                      title: 'Воспроизведение',
-                      subtitle: 'Громкость участников и демонстраций на этом устройстве.',
-                      compact: compact,
-                      child: AudioVolumeReset(
-                        reset: state.resetAudioVolumes,
-                        warning: state.voiceVolumeWarning,
-                      ),
-                    ),
-                  ],
+                    );
+                  },
                 ),
               ),
             ],

@@ -49,15 +49,16 @@ extension WorkspaceUserFooterBuildAction on WorkspaceUserFooterContext {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            Text(
-                              state.user!.isAdmin
-                                  ? 'Администратор'
-                                  : 'Участник',
-                              style: const TextStyle(
-                                color: GcColors.muted,
-                                fontSize: 11,
+                            if (!compact)
+                              Text(
+                                state.user!.isAdmin
+                                    ? 'Администратор'
+                                    : 'Участник',
+                                style: const TextStyle(
+                                  color: GcColors.muted,
+                                  fontSize: 11,
+                                ),
                               ),
-                            ),
                           ],
                         ),
                       ),

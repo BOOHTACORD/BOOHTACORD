@@ -3,13 +3,13 @@
 The initial #420 head `0be02eadad47c00e08ebc50a40f8e858684b4b6c` activated existing
 workflow acceptance. These are failures, not accepted native/media evidence:
 
-- [SFU run 39169982563](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39169982563),
+- [SFU run 39169982563](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39169982563),
   job 117800830088: report generation raised `AttributeError: Stack.binary` after
   the fixture switched to a container-built API. The correction checks that the
   active container is registered and still has the owned label, copies only its
   public `/api` executable to a disposable private directory, hashes it and removes
   that temporary copy. It does not substitute a hash of another host binary.
-- [Next-client run 39169982553](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39169982553),
+- [Next-client run 39169982553](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39169982553),
   job 117800830266: the enabled file input resolved, then setInputFiles timed out
   after 20 seconds for the initial 5/5/25 MB batch. No successful upload receipt
   was produced. Timeout/retry/HTTP assertions were not weakened.

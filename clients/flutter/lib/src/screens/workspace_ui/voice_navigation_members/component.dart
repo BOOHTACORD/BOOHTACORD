@@ -21,18 +21,6 @@ class WorkspaceVoiceNavigationMembers extends StatelessWidget {
     padding: const EdgeInsets.fromLTRB(40, 4, 8, 8),
     child: Column(
       children: [
-        WorkspaceVoiceNavigationMemberRow(
-          state: state,
-          name: state.profile?.displayName.trim().isNotEmpty == true
-              ? '${state.profile!.displayName} · вы'
-              : 'Вы',
-          accountId: state.user?.accountId,
-          muted: state.microphoneMuted,
-          microphoneUnavailable: state.microphoneUnavailable,
-          deafened: state.deafened,
-          speaking: localParticipant.isSpeaking,
-          screenSharing: state.screenSharePhase == ScreenSharePhase.sharing,
-        ),
         for (final participant in remoteParticipants) ...[
           const SizedBox(height: 4),
           WorkspaceVoiceNavigationMemberRow(
@@ -50,6 +38,19 @@ class WorkspaceVoiceNavigationMembers extends StatelessWidget {
             ),
           ),
         ],
+        if (remoteParticipants.isNotEmpty) const SizedBox(height: 4),
+        WorkspaceVoiceNavigationMemberRow(
+          state: state,
+          name: state.profile?.displayName.trim().isNotEmpty == true
+              ? state.profile!.displayName
+              : 'Вы',
+          accountId: state.user?.accountId,
+          muted: state.microphoneMuted,
+          microphoneUnavailable: state.microphoneUnavailable,
+          deafened: state.deafened,
+          speaking: localParticipant.isSpeaking,
+          screenSharing: state.screenSharePhase == ScreenSharePhase.sharing,
+        ),
       ],
     ),
   );

@@ -28,9 +28,9 @@ void main() {
           nativeBuild: '46',
           priority: 'normal',
           summary: summary,
-          releaseNotesUrl: 'https://github.com/Egkurilov/BOOHTACORD/releases',
+          releaseNotesUrl: 'https://github.com/BOOHTACORD/BOOHTACORD/releases',
           actionKind: 'open_download_page',
-          actionUrl: 'https://github.com/Egkurilov/BOOHTACORD/releases',
+          actionUrl: 'https://github.com/BOOHTACORD/BOOHTACORD/releases',
         ),
       );
     addTearDown(updates.dispose);

@@ -34,7 +34,7 @@ def verify(envelope, package, public_key, openssl='openssl'):
     from jsonschema import Draft202012Validator, FormatChecker
     Draft202012Validator(json.loads((ROOT/'contracts/desktop-update-artifact.schema.json').read_text()),format_checker=FormatChecker()).validate(value)
     if datetime.fromisoformat(value['expires_at'].replace('Z','+00:00'))<=datetime.now(timezone.utc):raise ValueError('Artifact metadata expired')
-    if not re.fullmatch(r'https://github\.com/Egkurilov/BOOHTACORD/releases/download/[A-Za-z0-9_][A-Za-z0-9._-]{0,190}/[A-Za-z0-9_][A-Za-z0-9._-]{0,190}',value['download_url']):raise ValueError('Unofficial artifact URL')
+    if not re.fullmatch(r'https://github\.com/BOOHTACORD/BOOHTACORD/releases/download/[A-Za-z0-9_][A-Za-z0-9._-]{0,190}/[A-Za-z0-9_][A-Za-z0-9._-]{0,190}',value['download_url']):raise ValueError('Unofficial artifact URL')
     package=Path(package)
     if not package.is_file() or package.stat().st_size!=value['size']:raise ValueError('Artifact size mismatch')
     digest=hashlib.sha256()

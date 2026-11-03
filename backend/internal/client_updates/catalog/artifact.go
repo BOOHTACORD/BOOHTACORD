@@ -94,7 +94,7 @@ func validateInstallArtifact(envelope *InstallArtifact, selector Selector, targe
 	if err != nil || len(value.DownloadURL) > 2048 || u.Scheme != "https" || u.Host != "github.com" || u.User != nil || u.RawQuery != "" || u.Fragment != "" {
 		return reject
 	}
-	prefix := "/Egkurilov/BOOHTACORD/releases/download/"
+	prefix := "/BOOHTACORD/BOOHTACORD/releases/download/"
 	if !strings.HasPrefix(u.EscapedPath(), prefix) {
 		return reject
 	}

@@ -7,7 +7,7 @@ from tools.ci.native.process import ROOT, output
 from tools.ci.backend_gates.results import execution
 
 PLATFORMS=('android','windows','macos')
-REPOSITORY='Egkurilov/BOOHTACORD'
+REPOSITORY='BOOHTACORD/BOOHTACORD'
 
 
 def require(value):

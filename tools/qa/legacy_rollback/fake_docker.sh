@@ -13,6 +13,9 @@ fi
 case "$command" in
   *' up -d --wait postgres '*)
     ;;
+  *' up -d --wait livekit '*)
+    [[ "$(cat "$QA12_STATE/maintenance")" == on ]]
+    ;;
   *' maintenance-admission --enable '*)
     printf 'on\n' > "$QA12_STATE/maintenance"
     ;;
@@ -23,6 +26,9 @@ case "$command" in
     [[ "$(cat "$QA12_STATE/maintenance")" == on ]]
     ;;
   *' run --rm --no-deps screen-preview-storage-init '*)
+    [[ "$(cat "$QA12_STATE/maintenance")" == on ]]
+    ;;
+  *' up -d --wait egress '*)
     [[ "$(cat "$QA12_STATE/maintenance")" == on ]]
     ;;
   *' up -d --no-deps --no-build api web '*)

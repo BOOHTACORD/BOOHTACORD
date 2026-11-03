@@ -96,5 +96,5 @@ test_measure.py}`, existing `tools/qa/client_lifecycle/stack.py` as fixture reus
 - [x] Inspect explicit changed file sizes/status; run native Web/Go/contracts,
   traceability and docs checks. Record observed acceptance and limitations.
 - [x] Commit explicit paths, publish PR, fix failures and verify its source in CI.
-  Integration is recorded in [PR 128](https://github.com/Egkurilov/BOOHTACORD/pull/128);
+  Integration is recorded in [PR 128](https://github.com/BOOHTACORD/BOOHTACORD/pull/128);
   compatible signed rollback and broader production/device gates stay open.

@@ -2,7 +2,7 @@
 from .results import require
 from tools.ci.runner_pool.routing import GITHUB_LINUX
 
-MASTER="github.repository == 'Egkurilov/BOOHTACORD' && github.ref == 'refs/heads/master'"
+MASTER="github.repository == 'BOOHTACORD/BOOHTACORD' && github.ref == 'refs/heads/master'"
 POSTGRES='postgres://voice_platform_test:test-only-password@127.0.0.1:5432/voice_platform_test?sslmode=disable'
 SUFFIX='${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}'
 VERIFY_PYTHON='python -m tools.ci.toolchains.runtime python'

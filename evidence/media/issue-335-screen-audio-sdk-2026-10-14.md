@@ -128,7 +128,7 @@ source with `source_dirty=false`. Every embedded SDK executable `__TEXT`
 section matches the downloaded public r2 framework; its revision marker is
 present. Embedded framework SHA-256:
 `20419d9a76e9e2a5ecd0c149778bc602888b9d807ff2af63992935705f2da427`.
-The published [macOS ZIP](https://github.com/Egkurilov/BOOHTACORD/releases/tag/macos-v1.0.42)
+The published [macOS ZIP](https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/macos-v1.0.42)
 has SHA-256 `623af9ffc5c3033f2b562e5bddf8f306b7d0605c1825090a3d546dd8e820bea1`,
 confirmed by the GitHub asset digest. Manifest/checksums/component notices are
 attached. The final client is open at login; physical smoke remains NOT_RUN.
@@ -140,8 +140,8 @@ overlays differ. Host and ReplayKit extension both have 1.0.42 (77), with a
 matching extension selector. IPA/TestFlight remain BLOCKED by the missing
 App Group parent and extension distribution profiles; features were retained.
 
-Build server [38482998048](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38482998048)
-and production deployment [38484288236](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38484288236)
+Build server [38482998048](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/38482998048)
+and production deployment [38484288236](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/38484288236)
 passed for the fix source, rebuilding and deploying API/Web through the existing
 signed bundle workflow. Android's required Flutter gate passed; signed packaging
 is still in the native signing queue at this checkpoint.
@@ -153,7 +153,7 @@ JSON. A separate build recipe in `codex/issue335-sdk` checks out the immutable
 fix source and retains the same tests/analyzer/build/publisher; it does not move
 the Windows release tag or bypass gates. Its version probe passed and required
 tests are running in
-[38485185006](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38485185006).
+[38485185006](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/38485185006).
 
 ## Release build recovery
 
@@ -179,7 +179,7 @@ version are unchanged from the SDK/audio fix. The immutable Android tag is
 retained; a clean checkout of this build-command commit explicitly records its
 true source in the APK manifest. The original Flutter quality result is reused
 for unchanged app sources; no additional simulation or device matrix is run.
-Signed rebuild run: [38487779735](https://github.com/Egkurilov/BOOHTACORD/actions/runs/38487779735).
+Signed rebuild run: [38487779735](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/38487779735).
 
 Follow-up backend/Web build 38486317671 and deployment 38487492666 also passed
 at source 4791b7f5f58efe3c600fe2b5f963d30679a95fd1. Main CI for that source was
@@ -189,7 +189,7 @@ macOS client is still at login. No credential entry or audible result is inferre
 
 ## Completed publication
 
-[Android 1.0.42](https://github.com/Egkurilov/BOOHTACORD/releases/tag/android-v1.0.42):
+[Android 1.0.42](https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/android-v1.0.42):
 run 38487779735 passed. All three APKs passed actual apksigner verification,
 application/version/ABI version-code inspection, signer continuity and size
 inspection. The downloaded public manifest and SHA256SUMS were verified against
@@ -201,7 +201,7 @@ APK sizes: arm64-v8a 20,367,092 bytes; armeabi-v7a 18,233,444; x86_64 21,726,910
 Arm64 APK SHA-256:
 `0f8601a296e8130859429b30c2401d53fbc0e12ba3438bdebca0ff4bb10ce2c0`.
 
-[Windows 1.0.42](https://github.com/Egkurilov/BOOHTACORD/releases/tag/windows-v1.0.42):
+[Windows 1.0.42](https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/windows-v1.0.42):
 publication-only recovery run 38489064490 passed without compilation or app-test
 repetition. The retained ZIP, manifest and SHA256SUMS are published and all three
 GitHub asset digests match the previously verified local artifact. An interrupted

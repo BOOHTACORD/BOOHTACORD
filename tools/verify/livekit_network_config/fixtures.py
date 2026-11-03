@@ -7,19 +7,22 @@ def valid_model():
         "port": 7880,
         "prometheus_port": 6789,
         "rtc": {"tcp_port": 7882, "port_range_start": 50000,
-               "port_range_end": 50100, "use_external_ip": True},
+               "port_range_end": 50100, "use_external_ip": False},
     }
     deploy = {
         "name": "voice-platform",
         "services": {
             "livekit": {"image": PINNED_LIVEKIT_IMAGE,
+                        "command": ['exec /livekit-server --node-ip "$${LIVEKIT_NODE_IP}"'],
+                        "environment": {"LIVEKIT_NODE_IP": "${LIVEKIT_NODE_IP:?set LIVEKIT_NODE_IP in .env}"},
                         "ports": ["7882:7882/tcp", "50000-50100:50000-50100/udp"],
-                        "networks": ["private", "livekit-metrics"]},
+                        "networks": ["private", "livekit-metrics", "livekit-rtc"]},
             "api": {"networks": ["private"]}, "postgres": {"networks": ["private"]},
             "proxy": {"ports": ["443:443"], "networks": ["edge", "private"]},
         },
         "networks": {"edge": {}, "private": {"internal": True},
-                     "livekit-metrics": {"internal": True}},
+                     "livekit-metrics": {"internal": True},
+                     "livekit-rtc": {"driver": "bridge", "internal": False}},
     }
     observability = {
         "services": {"prometheus": {"networks": ["default", "livekit-metrics"]}},

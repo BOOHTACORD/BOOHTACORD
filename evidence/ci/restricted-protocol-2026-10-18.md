@@ -1,7 +1,7 @@
 # CI restricted-network observation regression
 
 The first CICD-01 PR run failed the existing TCP transport assertion:
-[run 39158751656, frontend job 117767385899](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39158751656/job/117767385899).
+[run 39158751656, frontend job 117767385899](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39158751656/job/117767385899).
 It passed baseline UDP, then failed `matrix.browser.spec.ts` on the UDP-blocked
 profile's expected selected TCP transport. That failed sample was not retained by
 the old fixture, so its precise cause is unproven. No assertion was retried or bypassed.
@@ -17,8 +17,8 @@ No application UI, diagnostics implementation or network isolation rule changed.
 Five readiness/privacy Node tests and eight namespace-isolation Python tests PASS.
 Tests failed before the new helper implementation.
 
-Actual repeatability proof: [run 39160333284](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39160333284),
-job `117772110509`, temporary [PR #412](https://github.com/Egkurilov/BOOHTACORD/pull/412)
+Actual repeatability proof: [run 39160333284](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39160333284),
+job `117772110509`, temporary [PR #412](https://github.com/BOOHTACORD/BOOHTACORD/pull/412)
 (closed without merge). Three independent complete Chromium/LiveKit matrices
 passed **15/15 profiles**, stopping on any failure, with zero test retries:
 

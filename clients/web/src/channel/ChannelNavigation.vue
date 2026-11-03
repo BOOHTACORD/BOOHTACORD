@@ -12,7 +12,6 @@ import type { VoiceNavigationPresence } from './voice_navigation_presence'
 import type { PermissionValues } from '../authorization/permission_keys'
 import { categoryActions, channelActions } from './member_topology/action_resolver'
 import { useCategoryDisclosure } from './category_disclosure/use_category_disclosure'
-import { filterNavigationCategories } from './category_disclosure/preferences'
 import CategoryContextMenu from './CategoryContextMenu.vue'
 
 const props = defineProps<{
@@ -34,13 +33,11 @@ const emit = defineEmits<{
   changed: []
 }>()
 const authors = useAuthorDirectory()
-const channelQuery = ref('')
 const categoryContextMenu = ref<{ open: (event: MouseEvent, category: ChannelTopology['categories'][number]) => void } | null>(null)
 const disclosure = useCategoryDisclosure(() => props.accountId)
-const visibleCategories = computed(() => filterNavigationCategories(props.topology.categories, channelQuery.value))
 const favoriteChannels = computed(() => {
   const favorites = new Set(disclosure.favoriteIds())
-  return visibleCategories.value.flatMap(({ channels }) => channels).filter(channel => favorites.has(channel.id))
+  return props.topology.categories.flatMap(({ channels }) => channels).filter(channel => favorites.has(channel.id))
 })
 watch(() => props.topology.categories.flatMap(({ channels }) => channels.map(({ id }) => id)), ids => disclosure.pruneFavorites(new Set(ids)), { immediate: true })
 watch(() => props.topology.categories.map(({ id }) => id), ids => disclosure.pruneCollapsed(new Set(ids)), { immediate: true })
@@ -73,20 +70,19 @@ async function toggleFavorite(channelId: string, event: MouseEvent): Promise<voi
 <template>
   <nav class="channel-navigation" aria-label="Разделы и каналы">
     <div class="channel-navigation-actions"><span>Каналы</span><button v-action-hint v-if="canCreate()" type="button" aria-label="Создать раздел или канал" @click="emit('createGlobal')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg></button></div>
-    <label class="channel-search"><span class="gc-sr-only">Поиск каналов</span><input v-model="channelQuery" type="search" placeholder="Найти канал" autocomplete="off" aria-label="Поиск каналов"></label>
     <section v-if="favoriteChannels.length" class="channel-category channel-favorites" aria-label="Избранные каналы">
       <h2><span class="channel-favorites-title">Избранное</span></h2>
       <button v-for="channel in favoriteChannels" :key="channel.id" type="button" class="channel-button channel-favorite-link" :class="{ selected: props.selectedChannelId === channel.id, 'voice-connected': isConnectedVoice(channel) }" :aria-current="props.selectedChannelId === channel.id ? 'page' : undefined" @click="emit('select', channel)">
         <span class="channel-icon" aria-hidden="true">{{ channel.kind === 'TEXT' ? '#' : '◖' }}</span><span class="channel-name">{{ channel.name }}</span><span v-if="isConnectedVoice(channel)" class="channel-connected-mark" role="img" aria-label="Подключено к голосу">✓</span><span v-if="channel.kind === 'TEXT' && channel.unreadCount" class="channel-state" :aria-label="`Непрочитанных сообщений: ${channel.unreadCount}`">{{ channel.unreadCount }}</span><span v-if="channel.kind === 'TEXT' && channel.mentionCount" class="channel-state" :aria-label="`Упоминаний: ${channel.mentionCount}`">@{{ channel.mentionCount }}</span><span class="channel-favorite-parent">{{ props.topology.categories.find(category => category.channels.some(item => item.id === channel.id))?.name }}</span>
       </button>
     </section>
-    <section v-for="category in visibleCategories" :key="category.id" class="channel-category" @contextmenu.stop.prevent="categoryContextMenu?.open($event, category)">
+    <section v-for="category in props.topology.categories" :key="category.id" class="channel-category" @contextmenu.stop.prevent="categoryContextMenu?.open($event, category)">
       <h2><button v-action-hint="category.name" class="channel-category-disclosure" type="button" :aria-label="`${disclosure.isOpen(category.id) ? 'Свернуть' : 'Развернуть'} раздел ${category.name}`" :aria-expanded="disclosure.isOpen(category.id)" @click="disclosure.toggle(category.id)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="m8 10 4 4 4-4" /></svg><span>{{ category.name }}</span></button><span v-if="props.permissions" class="channel-category-actions">
         <button v-action-hint v-if="categoryActions(props.permissions, category.channels.length === 0).createText || categoryActions(props.permissions, category.channels.length === 0).createVoice" type="button" :aria-label="`Создать канал в разделе ${category.name}`" @click="emit('createInCategory', category)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg></button>
         <button v-action-hint v-if="categoryActions(props.permissions, category.channels.length === 0).delete" type="button" :aria-label="`Действия с разделом ${category.name}`" @click="emit('deleteCategory', category)">⋯</button>
       </span></h2>
       <p v-if="disclosure.isOpen(category.id) && category.channels.length === 0" class="empty-category">Нет каналов</p>
-      <template v-for="channel in disclosure.isOpen(category.id) || channelQuery.trim() ? category.channels : []" :key="channel.id">
+      <template v-for="channel in disclosure.isOpen(category.id) ? category.channels : []" :key="channel.id">
         <div class="channel-row" @contextmenu.stop.prevent><button
           class="channel-button"
           :class="{ selected: props.selectedChannelId === channel.id, 'voice-connected': isConnectedVoice(channel) }"
@@ -115,7 +111,6 @@ async function toggleFavorite(channelId: string, event: MouseEvent): Promise<voi
         <VoiceRoomRoster v-else-if="channel.kind === 'VOICE' && rosterFor(channel.id)?.participants.length" :roster="rosterFor(channel.id)!" compact />
         </template>
     </section>
-    <p v-if="channelQuery.trim() && !visibleCategories.length" class="channel-search-empty" role="status">Каналы не найдены</p>
     <CategoryContextMenu ref="categoryContextMenu" :topology="props.topology" :permissions="props.permissions" @create-global="emit('createGlobal')" @create-in-category="createInCategory" @delete-category="deleteCategory" @changed="emit('changed')" />
   </nav>
 </template>

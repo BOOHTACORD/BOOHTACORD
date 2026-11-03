@@ -16,9 +16,10 @@ class WorkspaceVoiceParticipantCard extends WorkspaceVoiceParticipantCardContext
     super.watchingScreen = false,
     super.isLocal = false,
     super.onScreenTap,
+    super.avatarIdentity,
     super.previewIdentity = 'participant',
     super.previewThumbnail,
-    super.previewCaption = 'Экран',
+    super.previewCaption = '',
     super.microphoneUnavailable = false,
     super.deafened = false,
   });

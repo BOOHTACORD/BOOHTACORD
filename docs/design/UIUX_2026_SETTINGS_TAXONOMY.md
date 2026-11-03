@@ -1,6 +1,6 @@
 # UI/UX 2026 settings taxonomy
 
-Scope: personal settings and the existing audio settings surface in child issue [#297](https://github.com/Egkurilov/BOOHTACORD/issues/297). This map distinguishes account-wide preferences from guild administration without adding screens or changing API/session contracts.
+Scope: personal settings and the existing audio settings surface in child issue [#297](https://github.com/BOOHTACORD/BOOHTACORD/issues/297). This map distinguishes account-wide preferences from guild administration without adding screens or changing API/session contracts.
 
 ## Sections and ownership
 

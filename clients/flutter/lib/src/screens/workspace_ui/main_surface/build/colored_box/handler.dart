@@ -5,7 +5,9 @@ import '../../lifecycle/context.dart';
 
 extension MainSurfaceColoredBoxRenderer on WorkspaceMainSurfaceContext {
   ColoredBox renderMainSurfaceColoredBox(GuildChannel channel) => ColoredBox(
-    color: GcColors.content,
+    color: channel.kind == ChannelKind.text
+        ? GcColors.content
+        : GcColors.canvas,
     child: channel.kind == ChannelKind.text
         ? WorkspaceConversation(
             state: state,
@@ -25,6 +27,7 @@ extension MainSurfaceColoredBoxRenderer on WorkspaceMainSurfaceContext {
             pinnedScreenIdentity: pinnedScreenIdentity,
             onToggleNavigation: onToggleNavigation,
             onOpenMembers: onOpenMembers,
+            onSearch: onSearch,
           ),
   );
 }

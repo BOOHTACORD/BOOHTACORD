@@ -1,6 +1,7 @@
 import '../../../audio_settings_card/component.dart';
 import '../../../native_bindings.dart';
 import '../../lifecycle/context.dart';
+import '../../../../../widgets/noise_suppression_settings.dart';
 
 extension AudioSettingsScreenMicrophoneProcessingRenderer
     on WorkspaceAudioSettingsScreenContext {
@@ -11,10 +12,15 @@ extension AudioSettingsScreenMicrophoneProcessingRenderer
     title: 'Обработка микрофона',
     subtitle: 'Автоматическая обработка и усиление сигнала микрофона.',
     compact: compact,
-    minHeight: compact ? 224 : 236,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        NoiseSuppressionSettings(
+          processing: state.audioProcessing,
+          runtime: state.noiseSuppressionRuntime,
+          onChanged: state.setAudioProcessing,
+        ),
+        const Divider(height: 16),
         SwitchListTile.adaptive(
           contentPadding: EdgeInsets.zero,
           title: const Text('Автоматическая регулировка усиления'),
@@ -38,16 +44,6 @@ extension AudioSettingsScreenMicrophoneProcessingRenderer
           sensitivity: false,
           vad: state.audioActivationMode == AudioActivationMode.vad,
           agc: state.audioProcessing.autoGainControl,
-        ),
-        AudioProcessingAdvancedSettings(
-          inline: true,
-          processing: state.audioProcessing,
-          runtime: state.noiseSuppressionRuntime,
-          onProcessingChanged: state.setAudioProcessing,
-          voiceConnected:
-              state.voicePhase != VoicePhase.idle &&
-              state.voicePhase != VoicePhase.error,
-          voiceDiagnostics: state.voiceAudioDiagnostics,
         ),
       ],
     ),

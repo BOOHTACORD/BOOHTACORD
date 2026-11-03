@@ -32,7 +32,7 @@ tests:
       exp_annotations:
         summary: MediaClientTargetDiscrepancy
         description: Paired per-stage actual/target mean below0.9, >=0.1 samples/s, sustained3m. Static/paused/no-subscriber/moving-source context is unknown; no root-cause or paging inference.
-        runbook_url: https://github.com/Egkurilov/BOOHTACORD/blob/master/docs/operations/media-qoe.md
+        runbook_url: https://github.com/BOOHTACORD/BOOHTACORD/blob/master/docs/operations/media-qoe.md
   - eval_time: 8m
     alertname: MediaClientSenderCPUReports
     exp_alerts:
@@ -44,7 +44,7 @@ tests:
       exp_annotations:
         summary: MediaClientSenderCPUReports
         description: More than half recent sender reports name CPU adaptation, sustained5m. Client reason is not measured encoder CPU saturation.
-        runbook_url: https://github.com/Egkurilov/BOOHTACORD/blob/master/docs/operations/media-qoe.md
+        runbook_url: https://github.com/BOOHTACORD/BOOHTACORD/blob/master/docs/operations/media-qoe.md
 - name: missing_snapshot_is_unknown_not_stale
   interval: 1m
   input_series: []
@@ -75,7 +75,7 @@ tests:
       exp_annotations:
         summary: MediaClientTelemetryStale
         description: 'LiveKit private snapshot has active screens but no client receipt within60s, sustained3m. Requires #5 snapshot bridge/native scrape; otherwise unknown and absent. Active screen does not prove subscriber or visible viewer.'
-        runbook_url: https://github.com/Egkurilov/BOOHTACORD/blob/master/docs/operations/media-qoe.md
+        runbook_url: https://github.com/BOOHTACORD/BOOHTACORD/blob/master/docs/operations/media-qoe.md
   - eval_time: 8m
     alertname: MediaClientTelemetryStale
     exp_alerts: []

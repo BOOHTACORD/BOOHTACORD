@@ -35,7 +35,7 @@ const caption = computed(() => {
   const mode = props.screen.descriptor?.mode
   const profile = props.screen.targetProfile
   if (mode) return `${mode === 'motion' ? 'Плавность' : 'Текст'}${profile ? ` · ${profile}` : ''}`
-  return profile ? `Экран · ${profile}` : 'Демонстрация экрана'
+  return profile ?? ''
 })
 </script>
 
@@ -57,7 +57,7 @@ const caption = computed(() => {
       <span class="screen-preview-placeholder__title">Трансляция идёт</span>
       <span class="screen-preview-placeholder__hint">Предпросмотр скоро появится</span>
     </span>
-    <span class="participant-screen-preview__caption">{{ caption }}</span>
+    <span v-if="caption" class="participant-screen-preview__caption">{{ caption }}</span>
     <span class="participant-screen-preview__live"><span aria-hidden="true"></span>ЭФИР</span>
     <span v-if="screen.thumbnailUrl" class="participant-screen-preview__play" aria-hidden="true">
       <svg viewBox="0 0 24 24"><path d="m9 6 10 6-10 6z" /></svg>

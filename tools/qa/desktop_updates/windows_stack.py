@@ -211,8 +211,8 @@ class Stack:
                     'priority': 'normal', 'published_at': '2026-10-15T00:00:00Z',
                     'summary': 'Owned Windows updater acceptance',
                     'requirements': {'min_os_version': '10.0', 'supported_arches': ['x64']},
-                    'release_notes_url': 'https://github.com/Egkurilov/BOOHTACORD/releases',
-                    'action': {'kind': 'open_download_page', 'url': 'https://github.com/Egkurilov/BOOHTACORD/releases'},
+                    'release_notes_url': 'https://github.com/BOOHTACORD/BOOHTACORD/releases',
+                    'action': {'kind': 'open_download_page', 'url': 'https://github.com/BOOHTACORD/BOOHTACORD/releases'},
                     'install_artifact': envelope}}]
         (self.root / 'catalog.json').write_text(json.dumps({
             'schema_version': 1, 'catalog_revision': 2 if envelope else 1,

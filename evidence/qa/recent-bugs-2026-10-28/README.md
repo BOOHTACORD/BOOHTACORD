@@ -1,6 +1,6 @@
 # Recent bug fixes — 2026-10-28
 
-Intake window: 2026-10-27 18:59:52 UTC through 2026-10-28 18:59:52 UTC. GitHub author `Egkurilov` in `Egkurilov/BOOHTACORD`: #584, #585, #586, #587, #589. Four source fixes are implemented; #584 is **not fixed**. No issue or physical/release gate is closed by this evidence.
+Intake window: 2026-10-27 18:59:52 UTC through 2026-10-28 18:59:52 UTC. GitHub author `Egkurilov` in `BOOHTACORD/BOOHTACORD`: #584, #585, #586, #587, #589. Four source fixes are implemented; #584 is **not fixed**. No issue or physical/release gate is closed by this evidence.
 
 Implementation source: `9121f8302d4147aa2c9040bf5609325dc1268d4f`, rebased onto master `68b6e01b0` (#588). Native source is unchanged by that upstream commit. The companion `results.json` binds changed source/test blobs, local logs and reviewed synthetic images. Subsequent evidence-only commits do not change the tested code.
 

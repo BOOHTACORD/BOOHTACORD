@@ -10,7 +10,6 @@ class WorkspaceChannelRow extends StatefulWidget {
     required this.channel,
     required this.selected,
     required this.voiceConnected,
-    this.voiceParticipantCount,
     this.favorite = false,
     this.onFavoriteChanged,
     this.favoriteShortcut = false,
@@ -21,7 +20,6 @@ class WorkspaceChannelRow extends StatefulWidget {
   final GuildChannel channel;
   final bool selected;
   final bool voiceConnected;
-  final int? voiceParticipantCount;
   final bool favorite;
   final ValueChanged<bool>? onFavoriteChanged;
   final bool favoriteShortcut;

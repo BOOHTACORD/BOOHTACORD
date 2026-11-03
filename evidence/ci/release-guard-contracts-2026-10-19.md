@@ -1,7 +1,7 @@
 # Release-only source-guard regression — 19 October 2026
 
 After #420 merged as `ec7c832d61720c2f0d50707c96995c1b3bca02fa`,
-[Build server 39180524394](https://github.com/Egkurilov/BOOHTACORD/actions/runs/39180524394)
+[Build server 39180524394](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/39180524394)
 failed its contracts job 117832128989 in the release-only negative guard suite.
 The bundle job cannot proceed without a successful contracts gate. The seven
 ordinary PR checks and four actual acceptance jobs for the earlier reviewed tree

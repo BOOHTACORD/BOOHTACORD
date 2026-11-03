@@ -3,7 +3,7 @@ import re
 
 
 def validate(env, actual_source, clean):
-    if (env.get('GITHUB_ACTIONS') != 'true' or env.get('GITHUB_REPOSITORY') != 'Egkurilov/BOOHTACORD'
+    if (env.get('GITHUB_ACTIONS') != 'true' or env.get('GITHUB_REPOSITORY') != 'BOOHTACORD/BOOHTACORD'
             or env.get('GITHUB_REF') != 'refs/heads/master'
             or env.get('GITHUB_EVENT_NAME') not in ('push', 'workflow_dispatch')
             or not re.fullmatch('[0-9a-f]{40}', env.get('GITHUB_SHA', ''))

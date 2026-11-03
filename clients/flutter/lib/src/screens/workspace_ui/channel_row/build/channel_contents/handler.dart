@@ -7,7 +7,6 @@ extension ChannelRowChannelContentsRenderer on WorkspaceChannelRowStateContext {
     bool voiceConnected,
     GuildChannel channel,
     bool selected,
-    int? voiceParticipantCount,
     AppState state, {
     required bool showFavoriteButton,
   }) => Row(
@@ -62,24 +61,6 @@ extension ChannelRowChannelContentsRenderer on WorkspaceChannelRowStateContext {
         const Padding(
           padding: EdgeInsets.only(right: 10),
           child: Icon(Icons.lock_outline, size: 16, color: GcColors.warning),
-        ),
-      if (voiceParticipantCount != null && voiceParticipantCount > 0)
-        Padding(
-          padding: const EdgeInsets.only(right: 9),
-          child: Tooltip(
-            message: 'Участников в голосовом канале: $voiceParticipantCount',
-            child: Semantics(
-              label: 'Участников в голосовом канале: $voiceParticipantCount',
-              child: Text(
-                '$voiceParticipantCount',
-                style: const TextStyle(
-                  color: GcColors.textSecondary,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
         ),
       if (showFavoriteButton)
         IconButton(

@@ -9,38 +9,36 @@ extension MembersPanelPopoverSurfaceRenderer
     BuildContext context,
   ) => ColoredBox(
     color: GcColors.sidebar,
-    child: Padding(
-      key: const ValueKey('members-panel'),
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 10),
-          Row(
+    child: Stack(
+      fit: StackFit.expand,
+      children: [
+        Padding(
+          key: const ValueKey('members-panel'),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Expanded(
-                child: Text(
-                  'УЧАСТНИКИ',
-                  style: TextStyle(
-                    color: GcColors.muted,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: .7,
-                  ),
-                ),
+              Semantics(
+                key: ValueKey('members-panel-heading'),
+                header: true,
+                label: 'УЧАСТНИКИ',
+                child: SizedBox.shrink(),
               ),
-              if (onClose != null)
-                IconButton(
-                  tooltip: 'Закрыть участников',
-                  onPressed: onClose,
-                  icon: const Icon(Icons.close),
-                ),
+              renderMembersPanelMemberGroups(groups, context),
             ],
           ),
-          const SizedBox(height: 14),
-          renderMembersPanelMemberGroups(groups, context),
-        ],
-      ),
+        ),
+        if (onClose != null)
+          Positioned(
+            top: 0,
+            right: 0,
+            child: IconButton(
+              tooltip: 'Закрыть участников',
+              onPressed: onClose,
+              icon: const Icon(Icons.close),
+            ),
+          ),
+      ],
     ),
   );
 }

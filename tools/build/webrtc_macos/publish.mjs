@@ -7,8 +7,8 @@ const hash = bytes => createHash('sha256').update(bytes).digest('hex')
 
 export async function publishSdk({github,context,execution,authorized,contract,directory}) {
   require(authorized==='true'&&context.eventName==='workflow_dispatch'&&context.ref==='refs/heads/master'
-    &&`${context.repo.owner}/${context.repo.repo}`==='Egkurilov/BOOHTACORD')
-  require(contract.status==='PASS'&&contract.schema_version===1&&contract.repository==='Egkurilov/BOOHTACORD'
+    &&`${context.repo.owner}/${context.repo.repo}`==='BOOHTACORD/BOOHTACORD')
+  require(contract.status==='PASS'&&contract.schema_version===1&&contract.repository==='BOOHTACORD/BOOHTACORD'
     &&contract.builder_revision===context.sha&&/^[0-9a-f]{40}$/.test(context.sha)
     &&contract.run_id===execution.run_id&&contract.run_attempt===execution.run_attempt
     &&/^webrtc-m150-boohtacord-r[1-9][0-9]*$/.test(contract.version)&&contract.physical_playback_smoke==='NOT_RUN')

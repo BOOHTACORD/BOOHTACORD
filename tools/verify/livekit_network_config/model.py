@@ -1,4 +1,4 @@
-"""Fail-closed checks for the repository's LiveKit network topology."""
+"""Fail-closed checks for the repository's LiveKit media and metrics boundaries."""
 from .metric_contract import validate_metric_contract
 
 
@@ -39,11 +39,21 @@ def validate(livekit, deploy, observability_compose, prometheus, alerts):
     tcp = rtc.get("tcp_port")
     if not (isinstance(start, int) and isinstance(end, int) and 1 <= start <= end <= 65535):
         raise ValueError("invalid configured UDP range")
-    if not (isinstance(tcp, int) and 1 <= tcp <= 65535 and rtc.get("use_external_ip") is True):
-        raise ValueError("TCP fallback or external IP advertisement is not explicitly configured")
-
     services = deploy.get("services", {})
     server = services.get("livekit", {})
+    environment = server.get("environment", {})
+    node_ip_value = environment.get("LIVEKIT_NODE_IP") if isinstance(environment, dict) else None
+    command = server.get("command", "")
+    command_text = "\n".join(command) if isinstance(command, list) else str(command)
+    explicit_node_ip = (
+        isinstance(node_ip_value, str)
+        and node_ip_value.startswith("${LIVEKIT_NODE_IP:?")
+        and '--node-ip "$${LIVEKIT_NODE_IP}"' in command_text
+    )
+    if not (isinstance(tcp, int) and 1 <= tcp <= 65535 and
+            rtc.get("use_external_ip") is False and explicit_node_ip):
+        raise ValueError("TCP fallback or explicit node IP is not configured")
+
     mappings = [_port_mapping(port) for port in server.get("ports", [])]
     if not any(protocol == "udp" and host == (start, end) and target == (start, end)
                for host, target, protocol in mappings):
@@ -64,13 +74,27 @@ def validate(livekit, deploy, observability_compose, prometheus, alerts):
     if any(target[0] <= metrics_port <= target[1] for _, target, _ in mappings):
         raise ValueError("LiveKit metrics port must not publish to the host")
 
+    rtc_network_name = "livekit-rtc"
+    rtc_network = deploy.get("networks", {}).get(rtc_network_name, {})
+    if (not isinstance(rtc_network, dict)
+            or rtc_network.get("internal") is not False
+            or rtc_network.get("external", False) is not False
+            or rtc_network.get("driver") != "bridge"
+            or rtc_network_name not in _network_list(server)):
+        raise ValueError("public ICE ports require a routable dedicated RTC network")
+    all_services = list(services.items()) + list(
+        observability_compose.get("services", {}).items())
+    for name, service in all_services:
+        if name != "livekit" and rtc_network_name in _network_list(service):
+            raise ValueError("only LiveKit may join the dedicated RTC network")
+
     network_name = "livekit-metrics"
     network = deploy.get("networks", {}).get(network_name, {})
     if network.get("internal") is not True or network_name not in _network_list(server):
         raise ValueError("LiveKit metrics must use an internal dedicated network")
-    if set(_network_list(server)) != {"private", network_name} or deploy.get(
+    if set(_network_list(server)) != {"private", network_name, rtc_network_name} or deploy.get(
             "networks", {}).get("private", {}).get("internal") is not True:
-        raise ValueError("metrics port shares the internal private network; remove extra LiveKit networks")
+        raise ValueError("LiveKit must use private, dedicated metrics, and dedicated RTC networks")
     for name, service in services.items():
         if name != "livekit" and network_name in _network_list(service):
             raise ValueError("only LiveKit may join the dedicated metrics network")
