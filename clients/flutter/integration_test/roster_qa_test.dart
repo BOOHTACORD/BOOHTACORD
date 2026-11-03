@@ -222,7 +222,7 @@ void main() {
         mark('supplemental actual listener');
         final listen = find.widgetWithText(
           OutlinedButton,
-          'Подключиться без микрофона',
+          'Без микрофона',
         );
         await tester.ensureVisible(listen);
         await tester.tap(listen);
@@ -307,7 +307,7 @@ void main() {
         checks['background_foreground'] = 'PASS';
         mark('actual Android listener rejoin');
         final listen = find
-            .widgetWithText(OutlinedButton, 'Подключиться без микрофона')
+            .widgetWithText(OutlinedButton, 'Без микрофона')
             .hitTestable();
         await tester.ensureVisible(listen);
         await tester.tap(listen);
@@ -322,10 +322,10 @@ void main() {
         );
         await fresh(2);
         await tester.ensureVisible(
-          find.widgetWithText(OutlinedButton, 'Подключиться без микрофона'),
+          find.widgetWithText(OutlinedButton, 'Без микрофона'),
         );
         await tester.tap(
-          find.widgetWithText(OutlinedButton, 'Подключиться без микрофона'),
+          find.widgetWithText(OutlinedButton, 'Без микрофона'),
         );
         await wait(() => state.voicePhase == VoicePhase.listener);
         await tester.tap(

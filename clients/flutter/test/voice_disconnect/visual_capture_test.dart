@@ -71,8 +71,8 @@ void main() {
         expect(tester.takeException(), isNull);
         expect(find.text(notice.message), findsOneWidget);
         if (notice.reconnectAllowed) {
-          await tester.tap(find.text('Подключиться к голосу'));
-          await tester.tap(find.text('Подключиться без микрофона'));
+          await tester.tap(find.text('Войти'));
+          await tester.tap(find.text('Без микрофона'));
           expect(joins, 2);
         } else {
           expect(

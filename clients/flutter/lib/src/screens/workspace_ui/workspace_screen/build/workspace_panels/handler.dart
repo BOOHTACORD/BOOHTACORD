@@ -58,6 +58,7 @@ extension WorkspaceScreenWorkspacePanelsRenderer
                   onOpenMembers: showMemberToggle
                       ? workspaceToggleMembers
                       : null,
+                  onSearch: workspaceToggleSearch,
                   onCapturePttKey: workspaceBeginPttKeyCapture,
                   capturingPttKey: workspaceCapturingPttKey,
                   onCaptureVoiceShortcut: workspaceBeginVoiceShortcutCapture,

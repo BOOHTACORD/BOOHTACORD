@@ -11,6 +11,7 @@ import 'package:boohtacord_desktop/src/features/authorization/permissions/model.
 import 'package:boohtacord_desktop/src/models.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_screen.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/header/component.dart';
+import 'package:boohtacord_desktop/src/screens/workspace_ui/voice_room/build/header_actions/component.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/voice_navigation_members/component.dart';
 import 'package:boohtacord_desktop/src/services/api_client.dart';
 import 'package:boohtacord_desktop/src/services/composer_draft_memory.dart';
@@ -2117,7 +2118,7 @@ void main() {
     await tester.pump();
     final loadingStatus = find.text('Проверяем, кто сейчас в комнате…');
     expect(loadingStatus, findsOneWidget);
-    expect(find.text('Голосовой канал · проверяем состав'), findsOneWidget);
+    expect(find.text('Голосовой канал · проверяем состав'), findsNothing);
     expect(
       tester.getSemantics(loadingStatus).flagsCollection.isLiveRegion,
       isTrue,
@@ -2129,7 +2130,7 @@ void main() {
     await tester.pump();
     final errorStatus = find.text('Не удалось обновить состав комнаты.');
     expect(errorStatus, findsOneWidget);
-    expect(find.text('Голосовой канал · состав недоступен'), findsOneWidget);
+    expect(find.text('Голосовой канал · состав недоступен'), findsNothing);
     expect(
       tester.getSemantics(errorStatus).flagsCollection.isLiveRegion,
       isTrue,
@@ -2144,7 +2145,7 @@ void main() {
     state.voiceRoster.phase = VoiceRosterPhase.fresh;
     state.notifyListeners();
     await tester.pump();
-    expect(find.text('Голосовой канал · пока пусто'), findsOneWidget);
+    expect(find.text('Пока никого нет.'), findsOneWidget);
 
     state
       ..voiceRosters = const [
@@ -2162,7 +2163,7 @@ void main() {
       ]
       ..notifyListeners();
     await tester.pump();
-    expect(find.text('Голосовой канал · сейчас: 1'), findsOneWidget);
+    expect(find.text('Собеседник'), findsOneWidget);
 
     state
       ..selectedChannel = const GuildChannel(
@@ -2175,7 +2176,7 @@ void main() {
       ..voiceRosterError = 'Нет связи со списком голосовых каналов.'
       ..notifyListeners();
     await tester.pump();
-    expect(find.text('Голосовой канал · состав недоступен'), findsOneWidget);
+    expect(find.text('Голосовой канал · состав недоступен'), findsNothing);
     final closedNotice = find.text(
       'Вход в этот канал закрыт администратором. Отзыв media-доступа ещё подтверждается.',
     );
@@ -2190,7 +2191,7 @@ void main() {
       ),
       findsNothing,
     );
-    expect(find.text('Подключиться без микрофона'), findsNothing);
+    expect(find.text('Без микрофона'), findsNothing);
 
     state
       ..voiceChannel = state.selectedChannel
@@ -2314,14 +2315,14 @@ void main() {
     await tester.pumpWidget(MaterialApp(home: WorkspaceScreen(state: state)));
     await tester.pumpAndSettle();
 
-    expect(find.text('Вы не подключены'), findsOneWidget);
+    expect(find.text('Войти в голос'), findsOneWidget);
     expect(
       find.text(
         'Посмотрите, кто сейчас в комнате, и выберите удобный способ подключения.',
       ),
-      findsOneWidget,
+      findsNothing,
     );
-    expect(find.text('Последний состав: 1'), findsOneWidget);
+    expect(find.text('Последний состав: 1'), findsNothing);
     final voiceChannelRow = find.byKey(
       const ValueKey('workspace-channel-row:voice-1'),
     );
@@ -2339,7 +2340,7 @@ void main() {
     );
     expect(find.text('Мика'), findsNWidgets(2));
     expect(find.byTooltip('Показывает экран'), findsNWidgets(2));
-    expect(find.text('Идёт трансляция'), findsOneWidget);
+    expect(find.text('Идёт трансляция'), findsNothing);
     final navigationMic = find.descendant(
       of: find.byTooltip('Микрофон выключен'),
       matching: find.byIcon(Icons.mic_off_outlined),
@@ -2369,9 +2370,9 @@ void main() {
     state.notifyListeners();
     await tester.pump();
 
-    expect(find.text('Подключаемся к голосовой комнате'), findsOneWidget);
+    expect(find.text('Входим в голос…'), findsOneWidget);
     final joiningTitle = find.ancestor(
-      of: find.text('Подключаемся к голосовой комнате'),
+      of: find.text('Входим в голос…'),
       matching: find.byWidgetPredicate(
         (widget) => widget is Semantics && widget.properties.liveRegion == true,
       ),
@@ -2379,9 +2380,9 @@ void main() {
     expect(joiningTitle, findsOneWidget);
     expect(
       tester.widget<Semantics>(joiningTitle).properties.label,
-      'Подключаемся к голосовой комнате',
+      'Входим в голос…',
     );
-    expect(find.text('Соединение устанавливается.'), findsOneWidget);
+    expect(find.text('Соединение устанавливается.'), findsNothing);
     expect(
       tester
           .widget<FilledButton>(
@@ -2841,14 +2842,14 @@ void main() {
     final cardFinder = find.byKey(const ValueKey('voice-prejoin-card'));
     expect(
       tester.widget<Container>(cardFinder).padding,
-      const EdgeInsets.all(44),
+      const EdgeInsets.all(24),
     );
     final scrollFinder = find
         .ancestor(of: cardFinder, matching: find.byType(SingleChildScrollView))
         .first;
     expect(
       tester.widget<SingleChildScrollView>(scrollFinder).padding,
-      const EdgeInsets.all(72),
+      const EdgeInsets.fromLTRB(16, 64, 16, 40),
     );
     final icon = tester.widget<Container>(
       find.byKey(const ValueKey('voice-prejoin-icon')),
@@ -2860,8 +2861,8 @@ void main() {
       Border.fromBorderSide(const BorderSide(color: GcColors.control)),
     );
     expect(
-      tester.widget<Text>(find.text('Вы не подключены')).style?.fontSize,
-      24,
+      tester.widget<Text>(find.text('Войти в голос')).style?.fontSize,
+      20,
     );
 
     await tester.pumpWidget(const SizedBox.shrink());
@@ -2883,18 +2884,71 @@ void main() {
     final cardFinder = find.byKey(const ValueKey('voice-prejoin-card'));
     expect(
       tester.widget<Container>(cardFinder).padding,
-      const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
     );
     final scrollFinder = find
         .ancestor(of: cardFinder, matching: find.byType(SingleChildScrollView))
         .first;
     expect(
       tester.widget<SingleChildScrollView>(scrollFinder).padding,
-      const EdgeInsets.all(16),
+      const EdgeInsets.fromLTRB(16, 32, 16, 40),
     );
 
     await tester.pumpWidget(const SizedBox.shrink());
     state.dispose();
+  });
+
+  testWidgets('compact voice header keeps screen sharing launcher visible', (
+    tester,
+  ) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(960, 800);
+    addTearDown(tester.view.reset);
+    var shareStarts = 0;
+    var qualityOpens = 0;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Align(
+            alignment: Alignment.topRight,
+            child: VoiceRoomHeaderActions(
+              compact: true,
+              onSearch: () {},
+              onOpenMembers: () {},
+              onToggleShare: () => shareStarts++,
+              onConfigureShare: () => qualityOpens++,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    expect(
+      MediaQuery.sizeOf(tester.element(find.byType(VoiceRoomHeaderActions))).width,
+      960,
+    );
+    final shareLauncher = find.byTooltip('Начать демонстрацию экрана');
+    expect(shareLauncher, findsOneWidget);
+    await tester.tap(shareLauncher);
+    expect(shareStarts, 1);
+
+    await tester.tap(find.byTooltip('Другие действия'));
+    await tester.pumpAndSettle();
+    expect(find.text('Качество трансляции'), findsOneWidget);
+    expect(find.text('Начать демонстрацию'), findsNothing);
+    await tester.tap(find.text('Качество трансляции'));
+    expect(qualityOpens, 1);
+
+    tester.view.physicalSize = const Size(390, 844);
+    await tester.pumpAndSettle();
+    expect(find.byTooltip('Начать демонстрацию экрана'), findsNothing);
+    await tester.tap(find.byTooltip('Другие действия'));
+    await tester.pumpAndSettle();
+    final compactShareAction = find.text('Начать демонстрацию');
+    expect(compactShareAction, findsOneWidget);
+    await tester.tap(compactShareAction);
+    expect(shareStarts, 2);
   });
 
   testWidgets('voice dock reports accurate microphone actions in all states', (
@@ -3673,8 +3727,8 @@ void main() {
     await tester.pumpWidget(MaterialApp(home: WorkspaceScreen(state: state)));
     await tester.pumpAndSettle();
 
-    expect(find.text('Подключиться к голосу'), findsOneWidget);
-    expect(find.text('Подключиться без микрофона'), findsOneWidget);
+    expect(find.text('Войти'), findsOneWidget);
+    expect(find.text('Без микрофона'), findsOneWidget);
 
     await tester.pumpWidget(const SizedBox.shrink());
     state.dispose();

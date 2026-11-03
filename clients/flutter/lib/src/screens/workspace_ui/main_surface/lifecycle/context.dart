@@ -12,6 +12,7 @@ abstract class WorkspaceMainSurfaceContext extends StatelessWidget {
     required this.pinnedScreenIdentity,
     this.onToggleNavigation,
     this.onOpenMembers,
+    this.onSearch,
     this.onCapturePttKey,
     this.capturingPttKey = false,
     this.onCaptureVoiceShortcut,
@@ -27,6 +28,7 @@ abstract class WorkspaceMainSurfaceContext extends StatelessWidget {
   final String? pinnedScreenIdentity;
   final VoidCallback? onToggleNavigation;
   final VoidCallback? onOpenMembers;
+  final VoidCallback? onSearch;
   final VoidCallback? onCapturePttKey;
   final bool capturingPttKey;
   final ValueChanged<String>? onCaptureVoiceShortcut;

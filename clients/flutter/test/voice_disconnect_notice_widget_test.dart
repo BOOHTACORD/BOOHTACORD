@@ -45,8 +45,8 @@ void main() {
         expect(first.onPressed != null, notice.reconnectAllowed);
         expect(second.onPressed != null, notice.reconnectAllowed);
         if (notice.reconnectAllowed) {
-          await tester.tap(find.text('Подключиться к голосу'));
-          await tester.tap(find.text('Подключиться без микрофона'));
+          await tester.tap(find.text('Войти'));
+          await tester.tap(find.text('Без микрофона'));
         }
       }
       expect(joins, 3);
