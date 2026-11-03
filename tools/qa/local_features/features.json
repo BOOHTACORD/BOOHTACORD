@@ -290,6 +290,24 @@
       "clients/flutter/lib/src/screens/workspace_ui/voice_participant_room/**",
       "clients/flutter/test/voice_participant_stream_cards_test.dart",
       "clients/flutter/lib/src/screens/workspace_ui/voice_room/open_screen_fullscreen/**",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_room/build/room_header/handler.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_room/build/header_actions/**",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_room/lifecycle/widget.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/header/component.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/main_surface/build/colored_box/handler.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/main_surface/build/handler.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/main_surface/lifecycle/context.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/main_surface/lifecycle/widget.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/drawer_sidebar/handler.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/workspace_panels/handler.dart",
+      "clients/flutter/lib/src/screens/voice_prejoin/**",
+      "clients/flutter/lib/src/widgets/voice_disconnect/join_actions.dart",
+      "clients/flutter/integration_test/roster_qa_test.dart",
+      "clients/flutter/integration_test/mobile_navigation_qa_test.dart",
+      "clients/flutter/integration_test/admin_dialogs_qa_test.dart",
+      "clients/flutter/integration_test/accessibility_qa_test.dart",
+      "clients/flutter/integration_test/mini_player_qa_test.dart",
+      "clients/flutter/integration_test/desktop_updates/windows_app.dart",
       "clients/flutter/lib/src/services/screen_thumbnail.dart",
       "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/build/editing_shell/handler.dart",
       "clients/web/src/notification/NotificationSettings.vue",
@@ -313,6 +331,9 @@
     ],
     "flutter": [
       "test/voice_disconnect/visual_capture_test.dart",
+      "test/voice_disconnect_notice_widget_test.dart",
+      "test/voice_manual_join_actions_accessibility_test.dart",
+      "test/workspace_screen_test.dart",
       "test/web_parity/voice_geometry_test.dart",
       "packages/livekit_client/test/audio/audio_session_test.dart",
       "test/features/workspace/short_viewport/measured_status_test.dart",
@@ -354,7 +375,7 @@
       "issue347": {
         "browser": "clients/web/tests/voice_interface/playwright.config.ts",
         "actual": "tools/qa/critical_client_acceptance/voice_interface.mjs",
-        "scope": "Shared one-click controls, keyboard and Android touch PTT/denied/reconnect/leaving presentation, stale stream/roster cleanup, compact disclosure. Touch PTT shows its muted idle state in red, returns to neutral while transmitting, explains the hold action in the dock below participants, and transmits only while the dock mic is held; verify real pointer and Android touch input plus release on cancellation, focus loss or dock teardown. Settings do not ask touch devices for a hardware key. Verify the prejoin empty roster is geometrically centered against its card despite compact roster indentation. Muted dock controls retain their solid red state without a red border; keyboard focus remains visibly distinct. At narrow mobile width, reconnecting status wraps into balanced lines. Mobile connected voice shows only the persistent bottom dock; Android Chrome has no persistent screen-capture warning, and tapping its enabled share action shows the unsupported-browser explanation without starting capture. Reduce the listener heading's mobile top inset. Fixture viewport/text/actual zoom plus actual two-client SFU session continuity, TEXT/drawer/resize and leave. No native, hardware capture or media QoE claim."
+        "scope": "Shared one-click controls, keyboard and Android touch PTT/denied/reconnect/leaving presentation, stale stream/roster cleanup, compact disclosure. Touch PTT shows its muted idle state in red, returns to neutral while transmitting, explains the hold action in the dock below participants, and transmits only while the dock mic is held; verify real pointer and Android touch input plus release on cancellation, focus loss or dock teardown. Settings do not ask touch devices for a hardware key. Verify the prejoin empty roster is geometrically centered against its card despite compact roster indentation. Muted dock controls retain their solid red state without a red border; keyboard focus remains visibly distinct. At narrow mobile width, reconnecting status wraps into balanced lines. Mobile connected voice shows only the persistent bottom dock; Android Chrome has no persistent screen-capture warning, and tapping its enabled share action shows the unsupported-browser explanation without starting capture. Reduce the listener heading's mobile top inset. Flutter prejoin follows the Web composition across widths: concise title, microphone glyph, unframed roster and concise join actions; card padding and button layout adapt at 600 dp. Review mobile and desktop widths; native runtime and visual acceptance for this change remain NOT_RUN until captured and inspected. Fixture viewport/text/actual zoom plus actual two-client SFU session continuity, TEXT/drawer/resize and leave. No native, hardware capture or media QoE claim."
       },
       "flutter_web_parity_499_502": {
         "focused": [

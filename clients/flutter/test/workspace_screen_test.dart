@@ -2190,7 +2190,7 @@ void main() {
       ),
       findsNothing,
     );
-    expect(find.text('Подключиться без микрофона'), findsNothing);
+    expect(find.text('Без микрофона'), findsNothing);
 
     state
       ..voiceChannel = state.selectedChannel
@@ -2314,14 +2314,14 @@ void main() {
     await tester.pumpWidget(MaterialApp(home: WorkspaceScreen(state: state)));
     await tester.pumpAndSettle();
 
-    expect(find.text('Вы не подключены'), findsOneWidget);
+    expect(find.text('Войти в голос'), findsOneWidget);
     expect(
       find.text(
         'Посмотрите, кто сейчас в комнате, и выберите удобный способ подключения.',
       ),
-      findsOneWidget,
+      findsNothing,
     );
-    expect(find.text('Последний состав: 1'), findsOneWidget);
+    expect(find.text('Последний состав: 1'), findsNothing);
     final voiceChannelRow = find.byKey(
       const ValueKey('workspace-channel-row:voice-1'),
     );
@@ -2339,7 +2339,7 @@ void main() {
     );
     expect(find.text('Мика'), findsNWidgets(2));
     expect(find.byTooltip('Показывает экран'), findsNWidgets(2));
-    expect(find.text('Идёт трансляция'), findsOneWidget);
+    expect(find.text('Идёт трансляция'), findsNothing);
     final navigationMic = find.descendant(
       of: find.byTooltip('Микрофон выключен'),
       matching: find.byIcon(Icons.mic_off_outlined),
@@ -2841,14 +2841,14 @@ void main() {
     final cardFinder = find.byKey(const ValueKey('voice-prejoin-card'));
     expect(
       tester.widget<Container>(cardFinder).padding,
-      const EdgeInsets.all(44),
+      const EdgeInsets.all(24),
     );
     final scrollFinder = find
         .ancestor(of: cardFinder, matching: find.byType(SingleChildScrollView))
         .first;
     expect(
       tester.widget<SingleChildScrollView>(scrollFinder).padding,
-      const EdgeInsets.all(72),
+      const EdgeInsets.fromLTRB(16, 64, 16, 40),
     );
     final icon = tester.widget<Container>(
       find.byKey(const ValueKey('voice-prejoin-icon')),
@@ -2860,8 +2860,8 @@ void main() {
       Border.fromBorderSide(const BorderSide(color: GcColors.control)),
     );
     expect(
-      tester.widget<Text>(find.text('Вы не подключены')).style?.fontSize,
-      24,
+      tester.widget<Text>(find.text('Войти в голос')).style?.fontSize,
+      20,
     );
 
     await tester.pumpWidget(const SizedBox.shrink());
@@ -2883,14 +2883,14 @@ void main() {
     final cardFinder = find.byKey(const ValueKey('voice-prejoin-card'));
     expect(
       tester.widget<Container>(cardFinder).padding,
-      const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
     );
     final scrollFinder = find
         .ancestor(of: cardFinder, matching: find.byType(SingleChildScrollView))
         .first;
     expect(
       tester.widget<SingleChildScrollView>(scrollFinder).padding,
-      const EdgeInsets.all(16),
+      const EdgeInsets.fromLTRB(16, 32, 16, 40),
     );
 
     await tester.pumpWidget(const SizedBox.shrink());
@@ -3673,8 +3673,8 @@ void main() {
     await tester.pumpWidget(MaterialApp(home: WorkspaceScreen(state: state)));
     await tester.pumpAndSettle();
 
-    expect(find.text('Подключиться к голосу'), findsOneWidget);
-    expect(find.text('Подключиться без микрофона'), findsOneWidget);
+    expect(find.text('Войти'), findsOneWidget);
+    expect(find.text('Без микрофона'), findsOneWidget);
 
     await tester.pumpWidget(const SizedBox.shrink());
     state.dispose();

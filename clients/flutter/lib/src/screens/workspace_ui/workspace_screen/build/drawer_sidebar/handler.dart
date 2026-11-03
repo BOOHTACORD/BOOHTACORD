@@ -27,6 +27,7 @@ extension WorkspaceScreenDrawerSidebarRenderer on WorkspaceScreenStateContext {
             pinnedScreenIdentity: workspaceVisiblePinnedScreenIdentity,
             onToggleNavigation: workspaceToggleNavigation,
             onOpenMembers: showMemberToggle ? workspaceToggleMembers : null,
+            onSearch: workspaceToggleSearch,
             onCapturePttKey: workspaceBeginPttKeyCapture,
             capturingPttKey: workspaceCapturingPttKey,
             onCaptureVoiceShortcut: workspaceBeginVoiceShortcutCapture,

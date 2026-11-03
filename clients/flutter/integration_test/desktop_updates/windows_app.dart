@@ -98,7 +98,7 @@ class Journey {
   Future<void> joinListener() async {
     final button = find.widgetWithText(
       OutlinedButton,
-      'Подключиться без микрофона',
+      'Без микрофона',
     );
     step = 'voice_listener';
     await until(

@@ -359,9 +359,9 @@ void main() {
       report['voice_prejoin_navigation_method'] = 'Controlled production state.selectChannel of actual ACL-loaded channel; mobile channel-row pointer autojoin is not this prejoin test.';
       final listen = find.widgetWithText(
         OutlinedButton,
-        'Подключиться без микрофона',
+        'Без микрофона',
       );
-      named(listen, 'Подключиться без микрофона');
+      named(listen, 'Без микрофона');
       await capture('native-voice-prejoin');
       await scaleCapture('native-voice');
       checks['native_voice_prejoin_names_2x'] = 'PASS';

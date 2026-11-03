@@ -27,11 +27,8 @@ void main() {
       ),
     );
 
-    final join = find.widgetWithText(FilledButton, 'Подключиться к голосу');
-    final listen = find.widgetWithText(
-      OutlinedButton,
-      'Подключиться без микрофона',
-    );
+    final join = find.widgetWithText(FilledButton, 'Войти');
+    final listen = find.widgetWithText(OutlinedButton, 'Без микрофона');
     for (final button in [join, listen]) {
       final data = tester.getSemantics(button).getSemanticsData();
       expect(data.flagsCollection.isButton, isTrue);
@@ -66,15 +63,13 @@ void main() {
     );
 
     final join = find.widgetWithText(FilledButton, 'Подключаемся…');
-    final listen = find.widgetWithText(
-      OutlinedButton,
-      'Подключиться без микрофона',
-    );
+    final listen = find.widgetWithText(OutlinedButton, 'Без микрофона');
     for (final button in [join, listen]) {
       expect(
-        tester.getSemantics(button).getSemanticsData().hasAction(
-          SemanticsAction.tap,
-        ),
+        tester
+            .getSemantics(button)
+            .getSemanticsData()
+            .hasAction(SemanticsAction.tap),
         isFalse,
       );
     }
@@ -88,11 +83,7 @@ void main() {
 
     for (final (admissionClosed, notice, expectedLabel) in [
       (true, null, 'Вход временно закрыт'),
-      (
-        false,
-        VoiceDisconnectNotice('BANNED', 'server'),
-        'Подключиться к голосу',
-      ),
+      (false, VoiceDisconnectNotice('BANNED', 'server'), 'Войти'),
     ]) {
       await tester.pumpWidget(
         MaterialApp(
@@ -110,15 +101,13 @@ void main() {
       );
 
       final join = find.widgetWithText(FilledButton, expectedLabel);
-      final listen = find.widgetWithText(
-        OutlinedButton,
-        'Подключиться без микрофона',
-      );
+      final listen = find.widgetWithText(OutlinedButton, 'Без микрофона');
       for (final button in [join, listen]) {
         expect(
-          tester.getSemantics(button).getSemanticsData().hasAction(
-            SemanticsAction.tap,
-          ),
+          tester
+              .getSemantics(button)
+              .getSemanticsData()
+              .hasAction(SemanticsAction.tap),
           isFalse,
         );
       }

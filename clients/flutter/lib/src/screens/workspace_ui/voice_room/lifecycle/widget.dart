@@ -16,6 +16,7 @@ class WorkspaceVoiceRoom extends StatefulWidget {
     required this.pinnedScreenIdentity,
     this.onToggleNavigation,
     this.onOpenMembers,
+    this.onSearch,
   });
   final AppState state;
   final GuildChannel channel;
@@ -27,6 +28,7 @@ class WorkspaceVoiceRoom extends StatefulWidget {
   final String? pinnedScreenIdentity;
   final VoidCallback? onToggleNavigation;
   final VoidCallback? onOpenMembers;
+  final VoidCallback? onSearch;
 
   @override
   State<WorkspaceVoiceRoom> createState() => WorkspaceVoiceRoomState();

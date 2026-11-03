@@ -7,34 +7,22 @@ class VoicePrejoinHeading extends StatelessWidget {
   final bool joining;
   @override
   Widget build(BuildContext context) {
-    final title = joining
-        ? 'Подключаемся к голосовой комнате'
-        : 'Вы не подключены';
+    final title = joining ? 'Входим в голос…' : 'Войти в голос';
     return Column(
       children: [
         Container(
           key: const ValueKey('voice-prejoin-icon'),
-          width: 64,
-          height: 64,
+          width: 48,
+          height: 48,
           decoration: const BoxDecoration(
             color: GcColors.raised,
             shape: BoxShape.circle,
             border: Border.fromBorderSide(BorderSide(color: GcColors.control)),
           ),
           child: const Icon(
-            Icons.headset_mic_outlined,
+            Icons.mic_none_outlined,
             size: 28,
             color: GcColors.accentText,
-          ),
-        ),
-        const SizedBox(height: 16),
-        const Text(
-          'ГОЛОСОВАЯ КОМНАТА',
-          style: TextStyle(
-            color: GcColors.accentText,
-            fontSize: 11,
-            fontWeight: FontWeight.w800,
-            letterSpacing: 1.5,
           ),
         ),
         const SizedBox(height: 16),
@@ -45,14 +33,12 @@ class VoicePrejoinHeading extends StatelessWidget {
           child: Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              height: 1.4,
+            ),
           ),
-        ),
-        const SizedBox(height: 16),
-        Text(
-          joining ? 'Соединение устанавливается.' : 'Посмотрите, кто сейчас в комнате, и выберите удобный способ подключения.',
-          textAlign: TextAlign.center,
-          style: const TextStyle(color: GcColors.textSecondary, height: 1.45),
         ),
       ],
     );
