@@ -118,7 +118,7 @@ void main() {
     expect(service.startedInputId, 'input-1');
     expect(service.startedInputLabel, 'USB microphone');
     expect(
-      find.textContaining('индикатор показывает локальный уровень'),
+      find.text('Говорите, чтобы увидеть уровень микрофона.'),
       findsOneWidget,
     );
 
@@ -137,14 +137,21 @@ void main() {
       () => Future<void>.delayed(const Duration(milliseconds: 1)),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Проверка микрофона выключена.'), findsOneWidget);
+    expect(
+      find.text('Говорите, чтобы увидеть уровень микрофона.'),
+      findsNothing,
+    );
     expect(service.stopCount, 1);
 
-    await tester.tap(find.text('Проверить динамик'));
+    await tester.tap(find.text('Тестовый звук'));
     await tester.pumpAndSettle();
     expect(service.playedOutputId, 'output-1');
     expect(service.playedOutputLabel, 'USB speakers');
-    expect(find.textContaining('Сигнал завершён.'), findsOneWidget);
+    expect(find.textContaining('Сигнал воспроизведён.'), findsOneWidget);
+    expect(find.textContaining('Проверка локальная'), findsNothing);
+    await tester.tap(find.text('О проверке устройств'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Проверка локальная'), findsOneWidget);
 
     await tester.pumpWidget(const SizedBox.shrink());
     expect(service.disposeCount, 1);
@@ -167,18 +174,18 @@ void main() {
     );
 
     await tester.pumpWidget(buildCheck('output-1', 'USB speakers'));
-    await tester.tap(find.text('Проверить динамик'));
+    await tester.tap(find.text('Тестовый звук'));
     await tester.pumpAndSettle();
     expect(service.playedOutputId, 'output-1');
-    expect(find.textContaining('Сигнал завершён.'), findsOneWidget);
+    expect(find.textContaining('Сигнал воспроизведён.'), findsOneWidget);
 
     await tester.pumpWidget(buildCheck('output-2', 'Monitor audio'));
-    expect(find.textContaining('Сигнал завершён.'), findsNothing);
+    expect(find.textContaining('Сигнал воспроизведён.'), findsNothing);
 
-    await tester.tap(find.text('Проверить динамик'));
+    await tester.tap(find.text('Тестовый звук'));
     await tester.pumpAndSettle();
     expect(service.playedOutputId, 'output-2');
-    expect(find.textContaining('Сигнал завершён.'), findsOneWidget);
+    expect(find.textContaining('Сигнал воспроизведён.'), findsOneWidget);
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
@@ -201,7 +208,7 @@ void main() {
     );
 
     await tester.pumpWidget(buildCheck('output-1'));
-    await tester.tap(find.text('Проверить динамик'));
+    await tester.tap(find.text('Тестовый звук'));
     await tester.pump();
     expect(find.text('Воспроизводим короткий сигнал…'), findsOneWidget);
 
@@ -213,8 +220,8 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('Сигнал завершён.'), findsNothing);
-    expect(find.text('Проверить динамик'), findsOneWidget);
+    expect(find.textContaining('Сигнал воспроизведён.'), findsNothing);
+    expect(find.text('Тестовый звук'), findsOneWidget);
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
@@ -244,7 +251,10 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Проверка микрофона выключена.'), findsOneWidget);
+      expect(
+        find.text('Говорите, чтобы увидеть уровень микрофона.'),
+        findsNothing,
+      );
       expect(service.stopCount, 1);
       await tester.pumpWidget(const SizedBox.shrink());
     },

@@ -1194,22 +1194,37 @@
       "clients/web/src/design/design_v2_profile_presentation.css",
       "clients/web/tests/settings_hierarchy/fixture.ts",
       "clients/web/tests/settings_hierarchy/hierarchy.browser.spec.ts",
+      "clients/web/tests/control_consistency/controls.browser.spec.ts",
+      "clients/web/tests/microcopy/behavior.browser.spec.ts",
+      "clients/web/tests/microcopy/zoom.browser.spec.ts",
       "clients/web/src/notification/*",
       "clients/web/src/voice/AudioSettings.vue",
+      "clients/web/src/voice/AudioDeviceCheck.vue",
+      "clients/web/src/voice/ProcessingDetails.vue",
+      "clients/web/src/voice/audio_diagnostics/Diagnostics.vue",
       "clients/web/src/design/design_v2_audio_presentation.css",
       "clients/flutter/lib/src/screens/profile*",
       "clients/flutter/lib/src/screens/workspace_ui/audio_settings_screen/**",
       "clients/flutter/lib/src/widgets/audio_processing_advanced_settings.dart",
+      "clients/flutter/lib/src/widgets/noise_suppression_settings.dart",
+      "clients/flutter/lib/src/widgets/audio_device_check.dart",
+      "clients/flutter/lib/src/features/audio/settings/scan_notice.dart",
+      "clients/flutter/lib/src/features/audio/settings/scan_notice_copy.dart",
       "clients/flutter/lib/src/screens/workspace_ui/members_panel/**",
       "clients/flutter/lib/src/screens/workspace_ui/audio_device_dropdown/**"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",
-      "tests/settings_hierarchy/playwright.config.ts"
+      "tests/settings_hierarchy/playwright.config.ts",
+      "tests/microcopy/playwright.config.ts"
     ],
     "flutter": [
       "test/uiux_2026/personal_settings_visual_capture_test.dart",
       "test/profile_screen_test.dart",
+      "test/audio_devices/settings_scan_notice_test.dart",
+      "test/audio_device_check_test.dart",
+      "test/noise_suppression_settings_test.dart",
+      "test/workspace_screen_test.dart",
       "test/web_parity/audio_hierarchy_test.dart",
       "test/web_parity/popover_layout_test.dart",
       "test/web_parity/profile_overlay_test.dart"
@@ -1228,7 +1243,7 @@
       "issue351": {
         "browser": "clients/web/tests/settings_hierarchy/playwright.config.ts",
         "actual": "tools/qa/client_lifecycle/settings_hierarchy.mjs",
-        "scope": "13 actual component settings/admin surfaces at 390/1024/1440; explicit save/cancel/pending/error/403/409, visible unsaved/security warnings, retained mounted advanced audio controls at text/native browser zoom. Touch PTT settings offer on-screen hold guidance without requesting a hardware key. At enlarged mobile text, profile avatar removal remains inside its card. Owned Go API profile writes and actual SFU transport continuity during audio settings navigation; no native or hardware/audio quality claim."
+        "scope": "13 actual component settings/admin surfaces at 390/1024/1440; explicit save/cancel/pending/error/403/409, visible unsaved/security warnings, and audio controls at text/native browser zoom. Audio settings expose common processing controls and shortcuts at the first level while runtime, RTP and capture details stay collapsed until requested; idle and successful device checks hide internal status/counts. Touch PTT settings offer on-screen hold guidance without requesting a hardware key. At enlarged mobile text, profile avatar removal remains inside its card. Owned Go API profile writes and actual SFU transport continuity during audio settings navigation; no native or hardware/audio quality claim."
       },
       "flutter_web_parity_499_502": {
         "focused": [

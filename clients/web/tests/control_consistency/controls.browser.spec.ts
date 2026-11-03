@@ -33,7 +33,7 @@ async function open(page: Page, surface: string, scale = 100) {
   await fixtureRoutes(page)
   await page.goto(`/tests/control_consistency/fixture.html?surface=${surface}&scale=${scale}`)
   if (surface === 'guild') { await expect(page.getByLabel('Название гильдии', { exact: true })).toBeEnabled(); await page.getByLabel('Название гильдии', { exact: true }).fill('Новая гильдия') }
-  if (surface === 'audio') { await page.getByText('Дополнительно', { exact: true }).click(); await page.getByText('Режим и диагностика обработки', { exact: true }).click() }
+  if (surface === 'audio') await page.getByText('Диагностика', { exact: true }).click()
   if (surface === 'archive') { await expect(page.getByLabel('Канал', { exact: true })).toBeVisible(); await page.getByLabel('Канал', { exact: true }).selectOption(id) }
   if (surface === 'files') await expect(page.locator('.conversation-files .result-row')).toHaveCount(1)
   await page.evaluate(() => document.fonts.ready)
@@ -93,8 +93,7 @@ for (const scale of [100, 200]) for (const surface of surfaces) {
     await open(page, surface, scale)
     if (scale === 100) await page.screenshot({ path: info.outputPath(`${surface}-${scale}.png`), fullPage: true })
     if (surface === 'audio') {
-      const diagnostics = page.getByText('Диагностика качества голоса', { exact: true })
-      await diagnostics.click()
+      const diagnostics = page.locator('.audio-voice-diagnostics h3')
       if (scale === 100) await diagnostics.locator('..').screenshot({ path: info.outputPath('audio-diagnostics.png') })
       if (scale === 200) {
         const pairs = await page.locator('.audio-processing-values').evaluate(element => {
@@ -228,7 +227,6 @@ for (const [index, physicalViewport] of ux2026ActualZoomPhysicalViewports.entrie
   })
   await withBrowserZoom(playwright.chromium, physicalWidth, 2, async page => {
     await open(page, surface)
-    if (surface === 'audio') await page.getByText('Диагностика качества голоса', { exact: true }).click()
     const zoomed = await read(page)
     expect(zoomed.outer).toBe(before.outer)
     expect(Math.abs(zoomed.width * 2 - before.width)).toBeLessThanOrEqual(2)

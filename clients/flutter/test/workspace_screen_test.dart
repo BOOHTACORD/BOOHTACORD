@@ -783,19 +783,23 @@ void main() {
     expect(find.text('Назначить PTT-клавишу'), findsOneWidget);
 
     await tester.scrollUntilVisible(
-      find.text('Дополнительно'),
-      120,
-      scrollable: audioScrollable,
-    );
-    await tester.tap(find.text('Дополнительно'));
-    await tester.pumpAndSettle();
-    await tester.scrollUntilVisible(
       find.text('Подавление эха'),
       160,
       scrollable: audioScrollable,
     );
     expect(find.text('Подавление эха'), findsOneWidget);
-    expect(find.textContaining('Нативный SDK не сообщает'), findsOneWidget);
+    expect(find.textContaining('Native SDK не подтверждает'), findsNothing);
+    await tester.scrollUntilVisible(
+      find.text('Диагностика качества голоса'),
+      160,
+      scrollable: audioScrollable,
+    );
+    await tester.tap(find.text('Диагностика качества голоса'));
+    await tester.pumpAndSettle();
+    expect(
+      find.text('Статистика появляется после подключения и двух измерений.'),
+      findsOneWidget,
+    );
 
     await tester.dragUntilVisible(
       find.text('Назначить PTT-клавишу'),
@@ -843,12 +847,7 @@ void main() {
     await tester.pumpWidget(MaterialApp(home: WorkspaceScreen(state: state)));
     await tester.pump(const Duration(milliseconds: 100));
 
-    final subtitle = find.text('Проверьте устройства перед разговором.');
-    expect(subtitle, findsOneWidget);
-    expect(
-      tester.renderObject<RenderParagraph>(subtitle).didExceedMaxLines,
-      isFalse,
-    );
+    expect(find.text('Проверьте устройства перед разговором.'), findsNothing);
     final devices = find.byKey(const ValueKey('audio-settings-device-card'));
     final activation = find.byKey(
       const ValueKey('audio-settings-activation-card'),
@@ -894,12 +893,6 @@ void main() {
     final shortcuts = find.byKey(
       const ValueKey('audio-settings-shortcuts-card'),
     );
-    final advanced = find.byKey(
-      const PageStorageKey('audio-settings-advanced'),
-    );
-    await tester.scrollUntilVisible(advanced, 160, scrollable: audioScrollable);
-    await tester.tap(find.text('Дополнительно'));
-    await tester.pumpAndSettle();
     await tester.scrollUntilVisible(
       shortcuts,
       160,
@@ -1008,8 +1001,7 @@ void main() {
         findsNothing,
       );
       expect(find.text('Сбросить настройки аудио'), findsOneWidget);
-      expect(find.text('Дополнительно'), findsOneWidget);
-      expect(find.text('Диагностика качества голоса'), findsNothing);
+      expect(find.text('Дополнительно'), findsNothing);
       expect(tester.takeException(), isNull);
 
       await tester.pumpWidget(const SizedBox.shrink());
@@ -1020,7 +1012,7 @@ void main() {
   });
 
   testWidgets(
-    'audio processing keeps essentials visible and discloses advanced controls',
+    'audio settings expose common controls and keep technical details folded',
     (tester) async {
       addTearDown(() => debugDefaultTargetPlatformOverride = null);
       for (final scenario in [
@@ -1045,26 +1037,17 @@ void main() {
           of: find.byKey(const ValueKey('audio-settings-list')),
           matching: find.byType(Scrollable),
         );
-        final advanced = find.byKey(
-          const PageStorageKey('audio-settings-advanced'),
-        );
-        await tester.scrollUntilVisible(
-          advanced,
-          160,
-          scrollable: audioScrollable,
-        );
-        expect(find.text('Дополнительно'), findsOneWidget);
-        expect(find.text('Шумоподавление'), findsNothing);
-        expect(find.text('Подавление эха'), findsNothing);
-        expect(find.text('Диагностика качества голоса'), findsNothing);
-        final processingBefore = state.audioProcessing;
-        await tester.tap(find.text('Дополнительно'));
-        await tester.pumpAndSettle();
         await tester.scrollUntilVisible(
           find.text('Подавление эха'),
           160,
           scrollable: audioScrollable,
         );
+        expect(find.text('Дополнительно'), findsNothing);
+        expect(find.text('Шумоподавление'), findsOneWidget);
+        expect(find.text('Подавление эха'), findsOneWidget);
+        expect(find.text('Сведения об обработке'), findsOneWidget);
+        expect(find.textContaining('обработано кадров'), findsNothing);
+        final processingBefore = state.audioProcessing;
         expect(
           find.text('Автоматическая регулировка усиления'),
           findsOneWidget,
@@ -1072,8 +1055,17 @@ void main() {
         expect(find.text('Подавление эха'), findsOneWidget);
         expect(find.text('Громкость микрофона: 100%'), findsOneWidget);
         expect(find.text('Шумоподавление'), findsOneWidget);
-        expect(find.text('Диагностика обработки'), findsOneWidget);
-        expect(find.text('Диагностика качества голоса'), findsOneWidget);
+        expect(find.textContaining('обработано кадров'), findsNothing);
+        expect(
+          find.text(
+            'Статистика появляется после подключения и двух измерений.',
+          ),
+          findsNothing,
+        );
+        expect(
+          find.text('Эти данные не оценивают качество звука.'),
+          findsNothing,
+        );
         expect(state.audioProcessing, processingBefore);
         expect(tester.takeException(), isNull);
 
@@ -1102,23 +1094,7 @@ void main() {
     await tester.pumpWidget(MaterialApp(home: WorkspaceScreen(state: state)));
     await tester.pump(const Duration(milliseconds: 100));
 
-    final subtitle = find.byKey(const ValueKey('audio-settings-intro'));
-    expect(subtitle, findsOneWidget);
-    expect(tester.widget<Text>(subtitle).maxLines, isNull);
-    expect(
-      tester.renderObject<RenderParagraph>(subtitle).didExceedMaxLines,
-      isFalse,
-    );
-    expect(
-      tester.getTopLeft(subtitle).dy,
-      lessThan(
-        tester
-            .getTopLeft(
-              find.byKey(const ValueKey('audio-settings-device-card')),
-            )
-            .dy,
-      ),
-    );
+    expect(find.byKey(const ValueKey('audio-settings-intro')), findsNothing);
     final devices = find.byKey(const ValueKey('audio-settings-device-card'));
     final activation = find.byKey(
       const ValueKey('audio-settings-activation-card'),
@@ -1528,7 +1504,10 @@ void main() {
     expect(check.outputDeviceId, 'output-1');
     expect(check.outputDeviceLabel, 'USB speakers');
     expect(find.text('Проверить микрофон'), findsOneWidget);
-    expect(find.text('Проверить динамик'), findsOneWidget);
+    expect(find.text('Тестовый звук'), findsOneWidget);
+    expect(find.textContaining('Проверка локальная'), findsNothing);
+    await tester.tap(find.text('О проверке устройств'));
+    await tester.pumpAndSettle();
     expect(
       find.text(
         'Проверка локальная: она не подтверждает слышимость у другого участника.',
@@ -2328,16 +2307,10 @@ void main() {
     );
     expect(voiceChannelRow, findsOneWidget);
     expect(
-      find.descendant(
-        of: voiceChannelRow,
-        matching: find.text('1'),
-      ),
+      find.descendant(of: voiceChannelRow, matching: find.text('1')),
       findsNothing,
     );
-    expect(
-      find.byTooltip('Участников в голосовом канале: 1'),
-      findsNothing,
-    );
+    expect(find.byTooltip('Участников в голосовом канале: 1'), findsNothing);
     expect(find.text('Мика'), findsNWidgets(2));
     expect(find.byTooltip('Показывает экран'), findsNWidgets(2));
     expect(find.text('Идёт трансляция'), findsNothing);
@@ -2860,10 +2833,7 @@ void main() {
       iconDecoration.border,
       Border.fromBorderSide(const BorderSide(color: GcColors.control)),
     );
-    expect(
-      tester.widget<Text>(find.text('Войти в голос')).style?.fontSize,
-      20,
-    );
+    expect(tester.widget<Text>(find.text('Войти в голос')).style?.fontSize, 20);
 
     await tester.pumpWidget(const SizedBox.shrink());
     state.dispose();
@@ -2925,7 +2895,8 @@ void main() {
     );
 
     expect(
-      MediaQuery.sizeOf(tester.element(find.byType(VoiceRoomHeaderActions))).width,
+      MediaQuery.sizeOf(tester.element(find.byType(VoiceRoomHeaderActions)))
+          .width,
       960,
     );
     final shareLauncher = find.byTooltip('Начать демонстрацию экрана');
@@ -5760,10 +5731,7 @@ void main() {
     expect(profilePopover, findsOneWidget);
     expect(find.text('@unknown'), findsOneWidget);
     final memberRow = find.ancestor(
-      of: find.descendant(
-        of: membersPanel,
-        matching: find.text('Неизвестен'),
-      ),
+      of: find.descendant(of: membersPanel, matching: find.text('Неизвестен')),
       matching: find.byType(InkWell),
     );
     final rowRect = tester.getRect(memberRow.first);
@@ -5978,11 +5946,7 @@ void main() {
           await tester.pumpAndSettle();
           Future<void> capture(String surface) async {
             final exception = tester.takeException();
-            expect(
-              exception,
-              isNull,
-              reason: '$surface $width x$scale',
-            );
+            expect(exception, isNull, reason: '$surface $width x$scale');
             await captureUiuxBoundary(
               tester,
               find.byKey(root),

@@ -109,11 +109,16 @@ class WorkspaceAudioDeviceDropdown extends StatelessWidget {
                   child: CircularProgressIndicator(strokeWidth: 2),
                 ),
                 const SizedBox(width: 8),
-                Text(switch (label) {
-                  'Микрофон' => 'Переключаем микрофон…',
-                  'Динамик' => 'Переключаем динамик…',
-                  _ => 'Переключаем $label…',
-                }, style: const TextStyle(color: GcColors.muted, fontSize: 12)),
+                Expanded(
+                  child: Text(
+                    switch (label) {
+                      'Микрофон' => 'Переключаем микрофон…',
+                      'Динамик' => 'Переключаем динамик…',
+                      _ => 'Переключаем $label…',
+                    },
+                    style: const TextStyle(color: GcColors.muted, fontSize: 12),
+                  ),
+                ),
               ],
             ),
           ),

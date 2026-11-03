@@ -89,7 +89,8 @@ class WorkspaceHeader extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (!(compact && hideSubtitleOnCompact))
+                    if (subtitle.isNotEmpty &&
+                        !(compact && hideSubtitleOnCompact))
                       Text(
                         subtitle,
                         maxLines: 1,

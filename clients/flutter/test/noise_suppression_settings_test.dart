@@ -43,7 +43,10 @@ void main() {
         status: 'idle',
       ),
     );
-    expect(find.text('Состояние не проверено'), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('noise-suppression-runtime-status')),
+      findsNothing,
+    );
     expect(find.textContaining('Работает:'), findsNothing);
 
     await pumpRuntime(
@@ -55,8 +58,12 @@ void main() {
         failureReason: 'awaiting-audio',
       ),
     );
-    expect(find.text('Ожидаем аудио от микрофона.'), findsOneWidget);
+    expect(find.text('Ожидание аудиопотока'), findsOneWidget);
+    expect(find.text('Ожидаем аудио от микрофона.'), findsNothing);
     expect(find.textContaining('RNNoise активен'), findsNothing);
+    await tester.tap(find.text('Сведения об обработке'));
+    await tester.pumpAndSettle();
+    expect(find.text('Ожидаем аудио от микрофона.'), findsOneWidget);
   });
 
   testWidgets('active state requires a native-confirmed processed frame', (
@@ -74,6 +81,12 @@ void main() {
     expect(find.text('RNNoise активен'), findsOneWidget);
     expect(
       find.text('Нативный процессор подтвердил обработку 12 кадров.'),
+      findsNothing,
+    );
+    await tester.tap(find.text('Сведения об обработке'));
+    await tester.pumpAndSettle();
+    expect(
+      find.text('Нативный процессор подтвердил обработку 12 кадров.'),
       findsOneWidget,
     );
 
@@ -88,6 +101,8 @@ void main() {
     );
     expect(find.text('Обработка не подтверждена'), findsOneWidget);
     expect(find.text('RNNoise активен'), findsNothing);
+    await tester.tap(find.text('Сведения об обработке'));
+    await tester.pumpAndSettle();
 
     await pumpRuntime(
       tester,
@@ -99,8 +114,19 @@ void main() {
       ),
       requestedMode: NoiseSuppressionMode.browser,
     );
-    expect(find.text('Ожидание подтверждения настройки'), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('noise-suppression-runtime-status')),
+      findsNothing,
+    );
     expect(find.text('RNNoise активен'), findsNothing);
+    await tester.tap(find.text('Сведения об обработке'));
+    await tester.pumpAndSettle();
+    expect(
+      find.text(
+        'Отчёт относится к предыдущему режиму; активность нового режима пока не подтверждена.',
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets('fallback and unsupported states stay distinct', (tester) async {
@@ -114,6 +140,12 @@ void main() {
       ),
     );
     expect(find.text('Стандартная обработка включена'), findsOneWidget);
+    expect(
+      find.text('Формат микрофона не поддерживается фильтром.'),
+      findsNothing,
+    );
+    await tester.tap(find.text('Сведения об обработке'));
+    await tester.pumpAndSettle();
     expect(
       find.text('Формат микрофона не поддерживается фильтром.'),
       findsOneWidget,
@@ -146,13 +178,11 @@ void main() {
       ),
     );
 
-    expect(
-      find.text(
-        'На этой платформе нативное шумоподавление связано с эхоподавлением.',
-      ),
-      findsOneWidget,
-    );
+    expect(find.textContaining('связано с эхоподавлением'), findsNothing);
     expect(find.textContaining('Стандартная обработка включена'), findsNothing);
+    await tester.tap(find.text('Сведения об обработке'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('связано с эхоподавлением'), findsOneWidget);
   });
 
   testWidgets('error is a live, explicit state and not an effective mode', (
@@ -171,7 +201,7 @@ void main() {
     expect(find.text('Обработка микрофона приостановлена'), findsOneWidget);
     expect(
       find.text('Не удалось восстановить микрофон. Отправка звука выключена.'),
-      findsOneWidget,
+      findsNothing,
     );
     final semantics = tester.widget<Semantics>(
       find.byKey(const ValueKey('noise-suppression-runtime-status')),
@@ -180,6 +210,12 @@ void main() {
     expect(
       semantics.properties.label,
       contains('Обработка микрофона приостановлена'),
+    );
+    await tester.tap(find.text('Сведения об обработке'));
+    await tester.pumpAndSettle();
+    expect(
+      find.text('Не удалось восстановить микрофон. Отправка звука выключена.'),
+      findsOneWidget,
     );
   });
 
@@ -222,7 +258,7 @@ void main() {
     expect(find.text('Обработка микрофона приостановлена'), findsOneWidget);
     expect(
       find.text('Не удалось восстановить микрофон. Отправка звука выключена.'),
-      findsOneWidget,
+      findsNothing,
     );
   });
 }

@@ -16,13 +16,14 @@ test('prejoin is concise and retains named join, listener and joining announceme
   await expect(page.getByRole('button', { name: 'Подключаемся…', exact: true })).toBeDisabled()
   await expectAxeClear(page, 'main')
 })
-test('audio help is discoverable by keyboard and permission errors stay visible', async ({ page }) => {
+test('audio controls remain discoverable and permission errors stay visible', async ({ page }) => {
   await page.goto('/tests/microcopy/fixture.html?surface=audio&phase=error')
   await expect(page.getByRole('alert')).toContainText('Нет доступа к микрофону')
   await expect(page.locator('.audio-settings-heading p')).toHaveCount(0)
-  const summary = page.getByText('О настройках аудио', { exact: true })
+  await expect(page.getByText('Микрофон и выключение звука', { exact: true })).toBeVisible()
+  const summary = page.locator('.audio-check-details summary')
   await summary.focus(); await summary.press('Enter')
-  await expect(page.getByText('Настройки действуют на этом устройстве.', { exact: true })).toBeVisible()
+  await expect(page.getByText('Проверка локальная: она не подтверждает слышимость у другого участника.', { exact: true })).toBeVisible()
   await expect(page.locator('.audio-device-section select').first()).toHaveAccessibleName(/Микрофон/)
   await expectAxeClear(page, 'main')
 })
@@ -165,8 +166,8 @@ test.describe('touch', () => {
   test.use({ hasTouch: true, isMobile: true, viewport: { width: 390, height: 844 } })
   test('help and compact actions work without hover', async ({ page }) => {
     await page.goto('/tests/microcopy/fixture.html?surface=audio')
-    await page.getByText('О настройках аудио', { exact: true }).tap()
-    await expect(page.getByText('Настройки действуют на этом устройстве.', { exact: true })).toBeVisible()
+    await page.locator('.audio-check-details summary').tap()
+    await expect(page.getByText('Проверка локальная: она не подтверждает слышимость у другого участника.', { exact: true })).toBeVisible()
     await page.goto('/tests/microcopy/fixture.html?surface=chat')
     await page.getByRole('button', { name: 'Другие действия', exact: true }).tap()
     await expect(page.getByRole('menuitem', { name: 'Найти сообщение' })).toBeVisible()

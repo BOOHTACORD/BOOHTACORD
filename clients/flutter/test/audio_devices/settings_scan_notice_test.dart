@@ -28,8 +28,8 @@ void main() {
   testWidgets('initializing inventory is visibly pending', (tester) async {
     await showNotice(tester, status: AudioDeviceScanStatus.initializing);
 
-    expect(find.text('Проверяем доступ и запускаем аудиосистему…'), findsOneWidget);
-    expect(find.text('Список устройств пока не готов.'), findsOneWidget);
+    expect(find.text('Подключаем аудиоустройства…'), findsOneWidget);
+    expect(find.text('Список устройств пока не готов.'), findsNothing);
   });
 
   testWidgets('permission denial gives macOS recovery instructions', (
@@ -42,7 +42,10 @@ void main() {
     );
 
     expect(find.text('macOS запретил доступ к микрофону.'), findsOneWidget);
-    expect(find.textContaining('Конфиденциальность и безопасность → Микрофон'), findsOneWidget);
+    expect(
+      find.textContaining('Конфиденциальность и безопасность → Микрофон'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('restricted permission explains that system policy must change', (
@@ -55,7 +58,10 @@ void main() {
     );
 
     expect(find.text('Доступ к микрофону ограничен системой.'), findsOneWidget);
-    expect(find.textContaining('не запрашивает разрешение автоматически'), findsOneWidget);
+    expect(
+      find.textContaining('не запрашивает разрешение автоматически'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('native initialization failure is distinct from denial', (
@@ -68,26 +74,31 @@ void main() {
     );
 
     expect(find.textContaining('аудиосистему'), findsOneWidget);
-    expect(find.textContaining('Конфиденциальность и безопасность'), findsNothing);
+    expect(
+      find.textContaining('Конфиденциальность и безопасность'),
+      findsNothing,
+    );
   });
 
-  testWidgets('ready empty inventory is an informational state', (tester) async {
+  testWidgets('ready empty inventory is an informational state', (
+    tester,
+  ) async {
     await showNotice(tester, status: AudioDeviceScanStatus.ready);
 
     expect(find.text('Аудиоустройства не найдены.'), findsOneWidget);
     expect(find.byIcon(Icons.error_outline), findsNothing);
   });
 
-  testWidgets('one real endpoint is reported as a successful inventory', (
+  testWidgets('successful inventory hides internal device counts', (
     tester,
   ) async {
-    await showNotice(
-      tester,
-      status: AudioDeviceScanStatus.ready,
-      inputs: 1,
-    );
+    await showNotice(tester, status: AudioDeviceScanStatus.ready, inputs: 1);
 
-    expect(find.text('Список аудиоустройств обновлён.'), findsOneWidget);
-    expect(find.textContaining('Микрофонов: 1'), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('audio-device-scan-notice')),
+      findsNothing,
+    );
+    expect(find.text('Список аудиоустройств обновлён.'), findsNothing);
+    expect(find.textContaining('Микрофонов: 1'), findsNothing);
   });
 }

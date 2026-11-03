@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../devices/state.dart';
 
-enum AudioDeviceNoticeTone { pending, success, warning }
+enum AudioDeviceNoticeTone { pending, warning }
 
 class AudioDeviceScanNoticeCopy {
   const AudioDeviceScanNoticeCopy(
@@ -25,8 +25,8 @@ class AudioDeviceScanNoticeCopy {
   }) {
     if (status == AudioDeviceScanStatus.initializing) {
       return const AudioDeviceScanNoticeCopy(
-        'Проверяем доступ и запускаем аудиосистему…',
-        'Список устройств пока не готов.',
+        'Подключаем аудиоустройства…',
+        null,
         Icons.hourglass_top,
         AudioDeviceNoticeTone.pending,
       );
@@ -41,12 +41,7 @@ class AudioDeviceScanNoticeCopy {
         AudioDeviceNoticeTone.pending,
       );
     }
-    return AudioDeviceScanNoticeCopy(
-      'Список аудиоустройств обновлён.',
-      'Микрофонов: $inputCount; динамиков: $outputCount.',
-      Icons.check_circle_outline,
-      AudioDeviceNoticeTone.success,
-    );
+    return null;
   }
 
   static AudioDeviceScanNoticeCopy _failure(AudioDeviceScanFailure? failure) =>
@@ -72,12 +67,12 @@ class AudioDeviceScanNoticeCopy {
             Icons.error_outline,
             AudioDeviceNoticeTone.warning,
           ),
-        AudioDeviceScanFailure.enumerationFailed || null =>
-          const AudioDeviceScanNoticeCopy(
-            'Не удалось получить список аудиоустройств.',
-            'Повторите обновление списка.',
-            Icons.error_outline,
-            AudioDeviceNoticeTone.warning,
-          ),
+        AudioDeviceScanFailure.enumerationFailed ||
+        null => const AudioDeviceScanNoticeCopy(
+          'Не удалось получить список аудиоустройств.',
+          'Повторите обновление списка.',
+          Icons.error_outline,
+          AudioDeviceNoticeTone.warning,
+        ),
       };
 }
