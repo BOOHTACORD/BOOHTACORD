@@ -6,6 +6,7 @@ import 'state.dart';
 import '../screen_preview/receive.dart';
 import '../shortcuts/execute.dart';
 import '../connection_close/leave.dart';
+import '../connection_close/recovery.dart';
 import '../volumes/reset.dart';
 import '../connection_stats/poll.dart';
 import '../stream_notice/events.dart';
