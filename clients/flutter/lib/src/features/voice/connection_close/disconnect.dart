@@ -3,7 +3,6 @@ import 'package:livekit_client/livekit_client.dart'
 
 import '../../../services/voice_reconnect_policy.dart';
 import '../lifecycle/controller.dart';
-import 'recovery.dart';
 
 extension VoiceConnectionCloseDisconnect on VoiceController {
   Future<void> handleUnexpectedVoiceDisconnect(
@@ -40,8 +39,7 @@ extension VoiceConnectionCloseDisconnect on VoiceController {
     screenThumbnailPublications.clear();
     await closing;
     if (!active(ticket, revision) || generation != disconnect.generation) return;
-    if (recoverable && channel != null &&
-        disconnect.notice?.source != 'server') {
+    if (recoverable && disconnect.notice?.source != 'server') {
       recoverVoiceChannel(
         channel,
         previousLease: oldLease,
