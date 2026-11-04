@@ -8,7 +8,7 @@ from tools.audio.livekit_fixture import IMAGE
 from tools.qa.client_lifecycle.services import local_docker, ports_available
 from tools.qa.client_lifecycle.stack import Stack as Base, ready
 
-EGRESS_IMAGE = 'livekit/egress:v1.14.1'
+EGRESS_IMAGE = 'ghcr.io/boohtacord/egress@sha256:5900cca3897505ed264ad887a70dde4d26be9bea3f6a203f803e611772a09040'
 REDIS_IMAGE = 'redis:7.4.12-alpine'
 
 

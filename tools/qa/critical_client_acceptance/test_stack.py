@@ -3,10 +3,15 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 from tools.audio.livekit_fixture import IMAGE
-from .stack import REDIS_IMAGE, Stack, egress_image
+from .stack import EGRESS_IMAGE, REDIS_IMAGE, Stack, egress_image
 
 
 class LoopbackTransportTests(unittest.TestCase):
+    def test_default_egress_matches_immutable_deployment_image(self):
+        compose = (Path(__file__).resolve().parents[3] / 'deploy/livekit/compose.yaml').read_text()
+        self.assertRegex(EGRESS_IMAGE, r'^ghcr\.io/boohtacord/egress@sha256:[a-f0-9]{64}$')
+        self.assertIn(f'image: {EGRESS_IMAGE}', compose)
+
     def test_egress_image_override_requires_an_exact_local_image_id(self):
         image_id = 'sha256:' + 'a' * 64
         with patch.dict('os.environ', {'BOOHTACORD_QA_EGRESS_IMAGE': image_id}):
