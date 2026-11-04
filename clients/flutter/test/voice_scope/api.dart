@@ -19,6 +19,7 @@ const credential = VoiceCredential(
 class DelayedVoiceApi extends ApiClient {
   final credential = Completer<(String, VoiceCredential)>();
   final requestedVoiceTransfers = <bool>[];
+  Future<void> Function(String)? onRelease;
   @override
   Future<(String, VoiceCredential)> voiceCredential(
     String channelId, {
@@ -30,5 +31,7 @@ class DelayedVoiceApi extends ApiClient {
   @override
   Future<void> logout() async {}
   @override
-  Future<void> releaseVoice(String leaseId) async {}
+  Future<void> releaseVoice(String leaseId) async {
+    await onRelease?.call(leaseId);
+  }
 }

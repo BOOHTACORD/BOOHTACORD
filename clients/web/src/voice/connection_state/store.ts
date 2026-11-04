@@ -110,6 +110,10 @@ export const useVoiceConnectionStore = defineStore('voice-connection', () => {
 
   function selectDisconnectChannel(id: string): void { if(recovery.active&&recovery.channelId!==id){recovery.cancel();terminal.reset();if(!active.value){state.value='IDLE';error.value=null;void ownership.release()}}const old = terminal.notice.value; terminal.selectChannel(id); if (old && !terminal.notice.value) { revocation.resetPending(); error.value = null } }
   async function disconnectLocal(reason: Parameters<typeof revocation.disconnectLocal>[0]) {recovery.cancel();return revocation.disconnectLocal(reason)}
-  async function revokeLease(id:string,reason:Parameters<typeof revocation.revokeLease>[1]) {recovery.cancel();return revocation.revokeLease(id,reason)}
+  async function revokeLease(id:string,reason:Parameters<typeof revocation.revokeLease>[1]) {
+    if (recovery.active && reason === 'VOLUNTARY_LEAVE' &&
+        (id === recovery.leaseId || (state.value === 'JOINING' && id === terminal.leaseID))) return false
+    recovery.cancel();return revocation.revokeLease(id,reason)
+  }
   return { bindControllerAccount, disconnectNotice: terminal.notice, selectDisconnectChannel, resetAudioVolumes: volume.reset, active, voiceAudioDiagnostics, audioProcessingDiagnostics, inputSelection, setInputDevice, microphoneTrack, canJoin, clearScreenStream: screenViewer.clear, connectionQuality, deafenChanging, deafened, disconnectLocal, error, join, leave, microphoneMuted, microphonePermissionDenied, pingMs, refreshScreenDiagnostics, refreshScreenWatchers, retryScreenStream: screenViewer.retry, revokeLease, screenDiagnostics, screenError, screenProfile, screenState, screenViewerCards, screenViewerEnded, screenViewerError, screenWatcherIds, ownerScreenWatcherIds, selectScreenStream: screenViewer.select, selectedScreenStreamId, screenAudioMuted: screenViewer.audioMuted, setAudioProcessing, setMicrophoneMuted, startScreen, state, stopScreen, switchAudioDevice, toggleDeafen, toggleMicrophone, toggleScreenAudio: () => screenViewer.toggleAudio(volume.selectedScreenVolume.value, volume.setScreenVolume), transferRequired, voiceVolumeError: volume.error, voiceVolumeParticipants, selfSpeaking: volume.selfSpeaking, selectedScreenAudioVolume: volume.selectedScreenVolume, setParticipantVolume: volume.setParticipantVolume, setScreenVolume: volume.setScreenVolume }
 })

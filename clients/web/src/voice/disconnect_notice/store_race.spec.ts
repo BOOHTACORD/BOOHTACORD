@@ -53,3 +53,13 @@ it('channel selection during teardown clears notice and still cleans the old ses
   expect(store.active).toBeNull(); expect(store.disconnectNotice).toBeNull(); expect(store.error).toBeNull()
   store.$dispose()
 })
+
+it('does not cancel recovery for its own voluntary release', async () => {
+  const store = useVoiceConnectionStore(); await store.join('channel')
+  fixture.active = null; fixture.observer?.disconnected(3)
+  expect(store.state).toBe('RECONNECTING')
+  expect(await store.revokeLease('lease', 'VOLUNTARY_LEAVE')).toBe(false)
+  expect(store.state).toBe('RECONNECTING')
+  expect(store.disconnectNotice).toBeNull()
+  store.$dispose()
+})

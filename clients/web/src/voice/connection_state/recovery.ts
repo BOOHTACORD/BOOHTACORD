@@ -25,6 +25,7 @@ export class VoiceRecoveryLoop {
 
   get active(): boolean { return this.target !== null }
   get channelId(): string | null { return this.target?.channelId ?? null }
+  get leaseId(): string | null { return this.target?.leaseId ?? null }
 
   start(target: VoiceRecoveryTarget): void {
     this.cancel()

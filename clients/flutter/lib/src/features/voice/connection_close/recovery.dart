@@ -1,35 +1,17 @@
 import 'dart:async';
-
-import 'package:livekit_client/livekit_client.dart' show DisconnectReason;
-
 import '../../../core/http/api_failure.dart';
 import '../../../models.dart';
 import '../../../services/voice_reconnect_policy.dart';
 import '../lifecycle/controller.dart';
 
-/// Deliberate room removals must never turn into an automatic rejoin.
-bool shouldRecoverVoiceDisconnect(DisconnectReason? reason) => switch (reason) {
-  DisconnectReason.serverShutdown ||
-  DisconnectReason.stateMismatch ||
-  DisconnectReason.joinFailure ||
-  DisconnectReason.disconnected ||
-  DisconnectReason.signalingConnectionFailure ||
-  DisconnectReason.reconnectAttemptsExceeded ||
-  DisconnectReason.migration ||
-  DisconnectReason.signalClose ||
-  DisconnectReason.connectionTimeout ||
-  DisconnectReason.mediaFailure => true,
-  _ => false,
-};
-
 extension VoiceAutomaticRecovery on VoiceController {
-  void cancelVoiceRecovery() {
+  void cancelVoiceRecovery({bool retainReleasedLeases = false}) {
     voiceRecoveryGeneration++;
     voiceRecoveryTimer?.cancel();
     voiceRecoveryTimer = null;
     voiceRecoveryActive = false;
+    if (!retainReleasedLeases) voiceRecoveryReleasedLeases.clear();
   }
-
   /// Retry only while the original account and voluntary channel intent exist.
   /// Each attempt uses the normal API path (ACL + fresh JWT), never transfer.
   void recoverVoiceChannel(
@@ -38,9 +20,12 @@ extension VoiceAutomaticRecovery on VoiceController {
     required bool listen,
     required bool restoreDeafen,
   }) {
-    cancelVoiceRecovery();
+    cancelVoiceRecovery(retainReleasedLeases: true);
     final user = readUser();
-    if (disposed || user == null || channel.admissionClosed) return;
+    if (disposed || user == null || channel.admissionClosed) {
+      voiceRecoveryReleasedLeases.clear();
+      return;
+    }
 
     voiceRecoveryActive = true;
     final generation = voiceRecoveryGeneration;

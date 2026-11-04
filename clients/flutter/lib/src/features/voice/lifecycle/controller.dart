@@ -42,6 +42,7 @@ export '../volumes/apply.dart';
 export '../volumes/reset.dart';
 export '../connection_close/disconnect.dart';
 export '../connection_close/recovery.dart';
+export '../connection_close/recovery_policy.dart';
 export '../connection_close/leave.dart';
 
 class VoiceController extends VoiceState {

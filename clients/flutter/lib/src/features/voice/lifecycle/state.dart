@@ -55,6 +55,7 @@ abstract class VoiceState extends ChangeNotifier
   Timer? voiceRecoveryTimer;
   int voiceRecoveryGeneration = 0;
   bool voiceRecoveryActive = false;
+  final Set<String> voiceRecoveryReleasedLeases = <String>{};
   Object? lastVoiceAdmissionFailure;
   int microphoneRevision = 0;
   Future<void> microphoneTail = Future<void>.value();

@@ -4,6 +4,10 @@ import '../lifecycle/controller.dart';
 extension VoiceLeaseEventsRevocation on VoiceController {
   Future<void> dispatchVoiceRevocation(Map<String, dynamic> payload) async {
     if (disposed || !scope.capture().isActive) return;
+    if (payload['reason'] == 'VOLUNTARY_LEAVE' &&
+        voiceRecoveryReleasedLeases.contains(payload['lease_id'])) {
+      return;
+    }
     final revocation = VoiceLeaseRevocation.parse(
       payload['lease_id'],
       payload['reason'],

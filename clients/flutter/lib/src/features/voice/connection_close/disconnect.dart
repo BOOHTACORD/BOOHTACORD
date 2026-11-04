@@ -19,6 +19,9 @@ extension VoiceConnectionCloseDisconnect on VoiceController {
     final recoverable = channel != null &&
         disconnect.notice?.source != 'server' &&
         shouldRecoverVoiceDisconnect(event.reason);
+    if (recoverable && oldLease != null) {
+      voiceRecoveryReleasedLeases.add(oldLease);
+    }
     final message = switch (event.reason) {
       DisconnectReason.duplicateIdentity =>
         'Голосовое подключение открыто в другом окне. Перенесите его оттуда.',
