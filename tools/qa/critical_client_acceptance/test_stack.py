@@ -3,10 +3,18 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 from tools.audio.livekit_fixture import IMAGE
-from .stack import EGRESS_IMAGE, REDIS_IMAGE, Stack
+from .stack import REDIS_IMAGE, Stack, egress_image
 
 
 class LoopbackTransportTests(unittest.TestCase):
+    def test_egress_image_override_requires_an_exact_local_image_id(self):
+        image_id = 'sha256:' + 'a' * 64
+        with patch.dict('os.environ', {'BOOHTACORD_QA_EGRESS_IMAGE': image_id}):
+            self.assertEqual(egress_image(), image_id)
+        with patch.dict('os.environ', {'BOOHTACORD_QA_EGRESS_IMAGE': 'unreviewed:latest'}):
+            with self.assertRaises(ValueError):
+                egress_image()
+
     def test_owned_sfu_listens_on_bridge_and_advertises_loopback_candidates(self):
         with tempfile.TemporaryDirectory() as directory:
             work = Path(directory)
@@ -34,7 +42,7 @@ class LoopbackTransportTests(unittest.TestCase):
                              f'http://{stack.owner}-sfu:4880')
             calls = {call.args[0]: call for call in container.call_args_list}
             self.assertEqual(calls['redis'].args[:2], ('redis', REDIS_IMAGE))
-            self.assertEqual(calls['egress'].args[:2], ('egress', EGRESS_IMAGE))
+            self.assertEqual(calls['egress'].args[:2], ('egress', egress_image()))
             self.assertIn('--platform=linux/amd64', calls['egress'].args)
             args = calls['sfu'].args
             pairs = list(zip(args, args[1:]))
