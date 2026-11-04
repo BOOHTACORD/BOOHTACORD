@@ -53,8 +53,10 @@ export const useVoiceConnectionStore = defineStore('voice-connection', () => {
   onScopeDispose(ownership.cancel)
 
   const {join: joinInternal,settled,lastFailure}=createConnectionJoin({session,terminal,revocation,active,state,error,deafened,microphoneMuted,microphonePermissionDenied,canJoin,transferRequired,screenViewer,volume,refreshAudioProcessingDiagnostics,ownership})
+  const serverDisconnected = () => terminal.notice.value?.source === 'server'
+  const activeChannelId = () => active.value?.channelId
   const recovery = new VoiceRecoveryLoop(async (target, current) => {
-    if (!current() || terminal.notice.value?.source === 'server' || active.value) return 'stop'
+    if (!current() || serverDisconnected() || active.value) return 'stop'
     // Release the old, exact lease first. A retry never force-transfers a
     // session already acquired elsewhere while this client was offline.
     const controller = new AbortController()
@@ -67,11 +69,11 @@ export const useVoiceConnectionStore = defineStore('voice-connection', () => {
       if (cause instanceof VoiceRequestError && cause.status === 404) released = true
       if (cause instanceof VoiceRequestError && (cause.status === 401 || cause.status === 403)) return 'stop'
     } finally { clearTimeout(timeout) }
-    if (!current() || terminal.notice.value?.source === 'server') return 'stop'
+    if (!current() || serverDisconnected()) return 'stop'
     if (!released) return 'retry'
     await joinInternal(target.channelId, false, target.joinMode, false, true)
-    if (!current() || terminal.notice.value?.source === 'server') return 'stop'
-    if (active.value?.channelId === target.channelId) {
+    if (!current() || serverDisconnected()) return 'stop'
+    if (activeChannelId() === target.channelId) {
       if (target.deafened) await toggleDeafen()
       return 'restored'
     }

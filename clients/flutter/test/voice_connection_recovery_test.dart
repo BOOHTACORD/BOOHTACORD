@@ -4,9 +4,27 @@ import 'package:boohtacord_desktop/src/models.dart';
 import 'voice_scope/api.dart';
 import 'voice_scope/fakes.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/services.dart';
 import 'package:livekit_client/livekit_client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  const nativeChannel = MethodChannel('FlutterWebRTC.Method');
+  const audioChannel = MethodChannel('boohtacord/audio_devices');
+  setUp(() {
+    SharedPreferences.setMockInitialValues({});
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(nativeChannel, (_) async => null);
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(audioChannel, (_) async => null);
+  });
+  tearDown(() {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(nativeChannel, null);
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(audioChannel, null);
+  });
   test('transient SDK disconnects may restore the original channel', () {
     for (final reason in [
       DisconnectReason.reconnectAttemptsExceeded,
@@ -56,8 +74,10 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
     expect(harness.api.requestedVoiceTransfers, [false]);
     harness.api.credential.complete(('new-lease', credential));
-    await tester.pump();
-    expect(harness.room.connectCalled, isTrue);
+    for (var i = 0; i < 10 && !harness.room.connectCalled; i++) {
+      await tester.pump(const Duration(milliseconds: 100));
+    }
+    expect(harness.room.connectCalled, isTrue, reason: 'failure: ${harness.owner.lastVoiceAdmissionFailure}');
     harness.room.connecting.complete();
     await tester.pump();
     await tester.pump();
@@ -65,6 +85,7 @@ void main() {
     expect(harness.owner.voiceRecoveryActive, isFalse);
     expect(harness.owner.voiceChannel?.id, 'voice');
     expect(harness.owner.voicePhase, VoicePhase.listener);
+    harness.owner.stopVoiceConnectionStatsPolling();
   });
 
   testWidgets('manual Leave cancels recovery before another credential is requested', (tester) async {
