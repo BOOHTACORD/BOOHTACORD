@@ -4,6 +4,10 @@ import '../lifecycle/controller.dart';
 extension VoiceLeaseEventsRevocation on VoiceController {
   Future<void> dispatchVoiceRevocation(Map<String, dynamic> payload) async {
     if (disposed || !scope.capture().isActive) return;
+    if (payload['reason'] == 'VOLUNTARY_LEAVE' &&
+        voiceRecoveryReleasedLeases.contains(payload['lease_id'])) {
+      return;
+    }
     final revocation = VoiceLeaseRevocation.parse(
       payload['lease_id'],
       payload['reason'],
@@ -18,6 +22,7 @@ extension VoiceLeaseEventsRevocation on VoiceController {
       );
     }
     final accepted = disconnect.server(revocation.leaseId, revocation.reason);
+    if (accepted) cancelVoiceRecovery();
     if (accepted && room == null && !voiceAdmissionPending) {
       showVoiceDisconnect();
       return;
@@ -41,6 +46,7 @@ extension VoiceLeaseEventsRevocation on VoiceController {
     if (this.leaseId != leaseId || room == null) return;
     disconnect.bind(leaseId, voiceChannel?.id ?? disconnect.channelId ?? '');
     disconnect.server(leaseId, reason);
+    cancelVoiceRecovery();
     final generation = disconnect.generation;
     final ticket = scope.capture();
     final closing = leaveVoice(explicit: false);

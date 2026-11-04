@@ -60,7 +60,7 @@ services:
     logging: *json-log-rotation
 
   egress:
-    image: livekit/egress:v1.14.1
+    image: ghcr.io/boohtacord/egress@sha256:5900cca3897505ed264ad887a70dde4d26be9bea3f6a203f803e611772a09040
     environment:
       EGRESS_CONFIG_FILE: /etc/egress.yaml
       LIVEKIT_API_KEY: ${LIVEKIT_API_KEY:?set LIVEKIT_API_KEY in .env}

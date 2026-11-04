@@ -1,0 +1,28 @@
+{
+  "issue": 628,
+  "observed_at": "2026-11-04",
+  "status": "CANDIDATE_PENDING_FINAL_GATE",
+  "baseline_revision": "c8262cf96898e579111aa7fb2a853dfa4c8def88",
+  "upstream_egress_revision": "805884c3e65e1583277f93ae616d3bf0dfd35564",
+  "upstream_image": "livekit/egress@sha256:bf2b648b947349c3e9ff7aa8c718f00378d5c06af7624652a3653318e00333ce",
+  "patched_binary_sha256": "2c37c04135eb9b86e8fb33fc4b7655d0c200cee687f96a0337207f44670e1bec",
+  "observations": [
+    "Unmodified Egress produced one synthetic JPEG and retained the same content for 46 seconds while the job was active; the 45-second refresh assertion failed.",
+    "A wall-clock jump of approximately 2.767615 seconds coincided with fresh RTP packets being logged as 2.767625 seconds old. Both video and audio drops rose; decoded video stopped advancing.",
+    "Increasing the old-packet threshold to 5 seconds allowed one refresh but the next unchanged 45-second predicate failed; it is not a fix.",
+    "A patched Egress passing the original time.Now packet receipt value to PushAt completed a diagnostic 1440 lifecycle and three consecutive preview refreshes in 32.558, 32.837 and 32.594 seconds. The observed wall-to-monotonic offset increased by more than 10 seconds and the sampled log tail contained no old-packet drops.",
+    "The same patched executable completed the 393 lifecycle with its first refresh in 32.606 seconds. The independently built pinned recipe and diagnostic image have equal root filesystem layers and container configuration; their Egress executable SHA-256 is identical.",
+    "The canonical Web run on source dd57661579eef05f7fe7ac2a8283a34fd037f8c4 completed all browser stages and both real-stack 1440/393 stages with the published image ID; the original 45-second assertion and 30-second cadence were retained and owned resources removed.",
+    "At source resolution, receiver participant cards at both widths displayed the synthetic preview; the narrow layout truncates the resolution badge and participant names. The full screenshot report remains REVIEW_REQUIRED.",
+    "The pinned recipe built successfully on native linux/arm64 GitHub Actions run 41850110415 at temporary source f34ff0b950e69da5d0f5874e7a162fe4fdd09f35. The artifact archive and extracted ARM64 executable matched the run hashes; the executable reports Egress 1.14.1 in the original ARM64 base under temporary emulation.",
+    "On source dd57661579eef05f7fe7ac2a8283a34fd037f8c4, the ARM64 Egress image under local emulation completed the original critical portable-proxy lifecycle at widths 1440 and 393, with preview refresh at 32.990s and 32.811s respectively, the original 45s assertion unchanged, and owned resources removed.",
+    "The public immutable GHCR manifest contains the tested linux/amd64 and linux/arm64 images and both were pulled with an empty Docker credential configuration. The deployment compose and QA default now reference that manifest digest."
+  ],
+  "limitations": [
+    "The runtime fixture replaces only the operating-system screen picker with synthetic video and audio; physical capture and media quality were not verified.",
+    "The 1440 sustained run adds two checks after the original 45-second assertion and is diagnostic, not a complete final-source canonical release gate.",
+    "Final-source canonical acceptance and actual deployment are pending.",
+    "ARM64 media lifecycle evidence uses emulation rather than a physical ARM host. At short height and width 393, the runner recorded dockCoversStage=true; the full visual report remains REVIEW_REQUIRED."
+  ],
+  "published_image": "ghcr.io/boohtacord/egress@sha256:5900cca3897505ed264ad887a70dde4d26be9bea3f6a203f803e611772a09040"
+}

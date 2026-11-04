@@ -21,6 +21,12 @@ extension VoiceAdmissionFinalize on VoiceController {
       await events?.dispose();
       if (identical(voiceEvents, events)) voiceEvents = null;
       if (lease != null && ticket.isActive) {
+        if (voiceRecoveryActive) {
+          voiceRecoveryReleasedLeases.add(lease);
+          if (voiceRecoveryReleasedLeases.length > 16) {
+            voiceRecoveryReleasedLeases.remove(voiceRecoveryReleasedLeases.first);
+          }
+        }
         try {
           await api.releaseVoice(lease);
         } catch (_) {}
