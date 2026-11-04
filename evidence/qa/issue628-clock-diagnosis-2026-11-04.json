@@ -11,11 +11,13 @@
     "A wall-clock jump of approximately 2.767615 seconds coincided with fresh RTP packets being logged as 2.767625 seconds old. Both video and audio drops rose; decoded video stopped advancing.",
     "Increasing the old-packet threshold to 5 seconds allowed one refresh but the next unchanged 45-second predicate failed; it is not a fix.",
     "A patched Egress passing the original time.Now packet receipt value to PushAt completed a diagnostic 1440 lifecycle and three consecutive preview refreshes in 32.558, 32.837 and 32.594 seconds. The observed wall-to-monotonic offset increased by more than 10 seconds and the sampled log tail contained no old-packet drops.",
-    "The same patched executable completed the 393 lifecycle with its first refresh in 32.606 seconds. The independently built pinned recipe and diagnostic image have equal root filesystem layers and container configuration; their Egress executable SHA-256 is identical."
+    "The same patched executable completed the 393 lifecycle with its first refresh in 32.606 seconds. The independently built pinned recipe and diagnostic image have equal root filesystem layers and container configuration; their Egress executable SHA-256 is identical.",
+    "The canonical Web run on source dd57661579eef05f7fe7ac2a8283a34fd037f8c4 completed all browser stages and both real-stack 1440/393 stages with the published image ID; the original 45-second assertion and 30-second cadence were retained and owned resources removed.",
+    "At source resolution, receiver participant cards at both widths displayed the synthetic preview; the narrow layout truncates the resolution badge and participant names. The full screenshot report remains REVIEW_REQUIRED."
   ],
   "limitations": [
     "The runtime fixture replaces only the operating-system screen picker with synthetic video and audio; physical capture and media quality were not verified.",
     "The 1440 sustained run adds two checks after the original 45-second assertion and is diagnostic, not a complete final-source canonical release gate.",
-    "The image is local only and is not yet published or referenced by the production release. The issue must remain open until the full final-source 1440/393 canonical gate and delivery are complete."
+    "The GHCR image was published privately; the production compose still references the upstream image. Final-source canonical acceptance and deployment integration remain pending."
   ]
 }
