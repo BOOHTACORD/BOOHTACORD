@@ -8,6 +8,7 @@ import '../../telemetry/action_scope/action.dart';
 
 extension VoiceConnectionCloseLeave on VoiceController {
   Future<void> leaveVoice({bool explicit = true}) {
+    if (explicit) cancelVoiceRecovery();
     if (explicit &&
         (room != null || voiceAdmissionPending || disconnect.notice != null)) {
       voiceStatusDismissedAfterLeave = true;
@@ -15,7 +16,21 @@ extension VoiceConnectionCloseLeave on VoiceController {
       error = null;
     }
     final previous = closing;
-    if (previous != null) return previous;
+    if (previous != null) {
+      // A user Leave while transport cleanup is in progress must invalidate
+      // the pending automatic recovery, not let its completion restart media.
+      if (!explicit) return previous;
+      operationRevision++;
+      disconnect.local();
+      return previous.whenComplete(() {
+        if (!disposed && room == null && !voiceAdmissionPending) {
+          voiceChannel = null;
+          voicePhase = VoicePhase.idle;
+          error = null;
+          notifyListeners();
+        }
+      });
+    }
     if (leaseId != null) {
       disconnect.bind(leaseId!, voiceChannel?.id ?? disconnect.channelId ?? '');
     }

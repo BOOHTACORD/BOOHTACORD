@@ -130,3 +130,31 @@ it('shows transfer progress without asking for confirmation', async () => {
   expect(html).not.toContain('<dialog')
   expect(html).not.toContain('Перенести подключение сюда')
 })
+
+
+it('never transfers another active server lease during automatic recovery', async () => {
+  const sessionJoin = vi.fn<SessionJoin>().mockRejectedValueOnce(
+    new VoiceRequestError(409, 'ACTIVE_VOICE_LEASE', 'voice-other-device'),
+  )
+  const { active, join, state, error } = setup(sessionJoin, vi.fn(async () => true))
+
+  await join('voice-target', false, 'listener', false, true)
+
+  expect(sessionJoin).toHaveBeenCalledTimes(1)
+  expect(sessionJoin).toHaveBeenCalledWith('voice-target', false, 'listener')
+  expect(active.value).toBeNull()
+  expect(state.value).toBe('ERROR')
+  expect(error.value).toContain('ACTIVE_VOICE_LEASE')
+})
+
+it('does not steal the media controller from another tab during recovery', async () => {
+  const sessionJoin = vi.fn<SessionJoin>()
+  const { join, claim, state } = setup(sessionJoin, vi.fn(async () => false))
+
+  await join('voice-target', false, 'listener', false, true)
+
+  expect(claim).toHaveBeenCalledWith('voice-target', false)
+  expect(claim).not.toHaveBeenCalledWith('voice-target', true)
+  expect(sessionJoin).not.toHaveBeenCalled()
+  expect(state.value).toBe('ERROR')
+})

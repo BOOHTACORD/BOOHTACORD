@@ -2,6 +2,7 @@ import 'package:livekit_client/livekit_client.dart';
 
 import '../../../models.dart';
 import '../lifecycle/controller.dart';
+import '../connection_close/recovery.dart';
 import 'audio.dart';
 import 'connect_options.dart';
 import 'prepare.dart';
@@ -12,18 +13,24 @@ import '../../telemetry/action_scope/action.dart';
 import 'observe.dart';
 
 extension VoiceAdmissionJoin on VoiceController {
-  Future<void> joinVoice(GuildChannel channel, {bool listenerOnly = false}) =>
-      observeVoiceAdmission(
-        this,
-        channel,
-        listenerOnly,
-        () => admitVoice(channel, listenerOnly: listenerOnly),
-      );
+  Future<void> joinVoice(GuildChannel channel, {bool listenerOnly = false}) async {
+    final recovering = voiceRecoveryActive;
+    cancelVoiceRecovery();
+    if (recovering && voiceAdmissionPending) await leaveVoice();
+    await observeVoiceAdmission(
+      this,
+      channel,
+      listenerOnly,
+      () => admitVoice(channel, listenerOnly: listenerOnly),
+    );
+  }
 
   Future<void> admitVoice(
     GuildChannel channel, {
     bool listenerOnly = false,
+    bool transfer = true,
   }) async {
+    lastVoiceAdmissionFailure = null;
     final ticket = scope.capture();
     final admitted = operationRevision;
     await closing;
@@ -36,7 +43,7 @@ extension VoiceAdmissionJoin on VoiceController {
     String? admittedLease;
     var connected = false;
     try {
-      final result = await api.voiceCredential(channel.id, transfer: true);
+      final result = await api.voiceCredential(channel.id, transfer: transfer);
       admittedLease = result.$1;
       if (!active(ticket, revision) ||
           disconnect.generation != disconnectGeneration) {
@@ -93,8 +100,10 @@ extension VoiceAdmissionJoin on VoiceController {
       startVoiceConnectionStatsPolling(candidate);
       observeVoiceStreamStarts(candidate);
       connected = true;
+      lastVoiceAdmissionFailure = null;
       ActionScope.current?.step('ready');
     } catch (cause) {
+      lastVoiceAdmissionFailure = cause;
       if (active(ticket, revision)) {
         await failVoiceAdmission(
           cause,

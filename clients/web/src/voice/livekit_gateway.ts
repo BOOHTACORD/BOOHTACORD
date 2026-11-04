@@ -46,7 +46,7 @@ export interface VoiceRoom {
   stopScreenPreview?(): Promise<void>
   applyScreenPreview?(leaseId: string, bytes: Uint8Array): void
   clearScreenPreview?(leaseId: string): void
-  on(event: 'reconnecting' | 'reconnected' | 'disconnected', listener: () => void): VoiceRoom
+  on(event: 'reconnecting' | 'reconnected' | 'disconnected', listener: (reason?: number) => void): VoiceRoom
   readScreenDiagnostics?(): Promise<ScreenDiagnostics>
   stopScreenProfileChecks?(): void
   adoptScreenProfile?(profile: ScreenProfile): void

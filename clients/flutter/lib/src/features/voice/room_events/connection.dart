@@ -5,7 +5,6 @@ import 'package:livekit_client/livekit_client.dart'
 
 import '../lifecycle/controller.dart';
 import '../../../services/voice_connection_quality.dart';
-import '../../../services/voice_reconnect_policy.dart';
 
 extension VoiceEventsConnection on VoiceController {
   void bindConnection(
@@ -33,20 +32,6 @@ extension VoiceEventsConnection on VoiceController {
       if (voicePingMs == ping) return;
       voicePingMs = ping;
       notifyListeners();
-    });
-    listener.on<RoomAttemptReconnectEvent>((event) {
-      if (!owns()) return;
-      if (!identical(this.room, room) ||
-          voicePhase != VoicePhase.reconnecting ||
-          shouldAllowVoiceReconnectAttempt(event.attempt)) {
-        return;
-      }
-      if (leaseId != null) disconnect.bind(leaseId!, voiceChannel?.id ?? '');
-      disconnect.transport(
-        'Не удалось восстановить голосовое соединение после $voiceReconnectAttemptLimit попыток. Подключитесь ещё раз.',
-      );
-      showVoiceDisconnect();
-      unawaited(leaveVoice(explicit: false));
     });
     listener.on<RoomReconnectingEvent>((_) {
       if (!owns()) return;

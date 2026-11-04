@@ -11,6 +11,10 @@ import { createVoiceMediaState } from './media'
 import { createConnectionJoin } from './join'
 import type { VoiceConnectionState } from './types'
 import { createControllerOwnership } from '../controller_ownership/state'
+import { releaseVoiceLease, VoiceRequestError } from '../admission_client'
+import { tracedFetch } from '../../telemetry/client_tracing'
+import type { VoiceJoinMode } from '../livekit_gateway'
+import { VoiceRecoveryLoop } from './recovery'
 const session = new VoiceSession()
 
 export const useVoiceConnectionStore = defineStore('voice-connection', () => {
@@ -29,14 +33,74 @@ export const useVoiceConnectionStore = defineStore('voice-connection', () => {
   const {screenError,screenDiagnostics,screenProfile,screenState,screenViewerError,screenViewerEnded,selectedScreenStreamId,refreshScreenDiagnostics,startScreen,stopScreen,screenViewer,refreshScreenWatchers,deafenChanging,toggleDeafen,setMicrophoneMuted,toggleMicrophone,volume,voiceVolumeParticipants,screenViewerCards,screenWatcherIds,ownerScreenWatcherIds}=createVoiceMediaState(session,active,state,error,deafened,microphoneMuted,microphonePermissionDenied)
   const revocation = createVoiceConnectionRevocation({ terminal, session, active, state, error, deafened, microphoneMuted, microphonePermissionDenied, screenDiagnostics, screenProfile, screenState, screenViewer, volume, refreshAudioProcessingDiagnostics })
   const ownership=createControllerOwnership(async()=>{await revocation.disconnectLocal('TRANSFER');return !active.value})
-  const bindControllerAccount=(id:string)=>ownership.bind(id || null)
+  let accountID: string | null = null
+  const bindControllerAccount = (id: string) => {
+    const next = id || null
+    if (accountID !== next) {
+      if (recovery.active) {
+        recovery.cancel()
+        // Invalidate any in-flight HTTP/media join before another account
+        // can inherit the old session's delayed response.
+        terminal.reset()
+        if (!active.value) { state.value = 'IDLE'; error.value = null }
+        void ownership.cancelPending()
+      }
+      accountID = next
+    }
+    ownership.bind(next)
+  }
   watch(active,current=>{if(!current&&state.value!=='JOINING') void ownership.release()})
   onScopeDispose(ownership.cancel)
 
-  installVoiceConnectionLifecycle(session, active, state, error, microphoneMuted, microphonePermissionDenied, deafened, screenDiagnostics, screenProfile, screenState, screenViewer, volume, refreshAudioProcessingDiagnostics, terminal)
+  const {join: joinInternal,settled,lastFailure}=createConnectionJoin({session,terminal,revocation,active,state,error,deafened,microphoneMuted,microphonePermissionDenied,canJoin,transferRequired,screenViewer,volume,refreshAudioProcessingDiagnostics,ownership})
+  const serverDisconnected = () => terminal.notice.value?.source === 'server'
+  const activeChannelId = () => active.value?.channelId
+  const recovery = new VoiceRecoveryLoop(async (target, current) => {
+    if (!current() || serverDisconnected() || active.value) return 'stop'
+    // Release the old, exact lease first. A retry never force-transfers a
+    // session already acquired elsewhere while this client was offline.
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 5000)
+    let released = false
+    try {
+      await releaseVoiceLease(target.leaseId, (url, init) => tracedFetch(url, { ...init, signal: controller.signal }))
+      released = true
+    } catch (cause) {
+      if (cause instanceof VoiceRequestError && cause.status === 404) released = true
+      if (cause instanceof VoiceRequestError && (cause.status === 401 || cause.status === 403)) return 'stop'
+    } finally { clearTimeout(timeout) }
+    if (!current() || serverDisconnected()) return 'stop'
+    if (!released) return 'retry'
+    await joinInternal(target.channelId, false, target.joinMode, false, true)
+    if (!current() || serverDisconnected()) return 'stop'
+    if (activeChannelId() === target.channelId) {
+      if (target.deafened) await toggleDeafen()
+      return 'restored'
+    }
+    const failure = lastFailure()
+    if (failure instanceof VoiceRequestError && [401, 403, 404, 409].includes(failure.status)) return 'stop'
+    return 'retry'
+  }, () => {
+    if (!active.value && terminal.notice.value?.source !== 'server') {state.value='RECONNECTING';error.value=null}
+  })
+  onScopeDispose(() => recovery.cancel())
+  watch(terminal.notice, notice => {if(notice?.source==='server')recovery.cancel()})
 
-  const {join,settled}=createConnectionJoin({session,terminal,revocation,active,state,error,deafened,microphoneMuted,microphonePermissionDenied,canJoin,transferRequired,screenViewer,volume,refreshAudioProcessingDiagnostics,ownership})
+  installVoiceConnectionLifecycle(session, active, state, error, microphoneMuted, microphonePermissionDenied, deafened, screenDiagnostics, screenProfile, screenState, screenViewer, volume, refreshAudioProcessingDiagnostics, terminal, target => recovery.start(target))
+
+  async function join(channelId:string,transfer=false,joinMode:VoiceJoinMode='with-microphone'):Promise<void> {
+    if (recovery.active) {
+      recovery.cancel()
+      terminal.reset()
+      if(state.value==='JOINING'&&!active.value){await ownership.cancelPending();await settled()}
+      if(!active.value){state.value='IDLE';error.value=null}
+    }
+    await joinInternal(channelId,transfer,joinMode)
+  }
   async function leave(): Promise<void> {
+    const wasRecovering = recovery.active
+    recovery.cancel()
+    if(wasRecovering&&!active.value&&state.value!=='JOINING'){terminal.reset();state.value='IDLE';error.value=null;await ownership.release();return}
     if(state.value==='JOINING'&&!active.value){terminal.reset();state.value='LEAVING';await ownership.cancelPending();await settled();state.value='IDLE';error.value=null;transferRequired.value=false;return}
     await leaveVoiceConnection({ terminal, session, active, state, error, deafened, screenDiagnostics, screenProfile, screenState, screenViewer, volume, refreshAudioProcessingDiagnostics })
     const reason = revocation.takePostLeaveReason(active.value?.leaseId ?? '')
@@ -44,6 +108,12 @@ export const useVoiceConnectionStore = defineStore('voice-connection', () => {
     if(!active.value) await ownership.release()
   }
 
-  function selectDisconnectChannel(id: string): void { const old = terminal.notice.value; terminal.selectChannel(id); if (old && !terminal.notice.value) { revocation.resetPending(); error.value = null } }
-  return { bindControllerAccount, disconnectNotice: terminal.notice, selectDisconnectChannel, resetAudioVolumes: volume.reset, active, voiceAudioDiagnostics, audioProcessingDiagnostics, inputSelection, setInputDevice, microphoneTrack, canJoin, clearScreenStream: screenViewer.clear, connectionQuality, deafenChanging, deafened, disconnectLocal: revocation.disconnectLocal, error, join, leave, microphoneMuted, microphonePermissionDenied, pingMs, refreshScreenDiagnostics, refreshScreenWatchers, retryScreenStream: screenViewer.retry, revokeLease: revocation.revokeLease, screenDiagnostics, screenError, screenProfile, screenState, screenViewerCards, screenViewerEnded, screenViewerError, screenWatcherIds, ownerScreenWatcherIds, selectScreenStream: screenViewer.select, selectedScreenStreamId, screenAudioMuted: screenViewer.audioMuted, setAudioProcessing, setMicrophoneMuted, startScreen, state, stopScreen, switchAudioDevice, toggleDeafen, toggleMicrophone, toggleScreenAudio: () => screenViewer.toggleAudio(volume.selectedScreenVolume.value, volume.setScreenVolume), transferRequired, voiceVolumeError: volume.error, voiceVolumeParticipants, selfSpeaking: volume.selfSpeaking, selectedScreenAudioVolume: volume.selectedScreenVolume, setParticipantVolume: volume.setParticipantVolume, setScreenVolume: volume.setScreenVolume }
+  function selectDisconnectChannel(id: string): void { if(recovery.active&&recovery.channelId!==id){recovery.cancel();terminal.reset();if(!active.value){state.value='IDLE';error.value=null;void ownership.release()}}const old = terminal.notice.value; terminal.selectChannel(id); if (old && !terminal.notice.value) { revocation.resetPending(); error.value = null } }
+  async function disconnectLocal(reason: Parameters<typeof revocation.disconnectLocal>[0]) {recovery.cancel();return revocation.disconnectLocal(reason)}
+  async function revokeLease(id:string,reason:Parameters<typeof revocation.revokeLease>[1]) {
+    if (recovery.active && reason === 'VOLUNTARY_LEAVE' &&
+        (id === recovery.leaseId || (state.value === 'JOINING' && id === terminal.leaseID))) return false
+    recovery.cancel();return revocation.revokeLease(id,reason)
+  }
+  return { bindControllerAccount, disconnectNotice: terminal.notice, selectDisconnectChannel, resetAudioVolumes: volume.reset, active, voiceAudioDiagnostics, audioProcessingDiagnostics, inputSelection, setInputDevice, microphoneTrack, canJoin, clearScreenStream: screenViewer.clear, connectionQuality, deafenChanging, deafened, disconnectLocal, error, join, leave, microphoneMuted, microphonePermissionDenied, pingMs, refreshScreenDiagnostics, refreshScreenWatchers, retryScreenStream: screenViewer.retry, revokeLease, screenDiagnostics, screenError, screenProfile, screenState, screenViewerCards, screenViewerEnded, screenViewerError, screenWatcherIds, ownerScreenWatcherIds, selectScreenStream: screenViewer.select, selectedScreenStreamId, screenAudioMuted: screenViewer.audioMuted, setAudioProcessing, setMicrophoneMuted, startScreen, state, stopScreen, switchAudioDevice, toggleDeafen, toggleMicrophone, toggleScreenAudio: () => screenViewer.toggleAudio(volume.selectedScreenVolume.value, volume.setScreenVolume), transferRequired, voiceVolumeError: volume.error, voiceVolumeParticipants, selfSpeaking: volume.selfSpeaking, selectedScreenAudioVolume: volume.selectedScreenVolume, setParticipantVolume: volume.setParticipantVolume, setScreenVolume: volume.setScreenVolume }
 })

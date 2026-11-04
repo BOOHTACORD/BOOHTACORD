@@ -21,8 +21,10 @@ function requiresTransfer(cause:unknown):cause is VoiceRequestError {
 export function createConnectionJoin(context:JoinContext) {
  const {session,terminal,revocation,active,state,error,deafened,microphoneMuted,microphonePermissionDenied,canJoin,transferRequired,screenViewer,volume,refreshAudioProcessingDiagnostics}=context
   let pending:Promise<void>|null=null
-  async function performJoin(channelId: string, transfer = false, joinMode: VoiceJoinMode = 'with-microphone'): Promise<void> {
-    if (!canJoin.value) return
+  let lastFailure: unknown = null
+  async function performJoin(channelId: string, transfer = false, joinMode: VoiceJoinMode = 'with-microphone', allowTransfer = true, recovering = false): Promise<void> {
+    if (!recovering && !canJoin.value) return
+    lastFailure = null
 
     let transferForJoin=transfer
     terminal.reset(); revocation.resetPending()
@@ -32,7 +34,7 @@ export function createConnectionJoin(context:JoinContext) {
     transferRequired.value = transferForJoin
     try {
       if(!await context.ownership.claim(channelId,transferForJoin)) {
-        if(transferForJoin || !await context.ownership.claim(channelId,true)) throw new VoiceRequestError(409,'ORIGIN_MEDIA_BUSY',context.ownership.otherChannelId.value ?? undefined)
+        if(!allowTransfer || transferForJoin || !await context.ownership.claim(channelId,true)) throw new VoiceRequestError(409,'ORIGIN_MEDIA_BUSY',context.ownership.otherChannelId.value ?? undefined)
         transferForJoin=true
         transferRequired.value=true
       }
@@ -41,7 +43,7 @@ export function createConnectionJoin(context:JoinContext) {
       try {
         joined=await session.join(channelId,transferForJoin,joinMode)
       } catch(cause) {
-        if(transferForJoin || !requiresTransfer(cause)) throw cause
+        if(transferForJoin || !allowTransfer || !requiresTransfer(cause)) throw cause
         transferForJoin=true
         transferRequired.value=true
         joined=await session.join(channelId,true,joinMode)
@@ -61,6 +63,7 @@ export function createConnectionJoin(context:JoinContext) {
       microphonePermissionDenied.value = active.value.microphone === 'LISTENER_PERMISSION_DENIED'
       state.value = active.value.microphone === 'PUBLISHED' ? 'CONNECTED' : 'LISTENER'
     } catch (cause) {
+      lastFailure = cause
       if (generation !== terminal.generation) return
       const cancelledReason = revocation.takeJoinRevocation(terminal.leaseID ?? '')
       active.value = null
@@ -74,10 +77,10 @@ export function createConnectionJoin(context:JoinContext) {
     } finally {if(generation===terminal.generation&&!active.value) await context.ownership.release()}
   }
 
- function join(channelId:string,transfer=false,joinMode:VoiceJoinMode='with-microphone'):Promise<void> {
+ function join(channelId:string,transfer=false,joinMode:VoiceJoinMode='with-microphone',allowTransfer=true,recovering=false):Promise<void> {
    if(pending) return pending
-   const current=performJoin(channelId,transfer,joinMode).finally(()=>{if(pending===current) pending=null})
+   const current=performJoin(channelId,transfer,joinMode,allowTransfer,recovering).finally(()=>{if(pending===current) pending=null})
    pending=current;return current
  }
- return {join,settled:()=>pending ?? Promise.resolve()}
+ return {join,settled:()=>pending ?? Promise.resolve(),lastFailure:()=>lastFailure}
 }
