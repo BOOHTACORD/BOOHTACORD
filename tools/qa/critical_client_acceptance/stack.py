@@ -1,5 +1,6 @@
 """Owned real SFU transport for independent connection fault acceptance."""
 import os
+import re
 import subprocess
 import time
 
@@ -7,8 +8,17 @@ from tools.audio.livekit_fixture import IMAGE
 from tools.qa.client_lifecycle.services import local_docker, ports_available
 from tools.qa.client_lifecycle.stack import Stack as Base, ready
 
-EGRESS_IMAGE = 'livekit/egress:v1.14.1'
+EGRESS_IMAGE = 'ghcr.io/boohtacord/egress@sha256:5900cca3897505ed264ad887a70dde4d26be9bea3f6a203f803e611772a09040'
 REDIS_IMAGE = 'redis:7.4.12-alpine'
+
+
+def egress_image():
+    image = os.environ.get('BOOHTACORD_QA_EGRESS_IMAGE', '')
+    if not image:
+        return EGRESS_IMAGE
+    if not re.fullmatch(r'sha256:[a-f0-9]{64}', image):
+        raise ValueError('QA Egress override must be an exact local image ID')
+    return image
 
 
 class Stack(Base):
@@ -62,7 +72,7 @@ redis:
         if egress_platform and egress_platform not in ('linux/amd64', 'linux/arm64'):
             raise ValueError('Unsupported BOOHTACORD_QA_EGRESS_PLATFORM')
         egress_platform_args = ('--platform='+egress_platform,) if egress_platform else ()
-        self.container('egress', EGRESS_IMAGE, *egress_platform_args,
+        self.container('egress', egress_image(), *egress_platform_args,
                        '--env', 'EGRESS_CONFIG_FILE=/egress.yaml',
                        '--env', 'LIVEKIT_API_KEY=qa-only',
                        '--env', 'LIVEKIT_API_SECRET=qa-local-only-secret-12345',
