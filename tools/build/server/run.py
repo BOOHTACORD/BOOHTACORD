@@ -8,7 +8,7 @@ from tools.release.archive.extract import extract
 from tools.release.bundle.files import sha256
 from tools.release.bundle.manifest import require
 from tools.release.bundle.package import package
-from tools.audio.asset_build import build_assets
+from .asset_storage import build_release_assets
 from .buildx import configure
 from .images import build
 from .inputs import RUNTIME_PATHS, SOURCE_PATHS, archive, compatibility, git, source_root
@@ -46,7 +46,8 @@ def main():
         source = temporary / "source"
         with metrics.stage('source_extract'):
             extract(source_archive, source, max_bytes=200_000_000)
-        with metrics.stage('assets'):build_assets(source)
+        with metrics.stage('assets'):
+            metrics.value['asset_compiler_storage']=build_release_assets(source)
         with metrics.stage('buildx_setup'):environment = configure(builder_root, temporary / "docker")
         with metrics.stage('owned_builder'):
             storage = BuilderStorage(builder_root, environment, revision, source_hash)
