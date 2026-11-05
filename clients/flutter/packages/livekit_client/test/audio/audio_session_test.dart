@@ -380,7 +380,7 @@ void main() {
       expect(receiver.appleAudioMode, AppleAudioMode.voiceChat);
     });
 
-    test('voice recording never ducks other audio for either speaker route', () {
+    test('recording policy requests mixing without ducking flags for either speaker route', () {
       for (final preferSpeaker in [true, false]) {
         final config = resolveApplePolicy(
           const AudioSessionOptions.communication(),

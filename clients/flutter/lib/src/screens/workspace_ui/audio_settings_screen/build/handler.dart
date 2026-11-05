@@ -1,4 +1,5 @@
-import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart'
+    show defaultTargetPlatform, TargetPlatform;
 
 import 'device_selection/handler.dart';
 import 'voice_shortcuts/handler.dart';
@@ -9,6 +10,7 @@ import '../../audio_settings_card/component.dart';
 import '../../header/component.dart';
 import '../../native_bindings.dart';
 import '../../../../widgets/audio_processing_advanced_settings.dart';
+import '../../../../widgets/windows_audio_guidance.dart';
 
 import '../lifecycle/context.dart';
 import '../handler_bindings.dart';
@@ -130,20 +132,10 @@ extension WorkspaceAudioSettingsScreenBuildAction
                                 reset: state.resetAudioVolumes,
                                 warning: state.voiceVolumeWarning,
                               ),
-                              if (Platform.isWindows) ...[
+                              if (defaultTargetPlatform ==
+                                  TargetPlatform.windows) ...[
                                 const SizedBox(height: 16),
-                                const Text(
-                                  'Если при входе в голосовой канал Windows уменьшает '
-                                  'громкость музыки и других приложений: '
-                                  'Панель управления → Звук → Связь → '
-                                  '«Действие не требуется». '
-                                  'Это системная настройка, BOOHTACORD '
-                                  'не изменяет её автоматически.',
-                                  style: TextStyle(
-                                    color: GcColors.textSecondary,
-                                    fontSize: 13,
-                                  ),
-                                ),
+                                const WindowsAudioGuidance(),
                               ],
                             ],
                           ),

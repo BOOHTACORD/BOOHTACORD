@@ -622,7 +622,7 @@ tasks:
     title: Local native audio device checks
     requirements: [REQ-AUDIO-01]
     depends_on: [T-022]
-    evidence: [flutter-audio-device-check-tests, native-audio-builds, physical-audio-device-acceptance]
+    evidence: [flutter-audio-device-check-tests, native-audio-builds, physical-audio-device-acceptance, clients/flutter/test/audio_coexistence_guidance_test.dart, clients/flutter/packages/livekit_client/test/audio/audio_session_test.dart, docs/clients/audio-coexistence.md, evidence/qa/voice-music-coexistence-2026-11-05.md]
   - id: T-070
     title: Noise suppression modes and compatible preference migration
     requirements: [REQ-AUDIO-01, REQ-VOICE-01]
