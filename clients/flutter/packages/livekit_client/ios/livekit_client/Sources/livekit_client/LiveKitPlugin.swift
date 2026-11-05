@@ -1134,7 +1134,7 @@ class LKAudioEngineObserver: NSObject, RTCAudioDeviceModuleDelegate {
         // (and the result escapes `lock`), so start from a copy.
         let configuration = copyConfiguration(RTCAudioSessionConfiguration.webRTC())
         configuration.category = AVAudioSession.Category.playAndRecord.rawValue
-        configuration.categoryOptions = [.allowBluetooth, .allowBluetoothA2DP, .allowAirPlay]
+        configuration.categoryOptions = [.mixWithOthers, .allowBluetooth, .allowBluetoothA2DP, .allowAirPlay]
         // videoChat routes to the speaker, matching the Dart AudioManager's
         // default speaker preference. A non-default preference always arrives
         // as a pushed policy (its mode carries the preference), which bypasses
