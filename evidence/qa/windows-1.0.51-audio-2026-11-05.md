@@ -2,9 +2,10 @@
 
 - Installed client: `1.0.51+87`; installed executable and relevant audio
   libraries match the `windows-v1.0.51` release manifest.
-- The user reported voice connected, but neither remote audio nor microphone
-  worked in voice channels. End-to-end voice reproduction: **NOT_RUN**; no
-  independent test participant was available.
+- The user initially reported voice connected, but neither remote audio nor
+  microphone worked. On a later join to an occupied channel, the user confirmed
+  hearing participants and being heard on the unchanged installed 1.0.51.
+  The original failure's trigger and whether it recurs remain unknown.
 - Local microphone test: the user observed a changing input level. This does
   not establish that microphone audio is published or heard remotely.
 - Local speaker test: the user did not hear the signal on the Logitech
@@ -33,5 +34,5 @@
   blocked by the Windows `python3` app alias. Invoking the runner with Python
   reached the web stages, but web unit and build were blocked; the incomplete
   attempt was stopped. No physical or real-stack acceptance is claimed.
-- Installed-client validation of the candidate and paired voice acceptance:
-  **NOT_RUN**.
+- Installed-client validation of the patched candidate: **NOT_RUN**. The
+  later user-reported successful voice exchange used the unchanged 1.0.51.
