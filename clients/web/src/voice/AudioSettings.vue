@@ -54,6 +54,7 @@ const emit = defineEmits<{
   resetShortcuts: []; setShortcut: [action: VoiceShortcutAction, binding: VoiceShortcutBinding | null]
 }>()
 const recordingPttKey = ref(false)
+const windowsAudioGuidance = typeof navigator !== 'undefined' && /Windows/i.test(navigator.userAgent)
 const entry = ref<HTMLElement | null>(null)
 const selectedInput = computed(() => props.inputDeviceId ?? 'default')
 const selectedOutput = ref('default')
@@ -127,6 +128,10 @@ function setNoiseSuppressionMode(event: Event): void {
           <label>Наушники или динамики<select class="gc-field" :value="selectedOutput" :title="selectedOutputLabel" @change="choose('audiooutput', $event)"><option v-for="device in devices.outputs" :key="device.id" :value="device.id">{{ device.label }}</option></select></label>
           <AudioDeviceCheck :input-id="selectedInput" :output-id="selectedOutput" :processing="processing" :connected="connected" :microphone-track="microphoneTrack" />
         </template>
+        <details v-if="windowsAudioGuidance" class="audio-check-details">
+          <summary>Музыка становится тише при подключении к голосовому каналу?</summary>
+          <p>Windows может автоматически приглушать другие приложения во время голосовой связи. Откройте «Панель управления → Звук → Связь» и выберите «Действие не требуется». Браузер не может изменить эту системную настройку.</p>
+        </details>
       </section>
       <section class="audio-activation-section"><header><h2>Активация микрофона</h2></header>
         <div class="audio-activation-selector" role="group" aria-label="Активация микрофона"><button type="button" :aria-pressed="activationMode === 'VAD'" @click="emit('setActivation', 'VAD')">По голосу</button><button type="button" :aria-pressed="activationMode === 'PTT'" @click="emit('setActivation', 'PTT')">По нажатию</button></div>
