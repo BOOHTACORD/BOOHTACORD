@@ -322,7 +322,13 @@
       "clients/flutter/lib/src/screens/workspace_ui/voice_dock/build/connected_controls/handler.dart",
       "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/select_voice_screen/handler.dart",
       "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/stop_watching_pinned_screen/handler.dart",
-      "clients/flutter/lib/src/app/media_access/voice_controls.dart"
+      "clients/flutter/lib/src/app/media_access/voice_controls.dart",
+      "clients/flutter/lib/main.dart",
+      "clients/flutter/lib/src/services/voice_audio_session_bootstrap.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/audio_settings_screen/build/handler.dart",
+      "clients/flutter/packages/livekit_client/ios/Classes/LiveKitPlugin.swift",
+      "clients/flutter/packages/livekit_client/ios/livekit_client/Sources/livekit_client/LiveKitPlugin.swift",
+      "clients/flutter/test/voice_audio_session_bootstrap_test.dart"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",
@@ -342,7 +348,8 @@
       "test/features/voice/voice_participant_sound_tracker_test.dart",
       "test/features/voice/voice_room_event_sounds_test.dart",
       "test/voice_participant_stream_cards_test.dart",
-      "test/screen_preview_receiver_test.dart"
+      "test/screen_preview_receiver_test.dart",
+      "test/voice_audio_session_bootstrap_test.dart"
     ],
     "acceptance": {
       "issue59": {
@@ -440,6 +447,14 @@
           "clients/flutter/test/workspace_screen_test.dart"
         ],
         "scope": "Human participant joins/leaves are announced once after the initial roster is established; reconnect roster restoration and internal voice-lease participants are silent. Explicit remote stream view start/stop is announced without sounds for navigation cleanup or switching between remote streams. Event sounds have an independent persisted preference. Unit/widget tests cover event routing and sound choice; physical audio output and live multi-client room acceptance remain NOT_RUN."
+      },
+      "voice_audio_coexistence_20261105": {
+        "focused": [
+          "clients/web/src/voice/audio_settings_v2_layout.spec.ts",
+          "clients/flutter/test/voice_audio_session_bootstrap_test.dart",
+          "clients/flutter/packages/livekit_client/test/audio/audio_session_test.dart"
+        ],
+        "scope": "iOS automatic and native fallback voice sessions allow mixWithOthers without duckOthers; Android initializes AudioSwitch with manageAudioFocus=false before room connection while retaining communication routing. Windows desktop and Windows Web show the Windows Communications/Do nothing OS workaround without modifying third-party app volumes. Real Windows, Android, iOS, browser and Bluetooth music-level acceptance remains NOT_RUN pending physical testing."
       }
     },
     "parity": [
