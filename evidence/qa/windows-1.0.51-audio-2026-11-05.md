@@ -23,8 +23,12 @@
 - CI run 42096785598 on commit `4ad755d4f` passed the three focused output
   resolution tests and the existing local device-check tests; its Windows
   distribution build passed. Flutter analysis failed on internal-constructor
-  warnings in the new fixtures; the warnings are addressed in the next
-  revision and require a fresh CI run.
+  warnings in the new fixtures. CI run 42098603324 on commit `a74a689d3`
+  passed Flutter tests and analysis after the fixture warning fix: 1,762 app,
+  450 LiveKit, and 34 WebRTC tests passed; each of the first two suites skipped
+  three tests. The Windows build, native tests and GUI/SFU screen-setup gate
+  passed; that gate does not establish physical voice-audio acceptance. Its
+  contracts job requires a parity-review update, added in the next revision.
 - Local `check.sh --feature settings --base origin/master --real-stack` was
   blocked by the Windows `python3` app alias. Invoking the runner with Python
   reached the web stages, but web unit and build were blocked; the incomplete
