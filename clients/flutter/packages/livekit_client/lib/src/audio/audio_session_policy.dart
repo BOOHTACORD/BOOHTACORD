@@ -36,6 +36,7 @@ class ResolvedAudioSessionPolicy {
       return NativeAudioConfiguration(
         appleAudioCategory: AppleAudioCategory.playAndRecord,
         appleAudioCategoryOptions: {
+          AppleAudioCategoryOption.mixWithOthers,
           AppleAudioCategoryOption.allowBluetooth,
           AppleAudioCategoryOption.allowBluetoothA2DP,
           AppleAudioCategoryOption.allowAirPlay,
