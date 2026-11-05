@@ -107,6 +107,7 @@ void main() {
       expect(
         options.apple.categoryOptions,
         {
+          AppleAudioCategoryOption.mixWithOthers,
           AppleAudioCategoryOption.allowBluetooth,
           AppleAudioCategoryOption.allowBluetoothA2DP,
           AppleAudioCategoryOption.allowAirPlay,
@@ -363,6 +364,7 @@ void main() {
       expect(
         speaker.appleAudioCategoryOptions,
         {
+          AppleAudioCategoryOption.mixWithOthers,
           AppleAudioCategoryOption.allowBluetooth,
           AppleAudioCategoryOption.allowBluetoothA2DP,
           AppleAudioCategoryOption.allowAirPlay,
@@ -378,6 +380,19 @@ void main() {
       expect(receiver.appleAudioMode, AppleAudioMode.voiceChat);
     });
 
+    test('voice recording never ducks other audio for either speaker route', () {
+      for (final preferSpeaker in [true, false]) {
+        final config = resolveApplePolicy(
+          const AudioSessionOptions.communication(),
+          preferSpeakerOutput: preferSpeaker,
+        );
+        expect(config.appleAudioCategory, AppleAudioCategory.playAndRecord);
+        expect(config.appleAudioCategoryOptions, contains(AppleAudioCategoryOption.mixWithOthers));
+        expect(config.appleAudioCategoryOptions, isNot(contains(AppleAudioCategoryOption.duckOthers)));
+        expect(config.appleAudioCategoryOptions, isNot(contains(AppleAudioCategoryOption.interruptSpokenAudioAndMixWithOthers)));
+      }
+    });
+
     test('automatic Apple policy ignores manual media options', () {
       final config = resolveApplePolicy(
         const AudioSessionOptions.mediaPlayback(),
@@ -388,6 +403,7 @@ void main() {
       expect(
         config.appleAudioCategoryOptions,
         {
+          AppleAudioCategoryOption.mixWithOthers,
           AppleAudioCategoryOption.allowBluetooth,
           AppleAudioCategoryOption.allowBluetoothA2DP,
           AppleAudioCategoryOption.allowAirPlay,
@@ -491,6 +507,7 @@ void main() {
       expect(
         apple.appleAudioCategoryOptions,
         {
+          AppleAudioCategoryOption.mixWithOthers,
           AppleAudioCategoryOption.allowBluetooth,
           AppleAudioCategoryOption.allowBluetoothA2DP,
           AppleAudioCategoryOption.allowAirPlay,
