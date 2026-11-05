@@ -50,9 +50,11 @@ internal class LKAudioSwitchManager(private val context: Context) {
   private var audioSwitch: AbstractAudioSwitch? = null
   private var isActive = false
 
-  // Configuration. Defaults mirror a communication/VoIP session and match the
-  // AudioSwitchHandler defaults in the LiveKit Android SDK.
-  private var manageAudioFocus = true
+  // Keep the first voice session from ducking other apps even before Dart
+  // pushes the communication policy. LiveKit owns AudioSwitch (flutter_webrtc
+  // audio management is disabled) and its Dart communication preset also
+  // sets manageAudioFocus=false. Do not request system audio focus here.
+  private var manageAudioFocus = false
   private var audioMode = AudioManager.MODE_IN_COMMUNICATION
   private var focusMode = AudioManager.AUDIOFOCUS_GAIN
   private var audioStreamType = AudioManager.STREAM_VOICE_CALL
