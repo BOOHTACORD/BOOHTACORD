@@ -387,9 +387,18 @@ void main() {
           preferSpeakerOutput: preferSpeaker,
         );
         expect(config.appleAudioCategory, AppleAudioCategory.playAndRecord);
-        expect(config.appleAudioCategoryOptions, contains(AppleAudioCategoryOption.mixWithOthers));
-        expect(config.appleAudioCategoryOptions, isNot(contains(AppleAudioCategoryOption.duckOthers)));
-        expect(config.appleAudioCategoryOptions, isNot(contains(AppleAudioCategoryOption.interruptSpokenAudioAndMixWithOthers)));
+        expect(
+          config.appleAudioCategoryOptions,
+          contains(AppleAudioCategoryOption.mixWithOthers),
+        );
+        expect(
+          config.appleAudioCategoryOptions,
+          isNot(contains(AppleAudioCategoryOption.duckOthers)),
+        );
+        expect(
+          config.appleAudioCategoryOptions,
+          isNot(contains(AppleAudioCategoryOption.interruptSpokenAudioAndMixWithOthers)),
+        );
       }
     });
 
