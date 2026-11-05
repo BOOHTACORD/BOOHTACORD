@@ -20,5 +20,14 @@
 - Compared 1.0.50 to 1.0.51: the native Windows WebRTC, SoLoud and record
   DLL code sections and `libwebrtc.dll` match; the 1.0.51 audio-coexistence
   change adds Windows guidance. Earlier 1.0.50 changed voice recovery.
-- Corrected local-test routing and focused Flutter tests: **PENDING**.
-- Native Windows build and physical voice acceptance: **NOT_RUN**.
+- CI run 42096785598 on commit `4ad755d4f` passed the three focused output
+  resolution tests and the existing local device-check tests; its Windows
+  distribution build passed. Flutter analysis failed on internal-constructor
+  warnings in the new fixtures; the warnings are addressed in the next
+  revision and require a fresh CI run.
+- Local `check.sh --feature settings --base origin/master --real-stack` was
+  blocked by the Windows `python3` app alias. Invoking the runner with Python
+  reached the web stages, but web unit and build were blocked; the incomplete
+  attempt was stopped. No physical or real-stack acceptance is claimed.
+- Installed-client validation of the candidate and paired voice acceptance:
+  **NOT_RUN**.

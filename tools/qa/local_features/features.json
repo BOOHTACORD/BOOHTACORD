@@ -1272,6 +1272,9 @@
       "clients/flutter/lib/src/widgets/audio_processing_advanced_settings.dart",
       "clients/flutter/lib/src/widgets/noise_suppression_settings.dart",
       "clients/flutter/lib/src/widgets/audio_device_check.dart",
+      "clients/flutter/lib/src/services/audio_device_check.dart",
+      "clients/flutter/lib/src/services/audio_device_check/**",
+      "clients/flutter/test/audio_playback_device_resolution_test.dart",
       "clients/flutter/lib/src/features/audio/settings/scan_notice.dart",
       "clients/flutter/lib/src/features/audio/settings/scan_notice_copy.dart",
       "clients/flutter/lib/src/screens/workspace_ui/members_panel/**",
@@ -1291,6 +1294,7 @@
       "test/profile_screen_test.dart",
       "test/audio_devices/settings_scan_notice_test.dart",
       "test/audio_device_check_test.dart",
+      "test/audio_playback_device_resolution_test.dart",
       "test/noise_suppression_settings_test.dart",
       "test/workspace_screen_test.dart",
       "test/web_parity/audio_hierarchy_test.dart",
@@ -1299,6 +1303,10 @@
       "test/audio_coexistence_guidance_test.dart"
     ],
     "acceptance": {
+      "audio_check_exact_output_20261105": {
+        "focused": "clients/flutter/test/audio_playback_device_resolution_test.dart",
+        "scope": "The local speaker test prefers the complete selected device label and rejects ambiguous shortened labels. Physical Windows, Android and iOS output and real voice acceptance are separate and remain NOT_RUN."
+      },
       "issue297": {
         "native": "tools/qa/macos_ui/run.py",
         "scope": "physical macOS settings; emulator observations and physical reader gates separate"

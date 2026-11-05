@@ -1,3 +1,6 @@
+// SoLoud exposes its device constructor as internal; these are test fixtures.
+// ignore_for_file: invalid_use_of_internal_member
+
 import 'package:boohtacord_desktop/src/services/audio_device_check.dart';
 import 'package:flutter_soloud/flutter_soloud.dart';
 import 'package:flutter_test/flutter_test.dart';
