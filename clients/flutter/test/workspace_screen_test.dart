@@ -858,8 +858,12 @@ void main() {
     expect(devices, findsOneWidget);
     expect(activation, findsOneWidget);
     expect(
+      tester.getTopLeft(devices).dx,
+      lessThan(tester.getTopLeft(activation).dx),
+    );
+    expect(
       tester.getTopLeft(devices).dy,
-      lessThan(tester.getTopLeft(activation).dy),
+      closeTo(tester.getTopLeft(activation).dy, 1),
     );
     expect(tester.getSize(devices).height, greaterThanOrEqualTo(282));
     expect(
@@ -920,6 +924,51 @@ void main() {
 
     await tester.pumpWidget(const SizedBox.shrink());
     state.dispose();
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets('audio settings grid uses the padded workspace width', (
+    tester,
+  ) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
+    addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
+    for (final viewport in [const Size(1040, 900), const Size(1440, 900)]) {
+      tester.view.devicePixelRatio = 1;
+      tester.view.physicalSize = viewport;
+      final state = AppState(
+        _PortraitApi(),
+        audioDeviceLoader: () async => const [],
+      );
+      await state.initialize();
+      state.toggleWorkspacePanel(WorkspacePanel.audio);
+      await tester.pumpWidget(MaterialApp(home: WorkspaceScreen(state: state)));
+      await tester.pumpAndSettle();
+
+      final audioList = find.byKey(const ValueKey('audio-settings-list'));
+      final devices = tester.getRect(
+        find.byKey(const ValueKey('audio-settings-device-card')),
+      );
+      final activation = tester.getRect(
+        find.byKey(const ValueKey('audio-settings-activation-card')),
+      );
+      final contentWidth = tester.getSize(audioList).width - 48;
+
+      if (viewport.width < 1200) {
+        expect(devices.width, greaterThan(contentWidth * .9));
+        expect(activation.left, closeTo(devices.left, 1));
+        expect(activation.top, greaterThan(devices.top));
+      } else {
+        expect(devices.width, closeTo(activation.width, 1));
+        expect(activation.left, greaterThan(devices.left));
+        expect(activation.top, closeTo(devices.top, 1));
+      }
+      expect(tester.takeException(), isNull);
+
+      await tester.pumpWidget(const SizedBox.shrink());
+      state.dispose();
+    }
+    tester.view.reset();
     debugDefaultTargetPlatformOverride = null;
   });
 

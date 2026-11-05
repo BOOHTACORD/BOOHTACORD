@@ -86,11 +86,11 @@
     "clients/flutter/lib/src/features/voice/room_events/connection.dart": "sha256:9bbd22dc3a211bf838505af3b59aa4a24823a43d4945d8669d134cad7428ce0e",
     "clients/flutter/test/voice_scope/admission_test.dart": "sha256:c5ad51d068b400985148bd701eeb2b494c92ce544c570bb43c22dd01002ecfc0",
     "clients/flutter/test/screen_preview_capture_policy_test.dart": "sha256:c83584c2382b70b98cd6d20ef35a01cc3c81dc3ef3c3e520577ffee6f8d745bd",
-    "tools/qa/local_features/features.json": "sha256:b8a1ac91620b90da03090698011fdab1bb3986c67fed37ab5851b318a5da4c34"
+    "tools/qa/local_features/features.json": "sha256:090c4fa5ab828c08003f6a9893feb66283a4254bd9e7865d0109a176ce88620a"
   },
   "repository_artifact_revalidation": {
-    "observed_at": "2026-11-03",
-    "scope": "Refreshed only the repository_artifacts digest for tools/qa/local_features/features.json after recording the PR #646 audio-settings platform parity decisions.",
-    "runtime_or_media_verification": "NOT_RUN; existing production and media observations above are unchanged."
+    "observed_at": "2026-11-06",
+    "scope": "Refreshed only the repository_artifacts digest for tools/qa/local_features/features.json after registering Flutter audio-settings responsive-width acceptance and documenting unchanged shell, settings and voice parity scope.",
+    "runtime_or_media_verification": "No LiveKit configuration or media claims changed. Registered local feature run: Flutter unit and component captures PASS; web real-stack 1440/393 and Android runtime could not start because the configured Colima Docker socket was unavailable; iOS runtime BLOCKED because no simulator was available."
   }
 }
