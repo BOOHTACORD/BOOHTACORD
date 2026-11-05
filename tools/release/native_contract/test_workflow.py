@@ -28,3 +28,13 @@ class WorkflowTests(unittest.TestCase):
                     if change=='dry-run':s.pop('if')
                 if change=='retention' and s.get('with',{}).get('path')=='.out/native-release/android/':s['with']['retention-days']='1'
             with self.subTest(change=change),self.assertRaises(ValueError):validate(d)
+
+    def test_macos_can_publish_from_protected_master_after_exact_tag_preflight(self):
+        # Stable tag refs cannot enter the current master-only production environment.
+        # A manual master dispatch must therefore reach the existing exact-tag guard.
+        from tools.verify.action_pins.trust import release_guard
+        documents=self.documents()
+        job=documents['macos-release.yaml']['jobs']['macos-release']
+        self.assertEqual(job['if'],release_guard('macos-v'))
+        self.assertEqual(job['environment'],'production')
+        validate(documents)
