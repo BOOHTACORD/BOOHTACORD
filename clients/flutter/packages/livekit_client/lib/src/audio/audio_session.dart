@@ -165,6 +165,7 @@ class AppleAudioSessionConfiguration {
   static const communication = AppleAudioSessionConfiguration(
     category: AppleAudioCategory.playAndRecord,
     categoryOptions: {
+      AppleAudioCategoryOption.mixWithOthers,
       AppleAudioCategoryOption.allowBluetooth,
       AppleAudioCategoryOption.allowBluetoothA2DP,
       AppleAudioCategoryOption.allowAirPlay,
