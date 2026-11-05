@@ -49,6 +49,7 @@ def main():
     merged_sources = read(root, "evidence/media/livekit-network-history-merge-2026-11-04.json")
     audio_coexistence = read(root, "evidence/media/livekit-network-audio-coexistence-2026-11-05.json")
     release_headroom = read(root, "evidence/media/livekit-network-release-headroom-2026-11-05.json")
+    audio_check = read(root, "evidence/media/livekit-network-audio-check-2026-11-05.json")
     expected_artifacts = (evidence["repository_artifacts"] | revalidation["repository_artifacts"]
                           | telemetry["repository_artifacts"] | observability["repository_artifacts"]
                           | notifications["repository_artifacts"] | screen_previews["repository_artifacts"]
@@ -57,7 +58,8 @@ def main():
                           | egress["repository_artifacts"] | voice_recovery["repository_artifacts"]
                           | merged_sources["repository_artifacts"]
                           | audio_coexistence["repository_artifacts"]
-                          | release_headroom["repository_artifacts"])
+                          | release_headroom["repository_artifacts"]
+                          | audio_check["repository_artifacts"])
     for path, expected in expected_artifacts.items():
         content = (root / path).read_bytes().replace(b"\r\n", b"\n")
         actual = hashlib.sha256(content).hexdigest()

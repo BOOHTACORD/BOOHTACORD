@@ -1272,6 +1272,9 @@
       "clients/flutter/lib/src/widgets/audio_processing_advanced_settings.dart",
       "clients/flutter/lib/src/widgets/noise_suppression_settings.dart",
       "clients/flutter/lib/src/widgets/audio_device_check.dart",
+      "clients/flutter/lib/src/services/audio_device_check.dart",
+      "clients/flutter/lib/src/services/audio_device_check/**",
+      "clients/flutter/test/audio_playback_device_resolution_test.dart",
       "clients/flutter/lib/src/features/audio/settings/scan_notice.dart",
       "clients/flutter/lib/src/features/audio/settings/scan_notice_copy.dart",
       "clients/flutter/lib/src/screens/workspace_ui/members_panel/**",
@@ -1291,6 +1294,7 @@
       "test/profile_screen_test.dart",
       "test/audio_devices/settings_scan_notice_test.dart",
       "test/audio_device_check_test.dart",
+      "test/audio_playback_device_resolution_test.dart",
       "test/noise_suppression_settings_test.dart",
       "test/workspace_screen_test.dart",
       "test/web_parity/audio_hierarchy_test.dart",
@@ -1299,6 +1303,10 @@
       "test/audio_coexistence_guidance_test.dart"
     ],
     "acceptance": {
+      "audio_check_exact_output_20261105": {
+        "focused": "clients/flutter/test/audio_playback_device_resolution_test.dart",
+        "scope": "The local speaker test prefers the complete selected device label and rejects ambiguous shortened labels. Physical Windows, Android and iOS output and real voice acceptance are separate and remain NOT_RUN."
+      },
       "issue297": {
         "native": "tools/qa/macos_ui/run.py",
         "scope": "physical macOS settings; emulator observations and physical reader gates separate"
@@ -1377,7 +1385,7 @@
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "2026-10-24 (#553 Flutter follow-up): the shared members-panel path adds the current voice-channel caption and screen-share icon; audio and settings controls are unchanged. The widget behavior is shared by Android and iOS. 2026-10-24 (#570): compact Flutter member rows show the channel name without a redundant prefix and wrap it to two lines; Web and settings controls are unchanged. 2026-10-25 (#554): Account notification preferences and explicit device consent are wired into Web and shared Flutter settings; focused settings tests and local visual captures passed. Web and shared Flutter local regressions passed; physical Android/iOS and provider delivery remain NOT_RUN. 2026-10-31 (VC-001 path review): the shared settings path matcher includes the voice event-sound preference control. Other settings behavior and profile/session flows remain unchanged; physical audio output remains NOT_RUN. 2026-11-01 (PR #642): The member-list presentation changed within the broad shared workspace UI path; settings controls and their behavior are unchanged. Web settings are unchanged, and Android/iOS share the Flutter member-panel rendering. Focused widget coverage targets the panel; Android/iOS native runtime acceptance remains unverified. 2026-11-03 (PR #646): Web and shared Flutter audio settings expose device checks, microphone activation, shortcuts and common processing at the first level; playback reset is separate and technical diagnostics are collapsed. Android/iOS use the shared Flutter presentation. Web and Flutter tests/captures pass; Android runtime is locally BLOCKED by host disk capacity and iOS runtime is NOT_RUN. Voice transport, permissions and audio capture contracts are unchanged. 2026-11-05 (PR #654): Windows native and Web audio settings explain system Communications attenuation. Native guidance is collapsed by default; small-window and large-text tests exercise expansion and diagnostics. iOS and Android share the settings layout without Windows help; their LiveKit policy requests external audio mixing. Automated configuration/UI checks do not prove physical music levels; physical Windows/Web/Android/iOS and Bluetooth acceptance remain NOT_RUN, tracked in evidence/qa/voice-music-coexistence-2026-11-05.md."
+      "scope": "2026-10-24 (#553 Flutter follow-up): the shared members-panel path adds the current voice-channel caption and screen-share icon; audio and settings controls are unchanged. The widget behavior is shared by Android and iOS. 2026-10-24 (#570): compact Flutter member rows show the channel name without a redundant prefix and wrap it to two lines; Web and settings controls are unchanged. 2026-10-25 (#554): Account notification preferences and explicit device consent are wired into Web and shared Flutter settings; focused settings tests and local visual captures passed. Web and shared Flutter local regressions passed; physical Android/iOS and provider delivery remain NOT_RUN. 2026-10-31 (VC-001 path review): the shared settings path matcher includes the voice event-sound preference control. Other settings behavior and profile/session flows remain unchanged; physical audio output remains NOT_RUN. 2026-11-01 (PR #642): The member-list presentation changed within the broad shared workspace UI path; settings controls and their behavior are unchanged. Web settings are unchanged, and Android/iOS share the Flutter member-panel rendering. Focused widget coverage targets the panel; Android/iOS native runtime acceptance remains unverified. 2026-11-03 (PR #646): Web and shared Flutter audio settings expose device checks, microphone activation, shortcuts and common processing at the first level; playback reset is separate and technical diagnostics are collapsed. Android/iOS use the shared Flutter presentation. Web and Flutter tests/captures pass; Android runtime is locally BLOCKED by host disk capacity and iOS runtime is NOT_RUN. Voice transport, permissions and audio capture contracts are unchanged. 2026-11-05 (PR #654): Windows native and Web audio settings explain system Communications attenuation. Native guidance is collapsed by default; small-window and large-text tests exercise expansion and diagnostics. iOS and Android share the settings layout without Windows help; their LiveKit policy requests external audio mixing. Automated configuration/UI checks do not prove physical music levels; physical Windows/Web/Android/iOS and Bluetooth acceptance remain NOT_RUN, tracked in evidence/qa/voice-music-coexistence-2026-11-05.md. 2026-11-05 (PR #658): shared Flutter local speaker check prioritizes exact device labels and fails on ambiguous fallback; Web is unchanged, Android and iOS share the resolver. Focused regression tests cover the shared logic; physical platform acceptance remains NOT_RUN."
     }
   },
   "admin": {
