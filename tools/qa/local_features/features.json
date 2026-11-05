@@ -458,7 +458,9 @@
           "clients/flutter/test/audio_coexistence_guidance_test.dart",
           "clients/web/tests/settings_hierarchy/audio_coexistence.browser.spec.ts"
         ],
-        "scope": "iOS automatic and native fallback voice sessions include mixWithOthers without duckOthers. Android's actual LiveKit-owned LKAudioSwitchManager initializes its default manageAudioFocus=false before any Dart/native session config; Dart's communication preset also keeps focus disabled on connect. Windows desktop and Web show the Communications/Do nothing OS workaround. Focused configuration/UI suites pass; full-suite and runtime results are recorded in evidence/qa/voice-music-coexistence-2026-11-05.md. Real Windows/Android/iOS/browser/Bluetooth physical audio acceptance remains NOT_RUN."
+        "scope": "iOS automatic and native fallback voice sessions include mixWithOthers without duckOthers. Android's actual LiveKit-owned LKAudioSwitchManager initializes its default manageAudioFocus=false before any Dart/native session config; Dart's communication preset also keeps focus disabled on connect. Windows desktop and Web show the Communications/Do nothing OS workaround. Focused configuration/UI suites pass; full-suite and runtime results are recorded in evidence/qa/voice-music-coexistence-2026-11-05.md. Real Windows/Android/iOS/browser/Bluetooth physical audio acceptance remains NOT_RUN. Native QA checks first-level processing and diagnostic expansion/collapse against the owned API; no external music-level claim.",
+        "native": "tools/qa/local_features/native.py",
+        "target": "integration_test/local_qa_test.dart"
       }
     },
     "parity": [

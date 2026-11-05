@@ -2,7 +2,6 @@ import 'package:boohtacord_desktop/src/app_state.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/audio_settings_screen/component.dart';
 import 'package:boohtacord_desktop/src/services/api_client.dart';
 import 'package:boohtacord_desktop/src/theme.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,27 +12,70 @@ const guidanceTitle = 'Музыка становится тише при вхо�
 
 void main() {
   setUpAll(loadUiuxVisualCaptureFonts);
+  setUp(() {
+    const recorder = MethodChannel('com.llfbandit.record/messages');
+    final messenger =
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+    // Only creation/disposal occur in these UI tests; audio capture is not exercised.
+    messenger.setMockMethodCallHandler(recorder, (call) async {
+      if (call.method == 'create' || call.method == 'dispose') {
+        return null;
+      }
+      throw MissingPluginException(
+        'Unexpected recorder operation: ${call.method}',
+      );
+    });
+    addTearDown(() => messenger.setMockMethodCallHandler(recorder, null));
+  });
+  testWidgets(
+    'non-Windows audio settings omit Windows system guidance',
+    (tester) async {
+      final state = AppState(ApiClient());
+      addTearDown(state.dispose);
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: guildTheme(),
+          home: Scaffold(
+            body: WorkspaceAudioSettingsScreen(
+              state: state,
+              onBack: () {},
+              onCapturePttKey: null,
+              capturingPttKey: false,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      final diagnostics = find.text('Диагностика качества голоса');
+      await tester.scrollUntilVisible(
+        diagnostics,
+        150,
+        scrollable: find.byType(Scrollable).first,
+      );
+      expect(find.text(guidanceTitle), findsNothing);
+      expect(
+        find.textContaining('Панель управления → Звук → Связь'),
+        findsNothing,
+      );
+      await tester.ensureVisible(diagnostics);
+      await tester.pumpAndSettle();
+      await tester.tap(diagnostics.hitTestable());
+      await tester.pumpAndSettle();
+      expect(find.text('Профиль следующего подключения'), findsOneWidget);
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pumpAndSettle();
+    },
+    variant: TargetPlatformVariant({
+      TargetPlatform.android,
+      TargetPlatform.iOS,
+      TargetPlatform.macOS,
+      TargetPlatform.linux,
+    }),
+  );
   for (final profile in [(800.0, 600.0, 1.0), (320.0, 480.0, 2.0)]) {
     testWidgets(
       'Windows audio help and diagnostics remain reachable at ${profile.$1} text ${profile.$3}',
       (tester) async {
-        const recorder = MethodChannel('com.llfbandit.record/messages');
-        tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-          recorder,
-          (call) async {
-            if (call.method == 'create' || call.method == 'dispose')
-              return null;
-            throw MissingPluginException(
-              'Unexpected recorder operation: ${call.method}',
-            );
-          },
-        );
-        addTearDown(
-          () => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-            recorder,
-            null,
-          ),
-        );
         tester.view.devicePixelRatio = 1;
         tester.view.physicalSize = Size(profile.$1, profile.$2);
         addTearDown(tester.view.reset);

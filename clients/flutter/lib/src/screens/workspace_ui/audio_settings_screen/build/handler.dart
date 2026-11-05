@@ -1,6 +1,3 @@
-import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, TargetPlatform;
-
 import 'device_selection/handler.dart';
 import 'voice_shortcuts/handler.dart';
 import 'microphone_processing/handler.dart';
@@ -9,7 +6,6 @@ import '../../audio_device_shown_by_dropdown/component.dart';
 import '../../audio_settings_card/component.dart';
 import '../../header/component.dart';
 import '../../native_bindings.dart';
-import '../../../../widgets/audio_processing_advanced_settings.dart';
 import '../../../../widgets/windows_audio_guidance.dart';
 
 import '../lifecycle/context.dart';

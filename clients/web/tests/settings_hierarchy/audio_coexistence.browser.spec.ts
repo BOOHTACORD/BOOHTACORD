@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test'
 import { routes } from '../microcopy/routes'
 
+test.use({ userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140.0.0.0 Safari/537.36' })
+
 for (const width of [320, 800]) test.describe(`Windows audio help at ${width}px`, () => {
   test.use({ userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/140.0.0.0 Safari/537.36' })
   test('discloses system attenuation guidance and retains audio controls', async ({ page }, info) => {
