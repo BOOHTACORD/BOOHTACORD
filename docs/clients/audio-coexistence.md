@@ -6,7 +6,7 @@ BOOHTACORD must not deliberately reduce another application's volume when a user
 
 | Client | App-controlled change | Limitation outside the app |
 | --- | --- | --- |
-| Android | Initialize `AudioSwitch` with `manageAudioFocus=false`, keep `inCommunication`, voice routing, microphone capture and LiveKit's existing no-focus runtime policy. | Bluetooth mic use can switch a headset from A2DP stereo to HFP/SCO, lowering *quality* without changing its volume slider. Other apps and OEM policies can independently pause playback. |
+| Android | The **LiveKit-owned** native `LKAudioSwitchManager` defaults to `manageAudioFocus=false` from creation, before the first voice session; it retains `inCommunication`, speech routing, and microphone capture. Dart's communication preset also keeps focus disabled on connect. | Bluetooth mic use can switch a headset from A2DP stereo to HFP/SCO, lowering *quality* without changing its volume slider. Other apps and OEM policies can independently pause playback. |
 | iOS | Automatic `playAndRecord` and native fallback include `mixWithOthers` and not `duckOthers`, while preserving the speaker/Bluetooth options; playback-only already mixes. | OS/device routing and Bluetooth profile changes cannot be overridden by these flags. |
 | Windows | Native client shows how to disable **Windows Communications** attenuation; does not change system-wide policy or other programs' volumes. | Control Panel → Sound → Communications → **Do nothing** (`Панель управления → Звук → Связь → Действие не требуется`). This is Windows policy, not BOOHTACORD's participant volume. |
 | Web | On Windows the audio settings show the same OS guidance. | Browser APIs cannot change Windows Communications policy or mix with Bluetooth audio routing controls. |
