@@ -36,7 +36,10 @@ void main() {
       150,
       scrollable: find.byType(Scrollable).first,
     );
-    await t.tap(find.text('Диагностика качества голоса'));
+    final diagnostics = find.text('Диагностика качества голоса');
+    await t.ensureVisible(diagnostics);
+    await t.pumpAndSettle();
+    await t.tap(diagnostics.hitTestable());
     await t.pumpAndSettle();
     expect(find.text('Профиль следующего подключения'), findsOneWidget);
     await t.scrollUntilVisible(

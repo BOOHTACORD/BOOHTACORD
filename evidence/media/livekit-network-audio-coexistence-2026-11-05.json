@@ -1,0 +1,12 @@
+{
+  "kind": "source-only-livekit-network-revalidation",
+  "observed_at": "2026-11-05",
+  "status": "PASS",
+  "source_base": "0a5d63e7bdee78a8565950dd98f8d0a4bc0d4002",
+  "scope": "PR #654 audio coexistence updates the shared local-feature registry and its platform review decisions. Network topology, listeners, pinned media dependencies, metric labels and ACL are unchanged. Historical evidence is preserved. Existing topology validation and current artifact hash checks pass.",
+  "physical_acceptance": "NOT_RUN; source-only revalidation does not prove music levels, physical audio, production network or media delivery.",
+  "repository_artifacts": {
+    "tools/verify/livekit_network_config/check.py": "sha256:760746bb6df3fcb1b4eed46e5197b8ff78398a5b7dee796ed9a122a57a6cadec",
+    "tools/qa/local_features/features.json": "sha256:65ebf98e13861fc64da0b6f9cb843cb3fcf2aafd4c8a4409386e0140417283fc"
+  }
+}

@@ -9,7 +9,7 @@ from . import artifacts
 
 class ArtifactTests(unittest.TestCase):
     def test_mandatory_visual_inventory_keeps_all_uiux_capture_scenarios(self):
-        self.assertEqual(171, len(artifacts.VISUALS))
+        self.assertEqual(174, len(artifacts.VISUALS))
         self.assertEqual(len(artifacts.VISUALS), len(set(artifacts.VISUALS)))
         self.assertIn('flutter-listener-room-web-parity.png', artifacts.VISUALS)
         self.assertIn('flutter-participant-cards-stream-and-voice.png', artifacts.VISUALS)
@@ -42,6 +42,18 @@ class ArtifactTests(unittest.TestCase):
         for channel in ('text-channel', 'dm-conversation'):
             for profile, size in (('mobile', '393x852'), ('mobile-large-text', '393x852'), ('desktop', '1440x900')):
                 self.assertIn(f'flutter-{channel}-{profile}-{size}.png', artifacts.VISUALS)
+
+    def test_windows_audio_guidance_captures_are_required_and_finite(self):
+        from tools.ci.artifact_policy.capture_inventory import complete
+        expected = {f'audio-coexistence-windows-{state}.png'
+                    for state in ('collapsed', 'expanded', 'large-text')}
+        self.assertEqual(expected, {name for name in artifacts.VISUALS
+                                   if name.startswith('audio-coexistence-')})
+        for missing in expected:
+            with self.subTest(missing=missing), self.assertRaises(ValueError):
+                complete('flutter', dict.fromkeys(set(artifacts.VISUALS) - {missing}))
+        with self.assertRaises(ValueError):
+            complete('flutter', dict.fromkeys((*artifacts.VISUALS, 'audio-coexistence-user-upload.png')))
 
     def test_support_capture_names_are_finite_and_unknown_images_remain_rejected(self):
         from tools.ci.artifact_policy.capture_inventory import complete

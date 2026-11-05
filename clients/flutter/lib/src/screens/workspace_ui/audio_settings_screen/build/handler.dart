@@ -6,7 +6,7 @@ import '../../audio_device_shown_by_dropdown/component.dart';
 import '../../audio_settings_card/component.dart';
 import '../../header/component.dart';
 import '../../native_bindings.dart';
-import '../../../../widgets/audio_processing_advanced_settings.dart';
+import '../../../../widgets/windows_audio_guidance.dart';
 
 import '../lifecycle/context.dart';
 import '../handler_bindings.dart';
@@ -121,9 +121,19 @@ extension WorkspaceAudioSettingsScreenBuildAction
                           title: 'Воспроизведение',
                           subtitle: 'Громкость участников и демонстраций на этом устройстве.',
                           compact: compact,
-                          child: AudioVolumeReset(
-                            reset: state.resetAudioVolumes,
-                            warning: state.voiceVolumeWarning,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              AudioVolumeReset(
+                                reset: state.resetAudioVolumes,
+                                warning: state.voiceVolumeWarning,
+                              ),
+                              if (defaultTargetPlatform ==
+                                  TargetPlatform.windows) ...[
+                                const SizedBox(height: 16),
+                                const WindowsAudioGuidance(),
+                              ],
+                            ],
                           ),
                         ),
                         WorkspaceAudioSettingsCard(

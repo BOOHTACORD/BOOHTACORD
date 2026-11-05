@@ -69,4 +69,10 @@ describe('Design V2 audio settings', () => {
     expect(presentation).toContain('max-width: 928px; padding: 24px 24px 48px;')
     expect(presentation).toContain('@media (max-width: 1023px)')
   })
+  it('explains Windows system ducking without modifying third-party app volume', () => {
+    expect(component).toContain('windowsAudioGuidance')
+    expect(component).toContain('Действие не требуется')
+    expect(component).toContain('Браузер не может изменить')
+  })
+
 })

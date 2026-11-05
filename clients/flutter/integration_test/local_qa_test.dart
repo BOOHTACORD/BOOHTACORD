@@ -197,30 +197,38 @@ void main() {
           of: find.byKey(const ValueKey('audio-settings-list')),
           matching: find.byType(Scrollable),
         );
+        final processing = find.text('Автоматическая регулировка усиления');
         await tester.scrollUntilVisible(
-          find.text('Дополнительно'),
+          processing,
+          120,
+          scrollable: scrollable,
+        );
+        expect(processing, findsOneWidget);
+        final processingBefore = state.audioProcessing;
+        final diagnostics = find.text('Диагностика качества голоса');
+        await tester.scrollUntilVisible(
+          diagnostics,
           120,
           scrollable: scrollable,
         );
         await Scrollable.ensureVisible(
-          tester.element(find.text('Дополнительно')),
+          tester.element(diagnostics),
           alignment: 0.5,
         );
         await tester.pumpAndSettle();
-        await tester.tap(find.text('Дополнительно'));
+        await tester.tap(diagnostics.hitTestable());
         await tester.pumpAndSettle();
-        final processing = find.text('Автоматическая регулировка усиления');
-        expect(processing, findsOneWidget);
-        final mounted = tester.element(processing);
+        expect(find.text('Профиль следующего подключения'), findsOneWidget);
         await binding.takeScreenshot('native-audio-advanced');
         await Scrollable.ensureVisible(
-          tester.element(find.text('Дополнительно')),
+          tester.element(diagnostics),
           alignment: 0.5,
         );
         await tester.pumpAndSettle();
-        await tester.tap(find.text('Дополнительно'));
+        await tester.tap(diagnostics.hitTestable());
         await tester.pumpAndSettle();
-        expect(mounted.mounted, isTrue);
+        expect(find.text('Профиль следующего подключения'), findsNothing);
+        expect(state.audioProcessing, processingBefore);
       }
     }
     state.showChannels();

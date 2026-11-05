@@ -1,0 +1,220 @@
+{
+  "kind": "audio-coexistence-local-acceptance",
+  "observed_at": "2026-11-05",
+  "task": "T-061",
+  "pull_request": 654,
+  "base_sha": "0a5d63e7bdee78a8565950dd98f8d0a4bc0d4002",
+  "validation_checkout_head": "02033e36d906564d6e6643c9aa01d205d5f84678",
+  "validation_checkout_dirty": true,
+  "toolchain": {
+    "frameworkVersion": "3.47.7",
+    "frameworkRevision": "abaf9c523780a608bd46686fd5e53740a07077f8",
+    "engineRevision": "deb287481e3ce9468f3434937ced4240a70539ca",
+    "dartSdkVersion": "3.13.5"
+  },
+  "automated_checks": {
+    "status": "PASS",
+    "web_unit": {
+      "tests": 1748,
+      "files": 510
+    },
+    "flutter_unit": {
+      "passed": 1761,
+      "skipped": 1
+    },
+    "flutter_selected_components": 616,
+    "livekit_unit": {
+      "passed": 452,
+      "skipped": 1
+    },
+    "livekit_audio_session": 52,
+    "focused_flutter_guidance_and_diagnostics": 7,
+    "focused_browser_guidance": 3,
+    "python_contracts": {
+      "run": 1363,
+      "skipped": 9
+    },
+    "focused_analysis": "No issues found",
+    "spec_traceability": "PASS: 39 requirements, committed index; original Windows brief unavailable",
+    "contracts": "PASS: 20 tests, 129 public operations",
+    "client_parity_base_aware": "PASS",
+    "capture_inventory_and_network_model": "PASS: 25 tests"
+  },
+  "native_runtime": {
+    "ios": {
+      "status": "PASS",
+      "platform": "ios",
+      "device": "82C26E13-0F1F-43F9-AF27-866DC22C2456",
+      "mocks": false,
+      "scope": "auth, authenticated workspace, profile/audio/admin panels, logout",
+      "media": "NOT_RUN",
+      "physical_device": false
+    },
+    "android": {
+      "status": "PASS",
+      "platform": "android",
+      "device": "emulator-5554",
+      "mocks": false,
+      "scope": "auth, authenticated workspace, profile/audio/admin panels, logout",
+      "media": "NOT_RUN",
+      "physical_device": false
+    }
+  },
+  "web_real_stack": {
+    "1440": {
+      "status": "PASS",
+      "log": ".out/pr654/web-real-stack-1440-retry.log"
+    },
+    "393": {
+      "status": "PASS",
+      "log": ".out/pr654/web-real-stack-393-final.log",
+      "fresh_output": ".out/pr654/mobile-real-stack-final/393"
+    }
+  },
+  "initial_attempts": [
+    {
+      "status": "FAIL",
+      "scope": "local feature report .out/local-features/20261105-111959/report.json",
+      "reason": "QA Docker was stopped and its private context was absent; Android scenario still searched for removed Additional section."
+    },
+    {
+      "status": "FAIL",
+      "scope": "393px real-stack retry",
+      "reason": "Receiver thumbnail did not appear within existing 30s deadline. The fresh rerun passed after stopping completed QA emulators; no timeout or assertion was relaxed."
+    },
+    {
+      "status": "FAIL",
+      "scope": "first Python host runs",
+      "reason": "macOS temporary-path alias and missing private Docker Compose plugin; then a Git-contained temporary directory was rejected by blind-trial privacy validation. Final full run used a direct /private/tmp directory outside Git and passed."
+    }
+  ],
+  "advisory": {
+    "vendor_version_script": "FAIL, pre-existing: scripts/check_version.dart expects WebRTC-SDK in macOS podspec; project uses pinned BoohtacordWebRTC. Neither script nor dependency pins changed."
+  },
+  "physical_audio": {
+    "status": "NOT_RUN",
+    "platforms": [
+      "Windows native",
+      "Windows Web",
+      "Android",
+      "iOS"
+    ],
+    "outputs": [
+      "speaker",
+      "wired",
+      "Bluetooth"
+    ],
+    "reason": "User confirmed no physical devices are available; simulators/configuration flags do not prove music levels."
+  },
+  "release_gate": "BLOCKED",
+  "visual_review": {
+    "scope": "changed audio guidance and native audio/diagnostics surfaces only; no broad-screen or physical-media approval",
+    "status": "PASS",
+    "baseline_approved": false,
+    "observations": [
+      "800x600 collapsed and expanded Windows help stays within its card and diagnostics remains reachable.",
+      "320x480 at text scale 2 wraps and scrolls vertically; existing header ellipsis preserves navigation actions.",
+      "Windows Web help is keyboard operable at 320px/text200 and 800px; original-resolution crop confirms instructions wrap within the card.",
+      "Android and iOS audio cards and expanded diagnostics fit the viewport; bottom content is reachable by scrolling; no Windows help on mobile."
+    ]
+  },
+  "validated_product_files": {
+    "clients/flutter/integration_test/local_qa_test.dart": "f2cb4491bf6580fedac5eedcc9ea04e9afb4fa0e9fea8db5625edb4152f82d3c",
+    "clients/flutter/lib/src/screens/workspace_ui/audio_settings_screen/build/handler.dart": "007457b891677c2299948204bc75c427b803d463eab3672312b0d2f266cd522d",
+    "clients/flutter/lib/src/widgets/windows_audio_guidance.dart": "865337ecb0c73d0572cf71a13a653f8f79fe5faf5aa45804ff65415dc244b80e",
+    "clients/flutter/packages/livekit_client/.changes/audio-coexistence.md": "4b4e54c45f686f088135c2b34142f71fad95c4446bc87d3bc8611708443a8b9d",
+    "clients/flutter/packages/livekit_client/android/src/main/kotlin/io/livekit/plugin/LKAudioSwitchManager.kt": "254240bbe58f6cad70c40b9ff0f60356b662479b59badcb9689dcbf990638dc4",
+    "clients/flutter/packages/livekit_client/ios/Classes/LiveKitPlugin.swift": "670e085522c75a7580d13d81719d2c41711d920e937b17bd346937cabe3d0e0a",
+    "clients/flutter/packages/livekit_client/ios/livekit_client/Sources/livekit_client/LiveKitPlugin.swift": "670e085522c75a7580d13d81719d2c41711d920e937b17bd346937cabe3d0e0a",
+    "clients/flutter/packages/livekit_client/lib/src/audio/audio_session.dart": "81d03ecd5c699094b02c05203a9e4ead359a59dad4842a19dd230237b2e9e074",
+    "clients/flutter/packages/livekit_client/lib/src/audio/audio_session_policy.dart": "f8f7c218610bfab0a26772531e10d0864286bd4d4b8b81a4e9c51734758e4775",
+    "clients/flutter/packages/livekit_client/test/audio/audio_session_test.dart": "0d518cefb9863cff2529a756d02635efa66a41272ece465a0ca9207cddf07b57",
+    "clients/flutter/test/audio_coexistence_guidance_test.dart": "958d4e4807c799233e4c7fbf3e13f33f9d4ceb1035096957d6841f4ed30027f3",
+    "clients/flutter/test/web_parity/audio_hierarchy_test.dart": "71e26f00c41283fed8a2c8d0211a694574379fa982a9b5158d2456f16be1944b",
+    "clients/web/src/voice/AudioSettings.vue": "9240fe60fa7bb609df7569a6f498e2e72469c7b2298cc912ce9f1aa9b036772a",
+    "clients/web/src/voice/audio_settings_v2_layout.spec.ts": "b9417b1da2fbcc7a2b9f06c5f97cdaedace1fe180103b5d4816b30698f86971d",
+    "clients/web/tests/settings_hierarchy/audio_coexistence.browser.spec.ts": "8c1a107a8cc82867f4425f725d2df8e3876ef94a272a1bb54fa2d56d62a40e61"
+  },
+  "visual_artifacts": {
+    ".out/pr654/captures/audio-coexistence-windows-collapsed.png": {
+      "sha256": "81f84fd8c8606d358991a298826810f9e344e7e134dcb4acbcb8f93a781053e4",
+      "bytes": 50043,
+      "raster": [
+        800,
+        600
+      ]
+    },
+    ".out/pr654/captures/audio-coexistence-windows-expanded.png": {
+      "sha256": "48dc3216def14a71ac4b0c28b3a0e9dd224149f4c31ed6e32bf1e79a588ff896",
+      "bytes": 67638,
+      "raster": [
+        800,
+        600
+      ]
+    },
+    ".out/pr654/captures/audio-coexistence-windows-large-text.png": {
+      "sha256": "7def848835daae00e476098b71974c3a6d2c8265d85379f83cc76d99493a1d21",
+      "bytes": 32275,
+      "raster": [
+        320,
+        480
+      ]
+    },
+    ".out/pr654/web-audio-help/audio_coexistence.browser--9fcc3--and-retains-audio-controls/windows-audio-help-320.png": {
+      "sha256": "97d21cd12041ece121e790ab18fc2734539557ecb0ab3ff02c2cd2c20d509cfd",
+      "bytes": 394299,
+      "raster": [
+        320,
+        6577
+      ]
+    },
+    ".out/pr654/captures/web-windows-help-320-crop.png": {
+      "sha256": "752cd9e2c3086de41a293bb31db6d2604af1483507afa9071bbed474f949135b",
+      "bytes": 69053,
+      "raster": [
+        320,
+        860
+      ]
+    },
+    ".out/pr654/web-audio-help/audio_coexistence.browser--e0fdb--and-retains-audio-controls/windows-audio-help-800.png": {
+      "sha256": "5a8adb73e2ad77c2c1582ae9a132ecfa5a2b259e80aa636657ea6ff396a93ca7",
+      "bytes": 180688,
+      "raster": [
+        800,
+        2345
+      ]
+    },
+    ".out/local-features/20261105-111959/ios-runtime/native-audio.png": {
+      "sha256": "631e1c8de620530d28a2208ec6b6ac990e768ff4c8bde9950d84e195ffa38e5a",
+      "bytes": 375094,
+      "raster": [
+        1206,
+        2622
+      ]
+    },
+    ".out/local-features/20261105-111959/ios-runtime/native-audio-advanced.png": {
+      "sha256": "0f30f62ee87f6ebd9f39789dd0ad282428e4ef4670502169340a81008e997978",
+      "bytes": 420449,
+      "raster": [
+        1206,
+        2622
+      ]
+    },
+    ".out/pr654/android-runtime-retry/native-audio.png": {
+      "sha256": "ecab7e79eacc1ccf149a72c666e9636d885e240949575a5769e743fb4bda0a59",
+      "bytes": 172707,
+      "raster": [
+        1080,
+        2400
+      ]
+    },
+    ".out/pr654/android-runtime-retry/native-audio-advanced.png": {
+      "sha256": "a69f2d09616e37e2119d5028cc8ec665dd973d473cfaaac36a44487a171bedb3",
+      "bytes": 207531,
+      "raster": [
+        1080,
+        2400
+      ]
+    }
+  }
+}
