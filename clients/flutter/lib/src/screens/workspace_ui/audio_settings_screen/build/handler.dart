@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'device_selection/handler.dart';
 import 'voice_shortcuts/handler.dart';
 import 'microphone_processing/handler.dart';
@@ -121,9 +123,29 @@ extension WorkspaceAudioSettingsScreenBuildAction
                           title: 'Воспроизведение',
                           subtitle: 'Громкость участников и демонстраций на этом устройстве.',
                           compact: compact,
-                          child: AudioVolumeReset(
-                            reset: state.resetAudioVolumes,
-                            warning: state.voiceVolumeWarning,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              AudioVolumeReset(
+                                reset: state.resetAudioVolumes,
+                                warning: state.voiceVolumeWarning,
+                              ),
+                              if (Platform.isWindows) ...[
+                                const SizedBox(height: 16),
+                                const Text(
+                                  'Если при входе в голосовой канал Windows уменьшает '
+                                  'громкость музыки и других приложений: '
+                                  'Панель управления → Звук → Связь → '
+                                  '«Действие не требуется». '
+                                  'Это системная настройка, BOOHTACORD '
+                                  'не изменяет её автоматически.',
+                                  style: TextStyle(
+                                    color: GcColors.textSecondary,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
+                            ],
                           ),
                         ),
                         WorkspaceAudioSettingsCard(
