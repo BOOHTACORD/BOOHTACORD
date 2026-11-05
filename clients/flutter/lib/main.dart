@@ -10,7 +10,6 @@ import 'src/desktop_window_options.dart';
 import 'src/services/api_client.dart';
 import 'src/services/third_party_audio_licenses.dart';
 import 'src/services/client_telemetry.dart';
-import 'src/services/voice_audio_session_bootstrap.dart';
 import 'src/telemetry/traced_app_state.dart';
 import 'src/app/desktop_updates/bootstrap.dart';
 
@@ -20,11 +19,6 @@ Future<void> main() async {
   if (Platform.isAndroid) {
     await rtc.WebRTC.initialize(
       options: {'androidUseHardwareNoiseSuppression': false},
-    );
-    // WebRTC.initialize() configures the ADM, not AudioSwitch's focus policy.
-    // Apply our policy before any room or microphone capture begins.
-    await rtc.AndroidNativeAudioManagement.setAndroidAudioConfiguration(
-      androidVoiceAudioConfiguration,
     );
   }
   if (Platform.isMacOS || Platform.isWindows) {
