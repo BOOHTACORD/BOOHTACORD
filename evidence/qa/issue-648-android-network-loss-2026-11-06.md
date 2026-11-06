@@ -15,8 +15,14 @@
   The microphone remained muted. A separate Windows client showed the phone in
   the test channel's roster. This is a scoped client-network-outage result,
   not proof of media audibility, server restart handling or JWT/lease renewal.
+- A second run joined as listener and disabled both networks for 305 seconds.
+  At 60, 150 and 305 seconds, the Android UI still reported connected. Five
+  seconds after restoration it still reported connected, with mute retained;
+  the Windows roster also showed the phone. Because a disconnected-to-rejoined
+  transition was not observed in this run, the UI and roster do not by
+  themselves prove a new media connection or successful recovery.
 - After the run, both original network settings were enabled, the test voice
   channel was explicitly left, and the independent restoration guard had exited.
   The Windows user's existing voice session was not moved or restarted.
-- Windows/macOS/iOS, 5/15-minute outages, server-only failures, paired media,
+- Windows/macOS/iOS, 15-minute outages, server-only failures, paired media,
   manual-leave races and production deployment acceptance remain **NOT_RUN**.

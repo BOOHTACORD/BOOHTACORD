@@ -1,0 +1,13 @@
+{
+  "kind": "source-only-livekit-network-revalidation",
+  "observed_at": "2026-11-06",
+  "scope": "Add native connectivity-loss recovery scenario; no deployment configuration changes.",
+  "physical_acceptance": "NOT_RUN for patched build; 1.0.51 baseline evidence is separate.",
+  "repository_artifacts": {
+    "tools/verify/livekit_network_config/check.py": "sha256:638294c02fcc1c9f9fe2bdf19eba354db16162006831642663fda9d168cb487b",
+    "tools/qa/local_features/features.json": "sha256:5a13c7cb29e50b0c33083674407855e6d1ae7033b8afd25d582729bbcadb5e90",
+    "clients/flutter/packages/livekit_client/lib/src/core/engine.dart": "sha256:3ee08520b393d7aad46ac594e5ee3a068d15df0ad5702abdb61abd6dcb675c51",
+    "clients/flutter/packages/livekit_client/lib/src/core/connectivity_recovery.dart": "sha256:f7580a4e953a680bb9058dce3de531cade790355ba0eb95f999becc702c0bbe8",
+    "clients/flutter/packages/livekit_client/test/core/network_loss_reconnect_test.dart": "sha256:dc827826a3a08dd427fd70bd1ef4c8e3c35b6efb7d31a0377d42c91a6c4a9b8e"
+  }
+}

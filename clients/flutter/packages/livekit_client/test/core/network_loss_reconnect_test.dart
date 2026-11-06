@@ -54,4 +54,21 @@ void main() {
     expect(container.engine.isPendingReconnect, isFalse);
     await cancel();
   });
+
+  test('network loss after explicit disconnect does not restart voice', () async {
+    await room.disconnect();
+    final events = <RoomEvent>[];
+    final cancel = room.events.listen(events.add);
+    container.engine.signalClient.events.emit(
+      const SignalConnectivityChangedEvent(
+        oldState: [ConnectivityResult.wifi],
+        state: [ConnectivityResult.none],
+      ),
+    );
+    await Future<void>.delayed(const Duration(milliseconds: 100));
+
+    expect(events.whereType<RoomResumingEvent>(), isEmpty);
+    expect(container.engine.isPendingReconnect, isFalse);
+    await cancel();
+  });
 }
