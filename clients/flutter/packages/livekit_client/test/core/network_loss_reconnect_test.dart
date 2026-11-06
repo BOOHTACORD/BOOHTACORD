@@ -56,7 +56,9 @@ void main() {
   });
 
   test('network loss after explicit disconnect does not restart voice', () async {
-    await room.disconnect();
+    // The socket mock does not send a server leave acknowledgement.
+    await container.engine.disconnect();
+    expect(container.engine.isClosed, isTrue);
     final events = <RoomEvent>[];
     final cancel = room.events.listen(events.add);
     container.engine.signalClient.events.emit(
