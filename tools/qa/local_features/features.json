@@ -481,6 +481,7 @@
           "clients/web/src/voice/sound_preferences/concurrent.spec.ts",
           "clients/web/src/voice/sound_preferences/before_load.spec.ts",
           "clients/web/src/voice/sound_preferences/corruption.spec.ts",
+          "clients/web/src/voice/sound_preferences/settings.spec.ts",
           "clients/flutter/test/voice_sound_preferences/api_test.dart",
           "clients/flutter/test/voice_sound_preferences/fence_test.dart",
           "clients/flutter/test/voice_sound_preferences/storage_test.dart",
@@ -490,7 +491,7 @@
           "clients/flutter/test/voice_sound_events/policy_test.dart",
           "clients/flutter/test/voice_sound_events/boundary_test.dart"
         ],
-        "scope": "Unwired event policy and account preference backend prototype; no active client playback or native/runtime media acceptance is claimed. Unwired account-bound Web preference state preserves unsaved OFF; UI wiring and runtime remain NOT_RUN. Shared Flutter policy is also unwired; native media acceptance remains NOT_RUN."
+        "scope": "Unwired event policy and account preference backend prototype; no active client playback or native/runtime media acceptance is claimed. Unwired account-bound Web preference state preserves unsaved OFF; standalone settings component has no app or playback integration and its visual/runtime acceptance is NOT_RUN. Shared Flutter policy is also unwired; native media acceptance remains NOT_RUN."
       }
     },
     "parity": [
