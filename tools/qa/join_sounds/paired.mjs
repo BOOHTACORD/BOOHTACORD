@@ -23,11 +23,12 @@ try {
  const sound=await request(peer,'/me/join-sound','POST',wav(),{...fence,'content-type':'application/octet-stream'})
  await request(peer,'/me/join-sound','PATCH',{enabled:true},fence)
  const category=await request(admin,'/admin/categories','POST',{name:'SoundLab'+Date.now()})
- const room=await request(admin,`/admin/categories/${category.id}/channels`,'POST',{name:'SoundLab',kind:'VOICE'})
+ const roomName='SoundLab'+Date.now()
+ const room=await request(admin,`/admin/categories/${category.id}/channels`,'POST',{name:roomName,kind:'VOICE'})
  const [listener,sender]=await Promise.all(contexts.map(c=>c.newPage()))
  for(const page of [listener,sender]) {
   await page.addInitScript(observeCues);await page.goto(origin,{waitUntil:'domcontentloaded'})
-  await page.locator('.channel-button').filter({hasText:'SoundLab'}).click()
+  await page.locator('.channel-button').filter({hasText:roomName}).click()
  }
  const dock=page=>page.getByTestId('voice-dock')
  async function join(page) {
