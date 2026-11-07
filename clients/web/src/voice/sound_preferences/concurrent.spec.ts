@@ -63,3 +63,15 @@ it('keeps a newer OFF until its own acknowledgement arrives', async () => {
   secondReply(reply(2, { ...settings, joined: false })); await second
   expect(store.unsynchronised.value).toBe(false)
 })
+
+it('captures changes before the caller can mutate the request', async () => {
+  const request = vi.fn().mockResolvedValueOnce(reply(0)).mockResolvedValueOnce(reply(1, { ...settings, joined: false }))
+  const store = new VoiceSoundPreferences(request)
+  await store.select('account-a')
+  const changes = { joined: false }
+  const pending = store.patch(changes)
+  changes.joined = true
+  await pending
+  expect(JSON.parse(request.mock.calls[1][1].body)).toEqual({ expected_revision: 0, joined: false })
+  expect(store.unsynchronised.value).toBe(false)
+})

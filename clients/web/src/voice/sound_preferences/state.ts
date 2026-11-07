@@ -46,6 +46,7 @@ export class VoiceSoundPreferences {
   async patch(change: Partial<SoundSettings>): Promise<void> {
     const account = this.account, generation = this.generation
     if (!account || this.revision === null) { this.unsynchronised.value = true; return }
+    change = { ...change }
     const edit = ++this.edits
     for (const key of Object.keys(change) as (keyof SoundSettings)[]) this.versions[key] = edit
     this.safety.remember(account, change, this.settings.value)
