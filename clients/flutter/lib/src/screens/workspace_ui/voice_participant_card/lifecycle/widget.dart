@@ -17,6 +17,7 @@ class WorkspaceVoiceParticipantCard extends WorkspaceVoiceParticipantCardContext
     super.isLocal = false,
     super.onScreenTap,
     super.avatarIdentity,
+    super.memberAccountId,
     super.previewIdentity = 'participant',
     super.previewThumbnail,
     super.previewCaption = '',

@@ -27,12 +27,14 @@ const selectedVoiceParticipant = computed(() => props.participants.find((partici
 const voiceRoomVisible = computed(() => Boolean(props.selectedVoiceChannel && props.activeVoiceChannel?.id === props.selectedVoiceChannel.id))
 const visibleVoiceChannel = computed(() => props.selectedVoiceChannel)
 const memberCount = computed(() => props.selectedVoiceChannel ? voiceRoomVisible.value ? props.participants.length + 1 : '—' : memberCursor.value ? '—' : guildMembers.value.length)
+watch([() => guildMembers.value.length, memberCursor, membersLoading, membersError], ([count, cursor, loading, error]) => {
+  if (!cursor && !loading && !error) emit('memberCount', count)
+})
 
 async function loadRoster(cursor?: string): Promise<void> {
   if (directory.loading) return
   if (cursor) await directory.loadNext()
   else await directory.refresh()
-  if (!directory.cursor) emit('memberCount', directory.members.length)
 }
 function openProfile(userID: string, event: MouseEvent): void {
   const button = event.currentTarget as HTMLButtonElement

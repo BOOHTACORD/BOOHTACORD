@@ -1,5 +1,6 @@
 import '../../../message_action_menu/component.dart';
 import '../../../native_bindings.dart';
+import '../../../member_profile_trigger/component.dart';
 import '../../../../../widgets/message_timestamp.dart';
 import '../../lifecycle/context.dart';
 
@@ -7,10 +8,15 @@ extension MessageRowSenderHeaderRenderer on WorkspaceMessageRowContext {
   Row renderMessageRowSenderHeader(String authorName, String time) => Row(
     children: [
       Flexible(
-        child: Text(
-          authorName,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontWeight: FontWeight.w600),
+        child: MemberProfileTrigger(
+          state: state,
+          memberId: message.authorId,
+          name: authorName,
+          child: Text(
+            authorName,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
         ),
       ),
       const SizedBox(width: 8),

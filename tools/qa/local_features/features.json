@@ -33,9 +33,14 @@
       "test/auth_capacity_test.dart",
       "test/auth_screen_test.dart",
       "test/auth_rate_limit_test.dart",
+      "test/authentication_password_policy_test.dart",
       "test/reset_preflight_contract_test.dart"
     ],
     "acceptance": {
+      "registration_password_parity": {
+        "focused": ["clients/web/src/identity/auth_client.spec.ts", "tools/qa/critical_client_acceptance/auth.mjs", "clients/flutter/test/authentication_password_policy_test.dart", "clients/flutter/test/auth_screen_test.dart", "clients/flutter/integration_test/three_bugs_qa_test.dart"],
+        "scope": "Registration and password reset apply the server's 12–128 Unicode code-point bounds; legacy login remains permitted. Real browser and native device acceptance are recorded separately."
+      },
       "session_retention": {
         "browser": "clients/web/tests/auth_session_retention/playwright.config.ts",
         "focused": [
@@ -1796,7 +1801,8 @@
       "clients/flutter/lib/src/screens/workspace_ui/connection_status/**",
       "clients/flutter/lib/src/screens/workspace_ui/voice_dock/build/**",
       "clients/flutter/lib/src/screens/workspace_ui/direct_message_navigation/**",
-      "clients/flutter/lib/src/features/workspace/search/**"
+      "clients/flutter/lib/src/features/workspace/search/**",
+      "clients/flutter/lib/src/features/realtime/dispatch/presence.dart"
     ],
     "web": [
       "tests/responsive_shell/playwright.config.ts",
@@ -1822,6 +1828,9 @@
       "test/widget_test.dart",
       "test/web_parity/presentation_test.dart",
       "test/member_voice_presence_panel_test.dart",
+      "test/workspace_member_name_profile_test.dart",
+      "test/workspace_state/presence_member_event_test.dart",
+      "test/workspace_state/member_profile_refresh_test.dart",
       "test/features/workspace/channel_favorites_preferences_test.dart",
       "test/workspace_channel_favorites_test.dart",
       "test/profile_screen_test.dart",
@@ -1831,6 +1840,10 @@
       "test/features/voice/viewer_pending/presentation_test.dart"
     ],
     "acceptance": {
+      "member_presence_and_direct_entry": {
+        "focused": ["clients/web/src/identity/member_directory.spec.ts", "clients/web/src/workspace/workspace_realtime_dispatch.spec.ts", "clients/flutter/test/workspace_state/presence_member_event_test.dart", "clients/flutter/test/workspace_member_name_profile_test.dart", "clients/flutter/integration_test/three_bugs_qa_test.dart"],
+        "scope": "New online members are reconciled after presence changes and reconnect; member names in chat and voice open the existing ACL-protected profile and direct-message action. Real-stack and native device acceptance are recorded separately."
+      },
       "voice_navigation_parity": {
         "focused": [
           "clients/web/tests/navigation_density/navigation.browser.spec.ts",

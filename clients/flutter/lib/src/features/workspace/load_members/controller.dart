@@ -8,6 +8,7 @@ extension WorkspaceMembers on WorkspaceController {
   Future<void> refreshMembers({bool strict = false}) async {
     final ticket = scope.capture();
     if (!accepts(ticket)) return;
+    final previousIds = members.map((member) => member.id).toSet();
     membersLoading = true;
     membersError = null;
     changed();
@@ -15,14 +16,23 @@ extension WorkspaceMembers on WorkspaceController {
       final result = await api.members();
       if (accepts(ticket)) {
         final current = {for (final member in members) member.id: member};
-        members = result
+        final returnedIds = result.map((member) => member.id).toSet();
+        final incoming = result
             .map((member) {
               final previous = current[member.id];
               return previous == null
                   ? member
                   : memberProfileRevisions.preserveNewer(member, previous);
             })
-            .toList(growable: false);
+            .toList(growable: true);
+        incoming.addAll(
+          members.where(
+            (member) =>
+                !previousIds.contains(member.id) &&
+                !returnedIds.contains(member.id),
+          ),
+        );
+        members = incoming;
         for (final member in members) {
           updateDirectNamesForMember(this, member.id, member.displayName);
         }
@@ -67,6 +77,7 @@ extension WorkspaceMembers on WorkspaceController {
         memberProfileRevisions.memberRevision,
       );
       if (!accepts(ticket)) return;
+      if (result.id != userId) return;
       if ((memberProfileRevisions.memberRevision(result) ?? 0) <
           minimumRevision) {
         final latest = members
@@ -84,6 +95,7 @@ extension WorkspaceMembers on WorkspaceController {
       updateDirectNamesForMember(this, userId, result.displayName);
       final index = members.indexWhere((member) => member.id == userId);
       if (index < 0) {
+        members = [...members, result];
         changed();
         return;
       }

@@ -82,6 +82,7 @@ extension VoiceParticipantRoomParticipantsGridRenderer
       key: ValueKey('voice-participant-card:${participant.sid}'),
       state: state,
       name: workspaceParticipantName(participant),
+      memberAccountId: workspaceVoiceParticipantAccountId(participant),
       avatarUrl: workspaceParticipantMember(state, participant)?.avatarUrl,
       avatarIdentity:
           workspaceVoiceParticipantAccountId(participant) ??

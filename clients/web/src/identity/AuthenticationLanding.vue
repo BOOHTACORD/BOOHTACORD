@@ -81,7 +81,7 @@ onBeforeUnmount(() => { flow.dispose(); clearPassword() })
           <span class="authentication-password-control"><input id="authentication-password" ref="passwordInput" v-model="password" @input="passwordStatus = ''; confirmGeneration = false" :autocomplete="mode === 'login' ? 'current-password' : 'new-password'" required :type="showPassword ? 'text' : 'password'" :aria-describedby="error ? 'authentication-error' : undefined" :aria-invalid="Boolean(error)"><button class="authentication-password-toggle" type="button" :disabled="pending" :aria-label="showPassword ? 'Скрыть пароль' : 'Показать пароль'" :aria-pressed="showPassword" @click="showPassword = !showPassword"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Zm10-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" /></svg></button></span>
           <PasswordGenerationActions v-if="mode === 'register'" :pending="pending" :confirm="confirmGeneration" @generate="requestPasswordGeneration" @replace="generatePassword" @keep="confirmGeneration = false" />
         </div>
-        <p v-if="mode === 'register'" class="authentication-hint">Логин: 3–32 символа A–Z, 0–9, `_`, `.`, `-`. Пароль — от 12 символов.</p>
+        <p v-if="mode === 'register'" class="authentication-hint">Логин: 3–32 символа A–Z, 0–9, `_`, `.`, `-`. Пароль — от 12 до 128 символов.</p>
         <p class="authentication-password-status" role="status" aria-live="polite" aria-atomic="true">{{ passwordStatus }}</p>
         <p v-if="error" id="authentication-error" class="authentication-error" role="alert">{{ error }}</p>
         <p v-if="notice" class="authentication-hint" role="status" aria-live="polite">{{ notice }}</p>

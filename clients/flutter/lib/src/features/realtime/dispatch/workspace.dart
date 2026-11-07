@@ -9,6 +9,7 @@ import 'conversation_events.dart';
 import 'direct_message.dart';
 import 'screen_preview_event.dart';
 import 'member_profile.dart';
+import 'presence.dart';
 
 class WorkspaceRealtimeDispatch {
   WorkspaceRealtimeDispatch(
@@ -39,6 +40,7 @@ class WorkspaceRealtimeDispatch {
     if(event.kind=='notification.queued'||event.kind=='notification.preferences_changed'){await notificationHint?.call(event.kind,event.payload);return;}
     if (await dispatchMemberProfileUpdated(event, workspace, profileChanged))
       return;
+    if (await dispatchPresence(event, workspace)) return;
     if (await dispatchConversationEvent(
       event,
       workspace,
@@ -61,13 +63,6 @@ class WorkspaceRealtimeDispatch {
         }
       case 'session.state_changed':
         if (payload.isEmpty) notifyOwnSessionsChanged();
-      case 'presence.snapshot':
-        workspace.guildPresence.acceptSnapshot(payload['online_user_ids']);
-      case 'presence.changed':
-        workspace.guildPresence.acceptChange(
-          payload['user_id'],
-          payload['presence'],
-        );
       case 'channel.updated':
         await processEffect(
           event,

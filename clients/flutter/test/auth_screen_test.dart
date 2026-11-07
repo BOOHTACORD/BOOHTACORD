@@ -507,8 +507,20 @@ void main() {
 
     expect(requestCount, 0);
     expect(
-      find.text('Пароль должен содержать не менее 12 символов'),
+      find.text('Пароль должен содержать от 12 до 128 символов.'),
       findsOneWidget,
+    );
+    expect(
+      tester
+          .widget<InputDecorator>(
+            find.descendant(
+              of: find.byKey(const ValueKey('auth-password-field')),
+              matching: find.byType(InputDecorator),
+            ),
+          )
+          .decoration
+          .errorMaxLines,
+      greaterThan(1),
     );
 
     await tester.enterText(
@@ -522,7 +534,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(requestCount, 0);
     expect(
-      find.text('Пароль должен содержать не более 128 символов'),
+      find.text('Пароль должен содержать от 12 до 128 символов.'),
       findsOneWidget,
     );
   });

@@ -9,6 +9,7 @@ import '../theme.dart';
 import '../features/guild/profile/name.dart';
 import '../services/password_generator.dart';
 import '../features/authentication/password_generation/controls.dart';
+import '../features/session/authentication/password_policy.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key, required this.state});
@@ -264,6 +265,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   : AutofillHints.password,
                             ],
                             decoration: _authFieldDecoration().copyWith(
+                              errorMaxLines: 3,
                               suffixIcon: IconButton(
                                 tooltip: _showPassword ? 'Скрыть пароль' : 'Показать пароль',
                                 onPressed: _pending ? null : () => setState(() => _showPassword = !_showPassword),
@@ -279,14 +281,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               final password = value ?? '';
                               if (password.isEmpty) return 'Введите пароль.';
                               if (!_register) return null;
-                              final length = password.runes.length;
-                              if (length < 12) {
-                                return 'Пароль должен содержать не менее 12 символов';
-                              }
-                              if (length > 128) {
-                                return 'Пароль должен содержать не более 128 символов';
-                              }
-                              return null;
+                              return newPasswordError(password);
                             },
                           ),
                           if (_register)
@@ -301,7 +296,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           if (_register) ...[
                             const SizedBox(height: 8),
                             const Text(
-                              'Логин: 3–32 символа A–Z, 0–9, `_`, `.`, `-`. Пароль — от 12 символов.',
+                              'Логин: 3–32 символа A–Z, 0–9, `_`, `.`, `-`. Пароль — от 12 до 128 символов.',
                               style: TextStyle(
                                 color: GcColors.muted,
                                 fontSize: 12,

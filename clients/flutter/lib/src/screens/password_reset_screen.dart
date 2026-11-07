@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../app_state.dart';
 import '../theme.dart';
+import '../features/session/authentication/password_policy.dart';
 
 class PasswordResetScreen extends StatefulWidget {
   const PasswordResetScreen({super.key, required this.state});
@@ -33,11 +34,9 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
   Future<void> _submit() async {
     setState(() => _validationError = null);
     final password = _password.text;
-    if (password.runes.length < 12 || password.runes.length > 128) {
-      setState(
-        () =>
-            _validationError = 'Пароль должен содержать от 12 до 128 символов.',
-      );
+    final error = newPasswordError(password);
+    if (error != null) {
+      setState(() => _validationError = error);
       return;
     }
     if (password != _confirmation.text) {
