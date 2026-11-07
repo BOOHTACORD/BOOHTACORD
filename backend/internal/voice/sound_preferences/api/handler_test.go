@@ -92,3 +92,10 @@ func TestAccountFenceRejectsAccountSwitch(t *testing.T) {
 		t.Fatal("mismatched session account reached storage")
 	}
 }
+
+func TestPatchRejectsExplicitNullRatherThanSilentlyIgnoringIt(t *testing.T) {
+	f := &fakeService{read: p.Snapshot{Revision: 2, Settings: p.Default()}}
+	if got := request(NewHandler(f), "PATCH", `{"expected_revision":2,"joined":false,"left":null}`, true).Code; got != 400 || f.calls != 0 {
+		t.Fatal("null field accepted")
+	}
+}

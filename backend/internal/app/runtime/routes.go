@@ -18,6 +18,7 @@ import (
 	notificationroutes "voice-platform/backend/internal/app/notification_routes"
 	observabilityroutes "voice-platform/backend/internal/app/observability_routes"
 	storageroutes "voice-platform/backend/internal/app/storage_routes"
+	voicesoundroutes "voice-platform/backend/internal/app/voice_sound_routes"
 	clientupdates "voice-platform/backend/internal/client_updates/catalog"
 	runtimeconfig "voice-platform/backend/internal/config/runtime"
 	observeusage "voice-platform/backend/internal/identity/observe_usage"
@@ -31,6 +32,8 @@ import (
 	eventhub "voice-platform/backend/internal/realtime/event_hub"
 	"voice-platform/backend/internal/security/request_id"
 	reserve "voice-platform/backend/internal/storage/reserve_upload_space"
+	soundpreferences "voice-platform/backend/internal/voice/sound_preferences"
+	soundpostgres "voice-platform/backend/internal/voice/sound_preferences/postgres"
 )
 
 func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *eventhub.Hub, metrics *httpmetrics.Recorder, updates clientupdates.Provider, usage *observeusage.Tracker, previews screenpreview.Store, screenViewers *presencememory.Store) (http.Handler, screenpreview.Service, error) {
@@ -47,6 +50,7 @@ func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *
 	auth := authroutes.Register(mux, database, configuration, events, usage, lifecycle)
 	sessionService, maintenanceService := auth.Sessions, auth.Maintenance
 	notificationroutes.Register(mux, database, sessionService, configuration.NotificationsAvailable, events)
+	voicesoundroutes.Register(mux, soundpreferences.New(soundpostgres.New(database)), sessionService)
 	notificationroutes.RegisterDevices(mux, database, sessionService, configuration)
 	notificationroutes.RegisterActivation(mux, database, sessionService, configuration)
 	notificationroutes.RegisterReferences(mux, database, sessionService, configuration)
