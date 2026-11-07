@@ -40,6 +40,7 @@ func TestRoutesRequireSession(t *testing.T) {
 	}
 	r := httptest.NewRequest("GET", "/api/v1/me/voice-sound-preferences", nil)
 	r.AddCookie(&http.Cookie{Name: session.CookieName, Value: "qa"})
+	r.Header.Set("X-Voice-Sound-Account", "11111111-1111-4111-8111-111111111111")
 	w := httptest.NewRecorder()
 	mux.ServeHTTP(w, r)
 	if w.Code != 200 {
@@ -61,6 +62,7 @@ func TestMutationRequiresExactOrigin(t *testing.T) {
 		r := httptest.NewRequest("PATCH", "/api/v1/me/voice-sound-preferences", strings.NewReader(`{"expected_revision":0,"joined":false}`))
 		r.AddCookie(&http.Cookie{Name: session.CookieName, Value: "qa"})
 		r.Header.Set("Origin", item.origin)
+		r.Header.Set("X-Voice-Sound-Account", "11111111-1111-4111-8111-111111111111")
 		w := httptest.NewRecorder()
 		wrap(mux).ServeHTTP(w, r)
 		if w.Code != item.want {

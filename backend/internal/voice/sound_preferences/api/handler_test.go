@@ -34,6 +34,7 @@ func (f *fakeService) Save(_ context.Context, id string, revision int64, v p.Set
 func request(h http.Handler, method, body string, signed bool) *httptest.ResponseRecorder {
 	r := httptest.NewRequest(method, "/api/v1/me/voice-sound-preferences", strings.NewReader(body))
 	if signed {
+		r.Header.Set("X-Voice-Sound-Account", actor)
 		r = r.WithContext(session.WithPrincipal(r.Context(), auth.Principal{AccountID: actor, Role: "MEMBER"}))
 	}
 	w := httptest.NewRecorder()
@@ -97,5 +98,16 @@ func TestPatchRejectsExplicitNullRatherThanSilentlyIgnoringIt(t *testing.T) {
 	f := &fakeService{read: p.Snapshot{Revision: 2, Settings: p.Default()}}
 	if got := request(NewHandler(f), "PATCH", `{"expected_revision":2,"joined":false,"left":null}`, true).Code; got != 400 || f.calls != 0 {
 		t.Fatal("null field accepted")
+	}
+}
+
+func TestPatchRequiresAccountFence(t *testing.T) {
+	f := &fakeService{read: p.Snapshot{Revision: 1, Settings: p.Default()}}
+	r := httptest.NewRequest("PATCH", "/api/v1/me/voice-sound-preferences", strings.NewReader(`{"expected_revision":1,"joined":false}`))
+	r = r.WithContext(session.WithPrincipal(r.Context(), auth.Principal{AccountID: actor, Role: "MEMBER"}))
+	w := httptest.NewRecorder()
+	NewHandler(f).ServeHTTP(w, r)
+	if w.Code != 409 || f.calls != 0 || f.id != "" {
+		t.Fatal("missing account fence reached storage")
 	}
 }

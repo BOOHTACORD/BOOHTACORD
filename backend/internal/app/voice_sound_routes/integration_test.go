@@ -35,6 +35,7 @@ func TestAuthenticatedRoutePersistsAndRejectsStalePatch(t *testing.T) {
 		r := httptest.NewRequest(method, "/api/v1/me/voice-sound-preferences", strings.NewReader(body))
 		r.AddCookie(&http.Cookie{Name: session.CookieName, Value: "qa"})
 		r.Header.Set("Origin", "https://voice.example.test")
+		r.Header.Set("X-Voice-Sound-Account", "11111111-1111-4111-8111-111111111111")
 		w := httptest.NewRecorder()
 		wrap(mux).ServeHTTP(w, r)
 		return w

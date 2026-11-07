@@ -22,7 +22,7 @@ func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		respond(w, 401, nil)
 		return
 	}
-	if expected := r.Header.Get("X-Voice-Sound-Account"); expected != "" && expected != principal.AccountID {
+	if expected := r.Header.Get("X-Voice-Sound-Account"); expected != principal.AccountID {
 		respond(w, 409, nil)
 		return
 	}
