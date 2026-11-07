@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../app_state.dart';
 import '../../../core/session/scope.dart';
 import '../../../models.dart';
-import 'row.dart';
-import 'lookup.dart';
+import '../../../features/text/system_welcome/row.dart';
+import '../../../features/text/system_welcome/lookup.dart';
 
 class ResolvedSystemWelcome extends StatefulWidget {
   const ResolvedSystemWelcome({

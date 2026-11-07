@@ -1,4 +1,4 @@
-import '../../../../features/text/system_welcome/resolved.dart';
+import '../../system_welcome_author/component.dart';
 import 'sender_metadata/handler.dart';
 import 'sender_header/handler.dart';
 import '../../confirm_delete/component.dart';
