@@ -1,0 +1,17 @@
+import os,sys,json,tempfile,pathlib,subprocess
+root=pathlib.Path('/var/tmp/boohtacord-141-fresh');sys.path.insert(0,str(root))
+from tools.qa.client_lifecycle.stack import Stack
+subprocess.run(['npm','run','build'],cwd=root/'clients/web',check=True,stdout=subprocess.DEVNULL,env=dict(os.environ,VITE_PUBLIC_ORIGIN='https://localhost:4810'))
+code=1
+with tempfile.TemporaryDirectory(prefix='issue141-owned-',dir=root/'.out') as d:
+ work=pathlib.Path(d); stack=Stack(root,work)
+ try:
+  stack.start(); entry=work/'input.json';entry.write_text(json.dumps({'password':stack.password,'owner':stack.owner}));entry.chmod(0o600)
+  env=dict(os.environ,QA_ORIGIN='https://localhost:4810',QA_INPUT=str(entry))
+  p=subprocess.run(['node',str(root/'.out/issue141/actual.mjs')],env=env)
+  code=p.returncode;print('ACTUAL_EXIT='+str(code),flush=True)
+ finally:
+  stack.close();print('OWNED_STACK_CLEANED',flush=True)
+sys.exit(code)
+
+
