@@ -22,13 +22,14 @@ class VoiceSoundPreferencesApi {
     Map<String, dynamic> change,
   ) async {
     if (revision < 0) throw const FormatException('Invalid revision');
-    validateSoundChanges(change);
+    final captured = Map<String, dynamic>.of(change);
+    validateSoundChanges(captured);
     final result = await _request('PATCH', {
       'expected_revision': revision,
-      ...change,
+      ...captured,
     });
     if (result.revision <= revision ||
-        change.entries.any(
+        captured.entries.any(
           (entry) => result.settings[entry.key] != entry.value,
         )) {
       throw const FormatException('Unacknowledged preferences');
