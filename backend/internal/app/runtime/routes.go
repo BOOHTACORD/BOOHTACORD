@@ -51,6 +51,9 @@ func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *
 	sessionService, maintenanceService := auth.Sessions, auth.Maintenance
 	notificationroutes.Register(mux, database, sessionService, configuration.NotificationsAvailable, events)
 	voicesoundroutes.Register(mux, soundpreferences.New(soundpostgres.New(database)), sessionService)
+	if err := voicesoundroutes.RegisterJoinSounds(mux, database, sessionService, configuration.JoinSoundProcessorURL); err != nil {
+		return nil, screenpreview.Service{}, fmt.Errorf("configure join sound processor: %w", err)
+	}
 	notificationroutes.RegisterDevices(mux, database, sessionService, configuration)
 	notificationroutes.RegisterActivation(mux, database, sessionService, configuration)
 	notificationroutes.RegisterReferences(mux, database, sessionService, configuration)

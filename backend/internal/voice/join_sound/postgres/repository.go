@@ -14,16 +14,16 @@ type Database interface {
 type Repository struct{ db Database }
 
 func New(db Database) Repository { return Repository{db} }
-func (r Repository) Reserve(ctx context.Context, account string) (bool, error) {
-	var allowed bool
-	err := r.db.QueryRow(ctx, reserveSQL, account).Scan(&allowed)
+func (r Repository) Reserve(ctx context.Context, account string) (int64, error) {
+	var revision int64
+	err := r.db.QueryRow(ctx, reserveSQL, account).Scan(&revision)
 	if errors.Is(err, pgx.ErrNoRows) {
-		return false, nil
+		return 0, s.ErrRateLimited
 	}
-	return allowed, err
+	return revision, err
 }
-func (r Repository) Replace(ctx context.Context, account string, audio s.Audio) (s.Sound, error) {
-	return scan(r.db.QueryRow(ctx, replaceSQL, account, uuid.NewString(), audio.Bytes, audio.DurationMS))
+func (r Repository) Replace(ctx context.Context, actor s.Actor, revision int64, audio s.Audio) (s.Sound, error) {
+	return scan(r.db.QueryRow(ctx, replaceSQL, actor.Account, uuid.NewString(), audio.Bytes, audio.DurationMS, actor.SessionDigest[:], revision))
 }
 func (r Repository) Fetch(ctx context.Context, actor s.Actor, id string) (s.Sound, error) {
 	return scan(r.db.QueryRow(ctx, fetchSQL, actor.Account, actor.SessionDigest[:], id))

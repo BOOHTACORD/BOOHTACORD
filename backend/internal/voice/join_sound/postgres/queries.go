@@ -3,9 +3,11 @@ package soundstore
 const reserveSQL = `INSERT INTO join_sounds(account_id,next_upload_at)
  SELECT id,now()+interval '10 seconds' FROM users WHERE id=$1 AND blocked_at IS NULL
  ON CONFLICT(account_id) DO UPDATE SET next_upload_at=now()+interval '10 seconds'
- WHERE join_sounds.next_upload_at<=now() RETURNING true`
-const replaceSQL = `UPDATE join_sounds SET id=$2,revision=revision+1,enabled=true,payload=$3,duration_ms=$4
+ WHERE join_sounds.next_upload_at<=now() RETURNING revision`
+const replaceSQL = `UPDATE join_sounds SET id=$2,revision=revision+1,enabled=false,payload=$3,duration_ms=$4
  WHERE account_id=$1 AND EXISTS(SELECT 1 FROM users WHERE id=$1 AND blocked_at IS NULL)
+ AND EXISTS(SELECT 1 FROM sessions WHERE user_id=$1 AND token_digest=$5 AND revoked_at IS NULL AND expires_at>now())
+ AND revision=$6
  RETURNING id,account_id,revision,enabled,payload,duration_ms`
 const fetchSQL = `SELECT sound.id,sound.account_id,sound.revision,sound.enabled,sound.payload,sound.duration_ms
  FROM join_sounds sound JOIN users owner ON owner.id=sound.account_id

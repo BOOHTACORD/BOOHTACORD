@@ -19,6 +19,9 @@ func (b *bounded) Write(p []byte) (int, error) {
 	return b.Buffer.Write(p)
 }
 func command(ctx context.Context, name string, args ...string) ([]byte, []byte, error) {
+	if name == "ffmpeg" {
+		args = append([]string{"-filter_threads", "1", "-filter_complex_threads", "1"}, args...)
+	}
 	out, diagnostic := &bounded{max: 300000}, &bounded{max: 32768}
 	cmd := exec.CommandContext(ctx, name, args...)
 	cmd.Stdout = out

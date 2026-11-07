@@ -14,10 +14,15 @@ type storeFake struct {
 	writes            int
 }
 
-func (s *storeFake) Reserve(context.Context, string) (bool, error) { return s.reserved, nil }
-func (s *storeFake) Replace(_ context.Context, account string, data Audio) (Sound, error) {
+func (s *storeFake) Reserve(context.Context, string) (int64, error) {
+	if !s.reserved {
+		return 0, ErrRateLimited
+	}
+	return 0, nil
+}
+func (s *storeFake) Replace(_ context.Context, actor Actor, _ int64, data Audio) (Sound, error) {
 	s.writes++
-	s.value = Sound{ID: owner, Owner: account, Revision: 1, Enabled: true, Audio: data}
+	s.value = Sound{ID: owner, Owner: actor.Account, Revision: 1, Enabled: true, Audio: data}
 	return s.value, nil
 }
 func (s *storeFake) Fetch(_ context.Context, _ Actor, _ string) (Sound, error) {
@@ -39,22 +44,22 @@ func (p *processorFake) Process(context.Context, []byte) (Audio, error) {
 func TestUploadRejectsOversizeBeforeProcessingAndRateLimits(t *testing.T) {
 	s, p := &storeFake{reserved: true}, &processorFake{}
 	service := New(s, p)
-	if _, err := service.Upload(context.Background(), owner, make([]byte, MaxInput+1)); !errors.Is(err, ErrInvalid) || p.calls != 0 {
+	if _, err := service.Upload(context.Background(), Actor{Account: owner}, make([]byte, MaxInput+1)); !errors.Is(err, ErrInvalid) || p.calls != 0 {
 		t.Fatal("oversize reached processor")
 	}
 	s.reserved = false
-	if _, err := service.Upload(context.Background(), owner, []byte{1}); !errors.Is(err, ErrRateLimited) || p.calls != 0 {
+	if _, err := service.Upload(context.Background(), Actor{Account: owner}, []byte{1}); !errors.Is(err, ErrRateLimited) || p.calls != 0 {
 		t.Fatal("rate limit bypass")
 	}
 }
 func TestUploadFailsClosedAndPublishesOnlyProcessedAudio(t *testing.T) {
 	s, p := &storeFake{reserved: true}, &processorFake{err: ErrUnavailable}
 	service := New(s, p)
-	if _, err := service.Upload(context.Background(), owner, []byte{1}); !errors.Is(err, ErrUnavailable) || s.writes != 0 {
+	if _, err := service.Upload(context.Background(), Actor{Account: owner}, []byte{1}); !errors.Is(err, ErrUnavailable) || s.writes != 0 {
 		t.Fatal("processor failure replaced sound")
 	}
 	p.err = nil
-	sound, err := service.Upload(context.Background(), owner, []byte{1})
+	sound, err := service.Upload(context.Background(), Actor{Account: owner}, []byte{1})
 	if err != nil || sound.Owner != owner || s.writes != 1 {
 		t.Fatal("processed sound not stored")
 	}

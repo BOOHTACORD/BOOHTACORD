@@ -46,14 +46,18 @@ func TestPrivateSoundRequiresSameRoomAndLiveSession(t *testing.T) {
 		}
 	}
 	repo := db.New(pool)
-	allowed, err := repo.Reserve(ctx, owner)
-	if err != nil || !allowed {
+	revision, err := repo.Reserve(ctx, owner)
+	if err != nil || revision != 0 {
 		t.Fatal("initial reserve", err)
 	}
-	if allowed, err = repo.Reserve(ctx, owner); err != nil || allowed {
+	if _, err = repo.Reserve(ctx, owner); !errors.Is(err, s.ErrRateLimited) {
 		t.Fatal("upload throttle", err)
 	}
-	sound, err := repo.Replace(ctx, owner, s.Audio{Bytes: []byte{1}, DurationMS: 1000})
+	sound, err := repo.Replace(ctx, s.Actor{Account: owner, SessionDigest: ownerDigest}, revision, s.Audio{Bytes: []byte{1}, DurationMS: 1000})
+	if err != nil {
+		t.Fatal(err)
+	}
+	sound, err = repo.Enable(ctx, s.Actor{Account: owner, SessionDigest: ownerDigest}, true)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -83,11 +87,18 @@ func TestPrivateSoundRequiresSameRoomAndLiveSession(t *testing.T) {
 	if _, err = repo.Fetch(ctx, actor, sound.ID); !errors.Is(err, s.ErrNotFound) {
 		t.Fatal("revoked session access", err)
 	}
-	second, err := repo.Replace(ctx, owner, s.Audio{Bytes: []byte{2}, DurationMS: 1000})
+	second, err := repo.Replace(ctx, s.Actor{Account: owner, SessionDigest: ownerDigest}, sound.Revision, s.Audio{Bytes: []byte{2}, DurationMS: 1000})
 	if err != nil || second.ID == sound.ID {
 		t.Fatal("replacement", err)
 	}
 	if _, err = repo.Fetch(ctx, s.Actor{Account: owner, SessionDigest: ownerDigest}, sound.ID); !errors.Is(err, s.ErrNotFound) {
 		t.Fatal("old sound retained", err)
+	}
+	verifyManagement(t, ctx, repo, s.Actor{Account: owner, SessionDigest: ownerDigest}, actor, second.ID)
+	if _, err = pool.Exec(ctx, `UPDATE sessions SET revoked_at=now() WHERE user_id=$1`, owner); err != nil {
+		t.Fatal(err)
+	}
+	if _, err = repo.Replace(ctx, s.Actor{Account: owner, SessionDigest: ownerDigest}, second.Revision, s.Audio{Bytes: []byte{1}, DurationMS: 1000}); !errors.Is(err, s.ErrNotFound) {
+		t.Fatal("revoked upload completion", err)
 	}
 }
