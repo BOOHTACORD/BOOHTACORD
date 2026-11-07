@@ -1,3 +1,4 @@
+import '../../../../features/text/system_welcome/resolved.dart';
 import 'sender_metadata/handler.dart';
 import 'sender_header/handler.dart';
 import '../../confirm_delete/component.dart';
@@ -28,9 +29,9 @@ extension WorkspaceMessageRowBuildAction on WorkspaceMessageRowContext {
         .firstOrNull;
     final authorName = member?.displayName ?? message.authorId;
     if (message.kind == 'SYSTEM_WELCOME') {
-      return SystemWelcomeMessage(
+      return ResolvedSystemWelcome(
         message: message,
-        displayName: member?.displayName ?? 'Участник',
+        state: state,
         onDelete: state.user?.isAdmin == true
             ? () async {
                 if (await workspaceConfirmDelete(context)) {
