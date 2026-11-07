@@ -72,3 +72,24 @@ by the bounded release manifest. A three-image bundle cannot be acknowledged
 with an API/Web-only receipt or an old worker source. Legacy two-image deliveries
 remain supported. Twenty-two focused Linux delivery/bundle/install tests passed;
 remote signature, archive checksum and OCI verification remain mandatory.
+
+## Final client regression review (2026-11-08)
+
+At `5912bbe69`, the complete Windows-hosted Flutter unit suite passed: 1796
+tests, three existing skips. CI failures in the room fake were reproduced
+locally and fixed by exposing the real SDK's nullable room name/metadata and
+stopping the test's sound observer. Product Flutter sources are unchanged
+since the successful `4ebb1926` Windows/Samsung full-app runs.
+
+Source-resolution review found an unconnected legacy Web stream toggle and
+undersized legacy-review actions; both were corrected. It also found the new
+melody panel overflowing at 200% text. Three browser geometry tests failed
+before the layout fix and passed afterwards at 320/390/432 px. The reviewed
+panel wraps its heading/help and bounds the file input. Existing unrelated
+large-text dock wrapping and synthetic-image fixture failures were retained
+as observations, without approving replacement baselines.
+
+The expanded Linux release/build/bundle/install/delivery suite passed 230 tests
+(the separately destructive storage Docker suite was not selected). Final
+canonical runs, exact-head CI, signed release and production readback must be
+reported separately; this record does not turn pending gates into PASS.
