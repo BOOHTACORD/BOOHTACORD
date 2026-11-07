@@ -63,3 +63,10 @@ it('keeps local OFF if a successful response fails to acknowledge it', async () 
   const store = new VoiceSoundPreferences(request); await store.select('a'); await store.patch({ joined: false })
   expect(store.settings.value.joined).toBe(false); expect(store.unsynchronised.value).toBe(true)
 })
+
+it('fails closed when persisted safety state cannot be decoded', async () => {
+  const storage = { getItem: () => '{broken', setItem: () => {}, removeItem: () => {} }
+  const store = new VoiceSoundPreferences(vi.fn().mockImplementation(async () => response(true)), storage)
+  await store.select('a')
+  expect(store.settings.value.enabled).toBe(false); expect(store.unsynchronised.value).toBe(true)
+})

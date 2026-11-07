@@ -9,10 +9,11 @@ export class SafetyFence {
   constructor(private readonly storage: Storage | null) {}
   read(account: string): Safety {
     if (this.memory.has(account)) return { ...this.memory.get(account) }
-    let raw: unknown
-    try { raw = JSON.parse(this.storage?.getItem(key(account)) ?? '{}') } catch { raw = {} }
-    const source = raw && typeof raw === 'object' ? raw as Record<string, unknown> : {}
-    const safe: Safety = {}
+    let raw: unknown, corrupt = false
+    try { raw = JSON.parse(this.storage?.getItem(key(account)) ?? '{}') } catch { raw = {}; corrupt = true }
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) corrupt = true
+    const source = !corrupt ? raw as Record<string, unknown> : {}
+    const safe: Safety = corrupt ? { enabled: false } : {}
     for (const field of booleans) if (source[field] === false) safe[field] = false
     if (Number.isInteger(source.volume) && (source.volume as number) >= 0 && (source.volume as number) <= 100) safe.volume = source.volume as number
     this.memory.set(account, safe); return { ...safe }
