@@ -66,3 +66,9 @@ the user's chosen fields; the tests preserve the other device's volume and rejec
 retries after a session replacement. The four procedural cues also have identical
 Web/Dart SHA-256 output, enforced by shared PCM fixtures. Their original source
 and CC0 provenance are documented in `docs/audio/voice-cues.md`.
+
+The deployment acknowledgement was extended to the exact component set declared
+by the bounded release manifest. A three-image bundle cannot be acknowledged
+with an API/Web-only receipt or an old worker source. Legacy two-image deliveries
+remain supported. Twenty-two focused Linux delivery/bundle/install tests passed;
+remote signature, archive checksum and OCI verification remain mandatory.
