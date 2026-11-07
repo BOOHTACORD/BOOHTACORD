@@ -1,0 +1,26 @@
+import { chromium, expect } from '/var/tmp/boohtacord-141-fresh/clients/web/node_modules/@playwright/test/index.mjs';
+import { readFileSync } from 'node:fs';
+const password=JSON.parse(readFileSync('/var/tmp/boohtacord-648-ro1yxsfi/defines.json','utf8')).QA_PASSWORD;
+const browser=await chromium.launch({headless:true});
+try {
+ const context=await browser.newContext({ignoreHTTPSErrors:true,viewport:{width:1440,height:900}});
+ const page=await context.newPage(); page.setDefaultTimeout(25000);
+ await page.goto('https://localhost:4810/',{waitUntil:'domcontentloaded'});
+ const started=Date.now();
+ for(let i=0;i<8;i++) {const status=await page.evaluate(async()=>{let r=await fetch('/api/v1/auth/login',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({login:'qa_member_01',password:'synthetic-incorrect'})});return r.status}); if(status!==401)throw Error('precondition '+status);}
+ let count=0, statuses=[], retry=null;
+ page.on('request',r=>{if(r.method()==='POST' && new URL(r.url()).pathname==='/api/v1/auth/login')count++});
+ page.on('response',r=>{if(r.request().method()==='POST' && new URL(r.url()).pathname==='/api/v1/auth/login'){statuses.push(r.status()); retry=r.headers()['retry-after']??retry;}});
+ await page.getByLabel('Логин',{exact:true}).fill('qa_member_01');
+ await page.getByLabel('Пароль',{exact:true}).fill(password);
+ await page.getByRole('button',{name:'Войти',exact:true}).click();
+ await expect(page.getByText(/Повторите вручную через/)).toBeVisible();
+ if(count!==1 || statuses[0]!==429 || !(Number(retry)>0))throw Error('invalid 429 response');
+ await page.screenshot({path:'/var/tmp/issue137-web-429.png'});
+ await page.waitForTimeout(6000); if(count!==1)throw Error('automatic retry observed');
+ await page.waitForTimeout(Math.max(0,33000-(Date.now()-started)));
+ await page.getByRole('button',{name:'Войти',exact:true}).click();
+ await expect(page.getByTestId('app-shell')).toBeVisible();
+ if(count!==2 || statuses[1]!==204)throw Error('manual recovery failed');
+ console.log(JSON.stringify({status:'PASS_SCOPED',real429:true,autoRetry:0,manualRetry:204,requests:count}));
+} finally { await browser.close(); }
