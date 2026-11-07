@@ -24,13 +24,16 @@ export class VoiceSoundPreferences {
   private revision: number | null = null
   private generation = 0
   private edits = 0
-  private saving = false
+  private tail: Promise<void> = Promise.resolve()
+  private pending = 0
+  private failed = false
+  private versions: Partial<Record<keyof SoundSettings, number>> = {}
   private readonly safety: SafetyFence
   constructor(private readonly request: Request = fetch, storage: Storage | null = browserStorage()) { this.safety = new SafetyFence(storage) }
   async select(account: string | null): Promise<void> {
     if (account !== null && account === this.account && this.revision !== null && this.unsynchronised.value) return
     const generation = ++this.generation
-    this.account = account; this.revision = null; this.settings.value = muted(); this.unsynchronised.value = false; this.saving = false; this.edits = 0
+    this.account = account; this.revision = null; this.settings.value = muted(); this.unsynchronised.value = false; this.tail = Promise.resolve(); this.pending = 0; this.failed = false; this.versions = {}; this.edits = 0
     if (!account) return
     try {
       const result = await this.request(`${apiBaseUrl}/me/voice-sound-preferences`, { credentials: 'same-origin', headers: { 'X-Voice-Sound-Account': account } })
@@ -44,11 +47,17 @@ export class VoiceSoundPreferences {
     const account = this.account, generation = this.generation
     if (!account || this.revision === null) { this.unsynchronised.value = true; return }
     const edit = ++this.edits
+    for (const key of Object.keys(change) as (keyof SoundSettings)[]) this.versions[key] = edit
     this.safety.remember(account, change, this.settings.value)
     this.settings.value = this.safety.apply(this.settings.value, account)
     this.unsynchronised.value = true
-    if (this.saving) { this.unsynchronised.value = true; return }
-    this.saving = true
+    this.pending++
+    const task = this.tail.then(() => this.save(account, generation, edit, change))
+    this.tail = task
+    await task
+  }
+  private async save(account: string, generation: number, edit: number, change: Partial<SoundSettings>): Promise<void> {
+    if (generation !== this.generation || this.revision === null) return
     try {
       const result = await this.request(`${apiBaseUrl}/me/voice-sound-preferences`, { method: 'PATCH', credentials: 'same-origin', headers: { 'X-Voice-Sound-Account': account, 'content-type': 'application/json' }, body: JSON.stringify({ expected_revision: this.revision, ...change }) })
       if (!result.ok) throw new Error('Preference save failed')
@@ -56,9 +65,10 @@ export class VoiceSoundPreferences {
       if (generation !== this.generation) return
       if (data.revision <= this.revision || Object.entries(change).some(([key, value]) => data.settings[key as keyof SoundSettings] !== value)) throw new Error('Preference save was not acknowledged')
       this.revision = data.revision
-      if (edit === this.edits) { this.safety.acknowledge(account, change); this.settings.value = this.safety.apply(data.settings, account); this.unsynchronised.value = this.safety.has(account) }
-      else this.unsynchronised.value = true
-    } catch { if (generation === this.generation) this.unsynchronised.value = true }
-    finally { if (generation === this.generation) this.saving = false }
+      const acknowledged = Object.fromEntries(Object.entries(change).filter(([key]) => this.versions[key as keyof SoundSettings] === edit)) as Partial<SoundSettings>
+      this.safety.acknowledge(account, acknowledged)
+      this.settings.value = this.safety.apply(data.settings, account)
+    } catch { if (generation === this.generation) { this.failed = true; this.unsynchronised.value = true } }
+    finally { if (generation === this.generation) { this.pending--; if (!this.pending && !this.failed && !this.safety.has(account)) this.unsynchronised.value = false } }
   }
 }
