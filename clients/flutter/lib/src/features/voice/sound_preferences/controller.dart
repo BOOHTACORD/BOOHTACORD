@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import 'fence.dart';
+import 'pending.dart';
 import 'remote.dart';
 import 'schema.dart';
 
@@ -9,15 +10,7 @@ class VoiceSoundController extends ChangeNotifier {
   final VoiceSoundRemote remote;
   final SoundPreferenceFence fence;
   final bool Function() active;
-  Map<String, dynamic> _settings = {
-    'enabled': false,
-    'joined': false,
-    'left': false,
-    'started': false,
-    'stopped': false,
-    'allow_custom': false,
-    'volume': 0,
-  };
+  Map<String, dynamic> _settings = mutedSoundSettings();
   Map<String, dynamic> get settings => Map.unmodifiable(_settings);
   bool unsynchronised = false, _closed = false, _failed = false;
   int? _revision;
@@ -49,7 +42,14 @@ class VoiceSoundController extends ChangeNotifier {
   Future<void> update(Map<String, dynamic> values) {
     final change = Map<String, dynamic>.of(values);
     validateSoundChanges(change);
-    if (!_current || _revision == null) return Future.value();
+    if (!_current) return Future.value();
+    if (_revision == null) {
+      _epoch++;
+      _failed = true;
+      unsynchronised = true;
+      _changed();
+      return preserveBeforeLoad(fence, change);
+    }
     _epoch++;
     final before = Map<String, dynamic>.of(_settings);
     for (final entry in change.entries) {
