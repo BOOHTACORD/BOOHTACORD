@@ -59,44 +59,50 @@ class SoundPreferenceFence {
     }
   }
 
-  Future<Map<String, dynamic>> apply(Map<String, dynamic> settings) =>
-      _serial(() async {
-        final restrictions = await _read();
-        final result = Map<String, dynamic>.of(settings);
-        for (final entry in restrictions.entries) {
-          if (entry.key == 'volume') {
-            if ((entry.value as int) < (result['volume'] as int)) {
-              result['volume'] = entry.value;
-            }
-          } else {
-            result[entry.key] = false;
+  Future<Map<String, dynamic>> apply(Map<String, dynamic> settings) {
+    final snapshot = Map<String, dynamic>.of(settings);
+    return _serial(() async {
+      final restrictions = await _read();
+      final result = snapshot;
+      for (final entry in restrictions.entries) {
+        if (entry.key == 'volume') {
+          if ((entry.value as int) < (result['volume'] as int)) {
+            result['volume'] = entry.value;
           }
+        } else {
+          result[entry.key] = false;
         }
-        return result;
-      });
+      }
+      return result;
+    });
+  }
 
   Future<SoundFenceReceipt> restrict(
     Map<String, dynamic> change,
     Map<String, dynamic> current,
-  ) => _serial(() async {
-    validateSoundChanges(change);
-    final pending = await _read();
-    final versions = <String, int>{};
-    for (final entry in change.entries) {
-      if (soundFlags.contains(entry.key) && entry.value == false) {
-        pending[entry.key] = false;
-      } else if (entry.key == 'volume' &&
-          (entry.value as int) < (current['volume'] as int)) {
-        final previous = pending['volume'] as int? ?? 100;
-        if ((entry.value as int) < previous) pending['volume'] = entry.value;
-      } else {
-        continue;
+  ) {
+    change = Map<String, dynamic>.of(change);
+    current = Map<String, dynamic>.of(current);
+    return _serial(() async {
+      validateSoundChanges(change);
+      final pending = await _read();
+      final versions = <String, int>{};
+      for (final entry in change.entries) {
+        if (soundFlags.contains(entry.key) && entry.value == false) {
+          pending[entry.key] = false;
+        } else if (entry.key == 'volume' &&
+            (entry.value as int) < (current['volume'] as int)) {
+          final previous = pending['volume'] as int? ?? 100;
+          if ((entry.value as int) < previous) pending['volume'] = entry.value;
+        } else {
+          continue;
+        }
+        versions[entry.key] = _versions[entry.key] = ++_next;
       }
-      versions[entry.key] = _versions[entry.key] = ++_next;
-    }
-    await storage.write(key, jsonEncode(pending));
-    return SoundFenceReceipt._(versions);
-  });
+      await storage.write(key, jsonEncode(pending));
+      return SoundFenceReceipt._(versions);
+    });
+  }
 
   Future<void> acknowledge(SoundFenceReceipt receipt) => _serial(() async {
     final pending = Map<String, dynamic>.of(await _read());
