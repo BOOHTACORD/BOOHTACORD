@@ -78,7 +78,17 @@ export class VoiceSoundPreferences {
   private async save(account: string, generation: number, edit: number, change: Partial<SoundSettings>): Promise<void> {
     if (generation !== this.generation || this.revision === null) return
     try {
-      const result = await this.request(`${apiBaseUrl}/me/voice-sound-preferences`, { method: 'PATCH', credentials: 'same-origin', headers: { 'X-Voice-Sound-Account': account, 'content-type': 'application/json' }, body: JSON.stringify({ expected_revision: this.revision, ...change }) })
+      const send = () => this.request(`${apiBaseUrl}/me/voice-sound-preferences`, { method: 'PATCH', credentials: 'same-origin', headers: { 'X-Voice-Sound-Account': account, 'content-type': 'application/json' }, body: JSON.stringify({ expected_revision: this.revision, ...change }) })
+      let result = await send()
+      if (result.status === 409) {
+        await result.body?.cancel()
+        const current = await this.request(`${apiBaseUrl}/me/voice-sound-preferences`, { credentials: 'same-origin', cache:'no-store', headers:{'X-Voice-Sound-Account':account} })
+        if (!current.ok) throw new Error('Preference refresh failed')
+        const latest = parse(await current.json())
+        if (generation !== this.generation || this.revision === null || latest.revision < this.revision) throw new Error('Stale preference refresh')
+        this.revision = latest.revision
+        result = await send()
+      }
       if (!result.ok) throw new Error('Preference save failed')
       const data = parse(await result.json())
       if (generation !== this.generation) return

@@ -4,6 +4,7 @@ import 'fence.dart';
 import 'pending.dart';
 import 'remote.dart';
 import 'schema.dart';
+import 'rebase.dart';
 
 class VoiceSoundController extends ChangeNotifier {
   VoiceSoundController(this.remote, this.fence, this.active);
@@ -84,7 +85,7 @@ class VoiceSoundController extends ChangeNotifier {
       final receipt = await pending;
       if (receipt == null) throw StateError('Unable to persist mute');
       if (!_current || _revision == null) return;
-      final result = await remote.patch(_revision!, change);
+      final result = await saveSoundChange(remote, _revision!, change, () => _current);
       if (!_current) return;
       await fence.acknowledge(receipt);
       final restricted = await fence.apply(result.settings);

@@ -31,12 +31,10 @@ Uint8List defaultSound(String kind) {
   for (var i = 0; i < length; i++) {
     final n = i % 2400,
         envelope = math.min(math.min(n / 240, (2400 - n) / 480), 1);
-    data.setInt16(
-      44 + i * 2,
-      (6000 * envelope * math.sin(2 * math.pi * notes[i ~/ 2400] * n / 24000))
-          .round(),
-      Endian.little,
-    );
+    final sample =
+        6000 * envelope * math.sin(2 * math.pi * notes[i ~/ 2400] * n / 24000);
+    final quantized = (sample * 1e6 + .5).floor() / 1e6;
+    data.setInt16(44 + i * 2, (quantized + .5).floor(), Endian.little);
   }
   return result;
 }

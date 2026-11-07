@@ -1,7 +1,5 @@
 import 'dart:async';
-
 import 'package:flutter/foundation.dart';
-
 import '../../../core/http/transport.dart';
 import '../../../core/session/scope.dart';
 import '../join_sound/api.dart';
@@ -12,7 +10,6 @@ import '../sound_preferences/storage.dart';
 import '../sound_preferences/legacy.dart';
 import 'native.dart';
 import 'queue.dart';
-
 class VoiceSoundRuntime extends ChangeNotifier {
   VoiceSoundRuntime(
     this.transport,
@@ -27,10 +24,10 @@ class VoiceSoundRuntime extends ChangeNotifier {
   final String? Function() output, outputLabel;
   final player = NativeSoundPlayer();
   LegacySoundReview legacy = LegacySoundReview();
-
   VoiceSoundController? preferences;
   JoinSoundApi? api;
   SessionTicket? _ticket;
+  int? _serverRevision;
   int _generation = 0;
   Timer? _refresh;
   late final queue = NativeSoundQueue(
@@ -46,11 +43,12 @@ class VoiceSoundRuntime extends ChangeNotifier {
     ),
     player.stop,
   );
-  bool get active => _ticket?.isActive == true;
+  bool get active => _ticket?.isActive == true && _serverRevision == transport.session.serverRevision;
   Future<void> bind(String account) async {
     clear();
     final generation = _generation;
     _ticket = scope.capture();
+    _serverRevision = transport.session.serverRevision;
     final currentLegacy = legacy = LegacySoundReview();
     await currentLegacy.select(transport.session.baseUrl, account);
     if (!active || generation != _generation) return;
@@ -73,12 +71,10 @@ class VoiceSoundRuntime extends ChangeNotifier {
       );
     }
   }
-
   void _changed() {
     queue.clear();
     notifyListeners();
   }
-
   void clear() {
     _refresh?.cancel();
     _refresh = null;
@@ -90,7 +86,6 @@ class VoiceSoundRuntime extends ChangeNotifier {
     preferences = null;
     api = null;
   }
-
   bool allows(String kind) =>
       active &&
       !legacy.blocked &&
@@ -111,7 +106,6 @@ class VoiceSoundRuntime extends ChangeNotifier {
       notifyListeners();
     }
   }
-
   @override
   void dispose() {
     clear();

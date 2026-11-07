@@ -59,3 +59,10 @@ revisioned account preferences. Preference initialization now runs in the
 background and keeps playback muted until settings are available, so an offline
 preference service cannot block sign-in. Final CI and canonical gate remain
 pending; earlier failed test logs are retained privately without payloads.
+
+A focused conflicting-revision test exposed stale preference writes after a
+second device changed another field. Web/Flutter now refresh once and retry only
+the user's chosen fields; the tests preserve the other device's volume and reject
+retries after a session replacement. The four procedural cues also have identical
+Web/Dart SHA-256 output, enforced by shared PCM fixtures. Their original source
+and CC0 provenance are documented in `docs/audio/voice-cues.md`.

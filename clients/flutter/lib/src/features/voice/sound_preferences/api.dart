@@ -6,9 +6,7 @@ import '../../../core/http/transport.dart';
 import 'remote.dart';
 import 'schema.dart';
 
-class VoiceSoundPreferenceConflict implements Exception {
-  const VoiceSoundPreferenceConflict();
-}
+export 'remote.dart' show VoiceSoundPreferenceConflict;
 
 class VoiceSoundPreferencesApi implements VoiceSoundRemote {
   VoiceSoundPreferencesApi(this.transport, this.account);

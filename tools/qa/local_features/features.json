@@ -501,7 +501,11 @@
           "clients/flutter/test/voice_sound_preferences/legacy_test.dart",
           "tools/qa/join_sounds/web.mjs",
           "tools/qa/join_sounds/paired.mjs",
-          "clients/flutter/test/voice_sound_preferences/dock_fixture.dart"
+          "clients/flutter/test/voice_sound_preferences/dock_fixture.dart",
+          "clients/web/src/voice/sound_preferences/rebase.spec.ts",
+          "clients/flutter/test/voice_sound_preferences/rebase_test.dart",
+          "clients/web/src/voice/sound_playback/pcm.spec.ts",
+          "clients/flutter/test/voice_sound_events/pcm_test.dart"
         ],
         "scope": "Web and Flutter account settings and profile upload/enable/preview/delete are integrated with authenticated HTTP and bounded local audio playback. Real publisher/room events use the shared quiet-baseline policy; viewer subscriptions do not emit events. The signed server builder delivers the isolated processor as a verified third image. Synthetic-picker full-native QA target is integration_test/join_sound_full_qa_test.dart; OS picker, cross-device audio and unavailable platforms require separate runtime evidence. See current QA evidence for observed outcomes; registry is not a PASS receipt.",
         "target": "integration_test/join_sound_full_qa_test.dart"
