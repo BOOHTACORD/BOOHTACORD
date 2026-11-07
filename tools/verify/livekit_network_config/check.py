@@ -59,6 +59,7 @@ def main():
     sound_native_controller = read(root, "evidence/media/livekit-network-sound-native-controller-2026-11-07.json")
     sound_web_safety = read(root, "evidence/media/livekit-network-sound-web-safety-2026-11-07.json")
     sound_web_controls = read(root, "evidence/media/livekit-network-sound-web-controls-2026-11-07.json")
+    sound_web_queue = read(root, "evidence/media/livekit-network-sound-web-queue-2026-11-07.json")
     expected_artifacts = (evidence["repository_artifacts"] | revalidation["repository_artifacts"]
                           | telemetry["repository_artifacts"] | observability["repository_artifacts"]
                           | notifications["repository_artifacts"] | screen_previews["repository_artifacts"]
@@ -74,7 +75,7 @@ def main():
                           | sound_flutter["repository_artifacts"] | sound_concurrency["repository_artifacts"]
                           | sound_native_api["repository_artifacts"] | sound_native_fence["repository_artifacts"]
                           | sound_native_controller["repository_artifacts"] | sound_web_safety["repository_artifacts"]
-                          | sound_web_controls["repository_artifacts"])
+                          | sound_web_controls["repository_artifacts"] | sound_web_queue["repository_artifacts"])
     for path, expected in expected_artifacts.items():
         content = (root / path).read_bytes().replace(b"\r\n", b"\n")
         actual = hashlib.sha256(content).hexdigest()
