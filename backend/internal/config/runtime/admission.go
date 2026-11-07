@@ -18,7 +18,10 @@ func configureAdmission(configuration *Config) error {
 	}
 	configuration.RegistrationLimiter, err = makeLimiter(5, 15*time.Minute, 10_000)
 	if err == nil {
-		configuration.LoginLimiter, err = makeLimiter(10, 5*time.Minute, 10_000)
+		configuration.LoginLimiter, err = makeLimiter(32, 5*time.Minute, 10_000)
+	}
+	if err == nil {
+		configuration.LoginDeploymentLimiter, err = makeLimiter(200, 5*time.Minute, 1)
 	}
 	if err == nil {
 		configuration.LoginAdmission, err = admitlogin.New(admitlogin.Config{Limit: 8, Window: 30 * time.Second, MaxAccounts: 50_000})
