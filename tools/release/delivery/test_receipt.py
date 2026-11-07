@@ -17,6 +17,24 @@ def outcomes(): return {key:'success' for key in receipt.STEPS}
 
 
 class DeliveryReceiptTests(unittest.TestCase):
+    def test_fresh_three_component_delivery_remains_pass_in_public_receipt(self):
+        value=result()
+        value['readback']['sources']['join-sound-processor']=SHA
+        value['readback']['running_images']['join-sound-processor']='sha256:'+'3'*64
+        output=receipt.build(outcomes(),value)
+        self.assertEqual('PASS',output['status'])
+        self.assertEqual('FRESH_READBACK_VERIFIED',output['remote_completion'])
+        for field in ('sources','running_images'):
+            incomplete=result()
+            incomplete['readback'][field]['join-sound-processor']=value['readback'][field]['join-sound-processor']
+            self.assertEqual('FAIL',receipt.build(outcomes(),incomplete)['status'])
+        value['readback']['sources']['join-sound-processor']='b'*40
+        self.assertEqual('FAIL',receipt.build(outcomes(),value)['status'])
+        value['readback']['sources']['join-sound-processor']=SHA
+        for field in ('sources','running_images'):
+            value['readback'][field]['unknown-service']=value['readback'][field].pop('join-sound-processor')
+        self.assertEqual('FAIL',receipt.build(outcomes(),value)['status'])
+
     def test_only_complete_successful_steps_and_fresh_readback_are_pass(self):
         value=receipt.build(outcomes(),result())
         self.assertEqual('PASS',value['status']); self.assertEqual('NOT_ASSERTED',value['human_approval'])

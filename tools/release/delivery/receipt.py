@@ -44,7 +44,7 @@ def checked(value):
         if failed or len(rows)!=len(LIMITS) or 'readback' not in value: raise ValueError
         readback=value['readback']
         acknowledgement(json.dumps(readback).encode(),value['source_revision'],value['controller_revision'],
-                        readback['previous_source_revision'],readback['nonce'])
+                        readback['previous_source_revision'],readback['nonce'],components=readback['sources'])
     elif 'readback' in value: raise ValueError
     return value
 
