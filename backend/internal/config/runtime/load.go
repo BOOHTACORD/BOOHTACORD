@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 	admitlogin "voice-platform/backend/internal/identity/admit_login"
+	failures "voice-platform/backend/internal/identity/track_login_failures"
 	centralexport "voice-platform/backend/internal/observability/central_export"
 
 	livekitcredential "voice-platform/backend/internal/media/livekit_credential"
@@ -33,6 +34,7 @@ type Config struct {
 	LoginLimiter                                                                 *ratelimit.Limiter
 	LoginDeploymentLimiter                                                       *ratelimit.Limiter
 	LoginAdmission                                                               *admitlogin.Budget
+	LoginFailures                                                                *failures.Budget
 	PasswordResetLimiter                                                         *ratelimit.Limiter
 	UploadLimiter                                                                *ratelimit.Limiter
 	UploadAccountLimiter                                                         *ratelimit.Limiter
