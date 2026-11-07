@@ -167,6 +167,8 @@
         "voice_platform_login_budgets_active",
         "voice_platform_login_budgets_capacity",
         "voice_platform_login_completion_total",
+        "voice_platform_login_failure_admission_total",
+        "voice_platform_login_failure_completion_total",
         "voice_platform_login_reservations_active",
         "voice_platform_registration_welcome",
         "voice_platform_registration_welcome_total"
@@ -1047,6 +1049,70 @@
       ],
       "source_name": "voice_platform_login_completion_total",
       "exported_name": "voice_platform_login_completion_total",
+      "type": "Counter",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "outcome"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "prometheus defaults",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "voice",
+      "producer": [
+        {
+          "path": "backend/internal/identity/track_login_failures/budget.go",
+          "line": 41,
+          "sha256": "4ab8991cd4c7ebaa8cc6218fbb3905b285449403207ca1a83f46aa3f6aac3f78"
+        }
+      ],
+      "source_name": "voice_platform_login_failure_admission_total",
+      "exported_name": "voice_platform_login_failure_admission_total",
+      "type": "Counter",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "decision"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "prometheus defaults",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "voice",
+      "producer": [
+        {
+          "path": "backend/internal/identity/track_login_failures/budget.go",
+          "line": 42,
+          "sha256": "4ab8991cd4c7ebaa8cc6218fbb3905b285449403207ca1a83f46aa3f6aac3f78"
+        }
+      ],
+      "source_name": "voice_platform_login_failure_completion_total",
+      "exported_name": "voice_platform_login_failure_completion_total",
       "type": "Counter",
       "unit": "1",
       "declared_unit": "1",
