@@ -53,6 +53,7 @@ def main():
     roster_revalidation = read(root, "evidence/media/livekit-network-roster-2026-11-07.json")
     welcome_revalidation = read(root, "evidence/media/livekit-network-welcome-2026-11-07.json")
     welcome_parity = read(root, "evidence/media/livekit-network-welcome-parity-2026-11-07.json")
+    welcome_windows = read(root, "evidence/media/livekit-network-welcome-windows-2026-11-07.json")
     expected_artifacts = (evidence["repository_artifacts"] | revalidation["repository_artifacts"]
                           | telemetry["repository_artifacts"] | observability["repository_artifacts"]
                           | notifications["repository_artifacts"] | screen_previews["repository_artifacts"]
@@ -65,7 +66,7 @@ def main():
                           | android_network_loss["repository_artifacts"]
                           | roster_revalidation["repository_artifacts"]
                           | welcome_revalidation["repository_artifacts"]
-                          | welcome_parity["repository_artifacts"])
+                          | welcome_parity["repository_artifacts"] | welcome_windows["repository_artifacts"])
     for path, expected in expected_artifacts.items():
         content = (root / path).read_bytes().replace(b"\r\n", b"\n")
         actual = hashlib.sha256(content).hexdigest()
