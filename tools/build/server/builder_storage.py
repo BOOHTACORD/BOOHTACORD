@@ -8,7 +8,7 @@ import time
 import uuid
 from .storage_docker import Docker, DockerCommandError
 from .storage_lease import Lease, require
-
+SERVICES = ('api', 'web', 'join-sound-processor')
 CONFIG = '''[worker.oci]
   gc = true
   reservedSpace = 0
@@ -69,7 +69,7 @@ class BuilderStorage:
             if previous:self.report['post_recovery_filesystem']=capacity
             # Do not replace an existing target, including legacy images without
             # a journal. Same-source delivery retries reuse their verified producer.
-            for service in ('api', 'web'):
+            for service in SERVICES:
                 require(self.docker.tag_image('voice-platform-'+service+':'+self.revision) is None)
             require(capacity['filesystem_available_bytes'] >= 14*1024**3)
             owner = uuid.uuid4().hex
@@ -126,8 +126,8 @@ class BuilderStorage:
                     and re.fullmatch('release-smoke-[0-9a-f]{12}',row['name'])
                     and re.fullmatch('[0-9a-f]{64}',row['id']) and set(row['users'])<=smoke_ids)
         images = self.docker.matching_images(state['owner'])
-        allowed_tags = {'voice-platform-'+service+':'+state['revision'] for service in ('api', 'web')}
-        allowed_repos = {'voice-platform-api', 'voice-platform-web'}
+        allowed_tags = {'voice-platform-'+service+':'+state['revision'] for service in SERVICES}
+        allowed_repos = {'voice-platform-'+service for service in SERVICES}
         for image in images:
             require(image['owner'] == state['owner'] and image['revision'] == state['revision']
                     and image['archive'] == state['archive'] and re.fullmatch('sha256:[0-9a-f]{64}', image['id'])
