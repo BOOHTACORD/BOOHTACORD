@@ -476,9 +476,10 @@
         "focused": [
           "clients/web/src/voice/sound_events/policy.spec.ts",
           "backend/internal/voice/sound_preferences/model_test.go",
-          "backend/internal/voice/sound_preferences/postgres/repository_integration_test.go"
+          "backend/internal/voice/sound_preferences/postgres/repository_integration_test.go",
+          "clients/web/src/voice/sound_preferences/state.spec.ts"
         ],
-        "scope": "Unwired event policy and account preference backend prototype; no active client playback or native/runtime media acceptance is claimed."
+        "scope": "Unwired event policy and account preference backend prototype; no active client playback or native/runtime media acceptance is claimed. Unwired account-bound Web preference state preserves unsaved OFF; UI wiring and runtime remain NOT_RUN."
       }
     },
     "parity": [
