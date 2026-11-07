@@ -12,8 +12,13 @@ const (
 )
 
 type Settings struct {
-	Enabled, Joined, Left, Started, Stopped, AllowCustom bool
-	Volume                                               int
+	Enabled     bool `json:"enabled"`
+	Joined      bool `json:"joined"`
+	Left        bool `json:"left"`
+	Started     bool `json:"started"`
+	Stopped     bool `json:"stopped"`
+	AllowCustom bool `json:"allow_custom"`
+	Volume      int  `json:"volume"`
 }
 
 func Default() Settings {
