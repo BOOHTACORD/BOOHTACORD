@@ -51,7 +51,7 @@ func Run(ctx context.Context) (result error) {
 	resources.Add(func(context.Context) error { return writer.Close() })
 	metrics := httpmetrics.New()
 	if err := metrics.RegisterCollector(ratelimit.NewCollector(map[string]*ratelimit.Limiter{
-		"registration": configuration.RegistrationLimiter, "login_source": configuration.LoginLimiter,
+		"registration": configuration.RegistrationLimiter, "login_source": configuration.LoginLimiter, "login_deployment": configuration.LoginDeploymentLimiter,
 		"password_reset": configuration.PasswordResetLimiter,
 		"upload_source":  configuration.UploadLimiter, "upload_account": configuration.UploadAccountLimiter,
 		"upload_deployment": configuration.UploadDeploymentLimiter, "telemetry": configuration.TelemetryLimiter,

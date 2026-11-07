@@ -31,6 +31,7 @@ type Config struct {
 	MediaSnapshot                                                                snapshotlivekitpresence.Client
 	RegistrationLimiter                                                          *ratelimit.Limiter
 	LoginLimiter                                                                 *ratelimit.Limiter
+	LoginDeploymentLimiter                                                       *ratelimit.Limiter
 	LoginAdmission                                                               *admitlogin.Budget
 	PasswordResetLimiter                                                         *ratelimit.Limiter
 	UploadLimiter                                                                *ratelimit.Limiter

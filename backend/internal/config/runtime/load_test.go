@@ -62,12 +62,28 @@ func TestLoginSourceLimitMatchesADR003(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for attempt := 1; attempt <= 10; attempt++ {
+	for attempt := 1; attempt <= 32; attempt++ {
 		if _, allowed := configuration.LoginLimiter.Allow("198.51.100.20"); !allowed {
 			t.Fatalf("login attempt %d was rejected before the ADR-003 limit", attempt)
 		}
 	}
 	if _, allowed := configuration.LoginLimiter.Allow("198.51.100.20"); allowed {
-		t.Fatal("11th login attempt from one source was allowed")
+		t.Fatal("33rd login attempt from one source was allowed")
+	}
+}
+
+func TestLoginDeploymentBudget(t *testing.T) {
+	values := environment()
+	configuration, err := Load(func(key string) string { return values[key] })
+	if err != nil {
+		t.Fatal(err)
+	}
+	for attempt := 1; attempt <= 200; attempt++ {
+		if _, allowed := configuration.LoginDeploymentLimiter.Allow("deployment"); !allowed {
+			t.Fatalf("deployment login attempt %d rejected early", attempt)
+		}
+	}
+	if _, allowed := configuration.LoginDeploymentLimiter.Allow("deployment"); allowed {
+		t.Fatal("201st login attempt was allowed")
 	}
 }
