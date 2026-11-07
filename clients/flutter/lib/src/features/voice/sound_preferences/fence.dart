@@ -94,7 +94,7 @@ class SoundPreferenceFence {
             (entry.value as int) < (current['volume'] as int)) {
           final previous = pending['volume'] as int? ?? 100;
           if ((entry.value as int) < previous) pending['volume'] = entry.value;
-        } else {
+        } else if (!pending.containsKey(entry.key)) {
           continue;
         }
         versions[entry.key] = _versions[entry.key] = ++_next;

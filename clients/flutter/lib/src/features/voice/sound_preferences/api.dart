@@ -3,20 +3,23 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../../../core/http/transport.dart';
+import 'remote.dart';
 import 'schema.dart';
 
 class VoiceSoundPreferenceConflict implements Exception {
   const VoiceSoundPreferenceConflict();
 }
 
-class VoiceSoundPreferencesApi {
+class VoiceSoundPreferencesApi implements VoiceSoundRemote {
   VoiceSoundPreferencesApi(this.transport, this.account);
   final ApiTransport transport;
   final String account;
   static const _path = '/me/voice-sound-preferences';
 
+  @override
   Future<VoiceSoundSnapshot> load() => _request('GET');
 
+  @override
   Future<VoiceSoundSnapshot> patch(
     int revision,
     Map<String, dynamic> change,
