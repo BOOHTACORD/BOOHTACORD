@@ -79,6 +79,8 @@ func TestRunExecutesEmbeddedMigrations(t *testing.T) {
 		{"CREATE TABLE IF NOT EXISTS notification_preference_fences", "fence_notification_preference_changes"},
 		{"reclaim_deleted_notification_budget", "notification_deleted_delivery", "notification_deleted_intent"},
 		{"protect_support_service_account", "TG_OP='DELETE'", "RETURN OLD", "RETURN NEW", "ERRCODE='42501'"},
+		{"CREATE TABLE IF NOT EXISTS voice_sound_preferences", "account_id UUID PRIMARY KEY", "revision BIGINT NOT NULL"},
+		{"CREATE TABLE IF NOT EXISTS join_sounds", "next_upload_at", "262144"},
 	}
 	if len(executor.statements) != len(expected) {
 		t.Fatalf("migration count = %d", len(executor.statements))

@@ -6,6 +6,7 @@ import 'package:flutter_soloud/flutter_soloud.dart';
 import 'package:record/record.dart';
 
 import 'android_audio_devices.dart';
+import 'sound_engine_lease.dart';
 
 /// Local-only microphone and speaker checks used by audio settings.
 /// The microphone stream is never saved or sent to LiveKit.
@@ -121,6 +122,8 @@ class NativeAudioDeviceCheckService implements AudioDeviceCheckService {
     AudioSource? source;
     SoundHandle? handle;
     var initializedHere = false;
+    final release = SoundEngineLease.acquire();
+    if (release == null) throw const AudioDeviceCheckFailure('Сейчас занят звуковой выход. Повторите проверку через мгновение.');
     try {
       await soloud.init(device: outputDevice);
       initializedHere = true;
@@ -148,6 +151,7 @@ class NativeAudioDeviceCheckService implements AudioDeviceCheckService {
           await soloud.deinitAsync();
         } catch (_) {}
       }
+      release();
     }
   }
 

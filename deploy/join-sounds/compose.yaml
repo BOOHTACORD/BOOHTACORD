@@ -1,0 +1,28 @@
+services:
+  api:
+    environment:
+      JOIN_SOUND_PROCESSOR_URL: ${JOIN_SOUND_PROCESSOR_URL-http://join-sound-processor:8090/normalize}
+    networks:
+      private: {}
+      join-sound-processing: {}
+
+  join-sound-processor:
+    image: ${JOIN_SOUND_PROCESSOR_IMAGE:?set JOIN_SOUND_PROCESSOR_IMAGE to a verified digest}
+    user: "65532:65532"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    cpus: 1.0
+    mem_limit: 256m
+    pids_limit: 64
+    tmpfs:
+      - /tmp:size=16m,mode=1777,noexec,nosuid,nodev
+    networks: [join-sound-processing]
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options: {max-size: "1m", max-file: "2"}
+
+networks:
+  join-sound-processing:
+    internal: true

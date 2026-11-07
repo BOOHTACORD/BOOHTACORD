@@ -13,6 +13,7 @@ import { bindNetworkDiagnostics } from './network_diagnostics/bind'
 import { bindLiveKitScreenPublisher } from './screen_publisher/livekit_port'
 import { screenPublisherEventHandlers } from './screen_publisher/events'
 import { bindLiveKitScreenMetadata } from './screen_profile_metadata/livekit_binding'
+import { bindVoiceSounds } from './sound_events/livekit'
 
 export function wireLiveKitRoom(
   room: VoiceRoom,
@@ -87,6 +88,9 @@ export async function defaultLiveKitRoomFactory(): Promise<VoiceRoom> {
     diagnosticsTrack = undefined
   })
   const room = wireLiveKitRoom(liveKitRoom as unknown as VoiceRoom, viewer)
+  const sounds = bindVoiceSounds(liveKitRoom), connect = room.connect.bind(room), disconnect = room.disconnect.bind(room)
+  room.connect = async (...args) => { await connect(...args); sounds.seed() }
+  room.disconnect = async () => { sounds.pause(); await disconnect() }
   room.stopScreenPreview = preview.stop
   room.applyScreenPreview = preview.apply
   room.clearScreenPreview = preview.clear

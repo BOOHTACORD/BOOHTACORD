@@ -27,6 +27,11 @@ livekit_private_path_script="$script_dir/livekit_private_path.py"
 
 api_image="${API_IMAGE:-}"
 web_image="${WEB_IMAGE:-}"
+worker_image="${JOIN_SOUND_PROCESSOR_IMAGE:-}"
+if [[ -n "$worker_image" ]]; then
+  [[ "$worker_image" =~ ^voice-platform-join-sound-processor@sha256:[0-9a-f]{64}$ ]] || fail "Worker must be a verified local digest."
+  docker image inspect "$worker_image" >/dev/null || fail "Verified worker is unavailable."
+fi
 [[ -n "$api_image" ]] || fail "API_IMAGE is required."
 [[ -n "$web_image" ]] || fail "WEB_IMAGE is required."
 
@@ -48,6 +53,10 @@ public_host="$(sed -n 's/^PUBLIC_HOST=//p' "$env_file" | tail -n 1)"
 [[ "$public_host" =~ ^[A-Za-z0-9.-]+$ ]] || fail "PUBLIC_HOST must be a hostname."
 
 compose=(docker compose --project-directory "$compose_dir" --env-file "$env_file" -f "$compose_file")
+if [[ -n "$worker_image" ]]; then
+  [[ -r "$compose_dir/join-sounds/compose.yaml" ]] || fail "Worker topology is missing."
+  compose+=(-f "$compose_dir/join-sounds/compose.yaml")
+fi
 
 if [[ "$release_mode" == "local-build" ]]; then
   docker image inspect "$api_image" >/dev/null || fail "Local API image is unavailable."
@@ -126,8 +135,9 @@ bash "$project_dir/tools/ops/attachment_headroom/check-attachment-volume-headroo
 
 umask 077
 temporary_env="$(mktemp "$env_file.release.XXXXXX")"
-awk '!/^(API_IMAGE|WEB_IMAGE)=/' "$env_file" > "$temporary_env"
+awk '!/^(API_IMAGE|WEB_IMAGE|JOIN_SOUND_PROCESSOR_IMAGE)=/' "$env_file" > "$temporary_env"
 printf 'API_IMAGE=%s\nWEB_IMAGE=%s\n' "$api_image" "$web_image" >> "$temporary_env"
+if [[ -n "$worker_image" ]]; then printf 'JOIN_SOUND_PROCESSOR_IMAGE=%s\n' "$worker_image" >> "$temporary_env"; fi
 install -m 600 "$temporary_env" "$env_file"
 rm -f "$temporary_env"
 temporary_env=''
@@ -142,6 +152,7 @@ delivery_phase migration_completed
 # cannot pass while preview capture is silently unavailable.
 "${compose[@]}" up -d --wait egress
 delivery_phase services_started
+if [[ -n "$worker_image" ]]; then "${compose[@]}" up -d --no-deps --no-build join-sound-processor; fi
 "${compose[@]}" up -d --no-deps --no-build api web
 "${compose[@]}" up -d --no-deps --no-build --force-recreate proxy
 bash "$script_dir/assert-proxy-networks.sh" "$project_dir"

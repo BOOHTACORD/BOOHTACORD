@@ -42,9 +42,9 @@ def volumes():
     return result
 
 
-def sources(revision):
+def sources(revision, components=('api', 'web')):
     result = {}
-    for name in ('api', 'web'):
+    for name in components:
         rows = json.loads(docker('inspect', container(name)))
         require(isinstance(rows, list) and len(rows) == 1, 'Ambiguous running source')
         row = rows[0]

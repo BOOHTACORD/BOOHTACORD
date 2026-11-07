@@ -4,6 +4,7 @@ import '../lifecycle/controller.dart';
 import 'connection.dart';
 import 'remote_tracks.dart';
 import 'local_tracks.dart';
+import '../sound_events/bind.dart';
 
 extension VoiceRoomEventsBind on VoiceController {
   void bindVoiceRoomEvents(Room room) {
@@ -14,6 +15,8 @@ extension VoiceRoomEventsBind on VoiceController {
         (identical(this.room, room) || identical(pendingRoom, room));
     final listener = room.createListener();
     voiceEvents = listener;
+    soundObserver?.pause();
+    soundObserver = bindRoomSounds(room, listener, sounds, owns);
     bindConnection(room, listener, owns);
     bindRemoteTracks(room, listener, owns);
     bindLocalTracks(room, listener, owns);

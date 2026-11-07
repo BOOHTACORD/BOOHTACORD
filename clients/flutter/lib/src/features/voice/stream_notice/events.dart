@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:livekit_client/livekit_client.dart'
     hide ChatMessage, voiceReconnectAttemptLimit;
 
@@ -38,12 +36,7 @@ extension VoiceStreamNoticeEvents on VoiceController {
       voiceStreamStartNotice = false;
       notifyListeners();
     });
-    if (voiceStreamSoundEnabled) {
-      final sound = defaultTargetPlatform == TargetPlatform.android
-          ? SystemSoundType.click
-          : SystemSoundType.alert;
-      unawaited(SystemSound.play(sound).catchError((Object _) {}));
-    }
+
   }
 
   void clearVoiceStreamNotice({

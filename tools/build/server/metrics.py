@@ -35,6 +35,6 @@ class Metrics:
         storage=self.value.get('builder_storage')
         if storage is not None and (storage.get('status')!='PASS' or storage.get('owned_resources_removed') is not True):
             raise ValueError('Owned builder storage cleanup is incomplete')
-        if set(images)!={'api','web'} or any(not re.fullmatch('sha256:[a-f0-9]{64}',v) for v in images.values()):
+        if set(images) not in ({'api','web'}, {'api','web','join-sound-processor'}) or any(not re.fullmatch('sha256:[a-f0-9]{64}',v) for v in images.values()):
             raise ValueError('Verified component digests are required')
         self.value.update(status='PASS',images=images);self.save()

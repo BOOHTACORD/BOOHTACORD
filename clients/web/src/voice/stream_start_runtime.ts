@@ -5,6 +5,9 @@ import { StreamStartAlert, type StreamAlertPhase } from './stream_start_alert'
 import { StreamStartChime } from './stream_start_chime'
 
 export const streamStartChime = new StreamStartChime()
+// Superseded by account-scoped publisher/room events. Keep visual notices.
+streamStartChime.play = () => {}
+streamStartChime.playVoiceEvent = () => {}
 export const streamStartNotice = ref(false)
 let noticeTimer: ReturnType<typeof setTimeout> | null = null
 
