@@ -14,6 +14,7 @@ class VoiceSoundController extends ChangeNotifier {
   Map<String, dynamic> get settings => Map.unmodifiable(_settings);
   bool unsynchronised = false, _closed = false, _failed = false;
   int? _revision;
+  bool get ready => _revision != null && _current;
   int _pending = 0;
   int _epoch = 0;
   Future<void> _tail = Future.value();

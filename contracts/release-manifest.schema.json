@@ -13,13 +13,13 @@
     "platform": {"const": "linux/amd64"},
     "components": {
       "type": "object", "additionalProperties": false, "required": ["api", "web"],
-      "properties": {"api": {"$ref": "#/$defs/component"}, "web": {"$ref": "#/$defs/component"}}
+      "properties": {"api": {"$ref": "#/$defs/component"}, "web": {"$ref": "#/$defs/component"}, "join-sound-processor": {"$ref": "#/$defs/component"}}
     },
     "files": {
       "type": "object", "additionalProperties": false,
       "required": ["api.oci.tar", "web.oci.tar", "runtime.tar.gz", "checks.json"],
       "properties": {
-        "api.oci.tar": {"$ref": "#/$defs/file"}, "web.oci.tar": {"$ref": "#/$defs/file"},
+        "api.oci.tar": {"$ref": "#/$defs/file"}, "web.oci.tar": {"$ref": "#/$defs/file"}, "join-sound-processor.oci.tar": {"$ref": "#/$defs/file"},
         "runtime.tar.gz": {"$ref": "#/$defs/file"}, "checks.json": {"$ref": "#/$defs/file"}
       }
     },
@@ -36,6 +36,7 @@
       }
     }
   },
+  "allOf": [{"if": {"properties": {"components": {"required": ["join-sound-processor"]}}}, "then": {"properties": {"files": {"required": ["join-sound-processor.oci.tar"]}}}, "else": {"properties": {"files": {"not": {"required": ["join-sound-processor.oci.tar"]}}}}}],
   "$defs": {
     "revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
     "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
@@ -46,7 +47,7 @@
       "type": "object", "additionalProperties": false,
       "required": ["archive", "index_digest", "manifest_digest", "attestation_predicates"],
       "properties": {
-        "archive": {"enum": ["api.oci.tar", "web.oci.tar"]},
+        "archive": {"enum": ["api.oci.tar", "web.oci.tar", "join-sound-processor.oci.tar"]},
         "index_digest": {"$ref": "#/$defs/digest"},
         "manifest_digest": {"$ref": "#/$defs/digest"},
         "attestation_predicates": {"type": "array", "uniqueItems": true, "items": {"type": "string"},

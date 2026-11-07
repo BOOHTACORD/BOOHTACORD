@@ -31,4 +31,8 @@ function volume(event: Event) { emit('change', { volume: Number((event.target as
 .voice-sounds { display: grid; gap: 10px }
 .voice-sounds label { display: flex; align-items: center; gap: 8px }
 .event { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px }
+.event button { min-height: 44px; padding: 6px 12px; border: 1px solid #434957; border-radius: 8px; background: #23262f; color: inherit; font: inherit }
+.event button:disabled { opacity: .5 }
+.voice-sounds label { flex-wrap: wrap; min-height: 32px }
+.voice-sounds input[type=range] { flex: 1; min-width: 120px }
 </style>

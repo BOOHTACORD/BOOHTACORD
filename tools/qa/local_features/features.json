@@ -491,9 +491,17 @@
           "clients/flutter/test/voice_sound_preferences/controller_race_test.dart",
           "clients/flutter/test/voice_sound_preferences/reenable_test.dart",
           "clients/flutter/test/voice_sound_events/policy_test.dart",
-          "clients/flutter/test/voice_sound_events/boundary_test.dart"
+          "clients/flutter/test/voice_sound_events/boundary_test.dart",
+          "clients/web/src/voice/join_sound/client.spec.ts",
+          "clients/flutter/test/voice_sound_preferences/join_sound_api_test.dart",
+          "clients/flutter/test/voice_sound_events/playback_queue_test.dart",
+          "tools/build/server/test_join_sound_delivery.py",
+          "clients/web/src/voice/sound_preferences/legacy.spec.ts",
+          "clients/flutter/test/voice_sound_preferences/legacy_test.dart",
+          "tools/qa/join_sounds/web.mjs"
         ],
-        "scope": "Unwired event policy and account preference backend prototype; no active client playback or native/runtime media acceptance is claimed. Unwired account-bound Web preference state preserves unsaved OFF; standalone settings and bounded playback coordinator have no app integration or real audio driver, and visual/runtime acceptance is NOT_RUN. Shared Flutter policy is also unwired; native media acceptance remains NOT_RUN."
+        "scope": "Web and Flutter account settings and profile upload/enable/preview/delete are integrated with authenticated HTTP and bounded local audio playback. Real publisher/room events use the shared quiet-baseline policy; viewer subscriptions do not emit events. The signed server builder delivers the isolated processor as a verified third image. Synthetic-picker full-native QA target is integration_test/join_sound_full_qa_test.dart; OS picker, cross-device audio and unavailable platforms require separate runtime evidence. See current QA evidence for observed outcomes; registry is not a PASS receipt.",
+        "target": "integration_test/join_sound_full_qa_test.dart"
       }
     },
     "parity": [

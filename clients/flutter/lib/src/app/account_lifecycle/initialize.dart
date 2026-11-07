@@ -27,6 +27,7 @@ extension AppAccountInitialization on AppOwners {
 
   Future<void> prepareAccount(SessionUser account) async {
     final ticket = session.scope.capture();
+    await voice.sounds.bind(account.accountId);
     await nativeNotifications.useAccount(account.accountId);
     if (!ticket.isActive) return;
     if (voiceOverlayWindowsClient != null) {

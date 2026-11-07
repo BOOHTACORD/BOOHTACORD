@@ -3155,13 +3155,13 @@ void main() {
           .widget<CheckedPopupMenuItem<String>>(
             find.widgetWithText(
               CheckedPopupMenuItem<String>,
-              'Звуки участников и просмотра',
+              'Звуки входа и выхода',
             ),
           )
           .checked,
       isTrue,
     );
-    await tester.tap(find.text('Звуки участников и просмотра'));
+    await tester.tap(find.text('Звуки входа и выхода'));
     await tester.pumpAndSettle();
     expect(state.voiceRoomEventSoundsEnabled, isFalse);
     expect(
@@ -3180,7 +3180,7 @@ void main() {
           .widget<CheckedPopupMenuItem<String>>(
             find.widgetWithText(
               CheckedPopupMenuItem<String>,
-              'Звуки участников и просмотра',
+              'Звуки входа и выхода',
             ),
           )
           .checked,

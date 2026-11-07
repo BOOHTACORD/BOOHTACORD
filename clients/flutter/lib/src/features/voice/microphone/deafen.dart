@@ -20,6 +20,7 @@ extension VoiceMicrophoneDeafen on VoiceController {
     if (active(ticket, revision)) notifyListeners();
     try {
       if (nextDeafened) {
+        sounds.silence();
         mutedBeforeDeafen = wasMicrophoneMuted;
         if (audioActivationMode == AudioActivationMode.ptt ||
             !microphoneMuted) {

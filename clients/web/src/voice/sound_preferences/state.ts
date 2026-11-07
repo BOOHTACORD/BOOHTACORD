@@ -18,6 +18,7 @@ function parse(value: unknown): SoundSnapshot {
 }
 
 export class VoiceSoundPreferences {
+  readonly ready = ref(false)
   readonly settings = ref<SoundSettings>(muted())
   readonly unsynchronised = ref(false)
   private account: string | null = null
@@ -29,10 +30,22 @@ export class VoiceSoundPreferences {
   private failed = false
   private versions: Partial<Record<keyof SoundSettings, number>> = {}
   private readonly safety: SafetyFence
-  constructor(private readonly request: Request = fetch, storage: Storage | null = browserStorage()) { this.safety = new SafetyFence(storage) }
+  constructor(private readonly request: Request = (url, init) => fetch(url, init), storage: Storage | null = browserStorage()) { this.safety = new SafetyFence(storage) }
+  async refresh(): Promise<void> {
+    const account = this.account, generation = this.generation
+    if (!account || this.pending || this.unsynchronised.value || this.revision === null) return
+    try {
+      const result = await this.request(`${apiBaseUrl}/me/voice-sound-preferences`, { credentials: 'same-origin', cache: 'no-store', redirect: 'error', headers: { 'X-Voice-Sound-Account': account } })
+      if (!result.ok) return
+      const data = parse(await result.json())
+      if (generation !== this.generation || this.pending || this.unsynchronised.value || data.revision <= this.revision!) return
+      this.revision = data.revision; this.settings.value = this.safety.apply(data.settings, account)
+    } catch { /* Keep the last known restrictions while disconnected. */ }
+  }
   async select(account: string | null): Promise<void> {
     if (account !== null && account === this.account && this.revision !== null && this.unsynchronised.value) return
     const generation = ++this.generation
+    this.ready.value = false
     this.account = account; this.revision = null; this.settings.value = muted(); this.unsynchronised.value = false; this.tail = Promise.resolve(); this.pending = 0; this.failed = false; this.versions = {}; this.edits = 0
     if (!account) return
     try {
@@ -41,6 +54,7 @@ export class VoiceSoundPreferences {
       const data = parse(await result.json())
       if (generation !== this.generation) return
       this.revision = data.revision; this.settings.value = this.safety.apply(data.settings, account); this.unsynchronised.value = this.failed || this.safety.has(account)
+      this.ready.value = true
     } catch { if (generation === this.generation) this.unsynchronised.value = true }
   }
   async patch(change: Partial<SoundSettings>): Promise<void> {

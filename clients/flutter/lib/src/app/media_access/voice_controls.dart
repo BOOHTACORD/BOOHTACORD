@@ -9,7 +9,8 @@ import '../composition/owners.dart';
 
 mixin AppVoiceControlsAccess on AppOwners {
   VoiceDisconnectNotice? get voiceDisconnectNotice => voice.disconnect.notice;
-  VoiceAudioDiagnostics? get voiceAudioDiagnostics => voice.voiceAudioDiagnostics;
+  VoiceAudioDiagnostics? get voiceAudioDiagnostics =>
+      voice.voiceAudioDiagnostics;
   VoicePhase get voicePhase => voice.voicePhase;
 
   set voicePhase(VoicePhase value) => voice.voicePhase = value;
@@ -34,12 +35,17 @@ mixin AppVoiceControlsAccess on AppOwners {
 
   set deafenChanging(bool value) => voice.deafenChanging = value;
 
-  bool get voiceStreamSoundEnabled => voice.voiceStreamSoundEnabled;
+  bool get voiceStreamSoundEnabled =>
+      voice.sounds.preferences?.settings['started'] as bool? ??
+      voice.voiceStreamSoundEnabled;
 
   set voiceStreamSoundEnabled(bool value) =>
       voice.voiceStreamSoundEnabled = value;
 
-  bool get voiceRoomEventSoundsEnabled => voice.voiceRoomEventSoundsEnabled;
+  bool get voiceRoomEventSoundsEnabled => voice.sounds.preferences == null
+      ? voice.voiceRoomEventSoundsEnabled
+      : voice.sounds.preferences!.settings['joined'] == true &&
+            voice.sounds.preferences!.settings['left'] == true;
 
   String? get selectedRemoteScreenViewerIdentity =>
       voice.selectedRemoteScreenViewerIdentity;
@@ -70,11 +76,13 @@ mixin AppVoiceControlsAccess on AppOwners {
 
   VoiceShortcutBinding? get microphoneShortcut => voice.microphoneShortcut;
 
-  set microphoneShortcut(VoiceShortcutBinding? value) => voice.microphoneShortcut = value;
+  set microphoneShortcut(VoiceShortcutBinding? value) =>
+      voice.microphoneShortcut = value;
 
   VoiceShortcutBinding? get deafenShortcut => voice.deafenShortcut;
 
-  set deafenShortcut(VoiceShortcutBinding? value) => voice.deafenShortcut = value;
+  set deafenShortcut(VoiceShortcutBinding? value) =>
+      voice.deafenShortcut = value;
 
   String? get voiceShortcutStatus => voice.voiceShortcutStatus;
 
@@ -93,9 +101,11 @@ mixin AppVoiceControlsAccess on AppOwners {
   int? get voicePingMs => voice.voicePingMs;
 
   Future<void> setVoiceStreamSoundEnabled(bool enabled) =>
+      voice.sounds.preferences?.update({'started': enabled}) ??
       voice.setVoiceStreamSoundEnabled(enabled);
 
   Future<void> setVoiceRoomEventSoundsEnabled(bool enabled) =>
+      voice.sounds.preferences?.update({'joined': enabled, 'left': enabled}) ??
       voice.setVoiceRoomEventSoundsEnabled(enabled);
 
   Future<void> setPushToTalkKey(int? keyId, String? label) =>

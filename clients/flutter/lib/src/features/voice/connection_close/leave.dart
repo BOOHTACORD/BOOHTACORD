@@ -8,6 +8,8 @@ import '../../telemetry/action_scope/action.dart';
 
 extension VoiceConnectionCloseLeave on VoiceController {
   Future<void> leaveVoice({bool explicit = true}) {
+    sounds.silence();
+    soundObserver?.pause(); soundObserver = null;
     if (explicit) cancelVoiceRecovery();
     if (explicit &&
         (room != null || voiceAdmissionPending || disconnect.notice != null)) {

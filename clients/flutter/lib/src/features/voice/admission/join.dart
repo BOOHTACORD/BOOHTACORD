@@ -100,6 +100,7 @@ extension VoiceAdmissionJoin on VoiceController {
       startVoiceConnectionStatsPolling(candidate);
       observeVoiceStreamStarts(candidate);
       connected = true;
+      soundObserver?.seed();
       lastVoiceAdmissionFailure = null;
       ActionScope.current?.step('ready');
     } catch (cause) {

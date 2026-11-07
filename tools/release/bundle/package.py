@@ -8,6 +8,7 @@ from .signature import sign
 
 
 def package(root, revision, source_hash, receipts, compatibility, checks, private_key, *, measure=None):
+    files = FILES | {name + '.oci.tar' for name in receipts}
     measure=measure or (lambda _:nullcontext())
     with measure('manifest'):
         check_receipt(checks, revision)
@@ -15,7 +16,7 @@ def package(root, revision, source_hash, receipts, compatibility, checks, privat
         manifest = {"schema_version": 1, "release_id": revision, "source_revision": revision,
                   "source_archive_sha256": source_hash, "platform": "linux/amd64",
                   "components": {}, "compatibility": compatibility,
-                  "files": {name: {"sha256": sha256(root / name), "bytes": (root / name).stat().st_size} for name in sorted(FILES)}}
+                  "files": {name: {"sha256": sha256(root / name), "bytes": (root / name).stat().st_size} for name in sorted(files)}}
         for service, receipt in receipts.items():
           manifest["components"][service] = {"archive": service + ".oci.tar", **{
               key: receipt[key] for key in ("index_digest", "manifest_digest", "attestation_predicates")}}
@@ -27,7 +28,7 @@ def package(root, revision, source_hash, receipts, compatibility, checks, privat
     destination = root.parent / (revision + ".release.tar.gz")
     with measure('package'):
         with tarfile.open(destination, "x:gz", compresslevel=1) as archive:
-          for name in sorted(FILES | {"manifest.json", "manifest.json.sig"}):
+          for name in sorted(files | {"manifest.json", "manifest.json.sig"}):
               archive.add(root / name, arcname=name, recursive=False)
         destination.with_suffix(destination.suffix + ".sha256").write_text(
           sha256(destination) + "  " + destination.name + "\n", encoding="utf-8")

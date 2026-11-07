@@ -6,6 +6,10 @@ import AdminConfirmation from '../channel/AdminConfirmation.vue'
 import NotificationSettings from '../notification/NotificationSettings.vue'
 import UpdateStatus from '../updates/UpdateStatus.vue'
 import OwnSessionsPanel from './own_sessions/OwnSessionsPanel.vue'
+import JoinSoundPanel from '../voice/join_sound/Panel.vue'
+import SoundSettingsPanel from '../voice/sound_preferences/Panel.vue'
+import { voiceSoundPreferences, soundOutput, soundsDeafened, legacySoundReview } from '../voice/sound_playback/runtime'
+import LegacySoundReview from '../voice/sound_preferences/LegacyReview.vue'
 type ProfileTab = 'profile' | 'security' | 'notifications' | 'about'
 
 const props = defineProps<{ profile: OwnProfile | null; loading: boolean; loadError: string | null; logoutBusy?: boolean; logoutError?: string | null }>()
@@ -94,6 +98,7 @@ defineExpose({ hasUnsavedChanges })
         <label>Логин<input :value="props.profile.login" readonly aria-readonly="true"></label>
         <div class="profile-savebar"><span role="status" aria-live="polite">{{ profileStatus || (nameChanged ? 'Есть несохранённые изменения' : 'Изменения не внесены') }}</span><button class="profile-secondary-button" type="button" :disabled="busy || !nameChanged" @click="displayName = props.profile?.display_name ?? ''; profileStatus = null; error = null">Отменить</button><button type="submit" :disabled="busy || !nameChanged">{{ busyAction === 'name' ? 'Сохраняем…' : 'Сохранить профиль' }}</button></div>
       </form>
+      <LegacySoundReview /><JoinSoundPanel :account-id="props.profile.account_id" :muted="legacySoundReview.blocked.value || soundsDeafened || !voiceSoundPreferences.settings.value.enabled || !voiceSoundPreferences.settings.value.joined" :volume="voiceSoundPreferences.settings.value.volume" :output="soundOutput" />
       </section>
     </template>
     <template v-else-if="props.profile && activeTab === 'security'">
@@ -113,7 +118,7 @@ defineExpose({ hasUnsavedChanges })
       <OwnSessionsPanel :account-id="props.profile.account_id" @session-expired="emit('sessionExpired')" />
       </section>
     </template>
-    <template v-else-if="props.profile && activeTab === 'notifications'"><section id="profile-panel-notifications" class="profile-panel" role="tabpanel" aria-labelledby="profile-tab-notifications" tabindex="0"><NotificationSettings /></section></template>
+    <template v-else-if="props.profile && activeTab === 'notifications'"><section id="profile-panel-notifications" class="profile-panel" role="tabpanel" aria-labelledby="profile-tab-notifications" tabindex="0"><NotificationSettings /><SoundSettingsPanel /></section></template>
     <template v-else-if="props.profile && activeTab === 'about'"><section id="profile-panel-about" class="profile-panel" role="tabpanel" aria-labelledby="profile-tab-about" tabindex="0"><UpdateStatus /></section></template>
     <p v-if="error" id="profile-error" class="profile-error" role="alert">{{ error }}</p>
     <AdminConfirmation ref="discardConfirmation" id="profile-discard-confirm" title="Несохранённые изменения" confirm-label="Выйти без сохранения" />

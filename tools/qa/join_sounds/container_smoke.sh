@@ -4,17 +4,22 @@ image="${1:?worker image required}"
 owner="qa-join-$(python3 -c 'import secrets;print(secrets.token_hex(6))')"
 network="$owner-network"
 worker="$owner-worker"
-docker network create --internal "$network" >/dev/null
+labels=(--label "boohtacord.qa.owner=$owner")
+if [[ -n "${BOOHTACORD_BUILD_OWNER:-}" ]]; then
+  [[ "$BOOHTACORD_BUILD_OWNER" =~ ^[0-9a-f]{32}$ ]] || exit 1
+  labels+=(--label "org.boohtacord.builder.owner=$BOOHTACORD_BUILD_OWNER" --label org.boohtacord.builder.scope=smoke)
+fi
+docker network create "${labels[@]}" --internal "$network" >/dev/null
 cleanup() {
   docker logs "$worker" >&2 || true
   docker stop "$worker" >/dev/null 2>&1 || true
   docker network rm "$network" >/dev/null 2>&1 || true
 }
 trap cleanup EXIT
-docker run --detach --rm --name "$worker" --network "$network" --user 65532:65532 \
+docker run "${labels[@]}" --detach --rm --name "$worker" --network "$network" --user 65532:65532 \
   --read-only --cap-drop ALL --security-opt no-new-privileges:true --cpus 1 \
   --memory 256m --pids-limit 64 --tmpfs /tmp:size=16m,mode=1777,noexec,nosuid,nodev "$image" >/dev/null
-python3 - <<'PY' | docker run --rm -i --network "$network" --read-only \
+python3 - <<'PY' | docker run "${labels[@]}" --rm -i --network "$network" --read-only \
   --tmpfs /tmp:size=16m,mode=1777,noexec,nosuid,nodev --entrypoint sh curlimages/curl:8.17.0@sha256:935d9100e9ba842cdb060de42472c7ca90cfe9a7c96e4dacb55e79e560b3ff40 \
   -ec 'cat >/tmp/test.wav; curl --fail --max-time 12 --silent --show-error --data-binary @/tmp/test.wav "http://$1:8090/normalize" --output /tmp/result.mp3; size=$(wc -c </tmp/result.mp3); test "$size" -gt 0; test "$size" -le 262144; echo "ISOLATED_WORKER_PASS bytes=$size"' sh "$worker"
 import io, wave, math, struct, sys

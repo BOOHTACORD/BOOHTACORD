@@ -1,7 +1,7 @@
 services:
   api:
     environment:
-      JOIN_SOUND_PROCESSOR_URL: http://join-sound-processor:8090/normalize
+      JOIN_SOUND_PROCESSOR_URL: ${JOIN_SOUND_PROCESSOR_URL-http://join-sound-processor:8090/normalize}
     networks:
       private: {}
       join-sound-processing: {}
