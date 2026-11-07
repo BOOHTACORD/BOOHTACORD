@@ -3,7 +3,11 @@ export type Storage = Pick<globalThis.Storage, 'getItem' | 'setItem' | 'removeIt
 const booleans = ['enabled', 'joined', 'left', 'started', 'stopped', 'allow_custom'] as const
 type Safety = Partial<SoundSettings>
 function key(account: string): string { return `voice-sound-pending-off:v2:${account}` }
-export function browserStorage(): Storage | null { try { return typeof localStorage === 'undefined' ? null : localStorage } catch { return null } }
+const unavailable: Storage = { getItem: () => { throw new Error('Storage unavailable') }, setItem: () => { throw new Error('Storage unavailable') }, removeItem: () => { throw new Error('Storage unavailable') } }
+export function browserStorage(): Storage | null {
+  if (typeof window === 'undefined') return null
+  try { return window.localStorage ?? unavailable } catch { return unavailable }
+}
 export class SafetyFence {
   private memory = new Map<string, Safety>()
   constructor(private readonly storage: Storage | null) {}
@@ -12,6 +16,11 @@ export class SafetyFence {
     let raw: unknown, corrupt = false
     try { raw = JSON.parse(this.storage?.getItem(key(account)) ?? '{}') } catch { raw = {}; corrupt = true }
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) corrupt = true
+    if (!corrupt) for (const [field, value] of Object.entries(raw as Record<string, unknown>)) {
+      if (booleans.includes(field as typeof booleans[number]) && value === false) continue
+      if (field === 'volume' && Number.isInteger(value) && (value as number) >= 0 && (value as number) <= 100) continue
+      corrupt = true; break
+    }
     const source = !corrupt ? raw as Record<string, unknown> : {}
     const safe: Safety = corrupt ? { enabled: false } : {}
     for (const field of booleans) if (source[field] === false) safe[field] = false

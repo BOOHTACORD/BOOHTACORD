@@ -40,12 +40,16 @@ export class VoiceSoundPreferences {
       if (!result.ok) throw new Error('Preference load failed')
       const data = parse(await result.json())
       if (generation !== this.generation) return
-      this.revision = data.revision; this.settings.value = this.safety.apply(data.settings, account); this.unsynchronised.value = this.safety.has(account)
+      this.revision = data.revision; this.settings.value = this.safety.apply(data.settings, account); this.unsynchronised.value = this.failed || this.safety.has(account)
     } catch { if (generation === this.generation) this.unsynchronised.value = true }
   }
   async patch(change: Partial<SoundSettings>): Promise<void> {
     const account = this.account, generation = this.generation
-    if (!account || this.revision === null) { this.unsynchronised.value = true; return }
+    if (!account) { this.unsynchronised.value = true; return }
+    if (this.revision === null) {
+      this.safety.remember(account, { ...change }, { ...this.settings.value, volume: 100 })
+      this.failed = true; this.unsynchronised.value = true; return
+    }
     change = { ...change }
     const edit = ++this.edits
     for (const key of Object.keys(change) as (keyof SoundSettings)[]) this.versions[key] = edit
