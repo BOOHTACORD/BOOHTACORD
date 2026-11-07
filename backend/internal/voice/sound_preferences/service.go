@@ -10,8 +10,8 @@ import (
 var ErrConflict = errors.New("voice sound preference revision conflict")
 
 type Snapshot struct {
-	Revision int64
-	Settings Settings
+	Revision int64    `json:"revision"`
+	Settings Settings `json:"settings"`
 }
 type Store interface {
 	Read(context.Context, string) (Snapshot, error)
