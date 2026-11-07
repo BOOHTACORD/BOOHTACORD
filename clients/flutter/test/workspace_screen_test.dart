@@ -40,6 +40,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import 'uiux_2026/capture_support.dart';
+import 'voice_sound_preferences/dock_fixture.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -3115,6 +3116,7 @@ void main() {
     );
     expect(deafenSemantics.label, 'Выключить удалённый звук');
     expect(deafenSemantics.flagsCollection.isToggled, Tristate.isFalse);
+    final soundRemote = await installDockSoundPreferences(state);
     await tester.tap(find.byTooltip('Ещё настройки голоса'));
     await tester.pumpAndSettle();
     expect(
@@ -3128,13 +3130,13 @@ void main() {
           .checked,
       isTrue,
     );
+    await tester.ensureVisible(find.text('Сигнал новых трансляций'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Сигнал новых трансляций'));
     await tester.pumpAndSettle();
     expect(state.voiceStreamSoundEnabled, isFalse);
     expect(
-      (await SharedPreferences.getInstance()).getBool(
-        'voice-screen-start-sound:v1',
-      ),
+      soundRemote.settings['started'],
       isFalse,
     );
     await tester.tap(find.byTooltip('Ещё настройки голоса'));
@@ -3161,13 +3163,13 @@ void main() {
           .checked,
       isTrue,
     );
+    await tester.ensureVisible(find.text('Звуки входа и выхода'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Звуки входа и выхода'));
     await tester.pumpAndSettle();
     expect(state.voiceRoomEventSoundsEnabled, isFalse);
     expect(
-      (await SharedPreferences.getInstance()).getBool(
-        'voice-room-event-sounds:v1',
-      ),
+      soundRemote.settings['joined'],
       isFalse,
     );
     state.voice.voiceRoomEventSoundsEnabled = true;

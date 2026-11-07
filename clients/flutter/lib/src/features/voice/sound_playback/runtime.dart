@@ -66,7 +66,7 @@ class VoiceSoundRuntime extends ChangeNotifier {
     );
     preferences!.addListener(_changed);
     await preferences!.load();
-    if (active && generation == _generation) {
+    if (active && generation == _generation && preferences?.ready == true) {
       _refresh = Timer.periodic(
         const Duration(seconds: 15),
         (_) => preferences?.load(),

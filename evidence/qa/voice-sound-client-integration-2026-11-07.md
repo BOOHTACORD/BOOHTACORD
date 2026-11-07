@@ -37,3 +37,25 @@ feature acceptance, current-head CI and deployment are pending in this record.
 
 No merge, issue closure, production deployment, acoustic or iOS runtime PASS is
 claimed here. Later evidence must identify the exact tested source revision.
+
+## Follow-up runtime observations
+
+The physical Samsung SM A576B / Android 17 run passed the same full-app scenario
+with real HTTP normalization and SoLoud (`join-678-android-navigation.log`). The
+initial phone runs correctly failed because a direct state switch left the
+mobile navigation drawer over the profile; the test now enters through the real
+user-footer action and requires hit-testable controls. The user answered that
+they did not notice the short cue; acoustic audibility remains NOT_VERIFIED.
+
+The real two-browser SFU run (`tools/qa/join_sounds/paired.mjs`) passed: another
+participant's join downloads authenticated MP3 from the private endpoint and
+plays it; actual screen publication/unpublication emits default cues; leaving
+while publishing produces one leave cue and suppresses the stop cue; baseline,
+self and deafen remain quiet. Media is synthetic canvas video; there is no
+camera capture or recording. This does not prove every network or OS route.
+
+All 115 workspace widget tests passed after adapting the existing dock test to
+revisioned account preferences. Preference initialization now runs in the
+background and keeps playback muted until settings are available, so an offline
+preference service cannot block sign-in. Final CI and canonical gate remain
+pending; earlier failed test logs are retained privately without payloads.

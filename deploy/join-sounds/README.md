@@ -9,15 +9,23 @@ A successful upload is initially disabled. Enable it explicitly with
 
 Build `backend/Dockerfile.join-sound-worker` and run the container smoke target:
 `bash tools/qa/join_sounds/container_smoke.sh <worker-image>`.
-Set `JOIN_SOUND_PROCESSOR_IMAGE` to the verified image digest and add this Compose
-overlay to the normal deployment. It gives the worker a dedicated internal network,
+The signed server builder includes the worker OCI archive with source labels,
+SBOM/provenance and the signed manifest. The installer imports its verified digest,
+sets `JOIN_SOUND_PROCESSOR_IMAGE`, and selects this overlay during normal rollout
+and readback. Legacy two-image signed releases remain readable. The overlay gives
+the worker a dedicated internal network,
 no published ports or credentials, UID 65532, read-only root, a bounded tmpfs,
 256 MiB memory, one CPU and 64 PIDs. Only the API shares this worker network.
 
 Without the overlay/processor URL, upload returns 503 while voice remains available.
-Removing the overlay disables new processing; stored audio remains protected by
-the API ACL. The normal signed server bundle does not yet include this worker
-image or activate the overlay. Integrate its verified artifact into delivery before
-enabling the production feature; this document is not a deployment receipt.
+For a configuration rollback, set `JOIN_SOUND_PROCESSOR_URL=` explicitly in the
+host environment and recreate the API through the guarded deployment procedure.
+The empty value disables new processing; stored audio remains protected by the
+API ACL. It does not alter voice transport, preferences or existing user data.
+Do not roll back applied migrations by replacing an incompatible backend. This
+document is not a deployment receipt.
 
-Client upload UI, shared playback and event metadata are still under development.
+Web and Flutter profile panels manage upload, enable, preview and deletion. The
+listener's master/deafen, per-event switches, custom acceptance and volume govern
+local playback. Tokens contain only the enabled resource identifier/revision;
+downloads still require an active same-room session, or the owner's preview.
