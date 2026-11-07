@@ -44,10 +44,11 @@ async function listen() {
   </section>
 </template>
 <style scoped>
-.join-sound-panel { display: grid; gap: 12px; margin-top: 24px; padding-bottom: 8px }
+.join-sound-panel { display: grid; min-width: 0; gap: 12px; margin-top: 24px; padding-bottom: 8px; overflow-wrap: anywhere }
+.join-sound-panel > * { min-width: 0; max-width: 100% }
 .join-sound-panel p { margin: 0 }
 .join-sound-panel label { display: flex; flex-wrap: wrap; align-items: center; gap: 8px }
 .join-sound-panel button { justify-self: start; min-height: 44px; padding: 8px 16px; border: 1px solid #434957; border-radius: 8px; background: #23262f; color: inherit; font: inherit }
-.join-sound-panel input[type=file] { max-width: 100% }
+.join-sound-panel input[type=file] { min-width: 0; width: 100%; max-width: 100%; font: inherit }
 .join-sound-panel button:disabled { opacity: .5 }
 </style>
