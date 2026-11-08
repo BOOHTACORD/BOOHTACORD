@@ -1,85 +1,20 @@
 {
   "schema_version": 1,
-  "resolved_on": "2026-10-25",
+  "resolved_on": "2026-11-08",
   "actions": [
-    {
-      "action": "actions/checkout",
-      "reviewed_ref": "v7",
-      "commit": "3d3c42e5aac5ba805825da76410c181273ba90b1",
-      "source": "https://github.com/actions/checkout/commit/3d3c42e5aac5ba805825da76410c181273ba90b1"
-    },
-    {
-      "action": "actions/download-artifact",
-      "reviewed_ref": "v8",
-      "commit": "9000827ccba6bdab643e8b6fd33ac0654aef8333",
-      "source": "https://github.com/actions/download-artifact/commit/9000827ccba6bdab643e8b6fd33ac0654aef8333"
-    },
-    {
-      "action": "actions/github-script",
-      "reviewed_ref": "v9",
-      "commit": "3a2844b7e9c422d3c10d287c895573f7108da1b3",
-      "source": "https://github.com/actions/github-script/commit/3a2844b7e9c422d3c10d287c895573f7108da1b3"
-    },
-    {
-      "action": "actions/setup-dotnet",
-      "reviewed_ref": "v6",
-      "commit": "a98b56852c35b8e3190ac28c8c2271da59106c68",
-      "source": "https://github.com/actions/setup-dotnet/commit/a98b56852c35b8e3190ac28c8c2271da59106c68"
-    },
-    {
-      "action": "actions/setup-go",
-      "reviewed_ref": "v7",
-      "commit": "b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
-      "source": "https://github.com/actions/setup-go/commit/b7ad1dad31e06c5925ef5d2fc7ad053ef454303e"
-    },
-    {
-      "action": "actions/setup-java",
-      "reviewed_ref": "v6",
-      "commit": "b843ebf9b913146b38da2eaa7aeddf76074ae1ad",
-      "source": "https://github.com/actions/setup-java/commit/b843ebf9b913146b38da2eaa7aeddf76074ae1ad"
-    },
-    {
-      "action": "actions/setup-node",
-      "reviewed_ref": "v7",
-      "commit": "949feb2413d6458794dcd2491c4babbbce0c15c1",
-      "source": "https://github.com/actions/setup-node/commit/949feb2413d6458794dcd2491c4babbbce0c15c1"
-    },
-    {
-      "action": "actions/setup-python",
-      "reviewed_ref": "v7",
-      "commit": "6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
-      "source": "https://github.com/actions/setup-python/commit/6d4fd22b20465ccc0f7354476588e8df7c9ca0e0"
-    },
-    {
-      "action": "actions/upload-artifact",
-      "reviewed_ref": "v7",
-      "commit": "cf430e030ddbb5b0abf93d22962f4752f3646cd9",
-      "source": "https://github.com/actions/upload-artifact/commit/cf430e030ddbb5b0abf93d22962f4752f3646cd9"
-    },
-    {
-      "action": "softprops/action-gh-release",
-      "reviewed_ref": "v3",
-      "commit": "efb35369e0ad2afab669f228072c1b0d510eae64",
-      "source": "https://github.com/softprops/action-gh-release/commit/efb35369e0ad2afab669f228072c1b0d510eae64"
-    },
-    {
-      "action": "subosito/flutter-action",
-      "reviewed_ref": "v2",
-      "commit": "1a449444c387b1966244ae4d4f8c696479add0b2",
-      "source": "https://github.com/subosito/flutter-action/commit/1a449444c387b1966244ae4d4f8c696479add0b2"
-    },
-    {
-      "action": "actions/cache/restore",
-      "reviewed_ref": "v5",
-      "commit": "caa296126883cff596d87d8935842f9db880ef25",
-      "source": "https://github.com/actions/cache/commit/caa296126883cff596d87d8935842f9db880ef25"
-    },
-    {
-      "action": "actions/cache/save",
-      "reviewed_ref": "v5",
-      "commit": "caa296126883cff596d87d8935842f9db880ef25",
-      "source": "https://github.com/actions/cache/commit/caa296126883cff596d87d8935842f9db880ef25"
-    }
+    {"action":"actions/checkout","reviewed_ref":"v7","commit":"3d3c42e5aac5ba805825da76410c181273ba90b1","source":"https://github.com/actions/checkout/commit/3d3c42e5aac5ba805825da76410c181273ba90b1"},
+    {"action":"actions/download-artifact","reviewed_ref":"v8","commit":"9000827ccba6bdab643e8b6fd33ac0654aef8333","source":"https://github.com/actions/download-artifact/commit/9000827ccba6bdab643e8b6fd33ac0654aef8333"},
+    {"action":"actions/github-script","reviewed_ref":"v9","commit":"3a2844b7e9c422d3c10d287c895573f7108da1b3","source":"https://github.com/actions/github-script/commit/3a2844b7e9c422d3c10d287c895573f7108da1b3"},
+    {"action":"actions/setup-dotnet","reviewed_ref":"v6","commit":"0f4a354dd5547a28c70b7853dbd95d5b67886e73","source":"https://github.com/actions/setup-dotnet/commit/0f4a354dd5547a28c70b7853dbd95d5b67886e73"},
+    {"action":"actions/setup-go","reviewed_ref":"v7","commit":"b7ad1dad31e06c5925ef5d2fc7ad053ef454303e","source":"https://github.com/actions/setup-go/commit/b7ad1dad31e06c5925ef5d2fc7ad053ef454303e"},
+    {"action":"actions/setup-java","reviewed_ref":"v6","commit":"77dd5b2ce225ea11469928ac317850245a74ae78","source":"https://github.com/actions/setup-java/commit/77dd5b2ce225ea11469928ac317850245a74ae78"},
+    {"action":"actions/setup-node","reviewed_ref":"v7","commit":"949feb2413d6458794dcd2491c4babbbce0c15c1","source":"https://github.com/actions/setup-node/commit/949feb2413d6458794dcd2491c4babbbce0c15c1"},
+    {"action":"actions/setup-python","reviewed_ref":"v7","commit":"6d4fd22b20465ccc0f7354476588e8df7c9ca0e0","source":"https://github.com/actions/setup-python/commit/6d4fd22b20465ccc0f7354476588e8df7c9ca0e0"},
+    {"action":"actions/upload-artifact","reviewed_ref":"v7","commit":"cf430e030ddbb5b0abf93d22962f4752f3646cd9","source":"https://github.com/actions/upload-artifact/commit/cf430e030ddbb5b0abf93d22962f4752f3646cd9"},
+    {"action":"softprops/action-gh-release","reviewed_ref":"v3","commit":"efb35369e0ad2afab669f228072c1b0d510eae64","source":"https://github.com/softprops/action-gh-release/commit/efb35369e0ad2afab669f228072c1b0d510eae64"},
+    {"action":"subosito/flutter-action","reviewed_ref":"v2","commit":"1a449444c387b1966244ae4d4f8c696479add0b2","source":"https://github.com/subosito/flutter-action/commit/1a449444c387b1966244ae4d4f8c696479add0b2"},
+    {"action":"actions/cache/restore","reviewed_ref":"v5","commit":"caa296126883cff596d87d8935842f9db880ef25","source":"https://github.com/actions/cache/commit/caa296126883cff596d87d8935842f9db880ef25"},
+    {"action":"actions/cache/save","reviewed_ref":"v5","commit":"caa296126883cff596d87d8935842f9db880ef25","source":"https://github.com/actions/cache/commit/caa296126883cff596d87d8935842f9db880ef25"}
   ],
   "actionlint": "1.7.11",
   "actionlint_source_revision": "393031adb9afb225ee52ae2ccd7a5af5525e03e8"
