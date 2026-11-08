@@ -10,6 +10,7 @@ export async function voiceInterface(page, input, report) {
   const primaryControls = input.viewport.width <= 600 ? dock : room
   await expect(room.getByTestId('participant-card')).toHaveCount(2, { timeout: 15000 })
   await expect(room.getByRole('status')).toHaveText('Режим слушателя')
+  console.log('stage=voice-interface-room-ready')
   if (input.viewport.width <= 600) {
     await expect(room.locator('.voice-room-controls')).toBeHidden()
     await expect(dock.locator('.voice-actions')).toBeVisible()
@@ -21,6 +22,7 @@ export async function voiceInterface(page, input, report) {
   await page.screenshot({ path: input.directory + '/voice-deafened-compact.png' })
   await primaryControls.getByRole('button', { name: 'Включить удалённый звук', exact: true }).click()
   await expect(primaryControls.getByRole('button', { name: 'Выключить удалённый звук', exact: true })).toHaveAttribute('aria-pressed', 'false')
+  console.log('stage=voice-interface-deafen-tested')
   await primaryControls.getByRole('button', { name: 'Начать демонстрацию экрана', exact: true }).click()
   const setup = page.getByRole('dialog', { name: 'Демонстрация экрана', exact: true })
   await expect(setup).toBeVisible()
@@ -28,18 +30,22 @@ export async function voiceInterface(page, input, report) {
   await expect(setup).toHaveCount(0)
   await expect(primaryControls.getByRole('button', { name: 'Начать демонстрацию экрана', exact: true })).toBeFocused()
   assert.equal(await page.evaluate(() => window.__qaCaptureRequests), 0)
+  console.log('stage=voice-interface-share-dialog-tested')
   await page.evaluate(() => { window.__qaVoicePeers = window.__qaPeers.filter(peer => peer.connectionState === 'connected') })
   const checkTransport = async () => {
     assert.equal(await page.evaluate(() => window.__qaVoicePeers.length > 0 && window.__qaVoicePeers.every(peer => window.__qaPeers.includes(peer) && peer.connectionState === 'connected') && window.__qaPeers.filter(peer => peer.connectionState === 'connected').length === window.__qaVoicePeers.length), true)
   }
   await voiceHeaderSearch(page, input, report)
   await checkTransport()
+  console.log('stage=voice-interface-search-tested')
   Object.assign(report.header_actions.VOICE, { same_voice_transport:true })
   await liveAudioSettings(page, input, report)
   await checkTransport()
   Object.assign(report.settings_hierarchy, { same_voice_transport_after_settings: true })
+  console.log('stage=voice-interface-audio-settings-tested')
   await channel(page, 'Text')
   await checkTransport()
+  console.log('stage=voice-interface-text-navigation-tested')
   await expect(dock.locator('.voice-actions button')).toHaveCount(4)
   for (const button of await dock.locator('.voice-actions button').all()) await expect(button).toBeVisible()
   await dock.getByRole('button', { name: 'Выключить удалённый звук', exact: true }).click()
@@ -48,12 +54,15 @@ export async function voiceInterface(page, input, report) {
   await checkTransport()
   await expect(dock.locator('.voice-status')).toHaveText('Голос подключён')
   await page.screenshot({ path: input.directory + '/voice-text-navigation.png' })
+  console.log('stage=voice-interface-dock-controls-tested')
   await page.setViewportSize({ width: input.viewport.width < 1024 ? 740 : 1000, height: input.viewport.height })
   await checkTransport()
   await page.setViewportSize({ width: input.viewport.width, height: input.viewport.height })
+  console.log('stage=voice-interface-resize-tested')
   await channel(page, 'VoiceLab')
   await checkTransport()
   await expect(room.getByTestId('participant-card')).toHaveCount(2)
+  console.log('stage=voice-interface-returned-to-room')
   report.voice_interface = { actual_two_listener_sessions: true, compact_primary_controls: true, deafen_state: true,
     share_dialog_cancel_without_capture: true, focus_return: true, text_drawer_resize_retains_same_transport: true, all_four_mobile_dock_actions_without_drawer: true,
     hardware_capture_or_audio_quality: 'NOT_RUN' }

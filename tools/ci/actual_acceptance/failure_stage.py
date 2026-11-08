@@ -39,6 +39,11 @@ STAGES = frozenset({
     'screen-share-owner-stop-accepted', 'screen-share-owner-track-ended',
     'screen-share-view-removed',
     'settings-live-audio-accepted', 'settings-personal-api-accepted',
+    'voice-interface-room-ready', 'voice-interface-deafen-tested',
+    'voice-interface-share-dialog-tested', 'voice-interface-search-tested',
+    'voice-interface-audio-settings-tested', 'voice-interface-text-navigation-tested',
+    'voice-interface-dock-controls-tested', 'voice-interface-resize-tested',
+    'voice-interface-returned-to-room',
     'two-admin-clients-authenticated',
 })
 MARKER = re.compile(r'(?:^|\s)stage=([a-z][a-z0-9-]{0,80})(?=[:\s]|$)')

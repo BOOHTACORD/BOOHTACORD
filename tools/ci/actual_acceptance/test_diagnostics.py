@@ -64,6 +64,8 @@ class FailureDiagnosticTests(unittest.TestCase):
             })
             log.write_text('stage=chat-recovery-navigation-open\n')
             self.assertEqual(last_failure_stage(log), 'chat-recovery-navigation-open')
+            log.write_text('stage=member-profile-voice-acl-accepted\nstage=voice-interface-room-ready\n')
+            self.assertEqual(last_failure_stage(log), 'voice-interface-room-ready')
 
     def test_unknown_fields_stages_or_links_are_rejected(self):
         for case in ('extra', 'stage', 'large', 'link', 'duplicate'):
