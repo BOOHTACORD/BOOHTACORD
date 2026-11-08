@@ -9,7 +9,7 @@ STAGES = frozenset({
     'actual-reset-completed-focus', 'actual-reset-links-accepted',
     'actual-tempo-verified', 'actual-used-reset-rejected-focus',
     'admin-screen-ready', 'browser-api-ready-after-registration',
-    'critical-burst-active-channel-confirmed', 'critical-burst-hidden-channel-created',
+    'critical-burst-active-at-bottom', 'critical-burst-active-channel-confirmed', 'critical-burst-hidden-channel-created',
     'critical-burst-hidden-channel-selected', 'critical-burst-hidden-channel-visible',
     'critical-burst-navigation-open', 'header-voice-search-accepted',
     'isolated-tls-api-ready', 'member-profile-text-dm-accepted',
