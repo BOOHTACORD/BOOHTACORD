@@ -9,3 +9,5 @@ These browser fixtures commonly mock APIs; they do not establish live-stack, scr
 On the same product source, `flutter test --no-pub test/admin_accessibility test/workspace_navigation_text_scale_test.dart test/voice_manual_join_actions_accessibility_test.dart` passed 71 widget tests on Windows. These cover selected semantics, keyboard, text scale and layout fixtures, not native screen-reader or physical platform acceptance.
 
 A follow-up standalone diagnostic loaded the message module in 100 fresh Chromium pages against its own Vite server: 100 imports passed and no non-API request error was observed. This narrower diagnostic did not recreate the full suite or its API fixtures, so it does not explain or erase the intermittent failures.
+
+Another repeat ran five scenarios that failed in the two full-suite attempts ten times each, with temporary browser listeners for failed `/src/` and `/node_modules/` requests. All 50 passed; no such request failure was recorded. The listeners were removed after the run. This is targeted retry evidence only; it does not convert either full-suite failure into a pass or establish a root cause.
