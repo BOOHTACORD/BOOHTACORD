@@ -245,6 +245,10 @@
         "focused": "clients/web/src/realtime/reconnect_race.spec.ts",
         "scope": "Late session checks from an old socket attempt cannot open a duplicate socket or expire a newer connection; real network fault acceptance remains separate."
       },
+      "issue689_web_roster_contract": {
+        "focused": "clients/web/src/realtime/roster_payload.spec.ts",
+        "scope": "Web parser accepts only typed, versioned voice rosters and safe unavailable events without advancing replay cursors; server delivery and browser acceptance remain separate."
+      },
       "issue689_web_authenticated_maintenance": {
         "focused": ["clients/web/src/maintenance/auth_owner.spec.ts", "clients/web/src/workspace/workspace_maintenance.spec.ts"],
         "scope": "Negotiated authenticated maintenance updates feature state without unrelated protected refreshes; guest handoff and browser runtime remain separate acceptance work."
