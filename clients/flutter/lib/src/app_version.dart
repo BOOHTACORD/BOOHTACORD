@@ -1,18 +1,18 @@
 const appVersionName = String.fromEnvironment(
   'APP_VERSION',
-  defaultValue: '1.0.52',
+  defaultValue: '1.0.51',
 );
 const appBuildNumber = String.fromEnvironment(
   'APP_NATIVE_BUILD',
-  defaultValue: '88',
+  defaultValue: '87',
 );
 const appReleaseId = String.fromEnvironment(
   'APP_RELEASE_ID',
-  defaultValue: 'development-r67',
+  defaultValue: 'development-r66',
 );
 const appReleaseOrder = int.fromEnvironment(
   'APP_RELEASE_ORDER',
-  defaultValue: 67,
+  defaultValue: 66,
 );
 const appDistribution = String.fromEnvironment(
   'APP_DISTRIBUTION',
