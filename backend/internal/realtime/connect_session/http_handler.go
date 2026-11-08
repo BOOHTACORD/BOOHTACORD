@@ -9,10 +9,11 @@ import (
 	"github.com/google/uuid"
 	sessionapi "voice-platform/backend/internal/identity/authenticate_session/api"
 	"voice-platform/backend/internal/identity/session"
+	observestate "voice-platform/backend/internal/maintenance/observe_state"
 	eventhub "voice-platform/backend/internal/realtime/event_hub"
 )
 
-func NewHandlerWithAdmission(authenticator sessionapi.Authenticator, revalidationInterval time.Duration, now Clock, newID Identifier, observer ConnectionObserver, events *eventhub.Hub, admission Admission) http.Handler {
+func NewHandlerWithMaintenance(authenticator sessionapi.Authenticator, revalidationInterval time.Duration, now Clock, newID Identifier, observer ConnectionObserver, events *eventhub.Hub, admission Admission, maintenance *observestate.Observer) http.Handler {
 	if now == nil {
 		now = time.Now
 	}
@@ -56,6 +57,10 @@ func NewHandlerWithAdmission(authenticator sessionapi.Authenticator, revalidatio
 			defer observer.RealtimeConnectionClosed()
 		}
 		defer connection.CloseNow()
+		maintenanceSub := subscribeMaintenance(request, maintenance)
+		if maintenanceSub != nil {
+			defer maintenanceSub.Close()
+		}
 		writeContext, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 		var replay []eventhub.Event
@@ -108,10 +113,6 @@ func NewHandlerWithAdmission(authenticator sessionapi.Authenticator, revalidatio
 			observer.ObserveRealtimeConnectionReady(time.Since(acceptedAt))
 		}
 		finishHandshake(nil)
-		streamEvents(connection, authenticator, cookie, revalidationInterval, subscription, events, newID, now, observer, replayedIDs)
+		streamEvents(connection, authenticator, cookie, revalidationInterval, subscription, events, newID, now, observer, replayedIDs, maintenanceSub)
 	})
-}
-
-func presenceEvent(accountID, presence string, newID Identifier, now Clock) eventhub.Event {
-	return eventhub.Event{EventID: newID(), Kind: "presence.changed", OccurredAt: now().UTC(), Payload: map[string]any{"user_id": accountID, "presence": presence}}
 }
