@@ -19,9 +19,7 @@ func NewHandlerWithAdmission(authenticator sessionapi.Authenticator, revalidatio
 	if newID == nil {
 		newID = uuid.NewString
 	}
-	if revalidationInterval <= 0 {
-		revalidationInterval = defaultSessionRevalidationInterval
-	}
+	revalidationInterval = boundedRevalidationInterval(revalidationInterval)
 	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		principal, ok := sessionapi.PrincipalFrom(request.Context())
 		if !ok {

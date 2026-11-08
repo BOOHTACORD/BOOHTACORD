@@ -18,4 +18,11 @@ type ConnectionObserver interface {
 	RealtimeConnectionClosed()
 }
 
-const defaultSessionRevalidationInterval = 15 * time.Second
+const defaultSessionRevalidationInterval = 10 * time.Second
+
+func boundedRevalidationInterval(interval time.Duration) time.Duration {
+	if interval <= 0 || interval > defaultSessionRevalidationInterval {
+		return defaultSessionRevalidationInterval
+	}
+	return interval
+}
