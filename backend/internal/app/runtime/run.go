@@ -93,7 +93,7 @@ func Run(ctx context.Context) (result error) {
 		return err
 	}
 	resources.Add(stopPublic)
-	handler, screenPreviewService, err := routes(database, configuration, events, metrics, updates, usage, previews, screenViewers, publicHandler, maintenanceObserver)
+	handler, screenPreviewService, err := routes(ctx, &resources, database, configuration, events, metrics, updates, usage, previews, screenViewers, publicHandler, maintenanceObserver)
 	if err != nil {
 		return err
 	}

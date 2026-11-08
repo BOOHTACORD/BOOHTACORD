@@ -3,12 +3,14 @@
 package app
 
 import (
+	"context"
 	_ "embed"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"voice-platform/backend/internal/app/lifecycle"
 	clientupdates "voice-platform/backend/internal/client_updates/catalog"
 	runtimeconfig "voice-platform/backend/internal/config/runtime"
 	previewmemory "voice-platform/backend/internal/media/screen_preview/memory"
@@ -32,7 +34,9 @@ func TestComposedRoutesPreserveSessionAndOriginBoundaries(t *testing.T) {
 	defer previews.Close()
 	screenViewers := presencememory.New(nil)
 	defer screenViewers.Close()
-	handler, _, err := routes(nil, configuration, eventhub.New(64), httpmetrics.New(), unavailableUpdates{}, nil, previews, screenViewers, http.NotFoundHandler(), nil)
+	resources := &lifecycle.Stack{}
+	defer resources.Close(context.Background())
+	handler, _, err := routes(context.Background(), resources, nil, configuration, eventhub.New(64), httpmetrics.New(), unavailableUpdates{}, nil, previews, screenViewers, http.NotFoundHandler(), nil)
 	if err != nil {
 		t.Fatal(err)
 	}

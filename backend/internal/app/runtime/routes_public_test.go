@@ -12,6 +12,7 @@ import (
 
 	"github.com/coder/websocket"
 	"github.com/coder/websocket/wsjson"
+	"voice-platform/backend/internal/app/lifecycle"
 	publicrealtime "voice-platform/backend/internal/app/public_realtime"
 	runtimeconfig "voice-platform/backend/internal/config/runtime"
 	previewmemory "voice-platform/backend/internal/media/screen_preview/memory"
@@ -40,7 +41,9 @@ func TestComposedPublicRealtimeRouteDoesNotRequireSession(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer stop(context.Background())
-	handler, _, err := routes(nil, config, eventhub.New(64), httpmetrics.New(), unavailableUpdates{}, nil, previews, viewers, public, nil)
+	resources := &lifecycle.Stack{}
+	defer resources.Close(context.Background())
+	handler, _, err := routes(context.Background(), resources, nil, config, eventhub.New(64), httpmetrics.New(), unavailableUpdates{}, nil, previews, viewers, public, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

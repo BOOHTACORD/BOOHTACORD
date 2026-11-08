@@ -8,6 +8,11 @@ action_catalog:
   verification: backlog/VERIFICATION_TODO.md
   completed: DONE.md
 tasks:
+  - id: RT689-033
+    title: Compose shared roster source into authenticated realtime (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-OPS-01, REQ-SECURITY-01]
+    depends_on: [RT689-030, RT689-032]
+    evidence: [backend/internal/app/voice_realtime/socket_integration_test.go]
   - id: RT689-032
     title: Own shared roster coordinator for process lifecycle (GitHub #689)
     requirements: [REQ-VOICE-01, REQ-OPS-01, REQ-SECURITY-01]

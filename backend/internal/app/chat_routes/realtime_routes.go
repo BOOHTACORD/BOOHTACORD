@@ -31,5 +31,9 @@ func ConfigureChatAndRealtimeRoutesWithMaintenance(mux *http.ServeMux, database 
 }
 
 func ConfigureRealtimeRoutesWithMaintenance(mux *http.ServeMux, sessions authenticatesession.Service, metrics *httpmetrics.Recorder, events *eventhub.Hub, admission connectsession.Admission, maintenance *observestate.Observer) {
-	mux.Handle("GET /api/v1/realtime", sessionapi.Require(sessions)(connectsession.NewHandlerWithMaintenance(sessions, 0, nil, nil, metrics, events, admission, maintenance)))
+	ConfigureRealtimeRoutesWithRoster(mux, sessions, metrics, events, admission, maintenance, nil)
+}
+
+func ConfigureRealtimeRoutesWithRoster(mux *http.ServeMux, sessions authenticatesession.Service, metrics *httpmetrics.Recorder, events *eventhub.Hub, admission connectsession.Admission, maintenance *observestate.Observer, roster connectsession.RosterFactory) {
+	mux.Handle("GET /api/v1/realtime", sessionapi.Require(sessions)(connectsession.NewHandlerWithRoster(sessions, 0, nil, nil, metrics, events, admission, maintenance, roster, 1<<20)))
 }
