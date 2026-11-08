@@ -8,6 +8,11 @@ action_catalog:
   verification: backlog/VERIFICATION_TODO.md
   completed: DONE.md
 tasks:
+  - id: RT689-008
+    title: Public maintenance WebSocket transport with bounded admission (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-OPS-01]
+    depends_on: [RT689-001, RT689-002, RT689-007]
+    evidence: [backend/internal/realtime/connect_public/socket_test.go, backend/internal/realtime/connect_public/admission_test.go]
   - id: RT689-007
     title: Bound public realtime connections globally and per trusted source (GitHub #689)
     requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-OPS-01]
