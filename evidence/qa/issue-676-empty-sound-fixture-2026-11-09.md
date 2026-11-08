@@ -1,0 +1,5 @@
+# Issue 676: empty melody test setup
+
+Source `8306413a84c224a712509d7a059916c95b00bd3c`. On a disposable Android 15 emulator and isolated HTTPS API/PostgreSQL/normalizer, the full-app join-sound test initially reported `FormatException: Некорректный ответ сервера`. A temporary diagnostic logging only HTTP method and status identified `DELETE 404` in the test's unconditional cleanup, before its first upload. The owner had no melody; the API's missing-resource response was expected. The debug instrumentation was removed; no product source changed.
+
+The test setup now checks the current sound before deleting it. The Android debug integration test then passed both with an initially empty account and after a real synthetic melody had been seeded. Both runs performed actual upload, enable, SoLoud preview and delete; the OS picker returned a synthetic WAV. QA-only test copies used a certificate-pinned alternate localhost port and stage checks. The temporary Android app, port reverse and disposable containers were removed. This verifies test setup and the scoped feature scenario; physical acoustic output and the remaining #676 platform/release matrix are not claimed.
