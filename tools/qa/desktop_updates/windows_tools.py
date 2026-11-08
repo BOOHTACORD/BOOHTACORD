@@ -1,8 +1,11 @@
 """Pinned official native dependencies for the disposable Windows API/SFU."""
 import hashlib
+import http.client
 from pathlib import Path, PureWindowsPath
 import shutil
 import stat
+import time
+import urllib.error
 import urllib.request
 import zipfile
 
@@ -48,18 +51,42 @@ def extract_verified(archive, destination, digest):
                     shutil.copyfileobj(source, target, length=1024 * 1024)
 
 
+def download_verified(url, archive, size, digest):
+    if archive.exists():
+        raise FileExistsError(archive)
+    for attempt in range(3):
+        owned = False
+        try:
+            with urllib.request.urlopen(url, timeout=120) as response, archive.open('xb') as output:
+                owned = True
+                count = 0
+                while chunk := response.read(1024 * 1024):
+                    count += len(chunk)
+                    if count > size:
+                        raise ValueError('Native fixture tool exceeds pinned size')
+                    output.write(chunk)
+            if count != size:
+                raise ValueError('Incomplete native fixture tool')
+            with archive.open('rb') as stream:
+                if hashlib.file_digest(stream, 'sha256').hexdigest() != digest:
+                    raise ValueError('Native fixture tool digest mismatch')
+            return
+        except (urllib.error.URLError, TimeoutError, ConnectionError, http.client.IncompleteRead) as error:
+            if owned:
+                archive.unlink(missing_ok=True)
+            if (isinstance(error, urllib.error.HTTPError) and error.code not in (429, 500, 502, 503, 504)) or attempt == 2:
+                raise
+            time.sleep(2 ** (attempt + 1))
+        except Exception:
+            if owned:
+                archive.unlink(missing_ok=True)
+            raise
+
+
 def prepare(root: Path):
     root.mkdir(parents=True, exist_ok=False)
     for name, (url, size, digest) in PACKAGES.items():
         archive = root / (name + '.zip')
-        with urllib.request.urlopen(url, timeout=120) as response, archive.open('xb') as output:
-            count = 0
-            while chunk := response.read(1024 * 1024):
-                count += len(chunk)
-                if count > size:
-                    raise ValueError('Native fixture tool exceeds pinned size')
-                output.write(chunk)
-        if count != size:
-            raise ValueError('Incomplete native fixture tool')
+        download_verified(url, archive, size, digest)
         extract_verified(archive, root / name, digest)
     return root / 'postgres/pgsql/bin', root / 'livekit/livekit-server.exe'

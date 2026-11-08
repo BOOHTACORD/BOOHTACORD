@@ -1,4 +1,6 @@
 import test from 'node:test'
+import { spawnSync } from 'node:child_process'
+import { fileURLToPath } from 'node:url'
 import assert from 'node:assert/strict'
 import { writeFile } from 'node:fs/promises'
 import path from 'node:path'
@@ -8,6 +10,17 @@ import { publishContract } from './publisher.mjs'
 
 const apiRoot='https://api.example.test'
 const source='a'.repeat(40)
+
+test('release CLI fails closed without a token on every platform',()=>{
+  const script=fileURLToPath(new URL('./publish.mjs',import.meta.url))
+  for(const platform of ['android','windows','macos']) {
+    const result=spawnSync(process.execPath,[script,'--platform',platform],{
+      encoding:'utf8',env:{...process.env,GITHUB_TOKEN:''},
+    })
+    assert.equal(result.status,1)
+    assert.match(result.stderr,/GITHUB_TOKEN is required/)
+  }
+})
 const context={repository:'BOOHTACORD/BOOHTACORD',source_revision:source,tag:'android-v1.0.15',execution:{run_id:'12',run_attempt:'1'},
   source_ref:'refs/tags/android-v1.0.15',source_event:'push',trigger_revision:source}
 

@@ -192,6 +192,8 @@ jobs:
           cache-dependency-path: .out/ci/cache-inputs/go.json
       - name: Verify the Windows GUI acceptance result contract
         run: python -m unittest tools.qa.screen_setup.test_windows
+      - name: Verify fixture downloads reject corruption and retry transient failures
+        run: python -m unittest tools.qa.desktop_updates.test_windows_tools
       - name: Exercise recovery and actual GUI/SFU on the same verified native package
         timeout-minutes: 15
         run: python -m tools.ci.windows_gates.acceptance

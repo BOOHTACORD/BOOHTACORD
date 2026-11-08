@@ -23,6 +23,7 @@ import 'package:logging/logging.dart';
 
 import 'package:livekit_client/livekit_client.dart';
 import 'package:livekit_client/src/internal/events.dart';
+import 'package:livekit_client/src/proto/livekit_rtc.pb.dart' as lk_rtc;
 import '../mock/e2e_container.dart';
 import '../mock/test_data.dart';
 import '../mock/websocket_mock.dart';
@@ -52,11 +53,15 @@ void main() {
 
   group('connection', () {
     test('disconnect and connect', () async {
-      await room.disconnect();
+      final disconnecting = room.disconnect();
+      await Future<void>.delayed(Duration.zero);
+      ws.onData(lk_rtc.SignalResponse(leave: lk_rtc.LeaveRequest()).writeToBuffer());
+      await disconnecting;
+      expect(room.connectionState, ConnectionState.disconnected);
       await container.connectRoom();
       expect(room.connectionState, ConnectionState.connected);
       expect(room.localParticipant?.sid, joinResponse.join.participant.sid);
-    }, skip: 'todo');
+    });
   });
 
   group('room updates', () {
