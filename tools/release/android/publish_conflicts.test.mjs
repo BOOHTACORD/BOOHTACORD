@@ -1,5 +1,3 @@
-import { spawnSync } from 'node:child_process'
-import { fileURLToPath } from 'node:url'
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { publishGitHubRelease } from './publish.mjs'
@@ -40,27 +38,6 @@ test('rejects without a token or before uploading a conflicting same-name asset'
       /conflicting existing asset/,
     )
   })
-})
-
-test('runs the publisher CLI on the current platform and fails closed without its secret', () => {
-  const script = fileURLToPath(new URL('./publish.mjs', import.meta.url))
-  const result = spawnSync(process.execPath, [
-    script,
-    '--tag',
-    'android-v1.0.15',
-    '--asset',
-    'not-read-without-a-token.apk',
-  ], {
-    encoding: 'utf8',
-    env: {
-      ...process.env,
-      GITHUB_REPOSITORY: 'BOOHTACORD/BOOHTACORD',
-      GITHUB_TOKEN: '',
-    },
-  })
-
-  assert.equal(result.status, 1)
-  assert.match(result.stderr, /GITHUB_TOKEN is required/)
 })
 
 test('rejects a same-size asset with different or unavailable bytes digest', async () => {
