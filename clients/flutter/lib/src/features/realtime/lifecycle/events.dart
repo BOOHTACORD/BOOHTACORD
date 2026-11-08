@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'controller.dart';
 import '../social_hints/hints.dart';
 import 'maintenance_payload.dart';
+import 'roster_payload.dart';
 import 'resync_payload.dart';
 
 extension RealtimeEvents on RealtimeController {
@@ -42,7 +43,8 @@ extension RealtimeEvents on RealtimeController {
       final id = source['event_id'],
           kind = source['kind'],
           payload = source['payload'];
-      if (isMaintenanceKind(kind) && !validMaintenancePayload(payload)) {
+      if ((isMaintenanceKind(kind) && !validMaintenancePayload(payload)) ||
+          (isRosterKind(kind) && !validRosterPayload(kind, payload))) {
         delivery.reset();
         handleClosed();
         return;
