@@ -21,6 +21,17 @@ test('a wrapped draft follows conversation width changes without typing or a win
  await expect.poll(()=>textarea.evaluate(el=>el.clientHeight)).toBe(initial.height)
  await expect(textarea).toHaveValue(draft)
 })
+test('the mini preview does not add top spacing to the member roster when leaving the voice room',async({page},info)=>{
+ await mount(page)
+ const members=page.getByTestId('members-panel')
+ const before=await members.evaluate(el=>({top:el.getBoundingClientRect().top,heading:el.querySelector('.members-heading')!.getBoundingClientRect().top}))
+ await navigate(page,'text')
+ await expect(page.locator('.voice-room--mini')).toBeVisible()
+ const after=await members.evaluate(el=>({top:el.getBoundingClientRect().top,heading:el.querySelector('.members-heading')!.getBoundingClientRect().top}))
+ expect(after).toEqual(before)
+ await expect(page.locator('.screen-mini-dock')).toBeVisible()
+ await page.screenshot({path:info.outputPath('mini-player-with-roster.png')})
+})
 test('390px at 200% text keeps wrapped DM draft visible beside the automatically retained mini player',async({page},info)=>{
  await mount(page,390,900,200);await navigate(page,'dm');await geometry(page)
  const textarea=page.locator('.composer textarea'),shortDraft='Черновик'

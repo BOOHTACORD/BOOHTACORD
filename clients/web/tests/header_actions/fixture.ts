@@ -42,7 +42,7 @@ createApp({render:()=>h('div',{class:'app-frame'},[h('div',{class:['gc-shell',vi
  view.value==='search' ? h(WorkspaceSearchPanel,{onClose:()=>{view.value='text'}}) : h(WorkspaceMain,{
   accountId:own,activeVoiceChannel:voice,panel:panel.value,channel:view.value==='voice'?voice:text,directMessage:view.value==='dm'?direct:null,
   joinVoice:()=>events.push('join'),leaveVoice:()=>events.push('leave'),activationMode:'VAD',startScreen:()=>events.push('capture'),selectedScreenProfile:'P1080_30',
-  navOpen:nav.value,membersOpen:members.value,showMembers:!search.value,selfDisplayName:'Тестовый клиент',voiceConnection:connection,searchExpanded:search.value,
+  navOpen:nav.value,membersOpen:members.value,showMembers:!search.value,selfDisplayName:'Тестовый клиент',voiceConnection:connection,
   onToggleNav:()=>{nav.value=!nav.value},onToggleMembers:()=>{members.value=!members.value},onOpenSearch:()=>{search.value=!search.value},onClosePanel:()=>{panel.value='none'},
  },{audio:()=>h('p','Содержимое настроек аудио'),profile:()=>h('p','Содержимое профиля'),admin:()=>h('p','Содержимое управления')})
  ]),

@@ -403,8 +403,11 @@
       },
       "issue347": {
         "browser": "clients/web/tests/voice_interface/playwright.config.ts",
+        "focused": [
+          "clients/web/tests/voice_interface/controls.browser.spec.ts"
+        ],
         "actual": "tools/qa/critical_client_acceptance/voice_interface.mjs",
-        "scope": "Shared one-click controls, keyboard and Android touch PTT/denied/reconnect/leaving presentation, stale stream/roster cleanup, compact disclosure. Touch PTT shows its muted idle state in red, returns to neutral while transmitting, explains the hold action in the dock below participants, and transmits only while the dock mic is held; verify real pointer and Android touch input plus release on cancellation, focus loss or dock teardown. Settings do not ask touch devices for a hardware key. Verify the prejoin empty roster is geometrically centered against its card despite compact roster indentation. Muted dock controls retain their solid red state without a red border; keyboard focus remains visibly distinct. At narrow mobile width, reconnecting status wraps into balanced lines. Mobile connected voice shows only the persistent bottom dock; Android Chrome has no persistent screen-capture warning, and tapping its enabled share action shows the unsupported-browser explanation without starting capture. Reduce the listener heading's mobile top inset. Flutter prejoin follows the Web composition across widths: concise title, microphone glyph, unframed roster and concise join actions; card padding and button layout adapt at 600 dp. Review mobile and desktop widths; native runtime and visual acceptance for this change remain NOT_RUN until captured and inspected. Fixture viewport/text/actual zoom plus actual two-client SFU session continuity, TEXT/drawer/resize and leave. No native, hardware capture or media QoE claim."
+        "scope": "Shared one-click controls, keyboard and Android touch PTT/denied/reconnect/leaving presentation, stale stream/roster cleanup, compact disclosure and a four-card maximum per participant row. Touch PTT shows its muted idle state in red, returns to neutral while transmitting, explains the hold action in the dock below participants, and transmits only while the dock mic is held; verify real pointer and Android touch input plus release on cancellation, focus loss or dock teardown. Settings do not ask touch devices for a hardware key. Verify the prejoin empty roster is geometrically centered against its card despite compact roster indentation. Muted dock controls retain their solid red state without a red border; keyboard focus remains visibly distinct. At narrow mobile width, reconnecting status wraps into balanced lines. Mobile connected voice shows only the persistent bottom dock; Android Chrome has no persistent screen-capture warning, and tapping its enabled share action shows the unsupported-browser explanation without starting capture. Reduce the listener heading's mobile top inset. Flutter prejoin follows the Web composition across widths: concise title, microphone glyph, unframed roster and concise join actions; card padding and button layout adapt at 600 dp. Review mobile and desktop widths; native runtime and visual acceptance for this change remain NOT_RUN until captured and inspected. Fixture viewport/text/actual zoom plus actual two-client SFU session continuity, TEXT/drawer/resize and leave. No native, hardware capture or media QoE claim."
       },
       "flutter_web_parity_499_502": {
         "focused": [
@@ -932,7 +935,7 @@
         "focused": [
           "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts"
         ],
-        "scope": "Mouse movement reveals overlay actions that fade and slide down after inactivity; keyboard focus and touch remain accessible. The primary overlay action enters/exits browser fullscreen without enabling app-area expansion; the separate menu action expands to the app area. Viewer controls also stop viewing a remote screen share."
+        "scope": "Mouse movement reveals overlay actions that fade and slide down after inactivity; keyboard focus and touch remain accessible. The primary overlay action enters/exits browser fullscreen without enabling app-area expansion; the separate menu action expands to the app area. Viewer controls also stop viewing a remote screen share and expose the current voice microphone mute action in browser fullscreen."
       },
       "flutter_transient_controls": {
         "focused": [
@@ -1022,7 +1025,10 @@
       "issue349": {
         "browser": "clients/web/tests/mini_player/playwright.config.ts",
         "actual": "tools/qa/critical_client_acceptance/mini_player_ui.mjs",
-        "scope": "Automatically keeps a selected stream in the dock when navigating from its active VOICE channel to TEXT/DM/settings, with no pin/unpin control. TEXT/DM simultaneous typing, settings, pause/mute/expand/close; same media element/track/peer identity and subscription counters through actual API/SFU. Leaving, stream end and logout clear the viewer. Synthetic canvas/audio only; no hardware/native/QoE claim."
+        "focused": [
+          "clients/web/tests/mini_player/mini.browser.spec.ts"
+        ],
+        "scope": "Automatically keeps a selected stream in the dock when navigating from its active VOICE channel to TEXT/DM/settings, with no pin/unpin control. TEXT/DM simultaneous typing, settings, pause/mute/expand/close; the dock must not reserve space above the separate member roster; same media element/track/peer identity and subscription counters through actual API/SFU. Leaving, stream end and logout clear the viewer. Synthetic canvas/audio only; no hardware/native/QoE claim."
       },
       "issue288": {
         "native": "tools/qa/screen_setup/windows.py",
@@ -1630,6 +1636,7 @@
       "clients/flutter/lib/src/features/direct/send_state/**",
       "clients/flutter/lib/src/features/direct/edit_state/delete.dart",
       "clients/web/src/search/*",
+      "clients/web/src/validation/unicode_limits/unicode_forms.spec.ts",
       "clients/flutter/lib/src/screens/workspace_ui/message_action_menu/*",
       "clients/flutter/lib/src/screens/workspace_ui/direct_message_action_menu/*",
       "clients/web/src/conversation/history_window/*",
@@ -1706,9 +1713,12 @@
           "clients/web/src/conversation/history_window/follow_latest.spec.ts",
           "clients/web/src/conversation/text_history_pagination.spec.ts",
           "clients/web/src/direct_message/direct_message_history_pagination.spec.ts",
-          "clients/web/src/conversation/first_unread_presentation.spec.ts"
+          "clients/web/src/conversation/first_unread_presentation.spec.ts",
+          "clients/web/src/search/context_timeline/local_search.spec.ts",
+          "clients/web/src/conversation/conversation_overflow_menu.spec.ts",
+          "clients/web/tests/chat_rhythm/retention.browser.spec.ts"
         ],
-        "scope": "First unread is marked only after it intersects the visible message viewport; local/global search, file and mention targets open in the normal conversation and flash briefly; sending a message scrolls it into view. Authenticated desktop/mobile real-stack acceptance includes read-cursor SQL checks, search/file/mention routes and send follow; source-resolution screenshot review is recorded separately."
+        "scope": "First unread is marked only after it intersects the visible message viewport; global search, file and mention targets open in the normal conversation and flash briefly; channel and DM reading positions restore silently after navigation even when their anchor must be loaded around; per-conversation mini search is absent; sending a message scrolls it into view. Authenticated desktop/mobile real-stack acceptance includes read-cursor SQL checks, search/file/mention routes and send follow; source-resolution screenshot review is recorded separately."
       },
       "composer_text_scale": {
         "browser_test": "clients/web/tests/accessibility/composer_text_scale.browser.spec.ts",
@@ -2027,7 +2037,10 @@
       "issue350": {
         "browser": "clients/web/tests/member_roster/playwright.config.ts",
         "actual": "tools/qa/client_lifecycle/member_profile.mjs",
-        "scope": "Production roster/profile with 30 synthetic members; long guild and voice participant names stay inside the panel width without horizontal overflow, three presence groups, voice status/volume/admin visibility, live guild-wide voice-channel captions with a speaker-to-screen-share icon switch, pagination, empty/loading/retry/denied, keyboard/touch and focus, 320/390/1024/1440, root text and actual browser zoom 200%. Real Go API member-to-DM opening and actual SFU voice volume with MEMBER kick denial. No physical screen reader, native or media quality claim."
+        "focused": [
+          "clients/web/tests/member_roster/roster.browser.spec.ts"
+        ],
+        "scope": "Production roster/profile with 30 synthetic members; long guild and voice participant names stay inside the panel width without horizontal overflow, three presence groups, voice status/volume/admin visibility, live guild-wide voice-channel captions with a speaker-to-screen-share icon switch, pagination, empty/loading/retry/denied, keyboard/touch and focus, text-channel hide/reopen controls, 320/390/1024/1440, root text and actual browser zoom 200%. Real Go API member-to-DM opening and actual SFU voice volume with MEMBER kick denial. No physical screen reader, native or media quality claim."
       },
       "mobile_account_footer": {
         "browser": "clients/web/tests/responsive_shell/playwright.config.ts",

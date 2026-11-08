@@ -4,14 +4,15 @@ import { describe, expect, it } from 'vitest'
 function source(path: string): string { return readFileSync(new URL(path, import.meta.url), 'utf8') }
 
 describe('voice room header actions', () => {
-  it('opens the existing workspace search without replacing the selected media stream', () => {
+  it('keeps message search in the workspace launcher rather than the conversation header', () => {
     const pane = source('../conversation/ConversationPane.vue')
     const main = source('../workspace/WorkspaceMain.vue')
     const app = source('../workspace/WorkspaceApp.vue')
-    expect(pane).toContain("emit('openSearch')")
+    expect(pane).not.toContain('Найти сообщение')
+    expect(main).not.toContain('openSearch')
+    expect(app).toContain('<SearchLauncher')
     expect(pane).toContain('<ConversationOverflowMenu')
-    expect(main).toContain('@open-search="emit(\'openSearch\')"')
-    expect(app).toContain('@open-search="requestPanel(\'search\')"')
+    expect(app).toContain('@open="requestPanel(\'search\')"')
   })
 
   it('labels the voice menu and uses a participant icon for the member toggle', () => {

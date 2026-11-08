@@ -1,6 +1,6 @@
 import { nextTick, ref } from 'vue'
 
-export function useConversationOverflowMenu(openSearchAction: () => void, toggleMembersAction: () => void) {
+export function useConversationOverflowMenu(toggleMembersAction: () => void) {
   const expanded = ref(false)
   const root = ref<HTMLElement | null>(null)
   const trigger = ref<HTMLButtonElement | null>(null)
@@ -53,8 +53,7 @@ export function useConversationOverflowMenu(openSearchAction: () => void, toggle
     items[next]?.focus()
   }
 
-  function openSearch(): void { close(); openSearchAction() }
   function toggleMembers(): void { close(true); toggleMembersAction() }
 
-  return { close, expanded, root, trigger, menu, toggle, onOutside, onFocusOut, onKeys, openSearch, toggleMembers }
+  return { close, expanded, root, trigger, menu, toggle, onOutside, onFocusOut, onKeys, toggleMembers }
 }

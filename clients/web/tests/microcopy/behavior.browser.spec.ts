@@ -170,9 +170,8 @@ test.describe('touch', () => {
     await expect(page.getByText('Проверка локальная: она не подтверждает слышимость у другого участника.', { exact: true })).toBeVisible()
     await page.goto('/tests/microcopy/fixture.html?surface=chat')
     await page.getByRole('button', { name: 'Другие действия', exact: true }).tap()
-    await expect(page.getByRole('menuitem', { name: 'Найти сообщение' })).toBeVisible()
-    await page.getByRole('menuitem', { name: 'Найти сообщение' }).tap()
-    await expect(page.locator('.conversation-tools')).toBeVisible()
+    await expect(page.getByRole('menuitem', { name: 'Найти сообщение' })).toHaveCount(0)
+    await expect(page.getByRole('searchbox', { name: 'Поиск сообщений' })).toHaveCount(0)
   })
 })
 

@@ -12,6 +12,7 @@ import { useDirectMessageStore } from './direct_message_store'
 import { navigateToReplyTarget } from '../conversation/reply_context_navigation'
 import { useDirectMessageScrollAnchor } from './history_scroll_anchor'
 import { scrollToMessageTarget } from '../conversation/message_target_navigation'
+import { restore, type Position } from '../conversation/context_position/dom'
 
 const props = defineProps<{ directMessageId: string; session: CurrentSession | null; otherParticipantId: string; otherParticipantDisplayName: string; emptyText?: string }>()
 const emit = defineEmits<{ reply: [message: DirectMessageHistoryItem]; retry: [message: DirectMessageHistoryItem]; replyContext: [messageId: string]; viewportChange: [] }>()
@@ -38,7 +39,14 @@ watch([() => props.directMessageId, () => store.directMessageId, () => store.his
   if (version === announcementVersion) announcement.value = text
 }, { immediate: true, flush: 'post' })
 onMounted(() => { if (list.value) list.value.scrollTop = list.value.scrollHeight; scrollAnchor.capture(); emit('viewportChange') })
-watch(() => props.directMessageId, async () => { jumpCount.value = 0; await nextTick(); if (list.value) list.value.scrollTop = list.value.scrollHeight; scrollAnchor.capture(); emit('viewportChange') })
+watch(() => props.directMessageId, async () => {
+  jumpCount.value = 0
+  await nextTick()
+  if (targetNavigationDepth) { scrollAnchor.capture(); emit('viewportChange'); return }
+  if (list.value) list.value.scrollTop = list.value.scrollHeight
+  scrollAnchor.capture()
+  emit('viewportChange')
+})
 watch([() => store.historyLoaded, latestServerId], async ([loaded, newest], [wasLoaded, previous]) => {
   const viewport = list.value
   if (!newest || !viewport || store.directMessageId !== props.directMessageId) return
@@ -115,9 +123,17 @@ async function showMessage(messageId: string): Promise<boolean> {
   if (shown) { scrollAnchor.pinMessage(messageId); emit('viewportChange') }
   return shown
 }
+async function restoreMessagePosition(position: Position): Promise<boolean> {
+  await nextTick()
+  await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())))
+  if (!restore(list.value, position)) return false
+  scrollAnchor.pinMessage(position.id, position.offset)
+  emit('viewportChange')
+  return true
+}
 function beginTargetNavigation(): void { targetNavigationDepth++ }
 function endTargetNavigation(): void { targetNavigationDepth = Math.max(0, targetNavigationDepth - 1) }
-defineExpose({ showMessage, beginTargetNavigation, endTargetNavigation })
+defineExpose({ showMessage, restoreMessagePosition, beginTargetNavigation, endTargetNavigation })
 </script>
 
 <template>

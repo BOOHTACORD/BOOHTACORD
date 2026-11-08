@@ -91,6 +91,17 @@ test('connected room header uses the singular participant form when only the loc
   await page.screenshot({ path: info.outputPath('solo-channel-header.png') })
 })
 
+test('connected voice participant cards never exceed four columns on wide screens', async ({ page }) => {
+  await open(page, 1920)
+  await patch(page, { voiceVolumeParticipants: Array.from({ length: 11 }, (_, index) => ({
+    id: `peer-${index}`, accountId: `peer-${index}`, name: `Участник ${index + 1}`,
+    microphoneMuted: false, speaking: false, volume: 100,
+  })) })
+  const grid = page.getByTestId('voice-participants')
+  await expect(grid.getByTestId('participant-card')).toHaveCount(12)
+  await expect.poll(() => grid.evaluate(element => getComputedStyle(element).gridTemplateColumns.trim().split(/\s+/).length)).toBeLessThanOrEqual(4)
+})
+
 test('room and dock share icons, named states and keyboard actions without opening details', async ({ page }) => {
   await open(page)
   for (const scope of [page.locator('.room-wrap'), page.getByTestId('voice-dock')]) {

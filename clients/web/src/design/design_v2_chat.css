@@ -7,6 +7,8 @@
   .main { overflow: visible; }
   .text-conversation > .conversation-header { position: relative; z-index: 1; width: calc(100% + var(--gc-layout-aside-wide)); }
 }
+.text-conversation > .conversation-header:has(.conversation-overflow--expanded),
+.direct-message-conversation > .conversation-header:has(.conversation-overflow--expanded) { position: relative; z-index: 4; }
 .text-conversation .composer-wrap { padding: 8px 24px 16px; }
 .text-conversation .composer { min-height: 52px; }
 .text-conversation .reply-target { display: flex; min-height: 41px; flex: 0 0 100%; align-items: center; justify-content: space-between; margin: 0; }

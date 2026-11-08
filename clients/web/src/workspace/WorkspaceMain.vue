@@ -15,7 +15,6 @@ type VoiceConnection = ReturnType<typeof useVoiceConnectionStore>
 type WorkspaceVoiceControls = ReturnType<typeof useWorkspaceVoiceControls>
 
 defineProps<{
-  searchExpanded?: boolean
   accountId: string
   activeVoiceChannel: TopologyChannel | null
   panel: 'none' | 'admin' | 'audio' | 'profile'
@@ -35,7 +34,7 @@ defineProps<{
   voiceRosterError?: string | null
 }>()
 const miniPlayerTarget = shallowRef<HTMLElement | null>(null)
-const emit = defineEmits<{ openSearch: []; returnVoice: [channelId: string]; toggleNav: []; toggleMembers: []; closePanel: [panel: 'admin' | 'audio' | 'profile'] }>()
+const emit = defineEmits<{ returnVoice: [channelId: string]; toggleNav: []; toggleMembers: []; closePanel: [panel: 'admin' | 'audio' | 'profile'] }>()
 </script>
 
 <template>
@@ -57,7 +56,7 @@ const emit = defineEmits<{ openSearch: []; returnVoice: [channelId: string]; tog
   <ConversationPane
     v-show="panel === 'none'"
     :mini-player-target="miniPlayerTarget"
-    :search-expanded="searchExpanded" :account-id="accountId"
+    :account-id="accountId"
     :active-voice-channel="activeVoiceChannel"
     :visible="panel === 'none'"
     :channel="channel"
@@ -111,7 +110,6 @@ const emit = defineEmits<{ openSearch: []; returnVoice: [channelId: string]; tog
     @transfer="joinVoice($event, true)"
     @toggle-nav="emit('toggleNav')"
     @toggle-members="emit('toggleMembers')"
-    @open-search="emit('openSearch')"
   />
   </div>
 </template>

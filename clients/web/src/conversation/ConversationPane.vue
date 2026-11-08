@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { vActionHint } from '../shared/action_hint/directive'
 import type { VoiceDisconnectNotice } from '../voice/disconnect_notice/model'
 import DisconnectNotice from '../voice/disconnect_notice/Notice.vue'
 import { computed } from 'vue'
@@ -22,7 +21,6 @@ import TextConversation from './TextConversation.vue'
 import WorkspaceHeaderActions from '../shared/workspace_header/WorkspaceHeaderActions.vue'
 import ConversationOverflowMenu from './ConversationOverflowMenu.vue'
 const props = withDefaults(defineProps<{
-  searchExpanded?: boolean
   accountId: string; activeVoiceChannel: TopologyChannel | null
   miniPlayerTarget?: HTMLElement | null
   visible: boolean
@@ -68,8 +66,10 @@ const props = withDefaults(defineProps<{
   selectedScreenProfile: 'P1080_30',
   selectedScreenStreamId: null,
 })
-const emit = defineEmits<{ clearScreenStream: []; join: [channelId: string, transfer?: boolean, joinMode?: VoiceJoinMode]; leave: []; openSearch: []; refreshScreen: []; retryScreenStream: [automatic?: boolean]; returnVoice: [channelId: string]; selectScreenStream: [id: string, video: HTMLVideoElement | null, audio: HTMLAudioElement | null]; setParticipantVolume: [id: string, percent: number]; setScreenVolume: [percent: number]; toggleScreenAudio: []; startScreen: [profile: ScreenProfile]; stopScreen: []; transfer: [channelId: string]; toggleNav: []; toggleMembers: [] }>()
+const emit = defineEmits<{ clearScreenStream: []; join: [channelId: string, transfer?: boolean, joinMode?: VoiceJoinMode]; leave: []; refreshScreen: []; retryScreenStream: [automatic?: boolean]; returnVoice: [channelId: string]; selectScreenStream: [id: string, video: HTMLVideoElement | null, audio: HTMLAudioElement | null]; setParticipantVolume: [id: string, percent: number]; setScreenVolume: [percent: number]; toggleScreenAudio: []; startScreen: [profile: ScreenProfile]; stopScreen: []; transfer: [channelId: string]; toggleNav: []; toggleMembers: [] }>()
 const selectedScreenProfile = computed(() => props.selectedScreenProfile)
+const microphoneActionLabel = computed(() => props.activationMode === 'PTT' ? 'Микрофон управляется push-to-talk' : props.selfMicrophoneUnavailable ? 'Повторить доступ к микрофону' : props.selfMicrophoneMuted || props.selfDeafened ? 'Включить микрофон' : 'Выключить микрофон')
+const microphoneActionDisabled = computed(() => props.activationMode === 'PTT' || props.selfDeafened || props.deafenChanging || props.voiceState === 'JOINING' || props.voiceState === 'RECONNECTING' || props.voiceState === 'LEAVING')
 const { screenExpanded,
   voiceChannel, miniVisible, keepVoiceRoom, selectedScreenName, screenViewerRef, watchScreen, dismissLocalPreview } = useConversationScreenState(props)
 function clearScreenPreview(): void {
@@ -99,8 +99,7 @@ function clearScreenPreview(): void {
             <span class="conversation-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 4V5L7 9H3ZM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11" /></svg></span>
             <div class="main-title"><h2 :title="voiceChannel.name">{{ voiceChannel.name }}</h2><small>{{ voiceIsActive && voiceState === 'LEAVING' ? 'Выходим…' : selectedScreenName && voiceIsActive ? `${voiceVolumeParticipants.length + 1} участника · ${screenViewerCards.length} трансляции` : voiceIsActive ? `${voiceRoomSummary(voiceVolumeParticipants.length + 1, 0)} в голосовом канале` : voiceRosterError ? 'Голосовой канал · состав недоступен' : voiceRoster ? voiceRoster.participants.length ? `Голосовой канал · сейчас: ${voiceRoster.participants.length}` : 'Голосовой канал · пока пусто' : 'Голосовой канал · проверяем состав' }}</small></div>
             <WorkspaceHeaderActions :members-expanded="membersOpen" :nav-expanded="navOpen" :show-members="showMembers" @toggle-members="emit('toggleMembers')" @toggle-navigation="emit('toggleNav')">
-              <button v-action-hint class="header-action" type="button" aria-label="Найти сообщение" :aria-expanded="Boolean(searchExpanded)" aria-controls="search-aside-panel" @click="emit('openSearch')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg></button>
-              <template #overflow><ConversationOverflowMenu :search-expanded="searchExpanded" search-controls="search-aside-panel" menu-label="Действия голосового канала" :show-members="showMembers" :members-open="membersOpen" @search="emit('openSearch')" @toggle-members="emit('toggleMembers')" /></template>
+              <template #overflow><ConversationOverflowMenu menu-label="Действия голосового канала" :show-members="showMembers" :members-open="membersOpen" @toggle-members="emit('toggleMembers')" /></template>
             </WorkspaceHeaderActions>
           </header>
           <div v-if="voiceChannel.admissionClosed" class="state state-error" :role="voiceDisconnectNotice ? undefined : 'status'">
@@ -110,8 +109,8 @@ function clearScreenPreview(): void {
           </div>
           <template v-if="activeVoiceChannel?.id === voiceChannel.id && voiceState !== 'LEAVING' && (screenViewerCards.length || selectedScreenStreamId || screenViewerEnded)">
             <ScreenViewer
-              ref="screenViewerRef" v-show="selectedScreenStreamId !== null" :audio-muted="screenAudioMuted" :cards="screenViewerCards" :deafened="selfDeafened" :ended="screenViewerEnded" :error="screenViewerError" :expanded="screenExpanded" :mini="miniVisible" :own-screen-sharing="screenState === 'SHARING'" :participants="voiceVolumeParticipants" :screen-watcher-ids="screenWatcherIds" :self-account-id="accountId" :self-microphone-muted="selfMicrophoneMuted" :self-microphone-unavailable="selfMicrophoneUnavailable" :self-name="selfDisplayName" :self-speaking="selfSpeaking" :selected-audio-volume="selectedScreenAudioVolume" :selected-id="selectedScreenStreamId"
-              @clear="clearScreenPreview" @retry="emit('retryScreenStream', $event)" @select="(id, video, audio) => emit('selectScreenStream', id, video, audio)" @set-audio-volume="emit('setScreenVolume', $event)" @toggle-audio="emit('toggleScreenAudio')"
+              ref="screenViewerRef" v-show="selectedScreenStreamId !== null" :audio-muted="screenAudioMuted" :cards="screenViewerCards" :deafened="selfDeafened" :ended="screenViewerEnded" :error="screenViewerError" :expanded="screenExpanded" :microphone-action-disabled="microphoneActionDisabled" :microphone-action-label="microphoneActionLabel" :mini="miniVisible" :own-screen-sharing="screenState === 'SHARING'" :participants="voiceVolumeParticipants" :screen-watcher-ids="screenWatcherIds" :self-account-id="accountId" :self-microphone-muted="selfMicrophoneMuted" :self-microphone-unavailable="selfMicrophoneUnavailable" :self-name="selfDisplayName" :self-speaking="selfSpeaking" :selected-audio-volume="selectedScreenAudioVolume" :selected-id="selectedScreenStreamId"
+              @clear="clearScreenPreview" @retry="emit('retryScreenStream', $event)" @select="(id, video, audio) => emit('selectScreenStream', id, video, audio)" @set-audio-volume="emit('setScreenVolume', $event)" @toggle-audio="emit('toggleScreenAudio')" @toggle-microphone="props.toggleMicrophone"
               @change-quality="emit('startScreen', screenProfile ?? selectedScreenProfile)" @stop-screen="emit('stopScreen')"
               :source-diagnostics="screenDiagnostics" @update:expanded="screenExpanded = $event"
             />
