@@ -23,6 +23,8 @@ type State struct {
 	ObservedAt  time.Time
 	Unavailable bool
 	Roster      roster.Result
+	owner       *account
+	epoch       uint64
 }
 type job struct {
 	account *account

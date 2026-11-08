@@ -75,7 +75,7 @@ func (c *Coordinator) finish(work job, result roster.Result, encoded []byte, ava
 	if available {
 		a.last = encoded
 	}
-	a.state = State{Generation: c.generation, Revision: a.revision, ObservedAt: time.Now().UTC(), Unavailable: !available, Roster: result}
+	a.state = State{Generation: c.generation, Revision: a.revision, ObservedAt: time.Now().UTC(), Unavailable: !available, Roster: result, owner: a, epoch: work.epoch}
 	for sub := range a.subs {
 		if !changed && sub.initialized {
 			continue
