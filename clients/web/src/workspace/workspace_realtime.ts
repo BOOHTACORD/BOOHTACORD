@@ -27,25 +27,12 @@ import { useContextHints } from '../search/context_timeline/hints'
 import { useMemberDirectory } from '../identity/member_directory'
 import { reconcilePresenceMembers } from './presence_members'
 import type { WorkspaceRealtimeStores } from './protected_refresh/types'
+import { createAuthenticatedMaintenance } from '../maintenance/auth_owner'
+import { createMaintenanceState } from '../maintenance/state'
+import { checked, refreshProtectedState } from './protected_refresh/full'
 export type { WorkspaceRealtimeStores } from './protected_refresh/types'
-async function checked(refresh: () => Promise<void>, getError: () => string | null): Promise<void> {
-  await refresh()
-  if (getError()) throw new Error(getError()!)
-}
-export async function refreshProtectedState(stores: WorkspaceRealtimeStores): Promise<void> {
-  const { topology, messages, directMessages } = stores
-  const textActive = Boolean(messages.channelId && !directMessages.directMessageId)
-  const directActive = Boolean(directMessages.directMessageId)
-  await Promise.all([
-    checked(() => topology.refresh(), () => topology.error),
-    (async () => {
-      await checked(() => directMessages.refreshNavigation(), () => directMessages.error)
-      if (directActive) await checked(() => directMessages.refreshHistory(), () => directMessages.error)
-    })(),
-    textActive ? checked(() => messages.refresh(), () => messages.error) : Promise.resolve(),
-  ])
-}
-export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtime: ReturnType<typeof useRealtimeStore>, presence: ReturnType<typeof useGuildPresence>, voice: ReturnType<typeof useVoiceConnectionStore>, accountID: string, onSessionExpired: () => void) {
+export { refreshProtectedState } from './protected_refresh/full'
+export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtime: ReturnType<typeof useRealtimeStore>, presence: ReturnType<typeof useGuildPresence>, voice: ReturnType<typeof useVoiceConnectionStore>, accountID: string, onSessionExpired: () => void, maintenanceState = createMaintenanceState()) {
   let gate = createProtectedRefreshGate()
   const original = stores
   stores = coalesceStores(original, gate)
@@ -60,11 +47,13 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
   }, undefined, undefined, { visibility: screenPreviewCardVisibility })
   let active = false
   let lifecycle = 0
+  const maintenance = createAuthenticatedMaintenance(maintenanceState)
   const contextHints = useContextHints()
   const deliver = (event: RealtimeEvent, notify = true) =>
     active ? Promise.all([onEvent(event, notify), contextHints.apply(event)]).then(() => undefined) : Promise.resolve()
   function onEvent(event: RealtimeEvent, notify = true): void | Promise<void> {
     if (!active) return
+    if (maintenance.accept(event)) return
     const eventLifecycle = lifecycle
     if (event.kind === 'notification.queued' || event.kind === 'notification.preferences_changed') return acceptNotificationHint(event,accountID).then(()=>undefined)
     if (presence.acceptRealtimeEvent(event)) {
@@ -113,6 +102,8 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
         onRecovery: () => processRealtime([],()=>Promise.all([refreshProtectedState(stores), permissions.refresh(), guildProfile.refresh(), voice.refreshScreenWatchers(), contextHints.recover()]).then(() => undefined)),
         checkSession: async () => (await loadCurrentSession())?.accountId === accountID,
         onSessionExpired,
+        onSocketStart: maintenance.start,
+        onSocketEnd: maintenance.stop,
       })
     },
     stop(): void { active = false; lifecycle += 1; contextHints.reset(); previews.clear(); gate.close(); realtime.disconnect(); notifications.stop() },

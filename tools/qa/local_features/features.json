@@ -165,6 +165,9 @@
       "clients/web/src/channel/topology_store.ts",
       "clients/web/src/channel/topology_store.spec.ts",
       "clients/web/src/workspace/WorkspaceApp.vue",
+      "clients/web/src/workspace/workspace_realtime.ts",
+      "clients/web/src/workspace/workspace_maintenance.spec.ts",
+      "clients/web/src/workspace/protected_refresh/**",
       "clients/web/src/request_feedback.ts",
       "tools/qa/local_features/features.json",
       "clients/flutter/lib/src/features/realtime/**",
@@ -236,6 +239,10 @@
       "issue689_web_socket_lifecycle": {
         "focused": "clients/web/src/realtime/socket_lifecycle.spec.ts",
         "scope": "Authenticated socket attempts signal start and end across failure, retry and disconnect, allowing state owners to discard stale callbacks; real browser acceptance remains separate."
+      },
+      "issue689_web_authenticated_maintenance": {
+        "focused": ["clients/web/src/maintenance/auth_owner.spec.ts", "clients/web/src/workspace/workspace_maintenance.spec.ts"],
+        "scope": "Negotiated authenticated maintenance updates feature state without unrelated protected refreshes; guest handoff and browser runtime remain separate acceptance work."
       },
       "issue689_resync": {
         "focused": "clients/flutter/test/realtime_scope/resync_envelope_test.dart",

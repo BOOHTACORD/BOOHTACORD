@@ -56,7 +56,7 @@ export function parseRealtimeEvent(value: unknown): RealtimeEvent {
 export interface RealtimeLocation { protocol: string; host: string }
 
 export function realtimeURL(location: RealtimeLocation = window.location, after?: string): string {
-  const base = `${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}${apiBaseUrl}/realtime?capabilities=role_permissions_v1,flow_tracing_v1,screen_previews_v1,screen_viewers_v1,message_social_v1,notifications_v1`
+  const base = `${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}${apiBaseUrl}/realtime?capabilities=role_permissions_v1,flow_tracing_v1,screen_previews_v1,screen_viewers_v1,message_social_v1,notifications_v1,maintenance_v1`
   return after ? `${base}&after=${encodeURIComponent(after)}` : base
 }
 

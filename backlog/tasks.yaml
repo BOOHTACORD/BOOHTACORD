@@ -8,6 +8,11 @@ action_catalog:
   verification: backlog/VERIFICATION_TODO.md
   completed: DONE.md
 tasks:
+  - id: RT689-016
+    title: Web authenticated maintenance dispatch through existing socket (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-UI-01, REQ-QUALITY-01]
+    depends_on: [RT689-015]
+    evidence: [clients/web/src/maintenance/auth_owner.spec.ts]
   - id: RT689-015
     title: Web authenticated socket attempt lifecycle callbacks (GitHub #689)
     requirements: [REQ-ARCH-01, REQ-UI-01, REQ-QUALITY-01]
