@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { voiceHeaderSearch } from '../client_lifecycle/header_actions.mjs'
+import { voiceWorkspaceSearch } from '../client_lifecycle/header_actions.mjs'
 import { liveAudioSettings } from '../client_lifecycle/settings_hierarchy.mjs'
 import { channel, expect } from '../client_lifecycle/request.mjs'
 
@@ -35,7 +35,7 @@ export async function voiceInterface(page, input, report) {
   const checkTransport = async () => {
     assert.equal(await page.evaluate(() => window.__qaVoicePeers.length > 0 && window.__qaVoicePeers.every(peer => window.__qaPeers.includes(peer) && peer.connectionState === 'connected') && window.__qaPeers.filter(peer => peer.connectionState === 'connected').length === window.__qaVoicePeers.length), true)
   }
-  await voiceHeaderSearch(page, input, report)
+  await voiceWorkspaceSearch(page, input, report)
   await checkTransport()
   console.log('stage=voice-interface-search-tested')
   Object.assign(report.header_actions.VOICE, { same_voice_transport:true })

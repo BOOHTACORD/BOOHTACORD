@@ -29,22 +29,20 @@ export async function conversationHeaders(page, input, report, kind) {
   console.log(`stage=header-${kind.toLowerCase()}-accepted`)
 }
 
-export async function voiceHeaderSearch(page, input, report) {
+export async function voiceWorkspaceSearch(page, input, report) {
   const header=page.locator('.voice-room > .conversation-header')
   const title=await header.locator('h2').textContent()
-  const search=header.getByRole('button',{name:'Найти сообщение',exact:true})
-  await expect(search).toHaveAttribute('aria-expanded','false')
-  await search.click(); await expect(search).toHaveAttribute('aria-expanded','true')
-  await expect(search).toHaveAttribute('aria-controls','search-aside-panel')
+  await expect(header.getByRole('button',{name:'Найти сообщение',exact:true})).toHaveCount(0)
+  await expect(header.getByRole('menuitem',{name:'Найти сообщение',exact:true})).toHaveCount(0)
+  const search=page.locator('.guild-search-button')
+  await expect(search).toHaveCount(1)
+  await search.click()
   const aside=page.getByTestId('search-aside-panel')
   await expect(aside).toBeVisible()
-  await aside.getByRole('button',{name:'Каналы и люди',exact:true}).click()
-  await page.screenshot({path:input.directory+'/header-voice-search-navigation.png'})
   await aside.getByRole('button',{name:'Закрыть поиск',exact:true}).click()
   await expect(aside).toHaveCount(0)
-  await expect(search).toHaveAttribute('aria-expanded','false')
   await expect(header.locator('h2')).toHaveText(title)
   report.header_actions ??= {}
-  report.header_actions.VOICE={ external_search_state:true, navigation_search_close:true, same_selected_voice_channel:true }
-  console.log('stage=header-voice-search-accepted')
+  report.header_actions.VOICE={ conversation_search_removed:true, workspace_search_retained:true, same_selected_voice_channel:true }
+  console.log('stage=header-voice-workspace-search-accepted')
 }

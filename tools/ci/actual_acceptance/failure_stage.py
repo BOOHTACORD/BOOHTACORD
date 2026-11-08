@@ -11,7 +11,7 @@ STAGES = frozenset({
     'admin-screen-ready', 'browser-api-ready-after-registration',
     'critical-burst-active-at-bottom', 'critical-burst-active-channel-confirmed', 'critical-burst-hidden-channel-created',
     'critical-burst-hidden-channel-selected', 'critical-burst-hidden-channel-visible',
-    'critical-burst-navigation-open', 'header-voice-search-accepted',
+    'critical-burst-navigation-open', 'header-voice-workspace-search-accepted',
     'isolated-tls-api-ready', 'member-profile-text-dm-accepted',
     'member-profile-voice-acl-accepted', 'mini-player-actual-start',
     'mini-player-auto-retained-logout-clean', 'mini-player-controls-and-cleanup-accepted',
