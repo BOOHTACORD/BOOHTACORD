@@ -11,6 +11,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'three_bugs/peer.dart';
+import 'three_bugs/welcome_capture.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -30,8 +31,14 @@ void main() {
     final preferences = await SharedPreferences.getInstance();
     await preferences.setString('server_url', origin);
     final state = AppState(ApiClient());
+    final captureKey = GlobalKey();
     addTearDown(state.dispose);
-    await tester.pumpWidget(BoohtacordApp(state: state));
+    await tester.pumpWidget(
+      RepaintBoundary(
+        key: captureKey,
+        child: BoohtacordApp(state: state),
+      ),
+    );
     await tester.runAsync(state.initialize);
     await tester.runAsync(
       () => state.authenticate('qa_admin', password, register: false),
@@ -93,6 +100,10 @@ void main() {
     }
     expect(state.members.any((member) => member.id == peer.id), isFalse);
     expect(resolved, isTrue);
+    const capturePath = String.fromEnvironment('QA_SCREENSHOT_PATH');
+    if (capturePath.isNotEmpty) {
+      await tester.runAsync(() => captureWelcome(captureKey, capturePath));
+    }
     debugPrint('WELCOME_FULL_WORKSPACE_PASS uncached_author=true');
   }, timeout: const Timeout(Duration(minutes: 8)));
 }
