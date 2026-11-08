@@ -22,6 +22,7 @@ import (
 	clientupdates "voice-platform/backend/internal/client_updates/catalog"
 	runtimeconfig "voice-platform/backend/internal/config/runtime"
 	observeusage "voice-platform/backend/internal/identity/observe_usage"
+	observestate "voice-platform/backend/internal/maintenance/observe_state"
 	authorizelivekitsignal "voice-platform/backend/internal/media/authorize_livekit_signal"
 	screenpreview "voice-platform/backend/internal/media/screen_preview"
 	presencememory "voice-platform/backend/internal/media/screen_viewer_presence/memory"
@@ -36,7 +37,7 @@ import (
 	soundpostgres "voice-platform/backend/internal/voice/sound_preferences/postgres"
 )
 
-func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *eventhub.Hub, metrics *httpmetrics.Recorder, updates clientupdates.Provider, usage *observeusage.Tracker, previews screenpreview.Store, screenViewers *presencememory.Store, publicRealtime http.Handler) (http.Handler, screenpreview.Service, error) {
+func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *eventhub.Hub, metrics *httpmetrics.Recorder, updates clientupdates.Provider, usage *observeusage.Tracker, previews screenpreview.Store, screenViewers *presencememory.Store, publicRealtime http.Handler, maintenanceObserver *observestate.Observer) (http.Handler, screenpreview.Service, error) {
 	if events != nil {
 		key := configuration.CausalKey
 		if configuration.CentralTelemetry == nil {
@@ -69,7 +70,7 @@ func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *
 	observabilityroutes.ConfigureStatusRoutes(mux, maintenanceService, metrics)
 	channelsroutes.ConfigureChannelRoutes(mux, database, sessionService, events)
 	channelsroutes.ConfigureVoiceClosureRoutes(mux, database, sessionService, configuration.MediaSnapshot)
-	chatroutes.ConfigureChatAndRealtimeRoutes(mux, database, sessionService, metrics, events, configuration.RealtimeConnectionLimiter)
+	chatroutes.ConfigureChatAndRealtimeRoutesWithMaintenance(mux, database, sessionService, metrics, events, configuration.RealtimeConnectionLimiter, maintenanceObserver)
 	if err := storageroutes.ConfigureStorageRoutes(mux, database, sessionService, configuration.AttachmentRoot, configuration.UploadLimiter, configuration.UploadAccountLimiter, configuration.UploadDeploymentLimiter, configuration.UploadAdmissionLimiter, metrics, func(space reserve.Space, manager *reserve.Manager) {
 		observabilityroutes.ConfigureReadinessRoutes(mux, database, sessionService, configuration.MediaSnapshot, space, manager)
 	}); err != nil {

@@ -1827,6 +1827,7 @@
           {
             "name": "capabilities",
             "in": "query",
+            "description": "Comma-separated negotiated features. maintenance_v1 enables an ephemeral maintenance.snapshot followed by maintenance.changed on this authenticated connection; these events are not replay cursors. Clients without this capability retain legacy behavior during migration.",
             "schema": {
               "type": "string"
             }

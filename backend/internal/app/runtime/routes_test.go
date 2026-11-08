@@ -32,7 +32,7 @@ func TestComposedRoutesPreserveSessionAndOriginBoundaries(t *testing.T) {
 	defer previews.Close()
 	screenViewers := presencememory.New(nil)
 	defer screenViewers.Close()
-	handler, _, err := routes(nil, configuration, eventhub.New(64), httpmetrics.New(), unavailableUpdates{}, nil, previews, screenViewers, http.NotFoundHandler())
+	handler, _, err := routes(nil, configuration, eventhub.New(64), httpmetrics.New(), unavailableUpdates{}, nil, previews, screenViewers, http.NotFoundHandler(), nil)
 	if err != nil {
 		t.Fatal(err)
 	}

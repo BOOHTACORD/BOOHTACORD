@@ -88,12 +88,12 @@ func Run(ctx context.Context) (result error) {
 	resources.Add(func(context.Context) error { return screenViewers.Close() })
 	updates := clientupdates.NewStore(configuration.ClientUpdateCatalogPath, configuration.ClientUpdateAllowedHosts, metrics)
 	updates.Start(ctx)
-	publicHandler, stopPublic, err := startPublicRealtime(ctx, database, configuration)
+	publicHandler, maintenanceObserver, stopPublic, err := startPublicRealtime(ctx, database, configuration)
 	if err != nil {
 		return err
 	}
 	resources.Add(stopPublic)
-	handler, screenPreviewService, err := routes(database, configuration, events, metrics, updates, usage, previews, screenViewers, publicHandler)
+	handler, screenPreviewService, err := routes(database, configuration, events, metrics, updates, usage, previews, screenViewers, publicHandler, maintenanceObserver)
 	if err != nil {
 		return err
 	}
