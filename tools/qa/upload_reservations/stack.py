@@ -21,8 +21,12 @@ class UploadStack(Stack):
             self.volume_created = True
             self.container('keeper', 'postgres:17.6-alpine', '-v', self.volume+':/attachments', command=('sleep', '3600'))
             self.binary = self.work/'api-static'
+            docker_arch = output('docker', 'info', '--format', '{{.Architecture}}').strip()
+            goarch = {'aarch64': 'arm64', 'arm64': 'arm64', 'x86_64': 'amd64', 'amd64': 'amd64'}.get(docker_arch)
+            if not goarch:
+                raise RuntimeError('Unsupported disposable Docker architecture')
             run('go', 'build', '-o', str(self.binary), './cmd/api', cwd=self.root/'backend',
-                env=dict(os.environ, CGO_ENABLED='0'))
+                env=dict(os.environ, CGO_ENABLED='0', GOOS='linux', GOARCH=goarch))
         self.environment['ATTACHMENTS_DIRECTORY'] = '/attachments'
         names = ('DATABASE_URL', 'API_ADDR', 'PUBLIC_ORIGIN', 'ATTACHMENTS_DIRECTORY',
                  'LIVEKIT_API_KEY', 'LIVEKIT_API_SECRET', 'LIVEKIT_PUBLIC_WS_URL',

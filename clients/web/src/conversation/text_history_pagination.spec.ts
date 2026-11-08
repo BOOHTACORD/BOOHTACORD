@@ -69,6 +69,26 @@ describe('TEXT history pagination', () => {
     expect(store.nextCursor).toBe('message-2')
   })
 
+  it('opens around a searched message and keeps paging in both directions', async () => {
+    const store = useMessageStore(), urls: string[] = []
+    const request = async (url: string) => {
+      urls.push(url)
+      const parsed = new URL(url, 'https://example.test')
+      if (parsed.searchParams.has('at')) return page([message(10), message(9)], 'message-9')
+      if (parsed.searchParams.has('after')) return page([message(11), message(12)], 'message-12')
+      return page([message(20), message(19)], 'message-19')
+    }
+
+    await store.open('text-1', request)
+    await expect(store.openAround('message-10', request)).resolves.toBe(true)
+    expect(urls[1]).toContain('at=message-10')
+    expect(store.messages.map(({ id }) => id)).toEqual(['message-10', 'message-9'])
+    expect(store.nextCursor).toBe('message-9')
+    await expect(store.loadNewer(request)).resolves.toBe(true)
+    expect(urls[2]).toContain('after=message-10')
+    expect(store.messages.map(({ id }) => id)).toContain('message-12')
+  })
+
   it('ignores an old-page response after switching channels', async () => {
     const store = useMessageStore()
     let resolveOlder: ((response: Response) => void) | undefined

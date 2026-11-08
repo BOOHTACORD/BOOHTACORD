@@ -67,19 +67,36 @@ export async function navigation(page, fixture, input, report) {
   await page.locator('.guild-search-button').click()
   const search=page.getByTestId('search-panel')
   await search.getByLabel('Запрос',{exact:true}).fill('QA history 1')
+  const searchResponse=page.waitForResponse(response=>new URL(response.url()).pathname==='/api/v1/search/messages'&&response.request().method()==='GET')
   await search.getByRole('button',{name:'Найти',exact:true}).click()
+  const searchBody=await (await searchResponse).json()
+  const targetMessage=searchBody.messages.find(message=>message.kind==='CHANNEL'&&message.channel_id===fixture.a&&message.body==='QA history 1')
+  assert.ok(targetMessage,'Search omitted the synthetic history target')
   // A new SQL-only row has never been delivered or rendered in this browser.
   // It witnesses a genuinely unseen tail, independently of earlier reply scrolling.
   const unseen=sql(`INSERT INTO messages(id,channel_id,author_id,client_message_id,body,created_at) VALUES(gen_random_uuid(),'${fixture.a}','${fixture.member}',gen_random_uuid(),'QA unseen search tail',now()+INTERVAL '1 second') RETURNING id`).split('\n')[0]
   const priorCursor=sql(`SELECT message_id FROM channel_read_cursors WHERE account_id='${fixture.admin}' AND channel_id='${fixture.a}'`)
   assert.ok(priorCursor);assert.notEqual(priorCursor,unseen)
   await expect(page.locator(`[data-message-id="${unseen}"]`)).toHaveCount(0)
-  await search.getByRole('button',{name:/Открыть сообщение от/}).first().click()
-  await expect(context.locator('[data-search-anchor]')).toBeFocused()
-  assert.equal(sql(`SELECT message_id FROM channel_read_cursors WHERE account_id='${fixture.admin}' AND channel_id='${fixture.a}'`),priorCursor,'Search context consumed unseen history')
+  const targetIndex=await search.locator('.search-result').evaluateAll(cards=>cards.findIndex(card=>
+    card.querySelector('.result-source')?.innerText==='#NextNavigation'&&card.querySelector('.search-result-body')?.innerText==='QA history 1'))
+  assert.ok(targetIndex>=0,'Rendered search results omitted the exact synthetic history target')
+  const targetSelector=`.text-conversation .message-list [data-message-id="${targetMessage.id}"].message-search-target`
+  const aroundRequest=page.waitForRequest(request=>{
+    const url=new URL(request.url())
+    return url.pathname===`/api/v1/channels/${fixture.a}/messages`&&url.searchParams.get('at')===targetMessage.id
+  },{timeout:15000})
+  const targetFlash=page.waitForSelector(targetSelector,{state:'attached',timeout:15000})
+  await search.locator('.search-result').nth(targetIndex).getByRole('button',{name:/Открыть сообщение от/}).click()
+  await aroundRequest
+  await targetFlash
+  const target=page.locator(targetSelector)
+  await expect(target).toBeVisible()
+  await expect(target).toBeInViewport()
+  await expect(page.getByRole('heading',{name:'Контекст найденного сообщения',exact:true})).toHaveCount(0)
+  assert.equal(sql(`SELECT message_id FROM channel_read_cursors WHERE account_id='${fixture.admin}' AND channel_id='${fixture.a}'`),priorCursor,'Search navigation advanced beyond the visible target')
   assert.equal(lease(),originalLease)
-  await page.screenshot({path:input.directory+'/search-context-voice-retained.png'})
-  await context.getByRole('button',{name:'Вернуться к исходной позиции',exact:true}).click()
+  await page.screenshot({path:input.directory+'/search-target-voice-retained.png'})
   // This DM is between two synthetic members. Administrator status never grants reading.
   const other=await api(page,'/auth/register','POST',{login:'qa_private_member',password:input.password});status(other,201)
   const foreign=sql(`INSERT INTO direct_messages(id,participant_one_id,participant_two_id) VALUES(gen_random_uuid(),LEAST('${fixture.member}'::uuid,'${other.body.id}'::uuid),GREATEST('${fixture.member}'::uuid,'${other.body.id}'::uuid)) RETURNING id` ).split('\n')[0]
