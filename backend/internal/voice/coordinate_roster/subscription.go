@@ -46,6 +46,31 @@ func (c *Coordinator) Subscribe(id string) (*Subscription, error) {
 
 func (s *Subscription) Events() <-chan State { return s.events }
 
+// RequestRefresh discards queued state and requests a fresh read for this recipient.
+func (s *Subscription) RequestRefresh() bool {
+	c := s.owner
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	if c.closed || c.accounts[s.account.id] != s.account {
+		return false
+	}
+	if _, ok := s.account.subs[s]; !ok {
+		return false
+	}
+	select {
+	case <-s.events:
+	default:
+	}
+	s.initialized = false
+	s.account.epoch++
+	s.account.dirty = true
+	if s.account.cancel != nil {
+		s.account.cancel()
+	}
+	c.schedule(s.account)
+	return true
+}
+
 func (s *Subscription) Close() {
 	s.once.Do(func() {
 		c := s.owner
