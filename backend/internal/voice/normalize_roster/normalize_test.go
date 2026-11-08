@@ -56,3 +56,18 @@ func TestRejectsMalformedDuplicateAndOversizedResults(t *testing.T) {
 		t.Fatalf("invalid bound: %v", err)
 	}
 }
+
+func TestInternalLeaseProofSurvivesCopyButNeverEntersJSON(t *testing.T) {
+	const proof = "33333333-3333-4333-8333-333333333333"
+	input := roster.Result{Channels: []roster.ChannelRoster{{ChannelID: first, Participants: []roster.Participant{{LeaseID: proof, AccountID: second, DisplayName: "Test"}}}}}
+	result, encoded, err := Canonicalize(input, 4096)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Channels[0].Participants[0].LeaseID != proof {
+		t.Fatal("proof lost during normalization")
+	}
+	if strings.Contains(string(encoded), proof) || strings.Contains(string(encoded), "lease") {
+		t.Fatal("proof leaked into JSON")
+	}
+}
