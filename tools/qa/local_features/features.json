@@ -165,6 +165,7 @@
       "clients/web/src/channel/topology_store.ts",
       "clients/web/src/channel/topology_store.spec.ts",
       "clients/web/src/workspace/WorkspaceApp.vue",
+      "clients/web/src/App.vue",
       "clients/web/src/workspace/workspace_realtime.ts",
       "clients/web/src/workspace/workspace_maintenance.spec.ts",
       "clients/web/src/workspace/protected_refresh/**",
@@ -243,6 +244,10 @@
       "issue689_web_authenticated_maintenance": {
         "focused": ["clients/web/src/maintenance/auth_owner.spec.ts", "clients/web/src/workspace/workspace_maintenance.spec.ts"],
         "scope": "Negotiated authenticated maintenance updates feature state without unrelated protected refreshes; guest handoff and browser runtime remain separate acceptance work."
+      },
+      "issue689_web_maintenance_handoff": {
+        "focused": ["clients/web/src/maintenance/owner.spec.ts", "clients/web/src/maintenance/guest_socket.spec.ts", "clients/web/src/maintenance/maintenance_status.spec.ts", "clients/web/src/workspace/workspace_maintenance.spec.ts"],
+        "scope": "Web maintenance ownership switches between public and authenticated sockets and ignores callbacks from the previous owner. Real-browser login, logout, restart and network traces remain separate acceptance work."
       },
       "issue689_resync": {
         "focused": "clients/flutter/test/realtime_scope/resync_envelope_test.dart",

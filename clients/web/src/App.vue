@@ -9,8 +9,8 @@ import { loadCurrentSession, type CurrentSession } from './identity/current_sess
 import PasswordResetCompletion from './identity/PasswordResetCompletion.vue'
 import { completePasswordReset, PasswordResetInvalidError } from './identity/password_reset_client'
 import { consumePasswordResetFragment } from './identity/password_reset_fragment'
-import MaintenanceBanner from './maintenance/MaintenanceBanner.vue'
-import { createMaintenanceRealtime } from './maintenance/maintenance_realtime'
+import MaintenanceStatus from './maintenance/MaintenanceStatus.vue'
+import { useMaintenanceOwner } from './maintenance/context'
 import UpdateBanner from './updates/UpdateBanner.vue'
 import { useUpdateStore } from './updates/update_store'
 import WorkspaceApp from './workspace/WorkspaceApp.vue'
@@ -21,8 +21,9 @@ const state = ref<AppState>('loading')
 const error = ref<string | null>(null)
 const session = ref<CurrentSession | null>(null)
 const readiness=shallowRef<ActionScope>()
-const maintenance = createMaintenanceRealtime()
+const maintenance = useMaintenanceOwner(() => state.value === 'authenticated')
 const maintenanceActive = maintenance.active
+const maintenanceKnown = maintenance.known
 const resetRoute = ref(false)
 const focusLoginOnReturn = ref(false)
 let resetToken: string | null = null
@@ -90,19 +91,17 @@ function returnToLogin(): void {
 onMounted(() => {
   void guildProfile.refresh()
   if (!resetRoute.value) void refreshSession('startup')
-  maintenance.start()
   updates.start()
 })
 
 onUnmounted(() => {
   readiness.value?.finish('cancelled','disposed')
-  maintenance.stop()
   updates.dispose()
 })
 </script>
 
 <template>
-  <MaintenanceBanner v-if="maintenanceActive" />
+  <MaintenanceStatus :active="maintenanceActive" :known="maintenanceKnown" />
   <UpdateBanner />
   <PasswordResetCompletion v-if="resetRoute" :valid-link="Boolean(resetToken)" :complete="finishPasswordReset" @invalid-link="resetToken = null" @return-to-login="returnToLogin" />
   <main v-else-if="state === 'loading'" class="session-state" aria-live="polite">Проверяем безопасную сессию…</main>
