@@ -1,0 +1,13 @@
+import {writeFile} from 'node:fs/promises';
+export async function observeVoiceJoin(page, action){
+ const events=[], pending=[];
+ const record=response=>{
+  const url=new URL(response.url());if(!url.pathname.startsWith('/api/v1/voice/'))return;
+  const status=response.status(), item={status,method:response.request().method(),route:url.pathname.includes('/leases')?'lease':'voice-other'};
+  if(status>=400)pending.push((async()=>{try{const x=await response.json();const code=x?.error?.code;if(typeof code==='string'&&/^[A-Z_]{1,64}$/.test(code))item.code=code}catch{}})());
+  events.push(item);
+ };
+ page.on('response',record);let result='PASS', states=[];
+ try{return await action()}catch(error){result='FAIL';try{states=await page.evaluate(()=>window.__qaPeers?.map(p=>p.connectionState)??[])}catch{};throw error}
+ finally{page.off('response',record);await Promise.allSettled(pending);await writeFile('/mnt/c/b-qa675/.out/qa648-session-diagnostic.json',JSON.stringify({result,events,states},null,2));console.log('QA648_SESSION_DIAGNOSTIC='+result)}
+}

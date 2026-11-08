@@ -1,0 +1,26 @@
+{
+  "result": "PASS",
+  "events": [
+    {
+      "status": 200,
+      "method": "GET",
+      "route": "voice-other"
+    },
+    {
+      "status": 201,
+      "method": "POST",
+      "route": "lease"
+    },
+    {
+      "status": 200,
+      "method": "POST",
+      "route": "lease"
+    },
+    {
+      "status": 204,
+      "method": "POST",
+      "route": "voice-other"
+    }
+  ],
+  "states": []
+}
