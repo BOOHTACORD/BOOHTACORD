@@ -3,6 +3,10 @@
 - Observed: the released 1.0.52 Windows executable, record plugin, and two
   Velopack binaries in its full package are unsigned. The installed executable
   on the local PC runs; this does not establish behavior on the affected PC.
+- Windows SDK 10.0.26100.0 `shared/ntstatus.h` maps the reported `0xC0E90002`
+  to `STATUS_SYSTEM_INTEGRITY_POLICY_VIOLATION`: Application Control blocked the
+  named file. The particular policy and its reasons still require the affected
+  PC's CodeIntegrity event; Smart App Control is not confirmed specifically.
 - Certificate discovery: no usable code-signing certificate was returned from
   CurrentUser/My or LocalMachine/My on this PC. Repository and production
   environment action metadata revealed no Windows code-signing configuration;
