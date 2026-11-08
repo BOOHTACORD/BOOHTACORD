@@ -23,6 +23,11 @@ tasks:
     requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-QUALITY-01]
     depends_on: [T-010]
     evidence: [clients/flutter/test/realtime_scope/resync_envelope_test.dart]
+  - id: RT689-004
+    title: Web validates typed realtime maintenance payloads (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-QUALITY-01]
+    depends_on: [RT689-002]
+    evidence: [clients/web/src/realtime/maintenance_payload.spec.ts]
   - id: T-001
     title: Specification packet and traceability
     requirements: [REQ-PRODUCT-01, REQ-ISOLATION-01, REQ-STACK-01, REQ-ARCH-01, REQ-QUALITY-02]
