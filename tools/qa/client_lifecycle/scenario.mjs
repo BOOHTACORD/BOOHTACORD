@@ -229,6 +229,7 @@ try {
   await globalSearch.locator('.search-filter-disclosure > summary').click()
   await expect(globalSearch.getByLabel('С даты')).toBeVisible()
   await expect(globalSearch.getByLabel('По дату включительно')).toBeVisible()
+  await globalSearch.getByRole('searchbox', { name: 'Запрос', exact: true }).fill('')
   await expect(globalSearch.getByRole('button', { name: 'Найти', exact: true })).toBeDisabled()
   await guest.screenshot({ path: input.directory+'/global-search.png' })
   await globalSearch.getByRole('searchbox', { name: 'Запрос' }).fill('Synthetic UIUX channel sample readable conversation text')
