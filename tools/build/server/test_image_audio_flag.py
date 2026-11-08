@@ -1,4 +1,6 @@
 import unittest
+import re
+import shlex
 from pathlib import Path
 from .images import web_build_arguments
 
@@ -67,3 +69,20 @@ class WebAudioFlagTests(unittest.TestCase):
             'COPY contracts/screen-share-profile-v1.catalog.json /app/contracts/screen-share-profile-v1.catalog.json',
             source,
         )
+
+    def test_web_build_context_contains_shared_json_imports(self):
+        root = Path(__file__).resolve().parents[3]
+        dockerfile = (root / 'clients/web/Dockerfile').read_text(encoding='utf-8')
+        copied = set()
+        for line in dockerfile.split('RUN npm run build')[0].splitlines():
+            if line.startswith('COPY '):
+                copied.update(shlex.split(line)[1:-1])
+        imports = set()
+        for source in (root / 'clients/web/src').rglob('*'):
+            if source.suffix not in ('.ts', '.vue'): continue
+            for name in re.findall(r'''(?:from\s*|import\s*)['"]([^'"]+\.json)['"]''', source.read_text(encoding='utf-8')):
+                target = (source.parent / name).resolve()
+                if target.is_relative_to(root / 'contracts'):
+                    imports.add(target.relative_to(root).as_posix())
+        self.assertTrue(imports, 'No shared JSON import boundary was inspected')
+        self.assertFalse(imports - copied, f'Missing shared build inputs: {sorted(imports - copied)}')

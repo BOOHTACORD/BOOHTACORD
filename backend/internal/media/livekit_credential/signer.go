@@ -33,6 +33,12 @@ func New(config Config) (Signer, error) {
 }
 
 func (signer Signer) Issue(leaseID, channelID, accountID, displayName string) (Credential, error) {
+	return signer.issue(leaseID, channelID, accountID, displayName, nil)
+}
+func (signer Signer) IssueWithSound(leaseID, channelID, accountID, displayName, id, revision string) (Credential, error) {
+	return signer.issue(leaseID, channelID, accountID, displayName, map[string]string{"boohtacord.join_sound_id": id, "boohtacord.join_sound_revision": revision})
+}
+func (signer Signer) issue(leaseID, channelID, accountID, displayName string, attributes map[string]string) (Credential, error) {
 	if leaseID == "" || channelID == "" || accountID == "" || displayName == "" {
 		return Credential{}, ErrInvalidConfig
 	}
@@ -45,6 +51,7 @@ func (signer Signer) Issue(leaseID, channelID, accountID, displayName string) (C
 		SetIdentity("voice-lease:" + leaseID).
 		SetName(displayName).
 		SetMetadata("account:" + accountID).
+		SetAttributes(attributes).
 		SetVideoGrant(grant).
 		SetValidFor(validity).
 		ToJWT()

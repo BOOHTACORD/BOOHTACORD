@@ -51,7 +51,7 @@ def validate(document, native):
         for parameter in parameters:
             identity = parameter["in"], parameter["name"]
             required = (identity[0] == "path" or identity in {("header", "X-Account-ID"),
-                        ("header", "X-Screen-Preview-Revision"), ("header", "X-Client-Platform")} or
+                        ("header", "X-Screen-Preview-Revision"), ("header", "X-Client-Platform"), ("header", "X-Voice-Sound-Account")} or
                         identity == ("header", "Origin") and origin_required(route) or
                         route["path"] == "/api/v1/client-updates")
             require(parameter.get("required", False) == required, name + ": required parameter " + str(identity))

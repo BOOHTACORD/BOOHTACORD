@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { soundOutput } from './sound_playback/runtime'
 
 import { listAudioDevices, type AudioDevice, type AudioDeviceKind } from './audio_devices'
 import { createAudioProcessingControls, type AudioProcessingApplier } from './audio_processing_controls'
@@ -40,6 +41,7 @@ export const useAudioSettingsStore = defineStore('audio-settings', () => {
     error.value = null
     try {
       await switchDevice(kind, deviceId)
+      if (kind === 'audiooutput') soundOutput.value = deviceId
     } catch (cause) {
       error.value = cause instanceof Error ? cause.message : 'Не удалось переключить аудиоустройство.'
     }

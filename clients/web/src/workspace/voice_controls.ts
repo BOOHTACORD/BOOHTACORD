@@ -1,4 +1,5 @@
 import { bindMicrophoneAccount } from '../voice/microphone_processing/runtime'
+import { voiceSoundPreferences, soundQueue, soundsDeafened, legacySoundReview } from '../voice/sound_playback/runtime'
 import { computed, onBeforeUnmount, onMounted, watch } from 'vue'
 
 import type { TopologyChannel } from '../channel/topology_client'
@@ -20,14 +21,19 @@ export function useWorkspaceVoiceControls(accountId = '') {
   const audioSettings = useAudioSettingsStore()
   const voiceActivation = useVoiceActivationStore()
   const voiceConnection = useVoiceConnectionStore()
+  watch(() => voiceConnection.deafened, value => { soundsDeafened.value = value }, { immediate: true })
   const voiceNavigation = useVoiceNavigationStore()
   let shortcuts: VoiceShortcuts | null = null
+  let soundRefresh: ReturnType<typeof setInterval> | null = null
   watch(() => voiceConnection.inputSelection, (selection) => { if (selection) audioSettings.observeInput(selection) })
   const cancelShortcuts = () => { shortcuts?.invalidate(); voiceActivation.shortcutStatus = '' }
   watch(() => voiceConnection.active, cancelShortcuts)
   watch(() => [voiceActivation.microphoneShortcut, voiceActivation.deafenShortcut], cancelShortcuts)
   const refreshDevices = () => { void loadAudioDevices() }
   onMounted(() => {
+    void voiceSoundPreferences.select(accountId)
+    legacySoundReview.select(accountId)
+    soundRefresh = setInterval(() => { if (document.visibilityState === 'visible') void voiceSoundPreferences.refresh() }, 15000)
     voiceActivation.bindAccount?.(accountId)
     voiceConnection.bindControllerAccount?.(accountId)
     bindMicrophoneAccount(accountId || null)
@@ -40,6 +46,9 @@ export function useWorkspaceVoiceControls(accountId = '') {
     shortcuts.start(); window.addEventListener('blur', cancelShortcuts)
   })
   onBeforeUnmount(() => {
+    soundQueue.clear(); void voiceSoundPreferences.select(null)
+    legacySoundReview.select(null)
+    if (soundRefresh) clearInterval(soundRefresh)
     bindMicrophoneAccount(null)
     stopJourneyRun()
     voiceConnection.bindControllerAccount?.('')
