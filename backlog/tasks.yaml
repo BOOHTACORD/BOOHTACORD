@@ -8,6 +8,11 @@ action_catalog:
   verification: backlog/VERIFICATION_TODO.md
   completed: DONE.md
 tasks:
+  - id: RT689-007
+    title: Bound public realtime connections globally and per trusted source (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-OPS-01]
+    depends_on: [RT689-006]
+    evidence: [backend/internal/realtime/admit_public_connection/limiter_test.go]
   - id: RT689-001
     title: Central maintenance state observer for realtime migration (GitHub #689)
     requirements: [REQ-ARCH-01, REQ-OPS-01, REQ-SECURITY-01]
