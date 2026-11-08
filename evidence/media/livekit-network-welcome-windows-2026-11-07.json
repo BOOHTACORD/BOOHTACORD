@@ -5,13 +5,13 @@
   "physical_acceptance": "No media acceptance or deployment claim.",
   "repository_artifacts": {
     "tools/verify/livekit_network_config/check.py": "sha256:2b3a934615e99c1de974568a3ac19c34594a668b4a6c3a2665c113b5f8da7a12",
-    "tools/qa/local_features/features.json": "sha256:ba53e9d731607063719dd2fb47facf93050927e93264932a8a7dcb674bdc01f6",
+    "tools/qa/local_features/features.json": "sha256:b653f78ad67910d276f7eb61b1b1249e5a04c3a87dacbf3a666744639bad3de2",
     "backlog/tasks.yaml": "sha256:01826553645e5f0a3d0f6afca975462a1b6b920a3840774584b38aa41ba0cd09",
     "tools/ci/select_changes/dependencies.json": "sha256:54ea30568e3678ade523d656f61a49669140ec9801148b0f7a0872b7548f6ec5",
     "tools/ci/select_changes/test_routing.py": "sha256:99a17e98c702df1beec5aa9d4eae1deb3ae609b6b23a31d1e2312b751ad044f5"
   },
   "repository_artifact_revalidation": {
     "observed_at": "2026-11-08",
-    "scope": "Refreshed source digests after adding backlog leaf WEB-CHAT-002 and recording PR #682 Web-only parity decisions for support, chat and shell. No LiveKit configuration or media evidence claim changed. Added explicit contracts-only routing for upload_reservations QA helpers and contracts+Web routing for browser acceptance scenarios; their actual acceptance profiles remain lifecycle/next and have no native-release impact."
+    "scope": "Refreshed source digests after adding backlog leaf WEB-CHAT-002 and recording PR #682 Web-only parity decisions for support, chat and shell. PR #683 adds Web-only follow-up decisions for chat, support, shell, voice, screen and connection status, and updates the tablet lifecycle assertion to target the latest seeded message. No LiveKit configuration or media evidence claim changed. Added explicit contracts-only routing for upload_reservations QA helpers and contracts+Web routing for browser acceptance scenarios; their actual acceptance profiles remain lifecycle/next and have no native-release impact."
   }
 }
