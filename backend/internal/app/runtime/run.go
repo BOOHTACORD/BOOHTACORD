@@ -11,27 +11,19 @@ import (
 	"time"
 	"voice-platform/backend/internal/app/lifecycle"
 	screenviewerpresenceapp "voice-platform/backend/internal/app/media_routes/screen_viewer_presence"
-	notificationroutes "voice-platform/backend/internal/app/notification_routes"
 	"voice-platform/backend/internal/app/telemetry"
 	workerruntime "voice-platform/backend/internal/app/worker_runtime"
 	clientupdates "voice-platform/backend/internal/client_updates/catalog"
 	runtimeconfig "voice-platform/backend/internal/config/runtime"
 	"voice-platform/backend/internal/database/pool"
-	admitlogin "voice-platform/backend/internal/identity/admit_login"
 	observeusage "voice-platform/backend/internal/identity/observe_usage"
-	"voice-platform/backend/internal/identity/password"
-	failures "voice-platform/backend/internal/identity/track_login_failures"
 	previewmemory "voice-platform/backend/internal/media/screen_preview/memory"
 	presencememory "voice-platform/backend/internal/media/screen_viewer_presence/memory"
-	notificationmetrics "voice-platform/backend/internal/notifications/observe_delivery"
 	centralexport "voice-platform/backend/internal/observability/central_export"
-	httpmetrics "voice-platform/backend/internal/observability/http_metrics"
 	installation "voice-platform/backend/internal/observability/installation"
 	dependencies "voice-platform/backend/internal/observability/observe_dependencies"
-	ratelimit "voice-platform/backend/internal/security/rate_limit"
 	writerlock "voice-platform/backend/internal/storage/acquire_writer_lock"
 	reserve "voice-platform/backend/internal/storage/reserve_upload_space"
-	supportbridge "voice-platform/backend/internal/support/bridge"
 )
 
 func Run(ctx context.Context) (result error) {
@@ -50,26 +42,8 @@ func Run(ctx context.Context) (result error) {
 		return err
 	}
 	resources.Add(func(context.Context) error { return writer.Close() })
-	metrics := httpmetrics.New()
-	if err := metrics.RegisterCollector(ratelimit.NewCollector(map[string]*ratelimit.Limiter{
-		"registration": configuration.RegistrationLimiter, "login_source": configuration.LoginLimiter, "login_deployment": configuration.LoginDeploymentLimiter,
-		"password_reset": configuration.PasswordResetLimiter,
-		"upload_source":  configuration.UploadLimiter, "upload_account": configuration.UploadAccountLimiter,
-		"upload_deployment": configuration.UploadDeploymentLimiter, "telemetry": configuration.TelemetryLimiter,
-	})); err != nil {
-		return err
-	}
-	poolMetrics := pool.NewMetrics()
-	if err := metrics.RegisterCollector(admitlogin.NewCollector(configuration.LoginAdmission)); err != nil {
-		return err
-	}
-	if err := metrics.RegisterCollector(failures.NewCollector(configuration.LoginFailures)); err != nil {
-		return err
-	}
-	if err := metrics.RegisterCollector(password.NewCollector()); err != nil {
-		return err
-	}
-	if err := metrics.RegisterCollector(poolMetrics); err != nil {
+	metrics, poolMetrics, err := configureMetrics(configuration)
+	if err != nil {
 		return err
 	}
 	database, err := pool.OpenObserved(ctx, configuration.DatabaseURL, poolMetrics)
@@ -114,36 +88,26 @@ func Run(ctx context.Context) (result error) {
 	resources.Add(func(context.Context) error { return screenViewers.Close() })
 	updates := clientupdates.NewStore(configuration.ClientUpdateCatalogPath, configuration.ClientUpdateAllowedHosts, metrics)
 	updates.Start(ctx)
-	handler, screenPreviewService, err := routes(database, configuration, events, metrics, updates, usage, previews, screenViewers)
+	publicHandler, stopPublic, err := startPublicRealtime(ctx, database, configuration)
+	if err != nil {
+		return err
+	}
+	resources.Add(stopPublic)
+	handler, screenPreviewService, err := routes(database, configuration, events, metrics, updates, usage, previews, screenViewers, publicHandler)
 	if err != nil {
 		return err
 	}
 	resources.Add(screenPreviewService.Start(ctx))
-	// Storage route composition has now created the same private file directory used by downloads.
-	supportWorker, supportErr := supportbridge.NewWorker(ctx, database, configuration.AttachmentRoot, os.Getenv("PRODUCT_SUPPORT_ENDPOINT"), events)
-	if supportErr != nil {
-		slog.Warn("product support worker unavailable")
-	} else {
-		resources.Add(supportWorker.Start(ctx))
-	}
+	startSupport(ctx, database, configuration.AttachmentRoot, events, &resources)
 	space, err := reserve.NewFilesystem(configuration.AttachmentRoot)
 	if err != nil {
 		return err
 	}
 	resources.Add(dependencies.Start(ctx, configuration.MediaSnapshot, space).Stop)
 	resources.Add(workerruntime.StartVoice(ctx, database, configuration, metrics, events))
-	notificationTelemetry := notificationmetrics.NewRuntime()
-	if err := metrics.RegisterCollector(notificationmetrics.NewCollector(database)); err != nil {
+	if err := startNotifications(ctx, database, configuration, events, metrics, &resources); err != nil {
 		return err
 	}
-	if err := metrics.RegisterCollector(notificationTelemetry); err != nil {
-		return err
-	}
-	stopNotifications, err := notificationroutes.StartDelivery(ctx, database, configuration, events, notificationTelemetry)
-	if err != nil {
-		return err
-	}
-	resources.Add(stopNotifications)
 	server := &http.Server{Addr: configuration.Address, Handler: handler, ReadHeaderTimeout: 5 * time.Second}
 	slog.Info("api listening", "address", configuration.Address)
 	return lifecycle.Serve(ctx, server)

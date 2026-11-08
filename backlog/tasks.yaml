@@ -8,6 +8,11 @@ action_catalog:
   verification: backlog/VERIFICATION_TODO.md
   completed: DONE.md
 tasks:
+  - id: RT689-010
+    title: Register public realtime route with lifecycle and API contract (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-OPS-01]
+    depends_on: [RT689-009]
+    evidence: [backend/internal/app/runtime/routes_public_test.go]
   - id: RT689-009
     title: Own one shared public maintenance observer and admission lifecycle (GitHub #689)
     requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-OPS-01]

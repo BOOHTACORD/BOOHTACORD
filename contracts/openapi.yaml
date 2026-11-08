@@ -1739,6 +1739,20 @@
         "security": []
       }
     },
+    "/api/v1/public/realtime": {
+      "get": {
+        "operationId": "connectPublicRealtime",
+        "description": "Unauthenticated server-to-client WebSocket for maintenance only. Browser Origin must exactly match PUBLIC_ORIGIN; native clients may omit Origin. Query parameters and client commands are rejected. The server sends connection.ready and a current maintenance.snapshot followed by maintenance.changed events. Unknown maintenance state closes the socket without reporting inactive. Events are ephemeral and must not be used as replay cursors. Public handshake and connection budgets are independent of authenticated realtime.",
+        "responses": {
+          "101": {"description": "Public WebSocket upgraded", "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}}},
+          "400": {"description": "Invalid source, query or upgrade request", "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}}},
+          "403": {"description": "Foreign Origin", "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}}},
+          "429": {"description": "Public connection or handshake limit", "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}, "Retry-After": {"schema": {"type": "integer", "minimum": 1}}}},
+          "500": {"description": "Middleware failure may emit an empty body", "x-empty-body-possible": true, "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}}}
+        },
+        "security": []
+      }
+    },
     "/api/v1/realtime": {
       "get": {
         "operationId": "connectRealtime",

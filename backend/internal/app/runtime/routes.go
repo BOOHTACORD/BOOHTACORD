@@ -36,7 +36,7 @@ import (
 	soundpostgres "voice-platform/backend/internal/voice/sound_preferences/postgres"
 )
 
-func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *eventhub.Hub, metrics *httpmetrics.Recorder, updates clientupdates.Provider, usage *observeusage.Tracker, previews screenpreview.Store, screenViewers *presencememory.Store) (http.Handler, screenpreview.Service, error) {
+func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *eventhub.Hub, metrics *httpmetrics.Recorder, updates clientupdates.Provider, usage *observeusage.Tracker, previews screenpreview.Store, screenViewers *presencememory.Store, publicRealtime http.Handler) (http.Handler, screenpreview.Service, error) {
 	if events != nil {
 		key := configuration.CausalKey
 		if configuration.CentralTelemetry == nil {
@@ -45,6 +45,7 @@ func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *
 		events.SetTelemetryKey(key)
 	}
 	mux := http.NewServeMux()
+	mux.Handle("GET /api/v1/public/realtime", publicRealtime)
 	mux.Handle("/api/v1/client-updates", clientupdates.Handler(updates, metrics))
 	lifecycle := guildlifecycle.New(otel.Tracer("boohtacord/guild"), otel.Meter("boohtacord/guild"), metrics)
 	auth := authroutes.Register(mux, database, configuration, events, usage, lifecycle)
