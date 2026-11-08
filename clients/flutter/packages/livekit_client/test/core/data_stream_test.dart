@@ -107,6 +107,7 @@ void main() {
     test('Send Large Text Message With Progress Tracking', () async {
       final longText = 'a' * 100000;
       final received = Completer<String>();
+      final progressValues = <double>[];
 
       room.registerTextStreamHandler('chat-long-text', (TextStreamReader reader, String participantIdentity) async {
         try {
@@ -121,7 +122,7 @@ void main() {
         options: SendTextOptions(
           topic: 'chat-long-text',
           onProgress: (progress) {
-            print('progress: $progress');
+            progressValues.add(progress);
             expect(progress, greaterThanOrEqualTo(0.0));
             expect(progress, lessThanOrEqualTo(1.0));
           },
@@ -129,6 +130,8 @@ void main() {
       );
       expect(info, isNotNull);
       expect(await received.future.timeout(const Duration(seconds: 5)), longText);
+      expect(progressValues, isNotEmpty);
+      expect(progressValues.last, 1.0);
     });
 
     test('Stream Text With Multiple Chunks', () async {
@@ -171,6 +174,7 @@ void main() {
       final receivedText = Completer<String>();
       final allFiles = Completer<void>();
       final receivedFiles = <String, List<int>>{};
+      final progressValues = <double>[];
 
       room.registerTextStreamHandler('chat-stream-with-files', (
         TextStreamReader reader,
@@ -202,7 +206,7 @@ void main() {
           topic: 'chat-stream-with-files',
           attachments: files,
           onProgress: (progress) {
-            print('file from chat-stream-with-files: progress: $progress');
+            progressValues.add(progress);
             expect(progress, greaterThanOrEqualTo(0.0));
             expect(progress, lessThanOrEqualTo(1.0));
           },
@@ -212,6 +216,8 @@ void main() {
       expect(await receivedText.future.timeout(const Duration(seconds: 5)), longText);
       await allFiles.future.timeout(const Duration(seconds: 5));
       expect(receivedFiles, expectedFiles);
+      expect(progressValues, isNotEmpty);
+      expect(progressValues.last, 1.0);
     });
 
     test('Text Stream With Operation Types', () async {
