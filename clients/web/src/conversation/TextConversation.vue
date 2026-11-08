@@ -22,7 +22,6 @@ import { useSavedComposer } from './use_saved_composer'
 import { submitOnComposerEnter } from './composer_enter'
 import SearchMessageContext from '../search/SearchMessageContext.vue'
 import { useSearchTargetStore } from '../search/search_target_store'
-import { useUnreadBoundary } from './use_unread_boundary'
 import { useScopedSend } from './use_scoped_send'
 import type { Position } from './context_position/dom'
 import { useContextPosition } from './context_position/return'
@@ -35,10 +34,11 @@ const topology = useTopologyStore()
 const searchTarget = useSearchTargetStore()
 const filesOpen = ref(false)
 const contextTarget = computed(() => searchTarget.target?.kind === 'CHANNEL' && searchTarget.target.conversationId === props.channelId ? searchTarget.target : null)
+const historyList = ref<{ showMessage: (messageId: string) => Promise<boolean>; beginTargetNavigation: () => void; endTargetNavigation: () => void } | null>(null)
+const searchNavigationError = ref('')
 const replyContextTarget = ref<string | null>(null)
 const restored = ref<Position | null>(null)
 const firstUnread = computed(() => topology.topology?.categories.flatMap(({ channels }) => channels).find(({ id }) => id === props.channelId)?.firstUnreadMessageId)
-const { unreadBoundary, unreadContextOpen, readUnlocked, showUnread, continueAtLatest } = useUnreadBoundary(() => props.channelId, firstUnread, () => { void showLatest().then(queueVisibleRead) })
 const authors = useAuthorDirectory()
 const session = ref<CurrentSession | null>(null)
 const composer = useSavedComposer<TextMessage, TextAttachmentUpload>(props.accountId, 'CHANNEL', () => props.channelId)
@@ -52,14 +52,45 @@ const attachmentPicker = ref<{ addPastedFiles: (files: File[]) => void } | null>
 const emojiPicker = ref<{ show: () => Promise<void> } | null>(null)
 const { readRoot, queueVisibleRead } = useVisibleRead({
   conversationId: () => props.channelId, loadedConversationId: () => store.channelId, messages: () => store.messages,
-  canRead: () => props.active && Boolean(topology.topology) && !filesOpen.value && !contextTarget.value && !replyContextTarget.value && !unreadContextOpen.value && !restored.value && (!unreadBoundary.value || readUnlocked.value),
+  firstUnreadMessageId: () => firstUnread.value,
+  canRead: () => props.active && Boolean(topology.topology) && !filesOpen.value && !contextTarget.value && !replyContextTarget.value && !restored.value,
   advance: (id, messageId) => advanceTextReadIfVisible({ activeChannelId: store.channelId, renderedChannelId: id,
     newestDisplayedMessageId: messageId, visibilityState: document.visibilityState }),
   refreshCounters: () => { void topology.refresh() },
 })
-const contextOpen = () => Boolean(filesOpen.value || contextTarget.value || replyContextTarget.value || unreadContextOpen.value || restored.value)
-const { save: savePosition, showLatest } = useContextPosition(props.accountId, 'CHANNEL', () => props.channelId, readRoot, contextOpen, () => store.historyLoaded && store.channelId === props.channelId, restored)
+const contextOpen = () => Boolean(filesOpen.value || replyContextTarget.value || restored.value)
+const { save: savePosition } = useContextPosition(props.accountId, 'CHANNEL', () => props.channelId, readRoot, contextOpen, () => store.historyLoaded && store.channelId === props.channelId, restored)
 function onViewportChange(): void { savePosition(); queueVisibleRead() }
+let handledTargetKey = ''
+watch([contextTarget, () => store.channelId, () => store.historyLoaded], async ([target, loadedId, loaded]) => {
+  if (!target || loadedId !== props.channelId || !loaded) return
+  const key = `${target.conversationId}:${target.messageId}`
+  if (handledTargetKey === key) return
+  handledTargetKey = key
+  filesOpen.value = false; replyContextTarget.value = null; restored.value = null; searchNavigationError.value = ''
+  historyList.value?.beginTargetNavigation()
+  try {
+    if (!await store.openAround(target.messageId) || contextTarget.value?.messageId !== target.messageId) {
+      if (contextTarget.value?.messageId === target.messageId) {
+        searchNavigationError.value = 'Не удалось открыть найденное сообщение. Попробуйте ещё раз.'
+        searchOpen.value = true
+        searchTarget.clear()
+      }
+      return
+    }
+    await store.loadNewer()
+    closeSearch()
+    await nextTick()
+    const shown = await historyList.value?.showMessage(target.messageId)
+    if (contextTarget.value?.messageId !== target.messageId) return
+    if (shown) searchTarget.clear()
+    else { searchNavigationError.value = 'Не удалось найти сообщение в истории канала.'; searchOpen.value = true; searchTarget.clear() }
+  } finally {
+    await nextTick(); await nextTick()
+    historyList.value?.endTargetNavigation()
+  }
+}, { flush: 'post' })
+watch(() => searchTarget.target, (target) => { if (!target) handledTargetKey = '' })
 watch(() => props.channelId, (channelId) => {
   replyContextTarget.value = null
   void store.open(channelId)
@@ -94,17 +125,11 @@ function closeSearch(): void { searchOpen.value = false; void nextTick(() => sea
     <div v-if="searchOpen" v-show="!contextOpen()" class="conversation-tools" :id="searchPanelId"><TextMessageSearch :channel-id="props.channelId" @open="searchTarget.open({ kind: 'CHANNEL', conversationId: props.channelId, messageId: $event })" @close="closeSearch" /></div>
     <p v-if="store.loading" class="state" aria-live="polite">Загружаем историю…</p>
     <p v-if="store.error" id="text-conversation-error" class="state state-error" role="alert">{{ store.error }} <span v-if="store.historyLoaded">Показанная история может быть устаревшей.</span> <button v-if="store.retryableError" type="button" @click="store.refresh()">Повторить загрузку</button></p>
-    <div v-if="!filesOpen && unreadBoundary && !readUnlocked" class="unread-boundary-actions" role="status">
-      <span>Есть непрочитанные сообщения.</span>
-      <button type="button" @click="showUnread">К первому непрочитанному</button>
-      <button type="button" @click="continueAtLatest">Остаться у последних</button>
-    </div>
+    <p v-if="searchNavigationError" class="state state-error" role="alert">{{ searchNavigationError }}</p>
     <ConversationFilesPanel v-if="filesOpen" kind="CHANNEL" :conversation-id="props.channelId" :deleted-message-ids="store.deletedMessageIds" @open-message="filesOpen = false; searchTarget.open({ kind: 'CHANNEL', conversationId: props.channelId, messageId: $event })" @close="filesOpen = false; void nextTick(() => overflow?.focus())" />
-    <SearchMessageContext v-else-if="contextTarget" kind="CHANNEL" :conversation-id="props.channelId" :message-id="contextTarget.messageId" @close="searchTarget.clear()" />
     <SearchMessageContext v-else-if="replyContextTarget" kind="CHANNEL" :conversation-id="props.channelId" :message-id="replyContextTarget" heading="Контекст ответа" @close="replyContextTarget = null" />
-    <SearchMessageContext v-else-if="unreadContextOpen" kind="CHANNEL" :conversation-id="props.channelId" :message-id="unreadBoundary" heading="Первое непрочитанное сообщение" unread :active="props.active" @read="topology.refresh()" @viewport-change="savePosition" @close="continueAtLatest" />
     <SearchMessageContext v-else-if="restored" kind="CHANNEL" :conversation-id="props.channelId" :message-id="restored.id" :offset="restored.offset" heading="Сохранённая позиция" @viewport-change="savePosition" @close="restored = null" />
-    <TextHistoryList v-show="!contextOpen()" :channel-id="props.channelId" :session="session" @reply="replyTarget = $event" @reply-context="replyContextTarget = $event" @retry="retry" @viewport-change="onViewportChange" />
+    <TextHistoryList ref="historyList" v-show="!contextOpen()" :channel-id="props.channelId" :session="session" @reply="replyTarget = $event" @reply-context="replyContextTarget = $event" @retry="retry" @viewport-change="onViewportChange" />
     <div class="composer-wrap">
       <p v-if="replyTarget" class="reply-target"><span class="reply-target-icon" aria-hidden="true">↶</span><span>Ответ <strong>{{ authors.displayName(replyTarget.authorId) }}</strong> · {{ replyTarget.body }}</span><button type="button" aria-label="Отменить ответ" @click="replyTarget = null">×</button></p>
       <MentionAutocomplete v-model="draft" v-model:mention-user-ids="mentionUserIds" :self-id="session?.accountId ?? ''" :disabled="store.sending || !session" />

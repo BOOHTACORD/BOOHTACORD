@@ -83,4 +83,24 @@ describe('DM history pagination', () => {
     expect(store.messages.map(({ id }) => id)).toEqual(['message-5', 'message-4', 'message-3', 'message-2'])
     expect(store.nextCursor).toBe('message-2')
   })
+
+  it('opens around a searched message and pages toward newer messages', async () => {
+    const store = useDirectMessageStore(), urls: string[] = []
+    const request = async (url: string) => {
+      urls.push(url)
+      const parsed = new URL(url, 'https://example.test')
+      if (parsed.searchParams.has('at')) return page([message(10), message(9)], 'message-9')
+      if (parsed.searchParams.has('after')) return page([message(11), message(12)], 'message-12')
+      return page([message(20), message(19)], 'message-19')
+    }
+
+    await store.open('dm-1', request)
+    await expect(store.openAround('message-10', request)).resolves.toBe(true)
+    expect(urls[1]).toContain('at=message-10')
+    expect(store.messages.map(({ id }) => id)).toEqual(['message-10', 'message-9'])
+    expect(store.nextCursor).toBe('message-9')
+    await expect(store.loadNewer(request)).resolves.toBe(true)
+    expect(urls[2]).toContain('after=message-10')
+    expect(store.messages.map(({ id }) => id)).toContain('message-12')
+  })
 })

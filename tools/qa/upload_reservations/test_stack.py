@@ -13,10 +13,14 @@ class UploadStackTests(unittest.TestCase):
             root = Path(temporary)
             stack = UploadStack(root, root, 2 * 1024**3)
             with patch.object(stack, 'container') as container, \
-                    patch('tools.qa.upload_reservations.stack.run'), \
+                    patch('tools.qa.upload_reservations.stack.run') as run, \
+                    patch('tools.qa.upload_reservations.stack.output', return_value='arm64') as output, \
                     patch('tools.qa.upload_reservations.stack.ready') as ready:
                 stack.restart()
 
+            output.assert_called_once_with('docker', 'info', '--format', '{{.Architecture}}')
+            build = next(call for call in run.call_args_list if call.args[:2] == ('go', 'build'))
+            self.assertEqual(build.kwargs['env']['GOARCH'], 'arm64')
             args = container.call_args.args
             pairs = list(zip(args, args[1:]))
             self.assertEqual(args[:2], ('api', 'postgres:17.6-alpine'))

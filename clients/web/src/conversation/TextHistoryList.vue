@@ -9,8 +9,9 @@ import { vRetainedEditingPin } from './history_window/editing_tabstops'
 const props = defineProps<{ channelId: string; session: CurrentSession | null }>()
 const emit = defineEmits<{ reply: [message: TextMessage]; retry: [message: TextMessage]; replyContext: [messageId: string]; viewportChange: [] }>()
 const list = ref<HTMLOListElement | null>(null)
-const { store, timeline, announcement, jumpCount, historyWindow, historyScope, onScroll, jumpToLatest, openReplyContext, replyPreview, loadOlder, loadNewer } = useTextHistoryList(
+const { store, timeline, announcement, jumpCount, historyWindow, historyScope, onScroll, jumpToLatest, openReplyContext, showMessage, beginTargetNavigation, endTargetNavigation, replyPreview, loadOlder, loadNewer } = useTextHistoryList(
   props, { viewportChange: () => emit('viewportChange'), replyContext: (id) => emit('replyContext', id) }, list)
+defineExpose({ showMessage, beginTargetNavigation, endTargetNavigation })
 </script>
 
 <template>

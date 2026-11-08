@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { advanceReadIfVisible } from '../direct_message/direct_message_read_gate'
 import { advanceTextReadIfVisible } from './text_read_gate'
-import { newestVisibleServerMessageId, shouldAdvanceVisibleRead } from './read_visibility'
+import { firstUnreadIsVisible, newestVisibleServerMessageId, shouldAdvanceVisibleRead } from './read_visibility'
 
 function viewport(rows: { id: string; top: number; bottom: number }[], height = 100): HTMLElement {
   return {
@@ -40,6 +40,16 @@ describe('read visibility in a scrolled conversation', () => {
     expect(newestVisibleServerMessageId(viewport([{ id: 'server', top: 100, bottom: 140 }]), history)).toBeUndefined()
     expect(newestVisibleServerMessageId(viewport(rows, 0), history)).toBeUndefined()
     expect(newestVisibleServerMessageId(null, history)).toBeUndefined()
+  })
+
+  it('waits for the first unread row to enter the viewport before advancing', () => {
+    const list = viewport([{ id: 'latest', top: 10, bottom: 50 }])
+    expect(firstUnreadIsVisible(list, 'unread')).toBe(false)
+    expect(firstUnreadIsVisible(viewport([
+      { id: 'unread', top: 95, bottom: 120 },
+      { id: 'latest', top: 10, bottom: 50 },
+    ]), 'unread')).toBe(true)
+    expect(firstUnreadIsVisible(list, undefined)).toBe(true)
   })
 
   it('does not regress a cursor when scrolling back through older rows', () => {
