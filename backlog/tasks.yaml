@@ -33,6 +33,11 @@ tasks:
     requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-QUALITY-01]
     depends_on: [RT689-002, RT689-003]
     evidence: [clients/flutter/test/realtime_scope/maintenance_event_test.dart]
+  - id: RT689-006
+    title: Reuse trusted client source resolution for public realtime admission (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01]
+    depends_on: [T-010]
+    evidence: [backend/internal/security/rate_limit/source_test.go]
   - id: T-001
     title: Specification packet and traceability
     requirements: [REQ-PRODUCT-01, REQ-ISOLATION-01, REQ-STACK-01, REQ-ARCH-01, REQ-QUALITY-02]
