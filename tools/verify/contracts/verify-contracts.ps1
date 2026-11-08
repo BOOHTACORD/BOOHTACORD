@@ -52,7 +52,7 @@ $realtime = Get-Content -Raw -LiteralPath $realtimePath | ConvertFrom-Json
 . (Join-Path $PSScriptRoot 'telemetry.ps1')
 Push-Location (Join-Path $PSScriptRoot '../../..')
 try {
-    python -m unittest tools.verify.openapi_parity.test_parity tools.verify.openapi_parity.test_source
+    python -m unittest tools.verify.openapi_parity.test_parity tools.verify.openapi_parity.test_source tools.verify.realtime_schema.test_maintenance
     if ($LASTEXITCODE -ne 0) { throw 'OpenAPI parity tests failed.' }
     python -m tools.verify.openapi_parity.lint
     if ($LASTEXITCODE -ne 0) { throw 'OpenAPI schema lint failed.' }

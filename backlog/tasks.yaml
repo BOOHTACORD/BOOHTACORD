@@ -13,6 +13,11 @@ tasks:
     requirements: [REQ-ARCH-01, REQ-OPS-01, REQ-SECURITY-01]
     depends_on: [T-003]
     evidence: [backend/internal/maintenance/observe_state/observer_test.go]
+  - id: RT689-002
+    title: Typed realtime maintenance snapshot contract (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-OPS-01]
+    depends_on: [T-001]
+    evidence: [tools/verify/realtime_schema/test_maintenance.py]
   - id: T-001
     title: Specification packet and traceability
     requirements: [REQ-PRODUCT-01, REQ-ISOLATION-01, REQ-STACK-01, REQ-ARCH-01, REQ-QUALITY-02]
