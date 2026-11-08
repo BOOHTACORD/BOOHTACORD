@@ -12,7 +12,7 @@ import (
 	eventhub "voice-platform/backend/internal/realtime/event_hub"
 )
 
-func streamEvents(connection *websocket.Conn, authenticator sessionapi.Authenticator, cookie *http.Cookie, interval time.Duration, subscription *eventhub.Subscription, hub *eventhub.Hub, newID Identifier, now Clock, observer ConnectionObserver, replayedIDs map[string]struct{}, maintenance *observestate.Subscription) {
+func streamEvents(connection *websocket.Conn, authenticator sessionapi.Authenticator, cookie *http.Cookie, subscription *eventhub.Subscription, hub *eventhub.Hub, newID Identifier, now Clock, observer ConnectionObserver, replayedIDs map[string]struct{}, maintenance *observestate.Subscription) {
 	closed := connection.CloseRead(context.Background()).Done()
 	var events <-chan eventhub.Event
 	var overflowed <-chan struct{}
@@ -23,13 +23,6 @@ func streamEvents(connection *websocket.Conn, authenticator sessionapi.Authentic
 	}
 	if subscription != nil {
 		events, overflowed = subscription.Events(), subscription.Overflowed()
-	}
-	var ticker *time.Ticker
-	var revalidate <-chan time.Time
-	if authenticator != nil {
-		ticker = time.NewTicker(interval)
-		defer ticker.Stop()
-		revalidate = ticker.C
 	}
 	for {
 		select {
@@ -74,16 +67,6 @@ func streamEvents(connection *websocket.Conn, authenticator sessionapi.Authentic
 				return
 			}
 			subscription.AcknowledgeOverflow()
-		case <-revalidate:
-			context, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-			started := time.Now()
-			_, err := authenticator.Authenticate(context, cookie.Value)
-			cancel()
-			observeRevalidation(observer, time.Since(started), err == nil)
-			if err != nil {
-				_ = connection.Close(websocket.StatusPolicyViolation, "session is no longer valid")
-				return
-			}
 		}
 	}
 }

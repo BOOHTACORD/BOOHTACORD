@@ -44,6 +44,9 @@ func NewHandlerWithMaintenance(authenticator sessionapi.Authenticator, revalidat
 		if err != nil {
 			return
 		}
+		defer connection.CloseNow()
+		stopMonitor := startSessionMonitor(request.Context(), connection, authenticator, cookie, principal, revalidationInterval, observer)
+		defer stopMonitor()
 		finishHandshake := beginHandshake(request.Context())
 		defer finishHandshake(errHandshakeWrite)
 		var subscription *eventhub.Subscription
@@ -56,7 +59,6 @@ func NewHandlerWithMaintenance(authenticator sessionapi.Authenticator, revalidat
 			observer.RealtimeConnectionOpened()
 			defer observer.RealtimeConnectionClosed()
 		}
-		defer connection.CloseNow()
 		maintenanceSub := subscribeMaintenance(request, maintenance)
 		if maintenanceSub != nil {
 			defer maintenanceSub.Close()
@@ -113,6 +115,6 @@ func NewHandlerWithMaintenance(authenticator sessionapi.Authenticator, revalidat
 			observer.ObserveRealtimeConnectionReady(time.Since(acceptedAt))
 		}
 		finishHandshake(nil)
-		streamEvents(connection, authenticator, cookie, revalidationInterval, subscription, events, newID, now, observer, replayedIDs, maintenanceSub)
+		streamEvents(connection, authenticator, cookie, subscription, events, newID, now, observer, replayedIDs, maintenanceSub)
 	})
 }
