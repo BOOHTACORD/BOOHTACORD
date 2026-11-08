@@ -1,0 +1,11 @@
+# Issue 676: isolated Web pair and Android emulator
+
+Product source `8306413a84c224a712509d7a059916c95b00bd3c`; the join-sound worker was freshly built from that source (local image `sha256:d75063103492daf1f554fcb14625170a2a9b3b7f409a30f0562f2d2fd56870b9`). Two owned localhost stacks used different loopback ports because another independent fixture occupied the defaults. Only temporary QA harness port literals changed and were restored. No production service was changed.
+
+The project's `tools/qa/join_sounds/paired.mjs` passed on two Chromium clients against real Go API, PostgreSQL, isolated normalizer and LiveKit. An authenticated room participant's custom audio was fetched over private HTTP; the browser's media play promise resolved. The scenario checked stream start/stop, leave suppressing duplicate stop, quiet baseline/self and deafen. A synthetic canvas replaced the screen picker. This is not proof of sound reaching a physical speaker or headset.
+
+On a Pixel Android 15 emulator, a debug integration build of the full Flutter app used the same type of isolated worker and a synthetic picker. Upload, enable, SoLoud preview and delete passed over real HTTPS. An initial run with an artificial post-preview delay completed the operations but detected an unhandled `FormatException` from join-sound response validation at the final test check. A run without that delay and a second run with a longer delay and stage checks both passed; the initial error remains unexplained and is not declared fixed. The 1080 x 2400 emulator screenshot was inspected: the profile and melody labels fit; controls were disabled during the captured operation. Its local SHA-256 is `d0445d1cdaaead1a006ed15fa8bf3c62904ec2ee86451ff267fc8333272a55cd`. The synthetic image is not committed. The temporary app and port reversal were absent after testing.
+
+Focused Web policy/client tests passed (12), as did four Flutter tests and the nearest Go join-sound/preferences/route packages. These package results do not imply that every optional integration was run. Both disposable stacks removed their owned resources.
+
+PASS_SCOPED only. Real acoustic playback, OS picker, Windows/macOS/iOS routes, restart and cross-platform matrix, release and deployment remain unverified here. Issue #676 remains open.
