@@ -35,7 +35,7 @@ def deploy(directory, manifest):
     writer_topology(configuration, docker('compose', *arguments, 'ps', '-q', 'api'))
     environment = {**os.environ, "VOICE_PLATFORM_DIR": str(directory)}
     for service, component in manifest["components"].items():
-        environment[service.upper() + "_IMAGE"] = f"voice-platform-{service}@{component['index_digest']}"
+        environment[service.upper().replace('-', '_') + "_IMAGE"] = f"voice-platform-{service}@{component['index_digest']}"
     with tempfile.TemporaryDirectory(prefix='voice-platform-rollout-') as temporary:
         phases = Path(temporary)/'phases.txt'
         phases.touch(mode=0o600)

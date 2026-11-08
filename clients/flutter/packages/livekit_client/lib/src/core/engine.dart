@@ -52,6 +52,8 @@ import '../utils/voice_reconnect_policy.dart';
 import 'signal_client.dart';
 import 'transport.dart';
 
+part 'connectivity_recovery.dart';
+
 class Engine extends Disposable with EventsEmittable<EngineEvent> {
   static const _lossyDCLabel = '_lossy';
   static const _reliableDCLabel = '_reliable';
@@ -162,6 +164,7 @@ class Engine extends Disposable with EventsEmittable<EngineEvent> {
   );
   final TTLMap<String, int> _reliableReceivedState = TTLMap<String, int>(30000);
   bool _isReconnecting = false;
+  bool _hasCompletedInitialConnection = false;
 
   Completer<void>? _publisherConnectionCompleter;
 
@@ -235,6 +238,7 @@ class Engine extends Disposable with EventsEmittable<EngineEvent> {
 
     //reset state
     _isClosed = false;
+    _hasCompletedInitialConnection = false;
 
     try {
       // wait for socket to connect rtc server
@@ -264,6 +268,7 @@ class Engine extends Disposable with EventsEmittable<EngineEvent> {
           'Timed out waiting for PeerConnection to connect, please check your network for ice connectivity',
         ),
       );
+      _hasCompletedInitialConnection = true;
       events.emit(const EngineConnectedEvent());
     } catch (error) {
       logger.fine('Connect Error $error');
@@ -287,6 +292,7 @@ class Engine extends Disposable with EventsEmittable<EngineEvent> {
   // resets internal state to a re-usable state
   Future<void> cleanUp() async {
     logger.fine('[$objectId] cleanUp()');
+    _hasCompletedInitialConnection = false;
 
     await publisher?.dispose();
     publisher = null;
@@ -1404,6 +1410,7 @@ class Engine extends Disposable with EventsEmittable<EngineEvent> {
   });
 
   void _setUpSignalListeners() => _signalListener
+    ..on<SignalConnectivityChangedEvent>(this._handleConnectivityChange)
     ..on<SignalJoinResponseEvent>((event) async {
       // create peer connections
       _subscriberPrimary = event.response.subscriberPrimary;

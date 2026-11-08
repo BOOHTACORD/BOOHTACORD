@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 	admitlogin "voice-platform/backend/internal/identity/admit_login"
+	failures "voice-platform/backend/internal/identity/track_login_failures"
 
 	admitconnection "voice-platform/backend/internal/realtime/admit_connection"
 	"voice-platform/backend/internal/security/rate_limit"
@@ -18,10 +19,16 @@ func configureAdmission(configuration *Config) error {
 	}
 	configuration.RegistrationLimiter, err = makeLimiter(5, 15*time.Minute, 10_000)
 	if err == nil {
-		configuration.LoginLimiter, err = makeLimiter(10, 5*time.Minute, 10_000)
+		configuration.LoginLimiter, err = makeLimiter(32, 5*time.Minute, 10_000)
+	}
+	if err == nil {
+		configuration.LoginDeploymentLimiter, err = makeLimiter(200, 5*time.Minute, 1)
 	}
 	if err == nil {
 		configuration.LoginAdmission, err = admitlogin.New(admitlogin.Config{Limit: 8, Window: 30 * time.Second, MaxAccounts: 50_000})
+	}
+	if err == nil {
+		configuration.LoginFailures, err = failures.New(failures.Config{Limit: 8, Window: 30 * time.Second, Capacity: 50_000})
 	}
 	if err == nil {
 		configuration.PasswordResetLimiter, err = makeLimiter(5, 15*time.Minute, 10_000)

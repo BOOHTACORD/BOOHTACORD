@@ -36,3 +36,12 @@
   attempt was stopped. No physical or real-stack acceptance is claimed.
 - Installed-client validation of the patched candidate: **NOT_RUN**. The
   later user-reported successful voice exchange used the unchanged 1.0.51.
+
+## Current-master integration, 2026-11-08
+
+The branch was combined with master `cc5d3992d`: the split speaker check retains
+the master's process-wide `SoundEngineLease` acquisition and final release.
+The exact-label/ambiguous-fallback resolver and existing Android route behavior
+remain covered. Fourteen focused resolver/device-check/queue tests passed on
+Windows. This source validation does not establish acoustic output; physical
+audibility on the patched candidate remains NOT_RUN.

@@ -20,6 +20,15 @@ def fixture():
 
 
 class TransferAcknowledgementTests(unittest.TestCase):
+    def test_third_signed_component_cannot_be_omitted_from_fresh_readback(self):
+        value=fixture();components={'api','web','join-sound-processor'}
+        def checked(): return readback_contract.validate(json.dumps(value).encode(), SHA, CONTROLLER, PRIOR, NONCE, components=components)
+        with self.assertRaises(ValueError): checked()
+        value['running_images']['join-sound-processor']='sha256:'+'a'*64
+        value['sources']['join-sound-processor']=SHA
+        self.assertEqual(components,set(checked()['running_images']))
+        value['sources']['join-sound-processor']=PRIOR
+        with self.assertRaises(ValueError): checked()
     def validate(self, value): return readback_contract.validate(json.dumps(value).encode(), SHA, CONTROLLER, PRIOR, NONCE)
 
     def test_exact_fresh_receipt_is_the_only_acknowledgement(self):

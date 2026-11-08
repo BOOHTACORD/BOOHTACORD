@@ -47,7 +47,7 @@ func (f *fixture) serve(w http.ResponseWriter, r *http.Request) {
 	if path == "/auth/login" {
 		if f.enforceNAT {
 			f.natAttempts++
-			if f.natAttempts > 10 {
+			if f.natAttempts > 32 {
 				w.Header().Set("Retry-After", "300")
 				w.WriteHeader(429)
 				json.NewEncoder(w).Encode(map[string]any{"error": map[string]string{"code": "RATE_LIMITED"}})

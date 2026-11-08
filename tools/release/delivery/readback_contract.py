@@ -18,9 +18,11 @@ def unique(rows):
     return result
 
 
-def validate(raw, source, controller, prior, nonce):
+def validate(raw, source, controller, prior, nonce, *, components=('api','web')):
     try:
         if not isinstance(raw, bytes) or not 0 < len(raw) <= 16384: raise ValueError
+        components = set(components)
+        if components not in ({'api','web'},{'api','web','join-sound-processor'}): raise ValueError
         for value in (source, controller, prior):
             if not isinstance(value, str) or not re.fullmatch('[a-f0-9]{40}', value): raise ValueError
         if not isinstance(nonce, str) or not re.fullmatch('[a-f0-9]{32}', nonce): raise ValueError
@@ -28,14 +30,14 @@ def validate(raw, source, controller, prior, nonce):
         if not isinstance(result, dict) or set(result) not in (KEYS, KEYS | {'rollout'}): raise ValueError
         expected = {'kind': 'installed-source-readback', 'status': 'PASS', 'source_revision': source,
                     'controller_revision': controller, 'nonce': nonce, 'previous_source_revision': prior,
-                    'persistent_volumes': 'PASS', 'health': 'PASS', 'sources': {'api': source, 'web': source}}
+                    'persistent_volumes': 'PASS', 'health': 'PASS', 'sources': {name:source for name in components}}
         if type(result['schema_version']) is not int or result['schema_version'] != 1: raise ValueError
         if any(result[key] != value for key, value in expected.items()): raise ValueError
         if result['schema_relation'] not in ('unchanged', 'changed-with-migration-inventory'): raise ValueError
         for key in ('schema_sha256', 'migration_inventory_sha256'):
             if not isinstance(result[key], str) or not re.fullmatch('[a-f0-9]{64}', result[key]): raise ValueError
         for key, names, pattern in (('volumes', set(VOLUMES), '[a-f0-9]{64}'),
-                                    ('running_images', {'api', 'web'}, 'sha256:[a-f0-9]{64}')):
+                                    ('running_images', components, 'sha256:[a-f0-9]{64}')):
             values = result[key]
             if (not isinstance(values, dict) or set(values) != names
                     or any(not isinstance(v, str) or not re.fullmatch(pattern, v) for v in values.values())): raise ValueError

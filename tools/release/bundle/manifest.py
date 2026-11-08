@@ -2,6 +2,7 @@
 import re
 
 FILES = {"api.oci.tar", "web.oci.tar", "runtime.tar.gz", "checks.json"}
+WORKER = 'join-sound-processor'
 PREDICATES = {"https://spdx.dev/Document", "https://slsa.dev/provenance/v0.2"}
 
 
@@ -29,14 +30,16 @@ def _validate(m):
     require(m["release_id"] == m["source_revision"], "Release ID must equal the immutable source SHA")
     require(hex_value(m["source_archive_sha256"], 64), "Invalid source archive checksum")
     require(m["platform"] == "linux/amd64", "Unsupported release platform")
-    require(set(m["components"]) == {"api", "web"}, "Both server components are required")
+    components = set(m['components'])
+    require(components in ({'api', 'web'}, {'api', 'web', WORKER}), "Unexpected server components")
     for service, component in m["components"].items():
         require(set(component) == {"archive", "index_digest", "manifest_digest", "attestation_predicates"}, "Invalid component fields")
         require(component["archive"] == service + ".oci.tar", "Invalid component archive")
         for name in ("index_digest", "manifest_digest"):
             require(re.fullmatch(r"sha256:[0-9a-f]{64}", component[name]), "Invalid OCI digest")
         require(set(component["attestation_predicates"]) >= PREDICATES, "SBOM/provenance missing")
-    require(set(m["files"]) == FILES, "Release must contain the exact approved payload files")
+    expected = FILES | ({WORKER + '.oci.tar'} if WORKER in components else set())
+    require(set(m["files"]) == expected, "Release must contain the exact approved payload files")
     for entry in m["files"].values():
         require(set(entry) == {"sha256", "bytes"} and hex_value(entry["sha256"], 64), "Invalid file checksum")
         require(type(entry["bytes"]) is int and 0 < entry["bytes"] <= 2_000_000_000, "Invalid payload size")

@@ -6,6 +6,7 @@ import 'package:flutter_soloud/flutter_soloud.dart';
 import 'package:record/record.dart';
 
 import 'android_audio_devices.dart';
+import 'sound_engine_lease.dart';
 
 part 'audio_device_check/devices.dart';
 part 'audio_device_check/microphone.dart';
@@ -41,16 +42,18 @@ class NativeAudioDeviceCheckService implements AudioDeviceCheckService {
   bool _disposed = false;
 
   @override
-  Future<Stream<double>> startMicrophone({String? deviceId, String? deviceLabel}) =>
-      this._startMicrophone(deviceId: deviceId, deviceLabel: deviceLabel);
+  Future<Stream<double>> startMicrophone({
+    String? deviceId,
+    String? deviceLabel,
+  }) => _startMicrophone(deviceId: deviceId, deviceLabel: deviceLabel);
 
   @override
-  Future<void> stopMicrophone() => this._stopMicrophone();
+  Future<void> stopMicrophone() => _stopMicrophone();
 
   @override
   Future<void> playSpeaker({String? deviceId, String? deviceLabel}) =>
-      this._playSpeaker(deviceId: deviceId, deviceLabel: deviceLabel);
+      _playSpeaker(deviceId: deviceId, deviceLabel: deviceLabel);
 
   @override
-  Future<void> dispose() => this._disposeAudioCheck();
+  Future<void> dispose() => _disposeAudioCheck();
 }

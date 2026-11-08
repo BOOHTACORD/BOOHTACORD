@@ -1,0 +1,89 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:crypto/crypto.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:boohtacord_desktop/src/app.dart';
+import 'package:boohtacord_desktop/src/app_state.dart';
+import 'package:boohtacord_desktop/src/models.dart';
+import 'package:boohtacord_desktop/src/services/api_client.dart';
+
+class QaTls extends HttpOverrides {
+  QaTls(this.pin);
+  final String pin;
+  @override
+  HttpClient createHttpClient(SecurityContext? context) => super.createHttpClient(context)
+    ..badCertificateCallback = (cert, host, port) => host == 'localhost' && port == 4810 && sha256.convert(cert.der).toString() == pin;
+}
+class CountingClient extends http.BaseClient {
+  final http.Client inner = http.Client();
+  int loginRequests = 0;
+  int? lastStatus;
+  String? retryAfter;
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) async {
+    final isLogin = request.method == 'POST' && request.url.path == '/api/v1/auth/login';
+    if (isLogin) loginRequests++;
+    final response = await inner.send(request);
+    if (isLogin) { lastStatus = response.statusCode; retryAfter = response.headers['retry-after']; }
+    return response;
+  }
+  @override
+  void close() => inner.close();
+}
+void main() {
+  final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  testWidgets('physical client honors real 429 and explicit retry', (tester) async {
+    const origin = String.fromEnvironment('QA_API_BASE');
+    const pin = String.fromEnvironment('QA_CERT_SHA256');
+    const password = String.fromEnvironment('QA_PASSWORD');
+    if (origin != 'https://localhost:4810/api/v1' || pin.length != 64 || password.isEmpty) throw StateError('Owned QA endpoint required');
+    HttpOverrides.global = QaTls(pin);
+    addTearDown(() => HttpOverrides.global = null);
+    final prep = http.Client();
+    final started = DateTime.now();
+    await tester.runAsync(() async {
+      for (var i = 0; i < 8; i++) {
+        final r = await prep.post(Uri.parse('$origin/auth/login'), headers: {'content-type':'application/json','origin':'https://localhost:4810'}, body: jsonEncode({'login':'qa_admin','password':'synthetic-incorrect'}));
+        expect(r.statusCode, 401);
+      }
+      prep.close();
+    });
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.setString('server_url', origin);
+    final network = CountingClient();
+    final state = AppState(ApiClient(client: network));
+    addTearDown(state.dispose);
+    await tester.pumpWidget(BoohtacordApp(state: state));
+    await tester.runAsync(state.initialize);
+    await tester.pumpAndSettle();
+    expect(state.phase, AppPhase.signedOut);
+    await tester.enterText(find.byKey(const ValueKey('auth-login-field')), 'qa_admin');
+    await tester.enterText(find.byKey(const ValueKey('auth-password-field')), password);
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pump();
+    await tester.tap(find.text('Войти').last);
+    for (var i=0; i<120 && network.lastStatus == null; i++) { await tester.pump(const Duration(milliseconds:250)); }
+    expect(network.lastStatus, 429);
+    expect(int.tryParse(network.retryAfter ?? ''), greaterThan(0));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Повторите вручную'), findsOneWidget);
+    expect(network.loginRequests, 1);
+    if (Platform.isAndroid) { await binding.convertFlutterSurfaceToImage(); await tester.pumpAndSettle(); }
+    await binding.takeScreenshot('android-real-429');
+    await tester.runAsync(() => Future<void>.delayed(const Duration(seconds: 6)));
+    await tester.pump();
+    expect(network.loginRequests, 1, reason:'no automatic login retry');
+    final remaining = const Duration(seconds: 33) - DateTime.now().difference(started);
+    if (!remaining.isNegative) await tester.runAsync(() => Future<void>.delayed(remaining));
+    await tester.tap(find.text('Войти').last);
+    for (var i=0; i<160 && state.phase != AppPhase.ready; i++) { await tester.pump(const Duration(milliseconds:250)); }
+    expect(state.phase, AppPhase.ready);
+    expect(network.loginRequests, 2);
+    expect(network.lastStatus, 204);
+    print('QA137_ANDROID_PASS real429=1 auto_retry=0 manual_retry=204');
+  }, timeout: const Timeout(Duration(minutes:8)));
+}

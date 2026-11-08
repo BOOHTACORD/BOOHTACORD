@@ -6,11 +6,12 @@ import { createPinia } from 'pinia'
 import VoiceDock from './VoiceDock.vue'
 import VoiceParticipantVolumes from './VoiceParticipantVolumes.vue'
 import StreamStartSoundSetting from './StreamStartSoundSetting.vue'
-import { streamStartChime, streamStartNotice } from './stream_start_runtime'
+import { streamStartNotice } from './stream_start_runtime'
+import { voiceSoundPreferences } from './sound_playback/runtime'
 
 describe('new screen presentation', () => {
   it('marks a remote participant live and keeps the personal sound switch in audio settings', async () => {
-    streamStartChime.setEnabled(true)
+    voiceSoundPreferences.settings.value = { ...voiceSoundPreferences.settings.value, started: true }
     const participants = await renderToString(createSSRApp(VoiceParticipantVolumes, {
       error: null, participants: [{ id: 'alice', accountId: 'alice', name: 'Алиса', volume: 100, speaking: false, microphoneMuted: false }],
       screenStreams: [{ id: 'alice:screen', participantId: 'alice', participantName: 'Алиса', hasAudio: true }],
@@ -31,7 +32,7 @@ describe('new screen presentation', () => {
     expect(soundSetting).toContain('aria-checked="true"')
 
     streamStartNotice.value = true
-    streamStartChime.setEnabled(false)
+    voiceSoundPreferences.settings.value = { ...voiceSoundPreferences.settings.value, started: false }
     try {
       const silentDock = await renderToString(createSSRApp(VoiceDock, {
         channel: null, activeSession: true, error: null, activationMode: 'VAD', deafened: false,
@@ -44,7 +45,13 @@ describe('new screen presentation', () => {
       expect(silentDock).not.toContain('В канале началась демонстрация экрана')
     } finally {
       streamStartNotice.value = false
-      streamStartChime.setEnabled(true)
+      voiceSoundPreferences.settings.value = { ...voiceSoundPreferences.settings.value, started: true }
     }
   })
+})
+
+it('disables the audio shortcut until account preferences are loaded', async () => {
+  voiceSoundPreferences.ready.value = false
+  const markup = await renderToString(createSSRApp(StreamStartSoundSetting))
+  expect(markup).toContain('disabled')
 })

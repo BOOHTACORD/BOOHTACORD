@@ -18,6 +18,7 @@ COPY clients/web/src ./src
 COPY clients/web/public ./public
 COPY contracts/client-build.json /app/contracts/client-build.json
 COPY contracts/screen-share-profile-v1.catalog.json /app/contracts/screen-share-profile-v1.catalog.json
+COPY contracts/voice-sound-pcm.fixtures.json /app/contracts/voice-sound-pcm.fixtures.json
 RUN npm run build
 
 FROM nginx:1.27.4-alpine

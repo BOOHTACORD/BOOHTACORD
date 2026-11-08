@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 	admitlogin "voice-platform/backend/internal/identity/admit_login"
+	failures "voice-platform/backend/internal/identity/track_login_failures"
 	centralexport "voice-platform/backend/internal/observability/central_export"
 
 	livekitcredential "voice-platform/backend/internal/media/livekit_credential"
@@ -23,6 +24,7 @@ type Config struct {
 	NotificationsAvailable                                                       bool
 	Address, DatabaseURL, LiveKitAPIKey, LiveKitAPISecret, LiveKitPrivateHTTPURL string
 	PublicOrigin                                                                 string
+	JoinSoundProcessorURL                                                        string
 	ClientUpdateCatalogPath                                                      string
 	ClientUpdateAllowedHosts                                                     []string
 	OriginMiddleware                                                             func(http.Handler) http.Handler
@@ -31,7 +33,9 @@ type Config struct {
 	MediaSnapshot                                                                snapshotlivekitpresence.Client
 	RegistrationLimiter                                                          *ratelimit.Limiter
 	LoginLimiter                                                                 *ratelimit.Limiter
+	LoginDeploymentLimiter                                                       *ratelimit.Limiter
 	LoginAdmission                                                               *admitlogin.Budget
+	LoginFailures                                                                *failures.Budget
 	PasswordResetLimiter                                                         *ratelimit.Limiter
 	UploadLimiter                                                                *ratelimit.Limiter
 	UploadAccountLimiter                                                         *ratelimit.Limiter
@@ -50,6 +54,7 @@ type Config struct {
 func Load(getenv func(string) string) (Config, error) {
 	configuration := Config{PublicOrigin: getenv("PUBLIC_ORIGIN"), AttachmentRoot: getenv("ATTACHMENTS_DIRECTORY"), ScreenPreviewRoot: getenv("SCREEN_PREVIEW_DIRECTORY"), TrustedProxyCIDRs: splitHosts(getenv("TRUSTED_PROXY_CIDRS"))}
 	var err error
+	configuration.JoinSoundProcessorURL = getenv("JOIN_SOUND_PROCESSOR_URL")
 	if _, err := notificationAvailability(getenv("NOTIFICATION_WEB_ENABLED")); err != nil {
 		return Config{}, fmt.Errorf("NOTIFICATION_WEB_ENABLED must be true or false")
 	}
@@ -107,22 +112,4 @@ func Load(getenv func(string) string) (Config, error) {
 	configuration.LiveKitAPIKey = getenv("LIVEKIT_API_KEY")
 	configuration.LiveKitAPISecret = getenv("LIVEKIT_API_SECRET")
 	return configuration, nil
-}
-
-func splitHosts(raw string) []string {
-	var result []string
-	for _, value := range strings.Split(raw, ",") {
-		if host := strings.TrimSpace(value); host != "" {
-			result = append(result, host)
-		}
-	}
-	return result
-}
-
-func publicHost(raw string) []string {
-	request, err := http.NewRequest(http.MethodGet, raw, nil)
-	if err != nil || request.URL.Hostname() == "" {
-		return nil
-	}
-	return []string{request.URL.Hostname()}
 }

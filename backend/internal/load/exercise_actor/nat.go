@@ -7,21 +7,21 @@ import (
 	"voice-platform/backend/internal/load/validate_target"
 )
 
-// ADR-003: ten attempts per five minutes per source IP. This independent profile
+// ADR-003: 32 attempts per five minutes per source IP. This independent profile
 // uses one source; the normal 100-source profile does not bypass this quota.
 // SEC-001 admits at most eight checks per account in a short window. Use fresh
-// unknown fixture logins for source attempts 9..11, so an exhausted account
-// cannot hide whether the independent IP admission still rejects attempt 11.
+// unknown fixture logins for source attempts 9..33, so an exhausted account
+// cannot hide whether the independent IP admission still rejects attempt 33.
 func (a *Actor) SharedNAT(ctx context.Context) error {
 	a.Client = validate_target.ClientFrom(199)
-	for attempt := 0; attempt < 11; attempt++ {
+	for attempt := 0; attempt < 33; attempt++ {
 		expected, name := 204, "login"
 		login := a.Account.Login
 		if attempt >= 8 {
 			login = fmt.Sprintf("qa_load_nat_probe_%02d", attempt)
 			expected = 401
 		}
-		if attempt == 10 {
+		if attempt == 32 {
 			expected, name = 429, "nat_limit"
 		}
 		var result any

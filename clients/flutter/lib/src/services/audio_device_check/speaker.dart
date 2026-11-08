@@ -26,6 +26,11 @@ extension _NativeSpeakerCheck on NativeAudioDeviceCheckService {
     AudioSource? source;
     SoundHandle? handle;
     var initializedHere = false;
+    final release = SoundEngineLease.acquire();
+    if (release == null)
+      throw const AudioDeviceCheckFailure(
+        'Сейчас занят звуковой выход. Повторите проверку через мгновение.',
+      );
     try {
       await soloud.init(device: outputDevice);
       initializedHere = true;
@@ -53,7 +58,7 @@ extension _NativeSpeakerCheck on NativeAudioDeviceCheckService {
           await soloud.deinitAsync();
         } catch (_) {}
       }
+      release();
     }
   }
-
 }

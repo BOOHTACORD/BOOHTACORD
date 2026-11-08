@@ -7,6 +7,8 @@ import '../app_state.dart';
 import '../features/admin/confirmation/dialog.dart';
 import '../features/session/own_sessions/panel.dart';
 import '../features/updates/status_card.dart';
+import '../features/voice/join_sound/panel.dart';
+import '../features/voice/sound_preferences/panel.dart';
 import '../models.dart';
 import '../app/notification_settings/panel.dart';
 import '../theme.dart';
@@ -499,6 +501,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         const SizedBox(height: 20),
         _feedback(),
+        const SizedBox(height: 24),
+        if (widget.state.voice.sounds.active) JoinSoundPanel(key: ValueKey(profile.accountId), runtime: widget.state.voice.sounds),
       ],
     ),
   );
@@ -563,7 +567,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     ),
   );
 
-  Widget _notificationsSection() => _panel(child: NotificationSettingsPanel(state:widget.state));
+  Widget _notificationsSection() => _panel(child: Column(children: [NotificationSettingsPanel(state:widget.state), VoiceSoundSettingsPanel(runtime: widget.state.voice.sounds)]));
 
   Widget _aboutSection() => _panel(child: const ClientUpdateStatusCard());
 

@@ -74,9 +74,17 @@ extension WorkspaceAudioSettingsScreenBuildAction
               Expanded(
                 child: LayoutBuilder(
                   builder: (context, constraints) {
+                    final horizontalInset = compact ? 16.0 : 24.0;
+                    final contentWidth =
+                        (constraints.maxWidth - horizontalInset * 2).clamp(
+                          0.0,
+                          double.infinity,
+                        );
+                    const columnSpacing = 20.0;
+                    const minCardWidthForColumns = 420.0;
                     final useTwoColumns =
-                        MediaQuery.sizeOf(context).width >=
-                        GcLayout.mobileBreakpoint;
+                        contentWidth >=
+                        minCardWidthForColumns * 2 + columnSpacing;
                     final cards = <Widget>[
                       renderAudioSettingsScreenDeviceSelection(
                         compact,
@@ -91,11 +99,11 @@ extension WorkspaceAudioSettingsScreenBuildAction
                     ];
                     final content = useTwoColumns
                         ? Wrap(
-                            spacing: 20,
+                            spacing: columnSpacing,
                             children: [
                               for (final card in cards)
                                 SizedBox(
-                                  width: (constraints.maxWidth - 20) / 2,
+                                  width: (contentWidth - columnSpacing) / 2,
                                   child: card,
                                 ),
                             ],
@@ -107,9 +115,9 @@ extension WorkspaceAudioSettingsScreenBuildAction
                     return ListView(
                       key: const ValueKey('audio-settings-list'),
                       padding: EdgeInsets.fromLTRB(
-                        compact ? 16 : 24,
+                        horizontalInset,
                         compact ? 24 : 32,
-                        compact ? 16 : 24,
+                        horizontalInset,
                         compact ? 48 : 32,
                       ),
                       children: [

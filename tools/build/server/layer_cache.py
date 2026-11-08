@@ -8,11 +8,12 @@ import shutil
 from .cache_layout import inspect
 
 OWNER={'kind':'boohtacord-server-layer-cache','version':1}
-SERVICES=('api','web')
+SERVICES=('api','web','join-sound-processor')
 
 
 def namespace(root,service,*,builder_root=None):
     paths={'api':('backend/Dockerfile','backend/go.mod','backend/go.sum'),
+           'join-sound-processor':('backend/Dockerfile.join-sound-worker','backend/go.mod','backend/go.sum'),
            'web':('clients/web/Dockerfile','clients/web/package.json','clients/web/package-lock.json')}[service]
     values={name:hashlib.sha256((root/name).read_bytes()).hexdigest() for name in ('tools/toolchains.json',*paths)}
     # Retained product sources may predate the current backend pin. Bind the

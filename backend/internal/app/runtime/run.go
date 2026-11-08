@@ -20,6 +20,7 @@ import (
 	admitlogin "voice-platform/backend/internal/identity/admit_login"
 	observeusage "voice-platform/backend/internal/identity/observe_usage"
 	"voice-platform/backend/internal/identity/password"
+	failures "voice-platform/backend/internal/identity/track_login_failures"
 	previewmemory "voice-platform/backend/internal/media/screen_preview/memory"
 	presencememory "voice-platform/backend/internal/media/screen_viewer_presence/memory"
 	notificationmetrics "voice-platform/backend/internal/notifications/observe_delivery"
@@ -51,7 +52,7 @@ func Run(ctx context.Context) (result error) {
 	resources.Add(func(context.Context) error { return writer.Close() })
 	metrics := httpmetrics.New()
 	if err := metrics.RegisterCollector(ratelimit.NewCollector(map[string]*ratelimit.Limiter{
-		"registration": configuration.RegistrationLimiter, "login_source": configuration.LoginLimiter,
+		"registration": configuration.RegistrationLimiter, "login_source": configuration.LoginLimiter, "login_deployment": configuration.LoginDeploymentLimiter,
 		"password_reset": configuration.PasswordResetLimiter,
 		"upload_source":  configuration.UploadLimiter, "upload_account": configuration.UploadAccountLimiter,
 		"upload_deployment": configuration.UploadDeploymentLimiter, "telemetry": configuration.TelemetryLimiter,
@@ -60,6 +61,9 @@ func Run(ctx context.Context) (result error) {
 	}
 	poolMetrics := pool.NewMetrics()
 	if err := metrics.RegisterCollector(admitlogin.NewCollector(configuration.LoginAdmission)); err != nil {
+		return err
+	}
+	if err := metrics.RegisterCollector(failures.NewCollector(configuration.LoginFailures)); err != nil {
 		return err
 	}
 	if err := metrics.RegisterCollector(password.NewCollector()); err != nil {

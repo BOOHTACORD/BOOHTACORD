@@ -40,6 +40,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import 'uiux_2026/capture_support.dart';
+import 'voice_sound_preferences/dock_fixture.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -858,8 +859,12 @@ void main() {
     expect(devices, findsOneWidget);
     expect(activation, findsOneWidget);
     expect(
+      tester.getTopLeft(devices).dx,
+      lessThan(tester.getTopLeft(activation).dx),
+    );
+    expect(
       tester.getTopLeft(devices).dy,
-      lessThan(tester.getTopLeft(activation).dy),
+      closeTo(tester.getTopLeft(activation).dy, 1),
     );
     expect(tester.getSize(devices).height, greaterThanOrEqualTo(282));
     expect(
@@ -920,6 +925,51 @@ void main() {
 
     await tester.pumpWidget(const SizedBox.shrink());
     state.dispose();
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets('audio settings grid uses the padded workspace width', (
+    tester,
+  ) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
+    addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
+    for (final viewport in [const Size(1040, 900), const Size(1440, 900)]) {
+      tester.view.devicePixelRatio = 1;
+      tester.view.physicalSize = viewport;
+      final state = AppState(
+        _PortraitApi(),
+        audioDeviceLoader: () async => const [],
+      );
+      await state.initialize();
+      state.toggleWorkspacePanel(WorkspacePanel.audio);
+      await tester.pumpWidget(MaterialApp(home: WorkspaceScreen(state: state)));
+      await tester.pumpAndSettle();
+
+      final audioList = find.byKey(const ValueKey('audio-settings-list'));
+      final devices = tester.getRect(
+        find.byKey(const ValueKey('audio-settings-device-card')),
+      );
+      final activation = tester.getRect(
+        find.byKey(const ValueKey('audio-settings-activation-card')),
+      );
+      final contentWidth = tester.getSize(audioList).width - 48;
+
+      if (viewport.width < 1200) {
+        expect(devices.width, greaterThan(contentWidth * .9));
+        expect(activation.left, closeTo(devices.left, 1));
+        expect(activation.top, greaterThan(devices.top));
+      } else {
+        expect(devices.width, closeTo(activation.width, 1));
+        expect(activation.left, greaterThan(devices.left));
+        expect(activation.top, closeTo(devices.top, 1));
+      }
+      expect(tester.takeException(), isNull);
+
+      await tester.pumpWidget(const SizedBox.shrink());
+      state.dispose();
+    }
+    tester.view.reset();
     debugDefaultTargetPlatformOverride = null;
   });
 
@@ -3066,6 +3116,7 @@ void main() {
     );
     expect(deafenSemantics.label, 'Выключить удалённый звук');
     expect(deafenSemantics.flagsCollection.isToggled, Tristate.isFalse);
+    final soundRemote = await installDockSoundPreferences(state);
     await tester.tap(find.byTooltip('Ещё настройки голоса'));
     await tester.pumpAndSettle();
     expect(
@@ -3079,13 +3130,13 @@ void main() {
           .checked,
       isTrue,
     );
+    await tester.ensureVisible(find.text('Сигнал новых трансляций'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Сигнал новых трансляций'));
     await tester.pumpAndSettle();
     expect(state.voiceStreamSoundEnabled, isFalse);
     expect(
-      (await SharedPreferences.getInstance()).getBool(
-        'voice-screen-start-sound:v1',
-      ),
+      soundRemote.settings['started'],
       isFalse,
     );
     await tester.tap(find.byTooltip('Ещё настройки голоса'));
@@ -3106,19 +3157,19 @@ void main() {
           .widget<CheckedPopupMenuItem<String>>(
             find.widgetWithText(
               CheckedPopupMenuItem<String>,
-              'Звуки участников и просмотра',
+              'Звуки входа и выхода',
             ),
           )
           .checked,
       isTrue,
     );
-    await tester.tap(find.text('Звуки участников и просмотра'));
+    await tester.ensureVisible(find.text('Звуки входа и выхода'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Звуки входа и выхода'));
     await tester.pumpAndSettle();
     expect(state.voiceRoomEventSoundsEnabled, isFalse);
     expect(
-      (await SharedPreferences.getInstance()).getBool(
-        'voice-room-event-sounds:v1',
-      ),
+      soundRemote.settings['joined'],
       isFalse,
     );
     state.voice.voiceRoomEventSoundsEnabled = true;
@@ -3131,7 +3182,7 @@ void main() {
           .widget<CheckedPopupMenuItem<String>>(
             find.widgetWithText(
               CheckedPopupMenuItem<String>,
-              'Звуки участников и просмотра',
+              'Звуки входа и выхода',
             ),
           )
           .checked,

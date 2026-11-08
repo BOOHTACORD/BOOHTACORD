@@ -5,6 +5,7 @@ import time
 import uuid
 import re
 from functools import partial
+from pathlib import Path
 from urllib.request import urlopen
 from tools.build.web.assets import verify_png
 from tools.build.web.audio_assets import verify_served_audio
@@ -51,6 +52,9 @@ def wait_database(database, *, attempts=30, environment=None):
 
 
 def run_smoke(receipts, output, *, environment=None):
+    if 'join-sound-processor' in receipts:
+        subprocess.run(['bash', str(Path(__file__).resolve().parents[3]/'tools/qa/join_sounds/container_smoke.sh'),
+                        receipts['join-sound-processor']['image_id']], env=environment, check=True)
     client=partial(docker,environment=environment)
     suffix = uuid.uuid4().hex[:12]
     network, database = "release-smoke-" + suffix, "db-" + suffix
