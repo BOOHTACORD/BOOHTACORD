@@ -16,11 +16,11 @@ def configuration(env):
     if not thumb and not timestamp: return None
     url = urlsplit(timestamp)
     if (not re.fullmatch(r'[0-9a-fA-F]{40}', thumb)
-            or not re.fullmatch(r'https://[A-Za-z0-9.-]+(?::[0-9]{1,5})?(?:/[A-Za-z0-9._~/%-]*)?', timestamp)
-            or url.scheme != 'https'
+            or not re.fullmatch(r'https?://[A-Za-z0-9.-]+(?::[0-9]{1,5})?(?:/[A-Za-z0-9._~/%-]*)?', timestamp)
+            or url.scheme not in ('http', 'https')
             or not url.hostname or url.username or url.password or url.query
             or url.fragment or re.search(r'\s', timestamp)):
-        raise ValueError('Windows signing requires a certificate thumbprint and HTTPS timestamp URL')
+        raise ValueError('Windows signing requires a certificate thumbprint and RFC 3161 timestamp URL')
     return {'thumbprint': thumb.upper(), 'timestamp': timestamp}
 
 

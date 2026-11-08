@@ -21,10 +21,15 @@ class SigningTests(unittest.TestCase):
         self.assertIsNone(signing.configuration({}))
         for env in ({'WINDOWS_SIGN_CERT_SHA1': 'a' * 40},
                     {'WINDOWS_SIGN_CERT_SHA1': 'x' * 40, 'WINDOWS_SIGN_TIMESTAMP_URL': 'https://a.test'},
-                    {'WINDOWS_SIGN_CERT_SHA1': 'a' * 40, 'WINDOWS_SIGN_TIMESTAMP_URL': 'http://a.test'},
+                    {'WINDOWS_SIGN_CERT_SHA1': 'a' * 40, 'WINDOWS_SIGN_TIMESTAMP_URL': 'ftp://a.test'},
                     {'WINDOWS_SIGN_CERT_SHA1': 'a' * 40, 'WINDOWS_SIGN_TIMESTAMP_URL': 'https://a.test/" /sha1'}):
             with self.subTest(env=env), self.assertRaises(ValueError):
                 signing.configuration(env)
+
+    def test_rfc3161_http_endpoint_is_supported(self):
+        config = signing.configuration({'WINDOWS_SIGN_CERT_SHA1': 'a' * 40,
+                                        'WINDOWS_SIGN_TIMESTAMP_URL': 'http://timestamp.digicert.com'})
+        self.assertEqual(config['timestamp'], 'http://timestamp.digicert.com')
 
     def test_signs_unsigned_files_preserves_trusted_and_rechecks_all(self):
         exe = self.root / 'boohtacord_desktop.exe'

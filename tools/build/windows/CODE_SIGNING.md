@@ -8,7 +8,10 @@ For a controlled signing environment, provision a trusted code-signing
 certificate and accessible private key in the build user's Windows `My`
 certificate store. Configure `WINDOWS_SIGN_CERT_SHA1` with the public 40-digit
 certificate thumbprint and `WINDOWS_SIGN_TIMESTAMP_URL` with the provider's
-HTTPS RFC 3161 timestamp endpoint. Both are required together. Do not put a
+HTTP or HTTPS RFC 3161 timestamp endpoint. Both are required together. Some
+Windows SDK SignTool versions reject HTTPS URLs; HTTP exposes the digest to the
+timestamp service and network, but the timestamp response is signed and its
+trust must be verified. Do not put a
 private key, password or access token in command-line arguments, repository
 files or logs. `signtool.exe` must be on PATH or in the installed Windows SDK.
 
