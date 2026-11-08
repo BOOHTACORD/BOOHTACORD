@@ -8,6 +8,11 @@ action_catalog:
   verification: backlog/VERIFICATION_TODO.md
   completed: DONE.md
 tasks:
+  - id: RT689-021
+    title: Bounded process-scoped voice roster coordinator (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-VOICE-01, REQ-SECURITY-01, REQ-SECURITY-02, REQ-OPS-01]
+    depends_on: [RT689-020]
+    evidence: [backend/internal/voice/coordinate_roster/coordinator_test.go, backend/internal/voice/coordinate_roster/barrier_test.go]
   - id: RT689-020
     title: Deterministic bounded voice roster normalization (GitHub #689)
     requirements: [REQ-ARCH-01, REQ-VOICE-01, REQ-SECURITY-01, REQ-SECURITY-02]
