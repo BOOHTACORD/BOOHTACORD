@@ -7,6 +7,7 @@ import { useNotificationStore } from '../notification/notification_store'
 import { useVoiceNavigationStore } from '../voice/navigation_store'
 import { usePermissionStore } from '../authorization/permission_store'
 import { createWorkspaceRealtime } from './workspace_realtime'
+import { useMemberDirectory } from '../identity/member_directory'
 
 const directID = '11111111-1111-4111-8111-111111111111'
 const messageID = '22222222-2222-4222-8222-222222222222'
@@ -33,6 +34,27 @@ function fixture() {
 
 describe('workspace typed realtime dispatch', () => {
   beforeEach(() => setActivePinia(createPinia()))
+
+  it('loads an unknown member when an online presence event arrives', async () => {
+    const value = fixture()
+    value.presence.acceptRealtimeEvent.mockReturnValue(true)
+    const directory = useMemberDirectory()
+    const ensure = vi.spyOn(directory, 'ensureMember').mockResolvedValue()
+    await value.deliver(hint('presence.changed', { user_id: directID, presence: 'online' }))
+    expect(ensure).toHaveBeenCalledWith(directID)
+    await value.deliver(hint('presence.changed', { user_id: directID, presence: 'offline' }))
+    expect(ensure).toHaveBeenCalledOnce()
+  })
+
+  it('reconciles online members from a presence snapshot after reconnect', async () => {
+    const value = fixture()
+    value.presence.acceptRealtimeEvent.mockReturnValue(true)
+    const directory = useMemberDirectory()
+    vi.spyOn(directory, 'refresh').mockResolvedValue()
+    const ensure = vi.spyOn(directory, 'ensureMember').mockResolvedValue()
+    await value.deliver(hint('presence.snapshot', { online_user_ids: [directID] }))
+    expect(ensure).toHaveBeenCalledWith(directID)
+  })
 
   it.each(['direct_message.message_created', 'direct_message.message_updated', 'direct_message.message_deleted'] as const)('refreshes only the addressed DM on %s', async (kind) => {
     const value = fixture()

@@ -3,6 +3,15 @@ import { mount, openProfile, geometry, fullName, members, routes } from './helpe
 import { expectAxeClear } from '../accessibility/axe'
 import { withBrowserZoom, captureZoomedPage } from '../control_consistency/browser_zoom'
 const profileAction=(page:import('@playwright/test').Page)=>page.getByTestId('member-popover').getByRole('button',{name:'Написать сообщение',exact:true})
+test('member count updates when the directory receives a new member', async ({page}) => {
+ await mount(page)
+ await page.evaluate(() => {
+  const fixture=(window as any).__membersFixture
+  fixture.events.length=0
+  fixture.directory.members=[...fixture.directory.members,{user_id:'new-id',login:'new',display_name:'Новый',role:'MEMBER',presence:'online'}]
+ })
+ await expect.poll(() => page.evaluate(() => (window as any).__membersFixture.events)).toContain('members:31')
+})
 test('guild roster labels voice members and uses a screen icon while they stream',async({page},info)=>{
  await mount(page)
  const member=page.locator('.members-guild-roster .member-card').filter({hasText:fullName})

@@ -15,6 +15,11 @@ export async function registration(browser, input, report) {
       await expect(page.locator('.authentication-recovery-details')).toContainText('администратора')
       await page.getByRole('button', { name: 'Создать аккаунт', exact: true }).click()
       await page.getByLabel('Логин', { exact: true }).fill('qa_flow')
+      await page.getByLabel('Пароль', { exact: true }).fill('abcdefghijk')
+      await page.locator('.authentication-submit').click()
+      await expect(page.getByRole('alert')).toContainText('от 12 до 128')
+      assert.equal(registrations, 0)
+      await page.screenshot({ path: input.directory+'/registration-short-password.png' })
       const password = input.password+' é🙂е́ '
       await page.getByLabel('Пароль', { exact: true }).fill(password)
       const toggle = page.getByRole('button', { name: 'Показать пароль', exact: true })
@@ -37,7 +42,7 @@ export async function registration(browser, input, report) {
       await expect(page.getByTestId('app-shell')).toBeVisible()
       assert.equal(registrations, 1)
       report.authentication = { register_success_login_network_failure: true, manual_login_only: true,
-        registrations, unicode_password_unchanged: true, show_password_accessible: true, admin_reset_explained: true }
+        registrations, short_password_blocked: true, unicode_password_unchanged: true, show_password_accessible: true, admin_reset_explained: true }
       return (await api(page, '/auth/session')).body
     })
   } finally { await context.close() }

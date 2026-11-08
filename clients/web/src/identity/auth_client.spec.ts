@@ -36,4 +36,12 @@ describe('authentication client', () => {
     await expect(register({ login: 'member', password: `${password}😀` }, request)).rejects.toThrow('12 до 128')
     expect(request).toHaveBeenCalledOnce()
   })
+
+  it('rejects a short registration password before sending it, while allowing legacy login', async () => {
+    const request = vi.fn().mockResolvedValue(new Response(null, { status: 204 }))
+    await expect(register({ login: 'member', password: 'a'.repeat(11) }, request)).rejects.toThrow('от 12 до 128')
+    expect(request).not.toHaveBeenCalled()
+    await login({ login: 'member', password: 'a'.repeat(11) }, request)
+    expect(request).toHaveBeenCalledOnce()
+  })
 })

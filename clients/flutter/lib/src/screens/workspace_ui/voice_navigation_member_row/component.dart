@@ -1,5 +1,6 @@
 import '../voice_avatar_color/component.dart';
 import '../native_bindings.dart';
+import '../member_profile_trigger/component.dart';
 
 class WorkspaceVoiceNavigationMemberRow extends StatelessWidget {
   const WorkspaceVoiceNavigationMemberRow({
@@ -22,7 +23,6 @@ class WorkspaceVoiceNavigationMemberRow extends StatelessWidget {
   final bool deafened;
   final bool speaking;
   final bool screenSharing;
-
   @override
   Widget build(BuildContext context) {
     final presentation = VoiceParticipantPresentation.resolve(
@@ -48,18 +48,23 @@ class WorkspaceVoiceNavigationMemberRow extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Expanded(
-            child: Text(
-              name,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: presentation.isSpeaking
-                    ? GcColors.success
-                    : GcColors.textSecondary,
-                fontSize: 12,
-                fontWeight: presentation.isSpeaking
-                    ? FontWeight.w600
-                    : FontWeight.w400,
+            child: MemberProfileTrigger(
+              state: state,
+              memberId: accountId,
+              name: name,
+              child: Text(
+                name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: presentation.isSpeaking
+                      ? GcColors.success
+                      : GcColors.textSecondary,
+                  fontSize: 12,
+                  fontWeight: presentation.isSpeaking
+                      ? FontWeight.w600
+                      : FontWeight.w400,
+                ),
               ),
             ),
           ),

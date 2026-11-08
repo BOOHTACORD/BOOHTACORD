@@ -49,7 +49,9 @@ def main():
     merged_sources = read(root, "evidence/media/livekit-network-history-merge-2026-11-04.json")
     audio_coexistence = read(root, "evidence/media/livekit-network-audio-coexistence-2026-11-05.json")
     release_headroom = read(root, "evidence/media/livekit-network-release-headroom-2026-11-05.json")
+    audio_check = read(root, "evidence/media/livekit-network-audio-check-2026-11-05.json")
     android_network_loss = read(root, "evidence/media/livekit-android-network-loss-2026-11-06.json")
+    roster_revalidation = read(root, "evidence/media/livekit-network-roster-2026-11-07.json")
     sound_revalidation = read(root, "evidence/media/livekit-network-sound-policy-2026-11-07.json")
     sound_preferences = read(root, "evidence/media/livekit-network-sound-preferences-2026-11-07.json")
     sound_flutter = read(root, "evidence/media/livekit-network-sound-flutter-2026-11-07.json")
@@ -62,6 +64,9 @@ def main():
     sound_web_queue = read(root, "evidence/media/livekit-network-sound-web-queue-2026-11-07.json")
     sound_web_loader = read(root, "evidence/media/livekit-network-sound-web-loader-2026-11-07.json")
     sound_integration = read(root, "evidence/media/livekit-network-sound-integration-2026-11-07.json")
+    welcome_revalidation = read(root, "evidence/media/livekit-network-welcome-2026-11-07.json")
+    welcome_parity = read(root, "evidence/media/livekit-network-welcome-parity-2026-11-07.json")
+    welcome_windows = read(root, "evidence/media/livekit-network-welcome-windows-2026-11-07.json")
     expected_artifacts = (evidence["repository_artifacts"] | revalidation["repository_artifacts"]
                           | telemetry["repository_artifacts"] | observability["repository_artifacts"]
                           | notifications["repository_artifacts"] | screen_previews["repository_artifacts"]
@@ -71,6 +76,7 @@ def main():
                           | merged_sources["repository_artifacts"]
                           | audio_coexistence["repository_artifacts"]
                           | release_headroom["repository_artifacts"]
+                          | audio_check["repository_artifacts"]
                           | android_network_loss["repository_artifacts"]
                           | sound_revalidation["repository_artifacts"]
                           | sound_preferences["repository_artifacts"]
@@ -78,7 +84,9 @@ def main():
                           | sound_native_api["repository_artifacts"] | sound_native_fence["repository_artifacts"]
                           | sound_native_controller["repository_artifacts"] | sound_web_safety["repository_artifacts"]
                           | sound_web_controls["repository_artifacts"] | sound_web_queue["repository_artifacts"]
-                          | sound_web_loader["repository_artifacts"] | sound_integration["repository_artifacts"])
+                          | sound_web_loader["repository_artifacts"] | sound_integration["repository_artifacts"]
+                          | roster_revalidation["repository_artifacts"]
+                          | welcome_revalidation["repository_artifacts"] | welcome_parity["repository_artifacts"] | welcome_windows["repository_artifacts"] )
     for path, expected in expected_artifacts.items():
         content = (root / path).read_bytes().replace(b"\r\n", b"\n")
         actual = hashlib.sha256(content).hexdigest()

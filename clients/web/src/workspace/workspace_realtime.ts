@@ -24,9 +24,10 @@ import { screenPreviewCardVisibility } from '../voice/screen_preview/visibility'
 import { createMemberProfileRefresh } from './member_profile_realtime'
 import { acceptNotificationHint } from '../notification/remote_push/hints'
 import { useContextHints } from '../search/context_timeline/hints'
+import { useMemberDirectory } from '../identity/member_directory'
+import { reconcilePresenceMembers } from './presence_members'
 import type { WorkspaceRealtimeStores } from './protected_refresh/types'
 export type { WorkspaceRealtimeStores } from './protected_refresh/types'
-
 async function checked(refresh: () => Promise<void>, getError: () => string | null): Promise<void> {
   await refresh()
   if (getError()) throw new Error(getError()!)
@@ -52,6 +53,7 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
   const notifications = useNotificationStore()
   const permissions = usePermissionStore()
   const refreshMemberProfile = createMemberProfileRefresh()
+  const members = useMemberDirectory()
   const previews = new LatestScreenPreviewReader({
     apply: (hint, bytes) => { const active = voice.active; if (active && active.leaseId !== hint.leaseId) active.room.applyScreenPreview?.(hint.leaseId, bytes) },
     clear: leaseId => voice.active?.room.clearScreenPreview?.(leaseId),
@@ -65,7 +67,9 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
     if (!active) return
     const eventLifecycle = lifecycle
     if (event.kind === 'notification.queued' || event.kind === 'notification.preferences_changed') return acceptNotificationHint(event,accountID).then(()=>undefined)
-    if (presence.acceptRealtimeEvent(event)) return
+    if (presence.acceptRealtimeEvent(event)) {
+      return reconcilePresenceMembers(event, members)
+    }
     applyDeletedMessageHint(event, stores)
     if (event.kind === 'member.profile.updated') return refreshMemberProfile(event, stores.directMessages).then(() => undefined)
     if (event.kind === 'session.state_changed') { notifyOwnSessionsChanged(); return }

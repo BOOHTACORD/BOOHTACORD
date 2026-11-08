@@ -62,7 +62,7 @@ void main() {
     await tester.enterText(passwordField, 'short');
     await press(tester, find.widgetWithText(FilledButton, 'Создать аккаунт'));
     expect(
-      find.text('Пароль должен содержать не менее 12 символов'),
+      find.text('Пароль должен содержать от 12 до 128 символов.'),
       findsOneWidget,
     );
     state.reportError('Предыдущая ошибка');
@@ -70,7 +70,7 @@ void main() {
     await press(tester, generateButton);
     await press(tester, find.text('Заменить'));
     expect(
-      find.text('Пароль должен содержать не менее 12 символов'),
+      find.text('Пароль должен содержать от 12 до 128 символов.'),
       findsNothing,
     );
     expect(state.error, isNull);

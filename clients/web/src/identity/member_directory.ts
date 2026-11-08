@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed, onScopeDispose, ref } from 'vue'
 
-import { loadMembers, type GuildMember, type ProfileRequest } from './profile_client'
+import { loadMember, loadMembers, type GuildMember, type ProfileRequest } from './profile_client'
 
 function keepLatest(incoming: GuildMember[], current: GuildMember[]): GuildMember[] {
   const previous = new Map(current.map((member) => [member.user_id, member]))
@@ -19,6 +19,10 @@ export const useMemberDirectory = defineStore('member-directory', () => {
   const loading = ref(false)
   const error = ref<string | null>(null)
   let running: Promise<void> | null = null
+  const lookups = new Map<string, Promise<void>>()
+  let overflow: Promise<void> | null = null
+  let active = true
+  onScopeDispose(() => { active = false; lookups.clear() })
 
   const byId = computed(() => Object.fromEntries(members.value.map((member) => [member.user_id, member])))
 
@@ -28,8 +32,11 @@ export const useMemberDirectory = defineStore('member-directory', () => {
     error.value = null
     const current = members.value
     const task = loadMembers(cursorValue, request).then((page) => {
-      const incoming = cursorValue ? [...members.value, ...page.members] : page.members
-      members.value = keepLatest(incoming, current)
+      if (!active) return
+      const previousIDs = new Set(current.map(member => member.user_id))
+      const addedDuringLoad = members.value.filter(member => !previousIDs.has(member.user_id))
+      const incoming = [...new Map((cursorValue ? [...members.value, ...page.members] : [...page.members, ...addedDuringLoad]).map(member => [member.user_id, member])).values()]
+      members.value = keepLatest(incoming, members.value)
       cursor.value = page.next_cursor ?? null
     }).catch((cause: unknown) => {
       error.value = cause instanceof Error ? cause.message : 'Не удалось загрузить участников.'
@@ -47,11 +54,30 @@ export const useMemberDirectory = defineStore('member-directory', () => {
     const loadedCount = members.value.length
     if (running) await running
     await refresh(request)
-    while (cursor.value && members.value.length < loadedCount) await loadNext(request)
+    while (cursor.value && members.value.length < loadedCount) {
+      const previousCursor = cursor.value
+      await loadNext(request)
+      if (error.value || cursor.value === previousCursor) break
+    }
   }
   function loadNext(request?: ProfileRequest): Promise<void> {
     return cursor.value ? load(cursor.value, request) : Promise.resolve()
   }
 
-  return { byId, cursor, error, invalidate, load, loadNext, loading, members, refresh }
+  function ensureMember(userId: string, request?: ProfileRequest): Promise<void> {
+    if (!active || !userId || byId.value[userId]) return Promise.resolve()
+    const pending = lookups.get(userId)
+    if (pending) return pending
+    if (lookups.size >= 32) {
+      if (!overflow) overflow = invalidate(request).finally(() => { overflow = null })
+      return overflow
+    }
+    const task = loadMember(userId, request).then(member => {
+      if (active && member.user_id === userId && !byId.value[userId]) members.value = [...members.value, member]
+    }).catch(() => { /* The member can be unavailable or no longer visible. */ }).finally(() => { lookups.delete(userId) })
+    lookups.set(userId, task)
+    return task
+  }
+
+  return { byId, cursor, error, ensureMember, invalidate, load, loadNext, loading, members, refresh }
 })

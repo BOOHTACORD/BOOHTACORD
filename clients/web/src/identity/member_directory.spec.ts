@@ -40,4 +40,28 @@ describe('member directory', () => {
     await Promise.all([initial, invalidated])
     expect(directory.byId['user-2'].display_name).toBe('Новое имя')
   })
+
+  it('loads an arriving member once and does not duplicate a later page', async () => {
+    const directory = useMemberDirectory()
+    let complete!: (response: Response) => void
+    const request = vi.fn(() => new Promise<Response>(resolve => { complete = resolve }))
+    const first = directory.ensureMember('user-2', request)
+    const second = directory.ensureMember('user-2', request)
+    expect(request).toHaveBeenCalledTimes(1)
+    complete(new Response(JSON.stringify({ user_id: 'user-2', login: 'member', display_name: 'Новый', role: 'MEMBER', presence: 'online', profile_revision: 1 })))
+    await Promise.all([first, second])
+    expect(directory.byId['user-2'].display_name).toBe('Новый')
+    await directory.load(undefined, vi.fn().mockResolvedValue(page('Новый', 1)))
+    expect(directory.members).toHaveLength(1)
+  })
+
+  it('keeps a new arrival when an older directory page finishes later', async () => {
+    const directory = useMemberDirectory()
+    let finish!: (response: Response) => void
+    const stale = directory.refresh(vi.fn(() => new Promise<Response>(resolve => { finish = resolve })))
+    await directory.ensureMember('user-2', vi.fn().mockResolvedValue(new Response(JSON.stringify({ user_id: 'user-2', login: 'member', display_name: 'New', role: 'MEMBER', presence: 'online' }))))
+    finish(new Response(JSON.stringify({ members: [] })))
+    await stale
+    expect(directory.members.map(member => member.user_id)).toEqual(['user-2'])
+  })
 })

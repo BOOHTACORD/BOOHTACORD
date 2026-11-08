@@ -1,6 +1,7 @@
 import 'participant_details/handler.dart';
 import 'preview/handler.dart';
 import '../../native_bindings.dart';
+import '../../member_profile_trigger/component.dart';
 
 import '../lifecycle/context.dart';
 import '../handler_bindings.dart';
@@ -43,7 +44,12 @@ extension WorkspaceVoiceParticipantCardBuildAction
             mainAxisSize: MainAxisSize.min,
             children: [
               renderVoiceParticipantCardPreview(),
-              renderVoiceParticipantCardDetails(context, presentation),
+              MemberProfileTrigger(
+                state: state,
+                memberId: isLocal ? null : memberAccountId,
+                name: name,
+                child: renderVoiceParticipantCardDetails(context, presentation),
+              ),
             ],
           ),
         ),
