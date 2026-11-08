@@ -9,3 +9,7 @@ On a Pixel Android 15 emulator, a debug integration build of the full Flutter ap
 Focused Web policy/client tests passed (12), as did four Flutter tests and the nearest Go join-sound/preferences/route packages. These package results do not imply that every optional integration was run. Both disposable stacks removed their owned resources.
 
 PASS_SCOPED only. Real acoustic playback, OS picker, Windows/macOS/iOS routes, restart and cross-platform matrix, release and deployment remain unverified here. Issue #676 remains open.
+
+## Diagnosis of the initial test failure
+
+Further Android runs reproduced the initial exception before upload. Temporary diagnostics recorded `DELETE 404`: test setup unconditionally deleted a missing sound, and `tester.runAsync` retained the exception for its final check. The empty resource was expected, not a demonstrated product outage. The setup fix and fresh-account/existing-sound retests are documented in [PR #692](https://github.com/BOOHTACORD/BOOHTACORD/pull/692). The debug instrumentation was removed. The platform and acoustic limitations above still apply.
