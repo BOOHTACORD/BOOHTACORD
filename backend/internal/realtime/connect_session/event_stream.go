@@ -12,11 +12,15 @@ import (
 	eventhub "voice-platform/backend/internal/realtime/event_hub"
 )
 
-func streamEvents(connection *websocket.Conn, authenticator sessionapi.Authenticator, cookie *http.Cookie, subscription *eventhub.Subscription, hub *eventhub.Hub, newID Identifier, now Clock, observer ConnectionObserver, replayedIDs map[string]struct{}, maintenance *observestate.Subscription) {
+func streamEvents(connection *websocket.Conn, authenticator sessionapi.Authenticator, cookie *http.Cookie, subscription *eventhub.Subscription, hub *eventhub.Hub, newID Identifier, now Clock, observer ConnectionObserver, replayedIDs map[string]struct{}, maintenance *observestate.Subscription, roster RosterStream, maxRosterBytes int) {
 	closed := connection.CloseRead(context.Background()).Done()
 	var events <-chan eventhub.Event
 	var overflowed <-chan struct{}
 	var maintenanceEvents <-chan observestate.State
+	var rosterEvents <-chan RosterDelivery
+	if roster != nil {
+		rosterEvents = roster.Events()
+	}
 	firstMaintenance := true
 	if maintenance != nil {
 		maintenanceEvents = maintenance.Events()
@@ -28,6 +32,10 @@ func streamEvents(connection *websocket.Conn, authenticator sessionapi.Authentic
 		select {
 		case <-closed:
 			return
+		case delivery, ok := <-rosterEvents:
+			if !ok || !writeRoster(connection, roster, delivery, maxRosterBytes, newID, now) {
+				return
+			}
 		case state, ok := <-maintenanceEvents:
 			if !ok || !writeMaintenance(connection, state, firstMaintenance, newID, now) {
 				return
