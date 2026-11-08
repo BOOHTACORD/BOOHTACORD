@@ -1,0 +1,56 @@
+import { readFileSync } from 'node:fs'
+import { spawnSync } from 'node:child_process'
+import { chromium, expect, login, api, channel, status } from '../../tools/qa/client_lifecycle/request.mjs'
+const input=JSON.parse(readFileSync(process.env.QA_INPUT,'utf8'))
+const width=Number(process.env.QA_WIDTH||1440); const browser=await chromium.launch({headless:true})
+let stage='initialization'; let page
+try {
+ const context=await browser.newContext({ignoreHTTPSErrors:true,viewport:{width,height:width===393?852:900},isMobile:width===393,hasTouch:width===393,deviceScaleFactor:width===393?3:1})
+ await context.addInitScript(() => { globalThis.__qaLongTasks=[];new PerformanceObserver(list=>globalThis.__qaLongTasks.push(...list.getEntries().map(x=>x.duration))).observe({type:'longtask',buffered:true}) });page=await context.newPage();page.setDefaultTimeout(20000);const cdp=await context.newCDPSession(page);await cdp.send('Performance.enable')
+ await login(page,'qa_admin',input.password); stage='create_channel'
+ const cat=await api(page,'/admin/categories','POST',{name:'HistoryFixture'});status(cat,201)
+ const ch=await api(page,`/admin/categories/${cat.body.id}/channels`,'POST',{name:'HistoryFixture',kind:'TEXT'});status(ch,201)
+ const channelId=ch.body.id
+ if(!/^[0-9a-f-]{36}$/i.test(channelId))throw Error('invalid fixture channel')
+ const sql=`INSERT INTO messages (id,channel_id,author_id,client_message_id,body,created_at) SELECT gen_random_uuid(),'${channelId}',u.id,gen_random_uuid(),'QA history row '||lpad(i::text,5,'0'),now()-(10000-i)*interval '1 second' FROM users u CROSS JOIN generate_series(1,10000) i WHERE u.login='qa_admin'; SELECT id FROM messages WHERE channel_id='${channelId}' ORDER BY created_at DESC,id DESC LIMIT 1;`
+ const seed=spawnSync('docker',['exec',`${input.owner}-db`,'psql','-U','qa','-d','qa','-At','-v','ON_ERROR_STOP=1','-c',sql],{encoding:'utf8'})
+ if(seed.status!==0)throw Error('fixture seed failed')
+ const target=seed.stdout.trim().split(/\s+/).at(-1);if(!/^[0-9a-f-]{36}$/i.test(target))throw Error('fixture seed id invalid')
+ await page.reload();await expect(page.getByTestId('app-shell')).toBeVisible();await channel(page,'HistoryFixture');stage='initial_history'
+ await expect(page.getByText('QA history row 10000',{exact:true})).toBeVisible()
+ const history=page.getByRole('log',{name:'История сообщений'})
+ const old=page.getByRole('button',{name:'Показать предыдущие сообщения',exact:true})
+ for(let i=0;i<9;i++){
+  const response=page.waitForResponse(r=>r.url().includes(`/channels/${channelId}/messages?before=`)&&r.status()===200)
+  await old.click();await response;await expect(old).toBeEnabled()
+ }
+ const before=await cdp.send('Performance.getMetrics');const beforeHeap=before.metrics.find(x=>x.name==='JSHeapUsedSize')?.value??null;const beforeDom=await page.locator('*').count();const beforeLong=await page.evaluate(()=>({count:globalThis.__qaLongTasks.length,max_ms:Math.max(0,...globalThis.__qaLongTasks)}));console.log(JSON.stringify({checkpoint:'loaded_500',heap_bytes:beforeHeap,dom_nodes:beforeDom,longtasks:beforeLong}));stage='begin_edit'
+ await history.evaluate(el=>{el.scrollTop=el.scrollHeight;el.dispatchEvent(new Event('scroll'))})
+ const row=page.locator(`[data-message-id="${target}"]`);await expect(row).toBeVisible()
+ await row.hover();const toggle=row.getByRole('button',{name:'Действия с сообщением'});if(await toggle.isVisible())await toggle.click()
+ await row.getByRole('button',{name:'Изменить',exact:true}).click()
+ const editor=page.getByRole('textbox',{name:'Изменённый текст сообщения',exact:true})
+ await editor.fill('Synthetic uncommitted draft 141');await editor.evaluate(el=>{el.setSelectionRange(4,12);globalThis.__qaRetainedEditor=el})
+ stage='evict'
+ const evict=page.waitForResponse(r=>r.url().includes(`/channels/${channelId}/messages?before=`)&&r.status()===200)
+ await old.click();await evict
+ const editorCount=await editor.count();console.log(JSON.stringify({checkpoint:'evicted',editor_count:editorCount}));if(editorCount!==1)throw Error('active editor lost after eviction');const retained=page.locator(`[data-retained-message-id="${target}"]`);await expect(retained).toHaveCount(1)
+ await expect(editor).toHaveValue('Synthetic uncommitted draft 141')
+ stage='return'
+ const newer=page.getByRole('button',{name:'Показать следующие сообщения',exact:true})
+ for(let i=0;i<3;i++){
+  const response=page.waitForResponse(r=>r.url().includes(`/channels/${channelId}/messages?after=`)&&r.status()===200)
+  await newer.click();await response
+ }
+ await expect(row).toHaveCount(1);await expect(editor).toHaveValue('Synthetic uncommitted draft 141')
+ const same=await editor.evaluate(el=>el===globalThis.__qaRetainedEditor)
+ const selection=await editor.evaluate(el=>[el.selectionStart,el.selectionEnd])
+ if(!same||selection[0]!==4||selection[1]!==12)throw Error('editor identity or selection changed')
+ const metrics=await cdp.send('Performance.getMetrics');const heap=metrics.metrics.find(x=>x.name==='JSHeapUsedSize')?.value??null;const dom=await page.locator('*').count();const longtasks=await page.evaluate(()=>({count:globalThis.__qaLongTasks.length,max_ms:Math.max(0,...globalThis.__qaLongTasks)}));console.log(JSON.stringify({metrics:{heap_bytes:heap,dom_nodes:dom,longtasks}}));await editor.scrollIntoViewIfNeeded();await page.screenshot({path:'/var/tmp/boohtacord-141-fresh/.out/issue141/actual-10000-'+width+'.png'});console.log(JSON.stringify({width,status:'PASS_SCOPED',source:'real browser, API and PostgreSQL',seed_count:10000,older_pages:10,newer_pages:3,detached_retained:true,draft_and_selection_preserved:true}))
+ await context.close()
+} catch(e) {if(page) await page.screenshot({path:'/var/tmp/boohtacord-141-fresh/.out/issue141/failure.png'});console.log(JSON.stringify({status:'FAIL',stage,error:String(e).replace(/[0-9a-f]{8}-[0-9a-f-]{27,}/ig,'[fixture-id]').slice(0,500)}));process.exitCode=1}
+finally {await browser.close()}
+
+
+
+

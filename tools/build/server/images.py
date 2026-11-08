@@ -60,7 +60,9 @@ def build(source, output, revision, source_hash, environment, *, metrics=None):
     measure=metrics.stage if metrics else lambda _:nullcontext()
     cache_root=environment.get('BOOHTACORD_SERVER_CACHE_ROOT')
     with (LayerCache(Path(cache_root)) if cache_root else nullcontext(None)) as cache:
-        for service, context in (("api", "backend"), ("web", ".")):
+        services = [("api", "backend"), ("web", ".")]
+        if (source/'backend/Dockerfile.join-sound-worker').is_file(): services.append(('join-sound-processor', 'backend'))
+        for service, context in services:
             key=namespace(source,service)
             with measure(service+'_cache_prepare'):
                 cache_args=cache.arguments(service,key) if cache else []
@@ -74,7 +76,8 @@ def build(source, output, revision, source_hash, environment, *, metrics=None):
                           *(['--label','org.boohtacord.builder.owner='+owner] if owner else []),
                           "--tag", tag, '--build-arg', 'BOOHTACORD_CACHE_SCOPE='+key,
                           *( ["--file", str(source / "clients/web/Dockerfile"), *web_build_arguments(environment),
-                              "--build-arg", "SOURCE_REVISION=" + revision] if service == "web" else [])]
+                              "--build-arg", "SOURCE_REVISION=" + revision] if service == "web" else []),
+                          *(['--file', str(source/'backend/Dockerfile.join-sound-worker')] if service == 'join-sound-processor' else [])]
             with measure(service+'_oci_build_export'):
                 subprocess.run([*build_args, "--sbom=true", "--provenance=mode=max,version=v0.2",
                                 "--output", f"type=oci,dest={archive}", *cache_args, str(source / context)],

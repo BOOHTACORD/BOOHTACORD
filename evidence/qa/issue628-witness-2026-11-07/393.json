@@ -1,0 +1,74 @@
+{
+  "exit_code": 0,
+  "source": "cc4fbb4265709104c92d9ff085384bfb1ad2dbee",
+  "viewport": 393,
+  "file_changes": [
+    {
+      "seconds": 76.01,
+      "path_hash": "43efd729c3db",
+      "sha256": "68faa2744906946bc495bd3bd451a2424a88a33cb0f399d3c1eceb0b9e4e0a9e",
+      "bytes": 6079,
+      "jpeg_markers": true
+    },
+    {
+      "seconds": 105.14,
+      "path_hash": "43efd729c3db",
+      "sha256": "736282a26c7d4c65bca6a3bab99c7b5e9007a45a3f4a1c6d70646eec6a58f91b",
+      "bytes": 5742,
+      "jpeg_markers": true
+    },
+    {
+      "seconds": 112.81,
+      "path_hash": "43efd729c3db",
+      "sha256": "fe8e1554f216542df2508f830df21c54bfecf4882dc6c080cb1e73b9cf52f8c5",
+      "bytes": 5714,
+      "jpeg_markers": true
+    }
+  ],
+  "log_events": [
+    {
+      "category": "error",
+      "job_hash": null
+    },
+    {
+      "category": "service ready",
+      "job_hash": null
+    },
+    {
+      "category": "file",
+      "job_hash": "f2a0ca78e694"
+    },
+    {
+      "category": "image",
+      "job_hash": "f2a0ca78e694"
+    },
+    {
+      "category": "image",
+      "job_hash": "f2a0ca78e694"
+    },
+    {
+      "category": "image",
+      "job_hash": "f2a0ca78e694"
+    },
+    {
+      "category": "image",
+      "job_hash": "f2a0ca78e694"
+    }
+  ],
+  "job_and_image_log_links": [],
+  "stage_count": 88,
+  "stages": [
+    {
+      "seconds": 74.34,
+      "stage": "stage=sender-screen-preview:decoded-frames"
+    },
+    {
+      "seconds": 74.44,
+      "stage": "stage=screen-share-short-height:{\"height\":160,\"visibleHeight\":82,\"dockHeight\":53,\"dockPosition\":\"relative\",\"dockGridColumns\":\"201px 172px\",\"dockCoversStage\":tru"
+    },
+    {
+      "seconds": 106.03,
+      "stage": "stage=server-screen-preview-refreshed:33000"
+    }
+  ]
+}

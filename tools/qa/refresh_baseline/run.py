@@ -22,6 +22,10 @@ def extract(data, destination):
         archive.extractall(destination, filter='data')
 
 
+def archive_source(root, revision):
+    return subprocess.check_output(['git', 'archive', revision, 'clients/web', 'contracts'], cwd=root)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--revision', required=True)
@@ -31,9 +35,7 @@ def main():
     root = Path(__file__).resolve().parents[3]
     destination = root/'.out/refresh-baseline'
     destination.mkdir(parents=True, exist_ok=True)
-    source = subprocess.check_output(['git', 'archive', args.revision, 'clients/web',
-                                      'contracts/client-build.json',
-                                      'contracts/screen-share-profile-v1.catalog.json'], cwd=root)
+    source = archive_source(root, args.revision)
     with tempfile.TemporaryDirectory(prefix='qa-baseline-', dir=root/'.out') as directory:
         work = Path(directory)
         stack = Stack(root, work)

@@ -1,0 +1,45 @@
+{
+  "exit_code": 0,
+  "source": "cc4fbb4265709104c92d9ff085384bfb1ad2dbee",
+  "viewport": 1440,
+  "file_changes": [
+    {
+      "seconds": 92.34,
+      "path_hash": "b4e671ff9001",
+      "sha256": "2eb51696e8e40d6e39dc601a31fe41c9f17d1536a611f9dc3655a724441cdd3c",
+      "bytes": 5714,
+      "jpeg_markers": true
+    },
+    {
+      "seconds": 122.56,
+      "path_hash": "b4e671ff9001",
+      "sha256": "bf440416c6194c65162a038734ae90f6e7e8fa946b4a01c24d311ee48a80a83c",
+      "bytes": 6094,
+      "jpeg_markers": true
+    },
+    {
+      "seconds": 130.43,
+      "path_hash": "b4e671ff9001",
+      "sha256": "ad0bcd4f8d5292181032eb3c349e86b0d4463d8ebec520a1615f60dcb9123a32",
+      "bytes": 6076,
+      "jpeg_markers": true
+    }
+  ],
+  "log_events": [],
+  "job_and_image_log_links": [],
+  "stage_count": 87,
+  "stages": [
+    {
+      "seconds": 90.63,
+      "stage": "stage=sender-screen-preview:decoded-frames"
+    },
+    {
+      "seconds": 90.8,
+      "stage": "stage=screen-share-short-height:{\"height\":160,\"visibleHeight\":132,\"dockHeight\":112,\"dockPosition\":\"relative\",\"dockGridColumns\":\"none\",\"dockCoversStage\":false}"
+    },
+    {
+      "seconds": 122.33,
+      "stage": "stage=server-screen-preview-refreshed:33038"
+    }
+  ]
+}

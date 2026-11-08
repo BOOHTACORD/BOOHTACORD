@@ -1,0 +1,5 @@
+[
+  {"name":"baseline and join","members":[{"actor":"other","lease":"l1"}],"streams":[],"steps":[{"id":"same","type":"voice.member_joined","actor":"other","session":"l1","time":10000},{"id":"self","type":"voice.member_joined","actor":"self","session":"l2","time":10000},{"id":"new","type":"voice.member_joined","actor":"new","session":"l3","time":10000},{"id":"new","type":"voice.member_joined","actor":"new","session":"l3","time":10000}],"expected":["voice.member_joined"]},
+  {"name":"leave suppresses stop","members":[{"actor":"other","lease":"l1"}],"streams":[{"actor":"other","session":"s1"}],"steps":[{"id":"stop","type":"voice.stream_stopped","actor":"other","session":"s1","time":10000},{"id":"leave","type":"voice.member_left","actor":"other","session":"l1","time":11200},{"flush":13000}],"expected":["voice.member_left"]},
+  {"name":"stale delayed event","members":[{"actor":"other","lease":"l1"}],"streams":[],"steps":[{"id":"leave","type":"voice.member_left","actor":"other","session":"l1","time":10000},{"flush":20000}],"expected":[]}
+]

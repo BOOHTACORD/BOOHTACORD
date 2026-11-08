@@ -4,12 +4,9 @@ import { useNotificationStore } from './notification_store'
 import ConversationNotificationSettings from './conversation_preferences/Settings.vue'
 import ServerSettings from './server_preferences/Settings.vue'
 import { useServerNotifications } from './server_preferences/state'
-import { streamStartChime } from '../voice/stream_start_runtime'
 
 const notifications = useNotificationStore()
 const remote = useServerNotifications()
-function changeStreamSound(event:Event):void {const enabled=(event.target as HTMLInputElement).checked;streamStartChime.setEnabled(enabled);if(enabled) streamStartChime.activate()}
-function changeVoiceEventSounds(event:Event):void {const enabled=(event.target as HTMLInputElement).checked;streamStartChime.setVoiceEventsEnabled(enabled);if(enabled) streamStartChime.activate()}
 onMounted(() => { notifications.refreshStatus(); window.addEventListener('focus', notifications.refreshStatus) })
 onBeforeUnmount(() => window.removeEventListener('focus', notifications.refreshStatus))
 const status = computed(() => {
@@ -33,7 +30,5 @@ const status = computed(() => {
     <p v-if="notifications.error" class="profile-error" role="alert">{{ notifications.error }}</p>
     </template>
     <ConversationNotificationSettings />
-    <label><input type="checkbox" :checked="streamStartChime.enabled.value" @change="changeStreamSound"> Отдельный звук начала демонстрации</label>
-    <label><input type="checkbox" :checked="streamStartChime.voiceEventsEnabled.value" @change="changeVoiceEventSounds"> Звуки голосовой комнаты <small>Подключение и отключение участников, начало и завершение просмотра трансляции</small></label>
   </section>
 </template>

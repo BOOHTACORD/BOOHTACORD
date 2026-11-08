@@ -1,0 +1,82 @@
+{
+  "exit_code": 0,
+  "source": "cc4fbb4265709104c92d9ff085384bfb1ad2dbee",
+  "viewport": 393,
+  "file_changes": [
+    {
+      "seconds": 82.19,
+      "path_hash": "781dfb5e5f1f",
+      "sha256": "2eb51696e8e40d6e39dc601a31fe41c9f17d1536a611f9dc3655a724441cdd3c",
+      "bytes": 5714,
+      "jpeg_markers": true
+    },
+    {
+      "seconds": 110.61,
+      "path_hash": "781dfb5e5f1f",
+      "sha256": "df838c6cbd4460d3208a27f56f1a5d72313795078231314b59fee77c68db6196",
+      "bytes": 6099,
+      "jpeg_markers": true
+    },
+    {
+      "seconds": 120.84,
+      "path_hash": "781dfb5e5f1f",
+      "sha256": "13cd75b0825d351a0a74b6f5490943e2007d34ab7fd188718a7fcf4437eb5161",
+      "bytes": 5985,
+      "jpeg_markers": true
+    }
+  ],
+  "log_events": [
+    {
+      "category": "error",
+      "job_hash": null
+    },
+    {
+      "category": "service ready",
+      "job_hash": null
+    },
+    {
+      "category": "file",
+      "job_hash": "9d7727c77258"
+    },
+    {
+      "category": "image",
+      "job_hash": "9d7727c77258"
+    },
+    {
+      "category": "image",
+      "job_hash": "9d7727c77258"
+    },
+    {
+      "category": "image",
+      "job_hash": "9d7727c77258"
+    },
+    {
+      "category": "image",
+      "job_hash": "9d7727c77258"
+    }
+  ],
+  "job_and_image_log_links": [],
+  "api_job_file_links": [
+    "9d7727c77258:781dfb5e5f1f"
+  ],
+  "api_statuses": [
+    "EGRESS_ACTIVE",
+    "EGRESS_COMPLETE"
+  ],
+  "api_errors": [],
+  "stage_count": 88,
+  "stages": [
+    {
+      "seconds": 78.64,
+      "stage": "stage=sender-screen-preview:decoded-frames"
+    },
+    {
+      "seconds": 78.76,
+      "stage": "stage=screen-share-short-height:{\"height\":160,\"visibleHeight\":82,\"dockHeight\":53,\"dockPosition\":\"relative\",\"dockGridColumns\":\"201px 172px\",\"dockCoversStage\":tru"
+    },
+    {
+      "seconds": 110.77,
+      "stage": "stage=server-screen-preview-refreshed:33054"
+    }
+  ]
+}

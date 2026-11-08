@@ -10,6 +10,7 @@ import '../media_preferences/screen.dart';
 
 extension AppAccountCleanup on AppOwners {
   void clearPrivateCaches() {
+    voice.sounds.clear();
     permissions.stop();
     profileOwner.clear();
     workspace.clear();

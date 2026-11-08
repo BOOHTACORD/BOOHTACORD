@@ -1,0 +1,46 @@
+import os, sys, time, json, hashlib, pathlib, subprocess, threading, re
+root=pathlib.Path('/var/tmp/boohtacord-628-new')
+env=dict(os.environ, PATH='/var/tmp/boohtacord-node-24/bin:/var/tmp/boohtacord-qa-cli/extracted/usr/bin:'+os.environ['PATH'], DOCKER_CONFIG='/var/tmp/boohtacord-qa-cli/config', DOCKER_HOST='unix:///var/run/docker.sock')
+cmd=[sys.executable,'-m','tools.qa.client_lifecycle.run','--critical','--portable-proxy','--width','393','--output-root','.out/issue628-witness-393-20261107']
+p=subprocess.Popen(cmd,cwd=root,env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,bufsize=1)
+stages=[]
+def consume():
+ for line in p.stdout:
+  if line.startswith('stage='):
+   stages.append({'seconds':round(time.monotonic()-start,2),'stage':line.strip()[:160]}); print(line.strip(),flush=True)
+start=time.monotonic(); thread=threading.Thread(target=consume,daemon=True); thread.start(); seen={}; names={}; changes=[]; logs={}; links=set()
+while p.poll() is None:
+ for directory in (root/'.out').glob('boohtacord-client-qa-*/screen-previews'):
+  for f in directory.rglob('*'):
+   try:
+    if not f.is_file(): continue
+    data=f.read_bytes(); digest=hashlib.sha256(data).hexdigest(); pathhash=hashlib.sha256(str(f.relative_to(directory)).encode()).hexdigest()[:12]
+    names[pathhash]=f.name
+    if seen.get(pathhash)!=digest:
+     seen[pathhash]=digest; changes.append({'seconds':round(time.monotonic()-start,2),'path_hash':pathhash,'sha256':digest,'bytes':len(data),'jpeg_markers':data.startswith(b'\xff\xd8') and data.endswith(b'\xff\xd9')})
+   except (OSError,ValueError): pass
+ try:
+  ps=subprocess.run(['docker','ps','--format','{{.Names}}'],env=env,capture_output=True,text=True,timeout=4)
+  for name in ps.stdout.splitlines():
+   if not name.startswith('qa-client-') or not name.endswith('-egress'): continue
+   r=subprocess.run(['docker','logs','--tail','250',name],env=env,capture_output=True,text=True,timeout=4)
+   for line in (r.stdout+'\n'+r.stderr).splitlines():
+    try: record=json.loads(line)
+    except ValueError: record={'msg':line}
+    msg=str(record.get('msg',record.get('message',''))).lower()
+    cat=next((v for v in ['service ready','starting egress','egress started','file','image','ending egress','egress ended','error'] if v in msg),None)
+    job=record.get('egressID') or record.get('egress_id') or record.get('egressId')
+    if not job:
+     found=re.search(r'(?i)egress[_-]?id[\s:=\"\x27]+([A-Za-z0-9_-]+)',line)
+     job=found.group(1) if found else None
+    if cat:
+     key=hashlib.sha256(line.encode()).hexdigest(); logs[key]={'category':cat,'job_hash':hashlib.sha256(str(job).encode()).hexdigest()[:12] if job else None}
+     if job:
+      for pathhash,filename in names.items():
+       if filename in line: links.add(hashlib.sha256(str(job).encode()).hexdigest()[:12]+':'+pathhash)
+ except (OSError,subprocess.TimeoutExpired): pass
+ time.sleep(2)
+thread.join(timeout=3)
+result={'exit_code':p.returncode,'source':'cc4fbb4265709104c92d9ff085384bfb1ad2dbee','viewport':393,'file_changes':changes,'log_events':list(logs.values()),'job_and_image_log_links':sorted(links),'stage_count':len(stages),'stages':stages}
+out=pathlib.Path('/var/tmp/issue628-witness-393-20261107.json');out.write_text(json.dumps(result,indent=2));print('WITNESS_RESULT '+json.dumps({'exit_code':p.returncode,'file_changes':len(changes),'log_events':len(logs),'job_and_image_log_links':len(links),'report':str(out)}),flush=True)
+sys.exit(p.returncode)
