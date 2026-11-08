@@ -233,6 +233,10 @@
         "focused": "clients/web/src/maintenance/guest_socket.spec.ts",
         "scope": "Web guest transport enforces initial state, bounded retries and public-only events; application handoff and real browser network checks remain separate acceptance work."
       },
+      "issue689_web_socket_lifecycle": {
+        "focused": "clients/web/src/realtime/socket_lifecycle.spec.ts",
+        "scope": "Authenticated socket attempts signal start and end across failure, retry and disconnect, allowing state owners to discard stale callbacks; real browser acceptance remains separate."
+      },
       "issue689_resync": {
         "focused": "clients/flutter/test/realtime_scope/resync_envelope_test.dart",
         "scope": "A valid server resync reason clears the durable cursor and invokes recovery; malformed or extra fields do not. Android emulator and other runtime acceptance remain separate."

@@ -7,6 +7,7 @@ import { createCoalescedDelivery } from './hint_batch/controller'
 import { createReconnectSchedule } from './reconnect_schedule/controller'
 import type { RealtimeConnectOptions, RealtimeSocket, RealtimeSocketFactory } from './realtime_connection_types'
 import { startTracedCompletion } from '../telemetry/client_tracing'
+import { createSocketAttempt } from './socket_attempt'
 export type { RealtimeConnectOptions, RealtimeSocket, RealtimeSocketFactory } from './realtime_connection_types'
 export type RealtimeState = 'IDLE' | 'CONNECTING' | 'CONNECTED' | 'DISCONNECTED' | 'ERROR'
 export const useRealtimeStore = defineStore('realtime', () => {
@@ -17,12 +18,13 @@ export const useRealtimeStore = defineStore('realtime', () => {
   let active = false, generation = 0
   let delivery: ReturnType<typeof createRealtimeDelivery> | null = null
   let pendingConnection: (() => void) | null = null, retryNow: (() => void) | null = null
+  let endSocketAttempt = () => {}
   function connect(onEvent: EventHandler, factory: RealtimeSocketFactory = (url) => new WebSocket(url), url?: string, options: RealtimeConnectOptions = {}): void {
     if (active) return
     active = true
-    const ownGeneration = ++generation
-    const retry = createReconnectSchedule(open, options.random)
-    stopSchedule = retry.stop
+    const ownGeneration = ++generation, attempt = createSocketAttempt(options)
+    endSocketAttempt = attempt.end
+    const retry = createReconnectSchedule(open, options.random); stopSchedule = retry.stop
     state.value = 'CONNECTING'
     error.value = null
     const failure = (cause: unknown) => {
@@ -49,7 +51,7 @@ export const useRealtimeStore = defineStore('realtime', () => {
     }
     function fail(current: RealtimeSocket): void {
       if (!active || socket !== current || ownGeneration !== generation) return
-      socket = null
+      socket = null; attempt.end()
       delivery?.disconnected()
       state.value = 'DISCONNECTED'
       error.value ??= 'Realtime-СЃРѕРµРґРёРЅРµРЅРёРµ РЅРµРґРѕСЃС‚СѓРїРЅРѕ. РџРѕРІС‚РѕСЂСЏРµРј РїРѕРґРєР»СЋС‡РµРЅРёРµ.'
@@ -58,6 +60,7 @@ export const useRealtimeStore = defineStore('realtime', () => {
     }
     function open(): void {
       if (!active || ownGeneration !== generation) return
+      attempt.begin()
       const operation = retry.attempt() === 0 ? 'realtime.connect' : 'realtime.reconnect'
       const { finish,cancel,fields, traceparent, tracestate } = startTracedCompletion(operation)
       pendingConnection = cancel
@@ -68,7 +71,7 @@ export const useRealtimeStore = defineStore('realtime', () => {
         const after = delivery?.cursor()
         current = factory(realtimeTraceURL(after ? `${target}${target.includes('?') ? '&' : '?'}after=${encodeURIComponent(after)}` : target, traceparent, tracestate,fields))
       } catch (cause) {
-        finish(true)
+        attempt.end(); finish(true)
         error.value = cause instanceof Error ? cause.message : 'Realtime-СЃРѕРµРґРёРЅРµРЅРёРµ РЅРµРґРѕСЃС‚СѓРїРЅРѕ.'
         state.value = 'DISCONNECTED'
         schedule()
@@ -94,7 +97,7 @@ export const useRealtimeStore = defineStore('realtime', () => {
       if (!active || ownGeneration !== generation) return
       retry.stop()
       const current = socket
-      socket = null
+      socket = null; attempt.end()
       current?.close()
       delivery?.disconnected()
       open()
@@ -102,15 +105,12 @@ export const useRealtimeStore = defineStore('realtime', () => {
     open()
   }
   function disconnect(): void {
-    active = false
-    generation++
-    stopSchedule()
-    delivery?.reset()
-    delivery = null
+    active = false; endSocketAttempt(); endSocketAttempt = () => {}
+    generation++; stopSchedule()
+    delivery?.reset(); delivery = null
     const current = socket
     socket = null
-    pendingConnection?.()
-    pendingConnection = null
+    pendingConnection?.(); pendingConnection = null
     retryNow = null
     if (current) { current.onclose = null; current.onerror = null; current.onmessage = null; current.onopen = null; current.close() }
     state.value = 'DISCONNECTED'
