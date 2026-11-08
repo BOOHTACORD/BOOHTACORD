@@ -185,6 +185,7 @@
       "test/realtime_scope/open_failure_test.dart",
       "test/realtime_scope/late_failure_test.dart",
       "test/realtime_scope/socket_recovery_integration_test.dart",
+      "test/realtime_scope/resync_envelope_test.dart",
       "test/features/workspace/short_viewport/measured_status_test.dart"
     ],
     "acceptance": {
@@ -213,6 +214,10 @@
           "clients/flutter/test/admin_telemetry/api_test.dart"
         ],
         "scope": "Owned real Go/PostgreSQL/TLS runtime: durable TEXT/DM replay after socket closure, edits/deletes/social state, ordinary second account, reachable administrator telemetry; Android and iOS have separate runs. Physical media remains NOT_RUN."
+      },
+      "issue689_resync": {
+        "focused": "clients/flutter/test/realtime_scope/resync_envelope_test.dart",
+        "scope": "A valid server resync reason clears the durable cursor and invokes recovery; malformed or extra fields do not. Android emulator and other runtime acceptance remain separate."
       },
       "issue607": {
         "focused": "clients/flutter/test/realtime_scope/open_failure_test.dart",

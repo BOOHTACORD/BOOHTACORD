@@ -18,6 +18,11 @@ tasks:
     requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-OPS-01]
     depends_on: [T-001]
     evidence: [tools/verify/realtime_schema/test_maintenance.py]
+  - id: RT689-003
+    title: Flutter accepts valid server resync reasons (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-QUALITY-01]
+    depends_on: [T-010]
+    evidence: [clients/flutter/test/realtime_scope/resync_envelope_test.dart]
   - id: T-001
     title: Specification packet and traceability
     requirements: [REQ-PRODUCT-01, REQ-ISOLATION-01, REQ-STACK-01, REQ-ARCH-01, REQ-QUALITY-02]
