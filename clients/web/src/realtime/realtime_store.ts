@@ -22,7 +22,7 @@ export const useRealtimeStore = defineStore('realtime', () => {
   function connect(onEvent: EventHandler, factory: RealtimeSocketFactory = (url) => new WebSocket(url), url?: string, options: RealtimeConnectOptions = {}): void {
     if (active) return
     active = true
-    const ownGeneration = ++generation, attempt = createSocketAttempt(options)
+    const ownGeneration = ++generation, attempt = createSocketAttempt(options); let attemptNumber = 0
     endSocketAttempt = attempt.end
     const retry = createReconnectSchedule(open, options.random); stopSchedule = retry.stop
     state.value = 'CONNECTING'
@@ -37,11 +37,11 @@ export const useRealtimeStore = defineStore('realtime', () => {
     function schedule(): void {
       if (active && ownGeneration === generation) retry.schedule()
     }
-    async function checkAndRetry(): Promise<void> {
+    async function checkAndRetry(failedAttempt: number): Promise<void> {
       let valid: boolean | null = null
       try { valid = await (options.checkSession ?? (async () => (await loadCurrentSession()) !== null))() }
       catch { /* A network failure does not prove session revocation. */ }
-      if (!active || ownGeneration !== generation) return
+      if (!active || ownGeneration !== generation || failedAttempt !== attemptNumber) return
       if (valid === false) {
         disconnect()
         options.onSessionExpired?.()
@@ -56,11 +56,11 @@ export const useRealtimeStore = defineStore('realtime', () => {
       state.value = 'DISCONNECTED'
       error.value ??= 'Realtime-СЃРѕРµРґРёРЅРµРЅРёРµ РЅРµРґРѕСЃС‚СѓРїРЅРѕ. РџРѕРІС‚РѕСЂСЏРµРј РїРѕРґРєР»СЋС‡РµРЅРёРµ.'
       current.close()
-      void checkAndRetry()
+      void checkAndRetry(attemptNumber)
     }
     function open(): void {
-      if (!active || ownGeneration !== generation) return
-      attempt.begin()
+      if (!active || ownGeneration !== generation || socket) return
+      attemptNumber++; attempt.begin()
       const operation = retry.attempt() === 0 ? 'realtime.connect' : 'realtime.reconnect'
       const { finish,cancel,fields, traceparent, tracestate } = startTracedCompletion(operation)
       pendingConnection = cancel
