@@ -26,6 +26,8 @@ class MaintenanceSchemaTests(unittest.TestCase):
             self.assertEqual([], list(self.validator.iter_errors(event)))
             event["payload"]["active"] = True
             self.assertEqual([], list(self.validator.iter_errors(event)))
+            event["payload"].update(version=1.0, revision=1.0)
+            self.assertEqual([], list(self.validator.iter_errors(event)))
 
     def test_malformed_and_private_payloads_are_rejected(self):
         base = self.event("maintenance.snapshot")

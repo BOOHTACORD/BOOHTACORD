@@ -28,6 +28,11 @@ tasks:
     requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-QUALITY-01]
     depends_on: [RT689-002]
     evidence: [clients/web/src/realtime/maintenance_payload.spec.ts]
+  - id: RT689-005
+    title: Flutter validates maintenance events and recovers from malformed frames (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-QUALITY-01]
+    depends_on: [RT689-002, RT689-003]
+    evidence: [clients/flutter/test/realtime_scope/maintenance_event_test.dart]
   - id: T-001
     title: Specification packet and traceability
     requirements: [REQ-PRODUCT-01, REQ-ISOLATION-01, REQ-STACK-01, REQ-ARCH-01, REQ-QUALITY-02]
