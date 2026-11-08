@@ -58,7 +58,7 @@ try {
   await personalSettings(a, input, report)
   await login(guest, 'qa_member', input.password, input.directory)
   console.log(`stage=qa-member-login:${input.viewport.width}`)
-  await channel(guest, 'Text')
+  await channel(guest, 'Text', value.channelId)
   await expect(guest.getByRole('heading', { name: 'Text', exact: true })).toBeVisible()
   console.log('stage=qa-member-text-channel-selected')
   const channelHistory = guest.getByRole('log', { name: 'История сообщений' })

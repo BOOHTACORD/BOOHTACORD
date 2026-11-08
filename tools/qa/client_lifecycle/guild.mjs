@@ -18,7 +18,7 @@ export async function guild(a, b, guest, password, report, directory, expectedMe
   const topology = await seedAdminReferenceTopology(a)
   const target = topology.welcome
   console.log('stage=reference-topology-seeded')
-  await channel(b, 'Text')
+  await channel(b, 'Text', target.id)
   console.log('stage=reference-channel-selected')
   await expect(b.getByRole('heading', { name: 'Text', exact: true })).toBeVisible()
   console.log('stage=reference-channel-heading-visible')
@@ -93,7 +93,7 @@ export async function guild(a, b, guest, password, report, directory, expectedMe
   console.log('stage=reference-security-and-access-complete')
   const closeAdmin = a.getByRole('button', { name: 'Закрыть администрирование', exact: true })
   if (await closeAdmin.isVisible()) await closeAdmin.click()
-  await channel(a, 'Text'); await channel(b, 'Text')
+  await channel(a, 'Text', target.id); await channel(b, 'Text', target.id)
   await expect(a.getByRole('heading', { name: 'Text', exact: true })).toBeVisible()
   await expect(b.getByRole('heading', { name: 'Text', exact: true })).toBeVisible()
   const registered = await api(guest, '/auth/register', 'POST', { login: 'qa_member', password })

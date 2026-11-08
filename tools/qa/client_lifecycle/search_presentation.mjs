@@ -23,7 +23,7 @@ export async function searchPresentation(page, admin, fixture, input, report) {
     })).toBe(true)
     await expect(page.getByRole('heading', { name: 'Text', exact: true })).toBeVisible()
   }
-  await channel(page, 'Text')
+  await channel(page, 'Text', fixture.channelId)
   if (await page.getByTestId('nav-sidebar').getByRole('button', { name: 'Закрыть навигацию', exact: true }).isVisible()) await page.getByTestId('nav-sidebar').getByRole('button', { name: 'Закрыть навигацию', exact: true }).click()
   const draft = page.getByRole('textbox', { name: 'Сообщение', exact: true })
   await expect(draft).toBeVisible()
@@ -133,7 +133,7 @@ export async function searchPresentation(page, admin, fixture, input, report) {
   await expect(page.locator('.drawer-scrim')).not.toBeVisible()
   await expect(page.getByRole('heading', { name: 'log', exact: true })).toBeVisible()
   assert.equal(new URL(page.url()).hash, `#workspace/channel/${fixture.logChannelId}`)
-  await channel(page, 'Text')
+  await channel(page, 'Text', fixture.channelId)
   await expect(page.getByRole('heading', { name: 'Text', exact: true })).toBeVisible()
   await expect(draft).toHaveValue('Synthetic compact unsent draft')
   await draft.fill('')
