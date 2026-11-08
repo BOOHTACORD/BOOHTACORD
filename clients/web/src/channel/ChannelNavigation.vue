@@ -72,7 +72,7 @@ async function toggleFavorite(channelId: string, event: MouseEvent): Promise<voi
     <div class="channel-navigation-actions"><span>Каналы</span><button v-action-hint v-if="canCreate()" type="button" aria-label="Создать раздел или канал" @click="emit('createGlobal')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg></button></div>
     <section v-if="favoriteChannels.length" class="channel-category channel-favorites" aria-label="Избранные каналы">
       <h2><span class="channel-favorites-title">Избранное</span></h2>
-      <button v-for="channel in favoriteChannels" :key="channel.id" type="button" class="channel-button channel-favorite-link" :class="{ selected: props.selectedChannelId === channel.id, 'voice-connected': isConnectedVoice(channel) }" :aria-current="props.selectedChannelId === channel.id ? 'page' : undefined" @click="emit('select', channel)">
+      <button v-for="channel in favoriteChannels" :key="channel.id" type="button" class="channel-button channel-favorite-link" :data-channel-id="channel.id" :class="{ selected: props.selectedChannelId === channel.id, 'voice-connected': isConnectedVoice(channel) }" :aria-current="props.selectedChannelId === channel.id ? 'page' : undefined" @click="emit('select', channel)">
         <span class="channel-icon" aria-hidden="true">{{ channel.kind === 'TEXT' ? '#' : '◖' }}</span><span class="channel-name">{{ channel.name }}</span><span v-if="isConnectedVoice(channel)" class="channel-connected-mark" role="img" aria-label="Подключено к голосу">✓</span><span v-if="channel.kind === 'TEXT' && channel.unreadCount" class="channel-state" :aria-label="`Непрочитанных сообщений: ${channel.unreadCount}`">{{ channel.unreadCount }}</span><span v-if="channel.kind === 'TEXT' && channel.mentionCount" class="channel-state" :aria-label="`Упоминаний: ${channel.mentionCount}`">@{{ channel.mentionCount }}</span><span class="channel-favorite-parent">{{ props.topology.categories.find(category => category.channels.some(item => item.id === channel.id))?.name }}</span>
       </button>
     </section>
@@ -85,6 +85,7 @@ async function toggleFavorite(channelId: string, event: MouseEvent): Promise<voi
       <template v-for="channel in disclosure.isOpen(category.id) ? category.channels : []" :key="channel.id">
         <div class="channel-row" @contextmenu.stop.prevent><button
           class="channel-button"
+          :data-channel-id="channel.id"
           :class="{ selected: props.selectedChannelId === channel.id, 'voice-connected': isConnectedVoice(channel) }"
           :aria-current="props.selectedChannelId === channel.id ? 'page' : undefined"
           type="button"

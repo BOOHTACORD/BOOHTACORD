@@ -20,6 +20,8 @@
 .voice-room .stream-quality-row { display: flex; width: 100%; height: 48px; min-height: 48px; align-items: center; gap: 8px; border: 1px solid var(--gc-border-subtle); border-radius: 10px; padding: 4px 8px; background: var(--gc-sidebar); }
 .stream-quality-row .screen-audio-toggle, .stream-tool-button { display: grid; width: 36px; height: 36px; min-height: 36px; flex: none; place-items: center; border: 0; border-radius: 8px; padding: 0; color: var(--gc-text-secondary); background: transparent; cursor: pointer; }
 .stream-tool-button:hover, .stream-tool-button:focus-visible { color: var(--gc-text-primary); background: var(--gc-surface-hover); }
+.stream-microphone-toggle.is-muted { color: var(--gc-danger); background: var(--gc-danger-bg); }
+.stream-microphone-toggle:disabled { opacity: .55; cursor: not-allowed; }
 .stream-tool-button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
 .voice-room .stream-quality-row .volume-control { display: flex; min-width: 0; max-width: 150px; flex: 0 0 150px; align-items: center; gap: 8px; }
 .voice-room .stream-quality-row .volume-control input { appearance: none; width: 100px; min-width: 100px; height: 4px; margin: 0; border: 0; border-radius: 99px; padding: 0; background: linear-gradient(to right, var(--gc-text-secondary) var(--screen-audio-level), #404654 var(--screen-audio-level)); }

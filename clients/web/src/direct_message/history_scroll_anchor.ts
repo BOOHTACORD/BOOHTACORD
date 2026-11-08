@@ -20,12 +20,12 @@ export function useDirectMessageScrollAnchor(root: Ref<HTMLOListElement | null>)
     return anchor
   }
 
-  function pinMessage(messageId: string): boolean {
+  function pinMessage(messageId: string, offset?: number): boolean {
     const viewport = root.value
     const row = [...(viewport?.querySelectorAll<HTMLElement>('[data-message-id]') ?? [])]
       .find(item => item.dataset.messageId === messageId)
     if (!viewport || !row) return false
-    anchor = { row, offset: row.getBoundingClientRect().top - viewport.getBoundingClientRect().top, bottom: false }
+    anchor = { row, offset: offset ?? row.getBoundingClientRect().top - viewport.getBoundingClientRect().top, bottom: false }
     anchoredScrollTop = viewport.scrollTop
     return true
   }

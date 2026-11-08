@@ -376,6 +376,10 @@ test('screen viewing controls enter and exit browser fullscreen without enabling
 
   await page.getByRole('button', { name: 'Развернуть на весь экран', exact: true }).click()
   await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(true)
+  await expect(stageActions.getByRole('button', { name: 'Включить микрофон', exact: true })).toHaveCount(1)
+  await stageActions.getByRole('button', { name: 'Включить микрофон', exact: true }).click()
+  await expect(stageActions.getByRole('button', { name: 'Выключить микрофон', exact: true })).toHaveAttribute('aria-pressed', 'true')
+  await expect.poll(() => page.evaluate(() => (window as any).__screenUI.events.filter((event: unknown) => event === 'microphone').length)).toBe(1)
   await page.screenshot({ path: info.outputPath('viewer-controls-browser-fullscreen.png') })
   await stageActions.getByRole('button', { name: 'Свернуть просмотр', exact: true }).click()
   await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(false)
@@ -385,7 +389,7 @@ test('screen viewing controls enter and exit browser fullscreen without enabling
   await stageActions.getByRole('button', { name: 'Прекратить просмотр', exact: true }).click()
   await expect(page.locator('.screen-stage-actions')).toHaveCount(0)
   await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(false)
-  expect(await page.evaluate(() => (window as any).__screenUI.events)).toEqual(['clear'])
+  expect(await page.evaluate(() => (window as any).__screenUI.events)).toEqual(['microphone', 'clear'])
 })
 
 test('keyboard focus keeps the viewer actions visible after the idle timer', async ({ page }) => {

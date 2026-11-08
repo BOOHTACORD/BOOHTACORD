@@ -134,3 +134,21 @@ test('TEXT keeps 1,000-message DOM bounded and new-message jump retains middle a
   await expect(row(page, 8000)).toBeVisible()
   await expect(page.getByRole('button', { name: /К новым сообщениям/ })).toHaveCount(0)
 })
+
+test('TEXT silently restores the reading position after re-entering the conversation', async ({ page }) => {
+  await mount(page, 'CHANNEL')
+  await page.evaluate(() => (window as any).rhythmFixture.replaceHistory(1000))
+  const list = page.locator('.message-list')
+  await list.evaluate(element => { element.scrollTop = element.scrollHeight / 2; element.dispatchEvent(new Event('scroll')) })
+  await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))))
+  const anchor = async () => list.evaluate(element => {
+    const top = element.getBoundingClientRect().top
+    const item = [...element.querySelectorAll<HTMLElement>('[data-message-id]')].find(row => row.getBoundingClientRect().bottom > top)!
+    return { id: item.dataset.messageId!, y: item.getBoundingClientRect().top }
+  })
+  const before = await anchor()
+  await page.evaluate(() => (window as any).rhythmFixture.remount())
+  await expect(page.getByRole('heading', { name: 'Сохранённая позиция', exact: true })).toHaveCount(0)
+  await expect.poll(async () => (await anchor()).id).toBe(before.id)
+  expect(Math.abs((await anchor()).y - before.y)).toBeLessThanOrEqual(2)
+})

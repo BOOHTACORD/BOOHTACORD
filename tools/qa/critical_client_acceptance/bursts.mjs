@@ -9,6 +9,13 @@ export async function bursts(a, b, channelId, report, directory, baseline = fals
   }
   await expect(a.getByRole('heading', { name: baseline ? 'WelcomeLab' : 'Text', exact: true })).toBeVisible()
   assert.equal(new URL(a.url()).hash, activeChannelRoute, 'Active browser must display the burst target channel')
+  const activeHistory = a.getByRole('log', { name: 'История сообщений' })
+  await activeHistory.evaluate(element => {
+    element.scrollTop = element.scrollHeight
+    element.dispatchEvent(new Event('scroll', { bubbles: true }))
+  })
+  await expect.poll(() => activeHistory.evaluate(element => element.scrollHeight - element.clientHeight - element.scrollTop <= 96)).toBe(true)
+  console.log('stage=critical-burst-active-at-bottom')
   console.log('stage=critical-burst-active-channel-confirmed')
   const category = await api(a, '/admin/categories', 'POST', { name: 'HiddenLab' }); status(category, 201)
   const hidden = await api(a, `/admin/categories/${category.body.id}/channels`, 'POST', { name: 'HiddenLab', kind: 'TEXT' }); status(hidden, 201)

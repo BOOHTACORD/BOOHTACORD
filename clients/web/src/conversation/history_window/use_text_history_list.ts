@@ -11,6 +11,7 @@ import { useHistoryWindow } from './use'
 import { provideHistoryEditors } from './editing_state/context'
 import { draftMemoryEpoch } from '../draft_memory'
 import { scrollToMessageTarget } from '../message_target_navigation'
+import { restore, type Position } from '../context_position/dom'
 
 type Callbacks = { viewportChange: () => void; replyContext: (messageId: string) => void }
 export function useTextHistoryList(props: { channelId: string; session: CurrentSession | null }, emit: Callbacks, list: Ref<HTMLOListElement | null>) {
@@ -35,7 +36,15 @@ export function useTextHistoryList(props: { channelId: string; session: CurrentS
     await nextTick(); if (version === announcementVersion) announcement.value = text
   }, { immediate: true, flush: 'post' })
   onMounted(() => { if (list.value) list.value.scrollTop = list.value.scrollHeight; historyWindow.syncScroll(true); updateHistoryAnchor(); emit.viewportChange() })
-  watch(() => props.channelId, async () => { jumpCount.value = 0; await nextTick(); if (list.value) list.value.scrollTop = list.value.scrollHeight; historyWindow.syncScroll(true); updateHistoryAnchor(); emit.viewportChange() })
+  watch(() => props.channelId, async () => {
+    jumpCount.value = 0
+    await nextTick()
+    if (targetNavigationDepth) { historyWindow.syncScroll(); updateHistoryAnchor(); emit.viewportChange(); return }
+    if (list.value) list.value.scrollTop = list.value.scrollHeight
+    historyWindow.syncScroll(true)
+    updateHistoryAnchor()
+    emit.viewportChange()
+  })
   watch([() => store.historyLoaded, latestServerId], async ([loaded, newest], [wasLoaded, previous]) => {
     const viewport = list.value
     if (!newest || !viewport || store.channelId !== props.channelId) return
@@ -88,6 +97,16 @@ export function useTextHistoryList(props: { channelId: string; session: CurrentS
     if (shown) { historyWindow.syncScroll(); updateHistoryAnchor(); emit.viewportChange() }
     return shown
   }
+  async function restoreMessagePosition(position: Position): Promise<boolean> {
+    if (!historyWindow.scrollToMessage(position.id)) return false
+    await nextTick()
+    await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())))
+    if (!restore(list.value, position)) return false
+    historyWindow.syncScroll(false)
+    updateHistoryAnchor()
+    emit.viewportChange()
+    return true
+  }
   function beginTargetNavigation(): void { targetNavigationDepth++; historyWindow.syncScroll(false) }
   function endTargetNavigation(): void { targetNavigationDepth = Math.max(0, targetNavigationDepth - 1) }
   function replyPreview(message: TextMessage): string | undefined {
@@ -129,5 +148,5 @@ export function useTextHistoryList(props: { channelId: string; session: CurrentS
   }
   const loadOlder = () => loadPage(() => store.loadOlder())
   const loadNewer = () => loadPage(() => store.loadNewer())
-  return { store, timeline, announcement, jumpCount, historyWindow, historyScope, onScroll, jumpToLatest, openReplyContext, showMessage, beginTargetNavigation, endTargetNavigation, replyPreview, loadOlder, loadNewer }
+  return { store, timeline, announcement, jumpCount, historyWindow, historyScope, onScroll, jumpToLatest, openReplyContext, showMessage, restoreMessagePosition, beginTargetNavigation, endTargetNavigation, replyPreview, loadOlder, loadNewer }
 }

@@ -9,9 +9,9 @@ STAGES = frozenset({
     'actual-reset-completed-focus', 'actual-reset-links-accepted',
     'actual-tempo-verified', 'actual-used-reset-rejected-focus',
     'admin-screen-ready', 'browser-api-ready-after-registration',
-    'critical-burst-active-channel-confirmed', 'critical-burst-hidden-channel-created',
+    'critical-burst-active-at-bottom', 'critical-burst-active-channel-confirmed', 'critical-burst-hidden-channel-created',
     'critical-burst-hidden-channel-selected', 'critical-burst-hidden-channel-visible',
-    'critical-burst-navigation-open', 'header-voice-search-accepted',
+    'critical-burst-navigation-open', 'header-voice-workspace-search-accepted',
     'isolated-tls-api-ready', 'member-profile-text-dm-accepted',
     'member-profile-voice-acl-accepted', 'mini-player-actual-start',
     'mini-player-auto-retained-logout-clean', 'mini-player-controls-and-cleanup-accepted',
@@ -39,6 +39,11 @@ STAGES = frozenset({
     'screen-share-owner-stop-accepted', 'screen-share-owner-track-ended',
     'screen-share-view-removed',
     'settings-live-audio-accepted', 'settings-personal-api-accepted',
+    'voice-interface-room-ready', 'voice-interface-deafen-tested',
+    'voice-interface-share-dialog-tested', 'voice-interface-search-tested',
+    'voice-interface-audio-settings-tested', 'voice-interface-text-navigation-tested',
+    'voice-interface-dock-controls-tested', 'voice-interface-resize-tested',
+    'voice-interface-returned-to-room',
     'two-admin-clients-authenticated',
 })
 MARKER = re.compile(r'(?:^|\s)stage=([a-z][a-z0-9-]{0,80})(?=[:\s]|$)')

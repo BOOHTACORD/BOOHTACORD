@@ -18,7 +18,7 @@ const params = new URLSearchParams(location.search)
 document.documentElement.style.fontSize = params.get('scale') === '200' ? '200%' : '100%'
 if (params.has('unsupported')) Object.defineProperty(navigator, 'mediaDevices', { value: {}, configurable: true })
 const events: unknown[] = []
-const state = reactive({ open: true, expanded: false, selectedId: params.has('unselected') ? null : (params.has('watching-remote') || params.has('remote-audio') ? 'remote-screen' : 'local-screen') as string | null, profile: params.get('profile') ?? 'P1080_60', source: 'ACTIVE', fps: 1, sampledAt: null as number | null, hasAudio: false, audioMuted: false })
+const state = reactive({ open: true, expanded: false, selectedId: params.has('unselected') ? null : (params.has('watching-remote') || params.has('remote-audio') ? 'remote-screen' : 'local-screen') as string | null, profile: params.get('profile') ?? 'P1080_60', source: 'ACTIVE', fps: 1, sampledAt: null as number | null, hasAudio: false, audioMuted: false, microphoneMuted: true })
 replaceScreenPreviewParticipantLeases([['participant-card-sharing', 'fixture-preview-lease']])
 Object.assign(window, { __screenUI: { events, patch: (value: object) => Object.assign(state, value), isPreviewVisible: () => screenPreviewCardVisibility.isVisible('fixture-preview-lease') } })
 const diagnostics = (): ScreenDiagnostics => ({ source: state.source as ScreenDiagnostics['source'], audioTrack: 'ABSENT', connectionQuality: 'GOOD', measured: { width: 1920, height: 654, framesPerSecond: state.fps }, roundTripTimeMs: 42 })
@@ -93,7 +93,7 @@ const viewerStrip = () => h('section', { class: ['voice-room', state.expanded &&
     participants: fixtureViewerParticipants,
     screenWatcherIds: params.has('single-participant') ? [] : params.has('watching-remote') ? ['local-user', 'member-speaking'] : ['member-speaking'],
     selfAccountId: 'local-user',
-    selfMicrophoneMuted: true,
+    selfMicrophoneMuted: state.microphoneMuted,
     selfMicrophoneUnavailable: false,
     selfName: 'Очень длинное имя владельца трансляции для проверки ширины',
     selfSpeaking: false,
@@ -101,6 +101,7 @@ const viewerStrip = () => h('section', { class: ['voice-room', state.expanded &&
     selectedId: state.selectedId,
     sourceDiagnostics: diagnostics(),
     onToggleAudio: () => { state.audioMuted = !state.audioMuted },
+    onToggleMicrophone: () => { events.push('microphone'); state.microphoneMuted = !state.microphoneMuted },
     onStopScreen: () => events.push('stop-screen'),
     onClear: () => { events.push('clear'); state.selectedId = null },
     'onUpdate:expanded': (expanded: boolean) => { state.expanded = expanded },

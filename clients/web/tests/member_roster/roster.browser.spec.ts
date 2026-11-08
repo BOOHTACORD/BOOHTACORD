@@ -175,6 +175,18 @@ test('desktop collapse closes profile and reuses the same member rail',async({pa
  await expect(page.locator('.members-guild-roster .member-card')).toHaveCount(30)
 })
 
+test('text overflow can hide and reopen the member list without losing its header control',async({page})=>{
+ await mount(page)
+ await page.evaluate(()=> (window as any).__membersFixture.navigate('text'))
+ await page.getByRole('button',{name:'Другие действия',exact:true}).click()
+ await page.getByRole('menuitem',{name:'Скрыть участников',exact:true}).click()
+ await expect(page.getByTestId('members-panel')).not.toBeVisible()
+ const reopen=page.getByRole('button',{name:'Открыть участников',exact:true})
+ await expect(reopen).toBeVisible()
+ await reopen.click()
+ await expect(page.getByTestId('members-panel')).toBeVisible()
+})
+
 test('own profile exposes identity but no self DM, kick or volume action',async({page})=>{
  await mount(page)
  const trigger=page.getByRole('button',{name:/^Профиль: Участник 1 ·/})

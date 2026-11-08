@@ -47,11 +47,14 @@ export async function openNavigation(page) {
     }
   }
 }
-export async function channel(page, channelName = 'WelcomeLab') {
-  const target = page.locator('.channel-button').filter({ hasText: channelName })
+export async function channel(page, channelName = 'WelcomeLab', channelId) {
+  const target = channelId
+    ? page.locator(`.channel-button[data-channel-id="${channelId}"]`)
+    : page.locator('.channel-button').filter({ hasText: channelName })
+  const selectable = target.first()
   await openNavigation(page)
-  await expect(target).toBeVisible()
-  await target.click()
+  await expect(selectable).toBeVisible()
+  await selectable.click()
 }
 export async function guildPanel(page) {
   await openNavigation(page)

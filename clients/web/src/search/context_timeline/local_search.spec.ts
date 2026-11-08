@@ -1,18 +1,15 @@
 import { readFileSync } from 'node:fs'
 import { expect, it } from 'vitest'
 
-it.each([
-  ['../../conversation/TextMessageSearch.vue','../../conversation/TextConversation.vue','CHANNEL','channelId'],
-  ['../../direct_message/DirectMessageSearch.vue','../../direct_message/DirectMessageConversation.vue','DIRECT_MESSAGE','directMessageId'],
-])('routes local result IDs through the protected shared context: %s', (picker, conversation, kind, scope) => {
-  const search = readFileSync(new URL(picker,import.meta.url),'utf8')
-  const parent = readFileSync(new URL(conversation,import.meta.url),'utf8')
-  expect(search).toContain("emit('open', message.id)")
-  expect(parent).toContain(`searchTarget.open({ kind: '${kind}', conversationId: props.${scope}, messageId: $event })`)
-  if (kind === 'DIRECT_MESSAGE') {
-    expect(parent).toContain('v-if="searchMounted" v-show="searchOpen && !contextOpen()" class="conversation-tools"')
-    expect(parent).toContain('<KeepAlive><DirectMessageSearch v-if="searchOpen" :key="props.directMessageId"')
-  } else {
-    expect(parent).toContain('v-show="!contextOpen()" class="conversation-tools"')
-  }
+it('keeps only the workspace message search and removes per-conversation search panels', () => {
+  const text = readFileSync(new URL('../../conversation/TextConversation.vue', import.meta.url), 'utf8')
+  const directMessage = readFileSync(new URL('../../direct_message/DirectMessageConversation.vue', import.meta.url), 'utf8')
+  const workspace = readFileSync(new URL('../../workspace/WorkspaceApp.vue', import.meta.url), 'utf8')
+  expect(text).not.toContain('TextMessageSearch')
+  expect(text).not.toContain('Найти сообщение')
+  expect(text).not.toContain('conversation-tools')
+  expect(directMessage).not.toContain('DirectMessageSearch')
+  expect(directMessage).not.toContain('Найти сообщение')
+  expect(directMessage).not.toContain('conversation-tools')
+  expect(workspace).toContain('<SearchLauncher')
 })
