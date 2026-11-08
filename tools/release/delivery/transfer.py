@@ -10,6 +10,7 @@ import signal
 import tempfile
 from .commands import execute
 from .payload import inspect
+from .components import declared
 from .phases import Phases, PhaseFailed, ReportedFailure
 from .readback_contract import validate as acknowledgement
 from tools.release.install.diagnostics import validate_response
@@ -48,6 +49,7 @@ class Transfer:
 
     def prepare(self):
         payload = inspect(self.incoming, self.source)
+        components = declared(payload['path'], self.source)
         head = self.execute(['git', 'rev-parse', 'HEAD'], 10, capture_limit=128).decode('ascii').strip()
         if head != self.controller: raise ValueError('Delivery controller checkout differs')
         self.execute(['git', 'diff', '--exit-code', 'HEAD', '--'], 10)
@@ -59,13 +61,13 @@ class Transfer:
         if driver.is_symlink() or not driver.is_file() or not 0 < driver.stat().st_size <= 20_000_000:
             raise ValueError('Invalid delivery driver archive')
         with driver.open('rb') as stream: digest = hashlib.file_digest(stream, 'sha256').hexdigest()
-        return payload, driver, digest
+        return payload, driver, digest, components
 
     def ssh(self, *args):
         return ['ssh', *self.options, self.remote, 'sudo', '-n', 'bash', '-s', '--', *args]
 
     def run(self):
-        payload, driver, driver_sha = self.prepare()
+        payload, driver, driver_sha, components = self.prepare()
         def current(raw):
             if not re.fullmatch(b'[a-f0-9]{40}\n', raw): raise ValueError('Invalid running source identity')
             return raw.decode().strip()
@@ -88,7 +90,7 @@ class Transfer:
         with (self.scripts/'read_received.sh').open('rb') as stream:
             result = self.phases.run('readback', self.ssh(self.source, driver_sha, self.controller, self.nonce),
                                      stdin=stream, capture_limit=16384,
-                                     validator=lambda raw: acknowledgement(raw, self.source, self.controller, prior, self.nonce))
+                                     validator=lambda raw: acknowledgement(raw, self.source, self.controller, prior, self.nonce, components=components))
         return {**self.phases.complete(), 'readback': result}
 
 

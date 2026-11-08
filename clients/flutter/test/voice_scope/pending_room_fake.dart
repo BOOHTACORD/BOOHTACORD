@@ -11,6 +11,8 @@ class PendingVoiceRoom with EventsEmittable<RoomEvent> implements Room {
   ConnectOptions? receivedConnectOptions;
   MediaDevice? selectedOutput;
   @override
+  String? get name => 'voice';
+  @override
   late RoomOptions roomOptions;
   @override
   final PendingMicrophone localParticipant = PendingMicrophone();
@@ -46,6 +48,8 @@ class PendingVoiceRoom with EventsEmittable<RoomEvent> implements Room {
 }
 
 class PendingMicrophone implements LocalParticipant {
+  @override
+  String? get metadata => null;
   @override
   LocalTrackPublication? getTrackPublicationBySource(TrackSource source) =>
       null;

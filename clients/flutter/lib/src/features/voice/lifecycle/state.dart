@@ -21,6 +21,8 @@ import '../screen_viewer/selection_state.dart';
 import '../screen_viewer_presence/controller.dart';
 import '../voice_participant_sound_tracker.dart';
 import '../voice_room_event_sounds.dart';
+import '../sound_playback/runtime.dart';
+import '../sound_events/livekit.dart';
 
 abstract class VoiceState extends ChangeNotifier
     with VoiceScreenViewerSelectionState {
@@ -36,6 +38,17 @@ abstract class VoiceState extends ChangeNotifier
   });
   final ApiClient api;
   final SessionScope scope;
+  RoomSoundObserver? soundObserver;
+  late final sounds = VoiceSoundRuntime(
+    api.transport,
+    scope,
+    () => deafened,
+    () => selectedAudioOutputId,
+    () => audio.audioOutputDevices
+        .where((d) => d.deviceId == selectedAudioOutputId)
+        .firstOrNull
+        ?.label,
+  );
   final AudioDeviceController audio;
   final ScreenShareController screen;
   final SessionUser? Function() readUser;
@@ -123,7 +136,7 @@ abstract class VoiceState extends ChangeNotifier
   late final VoiceParticipantSoundTracker voiceParticipantSoundTracker =
       VoiceParticipantSoundTracker(
         (event) => playVoiceRoomEventSound(
-          enabled: voiceRoomEventSoundsEnabled,
+          enabled: false,
           event: event,
         ),
       );

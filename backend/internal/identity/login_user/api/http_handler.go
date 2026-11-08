@@ -9,6 +9,7 @@ import (
 	"time"
 	admitlogin "voice-platform/backend/internal/identity/admit_login"
 	passwordapi "voice-platform/backend/internal/identity/password/api"
+	failures "voice-platform/backend/internal/identity/track_login_failures"
 
 	"voice-platform/backend/internal/identity/login_user"
 	"voice-platform/backend/internal/identity/session"
@@ -25,6 +26,10 @@ func NewHandler(loginer Loginer) http.Handler {
 }
 
 func NewHandlerWithAdmission(loginer Loginer, budget *admitlogin.Budget) http.Handler {
+	return NewHandlerWithAdmissionAndFailures(loginer, budget, nil)
+}
+
+func NewHandlerWithAdmissionAndFailures(loginer Loginer, budget *admitlogin.Budget, failureBudget *failures.Budget) http.Handler {
 	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		if request.Method != http.MethodPost {
 			writer.WriteHeader(http.StatusMethodNotAllowed)
@@ -46,7 +51,7 @@ func NewHandlerWithAdmission(loginer Loginer, budget *admitlogin.Budget) http.Ha
 			writeError(writer, request, http.StatusBadRequest, "VALIDATION_FAILED", "Некорректные данные входа")
 			return
 		}
-		result, retry, err := admittedLogin(request.Context(), loginuser.Input{Login: body.Login, Password: body.Password}, loginer, budget)
+		result, retry, err := admittedLogin(request.Context(), loginuser.Input{Login: body.Login, Password: body.Password}, loginer, budget, failureBudget)
 		if errors.Is(err, admitlogin.ErrLimited) || errors.Is(err, admitlogin.ErrSaturated) {
 			writer.Header().Set("Cache-Control", "no-store")
 			ratelimit.WriteLimited(writer, request, retry)

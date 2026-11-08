@@ -1,0 +1,10 @@
+# Issue 137: separate failure window
+
+Observed 2026-11-07 UTC against backend commit `758e4e3c6eda9f5ab1b090b4ab771d078fe5623a` on an owned loopback-only API/PostgreSQL 17.6 stack. The API trusted its private Docker proxy and tests supplied synthetic logical sources; this was not a physical NAT or a production deployment. Nineteen fixture members were assigned the disposable administrator password hash inside the isolated database. No credentials, cookies, account names or IP addresses are recorded below.
+
+- Twenty distinct correct logins from one source returned 20 x 204 with cookies. Twelve further logins succeeded; request 33 returned 429, Retry-After 300, no cookie. A second source admitted 20 x 204. PASS_SCOPED.
+- After resetting the isolated API, one successful login established the all-attempt window. At 27 seconds seven incorrect passwords from distinct logical sources returned 401; after 31 seconds an eighth returned 401. A subsequent correct password returned 429, Retry-After 27, no cookie; a neighbor succeeded. At 31 seconds after the first failure, the original account succeeded. PASS_SCOPED. This explicitly crosses the all-attempt boundary; no clock override or restart occurred during this scenario.
+- Focused Go tests passed for failure tracking, login API, prior admission, password work, runtime config and route composition. Linux `go test -race` passed for failure tracking, login API, prior admission and password packages. Tests cover parallel reservations, expired pending work, bounded storage, normalization, response privacy, and charging invalid success results.
+- Spec traceability and contract checks passed. The owned stack cleanup completed normally.
+
+The earlier [NAT20 evidence](issue-137-nat20-2026-11-07.md) records the baseline, global admission, KDF and scoped upload controls on the preceding candidate. This record does not establish physical-network behavior, real file transfer, production capacity, shipping-client retry, or deployment of this commit. Fixed per-process windows are not distributed quotas and a targeted actor can temporarily deny a known login.

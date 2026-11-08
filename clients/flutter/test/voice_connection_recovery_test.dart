@@ -84,6 +84,7 @@ void main() {
     expect(harness.owner.voiceRecoveryActive, isFalse);
     expect(harness.owner.voiceChannel?.id, 'voice');
     expect(harness.owner.voicePhase, VoicePhase.listener);
+    harness.owner.soundObserver?.pause();
     harness.owner.stopVoiceConnectionStatsPolling();
   });
 

@@ -74,6 +74,8 @@ class VoiceController extends VoiceState {
   static const voiceRoomEventSoundPreferenceKey = 'voice-room-event-sounds:v1';
   @override
   void dispose() {
+    sounds.dispose();
+    soundObserver?.pause(); soundObserver = null;
     cancelVoiceRecovery();
     unawaited(microphoneForeground.dispose());
     unawaited(flushVoiceVolumes());

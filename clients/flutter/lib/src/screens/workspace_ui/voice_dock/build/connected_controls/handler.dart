@@ -130,7 +130,7 @@ extension VoiceDockConnectedControlsRenderer on WorkspaceVoiceDockContext {
             CheckedPopupMenuItem(
               value: 'room-event-sounds',
               checked: state.voiceRoomEventSoundsEnabled,
-              child: const Text('Звуки участников и просмотра'),
+              child: const Text('Звуки входа и выхода'),
             ),
             if (!kIsWeb && defaultTargetPlatform == TargetPlatform.windows) ...[
               CheckedPopupMenuItem(

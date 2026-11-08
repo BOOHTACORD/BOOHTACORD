@@ -1,6 +1,8 @@
 """The shared installer never accepts transfer completion as runtime success."""
 import hashlib
 import json
+import io
+import tarfile
 from pathlib import Path
 import tempfile
 import unittest
@@ -9,12 +11,20 @@ from . import transfer
 from .commands import ExecutionFailed
 from .test_readback_contract import fixture, SHA, PRIOR, CONTROLLER, NONCE
 from tools.release.install.diagnostics import failure_response, success_response
+from tools.release.bundle.test_manifest import fixture as release_fixture
 
 
 class SharedTransferTests(unittest.TestCase):
-    def fixture(self, root, *, failure=None, forged=False, bad_head=False):
+    def fixture(self, root, *, failure=None, forged=False, bad_head=False, worker=False, omit_worker=False):
         incoming=root/'incoming'; incoming.mkdir(); temporary=root/'temp'; temporary.mkdir()
-        bundle=incoming/(SHA+'.release.tar.gz'); bundle.write_bytes(b'signed-payload')
+        bundle=incoming/(SHA+'.release.tar.gz')
+        manifest=release_fixture();manifest.update(source_revision=SHA,release_id=SHA)
+        if worker:
+            manifest['components']['join-sound-processor']={**manifest['components']['api'],'archive':'join-sound-processor.oci.tar'}
+            manifest['files']['join-sound-processor.oci.tar']={'sha256':'a'*64,'bytes':1}
+        raw=json.dumps(manifest).encode()
+        with tarfile.open(bundle,'w:gz') as archive:
+            member=tarfile.TarInfo('manifest.json');member.size=len(raw);archive.addfile(member,io.BytesIO(raw))
         (incoming/(bundle.name+'.sha256')).write_text(hashlib.sha256(bundle.read_bytes()).hexdigest()+'  '+bundle.name+'\n')
         calls=[]
         def executor(argv, timeout, **kwargs):
@@ -29,10 +39,21 @@ class SharedTransferTests(unittest.TestCase):
                     result = failure_response('deployment') if failure == 'install' else success_response()
                     return json.dumps(result).encode()
                 value=fixture(); value['nonce']='0'*32 if forged else NONCE
+                if worker and not omit_worker:
+                    value['running_images']['join-sound-processor']='sha256:'+'a'*64
+                    value['sources']['join-sound-processor']=SHA
                 return json.dumps(value).encode()
             return b''
         value=transfer.Transfer(SHA, CONTROLLER, incoming, temporary, root, 'operator', '127.0.0.1', executor=executor, nonce=NONCE)
         return value,calls
+
+    def test_worker_receipt_must_match_the_actual_source_bundle_declaration(self):
+        for missing in (False,True):
+            with tempfile.TemporaryDirectory() as temporary:
+                value,_=self.fixture(Path(temporary).resolve(),worker=True,omit_worker=missing)
+                if missing:
+                    with self.assertRaises(transfer.PhaseFailed):value.run()
+                else:self.assertIn('join-sound-processor',value.run()['readback']['sources'])
 
     def test_current_trusted_controller_installs_an_exact_older_source_with_fresh_readback(self):
         with tempfile.TemporaryDirectory() as tmp:

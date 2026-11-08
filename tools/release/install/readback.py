@@ -15,12 +15,12 @@ from .state import current_manifest
 def collect(directory, manifest):
     verify_running(directory, manifest)
     return {'volumes': observation.volumes(), 'schema_sha256': observation.schema(),
-            'sources': observation.sources(manifest['source_revision']), 'health': observation.health(directory)}
+            'sources': observation.sources(manifest['source_revision'], manifest.get('components', ('api', 'web'))), 'health': observation.health(directory)}
 
 
-def checked(value, source):
+def checked(value, source, components=('api', 'web')):
     require(isinstance(value, dict) and value.get('health') == 'PASS'
-            and value.get('sources') == {'api': source, 'web': source}, 'Installed health or source differs')
+            and value.get('sources') == {name: source for name in components}, 'Installed health or source differs')
     volumes = value.get('volumes')
     require(isinstance(volumes, dict) and set(volumes) == set(observation.VOLUMES)
             and all(isinstance(v, str) and re.fullmatch('[a-f0-9]{64}', v) for v in volumes.values()),
@@ -33,7 +33,7 @@ def record(directory, manifest, previous, before, *, rollout=None):
     source = manifest['source_revision']
     intervals = timings.validate(rollout if rollout is not None else {'status':'NOT_AVAILABLE_LEGACY','events':[]})
     after = collect(directory, manifest)
-    checked(after, source)
+    checked(after, source, manifest['components'])
     require(before['volumes'] == after['volumes'], 'Persistent volume identity changed during installation')
     same_inventory = previous['compatibility']['migrations'] == manifest['compatibility']['migrations']
     same_schema = before['schema_sha256'] == after['schema_sha256']
@@ -60,13 +60,13 @@ def fresh(root, revision, public_key):
     require(not path.is_symlink() and path.is_file() and path.stat().st_nlink == 1
             and 0 < path.stat().st_size <= 16384, 'Installed readback receipt is unavailable')
     receipt = json.loads(path.read_bytes())
-    checked(receipt, revision)
+    checked(receipt, revision, manifest['components'])
     intervals = timings.validate(receipt.get('rollout', {'status':'NOT_AVAILABLE_LEGACY','events':[]}))
     require(receipt.get('schema_version') == 1 and receipt.get('kind') == 'installed-source-readback'
             and receipt.get('status') == 'PASS' and receipt.get('source_revision') == revision
             and receipt.get('persistent_volumes') == 'PASS', 'Installed readback receipt differs')
     after = collect(directory, manifest)
-    checked(after, revision)
+    checked(after, revision, manifest['components'])
     require(all(after[key] == receipt[key] for key in ('volumes', 'schema_sha256', 'sources', 'health')),
             'Installed state changed before fresh readback')
     images = {name: item['index_digest'] for name, item in manifest['components'].items()}
