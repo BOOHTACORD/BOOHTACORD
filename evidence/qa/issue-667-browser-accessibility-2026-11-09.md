@@ -5,3 +5,7 @@ Product source `8306413a84c224a712509d7a059916c95b00bd3c`, headless Chromium in 
 The four individual failures from the first run were retested: three passed together on the first retry; the composer failed once more, then passed twice on a further retry. The second suite's single axe scenario failed once with a dynamic import error, then passed twice in isolation. A separate diagnostic loaded the same message component eight times in fresh browser pages without reproducing the module error; it had no real API and its API 404s were expected. The cause remains unknown. Do not mark the full suite green based on isolated retries.
 
 These browser fixtures commonly mock APIs; they do not establish live-stack, screen-reader, physical-device, full visual baseline or WCAG 2.2 AA acceptance. Original second-run output remains locally in `.out/qa667-accessibility.log`. Issue #667 remains open.
+
+On the same product source, `flutter test --no-pub test/admin_accessibility test/workspace_navigation_text_scale_test.dart test/voice_manual_join_actions_accessibility_test.dart` passed 71 widget tests on Windows. These cover selected semantics, keyboard, text scale and layout fixtures, not native screen-reader or physical platform acceptance.
+
+A follow-up standalone diagnostic loaded the message module in 100 fresh Chromium pages against its own Vite server: 100 imports passed and no non-API request error was observed. This narrower diagnostic did not recreate the full suite or its API fixtures, so it does not explain or erase the intermittent failures.
