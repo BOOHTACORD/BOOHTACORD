@@ -50,6 +50,7 @@ func New(origin string, observer *observestate.Observer, rate *ratelimit.Limiter
 			return
 		}
 		defer connection.CloseNow()
+		connection.SetReadLimit(1024)
 		sub := observer.Subscribe()
 		defer sub.Close()
 		serve(connection, sub, time.Now)

@@ -8,6 +8,11 @@ action_catalog:
   verification: backlog/VERIFICATION_TODO.md
   completed: DONE.md
 tasks:
+  - id: RT689-009
+    title: Own one shared public maintenance observer and admission lifecycle (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-OPS-01]
+    depends_on: [RT689-008]
+    evidence: [backend/internal/app/public_realtime/runtime_test.go]
   - id: RT689-008
     title: Public maintenance WebSocket transport with bounded admission (GitHub #689)
     requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-OPS-01]
