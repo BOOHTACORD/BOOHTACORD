@@ -23,7 +23,6 @@ import { useSavedComposer } from '../conversation/use_saved_composer'
 import { submitOnComposerEnter } from '../conversation/composer_enter'
 import SearchMessageContext from '../search/SearchMessageContext.vue'
 import { useSearchTargetStore } from '../search/search_target_store'
-import { useUnreadBoundary } from '../conversation/use_unread_boundary'
 import { useScopedSend } from '../conversation/use_scoped_send'
 import type { Position } from '../conversation/context_position/dom'
 import { useContextPosition } from '../conversation/context_position/return'
@@ -34,10 +33,11 @@ const store = useDirectMessageStore()
 const support = computed(()=>isSupportPeer(props.otherParticipantId,store.supportContact))
 const publicationBlocked=computed(()=>isProductSupportPeer(props.otherParticipantId,store.supportContact)&&(store.supportContact.mode!=='product'||store.supportContact.consentRequired||store.supportContact.state!=='available'))
 const firstUnread = computed(() => store.directMessages.find(({ id }) => id === props.directMessageId)?.firstUnreadMessageId)
-const { unreadBoundary, unreadContextOpen, readUnlocked, showUnread, continueAtLatest } = useUnreadBoundary(() => props.directMessageId, firstUnread, () => { void showLatest().then(queueVisibleRead) })
 const searchTarget = useSearchTargetStore()
 const filesOpen = ref(false)
 const contextTarget = computed(() => searchTarget.target?.kind === 'DIRECT_MESSAGE' && searchTarget.target.conversationId === props.directMessageId ? searchTarget.target : null)
+const historyList = ref<{ showMessage: (messageId: string) => Promise<boolean>; beginTargetNavigation: () => void; endTargetNavigation: () => void } | null>(null)
+const searchNavigationError = ref('')
 const replyContextTarget = ref<string | null>(null)
 const restored = ref<Position | null>(null)
 const authors = useAuthorDirectory()
@@ -54,14 +54,15 @@ const attachmentPicker = ref<{ addPastedFiles: (files: File[]) => void } | null>
 const emojiPicker = ref<{ show: () => Promise<void> } | null>(null)
 const { readRoot, queueVisibleRead } = useVisibleRead({
   conversationId: () => props.directMessageId, loadedConversationId: () => store.directMessageId, messages: () => store.messages,
-  canRead: () => props.active && store.directMessages.some(({ id }) => id === props.directMessageId) && !filesOpen.value && !contextTarget.value && !replyContextTarget.value && !unreadContextOpen.value && !restored.value && (!unreadBoundary.value || readUnlocked.value),
+  firstUnreadMessageId: () => firstUnread.value,
+  canRead: () => props.active && store.directMessages.some(({ id }) => id === props.directMessageId) && !filesOpen.value && !contextTarget.value && !replyContextTarget.value && !restored.value,
   advance: (id, messageId) => advanceReadIfVisible({ activeDirectMessageId: store.directMessageId,
     renderedDirectMessageId: id, newestDisplayedMessageId: messageId, visibilityState: document.visibilityState }),
   refreshCounters: () => { void store.refreshNavigation() },
 })
 
-const contextOpen = () => Boolean(filesOpen.value || contextTarget.value || replyContextTarget.value || unreadContextOpen.value || restored.value)
-const { save: savePosition, showLatest } = useContextPosition(props.accountId, 'DIRECT_MESSAGE', () => props.directMessageId, readRoot, contextOpen, () => store.historyLoaded && store.directMessageId === props.directMessageId, restored)
+const contextOpen = () => Boolean(filesOpen.value || replyContextTarget.value || restored.value)
+const { save: savePosition } = useContextPosition(props.accountId, 'DIRECT_MESSAGE', () => props.directMessageId, readRoot, contextOpen, () => store.historyLoaded && store.directMessageId === props.directMessageId, restored)
 function onViewportChange(): void { savePosition(); queueVisibleRead() }
 const { send, retry } = useScopedSend<DirectMessageHistoryItem, TextMessageAttachment, DirectMessageHistoryItem>(
   props.accountId, 'DIRECT_MESSAGE', () => props.directMessageId, composer,
@@ -78,6 +79,37 @@ const { addEmoji, insertMobileMention, onComposerPaste, onDragOver, onDrop } = u
 function openSearch(): void { searchMounted.value = true; searchOpen.value = true }
 function toggleSearch(): void { searchOpen.value ? closeSearch() : openSearch() }
 function closeSearch(): void { searchOpen.value = false; void nextTick(() => searchTrigger.value?.focus()) }
+
+let handledTargetKey = ''
+watch([contextTarget, () => store.directMessageId, () => store.historyLoaded], async ([target, loadedId, loaded]) => {
+  if (!target || loadedId !== props.directMessageId || !loaded) return
+  const key = `${target.conversationId}:${target.messageId}`
+  if (handledTargetKey === key) return
+  handledTargetKey = key
+  filesOpen.value = false; replyContextTarget.value = null; restored.value = null; searchNavigationError.value = ''
+  historyList.value?.beginTargetNavigation()
+  try {
+    if (!await store.openAround(target.messageId) || contextTarget.value?.messageId !== target.messageId) {
+      if (contextTarget.value?.messageId === target.messageId) {
+        searchNavigationError.value = 'Не удалось открыть найденное сообщение. Попробуйте ещё раз.'
+        searchOpen.value = true
+        searchTarget.clear()
+      }
+      return
+    }
+    await store.loadNewer()
+    closeSearch()
+    await nextTick()
+    const shown = await historyList.value?.showMessage(target.messageId)
+    if (contextTarget.value?.messageId !== target.messageId) return
+    if (shown) searchTarget.clear()
+    else { searchNavigationError.value = 'Не удалось найти сообщение в личной переписке.'; searchOpen.value = true; searchTarget.clear() }
+  } finally {
+    await nextTick(); await nextTick()
+    historyList.value?.endTargetNavigation()
+  }
+}, { flush: 'post' })
+watch(() => searchTarget.target, (target) => { if (!target) handledTargetKey = '' })
 
 
 onMounted(() => {
@@ -102,17 +134,11 @@ onBeforeUnmount(() => searchTarget.clearFor('DIRECT_MESSAGE', props.directMessag
     <SupportPublicationConsent v-if="publicationBlocked" />
     <p v-if="store.loadingHistory" class="state" aria-live="polite">Загружаем историю…</p>
     <p v-if="store.error" id="direct-conversation-error" class="state state-error" role="alert">{{ store.error }} <span v-if="store.historyLoaded">Показанная история может быть устаревшей.</span> <button v-if="store.retryableError" type="button" @click="store.refreshHistory()">Повторить загрузку</button></p>
-    <div v-if="!filesOpen && unreadBoundary && !readUnlocked" class="unread-boundary-actions" role="status">
-      <span>Есть непрочитанные сообщения.</span>
-      <button type="button" @click="showUnread">К первому непрочитанному</button>
-      <button type="button" @click="continueAtLatest">Остаться у последних</button>
-    </div>
+    <p v-if="searchNavigationError" class="state state-error" role="alert">{{ searchNavigationError }}</p>
     <ConversationFilesPanel v-if="filesOpen" kind="DIRECT_MESSAGE" :conversation-id="props.directMessageId" :deleted-message-ids="store.deletedMessageIds" @open-message="filesOpen = false; searchTarget.open({ kind: 'DIRECT_MESSAGE', conversationId: props.directMessageId, messageId: $event })" @close="filesOpen = false; void nextTick(() => overflow?.focus())" />
-    <SearchMessageContext v-else-if="contextTarget" kind="DIRECT_MESSAGE" :conversation-id="props.directMessageId" :message-id="contextTarget.messageId" @close="searchTarget.clear()" />
     <SearchMessageContext v-else-if="replyContextTarget" kind="DIRECT_MESSAGE" :conversation-id="props.directMessageId" :message-id="replyContextTarget" heading="Контекст ответа" @close="replyContextTarget = null" />
-    <SearchMessageContext v-else-if="unreadContextOpen" kind="DIRECT_MESSAGE" :conversation-id="props.directMessageId" :message-id="unreadBoundary" heading="Первое непрочитанное сообщение" unread :active="props.active" @read="store.refreshNavigation()" @viewport-change="savePosition" @close="continueAtLatest" />
     <SearchMessageContext v-else-if="restored" kind="DIRECT_MESSAGE" :conversation-id="props.directMessageId" :message-id="restored.id" :offset="restored.offset" heading="Сохранённая позиция" @viewport-change="savePosition" @close="restored = null" />
-    <DirectMessageHistoryList :empty-text="support ? supportPrompt : undefined" v-show="!contextOpen()" :direct-message-id="props.directMessageId" :session="session" :other-participant-id="props.otherParticipantId" :other-participant-display-name="props.otherParticipantDisplayName" @reply="replyTarget = $event" @reply-context="replyContextTarget = $event" @retry="retry" @viewport-change="onViewportChange" />
+    <DirectMessageHistoryList ref="historyList" :empty-text="support ? supportPrompt : undefined" v-show="!contextOpen()" :direct-message-id="props.directMessageId" :session="session" :other-participant-id="props.otherParticipantId" :other-participant-display-name="props.otherParticipantDisplayName" @reply="replyTarget = $event" @reply-context="replyContextTarget = $event" @retry="retry" @viewport-change="onViewportChange" />
     <div v-if="!publicationBlocked" class="composer-wrap">
       <MentionAutocomplete v-model="draft" v-model:mention-user-ids="mentionUserIds" :self-id="session?.accountId ?? ''" :disabled="store.sending || !session" :only-participant="{ id: props.otherParticipantId, displayName: props.otherParticipantDisplayName }" />
       <form class="message-composer composer" @submit.prevent="send" @dragover="onDragOver" @drop="onDrop">

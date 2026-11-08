@@ -11,12 +11,16 @@ export async function searchPresentation(page, admin, fixture, input, report) {
     await page.locator('.guild-search-button').click()
     await expect(page.getByTestId('search-panel')).toBeVisible()
   }
-  async function returned(expected) {
-    const context = page.getByTestId('search-message-context')
-    await expect(context.locator('[data-search-anchor]')).toBeFocused()
-    if (expected) await expect(context.locator('[data-search-anchor]')).toHaveAttribute('data-message-id', expected)
-    await activate(context.getByRole('button', { name: 'Вернуться к исходной позиции', exact: true }))
-    await expect(context).not.toBeVisible()
+  async function navigated(expected) {
+    const target = page.locator(`.text-conversation .message-list [data-message-id="${expected}"].message-search-target`)
+    await expect(target).toBeVisible()
+    await expect(target).toHaveAttribute('data-message-id', expected)
+    await expect(page.getByTestId('search-message-context')).toHaveCount(0)
+    await expect.poll(() => target.evaluate(row => {
+      const viewport = row.closest('.message-list')
+      const bounds = row.getBoundingClientRect(), view = viewport.getBoundingClientRect()
+      return bounds.top >= view.top && bounds.bottom <= view.bottom
+    })).toBe(true)
     await expect(page.getByRole('heading', { name: 'Text', exact: true })).toBeVisible()
   }
   await channel(page, 'Text')
@@ -46,7 +50,7 @@ export async function searchPresentation(page, admin, fixture, input, report) {
   await expect(files.locator('.file-name-detail p')).toHaveText(file)
   await page.screenshot({ path: input.directory + '/compact-files.png' })
   await activate(files.getByRole('button', { name: `Перейти к сообщению с файлом ${file}`, exact: true }))
-  await returned(published.body.id)
+  await navigated(published.body.id)
   await expect(draft).toHaveValue('Synthetic compact unsent draft')
 
   let pinId
@@ -78,7 +82,7 @@ export async function searchPresentation(page, admin, fixture, input, report) {
   const before = await owner.evaluate(el => el.scrollTop)
   assert.ok(before > 0, 'Search return must exercise a nonzero result position')
   await activate(open)
-  await returned(searchResult.messages[0].id)
+  await navigated(searchResult.messages[0].id)
   await search()
   await expect(query).toHaveValue('Synthetic navigation')
   await expect(panel.getByLabel('Область поиска')).toHaveValue('current')
@@ -95,7 +99,7 @@ export async function searchPresentation(page, admin, fixture, input, report) {
   await expect(panel.locator('.pin-panel .result-row')).toHaveCount(1)
   await page.screenshot({ path: input.directory + '/compact-pins.png' })
   await activate(panel.getByRole('button', { name: /Открыть закреплённое сообщение/ }))
-  await returned(pinId)
+  await navigated(pinId)
   await search()
   await activate(panel.getByRole('button', { name: 'Упоминания', exact: true }))
   const mentions = await api(page, '/mentions'); status(mentions, 200)
@@ -103,7 +107,7 @@ export async function searchPresentation(page, admin, fixture, input, report) {
   await expect(mention).toBeVisible()
   await page.screenshot({ path: input.directory + '/compact-mentions.png' })
   await activate(mention)
-  await returned(mentions.body.mentions[0].message_id)
+  await navigated(mentions.body.mentions[0].message_id)
 
   const topology = await api(admin, '/channels'); status(topology, 200)
   const category = topology.body.categories.find(item => item.channels.some(item => item.id === fixture.channelId))
@@ -133,7 +137,7 @@ export async function searchPresentation(page, admin, fixture, input, report) {
   await expect(page.getByRole('heading', { name: 'Text', exact: true })).toBeVisible()
   await expect(draft).toHaveValue('Synthetic compact unsent draft')
   await draft.fill('')
-  report.search_presentation = { six_surfaces: true, actual_api: true, multiword_late_preview: true, upload_file_context: true, draft_retained: true,
+  report.search_presentation = { six_surfaces: true, actual_api: true, multiword_late_preview: true, upload_file_navigation: true, draft_retained: true,
     filter_message_return: true, nonzero_result_scroll_restored: true, query_and_filters_restored: true,
-    pinned_and_mention_context: true, archive_reader: true, quick_jump: true, touch }
+    pinned_and_mention_navigation: true, archive_reader: true, quick_jump: true, touch }
 }

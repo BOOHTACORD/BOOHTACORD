@@ -13,6 +13,15 @@ export function newServerMessageCount(messages: readonly ServerMessage[], previo
   return previousIndex > 0 ? previousIndex : 0
 }
 
+export function shouldFollowNewestMessages(
+  messages: readonly ServerMessage[],
+  previousNewestId: string | undefined,
+  wasLoaded: boolean,
+  nearBottom: boolean,
+): boolean {
+  return nearBottom && newServerMessageCount(messages, previousNewestId, wasLoaded) > 0
+}
+
 export function isHistoryNearBottom(viewport: ScrollMetrics | null): boolean {
   return Boolean(viewport && viewport.scrollHeight - viewport.clientHeight - viewport.scrollTop <= 96)
 }

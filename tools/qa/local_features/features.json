@@ -1633,6 +1633,16 @@
       "clients/flutter/lib/src/screens/workspace_ui/message_action_menu/*",
       "clients/flutter/lib/src/screens/workspace_ui/direct_message_action_menu/*",
       "clients/web/src/conversation/history_window/*",
+      "clients/web/src/conversation/message_target_navigation.ts",
+      "clients/web/src/workspace/search/WorkspaceSearchPanel.vue",
+      "tools/qa/client_lifecycle/scenario.mjs",
+      "tools/qa/client_lifecycle/search_presentation.mjs",
+      "tools/qa/dm_composer/scenario.mjs",
+      "tools/qa/conversation_files/scenario.mjs",
+      "tools/qa/mentions_inbox/scenario.mjs",
+      "tools/qa/next_client_acceptance/unread.mjs",
+      "tools/qa/next_client_acceptance/navigation.mjs",
+      "tools/qa/upload_reservations/stack.py",
       "clients/web/src/conversation/reactions/*",
       "clients/web/src/conversation/system_welcome/*",
       "clients/web/src/conversation/message_body/*",
@@ -1680,6 +1690,26 @@
       "test/features/workspace/direct_follow_latest/"
     ],
     "acceptance": {
+      "web_message_read_search_and_send_navigation": {
+        "browser_test": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
+        "real_stack": [
+          "tools/qa/client_lifecycle/scenario.mjs",
+          "tools/qa/client_lifecycle/search_presentation.mjs",
+          "tools/qa/dm_composer/scenario.mjs",
+          "tools/qa/conversation_files/scenario.mjs",
+          "tools/qa/mentions_inbox/scenario.mjs",
+          "tools/qa/next_client_acceptance/unread.mjs",
+          "tools/qa/next_client_acceptance/navigation.mjs"
+        ],
+        "focused": [
+          "clients/web/src/conversation/read_visibility.spec.ts",
+          "clients/web/src/conversation/history_window/follow_latest.spec.ts",
+          "clients/web/src/conversation/text_history_pagination.spec.ts",
+          "clients/web/src/direct_message/direct_message_history_pagination.spec.ts",
+          "clients/web/src/conversation/first_unread_presentation.spec.ts"
+        ],
+        "scope": "First unread is marked only after it intersects the visible message viewport; local/global search, file and mention targets open in the normal conversation and flash briefly; sending a message scrolls it into view. Authenticated desktop/mobile real-stack acceptance includes read-cursor SQL checks, search/file/mention routes and send follow; source-resolution screenshot review is recorded separately."
+      },
       "composer_text_scale": {
         "browser_test": "clients/web/tests/accessibility/composer_text_scale.browser.spec.ts",
         "scope": "Production Vue channel and DM composers at 100% and 200% root rem text scale: empty and single-line field geometry, viewport boundaries, Shift+Enter scrolling and focus; actual stack captures remain a separate gate"

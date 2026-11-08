@@ -176,7 +176,11 @@ try {
 
   const syntheticMessage = 'Синтетическое сообщение для QA'
   await guest.getByRole('textbox', { name: 'Сообщение' }).fill(syntheticMessage)
+  const dmSentResponse = guest.waitForResponse(r => r.request().method()==='POST' && new URL(r.url()).pathname.endsWith('/messages') && new URL(r.url()).pathname.includes('/direct-messages/'))
   await guest.getByRole('button', { name: 'Отправить сообщение', exact: true }).click()
+  const dmSent = await dmSentResponse
+  assert.equal(dmSent.status(), 201)
+  const dmSentMessage = await dmSent.json()
   await expect(guest.getByText(syntheticMessage, { exact: true })).toBeVisible()
   console.log('stage=qa-member-dm-message-sent')
   await guest.screenshot({ path: input.directory+'/dm-conversation.png' })
@@ -190,14 +194,21 @@ try {
   await expect(dmSearch.getByText(syntheticMessage, { exact: true })).toBeVisible()
   await guest.screenshot({ path: input.directory+'/dm-search.png' })
   await dmSearch.getByRole('button', { name: 'Открыть сообщение', exact: true }).click()
-  const context = guest.getByTestId('search-message-context')
-  await expect(context.getByText(syntheticMessage, { exact: true })).toBeVisible()
-  await context.getByRole('button', { name: 'Вернуться к исходной позиции', exact: true }).click()
+  const dmTarget = guest.locator(`.direct-message-conversation .message-list [data-message-id="${dmSentMessage.id}"].message-search-target`)
+  await expect(dmTarget).toContainText(syntheticMessage)
+  await expect(guest.getByTestId('search-message-context')).toHaveCount(0)
+  await expect.poll(() => dmTarget.evaluate(row => {
+    const viewport = row.closest('.message-list')
+    const bounds = row.getBoundingClientRect(), view = viewport.getBoundingClientRect()
+    return bounds.top >= view.top && bounds.bottom <= view.bottom
+  })).toBe(true)
+  await guest.screenshot({ path: input.directory+'/dm-search-result-in-conversation.png' })
+  await guest.getByRole('button', { name: 'Найти сообщение', exact: true }).click()
   await expect(dmSearch.getByRole('searchbox', { name: 'Запрос' })).toHaveValue(syntheticMessage)
   await expect(dmSearch.getByText(syntheticMessage, { exact: true })).toBeVisible()
   await dmSearch.getByRole('button', { name:'Закрыть поиск в диалоге', exact:true }).click()
   await conversationHeaders(guest, input, report, 'DM')
-  report.dm_full_app = { empty_conversation: true, list: true, sent_message: true, search: true, context_return_preserves_search: true }
+  report.dm_full_app = { empty_conversation: true, list: true, sent_message: true, search: true, search_result_scrolls_into_conversation: true, flash_highlight: true, context_view_removed: true }
   console.log('stage=qa-member-dm-search-complete')
 
   await guest.screenshot({ path: input.directory+'/direct-message-header.png' })
@@ -216,20 +227,34 @@ try {
   await expect(globalSearch.getByLabel('По дату включительно')).toBeVisible()
   await expect(globalSearch.getByRole('button', { name: 'Найти', exact: true })).toBeDisabled()
   await guest.screenshot({ path: input.directory+'/global-search.png' })
-  await globalSearch.getByRole('searchbox', { name: 'Запрос' }).fill('Synthetic UIUX channel sample')
+  await globalSearch.getByRole('searchbox', { name: 'Запрос' }).fill('Synthetic UIUX channel sample readable conversation text')
+  const globalResponse = guest.waitForResponse(r => r.request().method()==='GET' && new URL(r.url()).pathname==='/api/v1/search/messages')
   await globalSearch.getByRole('button', { name: 'Найти', exact: true }).click()
+  const globalBody = await (await globalResponse).json()
   const globalResults = globalSearch.locator('.search-result')
   await expect(globalResults.first()).toBeVisible()
-  await globalResults.first().getByRole('button').click()
-  await expect(guest.getByTestId('search-message-context')).toBeVisible()
-  await guest.screenshot({ path: input.directory+'/global-search-result-context.png' })
+  const globalMessage = globalBody.messages.find(message => message.body === 'Synthetic UIUX channel sample: readable conversation text.')
+  assert.ok(globalMessage, 'The global search result must resolve to its server message')
+  await globalResults.filter({ hasText:globalMessage.body }).getByRole('button').click()
+  const globalTarget = guest.locator(`.text-conversation .message-list [data-message-id="${globalMessage.id}"].message-search-target`)
+  await expect(globalTarget).toContainText('Synthetic UIUX channel sample')
+  await expect(guest.getByTestId('search-message-context')).toHaveCount(0)
+  await expect(guest.getByTestId('search-aside-panel')).toBeHidden()
+  await expect.poll(() => globalTarget.evaluate(row => {
+    const viewport = row.closest('.message-list')
+    const bounds = row.getBoundingClientRect(), view = viewport.getBoundingClientRect()
+    return bounds.top >= view.top && bounds.bottom <= view.bottom
+  })).toBe(true)
+  await guest.screenshot({ path: input.directory+'/global-search-result-in-conversation.png' })
   console.log('stage=qa-member-global-search-complete')
   report.global_search_full_app = {
     panel: true,
     defaultGlobalScope: true,
     authorAttachmentDateFilters: true,
     disposableApiResults: true,
-    resultOpensOriginalContext: true,
+    resultScrollsIntoConversation: true,
+    flashHighlight: true,
+    searchContextViewRemoved: true,
   }
 
   const denied = await api(guest, '/admin/guild-settings', 'PATCH', {

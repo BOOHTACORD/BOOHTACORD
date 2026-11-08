@@ -142,17 +142,20 @@ try {
   const history=a.waitForResponse(r=>new URL(r.url()).pathname==='/api/v1/channels/'+ch.body.id+'/messages'&&new URL(r.url()).searchParams.get('at')===text.id)
   phase='TEXT result Enter and history response'
   await a.keyboard.press('Enter');assert.equal((await history).status(),200)
-  const context=a.getByTestId('search-message-context')
-  phase='TEXT exact anchor'
-  await expect(context.locator('[data-search-anchor]')).toHaveAttribute('data-message-id',text.id)
-  await context.getByRole('button',{name:'Вернуться к исходной позиции',exact:true}).click()
+  const target=a.locator(`.text-conversation .message-list [data-message-id="${text.id}"].message-search-target`)
+  phase='TEXT normal-history target'
+  await expect(target).toHaveAttribute('data-message-id',text.id)
+  await expect(a.getByTestId('search-message-context')).toHaveCount(0)
+  await expect.poll(()=>target.evaluate(row=>{const view=row.closest('.message-list').getBoundingClientRect(),bounds=row.getBoundingClientRect();return bounds.top>=view.top&&bounds.bottom<=view.bottom})).toBe(true)
   p=await inbox(a)
   phase='DM exact protected history'
   const dmRow=p.locator('.search-result').filter({has:a.locator('header').filter({hasText:'Автор проверки'})}).first()
   const dmHistory=a.waitForResponse(r=>new URL(r.url()).pathname==='/api/v1/direct-messages/'+dm.body.id+'/messages'&&new URL(r.url()).searchParams.get('at')===direct.id)
   await dmRow.getByRole('button').click();assert.equal((await dmHistory).status(),200)
-  await expect(context.locator('[data-search-anchor]')).toHaveAttribute('data-message-id',direct.id)
-  await context.getByRole('button',{name:'Вернуться к исходной позиции',exact:true}).click()
+  const dmTarget=a.locator(`.direct-message-conversation .message-list [data-message-id="${direct.id}"].message-search-target`)
+  await expect(dmTarget).toBeVisible()
+  await expect(a.getByTestId('search-message-context')).toHaveCount(0)
+  await expect.poll(()=>dmTarget.evaluate(row=>{const view=row.closest('.message-list').getBoundingClientRect(),bounds=row.getBoundingClientRect();return bounds.top>=view.top&&bounds.bottom<=view.bottom})).toBe(true)
   report.checks.TEXT_DM_exact_origin_and_keyboard_activation='PASS'
   phase='rename edit remove delete and paginated recovery'
   p=await inbox(a)

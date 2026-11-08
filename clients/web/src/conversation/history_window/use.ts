@@ -1,10 +1,12 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, onUpdated, ref, watch, type ComputedRef, type CSSProperties, type Ref } from 'vue'
 import { buildVirtualOffsets, findVirtualRange, type HistoryRow, type RenderedRow } from './window'
 import { useEditingPin } from './editing_pin'
+import { shouldPreserveLatestPosition } from './follow_latest'
 
 export function useHistoryWindow<T extends HistoryRow>(rows: ComputedRef<T[]>, root: Ref<HTMLOListElement | null>, hasOlder: ComputedRef<boolean>, compact: Ref<boolean>, isEditing?: (id: string) => boolean) {
   const measured = ref(new Map<string, number>()), scrollTop = ref(0), viewportHeight = ref(600)
   const paddingTop = ref(20), paddingLeft = ref(24), paddingRight = ref(24), controlHeight = ref(0)
+  let isFollowingLatest = true
   const focusedMessage = ref<string>(), editingPin = useEditingPin(rows, root)
   const offsets = computed(() => buildVirtualOffsets(rows.value, measured.value))
   const rowIndex = computed(() => new Map(rows.value.flatMap((row, index) => row.messageId ? [[row.messageId, index] as const] : [])))
@@ -33,7 +35,11 @@ export function useHistoryWindow<T extends HistoryRow>(rows: ComputedRef<T[]>, r
     if (hasOlder.value && !controlHeight.value) controlHeight.value = 44
     compact.value = window.matchMedia?.('(max-width: 1023px)').matches ?? false
   }
-  function syncScroll(): void { scrollTop.value = root.value?.scrollTop ?? 0; viewportHeight.value = root.value?.clientHeight || viewportHeight.value }
+  function syncScroll(followingLatest?: boolean): void {
+    if (followingLatest !== undefined) isFollowingLatest = followingLatest
+    scrollTop.value = root.value?.scrollTop ?? 0
+    viewportHeight.value = root.value?.clientHeight || viewportHeight.value
+  }
   function observeRows(): void {
     if (!observer || !root.value) return
     for (const element of observed) if (!root.value.contains(element)) { observer.unobserve(element); observed.delete(element) }
@@ -60,6 +66,7 @@ export function useHistoryWindow<T extends HistoryRow>(rows: ComputedRef<T[]>, r
   function scrollToMessage(messageId: string): boolean {
     const offset = offsetOf(messageId), element = root.value
     if (offset === undefined || !element) return false
+    isFollowingLatest = false
     element.scrollTop = Math.max(0, offset - Math.round(element.clientHeight / 3)); syncScroll(); return true
   }
   function rowStyle(row: RenderedRow<T>): CSSProperties {
@@ -77,9 +84,14 @@ export function useHistoryWindow<T extends HistoryRow>(rows: ComputedRef<T[]>, r
       if (element.hasAttribute('data-history-control') && height > 0) controlHeight.value = height
     }
     if (next.size !== measured.value.size || [...next].some(([key, value]) => measured.value.get(key) !== value)) {
-      const keepBottom = Boolean(root.value && root.value.scrollHeight - root.value.clientHeight - root.value.scrollTop <= 96)
+      const keepBottom = Boolean(root.value && shouldPreserveLatestPosition(isFollowingLatest, root.value))
       measured.value = next
-      if (keepBottom) void nextTick(() => { if (root.value) { root.value.scrollTop = root.value.scrollHeight; syncScroll() } })
+      if (keepBottom) void nextTick(() => {
+        if (root.value && shouldPreserveLatestPosition(isFollowingLatest, root.value)) {
+          root.value.scrollTop = root.value.scrollHeight
+          syncScroll()
+        }
+      })
     }
   }
   onMounted(() => { readViewport(); if (typeof ResizeObserver !== 'undefined') { observer = new ResizeObserver(resize); if (root.value) observer.observe(root.value); observeRows() }; window.addEventListener('resize', readViewport) })

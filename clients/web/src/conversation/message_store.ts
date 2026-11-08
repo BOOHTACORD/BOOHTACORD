@@ -9,7 +9,7 @@ import { requestFailureMessage } from '../request_feedback'
 
 export const useMessageStore = defineStore('text-messages', () => {
   const pending = new Map<string, PendingSend>()
-  const { channelId, messages, messageById, nextCursor, newerCursor, loading, olderLoading, newerLoading, historyLoaded, error, retryableError, olderError, newerError, open, refresh, loadOlder, loadNewer, setHistoryAnchor, refreshMessage, refreshMessages } = createTextHistory(pending)
+  const { channelId, messages, messageById, nextCursor, newerCursor, loading, olderLoading, newerLoading, historyLoaded, error, retryableError, olderError, newerError, open, openAround, refresh, loadOlder, loadNewer, setHistoryAnchor, refreshMessage, refreshMessages } = createTextHistory(pending)
   const deletedMessageIds = ref<string[]>([])
   watch(channelId, () => { deletedMessageIds.value = [] })
   const sending = ref(false)
@@ -64,5 +64,5 @@ export const useMessageStore = defineStore('text-messages', () => {
     }
   }
 
-  return { applyDeletedHint, channelId, deletedMessageIds, edit, editWithResult, error, loading, olderLoading, newerLoading, historyLoaded, retryableError, olderError, newerError, loadOlder, loadNewer, messages, messageById, nextCursor, newerCursor, open, refresh, refreshMessage, refreshMessages, remove, retry, send, sending, setHistoryAnchor }
+  return { applyDeletedHint, channelId, deletedMessageIds, edit, editWithResult, error, loading, olderLoading, newerLoading, historyLoaded, retryableError, olderError, newerError, loadOlder, loadNewer, messages, messageById, nextCursor, newerCursor, open, openAround, refresh, refreshMessage, refreshMessages, remove, retry, send, sending, setHistoryAnchor }
 })

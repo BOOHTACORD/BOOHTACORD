@@ -438,6 +438,11 @@ tasks:
     requirements: [REQ-UI-01, REQ-UI-02, REQ-VOICE-01, REQ-SCREEN-01]
     depends_on: [T-022, T-030]
     evidence: [clients/web/tests/screen_share_ui/disclosure.browser.spec.ts, web-participant-card-controls-local-acceptance, web-participant-card-controls-ci]
+  - id: WEB-CHAT-002
+    title: Mark unread messages on visibility, navigate search results, and follow sent messages in Web
+    requirements: [REQ-CHAT-01, REQ-CHAT-02, REQ-SEARCH-01, REQ-UI-01]
+    depends_on: [T-040, T-041]
+    evidence: [clients/web/src/conversation/read_visibility.spec.ts, clients/web/src/conversation/history_window/follow_latest.spec.ts, clients/web/src/conversation/text_history_pagination.spec.ts, clients/web/src/direct_message/direct_message_history_pagination.spec.ts, clients/web/src/conversation/first_unread_presentation.spec.ts, clients/web/tests/accessibility/accessibility.browser.spec.ts, tools/qa/local_features/features.json, evidence/qa/web-chat-reading-navigation-2026-11-08.md]
   - id: FV2-041
     title: Flutter voice participant volume menu alignment
     requirements: [REQ-UI-01, REQ-UI-02, REQ-VOICE-01]

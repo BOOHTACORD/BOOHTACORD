@@ -82,8 +82,9 @@
 .message-avatar-spacer { display: flex; width: 2.25rem; flex: 0 0 2.25rem; align-items: baseline; justify-content: center; padding-top: 2px; color: var(--gc-text-muted); font-size: 0.6875rem; font-variant-numeric: tabular-nums; line-height: var(--gc-line-message); }
 .message-list > li.grouped-message { margin-top: var(--gc-space-1); }
 .message-history-wrap { position: relative; display: flex; min-width: 0; min-height: 0; flex: 1; }
-.unread-boundary-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gc-space-2); padding: var(--gc-space-2) var(--gc-space-5); color: var(--gc-text-secondary); border-bottom: 1px solid var(--gc-border-control); }
-.unread-boundary-actions button { border: 1px solid var(--gc-border-control); border-radius: var(--gc-radius-sm); padding: var(--gc-space-1) var(--gc-space-2); color: var(--gc-text-primary); background: var(--gc-surface); cursor: pointer; }
+.message-list > [data-message-id].message-search-target { animation: message-search-flash 1.8s ease-out both; }
+@keyframes message-search-flash { 0%, 18% { background: color-mix(in srgb, var(--gc-focus) 34%, transparent); } 100% { background: transparent; } }
+@media (prefers-reduced-motion: reduce) { .message-list > [data-message-id].message-search-target { animation-duration: 0.4s; } }
 .message-history-wrap > .messages { min-width: 0; flex: 1; }
 .direct-message-conversation .message-list { overflow-anchor: none; }
 /* Reserve both captions so pagination feedback cannot move the reading anchor. */
