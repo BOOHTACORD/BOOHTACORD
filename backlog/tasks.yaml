@@ -8,6 +8,11 @@ action_catalog:
   verification: backlog/VERIFICATION_TODO.md
   completed: DONE.md
 tasks:
+  - id: RT689-031
+    title: Bind roster preparation to each socket lifecycle (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-SECURITY-01, REQ-OPS-01]
+    depends_on: [RT689-028, RT689-030]
+    evidence: [backend/internal/app/voice_realtime/factory_test.go]
   - id: RT689-030
     title: Guard and bound negotiated realtime roster delivery (GitHub #689)
     requirements: [REQ-VOICE-01, REQ-SECURITY-01, REQ-SECURITY-02]
