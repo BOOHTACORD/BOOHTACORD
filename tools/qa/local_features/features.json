@@ -172,7 +172,8 @@
       "clients/flutter/lib/src/screens/workspace_ui/connection_status/**",
       "clients/flutter/lib/src/screens/workspace_ui/sidebar/component.dart",
       "clients/flutter/integration_test/local_qa_test.dart",
-      "clients/web/src/realtime/**"
+      "clients/web/src/realtime/**",
+      "clients/web/src/maintenance/**"
     ],
     "web": [
       "tests/connection_status/playwright.config.ts"
@@ -223,6 +224,10 @@
       "issue689_maintenance_contract": {
         "focused": "clients/web/src/realtime/maintenance_payload.spec.ts",
         "scope": "Web realtime parsing accepts only versioned maintenance state with a generation and safe revision. Browser runtime and guest/auth handoff remain separate acceptance work."
+      },
+      "issue689_web_maintenance_state": {
+        "focused": "clients/web/src/maintenance/state.spec.ts",
+        "scope": "Web maintenance state rejects stale connection callbacks and revisions while retaining the last value during disconnection. Guest/auth handoff and browser runtime remain separate acceptance work."
       },
       "issue689_resync": {
         "focused": "clients/flutter/test/realtime_scope/resync_envelope_test.dart",
