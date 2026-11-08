@@ -25,4 +25,5 @@
 - [x] Run `go test ./internal/maintenance/observe_state -count=1` from `backend` and confirm RED. Also observe RED for burst coalescing, timeout and shutdown before fixing them.
 - [x] Implement the worker and subscription boundary. Assign a fresh generation at startup; increment revision only on state or availability change; never perform a read under the subscriber lock.
 - [x] Run the focused tests and race detector; run the spec traceability check for the backlog change.
-- [ ] Resolve immediate authoritative initial snapshot versus the bounded shared read interval, integrate with the transport and lifecycle, and repeat security and real-stack acceptance. This leaf is not live yet.
+- [x] Replace the five-second late-subscription delay with a shared fresh read; coalesce bursts with a short 50 ms minimum spacing.
+- [ ] Integrate with the transport and lifecycle, measure query rate and initial latency under reconnect load, and repeat security and real-stack acceptance. This leaf is not live yet.

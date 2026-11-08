@@ -10,6 +10,9 @@ import (
 	"github.com/google/uuid"
 )
 
+// Coalesce concurrent initial reads while keeping reconnect latency bounded.
+const minimumReadSpacing = 50 * time.Millisecond
+
 type Reader interface {
 	Active(context.Context) (bool, error)
 }
@@ -71,7 +74,7 @@ func (o *Observer) Run(ctx context.Context) {
 			}
 		}
 		if o.read(ctx) {
-			nextRead = time.Now().Add(o.interval)
+			nextRead = time.Now().Add(minimumReadSpacing)
 		}
 	}
 }

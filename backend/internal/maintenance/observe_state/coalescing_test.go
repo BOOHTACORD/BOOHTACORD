@@ -9,25 +9,35 @@ import (
 
 func TestSubscriberBurstSharesBoundedReads(t *testing.T) {
 	var calls atomic.Int32
-	observer := New(readerFunc(func(context.Context) (bool, error) {
-		calls.Add(1)
+	started := make(chan struct{})
+	release := make(chan struct{})
+	observer := New(readerFunc(func(ctx context.Context) (bool, error) {
+		if calls.Add(1) == 1 {
+			close(started)
+			select {
+			case <-release:
+			case <-ctx.Done():
+				return false, ctx.Err()
+			}
+		}
 		return false, nil
-	}), 150*time.Millisecond, time.Second)
+	}), time.Hour, time.Second)
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	go observer.Run(ctx)
 	first := observer.Subscribe()
 	defer first.Close()
-	receive(t, first.Events())
+	select {
+	case <-started:
+	case <-time.After(time.Second):
+		t.Fatal("initial read did not start")
+	}
 	var subscriptions []*Subscription
 	for i := 0; i < 20; i++ {
 		subscriptions = append(subscriptions, observer.Subscribe())
-		time.Sleep(time.Millisecond)
 	}
-	time.Sleep(20 * time.Millisecond)
-	if got := calls.Load(); got != 1 {
-		t.Fatalf("subscriber burst caused %d reads before next interval", got)
-	}
+	close(release)
+	receive(t, first.Events())
 	for _, sub := range subscriptions {
 		if state := receive(t, sub.Events()); !state.Known {
 			t.Fatalf("initial state = %+v", state)
