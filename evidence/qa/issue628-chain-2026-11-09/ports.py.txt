@@ -1,0 +1,18 @@
+from pathlib import Path
+import os,subprocess,sys
+root=Path('/var/tmp/boohtacord-qa675-source')
+dirs=['tools/qa/client_lifecycle','tools/qa/critical_client_acceptance','tools/qa/local_features']
+ports={'4810':'4910','4812':'4912','4820':'4920','4880':'4980','4881':'4981','4882':'4982'}
+originals={}
+try:
+ for directory in dirs:
+  for path in (root/directory).rglob('*'):
+   if not path.is_file() or path.suffix not in ('.py','.mjs'):continue
+   source=path.read_text(); changed=source
+   for old,new in ports.items():changed=changed.replace(old,new)
+   if changed!=source:originals[path]=source;path.write_text(changed)
+ result=subprocess.run([sys.executable,'/mnt/c/b-qa675/.out/qa628-chain.py'],env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1'))
+finally:
+ for path,source in originals.items():path.write_text(source)
+print('QA628_PORT_FILES_RESTORED',flush=True)
+sys.exit(result.returncode)

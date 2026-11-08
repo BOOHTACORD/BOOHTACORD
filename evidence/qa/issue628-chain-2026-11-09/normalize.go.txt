@@ -1,0 +1,14 @@
+package main
+
+import (
+ "crypto/sha256"
+ "fmt"
+ "io"
+ "os"
+ preview "voice-platform/backend/internal/media/screen_preview"
+)
+func main() {
+ in, err := io.ReadAll(io.LimitReader(os.Stdin, 5*1024*1024+1)); if err != nil { os.Exit(1) }
+ out, err := preview.NormalizeJPEG(in); if err != nil { os.Exit(2) }
+ fmt.Printf("%x\n", sha256.Sum256(out))
+}

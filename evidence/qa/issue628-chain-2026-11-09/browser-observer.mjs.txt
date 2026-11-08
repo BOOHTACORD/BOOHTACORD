@@ -1,0 +1,27 @@
+import {createHash} from 'node:crypto';
+import {writeFile} from 'node:fs/promises';
+const hash=x=>createHash('sha256').update(x).digest('hex');
+export async function previewDigest(locator){
+ return locator.evaluate(async image=>{const response=await fetch(image.src);const bytes=await response.arrayBuffer();const digest=await crypto.subtle.digest('SHA-256',bytes);return {hash:Array.from(new Uint8Array(digest),x=>x.toString(16).padStart(2,'0')).join(''),width:image.naturalWidth,height:image.naturalHeight}});
+}
+export async function recordVisible(before,after){
+ await writeFile('/mnt/c/b-qa675/.out/qa628-chain4-visible.json',JSON.stringify({before,after},null,2));
+}
+export function observePreview(page){
+ const events=[], pending=[];
+ page.on('websocket',socket=>socket.on('framereceived',frame=>{
+  try{const x=JSON.parse(frame.payload.toString());if(x.kind!=='screen_preview.updated')return;
+   const p=x.payload;if(typeof p?.lease_id!=='string'||typeof p?.generation_id!=='string'||!Number.isInteger(p.revision))return;
+   events.push({type:'hint',at:Date.now(),lease:hash(p.lease_id).slice(0,16),generation:hash(p.generation_id).slice(0,16),revision:p.revision});
+  }catch{}
+ }));
+ page.on('response',response=>{
+  const u=new URL(response.url()),match=u.pathname.match(/\/voice\/screen-previews\/v1\/leases\/([^/]+)\/([^/]+)$/);
+  if(!match||response.request().method()!=='GET')return;
+  const at=Date.now();pending.push((async()=>{const headers=await response.allHeaders();const entry={type:'get',at,status:response.status(),lease:hash(match[1]).slice(0,16),generation:hash(match[2]).slice(0,16),revision:Number(headers['x-screen-preview-revision']??0),after:Number(u.searchParams.get('after_revision')??0)};
+   if(response.status()===200){try{entry.bytes_hash=hash(await response.body())}catch{entry.body_unavailable=true}}
+   events.push(entry);
+  })());
+ });
+ return async path=>{await Promise.allSettled(pending);await writeFile(path,JSON.stringify(events,null,2));console.log('QA628_REALTIME_EVENTS='+events.length)};
+}

@@ -1,0 +1,41 @@
+from pathlib import Path
+import hashlib,json,os,subprocess,sys,threading,time
+root=Path('/var/tmp/boohtacord-qa675-source'); scenario=root/'tools/qa/client_lifecycle/scenario.mjs'
+screen=root/'tools/qa/critical_client_acceptance/screen_share_ui.mjs'; screen_original=screen.read_text()
+original=scenario.read_text(); anchor="  const [a, b, guest] = await Promise.all(contexts.map(context => context.newPage()))"
+finish="    await media(a, b, guest, value.channelId, report, input)"
+assert original.count(anchor)==1 and original.count(finish)==1
+edited="import { observePreview } from '/mnt/c/b-qa675/.out/qa628-realtime-observer.mjs'\n"+original.replace(anchor,anchor+'\n  const finishPreviewObservation = observePreview(guest)')
+edited=edited.replace(finish,finish+"\n    await finishPreviewObservation('/mnt/c/b-qa675/.out/qa628-chain4-realtime.json')")
+first="    assert.ok(firstServerPreview, 'the server must deliver an initial thumbnail')"
+after="    console.log('stage=server-screen-preview-refreshed:' + refreshElapsedMs)"
+assert screen_original.count(first)==1 and screen_original.count(after)==1
+screen_edited="import { previewDigest, recordVisible } from '/mnt/c/b-qa675/.out/qa628-realtime-observer.mjs'\n"+screen_original.replace(first,first+"\n    const visibleBefore = await previewDigest(participantPreview.locator('img'))")
+screen_edited=screen_edited.replace(after,after+"\n    await recordVisible(visibleBefore, await previewDigest(participantPreview.locator('img')))")
+env=dict(os.environ,PATH='/var/tmp/boohtacord-node-24/bin:/var/tmp/boohtacord-679-cli/extracted/usr/bin:/usr/bin:/bin',DOCKER_HOST='unix:///var/run/docker.sock',DOCKER_CONFIG='/var/tmp/boohtacord-679-image/.out/qa-docker-config')
+old=set((root/'.out').glob('boohtacord-client-qa-*')); files=[];last={}; errors=0
+try:
+ scenario.write_text(edited);screen.write_text(screen_edited)
+ p=subprocess.Popen([sys.executable,'-m','tools.qa.client_lifecycle.run','--critical','--portable-proxy','--width','1440','--output-root','.out/qa628-chain4'],cwd=root,env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,bufsize=1)
+ def read_output():
+  with open('/mnt/c/b-qa675/.out/qa628-chain4.log','w',encoding='utf-8') as f:
+   for line in p.stdout:
+    f.write(line);f.flush()
+    if line.startswith(('stage=server-screen-preview-refreshed','QA628_REALTIME_EVENTS','Autonomous real-stack')):print(line.strip(),flush=True)
+ thread=threading.Thread(target=read_output,daemon=True);thread.start()
+ while p.poll() is None:
+  for directory in set((root/'.out').glob('boohtacord-client-qa-*'))-old:
+   preview=directory/'screen-previews'
+   for file in preview.rglob('*'):
+    try:
+     if not file.is_file():continue
+     data=file.read_bytes();digest=hashlib.sha256(data).hexdigest();key=hashlib.sha256(str(file.relative_to(preview)).encode()).hexdigest()[:16]
+     if last.get(key)!=digest:
+      normalized=subprocess.run([str(root/'backend/.out/qa628/normalize')],input=data,capture_output=True,timeout=5)
+      last[key]=digest;files.append({'at':int(time.time()*1000),'path_hash':key,'bytes_hash':digest,'normalized_hash':normalized.stdout.decode().strip() if normalized.returncode==0 else None,'bytes':len(data),'jpeg':data.startswith(b'\xff\xd8') and data.endswith(b'\xff\xd9')})
+    except OSError:errors+=1
+  time.sleep(.5)
+ thread.join(timeout=5);Path('/mnt/c/b-qa675/.out/qa628-chain4-producer.json').write_text(json.dumps({'files':files,'read_errors':errors},indent=2));print('QA628_CHAIN_EXIT='+str(p.returncode),flush=True)
+finally:
+ scenario.write_text(original);screen.write_text(screen_original);print('QA628_TEST_SOURCE_RESTORED',flush=True)
+sys.exit(p.returncode)
