@@ -4,13 +4,14 @@ import MessageItem from '../conversation/MessageItem.vue'
 import { chronologicalDatedMessages } from '../conversation/history_dates'
 import { createMessageLogAnnouncer } from '../conversation/message_log_announcement'
 import { groupChronologicalMessages } from '../conversation/message_grouping'
-import { isHistoryNearBottom, newestServerMessageId, newServerMessageCount } from '../conversation/new_message_jump'
+import { isHistoryNearBottom, newestServerMessageId, newServerMessageCount, shouldFollowNewestMessages } from '../conversation/new_message_jump'
 import { useAuthorDirectory } from '../identity/author_directory'
 import type { CurrentSession } from '../identity/current_session'
 import type { DirectMessageHistoryItem } from './direct_message_client'
 import { useDirectMessageStore } from './direct_message_store'
 import { navigateToReplyTarget } from '../conversation/reply_context_navigation'
 import { useDirectMessageScrollAnchor } from './history_scroll_anchor'
+import { scrollToMessageTarget } from '../conversation/message_target_navigation'
 
 const props = defineProps<{ directMessageId: string; session: CurrentSession | null; otherParticipantId: string; otherParticipantDisplayName: string; emptyText?: string }>()
 const emit = defineEmits<{ reply: [message: DirectMessageHistoryItem]; retry: [message: DirectMessageHistoryItem]; replyContext: [messageId: string]; viewportChange: [] }>()
@@ -24,6 +25,7 @@ const announcement = ref('')
 const jumpCount = ref(0)
 const latestServerId = computed(() => newestServerMessageId(store.messages))
 let announcementVersion = 0
+let targetNavigationDepth = 0
 
 watch([() => props.directMessageId, () => store.directMessageId, () => store.historyLoaded, () => store.messages, () => props.session?.accountId], async () => {
   const text = announceNew({ conversationId: props.directMessageId, loaded: store.historyLoaded && store.directMessageId === props.directMessageId,
@@ -40,13 +42,34 @@ watch(() => props.directMessageId, async () => { jumpCount.value = 0; await next
 watch([() => store.historyLoaded, latestServerId], async ([loaded, newest], [wasLoaded, previous]) => {
   const viewport = list.value
   if (!newest || !viewport || store.directMessageId !== props.directMessageId) return
+  if (targetNavigationDepth) {
+    await nextTick()
+    if (targetNavigationDepth) { emit('viewportChange'); return }
+  }
   const nearBottom = isHistoryNearBottom(viewport)
   const added = newServerMessageCount(store.messages, previous, wasLoaded)
   await nextTick()
-  if (nearBottom) { viewport.scrollTop = viewport.scrollHeight; scrollAnchor.capture(); jumpCount.value = 0 }
+  if (shouldFollowNewestMessages(store.messages, previous, wasLoaded, nearBottom)) { viewport.scrollTop = viewport.scrollHeight; scrollAnchor.capture(); jumpCount.value = 0 }
   else if (loaded) jumpCount.value += added
   emit('viewportChange')
 })
+const scrolledPending = new Set<string>()
+let pendingScope = ''
+watch([() => props.directMessageId, () => props.session?.accountId, () => store.messages], async ([directMessageId, accountId, messages]) => {
+  if (directMessageId !== store.directMessageId) return
+  if (pendingScope !== directMessageId) {
+    pendingScope = directMessageId
+    scrolledPending.clear()
+    for (const message of messages) if (message.sendStatus) scrolledPending.add(message.id)
+    return
+  }
+  if (!accountId) return
+  const pendingMessage = messages.find((message) => message.sendStatus && message.authorId === accountId && !scrolledPending.has(message.id))
+  if (!pendingMessage) return
+  scrolledPending.add(pendingMessage.id)
+  await nextTick()
+  if (directMessageId === props.directMessageId && directMessageId === store.directMessageId) jumpToLatest()
+}, { flush: 'post' })
 
 function onScroll(): void { scrollAnchor.onScroll(); if (isHistoryNearBottom(list.value)) jumpCount.value = 0; emit('viewportChange') }
 function jumpToLatest(): void { if (!list.value) return; list.value.scrollTop = list.value.scrollHeight; scrollAnchor.capture(); jumpCount.value = 0; emit('viewportChange') }
@@ -73,6 +96,28 @@ async function loadOlder(): Promise<void> {
   scrollAnchor.restore(anchor)
   emit('viewportChange')
 }
+
+async function loadNewer(): Promise<void> {
+  const viewport = list.value
+  const anchor = scrollAnchor.capture()
+  const directMessageId = props.directMessageId
+  if (!await store.loadNewer()) return
+  await nextTick()
+  if (!viewport || directMessageId !== props.directMessageId) return
+  scrollAnchor.restore(anchor)
+  emit('viewportChange')
+}
+
+async function showMessage(messageId: string): Promise<boolean> {
+  await nextTick()
+  await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())))
+  const shown = scrollToMessageTarget(list.value, messageId)
+  if (shown) { scrollAnchor.pinMessage(messageId); emit('viewportChange') }
+  return shown
+}
+function beginTargetNavigation(): void { targetNavigationDepth++ }
+function endTargetNavigation(): void { targetNavigationDepth = Math.max(0, targetNavigationDepth - 1) }
+defineExpose({ showMessage, beginTargetNavigation, endTargetNavigation })
 </script>
 
 <template>
@@ -105,6 +150,13 @@ async function loadOlder(): Promise<void> {
       />
     </li>
     </template>
+    <li role="presentation" v-if="store.newerCursor || store.newerError" class="message-actions">
+      <button v-if="store.newerCursor" class="history-load-control" type="button" :disabled="store.newerLoading" :aria-busy="store.newerLoading" :aria-label="store.newerLoading ? 'Загружаем новые сообщения…' : 'Показать следующие сообщения'" @click="loadNewer">
+        <span aria-hidden="true" :class="{ 'history-load-caption-hidden': store.newerLoading }">Показать следующие сообщения</span>
+        <span aria-hidden="true" :class="{ 'history-load-caption-hidden': !store.newerLoading }">Загружаем новые сообщения…</span>
+      </button>
+    </li>
+    <li v-if="store.newerError" class="state state-error" role="alert">{{ store.newerError }} <button type="button" :disabled="store.newerLoading" @click="loadNewer">Повторить</button></li>
     <li role="presentation" v-if="store.historyLoaded && !store.error && !store.messages.length && !store.loadingHistory" class="state">{{ props.emptyText ?? 'Сообщений пока нет.' }}</li>
   </ol>
   </div>

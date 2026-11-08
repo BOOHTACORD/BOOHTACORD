@@ -65,6 +65,31 @@
     },
     {
       "paths": [
+        "tools/qa/client_lifecycle/**",
+        "tools/qa/next_client_acceptance/**",
+        "tools/qa/conversation_files/**",
+        "tools/qa/dm_composer/**",
+        "tools/qa/mentions_inbox/**"
+      ],
+      "gates": [
+        "contracts",
+        "web"
+      ],
+      "server": false,
+      "native": false
+    },
+    {
+      "paths": [
+        "tools/qa/upload_reservations/**"
+      ],
+      "gates": [
+        "contracts"
+      ],
+      "server": false,
+      "native": false
+    },
+    {
+      "paths": [
         "tools/ci/select_changes/dependencies.json",
         "tools/ci/select_changes/test_routing.py",
         "tools/ci/actual_acceptance/plan-v1.json",

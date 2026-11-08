@@ -436,7 +436,7 @@ test('empty direct-message navigation offers a visible start-conversation action
   await page.screenshot({ path: testInfo.outputPath('direct-message-empty-after.png'), fullPage: true })
 })
 
-test('direct-message search keeps its query and results after opening and returning from context', async ({ page }) => {
+test('direct-message search scrolls to and highlights a result in the conversation', async ({ page }, testInfo) => {
   await page.route('**/api/v1/**', route => {
     const url = new URL(route.request().url())
     const message = {
@@ -455,7 +455,24 @@ test('direct-message search keeps its query and results after opening and return
       }] }) })
     }
     if (url.pathname.endsWith('/messages')) {
-      return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ messages: url.searchParams.has('at') ? [message] : [] }) })
+      if (route.request().method() === 'POST') {
+        const sent = route.request().postDataJSON()
+        return route.fulfill({ status: 201, contentType: 'application/json', body: JSON.stringify({ ...message, id: 'message-sent', author_id: 'self', client_message_id: sent.client_message_id, body: sent.body, created_at: '2026-10-09T13:00:00Z' }) })
+      }
+      if (url.searchParams.has('after')) {
+        const newer = Array.from({ length: 20 }, (_, index) => ({ ...message,
+          id: `newer-${index + 1}`, client_message_id: `client-newer-${index + 1}`,
+          body: `Новое рядом ${index + 1}`,
+          created_at: new Date(Date.parse(message.created_at) + (index + 1) * 60_000).toISOString(),
+        }))
+        return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ messages: newer }) })
+      }
+      const older = Array.from({ length: 19 }, (_, index) => ({ ...message,
+        id: `older-${index + 1}`, client_message_id: `client-older-${index + 1}`,
+        body: `Старое сообщение ${index + 1}`,
+        created_at: new Date(Date.parse(message.created_at) - (index + 1) * 60_000).toISOString(),
+      }))
+      return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ messages: url.searchParams.has('at') ? [message, ...older] : [] , ...(url.searchParams.has('at') ? { next_cursor: 'older-19' } : {}) }) })
     }
     if (url.pathname === '/api/v1/members') {
       return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ members: [{
@@ -479,7 +496,7 @@ test('direct-message search keeps its query and results after opening and return
     const conversationId = ref('dm-1')
     await store.open(conversationId.value)
     document.body.innerHTML = '<div id="mount"></div>'
-    createApp({ render: () => h('main', [
+    createApp({ render: () => h('main', { style: 'display:flex;flex-direction:column;height:100vh;min-height:0' }, [
       h('button', {
         type: 'button',
         onClick: () => {
@@ -488,6 +505,7 @@ test('direct-message search keeps its query and results after opening and return
         },
       }, 'Переключить диалог'),
       h(Component, {
+        style: 'flex:1 1 0;min-height:0',
         accountId: 'self', active: true, directMessageId: conversationId.value,
         otherParticipantId: 'member-1',
         otherParticipantDisplayName: conversationId.value === 'dm-1' ? 'Алиса' : 'Борис',
@@ -511,12 +529,34 @@ test('direct-message search keeps its query and results after opening and return
   await page.getByRole('button', { name: 'Найти', exact: true }).click()
   await expect(page.getByText('Найденный результат')).toBeVisible()
   await page.getByRole('button', { name: 'Открыть сообщение' }).click()
-  await expect(page.getByRole('heading', { name: 'Контекст найденного сообщения' })).toBeVisible()
-  await page.getByRole('button', { name: 'Вернуться к исходной позиции' }).click()
+  const target = page.locator('[data-message-id="message-1"].message-search-target')
+  await expect(target).toBeVisible()
+  await expect(target).toContainText('Оригинальный контекст')
+  await expect(page.getByRole('heading', { name: 'Контекст найденного сообщения' })).toHaveCount(0)
+  await expect.poll(() => target.evaluate((row) => {
+    const viewport = row.closest('.message-list')!
+    const bounds = row.getBoundingClientRect(), view = viewport.getBoundingClientRect()
+    return bounds.top >= view.top && bounds.bottom <= view.bottom
+  })).toBe(true)
+  await expect(page.getByRole('searchbox', { name: 'Запрос' })).toHaveCount(0)
+  await page.screenshot({ path: testInfo.outputPath('search-result-in-conversation.png') })
+  await page.getByRole('button', { name: 'Найти сообщение' }).click()
+  await expect(page.getByRole('searchbox', { name: 'Запрос' })).toHaveValue('контекст')
   await expect(page.getByText('Найденный результат')).toBeVisible()
 
   await page.getByRole('searchbox', { name: 'Запрос' }).press('Escape')
   await expect(page.getByRole('searchbox', { name: 'Запрос' })).toHaveCount(0)
+  const history = page.locator('.direct-message-conversation .message-list')
+  await history.evaluate((element) => { element.scrollTop = 0 })
+  await page.getByRole('textbox', { name: 'Сообщение' }).fill('Новое сообщение')
+  await page.getByRole('button', { name: 'Отправить сообщение' }).click()
+  const sentMessage = page.locator('[data-message-id="message-sent"]')
+  await expect(sentMessage).toContainText('Новое сообщение')
+  await expect.poll(() => sentMessage.evaluate((row) => {
+    const viewport = row.closest('.message-list')!
+    const bounds = row.getBoundingClientRect(), view = viewport.getBoundingClientRect()
+    return bounds.bottom > view.top && bounds.top < view.bottom
+  })).toBe(true)
   await page.getByRole('button', { name: 'Переключить диалог' }).click()
   await expect(page.getByRole('heading', { name: 'Борис' })).toBeVisible()
   await openSearch()
@@ -524,6 +564,8 @@ test('direct-message search keeps its query and results after opening and return
   await page.getByRole('searchbox', { name: 'Запрос' }).press('Escape')
   await page.getByRole('button', { name: 'Переключить диалог' }).click()
   await expect(page.getByRole('heading', { name: 'Алиса' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Сохранённая позиция' })).toBeVisible()
+  await page.getByRole('button', { name: 'Вернуться к исходной позиции' }).click()
   await openSearch()
   await expect(page.getByRole('searchbox', { name: 'Запрос' })).toHaveValue('контекст')
   await expect(page.getByText('Найденный результат')).toBeVisible()

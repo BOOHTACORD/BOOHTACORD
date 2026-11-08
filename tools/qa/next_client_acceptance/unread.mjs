@@ -26,39 +26,52 @@ export async function unread(page, browser, fixture, input, report) {
       await page.locator('.direct-message-navigation .channel-button').filter({ hasText: 'qa_unread_member' }).click()
     }
     const read = () => sql(`SELECT COALESCE((SELECT message_id::text FROM ${cursorTable} WHERE account_id='${fixture.admin}' AND ${cursorTarget}='${data.scope}'),'')`)
-    await page.getByRole('button', { name: 'К первому непрочитанному', exact: true }).click()
-    const context = page.getByTestId('search-message-context')
-    await expect(context.getByRole('separator', { name: 'Новые сообщения', exact: true })).toBeVisible()
-    await expect(context.locator('[data-search-anchor]')).toHaveAttribute('data-message-id', data.ids[0])
-    await expect.poll(read).toBe(data.ids[0])
-    for (let i=0; i<6; i++) await context.getByRole('button', { name: 'Показать следующие сообщения', exact: true }).click()
-    await expect(context.locator('[data-message-id]')).toHaveCount(121)
-    assert.notEqual(read(), data.ids[120], 'Invisible tail was incorrectly marked read')
-    const before = read()
+    const list = page.locator(kind==='CHANNEL' ? '.text-conversation .message-list' : '.direct-message-conversation .message-list')
+    await expect(page.getByText('Есть непрочитанные сообщения.', { exact:true })).toHaveCount(0)
+    await expect(page.getByTestId('search-message-context')).toHaveCount(0)
+    await expect.poll(read).toBe('')
+    const firstUnread = list.locator(`[data-message-id="${data.ids[0]}"]`)
+    for (let i=0; i<24 && await firstUnread.count()===0; i++) {
+      const older = list.getByRole('button', { name:'Показать предыдущие сообщения', exact:true })
+      if (!await older.count()) break
+      await older.click()
+      await list.evaluate(viewport => { viewport.scrollTop=0 })
+      await page.waitForTimeout(150)
+    }
+    await list.evaluate(viewport => { viewport.scrollTop=0 })
+    await page.waitForTimeout(150)
+    if (await firstUnread.count()) await firstUnread.scrollIntoViewIfNeeded()
+    await expect(firstUnread).toBeVisible()
+    await list.evaluate(viewport => viewport.dispatchEvent(new Event('scroll')))
+    await expect.poll(read).not.toBe('')
+    const firstVisibleRead = data.ids.indexOf(read())
+    assert.ok(firstVisibleRead>=0 && firstVisibleRead<35, `Read cursor ${read()} must stop at the visible oldest page, not skip unseen messages`)
+    const resumeTop=await list.evaluate(viewport=>viewport.scrollTop)
+    const beforeBackground = read()
     await whileWindowHidden(page, async () => {
-      await context.locator('.search-context-list').evaluate(list => { list.scrollTop=list.scrollHeight; list.dispatchEvent(new Event('scroll')) })
+      await list.evaluate(viewport => { viewport.scrollTop=viewport.scrollHeight; viewport.dispatchEvent(new Event('scroll')) })
       await page.waitForTimeout(200)
-      assert.equal(read(), before, 'Background window advanced cursor')
+      assert.equal(read(), beforeBackground, 'Background window advanced cursor')
     })
-    await context.locator('.search-context-list').evaluate(list => list.dispatchEvent(new Event('scroll')))
+    await list.evaluate((viewport,top) => { viewport.scrollTop=top; viewport.dispatchEvent(new Event('scroll')) },resumeTop)
+    for (let step=0;step<40;step++) {
+      const previousIndex=data.ids.indexOf(read())
+      if (previousIndex===data.ids.length-1) break
+      await list.evaluate(viewport => {
+        viewport.scrollTop=Math.min(viewport.scrollHeight-viewport.clientHeight,viewport.scrollTop+Math.max(120,viewport.clientHeight*.35))
+        viewport.dispatchEvent(new Event('scroll'))
+      })
+      await expect.poll(()=>data.ids.indexOf(read())).toBeGreaterThan(previousIndex)
+    }
     await expect.poll(read).toBe(data.ids[120])
     await page.screenshot({ path: input.directory+'/unread-'+kind.toLowerCase()+'.png' })
     if (kind==='CHANNEL') {
-      await context.locator('.search-context-list').evaluate((list,id) => {
-        const row=[...list.querySelectorAll('[data-message-id]')].find(row=>row.dataset.messageId===id)
-        list.scrollTop+=row.getBoundingClientRect().top-list.getBoundingClientRect().top+15
-        list.dispatchEvent(new Event('scroll'))
-      },data.ids[40])
       await select(page,'NextB'); await select(page,'NextUnread')
-      await expect(context.locator('[data-search-anchor]')).toHaveAttribute('data-message-id',data.ids[40])
-      await expect.poll(()=>context.locator('.search-context-list').evaluate(list=>{
-        const row=list.querySelector('[data-search-anchor]');return Math.round(row.getBoundingClientRect().top-list.getBoundingClientRect().top)
-      })).toBe(-15)
+      await expect(page.getByRole('heading',{name:'Контекст найденного сообщения',exact:true})).toHaveCount(0)
+      await expect.poll(read).toBe(data.ids[120])
     }
-    const close = context.getByRole('button',{name:kind==='CHANNEL'?'Вернуться к исходной позиции':'К последним сообщениям',exact:true})
-    await close.click()
-    results.push({ kind, postgres_forward_rows:120, browser_context_rows:121, divider:true, own_messages_present:true,
-      unseen_tail_retained:true, background_read_blocked:true, visible_tail_advances:true, ...(kind==='CHANNEL'?{scope_anchor_offset_restored:true}:{}) })
+    results.push({ kind, postgres_forward_rows:120, normal_history:true, unread_banner_removed:true, first_unread_requires_visibility:true,
+      first_unread_visible_advances_cursor:true, background_read_blocked:true, visible_tail_advances:true })
   }
   report.unread = results
 }

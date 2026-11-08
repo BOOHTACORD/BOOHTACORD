@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { vActionHint } from '../../shared/action_hint/directive'
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import type { TopologyChannel } from '../../channel/topology_client'
 import { useDirectMessageStore } from '../../direct_message/direct_message_store'
 import { useTopologyStore } from '../../channel/topology_store'
@@ -53,13 +53,17 @@ async function open(message: SearchMessage): Promise<void> {
     let channel = topologyStore.topology?.categories.flatMap((category) => category.channels).find((item) => item.id === message.channelId && item.kind === 'TEXT')
     if (!channel) { await topologyStore.refresh(); if (sequence !== openSequence) return; channel = topologyStore.topology?.categories.flatMap((category) => category.channels).find((item) => item.id === message.channelId && item.kind === 'TEXT') }
     if (!channel) { openError.value = 'Найденный канал больше недоступен.'; return }
-    searchTarget.open({ kind: 'CHANNEL', conversationId: channel.id, messageId: message.id })
     emit('openChannel', channel)
+    await nextTick()
+    searchTarget.open({ kind: 'CHANNEL', conversationId: channel.id, messageId: message.id })
+    emit('close')
   } else {
     if (!directMessageStore.directMessages.some(({ id }) => id === message.directMessageId)) { await directMessageStore.refreshNavigation(); if (sequence !== openSequence) return }
     if (!directMessageStore.directMessages.some(({ id }) => id === message.directMessageId)) { openError.value = 'Личный диалог больше недоступен.'; return }
-    searchTarget.open({ kind: 'DIRECT_MESSAGE', conversationId: message.directMessageId, messageId: message.id })
     emit('openDirectMessage', message.directMessageId)
+    await nextTick()
+    searchTarget.open({ kind: 'DIRECT_MESSAGE', conversationId: message.directMessageId, messageId: message.id })
+    emit('close')
   }
 }
 async function openMention(mention: MentionInboxItem): Promise<void> {
@@ -79,7 +83,6 @@ async function openMention(mention: MentionInboxItem): Promise<void> {
     openError.value = mention.kind === 'CHANNEL' ? 'Канал с упоминанием больше недоступен.' : 'Личный диалог больше недоступен.'
     return
   }
-  searchTarget.open(target)
   if (target.kind === 'CHANNEL') {
     const channel = navigationChannels.value.find(({ id, kind }) => id === target.conversationId && kind === 'TEXT')
     if (!channel) { openError.value = 'Канал с упоминанием больше недоступен.'; searchTarget.clear(); return }
@@ -87,6 +90,9 @@ async function openMention(mention: MentionInboxItem): Promise<void> {
   } else {
     emit('openDirectMessage', target.conversationId)
   }
+  await nextTick()
+  searchTarget.open(target)
+  emit('close')
 }
 async function openQuickJump(entry: QuickJumpTarget): Promise<void> {
   openSequence++

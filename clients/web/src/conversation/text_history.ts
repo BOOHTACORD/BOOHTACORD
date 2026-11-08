@@ -29,6 +29,7 @@ export function createTextHistory(pending: Map<string, PendingSend>) {
   let generation = 0
   let refreshSequence = 0
   let windowPaged = false
+  let anchoredMode = false
   const mergePage = createHistoryMerger(messages, channelId, pending)
 
   function applyWindow(canPageOlder: boolean, canPageNewer: boolean, direction?: 'older' | 'newer'): void {
@@ -63,7 +64,48 @@ export function createTextHistory(pending: Map<string, PendingSend>) {
     historyLoaded.value = false
     retryableError.value = false
     windowPaged = false
+    anchoredMode = false
     await refresh(request)
+  }
+
+  async function openAround(messageId: string, request?: MessageRequest): Promise<boolean> {
+    const target = channelId.value
+    if (!target || !messageId) return false
+    if (messages.value.some((message) => message.id === messageId && !message.sendStatus)) {
+      historyAnchorId.value = messageId
+      return true
+    }
+    const version = ++generation
+    const sequence = ++refreshSequence
+    loading.value = true
+    error.value = null
+    retryableError.value = false
+    olderLoading.value = false
+    newerLoading.value = false
+    olderError.value = null
+    newerError.value = null
+    try {
+      const page = await loadMessagePage(target, undefined, request, messageId)
+      if (generation !== version || channelId.value !== target || refreshSequence !== sequence) return false
+      if (page.messages[0]?.id !== messageId) return false
+      messages.value = messages.value.filter((message) => message.sendStatus)
+      mergePage(page.messages)
+      historyAnchorId.value = messageId
+      windowPaged = true
+      anchoredMode = true
+      applyWindow(Boolean(page.nextCursor), true)
+      historyLoaded.value = true
+      return true
+    } catch (cause) {
+      if (generation === version && refreshSequence === sequence) {
+        const feedback = requestFailureFeedback(cause, 'Не удалось открыть найденное сообщение.')
+        error.value = feedback.message
+        retryableError.value = feedback.retryable
+      }
+      return false
+    } finally {
+      if (generation === version && refreshSequence === sequence) loading.value = false
+    }
   }
 
   async function refresh(request?: MessageRequest): Promise<void> {
@@ -77,6 +119,8 @@ export function createTextHistory(pending: Map<string, PendingSend>) {
     try {
       const page = await loadMessagePage(target, undefined, request)
       if (generation !== version || channelId.value !== target || refreshSequence !== sequence) return
+      const overlaps = page.messages.some(({ id }) => messages.value.some((message) => message.id === id))
+      if (anchoredMode && !overlaps) { historyLoaded.value = true; return }
       mergePage(page.messages)
       applyWindow(
         windowPaged ? Boolean(nextCursor.value) : Boolean(page.nextCursor),
@@ -99,5 +143,5 @@ export function createTextHistory(pending: Map<string, PendingSend>) {
     merge: (incoming) => { mergePage(incoming); applyWindow(Boolean(nextCursor.value), Boolean(newerCursor.value)) }, error,
     fallback: 'Не удалось обновить сообщение.' })
 
-  return { channelId, messages, messageById, nextCursor, newerCursor, loading, olderLoading, newerLoading, historyLoaded, error, retryableError, olderError, newerError, open, refresh, ...paging, setHistoryAnchor: (id?: string) => { historyAnchorId.value = id }, refreshMessage, refreshMessages }
+  return { channelId, messages, messageById, nextCursor, newerCursor, loading, olderLoading, newerLoading, historyLoaded, error, retryableError, olderError, newerError, open, openAround, refresh, ...paging, setHistoryAnchor: (id?: string) => { historyAnchorId.value = id }, refreshMessage, refreshMessages }
 }

@@ -144,8 +144,10 @@ try {
   await metadata(p,['text-new.png','text-old-one.png','text-old-two.png'])
   await capture(p,'text-files-paginated.png')
   await p.getByRole('button',{name:'Перейти к сообщению с файлом text-old-one.png',exact:true}).click()
-  await expect(a.getByTestId('search-message-context').locator('[data-search-anchor]')).toBeVisible()
-  await a.getByTestId('search-message-context').getByRole('button',{name:'Вернуться к исходной позиции',exact:true}).click()
+  const textTarget=a.locator(`.text-conversation .message-list [data-message-id="${textOld.id}"].message-search-target`)
+  await expect(textTarget).toBeVisible()
+  await expect(a.getByTestId('search-message-context')).toHaveCount(0)
+  await expect.poll(()=>textTarget.evaluate(row=>{const view=row.closest('.message-list').getBoundingClientRect(),bounds=row.getBoundingClientRect();return bounds.top>=view.top&&bounds.bottom<=view.bottom})).toBe(true)
   p=await loaded(a)
   report.checks.text_metadata_cursor_and_origin_navigation='PASS'
   report.text_participant_file_statuses=await fileStatuses(a,'/channels/'+first.body.id,textNew.attachments[0].id)
@@ -193,8 +195,10 @@ try {
   report.checks.acl={status:'PASS',participants_download_preview:[200,200],third_admin_history_download_preview:[404,404,404],anonymous_download_preview:denied}
   phase='DM navigation to origin'
   await p.getByRole('button',{name:'Перейти к сообщению с файлом dm-old-one.png',exact:true}).click()
-  await expect(a.getByTestId('search-message-context').locator('[data-search-anchor]')).toBeVisible()
-  await a.getByTestId('search-message-context').getByRole('button',{name:'Вернуться к исходной позиции',exact:true}).click()
+  const dmTarget=a.locator(`.direct-message-conversation .message-list [data-message-id="${dmOld.id}"].message-search-target`)
+  await expect(dmTarget).toBeVisible()
+  await expect(a.getByTestId('search-message-context')).toHaveCount(0)
+  await expect.poll(()=>dmTarget.evaluate(row=>{const view=row.closest('.message-list').getBoundingClientRect(),bounds=row.getBoundingClientRect();return bounds.top>=view.top&&bounds.bottom<=view.bottom})).toBe(true)
   p=await loaded(a)
   phase='DM peer deletion while older page open'
   const dmDeleted = await api(b,`/direct-messages/${primary.body.id}/messages/${dmOld.id}`,'DELETE')
