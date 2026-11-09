@@ -1,0 +1,40 @@
+from pathlib import Path
+import subprocess,time
+log=Path('/mnt/c/b-qa675/.out/qa648-force-race.log')
+docker='/var/tmp/boohtacord-679-cli/extracted/usr/bin/docker'
+owner=Path('/mnt/c/b-qa675/.out/qa648-win-owner').read_text().strip(); sfu=owner+'-sfu'
+def saw(marker):
+ try:return marker in log.read_text(encoding='utf-8',errors='replace')
+ except FileNotFoundError:return False
+def wait(marker,seconds):
+ end=time.monotonic()+seconds
+ while time.monotonic()<end:
+  if saw(marker):return True
+  time.sleep(.25)
+ return False
+def guard():
+ label=subprocess.check_output([docker,'inspect','-f','{{index .Config.Labels "boohtacord.qa.owner"}}',sfu],text=True).strip()
+ assert label==owner
+stopped=False
+try:
+ if not wait('ISSUE648_READY_FOR_OUTAGE',600):raise RuntimeError('client readiness not observed')
+ guard();subprocess.run([docker,'stop','--time','2',sfu],check=True,stdout=subprocess.DEVNULL);stopped=True
+ print('QA648_LEAVE_SFU_STOPPED',flush=True)
+ end=time.monotonic()+120
+ while time.monotonic()<end and not Path('/mnt/c/b-qa675/.out/qa648-force-race-marker').exists():time.sleep(.25)
+ if not Path('/mnt/c/b-qa675/.out/qa648-force-race-marker').exists():raise RuntimeError('new lease not observed')
+ print('QA648_HANDOFF_LEASE_OBSERVED',flush=True)
+finally:
+ if stopped:
+  guard();subprocess.run([docker,'start',sfu],check=True,stdout=subprocess.DEVNULL)
+  print('QA648_LEAVE_SFU_RESTARTED',flush=True)
+  import socket
+  end=time.monotonic()+30
+  while True:
+   try:
+    with socket.create_connection(('127.0.0.1',4981),timeout=1):break
+   except OSError:
+    if time.monotonic()>end:raise RuntimeError('SFU port not ready')
+    time.sleep(.25)
+  Path('/mnt/c/b-qa675/.out/qa648-force-race-sfu-ready').write_text('ready')
+  print('QA648_SFU_PORT_READY',flush=True)

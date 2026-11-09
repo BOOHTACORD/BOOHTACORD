@@ -1,0 +1,23 @@
+from pathlib import Path
+import os,subprocess,sys
+root=Path('/var/tmp/boohtacord-win648')
+names=['tools/qa/client_lifecycle/stack.py','tools/qa/client_lifecycle/services.py','tools/qa/critical_client_acceptance/stack.py','tools/qa/local_features/stack.py','tools/qa/join_sounds/paired.mjs']
+originals={name:(root/name).read_text() for name in names}
+ports={'4810':'4910','4812':'4912','4820':'4920','4880':'4980','4881':'4981','4882':'4982'}
+try:
+ for name,source in originals.items():
+  for old,new in ports.items():source=source.replace(old,new)
+  if name=='tools/qa/local_features/stack.py':
+   before=r' handle /api/* {\n  reverse_proxy'
+   after=r' handle /api/* {\n  @hold_release {\n   method DELETE\n   path /api/v1/voice/leases/*\n  }\n  respond @hold_release 503\n  reverse_proxy'
+   if source.count(before)!=1: raise RuntimeError('Expected proxy insertion point missing')
+   source=source.replace(before,after)
+  (root/name).write_text(source)
+ target=Path(sys.argv[1]) if len(sys.argv)>1 else Path('/mnt/c/b-qa675/.out/qa676-paired.py')
+ base=target.read_text().replace('localhost:4810','localhost:4910')
+ tmp=Path('/mnt/c/b-qa675/.out/qa648-win-alt.py');tmp.write_text(base)
+ result=subprocess.run([sys.executable,str(tmp)],env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1'))
+finally:
+ for name,source in originals.items():(root/name).write_text(source)
+print('QA676_QA_PORT_FILES_RESTORED',flush=True)
+sys.exit(result.returncode)

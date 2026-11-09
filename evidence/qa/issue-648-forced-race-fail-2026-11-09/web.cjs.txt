@@ -1,0 +1,26 @@
+const fs=require('fs');
+const {chromium,expect}=require('/var/tmp/boohtacord-qa675-source/clients/web/node_modules/@playwright/test');
+const root='/mnt/c/b-qa675/.out/', origin='https://localhost:4910';
+const cfg=JSON.parse(fs.readFileSync(root+'qa648-win-defines.json','utf8'));
+if(cfg.QA_API_BASE!==origin+'/api/v1')throw Error('wrong origin');
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function marker(text,ms){const end=Date.now()+ms;while(Date.now()<end){if(fs.existsSync(root+'qa648-force-race.log')&&fs.readFileSync(root+'qa648-force-race.log','utf8').includes(text))return;await sleep(250)}throw Error('marker timeout')}
+let step='startup';
+(async()=>{const browser=await chromium.launch({headless:true,args:['--allow-loopback-in-peer-connection','--use-fake-device-for-media-stream','--use-fake-ui-for-media-stream']});try{
+const ctx=await browser.newContext({ignoreHTTPSErrors:true,permissions:['microphone'],viewport:{width:1440,height:1000}});
+await marker('ISSUE648_READY_FOR_OUTAGE',360000);step='login';const login=await ctx.request.post(origin+'/api/v1/auth/login',{headers:{origin},data:{login:'qa_admin',password:cfg.QA_PASSWORD}});if(login.status()!==204)throw Error('login '+login.status());
+const page=await ctx.newPage();
+await page.route('**/api/v1/voice/leases/*/credential',async route=>{
+ const end=Date.now()+30000;
+ while(Date.now()<end && !fs.existsSync(root+'qa648-force-race-sfu-ready'))await sleep(200);
+ if(!fs.existsSync(root+'qa648-force-race-sfu-ready'))throw Error('SFU port not ready');
+ await route.continue();
+});
+step='navigate';await page.goto(origin,{waitUntil:'domcontentloaded'});await page.locator('.channel-button').filter({hasText:'Voice QA'}).click();
+page.on('response',r=>{const u=new URL(r.url());if(r.request().method()==='POST' && /^\/api\/v1\/voice\/channels\/[^/]+\/leases$/.test(u.pathname) && r.status()>=200 && r.status()<300){let flag=null;try{flag=r.request().postDataJSON()?.transfer}catch{};fs.writeFileSync(root+'qa648-force-race-transfer',String(flag));console.log('QA648_ACCEPTED_TRANSFER_'+String(flag));fs.writeFileSync(root+'qa648-force-race-marker','lease');console.log('QA648_NEW_DEVICE_LEASE_ACCEPTED')}});
+step='android-recovering';await marker('QA648_RETRY_VISIBLE',180000);step='join';await page.getByRole('button',{name:'Без микрофона',exact:true}).click();
+step='web-connected';await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён',{timeout:90000});console.log('QA648_NEW_DEVICE_CONNECTED');
+step='old-cancelled';await marker('QA648_HANDOFF_CANCELLED',120000);
+step='stable';for(let i=0;i<9;i++){await sleep(10000);await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён',{timeout:3000})}
+console.log('QA648_NEW_DEVICE_STABLE');await marker('QA648_HANDOFF_STAYED_OUT',120000);
+}finally{await browser.close()}})().catch(e=>{console.error('QA648_HANDOFF_CONTROL_FAILED',step,e.name);process.exitCode=1});
