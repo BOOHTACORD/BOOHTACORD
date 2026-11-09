@@ -8,7 +8,8 @@ import yaml
 from .model import metrics_reachable_peers, validate
 from .historical_artifact import evidence_content
 
-HISTORICAL_EVIDENCE_REVISION = '10e0e44f28a2612d2f7fecf5be06931cf91fb166'
+# The latest source-only evidence was recorded against this merged revision.
+HISTORICAL_EVIDENCE_REVISION = 'c875c5d686f99d47ca28c511eecd5213c7a3319a'
 
 
 def read(root, path):
@@ -94,6 +95,8 @@ def main():
     expected_artifacts |= release_metadata["repository_artifacts"]
     chat_ux_metadata = read(root, "evidence/media/livekit-network-release-metadata-2026-11-09-chat-ux.json")
     expected_artifacts |= chat_ux_metadata["repository_artifacts"]
+    roster_ws_source = read(root, "evidence/media/livekit-network-roster-ws-source-2026-11-09.json")
+    expected_artifacts |= roster_ws_source["repository_artifacts"]
     for path, expected in expected_artifacts.items():
         content = evidence_content(root, HISTORICAL_EVIDENCE_REVISION, path)
         content = content.replace(b"\r\n", b"\n")
