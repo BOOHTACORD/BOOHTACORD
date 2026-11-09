@@ -2,14 +2,14 @@ package connectsession
 
 import (
 	"context"
+	"errors"
 	"net/http"
-	"time"
 
 	"github.com/coder/websocket"
-	"github.com/coder/websocket/wsjson"
 	sessionapi "voice-platform/backend/internal/identity/authenticate_session/api"
 	observestate "voice-platform/backend/internal/maintenance/observe_state"
 	eventhub "voice-platform/backend/internal/realtime/event_hub"
+	guard "voice-platform/backend/internal/voice/authorize_roster_delivery"
 )
 
 func streamEvents(connection *websocket.Conn, authenticator sessionapi.Authenticator, cookie *http.Cookie, subscription *eventhub.Subscription, hub *eventhub.Hub, newID Identifier, now Clock, observer ConnectionObserver, replayedIDs map[string]struct{}, maintenance *observestate.Subscription, roster RosterStream, maxRosterBytes int) {
@@ -18,6 +18,14 @@ func streamEvents(connection *websocket.Conn, authenticator sessionapi.Authentic
 	var overflowed <-chan struct{}
 	var maintenanceEvents <-chan observestate.State
 	var rosterEvents <-chan RosterDelivery
+	var checks <-chan rosterCheckResult
+	var cancelCheck context.CancelFunc
+	var version uint64
+	defer func() {
+		if cancelCheck != nil {
+			cancelCheck()
+		}
+	}()
 	if roster != nil {
 		rosterEvents = roster.Events()
 	}
@@ -33,48 +41,79 @@ func streamEvents(connection *websocket.Conn, authenticator sessionapi.Authentic
 		case <-closed:
 			return
 		case delivery, ok := <-rosterEvents:
-			if !ok || !writeRoster(connection, roster, delivery, maxRosterBytes, newID, now) {
+			if !ok {
 				return
 			}
+			if cancelCheck != nil {
+				cancelCheck()
+				checks, cancelCheck = nil, nil
+			}
+			if delivery.SessionInvalid || delivery.Unavailable {
+				if !writeRoster(connection, roster, delivery, maxRosterBytes, newID, now) {
+					return
+				}
+				version++
+			} else if !roster.Current(delivery.State) {
+				if !roster.RequestRefresh() {
+					return
+				}
+			} else {
+				checks, cancelCheck = startRosterCheck(roster, delivery, version)
+			}
+		case result := <-checks:
+			cancelCheck()
+			checks, cancelCheck = nil, nil
+			if errors.Is(result.err, guard.ErrSession) {
+				_ = writeRoster(connection, roster, RosterDelivery{SessionInvalid: true}, maxRosterBytes, newID, now)
+				return
+			}
+			if errors.Is(result.err, guard.ErrStale) || !roster.Current(result.delivery.State) {
+				if !roster.RequestRefresh() {
+					return
+				}
+				continue
+			}
+			if result.err != nil {
+				if !writeRoster(connection, roster, RosterDelivery{Unavailable: true}, maxRosterBytes, newID, now) {
+					return
+				}
+				version++
+				continue
+			}
+			if result.version == version {
+				select {
+				case event := <-events:
+					if !writeHubEvent(connection, authenticator, cookie, subscription, hub, observer, replayedIDs, event) {
+						return
+					}
+					version++
+				default:
+				}
+			}
+			if result.version != version {
+				checks, cancelCheck = startRosterCheck(roster, result.delivery, version)
+				continue
+			}
+			if !writeRoster(connection, roster, result.delivery, maxRosterBytes, newID, now) {
+				return
+			}
+			version++
 		case state, ok := <-maintenanceEvents:
 			if !ok || !writeMaintenance(connection, state, firstMaintenance, newID, now) {
 				return
 			}
 			firstMaintenance = false
+			version++
 		case event := <-events:
-			if _, replayed := replayedIDs[event.EventID]; replayed {
-				delete(replayedIDs, event.EventID)
-				continue
-			}
-			if (isPrivateDirectMessageEvent(event.Kind) || event.Kind == "session.state_changed") && !privateEventSessionValid(authenticator, cookie, subscription, observer) {
-				_ = connection.Close(websocket.StatusPolicyViolation, "session is no longer valid")
+			if !writeHubEvent(connection, authenticator, cookie, subscription, hub, observer, replayedIDs, event) {
 				return
 			}
-			writeContext, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-			if subscription.Supports("flow_tracing_v1") {
-				event = hub.Correlate(writeContext, subscription.AccountID(), event)
-			}
-			err := wsjson.Write(writeContext, connection, event)
-			cancel()
-			if err != nil {
-				return
-			}
-			if latencyObserver, ok := observer.(interface{ ObserveRealtimeEventDeliveryLatency(time.Duration) }); ok && !event.OccurredAt.IsZero() {
-				if latency := time.Since(event.OccurredAt); latency >= 0 {
-					latencyObserver.ObserveRealtimeEventDeliveryLatency(latency)
-				}
-			}
+			version++
 		case <-overflowed:
-			writeContext, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-			ok := writeEvent(writeContext, connection, newID, now, "connection.resync_required", map[string]any{"reason": "event_overflow"})
-			if ok && hub != nil {
-				ok = writeEvent(writeContext, connection, newID, now, "presence.snapshot", map[string]any{"online_user_ids": hub.OnlineAccounts()})
-			}
-			cancel()
-			if !ok {
+			if !writeOverflow(connection, subscription, hub, newID, now) {
 				return
 			}
-			subscription.AcknowledgeOverflow()
+			version++
 		}
 	}
 }

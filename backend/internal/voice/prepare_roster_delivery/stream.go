@@ -42,7 +42,7 @@ func (p *Pool) run(ctx context.Context, sub Subscription, token string, principa
 			}
 			continue
 		}
-		err := p.check(ctx, checker, token, principal, state)
+		err := p.Check(ctx, checker, token, principal, state)
 		if ctx.Err() != nil {
 			return
 		}
@@ -77,7 +77,11 @@ func (p *Pool) run(ctx context.Context, sub Subscription, token string, principa
 	}
 }
 
-func (p *Pool) check(parent context.Context, checker Guard, token string, principal auth.Principal, state coordinator.State) error {
+// Check shares the bounded authorization pool with delivery-time rechecks.
+func (p *Pool) Check(parent context.Context, checker Guard, token string, principal auth.Principal, state coordinator.State) error {
+	if checker == nil {
+		return guard.ErrUnavailable
+	}
 	ctx, cancel := context.WithTimeout(parent, p.timeout)
 	defer cancel()
 	select {

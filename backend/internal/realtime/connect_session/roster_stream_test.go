@@ -22,12 +22,20 @@ type socketRoster struct {
 	deliveries chan prepared.Delivery
 	current    atomic.Bool
 	refreshes  atomic.Int32
+	check      func(context.Context, coordinator.State) error
 }
 
 func (s *socketRoster) Events() <-chan prepared.Delivery { return s.deliveries }
 func (s *socketRoster) Current(coordinator.State) bool   { return s.current.Load() }
 func (s *socketRoster) RequestRefresh() bool             { s.refreshes.Add(1); return true }
 func (s *socketRoster) Close()                           {}
+
+func (s *socketRoster) Check(ctx context.Context, state coordinator.State) error {
+	if s.check == nil {
+		return nil
+	}
+	return s.check(ctx, state)
+}
 
 func TestRosterSocketNegotiatesAndSuppressesStaleDelivery(t *testing.T) {
 	stream := &socketRoster{deliveries: make(chan prepared.Delivery, 2)}

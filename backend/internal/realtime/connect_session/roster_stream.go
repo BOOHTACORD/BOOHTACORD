@@ -20,6 +20,7 @@ type RosterStream interface {
 	Events() <-chan RosterDelivery
 	Current(coordinator.State) bool
 	RequestRefresh() bool
+	Check(context.Context, coordinator.State) error
 	Close()
 }
 type RosterFactory func(context.Context, auth.Principal, *http.Cookie) (RosterStream, error)

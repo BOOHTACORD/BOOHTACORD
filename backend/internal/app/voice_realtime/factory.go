@@ -35,17 +35,24 @@ func (f *Factory) Open(parent context.Context, principal auth.Principal, cookie 
 	}
 	ctx, cancel := context.WithCancel(parent)
 	events, _ := f.pool.Stream(ctx, sub, cookie.Value, principal, f.guard)
-	return &stream{sub: sub, events: events, cancel: cancel}, nil
+	return &stream{sub: sub, events: events, cancel: cancel, pool: f.pool, guard: f.guard, token: cookie.Value, principal: principal}, nil
 }
 
 type stream struct {
-	sub    *coordinator.Subscription
-	events <-chan prepared.Delivery
-	cancel context.CancelFunc
-	once   sync.Once
+	sub       *coordinator.Subscription
+	events    <-chan prepared.Delivery
+	cancel    context.CancelFunc
+	once      sync.Once
+	pool      *prepared.Pool
+	guard     prepared.Guard
+	token     string
+	principal auth.Principal
 }
 
 func (s *stream) Events() <-chan prepared.Delivery     { return s.events }
 func (s *stream) Current(state coordinator.State) bool { return s.sub.Current(state) }
 func (s *stream) RequestRefresh() bool                 { return s.sub.RequestRefresh() }
-func (s *stream) Close()                               { s.once.Do(func() { s.cancel(); s.sub.Close() }) }
+func (s *stream) Check(ctx context.Context, state coordinator.State) error {
+	return s.pool.Check(ctx, s.guard, s.token, s.principal, state)
+}
+func (s *stream) Close() { s.once.Do(func() { s.cancel(); s.sub.Close() }) }
