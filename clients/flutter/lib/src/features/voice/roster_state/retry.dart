@@ -5,12 +5,12 @@ import 'controller.dart';
 
 extension VoiceRosterRetry on VoiceRosterController {
   Future<bool> waitForRetry(int expected) async {
-    if (retryAttempt >= retryBudget) return false;
-    final milliseconds = min(
-      30000,
-      retryDelay.inMilliseconds * pow(2, retryAttempt),
-    ).toInt();
-    retryAttempt++;
+    // Exhausting the fast budget must not strand a healthy session forever.
+    // Continue with one jittered, rate-limited retry until stopped or revoked.
+    final milliseconds = retryAttempt >= retryBudget
+        ? 30000
+        : min(30000, retryDelay.inMilliseconds * pow(2, retryAttempt)).toInt();
+    if (retryAttempt < retryBudget) retryAttempt++;
     final delay = Duration(
       milliseconds: min(
         30000,

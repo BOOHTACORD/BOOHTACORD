@@ -66,7 +66,8 @@ extension VoiceRosterWatch on VoiceRosterController {
         }
         opening = false;
         markLost(expected);
-        if (cause is ApiFailure && cause.status == 403) {
+        if (cause is ApiFailure &&
+            const {403, 404, 410}.contains(cause.status)) {
           voiceRosters = null;
           phase = VoiceRosterPhase.unavailable;
           staleTimer?.cancel();
