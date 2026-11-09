@@ -25,6 +25,11 @@ describe('new-message jump while reading older history', () => {
     expect(shouldFollowNewestMessages([{ id: 'new-2' }, { id: 'seen' }], 'seen', true, false)).toBe(false)
   })
 
+  it('starts at the newest messages when the first history page arrives into an empty viewport', () => {
+    expect(shouldFollowNewestMessages(messages, undefined, false, true)).toBe(true)
+    expect(shouldFollowNewestMessages(messages, undefined, false, false)).toBe(false)
+  })
+
   it('treats only a near-bottom viewport as following latest', () => {
     expect(isHistoryNearBottom({ scrollHeight: 500, clientHeight: 200, scrollTop: 200 })).toBe(false)
     expect(isHistoryNearBottom({ scrollHeight: 500, clientHeight: 200, scrollTop: 205 })).toBe(true)

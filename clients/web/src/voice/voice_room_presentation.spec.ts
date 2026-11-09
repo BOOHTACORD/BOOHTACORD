@@ -109,7 +109,7 @@ describe('voice-room visual status and screen presentation', () => {
     expect(viewer).toContain('Escape')
     expect(source('./ScreenMiniToolbar.vue')).toContain('Развернуть на всю область')
     expect(source('../conversation/ConversationPane.vue')).toContain('voice-room--screen-expanded')
-    expect(source('../conversation/ConversationPane.vue')).toContain(':disabled="!screenExpanded && !(miniVisible && miniPlayerTarget)"')
+    expect(source('../conversation/ConversationPane.vue')).toContain(':disabled="!screenExpanded && !(miniVisible && activeMiniPlayerTarget)"')
   })
 
   it('uses one setup dialog and selected profile from the room and persistent voice dock', () => {

@@ -776,6 +776,7 @@
       "clients/web/src/voice/use_conversation_screen_state*",
       "clients/web/src/voice/ScreenMiniToolbar.vue",
       "clients/web/src/voice/mini_player_state.spec.ts",
+      "clients/web/src/design/mini_player.css",
       "clients/web/tests/mini_player/**",
       "clients/web/tests/member_roster/helpers.ts",
       "clients/web/tests/member_roster/roster.browser.spec.ts",
@@ -1641,6 +1642,15 @@
       "clients/flutter/lib/src/screens/workspace_ui/message_action_menu/*",
       "clients/flutter/lib/src/screens/workspace_ui/direct_message_action_menu/*",
       "clients/web/src/conversation/history_window/*",
+      "clients/web/src/identity/author_directory.ts",
+      "clients/web/src/design/design_v2_chat.css",
+      "clients/web/src/design/design_v2_direct_messages.css",
+      "clients/web/src/design/responsive_shell.css",
+      "clients/web/src/direct_message/DirectMessageConversation.vue",
+      "clients/web/src/workspace/workspace_header_actions.spec.ts",
+      "clients/web/src/workspace/member_header_expanded.ts",
+      "clients/web/tests/mini_player/mini.browser.spec.ts",
+      "clients/web/tests/mini_player/fixture.ts",
       "clients/web/src/conversation/message_target_navigation.ts",
       "clients/web/src/workspace/search/WorkspaceSearchPanel.vue",
       "tools/qa/client_lifecycle/scenario.mjs",
@@ -1667,7 +1677,8 @@
       "clients/flutter/lib/src/screens/workspace_ui/header/conversation_actions.dart",
       "clients/flutter/lib/src/widgets/attachment_revocation/**",
       "clients/flutter/lib/src/features/direct/follow_latest/**",
-      "clients/flutter/lib/src/features/text/system_welcome/*"
+      "clients/flutter/lib/src/features/text/system_welcome/*",
+      "tools/qa/local_features/features.json"
     ],
     "web": [
       "tests/conversation_action_disclosure/playwright.config.ts",
@@ -1679,7 +1690,8 @@
       "tests/message_social/playwright.config.ts",
       "tests/dm_starter/playwright.config.ts",
       "tests/search_presentation/playwright.config.ts",
-      "tests/search_dates/playwright.config.ts"
+      "tests/search_dates/playwright.config.ts",
+      "tests/mini_player/playwright.config.ts"
     ],
     "flutter": [
       "test/uiux_2026/dialog_visual_capture_test.dart",
@@ -1715,11 +1727,16 @@
           "clients/web/src/conversation/text_history_pagination.spec.ts",
           "clients/web/src/direct_message/direct_message_history_pagination.spec.ts",
           "clients/web/src/conversation/first_unread_presentation.spec.ts",
+          "clients/web/src/conversation/new_message_jump.spec.ts",
           "clients/web/src/search/context_timeline/local_search.spec.ts",
           "clients/web/src/conversation/conversation_overflow_menu.spec.ts",
+          "clients/web/src/direct_message/direct_message_navigation_badges.spec.ts",
+          "clients/web/src/workspace/workspace_header_actions.spec.ts",
+          "clients/web/src/design/design_v2_chat_geometry.spec.ts",
+          "clients/web/tests/mini_player/mini.browser.spec.ts",
           "clients/web/tests/chat_rhythm/retention.browser.spec.ts"
         ],
-        "scope": "First unread is marked only after it intersects the visible message viewport; global search, file and mention targets open in the normal conversation and flash briefly; channel and DM reading positions restore silently after navigation even when their anchor must be loaded around; per-conversation mini search is absent; sending a message scrolls it into view. Authenticated desktop/mobile real-stack acceptance includes read-cursor SQL checks, search/file/mention routes and send follow; source-resolution screenshot review is recorded separately."
+        "scope": "First unread is marked only after it intersects the visible message viewport; initial history opens at the newest messages while saved anchors still restore silently; global search, file and mention targets open in the normal conversation and flash briefly; per-conversation mini search is absent; sending a message scrolls it into view. The desktop roster toggle remains reachable when the roster is hidden, retained stream previews do not shift the roster, and DM navigation shows protected peer avatars when available. Authenticated desktop/mobile real-stack acceptance includes read-cursor SQL checks, search/file/mention routes and send follow; source-resolution screenshot review is recorded separately."
       },
       "composer_text_scale": {
         "browser_test": "clients/web/tests/accessibility/composer_text_scale.browser.spec.ts",
