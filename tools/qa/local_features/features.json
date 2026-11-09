@@ -287,6 +287,7 @@
       "clients/web/src/voice/TouchPttButton.vue",
       "clients/web/src/design/design_v2_audio_presentation.css",
       "clients/flutter/lib/src/features/voice/*",
+      "clients/flutter/test/voice_connection_recovery_visible_test.dart",
       "clients/flutter/packages/livekit_client/lib/src/audio/*",
       "clients/flutter/packages/livekit_client/lib/src/core/engine.dart",
       "clients/flutter/packages/livekit_client/lib/src/core/connectivity_recovery.dart",
@@ -359,6 +360,7 @@
     "flutter": [
       "test/voice_disconnect/visual_capture_test.dart",
       "test/voice_disconnect_notice_widget_test.dart",
+      "test/voice_connection_recovery_visible_test.dart",
       "test/voice_manual_join_actions_accessibility_test.dart",
       "test/workspace_screen_test.dart",
       "test/web_parity/voice_geometry_test.dart",
@@ -631,6 +633,7 @@
             "tests": [
               "clients/flutter/test/voice_connection_recovery_test.dart",
               "clients/flutter/test/voice_connection_recovery_release_test.dart",
+              "clients/flutter/test/voice_connection_recovery_visible_test.dart",
               "clients/flutter/test/voice_reconnect_policy_test.dart",
               "clients/flutter/test/voice_disconnect_race_test.dart"
             ],
@@ -642,6 +645,7 @@
             "tests": [
               "clients/flutter/test/voice_connection_recovery_test.dart",
               "clients/flutter/test/voice_connection_recovery_release_test.dart",
+              "clients/flutter/test/voice_connection_recovery_visible_test.dart",
               "clients/flutter/test/voice_reconnect_policy_test.dart",
               "clients/flutter/test/voice_disconnect_race_test.dart"
             ],
