@@ -95,6 +95,8 @@ def main():
     expected_artifacts |= roster_retry["repository_artifacts"]
     integrated = read(root, "evidence/media/livekit-network-recovery-roster-integration-2026-11-09.json")
     expected_artifacts |= integrated["repository_artifacts"]
+    transfer_recovery = read(root, "evidence/media/livekit-network-transfer-recovery-2026-11-09.json")
+    expected_artifacts |= transfer_recovery["repository_artifacts"]
     for path, expected in expected_artifacts.items():
         content = (root / path).read_bytes().replace(b"\r\n", b"\n")
         actual = hashlib.sha256(content).hexdigest()
