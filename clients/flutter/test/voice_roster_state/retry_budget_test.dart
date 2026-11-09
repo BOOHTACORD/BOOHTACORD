@@ -48,32 +48,27 @@ void main() {
       expect(h.timers.where((t) => t.isActive), isEmpty);
     },
   );
-  test(
-    '401 expires without retries; 403 clears roster and stops retries',
-    () async {
-      for (final status in [401, 403]) {
-        final h = RosterHarness();
-        var expired = false;
-        h.api.onUnauthorized = () => expired = true;
-        h.owner.start();
-        h.api.streams.single.completeError(
-          ApiFailure('denied', status: status),
-        );
-        await h.flush();
-        expect(h.owner.voiceRosters, isNull);
-        expect(h.owner.watching, isFalse);
-        expect(expired, status == 401);
-        expect(
-          h.owner.phase,
-          status == 401
-              ? VoiceRosterPhase.sessionExpired
-              : VoiceRosterPhase.unavailable,
-        );
-        expect(h.owner.retryTimer, isNull);
-        h.owner.dispose();
-      }
-    },
-  );
+  test('terminal authorization or removed endpoint stops retries', () async {
+    for (final status in [401, 403, 404, 410]) {
+      final h = RosterHarness();
+      var expired = false;
+      h.api.onUnauthorized = () => expired = true;
+      h.owner.start();
+      h.api.streams.single.completeError(ApiFailure('denied', status: status));
+      await h.flush();
+      expect(h.owner.voiceRosters, isNull);
+      expect(h.owner.watching, isFalse);
+      expect(expired, status == 401);
+      expect(
+        h.owner.phase,
+        status == 401
+            ? VoiceRosterPhase.sessionExpired
+            : VoiceRosterPhase.unavailable,
+      );
+      expect(h.owner.retryTimer, isNull);
+      h.owner.dispose();
+    }
+  });
   test(
     'logout clears data and cancels all timers and stream callbacks',
     () async {
