@@ -3,39 +3,51 @@ import 'package:flutter_test/flutter_test.dart';
 import 'support.dart';
 
 void main() {
-  test('retry budget stops automatic attempts and one manual retry replaces generation', () async {
-    final h = RosterHarness();
-    addTearDown(h.owner.dispose);
-    h.owner.start();
-    for (var attempt = 0; attempt < 3; attempt++) {
-      h.api.streams.last.completeError(
-        const ApiFailure('unavailable', status: 503),
-      );
-      await h.flush();
-      if (attempt < 2) {
-        h.timers.last.fire();
+  test(
+    'transient outage keeps one slow retry and recovers after budget',
+    () async {
+      final h = RosterHarness();
+      addTearDown(h.owner.dispose);
+      h.owner.start();
+      for (var attempt = 0; attempt < 5; attempt++) {
+        h.api.streams.last.completeError(
+          const ApiFailure('unavailable', status: 503),
+        );
+        await h.flush();
+        expect(h.owner.watching, isTrue);
+        expect(h.owner.canRetry, isTrue);
+        final retry = h.owner.retryTimer! as ScheduledRosterTimer;
+        expect(
+          retry.delay,
+          attempt < 2
+              ? Duration(seconds: 2 * (1 << attempt))
+              : const Duration(seconds: 30),
+        );
+        expect(
+          h.timers.where(
+            (t) => t.isActive && t.delay != const Duration(seconds: 10),
+          ),
+          hasLength(1),
+        );
+        retry.fire();
         await h.flush();
       }
-    }
-    expect(h.api.streams, hasLength(3));
-    expect(h.owner.watching, isFalse);
-    expect(h.owner.canRetry, isTrue);
-    expect(
-      h.timers.where(
-        (t) => t.isActive && t.delay != const Duration(seconds: 10),
-      ),
-      isEmpty,
-    );
-    final old = h.owner.revision;
-    h.owner.retryVoiceRosters();
-    h.owner.retryVoiceRosters();
-    expect(h.api.streams, hasLength(4));
-    expect(h.owner.revision, greaterThan(old));
-    expect(h.owner.phase, VoiceRosterPhase.initialLoading);
-    h.owner.stop();
-    h.api.streams.last.completeError(const ApiFailure('closed'));
-    await h.flush();
-  });
+      expect(h.api.streams, hasLength(6));
+      final stream = await h.connect();
+      h.snapshot(stream);
+      await h.flush();
+      expect(h.owner.phase, VoiceRosterPhase.fresh);
+      expect(h.owner.retryAttempt, 0);
+      await stream.close();
+      await h.flush();
+      expect(
+        (h.owner.retryTimer! as ScheduledRosterTimer).delay,
+        const Duration(seconds: 2),
+      );
+      h.owner.stop();
+      expect(h.timers.where((t) => t.isActive), isEmpty);
+    },
+  );
   test(
     '401 expires without retries; 403 clears roster and stops retries',
     () async {

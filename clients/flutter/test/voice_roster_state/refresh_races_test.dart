@@ -45,23 +45,23 @@ void main() {
       await stream.close();
     },
   );
-  test(
-    'stale retention expires even after automatic retry budget is exhausted',
-    () async {
-      final h = RosterHarness();
-      addTearDown(h.owner.dispose);
-      h.owner.start();
-      final stream = await h.connect();
-      h.snapshot(stream);
-      await h.flush();
-      h.owner.retryAttempt = h.owner.retryBudget;
-      await stream.close();
-      await h.flush();
-      expect(h.owner.watching, isFalse);
-      expect(h.owner.phase, VoiceRosterPhase.stale);
-      h.timers.single.fire();
-      expect(h.owner.voiceRosters, isNull);
-      expect(h.owner.phase, VoiceRosterPhase.unavailable);
-    },
-  );
+  test('stale retention expires while slow retry remains scheduled', () async {
+    final h = RosterHarness();
+    addTearDown(h.owner.dispose);
+    h.owner.start();
+    final stream = await h.connect();
+    h.snapshot(stream);
+    await h.flush();
+    h.owner.retryAttempt = h.owner.retryBudget;
+    await stream.close();
+    await h.flush();
+    expect(h.owner.watching, isTrue);
+    expect(h.owner.retryTimer, isNotNull);
+    expect(h.owner.phase, VoiceRosterPhase.stale);
+    h.timers
+        .singleWhere((timer) => timer.delay == const Duration(seconds: 10))
+        .fire();
+    expect(h.owner.voiceRosters, isNull);
+    expect(h.owner.phase, VoiceRosterPhase.unavailable);
+  });
 }
