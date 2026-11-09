@@ -190,6 +190,7 @@
       "test/realtime_scope/retry_policy_test.dart",
       "test/workspace_connection_status_test.dart",
       "test/voice_roster_state/app_composition_test.dart",
+      "test/voice_roster_state/shared_socket_test.dart",
       "test/realtime_scope/open_failure_test.dart",
       "test/realtime_scope/late_failure_test.dart",
       "test/realtime_scope/socket_recovery_integration_test.dart",
@@ -233,6 +234,10 @@
       "issue689_flutter_roster_contract": {
         "focused": ["clients/flutter/test/realtime_scope/roster_event_test.dart", "clients/flutter/test/realtime_scope/roster_payload_validation_test.dart"],
         "scope": "Flutter validates versioned voice roster payloads and safe unavailable codes, rejects malformed frames and preserves durable replay cursors; native delivery remains separate acceptance work."
+      },
+      "issue689_flutter_roster_state": {
+        "focused": "clients/flutter/test/voice_roster_state/shared_socket_test.dart",
+        "scope": "Flutter shared-socket roster state covers initial timeout, stale retention, scope changes and reconnect without a separate roster request. Production wiring and native runtime remain separate."
       },
       "issue689_maintenance_contract": {
         "focused": "clients/web/src/realtime/maintenance_payload.spec.ts",

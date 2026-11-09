@@ -6,6 +6,10 @@ extension VoiceRosterRefresh on VoiceRosterController {
     if (disposed || !ticket.isActive || !isReady() || !hasUser() || loading) {
       return;
     }
+    if (sharedSocket) {
+      onSharedRetry?.call();
+      return;
+    }
     loading = true;
     final expected = ++refreshRevision;
     final generation = revision;

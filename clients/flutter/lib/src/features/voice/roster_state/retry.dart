@@ -33,6 +33,10 @@ extension VoiceRosterRetry on VoiceRosterController {
 
   void retryVoiceRosters() {
     if (!canRetry) return;
+    if (sharedSocket) {
+      onSharedRetry?.call();
+      return;
+    }
     stop();
     start();
     changed();

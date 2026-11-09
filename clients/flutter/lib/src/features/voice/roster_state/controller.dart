@@ -15,6 +15,7 @@ export 'watch.dart';
 export 'refresh.dart';
 export 'stop.dart';
 export 'stale.dart';
+export 'socket.dart';
 export '../../../services/api_client.dart' show ApiFailure;
 
 class VoiceRosterController extends ChangeNotifier {
@@ -27,6 +28,8 @@ class VoiceRosterController extends ChangeNotifier {
     this.retryDelay = const Duration(seconds: 2),
     this.staleTimeout = const Duration(seconds: 10),
     this.retryBudget = 6,
+    this.sharedSocket = false,
+    this.onSharedRetry,
     Timer Function(Duration, void Function())? schedule,
     double Function()? jitter,
   }) : schedule = schedule ?? Timer.new,
@@ -54,6 +57,13 @@ class VoiceRosterController extends ChangeNotifier {
   int retryAttempt = 0;
   bool opening = false;
   final int retryBudget;
+  final bool sharedSocket;
+  final void Function()? onSharedRetry;
+  bool sharedOpen = false;
+  String? sharedGeneration;
+  int sharedRevision = 0;
+  SessionTicket? sharedTicket;
+  Timer? initialTimer;
   final Timer Function(Duration, void Function()) schedule;
   final double Function() jitter;
   VoiceRosterPhase phase = VoiceRosterPhase.initialLoading;

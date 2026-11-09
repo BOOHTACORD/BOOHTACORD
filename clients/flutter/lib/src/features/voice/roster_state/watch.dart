@@ -13,6 +13,10 @@ extension VoiceRosterWatch on VoiceRosterController {
       return;
     }
     watching = true;
+    if (sharedSocket) {
+      revision++;
+      return;
+    }
     unawaited(watch(++revision));
   }
 

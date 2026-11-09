@@ -8,6 +8,11 @@ action_catalog:
   verification: backlog/VERIFICATION_TODO.md
   completed: DONE.md
 tasks:
+  - id: RT689-037
+    title: Model Flutter voice roster on the shared socket (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-QUALITY-01]
+    depends_on: [RT689-036]
+    evidence: [clients/flutter/test/voice_roster_state/shared_socket_test.dart]
   - id: RT689-036
     title: Deliver Web voice roster through the existing socket (GitHub #689)
     requirements: [REQ-VOICE-01, REQ-QUALITY-01]
