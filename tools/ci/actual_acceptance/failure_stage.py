@@ -35,6 +35,8 @@ STAGES = frozenset({
     'reference-topology-seeded', 'reference-welcome-complete',
     'registration-outcome-accepted', 'screen-configuration-status',
     'screen-share-short-height', 'sender-screen-preview',
+    'screen-short-geometry-ok', 'screen-short-frames-ok',
+    'screen-preview-card-ok', 'screen-preview-decoded-ok', 'screen-preview-refresh-ok',
     'screen-share-mini-player-returned', 'screen-share-owner-controls-revealed',
     'screen-share-owner-stop-accepted', 'screen-share-owner-track-ended',
     'screen-share-view-removed',
