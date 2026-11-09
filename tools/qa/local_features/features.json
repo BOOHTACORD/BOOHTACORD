@@ -194,6 +194,7 @@
       "test/realtime_scope/open_failure_test.dart",
       "test/realtime_scope/late_failure_test.dart",
       "test/realtime_scope/socket_recovery_integration_test.dart",
+      "test/realtime_scope/socket_attempt_test.dart",
       "test/realtime_scope/resync_envelope_test.dart",
       "test/realtime_scope/maintenance_event_test.dart",
       "test/realtime_scope/roster_event_test.dart",
@@ -254,6 +255,10 @@
       "issue689_web_socket_lifecycle": {
         "focused": "clients/web/src/realtime/socket_lifecycle.spec.ts",
         "scope": "Authenticated socket attempts signal start and end across failure, retry and disconnect, allowing state owners to discard stale callbacks; real browser acceptance remains separate."
+      },
+      "issue689_flutter_socket_lifecycle": {
+        "focused": ["clients/flutter/test/realtime_scope/socket_attempt_test.dart", "clients/flutter/test/realtime_scope/socket_recovery_integration_test.dart"],
+        "scope": "Flutter reports exactly one start and end per realtime connection attempt, including a failed handshake and recovery; feature composition and Android runtime are separate."
       },
       "issue689_web_reconnect_race": {
         "focused": "clients/web/src/realtime/reconnect_race.spec.ts",

@@ -13,6 +13,7 @@ import '../../../core/session/scope.dart';
 import '../../../services/api_client.dart';
 import 'event.dart';
 import 'close.dart';
+import 'attempt.dart';
 import '../../telemetry/action_scope/action.dart';
 export 'connect.dart';
 export 'close.dart';
@@ -29,6 +30,8 @@ class RealtimeController extends ChangeNotifier {
     required this.invalidatePresence,
     required this.dispatch,
     this.recover,
+    this.onSocketStart,
+    this.onSocketEnd,
     double Function()? jitter,
   }) : jitter = jitter ?? Random().nextDouble;
   final double Function() jitter;
@@ -40,6 +43,9 @@ class RealtimeController extends ChangeNotifier {
   final void Function() invalidatePresence;
   final FutureOr<void> Function(RealtimeEvent) dispatch;
   final FutureOr<void> Function()? recover;
+  final void Function()? onSocketStart;
+  final void Function()? onSocketEnd;
+  late final socketAttempt = RealtimeSocketAttempt(onSocketStart, onSocketEnd);
   late final delivery = RealtimeDelivery(applyEvent, () async {
     if (recover != null) {
       await recover!();

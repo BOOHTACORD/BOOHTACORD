@@ -8,6 +8,11 @@ action_catalog:
   verification: backlog/VERIFICATION_TODO.md
   completed: DONE.md
 tasks:
+  - id: RT689-038
+    title: Expose Flutter realtime socket attempt lifecycle (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-QUALITY-01]
+    depends_on: [RT689-037]
+    evidence: [clients/flutter/test/realtime_scope/socket_attempt_test.dart]
   - id: RT689-037
     title: Model Flutter voice roster on the shared socket (GitHub #689)
     requirements: [REQ-VOICE-01, REQ-QUALITY-01]
