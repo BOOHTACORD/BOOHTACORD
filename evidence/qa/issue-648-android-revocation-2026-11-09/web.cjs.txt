@@ -1,0 +1,17 @@
+const fs=require('fs');
+const {chromium}=require('/var/tmp/boohtacord-qa675-source/clients/web/node_modules/@playwright/test');
+const root='/mnt/c/b-qa675/.out/',origin='https://localhost:4910';
+const cfg=JSON.parse(fs.readFileSync(root+'qa648-win-defines.json','utf8'));
+if(cfg.QA_API_BASE!==origin+'/api/v1')throw Error('wrong origin');
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function marker(text,ms){const end=Date.now()+ms;while(Date.now()<end){if(fs.existsSync(root+'qa648-revoked.log')&&fs.readFileSync(root+'qa648-revoked.log','utf8').includes(text))return;await sleep(250)}throw Error('marker timeout')}
+(async()=>{const browser=await chromium.launch({headless:true});try{const ctx=await browser.newContext({ignoreHTTPSErrors:true});
+await marker('ISSUE648_READY_FOR_OUTAGE',360000);
+const login=await ctx.request.post(origin+'/api/v1/auth/login',{headers:{origin},data:{login:'qa_admin',password:cfg.QA_PASSWORD}});if(login.status()!==204)throw Error('login status '+login.status());
+await marker('QA648_RETRY_VISIBLE',180000);
+const sessions=await ctx.request.get(origin+'/api/v1/me/sessions',{headers:{origin}});if(sessions.status()!==200)throw Error('sessions status '+sessions.status());const account=(await sessions.json()).account_id;
+const revoke=await ctx.request.post(origin+'/api/v1/me/sessions/revoke-others',{headers:{Origin:origin,'X-Account-ID':account}});if(revoke.status()!==204)throw Error('revoke status '+revoke.status());
+fs.writeFileSync(root+'qa648-revoked-marker','revoked');console.log('QA648_OTHER_SESSION_REVOKED');
+await marker('QA648_REVOKED_STAYED_OUT',180000);console.log('QA648_REVOKED_CONTROL_PASS');
+}finally{await browser.close()}})().catch(e=>{console.error('QA648_REVOKE_CONTROL_FAILED',e.message);process.exitCode=1});
+
