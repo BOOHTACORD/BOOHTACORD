@@ -4,6 +4,7 @@
 .direct-message-navigation > .channel-button.selected { background: var(--gc-surface-selected); box-shadow: inset 3px 0 var(--gc-accent-text); }
 .direct-message-navigation > .channel-button:hover { background: var(--gc-surface-hover); }
 .direct-message-navigation .dm-avatar { width: 36px; height: 36px; flex-basis: 36px; color: #E2D9FB; background: #493C68; font-size: 0.75rem; }
+.direct-message-navigation .dm-avatar > img { width: 100%; height: 100%; border-radius: inherit; object-fit: cover; }
 .direct-message-navigation .dm-avatar--daria { color: #9FDADB; background: #19484C; }
 .direct-message-navigation .dm-avatar--max { color: #F6C397; background: #66452D; }
 .dm-presence-dot { position: absolute; left: 33px; bottom: 11px; width: 12px; height: 12px; border: 2px solid var(--gc-sidebar); border-radius: 50%; background: #778295; }
