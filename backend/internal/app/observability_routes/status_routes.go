@@ -12,6 +12,5 @@ import (
 func ConfigureStatusRoutes(mux *http.ServeMux, maintenance maintenanceadmission.Service, metrics *httpmetrics.Recorder) {
 	mux.Handle("GET /api/v1/health", health.NewHandler())
 	mux.Handle("GET /api/v1/maintenance", maintenanceapi.NewHandler(maintenance))
-	mux.Handle("GET /api/v1/maintenance/events", maintenanceapi.NewEventHandler(maintenance))
 	mux.Handle("GET /metrics", metrics.Handler())
 }

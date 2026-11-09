@@ -36,7 +36,22 @@ If the host-native LiveKit Egress image is unavailable or broken, set `BOOHTACOR
 
 Every run includes the complete Web/Flutter unit suites for selected platforms and authenticated desktop/mobile Web journeys (1440/393 logical px). Reports are under `.out/local-features/<timestamp>/index.html` with test logs, screenshot hashes and machine-readable status. Registration lives in `features.json`. A source change outside registered coverage fails with `--base`. Add focused behavioural tests and screenshots for each new scenario before changing its implementation. The registry selects existing suites; it is not proof that every state of a new feature is covered.
 
+The report fingerprints the tracked working-tree diff and non-ignored untracked
+files before and after the run. If those fingerprints differ, source stability
+is BLOCKED; equal endpoint fingerprints do not prove that no temporary change
+occurred during execution. Flutter unit or component-capture skips are BLOCKED.
+
+Selected features may register additional `native_targets`. The runner executes
+each registered target as a separate runtime stage after the standard smoke;
+an unknown target is rejected. Full Flutter unit tests have a bounded 60-minute
+budget, while other stages keep their 30-minute budget.
+The Flutter unit stage records skipped-test counts and remains `BLOCKED` if any
+tests are skipped or its successful summary is missing. Platform-specific tests
+must be run and reported separately on the applicable host.
+
 The Web layer runs Vite/production Vue components, keyboard/axe and responsive checks. `--real-stack` also runs the existing authenticated multi-client lifecycle against isolated PostgreSQL, Go API, Tempo and LiveKit. The portable proxy works with macOS Colima. Flutter captures render actual widgets with controlled fixture state; Android/iOS runtime currently checks real authentication, workspace rendering, profile/audio/admin panels and logout. Extend `integration_test/local_qa_test.dart` (or add feature-specific integration targets) for real channel, DM, upload, voice, capture-picker and reconnect scenarios. Media quality/capacity requires separate evidence; screenshots and emulator results do not close those gates.
+
+The issue #689 native runner also accepts `--platform windows --device windows` only with `--target integration_test/issue689_roster_test.dart`. It uses the same owned local API and the Windows Flutter runtime, but replaces preferences and secure storage with in-memory test implementations to avoid changing the user's settings or sessions. Windows Flutter reports no integration screenshot capability; this smoke does not establish visual, installed-release, secure-storage or media acceptance.
 
 The default report remains `REVIEW_REQUIRED` until its images are visually inspected. Missing native/runtime runs are `BLOCKED`; failed commands are `FAIL`. A passing widget capture never counts as a passing device run. No fixture mocks access production and no production account is required.
 

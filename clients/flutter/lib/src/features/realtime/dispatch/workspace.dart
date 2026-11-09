@@ -6,10 +6,10 @@ import '../lifecycle/event.dart';
 import '../../session/own_sessions/hint.dart';
 import '../../telemetry/realtime/process.dart';
 import 'conversation_events.dart';
-import 'direct_message.dart';
 import 'screen_preview_event.dart';
 import 'member_profile.dart';
 import 'presence.dart';
+import 'recovery.dart';
 
 class WorkspaceRealtimeDispatch {
   WorkspaceRealtimeDispatch(
@@ -24,11 +24,16 @@ class WorkspaceRealtimeDispatch {
     this.screenPreviewInvalidated,
     this.screenViewersChanged,
     this.notificationHint,
+    this.rosterEvent,
+    this.maintenanceEvent,
   });
   final WorkspaceController workspace;
   final ConversationController conversation;
   final void Function(RealtimeEvent) notifyMessage;
-  final FutureOr<void> Function(String?,Map<String,dynamic>)? notificationHint;
+  final FutureOr<void> Function(String?, Map<String, dynamic>)?
+  notificationHint;
+  final bool Function(RealtimeEvent)? rosterEvent;
+  final bool Function(RealtimeEvent)? maintenanceEvent;
   final FutureOr<void> Function(Map<String, dynamic>) voiceRevoked;
   final FutureOr<void> Function() permissionsChanged;
   final FutureOr<void> Function(int)? guildChanged;
@@ -37,23 +42,32 @@ class WorkspaceRealtimeDispatch {
   final void Function(Map<String, dynamic>)? screenPreviewUpdated;
   final void Function(Map<String, dynamic>)? screenPreviewInvalidated;
   Future<void> call(RealtimeEvent event) async {
-    if(event.kind=='notification.queued'||event.kind=='notification.preferences_changed'){await notificationHint?.call(event.kind,event.payload);return;}
-    if (await dispatchMemberProfileUpdated(event, workspace, profileChanged))
+    if (maintenanceEvent?.call(event) == true) return;
+    if (rosterEvent?.call(event) == true) return;
+    if (event.kind == 'notification.queued' ||
+        event.kind == 'notification.preferences_changed') {
+      await notificationHint?.call(event.kind, event.payload);
       return;
+    }
+    if (await dispatchMemberProfileUpdated(event, workspace, profileChanged)) {
+      return;
+    }
     if (await dispatchPresence(event, workspace)) return;
     if (await dispatchConversationEvent(
       event,
       workspace,
       conversation,
       notifyMessage,
-    ))
+    )) {
       return;
+    }
     if (dispatchScreenPreviewEvent(
       event,
       screenPreviewUpdated,
       screenPreviewInvalidated,
-    ))
+    )) {
       return;
+    }
     final payload = event.payload;
     switch (event.kind) {
       case 'guild.profile.updated':
@@ -83,27 +97,13 @@ class WorkspaceRealtimeDispatch {
         await permissionsChanged();
         await screenViewersChanged?.call();
       case 'connection.resync_required':
-        await guildChanged?.call(0);
-        await processEffect(
+        await dispatchRecovery(
           event,
-          conversation.api.transport.session.telemetry,
-          () async {
-            await workspace.refreshTopology(strict: true);
-            await Future.wait<void>([
-              workspace.refreshMembers(strict: true),
-              workspace.refreshDirectMessages(strict: true),
-              Future<void>.sync(permissionsChanged),
-              if (workspace.selectedChannel?.kind == ChannelKind.text)
-                conversation.refreshSelectedTextHistory(
-                  strict: true,
-                  replace: true,
-                ),
-              if (conversation.selectedDirectMessage != null)
-                refreshDirectEvent(conversation, null, true),
-              if (screenViewersChanged != null)
-                Future<void>.sync(screenViewersChanged!),
-            ]);
-          },
+          workspace,
+          conversation,
+          permissionsChanged,
+          guildChanged,
+          screenViewersChanged,
         );
       case 'voice.lease_revoked':
         await processEffect(

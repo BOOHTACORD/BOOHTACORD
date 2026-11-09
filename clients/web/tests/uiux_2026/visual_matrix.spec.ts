@@ -269,7 +269,7 @@ describe('UIUX-2026 visual regression inventory', () => {
     const search = matrix.screens.find(({ id }) => id === 'M07')!
 
     expect(search.fixture).toBe('tools/qa/client_lifecycle/run.py')
-    expect(search.testFile).toBe('tools/qa/client_lifecycle/scenario.mjs')
+    expect(search.testFile).toBe('tools/qa/client_lifecycle/journey/scenario.mjs')
     expect(search.interaction).toContain('global workspace search')
     expect(search.owner).toContain('clients/web/src/workspace/search/WorkspaceSearchPanel.vue')
     expect(search.owner).toContain('clients/web/src/search/SearchPanel.vue')
@@ -448,7 +448,7 @@ describe('UIUX-2026 visual regression inventory', () => {
       const reportCapture = report.captures.find(({ catalog_slot }: { catalog_slot: string }) => catalog_slot === screenId)!
       expect(screen.sourceComparisonStatus, `${screenId} review status`).toBe('REVIEWED_CAPTURE_NOT_APPROVED_GOLDEN')
       expect(screen.fixture).toBe('tools/qa/client_lifecycle/run.py')
-      expect(screen.testFile).toBe('tools/qa/client_lifecycle/scenario.mjs')
+      expect(screen.testFile).toBe('tools/qa/client_lifecycle/journey/scenario.mjs')
       expect(capture.source.sha256).toMatch(/^[a-f0-9]{64}$/)
       expect(capture.after.sha256).toMatch(/^[a-f0-9]{64}$/)
       expect(capture.source.raster).toBe(capture.after.raster)

@@ -1,0 +1,21 @@
+/* The workspace shares the viewport with maintenance and update notices. */
+#app:has(> .app-frame) {
+  display: flex;
+  height: 100dvh;
+  flex-direction: column;
+}
+
+#app > .maintenance-banner, #app > .update-banner {
+  flex: 0 0 auto;
+}
+
+#app > .app-frame {
+  flex: 1 1 0;
+  height: auto;
+  min-height: 0;
+}
+
+#app > .app-frame > .gc-shell {
+  height: 100%;
+  min-height: 0;
+}

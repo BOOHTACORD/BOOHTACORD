@@ -1,6 +1,6 @@
 # ADR-015: Long-lived voice roster SSE with session revalidation
 
-- **Status:** Accepted
+- **Status:** Superseded by ADR-031 for the coordinated issue #689 cutover; historical production evidence remains valid for the release it describes.
 - **Date:** 2026-10-02
 - **Decision owners:** Voice Platform maintainers
 

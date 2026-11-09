@@ -13,7 +13,12 @@ def main():
     for panel in dashboard['panels']:
         for target in panel['targets']:
             expression = target['expr'].replace('$__rate_interval', '5m')
-            rules.append({'record': f'roster_dashboard_panel_{panel["id"]}', 'expr': expression})
+            rules.append({'record': f'roster_dashboard_panel_{panel["id"]}_{target["refId"]}', 'expr': expression})
+    fleet = json.loads((root / 'docker/observability/fleet/dashboards/voice-roster.json').read_text(encoding='utf-8'))
+    for panel in fleet['panels']:
+        for target in panel['targets']:
+            expression = target['expr'].replace('$installation', 'synthetic').replace('$__rate_interval', '5m')
+            rules.append({'record': f'fleet_roster_panel_{panel["id"]}_{target["refId"]}', 'expr': expression})
     destination = root / '.out/voice-roster/dashboard-rules.yaml'
     destination.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(root / 'docker/observability/voice-roster-alerts.yaml', destination.parent / 'voice-roster-alerts.yaml')

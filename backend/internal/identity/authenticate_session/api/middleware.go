@@ -33,7 +33,7 @@ func Require(authenticator Authenticator) func(http.Handler) http.Handler {
 				return
 			}
 			if err != nil {
-				if errors.Is(err, context.DeadlineExceeded) && (request.URL.Path == "/api/v1/voice/participants" || request.URL.Path == "/api/v1/voice/rosters/events") {
+				if errors.Is(err, context.DeadlineExceeded) && request.URL.Path == "/api/v1/voice/participants" {
 					writer.Header().Set("Cache-Control", "no-store")
 					writer.Header().Set("Retry-After", "1")
 					writer.Header().Set("Content-Type", "application/json; charset=utf-8")
