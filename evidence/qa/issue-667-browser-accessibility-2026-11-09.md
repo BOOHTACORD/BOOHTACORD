@@ -11,3 +11,9 @@ On the same product source, `flutter test --no-pub test/admin_accessibility test
 A follow-up standalone diagnostic loaded the message module in 100 fresh Chromium pages against its own Vite server: 100 imports passed and no non-API request error was observed. This narrower diagnostic did not recreate the full suite or its API fixtures, so it does not explain or erase the intermittent failures.
 
 Another repeat ran five scenarios that failed in the two full-suite attempts ten times each, with temporary browser listeners for failed `/src/` and `/node_modules/` requests. All 50 passed; no such request failure was recorded. The listeners were removed after the run. This is targeted retry evidence only; it does not convert either full-suite failure into a pass or establish a root cause.
+
+## Isolated dependency-cache follow-up
+
+The preceding failed runs used a `node_modules` symlink whose final target was shared with a separate working copy. The experiment moved this run's symlink aside, copied the same lockfile-compatible dependencies into a private directory, and started with a private Vite cache. On product Web source `8306413a84c224a712509d7a059916c95b00bd3c`, the full 114-case accessibility Playwright configuration then passed twice, and its additional axe case passed independently. The exact project command `npm run test:accessibility` subsequently completed successfully: 114/114 followed by 1/1, exit 0. The Linux copy also contained an unrelated Flutter candidate and QA navigation-helper change, neither used by these Web fixtures.
+
+This improves current repeatability and identifies shared mutable dependency/cache state as a plausible contributor; it does not prove that it caused any prior failure, whose original results remain FAIL. It is browser fixture evidence only, not physical screen-reader, exhaustive visual, platform or production accessibility acceptance. #667 remains open.
