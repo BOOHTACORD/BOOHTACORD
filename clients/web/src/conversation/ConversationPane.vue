@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { VoiceDisconnectNotice } from '../voice/disconnect_notice/model'
 import DisconnectNotice from '../voice/disconnect_notice/Notice.vue'
-import { computed } from 'vue'
+import { computed, shallowRef } from 'vue'
 import type { TopologyChannel } from '../channel/topology_client'
 import DirectMessageConversation from '../direct_message/DirectMessageConversation.vue'
 import type { DirectMessageListItem } from '../direct_message/direct_message_client'
@@ -68,6 +68,8 @@ const props = withDefaults(defineProps<{
 })
 const emit = defineEmits<{ clearScreenStream: []; join: [channelId: string, transfer?: boolean, joinMode?: VoiceJoinMode]; leave: []; refreshScreen: []; retryScreenStream: [automatic?: boolean]; returnVoice: [channelId: string]; selectScreenStream: [id: string, video: HTMLVideoElement | null, audio: HTMLAudioElement | null]; setParticipantVolume: [id: string, percent: number]; setScreenVolume: [percent: number]; toggleScreenAudio: []; startScreen: [profile: ScreenProfile]; stopScreen: []; transfer: [channelId: string]; toggleNav: []; toggleMembers: [] }>()
 const selectedScreenProfile = computed(() => props.selectedScreenProfile)
+const inlineMiniPlayerTarget = shallowRef<HTMLElement | null>(null)
+const activeMiniPlayerTarget = computed(() => props.visible && inlineMiniPlayerTarget.value ? inlineMiniPlayerTarget.value : props.miniPlayerTarget ?? null)
 const microphoneActionLabel = computed(() => props.activationMode === 'PTT' ? 'Микрофон управляется push-to-talk' : props.selfMicrophoneUnavailable ? 'Повторить доступ к микрофону' : props.selfMicrophoneMuted || props.selfDeafened ? 'Включить микрофон' : 'Выключить микрофон')
 const microphoneActionDisabled = computed(() => props.activationMode === 'PTT' || props.selfDeafened || props.deafenChanging || props.voiceState === 'JOINING' || props.voiceState === 'RECONNECTING' || props.voiceState === 'LEAVING')
 const { screenExpanded,
@@ -76,11 +78,12 @@ function clearScreenPreview(): void {
   dismissLocalPreview()
   emit('clearScreenStream')
 }
+function setInlineMiniPlayerTarget(target: HTMLElement | null): void { inlineMiniPlayerTarget.value = target }
 </script>
 <template>
   <section class="conversation-pane" aria-live="polite">
     <template v-if="directMessage">
-      <DirectMessageConversation :key="directMessage.id" :account-id="accountId" :active="visible" :direct-message-id="directMessage.id" :other-participant-id="directMessage.otherParticipantId" :other-participant-display-name="directMessage.otherParticipantDisplayName" :nav-open="navOpen" @toggle-nav="emit('toggleNav')" />
+      <DirectMessageConversation :key="directMessage.id" :account-id="accountId" :active="visible" :direct-message-id="directMessage.id" :other-participant-id="directMessage.otherParticipantId" :other-participant-display-name="directMessage.otherParticipantDisplayName" :nav-open="navOpen" @mini-player-target="setInlineMiniPlayerTarget" @toggle-nav="emit('toggleNav')" />
     </template>
     <template v-else-if="!channel">
       <header class="main-header conversation-header">
@@ -90,10 +93,10 @@ function clearScreenPreview(): void {
       <p>Навигация показывает только данные, полученные от текущей серверной сессии.</p>
     </template>
     <template v-else-if="channel.kind === 'TEXT'">
-      <TextConversation :key="channel.id" :account-id="accountId" :active="visible" :channel-id="channel.id" :channel-name="channel.name" :channel-description="channel.description" :nav-open="navOpen" :members-open="membersOpen" :show-members="showMembers" @toggle-nav="emit('toggleNav')" @toggle-members="emit('toggleMembers')" />
+      <TextConversation :key="channel.id" :account-id="accountId" :active="visible" :channel-id="channel.id" :channel-name="channel.name" :channel-description="channel.description" :nav-open="navOpen" :members-open="membersOpen" :show-members="showMembers" @mini-player-target="setInlineMiniPlayerTarget" @toggle-nav="emit('toggleNav')" @toggle-members="emit('toggleMembers')" />
     </template>
     <template v-if="voiceChannel && keepVoiceRoom">
-      <Teleport :to="miniVisible && miniPlayerTarget ? miniPlayerTarget : 'body'" :disabled="!screenExpanded && !(miniVisible && miniPlayerTarget)">
+      <Teleport :to="miniVisible && activeMiniPlayerTarget ? activeMiniPlayerTarget : 'body'" :disabled="!screenExpanded && !(miniVisible && activeMiniPlayerTarget)">
         <section class="voice-room" :class="{ 'voice-room--screen-expanded': screenExpanded, 'voice-room--mini': miniVisible }">
           <header class="main-header conversation-header">
             <span class="conversation-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 4V5L7 9H3ZM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11" /></svg></span>
