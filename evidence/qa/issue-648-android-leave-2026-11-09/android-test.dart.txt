@@ -1,0 +1,113 @@
+import 'dart:async';
+import 'dart:io';
+import 'package:crypto/crypto.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:boohtacord_desktop/src/app.dart';
+import 'package:boohtacord_desktop/src/app_state.dart';
+import 'package:boohtacord_desktop/src/models.dart';
+import 'package:boohtacord_desktop/src/services/api_client.dart';
+import 'package:boohtacord_desktop/src/features/voice/admission/join.dart';
+import 'package:boohtacord_desktop/src/features/voice/connection_close/leave.dart';
+
+class LocalQaTls extends HttpOverrides {
+  LocalQaTls(this.pin);
+  final String pin;
+  @override
+  HttpClient createHttpClient(SecurityContext? context) =>
+      super.createHttpClient(context)..badCertificateCallback = (cert, host, port) =>
+          host == 'localhost' && port == 4910 && sha256.convert(cert.der).toString() == pin;
+}
+
+void main() {
+  final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  testWidgets('Windows returns to same voice after owned server outage', (tester) async {
+    const origin=String.fromEnvironment('QA_API_BASE');
+    const pin=String.fromEnvironment('QA_CERT_SHA256');
+    const password=String.fromEnvironment('QA_PASSWORD');
+    if (origin!='https://localhost:4910/api/v1' || pin.length!=64 || password.isEmpty) {
+      throw StateError('Disposable QA endpoint, pinned certificate and credentials required');
+    }
+    HttpOverrides.global=LocalQaTls(pin);
+    addTearDown(() => HttpOverrides.global=null);
+    SharedPreferences.setMockInitialValues({});
+    FlutterSecureStorage.setMockInitialValues({});
+    final preferences=await SharedPreferences.getInstance();
+    await preferences.setString('server_url',origin);
+    final api=ApiClient();
+    final state=AppState(api);
+    addTearDown(state.dispose);
+    await tester.pumpWidget(BoohtacordApp(state:state));
+    await tester.runAsync(state.initialize);
+    await tester.pumpAndSettle();
+    if (state.phase!=AppPhase.ready) {
+      final fields=find.byType(TextFormField);
+      expect(fields,findsNWidgets(2));
+      await tester.enterText(fields.at(0),'qa_admin');
+      await tester.enterText(fields.at(1),password);
+      FocusManager.instance.primaryFocus?.unfocus();
+      await tester.pump();
+      await tester.tap(find.text('Войти').last);
+      for (var i=0;i<120 && state.phase!=AppPhase.ready;i++) {
+        await tester.pump(const Duration(milliseconds:250));
+      }
+    }
+    expect(state.phase,AppPhase.ready);
+    await tester.runAsync(state.refreshTopology);
+    expect(state.topology,isNotNull);
+    await tester.runAsync(() async {
+      if (!state.topology!.categories.any((c)=>c.name=='Voice QA')) {
+        await api.createCategory('Voice QA');
+        await state.refreshTopology();
+      }
+      final category=state.topology!.categories.firstWhere((c)=>c.name=='Voice QA');
+      if (!category.channels.any((c)=>c.name=='Voice QA' && c.kind==ChannelKind.voice)) {
+        await api.createChannel(categoryId:category.id,name:'Voice QA',kind:ChannelKind.voice);
+        await state.refreshTopology();
+      }
+    });
+    final channel=state.topology!.categories.expand((c)=>c.channels)
+      .firstWhere((c)=>c.name=='Voice QA' && c.kind==ChannelKind.voice);
+    await tester.runAsync(() => state.voice.joinVoice(channel,listenerOnly:true));
+    expect(state.voicePhase,VoicePhase.listener);
+    expect(state.voiceChannel?.id,channel.id);
+    await tester.pump();
+    if (Platform.isAndroid) await binding.convertFlutterSurfaceToImage();
+    await tester.pump();
+    if (Platform.isAndroid) await binding.takeScreenshot('voice-before-outage');
+    for (var i = 0; i < 10; i++) {
+      await tester.runAsync(() => Future<void>.delayed(const Duration(seconds: 1)));
+      await tester.pump();
+      expect(state.voicePhase, VoicePhase.listener);
+      expect(state.voiceChannel?.id, channel.id);
+    }
+    debugPrint('ISSUE648_READY_FOR_OUTAGE');
+    var interrupted=false;
+    for (var n=0;n<180;n++) {
+      await tester.runAsync(() => Future<void>.delayed(const Duration(seconds:1)));
+      await tester.pump();
+      if (state.voicePhase==VoicePhase.reconnecting && state.voice.lastVoiceAdmissionFailure != null) {interrupted=true; break;}
+    }
+    expect(interrupted,isTrue,reason:'Recovery state not observed');
+    final leaveButton = find.byTooltip('Выйти из голосового канала');
+    expect(leaveButton, findsOneWidget);
+    await tester.tap(leaveButton);
+    for (var i=0; i<30 && state.voiceChannel!=null; i++) {
+      await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds:500)));
+      await tester.pump();
+    }
+    expect(state.voiceChannel,isNull);
+    expect(state.voice.voiceRecoveryActive,isFalse);
+    debugPrint('ISSUE648_LEFT_WHILE_DOWN');
+    for (var n=0;n<90;n++) {
+      await tester.runAsync(() => Future<void>.delayed(const Duration(seconds:1)));
+      await tester.pump();
+      expect(state.voiceChannel,isNull,reason:'Rejoined after explicit leave');
+    }
+    debugPrint('ISSUE648_STAYED_LEFT');
+    if (Platform.isAndroid) await binding.takeScreenshot('voice-stayed-left');
+  }, timeout: const Timeout(Duration(minutes:25)));
+}
