@@ -36,7 +36,7 @@ part 'app_state_parts/voice/admission.dart';
 part 'app_state_parts/direct/read.dart';
 part 'app_state_parts/history/edit.dart';
 part 'app_state_parts/history/delete.dart';
-part 'app_state_parts/attachments/routing.dart';
+part 'app_state_parts/attachment_routing.dart';
 part 'app_state_parts/fakes/state.dart';
 part 'app_state_parts/fakes/search.dart';
 part 'app_state_parts/fakes/identity.dart';

@@ -159,6 +159,7 @@
       }
     ],
     "parity_review": {
+      "issue689_follow_up": "Issue 689 changes session realtime handoff for Web and shared Flutter. Existing authentication regression suites remain required; Android/iOS current-source runtime acceptance is not established.",
       "issue": 676,
       "decisions": {
         "web": "implementation_and_regression",
@@ -390,6 +391,7 @@
       }
     ],
     "parity_review": {
+      "issue689_follow_up": "Issue 689 migrates maintenance and connection state to the shared WebSocket on Web and Flutter. Focused tests exist; complete Android and iOS runtime acceptance remains open.",
       "issue": 582,
       "decisions": {
         "web": "implementation_and_regression",
@@ -819,6 +821,7 @@
       }
     ],
     "parity_review": {
+      "issue689_follow_up": "Issue 689 migrates voice roster and revocation hints to WebSocket. Web and shared Flutter tests cover parts of delivery; physical voice and iOS runtime acceptance remain open.",
       "issue": 676,
       "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged. PR #625 (2026-10-31): Web stream-viewer overflow removes the dedicated diagnostics and duplicate full-area expand actions, and opens the participant roster with an accessible people icon. Focused browser regressions cover the menu, roster action, playback and fullscreen; Flutter/iOS/Android behavior and platform decisions are unchanged. PR #629 (2026-10-31): Web watcher text is a quiet inline label; the participant volume menu overlaps the microphone state and sits 4px below its center. Focused browser regressions cover watcher layout and hover alignment. Flutter, iOS and Android UI and platform decisions are unchanged. 2026-11-08 PR #683: Web connected participant cards allow at most four columns and the full-screen viewer exposes microphone mute. Voice admission, mute/deafen state ownership, and transport are unchanged. Flutter/iOS/Android implementations are unchanged; Web voice and screen-share browser regressions are included. 2026-11-09 PR #697: Web keeps the participant-roster toggle reachable after hiding the roster and places the retained mini stream preview beneath the text/DM header. The responsive roster, voice admission, mute/deafen ownership and transport are unchanged. Flutter/iOS/Android implementations are unchanged; existing voice platform decisions remain in force.",
       "decisions": {
@@ -1363,6 +1366,7 @@
       }
     ],
     "parity_review": {
+      "issue689_follow_up": "Issue 689 changes common workspace realtime and connection recovery while preserving existing screen feature behavior. Screen regression suites remain required on Web and native platforms; full current-source native media acceptance remains open.",
       "issue": 676,
       "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged. PR #625 (2026-10-31): the Web stream-viewer overflow menu removes the dedicated diagnostics and duplicate full-area expand actions, and opens the participant roster with an accessible people icon. Focused browser regressions cover the menu, roster action, playback and fullscreen; Flutter/iOS/Android behavior and existing platform decisions are unchanged. PR #626 (2026-10-31): Web participant stream previews use object-fit: cover to fill the card. This is a CSS-only browser presentation change; Flutter/iOS/Android preview behavior and platform decisions are unchanged. PR #629 (2026-10-31): Web watcher text is a quiet inline label; the participant volume menu overlaps the microphone state and sits 4px below its center. Focused browser regressions cover watcher layout and hover alignment. Flutter, iOS and Android UI and platform decisions are unchanged. 2026-11-08 PR #683: Web full-screen stream controls expose microphone mute, and the TEXT mini-player no longer reserves roster space. Flutter/iOS/Android screen presentation and behavior are unchanged; Web screen-share browser regressions are included. 2026-11-09 PR #697: Web docks the retained mini stream preview immediately below text/DM headers and keeps the participant toggle reachable when the roster closes. Stream capture, playback, audio and transport are unchanged; Flutter/iOS/Android implementations are unchanged.",
       "decisions": {
@@ -2083,7 +2087,25 @@
     "web": ["tests/update_required/playwright.config.ts"],
     "flutter": ["test/updates/required_test.dart", "test/updates/required_guard_test.dart", "test/updates/required_back_test.dart", "test/updates/required_action_test.dart", "test/updates/required_action_failure_test.dart", "test/updates/required_api_test.dart", "test/updates/required_stale_test.dart"],
     "native_targets": ["integration_test/update_required_test.dart"],
-    "acceptance": {"required_update_gate": {"scope": "A supported client below the configured minimum presents a non-snoozable update gate without discarding a mounted draft; real catalog and native runtime acceptance required.", "status": "NOT_RUN"}}
+    "acceptance": {"required_update_gate": {"scope": "A supported client below the configured minimum presents a non-snoozable update gate without discarding a mounted draft; real catalog and native runtime acceptance required.", "status": "NOT_RUN"}},
+    "parity_review": {
+      "issue": 689,
+      "decisions": {"web": "implementation_and_regression", "ios": "implementation_and_regression", "android": "implementation_and_regression"},
+      "scope": "Required-update presentation is registered for Web and shared Flutter. Browser and widget tests cover the gate; current-source native release, real catalog and iOS runtime acceptance remain NOT_RUN."
+    },
+    "parity": [{
+      "id": "updates.required_gate",
+      "expected": "A client below a configured minimum must show an update gate while preserving the mounted draft.",
+      "issue": 689,
+      "status": "NOT_VERIFIED",
+      "source": "Current checkout; exact release source and runtime are verified separately.",
+      "shipped": "Not established for the current release candidate.",
+      "platforms": {
+        "web": {"entrypoint": "clients/web/src/updates/RequiredUpdateGate.vue", "tests": ["clients/web/tests/update_required/required.browser.spec.ts"], "runtime": "NOT_VERIFIED", "conditions": "Configured minimum and browser runtime acceptance required."},
+        "ios": {"entrypoint": "clients/flutter/lib/src/features/updates/required_page.dart", "tests": ["clients/flutter/test/updates/required_test.dart"], "runtime": "NOT_RUN", "conditions": "Requires iOS runtime, configured catalog and signed build."},
+        "android": {"entrypoint": "clients/flutter/lib/src/features/updates/required_page.dart", "tests": ["clients/flutter/test/updates/required_test.dart"], "runtime": "NOT_VERIFIED", "conditions": "Requires Android runtime and configured catalog acceptance for this release."}
+      }
+    }]
   },
   "shell": {
     "paths": [
@@ -2418,6 +2440,7 @@
       }
     ],
     "parity_review": {
+      "issue689_follow_up": "Issue 689 changes shared Web and Flutter workspace realtime delivery and maintenance state. Shell regression suites remain required; complete current-source Android and iOS runtime acceptance remains open.",
       "issue": 676,
       "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged. PR #625 (2026-10-31): Web stream-viewer overflow removes the dedicated diagnostics and duplicate full-area expand actions, and opens the participant roster with an accessible people icon. Focused browser regressions cover the menu, roster action, playback and fullscreen; Flutter/iOS/Android behavior and platform decisions are unchanged. PR #626 (2026-10-31): Web participant stream previews use object-fit: cover to fill the card. This is a CSS-only browser presentation change; Flutter/iOS/Android preview behavior and platform decisions are unchanged. PR #629 (2026-10-31): Web watcher text is a quiet inline label; the participant volume menu overlaps the microphone state and sits 4px below its center. Focused browser regressions cover watcher layout and hover alignment. Flutter, iOS and Android UI and platform decisions are unchanged. 2026-11-08 PR #682: Web chat unread/search navigation and sent-message follow behavior are covered by Web unit, browser and real-stack regressions (evidence/qa/web-chat-reading-navigation-2026-11-08.md). Flutter/iOS/Android code is unchanged; no native runtime claim. 2026-11-08 PR #683: Web conversation and workspace header actions keep the member-list control available after hiding it and remove redundant per-conversation search entry points. Flutter/iOS/Android sources and behavior are unchanged; Web browser regressions are included. 2026-11-09 PR #697: Web keeps the participants control in the conversation header after closing the roster and positions the retained mini stream preview below that header. Voice connection and shell navigation state are unchanged; Flutter/iOS/Android implementations are unchanged.",
       "decisions": {
@@ -2626,6 +2649,7 @@
       }
     ],
     "parity_review": {
+      "issue689_follow_up": "Issue 689 changes shared realtime paths selected by this feature registry. Existing telemetry regression suites remain required; current-source Android/iOS runtime and telemetry evidence are not established.",
       "issue": 532,
       "decisions": {
         "web": "implementation_and_regression",
@@ -2782,6 +2806,7 @@
       }
     ],
     "parity_review": {
+      "issue689_follow_up": "Issue 689 changes common Web and Flutter workspace realtime delivery. Support-specific behavior is retained; existing Web and shared Flutter regression suites and current-source native acceptance remain required.",
       "issue": 609,
       "decisions": {
         "web": "implementation_and_regression",
