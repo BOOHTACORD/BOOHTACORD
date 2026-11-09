@@ -177,6 +177,7 @@
       "clients/flutter/lib/src/screens/workspace_ui/sidebar/component.dart",
       "clients/flutter/integration_test/local_qa_test.dart",
       "clients/web/src/realtime/**",
+      "clients/web/src/voice/roster_socket/**",
       "clients/web/src/maintenance/**"
     ],
     "web": [
@@ -254,6 +255,10 @@
       "issue689_web_roster_contract": {
         "focused": "clients/web/src/realtime/roster_payload.spec.ts",
         "scope": "Web parser accepts only typed, versioned voice rosters and safe unavailable events without advancing replay cursors; server delivery and browser acceptance remain separate."
+      },
+      "issue689_web_roster_state": {
+        "focused": "clients/web/src/voice/roster_socket/state.spec.ts",
+        "scope": "Shared-socket roster state distinguishes unknown, fresh, retained and unavailable values, rejects stale revisions and expires a missing initial snapshot. Workspace integration and real browser acceptance remain separate."
       },
       "issue689_web_authenticated_maintenance": {
         "focused": ["clients/web/src/maintenance/auth_owner.spec.ts", "clients/web/src/workspace/workspace_maintenance.spec.ts"],
