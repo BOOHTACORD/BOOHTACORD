@@ -168,6 +168,8 @@
       "clients/web/src/App.vue",
       "clients/web/src/workspace/workspace_realtime.ts",
       "clients/web/src/workspace/workspace_maintenance.spec.ts",
+      "clients/web/src/workspace/workspace_roster_socket.spec.ts",
+      "clients/web/src/workspace/composition/**",
       "clients/web/src/workspace/protected_refresh/**",
       "clients/web/src/request_feedback.ts",
       "tools/qa/local_features/features.json",
@@ -259,6 +261,10 @@
       "issue689_web_roster_state": {
         "focused": "clients/web/src/voice/roster_socket/state.spec.ts",
         "scope": "Shared-socket roster state distinguishes unknown, fresh, retained and unavailable values, rejects stale revisions and expires a missing initial snapshot. Workspace integration and real browser acceptance remain separate."
+      },
+      "issue689_web_roster_socket": {
+        "focused": ["clients/web/src/workspace/workspace_roster_socket.spec.ts", "clients/web/src/voice/roster_socket/state.spec.ts", "clients/web/src/realtime/realtime_client.spec.ts"],
+        "scope": "Web consumes negotiated roster snapshots on the existing authenticated socket, preserves unknown and retained states and retries through that socket. Real browser network, visual and media acceptance remain separate."
       },
       "issue689_web_authenticated_maintenance": {
         "focused": ["clients/web/src/maintenance/auth_owner.spec.ts", "clients/web/src/workspace/workspace_maintenance.spec.ts"],

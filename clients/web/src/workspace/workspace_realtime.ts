@@ -32,9 +32,10 @@ import { createMaintenanceState } from '../maintenance/state'
 import { maintenanceStateKey } from '../maintenance/context'
 import { hasInjectionContext, inject } from 'vue'
 import { checked, refreshProtectedState } from './protected_refresh/full'
+import type { createRosterSocketState } from '../voice/roster_socket/state'
 export type { WorkspaceRealtimeStores } from './protected_refresh/types'
 export { refreshProtectedState } from './protected_refresh/full'
-export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtime: ReturnType<typeof useRealtimeStore>, presence: ReturnType<typeof useGuildPresence>, voice: ReturnType<typeof useVoiceConnectionStore>, accountID: string, onSessionExpired: () => void, maintenanceState?: ReturnType<typeof createMaintenanceState>) {
+export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtime: ReturnType<typeof useRealtimeStore>, presence: ReturnType<typeof useGuildPresence>, voice: ReturnType<typeof useVoiceConnectionStore>, accountID: string, onSessionExpired: () => void, maintenanceState?: ReturnType<typeof createMaintenanceState>, roster?: ReturnType<typeof createRosterSocketState>) {
   let gate = createProtectedRefreshGate()
   const original = stores
   stores = coalesceStores(original, gate)
@@ -56,6 +57,7 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
   function onEvent(event: RealtimeEvent, notify = true): void | Promise<void> {
     if (!active) return
     if (maintenance.accept(event)) return
+    if (roster?.accept(event)) return
     const eventLifecycle = lifecycle
     if (event.kind === 'notification.queued' || event.kind === 'notification.preferences_changed') return acceptNotificationHint(event,accountID).then(()=>undefined)
     if (presence.acceptRealtimeEvent(event)) {
@@ -104,8 +106,8 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
         onRecovery: () => processRealtime([],()=>Promise.all([refreshProtectedState(stores), permissions.refresh(), guildProfile.refresh(), voice.refreshScreenWatchers(), contextHints.recover()]).then(() => undefined)),
         checkSession: async () => (await loadCurrentSession())?.accountId === accountID,
         onSessionExpired,
-        onSocketStart: maintenance.start,
-        onSocketEnd: maintenance.stop,
+        onSocketStart: () => { maintenance.start(); roster?.socketStart() },
+        onSocketEnd: () => { maintenance.stop(); roster?.socketEnd() },
       })
     },
     stop(): void { active = false; lifecycle += 1; contextHints.reset(); previews.clear(); gate.close(); realtime.disconnect(); notifications.stop() },
