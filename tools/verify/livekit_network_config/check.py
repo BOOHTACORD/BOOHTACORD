@@ -97,6 +97,8 @@ def main():
     expected_artifacts |= integrated["repository_artifacts"]
     transfer_recovery = read(root, "evidence/media/livekit-network-transfer-recovery-2026-11-09.json")
     expected_artifacts |= transfer_recovery["repository_artifacts"]
+    voice_large_text = read(root, "evidence/media/livekit-network-voice-large-text-2026-11-09.json")
+    expected_artifacts |= voice_large_text["repository_artifacts"]
     for path, expected in expected_artifacts.items():
         content = (root / path).read_bytes().replace(b"\r\n", b"\n")
         actual = hashlib.sha256(content).hexdigest()
