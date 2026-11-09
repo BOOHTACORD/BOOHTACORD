@@ -66,6 +66,9 @@ func (p *Pool) run(ctx context.Context, sub Subscription, token string, principa
 		default:
 		}
 		if err != nil {
+			if !sub.RetryOnNextRefresh() {
+				return
+			}
 			if !publish(ctx, out, Delivery{Unavailable: true}) {
 				return
 			}

@@ -31,7 +31,8 @@ export function createRosterSocketState(reconnectSocket: () => void) {
     clearInitial()
     if (!validVoiceRosterRealtime(event.kind, event.payload) || event.kind === 'voice.roster.unavailable') { unavailable(); return true }
     const nextGeneration = event.payload.generation as string, nextRevision = event.payload.revision as number
-    if (generation === nextGeneration && nextRevision <= revision) return true
+    if (generation === nextGeneration && (nextRevision < revision ||
+      (nextRevision === revision && status.value !== 'stale_reconnecting' && status.value !== 'unavailable'))) return true
     try {
       const next = parseVoiceRosters(event.payload)
       generation = nextGeneration; revision = nextRevision

@@ -20,6 +20,8 @@ function valid(policy: UpdatePolicy): boolean {
   if (!['published', 'unconfigured', 'disabled'].includes(policy.state ?? '')) return false
   if (policy.state !== 'published') return policy.target === null
   const target = policy.target
+  const minimum = target?.minimum_release_order
+  if (minimum != null && (!Number.isInteger(minimum) || minimum < 1 || minimum > 2147483647 || minimum > target!.release_order)) return false
   return Boolean(target && /^[A-Za-z0-9._-]{1,96}$/.test(target.release_id) && Number.isInteger(target.release_order) && target.release_order > 0 && Array.isArray(target.requirements?.supported_arches))
 }
 
@@ -39,4 +41,14 @@ export function evaluateUpdate(local: LocalIdentity | null, policy: UpdatePolicy
   if (target.release_order > local.release_order) return 'update_available'
   if (target.release_order < local.release_order) return 'current_ahead'
   return 'identity_conflict'
+}
+
+// This is a presentation decision, not a server authorization check.
+export function requiresUpdate(local: LocalIdentity | null, policy: UpdatePolicy, environment: EvaluationEnvironment): boolean {
+  if (!valid(policy) || policy.state !== 'published' || !policy.target) return false
+  const target = policy.target; const minimum = target.minimum_release_order
+  if (minimum == null || (target.expires_at && Date.parse(target.expires_at) <= Date.parse(environment.now ?? new Date().toISOString()))) return false
+  if (!local || !local.release_id || !Number.isInteger(local.release_order) || local.release_order < 1) return true
+  if (evaluateUpdate(local, policy, environment) === 'identity_conflict') return true
+  return local.release_order < minimum
 }

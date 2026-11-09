@@ -1,10 +1,12 @@
 {
   "auth": {
+    "native_targets": ["integration_test/issue689_roster_test.dart"],
     "paths": [
       "clients/web/src/identity/*",
       "clients/flutter/lib/src/screens/auth*",
       "clients/flutter/lib/src/screens/password_reset_screen.dart",
       "clients/flutter/lib/src/features/session/*",
+      "clients/flutter/lib/src/services/maintenance_events.dart",
       "clients/flutter/lib/src/core/session/*",
       "backend/internal/identity/session/*",
       "backend/internal/identity/login_user/**",
@@ -33,10 +35,19 @@
       "test/auth_capacity_test.dart",
       "test/auth_screen_test.dart",
       "test/auth_rate_limit_test.dart",
+      "test/session_lifecycle/authentication_failure_test.dart",
       "test/authentication_password_policy_test.dart",
       "test/reset_preflight_contract_test.dart"
     ],
     "acceptance": {
+      "issue689_banner_viewport": {
+        "browser": "clients/web/tests/accessibility/composer_text_scale.browser.spec.ts",
+        "scope": "The maintenance unknown banner leaves the authenticated composer inside the viewport at enlarged text; real backend failure acceptance remains separate."
+      },
+      "issue689_failed_socket_handoff": {
+        "focused": "clients/flutter/test/session_lifecycle/authentication_failure_test.dart",
+        "scope": "A failed guest-to-authenticated socket handoff cannot leave the Flutter session marked ready; native failure-injection acceptance remains separate."
+      },
       "registration_password_parity": {
         "focused": [
           "clients/web/src/identity/auth_client.spec.ts",
@@ -159,6 +170,7 @@
     }
   },
   "connection_status": {
+    "native_targets": ["integration_test/issue689_roster_test.dart", "integration_test/issue689_delivery_revocation_test.dart"],
     "paths": [
       "clients/web/src/workspace/connection_status/**",
       "clients/web/tests/connection_status/**",
@@ -174,10 +186,13 @@
       "clients/web/src/request_feedback.ts",
       "tools/qa/local_features/features.json",
       "clients/flutter/lib/src/features/realtime/**",
+      "clients/flutter/lib/src/features/session/maintenance_socket/**",
       "clients/flutter/lib/src/features/voice/roster_state/**",
       "clients/flutter/lib/src/screens/workspace_ui/connection_status/**",
       "clients/flutter/lib/src/screens/workspace_ui/sidebar/component.dart",
       "clients/flutter/integration_test/local_qa_test.dart",
+      "clients/flutter/integration_test/issue689_roster_test.dart",
+      "clients/flutter/integration_test/issue689_support.dart",
       "clients/web/src/realtime/**",
       "clients/web/src/voice/roster_socket/**",
       "clients/web/src/maintenance/**"
@@ -191,6 +206,14 @@
       "test/workspace_connection_status_test.dart",
       "test/voice_roster_state/app_composition_test.dart",
       "test/voice_roster_state/shared_socket_test.dart",
+      "test/maintenance_socket/state_test.dart",
+      "test/maintenance_socket/guest_test.dart",
+      "test/maintenance_socket/guest_handoff_test.dart",
+      "test/maintenance_socket/guest_loopback_test.dart",
+      "test/maintenance_socket/controller_test.dart",
+      "test/maintenance_socket/app_handoff_test.dart",
+      "test/maintenance_socket/server_failure_test.dart",
+      "test/maintenance_socket/unknown_banner_test.dart",
       "test/realtime_scope/open_failure_test.dart",
       "test/realtime_scope/late_failure_test.dart",
       "test/realtime_scope/socket_recovery_integration_test.dart",
@@ -233,6 +256,19 @@
         "focused": "clients/flutter/test/realtime_scope/maintenance_event_test.dart",
         "scope": "Flutter accepts strict versioned maintenance payloads and starts recovery on malformed ones; real platform delivery remains a separate gate."
       },
+      "issue689_flutter_maintenance_state": {
+        "focused": "clients/flutter/test/maintenance_socket/state_test.dart",
+        "scope": "Flutter maintenance state rejects stale ownership and revisions and retains unknown status across socket handoffs. Transport and native runtime remain separate."
+      },
+      "issue689_flutter_maintenance_guest": {
+        "focused": ["clients/flutter/test/maintenance_socket/guest_test.dart", "clients/flutter/test/maintenance_socket/guest_handoff_test.dart", "clients/flutter/test/maintenance_socket/guest_loopback_test.dart"],
+        "scope": "Flutter guest owner accepts only public maintenance events, cancels handshakes and rejects stale owners; loopback verifies no cookie or client messages. Application handoff and native runtime remain separate."
+      },
+      "issue689_flutter_maintenance_handoff": {
+        "focused": ["clients/flutter/test/maintenance_socket/controller_test.dart", "clients/flutter/test/maintenance_socket/app_handoff_test.dart", "clients/flutter/test/maintenance_socket/server_failure_test.dart", "clients/flutter/test/maintenance_socket/unknown_banner_test.dart"],
+        "native": "integration_test/issue689_roster_test.dart",
+        "scope": "Flutter transfers maintenance ownership across guest, authenticated, logout and server-change flows, showing unknown status without inventing an inactive value. Native and visual gates remain separate."
+      },
       "issue689_flutter_roster_contract": {
         "focused": ["clients/flutter/test/realtime_scope/roster_event_test.dart", "clients/flutter/test/realtime_scope/roster_payload_validation_test.dart"],
         "scope": "Flutter validates versioned voice roster payloads and safe unavailable codes, rejects malformed frames and preserves durable replay cursors; native delivery remains separate acceptance work."
@@ -240,6 +276,11 @@
       "issue689_flutter_roster_state": {
         "focused": "clients/flutter/test/voice_roster_state/shared_socket_test.dart",
         "scope": "Flutter shared-socket roster state covers initial timeout, stale retention, scope changes and reconnect without a separate roster request. Production wiring and native runtime remain separate."
+      },
+      "issue689_flutter_roster_socket": {
+        "focused": ["clients/flutter/test/voice_roster_state/app_composition_test.dart", "clients/flutter/test/realtime_scope/manual_reconnect_test.dart"],
+        "native": "integration_test/issue689_roster_test.dart",
+        "scope": "Flutter routes roster snapshots and availability through its authenticated socket, retains stale state and retries on that socket. Android emulator and full real-stack acceptance remain separate."
       },
       "issue689_maintenance_contract": {
         "focused": "clients/web/src/realtime/maintenance_payload.spec.ts",
@@ -257,9 +298,18 @@
         "focused": "clients/web/src/realtime/socket_lifecycle.spec.ts",
         "scope": "Authenticated socket attempts signal start and end across failure, retry and disconnect, allowing state owners to discard stale callbacks; real browser acceptance remains separate."
       },
+      "issue689_web_hint_overflow": {
+        "focused": "clients/web/src/realtime/hint_batch/overflow.spec.ts",
+        "scope": "Web coalesced hint delivery bounds pending and in-flight work, demands recovery on overflow and does not acknowledge stale work; real socket pressure and lease-revocation acceptance remain separate."
+      },
       "issue689_flutter_socket_lifecycle": {
         "focused": ["clients/flutter/test/realtime_scope/socket_attempt_test.dart", "clients/flutter/test/realtime_scope/socket_recovery_integration_test.dart"],
         "scope": "Flutter reports exactly one start and end per realtime connection attempt, including a failed handshake and recovery; feature composition and Android runtime are separate."
+      },
+      "issue689_flutter_revocation_pressure": {
+        "focused": "clients/flutter/test/realtime_scope/delivery_revocation_test.dart",
+        "native": "integration_test/issue689_delivery_revocation_test.dart",
+        "scope": "Flutter applies voice lease revocation immediately despite a blocked or full event queue while preserving cursor order and recovery on failure; native real-socket pressure remains separate acceptance work."
       },
       "issue689_flutter_manual_reconnect": {
         "focused": "clients/flutter/test/realtime_scope/manual_reconnect_test.dart",
@@ -352,6 +402,7 @@
     }
   },
   "voice": {
+    "native_targets": ["integration_test/issue689_listener_test.dart", "integration_test/issue689_roster_test.dart"],
     "paths": [
       "clients/web/src/voice/*",
       "clients/web/src/conversation/ConversationPane.vue",
@@ -1722,7 +1773,12 @@
       "clients/web/src/conversation/history_window/*",
       "clients/web/src/conversation/message_target_navigation.ts",
       "clients/web/src/workspace/search/WorkspaceSearchPanel.vue",
-      "tools/qa/client_lifecycle/scenario.mjs",
+      "tools/qa/client_lifecycle/journey/scenario.mjs",
+      "tools/qa/client_lifecycle/journey/member_channel.mjs",
+      "tools/qa/client_lifecycle/journey/member_log.mjs",
+      "tools/qa/client_lifecycle/journey/member_dm.mjs",
+      "tools/qa/client_lifecycle/journey/member_global_search.mjs",
+      "tools/qa/client_lifecycle/journey/captures.py",
       "tools/qa/client_lifecycle/search_presentation.mjs",
       "tools/qa/dm_composer/scenario.mjs",
       "tools/qa/conversation_files/scenario.mjs",
@@ -1780,7 +1836,12 @@
       "web_message_read_search_and_send_navigation": {
         "browser_test": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
         "real_stack": [
-          "tools/qa/client_lifecycle/scenario.mjs",
+          "tools/qa/client_lifecycle/journey/scenario.mjs",
+          "tools/qa/client_lifecycle/journey/member_channel.mjs",
+          "tools/qa/client_lifecycle/journey/member_log.mjs",
+          "tools/qa/client_lifecycle/journey/member_dm.mjs",
+          "tools/qa/client_lifecycle/journey/member_global_search.mjs",
+          "tools/qa/client_lifecycle/journey/captures.py",
           "tools/qa/client_lifecycle/search_presentation.mjs",
           "tools/qa/dm_composer/scenario.mjs",
           "tools/qa/conversation_files/scenario.mjs",
@@ -1999,6 +2060,13 @@
       "revision": "pr-683-web-chat-ux-2026-11-08",
       "web_only_follow_up": "2026-11-08 PR #682: Web TEXT/DM read cursors advance as messages become visible; search opens and briefly highlights the target in normal history, and sending follows the new message. Web unit, browser and real-stack regressions are recorded in evidence/qa/web-chat-reading-navigation-2026-11-08.md. Flutter/iOS/Android code is unchanged; no native runtime claim. 2026-11-08 PR #683: Web silently restores the exact TEXT/DM reading position, removes per-conversation mini-search, keeps primary search navigation in ordinary history, and follows sent messages. Flutter/iOS/Android sources and behavior are unchanged; Web regressions are included in this PR."
     }
+  },
+  "update_required": {
+    "paths": ["clients/flutter/lib/src/features/updates/*", "clients/flutter/lib/src/app.dart", "clients/web/src/updates/*", "clients/web/src/App.vue", "backend/internal/client_updates/catalog/*", "contracts/client-release-catalog.schema.json", "contracts/openapi.yaml"],
+    "web": ["tests/update_required/playwright.config.ts"],
+    "flutter": ["test/updates/required_test.dart", "test/updates/required_guard_test.dart", "test/updates/required_back_test.dart", "test/updates/required_action_test.dart", "test/updates/required_action_failure_test.dart", "test/updates/required_api_test.dart", "test/updates/required_stale_test.dart"],
+    "native_targets": ["integration_test/update_required_test.dart"],
+    "acceptance": {"required_update_gate": {"scope": "A supported client below the configured minimum presents a non-snoozable update gate without discarding a mounted draft; real catalog and native runtime acceptance required.", "status": "NOT_RUN"}}
   },
   "shell": {
     "paths": [

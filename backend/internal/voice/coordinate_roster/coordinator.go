@@ -21,13 +21,18 @@ type Coordinator struct {
 	jobs        chan job
 	closed      bool
 	running     atomic.Bool
+	observer    Observer
 }
 
-func New(config Config, lister Lister, changes <-chan struct{}) (*Coordinator, error) {
+func New(config Config, lister Lister, changes <-chan struct{}, observers ...Observer) (*Coordinator, error) {
 	if lister == nil || config.Workers < 1 || config.Workers > 16 || config.MaxAccounts < 1 || config.MaxAccounts > 5000 || config.MaxSubscribers < 1 || config.MaxSubscribers > 5000 || config.MaxSnapshotBytes < 1 || config.MaxSnapshotBytes > 1<<20 || config.PollInterval <= 0 || config.ReadTimeout <= 0 {
 		return nil, ErrInvalidConfig
 	}
-	return &Coordinator{config: config, lister: lister, changes: changes, generation: uuid.NewString(),
+	var observer Observer
+	if len(observers) > 0 {
+		observer = observers[0]
+	}
+	return &Coordinator{config: config, lister: lister, changes: changes, generation: uuid.NewString(), observer: observer,
 		accounts: make(map[string]*account), jobs: make(chan job, config.MaxAccounts)}, nil
 }
 

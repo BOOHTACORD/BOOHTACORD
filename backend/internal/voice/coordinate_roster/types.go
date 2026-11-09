@@ -13,6 +13,9 @@ var ErrAdmission = errors.New("voice roster coordinator unavailable")
 type Lister interface {
 	List(context.Context, string) (roster.Result, error)
 }
+type Observer interface {
+	ObserveRosterWSRefresh(bool)
+}
 type Config struct {
 	Workers, MaxAccounts, MaxSubscribers, MaxSnapshotBytes int
 	PollInterval, ReadTimeout                              time.Duration

@@ -16,7 +16,7 @@ export const useRealtimeStore = defineStore('realtime', () => {
   let socket: RealtimeSocket | null = null
   let stopSchedule = () => {}
   let active = false, generation = 0
-  let delivery: ReturnType<typeof createRealtimeDelivery> | null = null
+  let delivery: Pick<ReturnType<typeof createRealtimeDelivery>, 'accept' | 'cursor' | 'disconnected' | 'reset'> | null = null
   let pendingConnection: (() => void) | null = null, retryNow: (() => void) | null = null
   let endSocketAttempt = () => {}
   function connect(onEvent: EventHandler, factory: RealtimeSocketFactory = (url) => new WebSocket(url), url?: string, options: RealtimeConnectOptions = {}): void {

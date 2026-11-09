@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
-import { PushToTalk, type EventSource, type KeyboardEventLike } from './push_to_talk'
+import { PushToTalk, type KeyboardInput, type KeyboardEventLike } from './push_to_talk'
 
-class EventHub implements EventSource {
+class EventHub implements KeyboardInput {
   private readonly listeners = new Map<string, Array<(event: KeyboardEventLike) => void>>()
 
   addEventListener(type: string, listener: (event: KeyboardEventLike) => void): void {

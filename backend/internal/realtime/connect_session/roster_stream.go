@@ -10,6 +10,7 @@ import (
 	"github.com/coder/websocket"
 	"github.com/google/uuid"
 	auth "voice-platform/backend/internal/identity/authenticate_session"
+	guard "voice-platform/backend/internal/voice/authorize_roster_delivery"
 	coordinator "voice-platform/backend/internal/voice/coordinate_roster"
 	prepared "voice-platform/backend/internal/voice/prepare_roster_delivery"
 )
@@ -21,6 +22,7 @@ type RosterStream interface {
 	Current(coordinator.State) bool
 	RequestRefresh() bool
 	Check(context.Context, coordinator.State) error
+	WithRoster(context.Context, coordinator.State, func(context.Context) error) error
 	Close()
 }
 type RosterFactory func(context.Context, auth.Principal, *http.Cookie) (RosterStream, error)
@@ -79,7 +81,31 @@ func writeRoster(connection *websocket.Conn, sub RosterStream, delivery RosterDe
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	return connection.Write(ctx, websocket.MessageText, frame) == nil
+	if kind != "voice.roster.snapshot" {
+		started := time.Now()
+		err := connection.Write(ctx, websocket.MessageText, frame)
+		if observer, ok := sub.(interface{ ObserveRosterUnavailable(time.Duration, bool) }); ok {
+			observer.ObserveRosterUnavailable(time.Since(started), err == nil)
+		}
+		return err == nil
+	}
+	err = sub.WithRoster(ctx, state, func(writeCtx context.Context) error {
+		if !sub.Current(state) {
+			return guard.ErrStale
+		}
+		return connection.Write(writeCtx, websocket.MessageText, frame)
+	})
+	if errors.Is(err, guard.ErrSession) {
+		_ = connection.Close(websocket.StatusPolicyViolation, "session is no longer valid")
+		return false
+	}
+	if errors.Is(err, guard.ErrStale) {
+		return sub.RequestRefresh()
+	}
+	if errors.Is(err, guard.ErrUnavailable) {
+		return writeRoster(connection, sub, RosterDelivery{Unavailable: true}, maxBytes, newID, now)
+	}
+	return err == nil
 }
 
 func unavailableRoster() (string, map[string]any) {

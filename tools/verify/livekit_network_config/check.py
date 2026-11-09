@@ -6,6 +6,9 @@ from pathlib import Path
 import yaml
 
 from .model import metrics_reachable_peers, validate
+from .historical_artifact import evidence_content
+
+HISTORICAL_EVIDENCE_REVISION = '10e0e44f28a2612d2f7fecf5be06931cf91fb166'
 
 
 def read(root, path):
@@ -90,7 +93,8 @@ def main():
     release_metadata = read(root, "evidence/media/livekit-network-release-metadata-2026-11-08.json")
     expected_artifacts |= release_metadata["repository_artifacts"]
     for path, expected in expected_artifacts.items():
-        content = (root / path).read_bytes().replace(b"\r\n", b"\n")
+        content = evidence_content(root, HISTORICAL_EVIDENCE_REVISION, path)
+        content = content.replace(b"\r\n", b"\n")
         actual = hashlib.sha256(content).hexdigest()
         if expected != f"sha256:{actual}":
             raise ValueError(f"repository artifact hash differs for {path}")

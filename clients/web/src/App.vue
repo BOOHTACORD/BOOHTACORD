@@ -12,6 +12,7 @@ import { consumePasswordResetFragment } from './identity/password_reset_fragment
 import MaintenanceStatus from './maintenance/MaintenanceStatus.vue'
 import { useMaintenanceOwner } from './maintenance/context'
 import UpdateBanner from './updates/UpdateBanner.vue'
+import RequiredUpdateGate from './updates/RequiredUpdateGate.vue'
 import { useUpdateStore } from './updates/update_store'
 import WorkspaceApp from './workspace/WorkspaceApp.vue'
 
@@ -102,7 +103,7 @@ onUnmounted(() => {
 
 <template>
   <MaintenanceStatus :active="maintenanceActive" :known="maintenanceKnown" />
-  <UpdateBanner />
+  <UpdateBanner v-show="!updates.required" />
   <PasswordResetCompletion v-if="resetRoute" :valid-link="Boolean(resetToken)" :complete="finishPasswordReset" @invalid-link="resetToken = null" @return-to-login="returnToLogin" />
   <main v-else-if="state === 'loading'" class="session-state" aria-live="polite">Проверяем безопасную сессию…</main>
   <main v-else-if="state === 'error'" class="session-state" role="alert">
@@ -111,4 +112,5 @@ onUnmounted(() => {
   </main>
   <AuthenticationLanding v-else-if="state === 'guest'" :focus-login-on-mount="focusLoginOnReturn" @authenticated="refreshSession('auth.login')" />
   <WorkspaceApp v-else-if="session" :key="session.accountId" :role="session.role" :account-id="session.accountId" :readiness="readiness" @session-expired="refreshSession()" @logged-out="finishLogout" />
+  <RequiredUpdateGate v-if="updates.required" />
 </template>

@@ -19,6 +19,7 @@ type fakeSub struct {
 func (s *fakeSub) Events() <-chan coordinator.State { return s.events }
 func (s *fakeSub) Current(coordinator.State) bool   { return s.current.Load() }
 func (s *fakeSub) RequestRefresh() bool             { s.refreshes.Add(1); return true }
+func (s *fakeSub) RetryOnNextRefresh() bool         { return true }
 
 type checkFunc func(context.Context, string, auth.Principal, roster.Result) error
 

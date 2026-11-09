@@ -26,16 +26,13 @@ void main() {
   test(
     'shared roster keeps states, guards revision and retries without SSE',
     () {
-      final api = RosterApi(), scope = SessionScope();
+      final scope = SessionScope();
       final timers = <ScheduledRosterTimer>[];
       var retries = 0;
       final owner = VoiceRosterController(
-        api,
         scope,
         isReady: () => true,
         hasUser: () => true,
-        message: (e) => '$e',
-        sharedSocket: true,
         onSharedRetry: () => retries++,
         schedule: (delay, callback) {
           final timer = ScheduledRosterTimer(delay, callback);
@@ -45,7 +42,6 @@ void main() {
       );
       owner.start();
       owner.sharedSocketStart();
-      expect(api.streams, isEmpty);
       expect(owner.phase, VoiceRosterPhase.initialLoading);
       owner.acceptSocketEvent(snapshot(9));
       expect(owner.voiceRosters, hasLength(1));
@@ -62,21 +58,17 @@ void main() {
       owner.stop();
       owner.acceptSocketEvent(snapshot(2));
       expect(owner.voiceRosters, isNull);
-      expect(api.streams, isEmpty);
       owner.dispose();
     },
   );
 
   test('missing initial snapshot becomes unavailable and can recover', () {
-    final api = RosterApi(), scope = SessionScope();
+    final scope = SessionScope();
     final timers = <ScheduledRosterTimer>[];
     final owner = VoiceRosterController(
-      api,
       scope,
       isReady: () => true,
       hasUser: () => true,
-      message: (e) => '$e',
-      sharedSocket: true,
       onSharedRetry: () {},
       schedule: (delay, callback) {
         final timer = ScheduledRosterTimer(delay, callback);
@@ -94,14 +86,11 @@ void main() {
   });
 
   test('old socket cannot update a replaced account scope', () {
-    final api = RosterApi(), scope = SessionScope();
+    final scope = SessionScope();
     final owner = VoiceRosterController(
-      api,
       scope,
       isReady: () => true,
       hasUser: () => true,
-      message: (e) => '$e',
-      sharedSocket: true,
       onSharedRetry: () {},
     );
     owner.start();

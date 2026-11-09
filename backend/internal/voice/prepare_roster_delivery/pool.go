@@ -17,6 +17,7 @@ type Subscription interface {
 	Events() <-chan coordinator.State
 	Current(coordinator.State) bool
 	RequestRefresh() bool
+	RetryOnNextRefresh() bool
 }
 type Guard interface {
 	Check(context.Context, string, auth.Principal, roster.Result) error

@@ -11,9 +11,11 @@ import (
 	eventhub "voice-platform/backend/internal/realtime/event_hub"
 )
 
-func writeHubEvent(connection *websocket.Conn, authenticator sessionapi.Authenticator, cookie *http.Cookie, subscription *eventhub.Subscription, hub *eventhub.Hub, observer ConnectionObserver, replayedIDs map[string]struct{}, event eventhub.Event) bool {
-	if _, replayed := replayedIDs[event.EventID]; replayed {
-		delete(replayedIDs, event.EventID)
+func writeHubEvent(connection *websocket.Conn, authenticator sessionapi.Authenticator, cookie *http.Cookie, subscription *eventhub.Subscription, hub *eventhub.Hub, observer ConnectionObserver, replayedIDs map[replayKey]struct{}, event eventhub.Event) bool {
+	started := time.Now()
+	key := replayKey{event.Kind, event.EventID}
+	if _, replayed := replayedIDs[key]; replayed {
+		delete(replayedIDs, key)
 		return true
 	}
 	if (isPrivateDirectMessageEvent(event.Kind) || event.Kind == "session.state_changed") && !privateEventSessionValid(authenticator, cookie, subscription, observer) {
@@ -27,6 +29,16 @@ func writeHubEvent(connection *websocket.Conn, authenticator sessionapi.Authenti
 	}
 	if err := wsjson.Write(ctx, connection, event); err != nil {
 		return false
+	}
+	if !event.OccurredAt.IsZero() {
+		if stages, ok := observer.(interface {
+			ObserveRealtimeEventStages(time.Duration, time.Duration)
+		}); ok {
+			beforeHandler := started.Sub(event.OccurredAt)
+			if beforeHandler >= 0 {
+				stages.ObserveRealtimeEventStages(beforeHandler, time.Since(started))
+			}
+		}
 	}
 	if metrics, ok := observer.(interface{ ObserveRealtimeEventDeliveryLatency(time.Duration) }); ok && !event.OccurredAt.IsZero() {
 		if latency := time.Since(event.OccurredAt); latency >= 0 {

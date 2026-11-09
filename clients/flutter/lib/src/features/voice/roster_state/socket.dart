@@ -5,7 +5,7 @@ import 'controller.dart';
 
 extension VoiceRosterSharedSocket on VoiceRosterController {
   void sharedSocketStart() {
-    if (!sharedSocket || !watching || disposed || !scope.capture().isActive) {
+    if (!watching || disposed || !scope.capture().isActive) {
       return;
     }
     final ticket = scope.capture();
@@ -24,7 +24,7 @@ extension VoiceRosterSharedSocket on VoiceRosterController {
   }
 
   void sharedSocketEnd() {
-    if (!sharedSocket || !sharedOpen) return;
+    if (!sharedOpen) return;
     sharedOpen = false;
     sharedTicket = null;
     initialTimer?.cancel();
@@ -34,8 +34,7 @@ extension VoiceRosterSharedSocket on VoiceRosterController {
 
   bool acceptSocketEvent(RealtimeEvent event) {
     if (!isRosterKind(event.kind)) return false;
-    if (!sharedSocket ||
-        !sharedOpen ||
+    if (!sharedOpen ||
         !watching ||
         disposed ||
         sharedTicket?.isActive != true ||
@@ -52,7 +51,11 @@ extension VoiceRosterSharedSocket on VoiceRosterController {
     }
     final generation = event.payload['generation'] as String;
     final nextRevision = (event.payload['revision'] as num).toInt();
-    if (sharedGeneration == generation && nextRevision <= sharedRevision) {
+    if (sharedGeneration == generation &&
+        (nextRevision < sharedRevision ||
+            (nextRevision == sharedRevision &&
+                phase != VoiceRosterPhase.stale &&
+                phase != VoiceRosterPhase.unavailable))) {
       return true;
     }
     try {
@@ -61,8 +64,6 @@ extension VoiceRosterSharedSocket on VoiceRosterController {
           .toList(growable: false);
       sharedGeneration = generation;
       sharedRevision = nextRevision;
-      refreshRevision++;
-      loading = false;
       staleTimer?.cancel();
       staleTimer = null;
       voiceRosters = rooms;

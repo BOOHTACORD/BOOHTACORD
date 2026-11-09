@@ -14,7 +14,12 @@ import (
 	ratelimit "voice-platform/backend/internal/security/rate_limit"
 )
 
-func New(origin string, observer *observestate.Observer, rate *ratelimit.Limiter, quota *admitpublic.Limiter) (http.Handler, error) {
+type ConnectionObserver interface {
+	PublicRealtimeConnectionOpened()
+	PublicRealtimeConnectionClosed()
+}
+
+func New(origin string, observer *observestate.Observer, rate *ratelimit.Limiter, quota *admitpublic.Limiter, metrics ...ConnectionObserver) (http.Handler, error) {
 	u, err := url.ParseRequestURI(origin)
 	if err != nil || u == nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" || u.User != nil || u.Path != "" || u.RawQuery != "" || u.ForceQuery || u.Fragment != "" || origin != u.Scheme+"://"+u.Host || observer == nil || rate == nil || quota == nil {
 		return nil, fmt.Errorf("invalid public realtime configuration")
@@ -50,6 +55,12 @@ func New(origin string, observer *observestate.Observer, rate *ratelimit.Limiter
 			return
 		}
 		defer connection.CloseNow()
+		for _, metric := range metrics {
+			if metric != nil {
+				metric.PublicRealtimeConnectionOpened()
+				defer metric.PublicRealtimeConnectionClosed()
+			}
+		}
 		connection.SetReadLimit(1024)
 		sub := observer.Subscribe()
 		defer sub.Close()

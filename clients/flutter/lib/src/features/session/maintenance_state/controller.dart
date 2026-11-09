@@ -1,120 +1,115 @@
 import 'dart:async';
-import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
 import '../../../services/api_client.dart';
-import '../../../services/maintenance_events.dart';
+import '../../realtime/lifecycle/event.dart';
+import '../../realtime/lifecycle/maintenance_payload.dart';
+import '../maintenance_socket/guest.dart';
+import '../maintenance_socket/state.dart';
 
 class MaintenanceController extends ChangeNotifier {
   MaintenanceController(
     this.api, {
-    this.retryDelay = const Duration(seconds: 2),
-  });
-
+    Future<WebSocket> Function()? openGuest,
+    void Function()? abortGuest,
+  }) {
+    _guest = MaintenanceGuestSocket(
+      _state,
+      openGuest ?? api.openPublicRealtime,
+      abortOpen:
+          abortGuest ?? (openGuest == null ? api.abortPublicRealtime : null),
+    );
+    _state.addListener(_changed);
+  }
   final ApiClient api;
-  final Duration retryDelay;
-  Timer? retryTimer;
-  StreamSubscription<String>? subscription;
-  Completer<void>? streamDone;
-  Completer<void>? retryDone;
-  bool active = false;
-  bool watching = false;
-  bool disposed = false;
-  int revision = 0;
+  final _state = MaintenanceSocketState();
+  late final MaintenanceGuestSocket _guest;
+  bool _authenticated = false, _disposed = false;
+  int _transition = 0;
+  int? _authToken;
+
+  bool get active => _state.active;
+  set active(bool value) {
+    _state.active = value;
+    _state.known = true;
+    _changed();
+  }
+
+  bool get known => _state.known;
+
+  void _changed() {
+    if (!_disposed) notifyListeners();
+  }
 
   void start() {
-    if (disposed || watching) return;
-    watching = true;
-    unawaited(watch(++revision));
+    unawaited(useGuest());
   }
 
   void restart() {
-    if (disposed) return;
-    stop();
-    start();
+    unawaited(useGuest());
   }
 
-  Future<void> watch(int expected) async {
-    final session = api.transport.session;
-    bool current() => !disposed && watching && expected == revision;
-
-    while (current()) {
-      try {
-        final serverRevision = session.serverRevision;
-        final response = await api.maintenanceEvents();
-        if (!current() || serverRevision != session.serverRevision) {
-          await response.stream.listen(null).cancel();
-          return;
-        }
-
-        final done = Completer<void>();
-        streamDone = done;
-        final currentSubscription = response.stream
-            .transform(utf8.decoder)
-            .transform(const LineSplitter())
-            .listen(
-              (line) {
-                if (!current() || serverRevision != session.serverRevision) {
-                  return;
-                }
-                try {
-                  final next = parseMaintenanceEvent(line);
-                  if (next == null || next == active) return;
-                  active = next;
-                  notifyListeners();
-                } catch (_) {
-                  // Ignore malformed frames and keep the last known state.
-                }
-              },
-              onError: (Object _) {
-                if (!done.isCompleted) done.complete();
-              },
-              onDone: () {
-                if (!done.isCompleted) done.complete();
-              },
-            );
-        subscription = currentSubscription;
-        await done.future;
-        if (identical(subscription, currentSubscription)) {
-          subscription = null;
-        }
-        if (identical(streamDone, done)) streamDone = null;
-      } catch (_) {}
-
-      if (!current()) return;
-      final retry = Completer<void>();
-      retryDone = retry;
-      retryTimer = Timer(retryDelay, () {
-        if (!retry.isCompleted) retry.complete();
-      });
-      await retry.future;
-      if (!current()) return;
-      retryTimer = null;
-      retryDone = null;
+  Future<void> useGuest() async {
+    if (_disposed) return;
+    final transition = ++_transition;
+    _authenticated = false;
+    final token = _authToken;
+    _authToken = null;
+    if (token != null) _state.end(token);
+    await _guest.stop();
+    if (!_disposed && transition == _transition && api.realtimeEnabled) {
+      _guest.start();
     }
   }
 
-  void stop() {
-    watching = false;
-    revision++;
-    retryTimer?.cancel();
-    retryTimer = null;
-    final retry = retryDone;
-    if (retry != null && !retry.isCompleted) retry.complete();
-    retryDone = null;
-    final previousSubscription = subscription;
-    if (previousSubscription != null) unawaited(previousSubscription.cancel());
-    subscription = null;
-    final done = streamDone;
-    if (done != null && !done.isCompleted) done.complete();
-    streamDone = null;
+  Future<void> useAuthenticated() async {
+    if (_disposed) return;
+    ++_transition;
+    _authenticated = true;
+    await _guest.stop();
+  }
+
+  Future<void> suspend() async {
+    if (_disposed) return;
+    _transition++;
+    _authenticated = false;
+    final token = _authToken;
+    _authToken = null;
+    if (token != null) _state.end(token);
+    await _guest.stop();
+  }
+
+  void authSocketStart() {
+    if (_disposed || !_authenticated) return;
+    final previous = _authToken;
+    if (previous != null) _state.end(previous);
+    _authToken = _state.begin();
+  }
+
+  void authSocketEnd() {
+    final token = _authToken;
+    _authToken = null;
+    if (token != null) _state.end(token);
+  }
+
+  bool acceptRealtimeEvent(RealtimeEvent event) {
+    if (!isMaintenanceKind(event.kind)) return false;
+    final token = _authToken;
+    if (!_disposed && _authenticated && token != null) {
+      _state.accept(token, event);
+    }
+    return true;
   }
 
   @override
   void dispose() {
-    disposed = true;
-    stop();
+    _disposed = true;
+    _transition++;
+    unawaited(_guest.stop().catchError((Object _) {}));
+    _state.removeListener(_changed);
+    _state.dispose();
     super.dispose();
   }
 }

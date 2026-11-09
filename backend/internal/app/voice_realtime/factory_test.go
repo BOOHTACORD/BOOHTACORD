@@ -28,6 +28,10 @@ func (g guardFunc) Check(ctx context.Context, token string, principal auth.Princ
 	return g(ctx, token, principal, result)
 }
 
+func (g guardFunc) WithRoster(ctx context.Context, _ auth.Principal, _ roster.Result, write func(context.Context) error) error {
+	return write(ctx)
+}
+
 func TestFactoryBindsAndStopsPerSocket(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()

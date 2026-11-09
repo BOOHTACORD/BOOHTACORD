@@ -12,6 +12,7 @@ type Subscription struct {
 	account     *account
 	events      chan State
 	initialized bool
+	retryNext   bool
 	once        sync.Once
 }
 

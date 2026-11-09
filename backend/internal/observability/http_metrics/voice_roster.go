@@ -37,11 +37,11 @@ func (recorder *Recorder) ObserveSFURoomServiceCall(method string, failed bool) 
 
 func (recorder *Recorder) ObserveVoiceRosterFailure(stage string) {
 	switch stage {
-	case "visibility_initial", "visibility_initial_timeout", "visibility_initial_canceled", "presence_snapshot", "presence_snapshot_timeout", "presence_snapshot_canceled", "presence_validation", "presence_token", "presence_room_list", "presence_participants", "visibility_recheck", "visibility_recheck_timeout", "visibility_recheck_canceled", "stream_snapshot", "stream_session_store", "stream_write":
+	case "visibility_initial", "visibility_initial_timeout", "visibility_initial_canceled", "presence_snapshot", "presence_snapshot_timeout", "presence_snapshot_canceled", "presence_validation", "presence_token", "presence_room_list", "presence_participants", "visibility_recheck", "visibility_recheck_timeout", "visibility_recheck_canceled":
 	default:
 		stage = "unknown"
 	}
-	recorder.rosterStream.Failure(stage)
+	recorder.rosterDependencies.Failure(stage)
 	recorder.roster.failures.WithLabelValues(stage).Inc()
 }
 
@@ -50,30 +50,23 @@ func (recorder *Recorder) ObserveVoiceRosterSnapshot(duration time.Duration, req
 	if failed {
 		outcome = "failure"
 	}
-	recorder.rosterStream.Snapshot(duration, requestedRooms, failed)
+	recorder.rosterDependencies.Snapshot(duration, requestedRooms, failed)
 	recorder.roster.snapshots.WithLabelValues(outcome).Inc()
 	recorder.roster.duration.Observe(duration.Seconds())
 	recorder.roster.rooms.Observe(float64(requestedRooms))
 }
 
-func (recorder *Recorder) ObserveVoiceRosterInitial(elapsed time.Duration, outcome string) {
-	recorder.rosterStream.Initial(elapsed, outcome)
-}
-func (recorder *Recorder) OpenVoiceRosterStream()               { recorder.rosterStream.Open() }
-func (recorder *Recorder) CloseVoiceRosterStream(reason string) { recorder.rosterStream.Close(reason) }
 func (recorder *Recorder) ObserveSFURoomServiceDuration(method, outcome string, elapsed time.Duration) {
-	recorder.rosterStream.Call(method, outcome, elapsed)
+	recorder.rosterDependencies.Call(method, outcome, elapsed)
 }
 
 func (recorder *Recorder) ObserveVoicePresenceGate(outcome string) {
-	recorder.rosterStream.Gate(outcome)
+	recorder.rosterDependencies.Gate(outcome)
 }
 
 func (recorder *Recorder) ObserveSFURoomServiceConfigured(configured bool) {
-	recorder.rosterStream.Configured(configured)
+	recorder.rosterDependencies.Configured(configured)
 }
-func (recorder *Recorder) ObserveVoiceRosterSuccess() { recorder.rosterStream.Success() }
-
 func (recorder *Recorder) ObserveSFURoomServiceFailureClass(method, class, status string) {
-	recorder.rosterStream.FailureClass(method, class, status)
+	recorder.rosterDependencies.FailureClass(method, class, status)
 }

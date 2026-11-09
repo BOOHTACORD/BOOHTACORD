@@ -1,4 +1,4 @@
-import { expect } from './request.mjs'
+import { expect, openNavigation } from './request.mjs'
 
 // No test-only routes: use the mounted conversation and the owned Go API/SFU.
 export async function conversationHeaders(page, input, report, kind) {
@@ -36,6 +36,7 @@ export async function voiceWorkspaceSearch(page, input, report) {
   await expect(header.getByRole('menuitem',{name:'Найти сообщение',exact:true})).toHaveCount(0)
   const search=page.locator('.guild-search-button')
   await expect(search).toHaveCount(1)
+  await openNavigation(page)
   await search.click()
   const aside=page.getByTestId('search-aside-panel')
   await expect(aside).toBeVisible()

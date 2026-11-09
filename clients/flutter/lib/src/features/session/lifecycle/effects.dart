@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../../../models.dart';
 
 // Composition hooks affect their own feature state; this owner controls ordering.
@@ -24,7 +26,7 @@ class SessionEffects {
   final Future<void> Function() closeRealtime;
   final Future<void> Function() clearAccount;
   final Future<void> Function() expireAccount;
-  final void Function() beforeServerChange;
+  final FutureOr<void> Function() beforeServerChange;
   final Future<void> Function() clearServer;
   final void Function(String?) error;
   final String Function(Object) message;

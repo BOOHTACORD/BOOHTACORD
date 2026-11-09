@@ -1708,37 +1708,6 @@
         "security": []
       }
     },
-    "/api/v1/maintenance/events": {
-      "get": {
-        "operationId": "watchMaintenanceAdmission",
-        "description": "Public, metadata-only Server-Sent Events stream of the maintenance admission flag. Sends the current {active:boolean} state immediately, then emits only when it changes. The server checks the state every five seconds and sends heartbeat comments while idle. No schedule, operator identity, deployment internals or session data are exposed.",
-        "responses": {
-          "200": {
-            "description": "Long-lived stream of maintenance status snapshots",
-            "headers": {
-              "Cache-Control": { "schema": { "type": "string", "enum": ["no-store"] } },
-              "X-Accel-Buffering": { "schema": { "type": "string", "enum": ["no"] } },
-              "X-Request-ID": {"$ref": "#/components/headers/RequestID"}
-            },
-            "content": {
-              "text/event-stream": {
-                "schema": { "type": "string" },
-                "examples": {
-                  "active": { "value": "data: {\"active\":true}\n\n" },
-                  "inactive": { "value": "data: {\"active\":false}\n\n" }
-                }
-              }
-            }
-          },
-          "500": { "description": "Response writer does not support streaming or a known internal roster validation/token defect occurred. Middleware failure may emit an empty body.", "content": { "text/plain": { "schema": { "type": "string" } } },
-            "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}},
-            "x-empty-body-possible": true },
-          "503": { "description": "Maintenance state is temporarily unavailable before the stream opens", "content": { "text/plain": { "schema": { "type": "string" } } },
-            "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} }
-        },
-        "security": []
-      }
-    },
     "/api/v1/public/realtime": {
       "get": {
         "operationId": "connectPublicRealtime",
@@ -3766,40 +3735,6 @@
           "503": { "description": "Mandatory DB or LiveKit dependency unavailable (VOICE_PRESENCE_UNAVAILABLE); never interpreted as an empty roster", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },
             "headers": {"Retry-After": {"schema": {"type": "string", "enum": ["1"]}}, "X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
           "500": { "description": "Internal error. Middleware failure may emit an empty body.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },
-            "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}},
-            "x-empty-body-possible": true }
-        },
-        "security": [{"SessionCookie": []}]
-      }
-    },
-    "/api/v1/voice/rosters/events": {
-      "get": {
-        "operationId": "watchConnectedVoiceParticipants",
-        "description": "Authenticated non-blocked guild member; no voice lease required. Opens a long-lived Server-Sent Events stream of complete VoiceParticipants snapshots. Each snapshot is independently rebuilt from the caller's currently visible VOICE channels, active LiveKit participants and current unrevoked leases. LiveKit webhooks carry invalidation hints only; they never supply roster data. The original session cookie is revalidated every 10 seconds while the connection remains open; if it is revoked, the server sends `event: session-expired` with an empty JSON data line and closes the stream. Heartbeat comments keep idle connections alive. Each snapshot event is one UTF-8 line `data: <JSON VoiceParticipants>` followed by a blank line. No authorized event is cached. On transient refresh failure the server makes at most one retry in the original five-second snapshot budget, then emits `event: roster-unavailable` with data `{}` and closes. Dependency failures before handshake return 503 with Retry-After: 1; identifiable internal validation or token defects return 500. Short volatile SFU observations are shared only for equivalent scopes; ACL and leases are rechecked for every caller.",
-        "responses": {
-          "200": {
-            "description": "Long-lived SSE stream of complete current voice-roster snapshots; one JSON snapshot per data event, heartbeat comments while idle, a session-expired event if the session is revoked, or a roster-unavailable event followed by close after bounded dependency recovery fails",
-            "headers": {
-              "Cache-Control": { "schema": { "type": "string", "enum": ["no-store"] } },
-              "X-Accel-Buffering": { "schema": { "type": "string", "enum": ["no"] } },
-              "X-Request-ID": {"$ref": "#/components/headers/RequestID"}
-            },
-            "content": {
-              "text/event-stream": {
-                "schema": { "type": "string" },
-                "examples": {
-                  "snapshot": { "value": "data: {\"channels\":[{\"channel_id\":\"11111111-1111-4111-8111-111111111111\",\"participants\":[{\"account_id\":\"22222222-2222-4222-8222-222222222222\",\"display_name\":\"Р СљР С‘Р С”Р В°\",\"screen_sharing\":false,\"microphone_muted\":true}]}]}\n\n" },
-                  "sessionExpired": { "value": "event: session-expired\ndata: {}\n\n" },
-"rosterUnavailable": { "value": "event: roster-unavailable\ndata: {}\n\n" }
-                }
-              }
-            }
-          },
-          "401": { "description": "No active server-side session", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },
-            "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
-          "503": { "description": "Mandatory DB or LiveKit dependency unavailable; initial authentication lookup timeout returns the standard VOICE_PRESENCE_UNAVAILABLE JSON envelope, later initial roster failure keeps stable text. The stream is not opened with a fabricated empty roster.", "content": { "text/plain": { "schema": { "type": "string" } }, "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } },
-            "headers": {"Retry-After": {"schema": {"type": "string", "enum": ["1"]}}, "X-Request-ID": {"$ref": "#/components/headers/RequestID"}} },
-          "500": { "description": "Response writer does not support streaming or a known internal roster validation/token defect occurred. Middleware failure may emit an empty body.", "content": { "text/plain": { "schema": { "type": "string" } } },
             "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}},
             "x-empty-body-possible": true }
         },
@@ -9973,6 +9908,7 @@
         "properties": {
           "release_id":{"type":"string","pattern":"^[A-Za-z0-9._-]{1,96}$"},
           "release_order":{"type":"integer","minimum":1},
+          "minimum_release_order":{"type":["integer","null"],"minimum":1,"maximum":2147483647,"description":"Optional minimum supported client release order; null means no minimum. Must not exceed release_order."},
           "version":{"type":"string","maxLength":64},
           "native_build":{"type":["string","null"],"maxLength":64},
           "priority":{"enum":["normal","important"]},

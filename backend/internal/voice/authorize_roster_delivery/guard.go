@@ -18,10 +18,15 @@ var ErrUnavailable = errors.New("roster delivery temporarily unavailable")
 type Guard struct {
 	auth       sessionapi.Authenticator
 	repository roster.Repository
+	delivery   transactionDelivery
 }
 
-func New(authenticator sessionapi.Authenticator, repository roster.Repository) Guard {
-	return Guard{auth: authenticator, repository: repository}
+func New(authenticator sessionapi.Authenticator, repository roster.Repository, deliveries ...transactionDelivery) Guard {
+	var delivery transactionDelivery
+	if len(deliveries) > 0 {
+		delivery = deliveries[0]
+	}
+	return Guard{auth: authenticator, repository: repository, delivery: delivery}
 }
 
 // Check must be called for each recipient immediately before its socket write.

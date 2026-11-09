@@ -4,25 +4,12 @@ import { api, channel, expect, openNavigation, status } from '../client_lifecycl
 import { controlOwnedSfu } from './sfu_control.mjs'
 import { teardown } from './teardown.mjs'
 import { installRosterFailureObserver } from './roster_observer.mjs'
-import { rosterCounters } from './roster_diagnostics.mjs'
+import { diagnoseRosterFailure } from './roster_failure_diagnostics.mjs'
 import { observeRosterNetwork } from './roster_network.mjs'
 import { observeMiniSubscriptions } from './mini_player_ui.mjs'
 import { screenShareInterface } from './screen_share_ui.mjs'
 import { voiceInterface, leaveVoiceInterface } from './voice_interface.mjs'
-async function connected(page) {
-  try {
-    await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён', { timeout: 22000 })
-    await expect.poll(() => page.evaluate(() => window.__qaPeers.some(peer => peer.connectionState === 'connected')), { timeout: 22000 }).toBe(true)
-  } catch (error) {
-    // Keep only native transport state enums and counts; never SDP, tokens, identities or URLs.
-    console.error('media-connect-states='+JSON.stringify(await page.evaluate(() => window.__qaPeers?.map(peer => ({
-      connection: peer.connectionState, ice: peer.iceConnectionState, gathering: peer.iceGatheringState,
-      signaling: peer.signalingState, local_description: Boolean(peer.localDescription),
-      remote_description: Boolean(peer.remoteDescription),
-    })) ?? [])))
-    throw error
-  }
-}
+import { connected } from './media_connected.mjs'
 export async function media(a, b, member, channelId, report, input) {
   const directory = input.directory
   let blocked = false
@@ -85,8 +72,8 @@ export async function media(a, b, member, channelId, report, input) {
   if (manualRetryAvailable) await retry.click()
   await expect(banner).toBeHidden()
   console.log('stage=chat-recovery-retried')
-  // Chat recovery replaces the roster source asynchronously. Fault injection
-  // must start with a live SSE stream, rather than an initial/retry HTTP fetch.
+  // Chat recovery replaces the shared application socket asynchronously.
+  // Fault injection starts only after that socket is open.
   await expect.poll(() => a.evaluate(() => window.__qaRosterTransportSource?.readyState), { timeout: 15000 }).toBe(1)
   console.log('stage=roster-transport-restored')
   // Both listeners have real WebRTC transports. Suspend only the owned SFU;
@@ -96,27 +83,11 @@ export async function media(a, b, member, channelId, report, input) {
     await controlOwnedSfu('pause')
     await openNavigation(a)
     // Detection can use one 5s reconciliation period, a shared 5s snapshot deadline
-    // and a bounded 3s SSE write. Check the actual event before its UI consequence.
+    // and bounded delivery. Check the actual event before its UI consequence.
     try {
     await expect.poll(() => a.evaluate(() => window.__qaRosterUnavailableCount), { timeout: 15000 }).toBeGreaterThan(rosterFailuresBefore)
     } catch (error) {
-      // Diagnose real SSE delivery without retaining URLs, payloads or identities.
-      const transport = await a.evaluate(() => ({
-        ...window.__qaRosterTransport,
-        ready_state: window.__qaRosterTransportSource?.readyState ?? null,
-        unavailable: window.__qaRosterUnavailableCount,
-      }))
-      const presenceStatus = (await api(a, '/voice/participants')).status
-      console.error('roster-failure-diagnostics='+JSON.stringify({ ...transport, presence_status: presenceStatus,
-        network: rosterNetwork(), workspace_present: await a.getByTestId('app-shell').count() > 0 }))
-      // Only this journey's owned synthetic accounts are present in the capture.
-      try { await a.screenshot({ path: directory+'/roster-event-failure.png' }) } catch { /* Preserve the actual event assertion. */ }
-      try {
-        // The fixture owns the loopback API on 4820. Never fetch production
-        // telemetry, send a cookie or retain the original metric response.
-        const response = await fetch('http://127.0.0.1:4820/metrics', { signal: AbortSignal.timeout(2000) })
-        if (response.ok) console.error('roster-server-counters='+JSON.stringify(rosterCounters(await response.text())))
-      } catch { /* Keep the original actual-event acceptance failure. */ }
+      await diagnoseRosterFailure(a, rosterNetwork, directory)
       throw error
     }
     await expect(banner).toBeVisible()

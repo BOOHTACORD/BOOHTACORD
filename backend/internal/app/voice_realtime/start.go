@@ -11,12 +11,16 @@ import (
 )
 
 // Start owns one coordinator and one notification subscription for the process.
-func Start(parent context.Context, config coordinator.Config, lister coordinator.Lister, guard prepared.Guard, notifier *watch.Notifier) (*Factory, lifecycle.Stop, error) {
+func Start(parent context.Context, config coordinator.Config, lister coordinator.Lister, guard prepared.Guard, notifier *watch.Notifier, observers ...Observer) (*Factory, lifecycle.Stop, error) {
 	if parent == nil || parent.Err() != nil || guard == nil || notifier == nil {
 		return nil, nil, errUnavailable
 	}
 	changes, unsubscribe := notifier.Subscribe()
-	c, err := coordinator.New(config, lister, changes)
+	var observer Observer
+	if len(observers) > 0 {
+		observer = observers[0]
+	}
+	c, err := coordinator.New(config, lister, changes, observer)
 	if err != nil {
 		unsubscribe()
 		return nil, nil, err
@@ -38,5 +42,5 @@ func Start(parent context.Context, config coordinator.Config, lister coordinator
 			return ctx.Err()
 		}
 	}
-	return New(c, pool, guard), stop, nil
+	return New(c, pool, guard, observer), stop, nil
 }

@@ -29,7 +29,10 @@ func (c *Coordinator) worker(parent context.Context) {
 				result, encoded, err = normalizeroster.Canonicalize(result, c.config.MaxSnapshotBytes)
 			}
 			if parent.Err() == nil {
-				c.finish(work, result, encoded, err == nil)
+				accepted := c.finish(work, result, encoded, err == nil)
+				if accepted && c.observer != nil {
+					c.observer.ObserveRosterWSRefresh(err == nil)
+				}
 			}
 		}
 	}
@@ -54,18 +57,18 @@ func (c *Coordinator) prepare(parent context.Context, work job) (context.Context
 	return ctx, cancel, valid
 }
 
-func (c *Coordinator) finish(work job, result roster.Result, encoded []byte, available bool) {
+func (c *Coordinator) finish(work job, result roster.Result, encoded []byte, available bool) bool {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	defer c.scheduleWaiting()
 	a := work.account
 	if c.closed || c.accounts[a.id] != a {
-		return
+		return false
 	}
 	a.cancel = nil
 	a.pending = false
 	if a.epoch != work.epoch {
-		return
+		return false
 	}
 	changed := !a.have || a.available != available || (available && !bytes.Equal(a.last, encoded))
 	if changed {
@@ -77,16 +80,18 @@ func (c *Coordinator) finish(work job, result roster.Result, encoded []byte, ava
 	}
 	a.state = State{Generation: c.generation, Revision: a.revision, ObservedAt: time.Now().UTC(), Unavailable: !available, Roster: result, owner: a, epoch: work.epoch}
 	for sub := range a.subs {
-		if !changed && sub.initialized {
+		if !changed && sub.initialized && !sub.retryNext {
 			continue
 		}
 		sub.initialized = true
+		sub.retryNext = false
 		select {
 		case <-sub.events:
 		default:
 		}
 		sub.events <- copyState(a.state)
 	}
+	return true
 }
 
 func copyState(state State) State {

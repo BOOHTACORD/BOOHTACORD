@@ -6,12 +6,10 @@ import (
 	"sync"
 	"sync/atomic"
 	"time"
-
-	"github.com/google/uuid"
 )
 
 // Coalesce concurrent initial reads while keeping reconnect latency bounded.
-const minimumReadSpacing = 50 * time.Millisecond
+const minimumReadSpacing = 5 * time.Millisecond
 
 type Reader interface {
 	Active(context.Context) (bool, error)
@@ -26,6 +24,7 @@ type State struct {
 
 type Observer struct {
 	reader            Reader
+	readObserver      func(bool)
 	interval, timeout time.Duration
 	mu                sync.Mutex
 	state             State
@@ -38,14 +37,7 @@ type Observer struct {
 }
 
 func New(reader Reader, interval, timeout time.Duration) *Observer {
-	if interval <= 0 {
-		interval = 5 * time.Second
-	}
-	if timeout <= 0 {
-		timeout = 3 * time.Second
-	}
-	return &Observer{reader: reader, interval: interval, timeout: timeout,
-		state: State{Generation: uuid.NewString()}, subscribers: make(map[*Subscription]struct{}), refresh: make(chan struct{}, 1)}
+	return NewWithReadObserver(reader, interval, timeout, nil)
 }
 
 // Run must be owned by the process lifecycle. Concurrent calls after the first are ignored.
@@ -103,6 +95,9 @@ func (o *Observer) read(parent context.Context) bool {
 	cancel()
 	if parent.Err() != nil {
 		return false
+	}
+	if o.readObserver != nil {
+		o.readObserver(err == nil)
 	}
 	o.apply(sequence, active, err == nil)
 	return true

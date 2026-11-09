@@ -29,6 +29,9 @@ func (s *socketRoster) Events() <-chan prepared.Delivery { return s.deliveries }
 func (s *socketRoster) Current(coordinator.State) bool   { return s.current.Load() }
 func (s *socketRoster) RequestRefresh() bool             { s.refreshes.Add(1); return true }
 func (s *socketRoster) Close()                           {}
+func (s *socketRoster) WithRoster(ctx context.Context, _ coordinator.State, write func(context.Context) error) error {
+	return write(ctx)
+}
 
 func (s *socketRoster) Check(ctx context.Context, state coordinator.State) error {
 	if s.check == nil {

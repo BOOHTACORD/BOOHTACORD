@@ -12,7 +12,7 @@ import (
 	guard "voice-platform/backend/internal/voice/authorize_roster_delivery"
 )
 
-func streamEvents(connection *websocket.Conn, authenticator sessionapi.Authenticator, cookie *http.Cookie, subscription *eventhub.Subscription, hub *eventhub.Hub, newID Identifier, now Clock, observer ConnectionObserver, replayedIDs map[string]struct{}, maintenance *observestate.Subscription, roster RosterStream, maxRosterBytes int) {
+func streamEvents(connection *websocket.Conn, authenticator sessionapi.Authenticator, cookie *http.Cookie, subscription *eventhub.Subscription, hub *eventhub.Hub, newID Identifier, now Clock, observer ConnectionObserver, replayedIDs map[replayKey]struct{}, maintenance *observestate.Subscription, roster RosterStream, maxRosterBytes int) {
 	closed := connection.CloseRead(context.Background()).Done()
 	var events <-chan eventhub.Event
 	var overflowed <-chan struct{}

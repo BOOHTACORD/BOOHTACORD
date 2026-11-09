@@ -20,7 +20,7 @@ func Start(parent context.Context, reader observestate.Reader, origin string, tr
 }
 
 // StartShared supplies the same process-owned observer to the authenticated route.
-func StartShared(parent context.Context, reader observestate.Reader, origin string, trusted []string) (http.Handler, *observestate.Observer, lifecycle.Stop, error) {
+func StartShared(parent context.Context, reader observestate.Reader, origin string, trusted []string, metrics ...connectpublic.ConnectionObserver) (http.Handler, *observestate.Observer, lifecycle.Stop, error) {
 	if reader == nil {
 		return nil, nil, nil, errors.New("missing maintenance reader")
 	}
@@ -32,8 +32,14 @@ func StartShared(parent context.Context, reader observestate.Reader, origin stri
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	observer := observestate.New(reader, 5*time.Second, time.Second)
-	handler, err := connectpublic.New(origin, observer, rate, quota)
+	var report func(bool)
+	if len(metrics) > 0 {
+		if recorder, ok := metrics[0].(interface{ ObserveMaintenanceRead(bool) }); ok {
+			report = recorder.ObserveMaintenanceRead
+		}
+	}
+	observer := observestate.NewWithReadObserver(reader, 5*time.Second, time.Second, report)
+	handler, err := connectpublic.New(origin, observer, rate, quota, metrics...)
 	if err != nil {
 		return nil, nil, nil, err
 	}

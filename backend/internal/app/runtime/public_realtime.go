@@ -11,9 +11,10 @@ import (
 	maintenance "voice-platform/backend/internal/maintenance/admission"
 	maintenancepostgres "voice-platform/backend/internal/maintenance/admission/postgres"
 	observestate "voice-platform/backend/internal/maintenance/observe_state"
+	httpmetrics "voice-platform/backend/internal/observability/http_metrics"
 )
 
-func startPublicRealtime(ctx context.Context, database *pgxpool.Pool, config runtimeconfig.Config) (http.Handler, *observestate.Observer, lifecycle.Stop, error) {
+func startPublicRealtime(ctx context.Context, database *pgxpool.Pool, config runtimeconfig.Config, metrics *httpmetrics.Recorder) (http.Handler, *observestate.Observer, lifecycle.Stop, error) {
 	service := maintenance.New(maintenancepostgres.New(maintenancepostgres.NewPoolDatabase(database)))
-	return publicrealtime.StartShared(ctx, service, config.PublicOrigin, config.TrustedProxyCIDRs)
+	return publicrealtime.StartShared(ctx, service, config.PublicOrigin, config.TrustedProxyCIDRs, metrics)
 }

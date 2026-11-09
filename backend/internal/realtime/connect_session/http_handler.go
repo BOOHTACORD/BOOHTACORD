@@ -39,6 +39,7 @@ func NewHandlerWithRoster(authenticator sessionapi.Authenticator, revalidationIn
 			return
 		}
 		defer connection.CloseNow()
+		defer observeCapabilityConnection(observer, request)()
 		stopMonitor := startSessionMonitor(request.Context(), connection, authenticator, cookie, principal, revalidationInterval, observer)
 		defer stopMonitor()
 		rosterSub, rosterErr := subscribeRoster(request, principal, cookie, roster)
@@ -86,7 +87,7 @@ func NewHandlerWithRoster(authenticator sessionapi.Authenticator, revalidationIn
 		if !writeEvent(writeContext, connection, newID, now, "connection.ready", map[string]any{}) {
 			return
 		}
-		replayedIDs := make(map[string]struct{}, len(replay))
+		replayedIDs := make(map[replayKey]struct{}, len(replay))
 		replayComplete := replayReason == ""
 		if replayReason == "" && len(replay) > 0 {
 			var connectionOpen bool

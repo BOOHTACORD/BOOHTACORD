@@ -13,6 +13,13 @@ class DeviceSafetyTests(unittest.TestCase):
         inventory={'devices':{'ios':[{'udid':'id','name':'Personal iPhone','state':'Booted'}]}}
         with patch('subprocess.check_output',return_value=json.dumps(inventory)):
             with self.assertRaises(ValueError):verify_device('ios','id')
+    def test_windows_requires_the_supported_desktop_target(self):
+        inventory = [{'id': 'windows', 'targetPlatform': 'windows-x64', 'isSupported': True}]
+        with patch('subprocess.check_output', return_value=json.dumps(inventory)):
+            verify_device('windows', 'windows')
+            with self.assertRaises(ValueError): verify_device('windows', 'other')
+        with patch('subprocess.check_output', return_value='[]'):
+            with self.assertRaises(ValueError): verify_device('windows', 'windows')
 
 class ReverseOwnershipTests(unittest.TestCase):
     def test_existing_reverse_is_not_overwritten(self):
@@ -28,3 +35,13 @@ class ReverseOwnershipTests(unittest.TestCase):
             with self.assertRaises(subprocess.CalledProcessError):
                 with reversed_ports('emulator-5554'):pass
             self.assertEqual(run.call_args_list[-1].args[0],['adb','-s','emulator-5554','reverse','--remove','tcp:4810'])
+
+class NativeTargetTests(unittest.TestCase):
+    def test_only_registered_targets_are_allowed(self):
+        from .native import native_target
+        self.assertIn('auth', native_target('integration_test/local_qa_test.dart'))
+        self.assertIn('roster', native_target('integration_test/issue689_roster_test.dart'))
+        self.assertIn('listener', native_target('integration_test/issue689_listener_test.dart'))
+        self.assertIn('revocation', native_target('integration_test/issue689_delivery_revocation_test.dart'))
+        self.assertIn('required update', native_target('integration_test/update_required_test.dart'))
+        with self.assertRaises(ValueError): native_target('../unrelated.dart')
