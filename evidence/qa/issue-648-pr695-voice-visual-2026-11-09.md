@@ -1,20 +1,22 @@
 # PR 695: voice component visual review
 
-2026-11-09. Reviewed at original resolution the 27 component captures listed
-below from the Android local-feature gate on source
+2026-11-09. Initially reviewed the 27 component captures listed below in
+groups from the Android local-feature gate on source
 `c96af5782b34d968fbc43de831cf816840316de5`. The gate report SHA-256 is
 `fc380a4f7b66fab9e9b335a22da97dcd24b1b3d289e6d0dd70da01933aea6ff5`.
 These are fixture captures, not interactive or media acceptance.
 
-The connection status captures show the expected separate chat, voice and
-roster states. Viewer participant menus and ordinary-scale voice controls are
-visible in the corresponding captures. At 320 x 480 and text scale 2 with
-five or ten participants, text in narrow voice cards wraps awkwardly and the
-stream preview label is extremely small. In several full-layout captures at
-480 pixels height and scale 2, voice controls are outside the visible image;
-whether they can be reached by scrolling or other interaction was not tested.
-These observations require interactive follow-up and are not an acceptance
-of accessibility or a diagnosis of their cause.
+The grouped viewer output was truncated, so the initial claim that several
+voice controls were outside the visible image was incorrect. Individually
+reopened at original resolution, the full-layout scale-2 captures at widths
+320, 390, 768, 1024 and 1440 show the voice control row. An instrumented copy
+of the native widget scenario with the original fonts found the leave button
+hit-testable without scrolling at 320 x 480 and 1024 x 480. Rectangles were
+respectively (260, 424)-(308, 472) and (223, 359)-(265, 401). The repeated
+1024 capture matched the gate image SHA-256 byte for byte. This checks hit
+testing, not invocation or device accessibility. At 320 x 480 and text scale
+2 with five or ten participants, the initial grouped captures show awkward
+wrapping and a tiny preview label; those captures need individual review.
 
 Reviewed filenames:
 
@@ -46,7 +48,9 @@ Reviewed filenames:
 - `voice-viewer-participants-room-open.png`
 - `voice-viewer-participants-room.png`
 
-Together with the previously reviewed 14 native captures, 41 of the 188
-reported captures have been inspected. The other 147 component captures
-remain unreviewed; the original report remains REVIEW_REQUIRED and its visual
-review remains NOT_RUN. No screenshot baseline was approved.
+Only the five full-layout component images explicitly listed by width above
+have been individually rechecked after discovering the truncation. Together
+with the previously individually reviewed 14 native captures, at least 19 of
+the 188 reported captures have been checked this way. The other 169 require
+individual review; the original report remains REVIEW_REQUIRED and its
+visual review remains NOT_RUN. No screenshot baseline was approved.
