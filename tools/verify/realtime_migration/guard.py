@@ -16,6 +16,12 @@ EXCEPTIONS = {
     'tools/verify/contracts/voice.ps1',  # negative contract assertions
     'tools/verify/realtime_migration/guard.py',  # the patterns below
 }
+# This exact line rejects legacy requests during a real-stack test; no other
+# line in that scenario is exempt from the migration scan.
+NEGATIVE_ASSERTIONS = {
+    ('tools/qa/voice_roster_multiclient/scenario.cjs',
+     "client.requests.some(path => ['/api/v1/voice/rosters/events', '/api/v1/maintenance/events'].includes(path))) throw Error('legacy or duplicate stream')"),
+}
 PATTERNS = tuple(re.compile(value, re.IGNORECASE) for value in (
     r'\bEventSource\b', r'text/event-stream', r'Last-Event-ID',
     r'server[- .]sent[- .]events', r'\bwriteSSEHeaders\s*\(', r'\bnewRosterWriter\s*\(',
@@ -43,6 +49,8 @@ def scan(root, require_roots=False):
             if not path.is_file() or path.suffix not in EXTENSIONS or relative in EXCEPTIONS or test_file(path):
                 continue
             for number, line in enumerate(path.read_text(encoding='utf8').splitlines(), 1):
+                if (relative, line.strip()) in NEGATIVE_ASSERTIONS:
+                    continue
                 if any(pattern.search(line) for pattern in PATTERNS):
                     findings.append((relative, number))
     return sorted(set(findings))

@@ -6,6 +6,14 @@ from tools.verify.realtime_migration.guard import scan
 
 
 class MigrationGuardTest(unittest.TestCase):
+    def test_allows_only_the_named_negative_assertion_in_roster_scenario(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = root / 'tools/qa/voice_roster_multiclient/scenario.cjs'
+            path.parent.mkdir(parents=True)
+            path.write_text("client.requests.some(path => ['/api/v1/voice/rosters/events', '/api/v1/maintenance/events'].includes(path))) throw Error('legacy or duplicate stream')\nnew EventSource('/actual')\n", encoding='utf8')
+            self.assertEqual(scan(root), [('tools/qa/voice_roster_multiclient/scenario.cjs', 2)])
+
     def test_finds_first_party_runtime_streams_but_not_tests_or_exact_fixture(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
