@@ -1,0 +1,61 @@
+diff --git a/C:/b-qa675/.out/qa648_win_combined_test.dart.txt b/C:/b-qa675/.out/qa648_win_media_test.dart.txt
+index b678eecc1..787a3061e 100644
+--- a/C:/b-qa675/.out/qa648_win_combined_test.dart.txt
++++ b/C:/b-qa675/.out/qa648_win_media_test.dart.txt
+@@ -2,6 +2,7 @@ import 'dart:async';
+ import 'dart:io';
+ import 'package:crypto/crypto.dart';
+ import 'package:flutter/material.dart';
++import 'package:livekit_client/livekit_client.dart' show RemoteAudioTrack;
+ import 'package:flutter_test/flutter_test.dart';
+ import 'package:integration_test/integration_test.dart';
+ import 'package:shared_preferences/shared_preferences.dart';
+@@ -89,6 +90,38 @@ void main() {
+       expect(state.voiceChannel?.id, channel.id);
+     }
+     debugPrint('ISSUE648_READY_FOR_OUTAGE');
++    Future<(num, num)?> sampleAudio() async {
++      final room = state.voice.room;
++      if (room == null) return null;
++      for (final participant in room.remoteParticipants.values) {
++        for (final publication in participant.audioTrackPublications) {
++          final track = publication.track;
++          if (track is RemoteAudioTrack && publication.subscribed) {
++            final stats = await track.getReceiverStats();
++            if (stats?.bytesReceived != null && stats?.totalSamplesDuration != null) {
++              return (stats!.bytesReceived!, stats.totalSamplesDuration!);
++            }
++          }
++        }
++      }
++      return null;
++    }
++    Future<void> requireAudioFlow() async {
++      for (var i = 0; i < 120; i++) {
++        final before = await tester.runAsync(sampleAudio);
++        if (before != null) {
++          await tester.runAsync(() => Future<void>.delayed(const Duration(seconds: 3)));
++          final after = await tester.runAsync(sampleAudio);
++          if (after != null && after.$1 > before.$1 && after.$2 > before.$2) return;
++        } else {
++          await tester.runAsync(() => Future<void>.delayed(const Duration(seconds: 1)));
++        }
++        await tester.pump();
++      }
++      fail('No increasing received audio bytes and decoded sample duration');
++    }
++    await requireAudioFlow();
++    debugPrint('QA648_AUDIO_BEFORE');
+     var sawRetryVisible=false;
+     var sawInterruption=false;
+     var recovered=false;
+@@ -119,6 +152,8 @@ void main() {
+     debugPrint('ISSUE648_FRESH_LEASE');
+     expect(sawRetryVisible,isTrue,reason:'No visible recovery state observed during outage');
+     debugPrint('ISSUE648_RECOVERED_SAME_CHANNEL');
++    await requireAudioFlow();
++    debugPrint('QA648_AUDIO_AFTER');
+     await tester.runAsync(() => Future<void>.delayed(const Duration(seconds:15)));
+   }, timeout: const Timeout(Duration(minutes:25)));
+ }
+\ No newline at end of file

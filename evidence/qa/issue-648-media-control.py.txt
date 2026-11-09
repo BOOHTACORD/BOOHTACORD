@@ -1,0 +1,23 @@
+from pathlib import Path
+import subprocess,time
+log=Path('/mnt/c/b-qa675/.out/qa648-win-media.log')
+docker='/var/tmp/boohtacord-679-cli/extracted/usr/bin/docker'
+owner=Path('/mnt/c/b-qa675/.out/qa648-win-owner').read_text().strip()
+services=[owner+'-api',owner+'-sfu']
+def guard(name):
+ label=subprocess.check_output([docker,'inspect','-f','{{index .Config.Labels "boohtacord.qa.owner"}}',name],text=True).strip()
+ if label!=owner: raise RuntimeError('Unowned container')
+end=time.monotonic()+600;stopped=[]
+try:
+ while time.monotonic()<end:
+  if Path('/mnt/c/b-qa675/.out/qa648-media-failed').exists(): raise RuntimeError('Web peer failed')
+  if Path('/mnt/c/b-qa675/.out/qa648-media-ready').exists() and log.exists() and 'QA648_AUDIO_BEFORE' in log.read_text(encoding='utf-8',errors='replace'): break
+  time.sleep(.2)
+ else: raise RuntimeError('Client readiness not observed')
+ for name in services:
+  guard(name);subprocess.run([docker,'stop','--time','2',name],check=True,stdout=subprocess.DEVNULL);stopped.append(name)
+ print('QA648_API_AND_SFU_STOPPED',flush=True);time.sleep(130)
+finally:
+ for name in stopped:
+  guard(name);subprocess.run([docker,'start',name],check=True,stdout=subprocess.DEVNULL)
+ if stopped:print('QA648_OWNED_SERVICES_STARTED',flush=True)
