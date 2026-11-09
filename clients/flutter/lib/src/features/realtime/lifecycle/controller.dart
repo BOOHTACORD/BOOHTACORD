@@ -20,6 +20,7 @@ export 'close.dart';
 export 'events.dart';
 export 'recovery.dart';
 export 'event.dart';
+export 'manual_reconnect.dart';
 
 class RealtimeController extends ChangeNotifier {
   RealtimeController(
