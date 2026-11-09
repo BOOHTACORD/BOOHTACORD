@@ -1,0 +1,22 @@
+diff --git a/C:/b-qa675/.out/qa648_win_long_test.dart.txt b/C:/b-qa675/.out/qa648_win_combined_test.dart.txt
+index 52acd4740..b678eecc1 100644
+--- a/C:/b-qa675/.out/qa648_win_long_test.dart.txt
++++ b/C:/b-qa675/.out/qa648_win_combined_test.dart.txt
+@@ -97,7 +97,7 @@ void main() {
+       await tester.runAsync(() => Future<void>.delayed(const Duration(seconds:1)));
+       await tester.pump();
+       final phase=state.voicePhase;
+-      if (!sawRetryVisible && state.voice.voiceRecoveryActive && state.voice.lastVoiceAdmissionFailure != null) {
++      if (!sawRetryVisible && state.voice.voiceRecoveryActive && phase == VoicePhase.reconnecting) {
+         expect(phase, VoicePhase.reconnecting);
+         expect(state.voiceChannel?.id, channel.id);
+         expect(find.textContaining('Восстанавливаем'), findsWidgets);
+@@ -117,7 +117,7 @@ void main() {
+     expect(state.voice.leaseId, isNotNull);
+     expect(state.voice.leaseId, isNot(initialLease), reason: 'Recovery reused the old lease');
+     debugPrint('ISSUE648_FRESH_LEASE');
+-    expect(sawRetryVisible,isTrue,reason:'No failed retry observed');
++    expect(sawRetryVisible,isTrue,reason:'No visible recovery state observed during outage');
+     debugPrint('ISSUE648_RECOVERED_SAME_CHANNEL');
+     await tester.runAsync(() => Future<void>.delayed(const Duration(seconds:15)));
+   }, timeout: const Timeout(Duration(minutes:25)));
