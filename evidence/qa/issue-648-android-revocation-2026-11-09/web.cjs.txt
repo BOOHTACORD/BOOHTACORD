@@ -14,4 +14,3 @@ const revoke=await ctx.request.post(origin+'/api/v1/me/sessions/revoke-others',{
 fs.writeFileSync(root+'qa648-revoked-marker','revoked');console.log('QA648_OTHER_SESSION_REVOKED');
 await marker('QA648_REVOKED_STAYED_OUT',180000);console.log('QA648_REVOKED_CONTROL_PASS');
 }finally{await browser.close()}})().catch(e=>{console.error('QA648_REVOKE_CONTROL_FAILED',e.message);process.exitCode=1});
-
