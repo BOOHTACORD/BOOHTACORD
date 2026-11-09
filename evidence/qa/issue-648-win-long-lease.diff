@@ -1,0 +1,23 @@
+diff --git a/C:/b-qa675/.out/qa648_windows_test-run3.dart b/C:/b-qa675/.out/qa648_win_long_test.dart.txt
+index a355b7c1f..52acd4740 100644
+--- a/C:/b-qa675/.out/qa648_windows_test-run3.dart
++++ b/C:/b-qa675/.out/qa648_win_long_test.dart.txt
+@@ -76,6 +76,8 @@ void main() {
+     }
+     expect(state.voicePhase,VoicePhase.listener);
+     expect(state.voiceChannel?.id,channel.id);
++    final initialLease = state.voice.leaseId;
++    expect(initialLease, isNotNull);
+     await tester.pump();
+     if (Platform.isAndroid) await binding.convertFlutterSurfaceToImage();
+     await tester.pump();
+@@ -112,6 +114,9 @@ void main() {
+     if (Platform.isAndroid) await binding.takeScreenshot('voice-after-outage');
+     expect(sawInterruption,isTrue,reason:'No observed voice interruption');
+     expect(recovered,isTrue,reason:'Did not return to original channel');
++    expect(state.voice.leaseId, isNotNull);
++    expect(state.voice.leaseId, isNot(initialLease), reason: 'Recovery reused the old lease');
++    debugPrint('ISSUE648_FRESH_LEASE');
+     expect(sawRetryVisible,isTrue,reason:'No failed retry observed');
+     debugPrint('ISSUE648_RECOVERED_SAME_CHANNEL');
+     await tester.runAsync(() => Future<void>.delayed(const Duration(seconds:15)));
