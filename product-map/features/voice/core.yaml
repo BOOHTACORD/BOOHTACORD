@@ -1,0 +1,62 @@
+{
+  "components": [
+    {"id":"cmp.web.voice_controls","source":{"parity_id":"voice.controls","platform":"web"}},
+    {"id":"cmp.flutter.voice_controller","source":{"parity_id":"voice.controls","platform":"android"}},
+    {"id":"cmp.web.voice_recovery","source":{"parity_id":"voice.long_recovery","platform":"web"}},
+    {"id":"cmp.flutter.voice_recovery","source":{"parity_id":"voice.long_recovery","platform":"android"}},
+    {"id":"cmp.web.voice_event_sounds","source":{"parity_id":"voice.room_event_sounds","platform":"web"}},
+    {"id":"cmp.flutter.voice_event_sounds","source":{"parity_id":"voice.room_event_sounds","platform":"android"}},
+    {"id":"cmp.web.voice_melody","source":{"parity_id":"voice.event-sounds-private-melody","platform":"web"}},
+    {"id":"cmp.flutter.voice_melody","source":{"parity_id":"voice.event-sounds-private-melody","platform":"android"}}
+  ],
+  "features": [
+    {
+      "id":"voice.controls", "title":"Управление голосом", "domain":"voice", "target_revision":null,
+      "behavior_revisions":[], "parity_ids":["voice.controls"],
+      "components":["cmp.web.voice_controls","cmp.flutter.voice_controller"],
+      "platforms": {
+        "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "macos":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "android":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "ios":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null}
+      }
+    },
+    {
+      "id":"voice.long_recovery", "title":"Восстановление голосового канала", "domain":"voice", "target_revision":null,
+      "behavior_revisions":[], "parity_ids":["voice.long_recovery"],
+      "components":["cmp.web.voice_recovery","cmp.flutter.voice_recovery"],
+      "platforms": {
+        "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "macos":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "android":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "ios":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null}
+      }
+    },
+    {
+      "id":"voice.room_event_sounds", "title":"Звуки событий голосового канала", "domain":"voice", "target_revision":null,
+      "behavior_revisions":[], "parity_ids":["voice.room_event_sounds"],
+      "components":["cmp.web.voice_event_sounds","cmp.flutter.voice_event_sounds"],
+      "platforms": {
+        "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "macos":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "android":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "ios":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null}
+      }
+    },
+    {
+      "id":"voice.event-sounds-private-melody", "title":"Личная мелодия входа", "domain":"voice", "target_revision":null,
+      "behavior_revisions":[], "parity_ids":["voice.event-sounds-private-melody"],
+      "components":["cmp.web.voice_melody","cmp.flutter.voice_melody"],
+      "platforms": {
+        "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "macos":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "android":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "ios":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null}
+      }
+    }
+  ]
+}

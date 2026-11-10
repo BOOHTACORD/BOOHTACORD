@@ -25,6 +25,7 @@ def build_document(features):
 <label for="search">Поиск по ID или сценарию</label> <input id="search" type="search">
 <p id="count" aria-live="polite"></p><div class="table-wrap"><table><thead><tr><th scope="col">Сценарий</th>
 <th scope="col">Web</th><th scope="col">Windows</th><th scope="col">macOS</th><th scope="col">Android</th><th scope="col">iOS</th></tr></thead><tbody id="rows"></tbody></table></div>
+<section aria-labelledby="detail-heading"><h2 id="detail-heading">Компоненты сценария</h2><div id="detail" aria-live="polite">Выберите ID в таблице.</div></section>
 <noscript>Для интерактивной таблицы включите JavaScript. Доступна команда python -m tools.product_map matrix.</noscript></main><script>{script}</script></body></html>'''
 
 

@@ -2,6 +2,7 @@ const platforms = ['web', 'windows', 'macos', 'android', 'ios'];
 const rows = document.getElementById('rows');
 const search = document.getElementById('search');
 const count = document.getElementById('count');
+const detail = document.getElementById('detail');
 function cell(row, value) {
   const node = document.createElement('td');
   node.textContent = value;
@@ -34,7 +35,25 @@ search.addEventListener('input', render);
 function selectHash() {
   const match = location.hash.match(/^#feature\/(.*)$/);
   if (!match) return;
-  try { search.value = decodeURIComponent(match[1]); render(); } catch (_) { /* invalid link */ }
+  try {
+    search.value = decodeURIComponent(match[1]);
+    render();
+    const feature = data.find(item => item.id === search.value);
+    detail.replaceChildren();
+    if (!feature) { detail.textContent = 'Сценарий не найден.'; return; }
+    const title = document.createElement('h3');
+    title.textContent = feature.title || feature.id;
+    detail.appendChild(title);
+    const components = feature.components || [];
+    if (!components.length) { detail.append('Компоненты пока не описаны.'); return; }
+    const list = document.createElement('ul');
+    for (const component of components) {
+      const item = document.createElement('li');
+      item.textContent = component.id + ': ' + component.paths.join(', ');
+      list.appendChild(item);
+    }
+    detail.appendChild(list);
+  } catch (_) { detail.textContent = 'Некорректная ссылка.'; }
 }
 window.addEventListener('hashchange', selectHash);
 render();
