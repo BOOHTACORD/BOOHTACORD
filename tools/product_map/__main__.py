@@ -20,6 +20,8 @@ def main():
     sub.add_parser('matrix')
     impact = sub.add_parser('impact')
     impact.add_argument('--base', required=True, help='exact base commit SHA')
+    transition = sub.add_parser('check-transition')
+    transition.add_argument('--base', required=True, help='exact base commit SHA')
     generate = sub.add_parser('generate')
     generate.add_argument('--check', action='store_true')
     snapshot = sub.add_parser('release-snapshot')
@@ -47,6 +49,14 @@ def main():
     catalog = json.loads(path.read_text(encoding='utf-8'))
     validate(catalog, root)
     curated = load_curated_catalog(root, catalog)
+    if args.command == 'check-transition':
+        from tools.product_map.catalog.history import read_previous_catalog
+        from tools.product_map.catalog.transition import validate_transition
+        previous = read_previous_catalog(root, args.base)
+        validate_transition(previous, curated)
+        print(f'Catalog transition valid: {len(previous["features"])} prior feature IDs, '
+              f'{len(previous["components"])} prior component IDs.')
+        return
     if args.command == 'impact':
         from tools.product_map.impact.analyze import analyze
         from tools.product_map.impact.changes import changed_paths

@@ -11,6 +11,7 @@ python -m tools.product_map compare --platform web --platform windows --scope vo
 python -m tools.product_map generate
 python -m tools.product_map generate --check
 python -m tools.product_map impact --base <точный-SHA-базового-коммита>
+python -m tools.product_map check-transition --base <точный-SHA-базового-коммита>
 ```
 
 `impact` показывает компоненты и функции, связанные с изменёнными файлами,
@@ -19,6 +20,12 @@ python -m tools.product_map impact --base <точный-SHA-базового-к�
 ownership-каталог ещё не готов, поэтому `coverage` всегда `INCOMPLETE`,
 отсутствие функции в отчёте не доказывает отсутствие влияния. В PR CI
 печатает отчёт, но пока не блокирует неразмеченные пути.
+
+`check-transition` читает каталог непосредственно из Git на указанном SHA и
+отклоняет исчезновение существующих ID, снижение ревизии или переписывание
+её истории. Если в базовом коммите каталога ещё нет, проверка начинает с
+пустой базы. В CI она блокирует нарушения для PR и merge queue; это не заменяет
+пока отсутствующий полный контроль покрытия путей и манифеста изменений.
 
 В release workflow Windows, macOS и Android после действующей проверки
 настоящих native-артефактов команда `release-snapshot` готовит отдельный
