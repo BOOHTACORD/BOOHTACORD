@@ -70,6 +70,7 @@ jobs:
           python -m unittest tools.product_map.catalog.test_validation tools.product_map.catalog.test_resolve tools.product_map.catalog.test_pilot tools.product_map.catalog.test_enrich tools.product_map.catalog.test_curated tools.product_map.projection.test_importer tools.product_map.projection.test_compare tools.product_map.projection.test_real_registry tools.product_map.projection.test_status tools.product_map.projection.test_render tools.product_map.viewer.test_document
           python -m unittest tools.product_map.impact.test_analyze tools.product_map.impact.test_changes
           python -m unittest tools.product_map.catalog.test_history
+          python -m unittest tools.product_map.release.test_github_api
           node --test tools/product_map/viewer/graph.test.cjs
           if [ "$PRODUCT_MAP_EVENT" = pull_request ] || [ "$PRODUCT_MAP_EVENT" = merge_group ]; then
             test -n "$PRODUCT_MAP_BASE" || { echo 'Missing product-map base SHA' >&2; exit 1; }

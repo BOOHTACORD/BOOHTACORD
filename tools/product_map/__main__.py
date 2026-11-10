@@ -1,6 +1,7 @@
 """Read-only prototype of the product-map projection; not a release gate."""
 import argparse
 import json
+import os
 from pathlib import Path
 
 from tools.product_map.projection.compare import compare
@@ -31,11 +32,20 @@ def main():
     publication.add_argument('--snapshot', type=Path, required=True)
     publication.add_argument('--contract', type=Path, required=True)
     publication.add_argument('--receipt', type=Path, required=True)
+    candidate = sub.add_parser('native-release-candidate')
+    candidate.add_argument('--platform', choices=('windows', 'macos', 'android'), required=True)
+    candidate.add_argument('--run-id', type=int, required=True)
+    candidate.add_argument('--tag', required=True)
     comparison = sub.add_parser('compare')
     comparison.add_argument('--platform', choices=PLATFORMS, action='append', required=True)
     comparison.add_argument('--scope', default='')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]
+    if args.command == 'native-release-candidate':
+        from tools.product_map.release.github_api import fetch_candidate
+        print(json.dumps(fetch_candidate(args.platform, args.run_id, args.tag,
+                                         os.environ.get('GITHUB_TOKEN')), indent=2, sort_keys=True))
+        return
     if args.command == 'match-publication':
         from tools.product_map.release.publication import load_record, match_publication
         print(json.dumps(match_publication(load_record(args.snapshot), load_record(args.contract),
