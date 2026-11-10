@@ -2,6 +2,12 @@
   "version": 1,
   "rules": [
     {
+      "paths": ["tools/product_map/**", "product-map/**"],
+      "gates": ["contracts"],
+      "server": false,
+      "native": false
+    },
+    {
       "paths": [
         "backend/internal/notifications/**",
         "backend/internal/pushrelay/**",

@@ -8,7 +8,15 @@
 python -m tools.product_map validate-parity
 python -m tools.product_map matrix
 python -m tools.product_map compare --platform web --platform windows --scope voice
+python -m tools.product_map generate
+python -m tools.product_map generate --check
 ```
+
+Команда `generate` создаёт автономный предварительный просмотрщик
+`docs/product-map/generated/index.html`. Его можно открыть в браузере без
+сервера; поиск и ссылки вида `#feature/voice.long_recovery` работают локально.
+Проверка `--check` обнаруживает устаревший файл и запускается в CI. Она
+проверяет только эту проекцию, а не полноту карты или достоверность релизов.
 
 В выводе отдельно представлены состояние исходного кода, релиз и runtime.
 `UNKNOWN` означает отсутствие подтверждённой информации, а не отсутствие
@@ -17,6 +25,6 @@ python -m tools.product_map compare --platform web --platform windows --scope vo
 Windows и macOS не наследуют статусы из Android, iOS или общего Flutter.
 
 Ещё не готовы: полноценный каталог и компонентный граф, ревизии поведения,
-проверка поставок и откатов, интерактивный интерфейс, impact и обязательный
-CI, а также приёмка AC-01…AC-18. Данные нельзя использовать для решения о
+проверка поставок и откатов, полный интерактивный интерфейс, impact и контроль
+изменений PR, а также приёмка AC-01…AC-18. Данные нельзя использовать для решения о
 выпуске. Исходный parity-реестр остаётся авторитетным для своего покрытия.

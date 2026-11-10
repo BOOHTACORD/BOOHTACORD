@@ -1,0 +1,41 @@
+const platforms = ['web', 'windows', 'macos', 'android', 'ios'];
+const rows = document.getElementById('rows');
+const search = document.getElementById('search');
+const count = document.getElementById('count');
+function cell(row, value) {
+  const node = document.createElement('td');
+  node.textContent = value;
+  row.appendChild(node);
+}
+function render() {
+  rows.replaceChildren();
+  const query = search.value.trim().toLocaleLowerCase();
+  let visible = 0;
+  for (const feature of data) {
+    if (!(feature.id + ' ' + feature.description).toLocaleLowerCase().includes(query)) continue;
+    const row = document.createElement('tr');
+    const heading = document.createElement('th');
+    heading.scope = 'row';
+    const link = document.createElement('a');
+    link.href = '#feature/' + encodeURIComponent(feature.id);
+    link.textContent = feature.id;
+    heading.append(link, document.createElement('br'), document.createTextNode(feature.description));
+    row.appendChild(heading);
+    for (const name of platforms) {
+      const item = feature.platforms[name];
+      cell(row, 'Код: ' + item.source_status + '\nРелиз: ' + item.released + '\nRuntime: ' + item.runtime);
+    }
+    rows.appendChild(row);
+    visible++;
+  }
+  count.textContent = 'Сценариев: ' + visible;
+}
+search.addEventListener('input', render);
+function selectHash() {
+  const match = location.hash.match(/^#feature\/(.*)$/);
+  if (!match) return;
+  try { search.value = decodeURIComponent(match[1]); render(); } catch (_) { /* invalid link */ }
+}
+window.addEventListener('hashchange', selectHash);
+render();
+selectHash();

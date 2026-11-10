@@ -62,6 +62,11 @@ jobs:
         run: |
           python -m unittest tools.verify.client_parity.test_policy tools.release.ios_artifact.test_verify
           python -m tools.verify.client_parity.run --base "$PARITY_BASE"
+      - name: Verify product-map parity projection and generated viewer
+        run: |
+          python -m unittest tools.product_map.projection.test_importer tools.product_map.projection.test_compare tools.product_map.projection.test_real_registry tools.product_map.projection.test_status tools.product_map.projection.test_render tools.product_map.viewer.test_document
+          python -m tools.product_map validate-parity
+          python -m tools.product_map generate --check
       - name: Verify generated tracing contract bindings
         run: node tools/observability/flow_contract/generate.mjs --check
       - name: Verify publisher signatures and desktop promotion guards
