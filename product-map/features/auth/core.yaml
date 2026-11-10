@@ -13,6 +13,10 @@
       "id":"auth.registration", "title":"Регистрация учётной записи", "domain":"auth",
       "description":"Создание учётной записи с серверной проверкой логина и пароля.",
       "target_revision":null, "behavior_revisions":[], "parity_ids":[],
+      "owned_roots":[
+        {"path":"backend/internal/identity/register_user/","component":"cmp.backend.register_user"},
+        {"path":"backend/internal/identity/registration/","component":"cmp.backend.registration_policy"}
+      ],
       "components":["cmp.web.registration_ui","cmp.web.registration_client","cmp.flutter.registration_ui",
         "cmp.backend.registration_routes","cmp.backend.registration_api","cmp.backend.register_user","cmp.backend.registration_policy"],
       "platforms": {

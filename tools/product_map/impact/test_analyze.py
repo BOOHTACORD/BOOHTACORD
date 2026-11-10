@@ -41,6 +41,16 @@ class ImpactTests(unittest.TestCase):
         self.assertEqual(result['direct_features'], ['voice.a', 'voice.b'])
         self.assertEqual(result['dependent_features'], ['voice.c'])
 
+    def test_changed_file_inside_owned_scope_impacts_feature(self):
+        self.catalog['features'][0]['owned_roots'] = [
+            {'path': 'backend/internal/voice/lease/', 'component': 'cmp.shared'}]
+        path = 'backend/internal/voice/lease/store.go'
+        result = analyze([path], self.catalog)
+        self.assertEqual(result['direct_features'], ['voice.a', 'voice.b'])
+        self.assertIn('cmp.shared', result['components'])
+        self.assertEqual(result['dependent_features'], ['voice.c'])
+        self.assertEqual(result['unclassified_runtime_paths'], [])
+
     def test_invalid_paths_are_rejected_and_duplicates_are_deterministic(self):
         for path in ('../secret', '/etc/passwd', 'clients\\web\\x', 'C:/x', ''):
             with self.subTest(path=path), self.assertRaises(ValueError):

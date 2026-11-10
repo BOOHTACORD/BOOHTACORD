@@ -23,7 +23,17 @@ def mapped_feature_paths(catalog):
     return {path for identifier in reachable for path in components[identifier]['paths']}
 
 
+def scoped_feature_ids(path, catalog):
+    return {feature['id'] for feature in catalog['features']
+            if any(path.startswith(root['path']) for root in feature.get('owned_roots', []))}
+
+
+def scoped_component_ids(path, catalog):
+    return {scope['component'] for feature in catalog['features']
+            for scope in feature.get('owned_roots', []) if path.startswith(scope['path'])}
+
+
 def classify_new_paths(previous, current, catalog):
     mapped = mapped_feature_paths(catalog)
     return sorted(path for path in set(current) - set(previous)
-                  if is_runtime(path) and path not in mapped)
+                  if is_runtime(path) and path not in mapped and not scoped_feature_ids(path, catalog))

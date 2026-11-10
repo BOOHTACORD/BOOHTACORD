@@ -4,6 +4,7 @@ from pathlib import PurePosixPath
 
 from tools.product_map.projection.importer import PLATFORMS
 from .graph import validate_dependencies
+from tools.product_map.ownership.scopes import validate_feature_scopes
 
 FEATURE = re.compile(r'[a-z][a-z0-9_-]*(?:\.[a-z0-9_-]+)*\Z')
 COMPONENT = re.compile(r'cmp(?:\.[a-z0-9_-]+)+\Z')
@@ -27,6 +28,7 @@ def _path(root, value):
 
 def validate_catalog(catalog, root, parity_ids):
     components, features = catalog['components'], catalog['features']
+    validate_feature_scopes(features, root)
     component_ids = set()
     for item in components:
         identifier = item['id']

@@ -30,6 +30,15 @@ class CoverageTests(unittest.TestCase):
         self.assertEqual(first['unmapped'], 15)
         self.assertEqual(len(first['groups']['clients/web/src/']['unmapped_sample']), 10)
 
+    def test_feature_scope_counts_only_its_owned_tree(self):
+        catalog = {'features': [{'id': 'auth.registration', 'components': ['cmp.reg'],
+                                 'owned_roots': [{'path': 'backend/internal/identity/register_user/',
+                                                  'component': 'cmp.reg'}]}],
+                   'components': [{'id': 'cmp.reg', 'paths': ['backend/internal/identity/register_user/service.go']}]}
+        result = coverage_report(['backend/internal/identity/register_user/service.go',
+                                  'backend/internal/identity/other/service.go'], catalog)
+        self.assertEqual((result['mapped'], result['unmapped']), (1, 1))
+
     @patch('tools.product_map.ownership.report.subprocess.run')
     def test_dirty_catalog_cannot_be_attributed_to_head(self, git):
         git.return_value.stdout = b' M product-map/features/voice/core.yaml\n'

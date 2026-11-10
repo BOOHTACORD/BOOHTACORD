@@ -53,3 +53,10 @@ class OwnershipTests(unittest.TestCase):
         self.catalog['components'].append({'id': 'cmp.db', 'paths': ['backend/internal/db/new.go']})
         self.catalog['components'][0]['depends_on'] = ['cmp.db']
         self.assertEqual(classify_new_paths([], ['backend/internal/db/new.go'], self.catalog), [])
+
+    def test_declared_leaf_scope_covers_new_file_but_not_sibling_prefix(self):
+        self.catalog['features'][0]['owned_roots'] = [
+            {'path': 'backend/internal/identity/register_user/', 'component': 'cmp.voice'}]
+        paths = ['backend/internal/identity/register_user/postgres/new.go',
+                 'backend/internal/identity/register_user_extra/new.go']
+        self.assertEqual(classify_new_paths([], paths, self.catalog), [paths[1]])

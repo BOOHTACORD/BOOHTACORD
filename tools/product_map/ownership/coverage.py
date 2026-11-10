@@ -1,10 +1,11 @@
 """Count scoped Git paths with explicit feature-linked component ownership."""
-from .new_paths import RUNTIME_ROOTS, is_runtime, mapped_feature_paths
+from .new_paths import RUNTIME_ROOTS, is_runtime, mapped_feature_paths, scoped_feature_ids
 
 
 def coverage_report(paths, catalog):
     tracked = {path for path in paths if is_runtime(path)}
     mapped = tracked.intersection(mapped_feature_paths(catalog))
+    mapped.update(path for path in tracked if scoped_feature_ids(path, catalog))
     groups = {}
     for root in RUNTIME_ROOTS:
         members = {path for path in tracked if path.startswith(root)}
