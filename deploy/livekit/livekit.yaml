@@ -1,6 +1,9 @@
 port: 7880
 bind_addresses: ["0.0.0.0"]
 prometheus_port: 6789
+# Faster active-speaker updates; retain LiveKit sensitivity and smoothing defaults.
+audio:
+  update_interval: 150
 redis:
   address: redis:6379
 rtc:
