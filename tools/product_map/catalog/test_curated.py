@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 from tools.product_map.catalog.curated import load_curated_catalog
+from tools.product_map.impact.analyze import analyze
 
 
 class CuratedCatalogTests(unittest.TestCase):
@@ -61,3 +62,22 @@ class CuratedCatalogTests(unittest.TestCase):
         registry['voice']['parity'].append(extra)
         with self.assertRaisesRegex(ValueError, 'not fully mapped'):
             load_curated_catalog(root, registry)
+
+    def test_voice_melody_includes_real_server_routes(self):
+        root = Path(__file__).resolve().parents[3]
+        registry = json.loads((root / 'tools/qa/local_features/features.json')
+                              .read_text(encoding='utf-8'))
+        catalog = load_curated_catalog(root, registry)
+        features = {item['id']: item for item in catalog['features']}
+        components = {item['id']: item for item in catalog['components']}
+        ids = features['voice.event-sounds-private-melody']['components']
+        self.assertIn('cmp.backend.voice_join_sound_routes', ids)
+        self.assertEqual(components['cmp.backend.voice_join_sound_routes']['paths'],
+                         ['backend/internal/app/voice_sound_routes/join.go'])
+        self.assertEqual(components['cmp.backend.voice_join_sound_routes']['depends_on'],
+                         ['cmp.backend.voice_join_sound_service'])
+        self.assertIn('cmp.backend.voice_sound_preferences_routes',
+                      features['voice.room_event_sounds']['components'])
+        impact = analyze(['backend/internal/voice/join_sound/service.go'], catalog)
+        self.assertIn('voice.event-sounds-private-melody', impact['direct_features'])
+        self.assertIn('cmp.backend.voice_join_sound_routes', impact['components'])

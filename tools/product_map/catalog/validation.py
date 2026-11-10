@@ -37,6 +37,7 @@ def validate_catalog(catalog, root, parity_ids):
             raise ValueError(f'component without path: {identifier}')
         for path in item['paths']:
             _path(root, path)
+    validate_dependencies(components)
     ids = set()
     for item in features:
         identifier = item['id']

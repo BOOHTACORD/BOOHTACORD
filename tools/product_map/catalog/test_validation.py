@@ -1,7 +1,6 @@
 import tempfile
 import unittest
 from pathlib import Path
-
 from tools.product_map.catalog.validation import validate_catalog
 from tools.product_map.catalog.transition import validate_transition
 
@@ -19,8 +18,6 @@ def fixture():
                           ('web', 'windows', 'macos', 'android', 'ios')},
         }],
     }
-
-
 class CatalogTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
@@ -75,6 +72,15 @@ class CatalogTests(unittest.TestCase):
             validate_catalog(data, self.root, {'voice.test'})
         data['features'][0]['depends_on'] = ['voice.missing']
         with self.assertRaisesRegex(ValueError, 'dependency'):
+            validate_catalog(data, self.root, {'voice.test'})
+
+    def test_component_dependency_must_resolve_and_be_acyclic(self):
+        data = fixture()
+        data['components'][0]['depends_on'] = ['cmp.absent']
+        with self.assertRaisesRegex(ValueError, 'dependency'):
+            validate_catalog(data, self.root, {'voice.test'})
+        data['components'][0]['depends_on'] = ['cmp.shared.voice']
+        with self.assertRaisesRegex(ValueError, 'cycle'):
             validate_catalog(data, self.root, {'voice.test'})
 
     def test_exception_requires_reviewable_reason_and_issue(self):

@@ -32,6 +32,15 @@ class ImpactTests(unittest.TestCase):
         self.assertEqual(result['other_paths'], ['docs/guide.md'])
         self.assertEqual(result['coverage'], 'INCOMPLETE')
 
+    def test_changed_dependency_impacts_consuming_component_and_feature(self):
+        self.catalog['components'].append({'id': 'cmp.backend',
+            'paths': ['backend/internal/voice/service.go']})
+        self.catalog['components'][0]['depends_on'] = ['cmp.backend']
+        result = analyze(['backend/internal/voice/service.go'], self.catalog)
+        self.assertEqual(result['components'], ['cmp.backend', 'cmp.shared'])
+        self.assertEqual(result['direct_features'], ['voice.a', 'voice.b'])
+        self.assertEqual(result['dependent_features'], ['voice.c'])
+
     def test_invalid_paths_are_rejected_and_duplicates_are_deterministic(self):
         for path in ('../secret', '/etc/passwd', 'clients\\web\\x', 'C:/x', ''):
             with self.subTest(path=path), self.assertRaises(ValueError):

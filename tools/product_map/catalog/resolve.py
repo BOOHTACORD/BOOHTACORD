@@ -11,6 +11,10 @@ def resolve_catalog(curated, registry):
             parity[row['id']] = row
     result = deepcopy(curated)
     for component in result['components']:
+        if ('source' in component) == ('paths' in component):
+            raise ValueError(f'component must have exactly one path source: {component["id"]}')
+        if 'paths' in component:
+            continue
         source = component.pop('source')
         try:
             component['paths'] = [parity[source['parity_id']]['platforms']

@@ -15,6 +15,12 @@ def analyze(paths, catalog):
             raise ValueError(f'unsafe changed path: {path!r}')
     components = catalog['components']
     matched = {item['id'] for item in components if paths.intersection(item['paths'])}
+    while True:
+        consumers = {item['id'] for item in components
+                     if matched.intersection(item.get('depends_on', []))} - matched
+        if not consumers:
+            break
+        matched.update(consumers)
     mapped_paths = {path for item in components for path in item['paths']}
     direct = {item['id'] for item in catalog['features']
               if matched.intersection(item['components'])}

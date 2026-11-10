@@ -14,7 +14,10 @@ class VoiceSliceTests(unittest.TestCase):
         self.assertEqual({f['id'] for f in result['features']}, {
             'voice.controls', 'voice.long_recovery', 'voice.room_event_sounds',
             'voice.event-sounds-private-melody'})
-        self.assertEqual(len(result['components']), 8)
+        self.assertTrue({'cmp.backend.voice_join_sound_routes',
+                         'cmp.backend.voice_join_sound_service',
+                         'cmp.web.voice_controls', 'cmp.flutter.voice_controller'} <=
+                        {component['id'] for component in result['components']})
         for feature in result['features']:
             self.assertIsNone(feature['target_revision'])
             self.assertTrue(all(p['state'] == 'UNKNOWN'
