@@ -100,6 +100,8 @@ def main():
     expected_artifacts |= roster_ws_source["repository_artifacts"]
     recovery_review = read(root, "evidence/media/livekit-network-recovery-review-2026-11-09.json")
     verify_recovery_evidence(root, recovery_review["repository_artifacts"])
+    speaker_activity = read(root, "evidence/media/livekit-network-speaker-activity-2026-11-10.json")
+    expected_artifacts |= speaker_activity["repository_artifacts"]
     for path, expected in expected_artifacts.items():
         content = evidence_content(root, HISTORICAL_EVIDENCE_REVISION, path)
         content = content.replace(b"\r\n", b"\n")

@@ -406,6 +406,12 @@
   "voice": {
     "native_targets": ["integration_test/issue689_listener_test.dart", "integration_test/issue689_roster_test.dart"],
     "paths": [
+      "deploy/livekit/livekit.yaml",
+      "evidence/media/livekit-network-speaker-activity-2026-11-10.json",
+      "tools/verify/livekit_network_config/check.py",
+      "tools/verify/livekit_network_config/test_historical_artifact.py",
+      "tools/verify/livekit_network_config/test_speaker_activity.py",
+      "evidence/qa/voice-speaker-activity-2026-11-10.md",
       "clients/web/src/voice/*",
       "clients/web/src/conversation/ConversationPane.vue",
       "clients/web/src/design/design_v2_voice_room.css",
@@ -509,6 +515,10 @@
       "test/web_parity/audio_hierarchy_test.dart"
     ],
     "acceptance": {
+      "speaker_activity_interval": {
+        "focused": ["tools/verify/livekit_network_config/test_speaker_activity.py"],
+        "scope": "LiveKit active speaker reports use a 150 ms interval for Web and native clients; speaker sensitivity and smoothing retain LiveKit defaults. End-to-end timing, flicker and native media acceptance remain separate."
+      },
       "issue59": {
         "browser": "tools/qa/media_revocation/run.py",
         "focused": [
