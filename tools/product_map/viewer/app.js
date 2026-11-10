@@ -53,6 +53,18 @@ function selectHash() {
       list.appendChild(item);
     }
     detail.appendChild(list);
+    const edges = feature.component_edges || [];
+    const graphTitle = document.createElement('h4');
+    graphTitle.textContent = 'Связи компонентов';
+    detail.appendChild(graphTitle);
+    if (!edges.length) { detail.append('Связи пока не описаны.'); return; }
+    const graph = document.createElement('ul');
+    for (const edge of edges) {
+      const line = document.createElement('li');
+      line.textContent = edge.from + ' → ' + edge.to + ' (зависит от)';
+      graph.appendChild(line);
+    }
+    detail.appendChild(graph);
   } catch (_) { detail.textContent = 'Некорректная ссылка.'; }
 }
 window.addEventListener('hashchange', selectHash);

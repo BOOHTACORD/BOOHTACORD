@@ -10,6 +10,17 @@ def enrich_projection(projection, catalog):
         feature = features.get(row['id'])
         if feature is not None:
             row['title'] = feature['title']
-            row['components'] = [deepcopy(components[key])
-                                 for key in feature['components']]
+            selected = set(feature['components'])
+            pending = list(selected)
+            while pending:
+                for dependency in components[pending.pop()].get('depends_on', []):
+                    if dependency not in selected:
+                        selected.add(dependency)
+                        pending.append(dependency)
+            row['components'] = [deepcopy(components[key]) for key in sorted(selected)]
+            row['component_edges'] = [
+                {'from': key, 'to': dependency, 'type': 'depends_on'}
+                for key in sorted(selected)
+                for dependency in sorted(components[key].get('depends_on', []))
+            ]
     return result
