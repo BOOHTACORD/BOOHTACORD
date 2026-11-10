@@ -5,7 +5,7 @@
 правила parity и выводит текущие сценарии без копии реестра:
 
 ```sh
-python -m tools.product_map validate
+python -m tools.product_map validate-parity
 python -m tools.product_map matrix
 python -m tools.product_map compare --platform web --platform windows --scope voice
 ```

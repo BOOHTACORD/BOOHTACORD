@@ -12,7 +12,7 @@ from tools.verify.client_parity.policy import validate
 def main():
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers(dest='command', required=True)
-    sub.add_parser('validate')
+    sub.add_parser('validate-parity')
     sub.add_parser('show')
     sub.add_parser('matrix')
     comparison = sub.add_parser('compare')
@@ -24,8 +24,9 @@ def main():
     catalog = json.loads(path.read_text(encoding='utf-8'))
     validate(catalog, root)
     data = import_parity(catalog)
-    if args.command == 'validate':
-        print(f'PASS: {len(catalog)} groups, {len(data)} existing parity IDs')
+    if args.command == 'validate-parity':
+        print(f'PASS parity projection: {len(catalog)} groups, {len(data)} IDs; '
+              'full product-map validation is NOT IMPLEMENTED')
         return
     if args.command == 'matrix':
         print(render_matrix(data), end='')
