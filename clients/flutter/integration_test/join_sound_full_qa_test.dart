@@ -69,7 +69,10 @@ void main() {
         await tester.pump();
       }
       expect(state.voice.sounds.preferences!.ready, isTrue);
-      await tester.runAsync(() => state.voice.sounds.api!.remove());
+      final soundApi = state.voice.sounds.api!;
+      await tester.runAsync(() async {
+        if (await soundApi.current() != null) await soundApi.remove();
+      });
       await tester.tap(
         find
             .descendant(
@@ -81,7 +84,6 @@ void main() {
       );
       await tester.pumpAndSettle();
       final controls = QaSoundProfileDriver(tester);
-
       await controls.settled();
       if (state.voice.sounds.legacy.blocked) {
         await controls.tap('Использовать настройки аккаунта');
@@ -89,28 +91,19 @@ void main() {
       expect(state.voice.sounds.allows('joined'), isTrue);
       await controls.tap('Загрузить мелодию');
       expect(files.calls, 1);
-      final saved = await tester.runAsync(
-        () => state.voice.sounds.api!.current(),
-      );
+      final saved = await tester.runAsync(() => soundApi.current());
       expect(saved?['enabled'], false);
       expect(saved?['id'], isNotEmpty);
       await controls.tap('Использовать при входе в канал');
-      expect(
-        (await tester.runAsync(
-          () => state.voice.sounds.api!.current(),
-        ))?['enabled'],
-        true,
-      );
+      final enabled = await tester.runAsync(() => soundApi.current());
+      expect(enabled?['enabled'], true);
       await controls.tap('Прослушать мелодию');
       expect(find.textContaining('Не удалось воспроизвести'), findsNothing);
       await tester.runAsync(
         () => captureQaSoundWidgets(capture, 'profile-melody'),
       );
       await controls.tap('Удалить мелодию');
-      expect(
-        await tester.runAsync(() => state.voice.sounds.api!.current()),
-        isNull,
-      );
+      expect(await tester.runAsync(() => soundApi.current()), isNull);
       expect(find.text('Прослушать мелодию'), findsNothing);
       expect(tester.takeException(), isNull);
       debugPrint(
