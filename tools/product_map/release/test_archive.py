@@ -19,7 +19,8 @@ def archive(records):
 def metadata(data):
     return {'artifact_digest': 'sha256:' + hashlib.sha256(data).hexdigest(),
             'artifact_size': len(data), 'source_revision': 'a' * 40,
-            'run_id': 123, 'run_attempt': 2, 'status': 'CANDIDATE_UNVERIFIED'}
+            'run_id': 123, 'run_attempt': 2, 'status': 'CANDIDATE_UNVERIFIED',
+            'platform': 'windows', 'tag': 'windows-v1.0.52'}
 
 
 class ArchiveTests(unittest.TestCase):
@@ -62,3 +63,6 @@ class ArchiveTests(unittest.TestCase):
                        ('source.json', json.dumps(source))])
         with self.assertRaisesRegex(ValueError, 'producer'):
             read_native_evidence(raw, dict(metadata(raw), run_attempt=1))
+        for field, value in [('platform', 'android'), ('tag', 'windows-v1.0.53')]:
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, 'producer'):
+                read_native_evidence(raw, dict(metadata(raw), **{field: value}))

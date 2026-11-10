@@ -40,6 +40,8 @@ def read_native_evidence(raw, candidate):
                                    docs['publication.json'])
         execution = contract['execution']
         if (result['source_revision'] != candidate['source_revision'] or
+                contract['platform'] != candidate['platform'] or
+                contract['tag'] != candidate['tag'] or
                 execution['run_id'] != str(candidate['run_id']) or
                 execution['run_attempt'] != str(candidate['run_attempt'])):
             raise ValueError('archive belongs to a different producer')

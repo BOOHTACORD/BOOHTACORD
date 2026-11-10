@@ -56,5 +56,6 @@ def select_native_artifact(run, document, platform, run_id, tag):
         raise ValueError('incomplete native producer metadata') from error
     return {'status': 'CANDIDATE_UNVERIFIED', 'published': 'UNKNOWN',
             'source_revision': sha, 'run_id': run_id, 'run_attempt': attempt,
+            'platform': platform, 'tag': tag,
             'artifact_id': item['id'], 'artifact_digest': item['digest'],
             'artifact_size': item['size_in_bytes']}

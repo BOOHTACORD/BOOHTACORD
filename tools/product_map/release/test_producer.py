@@ -25,6 +25,7 @@ class ProducerTests(unittest.TestCase):
         self.assertEqual(result['artifact_id'], 98)
         self.assertEqual(result['status'], 'CANDIDATE_UNVERIFIED')
         self.assertEqual(result['published'], 'UNKNOWN')
+        self.assertEqual((result['platform'], result['tag']), ('windows', 'windows-v1.0.52'))
 
     def test_bad_workflow_run_and_source_are_rejected(self):
         for key, value in [('path', '.github/workflows/ci.yaml'), ('event', 'pull_request'),
