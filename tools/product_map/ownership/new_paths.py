@@ -11,7 +11,7 @@ def is_runtime(path):
     return path.startswith(RUNTIME_ROOTS) and not TEST_SUFFIX.search(path)
 
 
-def classify_new_paths(previous, current, catalog):
+def mapped_feature_paths(catalog):
     components = {item['id']: item for item in catalog['components']}
     reachable = {ref for feature in catalog['features'] for ref in feature['components']}
     pending = list(reachable)
@@ -20,6 +20,10 @@ def classify_new_paths(previous, current, catalog):
             if dependency not in reachable:
                 reachable.add(dependency)
                 pending.append(dependency)
-    mapped = {path for identifier in reachable for path in components[identifier]['paths']}
+    return {path for identifier in reachable for path in components[identifier]['paths']}
+
+
+def classify_new_paths(previous, current, catalog):
+    mapped = mapped_feature_paths(catalog)
     return sorted(path for path in set(current) - set(previous)
                   if is_runtime(path) and path not in mapped)
