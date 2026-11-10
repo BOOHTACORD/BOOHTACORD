@@ -6,6 +6,8 @@ from pathlib import Path
 
 from tools.product_map.catalog.curated import load_curated_catalog
 from tools.product_map.impact.analyze import analyze
+from tools.product_map.catalog.enrich import enrich_projection
+from tools.product_map.projection.importer import import_parity
 
 
 class CuratedCatalogTests(unittest.TestCase):
@@ -81,3 +83,17 @@ class CuratedCatalogTests(unittest.TestCase):
         impact = analyze(['backend/internal/voice/join_sound/service.go'], catalog)
         self.assertIn('voice.event-sounds-private-melody', impact['direct_features'])
         self.assertIn('cmp.backend.voice_join_sound_routes', impact['components'])
+
+    def test_registration_outside_parity_is_a_visible_product_feature(self):
+        root = Path(__file__).resolve().parents[3]
+        registry = json.loads((root / 'tools/qa/local_features/features.json')
+                              .read_text(encoding='utf-8'))
+        catalog = load_curated_catalog(root, registry)
+        rows = {row['id']: row for row in enrich_projection(import_parity(registry), catalog)}
+        self.assertIn('auth.registration', rows)
+        self.assertEqual(rows['auth.registration']['parity_ids'], [])
+        self.assertIn('cmp.backend.register_user',
+                      [component['id'] for component in rows['auth.registration']['components']])
+        for platform in rows['auth.registration']['platforms'].values():
+            self.assertEqual(platform['source_status'], 'UNKNOWN')
+            self.assertEqual(platform['released'], 'UNKNOWN')

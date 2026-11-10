@@ -30,3 +30,16 @@ test('feature graph displays explicit dependency edges as text', () => {
   assert.match(text(elements.detail), /cmp\.route\s+→\s+cmp\.service/);
   assert.match(text(elements.detail), /зависит от/i);
 });
+test('matrix displays actual and target behavior revisions separately from release', () => {
+  const elements = Object.fromEntries(['rows', 'search', 'count', 'detail'].map(k => [k, new Element()]));
+  const item = { source_status: 'BEHIND', implemented_revision: 2, target_revision: 3,
+    released: 'UNKNOWN', runtime: 'NOT_VERIFIED' };
+  const platforms = Object.fromEntries(['web', 'windows', 'macos', 'android', 'ios'].map(k => [k, item]));
+  const document = { getElementById: id => elements[id], createElement: () => new Element(),
+    createTextNode: value => value };
+  const script = fs.readFileSync(path.join(__dirname, 'app.js'), 'utf8');
+  vm.runInNewContext(script, { data: [{ id: 'voice.a', description: 'A', platforms }], document,
+    location: { hash: '' }, window: { addEventListener() {} } });
+  assert.match(text(elements.rows), /BEHIND.*r2.*r3/s);
+  assert.match(text(elements.rows), /Релиз: UNKNOWN/);
+});

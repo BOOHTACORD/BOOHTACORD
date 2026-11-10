@@ -1,0 +1,27 @@
+{
+  "components": [
+    {"id":"cmp.web.registration_ui","paths":["clients/web/src/identity/AuthenticationLanding.vue"]},
+    {"id":"cmp.web.registration_client","paths":["clients/web/src/identity/auth_client.ts"]},
+    {"id":"cmp.flutter.registration_ui","paths":["clients/flutter/lib/src/screens/auth_screen.dart"]},
+    {"id":"cmp.backend.registration_routes","paths":["backend/internal/app/auth_routes/register.go"],"depends_on":["cmp.backend.registration_api","cmp.backend.register_user"]},
+    {"id":"cmp.backend.registration_api","paths":["backend/internal/identity/register_user/api/http_handler.go"],"depends_on":["cmp.backend.register_user"]},
+    {"id":"cmp.backend.register_user","paths":["backend/internal/identity/register_user/service.go"],"depends_on":["cmp.backend.registration_policy"]},
+    {"id":"cmp.backend.registration_policy","paths":["backend/internal/identity/registration/registration.go"]}
+  ],
+  "features": [
+    {
+      "id":"auth.registration", "title":"Регистрация учётной записи", "domain":"auth",
+      "description":"Создание учётной записи с серверной проверкой логина и пароля.",
+      "target_revision":null, "behavior_revisions":[], "parity_ids":[],
+      "components":["cmp.web.registration_ui","cmp.web.registration_client","cmp.flutter.registration_ui",
+        "cmp.backend.registration_routes","cmp.backend.registration_api","cmp.backend.register_user","cmp.backend.registration_policy"],
+      "platforms": {
+        "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "macos":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "android":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "ios":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null}
+      }
+    }
+  ]
+}

@@ -24,7 +24,10 @@ function render() {
     row.appendChild(heading);
     for (const name of platforms) {
       const item = feature.platforms[name];
-      cell(row, 'Код: ' + item.source_status + '\nРелиз: ' + item.released + '\nRuntime: ' + item.runtime);
+      const revision = value => Number.isInteger(value) && value > 0 ? 'r' + value : '?';
+      const versions = item.implemented_revision != null || item.target_revision != null
+        ? ' (' + revision(item.implemented_revision) + ' → ' + revision(item.target_revision) + ')' : '';
+      cell(row, 'Код: ' + item.source_status + versions + '\nРелиз: ' + item.released + '\nRuntime: ' + item.runtime);
     }
     rows.appendChild(row);
     visible++;

@@ -18,7 +18,7 @@ class AssetGateIntegrationTests(unittest.TestCase):
                 result = build_verified_snapshot(ROOT, 'windows', directory / 'artifact-manifest.json')
                 self.assertEqual(result['build_provenance'], 'VERIFIED_ASSET_CONTRACT')
                 self.assertEqual(result['published'], 'UNKNOWN')
-                self.assertEqual(len(result['features']), 23)
+                self.assertTrue({'auth.registration', 'voice.controls'} <= result['features'].keys())
                 next(directory.glob('*Setup.exe')).write_bytes(b'tampered')
                 with self.assertRaises(ValueError):
                     build_verified_snapshot(ROOT, 'windows', directory / 'artifact-manifest.json')
