@@ -7,7 +7,7 @@ import yaml
 
 from .model import metrics_reachable_peers, validate
 from .historical_artifact import evidence_content
-from .recovery_evidence import verify_recovery_evidence
+from .review_history import REVIEWS, verify_review
 
 # The latest source-only evidence was recorded against this merged revision.
 HISTORICAL_EVIDENCE_REVISION = 'c875c5d686f99d47ca28c511eecd5213c7a3319a'
@@ -98,8 +98,9 @@ def main():
     expected_artifacts |= chat_ux_metadata["repository_artifacts"]
     roster_ws_source = read(root, "evidence/media/livekit-network-roster-ws-source-2026-11-09.json")
     expected_artifacts |= roster_ws_source["repository_artifacts"]
-    recovery_review = read(root, "evidence/media/livekit-network-recovery-review-2026-11-09.json")
-    verify_recovery_evidence(root, recovery_review["repository_artifacts"])
+    for name, revision in REVIEWS.items():
+        review = read(root, f"evidence/media/{name}")
+        verify_review(root, revision, review["repository_artifacts"])
     speaker_activity = read(root, "evidence/media/livekit-network-speaker-activity-2026-11-10.json")
     expected_artifacts |= speaker_activity["repository_artifacts"]
     for path, expected in expected_artifacts.items():
