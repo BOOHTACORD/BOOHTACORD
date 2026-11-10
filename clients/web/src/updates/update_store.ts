@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 
 import { buildIdentity } from './build_identity'
 import { fetchUpdatePolicy } from './client'
-import { evaluateUpdate } from './evaluator'
+import { evaluateUpdate, requiresUpdate } from './evaluator'
 import { controlledReload } from './safe_reload'
 import { UpdateScheduler } from './scheduler'
 import type { UpdatePolicy, UpdateResult } from './types'
@@ -22,6 +22,7 @@ export const useUpdateStore = defineStore('client-updates', () => {
   let scheduler: UpdateScheduler | null = null
 
   const snoozed = () => policy.value ? Number(localStorage.getItem(snoozeKey(policy.value)) ?? 0) > Date.now() : false
+  const required = computed(() => policy.value !== null && requiresUpdate(buildIdentity, policy.value, { os_version:'browser', arch:'any' }))
   const visible = computed(() => { void snoozeRevision.value; return preloadFailure.value || (result.value === 'update_available' && !snoozed()) })
 
   async function check(): Promise<void> {
@@ -53,15 +54,17 @@ export const useUpdateStore = defineStore('client-updates', () => {
     cooldownUntil.value = Date.now() + 5_000; scheduler?.manual() ?? void check().catch(() => {})
   }
   function later(): void {
-    const current = policy.value; if (!current?.target) return
+    const current = policy.value; if (!current?.target || required.value) return
     const delay = current.target.priority === 'important' ? 15*60_000 : 2*60*60_000
     localStorage.setItem(snoozeKey(current), String(Date.now() + delay)); preloadFailure.value = false; snoozeRevision.value++
   }
   async function apply(): Promise<void> {
     try {
-      const fresh = await fetchUpdatePolicy(); policy.value = fresh
+      const fresh = await fetchUpdatePolicy()
+      if ((fresh.catalog_revision ?? 0) < (policy.value?.catalog_revision ?? 0)) throw new Error('Получен устаревший каталог обновлений.')
+      policy.value = fresh
       result.value = evaluateUpdate(buildIdentity, fresh, { os_version:'browser', arch:'any' })
-      if (result.value !== 'update_available' || !fresh.target) return
+      if ((result.value !== 'update_available' && !required.value) || !fresh.target) return
       const response = await fetch('/build-info.json', { cache:'no-store', credentials:'omit' })
       const info = response.ok ? await response.json() as { release_id?:string } : null
       if (info?.release_id !== fresh.target.release_id) throw new Error('Файлы новой версии ещё не готовы.')
@@ -69,5 +72,5 @@ export const useUpdateStore = defineStore('client-updates', () => {
     } catch (cause) { error.value = cause instanceof Error ? cause.message : 'Не удалось начать обновление.' }
   }
   function reportPreloadError(): void { preloadFailure.value = true }
-  return { apply, buildIdentity, checkStatus, cooldownUntil, dispose, error, lastSuccessfulCheckAt, later, manual, policy, preloadFailure, reportPreloadError, result, stale, start, visible }
+  return { apply, buildIdentity, check, checkStatus, cooldownUntil, dispose, error, lastSuccessfulCheckAt, later, manual, policy, preloadFailure, reportPreloadError, required, result, stale, start, visible }
 })

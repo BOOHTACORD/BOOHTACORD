@@ -22,6 +22,7 @@ extension RealtimeConnection on RealtimeController {
     retry = null;
     connecting = true;
     changed();
+    final attemptToken = socketAttempt.begin();
     handshake?.finish('superseded');
     final flow = ActionScope(
       hadConnection ? 'realtime.reconnect' : 'realtime.connect',
@@ -31,6 +32,7 @@ extension RealtimeConnection on RealtimeController {
     handshake = flow;
     flow.step('connect');
     var failed = false;
+    var accepted = false;
     try {
       final opened = await flow.run(
         () => api.openRealtime(after: delivery.cursor),
@@ -57,10 +59,12 @@ extension RealtimeConnection on RealtimeController {
         },
         cancelOnError: true,
       );
+      accepted = true;
     } catch (_) {
       flow.finish('failed', reason: 'network');
       failed = true;
     } finally {
+      if (!accepted) socketAttempt.end(attemptToken);
       if (active()) {
         connecting = false;
         if (failed) scheduleRetry();

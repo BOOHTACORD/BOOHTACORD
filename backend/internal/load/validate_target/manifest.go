@@ -33,6 +33,15 @@ func Loopback(value string, secure bool) error {
 }
 
 func (m Manifest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateRosterMatrix admits empty rooms without relaxing target ownership checks.
+func (m Manifest) ValidateRosterMatrix() error {
+	return m.validate(true)
+}
+
+func (m Manifest) validate(rosterMatrix bool) error {
 	if Loopback(m.Origin, true) != nil || Loopback(m.Guard, false) != nil {
 		return errors.New("unsafe load target")
 	}
@@ -42,7 +51,9 @@ func (m Manifest) Validate() error {
 	if m.MaxSeconds < 1 || m.MaxSeconds > 7200 || m.MaxRequests < 1 || m.MaxRequests > 1000000 || m.UploadBytes < 1 || m.UploadBytes > 25000000 {
 		return errors.New("invalid bounded resource budget")
 	}
-	if len(m.Accounts) < 1 || len(m.Accounts) > 100 || len(m.Voice) < (len(m.Accounts)+19)/20 {
+	if len(m.Accounts) < 1 || len(m.Accounts) > 100 ||
+		(!rosterMatrix && len(m.Voice) < (len(m.Accounts)+19)/20) ||
+		(rosterMatrix && len(m.Voice) > 20) {
 		return errors.New("voice profile exceeds 100 total or 20 per room")
 	}
 	seen := map[string]bool{}

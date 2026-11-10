@@ -1,0 +1,6 @@
+# Issue 689: local Windows runtime smoke
+
+- PASS: `issue689-windows-runtime-retry1` ran the native Windows x64 Flutter scenario against an owned local TLS/Go/PostgreSQL/LiveKit stack. It exercised guest maintenance, login and socket handoff, an empty voice room roster, manual reconnect and logout. The fixture reported zero calls to legacy roster/maintenance streams and roster polling.
+- Preferences and secure storage were in-memory test implementations to protect the user's settings and credentials; API, realtime and UI runtime were real. The status is a scoped smoke, not secure-storage acceptance. The worktree was dirty.
+- The first build failed because Flutter's bootstrap emitted a localized `Unblock-File` error from the task SDK on D:, and a later diagnostic exposed the missing pinned Velopack headers. The project SDK restore downloaded and SHA-256 verified Velopack; a temporary suppression of the bootstrap error enabled the build, after which the SDK bootstrap was restored byte-for-byte and hash verified. The first failed run is not counted as a pass.
+- NOT_RUN: Windows visual screenshots, installed signed release, real voice/media, physical audio and the complete feature/release gates. Flutter reports no desktop integration screenshot capability on this host.

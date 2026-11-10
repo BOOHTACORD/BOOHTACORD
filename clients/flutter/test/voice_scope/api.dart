@@ -17,6 +17,9 @@ const credential = VoiceCredential(
 );
 
 class DelayedVoiceApi extends ApiClient {
+  @override
+  bool get realtimeEnabled => false;
+
   final credential = Completer<(String, VoiceCredential)>();
   final requestedVoiceTransfers = <bool>[];
   Future<void> Function(String)? onRelease;

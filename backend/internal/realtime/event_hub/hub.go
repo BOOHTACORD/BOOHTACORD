@@ -35,6 +35,7 @@ type Subscription struct {
 	becameOnline bool
 	events       chan Event
 	overflowed   chan struct{}
+	critical     []Event
 	dropped      bool
 	capabilities map[string]struct{}
 	once         sync.Once
@@ -82,23 +83,6 @@ func (subscription *Subscription) BecameOnline() bool { return subscription.beca
 
 func (subscription *Subscription) Events() <-chan Event        { return subscription.events }
 func (subscription *Subscription) Overflowed() <-chan struct{} { return subscription.overflowed }
-
-func (subscription *Subscription) AcknowledgeOverflow() {
-	subscription.hub.mu.Lock()
-	defer subscription.hub.mu.Unlock()
-	for {
-		select {
-		case <-subscription.events:
-		default:
-			subscription.dropped = false
-			select {
-			case <-subscription.overflowed:
-			default:
-			}
-			return
-		}
-	}
-}
 
 func (subscription *Subscription) Close(offlineEvents ...Event) bool {
 	becameOffline := false

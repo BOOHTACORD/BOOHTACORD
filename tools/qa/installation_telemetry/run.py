@@ -85,7 +85,9 @@ def run():
         result = subprocess.run(['go', 'test', '-tags=installation_acceptance', '-count=1', '-timeout=180s', '-v', './internal/observability/installation_acceptance'], cwd=ROOT / 'backend', env=env, capture_output=True, text=True, timeout=200)
         (out / 'acceptance.log').write_text(result.stdout + result.stderr)
         print(result.stdout, flush=True)
-        if result.returncode or '--- SKIP:' in result.stdout or result.stdout.count('--- PASS:') != 2:
+        expected = ('TestTwoInstallationsThroughActualStorage', 'TestConcurrentFirstInitialization',
+                    'TestRosterWSMetricsThroughRealCentralStorage')
+        if result.returncode or '--- SKIP:' in result.stdout or any('--- PASS: '+name not in result.stdout for name in expected):
             raise RuntimeError('Two-installation acceptance failed; inspect sanitized acceptance.log')
         status = 'PASS' if readiness else 'BLOCKED'
     finally:

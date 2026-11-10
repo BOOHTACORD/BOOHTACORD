@@ -18,6 +18,7 @@ type Channel struct {
 	Leases []Lease
 }
 type Participant struct {
+	LeaseID         string `json:"-"`
 	AccountID       string `json:"account_id"`
 	DisplayName     string `json:"display_name"`
 	ScreenSharing   bool   `json:"screen_sharing"`
@@ -104,7 +105,7 @@ func (service Service) List(ctx context.Context, actorID string) (Result, error)
 			}
 			seen[lease.AccountID] = true
 			current.Participants = append(current.Participants, Participant{
-				AccountID: lease.AccountID, DisplayName: lease.DisplayName, ScreenSharing: presence.ScreenSharing, MicrophoneMuted: presence.MicrophoneMuted,
+				LeaseID: lease.ID, AccountID: lease.AccountID, DisplayName: lease.DisplayName, ScreenSharing: presence.ScreenSharing, MicrophoneMuted: presence.MicrophoneMuted,
 			})
 		}
 		sort.Slice(current.Participants, func(i, j int) bool { return current.Participants[i].AccountID < current.Participants[j].AccountID })

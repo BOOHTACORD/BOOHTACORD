@@ -21,6 +21,21 @@ func TestSourceKeyIgnoresForwardingFromUntrustedPeer(t *testing.T) {
 	}
 }
 
+func TestLimiterExposesSameTrustedSourceAsHandshakeRateLimit(t *testing.T) {
+	limiter, err := New(Config{Limit: 1, Window: time.Minute, MaxSources: 8, TrustedProxyCIDRs: []string{"10.0.0.0/8"}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	request := &http.Request{RemoteAddr: "10.0.0.5:443", Header: http.Header{"X-Forwarded-For": []string{"203.0.113.9, 10.0.0.4"}}}
+	if source := limiter.SourceKey(request); source != "203.0.113.9" {
+		t.Fatalf("trusted source = %q", source)
+	}
+	request.RemoteAddr = "192.0.2.4:1234"
+	if source := limiter.SourceKey(request); source != "192.0.2.4" {
+		t.Fatalf("untrusted peer source = %q", source)
+	}
+}
+
 func TestSourceKeyWalksTrustedProxyChainFromNearestPeer(t *testing.T) {
 	trusted, err := parseTrustedProxies([]string{"10.0.0.0/8"})
 	if err != nil {

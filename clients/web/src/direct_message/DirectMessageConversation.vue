@@ -27,7 +27,9 @@ import type { Position } from '../conversation/context_position/dom'
 import { useContextPosition } from '../conversation/context_position/return'
 import { useVisibleRead } from '../conversation/use_visible_read'
 const props = defineProps<{ accountId: string; active: boolean; directMessageId: string; otherParticipantId: string; otherParticipantDisplayName: string; navOpen: boolean }>()
-const emit = defineEmits<{ toggleNav: [] }>()
+const emit = defineEmits<{ toggleNav: []; miniPlayerTarget: [target: HTMLElement | null] }>()
+const miniPlayerDock = ref<HTMLElement | null>(null)
+watch(miniPlayerDock, (target) => emit('miniPlayerTarget', target), { flush: 'post' })
 const store = useDirectMessageStore()
 const support = computed(()=>isSupportPeer(props.otherParticipantId,store.supportContact))
 const publicationBlocked=computed(()=>isProductSupportPeer(props.otherParticipantId,store.supportContact)&&(store.supportContact.mode!=='product'||store.supportContact.consentRequired||store.supportContact.state!=='available'))
@@ -120,7 +122,7 @@ onMounted(() => {
   void loadSession()
 })
 watch(() => props.directMessageId, () => { replyContextTarget.value = null })
-onBeforeUnmount(() => searchTarget.clearFor('DIRECT_MESSAGE', props.directMessageId))
+onBeforeUnmount(() => { emit('miniPlayerTarget', null); searchTarget.clearFor('DIRECT_MESSAGE', props.directMessageId) })
 </script>
 
 <template>
@@ -133,6 +135,7 @@ onBeforeUnmount(() => searchTarget.clearFor('DIRECT_MESSAGE', props.directMessag
       </div>
       <WorkspaceHeaderActions :members-expanded="false" :nav-expanded="props.navOpen" :show-members="false" @toggle-navigation="emit('toggleNav')"><template #overflow><ConversationOverflowMenu ref="overflow" show-files @files="filesOpen = true" /></template></WorkspaceHeaderActions>
     </header>
+    <div ref="miniPlayerDock" class="screen-mini-dock"></div>
     <p v-if="support" class="support-privacy" tabindex="0" role="region" aria-label="Приватность поддержки"><span v-if="store.supportChanged">Оператор поддержки изменился. Старые диалоги сохраняют прежних участников и историю. </span>{{ supportPrivacyNotice(store.supportContact,props.otherParticipantId) }}</p>
     <SupportPublicationConsent v-if="publicationBlocked" />
     <p v-if="store.loadingHistory" class="state" aria-live="polite">Загружаем историю…</p>

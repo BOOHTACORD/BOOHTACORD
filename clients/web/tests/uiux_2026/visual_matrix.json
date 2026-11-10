@@ -14,7 +14,7 @@
         "height": 900
       },
       "fixture": "tools/qa/client_lifecycle/run.py",
-      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
+      "testFile": "tools/qa/client_lifecycle/journey/scenario.mjs",
       "interaction": "Open and resize the channel workspace while keeping the selected channel, composer, member rail, and voice dock available.",
       "expectedOrException": "Authenticated production capture confirms the selected channel, member rail and composer at the source viewport; synthetic messages, attachment and unread-state differences are documented in review evidence.",
       "owner": "clients/web/src/workspace/WorkspaceApp.vue; clients/web/src/design/responsive_shell.css",
@@ -35,7 +35,7 @@
         "height": 900
       },
       "fixture": "tools/qa/client_lifecycle/run.py",
-      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
+      "testFile": "tools/qa/client_lifecycle/journey/scenario.mjs",
       "interaction": "Keyboard and pointer access to reply, reaction, and message overflow actions.",
       "expectedOrException": "Production runtime verifies pointer hover on desktop or explicit touch action on mobile; the synthetic member’s permissions limit visible actions, and mobile emulation is not physical touch evidence.",
       "owner": "clients/web/src/conversation/MessageItem.vue; clients/web/src/conversation/message_actions/",
@@ -56,7 +56,7 @@
         "height": 900
       },
       "fixture": "tools/qa/client_lifecycle/run.py",
-      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
+      "testFile": "tools/qa/client_lifecycle/journey/scenario.mjs",
       "interaction": "Open the DM list and select a conversation while retaining the workspace context.",
       "expectedOrException": "Production runtime capture shows DM navigation beside retained workspace context; the single synthetic account differs from the source roster.",
       "owner": "clients/web/src/direct_message/DirectMessageNavigation.vue",
@@ -308,7 +308,7 @@
         "height": 900
       },
       "fixture": "tools/qa/client_lifecycle/run.py",
-      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
+      "testFile": "tools/qa/client_lifecycle/journey/scenario.mjs",
       "interaction": "Review voice prejoin states and keyboard navigation of join controls.",
       "expectedOrException": "The Voice header, idle prejoin card, and both join choices are visible at 1440x900. The disposable client-lifecycle stack omits LiveKit, so its roster is unavailable with a retry action instead of the source empty-roster state; structural review only.",
       "owner": "clients/web/src/voice/VoicePrejoin.vue; clients/web/src/voice/VoiceRoomControls.vue",
@@ -371,7 +371,7 @@
         "height": 900
       },
       "fixture": "tools/qa/client_lifecycle/run.py",
-      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
+      "testFile": "tools/qa/client_lifecycle/journey/scenario.mjs",
       "interaction": "Open the log channel and inspect grouped message rows, mentions, timestamps, and destructive action controls.",
       "expectedOrException": "The log channel, message history, composer, and admin Reply/Edit/Delete actions are visible at 1440x900. Three synthetic messages replace the source mentions and historical author distribution; structural review only.",
       "owner": "clients/web/src/conversation/MessageItem.vue; clients/web/src/channel/ChannelNavigation.vue",
@@ -392,7 +392,7 @@
         "height": 852
       },
       "fixture": "tools/qa/client_lifecycle/run.py",
-      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
+      "testFile": "tools/qa/client_lifecycle/journey/scenario.mjs",
       "interaction": "Open and close the navigation drawer by trigger, close button, scrim, and browser Back.",
       "expectedOrException": "Production runtime capture verifies drawer open/close over selected channel context; a connectivity summary and synthetic roster differ from the source, and native Back/gesture remains separate.",
       "owner": "clients/web/src/channel/ChannelNavigation.vue; clients/web/src/workspace/WorkspaceApp.vue",
@@ -413,7 +413,7 @@
         "height": 852
       },
       "fixture": "tools/qa/client_lifecycle/run.py",
-      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
+      "testFile": "tools/qa/client_lifecycle/journey/scenario.mjs",
       "interaction": "Resize through compact widths with selected channel, composer, and voice dock present.",
       "expectedOrException": "Authenticated production capture confirms the selected channel, member rail and composer at the source viewport; synthetic messages, attachment and unread-state differences are documented in review evidence.",
       "owner": "clients/web/src/workspace/WorkspaceApp.vue; clients/web/src/design/responsive_shell.css",
@@ -434,7 +434,7 @@
         "height": 852
       },
       "fixture": "tools/qa/client_lifecycle/run.py",
-      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
+      "testFile": "tools/qa/client_lifecycle/journey/scenario.mjs",
       "interaction": "Touch-tap and long-press message action menu while scrolling and using reply.",
       "expectedOrException": "Production runtime verifies pointer hover on desktop or explicit touch action on mobile; the synthetic member’s permissions limit visible actions, and mobile emulation is not physical touch evidence.",
       "owner": "clients/web/src/conversation/MessageItem.vue; clients/web/src/conversation/message_actions/",
@@ -518,7 +518,7 @@
         "height": 852
       },
       "fixture": "tools/qa/client_lifecycle/run.py",
-      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
+      "testFile": "tools/qa/client_lifecycle/journey/scenario.mjs",
       "interaction": "Open global workspace search, verify the global scope and author/attachment/date filters, search a disposable API message, open its original channel context, and return to search.",
       "expectedOrException": "The full-app Web run verifies the global search panel, default scope, filters, live API results, and opening the original message context. The archive reference has no focused search field; the review capture retains the visible keyboard focus ring. Flutter search behavior is covered by workspace_screen_test.dart; physical keyboard and IME acceptance remains separate.",
       "owner": "clients/web/src/workspace/search/WorkspaceSearchPanel.vue; clients/web/src/search/SearchPanel.vue; clients/flutter/lib/src/screens/workspace_ui/workspace_search_panel/component.dart",
@@ -833,7 +833,7 @@
         "height": 852
       },
       "fixture": "tools/qa/client_lifecycle/run.py",
-      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
+      "testFile": "tools/qa/client_lifecycle/journey/scenario.mjs",
       "interaction": "Inspect prejoin, join, no-microphone join, connected, reconnecting, and ended states.",
       "expectedOrException": "The mobile Voice header, idle prejoin card, and both join choices are visible at 393x852. The disposable client-lifecycle stack omits LiveKit, so its roster is unavailable with a retry action instead of the source empty-roster state; no voice call was started.",
       "owner": "clients/web/src/voice/VoicePrejoin.vue; clients/web/src/voice/VoiceRoomConnected.vue",
@@ -854,7 +854,7 @@
         "height": 852
       },
       "fixture": "tools/qa/client_lifecycle/run.py",
-      "testFile": "tools/qa/client_lifecycle/scenario.mjs",
+      "testFile": "tools/qa/client_lifecycle/journey/scenario.mjs",
       "interaction": "Read log entries at phone width, inspect mention wrapping and reach message actions while scrolling.",
       "expectedOrException": "At 393x852 the log messages and composer remain readable, and touch opens the admin Reply/Edit/Delete action disclosure. Synthetic messages do not reproduce the source mentions or historical authors; browser touch emulation is not physical-device acceptance.",
       "owner": "clients/web/src/conversation/MessageItem.vue; clients/web/src/channel/ChannelNavigation.vue",

@@ -1,11 +1,11 @@
-import 'package:http/http.dart' as http;
+import 'dart:io';
 
 import '../../../core/http/facade_base.dart';
-import 'api.dart';
+import '../maintenance_socket/api.dart';
 
 mixin MaintenanceFacade on ApiFacadeBase {
-  late final _maintenance = MaintenanceApi(transport);
+  late final _publicRealtime = PublicMaintenanceApi(transport);
 
-  Future<http.StreamedResponse> maintenanceEvents() =>
-      transport.run(() => _maintenance.maintenanceEvents(), allowClosed: true);
+  Future<WebSocket> openPublicRealtime() => _publicRealtime.open();
+  void abortPublicRealtime() => _publicRealtime.abort();
 }

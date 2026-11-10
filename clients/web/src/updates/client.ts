@@ -21,6 +21,7 @@ function parseTarget(value: unknown): UpdateTarget {
   if (!record(requirements) || !Array.isArray(requirements.supported_arches) || !requirements.supported_arches.every((item) => typeof item === 'string')) throw new Error('Invalid update requirements')
   if (!record(action) || !['reload','open_download_page','open_store','open_instructions'].includes(String(action.kind)) || (action.url !== null && typeof action.url !== 'string')) throw new Error('Invalid update action')
   if (typeof value.release_id !== 'string' || typeof value.release_order !== 'number' || typeof value.version !== 'string' || (value.native_build !== null && typeof value.native_build !== 'string') || !['normal','important'].includes(String(value.priority)) || typeof value.summary !== 'string' || (value.release_notes_url !== null && typeof value.release_notes_url !== 'string')) throw new Error('Invalid release identity')
+  if (value.minimum_release_order != null && (!Number.isInteger(value.minimum_release_order) || (value.minimum_release_order as number) < 1 || (value.minimum_release_order as number) > 2147483647 || (value.minimum_release_order as number) > (value.release_order as number))) throw new Error('Invalid minimum release order')
   if (!safeURL(action.url as string | null) || !safeURL(value.release_notes_url as string | null)) throw new Error('Unsafe update URL')
   return value as unknown as UpdateTarget
 }

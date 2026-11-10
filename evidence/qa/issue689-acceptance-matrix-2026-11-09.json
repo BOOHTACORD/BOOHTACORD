@@ -1,0 +1,347 @@
+{
+  "issue": "https://github.com/BOOHTACORD/BOOHTACORD/issues/689",
+  "scope": "Each entry covers the complete issue requirement across all applicable platforms; NOT_RUN until full supporting evidence is verified.",
+  "status": "NOT_RUN",
+  "entries": [
+    {
+      "id": "WS-01",
+      "requirement": "Гость при запуске видит correct `maintenance.snapshot` off/on без авторизации/без SSE",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-android-maintenance-handoff-2026-11-09.md",
+          "limit": "Android AVD initial public state only; not all states/platforms."
+        }
+      ]
+    },
+    {
+      "id": "WS-02",
+      "requirement": "Изменение server-local maintenance CLI до/после подключения доставляется всем public+authenticated WS",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-maintenance-propagation-smoke-2026-11-09.md",
+          "limit": "Synthetic database-flag activation fixture; server-local CLI and end-to-end platform matrix unproven."
+        }
+      ]
+    },
+    {
+      "id": "WS-03",
+      "requirement": "HTTP/server restart во время maintenance: UI не превращает unavailable в false, сам reconnects",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-web-maintenance-restart-2026-11-09.md",
+          "limit": "Guest and authenticated Web Chromium at two viewport widths; native platforms and installed releases remain unproven."
+        }
+      ]
+    },
+    {
+      "id": "WS-04",
+      "requirement": "Login, logout, token expired, relogin, account switch, rapid guest/auth handoff — нет второго steady-state app WS/старых данных",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-android-maintenance-handoff-2026-11-09.md",
+          "limit": "Android guest/auth/guest subset on earlier dirty source; expiry/account-switch and full platform matrix unproven."
+        },
+        {
+          "path": "evidence/qa/issue689-android-corrected-runtime-2026-11-09.md",
+          "limit": "Current dirty-source Android AVD guest/auth/guest handoff subset; token expiry, account switch and other platforms remain unproven."
+        }
+      ]
+    },
+    {
+      "id": "WS-05",
+      "requirement": "WebSocket reject 401/403/429/503, handshake timeout, initial open failure (#607), exponential bounded jitter, manual retry",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-web-reconnect-race-2026-11-09.md",
+          "limit": "Focused Web socket race unit tests on older dirty source; real network failure and other rejection paths unproven."
+        }
+      ]
+    },
+    {
+      "id": "WS-06",
+      "requirement": "`connection.ready`, initial voice snapshot, replay, live event в момент initial fetch — correct barrier, no lost event",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": []
+    },
+    {
+      "id": "WS-07",
+      "requirement": "Durable chat hints before/after crash, old/new epoch, invalid/expired/512+ cursor, replay ACL, REST resync",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-replay-socket-unit-2026-11-09.md",
+          "limit": "Loopback WebSocket and real PostgreSQL journal check 512/513 and new-hub epoch; actual process crash, identity integration, client REST resync and platform coverage unproven."
+        }
+      ]
+    },
+    {
+      "id": "WS-08",
+      "requirement": "Burst ≥64 queued server hints / ≥256 client hints, slow subscriber, backpressure: bounded memory, resync, no silently lost critical revoke",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-roster-coordinator-2026-11-09.md",
+          "limit": "Coordinator unit/race tests include replaceable slow-subscriber delivery, not full socket backpressure or burst thresholds."
+        },
+        {
+          "path": "evidence/qa/issue689-web-hint-overflow-2026-11-09.md",
+          "limit": "Web client focused 256/257 hint tests including an immediate revoke; real socket pressure, full resync and native clients remain unproven."
+        },
+        {
+          "path": "evidence/qa/issue689-flutter-revocation-pressure-2026-11-09.md",
+          "limit": "Flutter backlog/revocation unit tests and Android AVD synthetic delivery; actual socket pressure and full native platform matrix remain unproven."
+        },
+        {
+          "path": "evidence/qa/issue689-event-identity-2026-11-09.md",
+          "limit": "Synthetic same-ID cross-kind dedup and urgent-revoke tests across handler and clients; actual overload recovery and complete platform matrix remain unproven."
+        },
+        {
+          "path": "evidence/qa/issue689-critical-queue-2026-11-09.md",
+          "limit": "Bounded server queue, loopback WebSocket and PostgreSQL outbox retry; failed socket writes, process crash, real slow network and full platform matrix remain unproven."
+        }
+      ]
+    },
+    {
+      "id": "WS-09",
+      "requirement": "Guest-origin/cookie privacy: public WS не получает никакой account/DM/roster/session payload",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-web-multiclient-roster-2026-11-09.md",
+          "limit": "Public WS in authenticated Web context observed during real roster changes, a synthetic DM and revocation of the context session; other event types and native clients remain unproven."
+        }
+      ]
+    },
+    {
+      "id": "WS-10",
+      "requirement": "XSS/cross-origin WS handshake, native/no Origin policy, forged/missing header, source quota / NAT 20 independent clients",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-public-origin-quota-2026-11-09.md",
+          "limit": "Public handler loopback WebSocket origin and 20-client source quota tests; deployed trusted proxy, authenticated endpoint, XSS and platform matrix remain unproven."
+        }
+      ]
+    },
+    {
+      "id": "VR-01",
+      "requirement": "Первая загрузка пустого roster: **доказанно empty** rooms, включая non-archived voice channels",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-android-roster-2026-11-09.md",
+          "limit": "Android empty roster subset on earlier dirty source; final full-platform acceptance unproven."
+        },
+        {
+          "path": "evidence/qa/issue689-android-corrected-runtime-2026-11-09.md",
+          "limit": "Current dirty-source Android AVD empty room and reconnect subset; full platform/ACL matrix unproven."
+        }
+      ]
+    },
+    {
+      "id": "VR-02",
+      "requirement": "Непустой roster ≥2 accounts: join/leave/transfer/rejoin и sidebar/prejoin/overlay parity",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-web-multiclient-roster-2026-11-09.md",
+          "limit": "Real Web/LiveKit two-account join, leave, rejoin and transfer with sidebar/prejoin parity; overlay and native platforms remain unproven."
+        }
+      ]
+    },
+    {
+      "id": "VR-03",
+      "requirement": "Mute/unmute, screen start/stop, track publish/unpublish; source truth vs LiveKit actual, no duplicate sound",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-web-multiclient-roster-2026-11-09.md",
+          "limit": "Synthetic microphone and screen publication, Web roster state, received audio RTP and video frames with one playback element; real capture, perceived quality and other platforms remain unproven."
+        }
+      ]
+    },
+    {
+      "id": "VR-04",
+      "requirement": "Duplicate/out-of-order/missing webhook, webhook during initial snapshot, repeated burst, periodic reconciliation repairs state",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-roster-process-2026-11-09.md",
+          "limit": "Injected invalidation hints trigger shared reads; not a signed actual webhook or full missing/out-of-order matrix."
+        }
+      ]
+    },
+    {
+      "id": "VR-05",
+      "requirement": "SFU down/slow RoomService (`ListRooms`, `ListParticipants`), DB down/slow/timeout: unavailable ≠ empty, bounded stale→unavailable→fresh recovery",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-roster-transient-recovery-2026-11-09.md",
+          "limit": "Focused transient recipient-check recovery; full SFU/database outages and all platforms unproven."
+        }
+      ]
+    },
+    {
+      "id": "VR-06",
+      "requirement": "2 accounts with differing ACL/current lease: no unauthorised channel, account, DM or previously revoked lease",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-roster-coordinator-2026-11-09.md",
+          "limit": "Scoped coordinator per-account isolation; final database/LiveKit/lease and platform scenarios remain unproven."
+        }
+      ]
+    },
+    {
+      "id": "VR-07",
+      "requirement": "ban/kick/logout/revoke/change account while snapshot pending; event not sent after revoke",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-session-revalidation-2026-11-08.md",
+          "limit": "Scoped interval tests only; full delayed snapshot/revocation matrix and final source unproven."
+        },
+        {
+          "path": "evidence/qa/issue689-web-multiclient-roster-2026-11-09.md",
+          "limit": "Revoked Web session returned to login and cleared roster; pending snapshots and other revoke paths remain unproven."
+        }
+      ]
+    },
+    {
+      "id": "VR-08",
+      "requirement": "renames, archive/voice-close, delete, account rename, role update while roster is being built — correct topology/state",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": []
+    },
+    {
+      "id": "VR-09",
+      "requirement": "Multi-tabs + multiple devices one account, duplicate/late snapshot, stale revision, process restart — no rollback of fresh state",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-roster-coordinator-2026-11-09.md",
+          "limit": "Scoped stale read and shared subscriber tests; actual multiple devices and process restarts remain unproven."
+        }
+      ]
+    },
+    {
+      "id": "VR-10",
+      "requirement": "Client background/foreground, app sleep/wake, Wi-Fi↔mobile, browser hidden/visible, initial reconnect and resumed snapshot",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": []
+    },
+    {
+      "id": "CF-01",
+      "requirement": "Chat TEXT/DM create/edit/delete, reactions, mentions, unread, history, notifications — no regressions/replay duplicates",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": []
+    },
+    {
+      "id": "CF-02",
+      "requirement": "Live voice persists through application WS disconnect/restart; media reconnect and `voice.lease_revoked` remain independent",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-android-listener-2026-11-09.md",
+          "limit": "Android SFU listener/realtime reconnect only; transmitted media and other platforms unproven."
+        },
+        {
+          "path": "evidence/qa/issue689-android-corrected-runtime-2026-11-09.md",
+          "limit": "Current dirty-source Android AVD listener remains in the real SFU room across app socket recovery; microphone and full platform matrix unproven."
+        },
+        {
+          "path": "evidence/qa/issue689-web-multiclient-roster-2026-11-09.md",
+          "limit": "Web two-listener RTC connection stayed established during a controlled four-second application WS outage; audio continuity, restart, revocation and native platforms remain unproven."
+        }
+      ]
+    },
+    {
+      "id": "CF-03",
+      "requirement": "Push APNs/FCM in background when WS suspended works as existing policy; no false live socket expectation",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": []
+    },
+    {
+      "id": "CF-04",
+      "requirement": "Old client denied with `update required` (or compatible phase), not allowed to silently show broken roster/maintenance",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-required-update-2026-11-09.md",
+          "limit": "New-client update policy subset only; installed old-client denial and compatible transition unproven."
+        },
+        {
+          "path": "evidence/qa/issue689-android-corrected-runtime-2026-11-09.md",
+          "limit": "Current dirty-source Android AVD required-update screen and actual Back input; installed legacy-client enforcement and upgrade delivery remain unproven."
+        },
+        {
+          "path": "evidence/qa/issue689-update-back-navigation-2026-11-09.md",
+          "limit": "Current dirty-source Android AVD required-update screen and actual Back input; installed legacy-client enforcement and upgrade delivery remain unproven."
+        }
+      ]
+    },
+    {
+      "id": "CF-05",
+      "requirement": "HAR/network trace: 0 SSE + no duplicate app WS + independent `/rtc` signaling/media",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": []
+    },
+    {
+      "id": "SEC-01",
+      "requirement": "No secrets or user IDs in logs/metric labels/trace attributes, no unprivileged private stream, no dead-subscriber resource leaks",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": [
+        {
+          "path": "evidence/qa/issue689-capability-observability-2026-11-09.md",
+          "limit": "Scoped fixed capability-label telemetry tests; full privacy and resource leak matrix unproven."
+        }
+      ]
+    },
+    {
+      "id": "CUT-01",
+      "requirement": "Both legacy SSE paths absent / not routable after final cutover; OpenAPI/CI guard proves no active SSE implementation",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": []
+    },
+    {
+      "id": "CUT-02",
+      "requirement": "Production-like signed candidate + rollback plan + per-platform release evidence; version matrix/observability verified",
+      "status": "NOT_RUN",
+      "evidence": [],
+      "partial_evidence": []
+    }
+  ]
+}

@@ -9,6 +9,8 @@ from pathlib import Path
 from .policy import validate_selection, changed_paths
 from .report import write_report
 from .doctor import devices, boot_android
+from .selection import flutter_stage_result, native_targets, records_test_summary, stage_timeout
+from .source_identity import source_identity, source_stability
 
 
 def main():
@@ -40,17 +42,22 @@ def main():
     import time
     started=time.time()
     stages=[]
+    initial_source=source_identity(root)
     environment=dict(os.environ, VITE_PUBLIC_ORIGIN='https://localhost:4810',
                      FLUTTER_ROOT=os.environ.get('FLUTTER_ROOT','/opt/homebrew/share/flutter'),
                      BOOHTACORD_VISUAL_CAPTURE_DIR=str(destination/'flutter-captures'))
     def stage(name, command, cwd, env=environment):
         print('stage='+name,flush=True)
+        skipped = None
         with (destination/(name+'.log')).open('w') as log:
             try:
-                outcome=subprocess.run(command,cwd=cwd,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=1800)
-                status='PASS' if outcome.returncode==0 else 'FAIL'
+                outcome=subprocess.run(command,cwd=cwd,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=stage_timeout(name))
+                output = (destination/(name+'.log')).read_text(errors='replace') if records_test_summary(name) else ''
+                status, skipped = flutter_stage_result(name, outcome.returncode, output)
             except (OSError, subprocess.TimeoutExpired): status='BLOCKED'
-        stages.append({'name':name,'status':status})
+        row = {'name':name,'status':status}
+        if records_test_summary(name): row['skipped_tests'] = skipped
+        stages.append(row)
         print(name+'='+status,flush=True)
     web=root/'clients/web'; flutter=root/'clients/flutter'
     if 'web' in platforms:
@@ -76,9 +83,11 @@ def main():
             if not ids:
                 stages.append({'name':platform+'-runtime','status':'BLOCKED'})
             else:
-                stage(platform+'-runtime',['python3','-m','tools.qa.local_features.native',
-                                          '--platform',platform,'--device',ids[0],
-                                          '--output',str(destination/(platform+'-runtime'))],root)
+                for index, target in enumerate(native_targets(catalog, features)):
+                    name = platform+'-runtime' + ('' if index == 0 else '-'+Path(target).stem)
+                    stage(name,['python3','-m','tools.qa.local_features.native',
+                                '--platform',platform,'--device',ids[0], '--target',target,
+                                '--output',str(destination/name)],root)
     images=[]
     for path in destination.rglob('*.png'):
         if 'images' not in path.relative_to(destination).parts:
@@ -87,10 +96,9 @@ def main():
         for path in (root/'.out/client-lifecycle').glob('*/*.png'):
             if path.stat().st_mtime >= started:
                 images.append(('web-real-stack/'+path.parent.name+'/'+path.name,path))
-    source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
-    dirty=subprocess.check_output(['git','diff','--binary'],cwd=root)
     import hashlib
-    source += ' diff-sha256='+hashlib.sha256(dirty).hexdigest()
+    source = source_identity(root)
+    stages.append(source_stability(initial_source, source))
     report=write_report(destination,stages,source,features,platforms,images)
     report['scenario_sources']={str(path.relative_to(root)):hashlib.sha256(path.read_bytes()).hexdigest()
         for directory in [root/'tools/qa/local_features',root/'clients/flutter/integration_test',root/'clients/flutter/test_driver']
