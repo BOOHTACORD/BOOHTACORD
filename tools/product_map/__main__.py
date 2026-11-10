@@ -23,11 +23,20 @@ def main():
     snapshot = sub.add_parser('release-snapshot')
     snapshot.add_argument('--platform', choices=('windows', 'macos', 'android'), required=True)
     snapshot.add_argument('--manifest', type=Path, required=True)
+    publication = sub.add_parser('match-publication')
+    publication.add_argument('--snapshot', type=Path, required=True)
+    publication.add_argument('--contract', type=Path, required=True)
+    publication.add_argument('--receipt', type=Path, required=True)
     comparison = sub.add_parser('compare')
     comparison.add_argument('--platform', choices=PLATFORMS, action='append', required=True)
     comparison.add_argument('--scope', default='')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]
+    if args.command == 'match-publication':
+        from tools.product_map.release.publication import load_record, match_publication
+        print(json.dumps(match_publication(load_record(args.snapshot), load_record(args.contract),
+                                           load_record(args.receipt)), indent=2, sort_keys=True))
+        return
     if args.command == 'release-snapshot':
         from tools.product_map.release.cli import run
         run(root, args.platform, args.manifest)

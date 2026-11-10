@@ -22,6 +22,17 @@ UNKNOWN/NOT_VERIFIED: наличие snapshot само по себе не под
 Пути для Web и iOS, приёмка на реальных артефактах и чтение release/deploy
 receipts картой пока не реализованы.
 
+Взаимную согласованность трёх локальных записей проверяет команда:
+
+```sh
+python -m tools.product_map match-publication --snapshot SNAPSHOT --contract CONTRACT --receipt RECEIPT
+```
+
+Она сопоставляет исходный SHA, платформу, хеш manifest, релизную идентичность
+и попытку workflow. Даже при совпадении ответ остаётся `MATCHED_UNVERIFIED`,
+а выпуск — `UNKNOWN`: происхождение локальных файлов ещё не подтверждено
+проверенной GitHub API и проверкой целостности artifact.
+
 Команда `generate` создаёт автономный предварительный просмотрщик
 `docs/product-map/generated/index.html`. Его можно открыть в браузере без
 сервера; поиск и ссылки вида `#feature/voice.long_recovery` работают локально.
