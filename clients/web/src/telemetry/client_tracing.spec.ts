@@ -4,7 +4,6 @@ import { ZoneContextManager } from '@opentelemetry/context-zone'
 import { context } from '@opentelemetry/api'
 import { createTracedFetch, traceOperation } from './client_tracing'
 import { telemetrySession } from './action_scope/session'
-
 describe('manual web tracing', () => {
   it('routine presence responses keep session rejection and installation replacement guards', async () => {
     const provider=new BasicTracerProvider()
@@ -111,11 +110,11 @@ describe('manual web tracing', () => {
     const provider = new BasicTracerProvider({ spanProcessors: [new SimpleSpanProcessor(exporter)] })
     const transport = vi.fn(async () => new Response(null, { status: 202 })) as unknown as typeof fetch
     const request = createTracedFetch(provider.getTracer('test'), transport)
-    for (const path of ['/api/v1/health', '/api/v1/maintenance', '/api/v1/maintenance/events', '/api/v1/telemetry/traces', '/api/v1/voice/rosters/events']) {
+    for (const path of ['/api/v1/health', '/api/v1/maintenance', '/api/v1/telemetry/traces']) {
       await request(path)
     }
     expect(exporter.getFinishedSpans()).toHaveLength(0)
-    expect((transport as ReturnType<typeof vi.fn>).mock.calls).toHaveLength(5)
+    expect((transport as ReturnType<typeof vi.fn>).mock.calls).toHaveLength(3)
     await provider.shutdown()
   })
 })

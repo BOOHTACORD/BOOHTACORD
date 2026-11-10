@@ -7,7 +7,7 @@ import 'support.dart';
 
 void main() {
   testWidgets(
-    'unavailable is not an empty roster and manual retry starts one attempt',
+    'unavailable is not an empty roster and retry requests the shared socket',
     (tester) async {
       final harness = RosterHarness();
       addTearDown(harness.owner.dispose);
@@ -19,8 +19,7 @@ void main() {
       expect(find.text('Пока никого нет.'), findsNothing);
       await tester.tap(find.byKey(const ValueKey('retry-voice-roster')));
       await tester.pump();
-      expect(harness.api.streams.length, 1);
-      expect(harness.owner.opening, isTrue);
+      expect(harness.retries, 1);
     },
   );
 

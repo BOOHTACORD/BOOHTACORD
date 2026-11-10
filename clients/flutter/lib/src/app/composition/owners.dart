@@ -29,7 +29,6 @@ abstract class AppOwners extends ChangeNotifier {
   AppOwners(
     this.api, {
     this.startupSessionTimeout = const Duration(seconds: 20),
-    this.voiceRosterRetryDelay = const Duration(seconds: 2),
     this.voiceRosterStaleTimeout = const Duration(seconds: 10),
     this.audioDeviceLoader,
     this.audioDeviceChanges,
@@ -39,7 +38,6 @@ abstract class AppOwners extends ChangeNotifier {
   }) : nativeNotifications = nativeNotifications ?? NativeNotificationService();
   final ApiClient api;
   final Duration startupSessionTimeout;
-  final Duration voiceRosterRetryDelay;
   final Duration voiceRosterStaleTimeout;
   final Future<List<MediaDevice>> Function()? audioDeviceLoader;
   final Stream<List<MediaDevice>>? audioDeviceChanges;

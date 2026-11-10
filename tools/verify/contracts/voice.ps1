@@ -2,14 +2,14 @@ if ($null -eq $openApi.paths.'/api/v1/voice/channels/{channelID}/leases'.post) {
     throw 'Voice contract must define POST /api/v1/voice/channels/{channelID}/leases.'
 }
 
-$voiceRosterEvents = $openApi.paths.'/api/v1/voice/rosters/events'.get
-if ($null -eq $voiceRosterEvents -or
-    $voiceRosterEvents.operationId -ne 'watchConnectedVoiceParticipants' -or
-    $voiceRosterEvents.responses.'200'.content.'text/event-stream'.schema.type -ne 'string' -or
-    $null -eq $voiceRosterEvents.responses.'401' -or
-    $voiceRosterEvents.responses.'503'.content.'text/plain'.schema.type -ne 'string' -or
-    $voiceRosterEvents.responses.'500'.content.'text/plain'.schema.type -ne 'string') {
-    throw 'Voice contract must define the authenticated SSE roster stream and its 401/500/503 outcomes.'
+if ($null -ne $openApi.paths.'/api/v1/voice/rosters/events' -or
+    $null -ne $openApi.paths.'/api/v1/maintenance/events') {
+    throw 'Retired SSE routes must not appear in the contract.'
+}
+if ($null -eq $openApi.paths.'/api/v1/voice/participants'.get -or
+    $null -eq $openApi.paths.'/api/v1/realtime'.get -or
+    $null -eq $openApi.paths.'/api/v1/public/realtime'.get) {
+    throw 'Roster snapshot and authenticated/public realtime contracts are required.'
 }
 
 $voiceParticipant = $openApi.components.schemas.VoiceParticipant

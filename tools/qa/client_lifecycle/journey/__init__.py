@@ -1,0 +1,1 @@
+"""Client lifecycle browser journey."""

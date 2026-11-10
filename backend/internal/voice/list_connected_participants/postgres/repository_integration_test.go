@@ -44,6 +44,18 @@ func TestPostgresRosterExcludesRevokedBlockedAndArchivedState(t *testing.T) {
 		}
 	}
 	check(1, 1)
+	if _, err := pool.Exec(ctx, `UPDATE sessions SET expires_at=now()-interval '1 second' WHERE token_digest=$1`, digest[:]); err != nil {
+		t.Fatal(err)
+	}
+	check(1, 0)
+	if _, err := pool.Exec(ctx, `UPDATE sessions SET expires_at=now()+interval '180 days',last_active_at=now()-interval '31 days' WHERE token_digest=$1`, digest[:]); err != nil {
+		t.Fatal(err)
+	}
+	check(1, 0)
+	if _, err := pool.Exec(ctx, `UPDATE sessions SET last_active_at=now() WHERE token_digest=$1`, digest[:]); err != nil {
+		t.Fatal(err)
+	}
+	check(1, 1)
 	if _, err := pool.Exec(ctx, `UPDATE sessions SET revoked_at = now() WHERE token_digest = $1`, digest[:]); err != nil {
 		t.Fatal(err)
 	}

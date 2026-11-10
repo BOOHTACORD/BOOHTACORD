@@ -3,6 +3,7 @@ import '../../features/realtime/lifecycle/controller.dart';
 import '../../features/realtime/dispatch/workspace.dart';
 import '../../features/profile/state/refresh.dart';
 import '../../features/voice/lifecycle/controller.dart';
+import '../../features/voice/roster_state/controller.dart';
 import '../../features/notifications/message_events/controller.dart';
 import '../../features/notifications/remote_lifecycle/controller.dart';
 import 'owners.dart';
@@ -32,6 +33,14 @@ void configureRealtime(AppOwners app) {
     isReady: () => app.session.phase == AppPhase.ready,
     expire: app.session.expire,
     invalidatePresence: () => app.workspace.guildPresence.invalidate(),
+    onSocketStart: () {
+      app.maintenance.authSocketStart();
+      app.voiceRoster.sharedSocketStart();
+    },
+    onSocketEnd: () {
+      app.maintenance.authSocketEnd();
+      app.voiceRoster.sharedSocketEnd();
+    },
     dispatch: WorkspaceRealtimeDispatch(
       app.workspace,
       app.conversation,
@@ -39,6 +48,8 @@ void configureRealtime(AppOwners app) {
       permissionsChanged: app.permissions.refreshStrict,
       notifyMessage: notifications.call,
       notificationHint: app.remoteNotifications.realtime,
+      rosterEvent: app.voiceRoster.acceptSocketEvent,
+      maintenanceEvent: app.maintenance.acceptRealtimeEvent,
       guildChanged: app.guildProfile.refresh,
       screenViewersChanged: app.voice.screenViewerPresence.refreshFromHint,
       profileChanged: (userId, revision) async {

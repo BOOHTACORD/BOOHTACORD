@@ -5,6 +5,7 @@ import WorkspaceMembersPanel from '../../src/workspace/WorkspaceMembersPanel.vue
 import VoiceDock from '../../src/voice/VoiceDock.vue'
 import { streamStartNotice } from '../../src/voice/stream_start_runtime'
 import { useAuthorDirectory } from '../../src/identity/author_directory'
+import { useMemberDirectory } from '../../src/identity/member_directory'
 import { useTopologyStore } from '../../src/channel/topology_store'
 import { useDirectMessageStore } from '../../src/direct_message/direct_message_store'
 import { own, peer, channel, dm } from '../chat_rhythm/data'
@@ -17,9 +18,10 @@ const voice = { ...text, id:'voice', kind:'VOICE' as const, name:'Голосов
 const direct = { id:dm, otherParticipantId:peer, otherParticipantDisplayName:'Собеседник', createdAt:'2026-10-15T10:00:00Z', unreadCount:0, mentionCount:0 }
 useAuthorDirectory(pinia).acceptOwnProfile({ account_id:own,login:'fixture',display_name:'Тестовый клиент',role:'MEMBER' })
 useAuthorDirectory(pinia).acceptOwnProfile({ account_id:peer,login:'peer',display_name:'Собеседник',role:'MEMBER' })
+useMemberDirectory(pinia).members = [{ user_id:peer, login:'peer', display_name:'Собеседник', role:'MEMBER', presence:'online' }]
 useTopologyStore(pinia).topology = { revision:1,categories:[{id:'general',name:'Общее',position:0,channels:[text,voice]}] }
 useDirectMessageStore(pinia).directMessages = [direct]
-const view = ref('voice'), panel = ref<'none'|'audio'>('none')
+const view = ref('voice'), panel = ref<'none'|'audio'>('none'), membersHidden = ref(false)
 const media = new MediaStream(), canvas = document.createElement('canvas'); canvas.width=640;canvas.height=360
 const context=canvas.getContext('2d')!; context.fillStyle='#163d62';context.fillRect(0,0,640,360); context.fillStyle='#eef';context.font='36px sans-serif';context.fillText('Тестовая демонстрация',45,180)
 canvas.captureStream(1).getTracks().forEach(track=>media.addTrack(track))
@@ -36,11 +38,12 @@ const connection:any = reactive({ active:{channelId:voice.id},state:'CONNECTED',
  setScreenVolume:(value:number)=>{connection.selectedScreenAudioVolume=value},toggleScreenAudio:()=>{connection.screenAudioMuted=!connection.screenAudioMuted},
  retryScreenStream:()=>events.push('retry'),setParticipantVolume:()=>{},refreshScreenDiagnostics:()=>{},stopScreen:()=>{},
 })
-Object.assign(window,{ __miniFixture:{ navigate:async(value:string)=>{panel.value=value==='settings'?'audio':'none';if(value!=='settings')view.value=value;if(value==='dm')void useDirectMessageStore(pinia).open(dm);await nextTick()},showStreamStartNotice:async()=>{streamStartNotice.value=true;await nextTick()},connection,events } })
-createApp({render:()=>h('div',{class:'app-frame'},[h('div',{class:'gc-shell'},[
+Object.assign(window,{ __miniFixture:{ navigate:async(value:string)=>{panel.value=value==='settings'?'audio':'none';if(value!=='settings')view.value=value;if(value==='dm')void useDirectMessageStore(pinia).open(dm);await nextTick()},showStreamStartNotice:async()=>{streamStartNotice.value=true;await nextTick()},setGuildMembers:(count:number)=>{useMemberDirectory(pinia).members=Array.from({length:count},(_,i)=>({user_id:`fixture-member-${i}`,login:`fixture-${i}`,display_name:`Участник ${i+1}`,role:'MEMBER',presence:'online'}))},connection,events } })
+createApp({render:()=>h('div',{class:'app-frame'},[h('div',{class:['gc-shell',{'members-collapsed':membersHidden.value}]},[
  h('aside',{class:'sidebar'},[h('p',{class:'fixture-guild'},'Тестовая гильдия'),h('div',{style:'flex:1'}),h(VoiceDock,{class:'mobile-voice-dock',error:null,channel:voice,activeSession:true,state:'CONNECTED',activationMode:'VAD',deafened:false,deafenChanging:false,microphoneMuted:false,microphonePermissionDenied:false,screenShareState:'IDLE',connectionQuality:'GOOD',pingMs:40,participantCount:2})]),
- h('main',{class:'main'},[h(WorkspaceMain,{accountId:own,activeVoiceChannel:connection.active?voice:null,panel:panel.value,channel:view.value==='other-voice'?{...voice,id:'other-voice',name:'Другая голосовая комната'}:view.value==='voice'?voice:text,directMessage:view.value==='dm'?direct:null,joinVoice:()=>{},leaveVoice:()=>{},activationMode:'VAD',startScreen:()=>{},selectedScreenProfile:'P1080_30',navOpen:false,membersOpen:false,showMembers:true,selfDisplayName:'Тестовый клиент',voiceConnection:connection,onReturnVoice:()=>{view.value='voice';panel.value='none'}},{audio:()=>h('p','Настройки звука')})]),
- h(WorkspaceMembersPanel,{activeVoiceChannel:voice,selectedVoiceChannel:voice,participants:connection.voiceVolumeParticipants,presenceResolver:(_id:string,fallback:any)=>fallback,role:'MEMBER',selfMicrophoneMuted:false,selfMicrophoneUnavailable:false,selfName:'Тестовый клиент',open:false,modal:false}),
+ h('main',{class:'main'},[h(WorkspaceMain,{accountId:own,activeVoiceChannel:connection.active?voice:null,panel:panel.value,channel:view.value==='other-voice'?{...voice,id:'other-voice',name:'Другая голосовая комната'}:view.value==='voice'?voice:text,directMessage:view.value==='dm'?direct:null,joinVoice:()=>{},leaveVoice:()=>{},activationMode:'VAD',startScreen:()=>{},selectedScreenProfile:'P1080_30',navOpen:false,membersOpen:innerWidth>=1280?!membersHidden.value:membersHidden.value,showMembers:true,selfDisplayName:'Тестовый клиент',voiceConnection:connection,onReturnVoice:()=>{view.value='voice';panel.value='none'},onToggleMembers:()=>{membersHidden.value=!membersHidden.value}},{audio:()=>h('p','Настройки звука')})]),
+ h(WorkspaceMembersPanel,{activeVoiceChannel:voice,selectedVoiceChannel:view.value==='voice'?voice:null,participants:connection.voiceVolumeParticipants,presenceResolver:(_id:string,fallback:any)=>fallback,role:'MEMBER',selfMicrophoneMuted:false,selfMicrophoneUnavailable:false,selfName:'Тестовый клиент',open:membersHidden.value,modal:false}),
+ membersHidden.value&&innerWidth<1280?h('button',{class:'drawer-scrim','aria-label':'Закрыть навигацию и участников',onClick:()=>{membersHidden.value=false}}):null,
 ])])}).use(pinia).mount('#app')
 
 if (innerWidth < 1024) document.querySelector('.fixture-guild')?.remove()

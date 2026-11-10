@@ -52,7 +52,6 @@ class AppState extends AppOwners
   AppState(
     super.api, {
     super.startupSessionTimeout,
-    super.voiceRosterRetryDelay,
     super.voiceRosterStaleTimeout,
     super.audioDeviceLoader,
     super.audioDeviceChanges,

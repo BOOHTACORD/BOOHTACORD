@@ -1,12 +1,12 @@
 import type { Ref } from 'vue'
-import { PushToTalk, type EventSource } from '../push_to_talk'
+import { PushToTalk, type KeyboardInput } from '../push_to_talk'
 import { useVoiceConnectionStore } from '../connection_store'
 
 let pushToTalk: PushToTalk | null = null
 let mutedBeforePtt: boolean | null = null
 let queuedChange: Promise<void> = Promise.resolve()
 
-function browserEvents(): EventSource {
+function browserEvents(): KeyboardInput {
   return {
     addEventListener: (type, listener) => (type === 'visibilitychange' ? document : window).addEventListener(type, listener as unknown as EventListener),
     removeEventListener: (type, listener) => (type === 'visibilitychange' ? document : window).removeEventListener(type, listener as unknown as EventListener),
