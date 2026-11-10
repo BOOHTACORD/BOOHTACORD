@@ -9,6 +9,13 @@ def load_record(path):
     if path.is_symlink() or not path.is_file() or path.stat().st_size > 4_000_000:
         raise ValueError('publication record is missing, too large or a symlink')
 
+    return parse_record(path.read_bytes())
+
+
+def parse_record(raw):
+    if len(raw) > 4_000_000:
+        raise ValueError('publication record is too large')
+
     def pairs(items):
         result = {}
         for key, value in items:
@@ -20,7 +27,7 @@ def load_record(path):
     def reject_constant(value):
         raise ValueError(f'invalid JSON constant: {value}')
 
-    return json.loads(path.read_text(encoding='utf-8'), object_pairs_hook=pairs,
+    return json.loads(raw.decode('utf-8'), object_pairs_hook=pairs,
                       parse_constant=reject_constant)
 
 
