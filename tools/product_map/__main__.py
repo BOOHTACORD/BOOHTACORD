@@ -18,6 +18,8 @@ def main():
     sub.add_parser('validate-parity')
     sub.add_parser('show')
     sub.add_parser('matrix')
+    impact = sub.add_parser('impact')
+    impact.add_argument('--base', required=True, help='exact base commit SHA')
     generate = sub.add_parser('generate')
     generate.add_argument('--check', action='store_true')
     snapshot = sub.add_parser('release-snapshot')
@@ -44,8 +46,15 @@ def main():
     path = root / 'tools/qa/local_features/features.json'
     catalog = json.loads(path.read_text(encoding='utf-8'))
     validate(catalog, root)
+    curated = load_curated_catalog(root, catalog)
+    if args.command == 'impact':
+        from tools.product_map.impact.analyze import analyze
+        from tools.product_map.impact.changes import changed_paths
+        print(json.dumps(analyze(changed_paths(root, args.base), curated),
+                         ensure_ascii=False, indent=2, sort_keys=True))
+        return
     data = import_parity(catalog)
-    data = enrich_projection(data, load_curated_catalog(root, catalog))
+    data = enrich_projection(data, curated)
     if args.command == 'generate':
         target = root / 'docs/product-map/generated/index.html'
         if not write_document(target, build_document(data), check=args.check):
