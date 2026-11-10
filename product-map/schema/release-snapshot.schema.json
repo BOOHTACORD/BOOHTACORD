@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.boohtacord.invalid/product-map/release-snapshot.schema.json",
+  "type": "object",
+  "required": ["schema_version", "source_revision", "platform", "version", "release_id", "architectures", "manifest_sha256", "features", "build_provenance", "published", "runtime"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": 1},
+    "source_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "platform": {"enum": ["windows", "macos", "android", "ios"]},
+    "version": {"type": "string", "minLength": 1},
+    "release_id": {"type": "string", "minLength": 1},
+    "architectures": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "features": {"type": "object", "propertyNames": {"pattern": "^[a-z][a-z0-9_-]*(\\.[a-z0-9_-]+)*$"},
+                 "additionalProperties": {"$ref": "#/$defs/feature"}},
+    "build_provenance": {"enum": ["UNVERIFIED", "VERIFIED_ASSET_CONTRACT"]},
+    "published": {"const": "UNKNOWN"},
+    "runtime": {"const": "NOT_VERIFIED"},
+    "execution": {"$ref": "#/$defs/execution"}
+  },
+  "allOf": [{"if": {"properties": {"build_provenance": {"const": "VERIFIED_ASSET_CONTRACT"}}, "required": ["build_provenance"]},
+             "then": {"required": ["execution"]}}],
+  "$defs": {
+    "feature": {
+      "type": "object", "required": ["state", "revision", "target_revision", "applicability", "components"],
+      "additionalProperties": false,
+      "properties": {
+        "state": {"enum": ["NOT_STARTED", "PARTIAL", "IMPLEMENTED", "UNKNOWN"]},
+        "revision": {"type": ["integer", "null"], "minimum": 1},
+        "target_revision": {"type": ["integer", "null"], "minimum": 1},
+        "applicability": {"enum": ["SUPPORTED", "NOT_APPLICABLE", "PLATFORM_EXCEPTION", "PLANNED", "UNKNOWN"]},
+        "components": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^cmp(\\.[a-z0-9_-]+)+$"}}
+      },
+      "allOf": [{"if": {"properties": {"state": {"const": "IMPLEMENTED"}}, "required": ["state"]},
+                 "then": {"properties": {"revision": {"type": "integer", "minimum": 1}}}}]
+    },
+    "execution": {"type": "object", "required": ["run_id", "run_attempt"], "additionalProperties": false,
+      "properties": {"run_id": {"type": "string", "pattern": "^[1-9][0-9]*$"},
+                     "run_attempt": {"type": "string", "pattern": "^[1-9][0-9]*$"}}}
+  }
+}

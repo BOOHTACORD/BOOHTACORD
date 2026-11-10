@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.boohtacord.invalid/product-map/feature.schema.json",
+  "type": "object",
+  "required": ["id", "title", "domain", "target_revision", "behavior_revisions", "parity_ids", "components", "platforms"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {"$ref": "#/$defs/id"},
+    "title": {"type": "string", "minLength": 1},
+    "domain": {"type": "string", "minLength": 1},
+    "description": {"type": "string", "minLength": 1},
+    "target_revision": {"type": ["integer", "null"], "minimum": 1},
+    "behavior_revisions": {"type": "array", "items": {"$ref": "#/$defs/revision"}},
+    "parity_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+    "aliases": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+    "depends_on": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+    "components": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/component_id"}},
+    "owned_roots": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/ownership"}},
+    "platforms": {"$ref": "platform-matrix.schema.json"}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*(\\.[a-z0-9_-]+)*$"},
+    "component_id": {"type": "string", "pattern": "^cmp(\\.[a-z0-9_-]+)+$"},
+    "revision": {"type": "object", "required": ["revision", "summary"], "additionalProperties": false,
+      "properties": {"revision": {"type": "integer", "minimum": 1}, "summary": {"type": "string", "minLength": 1}, "decision": {"type": "string", "minLength": 1}}},
+    "ownership": {"type": "object", "required": ["path", "component"], "additionalProperties": false,
+      "properties": {"path": {"type": "string", "minLength": 1}, "component": {"$ref": "#/$defs/component_id"}}}
+  }
+}

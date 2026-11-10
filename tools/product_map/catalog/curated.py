@@ -1,5 +1,5 @@
 """Load and validate the currently registered, possibly incomplete slices."""
-import json
+from tools.product_map.serialization.strict_json import parse_record
 
 from .resolve import resolve_catalog
 from .validation import validate_catalog
@@ -16,7 +16,9 @@ def load_curated_catalog(root, registry):
     for path in files:
         if not path.resolve().is_relative_to(directory.resolve()):
             raise ValueError('catalog path leaves catalog directory')
-        document = json.loads(path.read_text(encoding='utf-8'))
+        if path.stat().st_size > 4_000_000:
+            raise ValueError('catalog record is too large')
+        document = parse_record(path.read_bytes())
         for key in curated:
             curated[key].extend(document[key])
     resolved = resolve_catalog(curated, registry)
