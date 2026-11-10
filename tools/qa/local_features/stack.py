@@ -4,6 +4,8 @@ from tools.qa.client_lifecycle.stack import Stack as Base
 
 class Stack(CriticalStack):
     def container(self, role, image, *args, **options):
+        if role == 'api' and hasattr(self, 'qa_update_catalog'):
+            args = (*args, '--mount', f'type=bind,src={self.qa_update_catalog},dst=/qa-client-update/catalog.json,readonly')
         if role != 'proxy':
             return super().container(role, image, *args, **options)
         config = self.work/'Caddyfile'

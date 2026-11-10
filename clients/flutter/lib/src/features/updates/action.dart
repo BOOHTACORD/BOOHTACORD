@@ -17,16 +17,22 @@ Future<void> performUpdateAction(
   }
   final policy = updates.policy;
   final target = policy?.target;
-  if (target == null ||
-      evaluateUpdate(
-            updates.identity.local,
-            policy!,
-            updates.identity.environment,
-          ) !=
-          UpdateResult.updateAvailable)
-    return;
+  if (target == null || policy == null) return;
+  final result = evaluateUpdate(
+    updates.identity.local,
+    policy,
+    updates.identity.environment,
+  );
+  final required = requiresUpdate(
+    updates.identity.local,
+    policy,
+    updates.identity.environment,
+  );
+  if (result != UpdateResult.updateAvailable && !required) return;
   final desktop = updates.desktop;
-  if (desktop != null && target.installArtifact != null) {
+  if (desktop != null &&
+      target.installArtifact != null &&
+      result == UpdateResult.updateAvailable) {
     await desktop.prepare(target);
     return;
   }

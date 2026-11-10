@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { connectionStatus } from './model'
-import { createVoiceRosterRealtime, type VoiceRosterEvents } from '../../voice/voice_roster_realtime'
+import { createRosterSocketState } from '../../voice/roster_socket/state'
 
 describe('independent chat, media and roster state', () => {
   it('retains success age while distinguishing expired and retained data', () => {
@@ -23,13 +23,12 @@ describe('independent chat, media and roster state', () => {
     expect(connectionStatus('CONNECTED', 'CONNECTED', false, null, 6000).roster).toBe('Состав недоступен')
   })
   it('tracks last successful update and clears ownership on stop', () => {
-    const source: VoiceRosterEvents = { onmessage: null, onerror: null, addEventListener: vi.fn(), close: vi.fn() }
-    const roster = createVoiceRosterRealtime(() => source)
-    roster.start()
-    source.onmessage?.({ data: JSON.stringify({ channels: [] }) })
+    const roster = createRosterSocketState(vi.fn())
+    roster.start(); roster.socketStart()
+    roster.accept({ eventId: 'event', kind: 'voice.roster.snapshot', occurredAt: '2026-11-09T00:00:00Z', payload: { version: 1, generation: '11111111-1111-4111-8111-111111111111', revision: 1, observed_at: '2026-11-09T00:00:00Z', channels: [] } })
     const before = roster.lastUpdatedAt.value
     expect(before).not.toBeNull()
-    source.onerror?.()
+    roster.socketEnd()
     expect(roster.error.value).not.toBeNull()
     expect(roster.lastUpdatedAt.value).toBe(before)
     roster.stop()

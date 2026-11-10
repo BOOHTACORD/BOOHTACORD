@@ -31,17 +31,20 @@ func (hub *Hub) publishLocked(event Event) {
 	}
 }
 
-func (hub *Hub) deliverLocked(subscription *Subscription, event Event) {
+func (hub *Hub) deliverLocked(subscription *Subscription, event Event) bool {
 	if capability := requiredCapability(event.Kind); capability != "" {
 		if _, supported := subscription.capabilities[capability]; !supported {
-			return
+			return true
 		}
 	}
 	select {
 	case subscription.events <- event:
+		return true
 	default:
 		subscription.dropped = true
+		subscription.captureCriticalLocked()
 		subscription.overflowed <- struct{}{}
+		return subscription.retainCriticalLocked(event)
 	}
 }
 

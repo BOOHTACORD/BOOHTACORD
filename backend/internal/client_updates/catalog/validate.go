@@ -58,6 +58,9 @@ func (target Target) validate(allowedHosts []string, platform string) error {
 	if !releaseIDPattern.MatchString(target.ReleaseID) || target.ReleaseOrder < 1 {
 		return fmt.Errorf("invalid release identity")
 	}
+	if target.MinimumReleaseOrder != nil && (*target.MinimumReleaseOrder < 1 || *target.MinimumReleaseOrder > 2147483647 || *target.MinimumReleaseOrder > target.ReleaseOrder) {
+		return fmt.Errorf("invalid minimum release order")
+	}
 	if len(target.Version) > 64 || target.NativeBuild != nil && len(*target.NativeBuild) > 64 || utf8.RuneCountInString(target.Summary) > 1000 {
 		return fmt.Errorf("target text exceeds bounds")
 	}

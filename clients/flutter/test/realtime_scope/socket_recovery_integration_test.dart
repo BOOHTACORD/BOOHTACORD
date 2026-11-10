@@ -31,6 +31,7 @@ void main() {
       final sockets = <WebSocket>[];
       final statuses = <int>[];
       final ready = Completer<void>();
+      var starts = 0, ends = 0;
       final api = LoopbackSocketApi('ws://127.0.0.1:${server.port}/owned');
       final owner = RealtimeController(
         api,
@@ -39,6 +40,8 @@ void main() {
         expire: () async {},
         invalidatePresence: () {},
         dispatch: (_) {},
+        onSocketStart: () => starts++,
+        onSocketEnd: () => ends++,
         jitter: () => 0,
       );
       owner.addListener(() {
@@ -70,12 +73,15 @@ void main() {
         await ready.future.timeout(const Duration(seconds: 10));
         expect(statuses, [503, 101]);
         expect(api.opens, 2);
+        expect(starts, 2);
+        expect(ends, 1);
         expect(owner.connected, isTrue);
         expect(owner.attempt, 0);
         expect(owner.retry, isNull);
         expect(owner.readyTimeout?.isActive ?? false, isFalse);
       } finally {
         await owner.close();
+        expect(ends, 2);
         owner.dispose();
         for (final socket in sockets) {
           await socket.close();

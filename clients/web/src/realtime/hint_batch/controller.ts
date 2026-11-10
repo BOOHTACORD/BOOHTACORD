@@ -1,4 +1,4 @@
-import { createRealtimeDelivery, type EventHandler } from '../realtime_event_delivery'
+import { createRealtimeDelivery, eventIdentity, type EventHandler } from '../realtime_event_delivery'
 import type { RealtimeEvent } from '../realtime_client'
 import { isSocialHint } from '../../conversation/reactions/hints'
 export type HintBatchHandler = (events: RealtimeEvent[]) => Promise<void>
@@ -7,7 +7,7 @@ const hint = (event: RealtimeEvent) => !isSocialHint(event.kind) && (event.kind.
 
 export function createCoalescedDelivery(onEvent: EventHandler, recovery: EventHandlerRecovery,
   failure: (cause: unknown) => void, batch: HintBatchHandler) {
-  let active = true, timer: ReturnType<typeof setTimeout> | null = null
+  let active = true, generation = 0, outstanding = 0, timer: ReturnType<typeof setTimeout> | null = null
   let pending: RealtimeEvent[] = []
   const seen = new Set<string>()
   const revocations = new Set<string>()
@@ -17,23 +17,32 @@ export function createCoalescedDelivery(onEvent: EventHandler, recovery: EventHa
     const group = batches.get(event)
     batches.delete(event)
     if (group) {
-      const work = group.filter(item => !seen.has(item.eventId))
+      const ownGeneration = generation
+      const work = group.filter(item => !seen.has(eventIdentity(item)))
       if (work.length) await batch(work)
-      if (active) for (const item of work) {
-        seen.add(item.eventId)
-        if (seen.size > 2048) seen.delete(seen.values().next().value!)
+      if (active && ownGeneration === generation) {
+        outstanding -= group.length
+        for (const item of work) {
+          seen.add(eventIdentity(item))
+          if (seen.size > 2048) seen.delete(seen.values().next().value!)
+        }
       }
     } else if (immediate.has(event)) {
       const work = immediate.get(event)
       immediate.delete(event)
       await work
     } else { if (event.kind === 'connection.resync_required') seen.clear(); await onEvent(event) }
-  }, recovery, cause => { pending = []; batches.clear(); seen.clear(); immediate.clear(); revocations.clear(); failure(cause) })
+  }, recovery, cause => {
+    generation++; outstanding = 0
+    if (timer !== null) clearTimeout(timer)
+    timer = null; pending = []; batches.clear(); seen.clear(); immediate.clear(); revocations.clear(); failure(cause)
+  })
   function flush(): void {
     if (timer !== null) clearTimeout(timer)
     timer = null
     if (!active || !pending.length) return
-    const group = [...new Map(pending.map(event => [event.eventId, event])).values()]
+    const group = [...new Map(pending.map(event => [eventIdentity(event), event])).values()]
+    outstanding -= pending.length - group.length
     pending = []
     const last = group[group.length-1]
     batches.set(last, group)
@@ -41,8 +50,10 @@ export function createCoalescedDelivery(onEvent: EventHandler, recovery: EventHa
   }
   return {
     accept(event: RealtimeEvent): void {
-      if (!active || (hint(event) && seen.has(event.eventId))) return
+      if (!active || (hint(event) && seen.has(eventIdentity(event)))) return
       if (hint(event)) {
+        if (outstanding >= 256) { base.abort(new Error('Realtime delivery overflow')); return }
+        outstanding++
         pending.push(event)
         if (timer === null) timer = setTimeout(flush, 25)
         return
@@ -61,7 +72,7 @@ export function createCoalescedDelivery(onEvent: EventHandler, recovery: EventHa
     },
     cursor: base.cursor,
     disconnected: base.disconnected,
-    reset(): void { active = false; if (timer !== null) clearTimeout(timer); pending = []; batches.clear(); immediate.clear(); seen.clear(); revocations.clear(); base.reset() },
+    reset(): void { active = false; generation++; outstanding = 0; if (timer !== null) clearTimeout(timer); pending = []; batches.clear(); immediate.clear(); seen.clear(); revocations.clear(); base.reset() },
   }
 }
 type EventHandlerRecovery = (() => void | Promise<void>) | undefined

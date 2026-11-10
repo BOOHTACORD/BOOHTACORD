@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"fmt"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.opentelemetry.io/otel"
@@ -13,6 +14,7 @@ import (
 	chatroutes "voice-platform/backend/internal/app/chat_routes"
 	guildroutes "voice-platform/backend/internal/app/guild_routes"
 	identityroutes "voice-platform/backend/internal/app/identity_routes"
+	"voice-platform/backend/internal/app/lifecycle"
 	mediaroutes "voice-platform/backend/internal/app/media_routes"
 	messagesocialroutes "voice-platform/backend/internal/app/message_social_routes"
 	notificationroutes "voice-platform/backend/internal/app/notification_routes"
@@ -22,6 +24,7 @@ import (
 	clientupdates "voice-platform/backend/internal/client_updates/catalog"
 	runtimeconfig "voice-platform/backend/internal/config/runtime"
 	observeusage "voice-platform/backend/internal/identity/observe_usage"
+	observestate "voice-platform/backend/internal/maintenance/observe_state"
 	authorizelivekitsignal "voice-platform/backend/internal/media/authorize_livekit_signal"
 	screenpreview "voice-platform/backend/internal/media/screen_preview"
 	presencememory "voice-platform/backend/internal/media/screen_viewer_presence/memory"
@@ -36,7 +39,7 @@ import (
 	soundpostgres "voice-platform/backend/internal/voice/sound_preferences/postgres"
 )
 
-func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *eventhub.Hub, metrics *httpmetrics.Recorder, updates clientupdates.Provider, usage *observeusage.Tracker, previews screenpreview.Store, screenViewers *presencememory.Store) (http.Handler, screenpreview.Service, error) {
+func routes(ctx context.Context, resources *lifecycle.Stack, database *pgxpool.Pool, configuration runtimeconfig.Config, events *eventhub.Hub, metrics *httpmetrics.Recorder, updates clientupdates.Provider, usage *observeusage.Tracker, previews screenpreview.Store, screenViewers *presencememory.Store, publicRealtime http.Handler, maintenanceObserver *observestate.Observer) (http.Handler, screenpreview.Service, error) {
 	if events != nil {
 		key := configuration.CausalKey
 		if configuration.CentralTelemetry == nil {
@@ -45,6 +48,7 @@ func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *
 		events.SetTelemetryKey(key)
 	}
 	mux := http.NewServeMux()
+	mux.Handle("GET /api/v1/public/realtime", publicRealtime)
 	mux.Handle("/api/v1/client-updates", clientupdates.Handler(updates, metrics))
 	lifecycle := guildlifecycle.New(otel.Tracer("boohtacord/guild"), otel.Meter("boohtacord/guild"), metrics)
 	auth := authroutes.Register(mux, database, configuration, events, usage, lifecycle)
@@ -68,7 +72,13 @@ func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *
 	observabilityroutes.ConfigureStatusRoutes(mux, maintenanceService, metrics)
 	channelsroutes.ConfigureChannelRoutes(mux, database, sessionService, events)
 	channelsroutes.ConfigureVoiceClosureRoutes(mux, database, sessionService, configuration.MediaSnapshot)
-	chatroutes.ConfigureChatAndRealtimeRoutes(mux, database, sessionService, metrics, events, configuration.RealtimeConnectionLimiter)
+	rosterFactory, stopRoster, err := mediaroutes.StartVoiceParticipantRoutes(ctx, mux, database, sessionService, configuration.MediaSnapshot, metrics, configuration.LiveKitAPIKey, configuration.LiveKitAPISecret)
+	if err != nil {
+		return nil, screenpreview.Service{}, fmt.Errorf("configure voice roster: %w", err)
+	}
+	resources.Add(stopRoster)
+	chatroutes.ConfigureChatRoutes(mux, database, sessionService, events)
+	chatroutes.ConfigureRealtimeRoutesWithRoster(mux, sessionService, metrics, events, configuration.RealtimeConnectionLimiter, maintenanceObserver, rosterFactory)
 	if err := storageroutes.ConfigureStorageRoutes(mux, database, sessionService, configuration.AttachmentRoot, configuration.UploadLimiter, configuration.UploadAccountLimiter, configuration.UploadDeploymentLimiter, configuration.UploadAdmissionLimiter, metrics, func(space reserve.Space, manager *reserve.Manager) {
 		observabilityroutes.ConfigureReadinessRoutes(mux, database, sessionService, configuration.MediaSnapshot, space, manager)
 	}); err != nil {
@@ -82,7 +92,6 @@ func routes(database *pgxpool.Pool, configuration runtimeconfig.Config, events *
 	}
 	messagesocialroutes.Register(mux, database, sessionService, events)
 	mediaroutes.ConfigureVoiceLeaseRoutes(mux, database, sessionService, maintenanceService)
-	mediaroutes.ConfigureVoiceParticipantRoutes(mux, database, sessionService, configuration.MediaSnapshot, metrics, configuration.LiveKitAPIKey, configuration.LiveKitAPISecret)
 	observabilityroutes.ConfigureClientScreenRoutes(mux, database, sessionService, metrics)
 	observabilityroutes.ConfigureClientTelemetryRoutes(mux, sessionService, configuration)
 	observabilityroutes.ConfigureInstallationRoutes(mux, sessionService, configuration)

@@ -8,6 +8,331 @@ action_catalog:
   verification: backlog/VERIFICATION_TODO.md
   completed: DONE.md
 tasks:
+  - id: RT689-065
+    title: Measure maintenance change propagation in the owned load fixture (GitHub #689)
+    requirements: [REQ-QUALITY-01, REQ-OPS-01]
+    depends_on: [RT689-050]
+    evidence: [backend/internal/load/roster_matrix/events_test.go, backend/internal/load/run_roster_matrix/measure_test.go, tools/load/guard/test_maintenance_change.py]
+  - id: RT689-064
+    title: Exclude expired participant sessions from roster delivery (GitHub #689)
+    requirements: [REQ-SECURITY-01, REQ-VOICE-01, REQ-QUALITY-01]
+    depends_on: [RT689-053]
+    evidence: [backend/internal/voice/authorize_roster_delivery/atomic_delivery_integration_test.go, backend/internal/voice/list_connected_participants/postgres/repository_integration_test.go]
+  - id: RT689-063
+    title: Order session revocation with bounded roster delivery (GitHub #689)
+    requirements: [REQ-SECURITY-01, REQ-QUALITY-01]
+    depends_on: [RT689-053]
+    evidence: [backend/internal/identity/serialize_session_delivery/postgres_integration_test.go, evidence/qa/issue689-revocation-window-2026-11-09.md]
+  - id: RT689-062
+    title: Serialize roster delivery with session, ACL and lease revocation (GitHub #689)
+    requirements: [REQ-SECURITY-01, REQ-VOICE-01, REQ-QUALITY-01]
+    depends_on: [RT689-053, RT689-063, RT689-064]
+    evidence: [backend/internal/realtime/connect_session/roster_revocation_window_test.go, evidence/qa/issue689-revocation-window-2026-11-09.md]
+  - id: RT689-061
+    title: Investigate initial maintenance latency while bounding shared reads (GitHub #689)
+    requirements: [REQ-QUALITY-01, REQ-OPS-01]
+    depends_on: [RT689-055]
+    evidence: [backend/internal/maintenance/observe_state/paced_subscribers_test.go, evidence/qa/issue689-load-fixture-smoke-2026-11-09.md]
+  - id: RT689-060
+    title: Update browser QA transports and mobile voice search acceptance (GitHub #689)
+    requirements: [REQ-QUALITY-01, REQ-UI-01]
+    depends_on: [RT689-054]
+    evidence: [clients/web/artifacts/design-v2/reference-live-state.test.mjs, tools/qa/client_lifecycle/voice_workspace_search.test.mjs, tools/ci/actual_acceptance/test_node_inventory.py]
+  - id: RT689-059
+    title: Keep workspace visible beside maintenance status (GitHub #689)
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-QUALITY-01]
+    depends_on: [RT689-049]
+    evidence: [clients/web/tests/accessibility/composer_text_scale.browser.spec.ts, tools/qa/local_features/features.json]
+  - id: RT689-058
+    title: Verify evolving historical evidence against its pinned source (GitHub #689)
+    requirements: [REQ-OPS-01, REQ-QUALITY-01]
+    depends_on: [RT689-054]
+    evidence: [tools/verify/livekit_network_config/test_historical_artifact.py, tools/verify/livekit_network_config/test_model.py]
+  - id: RT689-057
+    title: Measure authenticated sessions behind one source (GitHub #689)
+    requirements: [REQ-QUALITY-01, REQ-SECURITY-01]
+    depends_on: [RT689-050]
+    evidence: [backend/internal/load/run_roster_matrix/nat_test.go, tools/load/roster_matrix/test_outcome.py]
+  - id: RT689-056
+    title: Run registered native realtime scenarios in local acceptance (GitHub #689)
+    requirements: [REQ-QUALITY-01, REQ-PLATFORM-01]
+    depends_on: [RT689-049]
+    evidence: [tools/qa/local_features/test_selection.py, clients/flutter/integration_test/issue689_roster_test.dart]
+  - id: RT689-055
+    title: Observe maintenance reconciliation read outcomes (GitHub #689)
+    requirements: [REQ-OPS-01, REQ-SECURITY-01]
+    depends_on: [RT689-053]
+    evidence: [backend/internal/maintenance/observe_state/read_metrics_test.go, backend/internal/app/public_realtime/read_metrics_test.go, backend/internal/observability/http_metrics/maintenance_read_test.go]
+  - id: RT689-054
+    title: Guard first-party realtime against reintroduced SSE (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-QUALITY-01]
+    depends_on: [RT689-047, RT689-049]
+    evidence: [tools/verify/realtime_migration/test_guard.py]
+  - id: RT689-053
+    title: Retire obsolete SSE route telemetry classification (GitHub #689)
+    requirements: [REQ-OPS-01, REQ-QUALITY-01]
+    depends_on: [RT689-047]
+    evidence: [backend/internal/observability/observe_http_requests/retired_routes_test.go, backend/internal/observability/central_projection/retired_operations_test.go]
+  - id: RT689-052
+    title: Measure bounded anonymous connections and public payload isolation (GitHub #689)
+    requirements: [REQ-OPS-01, REQ-SECURITY-01, REQ-QUALITY-02]
+    depends_on: [RT689-048, RT689-050]
+    evidence: [backend/internal/load/public_matrix/event_test.go, backend/internal/load/public_matrix/socket_test.go, tools/load/roster_matrix/test_public_outcome.py]
+  - id: RT689-051
+    title: Exercise the shared socket on the local Windows desktop runtime (GitHub #689)
+    requirements: [REQ-PLATFORM-01, REQ-VOICE-01, REQ-QUALITY-01]
+    depends_on: [RT689-049]
+    evidence: [tools/qa/local_features/test_native.py, clients/flutter/integration_test/issue689_roster_test.dart]
+  - id: RT689-050
+    title: Observe public and authenticated realtime connections independently (GitHub #689)
+    requirements: [REQ-OPS-01, REQ-QUALITY-02]
+    depends_on: [RT689-033]
+    evidence: [backend/internal/observability/http_metrics/realtime_scope_test.go, backend/internal/realtime/connect_public/metrics_test.go]
+  - id: RT689-049
+    title: Remove Flutter roster SSE state machine and use shared realtime exclusively (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-QUALITY-01]
+    depends_on: [RT689-040, RT689-047]
+    evidence: [clients/flutter/test/voice_roster_state/socket_recovery_test.dart]
+  - id: RT689-048
+    title: Provision independent roster load matrix room counts (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-QUALITY-02]
+    depends_on: [RT689-047]
+    evidence: [tools/load/provision/test_roster_rooms.py]
+  - id: RT689-047
+    title: Retire server SSE routes and update public contracts (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-OPS-01, REQ-QUALITY-01]
+    depends_on: [RT689-040, RT689-044, RT689-046]
+    evidence: [backend/internal/app/media_routes/retired_stream_test.go, backend/internal/app/observability_routes/retired_stream_test.go]
+  - id: RT689-046
+    title: Remove obsolete Web roster SSE and polling implementation (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-QUALITY-01]
+    depends_on: [RT689-036]
+    evidence: [clients/web/src/voice/roster_status/stale_expiry.spec.ts]
+  - id: RT689-045
+    title: Present unknown Flutter maintenance state safely (GitHub #689)
+    requirements: [REQ-OPS-01, REQ-QUALITY-01]
+    depends_on: [RT689-044]
+    evidence: [clients/flutter/test/maintenance_socket/unknown_banner_test.dart]
+  - id: RT689-044
+    title: Handoff Flutter maintenance between public and authenticated sockets (GitHub #689)
+    requirements: [REQ-OPS-01, REQ-SECURITY-01, REQ-QUALITY-01]
+    depends_on: [RT689-043]
+    evidence: [clients/flutter/test/maintenance_socket/controller_test.dart]
+  - id: RT689-043
+    title: Add Flutter public maintenance WebSocket ownership (GitHub #689)
+    requirements: [REQ-OPS-01, REQ-SECURITY-01]
+    depends_on: [RT689-042]
+    evidence: [clients/flutter/test/maintenance_socket/guest_test.dart]
+  - id: RT689-042
+    title: Model Flutter maintenance ownership across sockets (GitHub #689)
+    requirements: [REQ-OPS-01, REQ-QUALITY-01]
+    depends_on: [RT689-041]
+    evidence: [clients/flutter/test/maintenance_socket/state_test.dart]
+  - id: RT689-041
+    title: Exercise shared roster socket on the owned Android AVD (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-QUALITY-01]
+    depends_on: [RT689-040]
+    evidence: [clients/flutter/integration_test/issue689_roster_test.dart]
+  - id: RT689-040
+    title: Deliver Flutter voice roster through the authenticated socket (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-QUALITY-01]
+    depends_on: [RT689-039]
+    evidence: [clients/flutter/test/voice_roster_state/app_composition_test.dart]
+  - id: RT689-039
+    title: Fence Flutter manual reconnect and preserve replay cursor (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-QUALITY-01, REQ-SECURITY-01]
+    depends_on: [RT689-038]
+    evidence: [clients/flutter/test/realtime_scope/manual_reconnect_test.dart]
+  - id: RT689-038
+    title: Expose Flutter realtime socket attempt lifecycle (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-QUALITY-01]
+    depends_on: [RT689-037]
+    evidence: [clients/flutter/test/realtime_scope/socket_attempt_test.dart]
+  - id: RT689-037
+    title: Model Flutter voice roster on the shared socket (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-QUALITY-01]
+    depends_on: [RT689-036]
+    evidence: [clients/flutter/test/voice_roster_state/shared_socket_test.dart]
+  - id: RT689-036
+    title: Deliver Web voice roster through the existing socket (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-QUALITY-01]
+    depends_on: [RT689-035]
+    evidence: [clients/web/src/workspace/workspace_roster_socket.spec.ts]
+  - id: RT689-035
+    title: Model Web voice roster on shared socket state (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-QUALITY-01]
+    depends_on: [RT689-034]
+    evidence: [clients/web/src/voice/roster_socket/state.spec.ts]
+  - id: RT689-034
+    title: Recheck prepared roster asynchronously at socket delivery (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-SECURITY-01, REQ-SECURITY-02]
+    depends_on: [RT689-033]
+    evidence: [backend/internal/realtime/connect_session/roster_final_check_test.go]
+  - id: RT689-033
+    title: Compose shared roster source into authenticated realtime (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-OPS-01, REQ-SECURITY-01]
+    depends_on: [RT689-030, RT689-032]
+    evidence: [backend/internal/app/voice_realtime/socket_integration_test.go]
+  - id: RT689-032
+    title: Own shared roster coordinator for process lifecycle (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-OPS-01, REQ-SECURITY-01]
+    depends_on: [RT689-031]
+    evidence: [backend/internal/app/voice_realtime/start_test.go]
+  - id: RT689-031
+    title: Bind roster preparation to each socket lifecycle (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-SECURITY-01, REQ-OPS-01]
+    depends_on: [RT689-028, RT689-030]
+    evidence: [backend/internal/app/voice_realtime/factory_test.go]
+  - id: RT689-030
+    title: Guard and bound negotiated realtime roster delivery (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-SECURITY-01, REQ-SECURITY-02]
+    depends_on: [RT689-028, RT689-029]
+    evidence: [backend/internal/realtime/connect_session/roster_stream_test.go]
+  - id: RT689-029
+    title: Bound session revalidation despite blocked realtime writes (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-SECURITY-02, REQ-QUALITY-01]
+    depends_on: [RT689-028]
+    evidence: [backend/internal/realtime/connect_session/session_monitor_test.go]
+  - id: RT689-028
+    title: Bounded asynchronous per-recipient roster preparation (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-SECURITY-01, REQ-SECURITY-02, REQ-OPS-01]
+    depends_on: [RT689-027]
+    evidence: [backend/internal/voice/prepare_roster_delivery/prepare_test.go]
+  - id: RT689-027
+    title: Fence stale voice roster snapshots before delivery (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-SECURITY-01, REQ-SECURITY-02]
+    depends_on: [RT689-026]
+    evidence: [backend/internal/voice/coordinate_roster/current_test.go]
+  - id: RT689-026
+    title: Refresh one recipient after stale voice roster authorization (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-SECURITY-01, REQ-SECURITY-02]
+    depends_on: [RT689-023]
+    evidence: [backend/internal/voice/coordinate_roster/refresh_test.go]
+  - id: RT689-025
+    title: Flutter strict typed voice roster realtime parser (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-UI-01, REQ-SECURITY-01, REQ-QUALITY-01]
+    depends_on: [RT689-019]
+    evidence: [clients/flutter/test/realtime_scope/roster_event_test.dart]
+  - id: RT689-024
+    title: Web strict typed voice roster realtime parser (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-UI-01, REQ-SECURITY-01, REQ-QUALITY-01]
+    depends_on: [RT689-019]
+    evidence: [clients/web/src/realtime/roster_payload.spec.ts]
+  - id: RT689-023
+    title: Reauthorize each voice roster delivery against session and lease (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-SECURITY-01, REQ-SECURITY-02]
+    depends_on: [RT689-022]
+    evidence: [backend/internal/voice/authorize_roster_delivery/guard_test.go, backend/internal/voice/authorize_roster_delivery/session_test.go]
+  - id: RT689-022
+    title: Preserve matched voice lease as internal delivery proof (GitHub #689)
+    requirements: [REQ-VOICE-01, REQ-SECURITY-01, REQ-SECURITY-02]
+    depends_on: [RT689-021]
+    evidence: [backend/internal/voice/list_connected_participants/lease_proof_test.go]
+  - id: RT689-021
+    title: Bounded process-scoped voice roster coordinator (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-VOICE-01, REQ-SECURITY-01, REQ-SECURITY-02, REQ-OPS-01]
+    depends_on: [RT689-020]
+    evidence: [backend/internal/voice/coordinate_roster/coordinator_test.go, backend/internal/voice/coordinate_roster/barrier_test.go]
+  - id: RT689-020
+    title: Deterministic bounded voice roster normalization (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-VOICE-01, REQ-SECURITY-01, REQ-SECURITY-02]
+    depends_on: [RT689-019]
+    evidence: [backend/internal/voice/normalize_roster/normalize_test.go]
+  - id: RT689-019
+    title: Typed authorized voice roster WebSocket events (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-VOICE-01, REQ-SECURITY-01, REQ-SECURITY-02]
+    depends_on: [RT689-002]
+    evidence: [tools/verify/realtime_schema/test_roster.py]
+  - id: RT689-018
+    title: Reject stale Web session checks after manual realtime reconnect (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-QUALITY-01]
+    depends_on: [RT689-015]
+    evidence: [clients/web/src/realtime/reconnect_race.spec.ts]
+  - id: RT689-017
+    title: Web maintenance guest and authenticated socket handoff (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-UI-01, REQ-SECURITY-01, REQ-QUALITY-01]
+    depends_on: [RT689-016]
+    evidence: [clients/web/src/maintenance/owner.spec.ts]
+  - id: RT689-016
+    title: Web authenticated maintenance dispatch through existing socket (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-UI-01, REQ-QUALITY-01]
+    depends_on: [RT689-015]
+    evidence: [clients/web/src/maintenance/auth_owner.spec.ts]
+  - id: RT689-015
+    title: Web authenticated socket attempt lifecycle callbacks (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-UI-01, REQ-QUALITY-01]
+    depends_on: [RT689-014]
+    evidence: [clients/web/src/realtime/socket_lifecycle.spec.ts]
+  - id: RT689-014
+    title: Web public maintenance WebSocket owner (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-UI-01, REQ-SECURITY-01, REQ-QUALITY-01]
+    depends_on: [RT689-013]
+    evidence: [clients/web/src/maintenance/guest_socket.spec.ts]
+  - id: RT689-013
+    title: Generation-safe Web maintenance feature state (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-UI-01, REQ-QUALITY-01]
+    depends_on: [RT689-004, RT689-012]
+    evidence: [clients/web/src/maintenance/state.spec.ts]
+  - id: RT689-012
+    title: Share one maintenance observer across public and authenticated sockets (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-OPS-01]
+    depends_on: [RT689-011]
+    evidence: [backend/internal/app/public_realtime/shared_test.go]
+  - id: RT689-011
+    title: Capability-gated maintenance on authenticated realtime stream (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-OPS-01]
+    depends_on: [RT689-010]
+    evidence: [backend/internal/realtime/connect_session/maintenance_stream_test.go]
+  - id: RT689-010
+    title: Register public realtime route with lifecycle and API contract (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-OPS-01]
+    depends_on: [RT689-009]
+    evidence: [backend/internal/app/runtime/routes_public_test.go]
+  - id: RT689-009
+    title: Own one shared public maintenance observer and admission lifecycle (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-OPS-01]
+    depends_on: [RT689-008]
+    evidence: [backend/internal/app/public_realtime/runtime_test.go]
+  - id: RT689-008
+    title: Public maintenance WebSocket transport with bounded admission (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-OPS-01]
+    depends_on: [RT689-001, RT689-002, RT689-007]
+    evidence: [backend/internal/realtime/connect_public/socket_test.go, backend/internal/realtime/connect_public/admission_test.go]
+  - id: RT689-007
+    title: Bound public realtime connections globally and per trusted source (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-OPS-01]
+    depends_on: [RT689-006]
+    evidence: [backend/internal/realtime/admit_public_connection/limiter_test.go]
+  - id: RT689-001
+    title: Central maintenance state observer for realtime migration (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-OPS-01, REQ-SECURITY-01]
+    depends_on: [T-003]
+    evidence: [backend/internal/maintenance/observe_state/observer_test.go]
+  - id: RT689-002
+    title: Typed realtime maintenance snapshot contract (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-OPS-01]
+    depends_on: [T-001]
+    evidence: [tools/verify/realtime_schema/test_maintenance.py]
+  - id: RT689-003
+    title: Flutter accepts valid server resync reasons (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-QUALITY-01]
+    depends_on: [T-010]
+    evidence: [clients/flutter/test/realtime_scope/resync_envelope_test.dart]
+  - id: RT689-004
+    title: Web validates typed realtime maintenance payloads (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-QUALITY-01]
+    depends_on: [RT689-002]
+    evidence: [clients/web/src/realtime/maintenance_payload.spec.ts]
+  - id: RT689-005
+    title: Flutter validates maintenance events and recovers from malformed frames (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01, REQ-QUALITY-01]
+    depends_on: [RT689-002, RT689-003]
+    evidence: [clients/flutter/test/realtime_scope/maintenance_event_test.dart]
+  - id: RT689-006
+    title: Reuse trusted client source resolution for public realtime admission (GitHub #689)
+    requirements: [REQ-ARCH-01, REQ-SECURITY-01]
+    depends_on: [T-010]
+    evidence: [backend/internal/security/rate_limit/source_test.go]
   - id: T-001
     title: Specification packet and traceability
     requirements: [REQ-PRODUCT-01, REQ-ISOLATION-01, REQ-STACK-01, REQ-ARCH-01, REQ-QUALITY-02]

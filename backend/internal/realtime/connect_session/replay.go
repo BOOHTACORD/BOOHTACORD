@@ -35,7 +35,9 @@ func loadReplay(ctx context.Context, hub *eventhub.Hub, accountID, after string)
 	}
 }
 
-func writeAuthorizedReplay(ctx context.Context, connection *websocket.Conn, authenticator sessionapi.Authenticator, cookie *http.Cookie, subscription *eventhub.Subscription, hub *eventhub.Hub, epoch string, events []eventhub.Event, replayedIDs map[string]struct{}, newID Identifier, now Clock, observer ConnectionObserver) (bool, bool) {
+type replayKey struct{ kind, id string }
+
+func writeAuthorizedReplay(ctx context.Context, connection *websocket.Conn, authenticator sessionapi.Authenticator, cookie *http.Cookie, subscription *eventhub.Subscription, hub *eventhub.Hub, epoch string, events []eventhub.Event, replayedIDs map[replayKey]struct{}, newID Identifier, now Clock, observer ConnectionObserver) (bool, bool) {
 	for _, event := range events {
 		if !hub.ContinuityAt(epoch) {
 			observeReconnectOutcome(observer, "resync_required")
@@ -60,7 +62,7 @@ func writeAuthorizedReplay(ctx context.Context, connection *websocket.Conn, auth
 		if err := wsjson.Write(ctx, connection, event); err != nil {
 			return false, false
 		}
-		replayedIDs[event.EventID] = struct{}{}
+		replayedIDs[replayKey{event.Kind, event.EventID}] = struct{}{}
 	}
 	return true, true
 }

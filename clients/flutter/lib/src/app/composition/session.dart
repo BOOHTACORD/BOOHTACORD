@@ -34,8 +34,14 @@ void configureSession(AppOwners app) {
       },
       resume: () async {
         final ticket = app.session.scope.capture();
+        if (app.session.phase != AppPhase.ready || app.session.user == null) {
+          await app.maintenance.useGuest();
+          return;
+        }
         unawaited(app.permissions.refresh());
         await app.realtime.close();
+        if (!ticket.isActive) return;
+        await app.maintenance.useAuthenticated();
         if (!ticket.isActive) return;
         app.voiceRoster.start();
         unawaited(app.realtime.connect());
@@ -47,9 +53,10 @@ void configureSession(AppOwners app) {
       closeRealtime: () => app.realtime.close(),
       clearAccount: app.clearSignedOutAccount,
       expireAccount: app.clearExpiredAccount,
-      beforeServerChange: () {
+      beforeServerChange: () async {
         app.conversation.loadingMessages = false;
         app.voiceRoster.stop();
+        await app.maintenance.suspend();
       },
       clearServer: app.clearServerAccount,
       error: (value) => app.error = value,
