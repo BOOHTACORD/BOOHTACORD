@@ -31,6 +31,3 @@
 
 /* Keep the full-view stage inside its flex allocation on short windows. */
 .voice-room .screen-stage { min-height: 0; }
-
-/* A shared desktop header must not move across roster rows below the dock. */
-.workspace-main-layout:has(.screen-mini-dock > .voice-room--mini) .text-conversation > .conversation-header { width: 100%; }

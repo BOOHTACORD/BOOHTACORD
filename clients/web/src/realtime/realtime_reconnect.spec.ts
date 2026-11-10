@@ -105,7 +105,8 @@ describe('realtime recovery', () => {
   })
 
   it('keeps control and presence IDs out of the durable cursor', async () => {
-    expect(realtimeURL({ protocol: 'https:', host: 'voice.test' }, eventID)).toBe(`wss://voice.test/api/v1/realtime?capabilities=role_permissions_v1,flow_tracing_v1,screen_previews_v1,screen_viewers_v1,message_social_v1,notifications_v1&after=${eventID}`)
+    const reconnectURL = new URL(realtimeURL({ protocol: 'https:', host: 'voice.test' }, eventID))
+    expect(reconnectURL.searchParams.get('after')).toBe(eventID); expect(reconnectURL.searchParams.get('capabilities')?.split(',')).toContain('maintenance_v1')
     const sockets = [fakeSocket(), fakeSocket()]
     const urls: string[] = []
     const store = useRealtimeStore()

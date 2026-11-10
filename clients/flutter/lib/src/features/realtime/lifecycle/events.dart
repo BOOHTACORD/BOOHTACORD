@@ -3,6 +3,9 @@ import 'dart:convert';
 
 import 'controller.dart';
 import '../social_hints/hints.dart';
+import 'maintenance_payload.dart';
+import 'roster_payload.dart';
+import 'resync_payload.dart';
 
 extension RealtimeEvents on RealtimeController {
   void synchronizeDeliveryScope() {
@@ -21,10 +24,12 @@ extension RealtimeEvents on RealtimeController {
   Future<void> applyEvent(RealtimeEvent event) async {
     if (deliveryTicket?.isActive != true ||
         deliveryServer != api.transport.session.serverRevision ||
-        deliveryInstallation != api.transport.session.telemetry.installation)
+        deliveryInstallation != api.transport.session.telemetry.installation) {
       return;
-    if (await SocialHints.forTransport(api.transport).receiveAsync(event))
+    }
+    if (await SocialHints.forTransport(api.transport).receiveAsync(event)) {
       return;
+    }
     await dispatch(event);
     changed();
   }
@@ -38,15 +43,26 @@ extension RealtimeEvents on RealtimeController {
       final id = source['event_id'],
           kind = source['kind'],
           payload = source['payload'];
+      if ((isMaintenanceKind(kind) && !validMaintenancePayload(payload)) ||
+          (isRosterKind(kind) && !validRosterPayload(kind, payload))) {
+        delivery.reset();
+        handleClosed();
+        return;
+      }
       if (id is! String ||
           id.isEmpty ||
           id.length > 512 ||
           kind is! String ||
-          payload is! Map<String, dynamic>)
+          payload is! Map<String, dynamic>) {
         return;
+      }
       if (kind == 'screen_viewers.changed' && payload.isNotEmpty) return;
-      if (kind == 'connection.ready' || kind == 'connection.resync_required') {
+      if (kind == 'connection.ready') {
         if (payload.isNotEmpty) return;
+      }
+      if (kind == 'connection.resync_required' &&
+          !validResyncPayload(payload)) {
+        return;
       }
       if (kind == 'connection.ready') {
         if (connected) return;

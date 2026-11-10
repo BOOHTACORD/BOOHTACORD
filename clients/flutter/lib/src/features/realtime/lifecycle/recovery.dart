@@ -12,6 +12,7 @@ extension RealtimeRecovery on RealtimeController {
   }
 
   void handleClosed() {
+    socketAttempt.end();
     handshake?.finish('failed', reason: 'network');
     handshake = null;
     readyTimeout?.cancel();

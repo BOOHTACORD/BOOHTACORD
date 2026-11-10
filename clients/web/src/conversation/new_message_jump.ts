@@ -19,7 +19,8 @@ export function shouldFollowNewestMessages(
   wasLoaded: boolean,
   nearBottom: boolean,
 ): boolean {
-  return nearBottom && newServerMessageCount(messages, previousNewestId, wasLoaded) > 0
+  const hasInitialHistory = !wasLoaded && messages.some((message) => !message.sendStatus)
+  return nearBottom && (hasInitialHistory || newServerMessageCount(messages, previousNewestId, wasLoaded) > 0)
 }
 
 export function isHistoryNearBottom(viewport: ScrollMetrics | null): boolean {

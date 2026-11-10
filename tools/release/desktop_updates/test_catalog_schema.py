@@ -36,3 +36,11 @@ class CatalogSchemaTests(unittest.TestCase):
     def test_camel_case_internal_definition_cannot_be_used_as_a_target_field(self):
         with self.assertRaises(ValidationError):
             validator().validate(catalog(installArtifact=envelope()))
+
+    def test_optional_minimum_release_is_bounded_and_backwards_compatible(self):
+        validator().validate(catalog())
+        validator().validate(catalog(minimum_release_order=1))
+        validator().validate(catalog(minimum_release_order=None))
+        for value in (0, -1, 2147483648, "1"):
+            with self.subTest(value=value), self.assertRaises(ValidationError):
+                validator().validate(catalog(minimum_release_order=value))

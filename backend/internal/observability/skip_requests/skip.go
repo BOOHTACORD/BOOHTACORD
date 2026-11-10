@@ -6,9 +6,9 @@ import "net/http"
 // spans, normal API metrics or access log entries. Operational aggregates remain safe.
 func Skip(request *http.Request) bool {
 	switch request.URL.Path {
-	case "/metrics", "/api/v1/health", "/api/v1/maintenance", "/api/v1/maintenance/events",
+	case "/metrics", "/api/v1/health", "/api/v1/maintenance",
 		"/api/v1/auth/session", "/api/v1/telemetry/traces",
-		"/api/v1/voice/screen-metrics", "/api/v1/voice/rosters/events",
+		"/api/v1/voice/screen-metrics",
 		"/internal/media-admission", "/internal/livekit/roster":
 		return true
 	default:

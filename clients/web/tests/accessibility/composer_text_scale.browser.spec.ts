@@ -2,8 +2,8 @@ import { expect, test } from '@playwright/test'
 import { chatMembers, chatProfile, chatTopology } from '../../artifacts/design-v2/chat-reference-fixture.mjs'
 import { installReferenceTransports } from '../../artifacts/design-v2/reference-live-state.mjs'
 
-test.beforeEach(async ({ page }) => {
-  await installReferenceTransports(page)
+test.beforeEach(async ({ page }, testInfo) => {
+  await installReferenceTransports(page, { maintenanceUnknown: testInfo.title.startsWith('maintenance unknown banner') })
   await page.route('**/api/v1/**', async route => {
     const path = new URL(route.request().url()).pathname
     let body: unknown = {}
@@ -54,3 +54,16 @@ for (const kind of ['CHANNEL', 'DM']) for (const width of [320, 393, 1024, 1280,
     expect(multiline.scrollTop).toBeGreaterThan(0)
   })
 }
+
+test('maintenance unknown banner leaves the composer inside the viewport', async ({ page }, testInfo) => {
+  const errors: string[] = []
+  page.on('pageerror', error => errors.push(error.message))
+  await page.setViewportSize({ width: 393, height: 900 })
+  await page.goto('/')
+  await expect(page.getByRole('status').filter({ hasText: 'Проверяем статус обслуживания' }), errors.join('; ')).toBeVisible()
+  await expect(page.locator('#message-body')).toBeVisible()
+  await page.evaluate(() => { document.documentElement.style.fontSize = '200%' })
+  const bottom = await page.locator('#message-body').evaluate(element => element.closest('form')!.getBoundingClientRect().bottom)
+  expect(bottom).toBeLessThanOrEqual(900.5)
+  await page.screenshot({ path: testInfo.outputPath('maintenance-unknown-200.png') })
+})

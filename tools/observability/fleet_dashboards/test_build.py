@@ -4,6 +4,12 @@ from .build import build, OUT
 
 
 class ScopedDashboardsTest(unittest.TestCase):
+    def test_roster_dashboard_tracks_websocket_subscribers(self):
+        panels = build()['voice-roster']['panels']
+        queries = [target['expr'] for panel in panels for target in panel['targets']]
+        self.assertTrue(any('voice_platform_voice_roster_ws_subscribers' in query for query in queries))
+        self.assertFalse(any('voice_platform_voice_roster_streams_active' in query for query in queries))
+
     def test_fleet_has_observed_health_versions_and_replica_safe_accounts(self):
         queries = [target['expr'] for panel in build()['fleet']['panels'] for target in panel['targets']]
         combined = '\n'.join(queries)

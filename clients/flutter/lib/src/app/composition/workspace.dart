@@ -6,6 +6,7 @@ import '../../features/workspace/lifecycle/controller.dart';
 import '../../features/conversation/lifecycle/controller.dart';
 import '../../features/profile/state/controller.dart';
 import '../../features/voice/roster_state/controller.dart';
+import '../../features/realtime/lifecycle/controller.dart';
 import '../../features/authorization/permissions/controller.dart';
 import 'owners.dart';
 
@@ -45,12 +46,11 @@ void configureWorkspace(AppOwners app) {
     refreshMembers: app.workspace.refreshMembers,
   )..addListener(app.notifyListeners);
   app.voiceRoster = VoiceRosterController(
-    app.api,
     app.session.scope,
     isReady: () => app.session.phase == AppPhase.ready,
     hasUser: () => app.session.user != null,
-    message: appFailureMessage,
-    retryDelay: app.voiceRosterRetryDelay,
     staleTimeout: app.voiceRosterStaleTimeout,
+    onSharedRetry: () =>
+        unawaited(app.realtime.reconnectNow().catchError((Object _) {})),
   )..addListener(app.notifyListeners);
 }

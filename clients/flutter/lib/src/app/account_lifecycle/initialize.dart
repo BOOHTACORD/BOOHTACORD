@@ -22,7 +22,7 @@ extension AppAccountInitialization on AppOwners {
     if (!ticket.isActive) return;
     await nativeNotifications.initialize();
     if (!ticket.isActive) return;
-    maintenance.start();
+    await maintenance.useGuest();
   }
 
   Future<void> prepareAccount(SessionUser account) async {
@@ -64,6 +64,8 @@ extension AppAccountInitialization on AppOwners {
       workspace.refreshDirectMessages(),
       profileOwner.refreshProfile(),
     ]);
+    if (!ticket.isActive || session.phase != AppPhase.ready) return;
+    await maintenance.useAuthenticated();
     if (!ticket.isActive || session.phase != AppPhase.ready) return;
     voiceRoster.start();
     unawaited(remoteNotifications.start(session.user!.accountId));

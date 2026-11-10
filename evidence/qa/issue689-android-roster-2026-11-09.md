@@ -1,0 +1,7 @@
+# Issue 689: Android roster socket on the local stack
+
+- PASS: dedicated AVD `BOOHTACORD_QA_ISSUE689` (`emulator-5554`, Android API 35) against an owned disposable TLS/Go/PostgreSQL/LiveKit stack. The test authenticated, created a voice channel, received a fresh roster, manually reconnected the authenticated socket, and received a fresh roster again. A tracked API rejected and observed zero legacy roster stream or roster HTTP reads.
+- PASS: 56 related Flutter realtime/roster/status tests, the focused voice roster widget test, targeted analyzer, native-runner safety tests and spec traceability. The full Flutter unit suite and registered end-to-end feature gate were not rerun at this candidate.
+- VISUAL: `.out/local-features/issue689-roster-android/android-roster-socket.png` was inspected at its original 1080×1920 resolution. Channel navigation and controls were legible without obvious clipping; a gray system/navigation strip is visible at the bottom. No screenshot baseline was approved.
+- Source: base commit `72928320db20baa1ca7c9810d5a7bafe7e8a7533` plus uncommitted Flutter socket wiring and QA target at execution time; the test target SHA-256 was `31e3d420683eae266b1c4793757416e8b52545af4e58ac5c023da5fb83660f79`. Runtime report is in `.out/local-features/issue689-roster-android/runtime.json`.
+- NOT RUN: actual voice/media participant, physical Android, iOS/macOS/Windows client acceptance, maintenance handoff, fault/load matrix and release gates. AVD success does not prove media quality or capacity.

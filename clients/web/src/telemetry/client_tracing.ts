@@ -17,7 +17,7 @@ function shouldTrace(input: RequestInfo | URL): boolean {
   const base = typeof window === 'undefined' ? 'https://example.test' : window.location.origin
   const url = new URL(input instanceof Request ? input.url : String(input), base)
   if (url.origin !== base || !url.pathname.startsWith(`${apiBaseUrl}/`)) return false
-  return !new Set(['/health', '/maintenance', '/maintenance/events', '/auth/session', '/telemetry/traces', '/voice/screen-metrics', '/voice/rosters/events']).has(url.pathname.slice(apiBaseUrl.length))
+  return !new Set(['/health', '/maintenance', '/auth/session', '/telemetry/traces', '/voice/screen-metrics']).has(url.pathname.slice(apiBaseUrl.length))
 }
 
 export function createTracedFetch(tracer: Tracer, transport: typeof fetch): typeof fetch {

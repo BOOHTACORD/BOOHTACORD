@@ -34,6 +34,7 @@
       "properties": {
         "release_id": {"type": "string", "pattern": "^[A-Za-z0-9._-]{1,96}$"},
         "release_order": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+        "minimum_release_order": {"type": ["integer", "null"], "minimum": 1, "maximum": 2147483647, "description": "Optional minimum supported client release order. When set, it must not exceed release_order; null is equivalent to absent."},
         "version": {"type": "string", "maxLength": 64},
         "native_build": {"type": ["string", "null"], "maxLength": 64},
         "priority": {"enum": ["normal", "important"]},

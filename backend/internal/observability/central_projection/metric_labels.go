@@ -13,12 +13,14 @@ func enum(values ...string) map[string]bool {
 }
 
 var extraLabelValues = map[string]map[string]bool{
+	"capability":     enum("both", "neither", "roster_only", "maintenance_only"),
+	"scope":          enum("public", "authenticated"),
 	"method":         enum("ListRooms", "ListParticipants", "other", "OTHER", "CONNECT", "TRACE"),
 	"source":         enum("client_report"),
 	"state":          enum("waiting_subscription"),
 	"stat":           enum("empty_acquires", "canceled_acquires", "acquired", "idle", "total", "max", "constructing", "participants", "streams", "screen_streams"),
-	"outcome":        enum("success", "failure", "failed", "canceled", "timeout", "error", "transport_error", "http_error", "overload", "started", "finished", "shared", "cached", "overloaded", "published", "skipped_disabled", "skipped_channel_unavailable", "rejected", "conflict", "accepted"),
-	"operation":      enum("livekit_probe", "storage_probe", "livekit_snapshot", "storage_snapshot", "livekit_list_rooms", "livekit_list_participants", "livekit_other", "livekit_remove", "trace_export", "metric_export", "relay_export", "lease_notification_worker", "channel_finalization_worker", "sfu_revocation_worker", "realtime_journal", "metrics_scrape", "health", "maintenance", "maintenance_events", "session_probe", "trace_relay", "screen_report", "roster_events", "media_admission", "roster_hook"),
+	"outcome":        enum("success", "failure", "unavailable", "failed", "canceled", "timeout", "error", "transport_error", "http_error", "overload", "started", "finished", "shared", "cached", "overloaded", "published", "skipped_disabled", "skipped_channel_unavailable", "rejected", "conflict", "accepted"),
+	"operation":      enum("livekit_probe", "storage_probe", "livekit_snapshot", "storage_snapshot", "livekit_list_rooms", "livekit_list_participants", "livekit_other", "livekit_remove", "trace_export", "metric_export", "relay_export", "lease_notification_worker", "channel_finalization_worker", "sfu_revocation_worker", "realtime_journal", "metrics_scrape", "health", "maintenance", "session_probe", "trace_relay", "screen_report", "media_admission", "roster_hook"),
 	"class":          enum("dns", "connect", "reset", "timeout", "canceled", "other"),
 	"status_class":   enum("401", "403", "404", "5xx", "other"),
 	"freshness":      enum("fresh", "stale", "legacy"),

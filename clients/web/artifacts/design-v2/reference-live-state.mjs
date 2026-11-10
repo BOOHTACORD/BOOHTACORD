@@ -1,26 +1,29 @@
 // Test transport records drive the real Vue stores; production code is untouched.
-export async function installReferenceTransports(page) {
-  await page.addInitScript(() => {
+export async function installReferenceTransports(page, options = {}) {
+  await page.addInitScript(({ maintenanceUnknown }) => {
     window.WebSocket = class {
-      constructor() { this.readyState = 0; setTimeout(() => { this.readyState = 1; this.onopen?.({}) }, 0) }
+      constructor(url) {
+        this.readyState = 0
+        setTimeout(() => {
+          if (this.readyState === 3) return
+          this.readyState = 1; this.onopen?.({})
+          if (maintenanceUnknown) return
+          const generation = '11111111-1111-4111-8111-111111111111'
+          const events = [
+            ['connection.ready', {}],
+            ['maintenance.snapshot', { version: 1, generation, revision: 1, active: false }],
+          ]
+          if (!String(url).includes('/public/realtime')) events.push(['voice.roster.unavailable', { version: 1, code: 'temporarily_unavailable' }])
+          events.forEach(([kind, payload], index) => {
+            const event_id = `00000000-0000-4000-8000-${String(index + 1).padStart(12, '0')}`
+            if (this.readyState !== 3) this.onmessage?.({ data: JSON.stringify({ event_id, occurred_at: '2026-11-09T00:00:00Z', kind, payload }) })
+          })
+        }, 0)
+      }
       send() {}
       close() { this.readyState = 3 }
     }
-    window.EventSource = class {
-      constructor() {
-        setTimeout(() => this.onmessage?.({ data: JSON.stringify({ channels: [{
-          channel_id: 'voice-1', participants: [
-            { account_id: 'alex-3', display_name: 'Alex', screen_sharing: true, microphone_muted: true },
-            { account_id: 'daria-2', display_name: 'Daria', screen_sharing: false, microphone_muted: false },
-            { account_id: 'max-7', display_name: 'Max', screen_sharing: false, microphone_muted: false },
-            { account_id: 'egor-2', display_name: 'Егор', screen_sharing: false, microphone_muted: false },
-          ],
-        }] }) }), 30)
-      }
-      addEventListener() {}
-      close() {}
-    }
-  })
+  }, { maintenanceUnknown: options.maintenanceUnknown === true })
 }
 
 export async function connectReferenceVoiceStore(page) {

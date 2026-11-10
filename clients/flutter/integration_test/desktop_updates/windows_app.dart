@@ -83,12 +83,20 @@ class Journey {
       await tap(find.byTooltip('Открыть навигацию'), at: 'navigation_open');
     }
     await tap(launcher, at: 'search_open');
-    await tap(find.byTooltip('Каналы и люди'), at: 'quick_jump_open');
+    final results = find.byKey(const ValueKey('guild-quick-jump-results'));
+    // The panel may return to messages mode after a switch. Retry only while
+    // its messages-mode control is visible, with a bounded attempt count.
+    for (var attempt = 0; attempt < 3; attempt++) {
+      if (results.hitTestable().evaluate().isNotEmpty) break;
+      final switcher = find.byTooltip('Каналы и люди').hitTestable();
+      if (switcher.evaluate().isEmpty) break;
+      await tap(switcher, at: 'quick_jump_open');
+    }
     // Compact drawer rows intentionally autojoin with the normal microphone
     // mode. Quick jump is the public UI path for opening a room without joining.
     await tap(
       find.descendant(
-        of: find.byKey(const ValueKey('guild-quick-jump-results')),
+        of: results,
         matching: find.text(label),
       ),
       at: 'voice_open',

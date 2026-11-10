@@ -6,22 +6,15 @@ import (
 	"time"
 
 	"github.com/coder/websocket"
-	"github.com/google/uuid"
 	sessionapi "voice-platform/backend/internal/identity/authenticate_session/api"
 	"voice-platform/backend/internal/identity/session"
+	observestate "voice-platform/backend/internal/maintenance/observe_state"
 	eventhub "voice-platform/backend/internal/realtime/event_hub"
 )
 
-func NewHandlerWithAdmission(authenticator sessionapi.Authenticator, revalidationInterval time.Duration, now Clock, newID Identifier, observer ConnectionObserver, events *eventhub.Hub, admission Admission) http.Handler {
-	if now == nil {
-		now = time.Now
-	}
-	if newID == nil {
-		newID = uuid.NewString
-	}
-	if revalidationInterval <= 0 {
-		revalidationInterval = defaultSessionRevalidationInterval
-	}
+func NewHandlerWithRoster(authenticator sessionapi.Authenticator, revalidationInterval time.Duration, now Clock, newID Identifier, observer ConnectionObserver, events *eventhub.Hub, admission Admission, maintenance *observestate.Observer, roster RosterFactory, maxRosterBytes int) http.Handler {
+	now, newID = connectionDefaults(now, newID)
+	revalidationInterval = boundedRevalidationInterval(revalidationInterval)
 	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		principal, ok := sessionapi.PrincipalFrom(request.Context())
 		if !ok {
@@ -45,6 +38,16 @@ func NewHandlerWithAdmission(authenticator sessionapi.Authenticator, revalidatio
 		if err != nil {
 			return
 		}
+		defer connection.CloseNow()
+		defer observeCapabilityConnection(observer, request)()
+		stopMonitor := startSessionMonitor(request.Context(), connection, authenticator, cookie, principal, revalidationInterval, observer)
+		defer stopMonitor()
+		rosterSub, rosterErr := subscribeRoster(request, principal, cookie, roster)
+		if rosterErr != nil {
+			_ = connection.Close(websocket.StatusTryAgainLater, "roster unavailable")
+			return
+		}
+		defer closeRoster(rosterSub)
 		finishHandshake := beginHandshake(request.Context())
 		defer finishHandshake(errHandshakeWrite)
 		var subscription *eventhub.Subscription
@@ -53,11 +56,11 @@ func NewHandlerWithAdmission(authenticator sessionapi.Authenticator, revalidatio
 			defer subscription.Close(presenceEvent(principal.AccountID, "offline", newID, now))
 		}
 		acceptedAt := time.Now()
-		if observer != nil {
-			observer.RealtimeConnectionOpened()
-			defer observer.RealtimeConnectionClosed()
+		defer observeConnection(observer)()
+		maintenanceSub := subscribeMaintenance(request, maintenance)
+		if maintenanceSub != nil {
+			defer maintenanceSub.Close()
 		}
-		defer connection.CloseNow()
 		writeContext, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 		var replay []eventhub.Event
@@ -84,7 +87,7 @@ func NewHandlerWithAdmission(authenticator sessionapi.Authenticator, revalidatio
 		if !writeEvent(writeContext, connection, newID, now, "connection.ready", map[string]any{}) {
 			return
 		}
-		replayedIDs := make(map[string]struct{}, len(replay))
+		replayedIDs := make(map[replayKey]struct{}, len(replay))
 		replayComplete := replayReason == ""
 		if replayReason == "" && len(replay) > 0 {
 			var connectionOpen bool
@@ -110,10 +113,6 @@ func NewHandlerWithAdmission(authenticator sessionapi.Authenticator, revalidatio
 			observer.ObserveRealtimeConnectionReady(time.Since(acceptedAt))
 		}
 		finishHandshake(nil)
-		streamEvents(connection, authenticator, cookie, revalidationInterval, subscription, events, newID, now, observer, replayedIDs)
+		streamEvents(connection, authenticator, cookie, subscription, events, newID, now, observer, replayedIDs, maintenanceSub, rosterSub, maxRosterBytes)
 	})
-}
-
-func presenceEvent(accountID, presence string, newID Identifier, now Clock) eventhub.Event {
-	return eventhub.Event{EventID: newID(), Kind: "presence.changed", OccurredAt: now().UTC(), Payload: map[string]any{"user_id": accountID, "presence": presence}}
 }

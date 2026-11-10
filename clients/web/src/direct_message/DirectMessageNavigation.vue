@@ -2,8 +2,9 @@
 import { noSupport, isCurrentSupportPeer, type SupportContact } from '../support/contact'
 import SupportRow from '../support/SupportRow.vue'
 import { vActionHint } from '../shared/action_hint/directive'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useMemberDirectory } from '../identity/member_directory'
+import { useAuthorDirectory } from '../identity/author_directory'
 import type { DirectMessageListItem } from './direct_message_client'
 import DirectMessageStarter from './DirectMessageStarter.vue'
 
@@ -20,10 +21,14 @@ const props = defineProps<{
 
 const emit = defineEmits<{ select: [directMessageId: string]; open: [directMessageId: string]; support: [] }>()
 const memberDirectory = useMemberDirectory()
+const authorDirectory = useAuthorDirectory()
 const contact = computed(()=>props.supportContact??noSupport)
 const ordinary = computed(()=>props.directMessages.filter(item=>!isCurrentSupportPeer(item.otherParticipantId,contact.value)))
 const members = computed(() => memberDirectory.byId)
 onMounted(() => { void memberDirectory.refresh() })
+watch(() => ordinary.value.map(item => item.otherParticipantId), ids => {
+  for (const id of ids) void authorDirectory.ensure(id)
+}, { immediate: true })
 
 </script>
 
@@ -55,7 +60,7 @@ onMounted(() => { void memberDirectory.refresh() })
       type="button"
       @click="emit('select', directMessage.id)"
     >
-      <span class="dm-avatar" :class="`dm-avatar--${directMessage.otherParticipantDisplayName.toLocaleLowerCase('ru-RU')}`" aria-hidden="true">{{ directMessage.otherParticipantDisplayName.slice(0, 2).toLocaleUpperCase('ru-RU') }}</span>
+      <span class="dm-avatar" :class="`dm-avatar--${directMessage.otherParticipantDisplayName.toLocaleLowerCase('ru-RU')}`" aria-hidden="true"><img v-if="authorDirectory.avatarUrl(directMessage.otherParticipantId)" :src="authorDirectory.avatarUrl(directMessage.otherParticipantId)" alt=""><template v-else>{{ directMessage.otherParticipantDisplayName.slice(0, 2).toLocaleUpperCase('ru-RU') }}</template></span>
       <span class="dm-presence-dot" :class="{ 'is-online': members[directMessage.otherParticipantId]?.presence === 'online' }" aria-hidden="true" />
       <span class="dm-identity"><span class="channel-name">{{ directMessage.otherParticipantDisplayName }}</span><small>{{ members[directMessage.otherParticipantId]?.presence === 'online' ? 'В сети' : members[directMessage.otherParticipantId]?.presence === 'offline' ? 'Не в сети' : 'Статус неизвестен' }}</small></span>
       <span v-if="directMessage.unreadCount" class="channel-state" :aria-label="`Непрочитанных личных сообщений: ${directMessage.unreadCount}`">{{ directMessage.unreadCount }}</span>
