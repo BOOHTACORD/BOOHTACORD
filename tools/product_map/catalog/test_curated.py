@@ -76,8 +76,8 @@ class CuratedCatalogTests(unittest.TestCase):
         self.assertIn('cmp.backend.voice_join_sound_routes', ids)
         self.assertEqual(components['cmp.backend.voice_join_sound_routes']['paths'],
                          ['backend/internal/app/voice_sound_routes/join.go'])
-        self.assertEqual(components['cmp.backend.voice_join_sound_routes']['depends_on'],
-                         ['cmp.backend.voice_join_sound_service'])
+        self.assertEqual(set(components['cmp.backend.voice_join_sound_routes']['depends_on']),
+                         {'cmp.backend.voice_join_sound_service', 'cmp.backend.voice_join_sound_processor'})
         self.assertIn('cmp.backend.voice_sound_preferences_routes',
                       features['voice.room_event_sounds']['components'])
         impact = analyze(['backend/internal/voice/join_sound/service.go'], catalog)
