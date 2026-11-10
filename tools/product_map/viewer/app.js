@@ -57,47 +57,7 @@ function selectHash() {
     domain.value = 'all'; status.value = 'all';
     render();
     const feature = data.find(item => item.id === search.value);
-    detail.replaceChildren();
-    if (!feature) { detail.textContent = 'Сценарий не найден.'; return; }
-    const title = document.createElement('h3');
-    title.textContent = feature.title || feature.id;
-    detail.appendChild(title);
-    if ((feature.depends_on || []).length) {
-      const heading = document.createElement('h4');
-      heading.textContent = 'Зависит от функций';
-      detail.appendChild(heading);
-      const dependencies = document.createElement('ul');
-      for (const identifier of feature.depends_on) {
-        const item = document.createElement('li');
-        const link = document.createElement('a');
-        link.href = '#feature/' + encodeURIComponent(identifier);
-        link.textContent = identifier;
-        item.appendChild(link);
-        dependencies.appendChild(item);
-      }
-      detail.appendChild(dependencies);
-    }
-    const components = feature.components || [];
-    if (!components.length) { detail.append('Компоненты пока не описаны.'); return; }
-    const list = document.createElement('ul');
-    for (const component of components) {
-      const item = document.createElement('li');
-      item.textContent = component.id + ': ' + component.paths.join(', ');
-      list.appendChild(item);
-    }
-    detail.appendChild(list);
-    const edges = feature.component_edges || [];
-    const graphTitle = document.createElement('h4');
-    graphTitle.textContent = 'Связи компонентов';
-    detail.appendChild(graphTitle);
-    if (!edges.length) { detail.append('Связи пока не описаны.'); return; }
-    const graph = document.createElement('ul');
-    for (const edge of edges) {
-      const line = document.createElement('li');
-      line.textContent = edge.from + ' → ' + edge.to + ' (зависит от)';
-      graph.appendChild(line);
-    }
-    detail.appendChild(graph);
+    renderDetail(feature, detail);
   } catch (_) { detail.textContent = 'Некорректная ссылка.'; }
 }
 window.addEventListener('hashchange', selectHash);

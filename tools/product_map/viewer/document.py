@@ -14,8 +14,8 @@ def _hash(value):
 def build_document(features):
     payload = json.dumps(features, ensure_ascii=True, sort_keys=True, separators=(',', ':'))
     payload = payload.replace('<', r'\u003c').replace('>', r'\u003e').replace('&', r'\u0026')
-    script = ('const data = ' + payload + ';\n' + (HERE / 'filters.js').read_text(encoding='utf-8') +
-              '\n' + (HERE / 'app.js').read_text(encoding='utf-8'))
+    script = 'const data = ' + payload + ';\n' + '\n'.join(
+        (HERE / name).read_text(encoding='utf-8') for name in ('filters.js', 'detail.js', 'app.js'))
     style = (HERE / 'style.css').read_text(encoding='utf-8')
     csp = f"default-src 'none'; style-src 'sha256-{_hash(style)}'; script-src 'sha256-{_hash(script)}'; base-uri 'none'; form-action 'none'"
     return f'''<!doctype html>

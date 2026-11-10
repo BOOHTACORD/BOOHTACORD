@@ -20,16 +20,19 @@ function elements() {
   return values;
 }
 function script() {
-  return ['filters.js', 'app.js'].map(file => fs.readFileSync(path.join(__dirname, file), 'utf8')).join('\n');
+  return ['filters.js', 'detail.js', 'app.js'].map(file => fs.readFileSync(path.join(__dirname, file), 'utf8')).join('\n');
 }
 function text(node) {
   return typeof node === 'string' ? node : node.textContent + node.children.map(text).join(' ');
+}
+function links(node) {
+  return typeof node === 'string' ? [] : [node.href, ...node.children.flatMap(links)].filter(Boolean);
 }
 test('feature graph displays explicit dependency edges as text', () => {
   const nodes = elements();
   const platforms = Object.fromEntries(['web', 'windows', 'macos', 'android', 'ios']
     .map(k => [k, { source_status: 'UNKNOWN', released: 'UNKNOWN', runtime: 'NOT_VERIFIED' }]));
-  const data = [{ id: 'voice.a', title: 'A', description: 'A', platforms,
+  const data = [{ id: 'voice.a', title: 'A', description: 'A', platforms, issue: 688,
     components: [{ id: 'cmp.route', paths: ['route.go'] }, { id: 'cmp.service', paths: ['service.go'] }],
     component_edges: [{ from: 'cmp.route', to: 'cmp.service', type: 'depends_on' }],
     depends_on: ['auth.session'] }];
@@ -40,6 +43,9 @@ test('feature graph displays explicit dependency edges as text', () => {
   assert.match(text(nodes.detail), /cmp\.route\s+→\s+cmp\.service/);
   assert.match(text(nodes.detail), /зависит от/i);
   assert.match(text(nodes.detail), /auth\.session/);
+  assert.match(text(nodes.detail), /без привязки к SHA/);
+  assert.ok(links(nodes.detail).includes('https://github.com/BOOHTACORD/BOOHTACORD/issues/688'));
+  assert.ok(links(nodes.detail).includes('https://github.com/BOOHTACORD/BOOHTACORD/blob/master/route.go'));
 });
 test('matrix displays actual and target behavior revisions separately from release', () => {
   const nodes = elements();
