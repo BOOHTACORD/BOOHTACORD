@@ -56,10 +56,11 @@ python -m tools.product_map match-publication --snapshot SNAPSHOT --contract CON
 python -m tools.product_map native-release-candidate --platform windows --run-id RUN_ID --tag windows-v1.0.52
 ```
 
-Проверяются репозиторий, SHA, попытка и digest, а перенаправления с токеном
-запрещены. Ответ `CANDIDATE_UNVERIFIED` не подтверждает публикацию: получение
-и проверка байтов архива через API и связь с GitHub Release ещё не подключены.
-Есть отдельная проверка ограниченного ZIP без извлечения файлов на диск.
+Проверяются репозиторий, SHA, попытка и digest. Флаг `--inspect-archive`
+дополнительно скачивает и проверяет ограниченный ZIP в памяти; токен на
+адрес хранилища не передаётся. Для скачивания может потребоваться токен с
+правом чтения Actions. Результат остаётся `MATCHED_UNVERIFIED`: проверка на
+настоящем новом артефакте и связь с GitHub Release ещё не подтверждены.
 
 Команда `generate` создаёт автономный предварительный просмотрщик
 `docs/product-map/generated/index.html`. Его можно открыть в браузере без

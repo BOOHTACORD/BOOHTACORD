@@ -71,6 +71,7 @@ jobs:
           python -m unittest tools.product_map.impact.test_analyze tools.product_map.impact.test_changes
           python -m unittest tools.product_map.catalog.test_history
           python -m unittest tools.product_map.release.test_github_api
+          python -m unittest tools.product_map.evidence_download.test_run tools.product_map.evidence_download.test_transport
           node --test tools/product_map/viewer/graph.test.cjs
           if [ "$PRODUCT_MAP_EVENT" = pull_request ] || [ "$PRODUCT_MAP_EVENT" = merge_group ]; then
             test -n "$PRODUCT_MAP_BASE" || { echo 'Missing product-map base SHA' >&2; exit 1; }

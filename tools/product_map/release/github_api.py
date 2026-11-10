@@ -19,12 +19,16 @@ def urlopen_no_redirect(request):
     return build_opener(NoRedirect()).open(request, timeout=20)
 
 
-def read_api(path, token):
-    if not isinstance(path, str) or not PATH.fullmatch(path):
-        raise ValueError('invalid GitHub API path')
+def validate_token(token):
     if token is not None and (not isinstance(token, str) or
                               not re.fullmatch(r'[A-Za-z0-9_-]{1,512}', token)):
         raise ValueError('invalid GitHub API credential format')
+
+
+def read_api(path, token):
+    if not isinstance(path, str) or not PATH.fullmatch(path):
+        raise ValueError('invalid GitHub API path')
+    validate_token(token)
     headers = {'Accept': 'application/vnd.github+json', 'User-Agent': 'boohtacord-product-map',
                'X-GitHub-Api-Version': '2022-11-28'}
     if token:

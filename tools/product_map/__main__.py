@@ -36,15 +36,19 @@ def main():
     candidate.add_argument('--platform', choices=('windows', 'macos', 'android'), required=True)
     candidate.add_argument('--run-id', type=int, required=True)
     candidate.add_argument('--tag', required=True)
+    candidate.add_argument('--inspect-archive', action='store_true')
     comparison = sub.add_parser('compare')
     comparison.add_argument('--platform', choices=PLATFORMS, action='append', required=True)
     comparison.add_argument('--scope', default='')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]
     if args.command == 'native-release-candidate':
-        from tools.product_map.release.github_api import fetch_candidate
-        print(json.dumps(fetch_candidate(args.platform, args.run_id, args.tag,
-                                         os.environ.get('GITHUB_TOKEN')), indent=2, sort_keys=True))
+        if args.inspect_archive:
+            from tools.product_map.evidence_download.run import inspect_native_run as fetch
+        else:
+            from tools.product_map.release.github_api import fetch_candidate as fetch
+        print(json.dumps(fetch(args.platform, args.run_id, args.tag,
+                               os.environ.get('GITHUB_TOKEN')), indent=2, sort_keys=True))
         return
     if args.command == 'match-publication':
         from tools.product_map.release.publication import load_record, match_publication
