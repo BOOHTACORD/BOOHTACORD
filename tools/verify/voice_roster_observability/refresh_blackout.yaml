@@ -4,11 +4,11 @@ evaluation_interval: 1m
 tests:
 - interval: 1m
   input_series:
-  - series: voice_platform_voice_roster_observation_enabled{service_name="boohtacord-api"}
+  - series: voice_platform_voice_roster_ws_observation_enabled{service_name="boohtacord-api"}
     values: 1+0x15
-  - series: voice_platform_voice_roster_streams_active{service_name="boohtacord-api"}
+  - series: voice_platform_voice_roster_ws_subscribers{service_name="boohtacord-api"}
     values: 2+0x15
-  - series: voice_platform_voice_roster_last_success_timestamp_seconds{service_name="boohtacord-api"}
+  - series: voice_platform_voice_roster_ws_last_success_timestamp_seconds{service_name="boohtacord-api"}
     values: 0+0x15
   alert_rule_test:
   - eval_time: 10m
@@ -22,8 +22,8 @@ tests:
       exp_annotations:
         summary: Active roster watchers have no recent successful snapshot
         description: The 60-second budget is twelve 5-second refresh intervals, sustained
-          for five minutes. Investigate dependencies, cancellation and stream close
-          reasons before rollback.
+          for five minutes. Investigate dependencies, cancellation and WS delivery
+          failures before rollback.
   - eval_time: 10m
     alertname: VoiceRosterTelemetryMissing
     exp_alerts: []

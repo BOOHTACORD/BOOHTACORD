@@ -15,7 +15,10 @@ import (
 	eventhub "voice-platform/backend/internal/realtime/event_hub"
 )
 
-type deliveryObserver struct{ latencies chan time.Duration }
+type deliveryObserver struct {
+	latencies chan time.Duration
+	stages    chan [2]time.Duration
+}
 
 func (deliveryObserver) RealtimeConnectionOpened()                    {}
 func (deliveryObserver) ObserveRealtimeConnectionReady(time.Duration) {}
@@ -24,9 +27,15 @@ func (observer deliveryObserver) ObserveRealtimeEventDeliveryLatency(latency tim
 	observer.latencies <- latency
 }
 
+func (observer deliveryObserver) ObserveRealtimeEventStages(queue, write time.Duration) {
+	if observer.stages != nil {
+		observer.stages <- [2]time.Duration{queue, write}
+	}
+}
+
 func TestCurrentSessionReceivesPrivateDirectMessageHint(t *testing.T) {
 	hub := eventhub.New(4)
-	observer := deliveryObserver{latencies: make(chan time.Duration, 4)}
+	observer := deliveryObserver{latencies: make(chan time.Duration, 4), stages: make(chan [2]time.Duration, 4)}
 	handler := NewHandlerWithEvents(authenticatorFunc(func(_ context.Context, token string) (auth.Principal, error) {
 		if token != "opaque-token" {
 			return auth.Principal{}, auth.ErrUnauthenticated
@@ -60,12 +69,24 @@ func TestCurrentSessionReceivesPrivateDirectMessageHint(t *testing.T) {
 	deadline := time.After(time.Second)
 	for {
 		select {
-		case latency := <-observer.latencies:
-			if latency > 0 {
-				return
+		case stages := <-observer.stages:
+			if stages[0] < 0 || stages[1] < 0 {
+				t.Fatalf("invalid stages: %v", stages)
+			}
+			if stages[0] >= 5*time.Millisecond {
+				for {
+					select {
+					case latency := <-observer.latencies:
+						if latency > 0 {
+							return
+						}
+					case <-deadline:
+						t.Fatal("successful event write did not report delivery latency")
+					}
+				}
 			}
 		case <-deadline:
-			t.Fatal("successful event write did not report delivery latency")
+			t.Fatal("private event did not report its stage timings")
 		}
 	}
 }

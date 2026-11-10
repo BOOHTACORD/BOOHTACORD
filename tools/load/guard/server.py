@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from .faults import Faults
 from .metrics import snapshot
+from .maintenance import FixtureMaintenance
 from .ownership import owned, verify_marker
 from .resources import Resources
 
@@ -15,6 +16,7 @@ class Guard:
         self.stack, self.manifest = stack, manifest
         verify_marker(stack, manifest['Nonce'], len(manifest['Accounts']))
         self.resources, self.faults = Resources(stack), Faults(stack)
+        self.maintenance = FixtureMaintenance(stack, manifest)
         parent = self
 
         class Handler(BaseHTTPRequestHandler):
@@ -37,14 +39,24 @@ class Guard:
                     self.send_header('Content-Type', 'application/json')
                     self.end_headers()
                     self.wfile.write(json.dumps(data).encode())
+                except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
+                    return
                 except (OSError, ValueError, RuntimeError):
-                    self.send_error(503)
+                    try:
+                        self.send_error(503)
+                    except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
+                        return
 
             def do_POST(self):
                 if not self.authorized():
                     self.send_error(403)
                     return
                 try:
+                    if self.path == '/maintenance/on':
+                        parent.maintenance.activate()
+                        self.send_response(204)
+                        self.end_headers()
+                        return
                     if not self.path.startswith('/fault/'):
                         raise ValueError('Unknown controller command')
                     owned(stack, 'db')  # Recovery checks ownership, never a health threshold.
@@ -76,7 +88,10 @@ class Guard:
         try:
             self.faults.restore()
         finally:
-            if self.thread.is_alive():
-                self.server.shutdown()
-            self.server.server_close()
-            self.thread.join(timeout=3) if self.thread.is_alive() else None
+            try:
+                self.maintenance.restore()
+            finally:
+                if self.thread.is_alive():
+                    self.server.shutdown()
+                self.server.server_close()
+                self.thread.join(timeout=3) if self.thread.is_alive() else None

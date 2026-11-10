@@ -1,0 +1,19 @@
+rule_files:
+- voice-roster-alerts.yaml
+evaluation_interval: 1m
+tests:
+- interval: 1m
+  input_series:
+  - series: voice_platform_voice_roster_ws_delivery_total{service_name="boohtacord-api",outcome="unavailable"}
+    values: 0+1x15
+  - series: voice_platform_voice_roster_ws_delivery_total{service_name="boohtacord-api",outcome="success"}
+    values: 0+0x15
+  alert_rule_test:
+  - eval_time: 10m
+    alertname: VoiceRosterDeliveryBlackout
+    exp_alerts:
+    - exp_labels:
+        severity: warning
+      exp_annotations:
+        summary: Every observed roster WS delivery failed or was unavailable
+        description: Check recipient authorization, WebSocket delivery and database health using docs/operations/voice-roster.md.

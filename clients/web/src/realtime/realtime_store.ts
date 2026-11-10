@@ -7,6 +7,7 @@ import { createCoalescedDelivery } from './hint_batch/controller'
 import { createReconnectSchedule } from './reconnect_schedule/controller'
 import type { RealtimeConnectOptions, RealtimeSocket, RealtimeSocketFactory } from './realtime_connection_types'
 import { startTracedCompletion } from '../telemetry/client_tracing'
+import { createSocketAttempt } from './socket_attempt'
 export type { RealtimeConnectOptions, RealtimeSocket, RealtimeSocketFactory } from './realtime_connection_types'
 export type RealtimeState = 'IDLE' | 'CONNECTING' | 'CONNECTED' | 'DISCONNECTED' | 'ERROR'
 export const useRealtimeStore = defineStore('realtime', () => {
@@ -15,14 +16,15 @@ export const useRealtimeStore = defineStore('realtime', () => {
   let socket: RealtimeSocket | null = null
   let stopSchedule = () => {}
   let active = false, generation = 0
-  let delivery: ReturnType<typeof createRealtimeDelivery> | null = null
+  let delivery: Pick<ReturnType<typeof createRealtimeDelivery>, 'accept' | 'cursor' | 'disconnected' | 'reset'> | null = null
   let pendingConnection: (() => void) | null = null, retryNow: (() => void) | null = null
+  let endSocketAttempt = () => {}
   function connect(onEvent: EventHandler, factory: RealtimeSocketFactory = (url) => new WebSocket(url), url?: string, options: RealtimeConnectOptions = {}): void {
     if (active) return
     active = true
-    const ownGeneration = ++generation
-    const retry = createReconnectSchedule(open, options.random)
-    stopSchedule = retry.stop
+    const ownGeneration = ++generation, attempt = createSocketAttempt(options); let attemptNumber = 0
+    endSocketAttempt = attempt.end
+    const retry = createReconnectSchedule(open, options.random); stopSchedule = retry.stop
     state.value = 'CONNECTING'
     error.value = null
     const failure = (cause: unknown) => {
@@ -35,11 +37,11 @@ export const useRealtimeStore = defineStore('realtime', () => {
     function schedule(): void {
       if (active && ownGeneration === generation) retry.schedule()
     }
-    async function checkAndRetry(): Promise<void> {
+    async function checkAndRetry(failedAttempt: number): Promise<void> {
       let valid: boolean | null = null
       try { valid = await (options.checkSession ?? (async () => (await loadCurrentSession()) !== null))() }
       catch { /* A network failure does not prove session revocation. */ }
-      if (!active || ownGeneration !== generation) return
+      if (!active || ownGeneration !== generation || failedAttempt !== attemptNumber) return
       if (valid === false) {
         disconnect()
         options.onSessionExpired?.()
@@ -49,15 +51,16 @@ export const useRealtimeStore = defineStore('realtime', () => {
     }
     function fail(current: RealtimeSocket): void {
       if (!active || socket !== current || ownGeneration !== generation) return
-      socket = null
+      socket = null; attempt.end()
       delivery?.disconnected()
       state.value = 'DISCONNECTED'
       error.value ??= 'Realtime-СЃРѕРµРґРёРЅРµРЅРёРµ РЅРµРґРѕСЃС‚СѓРїРЅРѕ. РџРѕРІС‚РѕСЂСЏРµРј РїРѕРґРєР»СЋС‡РµРЅРёРµ.'
       current.close()
-      void checkAndRetry()
+      void checkAndRetry(attemptNumber)
     }
     function open(): void {
-      if (!active || ownGeneration !== generation) return
+      if (!active || ownGeneration !== generation || socket) return
+      attemptNumber++; attempt.begin()
       const operation = retry.attempt() === 0 ? 'realtime.connect' : 'realtime.reconnect'
       const { finish,cancel,fields, traceparent, tracestate } = startTracedCompletion(operation)
       pendingConnection = cancel
@@ -68,7 +71,7 @@ export const useRealtimeStore = defineStore('realtime', () => {
         const after = delivery?.cursor()
         current = factory(realtimeTraceURL(after ? `${target}${target.includes('?') ? '&' : '?'}after=${encodeURIComponent(after)}` : target, traceparent, tracestate,fields))
       } catch (cause) {
-        finish(true)
+        attempt.end(); finish(true)
         error.value = cause instanceof Error ? cause.message : 'Realtime-СЃРѕРµРґРёРЅРµРЅРёРµ РЅРµРґРѕСЃС‚СѓРїРЅРѕ.'
         state.value = 'DISCONNECTED'
         schedule()
@@ -94,7 +97,7 @@ export const useRealtimeStore = defineStore('realtime', () => {
       if (!active || ownGeneration !== generation) return
       retry.stop()
       const current = socket
-      socket = null
+      socket = null; attempt.end()
       current?.close()
       delivery?.disconnected()
       open()
@@ -102,15 +105,12 @@ export const useRealtimeStore = defineStore('realtime', () => {
     open()
   }
   function disconnect(): void {
-    active = false
-    generation++
-    stopSchedule()
-    delivery?.reset()
-    delivery = null
+    active = false; endSocketAttempt(); endSocketAttempt = () => {}
+    generation++; stopSchedule()
+    delivery?.reset(); delivery = null
     const current = socket
     socket = null
-    pendingConnection?.()
-    pendingConnection = null
+    pendingConnection?.(); pendingConnection = null
     retryNow = null
     if (current) { current.onclose = null; current.onerror = null; current.onmessage = null; current.onopen = null; current.close() }
     state.value = 'DISCONNECTED'

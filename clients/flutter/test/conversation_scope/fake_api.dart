@@ -28,6 +28,9 @@ DirectChatMessage message(String id) => DirectChatMessage(
 );
 
 class ConversationFakeApi extends ApiClient {
+  @override
+  bool get realtimeEnabled => false;
+
   final firstPage = Completer<DirectChatMessagePage>();
   final uploaded = Completer<MessageAttachment>();
   int requests = 0;

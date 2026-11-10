@@ -16,12 +16,12 @@ func TestServiceRequestsDoNotCreateRequestMetricsOrLogs(t *testing.T) {
 	handler := LoggingMiddleware(logger, recorder.Middleware(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusAccepted)
 	})))
-	for _, path := range []string{"/metrics", "/api/v1/health", "/api/v1/maintenance", "/api/v1/maintenance/events", "/api/v1/auth/session", "/api/v1/telemetry/traces", "/api/v1/voice/rosters/events", "/api/v1/voice/screen-metrics", "/internal/media-admission", "/internal/livekit/roster"} {
+	for _, path := range []string{"/metrics", "/api/v1/health", "/api/v1/maintenance", "/api/v1/auth/session", "/api/v1/telemetry/traces", "/api/v1/voice/screen-metrics", "/internal/media-admission", "/internal/livekit/roster"} {
 		handler.ServeHTTP(httptest.NewRecorder(), httptest.NewRequest(http.MethodPost, path, nil))
 	}
 	scrape := httptest.NewRecorder()
 	recorder.Handler().ServeHTTP(scrape, httptest.NewRequest(http.MethodGet, "/metrics", nil))
-	for _, operation := range []string{"metrics_scrape", "health", "maintenance", "maintenance_events", "session_probe", "trace_relay", "roster_events", "screen_report", "media_admission", "roster_hook"} {
+	for _, operation := range []string{"metrics_scrape", "health", "maintenance", "session_probe", "trace_relay", "screen_report", "media_admission", "roster_hook"} {
 		if !strings.Contains(scrape.Body.String(), `operation="`+operation+`",status="202"} 1`) {
 			t.Fatal("operational result absent", operation)
 		}

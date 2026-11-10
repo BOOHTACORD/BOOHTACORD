@@ -27,7 +27,9 @@ import { useContextPosition } from './context_position/return'
 import { useVisibleRead } from './use_visible_read'
 
 const props = defineProps<{ accountId: string; active: boolean; channelId: string; channelName: string; channelDescription?: string; navOpen: boolean; membersOpen: boolean; showMembers: boolean }>()
-const emit = defineEmits<{ toggleNav: []; toggleMembers: [] }>()
+const emit = defineEmits<{ toggleNav: []; toggleMembers: []; miniPlayerTarget: [target: HTMLElement | null] }>()
+const miniPlayerDock = ref<HTMLElement | null>(null)
+watch(miniPlayerDock, (target) => emit('miniPlayerTarget', target), { flush: 'post' })
 const store = useMessageStore()
 const topology = useTopologyStore()
 const searchTarget = useSearchTargetStore()
@@ -104,7 +106,7 @@ watch(() => props.channelId, (channelId) => {
   void store.open(channelId)
   void loadSession()
 }, { immediate: true })
-onBeforeUnmount(() => searchTarget.clearFor('CHANNEL', props.channelId))
+onBeforeUnmount(() => { emit('miniPlayerTarget', null); searchTarget.clearFor('CHANNEL', props.channelId) })
 
 const { send, retry } = useScopedSend<TextMessage, TextAttachmentUpload, TextMessage>(
   props.accountId, 'CHANNEL', () => props.channelId, composer,
@@ -128,6 +130,7 @@ const { addEmoji, insertMobileMention, onComposerPaste, onDragOver, onDrop } = u
       </div>
       <WorkspaceHeaderActions :members-expanded="props.membersOpen" :nav-expanded="props.navOpen" :show-members="props.showMembers" @toggle-members="emit('toggleMembers')" @toggle-navigation="emit('toggleNav')"><template #overflow><ConversationOverflowMenu ref="overflow" :show-members="props.showMembers" :members-open="props.membersOpen" show-files @toggle-members="emit('toggleMembers')" @files="filesOpen = true" /></template></WorkspaceHeaderActions>
     </header>
+    <div ref="miniPlayerDock" class="screen-mini-dock"></div>
     <p v-if="store.loading" class="state" aria-live="polite">Загружаем историю…</p>
     <p v-if="store.error" id="text-conversation-error" class="state state-error" role="alert">{{ store.error }} <span v-if="store.historyLoaded">Показанная история может быть устаревшей.</span> <button v-if="store.retryableError" type="button" @click="store.refresh()">Повторить загрузку</button></p>
     <p v-if="searchNavigationError" class="state state-error" role="alert">{{ searchNavigationError }}</p>

@@ -6,8 +6,17 @@ from .request import api
 
 
 def validate_count(count):
-    if not isinstance(count, int) or not 1 <= count <= 100:
+    if type(count) is not int or not 1 <= count <= 100:
         raise ValueError('Profile requires 1..100 synthetic accounts')
+
+
+def roster_room_count(count, rooms):
+    validate_count(count)
+    if rooms is None:
+        return (count + 19) // 20
+    if type(rooms) is not int or not 0 <= rooms <= 20:
+        raise ValueError('Roster profile requires 0..20 rooms')
+    return rooms
 
 
 def account_rows(count):
@@ -15,8 +24,8 @@ def account_rows(count):
     return [dict(Login=f'qa_load_{index:03}', ID=str(uuid.uuid4())) for index in range(count)]
 
 
-def provision(stack, nonce, count):
-    validate_count(count)
+def provision(stack, nonce, count, rooms=None):
+    room_count = roster_room_count(count, rooms)
     if not re.fullmatch("[a-f0-9]{64}", nonce):
         raise ValueError("Invalid private fixture nonce")
     owned(stack, 'db')
@@ -36,7 +45,7 @@ def provision(stack, nonce, count):
                                       'POST', dict(name=name, kind=kind), 201)['id']
     private_dm = client('/direct-messages', 'POST', dict(participant_id=rows[0]['ID']), 201)['id']
     text = create('LoadText', 'TEXT')
-    voice = [create(f'LoadVoice{index}', 'VOICE') for index in range((count+19)//20)]
+    voice = [create(f'LoadVoice{index}', 'VOICE') for index in range(room_count)]
     for row in rows:
         row['Password'] = stack.password
     return dict(Text=text, Voice=voice, Accounts=rows, PrivateDM=private_dm)

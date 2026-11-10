@@ -1,6 +1,11 @@
 package eventhub
 
-import "context"
+import (
+	"context"
+	"errors"
+)
+
+var ErrCriticalBackpressure = errors.New("critical realtime delivery is saturated")
 
 // PublishToAccountsTransient sends a private invalidation without writing it
 // to the replay journal. The recipient reloads the authorized snapshot.
@@ -79,13 +84,21 @@ func (hub *Hub) publishToAccounts(ctx context.Context, accountIDs []string, even
 	}
 	hub.mu.Lock()
 	defer hub.mu.Unlock()
+	var saturated bool
 	for subscription := range hub.subscribers {
-		if subscription.dropped {
+		if _, targeted := targets[subscription.accountID]; !targeted {
 			continue
 		}
-		if _, targeted := targets[subscription.accountID]; targeted {
-			hub.deliverLocked(subscription, event)
+		if subscription.dropped {
+			if !subscription.retainCriticalLocked(event) {
+				saturated = true
+			}
+		} else if !hub.deliverLocked(subscription, event) {
+			saturated = true
 		}
+	}
+	if saturated {
+		return ErrCriticalBackpressure
 	}
 	return nil
 }
