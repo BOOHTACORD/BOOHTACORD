@@ -1,0 +1,42 @@
+const fs = require('fs');
+const { chromium, expect } = require('/var/tmp/boohtacord-qa675-source/clients/web/node_modules/@playwright/test');
+const root = '/mnt/c/b-qa675/.out/';
+const conf = JSON.parse(fs.readFileSync(root+'qa648-win-defines.json','utf8'));
+if(conf.QA_API_BASE !== 'https://localhost:4910/api/v1') throw Error('Non-QA origin');
+let step='start';
+const origin='https://localhost:4910', wait=ms=>new Promise(r=>setTimeout(r,ms));
+async function marker(file, text, timeout) {
+ const end=Date.now()+timeout;
+ while(Date.now()<end){if(fs.existsSync(file)&&fs.readFileSync(file,'utf8').includes(text))return;await wait(250)}
+ throw Error('Timed out waiting for local QA marker');
+}
+(async()=>{
+ const browser=await chromium.launch({headless:true,args:['--allow-loopback-in-peer-connection','--use-fake-device-for-media-stream','--use-fake-ui-for-media-stream','--use-file-for-fake-audio-capture=/mnt/c/b-qa675/.out/qa648-silent-mono.wav']});
+ try {
+  const context=await browser.newContext({ignoreHTTPSErrors:true,permissions:['microphone'],viewport:{width:1440,height:1000}});
+  const request=async(path,method='GET',data)=>{
+   const r=await context.request.fetch(conf.QA_API_BASE+path,{method,headers:{origin},...(data===undefined?{}:{data})});
+   if(!r.ok())throw Error('QA HTTP status '+r.status());
+   return r.status()===204?null:r.json();
+  };
+  step='windows-ready';await marker(root+'qa272-android.log','ISSUE648_READY_FOR_OUTAGE',360000);
+  // Use the second synthetic account after registration, never the Windows account.
+  const login='qa_peer_'+Date.now();
+  step='register';await request('/auth/register','POST',{login,password:conf.QA_PASSWORD});
+  step='login';await request('/auth/login','POST',{login,password:conf.QA_PASSWORD});
+  step='navigate';const page=await context.newPage();const nav=await page.goto(origin,{waitUntil:'domcontentloaded'});if(!nav || !nav.ok())throw Error('QA web not served');
+  step='channel';await page.locator('.channel-button').filter({hasText:'Voice QA'}).click();
+  step='join';await page.getByRole('button',{name:'Войти',exact:true}).click();
+  const status=page.getByTestId('voice-dock').locator('.voice-status');
+  step='connected';await expect(status).toHaveText('Голос подключён',{timeout:30000});
+  async function participantCount(){try{const v=await request('/voice/participants');return Math.max(0,...v.channels.map(c=>c.participants.length))}catch{return 0}}
+  step='roster';await expect.poll(participantCount,{timeout:30000}).toBeGreaterThanOrEqual(2);
+  await expect(page.getByRole('button',{name:'Выключить микрофон',exact:true}).first()).toBeVisible({timeout:30000});
+  fs.writeFileSync(root+'qa272-android-ready','ready');console.log('QA648_WEB_AND_WINDOWS_JOINED');
+  step='windows-ready';await marker(root+'qa272-android.log','QA272_DONE',420000);
+  await expect(status).toHaveText('Голос подключён',{timeout:120000});
+  await expect.poll(participantCount,{timeout:120000}).toBeGreaterThanOrEqual(2);
+  console.log('QA648_TWO_CLIENTS_RECOVERED');
+  await context.close();
+ } finally {await browser.close()}
+})().catch(e=>{console.error('QA648_WEB_TEST_FAILED',step,e.name);fs.writeFileSync(root+'qa272-android-failed','failed');process.exitCode=1});
