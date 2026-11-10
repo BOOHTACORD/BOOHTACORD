@@ -115,6 +115,8 @@ jobs:
 
       - name: Verify complete signed metadata and exact asset set before publication
         run: python -m tools.release.native_contract.run assets macos
+      - name: Retain source-bound product feature snapshot
+        run: python -m tools.product_map release-snapshot --platform macos --manifest clients/flutter/build/release-assets/artifact-manifest.json
       - name: Retain verified macOS candidate assets
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:

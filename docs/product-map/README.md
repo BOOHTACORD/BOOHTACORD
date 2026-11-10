@@ -12,6 +12,16 @@ python -m tools.product_map generate
 python -m tools.product_map generate --check
 ```
 
+В release workflow Windows, macOS и Android после действующей проверки
+настоящих native-артефактов команда `release-snapshot` готовит отдельный
+`feature-snapshot.json` в `.out/native-release/<platform>/`. Он содержит
+SHA исходников, SHA проверенного manifest и независимые состояния функций;
+существующий подписанный пакет и перечень его файлов не изменяются. Sidecar
+сохраняется среди workflow evidence. Публикация и runtime в нём остаются
+UNKNOWN/NOT_VERIFIED: наличие snapshot само по себе не подтверждает выпуск.
+Пути для Web и iOS, приёмка на реальных артефактах и чтение release/deploy
+receipts картой пока не реализованы.
+
 Команда `generate` создаёт автономный предварительный просмотрщик
 `docs/product-map/generated/index.html`. Его можно открыть в браузере без
 сервера; поиск и ссылки вида `#feature/voice.long_recovery` работают локально.

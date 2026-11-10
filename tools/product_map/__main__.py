@@ -20,11 +20,18 @@ def main():
     sub.add_parser('matrix')
     generate = sub.add_parser('generate')
     generate.add_argument('--check', action='store_true')
+    snapshot = sub.add_parser('release-snapshot')
+    snapshot.add_argument('--platform', choices=('windows', 'macos', 'android'), required=True)
+    snapshot.add_argument('--manifest', type=Path, required=True)
     comparison = sub.add_parser('compare')
     comparison.add_argument('--platform', choices=PLATFORMS, action='append', required=True)
     comparison.add_argument('--scope', default='')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]
+    if args.command == 'release-snapshot':
+        from tools.product_map.release.cli import run
+        run(root, args.platform, args.manifest)
+        return
     path = root / 'tools/qa/local_features/features.json'
     catalog = json.loads(path.read_text(encoding='utf-8'))
     validate(catalog, root)
