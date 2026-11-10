@@ -8,11 +8,11 @@ Check collector `up`, `time()-timestamp(up)`, then `time()-boohtacord_incident_a
 
 `boohtacord_incident_last_attempt_timestamp_seconds`, `last_success_timestamp_seconds`, `last_successful` and `stale` have only fixed operation labels. Exporter `boohtacord_incident_enabled{operation}` distinguishes intentionally disabled (0) from configured (1), without publishing endpoints or credentials. First successful timestamp is absent until success. Failure retains last success, sets latest result 0; stale 1 means no successful attempt or age exceeds probes/workers 45 s, exporters 180 s, other on-demand operations 300 s. An idle relay/on-demand operation can become stale without failure. For collector outage inspect native equivalents locally; exporter failures can only reach the collector once delivery recovers. API collection age continues to expose stopped delivery even while the collector caches earlier result gauges.
 
-Scheduled probes run at startup and every 15 s under runtime shutdown cancellation, each with a 3 s deadline. LiveKit uses the existing private `Ping` ListRooms call, without participant fan-out; storage checks the existing filesystem snapshot and rejects invalid byte ranges. They do not change liveness/ACL or prove media capacity. Final/interim HTTP status and open SSE flushing plus real WebSocket behavior are covered by combined middleware wire tests. Storage non-Linux unsupported snapshots report failure, never a healthy zero.
+Scheduled probes run at startup and every 15 s under runtime shutdown cancellation, each with a 3 s deadline. LiveKit uses the existing private `Ping` ListRooms call, without participant fan-out; storage checks the existing filesystem snapshot and rejects invalid byte ranges. They do not change liveness/ACL or prove media capacity. Final/interim HTTP status, streaming response flushing and real WebSocket behavior are covered by combined middleware wire tests. Storage non-Linux unsupported snapshots report failure, never a healthy zero.
 
 ## Route diagnosis and request correlation
 
-Native `voice_platform_api_requests_total` and `voice_platform_api_request_duration_seconds` now label `method,route,status`. Registered ServeMux templates remove the method prefix, for example `/api/v1/channels/{channelID}/messages`; all unmatched URLs collapse to `unmatched`. Method is a standard HTTP enum or `OTHER`; status is 100–599, invalid/panic maps 500. OTel mirrors are `boohtacord_incident_http_requests_total` and `boohtacord_incident_http_duration_seconds_bucket`. Select method/template and compare 5xx rate and histogram p95 without Tempo. A rejected Origin still resolves the registered template before routing. Panic is counted and rethrown. WebSocket/SSE duration is connection lifetime, not handshake latency; use existing connection-ready/event-delivery metrics for those incidents.
+Native `voice_platform_api_requests_total` and `voice_platform_api_request_duration_seconds` now label `method,route,status`. Registered ServeMux templates remove the method prefix, for example `/api/v1/channels/{channelID}/messages`; all unmatched URLs collapse to `unmatched`. Method is a standard HTTP enum or `OTHER`; status is 100–599, invalid/panic maps 500. OTel mirrors are `boohtacord_incident_http_requests_total` and `boohtacord_incident_http_duration_seconds_bucket`. Select method/template and compare 5xx rate and histogram p95 without Tempo. A rejected Origin still resolves the registered template before routing. Panic is counted and rethrown. WebSocket duration is connection lifetime, not handshake latency; use existing connection-ready/event-delivery metrics for those incidents.
 
 Copy server `X-Request-ID` from the response. Incoming client values are ignored. The same UUID appears in the safe local `http.request.completed` access event (`request_id`) and HTTP span attribute `request_id`. In Tempo use `{ span.request_id = "<response UUID>" }`; search local JSON access logs for that exact UUID. Neither logs nor the span contain URL/query/body/cookies/credentials. Sampling, exporter outage and deliberately excluded operations can leave no HTTP span. Access logs are local and rotated; there is no centralized logging stack. Request ID is not a Prometheus label.
 
@@ -50,3 +50,29 @@ Full LiveKit snapshot counts mirror as `boohtacord_incident_livekit_snapshot{sta
 ## Validation boundary
 
 Focused tests cover bounded route/method/privacy, panic and Origin rejection, server request ID correlation, pool cancellation/stats in both transports, operation freshness, export failure, OTLP payload delivery, dependency deadlines/invalid snapshot rejection, preserved LiveKit/relay/realtime/worker behavior. Pinned Collector 0.161.0 protobuf-to-Prometheus names and dashboard PromQL syntax (Promtool 3.11.2) are verified locally. The guarded saturation integration test runs against the disposable PostgreSQL service in native CI; locally it skips because test database variables are absent. Production dashboard import, live dependency outage and runtime rollback remain NOT_RUN. No APK/Windows build or deployment is included.
+
+## Realtime event delivery stages
+
+Private API metric `voice_platform_realtime_event_stage_seconds` has only two
+fixed `stage` values. `before_handler` measures from event `occurred_at` to
+entry into the socket event handler, including journal publication and queue
+wait; `handler` measures from handler entry through authorization, optional
+correlation and a successful WebSocket write. Only successful writes are
+observed; neither histogram alone isolates database, network or client time.
+Compare counts and traffic before interpreting the distributions. These native
+Prometheus metrics require an API scrape; they are not a claim that the OTel
+collector or a production dashboard exports them. Production scrape and alert
+validation remain NOT_RUN.
+
+## Realtime migration capability claims
+
+`voice_platform_realtime_capability_connections_active` and
+`voice_platform_realtime_capability_connections_total` count accepted
+**authenticated sockets** with fixed `capability` values `both`, `neither`,
+`roster_only`, and `maintenance_only`. They describe the two features claimed
+by the connecting client, not its identity, installed version or actual feature
+health. Totals include reconnects; do not interpret a socket fraction as the
+fraction of installed clients. No capability value grants access. Validate
+collector ingestion and scrape freshness in the target environment before
+using these signals for release decisions; the version manifest, update-required
+experience and compatible cutover remain separate gates.

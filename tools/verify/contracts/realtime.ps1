@@ -1,3 +1,15 @@
+foreach ($kind in @('maintenance.snapshot', 'maintenance.changed')) {
+    $branch = $realtime.allOf | Where-Object { $_.if.properties.kind.const -eq $kind } | Select-Object -First 1
+    $payload = $branch.then.properties.payload
+    if ($realtime.properties.kind.enum -notcontains $kind -or $null -eq $branch -or
+        $payload.additionalProperties -ne $false -or $payload.properties.version.const -ne 1 -or
+        $payload.properties.generation.format -ne 'uuid' -or $payload.properties.active.type -ne 'boolean' -or
+        $payload.properties.revision.minimum -ne 1 -or $payload.properties.revision.maximum -ne 9007199254740991 -or
+        (($payload.required | Sort-Object) -join ',') -ne 'active,generation,revision,version' -or
+        (($payload.properties.PSObject.Properties.Name | Sort-Object) -join ',') -ne 'active,generation,revision,version') {
+        throw "Realtime $kind must expose only the typed public maintenance state."
+    }
+}
 foreach ($kind in @('direct_message.message_created', 'direct_message.message_updated', 'direct_message.message_deleted')) {
     if ($realtime.properties.kind.enum -notcontains $kind) {
         throw "Realtime contract must define private $kind."

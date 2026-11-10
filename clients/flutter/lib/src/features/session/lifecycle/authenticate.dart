@@ -15,6 +15,7 @@ extension SessionAuthentication on SessionController {
     effects.error(null);
     changed();
     ActionScope? readiness;
+    var enteringWorkspace = false;
     try {
       await api.authenticate(login, password, register: register);
       if (!ticket.isActive) return;
@@ -31,6 +32,7 @@ extension SessionAuthentication on SessionController {
       }
       if (!ticket.isActive) return;
       phase = AppPhase.ready;
+      enteringWorkspace = true;
       if (readiness != null) {
         readiness.step('workspace');
         await readiness.run(effects.ready);
@@ -44,6 +46,7 @@ extension SessionAuthentication on SessionController {
     } catch (cause) {
       readiness?.finish('failed', reason: 'dependency');
       if (!ticket.isActive) return;
+      if (enteringWorkspace) phase = AppPhase.connectionError;
       effects.error(effects.message(cause));
       rethrow;
     } finally {

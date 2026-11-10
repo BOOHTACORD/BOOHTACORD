@@ -13,5 +13,7 @@ export interface RealtimeConnectOptions {
   checkSession?: () => Promise<boolean>
   onRecovery?: () => void | Promise<void>
   onSessionExpired?: () => void
+  onSocketStart?: () => void
+  onSocketEnd?: () => void
   random?: () => number
 }

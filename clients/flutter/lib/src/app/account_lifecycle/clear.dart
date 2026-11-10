@@ -31,13 +31,14 @@ extension AppAccountCleanup on AppOwners {
 
   Future<void> clearSignedOutAccount() async {
     clearPrivateCaches();
+    await realtime.close();
     await remoteNotifications.stop();
     await nativeNotifications.useAccount(null);
+    await maintenance.useGuest();
   }
 
   Future<void> clearServerAccount() async {
     await clearSignedOutAccount();
-    maintenance.restart();
   }
 
   Future<void> clearExpiredAccount() async {
@@ -54,6 +55,8 @@ extension AppAccountCleanup on AppOwners {
       nativeNotifications.useAccount(null),
       remoteNotifications.stop(),
     ]);
+    if (!ticket.isCurrent) return;
+    await maintenance.useGuest();
     if (!ticket.isCurrent) return;
     error = null;
     notifyListeners();

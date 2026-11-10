@@ -1,10 +1,12 @@
 {
   "auth": {
+    "native_targets": ["integration_test/issue689_roster_test.dart"],
     "paths": [
       "clients/web/src/identity/*",
       "clients/flutter/lib/src/screens/auth*",
       "clients/flutter/lib/src/screens/password_reset_screen.dart",
       "clients/flutter/lib/src/features/session/*",
+      "clients/flutter/lib/src/services/maintenance_events.dart",
       "clients/flutter/lib/src/core/session/*",
       "backend/internal/identity/session/*",
       "backend/internal/identity/login_user/**",
@@ -33,10 +35,19 @@
       "test/auth_capacity_test.dart",
       "test/auth_screen_test.dart",
       "test/auth_rate_limit_test.dart",
+      "test/session_lifecycle/authentication_failure_test.dart",
       "test/authentication_password_policy_test.dart",
       "test/reset_preflight_contract_test.dart"
     ],
     "acceptance": {
+      "issue689_banner_viewport": {
+        "browser": "clients/web/tests/accessibility/composer_text_scale.browser.spec.ts",
+        "scope": "The maintenance unknown banner leaves the authenticated composer inside the viewport at enlarged text; real backend failure acceptance remains separate."
+      },
+      "issue689_failed_socket_handoff": {
+        "focused": "clients/flutter/test/session_lifecycle/authentication_failure_test.dart",
+        "scope": "A failed guest-to-authenticated socket handoff cannot leave the Flutter session marked ready; native failure-injection acceptance remains separate."
+      },
       "registration_password_parity": {
         "focused": [
           "clients/web/src/identity/auth_client.spec.ts",
@@ -148,6 +159,7 @@
       }
     ],
     "parity_review": {
+      "issue689_follow_up": "Issue 689 changes session realtime handoff for Web and shared Flutter. Existing authentication regression suites remain required; Android/iOS current-source runtime acceptance is not established.",
       "issue": 676,
       "decisions": {
         "web": "implementation_and_regression",
@@ -159,20 +171,32 @@
     }
   },
   "connection_status": {
+    "native_targets": ["integration_test/issue689_roster_test.dart", "integration_test/issue689_delivery_revocation_test.dart"],
     "paths": [
       "clients/web/src/workspace/connection_status/**",
       "clients/web/tests/connection_status/**",
       "clients/web/src/channel/topology_store.ts",
       "clients/web/src/channel/topology_store.spec.ts",
       "clients/web/src/workspace/WorkspaceApp.vue",
+      "clients/web/src/App.vue",
+      "clients/web/src/workspace/workspace_realtime.ts",
+      "clients/web/src/workspace/workspace_maintenance.spec.ts",
+      "clients/web/src/workspace/workspace_roster_socket.spec.ts",
+      "clients/web/src/workspace/composition/**",
+      "clients/web/src/workspace/protected_refresh/**",
       "clients/web/src/request_feedback.ts",
       "tools/qa/local_features/features.json",
       "clients/flutter/lib/src/features/realtime/**",
+      "clients/flutter/lib/src/features/session/maintenance_socket/**",
       "clients/flutter/lib/src/features/voice/roster_state/**",
       "clients/flutter/lib/src/screens/workspace_ui/connection_status/**",
       "clients/flutter/lib/src/screens/workspace_ui/sidebar/component.dart",
       "clients/flutter/integration_test/local_qa_test.dart",
-      "clients/web/src/realtime/**"
+      "clients/flutter/integration_test/issue689_roster_test.dart",
+      "clients/flutter/integration_test/issue689_support.dart",
+      "clients/web/src/realtime/**",
+      "clients/web/src/voice/roster_socket/**",
+      "clients/web/src/maintenance/**"
     ],
     "web": [
       "tests/connection_status/playwright.config.ts"
@@ -182,9 +206,24 @@
       "test/realtime_scope/retry_policy_test.dart",
       "test/workspace_connection_status_test.dart",
       "test/voice_roster_state/app_composition_test.dart",
+      "test/voice_roster_state/shared_socket_test.dart",
+      "test/maintenance_socket/state_test.dart",
+      "test/maintenance_socket/guest_test.dart",
+      "test/maintenance_socket/guest_handoff_test.dart",
+      "test/maintenance_socket/guest_loopback_test.dart",
+      "test/maintenance_socket/controller_test.dart",
+      "test/maintenance_socket/app_handoff_test.dart",
+      "test/maintenance_socket/server_failure_test.dart",
+      "test/maintenance_socket/unknown_banner_test.dart",
       "test/realtime_scope/open_failure_test.dart",
       "test/realtime_scope/late_failure_test.dart",
       "test/realtime_scope/socket_recovery_integration_test.dart",
+      "test/realtime_scope/socket_attempt_test.dart",
+      "test/realtime_scope/manual_reconnect_test.dart",
+      "test/realtime_scope/resync_envelope_test.dart",
+      "test/realtime_scope/maintenance_event_test.dart",
+      "test/realtime_scope/roster_event_test.dart",
+      "test/realtime_scope/roster_payload_validation_test.dart",
       "test/features/workspace/short_viewport/measured_status_test.dart"
     ],
     "acceptance": {
@@ -213,6 +252,97 @@
           "clients/flutter/test/admin_telemetry/api_test.dart"
         ],
         "scope": "Owned real Go/PostgreSQL/TLS runtime: durable TEXT/DM replay after socket closure, edits/deletes/social state, ordinary second account, reachable administrator telemetry; Android and iOS have separate runs. Physical media remains NOT_RUN."
+      },
+      "issue689_flutter_maintenance_contract": {
+        "focused": "clients/flutter/test/realtime_scope/maintenance_event_test.dart",
+        "scope": "Flutter accepts strict versioned maintenance payloads and starts recovery on malformed ones; real platform delivery remains a separate gate."
+      },
+      "issue689_flutter_maintenance_state": {
+        "focused": "clients/flutter/test/maintenance_socket/state_test.dart",
+        "scope": "Flutter maintenance state rejects stale ownership and revisions and retains unknown status across socket handoffs. Transport and native runtime remain separate."
+      },
+      "issue689_flutter_maintenance_guest": {
+        "focused": ["clients/flutter/test/maintenance_socket/guest_test.dart", "clients/flutter/test/maintenance_socket/guest_handoff_test.dart", "clients/flutter/test/maintenance_socket/guest_loopback_test.dart"],
+        "scope": "Flutter guest owner accepts only public maintenance events, cancels handshakes and rejects stale owners; loopback verifies no cookie or client messages. Application handoff and native runtime remain separate."
+      },
+      "issue689_flutter_maintenance_handoff": {
+        "focused": ["clients/flutter/test/maintenance_socket/controller_test.dart", "clients/flutter/test/maintenance_socket/app_handoff_test.dart", "clients/flutter/test/maintenance_socket/server_failure_test.dart", "clients/flutter/test/maintenance_socket/unknown_banner_test.dart"],
+        "native": "integration_test/issue689_roster_test.dart",
+        "scope": "Flutter transfers maintenance ownership across guest, authenticated, logout and server-change flows, showing unknown status without inventing an inactive value. Native and visual gates remain separate."
+      },
+      "issue689_flutter_roster_contract": {
+        "focused": ["clients/flutter/test/realtime_scope/roster_event_test.dart", "clients/flutter/test/realtime_scope/roster_payload_validation_test.dart"],
+        "scope": "Flutter validates versioned voice roster payloads and safe unavailable codes, rejects malformed frames and preserves durable replay cursors; native delivery remains separate acceptance work."
+      },
+      "issue689_flutter_roster_state": {
+        "focused": "clients/flutter/test/voice_roster_state/shared_socket_test.dart",
+        "scope": "Flutter shared-socket roster state covers initial timeout, stale retention, scope changes and reconnect without a separate roster request. Production wiring and native runtime remain separate."
+      },
+      "issue689_flutter_roster_socket": {
+        "focused": ["clients/flutter/test/voice_roster_state/app_composition_test.dart", "clients/flutter/test/realtime_scope/manual_reconnect_test.dart"],
+        "native": "integration_test/issue689_roster_test.dart",
+        "scope": "Flutter routes roster snapshots and availability through its authenticated socket, retains stale state and retries on that socket. Android emulator and full real-stack acceptance remain separate."
+      },
+      "issue689_maintenance_contract": {
+        "focused": "clients/web/src/realtime/maintenance_payload.spec.ts",
+        "scope": "Web realtime parsing accepts only versioned maintenance state with a generation and safe revision. Browser runtime and guest/auth handoff remain separate acceptance work."
+      },
+      "issue689_web_maintenance_state": {
+        "focused": "clients/web/src/maintenance/state.spec.ts",
+        "scope": "Web maintenance state rejects stale connection callbacks and revisions while retaining the last value during disconnection. Guest/auth handoff and browser runtime remain separate acceptance work."
+      },
+      "issue689_web_guest_socket": {
+        "focused": "clients/web/src/maintenance/guest_socket.spec.ts",
+        "scope": "Web guest transport enforces initial state, bounded retries and public-only events; application handoff and real browser network checks remain separate acceptance work."
+      },
+      "issue689_web_socket_lifecycle": {
+        "focused": "clients/web/src/realtime/socket_lifecycle.spec.ts",
+        "scope": "Authenticated socket attempts signal start and end across failure, retry and disconnect, allowing state owners to discard stale callbacks; real browser acceptance remains separate."
+      },
+      "issue689_web_hint_overflow": {
+        "focused": "clients/web/src/realtime/hint_batch/overflow.spec.ts",
+        "scope": "Web coalesced hint delivery bounds pending and in-flight work, demands recovery on overflow and does not acknowledge stale work; real socket pressure and lease-revocation acceptance remain separate."
+      },
+      "issue689_flutter_socket_lifecycle": {
+        "focused": ["clients/flutter/test/realtime_scope/socket_attempt_test.dart", "clients/flutter/test/realtime_scope/socket_recovery_integration_test.dart"],
+        "scope": "Flutter reports exactly one start and end per realtime connection attempt, including a failed handshake and recovery; feature composition and Android runtime are separate."
+      },
+      "issue689_flutter_revocation_pressure": {
+        "focused": "clients/flutter/test/realtime_scope/delivery_revocation_test.dart",
+        "native": "integration_test/issue689_delivery_revocation_test.dart",
+        "scope": "Flutter applies voice lease revocation immediately despite a blocked or full event queue while preserving cursor order and recovery on failure; native real-socket pressure remains separate acceptance work."
+      },
+      "issue689_flutter_manual_reconnect": {
+        "focused": "clients/flutter/test/realtime_scope/manual_reconnect_test.dart",
+        "scope": "Flutter manual reconnect closes the previous socket, retains durable replay position and ignores late session/open results. Real Android acceptance remains separate."
+      },
+      "issue689_web_reconnect_race": {
+        "focused": "clients/web/src/realtime/reconnect_race.spec.ts",
+        "scope": "Late session checks from an old socket attempt cannot open a duplicate socket or expire a newer connection; real network fault acceptance remains separate."
+      },
+      "issue689_web_roster_contract": {
+        "focused": "clients/web/src/realtime/roster_payload.spec.ts",
+        "scope": "Web parser accepts only typed, versioned voice rosters and safe unavailable events without advancing replay cursors; server delivery and browser acceptance remain separate."
+      },
+      "issue689_web_roster_state": {
+        "focused": "clients/web/src/voice/roster_socket/state.spec.ts",
+        "scope": "Shared-socket roster state distinguishes unknown, fresh, retained and unavailable values, rejects stale revisions and expires a missing initial snapshot. Workspace integration and real browser acceptance remain separate."
+      },
+      "issue689_web_roster_socket": {
+        "focused": ["clients/web/src/workspace/workspace_roster_socket.spec.ts", "clients/web/src/voice/roster_socket/state.spec.ts", "clients/web/src/realtime/realtime_client.spec.ts"],
+        "scope": "Web consumes negotiated roster snapshots on the existing authenticated socket, preserves unknown and retained states and retries through that socket. Real browser network, visual and media acceptance remain separate."
+      },
+      "issue689_web_authenticated_maintenance": {
+        "focused": ["clients/web/src/maintenance/auth_owner.spec.ts", "clients/web/src/workspace/workspace_maintenance.spec.ts"],
+        "scope": "Negotiated authenticated maintenance updates feature state without unrelated protected refreshes; guest handoff and browser runtime remain separate acceptance work."
+      },
+      "issue689_web_maintenance_handoff": {
+        "focused": ["clients/web/src/maintenance/owner.spec.ts", "clients/web/src/maintenance/guest_socket.spec.ts", "clients/web/src/maintenance/maintenance_status.spec.ts", "clients/web/src/workspace/workspace_maintenance.spec.ts"],
+        "scope": "Web maintenance ownership switches between public and authenticated sockets and ignores callbacks from the previous owner. Real-browser login, logout, restart and network traces remain separate acceptance work."
+      },
+      "issue689_resync": {
+        "focused": "clients/flutter/test/realtime_scope/resync_envelope_test.dart",
+        "scope": "A valid server resync reason clears the durable cursor and invokes recovery; malformed or extra fields do not. Android emulator and other runtime acceptance remain separate."
       },
       "issue607": {
         "focused": "clients/flutter/test/realtime_scope/open_failure_test.dart",
@@ -261,6 +391,7 @@
       }
     ],
     "parity_review": {
+      "issue689_follow_up": "Issue 689 migrates maintenance and connection state to the shared WebSocket on Web and Flutter. Focused tests exist; complete Android and iOS runtime acceptance remains open.",
       "issue": 582,
       "decisions": {
         "web": "implementation_and_regression",
@@ -273,6 +404,7 @@
     }
   },
   "voice": {
+    "native_targets": ["integration_test/issue689_listener_test.dart", "integration_test/issue689_roster_test.dart"],
     "paths": [
       "clients/web/src/voice/*",
       "clients/web/src/conversation/ConversationPane.vue",
@@ -694,8 +826,9 @@
     ],
     "parity_review": {
       "issue648_recovery_review": "The shared Flutter recovery indicator changed; Android emulator outage and manual leave passed on an isolated stack. Windows initial media admission failed before outage, iOS and physical devices are not verified. Web was not changed; its existing regression checks remain required. Screen presentation is reviewed because the voice dock is shared.",
+      "issue689_follow_up": "Issue 689 migrates voice roster and revocation hints to WebSocket. Web and shared Flutter tests cover parts of delivery; physical voice and iOS runtime acceptance remain open.",
       "issue": 676,
-      "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged. PR #625 (2026-10-31): Web stream-viewer overflow removes the dedicated diagnostics and duplicate full-area expand actions, and opens the participant roster with an accessible people icon. Focused browser regressions cover the menu, roster action, playback and fullscreen; Flutter/iOS/Android behavior and platform decisions are unchanged. PR #629 (2026-10-31): Web watcher text is a quiet inline label; the participant volume menu overlaps the microphone state and sits 4px below its center. Focused browser regressions cover watcher layout and hover alignment. Flutter, iOS and Android UI and platform decisions are unchanged. 2026-11-08 PR #683: Web connected participant cards allow at most four columns and the full-screen viewer exposes microphone mute. Voice admission, mute/deafen state ownership, and transport are unchanged. Flutter/iOS/Android implementations are unchanged; Web voice and screen-share browser regressions are included.",
+      "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged. PR #625 (2026-10-31): Web stream-viewer overflow removes the dedicated diagnostics and duplicate full-area expand actions, and opens the participant roster with an accessible people icon. Focused browser regressions cover the menu, roster action, playback and fullscreen; Flutter/iOS/Android behavior and platform decisions are unchanged. PR #629 (2026-10-31): Web watcher text is a quiet inline label; the participant volume menu overlaps the microphone state and sits 4px below its center. Focused browser regressions cover watcher layout and hover alignment. Flutter, iOS and Android UI and platform decisions are unchanged. 2026-11-08 PR #683: Web connected participant cards allow at most four columns and the full-screen viewer exposes microphone mute. Voice admission, mute/deafen state ownership, and transport are unchanged. Flutter/iOS/Android implementations are unchanged; Web voice and screen-share browser regressions are included. 2026-11-09 PR #697: Web keeps the participant-roster toggle reachable after hiding the roster and places the retained mini stream preview beneath the text/DM header. The responsive roster, voice admission, mute/deafen ownership and transport are unchanged. Flutter/iOS/Android implementations are unchanged; existing voice platform decisions remain in force.",
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
@@ -781,6 +914,7 @@
       "clients/web/src/voice/use_conversation_screen_state*",
       "clients/web/src/voice/ScreenMiniToolbar.vue",
       "clients/web/src/voice/mini_player_state.spec.ts",
+      "clients/web/src/design/mini_player.css",
       "clients/web/tests/mini_player/**",
       "clients/web/tests/member_roster/helpers.ts",
       "clients/web/tests/member_roster/roster.browser.spec.ts",
@@ -1238,8 +1372,9 @@
     ],
     "parity_review": {
       "issue648_recovery_review": "The shared Flutter recovery indicator changed; Android emulator outage and manual leave passed on an isolated stack. Windows initial media admission failed before outage, iOS and physical devices are not verified. Web was not changed; its existing regression checks remain required. Screen presentation is reviewed because the voice dock is shared.",
+      "issue689_follow_up": "Issue 689 changes common workspace realtime and connection recovery while preserving existing screen feature behavior. Screen regression suites remain required on Web and native platforms; full current-source native media acceptance remains open.",
       "issue": 676,
-      "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged. PR #625 (2026-10-31): the Web stream-viewer overflow menu removes the dedicated diagnostics and duplicate full-area expand actions, and opens the participant roster with an accessible people icon. Focused browser regressions cover the menu, roster action, playback and fullscreen; Flutter/iOS/Android behavior and existing platform decisions are unchanged. PR #626 (2026-10-31): Web participant stream previews use object-fit: cover to fill the card. This is a CSS-only browser presentation change; Flutter/iOS/Android preview behavior and platform decisions are unchanged. PR #629 (2026-10-31): Web watcher text is a quiet inline label; the participant volume menu overlaps the microphone state and sits 4px below its center. Focused browser regressions cover watcher layout and hover alignment. Flutter, iOS and Android UI and platform decisions are unchanged. 2026-11-08 PR #683: Web full-screen stream controls expose microphone mute, and the TEXT mini-player no longer reserves roster space. Flutter/iOS/Android screen presentation and behavior are unchanged; Web screen-share browser regressions are included.",
+      "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged. PR #625 (2026-10-31): the Web stream-viewer overflow menu removes the dedicated diagnostics and duplicate full-area expand actions, and opens the participant roster with an accessible people icon. Focused browser regressions cover the menu, roster action, playback and fullscreen; Flutter/iOS/Android behavior and existing platform decisions are unchanged. PR #626 (2026-10-31): Web participant stream previews use object-fit: cover to fill the card. This is a CSS-only browser presentation change; Flutter/iOS/Android preview behavior and platform decisions are unchanged. PR #629 (2026-10-31): Web watcher text is a quiet inline label; the participant volume menu overlaps the microphone state and sits 4px below its center. Focused browser regressions cover watcher layout and hover alignment. Flutter, iOS and Android UI and platform decisions are unchanged. 2026-11-08 PR #683: Web full-screen stream controls expose microphone mute, and the TEXT mini-player no longer reserves roster space. Flutter/iOS/Android screen presentation and behavior are unchanged; Web screen-share browser regressions are included. 2026-11-09 PR #697: Web docks the retained mini stream preview immediately below text/DM headers and keeps the participant toggle reachable when the roster closes. Stream capture, playback, audio and transport are unchanged; Flutter/iOS/Android implementations are unchanged.",
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
@@ -1647,9 +1782,23 @@
       "clients/flutter/lib/src/screens/workspace_ui/message_action_menu/*",
       "clients/flutter/lib/src/screens/workspace_ui/direct_message_action_menu/*",
       "clients/web/src/conversation/history_window/*",
+      "clients/web/src/identity/author_directory.ts",
+      "clients/web/src/design/design_v2_chat.css",
+      "clients/web/src/design/design_v2_direct_messages.css",
+      "clients/web/src/design/responsive_shell.css",
+      "clients/web/src/direct_message/DirectMessageConversation.vue",
+      "clients/web/src/workspace/workspace_header_actions.spec.ts",
+      "clients/web/src/workspace/member_header_expanded.ts",
+      "clients/web/tests/mini_player/mini.browser.spec.ts",
+      "clients/web/tests/mini_player/fixture.ts",
       "clients/web/src/conversation/message_target_navigation.ts",
       "clients/web/src/workspace/search/WorkspaceSearchPanel.vue",
-      "tools/qa/client_lifecycle/scenario.mjs",
+      "tools/qa/client_lifecycle/journey/scenario.mjs",
+      "tools/qa/client_lifecycle/journey/member_channel.mjs",
+      "tools/qa/client_lifecycle/journey/member_log.mjs",
+      "tools/qa/client_lifecycle/journey/member_dm.mjs",
+      "tools/qa/client_lifecycle/journey/member_global_search.mjs",
+      "tools/qa/client_lifecycle/journey/captures.py",
       "tools/qa/client_lifecycle/search_presentation.mjs",
       "tools/qa/dm_composer/scenario.mjs",
       "tools/qa/conversation_files/scenario.mjs",
@@ -1673,7 +1822,8 @@
       "clients/flutter/lib/src/screens/workspace_ui/header/conversation_actions.dart",
       "clients/flutter/lib/src/widgets/attachment_revocation/**",
       "clients/flutter/lib/src/features/direct/follow_latest/**",
-      "clients/flutter/lib/src/features/text/system_welcome/*"
+      "clients/flutter/lib/src/features/text/system_welcome/*",
+      "tools/qa/local_features/features.json"
     ],
     "web": [
       "tests/conversation_action_disclosure/playwright.config.ts",
@@ -1685,7 +1835,8 @@
       "tests/message_social/playwright.config.ts",
       "tests/dm_starter/playwright.config.ts",
       "tests/search_presentation/playwright.config.ts",
-      "tests/search_dates/playwright.config.ts"
+      "tests/search_dates/playwright.config.ts",
+      "tests/mini_player/playwright.config.ts"
     ],
     "flutter": [
       "test/uiux_2026/dialog_visual_capture_test.dart",
@@ -1707,7 +1858,12 @@
       "web_message_read_search_and_send_navigation": {
         "browser_test": "clients/web/tests/accessibility/accessibility.browser.spec.ts",
         "real_stack": [
-          "tools/qa/client_lifecycle/scenario.mjs",
+          "tools/qa/client_lifecycle/journey/scenario.mjs",
+          "tools/qa/client_lifecycle/journey/member_channel.mjs",
+          "tools/qa/client_lifecycle/journey/member_log.mjs",
+          "tools/qa/client_lifecycle/journey/member_dm.mjs",
+          "tools/qa/client_lifecycle/journey/member_global_search.mjs",
+          "tools/qa/client_lifecycle/journey/captures.py",
           "tools/qa/client_lifecycle/search_presentation.mjs",
           "tools/qa/dm_composer/scenario.mjs",
           "tools/qa/conversation_files/scenario.mjs",
@@ -1721,11 +1877,16 @@
           "clients/web/src/conversation/text_history_pagination.spec.ts",
           "clients/web/src/direct_message/direct_message_history_pagination.spec.ts",
           "clients/web/src/conversation/first_unread_presentation.spec.ts",
+          "clients/web/src/conversation/new_message_jump.spec.ts",
           "clients/web/src/search/context_timeline/local_search.spec.ts",
           "clients/web/src/conversation/conversation_overflow_menu.spec.ts",
+          "clients/web/src/direct_message/direct_message_navigation_badges.spec.ts",
+          "clients/web/src/workspace/workspace_header_actions.spec.ts",
+          "clients/web/src/design/design_v2_chat_geometry.spec.ts",
+          "clients/web/tests/mini_player/mini.browser.spec.ts",
           "clients/web/tests/chat_rhythm/retention.browser.spec.ts"
         ],
-        "scope": "First unread is marked only after it intersects the visible message viewport; global search, file and mention targets open in the normal conversation and flash briefly; channel and DM reading positions restore silently after navigation even when their anchor must be loaded around; per-conversation mini search is absent; sending a message scrolls it into view. Authenticated desktop/mobile real-stack acceptance includes read-cursor SQL checks, search/file/mention routes and send follow; source-resolution screenshot review is recorded separately."
+        "scope": "First unread is marked only after it intersects the visible message viewport; initial history opens at the newest messages while saved anchors still restore silently; global search, file and mention targets open in the normal conversation and flash briefly; per-conversation mini search is absent; sending a message scrolls it into view. The desktop roster toggle remains reachable when the roster is hidden, retained stream previews do not shift the roster, and DM navigation shows protected peer avatars when available. Authenticated desktop/mobile real-stack acceptance includes read-cursor SQL checks, search/file/mention routes and send follow; source-resolution screenshot review is recorded separately."
       },
       "composer_text_scale": {
         "browser_test": "clients/web/tests/accessibility/composer_text_scale.browser.spec.ts",
@@ -1924,8 +2085,33 @@
       },
       "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-28 (PR #590): #586/#587/#589: shared Flutter mobile 48dp scope and open-image revocation; Web TEXT/DM live context refresh, immediate deletion redaction and generation/revision guards. Web browser/controller and shared Flutter tests pass; physical Android/iOS and the original real-stack counterexamples remain NOT_RUN. 2026-10-29 (#598): Android and iOS share the canonical attachment-only DM Send fix, correlation/revision/tombstone/session/navigation guards and 20s readback deadline. Shared Flutter focused+nearest115 tests and two actual production-widget JPEG/GIF Send cases pass on Windows; signed Android physical and iOS runtime remain NOT_RUN. Web implementation is unchanged; existing browser regression gates remain mandatory and hosted results are recorded separately. No platform runtime PASS is inferred from shared widget results. 2026-10-29 (#581/#580): Web viewer original download is separated from normalized image preview, and the owned search launcher can use its declared shortcut inside the navigation drawer without relaxing editors/content dialogs. These changes are Web-only; Flutter Android/iOS source and all earlier platform runtime rows remain unchanged. Focused Web regressions and real full-app download/shortcut/ACL acceptance are mandatory. Unit/SSR checks do not certify physical/native/platform-wide acceptance. 2026-10-30 (#582): shared Android/iOS short landscape editing layout preserves recovery retry and all voice actions; nearest full WorkspaceScreen regression covers physical-size IME geometry, touch hit-testing, retained draft/selection and orientation. Vue Web unchanged. Signed physical Android positive, iOS native and other platform/media facets remain pending until their own evidence. 2026-10-30 (#609): shared Flutter DM incoming append follows only an already-latest reader. Manual older scroll/draft, replacement or prepended history, queued user scroll, logout, DM navigation and history identity are guarded; initial open/older-page restore and TEXT behavior are preserved. Eight actual WorkspaceDirectConversation widget cases include a pinned-original RED and real-Inter Before/After component captures. Custom capture env only;167standard producers unchanged. Android signed606 passive follow-tail FAIL is retained; corrected signed APK and Android/iOS runtime/physical acceptance remain pending. Web behavior and existing platform decisions are unchanged. 2026-10-30 (#609 explicit-action completion): an older-history viewport exposes К последним сообщениям without moving its visible SelectableText anchor, unsent draft or selection. Actual pointer/ShiftTab+Enter/Space actions at100/200% reach the incoming row and hide the action at latest. The viewport keeps its child identity on account changes and fences callbacks by account/pair/history; a tiny history area hides the action before it can cover composer/voice controls.16focused shared Flutter cases include Android/iOS short activevoice+IME preservation. Original d9 append counterexample1FAIL1PASS and c7c8 missing-action6FAIL are retained; all temporarily pinned files restored byte-exact. Component Before/After inspected separately from pending corrected signed Android acceptance. Custom609captures only;167standard producer names and all other platform decisions preserved. 2026-10-31 (#141): Web-only scoped multi-editor retention across virtualization and reversible history eviction, bounded500 active controllers with no silent draft eviction and one focused DOM pin. Generation/identity reset fences preserve account/channel/logout privacy; existing MessageItem defaults outside TEXT and all Flutter/iOS/Android sources and decisions are preserved. New unit/browser regressions and actual built-Web/API acceptance plus canonical Web real-stack are required; component captures do not imply physical/native/media acceptance. 2026-11-07 PR #674: shared Flutter member profile navigation and live directory; Web live directory and registration guidance. Existing unaffected behavior remains subject to regression checks. Android physical isolated stack tested for password, live member and chat-to-DM; Windows, iOS and full platform acceptance not verified. No media, deployment or release claim. 2026-11-07 issue #675: shared Flutter resolves missing welcome authors within the active session; Web unchanged. Focused tests cover lookup and stale-session rejection; physical native acceptance remains NOT_RUN.",
       "revision": "pr-683-web-chat-ux-2026-11-08",
-      "web_only_follow_up": "2026-11-08 PR #682: Web TEXT/DM read cursors advance as messages become visible; search opens and briefly highlights the target in normal history, and sending follows the new message. Web unit, browser and real-stack regressions are recorded in evidence/qa/web-chat-reading-navigation-2026-11-08.md. Flutter/iOS/Android code is unchanged; no native runtime claim. 2026-11-08 PR #683: Web silently restores the exact TEXT/DM reading position, removes per-conversation mini-search, keeps primary search navigation in ordinary history, and follows sent messages. Flutter/iOS/Android sources and behavior are unchanged; Web regressions are included in this PR."
+      "web_only_follow_up": "2026-11-08 PR #682: Web TEXT/DM read cursors advance as messages become visible; search opens and briefly highlights the target in normal history, and sending follows the new message. Web unit, browser and real-stack regressions are recorded in evidence/qa/web-chat-reading-navigation-2026-11-08.md. Flutter/iOS/Android code is unchanged; no native runtime claim. 2026-11-08 PR #683: Web silently restores the exact TEXT/DM reading position, removes per-conversation mini-search, keeps primary search navigation in ordinary history, and follows sent messages. Flutter/iOS/Android sources and behavior are unchanged; Web regressions are included in this PR. 2026-11-09 PR #697: Web opens first chat history at the newest messages while restoring saved anchors, keeps the mini stream preview below the text/DM header, and shows protected peer avatars in ordinary DM rows. Message read/write and ACL behavior are unchanged; Flutter/iOS/Android implementations are unchanged."
     }
+  },
+  "update_required": {
+    "paths": ["clients/flutter/lib/src/features/updates/*", "clients/flutter/lib/src/app.dart", "clients/web/src/updates/*", "clients/web/src/App.vue", "backend/internal/client_updates/catalog/*", "contracts/client-release-catalog.schema.json", "contracts/openapi.yaml"],
+    "web": ["tests/update_required/playwright.config.ts"],
+    "flutter": ["test/updates/required_test.dart", "test/updates/required_guard_test.dart", "test/updates/required_back_test.dart", "test/updates/required_action_test.dart", "test/updates/required_action_failure_test.dart", "test/updates/required_api_test.dart", "test/updates/required_stale_test.dart"],
+    "native_targets": ["integration_test/update_required_test.dart"],
+    "acceptance": {"required_update_gate": {"scope": "A supported client below the configured minimum presents a non-snoozable update gate without discarding a mounted draft; real catalog and native runtime acceptance required.", "status": "NOT_RUN"}},
+    "parity_review": {
+      "issue": 689,
+      "decisions": {"web": "implementation_and_regression", "ios": "implementation_and_regression", "android": "implementation_and_regression"},
+      "scope": "Required-update presentation is registered for Web and shared Flutter. Browser and widget tests cover the gate; current-source native release, real catalog and iOS runtime acceptance remain NOT_RUN."
+    },
+    "parity": [{
+      "id": "updates.required_gate",
+      "expected": "A client below a configured minimum must show an update gate while preserving the mounted draft.",
+      "issue": 689,
+      "status": "NOT_VERIFIED",
+      "source": "Current checkout; exact release source and runtime are verified separately.",
+      "shipped": "Not established for the current release candidate.",
+      "platforms": {
+        "web": {"entrypoint": "clients/web/src/updates/RequiredUpdateGate.vue", "tests": ["clients/web/tests/update_required/required.browser.spec.ts"], "runtime": "NOT_VERIFIED", "conditions": "Configured minimum and browser runtime acceptance required."},
+        "ios": {"entrypoint": "clients/flutter/lib/src/features/updates/required_page.dart", "tests": ["clients/flutter/test/updates/required_test.dart"], "runtime": "NOT_RUN", "conditions": "Requires iOS runtime, configured catalog and signed build."},
+        "android": {"entrypoint": "clients/flutter/lib/src/features/updates/required_page.dart", "tests": ["clients/flutter/test/updates/required_test.dart"], "runtime": "NOT_VERIFIED", "conditions": "Requires Android runtime and configured catalog acceptance for this release."}
+      }
+    }]
   },
   "shell": {
     "paths": [
@@ -2260,8 +2446,9 @@
       }
     ],
     "parity_review": {
+      "issue689_follow_up": "Issue 689 changes shared Web and Flutter workspace realtime delivery and maintenance state. Shell regression suites remain required; complete current-source Android and iOS runtime acceptance remains open.",
       "issue": 676,
-      "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged. PR #625 (2026-10-31): Web stream-viewer overflow removes the dedicated diagnostics and duplicate full-area expand actions, and opens the participant roster with an accessible people icon. Focused browser regressions cover the menu, roster action, playback and fullscreen; Flutter/iOS/Android behavior and platform decisions are unchanged. PR #626 (2026-10-31): Web participant stream previews use object-fit: cover to fill the card. This is a CSS-only browser presentation change; Flutter/iOS/Android preview behavior and platform decisions are unchanged. PR #629 (2026-10-31): Web watcher text is a quiet inline label; the participant volume menu overlaps the microphone state and sits 4px below its center. Focused browser regressions cover watcher layout and hover alignment. Flutter, iOS and Android UI and platform decisions are unchanged. 2026-11-08 PR #682: Web chat unread/search navigation and sent-message follow behavior are covered by Web unit, browser and real-stack regressions (evidence/qa/web-chat-reading-navigation-2026-11-08.md). Flutter/iOS/Android code is unchanged; no native runtime claim. 2026-11-08 PR #683: Web conversation and workspace header actions keep the member-list control available after hiding it and remove redundant per-conversation search entry points. Flutter/iOS/Android sources and behavior are unchanged; Web browser regressions are included.",
+      "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged. PR #625 (2026-10-31): Web stream-viewer overflow removes the dedicated diagnostics and duplicate full-area expand actions, and opens the participant roster with an accessible people icon. Focused browser regressions cover the menu, roster action, playback and fullscreen; Flutter/iOS/Android behavior and platform decisions are unchanged. PR #626 (2026-10-31): Web participant stream previews use object-fit: cover to fill the card. This is a CSS-only browser presentation change; Flutter/iOS/Android preview behavior and platform decisions are unchanged. PR #629 (2026-10-31): Web watcher text is a quiet inline label; the participant volume menu overlaps the microphone state and sits 4px below its center. Focused browser regressions cover watcher layout and hover alignment. Flutter, iOS and Android UI and platform decisions are unchanged. 2026-11-08 PR #682: Web chat unread/search navigation and sent-message follow behavior are covered by Web unit, browser and real-stack regressions (evidence/qa/web-chat-reading-navigation-2026-11-08.md). Flutter/iOS/Android code is unchanged; no native runtime claim. 2026-11-08 PR #683: Web conversation and workspace header actions keep the member-list control available after hiding it and remove redundant per-conversation search entry points. Flutter/iOS/Android sources and behavior are unchanged; Web browser regressions are included. 2026-11-09 PR #697: Web keeps the participants control in the conversation header after closing the roster and positions the retained mini stream preview below that header. Voice connection and shell navigation state are unchanged; Flutter/iOS/Android implementations are unchanged.",
       "decisions": {
         "web": "implementation_and_regression",
         "ios": "implementation_and_regression",
@@ -2468,6 +2655,7 @@
       }
     ],
     "parity_review": {
+      "issue689_follow_up": "Issue 689 changes shared realtime paths selected by this feature registry. Existing telemetry regression suites remain required; current-source Android/iOS runtime and telemetry evidence are not established.",
       "issue": 532,
       "decisions": {
         "web": "implementation_and_regression",
@@ -2624,6 +2812,7 @@
       }
     ],
     "parity_review": {
+      "issue689_follow_up": "Issue 689 changes common Web and Flutter workspace realtime delivery. Support-specific behavior is retained; existing Web and shared Flutter regression suites and current-source native acceptance remain required.",
       "issue": 609,
       "decisions": {
         "web": "implementation_and_regression",
@@ -2632,7 +2821,7 @@
       },
       "scope": "SP-002: default product support, explicit public consent, publication-aware clients and ordinary DM/voice navigation regressions. Owned UI/API runtimes; physical capture, audio/background and media capacity are not claimed. 2026-10-23: author title and deleted-issue recovery are shared Go/gateway changes only; Web regression runs separately. iOS/Android clients need no implementation change or new binary; native runtime for this server fix is NOT_RUN, not inferred from the older source-bound records above. 2026-10-24 (#553): WorkspaceApp only passes guild voice-presence data to member rows; support publication and DM flows are unchanged. 2026-10-24 (#518): the shared workspace sidebar adds account-scoped channel favorites and independent connection recovery presentation; support consent, publication and DM behavior is untouched. The native local-QA scenario continues to exercise support navigation and recovery status; the broad shared-workspace path match was reviewed. 2026-10-25 (#554): Shared workspace composition changed for notification lifecycle; support consent, publication and DM ACL behavior are preserved, with existing regression suites retained. Web and shared Flutter local regressions passed; physical Android/iOS and provider delivery remain NOT_RUN. 2026-10-28 (PR #590): Shared imported composition paths changed for #587/#589; support consent/publication behavior is unchanged. Web/shared Flutter support regressions remain required; physical native support delivery acceptance is not claimed. 2026-10-30 (#582): shared native short-landscape keyboard layout keeps recovery retry and existing connected voice/screen controls in one row; no action/capture callback changes. Android/iOS WorkspaceScreen geometry/draft/selection widgets and nearest123 workspace/navigation tests cover preservation. Vue unchanged; physical fixed APK, iOS/native media and capacity remain independent pending gates. 2026-10-30 (#609): the shared Flutter DM history build edge now supports follow-at-latest and an explicit return-to-latest footer. Support consent, publication notice and ACL bindings remain unchanged. The broad shared path match is reviewed; existing Web/iOS/Android decisions and native platform exceptions are preserved. Required Web/support regressions and shared widget tests remain selected; corrected signed Android, iOS runtime and full support delivery acceptance are not inferred from component tests. 2026-11-01 (PR #640): at short Flutter window heights with text scale of 150% or more, the secondary profile-role subtitle is hidden to keep the fixed footer within the viewport; the profile, help and settings actions remain available. Web support flows are unchanged. Shared Flutter tests/captures and Android runtime passed; iOS runtime is BLOCKED because no Simulator device is available on this host. 2026-11-07 issue #676 draft: unwired Web sound-event policy and server preference prototype; existing feature behavior is unchanged. Equivalent Flutter integration and native/media acceptance remain NOT_RUN. 2026-11-07 PR #674: shared Flutter member profile navigation and live directory; Web live directory and registration guidance. Existing unaffected behavior remains subject to regression checks. Android physical isolated stack tested for password, live member and chat-to-DM; Windows, iOS and full platform acceptance not verified. No media, deployment or release claim.",
       "revision": "pr-683-web-chat-ux-2026-11-08",
-      "web_only_follow_up": "2026-11-08 PR #682: Web TEXT/DM read cursors advance only when messages enter the visible history; search opens and briefly highlights the target, and sending follows the new message. Web unit, browser and real-stack regressions are recorded in evidence/qa/web-chat-reading-navigation-2026-11-08.md. Flutter/iOS/Android code is unchanged; no native runtime claim. 2026-11-08 PR #683: Web DM/support history silently restores reading position and removes per-conversation mini-search. Public support consent, send/ACL behavior, and message privacy are unchanged. Flutter/iOS/Android sources and behavior are unchanged; the registered Web support scenarios remain in scope."
+      "web_only_follow_up": "2026-11-08 PR #682: Web TEXT/DM read cursors advance only when messages enter the visible history; search opens and briefly highlights the target, and sending follows the new message. Web unit, browser and real-stack regressions are recorded in evidence/qa/web-chat-reading-navigation-2026-11-08.md. Flutter/iOS/Android code is unchanged; no native runtime claim. 2026-11-08 PR #683: Web DM/support history silently restores reading position and removes per-conversation mini-search. Public support consent, send/ACL behavior, and message privacy are unchanged. Flutter/iOS/Android sources and behavior are unchanged; the registered Web support scenarios remain in scope. 2026-11-09 PR #697: Web places the retained mini stream preview below the DM header. Support consent, pair-only ACL, publication and messaging behavior are unchanged; Flutter/iOS/Android support implementations are unchanged."
     }
   },
   "notifications": {

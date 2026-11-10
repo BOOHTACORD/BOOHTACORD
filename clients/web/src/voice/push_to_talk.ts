@@ -4,7 +4,7 @@ export interface KeyboardEventLike {
   target: { closest?(selector: string): unknown } | null
 }
 
-export interface EventSource {
+export interface KeyboardInput {
   addEventListener(type: 'keydown' | 'keyup' | 'blur' | 'visibilitychange', listener: (event: KeyboardEventLike) => void): void
   removeEventListener(type: 'keydown' | 'keyup' | 'blur' | 'visibilitychange', listener: (event: KeyboardEventLike) => void): void
 }
@@ -17,7 +17,7 @@ export class PushToTalk {
   private pressed = false
 
   constructor(
-    private readonly source: EventSource,
+    private readonly source: KeyboardInput,
     private readonly key: string,
     private readonly onChanged: (pressed: boolean) => void,
   ) {}

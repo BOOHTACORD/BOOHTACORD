@@ -6,6 +6,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
+	identitysession "voice-platform/backend/internal/identity/session"
 	listconnectedparticipants "voice-platform/backend/internal/voice/list_connected_participants"
 )
 
@@ -18,6 +19,8 @@ LEFT JOIN LATERAL (
     FROM voice_leases AS lease
     JOIN sessions AS session ON session.token_digest = lease.session_token_digest
         AND session.user_id = lease.user_id AND session.revoked_at IS NULL
+        AND session.expires_at > clock_timestamp()
+        AND session.last_active_at > clock_timestamp() - ($2::double precision * interval '1 second')
     JOIN users AS account ON account.id = lease.user_id AND account.blocked_at IS NULL
     WHERE lease.channel_id = channel.id AND lease.revoked_at IS NULL
 ) AS roster ON TRUE
@@ -41,7 +44,7 @@ func (repository Repository) ListVisible(ctx context.Context, actorID string) ([
 	if uuid.Validate(actorID) != nil {
 		return nil, fmt.Errorf("invalid roster actor")
 	}
-	rows, err := repository.database.Query(ctx, selectVisible, actorID)
+	rows, err := repository.database.Query(ctx, selectVisible, actorID, int64(identitysession.IdleLifetime.Seconds()))
 	if err != nil {
 		return nil, fmt.Errorf("select visible voice roster: %w", err)
 	}

@@ -10,6 +10,11 @@ import (
 const maxForwardedHeaderBytes = 4096
 const maxForwardedHops = 32
 
+// SourceKey applies this limiter's trusted-proxy policy to a request.
+func (limiter *Limiter) SourceKey(request *http.Request) string {
+	return sourceKey(request, limiter.trusted)
+}
+
 func parseTrustedProxies(values []string) ([]*net.IPNet, error) {
 	trusted := make([]*net.IPNet, 0, len(values))
 	for _, value := range values {

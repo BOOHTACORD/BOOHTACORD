@@ -6,6 +6,7 @@ from .process import run
 def main():
     run(sys.executable, "-m", "tools.verify.toolchains.check")
     run(sys.executable, "-m", "tools.verify.python_tests.run")
+    run(sys.executable, "-m", "tools.verify.realtime_migration.guard")
     run(sys.executable, "-m", "tools.verify.dependencies.dart")
     run(sys.executable, "-m", "tools.verify.links.check")
     run(sys.executable, "-m", "tools.verify.compose_layout.check")

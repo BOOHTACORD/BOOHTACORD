@@ -170,6 +170,7 @@
         "voice_platform_login_failure_admission_total",
         "voice_platform_login_failure_completion_total",
         "voice_platform_login_reservations_active",
+        "voice_platform_maintenance_observer_reads_total",
         "voice_platform_registration_welcome",
         "voice_platform_registration_welcome_total"
       ]
@@ -332,7 +333,6 @@
       "coverage_and_limits": "Private Ping/control/roster aggregates and optional allowlisted LiveKit scrape. No RTP/RTCP proxy or load/capacity claim.",
       "signals": [
         "boohtacord.incident.livekit.snapshot",
-        "voice.roster.initial",
         "voice_platform_sfu_room_service_calls_total",
         "voice_platform_sfu_room_service_configured",
         "voice_platform_sfu_room_service_http_failures_total",
@@ -341,16 +341,16 @@
         "voice_platform_sfu_room_service_seconds",
         "voice_platform_sfu_room_service_transport_failures_total",
         "voice_platform_voice_roster_failures_total",
-        "voice_platform_voice_roster_initial_seconds",
-        "voice_platform_voice_roster_initial_total",
-        "voice_platform_voice_roster_last_success_timestamp_seconds",
-        "voice_platform_voice_roster_observation_enabled",
         "voice_platform_voice_roster_requested_rooms",
         "voice_platform_voice_roster_snapshot_seconds",
         "voice_platform_voice_roster_snapshots_total",
-        "voice_platform_voice_roster_stream_ends_total",
-        "voice_platform_voice_roster_streams_active",
-        "voice_roster.failure"
+        "voice_platform_voice_roster_ws_delivery_seconds",
+        "voice_platform_voice_roster_ws_delivery_total",
+        "voice_platform_voice_roster_ws_initial_total",
+        "voice_platform_voice_roster_ws_last_success_timestamp_seconds",
+        "voice_platform_voice_roster_ws_observation_enabled",
+        "voice_platform_voice_roster_ws_refresh_total",
+        "voice_platform_voice_roster_ws_subscribers"
       ]
     },
     {
@@ -368,11 +368,14 @@
         "voice.lease_notification.dispatch",
         "voice.sfu_revocation.attempt",
         "voice.sfu_revocation.dispatch",
+        "voice_platform_realtime_capability_connections_active",
+        "voice_platform_realtime_capability_connections_total",
         "voice_platform_realtime_connection_ready_seconds",
         "voice_platform_realtime_connections_active",
         "voice_platform_realtime_connections_rejected_total",
         "voice_platform_realtime_connections_total",
         "voice_platform_realtime_event_delivery_seconds",
+        "voice_platform_realtime_event_stage_seconds",
         "voice_platform_realtime_reconnect_outcomes_total",
         "voice_platform_realtime_session_revalidation_failures_total",
         "voice_platform_realtime_session_revalidation_seconds",
@@ -1135,6 +1138,38 @@
       }
     },
     {
+      "scenario": "voice",
+      "producer": [
+        {
+          "path": "backend/internal/observability/http_metrics/maintenance_read.go",
+          "line": 6,
+          "sha256": "c439066cea22cf43892bb14e7a57e8646b3c5ffdc1630e9425cf3255d9cffe9a"
+        }
+      ],
+      "source_name": "voice_platform_maintenance_observer_reads_total",
+      "exported_name": "voice_platform_maintenance_observer_reads_total",
+      "type": "Counter",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "outcome"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "prometheus defaults",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
       "scenario": "telemetry",
       "producer": [
         {
@@ -1204,9 +1239,41 @@
       "scenario": "realtime",
       "producer": [
         {
+          "path": "backend/internal/observability/http_metrics/realtime_capabilities.go",
+          "line": 21,
+          "sha256": "ff5f031be8dea1e566e62e37a866c1c2daea886d0ea249fb251914add518e92d"
+        }
+      ],
+      "source_name": "voice_platform_realtime_capability_connections_total",
+      "exported_name": "voice_platform_realtime_capability_connections_total",
+      "type": "Counter",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "capability"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "prometheus defaults",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "realtime",
+      "producer": [
+        {
           "path": "backend/internal/observability/http_metrics/realtime_connections.go",
           "line": 25,
-          "sha256": "d034282bc1ba2e6b93356c6c10af0a307df0cb9792fee9379add33a6e6ae611f"
+          "sha256": "e1a4fab33febbcfcc76f8bb6ac13b2e5be579eabf9a2be3113a28c26c367e864"
         }
       ],
       "source_name": "voice_platform_realtime_connections_rejected_total",
@@ -1236,7 +1303,7 @@
         {
           "path": "backend/internal/observability/http_metrics/realtime_connections.go",
           "line": 22,
-          "sha256": "d034282bc1ba2e6b93356c6c10af0a307df0cb9792fee9379add33a6e6ae611f"
+          "sha256": "e1a4fab33febbcfcc76f8bb6ac13b2e5be579eabf9a2be3113a28c26c367e864"
         }
       ],
       "source_name": "voice_platform_realtime_connections_total",
@@ -1298,7 +1365,7 @@
         {
           "path": "backend/internal/observability/http_metrics/realtime_connections.go",
           "line": 24,
-          "sha256": "d034282bc1ba2e6b93356c6c10af0a307df0cb9792fee9379add33a6e6ae611f"
+          "sha256": "e1a4fab33febbcfcc76f8bb6ac13b2e5be579eabf9a2be3113a28c26c367e864"
         }
       ],
       "source_name": "voice_platform_realtime_session_revalidation_failures_total",
@@ -1375,7 +1442,7 @@
         {
           "path": "backend/internal/observability/http_metrics/voice_roster.go",
           "line": 19,
-          "sha256": "f437ded65b28d1b8c531cdcf8abf7592f916c56c85406a1669acfbf03fb6b43b"
+          "sha256": "5b302af338ae53c18f09f2bcd420eb98781b2c66a8342c43b02270fcc6a15fd5"
         }
       ],
       "source_name": "voice_platform_sfu_room_service_calls_total",
@@ -1412,9 +1479,9 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/failure_classes.go",
+          "path": "backend/internal/observability/roster_dependency_metrics/failure_classes.go",
           "line": 19,
-          "sha256": "3d9a3b53f2656bf0978a1cbb48b6231abb641932661aed4a731a57ffe2bd3f7d"
+          "sha256": "d8a34538c7c304cd525e565fa55b633699c4d1653bbd7c55242ade3d1f872692"
         }
       ],
       "source_name": "voice_platform_sfu_room_service_http_failures_total",
@@ -1451,9 +1518,9 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/failure_classes.go",
+          "path": "backend/internal/observability/roster_dependency_metrics/failure_classes.go",
           "line": 18,
-          "sha256": "3d9a3b53f2656bf0978a1cbb48b6231abb641932661aed4a731a57ffe2bd3f7d"
+          "sha256": "d8a34538c7c304cd525e565fa55b633699c4d1653bbd7c55242ade3d1f872692"
         }
       ],
       "source_name": "voice_platform_sfu_room_service_transport_failures_total",
@@ -1522,9 +1589,9 @@
       "scenario": "presence",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/gate.go",
+          "path": "backend/internal/observability/roster_dependency_metrics/gate.go",
           "line": 20,
-          "sha256": "ffb2f4532bc156b98d3e8beb43eb8132d22e176f62ef38a183ee75121f316ea4"
+          "sha256": "033a50069eead75a1c13208d4f897a555930a81f4888a1c00a3c87d8e47e84ae"
         }
       ],
       "source_name": "voice_platform_voice_presence_gate_total",
@@ -1562,7 +1629,7 @@
         {
           "path": "backend/internal/observability/http_metrics/voice_roster.go",
           "line": 21,
-          "sha256": "f437ded65b28d1b8c531cdcf8abf7592f916c56c85406a1669acfbf03fb6b43b"
+          "sha256": "5b302af338ae53c18f09f2bcd420eb98781b2c66a8342c43b02270fcc6a15fd5"
         }
       ],
       "source_name": "voice_platform_voice_roster_failures_total",
@@ -1598,13 +1665,87 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/metrics.go",
-          "line": 25,
-          "sha256": "6815c73df1e33b3cdc35337f7d2c8bcfd0f40a4a3b2a7fefdf888d9556e3517a"
+          "path": "backend/internal/observability/http_metrics/voice_roster.go",
+          "line": 20,
+          "sha256": "5b302af338ae53c18f09f2bcd420eb98781b2c66a8342c43b02270fcc6a15fd5"
         }
       ],
-      "source_name": "voice_platform_voice_roster_initial_total",
-      "exported_name": "voice_platform_voice_roster_initial_total",
+      "source_name": "voice_platform_voice_roster_snapshots_total",
+      "exported_name": "voice_platform_voice_roster_snapshots_total",
+      "type": "Counter",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "outcome"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "prometheus defaults",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "livekit",
+      "producer": [
+        {
+          "path": "backend/internal/observability/roster_ws_metrics/metrics.go",
+          "line": 23,
+          "sha256": "88c14ad66ebba1ab4cef1eadad7e2c63d4436b0c81d4fc50957d52de479e1a39"
+        }
+      ],
+      "source_name": "voice_platform_voice_roster_ws_delivery_total",
+      "exported_name": "voice_platform_voice_roster_ws_delivery_total",
+      "type": "Counter",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "outcome"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "prometheus defaults",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/dashboards/voice-roster.json",
+          "dashboard_uid": "boohtacord-voice-roster",
+          "panel": 6
+        },
+        {
+          "path": "docker/observability/voice-roster-alerts.yaml",
+          "kind": "alert-rule"
+        }
+      ],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "livekit",
+      "producer": [
+        {
+          "path": "backend/internal/observability/roster_ws_metrics/metrics.go",
+          "line": 22,
+          "sha256": "88c14ad66ebba1ab4cef1eadad7e2c63d4436b0c81d4fc50957d52de479e1a39"
+        }
+      ],
+      "source_name": "voice_platform_voice_roster_ws_initial_total",
+      "exported_name": "voice_platform_voice_roster_ws_initial_total",
       "type": "Counter",
       "unit": "1",
       "declared_unit": "1",
@@ -1640,51 +1781,19 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/http_metrics/voice_roster.go",
-          "line": 20,
-          "sha256": "f437ded65b28d1b8c531cdcf8abf7592f916c56c85406a1669acfbf03fb6b43b"
+          "path": "backend/internal/observability/roster_ws_metrics/metrics.go",
+          "line": 24,
+          "sha256": "88c14ad66ebba1ab4cef1eadad7e2c63d4436b0c81d4fc50957d52de479e1a39"
         }
       ],
-      "source_name": "voice_platform_voice_roster_snapshots_total",
-      "exported_name": "voice_platform_voice_roster_snapshots_total",
+      "source_name": "voice_platform_voice_roster_ws_refresh_total",
+      "exported_name": "voice_platform_voice_roster_ws_refresh_total",
       "type": "Counter",
       "unit": "1",
       "declared_unit": "1",
       "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
       "attributes_or_labels": [
         "outcome"
-      ],
-      "label_scope": "declared constructor labels",
-      "buckets": "prometheus defaults",
-      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
-      "storage": "private Prometheus when the declared delivery target is configured",
-      "consumers": [],
-      "decision": "keep",
-      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
-      "delivery": {
-        "transport": "private-prometheus",
-        "runtime_status": "NOT_RUN",
-        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
-        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
-      }
-    },
-    {
-      "scenario": "livekit",
-      "producer": [
-        {
-          "path": "backend/internal/observability/roster_stream_metrics/metrics.go",
-          "line": 27,
-          "sha256": "6815c73df1e33b3cdc35337f7d2c8bcfd0f40a4a3b2a7fefdf888d9556e3517a"
-        }
-      ],
-      "source_name": "voice_platform_voice_roster_stream_ends_total",
-      "exported_name": "voice_platform_voice_roster_stream_ends_total",
-      "type": "Counter",
-      "unit": "1",
-      "declared_unit": "1",
-      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
-      "attributes_or_labels": [
-        "reason"
       ],
       "label_scope": "declared constructor labels",
       "buckets": "prometheus defaults",
@@ -1711,8 +1820,8 @@
       "producer": [
         {
           "path": "backend/internal/observability/http_metrics/recorder.go",
-          "line": 36,
-          "sha256": "9794c2770c4d378f6002ba4a144618c62b1a1a5f324fc3401969a61447276a4d"
+          "line": 41,
+          "sha256": "f35a6cdceae94582a5689bec3afb71d4b0f0d21e5b9010c27d451dc50c1541d8"
         }
       ],
       "source_name": "voice_platform_voice_sfu_revocations_total",
@@ -2482,9 +2591,9 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/export.go",
-          "line": 29,
-          "sha256": "84975a8f565edc481fa67a640c01e5f398f390aec35b4c2efa717eb1c0feae92"
+          "path": "backend/internal/observability/roster_dependency_metrics/export.go",
+          "line": 18,
+          "sha256": "a44d59be0b4613d372f9e2d22800dcc5572f6a9387591b94726ab4526256f1e8"
         }
       ],
       "source_name": "voice_platform_sfu_room_service_seconds",
@@ -2521,45 +2630,9 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/export.go",
-          "line": 27,
-          "sha256": "84975a8f565edc481fa67a640c01e5f398f390aec35b4c2efa717eb1c0feae92"
-        }
-      ],
-      "source_name": "voice_platform_voice_roster_initial_seconds",
-      "exported_name": "voice_platform_voice_roster_initial_seconds",
-      "type": "Float64Histogram",
-      "unit": "s",
-      "declared_unit": "s",
-      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
-      "attributes_or_labels": [],
-      "label_scope": "bounded per-instrument Add/Record/Observe keys; conditional applicability documented inline",
-      "buckets": ".005, .01, .025, .05, .1, .25, .5, 1, 2.5, 5, 10",
-      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
-      "storage": "private Prometheus when the declared delivery target is configured",
-      "consumers": [
-        {
-          "path": "docker/observability/dashboards/voice-roster.json",
-          "dashboard_uid": "boohtacord-voice-roster",
-          "panel": 3
-        }
-      ],
-      "decision": "keep",
-      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
-      "delivery": {
-        "transport": "OTLP",
-        "runtime_status": "NOT_RUN",
-        "boundary": "API OTLP -> Collector -> Prometheus exporter -> private Prometheus; client spans additionally pass authenticated sanitizing relay",
-        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
-      }
-    },
-    {
-      "scenario": "livekit",
-      "producer": [
-        {
-          "path": "backend/internal/observability/roster_stream_metrics/snapshot_export.go",
+          "path": "backend/internal/observability/roster_dependency_metrics/snapshot_export.go",
           "line": 22,
-          "sha256": "1c28127503093d714788fe6927f9467891469984ef94d7fe1e0147080282d5cb"
+          "sha256": "261786ff6ff083450c9f2107b9145ee123d7d05ab27bcb3d53951a678876f9fe"
         }
       ],
       "source_name": "voice_platform_voice_roster_requested_rooms",
@@ -2587,9 +2660,9 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/snapshot_export.go",
+          "path": "backend/internal/observability/roster_dependency_metrics/snapshot_export.go",
           "line": 21,
-          "sha256": "1c28127503093d714788fe6927f9467891469984ef94d7fe1e0147080282d5cb"
+          "sha256": "261786ff6ff083450c9f2107b9145ee123d7d05ab27bcb3d53951a678876f9fe"
         }
       ],
       "source_name": "voice_platform_voice_roster_snapshot_seconds",
@@ -2604,6 +2677,42 @@
       "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
       "storage": "private Prometheus when the declared delivery target is configured",
       "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "OTLP",
+        "runtime_status": "NOT_RUN",
+        "boundary": "API OTLP -> Collector -> Prometheus exporter -> private Prometheus; client spans additionally pass authenticated sanitizing relay",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "livekit",
+      "producer": [
+        {
+          "path": "backend/internal/observability/roster_ws_metrics/export.go",
+          "line": 23,
+          "sha256": "4d48181075d98e8a1f3b57e6666155f5fabe90be4a4125ec1fd263ba3c282b78"
+        }
+      ],
+      "source_name": "voice_platform_voice_roster_ws_delivery_seconds",
+      "exported_name": "voice_platform_voice_roster_ws_delivery_seconds",
+      "type": "Float64Histogram",
+      "unit": "s",
+      "declared_unit": "s",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [],
+      "label_scope": "bounded per-instrument Add/Record/Observe keys; conditional applicability documented inline",
+      "buckets": ".005, .01, .025, .05, .1, .25, .5, 1, 2.5, 5, 10",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/dashboards/voice-roster.json",
+          "dashboard_uid": "boohtacord-voice-roster",
+          "panel": 3
+        }
+      ],
       "decision": "keep",
       "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
       "delivery": {
@@ -3292,9 +3401,9 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/freshness.go",
-          "line": 37,
-          "sha256": "35cd5e7d3115781284fa06fece9107fa32d54c7be1c35c91b73eebc5bfbe85d5"
+          "path": "backend/internal/observability/roster_dependency_metrics/freshness.go",
+          "line": 31,
+          "sha256": "596e4d799503ee1a0f88e141c290dd296c78f85bfb2db9546ddd606174b18331"
         }
       ],
       "source_name": "voice_platform_sfu_room_service_configured",
@@ -3322,9 +3431,9 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/freshness.go",
-          "line": 35,
-          "sha256": "35cd5e7d3115781284fa06fece9107fa32d54c7be1c35c91b73eebc5bfbe85d5"
+          "path": "backend/internal/observability/roster_dependency_metrics/freshness.go",
+          "line": 29,
+          "sha256": "596e4d799503ee1a0f88e141c290dd296c78f85bfb2db9546ddd606174b18331"
         }
       ],
       "source_name": "voice_platform_sfu_room_service_last_attempt_timestamp_seconds",
@@ -3354,9 +3463,9 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/freshness.go",
-          "line": 36,
-          "sha256": "35cd5e7d3115781284fa06fece9107fa32d54c7be1c35c91b73eebc5bfbe85d5"
+          "path": "backend/internal/observability/roster_dependency_metrics/freshness.go",
+          "line": 30,
+          "sha256": "596e4d799503ee1a0f88e141c290dd296c78f85bfb2db9546ddd606174b18331"
         }
       ],
       "source_name": "voice_platform_sfu_room_service_last_success_timestamp_seconds",
@@ -3392,13 +3501,13 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/freshness.go",
-          "line": 38,
-          "sha256": "35cd5e7d3115781284fa06fece9107fa32d54c7be1c35c91b73eebc5bfbe85d5"
+          "path": "backend/internal/observability/roster_ws_metrics/export.go",
+          "line": 24,
+          "sha256": "4d48181075d98e8a1f3b57e6666155f5fabe90be4a4125ec1fd263ba3c282b78"
         }
       ],
-      "source_name": "voice_platform_voice_roster_last_success_timestamp_seconds",
-      "exported_name": "voice_platform_voice_roster_last_success_timestamp_seconds",
+      "source_name": "voice_platform_voice_roster_ws_last_success_timestamp_seconds",
+      "exported_name": "voice_platform_voice_roster_ws_last_success_timestamp_seconds",
       "type": "Float64ObservableGauge",
       "unit": "s",
       "declared_unit": "s",
@@ -3432,13 +3541,13 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/freshness.go",
-          "line": 39,
-          "sha256": "35cd5e7d3115781284fa06fece9107fa32d54c7be1c35c91b73eebc5bfbe85d5"
+          "path": "backend/internal/observability/roster_ws_metrics/export.go",
+          "line": 25,
+          "sha256": "4d48181075d98e8a1f3b57e6666155f5fabe90be4a4125ec1fd263ba3c282b78"
         }
       ],
-      "source_name": "voice_platform_voice_roster_observation_enabled",
-      "exported_name": "voice_platform_voice_roster_observation_enabled",
+      "source_name": "voice_platform_voice_roster_ws_observation_enabled",
+      "exported_name": "voice_platform_voice_roster_ws_observation_enabled",
       "type": "Float64ObservableGauge",
       "unit": "1",
       "declared_unit": "1",
@@ -4694,9 +4803,41 @@
       "scenario": "realtime",
       "producer": [
         {
+          "path": "backend/internal/observability/http_metrics/realtime_capabilities.go",
+          "line": 20,
+          "sha256": "ff5f031be8dea1e566e62e37a866c1c2daea886d0ea249fb251914add518e92d"
+        }
+      ],
+      "source_name": "voice_platform_realtime_capability_connections_active",
+      "exported_name": "voice_platform_realtime_capability_connections_active",
+      "type": "Gauge",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "capability"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "prometheus defaults",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "realtime",
+      "producer": [
+        {
           "path": "backend/internal/observability/http_metrics/realtime_connections.go",
           "line": 20,
-          "sha256": "d034282bc1ba2e6b93356c6c10af0a307df0cb9792fee9379add33a6e6ae611f"
+          "sha256": "e1a4fab33febbcfcc76f8bb6ac13b2e5be579eabf9a2be3113a28c26c367e864"
         }
       ],
       "source_name": "voice_platform_realtime_connections_active",
@@ -4705,7 +4846,9 @@
       "unit": "1",
       "declared_unit": "1",
       "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
-      "attributes_or_labels": [],
+      "attributes_or_labels": [
+        "scope"
+      ],
       "label_scope": "declared constructor labels",
       "buckets": "prometheus defaults",
       "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
@@ -4724,9 +4867,9 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/freshness.go",
-          "line": 30,
-          "sha256": "35cd5e7d3115781284fa06fece9107fa32d54c7be1c35c91b73eebc5bfbe85d5"
+          "path": "backend/internal/observability/roster_dependency_metrics/freshness.go",
+          "line": 25,
+          "sha256": "596e4d799503ee1a0f88e141c290dd296c78f85bfb2db9546ddd606174b18331"
         }
       ],
       "source_name": "voice_platform_sfu_room_service_configured",
@@ -4754,9 +4897,9 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/freshness.go",
-          "line": 28,
-          "sha256": "35cd5e7d3115781284fa06fece9107fa32d54c7be1c35c91b73eebc5bfbe85d5"
+          "path": "backend/internal/observability/roster_dependency_metrics/freshness.go",
+          "line": 23,
+          "sha256": "596e4d799503ee1a0f88e141c290dd296c78f85bfb2db9546ddd606174b18331"
         }
       ],
       "source_name": "voice_platform_sfu_room_service_last_attempt_timestamp_seconds",
@@ -4786,9 +4929,9 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/freshness.go",
-          "line": 29,
-          "sha256": "35cd5e7d3115781284fa06fece9107fa32d54c7be1c35c91b73eebc5bfbe85d5"
+          "path": "backend/internal/observability/roster_dependency_metrics/freshness.go",
+          "line": 24,
+          "sha256": "596e4d799503ee1a0f88e141c290dd296c78f85bfb2db9546ddd606174b18331"
         }
       ],
       "source_name": "voice_platform_sfu_room_service_last_success_timestamp_seconds",
@@ -4944,9 +5087,9 @@
       "scenario": "presence",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/gate.go",
+          "path": "backend/internal/observability/roster_dependency_metrics/gate.go",
           "line": 21,
-          "sha256": "ffb2f4532bc156b98d3e8beb43eb8132d22e176f62ef38a183ee75121f316ea4"
+          "sha256": "033a50069eead75a1c13208d4f897a555930a81f4888a1c00a3c87d8e47e84ae"
         }
       ],
       "source_name": "voice_platform_voice_presence_refreshes_active",
@@ -4980,13 +5123,13 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/freshness.go",
+          "path": "backend/internal/observability/roster_ws_metrics/metrics.go",
           "line": 26,
-          "sha256": "35cd5e7d3115781284fa06fece9107fa32d54c7be1c35c91b73eebc5bfbe85d5"
+          "sha256": "88c14ad66ebba1ab4cef1eadad7e2c63d4436b0c81d4fc50957d52de479e1a39"
         }
       ],
-      "source_name": "voice_platform_voice_roster_last_success_timestamp_seconds",
-      "exported_name": "voice_platform_voice_roster_last_success_timestamp_seconds",
+      "source_name": "voice_platform_voice_roster_ws_last_success_timestamp_seconds",
+      "exported_name": "voice_platform_voice_roster_ws_last_success_timestamp_seconds",
       "type": "Gauge",
       "unit": "s",
       "declared_unit": "s",
@@ -5020,13 +5163,13 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/freshness.go",
+          "path": "backend/internal/observability/roster_ws_metrics/metrics.go",
           "line": 27,
-          "sha256": "35cd5e7d3115781284fa06fece9107fa32d54c7be1c35c91b73eebc5bfbe85d5"
+          "sha256": "88c14ad66ebba1ab4cef1eadad7e2c63d4436b0c81d4fc50957d52de479e1a39"
         }
       ],
-      "source_name": "voice_platform_voice_roster_observation_enabled",
-      "exported_name": "voice_platform_voice_roster_observation_enabled",
+      "source_name": "voice_platform_voice_roster_ws_observation_enabled",
+      "exported_name": "voice_platform_voice_roster_ws_observation_enabled",
       "type": "Gauge",
       "unit": "1",
       "declared_unit": "1",
@@ -5060,13 +5203,13 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/metrics.go",
-          "line": 24,
-          "sha256": "6815c73df1e33b3cdc35337f7d2c8bcfd0f40a4a3b2a7fefdf888d9556e3517a"
+          "path": "backend/internal/observability/roster_ws_metrics/metrics.go",
+          "line": 21,
+          "sha256": "88c14ad66ebba1ab4cef1eadad7e2c63d4436b0c81d4fc50957d52de479e1a39"
         }
       ],
-      "source_name": "voice_platform_voice_roster_streams_active",
-      "exported_name": "voice_platform_voice_roster_streams_active",
+      "source_name": "voice_platform_voice_roster_ws_subscribers",
+      "exported_name": "voice_platform_voice_roster_ws_subscribers",
       "type": "Gauge",
       "unit": "1",
       "declared_unit": "1",
@@ -5722,7 +5865,7 @@
         {
           "path": "backend/internal/observability/http_metrics/realtime_connections.go",
           "line": 21,
-          "sha256": "d034282bc1ba2e6b93356c6c10af0a307df0cb9792fee9379add33a6e6ae611f"
+          "sha256": "e1a4fab33febbcfcc76f8bb6ac13b2e5be579eabf9a2be3113a28c26c367e864"
         }
       ],
       "source_name": "voice_platform_realtime_connection_ready_seconds",
@@ -5780,9 +5923,41 @@
       "scenario": "realtime",
       "producer": [
         {
+          "path": "backend/internal/observability/http_metrics/realtime_stages.go",
+          "line": 9,
+          "sha256": "85d41dde9442e7f3a0d9f31036259de8a0bb63b5d3b362d6f4d7a52549738fa0"
+        }
+      ],
+      "source_name": "voice_platform_realtime_event_stage_seconds",
+      "exported_name": "voice_platform_realtime_event_stage_seconds",
+      "type": "Histogram",
+      "unit": "s",
+      "declared_unit": "s",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "stage"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "[]float64{0.001, 0.0025, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "realtime",
+      "producer": [
+        {
           "path": "backend/internal/observability/http_metrics/realtime_connections.go",
           "line": 23,
-          "sha256": "d034282bc1ba2e6b93356c6c10af0a307df0cb9792fee9379add33a6e6ae611f"
+          "sha256": "e1a4fab33febbcfcc76f8bb6ac13b2e5be579eabf9a2be3113a28c26c367e864"
         }
       ],
       "source_name": "voice_platform_realtime_session_revalidation_seconds",
@@ -5810,9 +5985,9 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/metrics.go",
-          "line": 28,
-          "sha256": "6815c73df1e33b3cdc35337f7d2c8bcfd0f40a4a3b2a7fefdf888d9556e3517a"
+          "path": "backend/internal/observability/roster_dependency_metrics/metrics.go",
+          "line": 19,
+          "sha256": "d1751ca92f5120d28a587e22efd064b0272cc0a13121f1c23edf87c03596d6e7"
         }
       ],
       "source_name": "voice_platform_sfu_room_service_seconds",
@@ -5849,45 +6024,9 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/metrics.go",
-          "line": 26,
-          "sha256": "6815c73df1e33b3cdc35337f7d2c8bcfd0f40a4a3b2a7fefdf888d9556e3517a"
-        }
-      ],
-      "source_name": "voice_platform_voice_roster_initial_seconds",
-      "exported_name": "voice_platform_voice_roster_initial_seconds",
-      "type": "Histogram",
-      "unit": "s",
-      "declared_unit": "s",
-      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
-      "attributes_or_labels": [],
-      "label_scope": "declared constructor labels",
-      "buckets": "prometheus defaults",
-      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
-      "storage": "private Prometheus when the declared delivery target is configured",
-      "consumers": [
-        {
-          "path": "docker/observability/dashboards/voice-roster.json",
-          "dashboard_uid": "boohtacord-voice-roster",
-          "panel": 3
-        }
-      ],
-      "decision": "keep",
-      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
-      "delivery": {
-        "transport": "private-prometheus",
-        "runtime_status": "NOT_RUN",
-        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
-        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
-      }
-    },
-    {
-      "scenario": "livekit",
-      "producer": [
-        {
           "path": "backend/internal/observability/http_metrics/voice_roster.go",
           "line": 23,
-          "sha256": "f437ded65b28d1b8c531cdcf8abf7592f916c56c85406a1669acfbf03fb6b43b"
+          "sha256": "5b302af338ae53c18f09f2bcd420eb98781b2c66a8342c43b02270fcc6a15fd5"
         }
       ],
       "source_name": "voice_platform_voice_roster_requested_rooms",
@@ -5917,7 +6056,7 @@
         {
           "path": "backend/internal/observability/http_metrics/voice_roster.go",
           "line": 22,
-          "sha256": "f437ded65b28d1b8c531cdcf8abf7592f916c56c85406a1669acfbf03fb6b43b"
+          "sha256": "5b302af338ae53c18f09f2bcd420eb98781b2c66a8342c43b02270fcc6a15fd5"
         }
       ],
       "source_name": "voice_platform_voice_roster_snapshot_seconds",
@@ -5932,6 +6071,42 @@
       "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
       "storage": "private Prometheus when the declared delivery target is configured",
       "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "livekit",
+      "producer": [
+        {
+          "path": "backend/internal/observability/roster_ws_metrics/metrics.go",
+          "line": 25,
+          "sha256": "88c14ad66ebba1ab4cef1eadad7e2c63d4436b0c81d4fc50957d52de479e1a39"
+        }
+      ],
+      "source_name": "voice_platform_voice_roster_ws_delivery_seconds",
+      "exported_name": "voice_platform_voice_roster_ws_delivery_seconds",
+      "type": "Histogram",
+      "unit": "s",
+      "declared_unit": "s",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [],
+      "label_scope": "declared constructor labels",
+      "buckets": "prometheus defaults",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/dashboards/voice-roster.json",
+          "dashboard_uid": "boohtacord-voice-roster",
+          "panel": 3
+        }
+      ],
       "decision": "keep",
       "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
       "delivery": {
@@ -6470,6 +6645,36 @@
       }
     },
     {
+      "scenario": "realtime",
+      "producer": [
+        {
+          "path": "backend/internal/observability/http_metrics/realtime_capabilities.go",
+          "line": 26,
+          "sha256": "ff5f031be8dea1e566e62e37a866c1c2daea886d0ea249fb251914add518e92d"
+        }
+      ],
+      "source_name": "voice_platform_realtime_capability_connections_total",
+      "exported_name": "voice_platform_realtime_capability_connections_total",
+      "type": "Int64Counter",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [],
+      "label_scope": "bounded per-instrument Add/Record/Observe keys; conditional applicability documented inline",
+      "buckets": "SDK default / explicit definition map",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "OTLP",
+        "runtime_status": "NOT_RUN",
+        "boundary": "API OTLP -> Collector -> Prometheus exporter -> private Prometheus; client spans additionally pass authenticated sanitizing relay",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
       "scenario": "voice",
       "producer": [
         {
@@ -6520,9 +6725,9 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/export.go",
-          "line": 30,
-          "sha256": "84975a8f565edc481fa67a640c01e5f398f390aec35b4c2efa717eb1c0feae92"
+          "path": "backend/internal/observability/roster_dependency_metrics/export.go",
+          "line": 19,
+          "sha256": "a44d59be0b4613d372f9e2d22800dcc5572f6a9387591b94726ab4526256f1e8"
         }
       ],
       "source_name": "voice_platform_sfu_room_service_calls_total",
@@ -6559,9 +6764,9 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/failure_classes.go",
+          "path": "backend/internal/observability/roster_dependency_metrics/failure_classes.go",
           "line": 24,
-          "sha256": "3d9a3b53f2656bf0978a1cbb48b6231abb641932661aed4a731a57ffe2bd3f7d"
+          "sha256": "d8a34538c7c304cd525e565fa55b633699c4d1653bbd7c55242ade3d1f872692"
         }
       ],
       "source_name": "voice_platform_sfu_room_service_http_failures_total",
@@ -6598,9 +6803,9 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/failure_classes.go",
+          "path": "backend/internal/observability/roster_dependency_metrics/failure_classes.go",
           "line": 23,
-          "sha256": "3d9a3b53f2656bf0978a1cbb48b6231abb641932661aed4a731a57ffe2bd3f7d"
+          "sha256": "d8a34538c7c304cd525e565fa55b633699c4d1653bbd7c55242ade3d1f872692"
         }
       ],
       "source_name": "voice_platform_sfu_room_service_transport_failures_total",
@@ -6637,9 +6842,9 @@
       "scenario": "presence",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/gate.go",
+          "path": "backend/internal/observability/roster_dependency_metrics/gate.go",
           "line": 25,
-          "sha256": "ffb2f4532bc156b98d3e8beb43eb8132d22e176f62ef38a183ee75121f316ea4"
+          "sha256": "033a50069eead75a1c13208d4f897a555930a81f4888a1c00a3c87d8e47e84ae"
         }
       ],
       "source_name": "voice_platform_voice_presence_gate_total",
@@ -6675,9 +6880,9 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/snapshot_export.go",
+          "path": "backend/internal/observability/roster_dependency_metrics/snapshot_export.go",
           "line": 20,
-          "sha256": "1c28127503093d714788fe6927f9467891469984ef94d7fe1e0147080282d5cb"
+          "sha256": "261786ff6ff083450c9f2107b9145ee123d7d05ab27bcb3d53951a678876f9fe"
         }
       ],
       "source_name": "voice_platform_voice_roster_failures_total",
@@ -6713,51 +6918,9 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/export.go",
-          "line": 23,
-          "sha256": "84975a8f565edc481fa67a640c01e5f398f390aec35b4c2efa717eb1c0feae92"
-        }
-      ],
-      "source_name": "voice_platform_voice_roster_initial_total",
-      "exported_name": "voice_platform_voice_roster_initial_total",
-      "type": "Int64Counter",
-      "unit": "1",
-      "declared_unit": "1",
-      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
-      "attributes_or_labels": [
-        "outcome"
-      ],
-      "label_scope": "bounded per-instrument Add/Record/Observe keys; conditional applicability documented inline",
-      "buckets": "SDK default / explicit definition map",
-      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
-      "storage": "private Prometheus when the declared delivery target is configured",
-      "consumers": [
-        {
-          "path": "docker/observability/dashboards/voice-roster.json",
-          "dashboard_uid": "boohtacord-voice-roster",
-          "panel": 4
-        },
-        {
-          "path": "docker/observability/voice-roster-alerts.yaml",
-          "kind": "alert-rule"
-        }
-      ],
-      "decision": "keep",
-      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
-      "delivery": {
-        "transport": "OTLP",
-        "runtime_status": "NOT_RUN",
-        "boundary": "API OTLP -> Collector -> Prometheus exporter -> private Prometheus; client spans additionally pass authenticated sanitizing relay",
-        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
-      }
-    },
-    {
-      "scenario": "livekit",
-      "producer": [
-        {
-          "path": "backend/internal/observability/roster_stream_metrics/snapshot_export.go",
+          "path": "backend/internal/observability/roster_dependency_metrics/snapshot_export.go",
           "line": 19,
-          "sha256": "1c28127503093d714788fe6927f9467891469984ef94d7fe1e0147080282d5cb"
+          "sha256": "261786ff6ff083450c9f2107b9145ee123d7d05ab27bcb3d53951a678876f9fe"
         }
       ],
       "source_name": "voice_platform_voice_roster_snapshots_total",
@@ -6787,20 +6950,98 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/export.go",
-          "line": 28,
-          "sha256": "84975a8f565edc481fa67a640c01e5f398f390aec35b4c2efa717eb1c0feae92"
+          "path": "backend/internal/observability/roster_ws_metrics/export.go",
+          "line": 21,
+          "sha256": "4d48181075d98e8a1f3b57e6666155f5fabe90be4a4125ec1fd263ba3c282b78"
         }
       ],
-      "source_name": "voice_platform_voice_roster_stream_ends_total",
-      "exported_name": "voice_platform_voice_roster_stream_ends_total",
+      "source_name": "voice_platform_voice_roster_ws_delivery_total",
+      "exported_name": "voice_platform_voice_roster_ws_delivery_total",
       "type": "Int64Counter",
       "unit": "1",
       "declared_unit": "1",
       "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
-      "attributes_or_labels": [
-        "reason"
+      "attributes_or_labels": [],
+      "label_scope": "bounded per-instrument Add/Record/Observe keys; conditional applicability documented inline",
+      "buckets": "SDK default / explicit definition map",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/dashboards/voice-roster.json",
+          "dashboard_uid": "boohtacord-voice-roster",
+          "panel": 6
+        },
+        {
+          "path": "docker/observability/voice-roster-alerts.yaml",
+          "kind": "alert-rule"
+        }
       ],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "OTLP",
+        "runtime_status": "NOT_RUN",
+        "boundary": "API OTLP -> Collector -> Prometheus exporter -> private Prometheus; client spans additionally pass authenticated sanitizing relay",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "livekit",
+      "producer": [
+        {
+          "path": "backend/internal/observability/roster_ws_metrics/export.go",
+          "line": 20,
+          "sha256": "4d48181075d98e8a1f3b57e6666155f5fabe90be4a4125ec1fd263ba3c282b78"
+        }
+      ],
+      "source_name": "voice_platform_voice_roster_ws_initial_total",
+      "exported_name": "voice_platform_voice_roster_ws_initial_total",
+      "type": "Int64Counter",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [],
+      "label_scope": "bounded per-instrument Add/Record/Observe keys; conditional applicability documented inline",
+      "buckets": "SDK default / explicit definition map",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/dashboards/voice-roster.json",
+          "dashboard_uid": "boohtacord-voice-roster",
+          "panel": 4
+        },
+        {
+          "path": "docker/observability/voice-roster-alerts.yaml",
+          "kind": "alert-rule"
+        }
+      ],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "OTLP",
+        "runtime_status": "NOT_RUN",
+        "boundary": "API OTLP -> Collector -> Prometheus exporter -> private Prometheus; client spans additionally pass authenticated sanitizing relay",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "livekit",
+      "producer": [
+        {
+          "path": "backend/internal/observability/roster_ws_metrics/export.go",
+          "line": 22,
+          "sha256": "4d48181075d98e8a1f3b57e6666155f5fabe90be4a4125ec1fd263ba3c282b78"
+        }
+      ],
+      "source_name": "voice_platform_voice_roster_ws_refresh_total",
+      "exported_name": "voice_platform_voice_roster_ws_refresh_total",
+      "type": "Int64Counter",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [],
       "label_scope": "bounded per-instrument Add/Record/Observe keys; conditional applicability documented inline",
       "buckets": "SDK default / explicit definition map",
       "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
@@ -7545,12 +7786,42 @@
       }
     },
     {
+      "scenario": "realtime",
+      "producer": [
+        {
+          "path": "backend/internal/observability/http_metrics/realtime_capabilities.go",
+          "line": 25,
+          "sha256": "ff5f031be8dea1e566e62e37a866c1c2daea886d0ea249fb251914add518e92d"
+        }
+      ],
+      "source_name": "voice_platform_realtime_capability_connections_active",
+      "exported_name": "voice_platform_realtime_capability_connections_active",
+      "type": "Int64UpDownCounter",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [],
+      "label_scope": "bounded per-instrument Add/Record/Observe keys; conditional applicability documented inline",
+      "buckets": "SDK default / explicit definition map",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "OTLP",
+        "runtime_status": "NOT_RUN",
+        "boundary": "API OTLP -> Collector -> Prometheus exporter -> private Prometheus; client spans additionally pass authenticated sanitizing relay",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
       "scenario": "presence",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/gate.go",
+          "path": "backend/internal/observability/roster_dependency_metrics/gate.go",
           "line": 26,
-          "sha256": "ffb2f4532bc156b98d3e8beb43eb8132d22e176f62ef38a183ee75121f316ea4"
+          "sha256": "033a50069eead75a1c13208d4f897a555930a81f4888a1c00a3c87d8e47e84ae"
         }
       ],
       "source_name": "voice_platform_voice_presence_refreshes_active",
@@ -7584,13 +7855,13 @@
       "scenario": "livekit",
       "producer": [
         {
-          "path": "backend/internal/observability/roster_stream_metrics/export.go",
-          "line": 22,
-          "sha256": "84975a8f565edc481fa67a640c01e5f398f390aec35b4c2efa717eb1c0feae92"
+          "path": "backend/internal/observability/roster_ws_metrics/export.go",
+          "line": 19,
+          "sha256": "4d48181075d98e8a1f3b57e6666155f5fabe90be4a4125ec1fd263ba3c282b78"
         }
       ],
-      "source_name": "voice_platform_voice_roster_streams_active",
-      "exported_name": "voice_platform_voice_roster_streams_active",
+      "source_name": "voice_platform_voice_roster_ws_subscribers",
+      "exported_name": "voice_platform_voice_roster_ws_subscribers",
       "type": "Int64UpDownCounter",
       "unit": "1",
       "declared_unit": "1",
@@ -7729,7 +8000,7 @@
         {
           "path": "clients/web/src/telemetry/client_tracing.ts",
           "line": 1,
-          "sha256": "a0c434ce5870f47910afb0a9491e74155ee34ac998a23a331acc5a1a1e75aaa7"
+          "sha256": "392a74d1d449490b4d97d98e1ee551c3a2185120904fa7bbea5c328d6051d9f6"
         },
         {
           "path": "clients/web/src/telemetry/routine_request.ts",
@@ -9904,7 +10175,7 @@
         {
           "path": "clients/flutter/lib/src/features/session/lifecycle/authenticate.dart",
           "line": 1,
-          "sha256": "585374d1e4c62e819c49ee7112bb0d2deddff9c2579e4549c3816f71623333a2"
+          "sha256": "3419205cdffe959a80ce934d8189839a8d0c3195fb8453c643293d27d7ce20c0"
         },
         {
           "path": "clients/web/src/telemetry/action_scope/scope.ts",
@@ -10442,12 +10713,12 @@
         {
           "path": "clients/flutter/lib/src/features/realtime/lifecycle/connect.dart",
           "line": 1,
-          "sha256": "ef479e90fb2672bd3604bbee4ce01784ec4cd211fc37cb14fe8671074a4b949f"
+          "sha256": "30980c0bfdcc936633d7aac758c4f5f574ddee17ac72abf218322475de8dc39a"
         },
         {
           "path": "clients/web/src/realtime/realtime_store.ts",
           "line": 1,
-          "sha256": "b2a237e428c3d9a15125001a095e3cd13ea55a83a50f55c9b4f9794d19f60e4e"
+          "sha256": "5bdc3edf84f534f2270044815f3b1aea652de4e3752afdca785b6b1266e00ba0"
         },
         {
           "path": "clients/web/src/telemetry/action_scope/scope.ts",
@@ -10457,7 +10728,7 @@
         {
           "path": "clients/web/src/telemetry/client_tracing.ts",
           "line": 1,
-          "sha256": "a0c434ce5870f47910afb0a9491e74155ee34ac998a23a331acc5a1a1e75aaa7"
+          "sha256": "392a74d1d449490b4d97d98e1ee551c3a2185120904fa7bbea5c328d6051d9f6"
         }
       ],
       "source_name": "realtime.connect",
@@ -10582,12 +10853,12 @@
         {
           "path": "clients/flutter/lib/src/features/realtime/lifecycle/connect.dart",
           "line": 1,
-          "sha256": "ef479e90fb2672bd3604bbee4ce01784ec4cd211fc37cb14fe8671074a4b949f"
+          "sha256": "30980c0bfdcc936633d7aac758c4f5f574ddee17ac72abf218322475de8dc39a"
         },
         {
           "path": "clients/web/src/realtime/realtime_store.ts",
           "line": 1,
-          "sha256": "b2a237e428c3d9a15125001a095e3cd13ea55a83a50f55c9b4f9794d19f60e4e"
+          "sha256": "5bdc3edf84f534f2270044815f3b1aea652de4e3752afdca785b6b1266e00ba0"
         },
         {
           "path": "clients/web/src/telemetry/action_scope/scope.ts",
@@ -10597,7 +10868,7 @@
         {
           "path": "clients/web/src/telemetry/client_tracing.ts",
           "line": 1,
-          "sha256": "a0c434ce5870f47910afb0a9491e74155ee34ac998a23a331acc5a1a1e75aaa7"
+          "sha256": "392a74d1d449490b4d97d98e1ee551c3a2185120904fa7bbea5c328d6051d9f6"
         }
       ],
       "source_name": "realtime.reconnect",
@@ -10686,7 +10957,7 @@
         {
           "path": "clients/web/src/telemetry/client_tracing.ts",
           "line": 1,
-          "sha256": "a0c434ce5870f47910afb0a9491e74155ee34ac998a23a331acc5a1a1e75aaa7"
+          "sha256": "392a74d1d449490b4d97d98e1ee551c3a2185120904fa7bbea5c328d6051d9f6"
         },
         {
           "path": "clients/web/src/voice/voice_screen_session.ts",
@@ -10742,7 +11013,7 @@
         {
           "path": "clients/web/src/telemetry/client_tracing.ts",
           "line": 1,
-          "sha256": "a0c434ce5870f47910afb0a9491e74155ee34ac998a23a331acc5a1a1e75aaa7"
+          "sha256": "392a74d1d449490b4d97d98e1ee551c3a2185120904fa7bbea5c328d6051d9f6"
         },
         {
           "path": "clients/web/src/voice/voice_screen_session.ts",
@@ -10798,7 +11069,7 @@
         {
           "path": "clients/web/src/telemetry/client_tracing.ts",
           "line": 1,
-          "sha256": "a0c434ce5870f47910afb0a9491e74155ee34ac998a23a331acc5a1a1e75aaa7"
+          "sha256": "392a74d1d449490b4d97d98e1ee551c3a2185120904fa7bbea5c328d6051d9f6"
         },
         {
           "path": "clients/web/src/telemetry/observe_render/screen.ts",
@@ -11158,7 +11429,7 @@
         {
           "path": "clients/web/src/telemetry/client_tracing.ts",
           "line": 1,
-          "sha256": "a0c434ce5870f47910afb0a9491e74155ee34ac998a23a331acc5a1a1e75aaa7"
+          "sha256": "392a74d1d449490b4d97d98e1ee551c3a2185120904fa7bbea5c328d6051d9f6"
         },
         {
           "path": "clients/web/src/telemetry/media_sample/record.ts",
@@ -11277,7 +11548,7 @@
         {
           "path": "clients/web/src/telemetry/client_tracing.ts",
           "line": 1,
-          "sha256": "a0c434ce5870f47910afb0a9491e74155ee34ac998a23a331acc5a1a1e75aaa7"
+          "sha256": "392a74d1d449490b4d97d98e1ee551c3a2185120904fa7bbea5c328d6051d9f6"
         },
         {
           "path": "clients/web/src/voice/voice_session_shutdown.ts",
@@ -11333,7 +11604,7 @@
         {
           "path": "clients/web/src/telemetry/client_tracing.ts",
           "line": 1,
-          "sha256": "a0c434ce5870f47910afb0a9491e74155ee34ac998a23a331acc5a1a1e75aaa7"
+          "sha256": "392a74d1d449490b4d97d98e1ee551c3a2185120904fa7bbea5c328d6051d9f6"
         },
         {
           "path": "clients/web/src/voice/voice_reconnect_monitor.ts",
@@ -11388,37 +11659,6 @@
       "unit": "duration/timestamp ns",
       "record_kind": "span",
       "attributes_or_labels": [],
-      "attribute_scope": "Literal attribute keys in producer; flow/session metadata may additionally come from shared binding helpers. No metric labels.",
-      "frequency": "per actual stage/attempt/state transition; no event per frame or regular heartbeat",
-      "storage": "private Tempo",
-      "consumers": [],
-      "decision": "keep",
-      "reason": "Keep actual transition/worker outcome and causal links separate from polling and HTTP acknowledgement.",
-      "delivery": {
-        "transport": "OTLP-trace",
-        "runtime_status": "NOT_RUN",
-        "boundary": "Server OTel -> bounded exporter -> Collector -> private Tempo",
-        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
-      }
-    },
-    {
-      "scenario": "livekit",
-      "producer": [
-        {
-          "path": "backend/internal/voice/watch_connected_participants/initial_observation/trace.go",
-          "line": 18,
-          "sha256": "2784035a4039592e3aa86d156ce30c9235f6bba03a17cc9d5c8452cef051b2d6"
-        }
-      ],
-      "source_name": "voice.roster.initial",
-      "exported_name": "voice.roster.initial",
-      "type": "span/event",
-      "unit": "duration/timestamp ns",
-      "record_kind": "span",
-      "attributes_or_labels": [
-        "failure_stage",
-        "request_id"
-      ],
       "attribute_scope": "Literal attribute keys in producer; flow/session metadata may additionally come from shared binding helpers. No metric labels.",
       "frequency": "per actual stage/attempt/state transition; no event per frame or regular heartbeat",
       "storage": "private Tempo",
@@ -11550,67 +11790,6 @@
         "transport": "client-relay",
         "runtime_status": "NOT_RUN",
         "boundary": "Client SDK -> authenticated session/origin/generation-bound relay sanitization -> Collector -> private Tempo",
-        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
-      }
-    },
-    {
-      "scenario": "livekit",
-      "producer": [
-        {
-          "path": "backend/internal/voice/watch_connected_participants/initial_observation/trace.go",
-          "line": 23,
-          "sha256": "2784035a4039592e3aa86d156ce30c9235f6bba03a17cc9d5c8452cef051b2d6"
-        }
-      ],
-      "source_name": "voice_roster.failure",
-      "exported_name": "voice_roster.failure",
-      "type": "span/event",
-      "unit": "duration/timestamp ns",
-      "record_kind": "event",
-      "attributes_or_labels": [
-        "failure_stage",
-        "request_id"
-      ],
-      "attribute_scope": "Literal attribute keys in producer; flow/session metadata may additionally come from shared binding helpers. No metric labels.",
-      "frequency": "per actual stage/attempt/state transition; no event per frame or regular heartbeat",
-      "storage": "private Tempo",
-      "consumers": [],
-      "decision": "keep",
-      "reason": "Keep actual transition/worker outcome and causal links separate from polling and HTTP acknowledgement.",
-      "delivery": {
-        "transport": "OTLP-trace",
-        "runtime_status": "NOT_RUN",
-        "boundary": "Server OTel -> bounded exporter -> Collector -> private Tempo",
-        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
-      }
-    },
-    {
-      "scenario": "livekit",
-      "producer": [
-        {
-          "path": "backend/internal/voice/watch_connected_participants/lifecycle_observer.go",
-          "line": 38,
-          "sha256": "cf4c208149e0b5548c996ed4f33a58c65b84e1c6d94ce88850d07230c15151da"
-        }
-      ],
-      "source_name": "voice_roster.failure",
-      "exported_name": "voice_roster.failure",
-      "type": "span/event",
-      "unit": "duration/timestamp ns",
-      "record_kind": "event",
-      "attributes_or_labels": [
-        "failure_stage"
-      ],
-      "attribute_scope": "Literal attribute keys in producer; flow/session metadata may additionally come from shared binding helpers. No metric labels.",
-      "frequency": "per actual stage/attempt/state transition; no event per frame or regular heartbeat",
-      "storage": "private Tempo",
-      "consumers": [],
-      "decision": "keep",
-      "reason": "Keep actual transition/worker outcome and causal links separate from polling and HTTP acknowledgement.",
-      "delivery": {
-        "transport": "OTLP-trace",
-        "runtime_status": "NOT_RUN",
-        "boundary": "Server OTel -> bounded exporter -> Collector -> private Tempo",
         "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
       }
     }

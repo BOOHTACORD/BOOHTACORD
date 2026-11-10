@@ -7,9 +7,11 @@ import 'screens/workspace_screen.dart';
 import 'theme.dart';
 import 'features/session/startup/widgets.dart';
 import 'features/session/maintenance/banner.dart';
+import 'features/session/maintenance/unknown_banner.dart';
 import 'features/updates/banner.dart';
 import 'features/updates/controller.dart';
 import 'features/updates/scope.dart';
+import 'features/updates/required_guard.dart';
 import 'widgets/desktop_window_chrome.dart';
 
 class BoohtacordApp extends StatelessWidget {
@@ -32,25 +34,29 @@ class BoohtacordApp extends StatelessWidget {
           child: AnimatedBuilder(
             animation: Listenable.merge([state, updates]),
             builder: (context, _) {
+              final unknown =
+                  !state.maintenanceKnown && state.phase != AppPhase.loading;
+              final bannerVisible = unknown || state.maintenanceActive;
+              final appBusy =
+                  {
+                    VoicePhase.joining,
+                    VoicePhase.connected,
+                    VoicePhase.listener,
+                    VoicePhase.reconnecting,
+                    VoicePhase.leaving,
+                  }.contains(state.voicePhase) ||
+                  {
+                    ScreenSharePhase.starting,
+                    ScreenSharePhase.sharing,
+                    ScreenSharePhase.stopping,
+                  }.contains(state.screenSharePhase);
               final content = Column(
                 children: [
-                  if (state.maintenanceActive) const MaintenanceBanner(),
-                  ClientUpdateBanner(
-                    updates: updates,
-                    appBusy:
-                        {
-                          VoicePhase.joining,
-                          VoicePhase.connected,
-                          VoicePhase.listener,
-                          VoicePhase.reconnecting,
-                          VoicePhase.leaving,
-                        }.contains(state.voicePhase) ||
-                        {
-                          ScreenSharePhase.starting,
-                          ScreenSharePhase.sharing,
-                          ScreenSharePhase.stopping,
-                        }.contains(state.screenSharePhase),
-                  ),
+                  if (unknown)
+                    const MaintenanceUnknownBanner()
+                  else if (state.maintenanceActive)
+                    const MaintenanceBanner(),
+                  ClientUpdateBanner(updates: updates, appBusy: appBusy),
                   Expanded(
                     child: switch (state.phase) {
                       AppPhase.loading => const LoadingScreen(),
@@ -64,7 +70,7 @@ class BoohtacordApp extends StatelessWidget {
                             : AuthScreen(state: state),
                       AppPhase.ready => WorkspaceScreen(
                         state: state,
-                        maintenanceBannerVisible: state.maintenanceActive,
+                        maintenanceBannerVisible: bannerVisible,
                         openNavigationInitially: true,
                       ),
                     },
@@ -72,9 +78,14 @@ class BoohtacordApp extends StatelessWidget {
                 ],
               );
 
-              return state.maintenanceActive
+              final body = bannerVisible
                   ? SafeArea(top: true, bottom: false, child: content)
                   : content;
+              return RequiredUpdateGuard(
+                updates: updates,
+                appBusy: appBusy,
+                child: body,
+              );
             },
           ),
         ),

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:collection';
-import 'dart:convert';
 import 'dart:ui' show SemanticsRole, Tristate;
 
 import 'package:boohtacord_desktop/src/app.dart';
@@ -37,10 +36,17 @@ import 'package:livekit_client/livekit_client.dart'
         TrackSource;
 import 'package:livekit_client/src/proto/livekit_models.pb.dart' as lk;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 import 'uiux_2026/capture_support.dart';
 import 'voice_sound_preferences/dock_fixture.dart';
+
+part 'workspace_screen_parts/voice_dock/connected.dart';
+part 'workspace_screen_parts/voice_dock/microphone.dart';
+part 'workspace_screen_parts/voice_dock/preferences.dart';
+part 'workspace_screen_parts/voice_dock/screen_join.dart';
+part 'workspace_screen_parts/voice_dock/deafened.dart';
+part 'workspace_screen_parts/voice_dock/reconnect.dart';
+part 'workspace_screen_parts/voice_dock/leaving.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -2340,6 +2346,8 @@ void main() {
     );
     final state = AppState(api);
     await state.initialize();
+    state.voiceRosters = api.voiceRosters;
+    state.voiceRoster.phase = VoiceRosterPhase.fresh;
     state.selectedChannel = _PortraitApi.voiceChannel;
     await tester.pumpWidget(MaterialApp(home: WorkspaceScreen(state: state)));
     await tester.pumpAndSettle();
@@ -3000,337 +3008,13 @@ void main() {
     await tester.pumpAndSettle();
 
     final dock = find.byKey(const ValueKey('voice-dock'));
-    final dockDecoration =
-        tester.widget<Container>(dock).decoration! as BoxDecoration;
-    expect(dockDecoration.color, const Color(0xFF10191A));
-    final connectedLabel = find.descendant(
-      of: dock,
-      matching: find.text('Голос подключён'),
-    );
-    expect(connectedLabel, findsOneWidget);
-    expect(find.text('Подключено'), findsNothing);
-    expect(
-      find.descendant(
-        of: dock,
-        matching: find.byIcon(Icons.headphones_outlined),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      tester.widget<Text>(connectedLabel).style?.fontWeight,
-      FontWeight.w500,
-    );
-    expect(
-      find.text('${state.voiceChannel!.name} · 1 участник'),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(
-        of: dock,
-        matching: find.byIcon(Icons.signal_cellular_alt_rounded),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: dock, matching: find.text('42 мс')),
-      findsNothing,
-    );
-    expect(
-      find.descendant(
-        of: dock,
-        matching: find.bySemanticsLabel(
-          'Качество соединения: Нет данных · ping 42 мс',
-        ),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.byWidgetPredicate(
-        (widget) =>
-            widget is Semantics &&
-            widget.properties.liveRegion == true &&
-            widget.properties.label ==
-                'Голос подключён · ${state.voiceChannel!.name}',
-      ),
-      findsOneWidget,
-    );
-    final qualitySemantics = tester
-        .widgetList<Semantics>(
-          find.byWidgetPredicate(
-            (widget) =>
-                widget is Semantics &&
-                widget.properties.label ==
-                    'Качество соединения: Нет данных · ping 42 мс',
-          ),
-        )
-        .toList();
-    expect(qualitySemantics, isNotEmpty);
-    expect(
-      qualitySemantics.every((item) => item.properties.liveRegion != true),
-      isTrue,
-    );
-    expect(find.text('В голосовом канале'), findsWidgets);
-    final microphoneButton = tester.getSemantics(
-      find.bySemanticsLabel('Выключить микрофон').first,
-    );
-    expect(microphoneButton.label, 'Выключить микрофон');
-    expect(microphoneButton.flagsCollection.isToggled, Tristate.isTrue);
-    state.microphoneUnavailable = true;
-    state.notifyListeners();
-    await tester.pump();
-    final unavailableMicrophoneButton = tester.getSemantics(
-      find.byTooltip('Микрофон недоступен · повторить включение'),
-    );
-    expect(
-      unavailableMicrophoneButton.label,
-      'Повторить включение микрофона — микрофон недоступен',
-    );
-    expect(
-      unavailableMicrophoneButton.getSemanticsData().hasAction(
-        SemanticsAction.tap,
-      ),
-      isTrue,
-    );
-    state.microphoneUnavailable = false;
-    state.audioActivationMode = AudioActivationMode.ptt;
-    state.notifyListeners();
-    await tester.pump();
-    final pushToTalkMicrophoneButton = tester.getSemantics(
-      find.byTooltip('Микрофон управляется push-to-talk'),
-    );
-    expect(
-      pushToTalkMicrophoneButton.label,
-      'Микрофон управляется push-to-talk',
-    );
-    expect(
-      pushToTalkMicrophoneButton.getSemanticsData().hasAction(
-        SemanticsAction.tap,
-      ),
-      isFalse,
-    );
-    state.audioActivationMode = AudioActivationMode.vad;
-    state.notifyListeners();
-    await tester.pump();
-    final deafenSemantics = tester.getSemantics(
-      find.byTooltip('Выключить удалённый звук'),
-    );
-    expect(deafenSemantics.label, 'Выключить удалённый звук');
-    expect(deafenSemantics.flagsCollection.isToggled, Tristate.isFalse);
-    final soundRemote = await installDockSoundPreferences(state);
-    await tester.tap(find.byTooltip('Ещё настройки голоса'));
-    await tester.pumpAndSettle();
-    expect(
-      tester
-          .widget<CheckedPopupMenuItem<String>>(
-            find.widgetWithText(
-              CheckedPopupMenuItem<String>,
-              'Сигнал новых трансляций',
-            ),
-          )
-          .checked,
-      isTrue,
-    );
-    await tester.ensureVisible(find.text('Сигнал новых трансляций'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Сигнал новых трансляций'));
-    await tester.pumpAndSettle();
-    expect(state.voiceStreamSoundEnabled, isFalse);
-    expect(
-      soundRemote.settings['started'],
-      isFalse,
-    );
-    await tester.tap(find.byTooltip('Ещё настройки голоса'));
-    await tester.pumpAndSettle();
-    expect(
-      tester
-          .widget<CheckedPopupMenuItem<String>>(
-            find.widgetWithText(
-              CheckedPopupMenuItem<String>,
-              'Сигнал новых трансляций',
-            ),
-          )
-          .checked,
-      isFalse,
-    );
-    expect(
-      tester
-          .widget<CheckedPopupMenuItem<String>>(
-            find.widgetWithText(
-              CheckedPopupMenuItem<String>,
-              'Звуки входа и выхода',
-            ),
-          )
-          .checked,
-      isTrue,
-    );
-    await tester.ensureVisible(find.text('Звуки входа и выхода'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Звуки входа и выхода'));
-    await tester.pumpAndSettle();
-    expect(state.voiceRoomEventSoundsEnabled, isFalse);
-    expect(
-      soundRemote.settings['joined'],
-      isFalse,
-    );
-    state.voice.voiceRoomEventSoundsEnabled = true;
-    await state.voice.loadVoiceRoomEventSoundPreference();
-    expect(state.voiceRoomEventSoundsEnabled, isFalse);
-    await tester.tap(find.byTooltip('Ещё настройки голоса'));
-    await tester.pumpAndSettle();
-    expect(
-      tester
-          .widget<CheckedPopupMenuItem<String>>(
-            find.widgetWithText(
-              CheckedPopupMenuItem<String>,
-              'Звуки входа и выхода',
-            ),
-          )
-          .checked,
-      isFalse,
-    );
-    await tester.sendKeyEvent(LogicalKeyboardKey.escape);
-    await tester.pumpAndSettle();
-    expect(find.byTooltip('Начать демонстрацию экрана'), findsNWidgets(2));
-    final startScreenShareSemantics = tester.getSemantics(
-      find.byTooltip('Начать демонстрацию экрана').first,
-    );
-    expect(startScreenShareSemantics.label, 'Начать демонстрацию экрана');
-    expect(
-      startScreenShareSemantics.getSemanticsData().hasAction(
-        SemanticsAction.tap,
-      ),
-      isTrue,
-    );
-    await tester.tap(find.byTooltip('Начать демонстрацию экрана').first);
-    await tester.pump();
-    expect(find.text('Демонстрация экрана'), findsOneWidget);
-    expect(find.text('Качество трансляции'), findsOneWidget);
-    await tester.tap(find.text('Отмена'));
-    await tester.pumpAndSettle();
-
-    state.voicePhase = VoicePhase.joining;
-    state.notifyListeners();
-    await tester.pump();
-    expect(find.text('Подключено'), findsNothing);
-    expect(find.text('Подключаемся к голосовому каналу'), findsOneWidget);
-    expect(find.text('Соединяемся с голосовой комнатой.'), findsNothing);
-    final dockShareAction = find.descendant(
-      of: find.byTooltip('Начать демонстрацию экрана').first,
-      matching: find.byType(InkWell),
-    );
-    expect(tester.widget<InkWell>(dockShareAction).onTap, isNull);
-
-    state.deafenChanging = true;
-    state.notifyListeners();
-    await tester.pump();
-    final deafenButton = find.descendant(
-      of: find.byTooltip('Выключить удалённый звук'),
-      matching: find.byType(InkWell),
-    );
-    expect(tester.widget<InkWell>(deafenButton).onTap, isNull);
-
-    state.deafenChanging = false;
-    state.voicePhase = VoicePhase.connected;
-    state.deafened = true;
-    state.microphoneMuted = true;
-    state.notifyListeners();
-    await tester.pump();
-    final deafenedButton = tester.getSemantics(
-      find.byTooltip('Включить удалённый звук'),
-    );
-    expect(deafenedButton.label, 'Включить удалённый звук');
-    expect(deafenedButton.flagsCollection.isToggled, Tristate.isTrue);
-    for (final tooltip in ['Включить микрофон', 'Включить удалённый звук']) {
-      final controlMaterial = tester.widget<Material>(
-        find.descendant(
-          of: find.byTooltip(tooltip),
-          matching: find.byType(Material),
-        ),
-      );
-      expect(controlMaterial.color, GcColors.dangerSolid);
-      expect(
-        (controlMaterial.shape! as RoundedRectangleBorder).side.color,
-        GcColors.danger,
-      );
-      expect(
-        tester
-            .widget<Icon>(
-              find.descendant(
-                of: find.byTooltip(tooltip),
-                matching: find.byType(Icon),
-              ),
-            )
-            .color,
-        GcColors.onDanger,
-      );
-    }
-    expect(
-      find.text(
-        'Удалённый звук и микрофон выключены. Показ экрана этой кнопкой не отключается.',
-      ),
-      findsNothing,
-    );
-
-    state.voicePhase = VoicePhase.reconnecting;
-    state.notifyListeners();
-    await tester.pump();
-    expect(find.text('Восстанавливаем голосовое соединение'), findsOneWidget);
-    expect(find.text('Ручной выход отменит ожидание.'), findsNothing);
-    expect(
-      find.ancestor(
-        of: find.text('Восстанавливаем голосовое соединение'),
-        matching: find.byWidgetPredicate(
-          (widget) =>
-              widget is Semantics && widget.properties.liveRegion == true,
-        ),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.text(
-        'Удалённый звук и микрофон выключены. Показ экрана этой кнопкой не отключается.',
-      ),
-      findsNothing,
-    );
-
-    state.voicePhase = VoicePhase.leaving;
-    state.notifyListeners();
-    await tester.pump();
-    expect(find.text('Завершаем голосовое подключение'), findsOneWidget);
-    expect(find.text('Ожидаем завершения голосовой сессии.'), findsNothing);
-    expect(find.byTooltip('Выходим…'), findsOneWidget);
-    final leaveButton = find.descendant(
-      of: find.byTooltip('Выходим…'),
-      matching: find.byType(InkWell),
-    );
-    expect(tester.widget<InkWell>(leaveButton).onTap, isNull);
-    final leaveButtonSemantics = tester.getSemantics(
-      find.byTooltip('Выходим…'),
-    );
-    expect(leaveButtonSemantics.label, 'Выходим…');
-    expect(
-      leaveButtonSemantics.getSemanticsData().hasAction(SemanticsAction.tap),
-      isFalse,
-    );
-
-    state.error = 'Голосовая сессия завершилась с ошибкой';
-    state.notifyListeners();
-    await tester.pump();
-    expect(find.text(state.error!), findsOneWidget);
-    final alert = find.ancestor(
-      of: find.text(state.error!),
-      matching: find.byWidgetPredicate(
-        (widget) =>
-            widget is Semantics &&
-            widget.properties.role == SemanticsRole.alert,
-      ),
-    );
-    expect(
-      tester.getSemantics(alert).getSemanticsData().role,
-      SemanticsRole.alert,
-    );
-    expect(tester.takeException(), isNull);
-
+    _verifyConnectedDock(tester, state, dock);
+    await _verifyMicrophoneModes(tester, state);
+    await _verifyDockPreferences(tester, state);
+    await _verifyScreenAndJoining(tester, state);
+    await _verifyDeafenedDock(tester, state);
+    await _verifyReconnectDock(tester, state);
+    await _verifyLeavingDock(tester, state);
     await tester.pumpWidget(const SizedBox.shrink());
     state.dispose();
     await tester.runAsync(() => room.dispose());
@@ -6421,14 +6105,6 @@ class _PortraitApi extends ApiClient {
   Future<void> initialize() async {}
 
   @override
-  Future<http.StreamedResponse> maintenanceEvents() async =>
-      http.StreamedResponse(
-        const Stream<List<int>>.empty(),
-        200,
-        headers: {'content-type': 'text/event-stream'},
-      );
-
-  @override
   Future<SessionUser?> currentSession() async =>
       const SessionUser(accountId: 'account-1', role: 'MEMBER');
   @override
@@ -6461,33 +6137,6 @@ class _PortraitApi extends ApiClient {
 
   @override
   Future<List<VoiceRoomRoster>> voiceParticipants() async => voiceRosters;
-
-  @override
-  Future<http.StreamedResponse> voiceRosterEvents() async {
-    final payload = jsonEncode({
-      'channels': voiceRosters
-          .map(
-            (room) => {
-              'channel_id': room.channelId,
-              'participants': room.participants
-                  .map(
-                    (member) => {
-                      'account_id': member.accountId,
-                      'display_name': member.displayName,
-                      'screen_sharing': member.screenSharing,
-                      'microphone_muted': member.microphoneMuted,
-                    },
-                  )
-                  .toList(),
-            },
-          )
-          .toList(),
-    });
-    return http.StreamedResponse(
-      Stream.value(utf8.encode('data: $payload\n\n')),
-      200,
-    );
-  }
 
   @override
   Future<List<GuildMember>> members() async {
