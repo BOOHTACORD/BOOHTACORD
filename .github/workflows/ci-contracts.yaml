@@ -64,7 +64,7 @@ jobs:
           python -m tools.verify.client_parity.run --base "$PARITY_BASE"
       - name: Verify product-map parity projection and generated viewer
         run: |
-          python -m unittest tools.product_map.catalog.test_validation tools.product_map.catalog.test_resolve tools.product_map.catalog.test_pilot tools.product_map.catalog.test_enrich tools.product_map.projection.test_importer tools.product_map.projection.test_compare tools.product_map.projection.test_real_registry tools.product_map.projection.test_status tools.product_map.projection.test_render tools.product_map.viewer.test_document
+          python -m unittest tools.product_map.catalog.test_validation tools.product_map.catalog.test_resolve tools.product_map.catalog.test_pilot tools.product_map.catalog.test_enrich tools.product_map.catalog.test_curated tools.product_map.projection.test_importer tools.product_map.projection.test_compare tools.product_map.projection.test_real_registry tools.product_map.projection.test_status tools.product_map.projection.test_render tools.product_map.viewer.test_document
           python -m tools.product_map validate-parity
           python -m tools.product_map generate --check
       - name: Verify generated tracing contract bindings

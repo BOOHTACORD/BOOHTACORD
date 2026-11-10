@@ -7,7 +7,7 @@ from tools.product_map.projection.compare import compare
 from tools.product_map.projection.importer import PLATFORMS, import_parity
 from tools.product_map.projection.render import render_matrix
 from tools.product_map.catalog.enrich import enrich_projection
-from tools.product_map.catalog.pilot import load_voice_slice
+from tools.product_map.catalog.curated import load_curated_catalog
 from tools.product_map.viewer.document import build_document, write_document
 from tools.verify.client_parity.policy import validate
 
@@ -29,7 +29,7 @@ def main():
     catalog = json.loads(path.read_text(encoding='utf-8'))
     validate(catalog, root)
     data = import_parity(catalog)
-    data = enrich_projection(data, load_voice_slice(root, catalog))
+    data = enrich_projection(data, load_curated_catalog(root, catalog))
     if args.command == 'generate':
         target = root / 'docs/product-map/generated/index.html'
         if not write_document(target, build_document(data), check=args.check):
