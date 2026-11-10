@@ -12,6 +12,7 @@ def project_feature(feature, original=None):
         'issue': None, 'platforms': {}}
     row['title'] = feature['title']
     row['parity_ids'] = list(feature['parity_ids'])
+    row['depends_on'] = sorted(feature.get('depends_on', []))
     for name in PLATFORMS:
         decision = feature['platforms'][name]
         platform = row['platforms'].setdefault(name, {})

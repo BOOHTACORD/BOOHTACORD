@@ -71,6 +71,7 @@ jobs:
           python -m unittest tools.product_map.impact.test_analyze tools.product_map.impact.test_changes
           python -m unittest tools.product_map.catalog.test_history
           python -m unittest tools.product_map.catalog.test_feature_projection
+          python -m unittest tools.product_map.catalog.test_sessions
           python -m unittest tools.product_map.ownership.test_new_paths tools.product_map.ownership.test_git_tree
           python -m unittest tools.product_map.ownership.test_coverage
           python -m unittest tools.product_map.ownership.test_scopes

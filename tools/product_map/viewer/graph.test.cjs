@@ -21,7 +21,8 @@ test('feature graph displays explicit dependency edges as text', () => {
     .map(k => [k, { source_status: 'UNKNOWN', released: 'UNKNOWN', runtime: 'NOT_VERIFIED' }]));
   const data = [{ id: 'voice.a', title: 'A', description: 'A', platforms,
     components: [{ id: 'cmp.route', paths: ['route.go'] }, { id: 'cmp.service', paths: ['service.go'] }],
-    component_edges: [{ from: 'cmp.route', to: 'cmp.service', type: 'depends_on' }] }];
+    component_edges: [{ from: 'cmp.route', to: 'cmp.service', type: 'depends_on' }],
+    depends_on: ['auth.session'] }];
   const document = { getElementById: id => elements[id], createElement: () => new Element(),
     createTextNode: value => value };
   const script = fs.readFileSync(path.join(__dirname, 'app.js'), 'utf8');
@@ -29,6 +30,7 @@ test('feature graph displays explicit dependency edges as text', () => {
     window: { addEventListener() {} } });
   assert.match(text(elements.detail), /cmp\.route\s+→\s+cmp\.service/);
   assert.match(text(elements.detail), /зависит от/i);
+  assert.match(text(elements.detail), /auth\.session/);
 });
 test('matrix displays actual and target behavior revisions separately from release', () => {
   const elements = Object.fromEntries(['rows', 'search', 'count', 'detail'].map(k => [k, new Element()]));

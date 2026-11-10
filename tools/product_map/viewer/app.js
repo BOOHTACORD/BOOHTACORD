@@ -47,6 +47,21 @@ function selectHash() {
     const title = document.createElement('h3');
     title.textContent = feature.title || feature.id;
     detail.appendChild(title);
+    if ((feature.depends_on || []).length) {
+      const heading = document.createElement('h4');
+      heading.textContent = 'Зависит от функций';
+      detail.appendChild(heading);
+      const dependencies = document.createElement('ul');
+      for (const identifier of feature.depends_on) {
+        const item = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = '#feature/' + encodeURIComponent(identifier);
+        link.textContent = identifier;
+        item.appendChild(link);
+        dependencies.appendChild(item);
+      }
+      detail.appendChild(dependencies);
+    }
     const components = feature.components || [];
     if (!components.length) { detail.append('Компоненты пока не описаны.'); return; }
     const list = document.createElement('ul');
