@@ -7,7 +7,7 @@ extension SessionServerChange on SessionController {
     effects.invalidateOperations?.call();
     await closeWith(() async {
       try {
-        effects.beforeServerChange();
+        await effects.beforeServerChange();
         await effects.closeMedia();
         await effects.closeRealtime();
         await api.setBaseUrl(value);

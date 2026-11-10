@@ -17,6 +17,7 @@
   .members, .search-aside { position: absolute; inset: 0 0 0 auto; z-index: 31; width: min(320px, calc(100% - 32px)); border-left: 1px solid var(--gc-border-subtle); box-shadow: var(--gc-shadow-shell); }
   .members.is-open, .search-aside.is-open { display: block; }
   .workspace-header-toggle--members { display: grid; }
+  .conversation-header .workspace-header-toggle--members { position: relative; z-index: 32; }
   .drawer-scrim { position: fixed; inset: 0; z-index: 30; display: block; border: 0; background: var(--gc-overlay); }
 }
 
@@ -38,5 +39,6 @@
   .members, .search-aside { position: absolute; grid-row: 1 / 2; inset: 0 0 0 auto; z-index: 31; display: none; width: min(320px, calc(100vw - 40px)); border-left: 1px solid var(--gc-border-subtle); box-shadow: var(--gc-shadow-shell); }
   .members.is-open, .search-aside.is-open { display: block; }
   .workspace-header-toggle--nav, .workspace-header-toggle--members { display: grid; }
+  .conversation-header .workspace-header-toggle--members { position: relative; z-index: 32; }
   .drawer-scrim { position: fixed; inset: 0; z-index: 30; display: block; border: 0; background: var(--gc-overlay); }
 }

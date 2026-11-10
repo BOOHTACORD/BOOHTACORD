@@ -30,7 +30,7 @@ func TestRequireSuccessPreservesLongLivedOriginalContext(t *testing.T) {
 	middleware := Require(authenticatorFunc(func(context.Context, string) (authenticatesession.Principal, error) {
 		return authenticatesession.Principal{AccountID: "test-actor", Role: "MEMBER"}, nil
 	}))
-	request := httptest.NewRequest(http.MethodGet, "/api/v1/voice/rosters/events", nil).WithContext(ctx)
+	request := httptest.NewRequest(http.MethodGet, "/api/v1/realtime", nil).WithContext(ctx)
 	request.AddCookie(&http.Cookie{Name: session.CookieName, Value: "test-cookie"})
 	called := false
 	middleware(http.HandlerFunc(func(_ http.ResponseWriter, r *http.Request) {
@@ -39,7 +39,7 @@ func TestRequireSuccessPreservesLongLivedOriginalContext(t *testing.T) {
 			t.Error("successful auth cancelled stream context")
 		}
 		if _, ok := r.Context().Deadline(); ok {
-			t.Error("initial auth deadline leaked into long-lived SSE")
+			t.Error("initial auth deadline leaked into long-lived connection")
 		}
 		if _, ok := PrincipalFrom(r.Context()); !ok {
 			t.Error("verified principal missing")
@@ -51,7 +51,7 @@ func TestRequireSuccessPreservesLongLivedOriginalContext(t *testing.T) {
 }
 
 func TestLookupDeadlineResponseScopePreservesOtherAuthenticationFailures(t *testing.T) {
-	for _, path := range []string{"/api/v1/voice/participants", "/api/v1/voice/rosters/events", "/protected"} {
+	for _, path := range []string{"/api/v1/voice/participants", "/api/v1/realtime", "/protected"} {
 		req := httptest.NewRequest(http.MethodGet, path, nil)
 		req.AddCookie(&http.Cookie{Name: session.CookieName, Value: "test-cookie"})
 		auth := authenticatorFunc(func(context.Context, string) (authenticatesession.Principal, error) {
@@ -60,7 +60,7 @@ func TestLookupDeadlineResponseScopePreservesOtherAuthenticationFailures(t *test
 		r := httptest.NewRecorder()
 		Require(auth)(http.HandlerFunc(func(http.ResponseWriter, *http.Request) { t.Error("failed lookup reached handler") })).ServeHTTP(r, req)
 		expected := http.StatusServiceUnavailable
-		if path == "/protected" {
+		if path != "/api/v1/voice/participants" {
 			expected = http.StatusInternalServerError
 		}
 		if r.Code != expected {

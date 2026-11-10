@@ -43,7 +43,7 @@ def build():
             ('Observed bitrate', 'histogram_quantile(0.50, sum by (installation_id, le, direction) (rate(boohtacord_media_bitrate_kbps_bucket' + scope + '[5m])))')]),
         'voice-roster': dashboard('voice-roster', 'Installation · Voice roster', [
             ('Roster failures', 'sum by (installation_id) (rate(voice_platform_voice_roster_failures_total' + scope + '[5m]))'),
-            ('Roster streams', 'sum by (installation_id) (voice_platform_voice_roster_streams_active' + scope + ')')]),
+            ('Roster WS subscribers', 'sum by (installation_id) (voice_platform_voice_roster_ws_subscribers' + scope + ')')]),
         'fleet': dashboard('fleet', 'BOOHTACORD · Registered installations', [
             ('Registered installations', 'boohtacord_installation_registered'),
             ('Last seen (zero means never connected)', 'boohtacord_installation_last_seen_seconds'),

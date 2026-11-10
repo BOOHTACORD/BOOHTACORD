@@ -6,6 +6,7 @@
   .members { height: calc(100% - var(--gc-layout-header)); min-height: 0; margin-top: var(--gc-layout-header); }
   .main { overflow: visible; }
   .text-conversation > .conversation-header { position: relative; z-index: 1; width: calc(100% + var(--gc-layout-aside-wide)); }
+  .gc-shell.members-collapsed .text-conversation > .conversation-header { width: 100%; }
 }
 .text-conversation > .conversation-header:has(.conversation-overflow--expanded),
 .direct-message-conversation > .conversation-header:has(.conversation-overflow--expanded) { position: relative; z-index: 4; }

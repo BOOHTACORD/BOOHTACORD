@@ -3,8 +3,6 @@ import 'controller.dart';
 extension VoiceRosterStale on VoiceRosterController {
   void markLost(int expected) {
     if (!watching || disposed || expected != revision) return;
-    refreshRevision++;
-    loading = false;
     voiceRosterError = 'Не удалось обновить состав комнаты.';
     phase = voiceRosters == null
         ? VoiceRosterPhase.unavailable

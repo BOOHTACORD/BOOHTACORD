@@ -70,6 +70,9 @@ func (hub *Hub) breakContinuity() {
 	defer hub.mu.Unlock()
 	hub.broken = true
 	for subscription := range hub.subscribers {
+		if !subscription.dropped {
+			subscription.captureCriticalLocked()
+		}
 		subscription.dropped = true
 		select {
 		case subscription.overflowed <- struct{}{}:

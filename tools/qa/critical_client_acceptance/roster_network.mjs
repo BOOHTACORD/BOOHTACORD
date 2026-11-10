@@ -13,8 +13,8 @@ export function observeRosterNetwork(page) {
   function owned(value) {
     try {
       const url = new URL(value)
-      return url.origin === 'https://localhost:4810' && !url.username && !url.password &&
-        url.pathname === '/api/v1/voice/rosters/events'
+      return ['https:', 'wss:'].includes(url.protocol) && url.host === 'localhost:4810' &&
+        !url.username && !url.password && url.pathname === '/api/v1/realtime'
     } catch { return false }
   }
   page.on('response', response => {
@@ -26,6 +26,13 @@ export function observeRosterNetwork(page) {
     if (!owned(request.url())) return
     const reason = reasons.get(request.failure()?.errorText) ?? 'other'
     result.failed[reason] = (result.failed[reason] ?? 0) + 1
+  })
+  page.on('websocket', socket => {
+    if (!owned(socket.url())) return
+    socket.on('socketerror', error => {
+      const reason = reasons.get(error) ?? 'other'
+      result.failed[reason] = (result.failed[reason] ?? 0) + 1
+    })
   })
   return () => ({ status: result.status, failed: { ...result.failed } })
 }

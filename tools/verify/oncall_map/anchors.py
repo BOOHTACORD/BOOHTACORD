@@ -27,8 +27,9 @@ ANCHORS = (
     ("docker/observability/collector.yaml", "max_elapsed_time: 30s", "collector retry 30 s"),
     ("docker/observability/collector.yaml", "queue_size: 128", "collector queue 128"),
     ("backend/internal/storage/write_upload/service.go", "MaxBytes int64 = 25_000_000", "25,000,000 bytes"),
-    ("backend/internal/realtime/connect_session/connection_contract.go", "defaultSessionRevalidationInterval = 15 * time.Second", "session revalidation 15 s"),
-    ("backend/internal/realtime/connect_session/event_stream.go", "context.WithTimeout(context.Background(), 5*time.Second)", "WS write 5 s"),
+    ("backend/internal/realtime/connect_session/connection_contract.go", "defaultSessionRevalidationInterval = 10 * time.Second", "session revalidation 10 s"),
+    ("backend/internal/realtime/connect_session/event_writer.go", "context.WithTimeout(context.Background(), 5*time.Second)", "WS write 5 s"),
+    ("backend/internal/realtime/connect_session/session_monitor.go", "interval = 1500 * time.Millisecond", "session monitor 1.5 s"),
     ("clients/web/src/realtime/reconnect_policy.ts", "Math.min(15_000, 500 *", "WS reconnect 0.5–15 s"),
 )
 

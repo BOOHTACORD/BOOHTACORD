@@ -87,7 +87,7 @@ func TestRecorderPublishesRealtimeConnectionMetrics(t *testing.T) {
 	recorder.Handler().ServeHTTP(scrape, httptest.NewRequest(http.MethodGet, "/metrics", nil))
 	metrics := scrape.Body.String()
 	for _, line := range []string{
-		"voice_platform_realtime_connections_active 0",
+		`voice_platform_realtime_connections_active{scope="authenticated"} 0`,
 		"voice_platform_realtime_connections_total 1",
 		"voice_platform_realtime_connection_ready_seconds_count 1",
 		"voice_platform_realtime_session_revalidation_seconds_count 1",

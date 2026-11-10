@@ -38,11 +38,15 @@ class UpdateApi {
       );
     }
     if (response.bodyBytes.length > 32 * 1024 ||
-        !(response.headers['content-type'] ?? '').contains('application/json'))
+        !(response.headers['content-type'] ?? '').contains(
+          'application/json',
+        )) {
       throw const UpdateApiFailure('Invalid update response');
+    }
     final decoded = jsonDecode(utf8.decode(response.bodyBytes));
-    if (decoded is! Map<String, dynamic>)
+    if (decoded is! Map<String, dynamic>) {
       throw const FormatException('Invalid update policy');
+    }
     const policyKeys = {
       'application_family',
       'catalog_revision',
@@ -53,20 +57,30 @@ class UpdateApi {
       'state',
       'target',
     };
-    if (!policyKeys.every(decoded.containsKey))
+    if (!policyKeys.every(decoded.containsKey)) {
       throw const FormatException('Invalid update policy fields');
+    }
     final policy = UpdatePolicy.fromJson(decoded);
     if (policy.applicationFamily != 'boohtacord' ||
         policy.platform != selector.platform ||
         policy.distribution != selector.distribution ||
         policy.channel != selector.channel ||
         policy.arch != selector.arch ||
-        policy.revision == null)
+        policy.revision == null) {
       throw const FormatException('Update selector mismatch');
+    }
     if ((policy.state == UpdatePolicyState.published) !=
-        (policy.target != null))
+        (policy.target != null)) {
       throw const FormatException('Invalid update policy state');
+    }
     final target = policy.target;
+    final minimum = target?.minimumReleaseOrder;
+    if (minimum != null &&
+        (minimum < 1 ||
+            minimum > 2147483647 ||
+            minimum > target!.releaseOrder)) {
+      throw const FormatException('Invalid minimum release order');
+    }
     if (target != null &&
         (target.version == null ||
             target.nativeBuild == null ||
@@ -74,11 +88,13 @@ class UpdateApi {
             target.summary == null ||
             target.releaseNotesUrl == null ||
             target.actionKind == null ||
-            target.actionUrl == null))
+            target.actionUrl == null)) {
       throw const FormatException('Incomplete update target');
+    }
     if (target != null &&
-        (!_safeUrl(target.releaseNotesUrl!) || !_safeUrl(target.actionUrl!)))
+        (!_safeUrl(target.releaseNotesUrl!) || !_safeUrl(target.actionUrl!))) {
       throw const FormatException('Unsafe update URL');
+    }
     return policy;
   }
 }

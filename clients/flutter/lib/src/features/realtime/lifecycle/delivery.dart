@@ -3,6 +3,8 @@ import 'dart:collection';
 
 import 'event.dart';
 
+part 'delivery_pump.dart';
+
 // Only these server journal kinds can be used as replay cursors. Ephemeral
 // presence/profile/permission/audience hints must never advance the cursor.
 const durableRealtimeKinds = {
@@ -31,73 +33,37 @@ class RealtimeDelivery {
   final void Function() onFailure;
   final int maxPending;
   final _queue = Queue<RealtimeEvent>();
-  final _seen = LinkedHashSet<String>();
+  final _seen = <(String?, String)>{};
+  final _revocations = <String, Future<void>>{};
   String? cursor;
   bool _busy = false, _needsRecovery = true;
   int _epoch = 0;
 
   void accept(RealtimeEvent event) {
+    if (event.kind == 'voice.lease_revoked') {
+      if (_seen.contains((event.kind, event.id)) ||
+          _revocations.containsKey(event.id)) {
+        return;
+      }
+      final epoch = _epoch;
+      final work = Future<void>.sync(() => apply(event));
+      _revocations[event.id] = work;
+      unawaited(
+        work.catchError((Object _, StackTrace _) {
+          if (epoch == _epoch) _fail();
+        }),
+      );
+    }
     if (event.kind == 'screen_viewers.changed' &&
-        _queue.any((e) => e.kind == event.kind))
+        _queue.any((e) => e.kind == event.kind)) {
       return;
+    }
     if (_queue.length >= maxPending) {
       _fail();
       return;
     }
     _queue.add(event);
     _pump();
-  }
-
-  void _pump() {
-    if (_busy) return;
-    while (_queue.isNotEmpty) {
-      final event = _queue.removeFirst();
-      final durable = durableRealtimeKinds.contains(event.kind);
-      if (durable && _seen.contains(event.id)) continue;
-      final recovery =
-          event.kind == 'connection.resync_required' ||
-          event.kind == 'connection.ready' && _needsRecovery;
-      if (event.kind == 'connection.resync_required') {
-        cursor = null;
-        _seen.clear();
-        _needsRecovery = true;
-      }
-      final epoch = _epoch;
-      void complete() {
-        if (epoch != _epoch) return;
-        if (durable) {
-          _seen.add(event.id);
-          if (_seen.length > 2048) _seen.remove(_seen.first);
-          cursor = event.id;
-        }
-        if (recovery) _needsRecovery = false;
-      }
-
-      try {
-        final work = recovery ? _recoverAndApply(event) : apply(event);
-        if (work is Future) {
-          _busy = true;
-          unawaited(
-            work.then(
-              (_) {
-                if (epoch != _epoch) return;
-                complete();
-                _busy = false;
-                _pump();
-              },
-              onError: (Object _, StackTrace __) {
-                if (epoch == _epoch) _fail();
-              },
-            ),
-          );
-          return;
-        }
-        complete();
-      } catch (_) {
-        _fail();
-        return;
-      }
-    }
   }
 
   Future<void> _recoverAndApply(RealtimeEvent event) async {
@@ -125,6 +91,7 @@ class RealtimeDelivery {
     _busy = false;
     _queue.clear();
     _seen.clear();
+    _revocations.clear();
     cursor = null;
     _needsRecovery = true;
   }

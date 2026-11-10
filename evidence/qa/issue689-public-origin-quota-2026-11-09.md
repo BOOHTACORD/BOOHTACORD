@@ -1,0 +1,5 @@
+# Issue 689: public realtime origin and source-quota checks
+
+- PASS: `go test -race -count=5 ./internal/realtime/connect_public ./internal/security/rate_limit` on the current dirty worktree, using loopback HTTP and actual WebSocket upgrades. The public endpoint rejects foreign, `null`, wrong-scheme, wrong-port, comma-combined, duplicated and explicitly empty Origin headers with HTTP 403. The existing socket test separately covers a missing Origin accepted for native clients.
+- PASS: twenty simultaneous connections from the same loopback source were accepted; a twenty-first with a different forged `X-Forwarded-For` was rejected with HTTP 429. The fixture explicitly sets the global limit to 40 and the per-source limit to 20, so the rejection tests source quota rather than the global limit. No proxy is trusted in this fixture.
+- This is handler-level evidence on synthetic clients, not a release candidate or full deployed proxy/browser/native/XSS policy verification. Trusted-proxy integration, authenticated endpoint and the broader security and release matrix remain unproven. No production services or user accounts were used.
