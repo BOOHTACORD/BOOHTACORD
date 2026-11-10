@@ -1,0 +1,52 @@
+diff --git a/C:/b-qa675/.out/qa648_win_combined_test.dart.txt b/C:/b-qa675/.out/qa272_android_roster_fixed_test.dart.txt
+index b678eecc1..b704b828c 100644
+--- a/C:/b-qa675/.out/qa648_win_combined_test.dart.txt
++++ b/C:/b-qa675/.out/qa272_android_roster_fixed_test.dart.txt
+@@ -2,6 +2,7 @@ import 'dart:async';
+ import 'dart:io';
+ import 'package:crypto/crypto.dart';
+ import 'package:flutter/material.dart';
++import 'package:boohtacord_desktop/src/features/voice/roster_state/retry.dart';
+ import 'package:flutter_test/flutter_test.dart';
+ import 'package:integration_test/integration_test.dart';
+ import 'package:shared_preferences/shared_preferences.dart';
+@@ -119,6 +120,37 @@ void main() {
+     debugPrint('ISSUE648_FRESH_LEASE');
+     expect(sawRetryVisible,isTrue,reason:'No visible recovery state observed during outage');
+     debugPrint('ISSUE648_RECOVERED_SAME_CHANNEL');
+-    await tester.runAsync(() => Future<void>.delayed(const Duration(seconds:15)));
++    var rosterFresh = false;
++    for (var i = 0; i < 60; i++) {
++      await tester.runAsync(() => Future<void>.delayed(const Duration(seconds: 1)));
++      await tester.pump();
++      final roster = state.voiceRoster;
++      if (roster.phase.name == 'fresh' && roster.watching &&
++          (roster.voiceRosters ?? []).any((r) => r.channelId == channel.id && r.participants.length >= 2)) {
++        rosterFresh = true;
++        break;
++      }
++    }
++    debugPrint(rosterFresh ? 'QA272_AUTO_FRESH' : 'QA272_AUTO_STUCK');
++    final authoritative = await tester.runAsync(api.voiceParticipants);
++    expect(authoritative!.any((r) => r.channelId == channel.id && r.participants.length >= 2), isTrue,
++        reason: 'Owned API did not return the populated roster');
++    if (!rosterFresh) {
++      expect(state.voiceRoster.canRetry, isTrue);
++      state.voiceRoster.retryVoiceRosters();
++      for (var i = 0; i < 30 && state.voiceRoster.phase.name != 'fresh'; i++) {
++        await tester.runAsync(() => Future<void>.delayed(const Duration(seconds: 1)));
++        await tester.pump();
++      }
++      expect(state.voiceRoster.phase.name, 'fresh', reason: 'Manual recovery also failed');
++      debugPrint('QA272_MANUAL_FRESH');
++    }
++    if (Platform.isAndroid) {
++      await tester.pump();
++      await binding.takeScreenshot('roster-after-recovery');
++    }
++    debugPrint('QA272_DONE');
++    expect(rosterFresh, isTrue, reason: 'Roster failed to recover automatically after server restart');
++    await tester.runAsync(() => Future<void>.delayed(const Duration(seconds:5)));
+   }, timeout: const Timeout(Duration(minutes:25)));
+ }
+\ No newline at end of file
