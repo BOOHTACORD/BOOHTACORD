@@ -26,7 +26,7 @@ def build_document(features):
 <p id="count" aria-live="polite"></p><div class="table-wrap"><table><thead><tr><th scope="col">Сценарий</th>
 <th scope="col">Web</th><th scope="col">Windows</th><th scope="col">macOS</th><th scope="col">Android</th><th scope="col">iOS</th></tr></thead><tbody id="rows"></tbody></table></div>
 <section aria-labelledby="detail-heading"><h2 id="detail-heading">Компоненты сценария</h2><div id="detail" aria-live="polite">Выберите ID в таблице.</div></section>
-<noscript>Для интерактивной таблицы включите JavaScript. Доступна команда python -m tools.product_map matrix.</noscript></main><script>{script}</script></body></html>'''
+<noscript>Доступна <a href="index.md">карта в Markdown</a>; для интерактивной таблицы включите JavaScript.</noscript></main><script>{script}</script></body></html>'''
 
 
 def write_document(path, content, *, check):
