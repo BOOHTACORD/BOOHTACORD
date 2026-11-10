@@ -7,7 +7,9 @@ from .producer import PLATFORMS, select_native_artifact
 from .publication import parse_record
 
 API = 'https://api.github.com/repos/BOOHTACORD/BOOHTACORD'
-PATH = re.compile(r'/actions/runs/[1-9][0-9]*(?:/artifacts)?\Z')
+PATH = re.compile(r'(?:/actions/runs/[1-9][0-9]*(?:/artifacts)?|/releases/[1-9][0-9]*|'
+                  r'/git/ref/tags/(?:windows|macos|android)-v\d+\.\d+\.\d+|'
+                  r'/git/tags/[0-9a-f]{40})\Z')
 
 
 class NoRedirect(HTTPRedirectHandler):

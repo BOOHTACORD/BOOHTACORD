@@ -14,14 +14,14 @@ def fixture():
                 'version': '1.0.52+88', 'release_id': 'windows-direct-stable-r67',
                 'manifest_sha256': digest, 'execution': execution,
                 'build_provenance': 'VERIFIED_ASSET_CONTRACT', 'published': 'UNKNOWN',
-                'runtime': 'NOT_VERIFIED'}
+                'runtime': 'NOT_VERIFIED', 'features': {'voice.test': {'revision': None}}}
     contract = {'status': 'PASS', 'source_revision': sha, 'platform': 'windows',
                 'repository': 'BOOHTACORD/BOOHTACORD', 'release_mode': 'stable',
                 'tag_verified': True,
                 'tag': 'windows-v1.0.52', 'manifest_sha256': digest,
                 'identity': {'version': '1.0.52', 'native_build': '88',
                              'release_id': 'windows-direct-stable-r67'},
-                'assets': {'artifact-manifest.json': {'sha256': digest}},
+                'assets': {'artifact-manifest.json': {'sha256': digest, 'bytes': 100}},
                 'execution': execution}
     receipt = {'status': 'PASS', 'source_revision': sha, 'tag': 'windows-v1.0.52',
                'release_id': 17, 'manifest_sha256': digest, 'execution': execution}

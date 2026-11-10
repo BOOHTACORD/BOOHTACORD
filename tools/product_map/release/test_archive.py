@@ -33,6 +33,8 @@ class ArchiveTests(unittest.TestCase):
         result = read_native_evidence(raw, metadata(raw))
         self.assertEqual(result['status'], 'MATCHED_UNVERIFIED')
         self.assertEqual(result['published'], 'UNKNOWN')
+        self.assertEqual(result['asset_inventory'], contract['assets'])
+        self.assertEqual(result['features'], snapshot['features'])
 
     def test_rejects_missing_snapshot_foreign_path_and_digest_mismatch(self):
         snapshot, contract, receipt = fixture()

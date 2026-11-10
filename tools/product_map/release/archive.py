@@ -45,6 +45,8 @@ def read_native_evidence(raw, candidate):
                 execution['run_id'] != str(candidate['run_id']) or
                 execution['run_attempt'] != str(candidate['run_attempt'])):
             raise ValueError('archive belongs to a different producer')
+        result['asset_inventory'] = contract['assets']
+        result['features'] = docs['feature-snapshot.json']['features']
     except (KeyError, TypeError) as error:
         raise ValueError('incomplete native evidence archive') from error
     return result
