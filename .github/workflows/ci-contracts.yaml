@@ -70,6 +70,7 @@ jobs:
           python -m unittest tools.product_map.catalog.test_validation tools.product_map.catalog.test_resolve tools.product_map.catalog.test_pilot tools.product_map.catalog.test_enrich tools.product_map.catalog.test_curated tools.product_map.projection.test_importer tools.product_map.projection.test_compare tools.product_map.projection.test_real_registry tools.product_map.projection.test_status tools.product_map.projection.test_render tools.product_map.viewer.test_document
           python -m unittest tools.product_map.impact.test_analyze tools.product_map.impact.test_changes
           python -m unittest tools.product_map.catalog.test_history
+          python -m unittest tools.product_map.ownership.test_new_paths tools.product_map.ownership.test_git_tree
           python -m unittest tools.product_map.release.test_github_api
           python -m unittest tools.product_map.evidence_download.test_run tools.product_map.evidence_download.test_transport
           python -m unittest tools.product_map.release_verification.test_match tools.product_map.release_verification.test_live
@@ -77,6 +78,7 @@ jobs:
           if [ "$PRODUCT_MAP_EVENT" = pull_request ] || [ "$PRODUCT_MAP_EVENT" = merge_group ]; then
             test -n "$PRODUCT_MAP_BASE" || { echo 'Missing product-map base SHA' >&2; exit 1; }
             python -m tools.product_map check-transition --base "$PRODUCT_MAP_BASE"
+            python -m tools.product_map.ownership.run --base "$PRODUCT_MAP_BASE"
             python -m tools.product_map impact --base "$PRODUCT_MAP_BASE"
           fi
           python -m unittest tools.product_map.release.test_snapshot tools.product_map.release.test_source tools.product_map.release.test_build tools.product_map.release.test_workflows tools.product_map.release.test_asset_gate tools.product_map.release.test_publication tools.product_map.release.test_producer tools.product_map.release.test_archive
