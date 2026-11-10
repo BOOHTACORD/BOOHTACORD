@@ -8,6 +8,15 @@ from tools.product_map.catalog.curated import load_curated_catalog
 
 
 class CuratedCatalogTests(unittest.TestCase):
+    def test_every_existing_parity_scenario_has_a_curated_mapping(self):
+        root = Path(__file__).resolve().parents[3]
+        registry = json.loads((root / 'tools/qa/local_features/features.json')
+                              .read_text(encoding='utf-8'))
+        catalog = load_curated_catalog(root, registry)
+        all_ids = {row['id'] for group in registry.values() for row in group['parity']}
+        covered = {ref for feature in catalog['features'] for ref in feature['parity_ids']}
+        self.assertEqual(covered, all_ids)
+
     def test_existing_voice_and_workspace_slices_share_components(self):
         root = Path(__file__).resolve().parents[3]
         registry = json.loads((root / 'tools/qa/local_features/features.json')
@@ -42,3 +51,13 @@ class CuratedCatalogTests(unittest.TestCase):
                 self.skipTest(f'symlink creation unavailable: {error}')
             with self.assertRaisesRegex(ValueError, 'catalog'):
                 load_curated_catalog(root, {})
+
+    def test_new_parity_scenario_requires_an_explicit_mapping(self):
+        root = Path(__file__).resolve().parents[3]
+        registry = json.loads((root / 'tools/qa/local_features/features.json')
+                              .read_text(encoding='utf-8'))
+        extra = deepcopy(registry['voice']['parity'][0])
+        extra['id'] = 'voice.new_unmapped'
+        registry['voice']['parity'].append(extra)
+        with self.assertRaisesRegex(ValueError, 'not fully mapped'):
+            load_curated_catalog(root, registry)

@@ -1,0 +1,60 @@
+{
+  "components": [
+    {"id": "cmp.web.admin_telemetry", "source": {"parity_id": "admin.telemetry", "platform": "web"}},
+    {"id": "cmp.flutter.admin_telemetry", "source": {"parity_id": "admin.telemetry", "platform": "android"}},
+    {"id": "cmp.web.telemetry_client", "source": {"parity_id": "telemetry.privacy", "platform": "web"}},
+    {"id": "cmp.flutter.telemetry_api", "source": {"parity_id": "telemetry.privacy", "platform": "android"}},
+    {"id": "cmp.web.tracing", "source": {"parity_id": "telemetry.action.outcomes", "platform": "web"}},
+    {"id": "cmp.flutter.tracing", "source": {"parity_id": "telemetry.action.outcomes", "platform": "android"}}
+  ],
+  "features": [
+    {
+      "id": "admin.telemetry",
+      "title": "Администрирование диагностики",
+      "domain": "admin",
+      "target_revision": null,
+      "behavior_revisions": [],
+      "parity_ids": ["admin.telemetry"],
+      "components": ["cmp.web.admin_telemetry", "cmp.flutter.admin_telemetry"],
+      "platforms": {
+        "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "macos": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "android": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "ios": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null}
+      }
+    },
+    {
+      "id": "telemetry.privacy",
+      "title": "Конфиденциальность диагностики",
+      "domain": "telemetry",
+      "target_revision": null,
+      "behavior_revisions": [],
+      "parity_ids": ["telemetry.privacy"],
+      "components": ["cmp.web.telemetry_client", "cmp.flutter.telemetry_api"],
+      "platforms": {
+        "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "macos": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "android": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "ios": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null}
+      }
+    },
+    {
+      "id": "telemetry.action.outcomes",
+      "title": "Результаты действий",
+      "domain": "telemetry",
+      "target_revision": null,
+      "behavior_revisions": [],
+      "parity_ids": ["telemetry.action.outcomes"],
+      "components": ["cmp.web.tracing", "cmp.flutter.tracing"],
+      "platforms": {
+        "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "macos": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "android": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "ios": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null}
+      }
+    }
+  ]
+}

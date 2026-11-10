@@ -1,0 +1,59 @@
+{
+  "components": [
+    {"id": "cmp.web.realtime_store", "source": {"parity_id": "realtime.recovery", "platform": "web"}},
+    {"id": "cmp.flutter.realtime", "source": {"parity_id": "realtime.recovery", "platform": "android"}},
+    {"id": "cmp.web.realtime_client", "source": {"parity_id": "screen.audience", "platform": "web"}},
+    {"id": "cmp.flutter.screen_audience", "source": {"parity_id": "screen.audience", "platform": "android"}},
+    {"id": "cmp.flutter.screen_diagnostics", "source": {"parity_id": "screen.diagnostics", "platform": "android"}}
+  ],
+  "features": [
+    {
+      "id": "realtime.recovery",
+      "title": "Восстановление realtime",
+      "domain": "realtime",
+      "target_revision": null,
+      "behavior_revisions": [],
+      "parity_ids": ["realtime.recovery"],
+      "components": ["cmp.web.realtime_store", "cmp.flutter.realtime"],
+      "platforms": {
+        "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "macos": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "android": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "ios": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null}
+      }
+    },
+    {
+      "id": "screen.audience",
+      "title": "Зрители демонстрации",
+      "domain": "screen",
+      "target_revision": null,
+      "behavior_revisions": [],
+      "parity_ids": ["screen.audience"],
+      "components": ["cmp.web.realtime_client", "cmp.flutter.screen_audience"],
+      "platforms": {
+        "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "macos": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "android": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "ios": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null}
+      }
+    },
+    {
+      "id": "screen.diagnostics",
+      "title": "Диагностика демонстрации",
+      "domain": "screen",
+      "target_revision": null,
+      "behavior_revisions": [],
+      "parity_ids": ["screen.diagnostics"],
+      "components": ["cmp.web.voice_controls", "cmp.flutter.screen_diagnostics"],
+      "platforms": {
+        "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "macos": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "android": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "ios": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null}
+      }
+    }
+  ]
+}

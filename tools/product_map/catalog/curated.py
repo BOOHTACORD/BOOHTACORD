@@ -24,7 +24,7 @@ def load_curated_catalog(root, registry):
     covered = {ref for feature in resolved['features'] for ref in feature['parity_ids']}
     if not covered <= all_ids:
         raise ValueError('unknown parity ID in curated catalog')
-    validate_catalog(resolved, root, covered)
+    validate_catalog(resolved, root, all_ids)
     parity = {row['id']: row for group in registry.values() for row in group['parity']}
     components = {item['id']: item for item in resolved['components']}
     for feature in resolved['features']:
