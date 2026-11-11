@@ -25,6 +25,7 @@ import 'package:boohtacord_desktop/src/features/updates/identity.dart';
 import 'package:boohtacord_desktop/src/features/updates/restore/window_bounds.dart';
 
 import 'native_app.dart' as native;
+import 'navigation_search.dart';
 import 'voice_diagnostics.dart';
 
 Future<void> until(
@@ -79,9 +80,10 @@ class Journey {
 
   Future<void> openVoiceWithoutJoining(String label) async {
     final launcher = find.byKey(const ValueKey('navigation-search'));
-    if (launcher.hitTestable().evaluate().isEmpty) {
-      await tap(find.byTooltip('Открыть навигацию'), at: 'navigation_open');
-    }
+    await ensureNavigationSearchVisible(
+      launcher,
+      () => tap(find.byTooltip('Открыть навигацию'), at: 'navigation_open'),
+    );
     await tap(launcher, at: 'search_open');
     final results = find.byKey(const ValueKey('guild-quick-jump-results'));
     // The panel may return to messages mode after a switch. Retry only while
@@ -95,19 +97,13 @@ class Journey {
     // Compact drawer rows intentionally autojoin with the normal microphone
     // mode. Quick jump is the public UI path for opening a room without joining.
     await tap(
-      find.descendant(
-        of: results,
-        matching: find.text(label),
-      ),
+      find.descendant(of: results, matching: find.text(label)),
       at: 'voice_open',
     );
   }
 
   Future<void> joinListener() async {
-    final button = find.widgetWithText(
-      OutlinedButton,
-      'Без микрофона',
-    );
+    final button = find.widgetWithText(OutlinedButton, 'Без микрофона');
     step = 'voice_listener';
     await until(
       () =>
