@@ -70,7 +70,8 @@ class AuxiliaryTests(unittest.TestCase):
                 path.write_bytes((ROOT / name).read_bytes())
             auxiliary.audit(root)
             for name in manifest['files']:
-                path = root / name; path.write_bytes(path.read_bytes().replace(b'\n', b'\r\n'))
+                path = root / name
+                path.write_bytes(path.read_bytes().replace(b'\r\n', b'\n').replace(b'\n', b'\r\n'))
             auxiliary.audit(root)
             name = next(iter(manifest['files'])); path = root / name
             original = path.read_bytes(); path.write_bytes(original + b'\n')
