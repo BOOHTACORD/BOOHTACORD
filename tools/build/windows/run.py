@@ -11,6 +11,9 @@ from tools.build.client_identity import dart_defines, flutter_version_args
 
 def main():
     if sys.platform != 'win32': raise RuntimeError('Windows build requires a Windows host')
+    import os
+    from tools.build.windows.code_signing import configuration
+    signing_config = configuration(os.environ)
     parser = argparse.ArgumentParser()
     parser.add_argument('--ci-acceptance', action='store_true')
     args = parser.parse_args()
@@ -31,7 +34,6 @@ def main():
         if not (release / required).exists(): raise RuntimeError('Incomplete Windows release: ' + required)
     from tools.build.windows.runtime import retain_runtime
     retain_runtime(release)
-    import os
     from tools.build.windows.imports import verify_runtime
     verify_runtime(release, Path(os.environ['SystemRoot']) / 'System32')
     import shutil
@@ -42,11 +44,14 @@ def main():
         marker.write_text(json.dumps(PURPOSE, sort_keys=True) + '\n', encoding='utf-8')
     else:
         marker.unlink(missing_ok=True)
+    if signing_config:
+        from tools.build.windows.code_signing import prepare
+        prepare(release, signing_config)
     signing = json.loads(output('pwsh', '-NoProfile', '-File', str(ROOT / 'tools/build/windows/signature.ps1'),
                                 '-Path', str(release / 'boohtacord_desktop.exe')))
     write(release, 'windows', ['x64'], 'boohtacord_desktop', signing)
     from tools.build.windows.installer import package
-    package(release)
+    package(release, signing=signing_config)
     print('Retained Windows artifact, checksums and measured signing metadata: ' + str(release))
 
 

@@ -42,3 +42,19 @@ class InstallerTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'pinned version'):
                 package(self.root / 'Release')
             pack.assert_not_called()
+
+    def test_signed_packaging_requires_verified_installer_and_package(self):
+        config = {'thumbprint': 'A' * 40, 'timestamp': 'https://time.example.test'}
+        def pack(command, **options):
+            self.assertIn('--signParams', command)
+            params = command[command.index('--signParams') + 1]
+            self.assertIn('/sha1 ' + config['thumbprint'], params)
+            destination = self.root / '.out/releases/windows'
+            (destination / 'boohtacord_desktop-1.0.43-full.nupkg').touch()
+            (destination / 'boohtacord_desktop-win-Setup.exe').touch()
+        with patch('tools.build.windows.installer.load', return_value=self.identity), \
+             patch('tools.build.windows.installer.prepare_packager', return_value=self.tools / 'vpk.exe'), \
+             patch('tools.build.windows.installer.subprocess.run', side_effect=pack), \
+             patch('tools.build.windows.code_signing.verify_package') as verify:
+            package(self.root / 'Release', signing=config)
+            verify.assert_called_once()
