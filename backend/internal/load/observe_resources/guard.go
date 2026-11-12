@@ -36,25 +36,25 @@ func (g Guard) Check(ctx context.Context) (Snapshot, error) {
 	var s Snapshot
 	response, err := g.Request(ctx, "GET", "/snapshot")
 	if err != nil {
-		return s, errors.New("isolated resource guard unavailable")
+		return s, ErrUnavailable
 	}
 	defer response.Body.Close()
 	if response.StatusCode != 200 {
-		return s, errors.New("isolated resource guard denied")
+		return s, ErrDenied
 	}
 	if json.NewDecoder(io.LimitReader(response.Body, 65536)).Decode(&s) != nil {
-		return s, errors.New("invalid guard snapshot")
+		return s, ErrInvalid
 	}
 	m := g.Manifest
 	if s.Owner != m.Owner || s.Dataset != m.Dataset || s.Origin != m.Origin || s.Commit != m.Commit || s.DBName != "qa" || s.Accounts != len(m.Accounts)+1 {
-		return s, errors.New("foreign deployment or dataset guard")
+		return s, ErrForeign
 	}
 	age := time.Since(s.At)
 	if age < 0 || age > 5*time.Second {
-		return s, errors.New("stale guard snapshot")
+		return s, ErrStale
 	}
 	if s.CPUPercent < 0 || s.CPUPercent > 90 || s.RSSBytes < 1 || s.RSSBytes > 1<<30 || s.FreeBytes < 512<<20 {
-		return s, errors.New("resource threshold exceeded")
+		return s, ErrThreshold
 	}
 	return s, nil
 }

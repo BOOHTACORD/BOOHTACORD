@@ -18,6 +18,7 @@ func (r *Runner) Run(parent context.Context) (report Report) {
 		report.Requests = r.budget.Load()
 		report.ElapsedSeconds = time.Since(started).Seconds()
 		report.Resources = r.resources
+		report.GuardFailure = r.guardFailure
 		report.Criteria = criteria(report.Routes)
 		finalize(&report)
 	}()
@@ -32,6 +33,7 @@ func (r *Runner) Run(parent context.Context) (report Report) {
 	guard := observe_resources.Guard{Manifest: r.Manifest, Client: validate_target.Client()}
 	if _, err := guard.Check(ctx); err != nil {
 		report.StopReason = "guard_preflight"
+		r.guardFailure = observe_resources.Category(err)
 		return report
 	}
 	stop := make(chan string, 1)
