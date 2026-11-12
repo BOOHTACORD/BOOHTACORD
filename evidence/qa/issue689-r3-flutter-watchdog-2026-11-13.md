@@ -13,7 +13,8 @@
   test against a loopback peer: the socket was replaced after 46 seconds, PASS.
   The test APK SHA-256 was
   `d16e1d655f1275df326151cbedfe5efecb41dc41467c3afda35f40e44fb46510`.
-  This test ran from the working tree and is not a release build.
+  This test ran from the working tree subsequently committed as `1cf328161`;
+  it is not a release build.
 - The existing real guest loopback test also passed against a server that does
   not select a subprotocol. Such a legacy connection has no heartbeat watchdog.
 - Android full real-stack/visual acceptance for this change, actual network

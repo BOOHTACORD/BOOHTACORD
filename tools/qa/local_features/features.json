@@ -159,7 +159,7 @@
       }
     ],
     "parity_review": {
-      "issue689_follow_up": "Issue 689 bounds Web and shared Flutter socket opening and session checks, with cancellation of stalled Flutter session requests. Authentication regression suites remain required; Android/iOS current-source runtime acceptance is not established.",
+      "issue689_follow_up": "Issue 689 bounds Web and shared Flutter socket opening and session checks, and adds shared Flutter heartbeat recovery for guest and authenticated connections. Android emulator loopback passed; full authentication real-stack and iOS runtime acceptance remain open.",
       "issue": 676,
       "decisions": {
         "web": "implementation_and_regression",
