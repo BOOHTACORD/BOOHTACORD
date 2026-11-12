@@ -10,7 +10,8 @@ export function createCoalescedDelivery(onEvent: EventHandler, recovery: EventHa
   let active = true, generation = 0, outstanding = 0, timer: ReturnType<typeof setTimeout> | null = null
   let pending: RealtimeEvent[] = []
   const seen = new Set<string>()
-  const revocations = new Set<string>()
+  const priorityEvents = new Set<string>()
+  let permissionTail: Promise<void> | null = null
   const batches = new Map<RealtimeEvent, RealtimeEvent[]>()
   const immediate = new Map<RealtimeEvent, Promise<void>>()
   const base = createRealtimeDelivery(async event => {
@@ -35,8 +36,25 @@ export function createCoalescedDelivery(onEvent: EventHandler, recovery: EventHa
   }, recovery, cause => {
     generation++; outstanding = 0
     if (timer !== null) clearTimeout(timer)
-    timer = null; pending = []; batches.clear(); seen.clear(); immediate.clear(); revocations.clear(); failure(cause)
+    timer = null; pending = []; batches.clear(); seen.clear(); immediate.clear(); priorityEvents.clear(); permissionTail = null; failure(cause)
   })
+  function startPriority(event: RealtimeEvent): void {
+    const key = eventIdentity(event), own = generation
+    if (priorityEvents.has(key)) return
+    priorityEvents.add(key)
+    if (priorityEvents.size > 2048) priorityEvents.delete(priorityEvents.values().next().value!)
+    const permissions = event.kind === 'auth.permissions.invalidated' || event.kind === 'role.permissions.updated'
+    const invoke = () => active && own === generation ? onEvent(event) : undefined
+    let work: Promise<void>
+    try { work = permissions && permissionTail ? permissionTail.then(invoke) : Promise.resolve(invoke()) }
+    catch (cause) { work = Promise.reject(cause) }
+    if (permissions) {
+      permissionTail = work
+      void work.then(() => { if (permissionTail === work) permissionTail = null }, () => { if (permissionTail === work) permissionTail = null })
+    }
+    void work.catch(cause => { if (event.kind !== 'voice.lease_revoked' && active && own === generation) base.abort(cause) })
+    immediate.set(event, work)
+  }
   function flush(): void {
     if (timer !== null) clearTimeout(timer)
     timer = null
@@ -58,12 +76,9 @@ export function createCoalescedDelivery(onEvent: EventHandler, recovery: EventHa
         if (timer === null) timer = setTimeout(flush, 25)
         return
       }
-      if (event.kind === 'voice.lease_revoked') {
-        if (revocations.has(event.eventId)) return
-        revocations.add(event.eventId)
-        if (revocations.size > 2048) revocations.delete(revocations.values().next().value!)
-        try { const work = Promise.resolve(onEvent(event)); void work.catch(() => {}); immediate.set(event, work) }
-        catch (cause) { const work = Promise.reject<void>(cause); void work.catch(() => {}); immediate.set(event, work) }
+      if (['voice.lease_revoked', 'session.state_changed', 'auth.permissions.invalidated', 'role.permissions.updated'].includes(event.kind)) {
+        if (priorityEvents.has(eventIdentity(event))) return
+        startPriority(event)
       }
       if (!active) return
       flush()
@@ -74,10 +89,10 @@ export function createCoalescedDelivery(onEvent: EventHandler, recovery: EventHa
     disconnected(): void {
       generation++; outstanding = 0
       if (timer !== null) clearTimeout(timer)
-      timer = null; pending = []; batches.clear(); immediate.clear(); revocations.clear(); seen.clear()
+      timer = null; pending = []; batches.clear(); immediate.clear(); priorityEvents.clear(); permissionTail = null; seen.clear()
       base.disconnected()
     },
-    reset(): void { active = false; generation++; outstanding = 0; if (timer !== null) clearTimeout(timer); pending = []; batches.clear(); immediate.clear(); seen.clear(); revocations.clear(); base.reset() },
+    reset(): void { active = false; generation++; outstanding = 0; if (timer !== null) clearTimeout(timer); pending = []; batches.clear(); immediate.clear(); seen.clear(); priorityEvents.clear(); permissionTail = null; base.reset() },
   }
 }
 type EventHandlerRecovery = (() => void | Promise<void>) | undefined
