@@ -35,7 +35,11 @@ measurements and limits are recorded in
 
 ## Release gate
 
-The queue currently exists in isolation only. Before this proposal becomes a
+The queue and bounded output selector currently exist in isolation only. The
+selector rejects stale generation/sequence frames, emits silence on underflow
+and reports non-finite current audio; its caller must serialize mute and
+publication, and treat invalid audio as a failure. It does not solve races at
+the actual capture boundary. Before this proposal becomes a
 decision, implement and test worker ownership, a non-panicking C boundary,
 bounded overload and teardown, source/weight provenance, lifecycle races and
 independent rollback. Validate callback allocations and timing with a real
