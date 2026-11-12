@@ -11,5 +11,17 @@
   and prevent an old waiter consuming a replacement socket's event. The focused
   package passed 20 iterations, all load packages passed their Go tests, and the
   final focused package passed the Linux race detector.
-- Production event delivery, comparative capacity, fault recovery and a fresh
-  exact-source load run remain separate and are not established by this test.
+- Two isolated local fault profiles at `83cb107190c71b943d0ffdfd672a2b84f0caf4e6`
+  failed: one stopped by the resource guard, the other observed five fanout
+  errors and one success before failing the measured criterion. Both cleaned up
+  owned resources. A driver 503 is an internal failure observation, not an HTTP
+  response and not by itself proof of a lost server event.
+- A third isolated fault profile at `500f48c5049efac55496bebbbfb1ff7f39e2f8e9`
+  failed with `guard_resource_stop`; cleanup passed. Its bounded diagnostic
+  captured one WebSocket close code 1013 and a one-second session revalidation.
+  This is consistent with fail-closed session checking during the injected DB
+  lock, but 1013 has another server-side cause and neither the precise close
+  source nor the guard's reason was recorded. No fanout measurement occurred.
+  Reports are retained outside the repository under the local QA artifacts.
+- Production event delivery, comparative capacity and fault recovery remain
+  separate and are not established by these tests.
