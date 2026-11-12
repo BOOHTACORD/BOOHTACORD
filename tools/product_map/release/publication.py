@@ -1,6 +1,6 @@
 """Check consistency of local records without asserting their authenticity."""
 import re
-import json
+from tools.product_map.serialization.strict_json import parse_record
 
 PLATFORMS = {'android', 'windows', 'macos'}
 
@@ -10,25 +10,6 @@ def load_record(path):
         raise ValueError('publication record is missing, too large or a symlink')
 
     return parse_record(path.read_bytes())
-
-
-def parse_record(raw):
-    if len(raw) > 4_000_000:
-        raise ValueError('publication record is too large')
-
-    def pairs(items):
-        result = {}
-        for key, value in items:
-            if key in result:
-                raise ValueError(f'duplicate record field: {key}')
-            result[key] = value
-        return result
-
-    def reject_constant(value):
-        raise ValueError(f'invalid JSON constant: {value}')
-
-    return json.loads(raw.decode('utf-8'), object_pairs_hook=pairs,
-                      parse_constant=reject_constant)
 
 
 def match_publication(snapshot, contract, receipt):

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.boohtacord.invalid/product-map/catalog.schema.json",
+  "type": "object",
+  "required": ["features", "components"],
+  "additionalProperties": false,
+  "properties": {
+    "features": {"type": "array", "items": {"$ref": "feature.schema.json"}},
+    "components": {"type": "array", "items": {"$ref": "component.schema.json"}}
+  }
+}

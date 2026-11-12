@@ -14,7 +14,8 @@ def _hash(value):
 def build_document(features):
     payload = json.dumps(features, ensure_ascii=True, sort_keys=True, separators=(',', ':'))
     payload = payload.replace('<', r'\u003c').replace('>', r'\u003e').replace('&', r'\u0026')
-    script = 'const data = ' + payload + ';\n' + (HERE / 'app.js').read_text(encoding='utf-8')
+    script = 'const data = ' + payload + ';\n' + '\n'.join(
+        (HERE / name).read_text(encoding='utf-8') for name in ('filters.js', 'detail.js', 'app.js'))
     style = (HERE / 'style.css').read_text(encoding='utf-8')
     csp = f"default-src 'none'; style-src 'sha256-{_hash(style)}'; script-src 'sha256-{_hash(script)}'; base-uri 'none'; form-action 'none'"
     return f'''<!doctype html>
@@ -23,10 +24,14 @@ def build_document(features):
 <body><main><h1>Карта BOOHTACORD: предварительная проекция</h1>
 <p>Данные получены из каталога и parity-реестра. UNKNOWN не означает отсутствие функции; релизы и runtime не подтверждаются кодом.</p>
 <label for="search">Поиск по ID или сценарию</label> <input id="search" type="search">
-<p id="count" aria-live="polite"></p><div class="table-wrap"><table><thead><tr><th scope="col">Сценарий</th>
+<div class="filters"><label for="platform">Платформа</label> <select id="platform"><option value="all">Все</option><option value="web">Web</option><option value="windows">Windows</option><option value="macos">macOS</option><option value="android">Android</option><option value="ios">iOS</option></select>
+<label for="domain">Область</label> <select id="domain"><option value="all">Все</option></select>
+<label for="status">Фильтр состояния</label> <select id="status"><option value="all">Все</option><option value="differences">Расхождения исходников</option><option value="behind">Отстающие исходники</option><option value="unverified">Не подтверждено</option><option value="exceptions">Исключения</option></select>
+<fieldset><legend>Слои</legend><label><input id="layer-source" type="checkbox" checked> Исходники</label> <label><input id="layer-release" type="checkbox" checked> Релиз</label> <label><input id="layer-runtime" type="checkbox" checked> Runtime</label></fieldset></div>
+<p id="count" aria-live="polite"></p><div class="table-wrap"><table><thead><tr id="header"><th scope="col">Сценарий</th>
 <th scope="col">Web</th><th scope="col">Windows</th><th scope="col">macOS</th><th scope="col">Android</th><th scope="col">iOS</th></tr></thead><tbody id="rows"></tbody></table></div>
 <section aria-labelledby="detail-heading"><h2 id="detail-heading">Компоненты сценария</h2><div id="detail" aria-live="polite">Выберите ID в таблице.</div></section>
-<noscript>Для интерактивной таблицы включите JavaScript. Доступна команда python -m tools.product_map matrix.</noscript></main><script>{script}</script></body></html>'''
+<noscript>Доступна <a href="index.md">карта в Markdown</a>; для интерактивной таблицы включите JavaScript.</noscript></main><script>{script}</script></body></html>'''
 
 
 def write_document(path, content, *, check):

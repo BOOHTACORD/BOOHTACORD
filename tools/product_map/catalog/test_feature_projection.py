@@ -31,12 +31,14 @@ class FeatureProjectionTests(unittest.TestCase):
     def test_catalog_only_feature_is_visible_on_five_platforms(self):
         item = feature()
         item['parity_ids'] = []
+        item['depends_on'] = ['auth.session']
         result = project_feature(item)
         self.assertEqual(result['id'], 'voice.a')
         self.assertEqual(result['group'], 'voice')
         self.assertEqual(len(result['platforms']), 5)
         self.assertEqual(result['platforms']['windows']['source_status'], 'BEHIND')
         self.assertEqual(result['platforms']['windows']['runtime'], 'NOT_VERIFIED')
+        self.assertEqual(result['depends_on'], ['auth.session'])
 
     def test_exception_without_approval_does_not_become_green(self):
         item = feature()

@@ -8,12 +8,16 @@
     {"id":"cmp.flutter.voice_roster_recovery","source":{"parity_id":"voice.roster_long_recovery","platform":"android"}},
     {"id":"cmp.web.voice_event_sounds","source":{"parity_id":"voice.room_event_sounds","platform":"web"}},
     {"id":"cmp.flutter.voice_event_sounds","source":{"parity_id":"voice.room_event_sounds","platform":"android"}},
-    {"id":"cmp.web.voice_melody","source":{"parity_id":"voice.event-sounds-private-melody","platform":"web"}},
-    {"id":"cmp.flutter.voice_melody","source":{"parity_id":"voice.event-sounds-private-melody","platform":"android"}},
+    {"id":"cmp.web.voice_melody","source":{"parity_id":"voice.event-sounds-private-melody","platform":"web"},"depends_on":["cmp.web.voice_melody_client"]},
+    {"id":"cmp.web.voice_melody_client","paths":["clients/web/src/voice/join_sound/client.ts"]},
+    {"id":"cmp.flutter.voice_melody","source":{"parity_id":"voice.event-sounds-private-melody","platform":"android"},"depends_on":["cmp.flutter.voice_melody_controls"]},
+    {"id":"cmp.flutter.voice_melody_controls","paths":["clients/flutter/lib/src/features/voice/join_sound/controls.dart"]},
+    {"id":"cmp.flutter.voice_melody_api","paths":["clients/flutter/lib/src/features/voice/join_sound/api.dart"]},
     {"id":"cmp.backend.voice_sound_preferences_routes","paths":["backend/internal/app/voice_sound_routes/register.go"],"depends_on":["cmp.backend.voice_sound_preferences_service"]},
     {"id":"cmp.backend.voice_sound_preferences_service","paths":["backend/internal/voice/sound_preferences/service.go"]},
-    {"id":"cmp.backend.voice_join_sound_routes","paths":["backend/internal/app/voice_sound_routes/join.go"],"depends_on":["cmp.backend.voice_join_sound_service"]},
-    {"id":"cmp.backend.voice_join_sound_service","paths":["backend/internal/voice/join_sound/service.go"]}
+    {"id":"cmp.backend.voice_join_sound_routes","paths":["backend/internal/app/voice_sound_routes/join.go"],"depends_on":["cmp.backend.voice_join_sound_service","cmp.backend.voice_join_sound_processor"]},
+    {"id":"cmp.backend.voice_join_sound_service","paths":["backend/internal/voice/join_sound/service.go"]},
+    {"id":"cmp.backend.voice_join_sound_processor","paths":["backend/internal/voice/join_sound/processor/remote.go"]}
   ],
   "features": [
     {
@@ -55,6 +59,7 @@
     {
       "id":"voice.room_event_sounds", "title":"Звуки событий голосового канала", "domain":"voice", "target_revision":null,
       "behavior_revisions":[], "parity_ids":["voice.room_event_sounds"],
+      "owned_roots":[{"path":"backend/internal/voice/sound_preferences/","component":"cmp.backend.voice_sound_preferences_service"}],
       "components":["cmp.web.voice_event_sounds","cmp.flutter.voice_event_sounds","cmp.backend.voice_sound_preferences_routes","cmp.backend.voice_sound_preferences_service"],
       "platforms": {
         "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
@@ -67,7 +72,14 @@
     {
       "id":"voice.event-sounds-private-melody", "title":"Личная мелодия входа", "domain":"voice", "target_revision":null,
       "behavior_revisions":[], "parity_ids":["voice.event-sounds-private-melody"],
-      "components":["cmp.web.voice_melody","cmp.flutter.voice_melody","cmp.backend.voice_join_sound_routes","cmp.backend.voice_join_sound_service"],
+      "owned_roots":[
+        {"path":"clients/web/src/voice/join_sound/","component":"cmp.web.voice_melody"},
+        {"path":"clients/flutter/lib/src/features/voice/join_sound/","component":"cmp.flutter.voice_melody"},
+        {"path":"backend/internal/voice/join_sound/","component":"cmp.backend.voice_join_sound_service"}
+      ],
+      "components":["cmp.web.voice_melody","cmp.web.voice_melody_client","cmp.flutter.voice_melody",
+        "cmp.flutter.voice_melody_controls","cmp.flutter.voice_melody_api","cmp.backend.voice_join_sound_routes",
+        "cmp.backend.voice_join_sound_service","cmp.backend.voice_join_sound_processor"],
       "platforms": {
         "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
         "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
