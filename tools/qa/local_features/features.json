@@ -395,7 +395,7 @@
       }
     ],
     "parity_review": {
-      "issue689_follow_up": "Issue 689 migrates maintenance and connection state to the shared WebSocket on Web and Flutter. Focused tests exist; complete Android and iOS runtime acceptance remains open.",
+      "issue689_follow_up": "Issue 689 migrates maintenance and connection state to the shared WebSocket on Web and Flutter. R1 changes Web queue ownership on socket replacement and adds server roster generations; Flutter behavior is unchanged. Web regression and Android/iOS runtime acceptance remain required.",
       "issue": 582,
       "decisions": {
         "web": "implementation_and_regression",
