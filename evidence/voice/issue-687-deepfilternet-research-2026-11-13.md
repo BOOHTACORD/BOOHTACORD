@@ -79,5 +79,14 @@ allocators, more than one producer or consumer, deadlines, mute, or stale-frame
 filtering: callers must enforce generation and failure policy. The queue is not
 connected to libDF, WebRTC, microphone capture or a client setting.
 
+In a separate Node experiment with the WorkAdventure-pinned WASM and model,
+initialization and one silent frame succeeded, but passing the raw `df_create`
+pointer to the exported wasm-bindgen `__wbg_dfstate_free` raised
+`attempted to take ownership of Rust value while it was borrowed`. This is not
+a supported destructor for that raw-pointer API. Do not call it in the product;
+a rebuilt module with an explicit, tested ownership boundary is required.
+The process ended after the exception; no long-duration leak measurement or
+browser cleanup acceptance follows from this probe.
+
 Unknown: behavior on real capture, bounded fallback and mute, cross-browser
 support, native Windows real-time integration, speech quality and latency.
