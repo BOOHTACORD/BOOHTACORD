@@ -17,6 +17,7 @@ def feature():
 class MarkdownTests(unittest.TestCase):
     def test_index_links_feature_and_preserves_separate_statuses(self):
         output = render_index([feature()])
+        self.assertIn('(architecture.md)', output)
         self.assertIn('(features/auth.test.md)', output)
         self.assertIn('BEHIND', output)
         self.assertIn('r2 → r3', output)

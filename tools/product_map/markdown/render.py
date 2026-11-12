@@ -28,6 +28,7 @@ def render_index(features):
         raise ValueError('duplicate product feature ID')
     lines = ['# Карта продукта — предварительная проекция', '',
              'Исходный код, релиз и runtime показаны раздельно. UNKNOWN означает отсутствие подтверждения.', '',
+             '[Системная архитектура](architecture.md)', '',
              '| Функция | ' + ' | '.join(PLATFORMS) + ' |',
              '| --- | ' + ' | '.join('---' for _ in PLATFORMS) + ' |']
     for item in sorted(features, key=lambda row: _id(row['id'])):

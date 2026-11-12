@@ -77,7 +77,7 @@ jobs:
           python -m unittest tools.product_map.catalog.test_feature_projection
           python -m unittest tools.product_map.catalog.test_sessions
           python -m unittest tools.product_map.catalog.test_melody
-          python -m unittest tools.product_map.markdown.test_render tools.product_map.markdown.test_output
+          python -m unittest tools.product_map.markdown.test_render tools.product_map.markdown.test_output tools.product_map.markdown.test_architecture
           python -m unittest tools.product_map.schema.test_schema
           python -m unittest tools.product_map.architecture.test_model tools.product_map.architecture.test_catalog
           python -m unittest tools.product_map.viewer.test_synthetic

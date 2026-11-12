@@ -2,6 +2,8 @@
 
 Исходный код, релиз и runtime показаны раздельно. UNKNOWN означает отсутствие подтверждения.
 
+[Системная архитектура](architecture.md)
+
 | Функция | web | windows | macos | android | ios |
 | --- | --- | --- | --- | --- | --- |
 | [admin.telemetry](features/admin.telemetry.md)<br>Administrator can read installation state and opt into central diagnostics only with explicit consent and HTTPS; 403/old endpoint/network are not successful delivery. | UNKNOWN<br>UNKNOWN<br>NOT\_VERIFIED | UNKNOWN<br>UNKNOWN<br>NOT\_VERIFIED | UNKNOWN<br>UNKNOWN<br>NOT\_VERIFIED | UNKNOWN<br>UNKNOWN<br>NOT\_VERIFIED | UNKNOWN<br>UNKNOWN<br>NOT\_VERIFIED |
