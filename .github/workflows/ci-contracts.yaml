@@ -80,6 +80,7 @@ jobs:
           python -m unittest tools.product_map.markdown.test_render tools.product_map.markdown.test_output
           python -m unittest tools.product_map.schema.test_schema
           python -m unittest tools.product_map.architecture.test_model tools.product_map.architecture.test_catalog
+          python -m unittest tools.product_map.viewer.test_synthetic
           python -m unittest tools.product_map.ownership.test_new_paths tools.product_map.ownership.test_git_tree
           python -m unittest tools.product_map.ownership.test_coverage
           python -m unittest tools.product_map.ownership.test_scopes
@@ -102,6 +103,7 @@ jobs:
           npm ci --prefix clients/web --ignore-scripts
           clients/web/node_modules/.bin/playwright install --with-deps chromium
           node --test tools/product_map/viewer/viewport.browser.cjs
+          node tools/product_map/viewer/benchmark.browser.cjs
       - name: Verify generated tracing contract bindings
         run: node tools/observability/flow_contract/generate.mjs --check
       - name: Verify publisher signatures and desktop promotion guards
