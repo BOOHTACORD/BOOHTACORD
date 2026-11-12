@@ -51,3 +51,9 @@ if ($null -eq $realtimeUpgrade -or
     $realtimeUpgrade.description -notmatch '7-day') {
     throw 'Realtime upgrade contract must define the acknowledged after cursor and retention.'
 }
+$heartbeat = $realtime.allOf | Where-Object { $_.if.properties.kind.const -eq 'connection.heartbeat' } | Select-Object -First 1
+if ($realtime.properties.kind.enum -notcontains 'connection.heartbeat' -or
+    $null -eq $heartbeat -or $heartbeat.then.properties.payload.additionalProperties -ne $false -or
+    $heartbeat.then.not.required -notcontains 'telemetry') {
+    throw 'Realtime heartbeat must have an empty payload.'
+}

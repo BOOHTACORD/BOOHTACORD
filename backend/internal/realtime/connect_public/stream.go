@@ -8,6 +8,7 @@ import (
 	"github.com/coder/websocket/wsjson"
 	"github.com/google/uuid"
 	observestate "voice-platform/backend/internal/maintenance/observe_state"
+	"voice-platform/backend/internal/realtime/heartbeat"
 )
 
 type event struct {
@@ -19,6 +20,8 @@ type event struct {
 
 func serve(connection *websocket.Conn, sub *observestate.Subscription, now func() time.Time) {
 	closed := connection.CloseRead(context.Background()).Done()
+	heartbeats, stopHeartbeat := heartbeat.Ticks(connection)
+	defer stopHeartbeat()
 	if !write(connection, now, "connection.ready", map[string]any{}) {
 		return
 	}
@@ -29,6 +32,10 @@ func serve(connection *websocket.Conn, sub *observestate.Subscription, now func(
 		select {
 		case <-closed:
 			return
+		case <-heartbeats:
+			if !write(connection, now, "connection.heartbeat", map[string]any{}) {
+				return
+			}
 		case <-initial.C:
 			if first {
 				return

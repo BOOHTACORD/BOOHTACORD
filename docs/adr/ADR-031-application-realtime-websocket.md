@@ -41,6 +41,12 @@ Flutter uses the same 10-second session-revalidation bound. Timeout, explicit
 close and manual replacement abort that HTTP request; a cancelled or late
 response cannot by itself expire the replacement connection.
 
+The server can emit a payload-free heartbeat every 15 seconds on public and
+authenticated sockets that negotiate `boohtacord.heartbeat.v1` as a WebSocket
+subprotocol. Legacy connections receive no new event. This server support alone
+does not detect a blackhole on clients: client watchdogs, background behaviour,
+mixed-version rollout and rollback remain separate release gates.
+
 The public socket uses bounded admission and the configured Origin policy. No
 public event carries protected account, roster, session or message information.
 The deployment remains one guild and one application API process; this decision
