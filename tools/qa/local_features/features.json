@@ -171,7 +171,7 @@
     }
   },
   "connection_status": {
-    "native_targets": ["integration_test/issue689_roster_test.dart", "integration_test/issue689_delivery_revocation_test.dart"],
+    "native_targets": ["integration_test/issue689_roster_test.dart", "integration_test/issue689_delivery_revocation_test.dart", "integration_test/issue689_heartbeat_test.dart"],
     "paths": [
       "clients/web/src/workspace/connection_status/**",
       "clients/web/tests/connection_status/**",
@@ -193,6 +193,7 @@
       "clients/flutter/lib/src/screens/workspace_ui/sidebar/component.dart",
       "clients/flutter/integration_test/local_qa_test.dart",
       "clients/flutter/integration_test/issue689_roster_test.dart",
+      "clients/flutter/integration_test/issue689_heartbeat_test.dart",
       "clients/flutter/integration_test/issue689_support.dart",
       "clients/web/src/realtime/**",
       "clients/web/src/voice/roster_socket/**",
