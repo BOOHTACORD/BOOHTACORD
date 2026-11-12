@@ -2,6 +2,7 @@ import { RnnoiseTrackProcessor } from '../../src/voice/noise_suppression/rnnoise
 import { loadRnnoiseAssets } from '../../src/voice/noise_suppression/rnnoise_loader'
 import { SampleRingBuffer } from '../../src/voice/noise_suppression/ring_buffer'
 import { Track } from 'livekit-client'
+import { checkUnmuteRace } from './unmute_race_fixture'
 interface MeterReading { samples: number; rms: number; peak: number; nonfinite: number }
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 function meter(context: AudioContext, track: MediaStreamTrack) {
@@ -79,6 +80,10 @@ const gate = {
       }
       return { graphs, contextState: test.context.state, sourceState: test.track.readyState }
     } finally { await test.stop() }
+  },
+  async unmuteRace() {
+    const test = await setup()
+    try { await test.init(); return await checkUnmuteRace(test.processor) } finally { await test.stop() }
   },
   async rtcPair() {
     const test = await setup(), sender = new RTCPeerConnection(), receiver = new RTCPeerConnection()

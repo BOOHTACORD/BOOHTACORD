@@ -29,6 +29,9 @@ test('100 transitions stop derived tracks and preserve borrowed source/context',
   const quantum = await evaluate(page, 'variableQuantum')
   expect(quantum.frames * 480 + quantum.residual).toBe(quantum.samples)
 })
+test('mute wins over pending unmute and a later unmute can complete', async ({ page }) => {
+  expect(await evaluate(page, 'unmuteRace')).toEqual({ enabled: true })
+})
 test('real WebRTC receiver hears processed synthetic output and mute silence', async ({ page }) => {
   const result = await evaluate(page, 'rtcPair')
   expect(result.modelId).toBe(process.env.VITE_RNNOISE_V02_ENABLED === 'true' ? 'rnnoise-stock-v0.2' : 'rnnoise-stock-v0.1')
