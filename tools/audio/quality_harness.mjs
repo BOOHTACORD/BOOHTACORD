@@ -4,10 +4,17 @@ import { fileURLToPath } from 'node:url'
 import { resolve } from 'node:path'
 import { performance } from 'node:perf_hooks'
 import { syntheticPcm, rms } from './synthetic_pcm_fixtures.mjs'
+import { validateCorpus } from './corpus/manifest.mjs'
+import { verifyAsset } from './assets/verify.mjs'
+const corpus = JSON.parse(readFileSync(new URL('./corpus/synthetic-v1.json', import.meta.url)))
+validateCorpus(corpus)
 const root = fileURLToPath(new URL('../../', import.meta.url))
 const folder = resolve(root, 'clients/web/public/audio/rnnoise/v0.1-cdf196b')
 const manifest = JSON.parse(readFileSync(resolve(folder, 'rnnoise-manifest.json')))
-const dsp = new WebAssembly.Instance(new WebAssembly.Module(readFileSync(resolve(folder, 'rnnoise.wasm'))), {}).exports
+const wasm = readFileSync(resolve(folder, 'rnnoise.wasm'))
+const lock = JSON.parse(readFileSync(new URL('./rnnoise_build_lock.json', import.meta.url)))
+verifyAsset(manifest, wasm, lock)
+const dsp = new WebAssembly.Instance(new WebAssembly.Module(wasm), {}).exports
 dsp._initialize(); if (dsp.ns_init() !== 1) throw new Error('RNNoise init failed')
 const input = new Float32Array(dsp.memory.buffer, dsp.ns_input(), 480), output = new Float32Array(dsp.memory.buffer, dsp.ns_output(), 480)
 const durations = []
@@ -37,7 +44,7 @@ for (let lag = 0; lag <= 1920; lag++) {
   if (score > bestScore) { bestScore = score; bestLag = lag }
 }
 durations.sort((a, b) => a - b)
-console.log(JSON.stringify({ status: 'PASS', fixtureLicense: 'CC0-1.0 authored synthetic source', sourceCommit: manifest.sourceCommit,
+console.log(JSON.stringify({ status: 'PASS', fixtureLicense: 'CC0-1.0 authored synthetic source', corpus, sourceCommit: manifest.sourceCommit,
   modelSha256: manifest.modelSha256, wasmSha256: manifest.wasmSha256, samplesPerSignal: fixtures.clean.length,
   measuredResults: { syntheticNoiseRmsRatioDb: reduction, syntheticCorrelationLagSamples: bestLag,
     syntheticCoreLagMs: bestLag / 48, nodeFrameCpuP99Ms: durations[Math.floor(durations.length * 0.99)] },
