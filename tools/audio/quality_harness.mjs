@@ -3,16 +3,18 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { resolve } from 'node:path'
 import { performance } from 'node:perf_hooks'
+import { argv } from 'node:process'
 import { syntheticPcm, rms } from './synthetic_pcm_fixtures.mjs'
 import { validateCorpus } from './corpus/manifest.mjs'
 import { verifyAsset } from './assets/verify.mjs'
+import { assetOptions } from './assets/options.mjs'
 const corpus = JSON.parse(readFileSync(new URL('./corpus/synthetic-v1.json', import.meta.url)))
 validateCorpus(corpus)
 const root = fileURLToPath(new URL('../../', import.meta.url))
-const folder = resolve(root, 'clients/web/public/audio/rnnoise/v0.1-cdf196b')
+const { folder, lockPath } = assetOptions(argv.slice(2), root)
 const manifest = JSON.parse(readFileSync(resolve(folder, 'rnnoise-manifest.json')))
 const wasm = readFileSync(resolve(folder, 'rnnoise.wasm'))
-const lock = JSON.parse(readFileSync(new URL('./rnnoise_build_lock.json', import.meta.url)))
+const lock = JSON.parse(readFileSync(lockPath))
 verifyAsset(manifest, wasm, lock)
 const dsp = new WebAssembly.Instance(new WebAssembly.Module(wasm), {}).exports
 dsp._initialize(); if (dsp.ns_init() !== 1) throw new Error('RNNoise init failed')

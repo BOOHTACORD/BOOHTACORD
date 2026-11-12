@@ -13,5 +13,13 @@ retain the old reference for comparisons; do not regenerate a reference merely
 to make a failing check pass. `node tools/audio/corpus/snapshot.mjs` prints a
 candidate reference for review.
 
+The default quality harness selects the pinned v0.1 assets. A separately built
+compatible RNNoise probe can be compared against the same input with
+`node tools/audio/quality_harness.mjs --asset-dir <directory> --lock <lock.json>`.
+The directory must contain `rnnoise-manifest.json` and `rnnoise.wasm`; its
+version, source commit and model hash must match the supplied lock, and its
+WASM hash must match the manifest. A caller-supplied lock is not independent
+evidence that the artifact is authentic or approved for distribution.
+
 Consented speech and physical-device measurements require separate provenance
 and permission; keep private recordings out of the repository and logs.

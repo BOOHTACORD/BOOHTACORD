@@ -42,3 +42,13 @@ An isolated Ubuntu/GCC build of those upstream sources initialized the default
 model and returned finite near-zero output for 100 silent frames; frame size
 was 480 and state size 32688 bytes on that build. This is a feasibility smoke
 test, not an application integration, numerical parity, or Windows result.
+
+An isolated scalar v0.2 WASM probe, using the same synthetic corpus, returned
+noise RMS change -76.441 dB, correlation lag 959 samples and Node frame CPU
+p99 0.426 ms. Its WASM SHA-256 was
+`f121a4c5f398e565058cdeb1301c7441c50cbed857e5898cfd39a0feaae43859`.
+The v0.2 source refers to an absent `os_support.h` on the scalar path; the
+probe used a local one-line `OPUS_CLEAR` shim. It was built outside the release
+tree and is not a supported or distributable artifact. This does not prove
+speech quality, platform compatibility, release eligibility, or end-to-end
+latency. The greater synthetic correlation lag warrants physical measurement.
