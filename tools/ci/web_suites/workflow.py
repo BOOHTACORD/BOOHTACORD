@@ -9,6 +9,9 @@ RECEIPT = 'python3 -m tools.ci.receipts.run web --parts .out/ci/web-parts'
 CAPTURES = {'.out/' + name + '/**' for name in WEB_ROOTS}
 SFU_CAPTURES = {'.out/screen-profile-browser-results/**/screen-share-sfu-smoke.json',
                 '.out/restricted-networks/*.json'}
+AUDIO_FIXTURES = ('node --test tools/audio/assets/test_options.mjs '
+                  'tools/audio/assets/test_verify.mjs tools/audio/corpus/test_manifest.mjs '
+                  'tools/audio/speech_fixture/test_frames.mjs tools/audio/speech_fixture/test_runner.mjs')
 
 
 def require(value):
@@ -52,9 +55,16 @@ def validate(document):
             if name == 'browser':
                 allowed |= {'python3 -m tools.ci.artifact_policy.run ' + operation + ' web "$WEB_PROFILE"'
                             for operation in ('begin', 'finish')}
+            if name == 'sfu':
+                allowed.add(AUDIO_FIXTURES)
+                audio = [s for s in job['steps'] if s.get('run') == AUDIO_FIXTURES]
+                require(len(audio) == 1 and audio[0].get('if') is None
+                        and not audio[0].get('continue-on-error')
+                        and job['steps'].index(audio[0]) < job['steps'].index(command))
             require({s['run'] for s in job['steps'] if 'run' in s} == allowed)
             node = [i for i, s in enumerate(job['steps']) if s.get('uses', '').startswith('actions/setup-node@')]
             require(len(node) == 1 and node[0] < job['steps'].index(command))
+            if name == 'sfu': require(node[0] < job['steps'].index(audio[0]))
             mandatory = [s for s in uploads(job) if s['with']['name'] == PREFIX + profile]
             require(len(mandatory) == 1 and mandatory[0].get('if') == 'always()')
             require(mandatory[0]['with']['path'] == '.out/ci/web-parts/' + profile + '.json'

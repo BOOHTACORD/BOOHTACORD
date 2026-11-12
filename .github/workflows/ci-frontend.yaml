@@ -121,6 +121,11 @@ jobs:
           node-version-file: .node-version
           cache: npm
           cache-dependency-path: .out/ci/cache-inputs/npm.json
+      - name: Test audio measurement fixtures
+        run: >-
+          node --test tools/audio/assets/test_options.mjs
+          tools/audio/assets/test_verify.mjs tools/audio/corpus/test_manifest.mjs
+          tools/audio/speech_fixture/test_frames.mjs tools/audio/speech_fixture/test_runner.mjs
       - name: Run complete reviewed sfu profile
         run: python3 -m tools.ci.web_suites.run --profile sfu-network
       - name: Retain mandatory source-bound profile result
