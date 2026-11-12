@@ -133,6 +133,8 @@ jobs:
           tools.audio.blind_quality.test_score
       - name: Run complete reviewed sfu profile
         run: python3 -m tools.ci.web_suites.run --profile sfu-network
+      - name: Test synthetic audio processing in Firefox
+        run: python3 -m tools.ci.web_suites.firefox_audio
       - name: Retain mandatory source-bound profile result
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

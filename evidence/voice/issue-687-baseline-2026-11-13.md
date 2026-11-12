@@ -71,6 +71,21 @@ Subsequently, the Web loader gained a build flag defaulting to v0.1; with the
 flag explicitly enabled and a locally generated v0.2 research manifest served
 same-origin, the Chromium synthetic graph/mute test passed. The temporary assets
 were removed afterward. No v0.2 assets have been included in the release path.
+An additional local Chromium test sent a synthetic 440 Hz signal through the
+selected v0.2 track processor and a direct RTCPeerConnection to a second peer.
+The receiver obtained nonzero audio and silence after mute; the processor
+reported `rnnoise-stock-v0.2`. The same test passed with the default v0.1
+model. This is a same-machine synthetic WebRTC test, not a physical microphone,
+LiveKit, listening-quality, other-browser or Windows-native acceptance. The
+v0.2 research files were removed from the Web public directory after testing.
+Firefox 155 on Windows also passed four synthetic v0.1 browser tests. With
+research v0.2 explicitly enabled, its graph and direct peer/mute tests passed;
+the peer test passed three additional repetitions. The first Firefox run exposed
+a test-instrumentation defect: the meter paused with the disabled local track
+and retained pre-mute partial-window samples. Resetting and acknowledging the
+meter before a new measurement fixed the test; the disabled track and remote
+peer silence are checked separately. This does not prove physical-device
+behavior or speech quality. Edge and LiveKit v0.2 acceptance remain NOT_RUN.
 
 Local feature gate at source `8bd07149125763e18da024700f9053d1b6fcad8b`
 was FAIL, not acceptance: its first real-stack attempts lacked Docker Buildx,

@@ -8,7 +8,9 @@ test('scalar WASM graph survives CSP; mute resets DSP and faults silence output'
   expect(result.active.some((reading: any) => reading.rms > 0.001)).toBe(true)
   expect(result.active.every((reading: any) => reading.nonfinite === 0 && reading.peak <= 1)).toBe(true)
   expect(result.muted.every((reading: any) => reading.peak === 0)).toBe(true)
-  expect(result.afterUnmute.every((reading: any) => reading.peak < 0.0001)).toBe(true)
+  expect(result.mutedTrackDisabled).toBe(true)
+  expect(result.afterUnmute.length).toBeGreaterThan(0)
+  expect(result.afterUnmute.every((reading: any) => reading.peak < 0.0001), JSON.stringify(result.afterUnmute.slice(0, 5))).toBe(true)
   expect(result.fault).toEqual({ disabled: true, failures: ['processor-error'] })
   expect(result.states.some((state: any) => state.processedFrames >= 100)).toBe(true)
   expect(requests.every(url => new URL(url).hostname === '127.0.0.1')).toBe(true)
@@ -29,6 +31,7 @@ test('100 transitions stop derived tracks and preserve borrowed source/context',
 })
 test('real WebRTC receiver hears processed synthetic output and mute silence', async ({ page }) => {
   const result = await evaluate(page, 'rtcPair')
+  expect(result.modelId).toBe(process.env.VITE_RNNOISE_V02_ENABLED === 'true' ? 'rnnoise-stock-v0.2' : 'rnnoise-stock-v0.1')
   expect(result.sender).toBe('connected'); expect(result.receiver).toBe('connected')
   expect(result.active.some((reading: any) => reading.rms > 0.001)).toBe(true)
   expect(result.muted.length).toBeGreaterThan(0); expect(result.muted.every((reading: any) => reading.peak < 0.0001)).toBe(true)

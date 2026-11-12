@@ -8,8 +8,12 @@ function meter(context: AudioContext, track: MediaStreamTrack) {
   const readings: MeterReading[] = []
   const node = new AudioWorkletNode(context, 'rnnoise-test-meter'), source = context.createMediaStreamSource(new MediaStream([track]))
   source.connect(node); node.connect(context.destination)
-  node.port.onmessage = event => readings.push(event.data)
-  return { readings, stop() { source.disconnect(); node.disconnect(); node.port.close() } }
+  let onReset: (() => void) | undefined
+  node.port.onmessage = event => { if (event.data === 'reset') onReset?.(); else readings.push(event.data) }
+  return { readings, async reset() {
+    await new Promise<void>(resolve => { onReset = resolve; node.port.postMessage('reset') })
+    onReset = undefined; readings.length = 0
+  }, stop() { source.disconnect(); node.disconnect(); node.port.close() } }
 }
 async function setup(rate = 48000) {
   const context = new AudioContext({ sampleRate: rate }); await context.resume()
@@ -33,14 +37,15 @@ const gate = {
       await wait(1400)
       const active = output.readings.splice(0)
       test.processor.mute(); test.gain.gain.value = 0; await wait(200); output.readings.length = 0; await wait(300)
-      const muted = output.readings.splice(0)
+      const muted = output.readings.splice(0), mutedTrackDisabled = !test.processor.processedTrack!.enabled
       test.gain.gain.value = 0
+      await output.reset()
       await test.processor.unmute(); test.processor.processedTrack!.enabled = true
       output.readings.length = 0; await wait(350)
       const afterUnmute = output.readings.splice(0)
       const fault = await gate.processorFault()
       output.stop()
-      return { active, muted, afterUnmute, fault, states: test.states, sampleRate: test.context.sampleRate }
+      return { active, muted, mutedTrackDisabled, afterUnmute, fault, states: test.states, sampleRate: test.context.sampleRate }
     } finally { await test.stop() }
   },
   async processorFault() {
@@ -89,8 +94,9 @@ const gate = {
       await receiver.setLocalDescription(await receiver.createAnswer()); await sender.setRemoteDescription(receiver.localDescription!)
       await Promise.race([received, wait(10000).then(() => { throw new Error('Peer track timeout') })]); await wait(1400)
       const active = receiveMeter!.readings.splice(0)
-      test.processor.mute(); await wait(300); receiveMeter!.readings.length = 0; await wait(350)
-      return { active, muted: receiveMeter!.readings, sender: sender.connectionState, receiver: receiver.connectionState, path: 'direct-RTCPeerConnection-graph-only' }
+      test.processor.mute(); await wait(300); await receiveMeter!.reset(); await wait(350)
+      return { active, muted: receiveMeter!.readings, sender: sender.connectionState, receiver: receiver.connectionState,
+        modelId: test.processor.runtimeState.modelId, path: 'direct-RTCPeerConnection-graph-only' }
     } finally { receiveMeter?.stop(); sender.close(); receiver.close(); await test.stop() }
   },
   variableQuantum() {
