@@ -44,3 +44,33 @@ test('reconnects after a live WebSocket silently stops sending', async ({ page }
     await new Promise<void>((resolve, reject) => server.close(error => error ? reject(error) : resolve()))
   }
 })
+
+test('falls back when an older server cannot select a subprotocol', async ({ page }) => {
+  const sockets = new Set<Duplex>(), server = createServer()
+  const offers: (string | undefined)[] = []
+  server.on('upgrade', (request, socket) => {
+    const key = request.headers['sec-websocket-key']
+    if (!key) { socket.destroy(); return }
+    offers.push(request.headers['sec-websocket-protocol']); sockets.add(socket)
+    const accept = createHash('sha1').update(key + '258EAFA5-E914-47DA-95CA-C5AB0DC85B11').digest('base64')
+    socket.write('HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\n' +
+      `Sec-WebSocket-Accept: ${accept}\r\n\r\n`)
+    if (!request.headers['sec-websocket-protocol']) socket.write(frame('connection.ready'))
+    socket.on('data', data => { if ((data[0] & 15) === 8) { socket.write(Buffer.from([0x88, 0])); socket.end() } })
+    socket.on('end', () => socket.end()); socket.on('close', () => sockets.delete(socket))
+  })
+  await new Promise<void>(resolve => server.listen(0, '127.0.0.1', resolve))
+  try {
+    const address = server.address()
+    if (!address || typeof address === 'string') throw Error('missing loopback listener')
+    await page.goto('/tests/connection_status/heartbeat.html')
+    await page.evaluate(url => (window as any).heartbeatFixture.start(url), `ws://127.0.0.1:${address.port}/realtime`)
+    await expect.poll(() => offers.length, { timeout: 10_000 }).toBeGreaterThanOrEqual(2)
+    await expect.poll(() => page.evaluate(() => (window as any).heartbeatFixture.state())).toBe('CONNECTED')
+    expect(offers[0]).toBe('boohtacord.heartbeat.v1'); expect(offers[1]).toBeUndefined()
+    await page.evaluate(() => (window as any).heartbeatFixture.stop())
+  } finally {
+    for (const socket of sockets) socket.destroy()
+    await new Promise<void>((resolve, reject) => server.close(error => error ? reject(error) : resolve()))
+  }
+})
