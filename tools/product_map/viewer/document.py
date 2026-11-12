@@ -11,11 +11,15 @@ def _hash(value):
     return base64.b64encode(hashlib.sha256(value.encode('utf-8')).digest()).decode('ascii')
 
 
-def build_document(features):
+def build_document(features, system_topology=None):
     payload = json.dumps(features, ensure_ascii=True, sort_keys=True, separators=(',', ':'))
     payload = payload.replace('<', r'\u003c').replace('>', r'\u003e').replace('&', r'\u0026')
-    script = 'const data = ' + payload + ';\n' + '\n'.join(
-        (HERE / name).read_text(encoding='utf-8') for name in ('filters.js', 'detail.js', 'app.js'))
+    topology = json.dumps(system_topology or {'nodes': [], 'edges': []}, ensure_ascii=True,
+                          sort_keys=True, separators=(',', ':'))
+    topology = topology.replace('<', r'\u003c').replace('>', r'\u003e').replace('&', r'\u0026')
+    script = 'const data = ' + payload + ';\nconst systemTopology = ' + topology + ';\n' + '\n'.join(
+        (HERE / name).read_text(encoding='utf-8') for name in ('filters.js', 'detail.js', 'system_graph.js', 'app.js'))
+    script += "\nrenderSystemGraph(systemTopology, document.getElementById('system-graph'), document.getElementById('system-links'), document.getElementById('system-edges'));"
     style = (HERE / 'style.css').read_text(encoding='utf-8')
     csp = f"default-src 'none'; style-src 'sha256-{_hash(style)}'; script-src 'sha256-{_hash(script)}'; base-uri 'none'; form-action 'none'"
     return f'''<!doctype html>
@@ -31,6 +35,11 @@ def build_document(features):
 <p id="count" aria-live="polite"></p><div class="table-wrap"><table id="matrix"><thead><tr id="header"><th scope="col">Сценарий</th>
 <th scope="col">Web</th><th scope="col">Windows</th><th scope="col">macOS</th><th scope="col">Android</th><th scope="col">iOS</th></tr></thead><tbody id="rows"></tbody></table></div>
 <section aria-labelledby="detail-heading"><h2 id="detail-heading">Компоненты сценария</h2><div id="detail" aria-live="polite">Выберите ID в таблице.</div></section>
+<section aria-labelledby="system-heading"><h2 id="system-heading">Системная архитектура</h2>
+<p>Частичная схема исходников. Ссылка на тест не подтверждает его прохождение, публикацию или работу в среде.</p>
+<p>Схему можно прокручивать по горизонтали; все её связи перечислены ниже текстом.</p>
+<div class="system-graph-scroll" role="region" aria-label="Схема компонентов" tabindex="0"><svg id="system-graph" viewBox="0 0 1200 720" role="img" aria-labelledby="system-heading"></svg></div>
+<h3>Компоненты и исходники</h3><ul id="system-links"></ul><h3>Связи</h3><ul id="system-edges"></ul></section>
 <noscript>Доступна <a href="index.md">карта в Markdown</a>; для интерактивной таблицы включите JavaScript.</noscript></main><script>{script}</script></body></html>'''
 
 

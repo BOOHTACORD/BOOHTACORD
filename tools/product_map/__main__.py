@@ -86,10 +86,11 @@ def main():
     data = import_parity(catalog)
     data = enrich_projection(data, curated)
     if args.command == 'generate':
+        from tools.product_map.architecture.catalog import load_system_graph
         from tools.product_map.markdown.output import write_markdown
         target = root / 'docs/product-map/generated/index.html'
         markdown_ok = write_markdown(target.parent, data, check=args.check)
-        html_ok = write_document(target, build_document(data), check=args.check)
+        html_ok = write_document(target, build_document(data, load_system_graph(root)), check=args.check)
         if not (markdown_ok and html_ok):
             parser.exit(1, 'Generated product map files are missing or stale; run generate.\n')
         print('Product map is current.' if args.check else f'Generated {target}')

@@ -6,4 +6,6 @@ table.single-platform{min-width:0;table-layout:fixed}table.single-platform th:fi
 th,td{border:1px solid #a5b0c2;padding:.65rem;vertical-align:top;text-align:left}
 thead th{background:#e7edf7;position:sticky;top:0}td{white-space:pre-line;min-width:120px}
 a{color:#1746a0} :focus-visible{outline:3px solid #ba3800;outline-offset:2px}
+.system-graph-scroll{max-width:100%;overflow:auto}.system-graph-scroll svg{display:block;min-width:1000px;width:100%;height:auto}
+.system-node{fill:#e7edf7;stroke:#53647d}.system-label{fill:#172033;font:14px system-ui,sans-serif}.system-edge{stroke:#53647d;stroke-width:2}#system-arrow path{fill:#53647d}
 @media(max-width:480px){body{margin:1rem}h1{font-size:1.5rem}.filters fieldset{flex-wrap:wrap;max-width:100%;box-sizing:border-box}.filters fieldset label{white-space:nowrap}}

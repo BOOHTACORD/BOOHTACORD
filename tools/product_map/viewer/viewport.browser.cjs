@@ -16,6 +16,15 @@ test('long component paths remain readable within mobile viewport', async () => 
       await page.setViewportSize({ width, height: 852 })
       await page.goto(viewer + '#feature/voice.roster_long_recovery')
       await page.locator('#detail a').first().waitFor()
+      assert.equal(await page.locator('#system-graph g').count(), 13)
+      assert.equal(await page.locator('#system-edges li').count(), 14)
+      const components = await page.locator('#system-links a').allTextContents()
+      assert.equal(components.filter(label => label === 'Общий Flutter-клиент').length, 1)
+      for (const name of ['Windows', 'macOS', 'Android', 'iOS']) assert.ok(components.includes(name))
+      const graph = await page.locator('.system-graph-scroll').evaluate(element => ({
+        viewport: element.clientWidth, content: element.scrollWidth,
+      }))
+      assert.ok(graph.content > graph.viewport, 'the graph retains its own horizontal scroll')
       await page.locator('#platform').selectOption('all')
       const dimensions = await page.evaluate(() => ({
         viewport: window.innerWidth,

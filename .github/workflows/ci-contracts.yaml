@@ -79,6 +79,7 @@ jobs:
           python -m unittest tools.product_map.catalog.test_melody
           python -m unittest tools.product_map.markdown.test_render tools.product_map.markdown.test_output
           python -m unittest tools.product_map.schema.test_schema
+          python -m unittest tools.product_map.architecture.test_model tools.product_map.architecture.test_catalog
           python -m unittest tools.product_map.ownership.test_new_paths tools.product_map.ownership.test_git_tree
           python -m unittest tools.product_map.ownership.test_coverage
           python -m unittest tools.product_map.ownership.test_scopes
@@ -86,7 +87,7 @@ jobs:
           python -m unittest tools.product_map.release.test_github_api
           python -m unittest tools.product_map.evidence_download.test_run tools.product_map.evidence_download.test_transport
           python -m unittest tools.product_map.release_verification.test_match tools.product_map.release_verification.test_live
-          node --test tools/product_map/viewer/graph.test.cjs tools/product_map/viewer/filters.test.cjs tools/product_map/viewer/links.test.cjs
+          node --test tools/product_map/viewer/graph.test.cjs tools/product_map/viewer/filters.test.cjs tools/product_map/viewer/links.test.cjs tools/product_map/viewer/system_graph.test.cjs
           if [ "$PRODUCT_MAP_EVENT" = pull_request ] || [ "$PRODUCT_MAP_EVENT" = merge_group ]; then
             test -n "$PRODUCT_MAP_BASE" || { echo 'Missing product-map base SHA' >&2; exit 1; }
             python -m tools.product_map check-transition --base "$PRODUCT_MAP_BASE"

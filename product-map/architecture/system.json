@@ -1,0 +1,33 @@
+{
+  "nodes": [
+    {"id":"sys.web","label":"Web-клиент","kind":"client_component","path":"clients/web/src/main.ts","x":340,"y":80},
+    {"id":"sys.windows","label":"Windows","kind":"platform_adapter","path":"clients/flutter/windows/runner/main.cpp","x":40,"y":170},
+    {"id":"sys.macos","label":"macOS","kind":"platform_adapter","path":"clients/flutter/macos/Runner/AppDelegate.swift","x":40,"y":290},
+    {"id":"sys.android","label":"Android","kind":"platform_adapter","path":"clients/flutter/android/app/src/main/kotlin/ru/boohtacord/app/MainActivity.kt","x":40,"y":410},
+    {"id":"sys.ios","label":"iOS","kind":"platform_adapter","path":"clients/flutter/ios/Runner/AppDelegate.swift","x":40,"y":530},
+    {"id":"sys.flutter.shared","label":"Общий Flutter-клиент","kind":"shared_component","path":"clients/flutter/lib/main.dart","x":340,"y":350},
+    {"id":"sys.proxy","label":"Обратный прокси","kind":"infrastructure","path":"deploy/caddy/Caddyfile","x":640,"y":80},
+    {"id":"sys.api","label":"Go API","kind":"backend_component","path":"backend/cmd/api/main.go","x":640,"y":300},
+    {"id":"sys.postgres","label":"PostgreSQL","kind":"infrastructure","path":"deploy/compose.yaml","x":980,"y":230},
+    {"id":"sys.livekit","label":"LiveKit","kind":"infrastructure","path":"deploy/livekit/livekit.yaml","x":980,"y":420},
+    {"id":"sys.http_contract","label":"HTTP-контракт","kind":"contract","path":"contracts/openapi.yaml","x":640,"y":500},
+    {"id":"sys.realtime_contract","label":"Realtime-контракт","kind":"contract","path":"contracts/realtime.schema.json","x":340,"y":620},
+    {"id":"sys.acceptance","label":"Локальная приёмка","kind":"test_evidence","path":"tools/qa/critical_client_acceptance/media.mjs","x":980,"y":620}
+  ],
+  "edges": [
+    {"from":"sys.windows","to":"sys.flutter.shared","type":"runs"},
+    {"from":"sys.macos","to":"sys.flutter.shared","type":"runs"},
+    {"from":"sys.android","to":"sys.flutter.shared","type":"runs"},
+    {"from":"sys.ios","to":"sys.flutter.shared","type":"runs"},
+    {"from":"sys.web","to":"sys.proxy","type":"calls"},
+    {"from":"sys.flutter.shared","to":"sys.proxy","type":"calls"},
+    {"from":"sys.proxy","to":"sys.api","type":"routes"},
+    {"from":"sys.api","to":"sys.postgres","type":"depends_on"},
+    {"from":"sys.api","to":"sys.livekit","type":"calls"},
+    {"from":"sys.web","to":"sys.livekit","type":"media"},
+    {"from":"sys.flutter.shared","to":"sys.livekit","type":"media"},
+    {"from":"sys.api","to":"sys.http_contract","type":"depends_on"},
+    {"from":"sys.api","to":"sys.realtime_contract","type":"depends_on"},
+    {"from":"sys.api","to":"sys.acceptance","type":"verified_by"}
+  ]
+}
