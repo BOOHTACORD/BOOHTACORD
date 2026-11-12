@@ -64,6 +64,11 @@ extension RealtimeEvents on RealtimeController {
           !validResyncPayload(payload)) {
         return;
       }
+      if (liveness?.observe(kind, source) == false) {
+        handleClosed();
+        return;
+      }
+      if (kind == 'connection.heartbeat') return;
       if (kind == 'connection.ready') {
         if (connected) return;
         connected = true;

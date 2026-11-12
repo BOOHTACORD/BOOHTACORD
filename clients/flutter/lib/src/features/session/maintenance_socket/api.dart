@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import '../../../core/http/transport.dart';
+import '../../realtime/lifecycle/liveness.dart';
 
 class PublicMaintenanceApi {
   PublicMaintenanceApi(this.transport, {HttpClient Function()? createClient})
@@ -35,7 +36,11 @@ class PublicMaintenanceApi {
     _pending = client;
     late WebSocket socket;
     try {
-      socket = await WebSocket.connect(target.toString(), customClient: client);
+      socket = await WebSocket.connect(
+        target.toString(),
+        customClient: client,
+        protocols: [heartbeatProtocol],
+      );
       if (!identical(_pending, client)) {
         await socket.close();
         throw StateError('Public realtime opening canceled');

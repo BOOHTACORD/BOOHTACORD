@@ -293,6 +293,11 @@
         "focused": ["clients/web/src/realtime/heartbeat_watch.spec.ts", "clients/web/src/realtime/heartbeat_contract.spec.ts", "clients/web/tests/connection_status/heartbeat.browser.spec.ts"],
         "scope": "Web negotiates server heartbeats, expires silent public and authenticated sockets and rechecks on visibility or online events. Native clients, physical network switching and mixed-version rollout remain separate."
       },
+      "issue689_flutter_silent_socket": {
+        "focused": ["clients/flutter/test/realtime_scope/heartbeat_liveness_test.dart", "clients/flutter/test/realtime_scope/heartbeat_loopback_test.dart", "clients/flutter/test/maintenance_socket/heartbeat_test.dart"],
+        "native": "integration_test/issue689_heartbeat_test.dart",
+        "scope": "Shared Flutter negotiates heartbeats, expires silent guest and authenticated sockets and checks staleness when resuming. Native loopback exercises the watchdog on the device; real-stack background network switching, iOS and production acceptance remain separate."
+      },
       "issue689_flutter_connect_deadline": {
         "focused": ["clients/flutter/test/realtime_scope/open_deadline_test.dart", "clients/flutter/test/realtime_scope/open_deadline_integration_test.dart", "clients/flutter/test/realtime_scope/retry_policy_test.dart"],
         "scope": "Shared Flutter bounds the entire socket upgrade and ready handshake, cancels abandoned HTTP clients and closes late sockets. Loopback tests cover an unanswered upgrade; Android, iOS and production acceptance remain separate."
@@ -417,7 +422,7 @@
       }
     ],
     "parity_review": {
-      "issue689_follow_up": "Issue 689 adds negotiated Web heartbeat and silent-socket recovery, bounds shared socket opening and session checks, and fences old Web work. Focused tests exist; complete Android and iOS runtime acceptance remains open.",
+      "issue689_follow_up": "Issue 689 adds negotiated Web and shared Flutter heartbeat and silent-socket recovery, bounds socket opening and session checks, and fences old Web work. Focused tests exist; complete Android and iOS runtime acceptance remains open.",
       "issue": 582,
       "decisions": {
         "web": "implementation_and_regression",

@@ -17,6 +17,8 @@ extension RealtimeRecovery on RealtimeController {
   }
 
   void handleClosed() {
+    liveness?.stop();
+    liveness = null;
     sessionDeadline?.cancel();
     sessionDeadline = null;
     socketAttempt.end();

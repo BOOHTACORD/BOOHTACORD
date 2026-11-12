@@ -35,6 +35,8 @@ class TrackedPublicSocket extends Stream<dynamic> implements WebSocket {
   @override
   int get readyState => inner.readyState;
   @override
+  String? get protocol => inner.protocol;
+  @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
