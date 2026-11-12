@@ -23,6 +23,11 @@ class ReconnectApi extends ApiClient {
 
   @override
   Future<SessionUser?> currentSession() => sessionCheck.future;
+  @override
+  Future<SessionUser?> currentRealtimeSession(
+    Future<void> abort,
+    bool Function() isCurrent,
+  ) => currentSession();
 }
 
 class DelayedReconnectApi extends ApiClient {

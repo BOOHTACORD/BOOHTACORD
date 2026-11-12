@@ -159,7 +159,7 @@
       }
     ],
     "parity_review": {
-      "issue689_follow_up": "Issue 689 bounds the Web socket opening and session checks and shared Flutter socket upgrade. Authentication regression suites remain required; Android/iOS current-source runtime acceptance is not established.",
+      "issue689_follow_up": "Issue 689 bounds Web and shared Flutter socket opening and session checks, with cancellation of stalled Flutter session requests. Authentication regression suites remain required; Android/iOS current-source runtime acceptance is not established.",
       "issue": 676,
       "decisions": {
         "web": "implementation_and_regression",
@@ -292,6 +292,10 @@
         "focused": ["clients/flutter/test/realtime_scope/open_deadline_test.dart", "clients/flutter/test/realtime_scope/open_deadline_integration_test.dart", "clients/flutter/test/realtime_scope/retry_policy_test.dart"],
         "scope": "Shared Flutter bounds the entire socket upgrade and ready handshake, cancels abandoned HTTP clients and closes late sockets. Loopback tests cover an unanswered upgrade; Android, iOS and production acceptance remain separate."
       },
+      "issue689_flutter_session_deadline": {
+        "focused": ["clients/flutter/test/realtime_scope/session_deadline_test.dart", "clients/flutter/test/realtime_scope/session_cancel_integration_test.dart", "clients/flutter/test/realtime_scope/session_cancel_late_test.dart", "clients/flutter/test/realtime_scope/session_expiration_test.dart"],
+        "scope": "Flutter bounds socket-loss session revalidation, aborts the HTTP request on timeout or replacement, and ignores a late unauthorized response. Android/iOS runtime remains separate."
+      },
       "issue689_web_roster_incarnation": {
         "focused": ["clients/web/src/realtime/hint_batch/incarnation.spec.ts", "clients/web/src/realtime/roster_incarnation.spec.ts", "clients/web/src/voice/roster_socket/state.spec.ts"],
         "scope": "Web delivery discards snapshots and unfinished queued work from disconnected socket incarnations while preserving the last applied durable cursor. Focused source tests do not establish real network, native or physical acceptance."
@@ -408,7 +412,7 @@
       }
     ],
     "parity_review": {
-      "issue689_follow_up": "Issue 689 bounds Web and shared Flutter socket opening and readiness, fences Web roster queues and late workspace continuations across socket replacement, and adds server roster generations. Focused tests exist; complete Android and iOS runtime acceptance remains open.",
+      "issue689_follow_up": "Issue 689 bounds Web and shared Flutter socket opening, readiness and session revalidation, fences Web roster queues and late workspace continuations across socket replacement, and adds server roster generations. Focused tests exist; complete Android and iOS runtime acceptance remains open.",
       "issue": 582,
       "decisions": {
         "web": "implementation_and_regression",
