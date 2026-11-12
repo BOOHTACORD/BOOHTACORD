@@ -44,6 +44,9 @@ An isolated Ubuntu/GCC build of those upstream sources initialized the default
 model and returned finite near-zero output for 100 silent frames; frame size
 was 480 and state size 32688 bytes on that build. This is a feasibility smoke
 test, not an application integration, numerical parity, or Windows result.
+An isolated scalar MSVC 19.44 Release build of the same source and model, with
+the same local `OPUS_CLEAR` shim, also passed that 100-frame silence smoke on
+Windows with 480-frame input and 32688 state bytes. It is not the Flutter client.
 
 An isolated scalar v0.2 WASM probe, using the same synthetic corpus, returned
 noise RMS change -76.441 dB, correlation lag 959 samples and Node frame CPU
@@ -54,3 +57,6 @@ probe used a local one-line `OPUS_CLEAR` shim. It was built outside the release
 tree and is not a supported or distributable artifact. This does not prove
 speech quality, platform compatibility, release eligibility, or end-to-end
 latency. The greater synthetic correlation lag warrants physical measurement.
+The tracked research builder validates the pinned source, weights and model
+header before building; two runs produced this same WASM hash. It writes only
+under ignored `.out/audio-research` and does not integrate with either client.

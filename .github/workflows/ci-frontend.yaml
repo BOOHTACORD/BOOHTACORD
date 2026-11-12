@@ -126,6 +126,8 @@ jobs:
           node --test tools/audio/assets/test_options.mjs
           tools/audio/assets/test_verify.mjs tools/audio/corpus/test_manifest.mjs
           tools/audio/speech_fixture/test_frames.mjs tools/audio/speech_fixture/test_runner.mjs
+      - name: Test RNNoise research source checks
+        run: python3 -m unittest tools.audio.research_v02.test_verify
       - name: Run complete reviewed sfu profile
         run: python3 -m tools.ci.web_suites.run --profile sfu-network
       - name: Retain mandatory source-bound profile result

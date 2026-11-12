@@ -28,6 +28,11 @@ For reproducibility, the first prepared input produced float32le output hashes
 `277147a6daa7a879467be3de5b0181cdd8ffb3a420c773ef440d5e0845563bd6`
 for v0.1 and `e4190c64a2c0535267f3347dbaedbbff63e8618af2d0b223d984dca99b1df951`
 for v0.2. Playback and subjective ratings remain NOT_RUN.
+For all eight inputs, an isolated Windows MSVC scalar v0.2 probe produced
+byte-identical float32 output to the scalar WASM probe (the first clip's hash
+is above). Both used the same downloaded model and local scalar shim. These are
+offline PCM comparisons, not exhaustive parity, client integration, real-time
+or alternate-CPU evidence.
 
 As a diagnostic only, the output was aligned to the dry input using the
 synthetic correlation lags rounded to 480 samples for v0.1 and 960 for v0.2.
