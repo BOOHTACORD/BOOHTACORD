@@ -10,6 +10,7 @@ let meter: AudioWorkletNode | undefined
 let meterSource: MediaStreamAudioSourceNode | undefined
 let remoteElement: HTMLMediaElement | undefined
 const readings: MeterReading[] = []
+let resetAcknowledged: (() => void) | undefined
 async function connect(role: 'sender' | 'receiver') {
   const credentials = await (await fetch(`/tests/audio/livekit-token?role=${role}`, { cache: 'no-store' })).json()
   const room = new Room()
@@ -23,7 +24,7 @@ async function connect(role: 'sender' | 'receiver') {
     meterSource = context!.createMediaStreamSource(new MediaStream([track.mediaStreamTrack]))
     meter = new AudioWorkletNode(context!, 'rnnoise-test-meter')
     meterSource.connect(meter); meter.connect(context!.destination)
-    meter.port.onmessage = event => readings.push(event.data)
+    meter.port.onmessage = event => { if (event.data === 'reset') resetAcknowledged?.(); else readings.push(event.data) }
   })
   await room.connect(credentials.url, credentials.token)
   return room
@@ -41,10 +42,15 @@ export const livekitPairFixture = {
     await localTrack.setProcessor(processor)
     await processor.unmute(); processor.processedTrack!.enabled = true
     await room.localParticipant.publishTrack(localTrack, { source: Track.Source.Microphone, audioPreset: { maxBitrate: 128000, priority: 'high' }, forceStereo: false })
-    return { engine: processor.runtimeState.effectiveMode, sampleRate: context!.sampleRate }
+    return { engine: processor.runtimeState.effectiveMode, modelId: processor.runtimeState.modelId, sampleRate: context!.sampleRate }
   },
   async mute() { processor?.mute(); await localTrack?.mute(); return true },
   read() { return { readings: readings.splice(0), state: activeRoom?.state } },
+  async resetMeter() {
+    if (!meter) throw new Error('Receiver meter is not ready')
+    await new Promise<void>(resolve => { resetAcknowledged = resolve; meter!.port.postMessage('reset') })
+    resetAcknowledged = undefined; readings.length = 0
+  },
   async stop() {
     meterSource?.disconnect(); meter?.disconnect(); meter?.port.close()
     remoteElement?.remove(); await activeRoom?.disconnect()

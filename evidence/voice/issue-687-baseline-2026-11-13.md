@@ -85,7 +85,14 @@ a test-instrumentation defect: the meter paused with the disabled local track
 and retained pre-mute partial-window samples. Resetting and acknowledging the
 meter before a new measurement fixed the test; the disabled track and remote
 peer silence are checked separately. This does not prove physical-device
-behavior or speech quality. Edge and LiveKit v0.2 acceptance remain NOT_RUN.
+behavior or speech quality. Edge acceptance remains NOT_RUN.
+On a separate local Windows Docker LiveKit v1.13.7 instance, two Chromium
+contexts passed the synthetic processed-track and remote mute test with v0.1
+and with the explicitly enabled research v0.2; the reported model ID was
+checked. The same test in Firefox failed to establish its receiver peer
+connection before the sender or denoiser started, for both model flags. Its
+cause is unresolved and Firefox/SFU acceptance is FAIL, not a v0.2 diagnosis.
+The ephemeral SFU and the temporary research files were removed after use.
 
 Local feature gate at source `8bd07149125763e18da024700f9053d1b6fcad8b`
 was FAIL, not acceptance: its first real-stack attempts lacked Docker Buildx,
