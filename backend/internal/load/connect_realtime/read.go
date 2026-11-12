@@ -11,7 +11,7 @@ func (s *Socket) read(ctx context.Context, conn *websocket.Conn, ready chan<- bo
 	for {
 		_, data, err := conn.Read(ctx)
 		if err != nil {
-			s.markFailed(conn)
+			s.recordReadFailure(conn, err)
 			if !sent {
 				ready <- false
 			}

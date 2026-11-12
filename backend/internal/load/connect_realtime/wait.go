@@ -13,13 +13,15 @@ func (s *Socket) signalLocked() {
 	s.wake = make(chan struct{})
 }
 
-func (s *Socket) markFailed(conn *websocket.Conn) {
+func (s *Socket) markFailed(conn *websocket.Conn) bool {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if s.conn == conn {
 		s.failure = true
 		s.signalLocked()
+		return true
 	}
+	return false
 }
 
 func (s *Socket) Wait(ctx context.Context, id string, since time.Time) (time.Duration, error) {
