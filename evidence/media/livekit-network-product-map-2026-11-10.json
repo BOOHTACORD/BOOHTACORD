@@ -1,10 +1,11 @@
 {
   "kind": "source-only-livekit-network-revalidation",
   "observed_at": "2026-11-10",
-  "scope": "Bind CI routing for the product map; no deployed configuration or media acceptance claim.",
+  "scope": "Bind product-map CI routing and the mobile viewer browser check; source-only, with no deployed configuration or media acceptance claim.",
   "repository_artifacts": {
     "tools/ci/select_changes/dependencies.json": "sha256:617c5cb612320e8cf1fbe0d3028d102734bc7a4f0ff4ba878aa73eb9cdfadaf8",
     "tools/ci/select_changes/test_routing.py": "sha256:15f060af94f5901fcdc8b3c84492ded559bca147a0b1e631e77cfbf056d0a983",
-    ".github/workflows/ci-contracts.yaml": "sha256:e3d8e3ac3888c812455a74d1bb9934a8e9dd46f6370940eb551377413088ac8f"
-  }
+    ".github/workflows/ci-contracts.yaml": "sha256:84104e774d9b1065b93ffbd41f152d24b86b01d4e3e4933345df929938c3d4f7"
+  },
+  "revalidated_at": "2026-11-12"
 }

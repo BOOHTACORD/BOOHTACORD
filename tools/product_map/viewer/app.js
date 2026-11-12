@@ -3,6 +3,7 @@ const rows = document.getElementById('rows');
 const search = document.getElementById('search');
 const count = document.getElementById('count');
 const detail = document.getElementById('detail');
+const matrix = document.getElementById('matrix');
 const header = document.getElementById('header');
 const platform = document.getElementById('platform'), domain = document.getElementById('domain');
 const status = document.getElementById('status');
@@ -20,6 +21,7 @@ function cell(row, value) {
 function render() {
   rows.replaceChildren();
   const selected = platforms.includes(platform.value) ? [platform.value] : platforms;
+  matrix.className = selected.length === 1 ? 'single-platform' : '';
   const layers = {source: sourceLayer.checked, release: releaseLayer.checked, runtime: runtimeLayer.checked};
   header.replaceChildren();
   for (const name of ['Сценарий', ...selected.map(value => names[value])]) {

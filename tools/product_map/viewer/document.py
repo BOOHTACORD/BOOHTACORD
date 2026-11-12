@@ -28,7 +28,7 @@ def build_document(features):
 <label for="domain">Область</label> <select id="domain"><option value="all">Все</option></select>
 <label for="status">Фильтр состояния</label> <select id="status"><option value="all">Все</option><option value="differences">Расхождения исходников</option><option value="behind">Отстающие исходники</option><option value="unverified">Не подтверждено</option><option value="exceptions">Исключения</option></select>
 <fieldset><legend>Слои</legend><label><input id="layer-source" type="checkbox" checked> Исходники</label> <label><input id="layer-release" type="checkbox" checked> Релиз</label> <label><input id="layer-runtime" type="checkbox" checked> Runtime</label></fieldset></div>
-<p id="count" aria-live="polite"></p><div class="table-wrap"><table><thead><tr id="header"><th scope="col">Сценарий</th>
+<p id="count" aria-live="polite"></p><div class="table-wrap"><table id="matrix"><thead><tr id="header"><th scope="col">Сценарий</th>
 <th scope="col">Web</th><th scope="col">Windows</th><th scope="col">macOS</th><th scope="col">Android</th><th scope="col">iOS</th></tr></thead><tbody id="rows"></tbody></table></div>
 <section aria-labelledby="detail-heading"><h2 id="detail-heading">Компоненты сценария</h2><div id="detail" aria-live="polite">Выберите ID в таблице.</div></section>
 <noscript>Доступна <a href="index.md">карта в Markdown</a>; для интерактивной таблицы включите JavaScript.</noscript></main><script>{script}</script></body></html>'''

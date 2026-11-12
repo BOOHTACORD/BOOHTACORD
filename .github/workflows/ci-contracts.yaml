@@ -92,6 +92,11 @@ jobs:
           python -m unittest tools.product_map.release.test_snapshot tools.product_map.release.test_source tools.product_map.release.test_build tools.product_map.release.test_workflows tools.product_map.release.test_asset_gate tools.product_map.release.test_publication tools.product_map.release.test_producer tools.product_map.release.test_archive
           python -m tools.product_map validate-parity
           python -m tools.product_map generate --check
+      - name: Verify product-map viewer at mobile widths
+        run: |
+          npm ci --prefix clients/web --ignore-scripts
+          clients/web/node_modules/.bin/playwright install --with-deps chromium
+          node --test tools/product_map/viewer/viewport.browser.cjs
       - name: Verify generated tracing contract bindings
         run: node tools/observability/flow_contract/generate.mjs --check
       - name: Verify publisher signatures and desktop promotion guards

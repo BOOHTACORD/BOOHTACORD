@@ -13,7 +13,7 @@ class Element {
   set innerHTML(_) { throw Error('unsafe HTML assignment'); }
 }
 function elements() {
-  const ids = ['rows', 'search', 'count', 'detail', 'header', 'platform', 'domain', 'status',
+  const ids = ['rows', 'search', 'count', 'detail', 'matrix', 'header', 'platform', 'domain', 'status',
     'layer-source', 'layer-release', 'layer-runtime'];
   const values = Object.fromEntries(ids.map(k => [k, new Element()]));
   values.platform.value = values.domain.value = values.status.value = 'all';
@@ -71,9 +71,12 @@ test('controls limit visible columns, rows and independent evidence layers', () 
   nodes.platform.value = 'windows'; nodes.domain.value = 'voice'; nodes.status.value = 'behind';
   nodes['layer-source'].checked = false; nodes['layer-runtime'].checked = false;
   nodes.status.events.change();
+  assert.equal(nodes.matrix.className, 'single-platform');
   assert.match(text(nodes.header), /Windows/);
   assert.doesNotMatch(text(nodes.header), /Web/);
   assert.match(text(nodes.rows), /voice\.a/);
   assert.doesNotMatch(text(nodes.rows), /chat\.b|Код:|Runtime:/);
   assert.match(text(nodes.rows), /Релиз: UNKNOWN/);
+  nodes.platform.value = 'all'; nodes.platform.events.change();
+  assert.equal(nodes.matrix.className, '');
 });
