@@ -7,17 +7,15 @@ from pathlib import Path
 import shutil
 import subprocess
 
-from .verify import checked_source
+from .verify import checked_source, check_output
 
 HERE = Path(__file__).resolve().parent
-RESEARCH_ROOT = (HERE.parents[2] / '.out/audio-research').resolve()
 SOURCES = ('denoise.c', 'rnn.c', 'pitch.c', 'kiss_fft.c', 'celt_lpc.c', 'nnet.c',
            'nnet_default.c', 'parse_lpcnet_weights.c', 'rnnoise_data.c', 'rnnoise_tables.c')
 
 
 def build(source, output):
-    if not output.resolve().is_relative_to(RESEARCH_ROOT) or output.resolve() == RESEARCH_ROOT:
-        raise ValueError('research output must be a new directory below .out/audio-research')
+    check_output(output)
     lock = json.loads((HERE / 'lock.json').read_text(encoding='utf-8'))
     checked_source(source, lock)
     compiler = os.environ.get('EMCC') or shutil.which('emcc')

@@ -17,9 +17,14 @@ Activate Emscripten 4.0.20 and run from the repository root:
 ```
 python -m tools.audio.research_v02.build_wasm --source <upstream-checkout> --output .out/audio-research/<new-directory>
 node tools/audio/quality_harness.mjs --asset-dir .out/audio-research/<new-directory> --lock tools/audio/research_v02/lock.json
+python -m tools.audio.research_v02.build_native --source <upstream-checkout> --output .out/audio-research/<new-native-directory> --cmake <cmake-executable>
 ```
 
 The output directory must not exist and must be under `.out/audio-research`.
 This scalar probe has no SIMD, runtime dispatch, production integration, release
 license clearance, or proof of real-time behavior. SHA matching alone does not
 establish perceived quality or source authenticity.
+The native `rnnoise_v02_pcm` executable takes an existing mono 48 kHz float32le
+input and a new output filename. It pads partial frames and appends 120 ms of
+silence, like `tools/audio/speech_fixture/run.mjs`; an existing output is never
+overwritten. It is for offline comparisons only, not microphone capture.

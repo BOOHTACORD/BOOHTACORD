@@ -1,6 +1,15 @@
 """Validate source identities before an isolated, non-release build."""
 import hashlib
 import subprocess
+from pathlib import Path
+
+RESEARCH_ROOT = (Path(__file__).resolve().parents[3] / '.out/audio-research').resolve()
+
+
+def check_output(output):
+    output = output.resolve()
+    if not output.is_relative_to(RESEARCH_ROOT) or output == RESEARCH_ROOT:
+        raise ValueError('research output must be a new directory below .out/audio-research')
 
 
 def checked_file(path, expected):

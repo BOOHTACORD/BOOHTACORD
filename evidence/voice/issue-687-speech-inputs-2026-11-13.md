@@ -33,6 +33,9 @@ byte-identical float32 output to the scalar WASM probe (the first clip's hash
 is above). Both used the same downloaded model and local scalar shim. These are
 offline PCM comparisons, not exhaustive parity, client integration, real-time
 or alternate-CPU evidence.
+The tracked research native builder was separately built with MSVC and
+reproduced the first clip's matching hash; it refused to overwrite an existing
+output. Its model and build artifacts remain outside version control.
 
 As a diagnostic only, the output was aligned to the dry input using the
 synthetic correlation lags rounded to 480 samples for v0.1 and 960 for v0.2.
