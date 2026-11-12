@@ -24,20 +24,27 @@ def prepare_packager():
     return executable
 
 
-def package(release: Path):
+def package(release: Path, *, signing=None):
     identity = load('windows')
     executable = prepare_packager()
     destination = ROOT / '.out/releases/windows'
     destination.mkdir(parents=True, exist_ok=True)
-    subprocess.run([str(executable), 'pack', '--packId', 'boohtacord_desktop',
+    command = [str(executable), 'pack', '--packId', 'boohtacord_desktop',
                     '--packVersion', identity['version'], '--packDir', str(release),
                     '--mainExe', 'boohtacord_desktop.exe', '--channel', 'stable',
                     '--packTitle', 'BOOHTACORD', '--packAuthors', 'BOOHTACORD',
-                    '--outputDir', str(destination), '--noPortable'], check=True)
+                    '--outputDir', str(destination), '--noPortable']
+    if signing:
+        from tools.build.windows.code_signing import parameters
+        command += ['--signParams', ' '.join(parameters(signing))]
+    subprocess.run(command, check=True)
     packages = list(destination.glob('*-full.nupkg'))
     installers = list(destination.glob('*Setup.exe'))
     if len(packages) != 1 or len(installers) != 1:
         raise ValueError('Velopack did not produce one full package and installer')
+    if signing:
+        from tools.build.windows.code_signing import verify_package
+        verify_package(release, packages[0], installers[0], signing)
     # This is unsigned feed metadata, never promoted as client trust metadata.
     (destination / 'build-identity.json').write_text(json.dumps(identity, indent=2)+'\n')
     return destination
