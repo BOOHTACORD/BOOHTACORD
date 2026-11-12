@@ -11,11 +11,7 @@ func (s *Socket) read(ctx context.Context, conn *websocket.Conn, ready chan<- bo
 	for {
 		_, data, err := conn.Read(ctx)
 		if err != nil {
-			s.mu.Lock()
-			if s.conn == conn {
-				s.failure = true
-			}
-			s.mu.Unlock()
+			s.markFailed(conn)
 			if !sent {
 				ready <- false
 			}
