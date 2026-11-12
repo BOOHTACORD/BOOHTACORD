@@ -10,7 +10,7 @@ class Socket {
   onopen: RealtimeSocket['onopen'] = null
   close = vi.fn()
   emit(kind: string, payload: Record<string, unknown>) {
-    this.onmessage?.({ data: JSON.stringify({ event_id: 'test', occurred_at: '2026-11-09T00:00:00Z', kind, payload }) } as MessageEvent<string>)
+    this.onmessage?.({ data: JSON.stringify({ event_id: '11111111-1111-4111-8111-111111111111', occurred_at: '2026-11-09T00:00:00Z', kind, payload }) } as MessageEvent<string>)
   }
 }
 const payload = (revision: number, active: boolean) => ({ version: 1, generation: '11111111-1111-4111-8111-111111111111', revision, active })
