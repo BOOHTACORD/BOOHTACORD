@@ -11,8 +11,9 @@ The application DSP was not modified for the baseline checks below.
 | Existing native fixture cross-compiler comparison | DIAGNOSTIC | 48,000 output samples: Windows MSVC vs WSL GCC max absolute difference 8.44812 and RMS 1.53560, on the float S16 scale. Inputs are generated independently by each executable; no tolerance or identical PCM input was established, so this is not a parity PASS |
 | Synthetic corpus identity | PASS | Windows Node 24.18.0 and WSL Node 24.19.0; exact float32le SHA-256 in `tools/audio/corpus/synthetic-v1.json` |
 | RNNoise v0.1 WASM synthetic baseline | PASS | Emscripten 4.0.20, scalar, Node 24.18.0 on Windows; fixture noise RMS change -6.517 dB, correlation lag 479 samples, core frame CPU p99 0.197 ms. WASM SHA-256 `c9e99c9a9b04c8a9f048f3961f95657c3d0b21cf6280d1d518dbf63aeedd1604` |
-| Speech quality, hearing and real-device delay | NOT_RUN | No consented speech corpus, blind panel or loopback result |
-| Native Windows microphone and browsers | NOT_RUN | Neither runtime nor end-to-end call tested |
+| Web unit and Chromium synthetic graph | PASS | 51 unit tests and 4 Chromium 153.0.8010.12 tests, including direct WebRTC peer; LiveKit, real microphone and other browsers NOT_RUN |
+| Speech quality, hearing and real-device delay | NOT_RUN | An incomplete public corpus subset is prepared; no blind panel or loopback result |
+| Native Windows microphone and browser real audio | NOT_RUN | No physical microphone or end-to-end call tested |
 | RNNoise v0.2 and DeepFilterNet3 acceptance | NOT_RUN | New engines are not implemented |
 
 The synthetic chirp is not speech. These checks do not establish speech
