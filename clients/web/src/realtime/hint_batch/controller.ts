@@ -71,7 +71,12 @@ export function createCoalescedDelivery(onEvent: EventHandler, recovery: EventHa
       base.accept(event)
     },
     cursor: base.cursor,
-    disconnected: base.disconnected,
+    disconnected(): void {
+      generation++; outstanding = 0
+      if (timer !== null) clearTimeout(timer)
+      timer = null; pending = []; batches.clear(); immediate.clear(); revocations.clear(); seen.clear()
+      base.disconnected()
+    },
     reset(): void { active = false; generation++; outstanding = 0; if (timer !== null) clearTimeout(timer); pending = []; batches.clear(); immediate.clear(); seen.clear(); revocations.clear(); base.reset() },
   }
 }

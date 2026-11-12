@@ -283,6 +283,10 @@
         "native": "integration_test/issue689_roster_test.dart",
         "scope": "Flutter routes roster snapshots and availability through its authenticated socket, retains stale state and retries on that socket. Android emulator and full real-stack acceptance remain separate."
       },
+      "issue689_web_roster_incarnation": {
+        "focused": ["clients/web/src/realtime/hint_batch/incarnation.spec.ts", "clients/web/src/realtime/roster_incarnation.spec.ts", "clients/web/src/voice/roster_socket/state.spec.ts"],
+        "scope": "Web delivery discards snapshots and unfinished queued work from disconnected socket incarnations while preserving the last applied durable cursor. Focused source tests do not establish real network, native or physical acceptance."
+      },
       "issue689_maintenance_contract": {
         "focused": "clients/web/src/realtime/maintenance_payload.spec.ts",
         "scope": "Web realtime parsing accepts only versioned maintenance state with a generation and safe revision. Browser runtime and guest/auth handoff remain separate acceptance work."

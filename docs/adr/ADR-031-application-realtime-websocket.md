@@ -20,6 +20,14 @@ Roster and maintenance events are ephemeral and never advance the durable replay
 cursor. Unknown dependency state is unavailable, not an empty roster or an
 inactive maintenance flag.
 
+Roster generation identifies one live account-coordinator incarnation. All
+concurrent subscriptions to that account share it; removing the last subscriber
+discards the account state, and the next incarnation obtains a new UUID before
+its revision starts again. A new process also creates new incarnations. The Web
+delivery queue is invalidated at each socket disconnect; its last successfully
+applied durable cursor remains available for replay. These rules do not by
+themselves cancel side effects of already-running protected REST requests.
+
 The public socket uses bounded admission and the configured Origin policy. No
 public event carries protected account, roster, session or message information.
 The deployment remains one guild and one application API process; this decision
