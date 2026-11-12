@@ -288,6 +288,11 @@
         "focused": ["clients/web/src/realtime/open_deadline.spec.ts", "clients/web/src/identity/current_session_signal.spec.ts", "clients/web/tests/connection_status/open_deadline.browser.spec.ts"],
         "scope": "Web authenticated socket attempts have a bounded open-to-ready deadline and cancel a stalled session check. A loopback HTTP server tests an upgrade that does not answer; Flutter, device and real-stack acceptance remain separate."
       },
+      "issue689_web_silent_socket": {
+        "browser": "clients/web/tests/connection_status/playwright.config.ts",
+        "focused": ["clients/web/src/realtime/heartbeat_watch.spec.ts", "clients/web/src/realtime/heartbeat_contract.spec.ts", "clients/web/tests/connection_status/heartbeat.browser.spec.ts"],
+        "scope": "Web negotiates server heartbeats, expires silent public and authenticated sockets and rechecks on visibility or online events. Native clients, physical network switching and mixed-version rollout remain separate."
+      },
       "issue689_flutter_connect_deadline": {
         "focused": ["clients/flutter/test/realtime_scope/open_deadline_test.dart", "clients/flutter/test/realtime_scope/open_deadline_integration_test.dart", "clients/flutter/test/realtime_scope/retry_policy_test.dart"],
         "scope": "Shared Flutter bounds the entire socket upgrade and ready handshake, cancels abandoned HTTP clients and closes late sockets. Loopback tests cover an unanswered upgrade; Android, iOS and production acceptance remain separate."
@@ -412,7 +417,7 @@
       }
     ],
     "parity_review": {
-      "issue689_follow_up": "Issue 689 bounds Web and shared Flutter socket opening, readiness and session revalidation, fences Web roster queues and late workspace continuations across socket replacement, and adds server roster generations. Focused tests exist; complete Android and iOS runtime acceptance remains open.",
+      "issue689_follow_up": "Issue 689 adds negotiated Web heartbeat and silent-socket recovery, bounds shared socket opening and session checks, and fences old Web work. Focused tests exist; complete Android and iOS runtime acceptance remains open.",
       "issue": 582,
       "decisions": {
         "web": "implementation_and_regression",
@@ -1440,7 +1445,7 @@
       }
     ],
     "parity_review": {
-      "issue689_follow_up": "Issue 689 fences late Web workspace continuations from a disconnected socket while preserving screen feature behavior. Screen regression suites remain required on Web and native platforms; full current-source native media acceptance remains open.",
+      "issue689_follow_up": "Issue 689 adds Web application-socket liveness and fences late workspace continuations while preserving screen feature behavior. Screen regression suites remain required on Web and native platforms; full current-source native media acceptance remains open.",
       "issue": 676,
       "web_only_follow_up": "PR #621: Web-only participant-card volume control overlays the microphone status position on hover without shifting the name or status. Mute/deafen SVGs render at 16px. Flutter, iOS and Android UI and platform decisions are unchanged. PR #625 (2026-10-31): the Web stream-viewer overflow menu removes the dedicated diagnostics and duplicate full-area expand actions, and opens the participant roster with an accessible people icon. Focused browser regressions cover the menu, roster action, playback and fullscreen; Flutter/iOS/Android behavior and existing platform decisions are unchanged. PR #626 (2026-10-31): Web participant stream previews use object-fit: cover to fill the card. This is a CSS-only browser presentation change; Flutter/iOS/Android preview behavior and platform decisions are unchanged. PR #629 (2026-10-31): Web watcher text is a quiet inline label; the participant volume menu overlaps the microphone state and sits 4px below its center. Focused browser regressions cover watcher layout and hover alignment. Flutter, iOS and Android UI and platform decisions are unchanged. 2026-11-08 PR #683: Web full-screen stream controls expose microphone mute, and the TEXT mini-player no longer reserves roster space. Flutter/iOS/Android screen presentation and behavior are unchanged; Web screen-share browser regressions are included. 2026-11-09 PR #697: Web docks the retained mini stream preview immediately below text/DM headers and keeps the participant toggle reachable when the roster closes. Stream capture, playback, audio and transport are unchanged; Flutter/iOS/Android implementations are unchanged.",
       "decisions": {
