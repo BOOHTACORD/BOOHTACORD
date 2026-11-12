@@ -8,7 +8,7 @@ class RealtimeConnectApi {
   RealtimeConnectApi(this.transport);
   final ApiTransport transport;
 
-  Future<WebSocket> openRealtime({String? after}) async {
+  Future<WebSocket> openRealtime({String? after, HttpClient? client}) async {
     final httpUri = Uri.parse(transport.session.baseUrl);
     final realtimeUri = httpUri.replace(
       scheme: httpUri.scheme == 'http' ? 'ws' : 'wss',
@@ -24,6 +24,7 @@ class RealtimeConnectApi {
     final socket = await WebSocket.connect(
       realtimeUri.toString(),
       headers: headers,
+      customClient: client,
     );
     try {
       transport.ensureCurrent();

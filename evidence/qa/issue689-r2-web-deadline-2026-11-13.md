@@ -10,6 +10,10 @@
   A timeout is treated as unknown, not proof of an expired session.
 - Focused Web checks: ten tests passed, including session AbortSignal
   propagation and stale session-result guards. This is source-level evidence.
-- Real HTTP upgrade with an accepted but unanswered handshake, complete Web
-  real-stack/visual review and Flutter/native implementation and tests are
-  NOT_RUN. These results do not close R2 or establish production behavior.
+- Chromium loopback HTTP upgrade with an accepted but unanswered handshake
+  passed: the client sent TCP EOF, the server acknowledged it, and a second
+  attempt reached the listener. An earlier server fixture incorrectly left its
+  own TCP half open; its failed close assertion was corrected and rerun.
+- Flutter source and loopback checks are separate; device acceptance and
+  current-source Web real-stack/visual review remain NOT_RUN. These results do
+  not close R2 or establish production behavior.
