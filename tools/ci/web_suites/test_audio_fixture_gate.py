@@ -18,14 +18,14 @@ class AudioFixtureGateTests(unittest.TestCase):
             self.assertIn(name, command)
         profile = next(item for item in steps if item.get('name') == 'Run complete reviewed sfu profile')
         self.assertLess(steps.index(step), steps.index(profile))
-        source = next(item for item in steps if item.get('name') == 'Test RNNoise research source checks')
+        source = next(item for item in steps if item.get('name') == 'Test audio research checks')
         self.assertNotIn('if', source)
         self.assertNotIn('continue-on-error', source)
-        self.assertEqual(source['run'], 'python3 -m unittest tools.audio.research_v02.test_verify')
+        self.assertEqual(source['run'], workflow.AUDIO_RESEARCH)
         self.assertLess(steps.index(source), steps.index(profile))
 
     def test_validator_rejects_a_skipped_or_ignored_fixture_gate(self):
-        for name in ('Test audio measurement fixtures', 'Test RNNoise research source checks'):
+        for name in ('Test audio measurement fixtures', 'Test audio research checks'):
             for key, value in (('if', 'false'), ('continue-on-error', 'true')):
                 workflow_document = document()
                 step = next(item for item in workflow_document['jobs']['sfu']['steps']

@@ -12,7 +12,9 @@ SFU_CAPTURES = {'.out/screen-profile-browser-results/**/screen-share-sfu-smoke.j
 AUDIO_FIXTURES = ('node --test tools/audio/assets/test_options.mjs '
                   'tools/audio/assets/test_verify.mjs tools/audio/corpus/test_manifest.mjs '
                   'tools/audio/speech_fixture/test_frames.mjs tools/audio/speech_fixture/test_runner.mjs')
-AUDIO_RESEARCH = 'python3 -m unittest tools.audio.research_v02.test_verify'
+AUDIO_RESEARCH = ('python3 -m unittest tools.audio.research_v02.test_verify '
+                  'tools.audio.blind_quality.test_trials tools.audio.blind_quality.test_output '
+                  'tools.audio.blind_quality.test_score')
 
 
 def require(value):

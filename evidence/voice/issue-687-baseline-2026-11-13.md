@@ -71,3 +71,17 @@ Subsequently, the Web loader gained a build flag defaulting to v0.1; with the
 flag explicitly enabled and a locally generated v0.2 research manifest served
 same-origin, the Chromium synthetic graph/mute test passed. The temporary assets
 were removed afterward. No v0.2 assets have been included in the release path.
+
+Local feature gate at source `8bd07149125763e18da024700f9053d1b6fcad8b`
+was FAIL, not acceptance: its first real-stack attempts lacked Docker Buildx,
+and several broad browser scenarios failed. Two synthetic voice-dock screenshots
+(desktop and mobile) were inspected at source resolution: controls were visible
+without obvious clipping, but the screenshots did not show the noise settings.
+The rest of the screenshot set and the requested real-client media behavior
+have not been visually accepted.
+After installing the pinned Buildx plugin in a dedicated Docker configuration,
+an independent real-stack lifecycle retry at 1440 px passed at the same source
+revision and removed its own resources. Six browser failures from the broader
+run passed when repeated individually; the original full run remains FAIL,
+and its SFU profile remains BLOCKED. The retry does not establish that v0.2
+processed microphone audio or demonstrate physical audio quality.
