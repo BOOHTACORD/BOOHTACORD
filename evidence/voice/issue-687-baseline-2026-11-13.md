@@ -60,3 +60,8 @@ latency. The greater synthetic correlation lag warrants physical measurement.
 The tracked research builder validates the pinned source, weights and model
 header before building; two runs produced this same WASM hash. It writes only
 under ignored `.out/audio-research` and does not integrate with either client.
+In a separate local Chromium experiment, that research module was explicitly
+injected into the existing RNNoise track processor, with a synthetic oscillator
+as input. The 48 kHz graph produced nonzero output and produced zero after mute.
+The application loader and real microphone were not used; this is not a
+production integration, fallback, reconnection or speech-quality acceptance.
