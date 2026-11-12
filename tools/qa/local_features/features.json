@@ -290,8 +290,8 @@
       },
       "issue689_web_silent_socket": {
         "browser": "clients/web/tests/connection_status/playwright.config.ts",
-        "focused": ["clients/web/src/realtime/heartbeat_watch.spec.ts", "clients/web/src/realtime/heartbeat_contract.spec.ts", "clients/web/tests/connection_status/heartbeat.browser.spec.ts"],
-        "scope": "Web negotiates server heartbeats, expires silent public and authenticated sockets and rechecks on visibility or online events. Native clients, physical network switching and mixed-version rollout remain separate."
+        "focused": ["clients/web/src/realtime/heartbeat_watch.spec.ts", "clients/web/src/realtime/heartbeat_contract.spec.ts", "clients/web/src/realtime/legacy_protocol.spec.ts", "clients/web/tests/connection_status/heartbeat.browser.spec.ts"],
+        "scope": "Web negotiates server heartbeats, expires silent public and authenticated sockets and rechecks on visibility or online events; a failed handshake alternates with a legacy handshake lacking the watchdog. Native clients, physical network switching and production rollback remain separate."
       },
       "issue689_flutter_connect_deadline": {
         "focused": ["clients/flutter/test/realtime_scope/open_deadline_test.dart", "clients/flutter/test/realtime_scope/open_deadline_integration_test.dart", "clients/flutter/test/realtime_scope/retry_policy_test.dart"],

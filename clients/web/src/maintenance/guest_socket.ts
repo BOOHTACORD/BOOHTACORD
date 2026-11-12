@@ -4,16 +4,18 @@ import type { RealtimeSocket, RealtimeSocketFactory } from '../realtime/realtime
 import { createReconnectSchedule } from '../realtime/reconnect_schedule/controller'
 import type { createMaintenanceState } from './state'
 import { createLivenessWatch, HEARTBEAT_PROTOCOL } from '../realtime/liveness'
+import { createProtocolFallback } from '../realtime/protocol_fallback'
 
 type MaintenanceState = ReturnType<typeof createMaintenanceState>
 
 export function createGuestMaintenanceSocket(
   state: MaintenanceState,
-  factory: RealtimeSocketFactory = url => new WebSocket(url, HEARTBEAT_PROTOCOL),
+  factory?: RealtimeSocketFactory,
   location: RealtimeLocation = window.location,
   random?: () => number,
 ) {
   let active = false, socket: RealtimeSocket | null = null, owner = 0
+  const protocol = factory ? null : createProtocolFallback()
   let timeout: ReturnType<typeof setTimeout> | null = null
   let liveness: ReturnType<typeof createLivenessWatch> | null = null
   const retry = createReconnectSchedule(open, random)
@@ -25,6 +27,7 @@ export function createGuestMaintenanceSocket(
   }
   function fail(current: RealtimeSocket): void {
     if (socket !== current) return
+    protocol?.failed(current)
     socket = null
     liveness?.stop(); liveness = null
     clearTimeoutIfNeeded()
@@ -37,11 +40,12 @@ export function createGuestMaintenanceSocket(
     if (!active || socket) return
     owner = state.begin()
     let current: RealtimeSocket
-    try { current = factory(url) } catch { state.disconnected(owner); retry.schedule(); return }
+    try { current = (factory ?? protocol!.open)(url) } catch { state.disconnected(owner); retry.schedule(); return }
     socket = current
     liveness = createLivenessWatch(current, () => fail(current))
     let ready = false
     timeout = setTimeout(() => fail(current), 3000)
+    current.onopen = () => { if (socket === current) protocol?.connected(current) }
     current.onmessage = message => {
       if (socket !== current) return
       try {

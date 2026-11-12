@@ -11,6 +11,10 @@
   signals. Twenty-four focused tests and Vue typecheck passed. Chromium also
   negotiated a real loopback WebSocket whose server stopped sending, observed
   the old connection close, and made a second connection after the deadline.
-- Real network blackholes, physical network changes, native clients, production
-  and mixed-version rollout/rollback are not established. A client requesting
-  this subprotocol requires a compatible server; this is not a rollback proof.
+- Chromium rejects a handshake when an older server does not select the offered
+  protocol. Authenticated and guest unit tests cover a legacy retry; real
+  Chromium rejected the first handshake then connected to a loopback legacy
+  server without a protocol. Legacy connections lack heartbeat silence
+  detection, and a transient handshake
+  failure can select the same fallback. Real network blackholes, physical network
+  changes, native clients, production and rollout/rollback remain unproven.

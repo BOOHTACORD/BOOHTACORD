@@ -2,6 +2,7 @@ import type { RealtimeConnectOptions } from './realtime_connection_types'
 import type { RealtimeSocket } from './realtime_connection_types'
 import { createLivenessWatch } from './liveness'
 export { HEARTBEAT_PROTOCOL } from './liveness'
+export { createProtocolFallback } from './protocol_fallback'
 
 export function boundedSessionCheck(check: (signal: AbortSignal) => Promise<boolean>) {
   const controller = new AbortController()
