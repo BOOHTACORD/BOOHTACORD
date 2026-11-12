@@ -4,6 +4,8 @@
     {"id":"cmp.flutter.voice_controller","source":{"parity_id":"voice.controls","platform":"android"}},
     {"id":"cmp.web.voice_recovery","source":{"parity_id":"voice.long_recovery","platform":"web"}},
     {"id":"cmp.flutter.voice_recovery","source":{"parity_id":"voice.long_recovery","platform":"android"}},
+    {"id":"cmp.web.voice_roster_recovery","source":{"parity_id":"voice.roster_long_recovery","platform":"web"}},
+    {"id":"cmp.flutter.voice_roster_recovery","source":{"parity_id":"voice.roster_long_recovery","platform":"android"}},
     {"id":"cmp.web.voice_event_sounds","source":{"parity_id":"voice.room_event_sounds","platform":"web"}},
     {"id":"cmp.flutter.voice_event_sounds","source":{"parity_id":"voice.room_event_sounds","platform":"android"}},
     {"id":"cmp.web.voice_melody","source":{"parity_id":"voice.event-sounds-private-melody","platform":"web"}},
@@ -30,6 +32,18 @@
       "id":"voice.long_recovery", "title":"Восстановление голосового канала", "domain":"voice", "target_revision":null,
       "behavior_revisions":[], "parity_ids":["voice.long_recovery"],
       "components":["cmp.web.voice_recovery","cmp.flutter.voice_recovery"],
+      "platforms": {
+        "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "macos":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "android":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "ios":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null}
+      }
+    },
+    {
+      "id":"voice.roster_long_recovery", "title":"Восстановление состава голосового канала", "domain":"voice", "target_revision":null,
+      "behavior_revisions":[], "parity_ids":["voice.roster_long_recovery"],
+      "components":["cmp.web.voice_roster_recovery","cmp.flutter.voice_roster_recovery"],
       "platforms": {
         "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
         "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},

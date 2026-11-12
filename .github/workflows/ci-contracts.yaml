@@ -67,7 +67,7 @@ jobs:
           PRODUCT_MAP_BASE: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
           PRODUCT_MAP_EVENT: ${{ github.event_name }}
         run: |
-          python -m unittest tools.product_map.catalog.test_validation tools.product_map.catalog.test_resolve tools.product_map.catalog.test_pilot tools.product_map.catalog.test_enrich tools.product_map.catalog.test_curated tools.product_map.projection.test_importer tools.product_map.projection.test_compare tools.product_map.projection.test_real_registry tools.product_map.projection.test_status tools.product_map.projection.test_render tools.product_map.viewer.test_document
+          python -m unittest tools.product_map.catalog.test_validation tools.product_map.catalog.test_resolve tools.product_map.catalog.test_pilot tools.product_map.catalog.test_enrich tools.product_map.catalog.test_curated tools.product_map.catalog.test_roster_mapping tools.product_map.projection.test_importer tools.product_map.projection.test_compare tools.product_map.projection.test_real_registry tools.product_map.projection.test_status tools.product_map.projection.test_render tools.product_map.viewer.test_document
           python -m unittest tools.product_map.impact.test_analyze tools.product_map.impact.test_changes
           python -m unittest tools.product_map.catalog.test_history
           python -m unittest tools.product_map.catalog.test_feature_projection

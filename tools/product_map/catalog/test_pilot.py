@@ -12,7 +12,8 @@ class VoiceSliceTests(unittest.TestCase):
                               .read_text(encoding='utf-8'))
         result = load_voice_slice(root, registry)
         self.assertEqual({f['id'] for f in result['features']}, {
-            'voice.controls', 'voice.long_recovery', 'voice.room_event_sounds',
+            'voice.controls', 'voice.long_recovery', 'voice.roster_long_recovery',
+            'voice.room_event_sounds',
             'voice.event-sounds-private-melody'})
         self.assertTrue({'cmp.backend.voice_join_sound_routes',
                          'cmp.backend.voice_join_sound_service',
