@@ -13,7 +13,7 @@ bool _keys(Map<String, dynamic> value, List<String> names) =>
     value.length == names.length && names.every(value.containsKey);
 bool _id(Object? value) => value is String && _uuid.hasMatch(value);
 
-bool _timestamp(Object? value) {
+bool validRealtimeTimestamp(Object? value) {
   if (value is! String) return false;
   final match = _date.firstMatch(value);
   if (match == null || DateTime.tryParse(value) == null) return false;
@@ -85,7 +85,7 @@ bool validRosterPayload(Object? kind, Object? value) {
       revision != revision.truncateToDouble() ||
       revision < 1 ||
       revision > 9007199254740991 ||
-      !_timestamp(value['observed_at']) ||
+      !validRealtimeTimestamp(value['observed_at']) ||
       channels is! List) {
     return false;
   }

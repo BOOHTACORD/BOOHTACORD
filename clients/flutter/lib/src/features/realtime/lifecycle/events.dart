@@ -6,6 +6,7 @@ import '../social_hints/hints.dart';
 import 'maintenance_payload.dart';
 import 'roster_payload.dart';
 import 'resync_payload.dart';
+import 'new_envelope.dart';
 
 extension RealtimeEvents on RealtimeController {
   void synchronizeDeliveryScope() {
@@ -43,7 +44,9 @@ extension RealtimeEvents on RealtimeController {
       final id = source['event_id'],
           kind = source['kind'],
           payload = source['payload'];
-      if ((isMaintenanceKind(kind) && !validMaintenancePayload(payload)) ||
+      if (((isMaintenanceKind(kind) || isRosterKind(kind)) &&
+              !validNewRealtimeEnvelope(source)) ||
+          (isMaintenanceKind(kind) && !validMaintenancePayload(payload)) ||
           (isRosterKind(kind) && !validRosterPayload(kind, payload))) {
         delivery.reset();
         handleClosed();

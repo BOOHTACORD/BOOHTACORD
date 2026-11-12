@@ -159,7 +159,7 @@
       }
     ],
     "parity_review": {
-      "issue689_follow_up": "Issue 689 bounds Web and shared Flutter socket opening and session checks, and adds shared Flutter heartbeat recovery for guest and authenticated connections. Android emulator loopback passed; full authentication real-stack and iOS runtime acceptance remain open.",
+      "issue689_follow_up": "Issue 689 bounds Web and shared Flutter socket opening, session checks and new-event envelopes for guest and authenticated connections. Prior Android heartbeat loopback passed; current-source full authentication real-stack and iOS runtime acceptance remain open.",
       "issue": 676,
       "decisions": {
         "web": "implementation_and_regression",
@@ -171,7 +171,7 @@
     }
   },
   "connection_status": {
-    "native_targets": ["integration_test/issue689_roster_test.dart", "integration_test/issue689_delivery_revocation_test.dart", "integration_test/issue689_heartbeat_test.dart"],
+    "native_targets": ["integration_test/issue689_roster_test.dart", "integration_test/issue689_delivery_revocation_test.dart", "integration_test/issue689_heartbeat_test.dart", "integration_test/issue689_envelope_test.dart"],
     "paths": [
       "clients/web/src/workspace/connection_status/**",
       "clients/web/tests/connection_status/**",
@@ -194,6 +194,7 @@
       "clients/flutter/integration_test/local_qa_test.dart",
       "clients/flutter/integration_test/issue689_roster_test.dart",
       "clients/flutter/integration_test/issue689_heartbeat_test.dart",
+      "clients/flutter/integration_test/issue689_envelope_test.dart",
       "clients/flutter/integration_test/issue689_support.dart",
       "clients/web/src/realtime/**",
       "clients/web/src/voice/roster_socket/**",
@@ -303,6 +304,11 @@
         "browser": "clients/web/tests/connection_status/playwright.config.ts",
         "focused": ["clients/web/src/realtime/new_envelope.spec.ts", "clients/web/src/realtime/roster_payload.spec.ts", "clients/web/src/realtime/maintenance_payload.spec.ts", "clients/web/src/maintenance/guest_socket.spec.ts", "clients/web/tests/connection_status/envelope.browser.spec.ts"],
         "scope": "Web validates complete maintenance and roster envelopes, including optional telemetry, and reconnects after malformed new events. Flutter, backlog pressure and full real-stack acceptance remain separate."
+      },
+      "issue689_flutter_envelope_validation": {
+        "focused": ["clients/flutter/test/realtime_scope/new_envelope_test.dart", "clients/flutter/test/realtime_scope/new_roster_envelope_test.dart", "clients/flutter/test/realtime_scope/maintenance_event_test.dart", "clients/flutter/test/realtime_scope/roster_event_test.dart", "clients/flutter/test/maintenance_socket/guest_loopback_test.dart"],
+        "native": "integration_test/issue689_envelope_test.dart",
+        "scope": "Shared Flutter validates new maintenance and roster envelopes and resets invalid guest or authenticated connections. Native loopback covers a malformed maintenance envelope; backlog and full real-stack acceptance remain separate."
       },
       "issue689_flutter_connect_deadline": {
         "focused": ["clients/flutter/test/realtime_scope/open_deadline_test.dart", "clients/flutter/test/realtime_scope/open_deadline_integration_test.dart", "clients/flutter/test/realtime_scope/retry_policy_test.dart"],
@@ -428,7 +434,7 @@
       }
     ],
     "parity_review": {
-      "issue689_follow_up": "Issue 689 adds negotiated Web and shared Flutter heartbeat recovery and strict Web envelopes for new maintenance and roster events. Focused tests exist; Flutter envelope, backlog and complete Android and iOS runtime acceptance remain open.",
+      "issue689_follow_up": "Issue 689 adds negotiated Web and shared Flutter heartbeat recovery and strict envelopes for new maintenance and roster events. Focused tests exist; backlog and complete current-source Android and iOS runtime acceptance remain open.",
       "issue": 582,
       "decisions": {
         "web": "implementation_and_regression",
