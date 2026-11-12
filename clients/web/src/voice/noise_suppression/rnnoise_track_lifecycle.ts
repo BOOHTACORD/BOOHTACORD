@@ -24,7 +24,7 @@ export abstract class RnnoiseTrackLifecycle implements TrackProcessor<Track.Kind
   protected generation = 0
   protected muted = true
   protected acknowledgeUnmute?: (intent: unknown) => void
-  protected cancelUnmute?: () => void
+  protected cancelUnmute?: (cause?: Error) => void
   protected failed = false
   protected cancelInit?: () => void
   constructor(protected readonly options: RnnoiseProcessorOptions = {}) {}
@@ -37,6 +37,7 @@ export abstract class RnnoiseTrackLifecycle implements TrackProcessor<Track.Kind
   protected fail(reason: NoiseSuppressionFallbackReason): void {
     if (this.failed) return
     this.failed = true
+    this.cancelUnmute?.(new Error('RNNoise processor failed'))
     if (this.processedTrack) this.processedTrack.enabled = false
     this.worklet?.port.postMessage({ type: 'mute' })
     this.update({ status: 'error', effectiveMode: 'unknown', fallbackReason: reason })

@@ -52,3 +52,13 @@ it('does not accept an old unmute acknowledgement for a later request', async ()
   await second; expect(settled).toBe(true)
   await processor.destroy()
 })
+
+it('cancels a pending unmute when the worklet fails', async () => {
+  const { node, track, processor } = await setup()
+  const pending = processor.unmute()
+  node.onprocessorerror()
+  await expect(pending).rejects.toThrow('RNNoise processor failed')
+  expect(track.enabled).toBe(false)
+  expect(processor.runtimeState).toMatchObject({ status: 'error', effectiveMode: 'unknown' })
+  await processor.destroy()
+})

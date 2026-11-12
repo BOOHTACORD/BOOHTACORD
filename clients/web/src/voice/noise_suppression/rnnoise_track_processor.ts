@@ -23,7 +23,7 @@ export class RnnoiseTrackProcessor extends RnnoiseTrackProcessorBase {
       }
       const timer = setTimeout(() => finish(new Error('RNNoise reset timeout')), 1000)
       this.acknowledgeUnmute = received => { if (received === intent) finish() }
-      this.cancelUnmute = () => finish()
+      this.cancelUnmute = finish
       this.worklet!.port.postMessage({ type: 'unmute', intent })
     })
     if (generation !== this.generation || intent !== this.intent || this.failed) return
