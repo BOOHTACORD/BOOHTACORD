@@ -517,6 +517,15 @@
       "test/realtime_scope/roster_event_test.dart"
     ],
     "acceptance": {
+      "issue687": {
+        "focused": [
+          "clients/web/src/voice/noise_suppression/rnnoise_model.spec.ts",
+          "clients/web/src/voice/noise_suppression/rnnoise_loader.spec.ts",
+          "clients/web/tests/audio/rnnoise.browser.spec.ts",
+          "clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/frame_queue/queue_test.cc"
+        ],
+        "scope": "RNNoise v0.2 selection is behind a disabled-by-default Web build flag; the native DeepFilter queue is not connected. This registration is not a physical, acoustic, cross-browser or release PASS."
+      },
       "speaker_activity_interval": {
         "focused": ["tools/verify/livekit_network_config/test_speaker_activity.py"],
         "scope": "LiveKit active speaker reports use a 150 ms interval for Web and native clients; speaker sensitivity and smoothing retain LiveKit defaults. End-to-end timing, flicker and native media acceptance remain separate."

@@ -1,4 +1,5 @@
 import hashlib
+import json
 import os
 import tempfile
 import unittest
@@ -46,3 +47,11 @@ class ResearchSourceTests(unittest.TestCase):
              patch.object(Path, 'mkdir'):
             build_native(source, RESEARCH_ROOT / 'unit-only', 'cmake')
         self.assertIn('-DRNNOISE_SOURCE=' + source.as_posix(), run.call_args_list[0].args[0])
+
+    def test_web_model_identity_matches_the_research_lock(self):
+        root = Path(__file__).resolve().parents[3]
+        lock = json.loads((Path(__file__).with_name('lock.json')).read_text(encoding='utf-8'))
+        web = (root / 'clients/web/src/voice/noise_suppression/rnnoise_model.ts').read_text(encoding='utf-8')
+        for key in ('version', 'sourceCommit', 'sourceArchiveSha256', 'modelSha256', 'modelId'):
+            with self.subTest(key=key):
+                self.assertIn("'" + lock[key] + "'", web)

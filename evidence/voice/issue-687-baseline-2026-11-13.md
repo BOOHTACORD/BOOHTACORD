@@ -27,6 +27,8 @@ Upstream reconnaissance: Xiph's annotated `v0.2` tag resolves to commit
 `904a876dce1f9ab8860c0a5000ed151f9f6eef58`; its `model_version` is
 `0b50c45`. The upstream model download has SHA-256
 `4ac81c5c0884ec4bd5907026aaae16209b7b76cd9d7f71af582094a2f98f4b43`.
+The GitHub v0.2 source archive retrieved for comparison has SHA-256
+`e4a17eb1493b7551f9f7781d2acc67b8847d6ed7c4b64db0fd62c017021ae1ec`.
 The model archive contains no separate license file; its redistribution
 terms still need verification independently of the source-code license.
 This download is research material, not a shipped or verified release asset.
@@ -65,3 +67,7 @@ injected into the existing RNNoise track processor, with a synthetic oscillator
 as input. The 48 kHz graph produced nonzero output and produced zero after mute.
 The application loader and real microphone were not used; this is not a
 production integration, fallback, reconnection or speech-quality acceptance.
+Subsequently, the Web loader gained a build flag defaulting to v0.1; with the
+flag explicitly enabled and a locally generated v0.2 research manifest served
+same-origin, the Chromium synthetic graph/mute test passed. The temporary assets
+were removed afterward. No v0.2 assets have been included in the release path.

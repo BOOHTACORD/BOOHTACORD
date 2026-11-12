@@ -37,7 +37,9 @@ def build(source, output):
                '-o', str(wasm)]
     subprocess.run(command, check=True, env={**os.environ, 'SOURCE_DATE_EPOCH': '1514764800'})
     digest = hashlib.sha256(wasm.read_bytes()).hexdigest()
-    (output / 'rnnoise-manifest.json').write_text(json.dumps({**lock, 'wasmSha256': digest}, indent=2) + '\n')
+    manifest = {**lock, 'wasmSha256': digest, 'wasmFile': 'rnnoise.wasm', 'sampleRate': 48000,
+                'frameSize': 480, 'pcmScale': 32768, 'threads': 1, 'simd': False}
+    (output / 'rnnoise-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
     print(json.dumps({'status': 'research-only', 'wasmSha256': digest}))
 
 

@@ -61,6 +61,15 @@ It establishes that this specific build cannot satisfy a zero-allocation audio
 callback contract by directly calling the stock processing function. The
 instrumented library is not shipped or used by BOOHTACORD.
 
+An isolated Rust C-ABI experiment wrapped model construction and per-frame calls
+in `catch_unwind`, returned status codes, rejected overlapping buffers and
+nonfinite inputs, and zeroed the output on invalid samples. In a standalone
+Windows process, 200 synthetic frames matched the upstream C API output exactly;
+missing model, overlapping input/output, and NaN rejection were exercised.
+This prototype is not the production ABI: pointer/lifetime guarantees,
+panic-abort configuration, thread ownership, integration, overload behavior,
+teardown and acoustic acceptance remain unverified.
+
 An independent fixed-capacity SPSC audio-frame queue was added as a possible
 worker boundary. Its local C++ tests passed on Windows MSVC and Linux/WSL:
 FIFO/overflow behavior, generation metadata, 10,000 ordered frames across two
