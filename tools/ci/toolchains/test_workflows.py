@@ -23,3 +23,14 @@ class ToolchainWorkflowTests(unittest.TestCase):
                 if mutation == 'npm': next(s for s in steps if s.get('uses', '').startswith('actions/setup-node@'))['with']['cache-dependency-path'] = 'clients/web/package-lock.json'
                 if mutation == 'skip': next(s for s in steps if 'tools.ci.web_suites.run' in s.get('run', ''))['if'] = "steps.cache.outputs.cache-hit != 'true'"
                 with self.assertRaises(ValueError): validate(documents, ROOT)
+
+    def test_contracts_browser_install_is_unconditional_and_uses_locked_cache(self):
+        for mutation in ('conditional', 'cache'):
+            documents = self.documents()
+            steps = documents['ci-contracts.yaml']['jobs']['contracts']['steps']
+            if mutation == 'conditional':
+                next(step for step in steps if 'npm ci' in step.get('run', ''))['if'] = 'false'
+            else:
+                next(step for step in steps if step.get('uses', '').startswith('actions/setup-node@'))['with']['cache-dependency-path'] = 'unrelated'
+            with self.subTest(mutation=mutation), self.assertRaises(ValueError):
+                validate(documents, ROOT)

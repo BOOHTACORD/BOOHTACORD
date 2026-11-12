@@ -29,9 +29,13 @@ jobs:
         with:
           go-version: '1.26.4'
           cache-dependency-path: .out/ci/cache-inputs/go.json
+      - name: Prepare public Node SDK and locked dependency cache inputs
+        run: python3 -m tools.ci.toolchains.cache_inputs npm
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: .out/ci/cache-inputs/npm.json
       - name: Test bounded disposable browser worker policy
         run: node --test clients/web/tests/browser_runtime/workers.test.mjs
       - name: Test owned browser startup and failure diagnostic privacy
