@@ -26,6 +26,8 @@ on a borrowed AudioContext therefore require a proper ownership/free design and
 measured lifecycle testing before integration; this observation alone does not
 prove a leak in every context. The per-frame JS binding also allocates input
 and output arrays, so its real-time cost must be measured rather than assumed.
+The corresponding upstream Rust `wasm.rs` creates the handle with
+`Box::into_raw`; no matching explicit destroy function is exposed there.
 
 The official native `libDF` source at
 `7b14b895fe7fc42cab72b4a4c1e49c982bd6404b` includes a C API, but its

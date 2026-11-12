@@ -22,6 +22,10 @@ void operator delete(void* memory, std::size_t) noexcept { std::free(memory); }
 int main() {
   FrameQueue<4> queue;
   AudioFrame frame{}, result{};
+  const auto initial = allocations.load(std::memory_order_relaxed);
+  void* probe = ::operator new(1);
+  assert(allocations.load(std::memory_order_relaxed) == initial + 1);
+  ::operator delete(probe);
   const auto before = allocations.load(std::memory_order_relaxed);
   assert(!queue.TryPop(result));
   for (int i = 0; i < 4; ++i) {
