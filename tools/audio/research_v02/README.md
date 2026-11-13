@@ -26,6 +26,10 @@ For a local opt-in Web probe, set `VITE_RNNOISE_V02_ENABLED=true` and set
 research WASM. The loader rejects a missing digest or a manifest with a
 different digest. This check is not a publisher signature or permission to
 redistribute the model. Remove temporary public assets after the local test.
+Production Web builds reject the enabled flag and the presence of the v0.2
+public asset directory, even with the flag off; local Vite development is
+allowed for isolated research. This guard must not be removed until model
+redistribution and release acceptance are established.
 This scalar probe has no SIMD, runtime dispatch, production integration, release
 license clearance, or proof of real-time behavior. SHA matching alone does not
 establish perceived quality or source authenticity.
