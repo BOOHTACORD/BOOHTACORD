@@ -24,3 +24,11 @@ func TestCleanupAndMeasuredCriteriaCannotReportSuccess(t *testing.T) {
 		t.Fatal("p95 breach did not fail")
 	}
 }
+
+func TestMeasuredFailureDoesNotEraseEarlierStopReason(t *testing.T) {
+	report := Report{Outcome: "FAIL", StopReason: "guard_resource_stop", Cleanup: "PASS", Criteria: map[string]string{"message": "FAIL"}}
+	finalize(&report)
+	if report.StopReason != "guard_resource_stop" || report.Outcome != "FAIL" {
+		t.Fatal(report)
+	}
+}

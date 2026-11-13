@@ -20,7 +20,7 @@ void main() {
       api,
       scope,
       effects: WorkspaceEffects(
-        selectChannel: (_) async {},
+        selectChannel: (_, {socketCurrent}) async {},
         openDirect: (_) async {},
         invalidateText: () {},
         clearText: () {},

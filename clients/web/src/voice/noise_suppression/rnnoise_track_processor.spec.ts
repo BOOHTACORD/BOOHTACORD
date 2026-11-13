@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { RnnoiseTrackProcessor } from './rnnoise_track_processor'
-afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks() })
+afterEach(() => { vi.unstubAllGlobals(); vi.unstubAllEnvs(); vi.restoreAllMocks() })
 describe('RNNoise graph ownership', () => {
   it('rejects unsupported before asset loads and never closes borrowed context or capture', async () => {
     vi.stubGlobal('window', { isSecureContext: false })
@@ -36,5 +36,19 @@ describe('bounded initialization diagnostics', () => {
     await expect(processor.init({ kind: 'audio', track: { getSettings: () => ({ sampleRate: NaN }) }, audioContext: { sampleRate: 44100 } } as never)).rejects.toThrow('48 kHz')
     expect(processor.runtimeState.captureSampleRate).toBeUndefined()
     expect(processor.runtimeState.initDurationMs).toBeUndefined()
+  })
+  it('fails closed before graph creation when the enabled v0.2 asset is missing', async () => {
+    supportedEnvironment()
+    vi.stubEnv('VITE_RNNOISE_V02_ENABLED', 'true')
+    vi.stubGlobal('window', { isSecureContext: true, location: { origin: 'https://voice.test' } })
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('', { status: 404 })))
+    const addModule = vi.fn(), failure = vi.fn()
+    const processor = new RnnoiseTrackProcessor({ onFailure: failure })
+    await expect(processor.init({ kind: 'audio', track: { getSettings: () => ({ sampleRate: 48000 }) },
+      audioContext: { sampleRate: 48000, audioWorklet: { addModule } } } as never)).rejects.toThrow('manifest unavailable')
+    expect(addModule).not.toHaveBeenCalled()
+    expect(failure).toHaveBeenCalledWith('asset-load')
+    expect(processor.processedTrack).toBeUndefined()
+    expect(processor.runtimeState).toMatchObject({ effectiveMode: 'unknown', status: 'error', fallbackReason: 'asset-load' })
   })
 })

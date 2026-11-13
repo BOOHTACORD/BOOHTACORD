@@ -5,9 +5,11 @@ extension ConversationRefreshSelectedTextHistory on ConversationController {
     bool strict = false,
     String? at,
     bool replace = false,
+    bool Function()? socketCurrent,
   }) async {
     final active = admission(selection: true);
-    if (!active()) return;
+    bool current() => active() && (socketCurrent?.call() ?? true);
+    if (!current()) return;
     final channel = selectedChannel;
     if (channel == null || channel.kind != ChannelKind.text) return;
 
@@ -16,7 +18,7 @@ extension ConversationRefreshSelectedTextHistory on ConversationController {
     changed();
     try {
       final page = await api.messagePage(channel.id, at: at);
-      if (!active()) return;
+      if (!current()) return;
       if (textHistoryLoadSequence != loadSequence ||
           selectedChannel?.id != channel.id) {
         return;
@@ -42,8 +44,8 @@ extension ConversationRefreshSelectedTextHistory on ConversationController {
       }
       error = null;
     } catch (cause) {
-      if (strict) rethrow;
-      if (!active()) return;
+      if (strict && current()) rethrow;
+      if (!current()) return;
       if (textHistoryLoadSequence == loadSequence &&
           selectedChannel?.id == channel.id) {
         error = formatError(cause);

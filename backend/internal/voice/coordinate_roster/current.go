@@ -12,5 +12,5 @@ func (s *Subscription) Current(state State) bool {
 	if _, ok := s.account.subs[s]; !ok || !s.initialized {
 		return false
 	}
-	return state.Generation == c.generation && state.epoch == s.account.epoch && state.Revision == s.account.revision
+	return state.Generation == s.account.generation && state.epoch == s.account.epoch && state.Revision == s.account.revision
 }

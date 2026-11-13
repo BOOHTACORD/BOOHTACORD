@@ -6,6 +6,9 @@ import 'delivery.dart';
 import '../social_hints/hints.dart';
 import 'events.dart';
 import 'recovery.dart';
+import 'open_deadline.dart';
+import 'session_deadline.dart';
+import 'liveness.dart';
 
 import 'package:flutter/foundation.dart';
 
@@ -63,6 +66,10 @@ class RealtimeController extends ChangeNotifier {
   int? deliveryServer;
   String? deliveryInstallation;
   Timer? readyTimeout;
+  HttpClient? openingClient;
+  RealtimeOpenDeadline? openingDeadline;
+  RealtimeSessionDeadline? sessionDeadline;
+  RealtimeLiveness? liveness;
   WebSocket? socket;
   StreamSubscription<dynamic>? subscription;
   Timer? retry;

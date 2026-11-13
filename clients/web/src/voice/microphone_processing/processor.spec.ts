@@ -53,3 +53,20 @@ it('hot updates do not restart capture; composite RNNoise output is enabled and 
   expect(output.stop).toHaveBeenCalled()
   expect(microphoneMeter.value.status).toBe('idle')
 })
+
+it('keeps both output tracks disabled when the inner processor fails during unmute', async () => {
+  vi.stubGlobal('localStorage', { getItem: () => null, setItem: vi.fn() })
+  vi.stubGlobal('AudioWorkletNode', Node)
+  vi.stubGlobal('MediaStream', class {})
+  const innerTrack = { enabled: false }, output = { enabled: true, stop: vi.fn() }
+  const context = { audioWorklet: { addModule: vi.fn(async () => {}) },
+    createMediaStreamSource: () => ({ connect: vi.fn(), disconnect: vi.fn() }),
+    createMediaStreamDestination: () => ({ stream: { getAudioTracks: () => [output] }, disconnect: vi.fn() }) }
+  const inner = { name: 'rnnoise', init: vi.fn(async () => {}), restart: vi.fn(), destroy: vi.fn(async () => {}),
+    mute: vi.fn(), unmute: vi.fn(async () => { throw new Error('RNNoise processor failed') }), processedTrack: innerTrack }
+  const processor = new MicrophoneControlsProcessor(false, inner as never)
+  await processor.init({ track: {}, audioContext: context } as unknown as AudioProcessorOptions)
+  await expect(processor.unmute()).rejects.toThrow('RNNoise processor failed')
+  expect(innerTrack.enabled).toBe(false); expect(output.enabled).toBe(false)
+  await processor.destroy()
+})

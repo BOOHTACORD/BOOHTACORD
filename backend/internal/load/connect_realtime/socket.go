@@ -20,25 +20,27 @@ type Event struct {
 	} `json:"payload"`
 }
 type Socket struct {
-	mu      sync.Mutex
-	conn    *websocket.Conn
-	cancel  context.CancelFunc
-	last    string
-	seen    map[string]time.Time
-	wake    chan struct{}
-	failure bool
-	resync  bool
-	results *record_results.Results
+	mu         sync.Mutex
+	conn       *websocket.Conn
+	cancel     context.CancelFunc
+	last       string
+	seen       map[string]time.Time
+	order      []string
+	tracked    map[string]int
+	wake       chan struct{}
+	generation uint64
+	failure    bool
+	resync     bool
+	results    *record_results.Results
 }
 
 func New(results *record_results.Results) *Socket {
-	return &Socket{seen: map[string]time.Time{}, wake: make(chan struct{}, 1), results: results}
+	return &Socket{seen: map[string]time.Time{}, tracked: map[string]int{}, wake: make(chan struct{}), results: results}
 }
 func (s *Socket) Connect(ctx context.Context, client *http.Client, origin string, resume bool) error {
 	s.Close()
 	s.mu.Lock()
 	last := s.last
-	s.failure = false
 	s.resync = false
 	s.mu.Unlock()
 	address := strings.Replace(origin, "https://", "wss://", 1) + "/api/v1/realtime"
@@ -59,6 +61,7 @@ func (s *Socket) Connect(ctx context.Context, client *http.Client, origin string
 	s.mu.Lock()
 	s.conn = conn
 	s.cancel = cancel
+	s.failure = false
 	s.mu.Unlock()
 	ready := make(chan bool, 1)
 	go s.read(readCtx, conn, ready, resume)
@@ -77,35 +80,16 @@ func (s *Socket) Connect(ctx context.Context, client *http.Client, origin string
 		return errors.New("websocket ready timeout")
 	}
 }
-func (s *Socket) Wait(ctx context.Context, id string, since time.Time) (time.Duration, error) {
-	deadline := time.NewTimer(5 * time.Second)
-	defer deadline.Stop()
-	for {
-		s.mu.Lock()
-		at, ok := s.seen[id]
-		failed := s.failure
-		s.mu.Unlock()
-		if ok {
-			return at.Sub(since), nil
-		}
-		if failed {
-			return 0, errors.New("websocket fanout interrupted")
-		}
-		select {
-		case <-ctx.Done():
-			return 0, ctx.Err()
-		case <-deadline.C:
-			return 0, errors.New("websocket fanout timeout")
-		case <-s.wake:
-		}
-	}
-}
 func (s *Socket) Resync() bool { s.mu.Lock(); defer s.mu.Unlock(); return s.resync }
 func (s *Socket) Close() {
 	s.mu.Lock()
 	conn, cancel := s.conn, s.cancel
 	s.conn = nil
 	s.cancel = nil
+	s.generation++
+	s.tracked = map[string]int{}
+	s.failure = true
+	s.signalLocked()
 	s.mu.Unlock()
 	if cancel != nil {
 		cancel()

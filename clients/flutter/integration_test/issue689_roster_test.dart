@@ -10,9 +10,9 @@ import 'package:boohtacord_desktop/src/app_state.dart';
 import 'package:boohtacord_desktop/src/features/realtime/lifecycle/controller.dart';
 import 'package:boohtacord_desktop/src/features/session/lifecycle/controller.dart';
 import 'package:boohtacord_desktop/src/features/voice/roster_state/phase.dart';
-import 'package:boohtacord_desktop/src/models.dart';
 
 import 'issue689_support.dart';
+import 'issue689_voice_fixture.dart';
 import 'local_qa_test.dart' show QaTls;
 
 void main() {
@@ -68,19 +68,13 @@ void main() {
       isTrue,
       reason: 'Each guest close must complete before the authenticated socket is ready',
     );
-    await tester.runAsync(() async {
-      await api.createCategory('Roster QA');
-      await app.refreshTopology();
-      final category = app.topology!.categories.firstWhere(
-        (value) => value.name == 'Roster QA',
-      );
-      await api.createChannel(
-        categoryId: category.id,
-        name: 'Roster voice',
-        kind: ChannelKind.voice,
-      );
-      await app.refreshTopology();
-    });
+    await createVoiceFixture(
+      tester,
+      api,
+      app,
+      categoryName: 'Roster QA',
+      channelName: 'Roster voice',
+    );
     await waitFor(
       tester,
       () =>

@@ -78,7 +78,7 @@ export function createRealtimeDelivery(onEvent: EventHandler, onRecovery: Recove
     accept(event: RealtimeEvent): void { if (!active) return; if (queue.length >= 256) { fail(new Error('Realtime delivery overflow')); return }; queue.push(event); pump() },
     abort(cause: unknown): void { if (active) fail(cause) },
     cursor(): string | null { return cursor },
-    disconnected(): void { if (!cursor) fullResyncNeeded = true },
+    disconnected(): void { epoch++; busy = false; queue.length = 0; if (!cursor) fullResyncNeeded = true },
     reset(): void { active = false; queue.length = 0; cursor = null; seen.clear() },
   }
 }

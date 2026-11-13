@@ -1,8 +1,11 @@
 package eventhub
 
-func (subscription *Subscription) AcknowledgeOverflow() {
+func (subscription *Subscription) AcknowledgeOverflow() bool {
 	subscription.hub.mu.Lock()
 	defer subscription.hub.mu.Unlock()
+	if subscription.closeRequired {
+		return false
+	}
 	for {
 		select {
 		case <-subscription.events:
@@ -16,7 +19,7 @@ func (subscription *Subscription) AcknowledgeOverflow() {
 			case <-subscription.overflowed:
 			default:
 			}
-			return
+			return true
 		}
 	}
 }
@@ -34,18 +37,23 @@ func (subscription *Subscription) captureCriticalLocked() {
 	}
 }
 
-// retainCriticalLocked returns false when a durable revoke must be retried.
-// At most one original queue's worth of revocations is retained per socket.
+// Retention is bounded by the original queue capacity. A transient security
+// hint that cannot be retained requires the socket to close and resynchronize.
 func (subscription *Subscription) retainCriticalLocked(event Event) bool {
-	if event.Kind != "voice.lease_revoked" {
+	switch event.Kind {
+	case "voice.lease_revoked", "session.state_changed", "auth.permissions.invalidated", "role.permissions.updated":
+	default:
 		return true
 	}
 	for _, previous := range subscription.critical {
-		if previous.EventID == event.EventID {
+		if previous.Kind == event.Kind && previous.EventID == event.EventID {
 			return true
 		}
 	}
 	if len(subscription.critical) >= cap(subscription.events) {
+		if event.Kind != "voice.lease_revoked" {
+			subscription.closeRequired = true
+		}
 		return false
 	}
 	subscription.critical = append(subscription.critical, event)

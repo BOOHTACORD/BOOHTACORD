@@ -21,8 +21,16 @@ void main() {
       recover: () {},
     );
     addTearDown(owner.dispose);
+    var sequence = 0;
     void receive(String eventID, String kind, Object payload) => owner.receive(
-      jsonEncode({'event_id': eventID, 'kind': kind, 'payload': payload}),
+      jsonEncode({
+        'event_id': kind.startsWith('voice.roster.')
+            ? '11111111-1111-4111-8111-${(++sequence).toString().padLeft(12, '0')}'
+            : eventID,
+        'occurred_at': '2026-11-13T00:00:00Z',
+        'kind': kind,
+        'payload': payload,
+      }),
     );
     receive('message', 'message.created', {});
     await Future<void>.delayed(Duration.zero);
@@ -90,7 +98,8 @@ void main() {
         owner.connected = true;
         owner.receive(
           jsonEncode({
-            'event_id': 'bad',
+            'event_id': id,
+            'occurred_at': '2026-11-13T00:00:00Z',
             'kind': 'voice.roster.snapshot',
             'payload': payload,
           }),

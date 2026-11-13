@@ -35,6 +35,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     .filter(path => path && existsSync(resolve(root, path)))
   const paths = [...new Set([
     ...trackedPaths(['clients/web/src']),
+    ...trackedPaths(['tools/audio/research_dfn_web/stage.mjs', 'tools/audio/research_dfn_web/build.py']),
     ...trackedPaths(['contracts']).filter(path => path.endsWith('.json')),
   ])]
   const result = Object.fromEntries(paths.map(path => [path, /\.(ts|vue|js)$/.test(path) ? importsOf(readFileSync(resolve(root, path), 'utf8'), path) : []]))

@@ -22,6 +22,27 @@ describe('prepublication microphone DSP', () => {
     for (let i = 0; i < 25; i++) block(dsp, .0001)
     expect(block(dsp, .0001).every(value => value === 0)).toBe(true)
   })
+  it('ramps the VAD gate instead of cutting abruptly at opening and closing', () => {
+    const dsp = new MicrophoneDsp(48000)
+    dsp.configure({ vadThresholdDb: -50, microphoneGainPercent: 100 }, true, false)
+    block(dsp, .001); block(dsp, .001)
+    const attack = block(dsp, .1)
+    expect(attack[0]).toBeGreaterThan(0); expect(attack[0]).toBeLessThan(.00002)
+    expect(attack[479]).toBeCloseTo(.001, 5)
+    for (let i = 0; i < 19; i++) block(dsp, .001)
+    const release = block(dsp, .001)
+    expect(release[0]).toBeGreaterThan(0)
+    expect(release[479]).toBeLessThan(release[0])
+    for (let i = 0; i < 5; i++) block(dsp, .001)
+    expect(block(dsp, .001).every(value => value === 0)).toBe(true)
+  })
+  it('preserves a quiet onset in the 20 ms pre-roll before louder speech', () => {
+    const dsp = new MicrophoneDsp(48000)
+    dsp.configure({ vadThresholdDb: -50, microphoneGainPercent: 100 }, true, false)
+    block(dsp, 0); block(dsp, .001); block(dsp, .1)
+    const onset = block(dsp, .1)
+    expect(onset.every(value => Math.abs(value - .001) < .00001)).toBe(true)
+  })
   it('supports silence, double gain/clipping and AGC restores manual gain', () => {
     const dsp = new MicrophoneDsp(48000)
     const settings = { vadThresholdDb: -50, microphoneGainPercent: 200 }
