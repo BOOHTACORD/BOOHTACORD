@@ -6,6 +6,7 @@ export class MicrophoneDsp {
   private gain = 1
   private vad = true
   private hold = 0
+  private gateGain = 0
   private index = 0
   private readonly delay: Float32Array
   gateOpen = false
@@ -19,7 +20,7 @@ export class MicrophoneDsp {
     if (this.targetGain === 0) this.gain = 0
     this.vad = vad
   }
-  reset(): void { this.delay.fill(0); this.index = 0; this.hold = 0; this.gateOpen = false }
+  reset(): void { this.delay.fill(0); this.index = 0; this.hold = 0; this.gateOpen = false; this.gateGain = 0 }
   process(input: Float32Array, output: Float32Array): void {
     let energy = 0
     for (let i = 0; i < input.length; i++) energy += Number.isFinite(input[i]) ? input[i] * input[i] : 0
@@ -30,13 +31,15 @@ export class MicrophoneDsp {
     } else { this.hold = Math.max(0, this.hold - input.length); if (!this.hold) this.gateOpen = false }
     this.clipping = false
     const step = 1 / Math.max(1, this.rate * .01)
+    const gateStep = this.gateOpen ? 1 / Math.max(1, this.rate * .005) : -1 / Math.max(1, this.rate * .05)
     for (let i = 0; i < output.length; i++) {
       const sample = Number.isFinite(input[i]) ? input[i] : 0
       const delayed = this.delay[this.index]
       this.delay[this.index] = sample
       this.index = (this.index + 1) % this.delay.length
       this.gain += Math.max(-step, Math.min(step, this.targetGain - this.gain))
-      const value = (!this.vad || this.gateOpen) ? (this.vad ? delayed : sample) * this.gain : 0
+      if (this.vad) this.gateGain = Math.max(0, Math.min(1, this.gateGain + gateStep))
+      const value = (this.vad ? delayed * this.gateGain : sample) * this.gain
       this.clipping ||= Math.abs(value) > 1
       output[i] = Math.max(-1, Math.min(1, value))
     }

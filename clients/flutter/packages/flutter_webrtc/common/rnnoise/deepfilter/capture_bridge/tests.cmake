@@ -1,0 +1,8 @@
+add_executable(deepfilter_capture_bridge_test deepfilter/capture_bridge/bridge_test.cc)
+target_compile_features(deepfilter_capture_bridge_test PRIVATE cxx_std_17)
+if(MSVC)
+  target_compile_options(deepfilter_capture_bridge_test PRIVATE /UNDEBUG)
+else()
+  target_compile_options(deepfilter_capture_bridge_test PRIVATE -UNDEBUG)
+endif()
+add_test(NAME deepfilter_capture_bridge_test COMMAND deepfilter_capture_bridge_test)

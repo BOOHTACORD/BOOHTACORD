@@ -27,6 +27,9 @@ class MicrophoneControls {
   int index_ = 0, hold_ = 0, clipping_hold_ = 0;
   bool gate_ = false;
   float gain_ = 1;
+#if defined(_WIN32)
+  float gate_gain_ = 0;
+#endif
 };
 }
 #endif

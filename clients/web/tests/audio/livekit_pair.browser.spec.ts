@@ -5,13 +5,16 @@ test('two isolated browsers send processed microphone PCM through actual LiveKit
   try {
     for (const page of [sender, receiver]) { await page.goto('/tests/audio/fixture.html'); await page.waitForFunction(() => 'livekitAudioGate' in window) }
     await receiver.evaluate(() => (window as any).livekitAudioGate.receiver())
-    expect(await sender.evaluate(() => (window as any).livekitAudioGate.sender())).toEqual({ engine: 'rnnoise', sampleRate: 48000 })
+    expect(await sender.evaluate(() => (window as any).livekitAudioGate.sender())).toEqual({
+      engine: 'rnnoise', sampleRate: 48000,
+      modelId: process.env.VITE_RNNOISE_V02_ENABLED === 'true' ? 'rnnoise-stock-v0.2' : 'rnnoise-stock-v0.1',
+    })
     await expect.poll(async () => {
       const sample = await receiver.evaluate(() => (window as any).livekitAudioGate.read())
       return sample.readings.some((reading: any) => reading.rms > 0.001 && reading.nonfinite === 0)
     }, { timeout: 15000 }).toBe(true)
     await sender.evaluate(() => (window as any).livekitAudioGate.mute())
-    await receiver.waitForTimeout(400); await receiver.evaluate(() => (window as any).livekitAudioGate.read())
+    await receiver.waitForTimeout(400); await receiver.evaluate(() => (window as any).livekitAudioGate.resetMeter())
     await receiver.waitForTimeout(400)
     const muted = await receiver.evaluate(() => (window as any).livekitAudioGate.read())
     expect(muted.readings.length).toBeGreaterThan(0)

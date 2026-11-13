@@ -33,7 +33,7 @@ export class RnnoiseAudioWorklet extends AudioWorkletProcessor {
       if (event.data.type === 'mute' || event.data.type === 'unmute' || event.data.type === 'reset') {
         this.reset()
         if (event.data.type !== 'reset') this.enabled = event.data.type === 'unmute'
-        if (event.data.type === 'unmute') this.port.postMessage({ type: 'unmuted' })
+        if (event.data.type === 'unmute') this.port.postMessage({ type: 'unmuted', intent: event.data.intent })
       } else if (event.data.type === 'destroy') { this.enabled = false; this.alive = false; this.reset() }
     }
     this.port.postMessage({ type: 'ready', contextSampleRate: sampleRate })

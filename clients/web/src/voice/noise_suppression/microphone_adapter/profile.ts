@@ -1,17 +1,25 @@
-import { rnnoiseReleaseEnabled } from '../capabilities'
+import { deepfilterReleaseEnabled, rnnoiseReleaseEnabled } from '../capabilities'
 import { browserProcessingConstraints, type AudioProcessingOptions, type NoiseSuppressionFallbackReason } from '../types'
+import { browserSuppressionDisabled } from '../deepfilter/capture_guard'
 
 import { MicrophoneAdapterPublication } from './publication'
 export abstract class MicrophoneAdapterProfile extends MicrophoneAdapterPublication {
   protected async configure(options: AudioProcessingOptions, generation: number): Promise<void> {
+    const mode = options.noiseSuppressionMode
     if (options.noiseSuppressionMode === 'rnnoise' && !rnnoiseReleaseEnabled()) { await this.fallback(options, 'release-disabled', generation); return }
+    if (mode === 'deepfilter' && !deepfilterReleaseEnabled()) { await this.fallback(options, 'release-disabled', generation); return }
     await this.track!.applyConstraints(browserProcessingConstraints(options))
     this.assertCurrent(generation)
-    if (options.noiseSuppressionMode !== 'rnnoise') { this.describeCapture(options); await this.attachControls(options, generation); return }
-    this.state = { requestedMode: 'rnnoise', effectiveMode: 'unknown', status: 'initializing' }
+    if (mode === 'deepfilter' && !browserSuppressionDisabled(this.source)) { await this.fallback(options, 'unsupported', generation); return }
+    if (mode !== 'rnnoise' && mode !== 'deepfilter') { this.describeCapture(options); await this.attachControls(options, generation); return }
+    this.state = { requestedMode: mode, effectiveMode: 'unknown', status: 'initializing' }
     const processor = this.dependencies.createProcessor({
-      onFailure: (reason) => this.recoverProcessor(processor, reason, generation),
-      onState: (state) => { if (!this.closed && generation === this.generation && this.processor === processor) this.state = { ...state, requestedMode: 'rnnoise' } },
+      onFailure: (reason) => {
+        if (!this.closed && generation === this.generation && this.processor === processor)
+          this.state = { requestedMode: mode, effectiveMode: 'unknown', status: 'error', fallbackReason: reason }
+        this.recoverProcessor(processor, reason, generation)
+      },
+      onState: (state) => { if (!this.closed && generation === this.generation && this.processor === processor) this.state = { ...state, requestedMode: mode } },
     }, options)
     this.processor = processor
     processor.mute()
@@ -19,7 +27,7 @@ export abstract class MicrophoneAdapterProfile extends MicrophoneAdapterPublicat
       await this.track!.setProcessor(processor)
       this.assertCurrent(generation)
       if (!processor.processedTrack || this.state.status === 'error') throw new Error('Аудиофильтр не предоставил рабочий выход.')
-      if (this.state.status !== 'active') this.state = { ...this.state, requestedMode: 'rnnoise', effectiveMode: 'rnnoise', status: 'active' }
+      if (this.state.status !== 'active') this.state = { ...this.state, requestedMode: mode, effectiveMode: mode, status: 'active', ...(mode === 'deepfilter' ? { modelId: 'deepfilternet3-research-d375b2d' } : {}) }
     } catch (cause) {
       this.assertCurrent(generation)
       const reason = (cause as { reason?: NoiseSuppressionFallbackReason })?.reason ?? this.state.fallbackReason ?? 'processor-error'

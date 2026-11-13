@@ -121,8 +121,21 @@ jobs:
           node-version-file: .node-version
           cache: npm
           cache-dependency-path: .out/ci/cache-inputs/npm.json
+      - name: Test audio measurement fixtures
+        run: >-
+          node --test tools/audio/assets/test_options.mjs
+          tools/audio/assets/test_verify.mjs tools/audio/corpus/test_manifest.mjs
+          tools/audio/speech_fixture/test_frames.mjs tools/audio/speech_fixture/test_runner.mjs
+      - name: Test audio research checks
+        run: >-
+          python3 -m unittest tools.audio.research_v02.test_verify
+          tools.audio.blind_quality.test_trials tools.audio.blind_quality.test_output
+          tools.audio.blind_quality.test_score tools.ci.web_suites.test_audio_sink
+          tools.ci.web_suites.test_firefox_audio
       - name: Run complete reviewed sfu profile
         run: python3 -m tools.ci.web_suites.run --profile sfu-network
+      - name: Test synthetic audio processing in Firefox
+        run: python3 -m tools.ci.web_suites.firefox_audio
       - name: Retain mandatory source-bound profile result
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
