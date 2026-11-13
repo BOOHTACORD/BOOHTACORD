@@ -5,12 +5,22 @@ from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from unittest.mock import patch
 from .keys import create
 from .sign import sign
 from .verify import verify
 from .promote import promote
 
 OPENSSL=os.environ.get('BOOHTACORD_TEST_OPENSSL') or ('/opt/homebrew/opt/openssl@3/bin/openssl' if Path('/opt/homebrew/opt/openssl@3/bin/openssl').is_file() else shutil.which('openssl'))
+
+class MissingOpenSSLTest(unittest.TestCase):
+    def test_missing_tool_leaves_no_publisher_key(self):
+        with tempfile.TemporaryDirectory() as directory:
+            private, public = Path(directory)/'publisher.pem', Path(directory)/'publisher.pub'
+            with patch('shutil.which', return_value=None), self.assertRaises(FileNotFoundError):
+                create(private, public, 'missing-openssl')
+            self.assertFalse(private.exists())
+            self.assertFalse(public.exists())
 
 class PublisherTest(unittest.TestCase):
     def setUp(self):

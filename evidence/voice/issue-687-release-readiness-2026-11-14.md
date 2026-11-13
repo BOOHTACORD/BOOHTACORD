@@ -19,3 +19,13 @@ isolated test environment cleared `PATH` before launching real Git. Retaining
 only the necessary executable-search and Windows system-root variables in the
 two real-Git fixtures allowed all 14 Python checks to pass. The 17 Node publisher
 checks also passed; neither test suite creates or publishes a real release.
+
+The existing desktop signing-key creator left an empty private-key file when
+OpenSSL was unavailable. A regression test reproduced that behavior; checking
+the executable before file creation fixes the missing-tool case. On Windows,
+that test and ten signing, catalog and rollback fixture tests passed with an
+explicit local Git OpenSSL. The separate Unix `0600` mode assertion still fails
+on Windows, where private-key ACL protection remains unverified; inherited
+permissions must be checked at the real key location before using it. The
+preflight does not cover executable removal after the check or all other
+key-generation failures. No project key was created and no rollback was run.
