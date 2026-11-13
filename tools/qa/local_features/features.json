@@ -309,8 +309,8 @@
       },
       "issue689_web_malformed_frame": {
         "browser": "clients/web/tests/connection_status/playwright.config.ts",
-        "focused": ["clients/web/src/realtime/malformed_frame.spec.ts", "clients/web/tests/connection_status/malformed_frame.browser.spec.ts"],
-        "scope": "Authenticated Web closes and retries on malformed JSON, non-object JSON or binary realtime frames; Chromium uses a real loopback WebSocket. Full-stack and other event validation remain separate."
+        "focused": ["clients/web/src/realtime/malformed_frame.spec.ts", "clients/web/src/realtime/malformed_cursor.spec.ts", "clients/web/tests/connection_status/malformed_frame.browser.spec.ts"],
+        "scope": "Authenticated Web clears replay state and retries on malformed JSON, non-object JSON or binary realtime frames; Chromium uses a real loopback WebSocket. Full-stack and other event validation remain separate."
       },
       "issue689_flutter_malformed_frame": {
         "focused": ["clients/flutter/test/realtime_scope/malformed_frame_test.dart", "clients/flutter/test/realtime_scope/malformed_loopback_test.dart"],
@@ -469,7 +469,7 @@
       }
     ],
     "parity_review": {
-      "issue689_follow_up": "Issue 689 adds heartbeat recovery, strict new-event envelopes, malformed and non-object frame recovery, security-hint priority and stale permission-request fencing in Web and shared Flutter; Flutter also fences a ready continuation after socket close. Complete current-source Android and iOS runtime acceptance remain open.",
+      "issue689_follow_up": "Issue 689 adds heartbeat recovery, strict new-event envelopes, malformed and non-object frame recovery including Web replay reset, security-hint priority and stale permission-request fencing in Web and shared Flutter; Flutter also fences a ready continuation after socket close. Complete current-source Android and iOS runtime acceptance remain open.",
       "issue": 582,
       "decisions": {
         "web": "implementation_and_regression",
