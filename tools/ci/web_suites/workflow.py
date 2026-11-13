@@ -14,7 +14,8 @@ AUDIO_FIXTURES = ('node --test tools/audio/assets/test_options.mjs '
                   'tools/audio/speech_fixture/test_frames.mjs tools/audio/speech_fixture/test_runner.mjs')
 AUDIO_RESEARCH = ('python3 -m unittest tools.audio.research_v02.test_verify '
                   'tools.audio.blind_quality.test_trials tools.audio.blind_quality.test_output '
-                  'tools.audio.blind_quality.test_score')
+                  'tools.audio.blind_quality.test_score tools.ci.web_suites.test_audio_sink '
+                  'tools.ci.web_suites.test_firefox_audio')
 FIREFOX_AUDIO = 'python3 -m tools.ci.web_suites.firefox_audio'
 
 

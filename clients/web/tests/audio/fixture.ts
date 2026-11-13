@@ -3,6 +3,7 @@ import { loadRnnoiseAssets } from '../../src/voice/noise_suppression/rnnoise_loa
 import { SampleRingBuffer } from '../../src/voice/noise_suppression/ring_buffer'
 import { Track } from 'livekit-client'
 import { checkUnmuteRace } from './unmute_race_fixture'
+import { resumeAudio } from './audio_context_fixture'
 interface MeterReading { samples: number; rms: number; peak: number; nonfinite: number }
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 function meter(context: AudioContext, track: MediaStreamTrack) {
@@ -17,7 +18,8 @@ function meter(context: AudioContext, track: MediaStreamTrack) {
   }, stop() { source.disconnect(); node.disconnect(); node.port.close() } }
 }
 async function setup(rate = 48000) {
-  const context = new AudioContext({ sampleRate: rate }); await context.resume()
+  const context = new AudioContext({ sampleRate: rate })
+  await resumeAudio(context)
   const oscillator = context.createOscillator(), gain = context.createGain(), destination = context.createMediaStreamDestination()
   oscillator.frequency.value = 440; gain.gain.value = 0.2
   oscillator.connect(gain); gain.connect(destination); oscillator.start()
