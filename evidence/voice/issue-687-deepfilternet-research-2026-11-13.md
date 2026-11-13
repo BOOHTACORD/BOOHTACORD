@@ -88,5 +88,16 @@ a rebuilt module with an explicit, tested ownership boundary is required.
 The process ended after the exception; no long-duration leak measurement or
 browser cleanup acceptance follows from this probe.
 
+A later Windows-hosted experimental rebuild used the explicit wasm-bindgen
+object in `tools/audio/research_dfn_web/wasm.rs` and the pinned WorkAdventure
+tract adaptation. Generated WASM SHA-256 was
+`d85cbc67367085bad7f28633facd06a1e9289aad954bc25eeef64eaf4e4889c0`.
+In Node, five new/process/free cycles rejected wrong-length and nonfinite
+frames, and rejected use after free; reported WASM linear-memory sizes were
+30,932,992 then 32,636,928 bytes for the remaining four cycles. In 200
+synthetic 480-sample frames, maximum absolute difference from the separate
+WorkAdventure build was 2.80e-8. This is not a browser or leak acceptance,
+physical sound test, reproducible release build, or permission to ship binaries.
+
 Unknown: behavior on real capture, bounded fallback and mute, cross-browser
 support, native Windows real-time integration, speech quality and latency.
