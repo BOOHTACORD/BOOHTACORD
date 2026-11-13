@@ -87,3 +87,10 @@ clock, so it is not used as a passing substitute. The research workflow now
 keeps Chromium and Edge on Windows and runs Firefox graph and local LiveKit
 tests on Linux with a private PulseAudio sink and a checksum-verified bundle
 from the same workflow run. Hosted validation of this change is pending.
+
+Hosted source `2d8043531d4dfd2ccaa9a9654642d7cb398ce166` passed
+the Windows Chromium/Edge research job and all four Firefox graph checks on
+Linux. The Firefox LiveKit test failed during peer connection on the loopback
+Docker fixture. The Linux fixture now uses a selected private interface for
+ICE, loopback-only signaling, explicitly bound UDP, and ephemeral credentials.
+Hosted verification and a working Firefox/SFU test remain pending.
