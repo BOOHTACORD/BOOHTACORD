@@ -18,6 +18,10 @@ Remove-Item Env:CHROMIUM_EXECUTABLE_PATH
 $server = "$env:RUNNER_TEMP/livekit/livekit-server.exe"
 python -m tools.audio.research_dfn_web.livekit_windows --binary $server --web clients/web --config tests/audio/playwright.deepfilter.config.ts --test deepfilter_livekit.research.spec.ts
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+$env:VITE_DEEPFILTER_ENABLED = 'true'
+$env:BOOHTA_DEEPFILTER_RESEARCH_BUNDLE = "$env:RUNNER_TEMP/dfn-web/bundle"
+python -m tools.audio.research_dfn_web.livekit_windows --binary $server --web clients/web --config tests/audio/playwright.deepfilter.config.ts --test deepfilter_switch_livekit.research.spec.ts
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 $env:CHROMIUM_EXECUTABLE_PATH = Join-Path ${env:ProgramFiles(x86)} 'Microsoft/Edge/Application/msedge.exe'
 python -m tools.audio.research_dfn_web.livekit_windows --binary $server --web clients/web --config tests/audio/playwright.deepfilter.config.ts --test deepfilter_livekit.research.spec.ts
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
