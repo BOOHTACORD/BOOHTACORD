@@ -2,9 +2,12 @@ import '../../../models.dart';
 import '../../direct/conversations/support_contact.dart';
 import '../lifecycle/controller.dart';
 
+final _realtimeLoads = Expando<int>();
+
 extension WorkspaceDirects on WorkspaceController {
   Future<void> refreshDirectMessages({bool strict = false}) async {
     final sequence = ++directNavigationSequence;
+    _realtimeLoads[this] = strict ? sequence : null;
     final owner = api.transport.session.telemetry.snapshot();
     final ticket = scope.capture();
     if (!accepts(ticket)) return;
@@ -28,17 +31,24 @@ extension WorkspaceDirects on WorkspaceController {
       directMessages = result;
       if (navigationSection == NavigationSection.directMessages) {
         final candidates = await api.directMessageCandidates();
-        if (!accepts(ticket)) return;
+        if (!accepts(ticket) || sequence != directNavigationSequence) return;
         directMessageCandidates = candidates;
       }
     } catch (cause) {
-      if (strict) rethrow;
+      if (strict && accepts(ticket) && sequence == directNavigationSequence) rethrow;
       if (accepts(ticket) && sequence == directNavigationSequence) {
         supportContact = supportContact.unavailable;
         effects.error(effects.message(cause));
       }
+    } finally {
+      if (_realtimeLoads[this] == sequence) _realtimeLoads[this] = null;
     }
-    if (accepts(ticket)) changed();
+    if (accepts(ticket) && sequence == directNavigationSequence) changed();
+  }
+
+  void invalidateRealtimeDirects() {
+    if (_realtimeLoads[this] == directNavigationSequence) directNavigationSequence++;
+    _realtimeLoads[this] = null;
   }
 
   Future<void> createDirectConversation(DirectCandidate candidate) async {

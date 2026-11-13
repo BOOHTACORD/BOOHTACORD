@@ -34,13 +34,16 @@ extension WorkspaceNavigation on WorkspaceController {
     changed();
   }
 
-  Future<void> selectChannel(GuildChannel channel) async {
+  Future<void> selectChannel(
+    GuildChannel channel, {
+    bool Function()? socketCurrent,
+  }) async {
     if (!accepts(scope.capture())) return;
     workspacePanel = WorkspacePanel.none;
     navigationSection = NavigationSection.channels;
     selectedDirectMessage = null;
     selectedChannel = channel;
-    await effects.selectChannel(channel);
+    await effects.selectChannel(channel, socketCurrent: socketCurrent);
   }
 
   Future<void> openDirectConversation(DirectConversation conversation) async {

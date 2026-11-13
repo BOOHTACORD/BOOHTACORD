@@ -10,7 +10,7 @@ import '../realtime_scope/fakes.dart';
 import '../voice_roster_state/support.dart' show ScheduledRosterTimer;
 
 String event(String kind, Map<String, dynamic> payload) => jsonEncode({
-  'event_id': 'event',
+  'event_id': '11111111-1111-4111-8111-111111111111',
   'kind': kind,
   'occurred_at': '2026-11-09T00:00:00Z',
   'payload': payload,

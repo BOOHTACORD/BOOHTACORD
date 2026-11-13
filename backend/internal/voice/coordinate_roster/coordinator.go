@@ -6,15 +6,12 @@ import (
 	"sync"
 	"sync/atomic"
 	"time"
-
-	"github.com/google/uuid"
 )
 
 type Coordinator struct {
 	config      Config
 	lister      Lister
 	changes     <-chan struct{}
-	generation  string
 	mu          sync.Mutex
 	accounts    map[string]*account
 	subscribers int
@@ -32,7 +29,7 @@ func New(config Config, lister Lister, changes <-chan struct{}, observers ...Obs
 	if len(observers) > 0 {
 		observer = observers[0]
 	}
-	return &Coordinator{config: config, lister: lister, changes: changes, generation: uuid.NewString(), observer: observer,
+	return &Coordinator{config: config, lister: lister, changes: changes, observer: observer,
 		accounts: make(map[string]*account), jobs: make(chan job, config.MaxAccounts)}, nil
 }
 

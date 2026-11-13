@@ -6,6 +6,8 @@ import 'api.dart';
 mixin RealtimeConnectFacade on ApiFacadeBase {
   late final _realtimeConnect = RealtimeConnectApi(transport);
 
-  Future<WebSocket> openRealtime({String? after}) =>
-      transport.run(() => _realtimeConnect.openRealtime(after: after));
+  Future<WebSocket> openRealtime({String? after, HttpClient? client}) =>
+      transport.run(
+        () => _realtimeConnect.openRealtime(after: after, client: client),
+      );
 }

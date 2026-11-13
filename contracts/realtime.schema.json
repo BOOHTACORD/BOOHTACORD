@@ -9,7 +9,7 @@
     "event_id": { "type": "string", "format": "uuid" },
     "kind": {
       "type": "string",
-      "enum": ["maintenance.snapshot", "maintenance.changed", "voice.roster.snapshot", "voice.roster.unavailable", "notification.queued", "notification.preferences_changed", "connection.ready", "connection.resync_required", "voice.lease_revoked", "channel.updated", "guild.profile.updated", "member.profile.updated", "presence.snapshot", "presence.changed", "message.created", "message.updated", "message.deleted", "direct_message.message_created", "direct_message.message_updated", "direct_message.message_deleted", "role.permissions.updated", "auth.permissions.invalidated", "session.state_changed", "screen_preview.updated", "screen_preview.invalidated", "screen_viewers.changed", "message.reactions_updated", "message.pins_updated", "direct_message.reactions_updated"]
+      "enum": ["maintenance.snapshot", "maintenance.changed", "voice.roster.snapshot", "voice.roster.unavailable", "notification.queued", "notification.preferences_changed", "connection.ready", "connection.heartbeat", "connection.resync_required", "voice.lease_revoked", "channel.updated", "guild.profile.updated", "member.profile.updated", "presence.snapshot", "presence.changed", "message.created", "message.updated", "message.deleted", "direct_message.message_created", "direct_message.message_updated", "direct_message.message_deleted", "role.permissions.updated", "auth.permissions.invalidated", "session.state_changed", "screen_preview.updated", "screen_preview.invalidated", "screen_viewers.changed", "message.reactions_updated", "message.pins_updated", "direct_message.reactions_updated"]
     },
     "occurred_at": { "type": "string", "format": "date-time" },
     "payload": { "type": "object" },
@@ -43,6 +43,7 @@
     }
   },
   "allOf": [
+    {"if": {"properties": {"kind": {"const": "connection.heartbeat"}}, "required": ["kind"]}, "then": {"not": {"required": ["telemetry"]}, "properties": {"payload": {"type": "object", "additionalProperties": false}}}},
     {"if":{"properties":{"kind":{"const":"voice.roster.snapshot"}},"required":["kind"]},"then":{"properties":{"payload":{"$ref":"#/$defs/VoiceRosterSnapshot"}}}},
     {"if":{"properties":{"kind":{"const":"voice.roster.unavailable"}},"required":["kind"]},"then":{"properties":{"payload":{"$ref":"#/$defs/VoiceRosterUnavailable"}}}},
     {"if":{"properties":{"kind":{"const":"maintenance.snapshot"}},"required":["kind"]},"then":{"properties":{"payload":{"type":"object","additionalProperties":false,"required":["version","generation","revision","active"],"properties":{"version":{"const":1},"generation":{"type":"string","format":"uuid"},"revision":{"type":"integer","minimum":1,"maximum":9007199254740991},"active":{"type":"boolean"}}}}}},

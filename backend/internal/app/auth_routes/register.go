@@ -12,7 +12,6 @@ import (
 	adminpostgres "voice-platform/backend/internal/identity/admin_account/postgres"
 	"voice-platform/backend/internal/identity/authenticate_session"
 	sessionapi "voice-platform/backend/internal/identity/authenticate_session/api"
-	sessionpostgres "voice-platform/backend/internal/identity/authenticate_session/postgres"
 	"voice-platform/backend/internal/identity/complete_password_reset"
 	completeresetapi "voice-platform/backend/internal/identity/complete_password_reset/api"
 	completeresetpostgres "voice-platform/backend/internal/identity/complete_password_reset/postgres"
@@ -41,7 +40,7 @@ type Services struct {
 	Maintenance maintenanceadmission.Service
 }
 
-func Register(mux *http.ServeMux, database *pgxpool.Pool, configuration runtimeconfig.Config, events *eventhub.Hub, usage *observeusage.Tracker, observers ...*guildlifecycle.Observer) Services {
+func Register(mux *http.ServeMux, database, sessionDatabase *pgxpool.Pool, configuration runtimeconfig.Config, events *eventhub.Hub, usage *observeusage.Tracker, observers ...*guildlifecycle.Observer) Services {
 	observer := guildlifecycle.New(otel.Tracer("boohtacord/guild"), otel.Meter("boohtacord/guild"), nil)
 	if len(observers) > 0 {
 		observer = observers[0]
@@ -50,7 +49,7 @@ func Register(mux *http.ServeMux, database *pgxpool.Pool, configuration runtimec
 	loginRepository := loginpostgres.New(loginpostgres.NewPoolDatabase(database))
 	loginService := loginuser.New(loginRepository, loginRepository)
 	logoutService := logoutuser.New(logoutpostgres.New(logoutpostgres.NewPoolDatabase(database)))
-	sessionService := authenticatesession.New(observeusage.TrackSessions(sessionpostgres.New(sessionpostgres.NewPoolDatabase(database)), usage))
+	sessionService := sessionServiceFor(sessionDatabase, usage)
 	ownsessionroutes.Register(mux, database, sessionService, events)
 	passwordResetService := completepasswordreset.New(completeresetpostgres.New(completeresetpostgres.NewPoolDatabase(database)))
 	passwordResetCreator := createpasswordreset.New(createresetpostgres.New(createresetpostgres.NewPoolDatabase(database)), time.Now)

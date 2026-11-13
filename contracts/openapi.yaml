@@ -1711,7 +1711,7 @@
     "/api/v1/public/realtime": {
       "get": {
         "operationId": "connectPublicRealtime",
-        "description": "Unauthenticated server-to-client WebSocket for maintenance only. Browser Origin must exactly match PUBLIC_ORIGIN; native clients may omit Origin. Query parameters and client commands are rejected. The server sends connection.ready and a current maintenance.snapshot followed by maintenance.changed events. Unknown maintenance state closes the socket without reporting inactive. Events are ephemeral and must not be used as replay cursors. Public handshake and connection budgets are independent of authenticated realtime.",
+        "description": "Unauthenticated server-to-client WebSocket for maintenance only. Browser Origin must exactly match PUBLIC_ORIGIN; native clients may omit Origin. Query parameters and client commands are rejected. The server sends connection.ready and a current maintenance.snapshot followed by maintenance.changed events. A client negotiating WebSocket subprotocol boohtacord.heartbeat.v1 receives an empty connection.heartbeat approximately every 15 seconds; legacy connections receive no heartbeat. Unknown maintenance state closes the socket without reporting inactive. Events are ephemeral and must not be used as replay cursors. Public handshake and connection budgets are independent of authenticated realtime.",
         "responses": {
           "101": {"description": "Public WebSocket upgraded", "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}}},
           "400": {"description": "Invalid source, query or upgrade request", "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}}},
@@ -1725,7 +1725,7 @@
     "/api/v1/realtime": {
       "get": {
         "operationId": "connectRealtime",
-        "description": "Authenticated same-origin WebSocket upgrade. Admission is bounded to 2 connections per session, 5 per account and 500 per deployment; rejected upgrades return 429 and Retry-After. The optional after UUID is the last acknowledged durable event_id. The journal has 7-day retention and a 512-event replay limit; the server rechecks current session and per-event ACL. A cursor from another server boot epoch, an expired/invalid cursor, overflow or unavailable journal causes connection.resync_required and REST full resync. Replayed events can duplicate live delivery, so the client deduplicates by event_id. Presence and connection events are ephemeral and must not be used as after cursors.",
+        "description": "Authenticated same-origin WebSocket upgrade. Admission is bounded to 2 connections per session, 5 per account and 500 per deployment; rejected upgrades return 429 and Retry-After. The optional after UUID is the last acknowledged durable event_id. The journal has 7-day retention and a 512-event replay limit; the server rechecks current session and per-event ACL. A cursor from another server boot epoch, an expired/invalid cursor, overflow or unavailable journal causes connection.resync_required and REST full resync. Replayed events can duplicate live delivery, so the client deduplicates by event_id. A client negotiating WebSocket subprotocol boohtacord.heartbeat.v1 receives an empty connection.heartbeat approximately every 15 seconds; legacy connections receive no heartbeat. Presence and connection events are ephemeral and must not be used as after cursors.",
         "parameters": [
           {
             "name": "after",

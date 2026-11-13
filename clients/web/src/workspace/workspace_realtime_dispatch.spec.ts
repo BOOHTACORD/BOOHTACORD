@@ -72,7 +72,7 @@ describe('workspace typed realtime dispatch', () => {
   })
 
   it.each(['role.permissions.updated', 'auth.permissions.invalidated'] as const)('refreshes effective permissions on %s', async (kind) => {
-    const value = fixture(); const permissions = usePermissionStore(); const refresh = vi.spyOn(permissions, 'refresh').mockResolvedValue()
+    const value = fixture(); const permissions = usePermissionStore(); const refresh = vi.spyOn(permissions, 'refreshRealtime').mockResolvedValue()
     await value.deliver(hint(kind, kind === 'role.permissions.updated' ? { role: 'MEMBER', revision: 8 } : {}))
     expect(refresh).toHaveBeenCalledOnce()
     expect(value.stores.topology.refresh).not.toHaveBeenCalled()

@@ -39,7 +39,7 @@ import (
 	soundpostgres "voice-platform/backend/internal/voice/sound_preferences/postgres"
 )
 
-func routes(ctx context.Context, resources *lifecycle.Stack, database *pgxpool.Pool, configuration runtimeconfig.Config, events *eventhub.Hub, metrics *httpmetrics.Recorder, updates clientupdates.Provider, usage *observeusage.Tracker, previews screenpreview.Store, screenViewers *presencememory.Store, publicRealtime http.Handler, maintenanceObserver *observestate.Observer) (http.Handler, screenpreview.Service, error) {
+func routes(ctx context.Context, resources *lifecycle.Stack, database, sessionDatabase *pgxpool.Pool, configuration runtimeconfig.Config, events *eventhub.Hub, metrics *httpmetrics.Recorder, updates clientupdates.Provider, usage *observeusage.Tracker, previews screenpreview.Store, screenViewers *presencememory.Store, publicRealtime http.Handler, maintenanceObserver *observestate.Observer) (http.Handler, screenpreview.Service, error) {
 	if events != nil {
 		key := configuration.CausalKey
 		if configuration.CentralTelemetry == nil {
@@ -51,7 +51,7 @@ func routes(ctx context.Context, resources *lifecycle.Stack, database *pgxpool.P
 	mux.Handle("GET /api/v1/public/realtime", publicRealtime)
 	mux.Handle("/api/v1/client-updates", clientupdates.Handler(updates, metrics))
 	lifecycle := guildlifecycle.New(otel.Tracer("boohtacord/guild"), otel.Meter("boohtacord/guild"), metrics)
-	auth := authroutes.Register(mux, database, configuration, events, usage, lifecycle)
+	auth := authroutes.Register(mux, database, sessionDatabase, configuration, events, usage, lifecycle)
 	sessionService, maintenanceService := auth.Sessions, auth.Maintenance
 	notificationroutes.Register(mux, database, sessionService, configuration.NotificationsAvailable, events)
 	voicesoundroutes.Register(mux, soundpreferences.New(soundpostgres.New(database)), sessionService)

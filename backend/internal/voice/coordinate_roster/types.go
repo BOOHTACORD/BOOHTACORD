@@ -35,6 +35,7 @@ type job struct {
 }
 type account struct {
 	id                              string
+	generation                      string
 	epoch, revision                 uint64
 	pending, dirty, have, available bool
 	last                            []byte
