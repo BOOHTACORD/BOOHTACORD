@@ -1,7 +1,4 @@
 if(WIN32)
-  add_library(deepfilter_verified_file STATIC deepfilter/verified_file/verified_file.cc deepfilter/verified_file/parent_locks.cc)
-  target_compile_features(deepfilter_verified_file PUBLIC cxx_std_17)
-  target_link_libraries(deepfilter_verified_file PUBLIC bcrypt)
   add_executable(deepfilter_verified_file_test deepfilter/verified_file/verified_file_test.cc)
   target_link_libraries(deepfilter_verified_file_test PRIVATE deepfilter_verified_file)
   if(MSVC)

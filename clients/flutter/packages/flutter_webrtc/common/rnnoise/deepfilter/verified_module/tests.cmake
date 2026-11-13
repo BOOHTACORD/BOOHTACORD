@@ -1,5 +1,3 @@
-add_library(deepfilter_verified_module STATIC deepfilter/verified_module/module.cc)
-target_link_libraries(deepfilter_verified_module PUBLIC deepfilter_verified_file)
 add_library(deepfilter_module_fixture SHARED deepfilter/verified_module/fixture.cc)
 add_custom_command(TARGET deepfilter_module_fixture POST_BUILD
   COMMAND ${CMAKE_COMMAND} "-DINPUT=$<TARGET_FILE:deepfilter_module_fixture>"
