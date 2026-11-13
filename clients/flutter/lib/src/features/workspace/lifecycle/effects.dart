@@ -11,7 +11,8 @@ class WorkspaceEffects {
     required this.error,
     required this.message,
   });
-  final Future<void> Function(GuildChannel) selectChannel;
+  final Future<void> Function(GuildChannel, {bool Function()? socketCurrent})
+  selectChannel;
   final Future<void> Function(DirectConversation) openDirect;
   final void Function() invalidateText;
   final void Function() clearText;

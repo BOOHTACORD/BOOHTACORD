@@ -34,6 +34,10 @@ extension _GuestConnection on MaintenanceGuestSocket {
       }
       _connecting = false;
       _socket = opened;
+      _liveness = RealtimeLiveness(
+        opened.protocol == heartbeatProtocol,
+        () => _fail(epoch),
+      );
       _subscription = opened.listen(
         (raw) => _receive(epoch, raw),
         onDone: () => _fail(epoch),
@@ -51,6 +55,8 @@ extension _GuestConnection on MaintenanceGuestSocket {
     if (_connecting) abortOpen?.call();
     _connecting = false;
     _ready = false;
+    _liveness?.stop();
+    _liveness = null;
     _timeout?.cancel();
     _timeout = null;
     final token = _token;

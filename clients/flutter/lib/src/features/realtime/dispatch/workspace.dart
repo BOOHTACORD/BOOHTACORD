@@ -26,6 +26,7 @@ class WorkspaceRealtimeDispatch {
     this.notificationHint,
     this.rosterEvent,
     this.maintenanceEvent,
+    this.captureCurrent,
   });
   final WorkspaceController workspace;
   final ConversationController conversation;
@@ -34,6 +35,7 @@ class WorkspaceRealtimeDispatch {
   notificationHint;
   final bool Function(RealtimeEvent)? rosterEvent;
   final bool Function(RealtimeEvent)? maintenanceEvent;
+  final bool Function() Function()? captureCurrent;
   final FutureOr<void> Function(Map<String, dynamic>) voiceRevoked;
   final FutureOr<void> Function() permissionsChanged;
   final FutureOr<void> Function(int)? guildChanged;
@@ -42,6 +44,7 @@ class WorkspaceRealtimeDispatch {
   final void Function(Map<String, dynamic>)? screenPreviewUpdated;
   final void Function(Map<String, dynamic>)? screenPreviewInvalidated;
   Future<void> call(RealtimeEvent event) async {
+    final current = captureCurrent?.call() ?? (() => true);
     if (maintenanceEvent?.call(event) == true) return;
     if (rosterEvent?.call(event) == true) return;
     if (event.kind == 'notification.queued' ||
@@ -58,6 +61,7 @@ class WorkspaceRealtimeDispatch {
       workspace,
       conversation,
       notifyMessage,
+      current,
     )) {
       return;
     }
@@ -93,9 +97,7 @@ class WorkspaceRealtimeDispatch {
       case 'screen_viewers.changed':
         if (payload.isEmpty) await screenViewersChanged?.call();
       case 'connection.ready':
-        await guildChanged?.call(0);
-        await permissionsChanged();
-        await screenViewersChanged?.call();
+        await dispatchReady(guildChanged, permissionsChanged, screenViewersChanged, current);
       case 'connection.resync_required':
         await dispatchRecovery(
           event,
@@ -104,6 +106,7 @@ class WorkspaceRealtimeDispatch {
           permissionsChanged,
           guildChanged,
           screenViewersChanged,
+          current,
         );
       case 'voice.lease_revoked':
         await processEffect(

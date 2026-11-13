@@ -4,6 +4,9 @@ import 'dart:io';
 import 'dart:math';
 
 import '../../realtime/lifecycle/event.dart';
+import '../../realtime/lifecycle/liveness.dart';
+import '../../realtime/lifecycle/new_envelope.dart';
+import '../../realtime/lifecycle/maintenance_payload.dart';
 import 'state.dart';
 
 part 'guest_connection.dart';
@@ -29,6 +32,7 @@ class MaintenanceGuestSocket {
   WebSocket? _socket;
   StreamSubscription<dynamic>? _subscription;
   Timer? _timeout, _retry;
+  RealtimeLiveness? _liveness;
   bool _running = false, _connecting = false, _ready = false;
   int _epoch = 0, _attempt = 0;
   int? _token;
@@ -48,6 +52,8 @@ class MaintenanceGuestSocket {
     if (_connecting) abortOpen?.call();
     _connecting = false;
     _ready = false;
+    _liveness?.stop();
+    _liveness = null;
     _timeout?.cancel();
     _timeout = null;
     _retry?.cancel();

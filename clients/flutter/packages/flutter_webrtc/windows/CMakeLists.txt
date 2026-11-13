@@ -53,6 +53,22 @@ target_include_directories(${PLUGIN_NAME} INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}/../common/rnnoise"
   "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/libwebrtc/include"
 )
+if(BOOHTA_DEEPFILTER_EXPERIMENTAL_NATIVE)
+  foreach(hash_var BOOHTA_DEEPFILTER_DLL_SHA256 BOOHTA_DEEPFILTER_MODEL_SHA256)
+    string(LENGTH "${${hash_var}}" hash_length)
+    if(NOT hash_length EQUAL 64 OR NOT "${${hash_var}}" MATCHES "^[0-9a-fA-F]+$")
+      message(FATAL_ERROR "${hash_var} must contain a pinned SHA-256")
+    endif()
+  endforeach()
+  target_sources(${PLUGIN_NAME} PRIVATE "../common/cpp/src/experimental_deepfilter.cc")
+  set_source_files_properties("../common/cpp/src/experimental_deepfilter.cc"
+    PROPERTIES COMPILE_OPTIONS "/DNOMINMAX;/wd4324")
+  target_compile_definitions(${PLUGIN_NAME} PRIVATE BOOHTA_DEEPFILTER_EXPERIMENTAL_NATIVE
+    BOOHTA_DEEPFILTER_DLL_SHA256="${BOOHTA_DEEPFILTER_DLL_SHA256}"
+    BOOHTA_DEEPFILTER_MODEL_SHA256="${BOOHTA_DEEPFILTER_MODEL_SHA256}")
+  target_link_libraries(${PLUGIN_NAME} PRIVATE deepfilter_verified_engine)
+endif()
+
 target_link_libraries(${PLUGIN_NAME} PRIVATE 
   flutter
   flutter_wrapper_plugin

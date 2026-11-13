@@ -13,6 +13,7 @@ import (
 
 type Phase struct {
 	Name              string
+	Failure           string
 	Active            int
 	Seconds           float64
 	Errors            int
@@ -26,6 +27,7 @@ type Report struct {
 	Requests            int64
 	ElapsedSeconds      float64
 	Outcome, StopReason string
+	GuardFailure        string
 	Phases              []Phase
 	Routes              map[string]record_results.Summary
 	Resources           []observe_resources.Snapshot
@@ -34,13 +36,14 @@ type Report struct {
 	Cleanup             string
 }
 type Runner struct {
-	Manifest  validate_target.Manifest
-	Profile   string
-	results   *record_results.Results
-	budget    atomic.Int64
-	actors    []*exercise_actor.Actor
-	mu        sync.Mutex
-	resources []observe_resources.Snapshot
+	Manifest     validate_target.Manifest
+	Profile      string
+	results      *record_results.Results
+	budget       atomic.Int64
+	actors       []*exercise_actor.Actor
+	mu           sync.Mutex
+	resources    []observe_resources.Snapshot
+	guardFailure string
 }
 
 func (r *Runner) cleanup(guard observe_resources.Guard) string {

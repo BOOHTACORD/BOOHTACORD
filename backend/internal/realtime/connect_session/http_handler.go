@@ -10,6 +10,7 @@ import (
 	"voice-platform/backend/internal/identity/session"
 	observestate "voice-platform/backend/internal/maintenance/observe_state"
 	eventhub "voice-platform/backend/internal/realtime/event_hub"
+	"voice-platform/backend/internal/realtime/heartbeat"
 )
 
 func NewHandlerWithRoster(authenticator sessionapi.Authenticator, revalidationInterval time.Duration, now Clock, newID Identifier, observer ConnectionObserver, events *eventhub.Hub, admission Admission, maintenance *observestate.Observer, roster RosterFactory, maxRosterBytes int) http.Handler {
@@ -34,7 +35,7 @@ func NewHandlerWithRoster(authenticator sessionapi.Authenticator, revalidationIn
 			writer.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		connection, err := websocket.Accept(writer, request, nil)
+		connection, err := websocket.Accept(writer, request, &websocket.AcceptOptions{Subprotocols: []string{heartbeat.Protocol}})
 		if err != nil {
 			return
 		}

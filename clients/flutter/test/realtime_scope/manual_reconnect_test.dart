@@ -14,7 +14,7 @@ class ReconnectApi extends ApiClient {
   final cursors = <String?>[];
   final sessionCheck = Completer<SessionUser?>();
   @override
-  Future<WebSocket> openRealtime({String? after}) async {
+  Future<WebSocket> openRealtime({String? after, HttpClient? client}) async {
     cursors.add(after);
     final socket = SocketFake();
     sockets.add(socket);
@@ -23,12 +23,17 @@ class ReconnectApi extends ApiClient {
 
   @override
   Future<SessionUser?> currentSession() => sessionCheck.future;
+  @override
+  Future<SessionUser?> currentRealtimeSession(
+    Future<void> abort,
+    bool Function() isCurrent,
+  ) => currentSession();
 }
 
 class DelayedReconnectApi extends ApiClient {
   final openings = <Completer<WebSocket>>[];
   @override
-  Future<WebSocket> openRealtime({String? after}) {
+  Future<WebSocket> openRealtime({String? after, HttpClient? client}) {
     final opening = Completer<WebSocket>();
     openings.add(opening);
     return opening.future;

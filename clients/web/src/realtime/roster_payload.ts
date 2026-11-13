@@ -4,7 +4,7 @@ const record = (value: unknown): value is Record<string, unknown> => typeof valu
 const keys = (value: Record<string, unknown>, names: string[]) => Object.keys(value).length === names.length && names.every(name => Object.hasOwn(value, name))
 const id = (value: unknown): value is string => typeof value === 'string' && uuid.test(value)
 
-function timestamp(value: unknown): boolean {
+export function timestamp(value: unknown): boolean {
   if (typeof value !== 'string') return false
   const match = time.exec(value)
   if (!match || Number.isNaN(Date.parse(value))) return false

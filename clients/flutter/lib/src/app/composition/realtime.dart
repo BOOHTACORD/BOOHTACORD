@@ -4,6 +4,9 @@ import '../../features/realtime/dispatch/workspace.dart';
 import '../../features/profile/state/refresh.dart';
 import '../../features/voice/lifecycle/controller.dart';
 import '../../features/voice/roster_state/controller.dart';
+import '../../features/workspace/load_topology/controller.dart';
+import '../../features/workspace/load_members/controller.dart';
+import '../../features/workspace/load_directs/controller.dart';
 import '../../features/notifications/message_events/controller.dart';
 import '../../features/notifications/remote_lifecycle/controller.dart';
 import 'owners.dart';
@@ -38,12 +41,17 @@ void configureRealtime(AppOwners app) {
       app.voiceRoster.sharedSocketStart();
     },
     onSocketEnd: () {
+      app.permissions.invalidateRealtime();
+      app.workspace.invalidateRealtimeTopology();
+      app.workspace.invalidateRealtimeMembers();
+      app.workspace.invalidateRealtimeDirects();
       app.maintenance.authSocketEnd();
       app.voiceRoster.sharedSocketEnd();
     },
     dispatch: WorkspaceRealtimeDispatch(
       app.workspace,
       app.conversation,
+      captureCurrent: () => app.realtime.admission(),
       voiceRevoked: app.voice.dispatchVoiceRevocation,
       permissionsChanged: app.permissions.refreshStrict,
       notifyMessage: notifications.call,

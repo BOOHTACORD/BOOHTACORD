@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:http/http.dart' as http;
+
 import 'admission_response.dart';
 
 import '../../../models.dart';
@@ -9,11 +11,27 @@ class AuthSessionApi {
   AuthSessionApi(this.transport);
   final ApiTransport transport;
 
-  Future<SessionUser?> currentSession() async {
-    final response = await transport.client.get(
-      transport.uri('/auth/session'),
-      headers: await transport.headers(),
-    );
+  Future<SessionUser?> currentSession({
+    Future<void>? abortTrigger,
+    bool Function()? isCurrent,
+  }) async {
+    final uri = transport.uri('/auth/session');
+    final headers = await transport.headers();
+    if (isCurrent?.call() == false) throw http.RequestAbortedException(uri);
+    final http.Response response;
+    if (abortTrigger == null) {
+      response = await transport.client.get(uri, headers: headers);
+    } else {
+      final request = http.AbortableRequest(
+        'GET',
+        uri,
+        abortTrigger: abortTrigger,
+      )..headers.addAll(headers);
+      response = await http.Response.fromStream(
+        await transport.client.send(request),
+      );
+    }
+    if (isCurrent?.call() == false) throw http.RequestAbortedException(uri);
     if (response.statusCode == 401) {
       await transport.clearSessionCookie();
       return null;

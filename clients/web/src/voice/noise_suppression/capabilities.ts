@@ -11,3 +11,7 @@ export function supportedContextRate(context: Pick<AudioContext, 'sampleRate'>):
 export function rnnoiseReleaseEnabled(): boolean {
   return import.meta.env.VITE_RNNOISE_ENABLED !== 'false'
 }
+/** Research opt-in only; assets and release acceptance are not yet supplied. */
+export function deepfilterReleaseEnabled(): boolean {
+  return import.meta.env.VITE_DEEPFILTER_ENABLED === 'true'
+}

@@ -4,6 +4,7 @@ import { publishOptions, selectedVoiceAudioProfile, type VoiceAudioProfile } fro
 import { LiveKitMicrophoneAdapter } from './controller'
 import { MicrophoneControlsProcessor } from '../../microphone_processing/processor'
 import { RnnoiseTrackProcessor } from '../rnnoise_track_processor'
+import { DeepFilterTrackProcessor } from '../deepfilter/track_processor'
 export function bindLiveKitMicrophone(room: VoiceRoom, liveKitRoom: Room, sdk: typeof import('livekit-client'), profile: VoiceAudioProfile = selectedVoiceAudioProfile()): void {
   const { RoomEvent, Track, LocalAudioTrack, ConnectionState } = sdk
   // Retain the SDK-owned context for processing before first publication.
@@ -29,7 +30,10 @@ export function bindLiveKitMicrophone(room: VoiceRoom, liveKitRoom: Room, sdk: t
     publishTrack: (track, options) => liveKitRoom.localParticipant.publishTrack(track, { ...options, ...publishOptions(profile), source: Track.Source.Microphone }),
     unpublishTrack: (track) => liveKitRoom.localParticipant.unpublishTrack(track, false),
     isReconnecting: () => liveKitRoom.state === ConnectionState.Reconnecting || liveKitRoom.state === ConnectionState.SignalReconnecting,
-    createProcessor: (callbacks, options) => new MicrophoneControlsProcessor(options?.autoGainControl ?? true, new RnnoiseTrackProcessor(callbacks), () => callbacks.onFailure('processor-error')),
+    createProcessor: (callbacks, options) => new MicrophoneControlsProcessor(options?.autoGainControl ?? true,
+      options?.noiseSuppressionMode === 'deepfilter'
+        ? new DeepFilterTrackProcessor({ onFailure: reason => callbacks.onFailure(reason) })
+        : new RnnoiseTrackProcessor(callbacks), () => callbacks.onFailure('processor-error')),
     createControlsProcessor: (options, failure) => new MicrophoneControlsProcessor(options.autoGainControl, undefined, failure),
   })
   room.setMicrophone = (enabled, options) => microphone.setEnabled(enabled, options)

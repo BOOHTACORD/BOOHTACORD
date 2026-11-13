@@ -68,6 +68,19 @@ class FailureDiagnosticTests(unittest.TestCase):
                            'stage=header-voice-workspace-search-accepted\n')
             self.assertEqual(last_failure_stage(log), 'header-voice-workspace-search-accepted')
 
+    def test_screen_preview_milestones_are_retained_without_private_values(self):
+        from .failure_stage import last_failure_stage
+        with tempfile.TemporaryDirectory() as temporary:
+            log = Path(temporary) / 'lifecycle.log'
+            for stage in ('screen-short-geometry-ok', 'screen-short-frames-ok',
+                          'screen-preview-card-ok', 'screen-preview-decoded-ok',
+                          'screen-preview-refresh-ok'):
+                with self.subTest(stage=stage):
+                    log.write_text('stage=screen-share-short-height\n'
+                                   + 'stage=' + stage + '\n'
+                                   + 'stage=private-secret-do-not-publish\n')
+                    self.assertEqual(last_failure_stage(log), stage)
+
     def test_unknown_fields_stages_or_links_are_rejected(self):
         for case in ('extra', 'stage', 'large', 'link', 'duplicate'):
             with tempfile.TemporaryDirectory() as temporary, self.subTest(case=case):
