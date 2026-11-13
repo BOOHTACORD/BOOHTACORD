@@ -9,6 +9,7 @@ from .metrics import snapshot
 from .maintenance import FixtureMaintenance
 from .ownership import owned, verify_marker
 from .resources import Resources
+from .sample_failure import SampleFailure, checked_inputs
 
 
 class Guard:
@@ -41,6 +42,10 @@ class Guard:
                     self.wfile.write(json.dumps(data).encode())
                 except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
                     return
+                except SampleFailure as failure:
+                    self.send_response(503)
+                    self.send_header('X-QA-Guard-Stage', str(failure))
+                    self.end_headers()
                 except (OSError, ValueError, RuntimeError):
                     try:
                         self.send_error(503)
@@ -70,8 +75,7 @@ class Guard:
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
 
     def sample(self):
-        verify_marker(self.stack, self.manifest['Nonce'], len(self.manifest['Accounts']))
-        data = self.resources.read()
+        data = checked_inputs(self.stack, self.manifest, self.resources, verify_marker)
         data.update(Owner=self.manifest['Owner'], Dataset='qa', Origin=self.manifest['Origin'],
                     Commit=self.manifest['Commit'], DBName='qa', Accounts=len(self.manifest['Accounts'])+1,
                     At=datetime.now(timezone.utc).isoformat())

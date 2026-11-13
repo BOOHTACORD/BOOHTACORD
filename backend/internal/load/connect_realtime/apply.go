@@ -28,9 +28,6 @@ func (s *Socket) apply(conn *websocket.Conn, event Event, replay bool) bool {
 			}
 		}
 	}
-	select {
-	case s.wake <- struct{}{}:
-	default:
-	}
+	s.signalLocked()
 	return true
 }

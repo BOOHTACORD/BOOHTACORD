@@ -3,6 +3,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from tools.load.guard.resources import Resources
+from tools.load.guard.sample_failure import SampleFailure
 
 
 class ResourceSnapshotTests(unittest.TestCase):
@@ -39,6 +40,15 @@ class ResourceSnapshotTests(unittest.TestCase):
                 patch('tools.load.guard.resources.output', return_value='0'):
             with self.assertRaises(ValueError):
                 Resources(stack).read()
+
+    def test_metrics_failure_is_bounded_and_does_not_leak_details(self):
+        stack = SimpleNamespace(api='qa-client-0123456789abcdef-api')
+        with patch('tools.load.guard.resources.owned', return_value=stack.api), \
+                patch('tools.load.guard.resources.output', return_value='2000000000'), \
+                patch('tools.load.guard.resources.snapshot', side_effect=OSError('private details')):
+            with self.assertRaises(SampleFailure) as failure:
+                Resources(stack).read()
+            self.assertEqual(str(failure.exception), 'resource_metrics')
 
 
 if __name__ == '__main__':
