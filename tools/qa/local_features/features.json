@@ -171,7 +171,7 @@
     }
   },
   "connection_status": {
-    "native_targets": ["integration_test/issue689_roster_test.dart", "integration_test/issue689_delivery_revocation_test.dart", "integration_test/issue689_heartbeat_test.dart", "integration_test/issue689_envelope_test.dart"],
+    "native_targets": ["integration_test/issue689_roster_test.dart", "integration_test/issue689_delivery_revocation_test.dart", "integration_test/issue689_heartbeat_test.dart", "integration_test/issue689_envelope_test.dart", "integration_test/issue689_topology_history_test.dart"],
     "paths": [
       "clients/web/src/workspace/connection_status/**",
       "clients/web/src/authorization/permission_store.ts",
@@ -355,6 +355,7 @@
       },
       "issue689_flutter_topology_socket_fence": {
         "focused": ["clients/flutter/test/realtime_scope/topology_socket_fence_test.dart", "clients/flutter/test/realtime_scope/topology_history_socket_fence_test.dart"],
+        "native": "integration_test/issue689_topology_history_test.dart",
         "scope": "Flutter rejects old realtime topology results, failures and subsequent initial channel history after socket end or a newer refresh while preserving independent initial loading. Native and full-stack acceptance remain separate."
       },
       "issue689_flutter_members_socket_fence": {

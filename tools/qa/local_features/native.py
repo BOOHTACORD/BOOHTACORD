@@ -23,6 +23,7 @@ def native_target(target):
         'integration_test/issue689_delivery_revocation_test.dart': 'native revocation delivery under synthetic backlog; no actual socket pressure',
         'integration_test/issue689_heartbeat_test.dart': 'native silent socket recovery against loopback; no real network switching or media',
         'integration_test/issue689_envelope_test.dart': 'native malformed maintenance envelope recovery against loopback; no real network switching or media',
+        'integration_test/issue689_topology_history_test.dart': 'native topology history response held across socket close against owned API',
         'integration_test/update_required_test.dart': 'required update gate from real synthetic catalog on owned API; no installer launch',
     }
     if target not in scopes: raise ValueError('Unsupported native QA target')
