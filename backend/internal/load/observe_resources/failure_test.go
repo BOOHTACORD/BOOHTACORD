@@ -13,6 +13,7 @@ func TestGuardFailureCategoriesAreBounded(t *testing.T) {
 		{ErrUnavailable, "unavailable"}, {ErrDenied, "denied"},
 		{ErrInvalid, "invalid_snapshot"}, {ErrForeign, "foreign_target"},
 		{ErrStale, "stale_snapshot"}, {ErrThreshold, "resource_threshold"},
+		{ErrFixtureVerification, "fixture_verification"}, {ErrResourceSnapshot, "resource_snapshot"},
 		{errors.New("private details"), "unknown"},
 	}
 	for _, item := range cases {

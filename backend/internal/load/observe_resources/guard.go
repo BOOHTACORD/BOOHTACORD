@@ -39,6 +39,14 @@ func (g Guard) Check(ctx context.Context) (Snapshot, error) {
 		return s, ErrUnavailable
 	}
 	defer response.Body.Close()
+	if response.StatusCode == http.StatusServiceUnavailable {
+		switch response.Header.Get("X-QA-Guard-Stage") {
+		case "fixture_verification":
+			return s, ErrFixtureVerification
+		case "resource_snapshot":
+			return s, ErrResourceSnapshot
+		}
+	}
 	if response.StatusCode != 200 {
 		return s, ErrDenied
 	}
