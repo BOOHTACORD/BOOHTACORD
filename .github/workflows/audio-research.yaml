@@ -1,0 +1,31 @@
+name: Audio research fixtures
+
+on:
+  pull_request:
+    paths:
+      - 'tools/audio/**'
+      - '.github/workflows/audio-research.yaml'
+  push:
+    branches: [master]
+    paths:
+      - 'tools/audio/**'
+      - '.github/workflows/audio-research.yaml'
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  fixtures:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+      - run: >-
+          node --test tools/audio/research_dfn_web/quality_core.test.mjs
+          tools/audio/research_dfn_web/quality_cli.test.mjs

@@ -21,5 +21,11 @@ version, source commit and model hash must match the supplied lock, and its
 WASM hash must match the manifest. A caller-supplied lock is not independent
 evidence that the artifact is authentic or approved for distribution.
 
+The experimental DeepFilterNet build can run on the same frozen synthetic
+signals with `node tools/audio/quality_harness.mjs --deepfilter-research
+<glue.js> <module.wasm> <model.tar.gz>`. All three hashes are pinned to the
+local research build; this does not establish reproducibility or permission to
+ship that build. Neither engine's synthetic output proves speech quality.
+
 Consented speech and physical-device measurements require separate provenance
 and permission; keep private recordings out of the repository and logs.
