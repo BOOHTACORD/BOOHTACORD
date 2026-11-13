@@ -1,10 +1,11 @@
 import { LocalAudioTrack, Room, RoomEvent, Track } from 'livekit-client'
 import { RnnoiseTrackProcessor } from '../../src/voice/noise_suppression/rnnoise_track_processor'
+import { DeepFilterTrackProcessor } from '../../src/voice/noise_suppression/deepfilter/track_processor'
 interface MeterReading { samples: number; rms: number; peak: number; nonfinite: number }
 let activeRoom: Room | undefined
 let context: AudioContext | undefined
 let localTrack: LocalAudioTrack | undefined
-let processor: RnnoiseTrackProcessor | undefined
+let processor: RnnoiseTrackProcessor | DeepFilterTrackProcessor | undefined
 let oscillator: OscillatorNode | undefined
 let meter: AudioWorkletNode | undefined
 let meterSource: MediaStreamAudioSourceNode | undefined
@@ -31,18 +32,20 @@ async function connect(role: 'sender' | 'receiver') {
 }
 export const livekitPairFixture = {
   async receiver() { await connect('receiver'); return true },
-  async sender() {
+  async sender(engine: 'rnnoise' | 'deepfilter-research' = 'rnnoise') {
     const room = await connect('sender')
     oscillator = context!.createOscillator(); oscillator.frequency.value = 440
     const gain = context!.createGain(); gain.gain.value = 0.2
     const destination = context!.createMediaStreamDestination()
     oscillator.connect(gain); gain.connect(destination); oscillator.start()
     localTrack = new LocalAudioTrack(destination.stream.getAudioTracks()[0], { sampleRate: 48000 }, true, context!)
-    processor = new RnnoiseTrackProcessor()
+    processor = engine === 'rnnoise' ? new RnnoiseTrackProcessor() : new DeepFilterTrackProcessor()
     await localTrack.setProcessor(processor)
     await processor.unmute(); processor.processedTrack!.enabled = true
     await room.localParticipant.publishTrack(localTrack, { source: Track.Source.Microphone, audioPreset: { maxBitrate: 128000, priority: 'high' }, forceStereo: false })
-    return { engine: processor.runtimeState.effectiveMode, modelId: processor.runtimeState.modelId, sampleRate: context!.sampleRate }
+    return processor instanceof RnnoiseTrackProcessor
+      ? { engine: processor.runtimeState.effectiveMode, modelId: processor.runtimeState.modelId, sampleRate: context!.sampleRate }
+      : { engine, sampleRate: context!.sampleRate }
   },
   async mute() { processor?.mute(); await localTrack?.mute(); return true },
   read() { return { readings: readings.splice(0), state: activeRoom?.state } },

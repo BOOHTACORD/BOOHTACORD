@@ -25,6 +25,20 @@ the separate direct-worklet test showed zero output. Unit tests cover stale
 preparation cancellation, unsupported sample rate and unmute/error races.
 These runs did not publish to LiveKit or use a physical microphone.
 
+Another test connected two peer connections in one browser process without an
+SFU. In both Windows Chromium and Firefox, the receiver measured a processed
+synthetic tone, followed by silence after mute. This is a loopback WebRTC
+check, not a two-client LiveKit or acoustic acceptance test.
+
+The separate two-browser LiveKit experiment on Windows used the official
+v1.13.7 binary (archive SHA-256
+`e539e7d2f75807b9c9202cd2a0bf2cb3d52fc4c52978a6953e0f47bc339fe77f`)
+on loopback only. Both the new research test and the existing RNNoise test
+failed to establish the receiver peer connection before model initialization.
+Enabling the server's loopback candidate did not resolve it. The cause is
+unknown; this is not evidence that DeepFilterNet media works through LiveKit.
+The test server was stopped and experimental assets removed from public paths.
+
 This research processor is not connected to LiveKit or an application setting.
 Its runtime cost, sustained operation, real microphone, voice quality,
 delivery, safe fallback and platform acceptance are not established.
