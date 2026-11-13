@@ -1,4 +1,5 @@
 import 'participants_grid/handler.dart';
+import 'column_policy.dart';
 import '../../error_banner/component.dart';
 import '../../people_word/component.dart';
 import '../../native_bindings.dart';
@@ -83,21 +84,12 @@ extension WorkspaceVoiceParticipantRoomBuildAction
                 const SizedBox(height: 16),
                 LayoutBuilder(
                   builder: (context, gridConstraints) {
-                    final compactViewport =
-                        MediaQuery.sizeOf(context).width <= 720;
-                    final textScale = MediaQuery.textScalerOf(context)
-                        .scale(1)
-                        .clamp(1.0, 2.0)
-                        .toDouble();
-                    final minWidth = 256 * textScale;
-                    final fittingColumns = compactViewport
-                        ? 2
-                        : ((gridConstraints.maxWidth + 16) / (minWidth + 16))
-                              .floor();
-                    final columns = fittingColumns
-                        .clamp(1, compactViewport ? 2 : 4)
-                        .clamp(1, participants.length + 1)
-                        .toInt();
+                    final columns = voiceParticipantColumns(
+                      viewportWidth: MediaQuery.sizeOf(context).width,
+                      availableWidth: gridConstraints.maxWidth,
+                      textScale: MediaQuery.textScalerOf(context).scale(1),
+                      participantCount: participants.length + 1,
+                    );
                     return renderVoiceParticipantRoomParticipantsGrid(columns);
                   },
                 ),

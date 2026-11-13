@@ -533,6 +533,8 @@
       "clients/web/src/voice/TouchPttButton.vue",
       "clients/web/src/design/design_v2_audio_presentation.css",
       "clients/flutter/lib/src/features/voice/*",
+      "clients/flutter/test/voice_connection_recovery_visible_test.dart",
+      "clients/flutter/test/voice_connection_recovery_transfer_test.dart",
       "clients/flutter/packages/livekit_client/lib/src/audio/*",
       "clients/flutter/packages/livekit_client/lib/src/core/engine.dart",
       "clients/flutter/packages/livekit_client/lib/src/core/connectivity_recovery.dart",
@@ -556,6 +558,7 @@
       "clients/flutter/lib/src/screens/workspace_ui/voice_participant_card/**",
       "clients/flutter/lib/src/screens/workspace_ui/voice_participant_room/**",
       "clients/flutter/test/voice_participant_stream_cards_test.dart",
+      "clients/flutter/test/voice_room_large_text_layout_test.dart",
       "clients/flutter/lib/src/screens/workspace_ui/voice_room/open_screen_fullscreen/**",
       "clients/flutter/lib/src/screens/workspace_ui/voice_room/build/room_header/handler.dart",
       "clients/flutter/lib/src/screens/workspace_ui/voice_room/build/header_actions/**",
@@ -609,9 +612,12 @@
     "flutter": [
       "test/voice_disconnect/visual_capture_test.dart",
       "test/voice_disconnect_notice_widget_test.dart",
+      "test/voice_connection_recovery_visible_test.dart",
+      "test/voice_connection_recovery_transfer_test.dart",
       "test/voice_manual_join_actions_accessibility_test.dart",
       "test/workspace_screen_test.dart",
       "test/web_parity/voice_geometry_test.dart",
+      "test/voice_room_large_text_layout_test.dart",
       "packages/livekit_client/test/audio/audio_session_test.dart",
       "packages/livekit_client/test/core/network_loss_reconnect_test.dart",
       "test/features/workspace/short_viewport/measured_status_test.dart",
@@ -702,9 +708,10 @@
       "flutter_web_parity_499_502": {
         "focused": [
           "clients/flutter/test/web_parity/voice_geometry_test.dart",
+          "clients/flutter/test/voice_room_large_text_layout_test.dart",
           "clients/flutter/test/workspace_screen_test.dart"
         ],
-        "scope": "Flutter presentation parity for #499–502; connected voice participant cards use two columns through 720 dp, matching Web mobile, with 12 dp gaps through 600 dp and 16 dp above. Speaking outline follows the outer card bounds. Verify the registered 320/390/768/1024/1440 dp matrix at scale 1/2, including short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
+        "scope": "Flutter presentation parity for #499–502; connected voice participant cards normally use two columns through 720 dp, matching Web mobile, with 12 dp gaps through 600 dp and 16 dp above. On narrow viewports with large text they use one column when two would make cards smaller than 128 scaled dp (#667). Speaking outline follows the outer card bounds. Verify the registered 320/390/768/1024/1440 dp matrix at scale 1/2, including short viewport and IME; existing owned API native smoke. Component tests do not prove physical capture/audio. Physical acceptance remains #303."
       },
       "flutter_stream_preview_placeholder": {
         "focused": [
@@ -920,6 +927,7 @@
             "tests": [
               "clients/flutter/test/voice_connection_recovery_test.dart",
               "clients/flutter/test/voice_connection_recovery_release_test.dart",
+              "clients/flutter/test/voice_connection_recovery_visible_test.dart",
               "clients/flutter/test/voice_reconnect_policy_test.dart",
               "clients/flutter/test/voice_disconnect_race_test.dart"
             ],
@@ -931,6 +939,7 @@
             "tests": [
               "clients/flutter/test/voice_connection_recovery_test.dart",
               "clients/flutter/test/voice_connection_recovery_release_test.dart",
+              "clients/flutter/test/voice_connection_recovery_visible_test.dart",
               "clients/flutter/test/voice_reconnect_policy_test.dart",
               "clients/flutter/test/voice_disconnect_race_test.dart"
             ],
@@ -1016,6 +1025,9 @@
       }
     ],
     "parity_review": {
+      "issue667_voice_large_text_review": "Shared Flutter voice participant cards switch to one column at narrow widths with large text. Web source is unchanged and its regression remains required; Android and iOS share the layout, but native runtime, screen reader and physical acceptance for this change remain NOT_RUN. Component tests and a 320 dp capture are recorded in the issue 667 evidence.",
+      "issue648_transfer_recovery_review": "Shared Flutter clears stale channel intent on accepted transfer revocation during recovery. Android emulator and Web were exercised on an isolated stack with injected release failure; iOS and production remain NOT_RUN.",
+      "issue648_recovery_review": "The shared Flutter recovery indicator changed; Android emulator outage and manual leave passed on an isolated stack. Windows initial media admission failed before outage, iOS and physical devices are not verified. Web was not changed; its existing regression checks remain required. Screen presentation is reviewed because the voice dock is shared.",
       "issue689_follow_up": "Issue 689 migrates voice roster and revocation hints to WebSocket. Web and shared Flutter tests cover parts of delivery; physical voice and iOS runtime acceptance remain open.",
       "issue687": "Web and Windows offer experimental DeepFilter only with disabled-by-default build flags. Flutter preflights model readiness and falls back for initial capture; normal Windows builds do not instantiate or deliver the engine. Web and Windows use a soft VAD envelope. Shared Flutter tests cover unchanged modes; Android/iOS runtime, real-stack and physical media acceptance remain NOT_RUN/BLOCKED.",
       "issue": 676,
@@ -1563,6 +1575,8 @@
       }
     ],
     "parity_review": {
+      "issue667_voice_large_text_review": "Shared Flutter voice participant cards switch to one column at narrow widths with large text. Web source is unchanged and its regression remains required; Android and iOS share the layout, but native runtime, screen reader and physical acceptance for this change remain NOT_RUN. Component tests and a 320 dp capture are recorded in the issue 667 evidence.",
+      "issue648_recovery_review": "The shared Flutter recovery indicator changed; Android emulator outage and manual leave passed on an isolated stack. Windows initial media admission failed before outage, iOS and physical devices are not verified. Web was not changed; its existing regression checks remain required. Screen presentation is reviewed because the voice dock is shared.",
       "issue689_follow_up": "Issue 689 adds Web application-socket liveness, new-event validation and permission-request fencing while preserving screen feature behavior. Screen regression suites remain required on Web and native platforms; full current-source native media acceptance remains open.",
       "issue687": "Shared Flutter microphone preferences add a Windows-gated experimental DeepFilter mode; screen-share code is unchanged. Web, Android and iOS screen regression and real-device media acceptance remain NOT_RUN.",
       "issue": 676,
@@ -2650,6 +2664,7 @@
       }
     ],
     "parity_review": {
+      "issue667_voice_large_text_review": "Shared Flutter voice participant cards switch to one column at narrow widths with large text. Web source is unchanged and its regression remains required; Android and iOS share the layout, but native runtime, screen reader and physical acceptance for this change remain NOT_RUN. Component tests and a 320 dp capture are recorded in the issue 667 evidence.",
       "issue689_follow_up": "Issue 689 fences late Web workspace continuations and supersedes stale permission requests on realtime invalidation; Flutter fences realtime permission, topology, member, direct-list and recovery continuations at socket end. Shell regression suites remain required; current-source Android and iOS runtime acceptance remains open.",
       "native_1054_identity": "PR #702 updates shared native version and release metadata only. Web source is unchanged; Android and iOS runtime regression and physical acceptance remain NOT_RUN.",
       "issue": 676,

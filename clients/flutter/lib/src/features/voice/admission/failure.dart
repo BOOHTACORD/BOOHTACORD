@@ -1,5 +1,6 @@
 import '../../../services/android_audio_devices.dart';
 import '../../../services/voice_lease_revocation.dart';
+import '../../../core/http/api_failure.dart';
 import '../lifecycle/controller.dart';
 import '../../telemetry/action_scope/action.dart';
 import '../../telemetry/action_scope/failure.dart';
@@ -28,10 +29,20 @@ extension VoiceAdmissionFailure on VoiceController {
     if (presentCause && admittedLease != null && revoked != null) {
       disconnect.server(admittedLease, revoked);
     }
-    if (presentCause && admittedLease != null && cause is VoiceLeaseRevocation) {
+    if (presentCause &&
+        admittedLease != null &&
+        cause is VoiceLeaseRevocation) {
       disconnect.server(admittedLease, cause.reason);
     }
-    error = !presentCause
+    final retryableRecovery =
+        voiceRecoveryActive &&
+        presentCause &&
+        revoked == null &&
+        disconnect.notice?.source != 'server' &&
+        cause is! VoiceLeaseRevocation &&
+        !(cause is ApiFailure &&
+            const {401, 403, 404, 409}.contains(cause.status));
+    error = !presentCause || retryableRecovery
         ? null
         : disconnect.notice?.message ??
               (revoked != null
@@ -42,10 +53,14 @@ extension VoiceAdmissionFailure on VoiceController {
                   : cause is VoiceLeaseRevocation
                   ? cause.message
                   : formatError(cause));
-    voicePhase = presentCause ? VoicePhase.error : VoicePhase.idle;
+    voicePhase = retryableRecovery
+        ? VoicePhase.reconnecting
+        : presentCause
+        ? VoicePhase.error
+        : VoicePhase.idle;
     room = null;
     leaseId = null;
-    voiceChannel = null;
+    if (!retryableRecovery) voiceChannel = null;
     mutedScreenShareAudioIdentities.clear();
     try {
       await AndroidAudioDevices.clearNativeOutput();
