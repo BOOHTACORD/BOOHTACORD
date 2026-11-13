@@ -7,17 +7,17 @@ RnnoiseCaptureProcessor::RnnoiseCaptureProcessor(StateAllocator allocate, deepfi
     : state_(static_cast<DenoiseState*>(allocate(rnnoise_get_size()))), hook_(hook) {
   // v0.1 rnnoise_create does not check malloc. Keep pinned source untouched and
   // initialize only successful allocations so unavailable is an honest fallback.
-  if (state_) rnnoise_init(state_);
-  else failure_.store(Failure::kUnavailable);
+  state_ready_.store(state_ && rnnoise_init(state_) == 0);
+  if (!state_ready_.load()) failure_.store(Failure::kUnavailable);
   // Stock v0.1 lazily allocates its global FFT tables on the first process call.
   // Warm on the control thread exactly once before any realtime callback.
   static std::once_flag fft_ready;
-  if (state_) {
+  if (state_ready_.load()) {
     std::call_once(fft_ready, [this] {
       float silence[480] = {};
       rnnoise_process_frame(state_, silence, silence);
     });
-    rnnoise_init(state_);
+    state_ready_.store(rnnoise_init(state_) == 0);
   }
 }
 RnnoiseCaptureProcessor::~RnnoiseCaptureProcessor() { rnnoise_destroy(state_); }
@@ -42,7 +42,7 @@ bool RnnoiseCaptureProcessor::Process(float* pcm, int frames, int capacity) {
 bool RnnoiseCaptureProcessor::ProcessNoise(float* pcm, int frames, int capacity) {
   const auto generation = generation_.load();
   if (generation != applied_generation_) {
-    if (state_) rnnoise_init(state_);
+    state_ready_.store(state_ && rnnoise_init(state_) == 0);
     resampler_.Reset();
     applied_generation_ = generation;
   }
@@ -53,7 +53,7 @@ bool RnnoiseCaptureProcessor::ProcessNoise(float* pcm, int frames, int capacity)
     return ProcessResearchV02At16k(pcm, frames, capacity, generation);
 #endif
   Failure error = Failure::kNone;
-  if (!state_) error = Failure::kUnavailable;
+  if (!state_ready_.load()) error = Failure::kUnavailable;
   else if (!pcm || rate_.load() != 48000 || channels_.load() != 1 ||
            frames != 480 || capacity < frames) error = Failure::kFormat;
   else for (int i = 0; i < frames; ++i) {
@@ -63,7 +63,7 @@ bool RnnoiseCaptureProcessor::ProcessNoise(float* pcm, int frames, int capacity)
   }
   if (error != Failure::kNone) {
     failure_.store(error); fallback_.fetch_add(1);
-    if (state_) rnnoise_init(state_);
+    state_ready_.store(state_ && rnnoise_init(state_) == 0);
     return false;
   }
   // RNNoise v0.1 consumes fullband float PCM on the same S16 amplitude scale

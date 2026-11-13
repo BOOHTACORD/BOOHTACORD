@@ -10,10 +10,10 @@ bool RnnoiseCaptureProcessor::ProcessResearchV02At16k(float* pcm, int frames, in
     fallback_.fetch_add(1);
     if (pcm && frames > 0 && capacity > 0) std::fill_n(pcm, std::min(frames, capacity), 0.f);
     resampler_.Reset();
-    if (state_) rnnoise_init(state_);
+    state_ready_.store(state_ && rnnoise_init(state_) == 0);
     return false;
   };
-  if (!state_) return fail(Failure::kUnavailable);
+  if (!state_ready_.load()) return fail(Failure::kUnavailable);
   if (!pcm || channels_.load() != 1 || frames != 160 || capacity < frames) return fail(Failure::kFormat);
   for (int i = 0; i < frames; ++i)
     if (!std::isfinite(pcm[i]) || std::fabs(pcm[i]) > 32768.f) return fail(Failure::kNonFinite);

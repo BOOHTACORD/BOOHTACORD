@@ -16,16 +16,25 @@ deterministically induced mid-frame engine change, with silence where writable.
 The ordinary nonexperimental path still rejects 16 kHz input.
 The separate native suite, built without the research flag, passed 21/21 tests.
 
-The test executables' SHA-256 values were:
+The initial three-test executables' SHA-256 values were:
 
 - `native_v02_adapter_test.exe`: `a8daf95cadecc3af5e0b14e9586c04ece3824affcb2ce221cb1f98a0ba31f851`
 - `native_v02_parity_test.exe`: `ad95a4d2663e9efcf6ca7709fb5fc6876d34fc771d0f56e9e0847110363b4dd0`
 - `native_v02_16k_test.exe`: `7848585ab53b47d96ac3638f5795500c8d5d9a4cc11f743edc58478168d79a5d`
 
 This is a local component experiment, not a Windows client or LiveKit test.
-The legacy capture processor does not check the initialization return value;
-v0.2 failure handling must be fixed before integration. The experimental 16 kHz
-path is not wired into Flutter. The deterministic mid-frame test does not prove
+The experimental 16 kHz path is not wired into Flutter. The deterministic mid-frame test does not prove
 race-free switching: the engine can change after the final generation check.
 Realtime safety, real devices, quality, signed delivery and model distribution
 rights remain unverified. No release or server deployment was performed.
+
+Follow-up: the existing processor ignored the initialization return code. A
+research bridge injected failures at construction and reset; the new test first
+failed because the processor reported availability. The processor now tracks
+initialization success and skips inference on failure, recovering after a
+successful reset. At 16 kHz the research path silenced writable samples; the
+ordinary 48 kHz fallback preserved its existing unchanged-input behavior. The
+four research tests and the 21-test standard native suite passed on Windows.
+The final `native_v02_init_test.exe` SHA-256 was
+`f360447b9baab5948b43e0ce89d84bd1856a3670d6a1886fecdb75c40383ff7b`.
+These injected failures do not prove production recovery or real-time safety.

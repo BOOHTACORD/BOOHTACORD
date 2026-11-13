@@ -44,6 +44,7 @@ class RnnoiseCaptureProcessor {
   DenoiseState* state_;
   deepfilter::CaptureHook* const hook_;
   std::atomic<Engine> requested_{Engine::kBrowser};
+  std::atomic<bool> state_ready_{false};
   std::atomic<Failure> failure_{Failure::kAwaitingAudio};
   std::atomic<uint64_t> generation_{1}, processed_{0}, fallback_{0};
   std::atomic<int> rate_{0}, channels_{0};
