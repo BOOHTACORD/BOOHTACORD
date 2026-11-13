@@ -21,6 +21,11 @@ python -m tools.audio.research_v02.build_native --source <upstream-checkout> --o
 ```
 
 The output directory must not exist and must be under `.out/audio-research`.
+For a local opt-in Web probe, set `VITE_RNNOISE_V02_ENABLED=true` and set
+`VITE_RNNOISE_V02_WASM_SHA256` to the independently validated SHA-256 of the
+research WASM. The loader rejects a missing digest or a manifest with a
+different digest. This check is not a publisher signature or permission to
+redistribute the model. Remove temporary public assets after the local test.
 This scalar probe has no SIMD, runtime dispatch, production integration, release
 license clearance, or proof of real-time behavior. SHA matching alone does not
 establish perceived quality or source authenticity.

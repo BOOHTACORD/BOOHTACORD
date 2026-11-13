@@ -17,6 +17,13 @@ fixture handles an unsupported browser-suppression constraint explicitly.
 The server was stopped after each run. The test adds the model-identity check
 to the checked-in SFU switch test; v0.2 requires separate local research assets.
 
+The v0.2 loader now requires a separately configured build-time WASM SHA-256;
+missing values and manifest mismatches fail before a WASM download, and a
+changed trusted digest does not reuse a cached module. The three-browser SFU
+probe was repeated with the verified digest configured. The default Web build
+completed afterward with no v0.2 asset directory. This binding does not sign
+the JavaScript, manifest or binary and is not a trusted delivery or rollback.
+
 This is not a physical speech, quality, long-duration, device, native Windows,
 or release acceptance test. The source model's redistribution terms remain
 unconfirmed; the local test does not grant permission to distribute the weights.
