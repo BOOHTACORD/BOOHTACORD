@@ -3,6 +3,7 @@ import 'dart:io';
 import '../../../core/http/transport.dart';
 import '../../../services/client_telemetry.dart';
 import '../../telemetry/action_scope/action.dart';
+import '../lifecycle/liveness.dart';
 
 class RealtimeConnectApi {
   RealtimeConnectApi(this.transport);
@@ -23,6 +24,7 @@ class RealtimeConnectApi {
     headers.addAll(ActionScope.current?.headers() ?? const {});
     final socket = await WebSocket.connect(
       realtimeUri.toString(),
+      protocols: [heartbeatProtocol],
       headers: headers,
       customClient: client,
     );

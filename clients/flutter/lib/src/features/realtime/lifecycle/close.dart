@@ -2,6 +2,8 @@ import 'controller.dart';
 
 extension RealtimeCleanup on RealtimeController {
   Future<void> close() async {
+    liveness?.stop();
+    liveness = null;
     sessionDeadline?.cancel();
     sessionDeadline = null;
     openingDeadline?.cancel();

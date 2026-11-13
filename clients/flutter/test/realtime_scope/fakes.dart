@@ -35,6 +35,8 @@ class RealtimeApiFake extends ApiClient {
 }
 
 class SocketFake extends Stream<dynamic> implements WebSocket {
+  @override
+  String? get protocol => null;
   final events = StreamController<dynamic>();
   bool closed = false;
   @override

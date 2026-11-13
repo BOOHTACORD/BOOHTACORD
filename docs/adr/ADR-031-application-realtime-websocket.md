@@ -50,8 +50,11 @@ browser online notification. If protocol negotiation fails before opening, Web
 alternates the next attempt with a legacy handshake, and tries the modern
 protocol again after an established connection closes. A legacy connection has
 no heartbeat-based silence detection; a transient handshake failure can also
-lead to this fallback. Flutter watchdogs, actual background/network switching,
-mixed-version rollout and production rollback remain separate release gates.
+lead to this fallback. Flutter requests the same protocol, checks its payload-free
+heartbeat and reconnects after 45 seconds without one, including an elapsed-time
+check on app resume. Android emulator loopback covers this narrow path; actual
+background/network switching, mixed-version rollout and production rollback
+remain separate release gates.
 
 The public socket uses bounded admission and the configured Origin policy. No
 public event carries protected account, roster, session or message information.

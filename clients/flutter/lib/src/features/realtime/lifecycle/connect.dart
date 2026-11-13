@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'controller.dart';
 import 'open_deadline.dart';
+import 'liveness.dart';
 import '../../telemetry/action_scope/action.dart';
 import '../../../services/client_telemetry.dart';
 
@@ -53,6 +54,9 @@ extension RealtimeConnection on RealtimeController {
         return;
       }
       socket = opened;
+      liveness = RealtimeLiveness(opened.protocol == heartbeatProtocol, () {
+        if (active() && identical(socket, opened)) handleClosed();
+      });
       readyTimeout?.cancel();
       final remaining = const Duration(seconds: 15) - elapsed.elapsed;
       readyTimeout = Timer(
