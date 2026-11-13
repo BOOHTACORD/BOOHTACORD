@@ -40,12 +40,14 @@ it('does not stack DeepFilter on browser suppression when disable is ignored', a
   await f.adapter.dispose()
 })
 
-it('does not claim DeepFilter or browser NS is active when browser settings are unavailable', async () => {
+it('does not publish when DeepFilter and browser NS settings cannot be confirmed', async () => {
   vi.stubEnv('VITE_DEEPFILTER_ENABLED', 'true')
   const f = fixture(); f.source.getSettings = () => ({}) as never
-  await f.adapter.setEnabled(true, options)
+  await expect(f.adapter.setEnabled(true, options)).rejects.toThrow('Браузер не подтвердил')
   expect(f.dependencies.createProcessor).not.toHaveBeenCalled()
-  expect(f.adapter.runtimeState).toMatchObject({ requestedMode: 'deepfilter', effectiveMode: 'unknown', status: 'fallback', fallbackReason: 'unsupported' })
+  expect(f.dependencies.publishTrack).not.toHaveBeenCalled()
+  expect(f.source.enabled).toBe(false)
+  expect(f.adapter.runtimeState).toMatchObject({ requestedMode: 'deepfilter', effectiveMode: 'unknown', status: 'error' })
   await f.adapter.dispose()
 })
 

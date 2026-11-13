@@ -642,6 +642,10 @@
           "clients/web/src/voice/noise_suppression/rnnoise_loader.spec.ts",
           "clients/web/src/voice/noise_suppression/rnnoise_track_processor.spec.ts",
           "clients/web/src/voice/noise_suppression/rnnoise_unmute_race.spec.ts",
+          "clients/web/src/voice/noise_suppression/microphone_adapter/rnnoise_capture_guard.spec.ts",
+          "clients/web/src/voice/noise_suppression/microphone_adapter/recapture.spec.ts",
+          "clients/web/src/voice/noise_suppression/microphone_adapter/recapture_races.spec.ts",
+          "clients/web/tests/audio/adapter_recapture.browser.spec.ts",
           "clients/web/src/voice/noise_suppression/microphone_adapter/deepfilter.spec.ts",
           "clients/web/src/voice/noise_suppression/deepfilter/track_processor.spec.ts",
           "clients/web/src/voice/noise_suppression/deepfilter/unmute_timeout.spec.ts",
@@ -666,7 +670,7 @@
           "clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/frame_queue/queue_test.cc",
           "clients/flutter/packages/flutter_webrtc/common/rnnoise/microphone_controls/processor_test.cc"
         ],
-        "scope": "RNNoise v0.2 and experimental Web/Windows DeepFilter modes are behind disabled-by-default build flags; DeepFilter release assets are not supplied. Flutter tests cover model readiness and browser fallback for initial capture, settings and desktop device changes using fakes; native hook is not instantiated by the normal client. Real-stack, Windows device, physical audio, visual and release acceptance remain NOT_RUN/BLOCKED."
+        "scope": "RNNoise v0.2 and experimental Web/Windows DeepFilter modes are behind disabled-by-default build flags; DeepFilter release assets are not supplied. Web adapter tests require a confirmed disabled browser noise suppressor before attaching either model; ignored constraints trigger muted recapture, and an unconfirmed fallback fails muted. Flutter tests cover model readiness and browser fallback for initial capture, settings and desktop device changes using fakes; native hook is not instantiated by the normal client. Real-stack, Windows device, physical audio, visual and release acceptance remain NOT_RUN/BLOCKED."
       },
       "speaker_activity_interval": {
         "focused": ["tools/verify/livekit_network_config/test_speaker_activity.py"],
@@ -1027,6 +1031,7 @@
       }
     ],
     "parity_review": {
+      "issue687_browser_capture_guard": "Web rechecks browser noise-suppression settings and safely reacquires the microphone when live constraints are ignored; unconfirmed model fallback fails muted. Flutter, Android and iOS implementations are unchanged; their native and real-stack regression checks remain required. Browser component and mocked-publication tests do not establish real SFU or physical speech acceptance.",
       "issue667_voice_large_text_review": "Shared Flutter voice participant cards switch to one column at narrow widths with large text. Web source is unchanged and its regression remains required; Android and iOS share the layout, but native runtime, screen reader and physical acceptance for this change remain NOT_RUN. Component tests and a 320 dp capture are recorded in the issue 667 evidence.",
       "issue648_transfer_recovery_review": "Shared Flutter clears stale channel intent on accepted transfer revocation during recovery. Android emulator and Web were exercised on an isolated stack with injected release failure; iOS and production remain NOT_RUN.",
       "issue648_recovery_review": "The shared Flutter recovery indicator changed; Android emulator outage and manual leave passed on an isolated stack. Windows initial media admission failed before outage, iOS and physical devices are not verified. Web was not changed; its existing regression checks remain required. Screen presentation is reviewed because the voice dock is shared.",

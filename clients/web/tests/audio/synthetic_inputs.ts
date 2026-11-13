@@ -22,8 +22,10 @@ export function installSyntheticInputs() {
     source.connect(gain); gain.connect(destination); source.start()
     const track = destination.stream.getAudioTracks()[0]
     const settings = track.getSettings.bind(track), stop = track.stop.bind(track)
-    track.applyConstraints = async () => undefined
-    track.getSettings = () => ({ ...settings(), deviceId: selected, noiseSuppression: false, echoCancellation: false, autoGainControl: false })
+    // Model the capture API's reported settings; the oscillator has no real NS.
+    let suppression = !!(audio && typeof audio === 'object' && audio.noiseSuppression === true)
+    track.applyConstraints = async value => { if (typeof value?.noiseSuppression === 'boolean') suppression = value.noiseSuppression }
+    track.getSettings = () => ({ ...settings(), deviceId: selected, noiseSuppression: suppression, echoCancellation: false, autoGainControl: false })
     track.stop = () => { if (track.readyState === 'ended') return; stop(); source.stop(); void context.close() }
     captures.push({ deviceId: selected, track })
     return destination.stream

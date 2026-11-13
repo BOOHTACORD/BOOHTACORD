@@ -8,9 +8,24 @@ export abstract class MicrophoneAdapterProfile extends MicrophoneAdapterPublicat
     const mode = options.noiseSuppressionMode
     if (options.noiseSuppressionMode === 'rnnoise' && !rnnoiseReleaseEnabled()) { await this.fallback(options, 'release-disabled', generation); return }
     if (mode === 'deepfilter' && !deepfilterReleaseEnabled()) { await this.fallback(options, 'release-disabled', generation); return }
-    await this.track!.applyConstraints(browserProcessingConstraints(options))
+    try { await this.track!.applyConstraints(browserProcessingConstraints(options)) }
+    catch (cause) {
+      this.assertCurrent(generation)
+      if (mode !== 'rnnoise' && mode !== 'deepfilter') throw cause
+      await this.fallback(options, 'unsupported', generation)
+      return
+    }
     this.assertCurrent(generation)
-    if (mode === 'deepfilter' && !browserSuppressionDisabled(this.source)) { await this.fallback(options, 'unsupported', generation); return }
+    if ((mode === 'off' || mode === 'rnnoise' || mode === 'deepfilter') && !browserSuppressionDisabled(this.source)) {
+      await this.reacquire(options, generation)
+      if (!browserSuppressionDisabled(this.source)) {
+        if (mode === 'off') throw new Error('Браузер не подтвердил отключение шумоподавления. Отправка микрофона выключена.')
+        await this.fallback(options, 'unsupported', generation); return
+      }
+    }
+    if (mode === 'browser' && this.readCaptureSettings()?.noiseSuppression === false) {
+      await this.reacquire(options, generation)
+    }
     if (mode !== 'rnnoise' && mode !== 'deepfilter') { this.describeCapture(options); await this.attachControls(options, generation); return }
     this.state = { requestedMode: mode, effectiveMode: 'unknown', status: 'initializing' }
     const processor = this.dependencies.createProcessor({
@@ -54,6 +69,10 @@ export abstract class MicrophoneAdapterProfile extends MicrophoneAdapterPublicat
     await this.removeProcessor()
     await this.track!.applyConstraints(browserProcessingConstraints({ ...options, noiseSuppressionMode: 'browser' }))
     this.assertCurrent(generation)
+    if (this.readCaptureSettings()?.noiseSuppression !== true) {
+      await this.reacquire({ ...options, noiseSuppressionMode: 'browser' }, generation)
+      if (this.readCaptureSettings()?.noiseSuppression !== true) throw new Error('Браузер не подтвердил резервное шумоподавление. Отправка микрофона выключена.')
+    }
     this.describeCapture(options, reason)
     await this.attachControls(options, generation)
   }
