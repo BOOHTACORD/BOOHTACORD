@@ -310,6 +310,10 @@
         "native": "integration_test/issue689_envelope_test.dart",
         "scope": "Shared Flutter validates new maintenance and roster envelopes and resets invalid guest or authenticated connections. Native loopback covers a malformed maintenance envelope; backlog and full real-stack acceptance remain separate."
       },
+      "issue689_web_security_priority": {
+        "focused": ["clients/web/src/realtime/hint_batch/security_priority.spec.ts", "clients/web/src/realtime/hint_batch/overflow.spec.ts", "clients/web/src/realtime/hint_batch/replay.spec.ts"],
+        "scope": "Web processes session and permission hints ahead of a blocked message batch, serializes permission refreshes, and resets on failure. Flutter, actual slow readers and full real-stack acceptance remain separate."
+      },
       "issue689_flutter_connect_deadline": {
         "focused": ["clients/flutter/test/realtime_scope/open_deadline_test.dart", "clients/flutter/test/realtime_scope/open_deadline_integration_test.dart", "clients/flutter/test/realtime_scope/retry_policy_test.dart"],
         "scope": "Shared Flutter bounds the entire socket upgrade and ready handshake, cancels abandoned HTTP clients and closes late sockets. Loopback tests cover an unanswered upgrade; Android, iOS and production acceptance remain separate."
@@ -434,7 +438,7 @@
       }
     ],
     "parity_review": {
-      "issue689_follow_up": "Issue 689 adds negotiated Web and shared Flutter heartbeat recovery and strict envelopes for new maintenance and roster events. Focused tests exist; backlog and complete current-source Android and iOS runtime acceptance remain open.",
+      "issue689_follow_up": "Issue 689 adds heartbeat recovery, strict new-event envelopes and Web security-hint priority under a blocked batch. Focused tests exist; Flutter priority and complete current-source Android and iOS runtime acceptance remain open.",
       "issue": 582,
       "decisions": {
         "web": "implementation_and_regression",
