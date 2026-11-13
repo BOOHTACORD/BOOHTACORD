@@ -8,3 +8,6 @@
   the fixture was corrected and both cases then passed.
 - Flutter malformed frames, other envelope classes, full current-source
   real-stack, visual and production acceptance remain separate and NOT_RUN.
+- Follow-up: non-object JSON also triggers recovery. Three new unit cases first
+  reproduced the omission; 18 related Web tests, typecheck and three Chromium
+  real-loopback cases passed. Flutter coverage is recorded separately.

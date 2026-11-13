@@ -80,8 +80,8 @@ export const useRealtimeStore = defineStore('realtime', () => {
       current.onopen = () => { if (socket === current) { protocol?.connected(current); state.value = 'CONNECTED'; error.value = null } }
       current.onmessage = (message) => {
         if (socket !== current) return; if (typeof message.data !== 'string') { fail(current); return }
-        try {
-          const event: RealtimeEvent = parseRealtimeEvent(JSON.parse(message.data)); if (!attempt.observe(event.kind)) { fail(current); return }
+        try { const source: unknown = JSON.parse(message.data); if (!source || typeof source !== 'object' || Array.isArray(source)) { fail(current); return }
+          const event: RealtimeEvent = parseRealtimeEvent(source); if (!attempt.observe(event.kind)) { fail(current); return }
           if (event.kind === 'connection.heartbeat') return
           if (event.kind === 'connection.ready') {attempt.ready();finish();retry.ready()}
           delivery?.accept(event)

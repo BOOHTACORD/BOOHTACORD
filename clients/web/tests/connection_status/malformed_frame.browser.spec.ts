@@ -5,6 +5,7 @@ import { expect, test } from '@playwright/test'
 
 for (const [name, invalid] of [
   ['invalid JSON', Buffer.from([0x81, 1, 0x7b])],
+  ['non-object JSON', Buffer.from([0x81, 4, 0x6e, 0x75, 0x6c, 0x6c])],
   ['binary frame', Buffer.from([0x82, 1, 0x01])],
 ] as const) test(`authenticated socket retries after ${name}`, async ({ page }) => {
   const sockets = new Set<Duplex>(), server = createServer()
