@@ -4,6 +4,7 @@
 #define NOMINMAX
 #include <windows.h>
 #include <atomic>
+#include <array>
 #include <chrono>
 #include <cmath>
 #include <cstdio>
@@ -46,12 +47,18 @@ int main(int argc, char** argv) {
   while (!processed.load() && !failed.load() && Clock::now() < deadline)
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
   unsigned ready = 0, buffering = 0, underruns = 0, overloads = 0;
+  std::array<unsigned, 32> lag_counts{};
   double peak = 0;
   auto next = Clock::now();
   for (int frame = 0; frame < 300 && processed.load() && !failed.load(); ++frame) {
     for (int i = 0; i < 480; ++i) input[i] = 0.2f * std::sin((frame * 480 + i) * 0.05f);
-    const auto status = exchange.Capture(input, 1, false, output);
-    if (status == ExchangeStatus::ready) ++ready;
+    std::uint64_t emitted;
+    const auto status = exchange.Capture(input, 1, false, output, &emitted);
+    if (status == ExchangeStatus::ready) {
+      const auto current = static_cast<std::uint64_t>(frame + 1);
+      if (emitted > current || current - emitted >= lag_counts.size()) { failed.store(true); break; }
+      ++lag_counts[current - emitted]; ++ready;
+    }
     else if (status == ExchangeStatus::buffering) ++buffering;
     else if (status == ExchangeStatus::no_frame) ++underruns;
     else { ++overloads; break; }
@@ -59,9 +66,16 @@ int main(int argc, char** argv) {
     next += std::chrono::milliseconds(10); std::this_thread::sleep_until(next);
   }
   stop.store(true); worker.join();
+  unsigned cumulative = 0, p95_frames = 0, max_frames = 0;
+  bool p95_set = false;
+  for (unsigned i = 0; i < lag_counts.size(); ++i) {
+    cumulative += lag_counts[i];
+    if (lag_counts[i]) max_frames = i;
+    if (ready && !p95_set && cumulative * 100 >= ready * 95) { p95_frames = i; p95_set = true; }
+  }
   const bool ok = !failed.load() && !overloads && ready > 0 && peak > 0.0001;
-  std::printf("threaded_native=%s startup_frames=%lu ready=%u buffering=%u underruns=%u overloads=%u processed=%u\n",
-              ok ? "SMOKE_COMPLETED" : "FAIL", delay, ready, buffering, underruns, overloads, processed.load());
+  std::printf("threaded_native=%s startup_frames=%lu ready=%u buffering=%u underruns=%u overloads=%u processed=%u p95_frame_lag=%u max_frame_lag=%u\n",
+              ok ? "SMOKE_COMPLETED" : "FAIL", delay, ready, buffering, underruns, overloads, processed.load(), p95_frames, max_frames);
   FreeLibrary(dll);
   return ok ? 0 : 1;
 }

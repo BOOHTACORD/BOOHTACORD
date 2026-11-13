@@ -23,7 +23,8 @@ class FrameExchange {
   explicit FrameExchange(std::size_t startup_frames = 0) noexcept
       : startup_frames_(std::min(startup_frames, Capacity - 1)), warmup_remaining_(startup_frames_) {}
   ExchangeStatus Capture(const float* input, std::uint64_t generation,
-                         bool muted, float* output) noexcept {
+                         bool muted, float* output, std::uint64_t* emitted_sequence = nullptr) noexcept {
+    if (emitted_sequence) *emitted_sequence = std::numeric_limits<std::uint64_t>::max();
     if (!output) return ExchangeStatus::invalid_audio;
     const auto silence = [output](ExchangeStatus status) noexcept {
       std::fill_n(output, 480, 0.0f); return status;
@@ -52,6 +53,7 @@ class FrameExchange {
     if (result != FrameStatus::ready) return ExchangeStatus::no_frame;
     for (float sample : frame.samples) if (std::fabs(sample) > 1.0f) return ExchangeStatus::invalid_audio;
     has_last_ = true; last_sequence_ = frame.sequence;
+    if (emitted_sequence) *emitted_sequence = frame.sequence;
     std::copy(frame.samples.begin(), frame.samples.end(), output);
     return ExchangeStatus::ready;
   }

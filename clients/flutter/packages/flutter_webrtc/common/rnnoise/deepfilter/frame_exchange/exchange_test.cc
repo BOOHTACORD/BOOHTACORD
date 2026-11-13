@@ -59,8 +59,10 @@ int main() {
   FrameExchange<4> delayed(2);
   for (int frame = 1; frame <= 3; ++frame) {
     for (auto& sample : input) sample = 0.1f * frame;
-    const auto status = delayed.Capture(input, 7, false, output);
+    std::uint64_t sequence = 123;
+    const auto status = delayed.Capture(input, 7, false, output, &sequence);
     assert(status == (frame < 3 ? ExchangeStatus::buffering : ExchangeStatus::ready));
+    assert(sequence == (frame < 3 ? std::numeric_limits<std::uint64_t>::max() : 0));
     for (float sample : output) assert(sample == (frame < 3 ? 0.0f : 0.1f));
     assert(delayed.WorkerPop(7, worker)); assert(delayed.WorkerPush(worker));
   }

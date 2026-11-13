@@ -33,7 +33,8 @@ The model archive contains no separate license file; its redistribution
 terms still need verification independently of the source-code license.
 This download is research material, not a shipped or verified release asset.
 The upstream [license question](https://github.com/xiph/rnnoise/issues/284)
-explicitly asks about this archive and remains open; it is not a license grant.
+asks generally about distributed weights; a later comment explicitly asks
+about the v0.2 archive. No maintainer license grant has been identified.
 DeepFilterNet's [license clarification](https://github.com/Rikorose/DeepFilterNet/commit/7b14b895fe7fc42cab72b4a4c1e49c982bd6404b)
 states that repository model weights are dual-licensed MIT/Apache-2.0. The exact
 files selected for a release and their hashes still need individual verification.

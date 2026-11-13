@@ -39,6 +39,12 @@ buffering / 0 underruns. One frame was primed before each timed loop. These
 are exploratory observations, not a validated buffer choice or a measured
 end-to-end delay. No setting has been enabled in the client.
 
+After adding sequence diagnostics, another set of single three-second runs
+reported p95 and maximum of four frame intervals for all three settings; the
+same ready/buffering/underrun counts were observed. The nominal pacing was
+10 ms per frame, but frame-index lag excludes model lookahead and real capture,
+transport and playout. It cannot establish the issue's 80 ms end-to-end limit.
+
 The caller must advance the generation for mute, unmute and failure, reset
 the model on generation changes, and synchronize publication with mute intent.
 An overflow requires the owner to stop the pipeline and fall back; the test
