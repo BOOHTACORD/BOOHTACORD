@@ -105,3 +105,13 @@ reported 297 ready, 3 buffering, 0 underruns and 0 overloads; p95/max frame lag
 was 4. This does not establish real-client behavior, bounded shutdown if the
 engine hangs, thread scheduling under load, physical speech quality, or the
 separate synchronization needed between mute and actual track publication.
+
+The shared capture processor now accepts an injected experimental DeepFilter
+hook. Without an injected available engine it reports unavailable; the normal
+WebRTC adapter does not supply one yet. A fake-engine test exercised selection,
+buffering, underrun, fallback, stale generation and switching back to browser.
+Windows MSVC CTest passed 15/15. One three-second synthetic test drove the same
+capture processor through the runtime with the verified research DLL and model:
+300 submitted frames, 297 processed and zero fallbacks after prewarming. It did
+not exercise an installed client, microphone, RTC track, physical audio, model
+packaging, long-term stability, or mute/publication synchronization.

@@ -5,6 +5,7 @@
 namespace boohta {
 class WebrtcCaptureAdapter : public libwebrtc::RTCAudioProcessing::CustomProcessing {
  public:
+  explicit WebrtcCaptureAdapter(deepfilter::CaptureHook* hook = nullptr) : processor(std::malloc, hook) {}
   void Initialize(int rate, int channels) override { processor.Initialize(rate, channels); }
   void Process(int bands, int frames, int capacity, float* pcm) override {
     processor.Process(pcm, frames, capacity);

@@ -22,13 +22,14 @@ class WorkerRuntime {
   WorkerRuntime& operator=(const WorkerRuntime&) = delete;
 
   bool Launch() noexcept {
-    if (launched_ || ever_launched_) return false;
+    if (launched_.load(std::memory_order_acquire) || ever_launched_) return false;
     stopping_.store(false, std::memory_order_release);
     try { worker_ = std::thread(&WorkerRuntime::Run, this); }
     catch (...) { return false; }
-    launched_ = true; ever_launched_ = true; return true;
+    launched_.store(true, std::memory_order_release); ever_launched_ = true; return true;
   }
-  std::uint64_t Start() noexcept { return launched_ ? lifecycle_.Start() : 0; }
+  bool Available() const noexcept { return launched_.load(std::memory_order_acquire); }
+  std::uint64_t Start() noexcept { return Available() ? lifecycle_.Start() : 0; }
   std::uint64_t Mute() noexcept { return lifecycle_.Mute(); }
   LifecycleSnapshot Snapshot() const noexcept { return lifecycle_.Snapshot(); }
   GuardStatus Capture(float* pcm, int frames, int capacity, int rate, int channels,
@@ -36,11 +37,11 @@ class WorkerRuntime {
     return guard_.Process(pcm, frames, capacity, rate, channels, emitted_sequence);
   }
   bool Shutdown() noexcept {
-    if (!launched_) return !close_failed_.load(std::memory_order_acquire);
+    if (!Available()) return !close_failed_.load(std::memory_order_acquire);
     lifecycle_.Stop();
     stopping_.store(true, std::memory_order_release);
     worker_.join();
-    launched_ = false;
+    launched_.store(false, std::memory_order_release);
     return !close_failed_.load(std::memory_order_acquire);
   }
 
@@ -63,9 +64,9 @@ class WorkerRuntime {
   CaptureBridge<Capacity> bridge_;
   CaptureGuard<CaptureBridge<Capacity>> guard_;
   WorkerStep<Engine, Capacity> step_;
-  std::atomic<bool> stopping_{false}, close_failed_{false};
+  std::atomic<bool> stopping_{false}, close_failed_{false}, launched_{false};
   std::thread worker_;
-  bool launched_ = false, ever_launched_ = false;
+  bool ever_launched_ = false;
 };
 }  // namespace boohta::deepfilter
 #endif

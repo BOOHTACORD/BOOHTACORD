@@ -10,7 +10,8 @@ endif()
 add_library(boohta_rnnoise STATIC
   upstream/src/denoise.c upstream/src/kiss_fft.c ${_rnnoise_pitch_lpc}
   upstream/src/rnn.c upstream/src/rnn_data.c
-  rnnoise_capture_processor.cc microphone_controls/processor.cc)
+  rnnoise_capture_processor.cc noise_engine_names.cc deepfilter/capture_hook/process.cc
+  microphone_controls/processor.cc)
 target_include_directories(boohta_rnnoise PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/upstream/include PRIVATE upstream/src)
 target_compile_features(boohta_rnnoise PUBLIC cxx_std_17)
@@ -28,6 +29,7 @@ if(BOOHTA_RNNOISE_TESTS)
   include(deepfilter/capture_bridge/tests.cmake)
   include(deepfilter/capture_guard/tests.cmake)
   find_package(Threads REQUIRED)
+  include(deepfilter/capture_hook/tests.cmake)
   include(deepfilter/worker_runtime/tests.cmake)
   include(deepfilter/lifecycle/tests.cmake)
   add_executable(deepfilter_frame_queue_test deepfilter/frame_queue/queue_test.cc)
