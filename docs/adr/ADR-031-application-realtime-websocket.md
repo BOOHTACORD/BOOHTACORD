@@ -27,6 +27,10 @@ its revision starts again. A new process also creates new incarnations. The Web
 delivery queue is invalidated at each socket disconnect; its last successfully
 applied durable cursor remains available for replay. These rules do not by
 themselves cancel side effects of already-running protected REST requests.
+Web workspace notification delivery and follow-up edited-message refreshes are
+also fenced to the socket incarnation that started the work. In-flight store
+requests themselves still require independent cancellation or stale-write
+protection; this fence does not establish that broader guarantee.
 
 Web authenticated socket attempts allow 15 seconds to receive
 `connection.ready`. A session revalidation on retry is bounded to 10 seconds

@@ -49,7 +49,7 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
     clear: leaseId => voice.active?.room.clearScreenPreview?.(leaseId),
   }, undefined, undefined, { visibility: screenPreviewCardVisibility })
   let active = false
-  let lifecycle = 0
+  let lifecycle = 0, incarnation = 0
   const maintenance = createAuthenticatedMaintenance(maintenanceState ?? (hasInjectionContext() ? inject(maintenanceStateKey) : undefined) ?? createMaintenanceState())
   const contextHints = useContextHints()
   const deliver = (event: RealtimeEvent, notify = true) =>
@@ -59,6 +59,7 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
     if (maintenance.accept(event)) return
     if (roster?.accept(event)) return
     const eventLifecycle = lifecycle
+    const eventIncarnation = incarnation
     if (event.kind === 'notification.queued' || event.kind === 'notification.preferences_changed') return acceptNotificationHint(event,accountID).then(()=>undefined)
     if (presence.acceptRealtimeEvent(event)) {
       return reconcilePresenceMembers(event, members)
@@ -72,7 +73,7 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
       const directMessageId = event.payload.direct_message_id as string
       const previousUnread = notify ? notifications.capture(event) : null
       return refreshDirectMessageHint(stores.directMessages, directMessageId).then(() => {
-        if (notify && active && lifecycle === eventLifecycle) return notifications.deliver(event, previousUnread)
+        if (notify && active && lifecycle === eventLifecycle && incarnation === eventIncarnation) return notifications.deliver(event, previousUnread)
       })
     }
     if (event.kind === 'channel.updated') return refreshTopologyHint(stores.topology)
@@ -88,7 +89,7 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
         checked(() => stores.topology.refresh(), () => stores.topology.error),
         visible ? checked(() => stores.messages.refresh(), () => stores.messages.error) : Promise.resolve(),
       ]).then(() => {
-        if (notify && active && lifecycle === eventLifecycle) return notifications.deliver(event, previousUnread)
+        if (notify && active && lifecycle === eventLifecycle && incarnation === eventIncarnation) return notifications.deliver(event, previousUnread)
       })
     }
     return refreshProtectedState(stores)
@@ -102,12 +103,16 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
       lifecycle += 1
       notifications.start(accountID)
       realtime.connect(event => processRealtime([event],()=>deliver(event)), undefined, undefined, {
-        onHintBatch: events => processRealtime(events,()=>deliverProtectedHintBatch(events, deliver).then(() => refreshEditedHints(original, events))),
+        onHintBatch: events => {
+          const own = incarnation
+          return processRealtime(events,()=>deliverProtectedHintBatch(events, deliver).then(() =>
+            active && incarnation === own ? refreshEditedHints(original, events) : undefined))
+        },
         onRecovery: () => processRealtime([],()=>Promise.all([refreshProtectedState(stores), permissions.refresh(), guildProfile.refresh(), voice.refreshScreenWatchers(), contextHints.recover()]).then(() => undefined)),
         checkSession: async signal => (await loadCurrentSession(undefined, signal))?.accountId === accountID,
         onSessionExpired,
         onSocketStart: () => { maintenance.start(); roster?.socketStart() },
-        onSocketEnd: () => { maintenance.stop(); roster?.socketEnd() },
+        onSocketEnd: () => { incarnation++; maintenance.stop(); roster?.socketEnd() },
       })
     },
     stop(): void { active = false; lifecycle += 1; contextHints.reset(); previews.clear(); gate.close(); realtime.disconnect(); notifications.stop() },
