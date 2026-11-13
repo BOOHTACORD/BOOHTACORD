@@ -1,4 +1,4 @@
-enum NoiseSuppressionMode { off, browser, rnnoise }
+enum NoiseSuppressionMode { off, browser, rnnoise, deepfilter }
 
 class AudioProcessingPreferences {
   const AudioProcessingPreferences({
@@ -61,4 +61,3 @@ class AudioProcessingPreferences {
     );
   }
 }
-

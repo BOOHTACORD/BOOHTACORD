@@ -3,8 +3,11 @@ import 'dart:async';
 import 'package:livekit_client/livekit_client.dart';
 
 import '../../../services/audio_preferences.dart';
+import '../../audio/devices/model_preflight.dart';
 import '../lifecycle/controller.dart';
 import '../background_microphone/admission.dart';
+
+part 'toggle.dart';
 
 extension VoiceMicrophoneCapture on VoiceController {
   Future<bool> applyMicrophoneMuted(bool muted) {
@@ -27,9 +30,22 @@ extension VoiceMicrophoneCapture on VoiceController {
     final operation = audio.nativeNoise.run(() async {
       if (!current()) return false;
       try {
-        if (!muted) { await preflightBackgroundMicrophone(); await audio.prepareNoiseForCapture(); await audio.applyMicrophoneControls(); }
+        if (!muted) {
+          await preflightBackgroundMicrophone();
+          await audio.prepareNoiseForCapture();
+          await audio.applyMicrophoneControls();
+        }
         if (!current()) return false;
         await audio.nativeNoise.reset();
+        if (!muted &&
+            !await audio.prepareNoiseModelForCaptureIfNeeded(
+              () =>
+                  current() &&
+                  request == microphoneRevision &&
+                  !audio.microphoneMutedIntent,
+            )) {
+          return false;
+        }
         await participant?.setMicrophoneEnabled(
           !audio.microphoneMutedIntent,
           audioCaptureOptions: audio.captureOptions,
@@ -46,11 +62,18 @@ extension VoiceMicrophoneCapture on VoiceController {
         }
         if (!muted) {
           if (audio.captureNoiseOverride == NoiseSuppressionMode.browser &&
-              audio.audioProcessing.noiseSuppressionMode ==
-                  NoiseSuppressionMode.rnnoise) {
+              (audio.audioProcessing.noiseSuppressionMode ==
+                      NoiseSuppressionMode.rnnoise ||
+                  audio.audioProcessing.noiseSuppressionMode ==
+                      NoiseSuppressionMode.deepfilter)) {
             audio.nativeNoise.confirmFallback(
               audio.nativeNoise.state.failureReason ?? 'unsupported',
-              unsupported: true,
+              unsupported:
+                  audio.audioProcessing.noiseSuppressionMode ==
+                      NoiseSuppressionMode.rnnoise ||
+                  audio.nativeNoise.state.failureReason ==
+                      'processor-unavailable' ||
+                  audio.nativeNoise.state.failureReason == 'unsupported',
             );
           }
           audio.monitorNativeNoise();
@@ -77,30 +100,5 @@ extension VoiceMicrophoneCapture on VoiceController {
     });
     microphoneTail = operation.then((_) {});
     return operation;
-  }
-
-  Future<void> toggleMicrophone() async {
-    final ticket = scope.capture();
-    final revision = operationRevision;
-    if (!active(ticket, revision) ||
-        room == null ||
-        deafened ||
-        audioActivationMode == AudioActivationMode.ptt) {
-      return;
-    }
-    final muted = !microphoneMuted;
-    microphoneMuted = muted;
-    final success = await applyMicrophoneMuted(muted);
-    if (!active(ticket, revision)) return;
-    if (!success) {
-      microphoneMuted = true;
-      microphoneUnavailable = true;
-      error = audioActivationError;
-    } else if (!muted) {
-      error = null;
-      listenerOnly = false;
-      if (voicePhase == VoicePhase.listener) voicePhase = VoicePhase.connected;
-    }
-    notifyListeners();
   }
 }
