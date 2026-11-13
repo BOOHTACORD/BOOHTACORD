@@ -51,6 +51,8 @@ node tools/audio/research_dfn_web/stage.mjs <new-directory>/bundle <new-stage-di
 
 The builder validates the upstream model, patch, Cargo lock, generated WASM
 and generated JavaScript hashes; it does not overwrite an existing directory.
+It remaps Cargo and source paths before compilation so local directory names do
+not leak into the WASM or change its identity.
 The stage command creates the worklet and model file layout without writing to
 `clients/web/public`. An opt-in Web build may consume the bundle with
 `VITE_DEEPFILTER_ENABLED=true` and `BOOHTA_DEEPFILTER_RESEARCH_BUNDLE` pointing

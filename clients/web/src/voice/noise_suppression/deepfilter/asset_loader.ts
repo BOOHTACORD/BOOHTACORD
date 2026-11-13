@@ -1,7 +1,7 @@
 /** Research-only identity; enabling it in a release requires a reproducible builder. */
 export const researchIdentity = Object.freeze({
   path: '/audio/deepfilternet/research-d375b2d/',
-  wasmSha256: '0745651e0b7a0993e8a4d71320840d28754c112425906b6f0e93f4c770724fec',
+  wasmSha256: '9e7d6eb2932f903a1d599288c5a57fe8dd510f2f5917441968e915adc5cf3caf',
   modelSha256: 'c94d91f70911001c946e0fabb4aa9adc37045f45a03b56008cb0c8244cb63616',
 })
 

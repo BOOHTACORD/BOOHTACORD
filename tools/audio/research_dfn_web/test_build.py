@@ -5,6 +5,12 @@ from unittest.mock import patch
 from . import build
 
 class BuildValidationTest(unittest.TestCase):
+    def test_build_flags_remap_cargo_and_source_paths_with_spaces(self):
+        flags = build.reproducible_rustflags(Path('C:/test cargo'), Path('D:/test source'))
+        self.assertEqual(flags[0], '-Ctarget-feature=+simd128')
+        self.assertIn(f'--remap-path-prefix={Path("C:/test cargo")}=/cargo', flags)
+        self.assertIn(f'--remap-path-prefix={Path("D:/test source")}=/source', flags)
+
     def test_existing_work_directory_never_overwritten(self):
         with tempfile.TemporaryDirectory() as d:
             marker = Path(d) / 'keep'; marker.write_text('original')

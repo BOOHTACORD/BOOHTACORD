@@ -7,7 +7,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 const webRoot = fileURLToPath(new URL('../../../clients/web/', import.meta.url))
 const feature = join(webRoot, 'src/voice/noise_suppression')
 export const expected = {
-  'dfn_bg.wasm': '0745651e0b7a0993e8a4d71320840d28754c112425906b6f0e93f4c770724fec',
+  'dfn_bg.wasm': '9e7d6eb2932f903a1d599288c5a57fe8dd510f2f5917441968e915adc5cf3caf',
   'dfn.js': '1e6adbcb777c92a03b09051f8f43b76a382f3e0489e4ff38ec4a9ebbbae75979',
   'model.bin': 'c94d91f70911001c946e0fabb4aa9adc37045f45a03b56008cb0c8244cb63616',
 }

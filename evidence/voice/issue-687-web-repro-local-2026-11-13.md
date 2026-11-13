@@ -47,3 +47,15 @@ frontend fast checks but contracts discovered the speech metric tests without
 their Python dependencies. The shared CI requirements now use the same exact
 audio pins, checked by a focused test and the reviewed input inventory. Local
 toolchain policy and speech metric tests pass; the new hosted run is pending.
+
+Hosted source `2baf02dfe317acaf375e8811716b356477f98544` exposed
+a cross-machine WASM hash mismatch. Inspection of the first artifact found
+absolute Cargo registry paths in the binary. Compiler remapping and a byte-stable
+source overlay produced matching SHA-256 `9e7d6eb2932f903a1d599288c5a57fe8dd510f2f5917441968e915adc5cf3caf`
+in two local builds with different source and Cargo directories; no local path
+strings were found. This does not yet prove reproducibility on a second host.
+The opt-in Web build and four experimental tests per Chromium, Firefox and
+Edge passed locally with the new module. Physical microphone and listening
+acceptance remain NOT_RUN. Hosted confirmation remains pending.
+The local LiveKit synthetic sender/receiver/mute test also passed again in
+all three browsers with the rebuilt module; it is not a physical microphone test.
