@@ -1,6 +1,10 @@
 package connect_realtime
 
-import "github.com/coder/websocket"
+import (
+	"errors"
+
+	"github.com/coder/websocket"
+)
 
 // Record only a bounded close-code category, never the server's close reason.
 func (s *Socket) recordReadFailure(conn *websocket.Conn, err error) {
@@ -15,4 +19,20 @@ func (s *Socket) recordReadFailure(conn *websocket.Conn, err error) {
 		status = int(code)
 	}
 	s.results.ObserveOutcome("ws_close", status, 0, false)
+	s.results.ObserveOutcome(closeCategory(err), status, 0, false)
+}
+
+func closeCategory(err error) string {
+	var closeErr websocket.CloseError
+	if errors.As(err, &closeErr) && closeErr.Code == websocket.StatusTryAgainLater {
+		switch closeErr.Reason {
+		case "session verification unavailable":
+			return "ws_close_session_unavailable"
+		case "realtime resynchronization required":
+			return "ws_close_resync_required"
+		case "roster unavailable":
+			return "ws_close_roster_unavailable"
+		}
+	}
+	return "ws_close_other"
 }

@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-var allowed = map[string]bool{"nat_limit": true, "login": true, "session": true, "topology": true, "members": true, "history": true, "search": true, "message": true, "cursor": true, "lease": true, "credential": true, "release": true, "acl": true, "origin_acl": true, "upload": true, "download": true, "upload_limit": true, "logout": true, "revoked": true, "ws_ready": true, "ws_close": true, "fanout": true, "reconnect": true, "replay": true, "resync": true}
+var allowed = map[string]bool{"nat_limit": true, "login": true, "session": true, "topology": true, "members": true, "history": true, "search": true, "message": true, "cursor": true, "lease": true, "credential": true, "release": true, "acl": true, "origin_acl": true, "upload": true, "download": true, "upload_limit": true, "logout": true, "revoked": true, "ws_ready": true, "ws_close": true, "ws_close_session_unavailable": true, "ws_close_resync_required": true, "ws_close_roster_unavailable": true, "ws_close_other": true, "fanout": true, "reconnect": true, "replay": true, "resync": true}
 
 type Summary struct {
 	Count, Errors       int
