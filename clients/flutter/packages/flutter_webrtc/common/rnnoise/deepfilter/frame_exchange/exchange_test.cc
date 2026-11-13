@@ -47,4 +47,12 @@ int main() {
   for (auto& sample : input) sample = 0.75f;
   assert(in_place.Capture(input, 1, false, input) == ExchangeStatus::ready);
   for (float sample : input) assert(sample == 0.25f);
+
+  FrameExchange<2> bad_output;
+  assert(bad_output.Capture(input, 1, false, output) == ExchangeStatus::no_frame);
+  assert(bad_output.WorkerPop(1, worker));
+  worker.samples[0] = 1.01f;
+  assert(bad_output.WorkerPush(worker));
+  assert(bad_output.Capture(input, 1, false, output) == ExchangeStatus::invalid_audio);
+  for (float sample : output) assert(sample == 0.0f);
 }
