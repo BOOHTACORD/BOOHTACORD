@@ -25,6 +25,8 @@ type Socket struct {
 	cancel     context.CancelFunc
 	last       string
 	seen       map[string]time.Time
+	order      []string
+	tracked    map[string]int
 	wake       chan struct{}
 	generation uint64
 	failure    bool
@@ -33,7 +35,7 @@ type Socket struct {
 }
 
 func New(results *record_results.Results) *Socket {
-	return &Socket{seen: map[string]time.Time{}, wake: make(chan struct{}), results: results}
+	return &Socket{seen: map[string]time.Time{}, tracked: map[string]int{}, wake: make(chan struct{}), results: results}
 }
 func (s *Socket) Connect(ctx context.Context, client *http.Client, origin string, resume bool) error {
 	s.Close()
@@ -85,6 +87,7 @@ func (s *Socket) Close() {
 	s.conn = nil
 	s.cancel = nil
 	s.generation++
+	s.tracked = map[string]int{}
 	s.failure = true
 	s.signalLocked()
 	s.mu.Unlock()
