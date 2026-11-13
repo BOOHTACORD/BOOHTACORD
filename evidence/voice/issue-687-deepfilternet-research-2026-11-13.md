@@ -108,19 +108,7 @@ Node reset calls measured median 0.0118 ms, maximum 0.0448 ms on this host;
 this is not an AudioWorklet deadline, device benchmark or a privacy guarantee.
 The tracked probe also passed five allocation/free cycles with the rebuilt API.
 
-An isolated experimental AudioWorklet was exercised in Windows Chromium and
-Firefox using the same local WASM and model, without adding those assets to
-the release build. Both browsers passed synthetic tone processing, mute,
-reset/unmute and destruction, and rejected a corrupt model without raw audio
-passthrough (two browser tests each). The meter test waits for pre-reset
-messages to drain; it does not measure the immediate acoustic transition.
-Unit tests additionally cover bounded frame buffering, nonfinite samples,
-overload, engine errors and per-instance entropy isolation/zeroization. A
-separate synthetic two-node test in both browsers verified that destroying one
-node does not stop the other from processing.
-This research node is not connected to LiveKit or an application setting.
-Its runtime cost, sustained operation, real microphone, voice quality,
-delivery, safe fallback and platform acceptance are not established.
+Further experimental browser results: `issue-687-deepfilternet-browser-2026-11-13.md`.
 
 Unknown: behavior on real capture, bounded fallback and mute, cross-browser
 support, native Windows real-time integration, speech quality and latency.
