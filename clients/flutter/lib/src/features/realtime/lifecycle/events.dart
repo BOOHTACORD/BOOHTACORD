@@ -23,16 +23,18 @@ extension RealtimeEvents on RealtimeController {
   }
 
   Future<void> applyEvent(RealtimeEvent event) async {
-    if (deliveryTicket?.isActive != true ||
+    final active = admission();
+    if (!active() || deliveryTicket?.isActive != true ||
         deliveryServer != api.transport.session.serverRevision ||
         deliveryInstallation != api.transport.session.telemetry.installation) {
       return;
     }
-    if (await SocialHints.forTransport(api.transport).receiveAsync(event)) {
+    final consumed = await SocialHints.forTransport(api.transport).receiveAsync(event);
+    if (!active() || consumed) {
       return;
     }
     await dispatch(event);
-    changed();
+    if (active()) changed();
   }
 
   void receive(dynamic raw) {
