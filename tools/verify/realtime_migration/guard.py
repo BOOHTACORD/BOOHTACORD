@@ -1,5 +1,7 @@
 """Reject first-party SSE implementations; permit named baseline/negative fixtures."""
 import re
+import hashlib
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -12,10 +14,9 @@ EXTENSIONS = {'.go', '.dart', '.ts', '.tsx', '.mts', '.vue', '.js', '.jsx', '.mj
               '.py', '.ps1', '.sh', '.yaml', '.yml', '.json', '.html', '.kt', '.java',
               '.swift', '.m', '.mm', '.h', '.c', '.cc', '.cpp'}
 EXCEPTIONS = {
-    'backend/internal/load/roster_matrix/open_legacy.go',  # owned baseline comparison only
-    'tools/verify/contracts/voice.ps1',  # negative contract assertions
     'tools/verify/realtime_migration/guard.py',  # the patterns below
 }
+FIXTURE_HASHES = json.loads(Path(__file__).with_name('fixture_exceptions.json').read_text(encoding='utf8'))
 # This exact line rejects legacy requests during a real-stack test; no other
 # line in that scenario is exempt from the migration scan.
 NEGATIVE_ASSERTIONS = {
@@ -30,12 +31,6 @@ PATTERNS = tuple(re.compile(value, re.IGNORECASE) for value in (
 ))
 
 
-def test_file(path):
-    name = path.name
-    return (name.startswith('test_') or name.endswith(('_test.go', '_test.dart', '.spec.ts', '.test.ts', '.spec.mjs', '.test.mjs'))
-            or 'test' in path.parts or 'tests' in path.parts)
-
-
 def scan(root, require_roots=False):
     root = Path(root)
     findings = []
@@ -46,13 +41,22 @@ def scan(root, require_roots=False):
             continue
         for path in directory.rglob('*'):
             relative = path.relative_to(root).as_posix()
-            if not path.is_file() or path.suffix not in EXTENSIONS or relative in EXCEPTIONS or test_file(path):
+            if not path.is_file() or path.suffix not in EXTENSIONS or relative in EXCEPTIONS:
                 continue
-            for number, line in enumerate(path.read_text(encoding='utf8').splitlines(), 1):
+            content = path.read_text(encoding='utf8')
+            if relative in FIXTURE_HASHES:
+                digest = hashlib.sha256(content.encode('utf8')).hexdigest()
+                if digest == FIXTURE_HASHES[relative]:
+                    continue
+                findings.append((relative, 1))
+            for number, line in enumerate(content.splitlines(), 1):
                 if (relative, line.strip()) in NEGATIVE_ASSERTIONS:
                     continue
                 if any(pattern.search(line) for pattern in PATTERNS):
                     findings.append((relative, number))
+    if require_roots:
+        for relative in FIXTURE_HASHES:
+            if not (root / relative).is_file(): findings.append((relative, 1))
     return sorted(set(findings))
 
 
