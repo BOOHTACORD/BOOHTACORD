@@ -17,6 +17,7 @@ class PermissionController extends ChangeNotifier {
   Future<void>? _inFlight;
   SessionTicket? _inFlightTicket;
   int _generation = 0;
+  int? _realtimeGeneration;
   bool get active => _poll != null;
   bool allows(GuildPermission permission) =>
       snapshot?.allows(permission) ?? false;
@@ -71,15 +72,32 @@ class PermissionController extends ChangeNotifier {
     final ticket = scope.capture();
     if (!active || !ticket.isActive) return;
     final generation = ++_generation;
+    _realtimeGeneration = generation;
     _inFlight = null;
-    await refresh();
-    if (generation != _generation || !ticket.isActive || error != null) {
-      throw StateError('Permission snapshot unavailable');
+    try {
+      await refresh();
+      if (generation != _generation || !ticket.isActive || error != null) {
+        throw StateError('Permission snapshot unavailable');
+      }
+    } finally {
+      if (_realtimeGeneration == generation) _realtimeGeneration = null;
     }
+  }
+
+  void invalidateRealtime() {
+    if (_realtimeGeneration != _generation) return;
+    _generation++;
+    _realtimeGeneration = null;
+    _inFlight = null;
+    _inFlightTicket = null;
+    loading = false;
+    error = null;
+    notifyListeners();
   }
 
   void stop() {
     _generation++;
+    _realtimeGeneration = null;
     _poll?.cancel();
     _poll = null;
     _inFlight = null;
