@@ -61,6 +61,9 @@ missing or modified opt-in assets make the build fail. No research bundle is
 published by these commands.
 
 For local browser tests, set `BOOHTA_RESEARCH_ASSET_DIR` to the staged directory.
+The production-adapter switch test also requires `VITE_DEEPFILTER_ENABLED=true`
+and `BOOHTA_DEEPFILTER_RESEARCH_BUNDLE` pointing to the validated bundle. The
+Firefox research runner includes that test and therefore requires both values.
 `python -m tools.audio.research_dfn_web.livekit_windows --binary <trusted-server>
 --web clients/web` creates a short-lived local server with random test keys and
 restricted candidate interfaces. It stops on a wildcard listener and removes
