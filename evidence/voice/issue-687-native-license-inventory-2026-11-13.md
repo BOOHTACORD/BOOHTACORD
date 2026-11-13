@@ -15,6 +15,10 @@ declared expressions included CC0-1.0, BSD-2-Clause, Unlicense, Zlib and 0BSD.
 `unicode-ident` 1.0.12 declared `(MIT OR Apache-2.0) AND Unicode-DFS-2016`.
 The complete local command output is `.out/deepfilter-native-licenses.txt`,
 SHA-256 `640e3671bf43f75ae139c50b1573fb66494458e833ed2179ad9b91059f27e9c8`.
+All 131 pairs were matched against Cargo metadata and their packaged source
+directories inspected for license or notice files. `crunchy` 0.2.2 and
+`realfft` 3.3.0 declare MIT, but neither packaged source directory contains a
+top-level license or notice file. Their exact notices require further review.
 
 The corresponding Web research tree was inspected with the same command,
 substituting `--features wasm --target wasm32-unknown-unknown`. Its Cargo.lock
@@ -23,6 +27,15 @@ It contained 123 package/version pairs; `unicode-ident` 1.0.27 declared
 `(MIT OR Apache-2.0) AND Unicode-3.0`. The local command output is
 `.out/deepfilter-web-licenses.txt`, SHA-256
 `cfd3bfd536e0e75d1331b39c9c9cc60548733fe42842e8593d5614cc0273e8f0`.
+WASM-filtered Cargo metadata matched 120 of these pairs; three host-side Windows
+packages appeared only after inspecting unfiltered metadata. Among all 123,
+`nom-language` 0.1.0, `tract-extra` 0.23.8 and `tract-transformers` 0.23.8
+had no top-level packaged license/notice file. The two tract crates report a
+dirty VCS source in their package metadata; upstream notices and exact source
+provenance still need independent verification.
+The MIT text from nom's repository root at the `nom-language` crate's recorded
+commit is retained in the draft research notices. The other missing notices
+remain unresolved.
 
 This tree includes normal and build dependencies and is an inventory of Cargo
 metadata, not a complete review of distributed files or license texts. Audit
