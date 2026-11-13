@@ -1,0 +1,30 @@
+# Issue 687: native research dependency license inventory
+
+On Windows, `cargo tree --locked --no-default-features --features capi -p
+deep_filter --target x86_64-pc-windows-msvc --edges normal,build --prefix none
+--format '{p}|{l}'` was run in the previously prepared DeepFilterNet native
+research source. Cargo reported version 1.97.1; the Cargo.lock SHA-256 was
+`67fbef75860cff0812f4660f6f95d55bba942818f43dac1d20bbcf3a3043be02`,
+matching the native research preparation pin. Dependencies were fetched from
+crates.io under Cargo's locked checksum verification. The offline attempt first
+failed because the local cache lacked `backtrace`; the online run succeeded.
+
+After deduplication, the target dependency tree contained 131 package/version
+pairs and no blank license fields. Most declared MIT and/or Apache-2.0; other
+declared expressions included CC0-1.0, BSD-2-Clause, Unlicense, Zlib and 0BSD.
+`unicode-ident` 1.0.12 declared `(MIT OR Apache-2.0) AND Unicode-DFS-2016`.
+The complete local command output is `.out/deepfilter-native-licenses.txt`,
+SHA-256 `640e3671bf43f75ae139c50b1573fb66494458e833ed2179ad9b91059f27e9c8`.
+
+The corresponding Web research tree was inspected with the same command,
+substituting `--features wasm --target wasm32-unknown-unknown`. Its Cargo.lock
+SHA-256 was `83b27804cbfbe8167d62b2f839bf4d3bbd4adb1ea1deecc9b35c97ee6e98aa0b`.
+It contained 123 package/version pairs; `unicode-ident` 1.0.27 declared
+`(MIT OR Apache-2.0) AND Unicode-3.0`. The local command output is
+`.out/deepfilter-web-licenses.txt`, SHA-256
+`cfd3bfd536e0e75d1331b39c9c9cc60548733fe42842e8593d5614cc0273e8f0`.
+
+This tree includes normal and build dependencies and is an inventory of Cargo
+metadata, not a complete review of distributed files or license texts. Audit
+the actual release graph, non-Rust dependencies and compound conditions, then
+bundle the required notices. No production binary or release was approved.
