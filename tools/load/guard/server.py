@@ -91,6 +91,9 @@ class Guard:
         data.update(Owner=self.manifest['Owner'], Dataset='qa', Origin=self.manifest['Origin'],
                     Commit=self.manifest['Commit'], DBName='qa', Accounts=len(self.manifest['Accounts'])+1,
                     At=datetime.now(timezone.utc).isoformat())
+        if self.faults.sfu_outage_active():
+            data.update(Metrics={}, MetricsStatus='UNAVAILABLE')
+            return data
         try:
             data.update(Metrics=snapshot(), MetricsStatus='AVAILABLE')
         except OSError:

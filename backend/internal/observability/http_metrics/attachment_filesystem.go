@@ -61,6 +61,7 @@ func (recorder *Recorder) RegisterAttachmentFilesystem(source AttachmentFilesyst
 		return ErrAttachmentFilesystemAlreadyRegistered
 	}
 	recorder.registry.MustRegister(newAttachmentFilesystemCollector(source))
+	recorder.resourceRegistry.MustRegister(newAttachmentFilesystemCollector(source))
 	recorder.attachmentFilesystemRegistered = true
 	return nil
 }
