@@ -34,3 +34,10 @@ passed. The earlier category does not identify timeout, HTTP, connection or pars
 failure, so the cause remains unproven. The guard now reports only those bounded
 categories without exception text; it still stops on every metrics failure. The
 new categories need a separate real-stack run without concurrent client suites.
+
+The integrated PR CI run 43352383711 also failed its reconnect profile: the
+two sockets closed after the spike and recovery fanout failed. The phase helper
+had cancelled the context that owned those sockets. A real loopback-WebSocket
+regression reproduced the failure and passes after keeping non-fault socket
+contexts alive until the overall run ends. All Go load packages passed locally;
+the full CI profile has not yet been rerun on this fix.
