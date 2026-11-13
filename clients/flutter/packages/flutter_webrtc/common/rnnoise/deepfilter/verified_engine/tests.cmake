@@ -24,3 +24,16 @@ add_executable(deepfilter_owner_research_probe
   ${CMAKE_CURRENT_SOURCE_DIR}/../../../../../../tools/audio/research_dfn_native/owner_probe.cc)
 target_include_directories(deepfilter_owner_research_probe PRIVATE deepfilter/capture_hook/stub)
 target_link_libraries(deepfilter_owner_research_probe PRIVATE deepfilter_verified_engine boohta_rnnoise Threads::Threads)
+if(BOOHTA_DEEPFILTER_EXPERIMENTAL_NATIVE)
+  add_executable(deepfilter_factory_research_probe
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../../../../../tools/audio/research_dfn_native/factory_probe.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/../cpp/src/experimental_deepfilter.cc)
+  target_include_directories(deepfilter_factory_research_probe PRIVATE
+    deepfilter/capture_hook/stub ${CMAKE_CURRENT_SOURCE_DIR}/../cpp/include)
+  target_compile_definitions(deepfilter_factory_research_probe PRIVATE
+    BOOHTA_DEEPFILTER_EXPERIMENTAL_NATIVE NOMINMAX
+    BOOHTA_DEEPFILTER_DLL_SHA256="${BOOHTA_DEEPFILTER_DLL_SHA256}"
+    BOOHTA_DEEPFILTER_MODEL_SHA256="${BOOHTA_DEEPFILTER_MODEL_SHA256}")
+  target_compile_options(deepfilter_factory_research_probe PRIVATE /wd4324)
+  target_link_libraries(deepfilter_factory_research_probe PRIVATE deepfilter_verified_engine boohta_rnnoise Threads::Threads)
+endif()

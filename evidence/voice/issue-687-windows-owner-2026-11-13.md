@@ -22,3 +22,10 @@ One run prepared in 307 ms, submitted 300 frames, processed 296 and observed
 zero fallback frames. It used a stub WebRTC interface, not the compiled plugin.
 No microphone, network call, installed client, GUI or release artifact was run. Those acceptance gates remain NOT_RUN, as do the full requirements of
 issue 687. No server deployment was performed.
+
+A subsequent automatic-factory probe compiled the same opt-in adapter and
+plugin factory source with the hashes above. In a separate directory, missing
+and deliberately corrupted model files both produced `processor-unavailable`;
+the valid research model prepared in 293 ms and processed 296 of 300 submitted
+synthetic frames with zero fallback. This still used the stub WebRTC interface,
+not the Flutter application or a physical microphone.
