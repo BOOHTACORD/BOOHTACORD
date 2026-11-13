@@ -46,11 +46,14 @@ func Run(ctx context.Context) (result error) {
 	if err != nil {
 		return err
 	}
-	database, err := pool.OpenObserved(ctx, configuration.DatabaseURL, poolMetrics)
+	database, sessionDatabase, err := pool.OpenPartitionedObserved(ctx, configuration.DatabaseURL, poolMetrics)
 	if err != nil {
 		return err
 	}
 	resources.Add(func(ctx context.Context) error { return lifecycle.Wait(ctx, database.Close) })
+	if sessionDatabase != database {
+		resources.Add(func(ctx context.Context) error { return lifecycle.Wait(ctx, sessionDatabase.Close) })
+	}
 	identity, identityErr := installation.Load(ctx, database)
 	if identityErr != nil {
 		slog.Warn("installation identity unavailable; external telemetry disabled")
@@ -93,7 +96,7 @@ func Run(ctx context.Context) (result error) {
 		return err
 	}
 	resources.Add(stopPublic)
-	handler, screenPreviewService, err := routes(ctx, &resources, database, configuration, events, metrics, updates, usage, previews, screenViewers, publicHandler, maintenanceObserver)
+	handler, screenPreviewService, err := routes(ctx, &resources, database, sessionDatabase, configuration, events, metrics, updates, usage, previews, screenViewers, publicHandler, maintenanceObserver)
 	if err != nil {
 		return err
 	}
