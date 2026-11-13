@@ -21,3 +21,9 @@ Cleanup passed. The harness now detects a failed current socket and explicitly
 reconnects it during a fault profile, recording the reconnect and preserving the
 original close/error observations. Focused tests pass; this latest recovery
 change has not yet been validated against the real disposable stack.
+
+The controller now accepts a phase-sized duration with a three-second margin,
+bounded to 30 seconds; longer phases fail before injecting a fault. Database
+statement and controller auto-restore timeouts both remain bounded. A timer from
+an earlier generation cannot restore a later fault. Controller and Go tests pass;
+this duration protocol still needs real-stack and safety-threshold validation.

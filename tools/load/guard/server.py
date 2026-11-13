@@ -73,8 +73,11 @@ class Guard:
                         return
                     if not self.path.startswith('/fault/'):
                         raise ValueError('Unknown controller command')
+                    seconds = self.headers.get('X-QA-Fault-Seconds', '2')
+                    if not seconds.isascii() or not seconds.isdecimal() or not 1 <= int(seconds) <= 30:
+                        raise ValueError('Invalid bounded fault duration')
                     owned(stack, 'db')  # Recovery checks ownership, never a health threshold.
-                    parent.faults.apply(self.path.removeprefix('/fault/'))
+                    parent.faults.apply(self.path.removeprefix('/fault/'), seconds=int(seconds))
                     self.send_response(204)
                     self.end_headers()
                 except (OSError, ValueError, RuntimeError):

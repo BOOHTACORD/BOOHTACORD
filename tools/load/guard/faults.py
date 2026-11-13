@@ -10,9 +10,11 @@ class Faults:
         self.lock, self.timer, self.current, self.generation = threading.RLock(), None, None, None
         self.pressure = stack.work/'attachments/load-pressure.bin'
 
-    def apply(self, name):
+    def apply(self, name, seconds=2):
         if name not in ('db_pressure', 'sfu_outage', 'slow_telemetry', 'disk_pressure', 'restore'):
             raise ValueError('Unknown bounded fault')
+        if type(seconds) is not int or not 1 <= seconds <= 30:
+            raise ValueError('Invalid bounded fault duration')
         with self.lock:
             if name == 'restore':
                 self.restore()
@@ -26,7 +28,7 @@ class Faults:
             elif name == 'db_pressure':
                 target = owned(self.stack, 'db')
                 command = ['docker', 'exec', '-e', 'PGAPPNAME=qa_load_fault', target, 'psql', '-U', 'qa', '-d', 'qa', '-XAt', '-c',
-                           "BEGIN; SET LOCAL statement_timeout='2500ms'; LOCK users IN ACCESS EXCLUSIVE MODE; SELECT pg_sleep(2); ROLLBACK;"]
+                           f"BEGIN; SET LOCAL statement_timeout='{seconds * 1000 + 500}ms'; LOCK users IN ACCESS EXCLUSIVE MODE; SELECT pg_sleep({seconds}); ROLLBACK;"]
                 self.processes.append(subprocess.Popen(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL))
             else:
                 self.pressure.parent.mkdir(exist_ok=True)
@@ -36,10 +38,15 @@ class Faults:
                     for _ in range(32):
                         stream.write(bytes(1 << 20))
             self.current = name
-            self.generation = object()
-            self.timer = threading.Timer(2, self.restore)
+            generation = self.generation = object()
+            self.timer = threading.Timer(seconds, lambda: self.expire(generation))
             self.timer.daemon = True
             self.timer.start()
+
+    def expire(self, generation):
+        with self.lock:
+            if self.generation is generation:
+                self.restore()
 
     def active(self, name):
         with self.lock:
