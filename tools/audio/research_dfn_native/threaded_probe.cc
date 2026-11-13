@@ -2,6 +2,7 @@
 #include "../../../clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/worker_step/worker.h"
 #include "../../../clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/capture_bridge/bridge.h"
 #include "../../../clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/lifecycle/lifecycle.h"
+#include "../../../clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/capture_guard/guard.h"
 #include "research_engine.h"
 #define NOMINMAX
 #include <windows.h>
@@ -32,10 +33,11 @@ int main(int argc, char** argv) {
   WorkerStep<ResearchEngine, 8> step(engine);
   Lifecycle lifecycle;
   const auto generation = lifecycle.Start();
+  CaptureGuard<CaptureBridge<8>> guard(lifecycle, bridge);
   std::atomic<bool> stop{false}, failed{false};
   std::atomic<unsigned> processed{0};
   float pcm[480]{};
-  if (bridge.Capture(pcm, 480, 480, 48000, 1, generation, false) != (delay ? ExchangeStatus::buffering : ExchangeStatus::no_frame)) {
+  if (guard.Process(pcm, 480, 480, 48000, 1) != (delay ? GuardStatus::buffering : GuardStatus::underrun)) {
     FreeLibrary(dll); return 5;
   }
   std::thread worker([&] {
@@ -57,14 +59,14 @@ int main(int argc, char** argv) {
   for (int frame = 0; frame < 300 && processed.load() && !failed.load(); ++frame) {
     for (int i = 0; i < 480; ++i) pcm[i] = 6553.6f * std::sin((frame * 480 + i) * 0.05f);
     std::uint64_t emitted;
-    const auto status = bridge.Capture(pcm, 480, 480, 48000, 1, generation, false, &emitted);
-    if (status == ExchangeStatus::ready) {
+    const auto status = guard.Process(pcm, 480, 480, 48000, 1, &emitted);
+    if (status == GuardStatus::ready) {
       const auto current = static_cast<std::uint64_t>(frame + 1);
       if (emitted > current || current - emitted >= lag_counts.size()) { failed.store(true); break; }
       ++lag_counts[current - emitted]; ++ready;
     }
-    else if (status == ExchangeStatus::buffering) ++buffering;
-    else if (status == ExchangeStatus::no_frame) ++underruns;
+    else if (status == GuardStatus::buffering) ++buffering;
+    else if (status == GuardStatus::underrun) ++underruns;
     else { lifecycle.Fail(generation); ++overloads; break; }
     for (float sample : pcm) peak = std::max(peak, static_cast<double>(std::fabs(sample)));
     next += std::chrono::milliseconds(10); std::this_thread::sleep_until(next);

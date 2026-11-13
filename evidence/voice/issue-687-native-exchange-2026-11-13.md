@@ -81,3 +81,13 @@ three-second research-model run exercised activation and stop, with 297 ready,
 inside a real capture callback or establish publication/mute synchronization.
 The client still needs to own, join and connect the worker, synchronize mute
 with publication, expose actual state/fallback, and pass physical acceptance.
+
+The capture-guard prototype joins the bridge with lifecycle snapshots. Its
+tests exercise preservation of input on processing failure, silence on mute or
+a generation change during processing, invalid format and buffer/underrun
+classification. Windows MSVC native CTest passed 12/12. The synthetic model
+probe now runs through the guard, reporting 297 ready, 3 buffered, 0 underruns
+and 0 overloads in one short run. The guard's final state check does not
+serialize mute with publication after it returns; that remains a required
+responsibility of the actual capture/publish owner. These are not device,
+long-duration, acoustic, network, or release acceptance results.
