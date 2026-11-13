@@ -13,16 +13,20 @@ template <typename Engine, std::size_t Capacity>
 class WorkerStep {
  public:
   explicit WorkerStep(Engine& engine) : engine_(engine) {}
+  bool Prepare(std::uint64_t generation) noexcept {
+    if (initialized_ && generation == generation_) return !poisoned_;
+    initialized_ = true; generation_ = generation; poisoned_ = false;
+    try { if (!engine_.Reset()) poisoned_ = true; }
+    catch (...) { poisoned_ = true; }
+    return !poisoned_;
+  }
   WorkerStatus Run(FrameExchange<Capacity>& exchange, std::uint64_t generation) noexcept {
     if (poisoned_ && initialized_ && generation == generation_) return WorkerStatus::engine_error;
     AudioFrame frame{};
     if (!exchange.WorkerPop(generation, frame)) return WorkerStatus::idle;
     const auto sequence = frame.sequence;
+    if (!Prepare(generation)) return WorkerStatus::engine_error;
     try {
-      if (!initialized_ || generation != generation_) {
-        initialized_ = true; generation_ = generation; poisoned_ = false;
-        if (!engine_.Reset()) { poisoned_ = true; return WorkerStatus::engine_error; }
-      }
       if (!engine_.Process(frame)) { poisoned_ = true; return WorkerStatus::engine_error; }
       frame.generation = generation; frame.sequence = sequence;
       for (float sample : frame.samples) {

@@ -76,6 +76,11 @@ RnnoiseCaptureProcessor::Engine RnnoiseCaptureProcessor::EffectiveEngine() const
 }
 const char* RnnoiseCaptureProcessor::failure_reason() const {
   if (requested_.load() != Engine::kRnnoise && requested_.load() != Engine::kDeepFilter) return "";
+  if (requested_.load() == Engine::kDeepFilter && hook_ && failure_.load() == Failure::kAwaitingAudio) {
+    const auto readiness = hook_->Readiness();
+    if (readiness == deepfilter::HookReadiness::preparing) return "awaiting-model";
+    if (readiness == deepfilter::HookReadiness::failed) return "processor-failed";
+  }
   switch (failure_.load()) {
     case Failure::kNone: return "";
     case Failure::kAwaitingAudio: return "awaiting-audio";

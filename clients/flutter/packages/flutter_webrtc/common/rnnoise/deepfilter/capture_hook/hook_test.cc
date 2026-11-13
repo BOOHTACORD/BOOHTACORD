@@ -9,8 +9,10 @@ using namespace boohta::deepfilter;
 struct FakeHook : CaptureHook {
   bool enabled = false, available = true;
   GuardStatus status = GuardStatus::ready;
+  HookReadiness readiness = HookReadiness::ready;
   void Reset(bool value) noexcept override { enabled = value; }
   bool Available() const noexcept override { return available; }
+  HookReadiness Readiness() const noexcept override { return readiness; }
   GuardStatus Capture(float* pcm, int frames, int, int, int) noexcept override {
     if (status == GuardStatus::ready) for (int i = 0; i < frames; ++i) pcm[i] *= 0.5f;
     return status;
@@ -38,6 +40,12 @@ int main() {
   processor.SetEngine(Engine::kDeepFilter);
   assert(hook.enabled && processor.supported());
   assert(processor.EffectiveEngine() == Engine::kUnknown);
+  hook.readiness = HookReadiness::preparing;
+  assert(std::string(processor.failure_reason()) == "awaiting-model");
+  hook.readiness = HookReadiness::failed;
+  assert(std::string(processor.failure_reason()) == "processor-failed");
+  hook.readiness = HookReadiness::ready;
+  assert(std::string(processor.failure_reason()) == "awaiting-audio");
   assert(processor.Process(pcm, 480, 480));
   assert(pcm[0] == 1000.f && processor.EffectiveEngine() == Engine::kDeepFilter);
   hook.status = GuardStatus::underrun;

@@ -5,6 +5,7 @@
 #include <chrono>
 #include <cmath>
 #include <cstdio>
+#include <cstring>
 #include <thread>
 
 using namespace boohta;
@@ -29,10 +30,15 @@ int wmain(int argc, wchar_t** argv) {
   adapter.Initialize(48000, 1);
   if (!runtime.Launch()) return 4;
   capture.SetEngine(RnnoiseCaptureProcessor::Engine::kDeepFilter);
+  const auto started = Clock::now();
+  const auto deadline = started + std::chrono::seconds(20);
+  while (!runtime.Prepared() && runtime.Snapshot().state == LifecycleState::starting && Clock::now() < deadline)
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  const auto prepare_ms = std::chrono::duration_cast<std::chrono::milliseconds>(Clock::now() - started).count();
+  if (!runtime.Prepared() || std::strcmp(capture.failure_reason(), "awaiting-audio") != 0) return 5;
   float pcm[480]{};
   adapter.Process(1, 480, 480, pcm);
   bool ok = capture.fallback_frames() == 0;
-  const auto deadline = Clock::now() + std::chrono::seconds(20);
   while (runtime.Snapshot().state == LifecycleState::starting && Clock::now() < deadline)
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
   unsigned submitted = 0;
@@ -50,7 +56,7 @@ int wmain(int argc, wchar_t** argv) {
   const bool closed = runtime.Shutdown();
   ok = ok && submitted == 300 && processed > 0 && fallback == 0 && closed &&
        effective == RnnoiseCaptureProcessor::Engine::kDeepFilter;
-  std::printf("verified_hook=%s submitted=%u processed=%llu fallbacks=%llu\n", ok ? "SMOKE_COMPLETED" : "FAIL",
-              submitted, static_cast<unsigned long long>(processed), static_cast<unsigned long long>(fallback));
+  std::printf("verified_hook=%s prepare_ms=%lld submitted=%u processed=%llu fallbacks=%llu\n", ok ? "SMOKE_COMPLETED" : "FAIL",
+              static_cast<long long>(prepare_ms), submitted, static_cast<unsigned long long>(processed), static_cast<unsigned long long>(fallback));
   return ok ? 0 : 1;
 }

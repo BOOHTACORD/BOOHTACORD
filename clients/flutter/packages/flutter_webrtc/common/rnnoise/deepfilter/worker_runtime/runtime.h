@@ -32,6 +32,11 @@ class WorkerRuntime {
   std::uint64_t Start() noexcept { return Available() ? lifecycle_.Start() : 0; }
   std::uint64_t Mute() noexcept { return lifecycle_.Mute(); }
   LifecycleSnapshot Snapshot() const noexcept { return lifecycle_.Snapshot(); }
+  bool Prepared() const noexcept {
+    const auto state = lifecycle_.Snapshot();
+    return (state.state == LifecycleState::starting || state.state == LifecycleState::active) &&
+           state.generation == prepared_.load(std::memory_order_acquire);
+  }
   GuardStatus Capture(float* pcm, int frames, int capacity, int rate, int channels,
                       std::uint64_t* emitted_sequence = nullptr) noexcept {
     return guard_.Process(pcm, frames, capacity, rate, channels, emitted_sequence);
@@ -50,6 +55,11 @@ class WorkerRuntime {
     while (!stopping_.load(std::memory_order_acquire)) {
       const auto snapshot = lifecycle_.Snapshot();
       if (snapshot.state == LifecycleState::starting || snapshot.state == LifecycleState::active) {
+        if (!step_.Prepare(snapshot.generation)) { lifecycle_.Fail(snapshot.generation); continue; }
+        const auto current = lifecycle_.Snapshot();
+        if (current.generation != snapshot.generation ||
+            (current.state != LifecycleState::starting && current.state != LifecycleState::active)) continue;
+        prepared_.store(snapshot.generation, std::memory_order_release);
         const auto result = step_.Run(bridge_.WorkerExchange(), snapshot.generation);
         if (result == WorkerStatus::processed) { lifecycle_.Activate(snapshot.generation); continue; }
         if (result != WorkerStatus::idle) lifecycle_.Fail(snapshot.generation);
@@ -65,6 +75,7 @@ class WorkerRuntime {
   CaptureGuard<CaptureBridge<Capacity>> guard_;
   WorkerStep<Engine, Capacity> step_;
   std::atomic<bool> stopping_{false}, close_failed_{false}, launched_{false};
+  std::atomic<std::uint64_t> prepared_{0};
   std::thread worker_;
   bool ever_launched_ = false;
 };

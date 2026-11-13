@@ -6,6 +6,7 @@ struct FakeHook : boohta::deepfilter::CaptureHook {
   bool enabled = false;
   void Reset(bool value) noexcept override { enabled = value; }
   bool Available() const noexcept override { return true; }
+  boohta::deepfilter::HookReadiness Readiness() const noexcept override { return boohta::deepfilter::HookReadiness::ready; }
   boohta::deepfilter::GuardStatus Capture(float* pcm, int frames, int, int, int) noexcept override {
     for (int i = 0; i < frames; ++i) pcm[i] *= 0.5f;
     return boohta::deepfilter::GuardStatus::ready;
