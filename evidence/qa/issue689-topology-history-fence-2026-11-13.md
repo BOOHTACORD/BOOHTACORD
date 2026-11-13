@@ -13,3 +13,8 @@ feature-policy/native/process tests passed under Linux; the process tests failed
 when initially run under Windows, where `os.killpg` is unavailable.
 This is unit/tooling evidence. Current-source Android, Web/Windows regression,
 visual, full matrix and production evidence remain open.
+
+A native Android scenario is registered to hold an actual owned-API history
+response across socket closure and capture the resulting screen. Its execution,
+source-resolution visual review and iOS counterpart are NOT_RUN until recorded
+separately; registering or analyzing the scenario does not establish a pass.
