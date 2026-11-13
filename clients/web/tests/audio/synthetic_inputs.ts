@@ -2,6 +2,7 @@
 export function installSyntheticInputs() {
   const available = new Set(['mic-1', 'mic-2'])
   const captures: { deviceId: string; track: MediaStreamTrack }[] = []
+  let ignoreNextConstraint = false
   const originalCapture = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices)
   const originalDevices = navigator.mediaDevices.enumerateDevices.bind(navigator.mediaDevices)
   navigator.mediaDevices.enumerateDevices = async () => [...available].map(deviceId => ({
@@ -23,8 +24,9 @@ export function installSyntheticInputs() {
     const track = destination.stream.getAudioTracks()[0]
     const settings = track.getSettings.bind(track), stop = track.stop.bind(track)
     // Model the capture API's reported settings; the oscillator has no real NS.
-    let suppression = !!(audio && typeof audio === 'object' && audio.noiseSuppression === true)
-    track.applyConstraints = async value => { if (typeof value?.noiseSuppression === 'boolean') suppression = value.noiseSuppression }
+    const ignore = ignoreNextConstraint; ignoreNextConstraint = false
+    let suppression = ignore || !!(audio && typeof audio === 'object' && audio.noiseSuppression === true)
+    track.applyConstraints = async value => { if (!ignore && typeof value?.noiseSuppression === 'boolean') suppression = value.noiseSuppression }
     track.getSettings = () => ({ ...settings(), deviceId: selected, noiseSuppression: suppression, echoCancellation: false, autoGainControl: false })
     track.stop = () => { if (track.readyState === 'ended') return; stop(); source.stop(); void context.close() }
     captures.push({ deviceId: selected, track })
@@ -32,6 +34,7 @@ export function installSyntheticInputs() {
   }
   return {
     captures,
+    ignoreNextConstraint() { ignoreNextConstraint = true },
     unplug(deviceId: string) {
       available.delete(deviceId)
       for (const capture of captures) if (capture.deviceId === deviceId && capture.track.readyState === 'live') {

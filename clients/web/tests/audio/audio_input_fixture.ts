@@ -63,6 +63,7 @@ const gate = {
   async mute(muted = true) { await session!.setMicrophoneMuted(muted); microphoneTrack.value = session!.active?.room.readMicrophoneTrack?.(); return this.read() },
   async deafen(enabled: boolean) { await session!.setDeafened(enabled); return this.read() },
   async reconnect() { await (session!.active!.room as unknown as Room).simulateScenario('resume-reconnect') },
+  ignoreNextConstraint() { input!.ignoreNextConstraint() },
   unplug(id: string) { input!.unplug(id) },
   removeAll() { input!.removeAll() },
   read() {
