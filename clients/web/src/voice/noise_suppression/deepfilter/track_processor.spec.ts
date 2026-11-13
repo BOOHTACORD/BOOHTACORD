@@ -11,7 +11,13 @@ async function fixture() {
   vi.stubGlobal('AudioWorkletNode', class {
     port: any = { onmessage: undefined, postMessage: vi.fn(), close: vi.fn() }
     onprocessorerror = null
-    constructor() { node = this; queueMicrotask(() => this.port.onmessage?.({ data: { type: 'ready' } })) }
+    constructor() {
+      node = this
+      this.port.postMessage.mockImplementation((message: any) => {
+        if (message.type === 'destroy') queueMicrotask(() => this.port.onmessage?.({ data: { type: 'destroyed' } }))
+      })
+      queueMicrotask(() => this.port.onmessage?.({ data: { type: 'ready' } }))
+    }
     connect() {} disconnect() {}
   })
   const output = { enabled: true, stop: vi.fn() }, capture = { stop: vi.fn() }
@@ -33,6 +39,41 @@ it('owns only its derived graph and starts muted until the latest reset is ackno
   await f.processor.destroy()
   expect(f.output.stop).toHaveBeenCalledOnce()
   expect(f.capture.stop).not.toHaveBeenCalled(); expect(f.context.close).not.toHaveBeenCalled()
+})
+
+it('keeps the port open until the worklet confirms disposal', async () => {
+  const f = await fixture()
+  f.node.port.postMessage.mockImplementation(() => {})
+  const pending = f.processor.destroy(); let done = false
+  void pending.then(() => { done = true })
+  await Promise.resolve()
+  expect(f.output.stop).toHaveBeenCalledOnce(); expect(f.node.port.close).not.toHaveBeenCalled()
+  expect(done).toBe(false)
+  f.node.port.onmessage({ data: { type: 'destroyed' } }); await pending
+  expect(f.node.port.close).toHaveBeenCalledOnce()
+})
+
+it('cancels a new initialization while a previous disposal is pending', async () => {
+  const f = await fixture()
+  f.node.port.postMessage.mockImplementation(() => {})
+  const disposal = f.processor.destroy()
+  const init = f.processor.init({ track: {}, audioContext: { sampleRate: 48000 } } as never)
+  const secondDisposal = f.processor.destroy()
+  f.node.port.onmessage({ data: { type: 'destroyed' } })
+  await Promise.all([disposal, secondDisposal, init])
+  expect(f.processor.processedTrack).toBeUndefined(); expect(f.onFailure).not.toHaveBeenCalled()
+})
+
+it('closes the port and reports disposal timeout without leaving capture enabled', async () => {
+  const f = await fixture()
+  vi.useFakeTimers()
+  try {
+    f.node.port.postMessage.mockImplementation(() => {})
+    const disposal = f.processor.destroy()
+    const rejected = expect(disposal).rejects.toThrow('processor disposal timeout')
+    await vi.advanceTimersByTimeAsync(1000); await rejected
+    expect(f.output.stop).toHaveBeenCalledOnce(); expect(f.node.port.close).toHaveBeenCalledOnce()
+  } finally { vi.useRealTimers() }
 })
 
 it('ignores stale acknowledgements after mute and fails closed on processor error', async () => {

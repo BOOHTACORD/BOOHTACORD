@@ -24,6 +24,10 @@ disabled after mute. Firefox stopped delivering frames in that state, while
 the separate direct-worklet test showed zero output. Unit tests cover stale
 preparation cancellation, unsupported sample rate and unmute/error races.
 These runs did not publish to LiveKit or use a physical microphone.
+The processor now waits for a disposal acknowledgement before closing its
+port; unit tests exercise that acknowledgement, timeout and cancellation while
+disposal is pending. Browser track and direct-peer checks passed again after
+this change. This is not a long-running memory-leak measurement.
 
 Another test connected two peer connections in one browser process without an
 SFU. In both Windows Chromium and Firefox, the receiver measured a processed

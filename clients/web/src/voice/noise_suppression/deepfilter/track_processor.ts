@@ -1,5 +1,6 @@
 import type { AudioProcessorOptions, Track, TrackProcessor } from 'livekit-client'
 import { loadDeepFilterAssets } from './asset_loader'
+import { disposePort } from './dispose_port'
 
 type Assets = Awaited<ReturnType<typeof loadDeepFilterAssets>>
 type Options = { loadAssets?: (signal: AbortSignal) => Promise<Assets>; onFailure?: () => void; timeoutMs?: number }
@@ -16,6 +17,7 @@ export class DeepFilterTrackProcessor implements TrackProcessor<Track.Kind.Audio
   private intent = 0
   private failed = false
   private preparation?: AbortController
+  private disposal?: Promise<void>
   private ready?: () => void
   private cancelReady?: () => void
   private acknowledge?: (intent: unknown) => void
@@ -45,6 +47,8 @@ export class DeepFilterTrackProcessor implements TrackProcessor<Track.Kind.Audio
   async init(opts: AudioProcessorOptions): Promise<void> {
     if (this.sourceTrack) throw new Error('processor already initialized')
     const generation = ++this.generation
+    if (this.disposal) await this.disposal
+    if (generation !== this.generation) return
     const preparation = this.preparation = new AbortController()
     this.failed = false; this.sourceTrack = opts.track
     try {
@@ -99,14 +103,16 @@ export class DeepFilterTrackProcessor implements TrackProcessor<Track.Kind.Audio
   }
   async restart(opts: AudioProcessorOptions): Promise<void> { await this.destroy(); await this.init(opts) }
   async destroy(): Promise<void> {
+    if (this.disposal) { this.generation++; return this.disposal }
     this.generation++; this.preparation?.abort(); this.preparation = undefined; this.mute(); this.cancelReady?.()
     this.source?.disconnect(); this.node?.disconnect(); this.destination?.disconnect()
-    if (this.node) {
-      this.node.onprocessorerror = null; this.node.port.onmessage = null
-      this.node.port.postMessage({ type: 'destroy' }); this.node.port.close()
-    }
+    const node = this.node
     this.processedTrack?.stop()
     this.source = undefined; this.node = undefined; this.destination = undefined
     this.processedTrack = undefined; this.sourceTrack = undefined
+    if (!node) return
+    node.onprocessorerror = null
+    const disposal = this.disposal = disposePort(node.port, Math.min(this.options.timeoutMs ?? 1000, 1000))
+    try { await disposal } finally { if (this.disposal === disposal) this.disposal = undefined }
   }
 }
