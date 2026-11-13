@@ -43,6 +43,7 @@ class RnnoiseCaptureProcessor {
   deepfilter::Resampler16k resampler_;
   DenoiseState* state_;
   deepfilter::CaptureHook* const hook_;
+  bool warmed_ = false;  // Set during construction, before the audio thread starts.
   std::atomic<Engine> requested_{Engine::kBrowser};
   std::atomic<bool> state_ready_{false};
   std::atomic<Failure> failure_{Failure::kAwaitingAudio};

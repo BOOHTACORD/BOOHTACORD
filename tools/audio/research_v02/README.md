@@ -52,7 +52,8 @@ signature, run the existing capture processor checks and compare 100 synthetic
 generation. The ordinary nonexperimental path still rejects 16 kHz. The test
 bridge includes a deterministic callback for its stale-generation test only.
 It is not integrated into Flutter or a release. A simulated initialization
-failure is tested at startup and reset; successful reinitialization recovers.
+failure is tested at startup and reset. A failed initial preparation requires
+recreating the processor; after successful prewarming, reset failure can recover.
 The existing 48 kHz error fallback preserves input, while the research 16 kHz
 path silences writable samples. Realtime/device testing, model rights and
 complete acceptance remain open.

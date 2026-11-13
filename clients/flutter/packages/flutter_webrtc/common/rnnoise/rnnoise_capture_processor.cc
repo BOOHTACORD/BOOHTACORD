@@ -17,6 +17,7 @@ RnnoiseCaptureProcessor::RnnoiseCaptureProcessor(StateAllocator allocate, deepfi
       float silence[480] = {};
       rnnoise_process_frame(state_, silence, silence);
     });
+    warmed_ = true;
     state_ready_.store(rnnoise_init(state_) == 0);
   }
 }
@@ -42,7 +43,7 @@ bool RnnoiseCaptureProcessor::Process(float* pcm, int frames, int capacity) {
 bool RnnoiseCaptureProcessor::ProcessNoise(float* pcm, int frames, int capacity) {
   const auto generation = generation_.load();
   if (generation != applied_generation_) {
-    state_ready_.store(state_ && rnnoise_init(state_) == 0);
+    state_ready_.store(warmed_ && state_ && rnnoise_init(state_) == 0);
     resampler_.Reset();
     applied_generation_ = generation;
   }
@@ -63,7 +64,7 @@ bool RnnoiseCaptureProcessor::ProcessNoise(float* pcm, int frames, int capacity)
   }
   if (error != Failure::kNone) {
     failure_.store(error); fallback_.fetch_add(1);
-    state_ready_.store(state_ && rnnoise_init(state_) == 0);
+    state_ready_.store(warmed_ && state_ && rnnoise_init(state_) == 0);
     return false;
   }
   // RNNoise v0.1 consumes fullband float PCM on the same S16 amplitude scale

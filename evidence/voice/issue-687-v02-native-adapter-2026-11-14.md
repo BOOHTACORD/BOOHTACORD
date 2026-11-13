@@ -31,8 +31,7 @@ rights remain unverified. No release or server deployment was performed.
 Follow-up: the existing processor ignored the initialization return code. A
 research bridge injected failures at construction and reset; the new test first
 failed because the processor reported availability. The processor now tracks
-initialization success and skips inference on failure, recovering after a
-successful reset. At 16 kHz the research path silenced writable samples; the
+initialization success and skips inference on failure. At 16 kHz the research path silenced writable samples; the
 ordinary 48 kHz fallback preserved its existing unchanged-input behavior. The
 four research tests and the 21-test standard native suite passed on Windows.
 The final `native_v02_init_test.exe` SHA-256 was
@@ -42,3 +41,10 @@ An additional model-free RNNoise stub exercises construction failure, reset
 failure, unchanged fallback audio and successful recovery in the ordinary
 native CTest suite. On Windows the expanded suite passed 22/22; the stub does
 not test the actual v0.2 model.
+
+Subsequent realtime review found that allowing a failed initial setup to retry
+on the audio thread could trigger the first lazy FFT initialization there. A
+new regression first failed against that behavior. The processor now remains
+unavailable until recreated if initial prewarming failed; after prewarming,
+an injected later reset failure can recover on a subsequent reset. All 22
+ordinary tests and four local v0.2 research tests passed again on Windows.

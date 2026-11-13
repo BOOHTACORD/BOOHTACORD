@@ -10,7 +10,7 @@ bool RnnoiseCaptureProcessor::ProcessResearchV02At16k(float* pcm, int frames, in
     fallback_.fetch_add(1);
     if (pcm && frames > 0 && capacity > 0) std::fill_n(pcm, std::min(frames, capacity), 0.f);
     resampler_.Reset();
-    state_ready_.store(state_ && rnnoise_init(state_) == 0);
+    state_ready_.store(warmed_ && state_ && rnnoise_init(state_) == 0);
     return false;
   };
   if (!state_ready_.load()) return fail(Failure::kUnavailable);
