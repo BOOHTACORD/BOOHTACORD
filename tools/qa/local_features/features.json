@@ -345,6 +345,10 @@
         "focused": "clients/flutter/test/realtime_scope/social_handoff_test.dart",
         "scope": "Flutter stops a stale ready continuation after its socket closes while a social observer is pending. Already-started callbacks and native acceptance remain separate."
       },
+      "issue689_flutter_recovery_incarnation": {
+        "focused": "clients/flutter/test/realtime_scope/recovery_incarnation_test.dart",
+        "scope": "A Flutter recovery from an old socket cannot dispatch its ready event after a new socket recovers. The effects of already-started recovery operations and native runtime remain separate."
+      },
       "issue689_flutter_connect_deadline": {
         "focused": ["clients/flutter/test/realtime_scope/open_deadline_test.dart", "clients/flutter/test/realtime_scope/open_deadline_integration_test.dart", "clients/flutter/test/realtime_scope/retry_policy_test.dart"],
         "scope": "Shared Flutter bounds the entire socket upgrade and ready handshake, cancels abandoned HTTP clients and closes late sockets. Loopback tests cover an unanswered upgrade; Android, iOS and production acceptance remain separate."
@@ -469,7 +473,7 @@
       }
     ],
     "parity_review": {
-      "issue689_follow_up": "Issue 689 adds heartbeat recovery, strict new-event envelopes, malformed and non-object frame recovery including Web replay reset, security-hint priority and stale permission-request fencing in Web and shared Flutter; Flutter also fences a ready continuation after socket close. Complete current-source Android and iOS runtime acceptance remain open.",
+      "issue689_follow_up": "Issue 689 adds heartbeat recovery, strict new-event envelopes, malformed and non-object frame recovery including Web replay reset, security-hint priority and stale permission-request fencing in Web and shared Flutter; Flutter also fences old ready continuations. Complete current-source Android and iOS runtime acceptance remain open.",
       "issue": 582,
       "decisions": {
         "web": "implementation_and_regression",
