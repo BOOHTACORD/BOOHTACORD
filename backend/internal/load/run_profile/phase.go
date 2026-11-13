@@ -27,6 +27,17 @@ func (r *Runner) phase(ctx context.Context, guard observe_resources.Guard, name 
 				}
 				return phase, err
 			}
+			if err := guard.WaitFault(ctx, fault); err != nil {
+				phase.Failure = "fault_unverified"
+				return phase, err
+			}
+			defer func() {
+				if err == nil {
+					if check := guard.FaultActive(ctx, fault); check != nil {
+						phase.Failure, err = "fault_lost", check
+					}
+				}
+			}()
 		}
 	}
 	if name == "recovery" {
