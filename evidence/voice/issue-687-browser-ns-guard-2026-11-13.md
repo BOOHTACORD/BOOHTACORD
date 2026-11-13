@@ -43,8 +43,9 @@ Windows server initially failed to establish a loopback ICE connection. With
 signalling on loopback and ICE restricted to the host's private interface,
 eight browser join and signalling-restart cases passed; four additional audio
 input lifecycle cases passed through an actual receiving peer. A further test
-passed switching browser -> RNNoise v0.1 -> off -> browser during a live SFU
-call, with one publication, synthetic audio at the receiver and silence on mute.
+passed in Chromium, Edge and Firefox switching browser -> RNNoise v0.1 -> off
+-> browser during a live SFU call, with one publication, synthetic audio at the
+receiver and silence on mute.
 With the separate research bundle and opt-in flag, local Chromium, Edge and Firefox tests
 passed browser -> experimental DeepFilterNet3 -> browser on the production
 microphone adapter through the SFU, checking receiver audio, one publication

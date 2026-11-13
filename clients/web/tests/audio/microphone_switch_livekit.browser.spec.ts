@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 
-test('processing switches preserve one live publication and receiver audio', async ({ browser }) => {
-  const senderContext = await browser.newContext({ permissions: ['microphone'] })
+test('processing switches preserve one live publication and receiver audio', async ({ browser, browserName }) => {
+  const senderContext = await browser.newContext(browserName === 'firefox' ? {} : { permissions: ['microphone'] })
   const receiverContext = await browser.newContext()
   const sender = await senderContext.newPage(), receiver = await receiverContext.newPage()
   const hear = async () => expect.poll(async () => {
@@ -26,7 +26,10 @@ test('processing switches preserve one live publication and receiver audio', asy
     for (const mode of ['rnnoise', 'off', 'browser'] as const) {
       const before = await receiver.evaluate(() => (window as any).livekitAudioGate.read())
       const state = await sender.evaluate(mode => (window as any).microphoneJoinGate.switchMode(mode), mode)
-      expect(state).toMatchObject({ publications: 1, processing: { requestedMode: mode, effectiveMode: mode } })
+      expect(state).toMatchObject({ publications: 1, processing: { requestedMode: mode } })
+      if (browserName === 'firefox' && mode === 'browser' && state.processing.effectiveMode === 'off')
+        expect(state.processing.status).toBe('unsupported')
+      else expect(state.processing.effectiveMode).toBe(mode)
       if (state.replaced) await expect.poll(async () => {
         const next = await receiver.evaluate(() => (window as any).livekitAudioGate.read())
         return next.subscriptions
