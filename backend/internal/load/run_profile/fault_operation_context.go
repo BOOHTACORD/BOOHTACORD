@@ -9,5 +9,5 @@ func operationContext(ctx context.Context, profile, phase string, duration time.
 	if profile == "faults" && phase != "recovery" && phase != "saturation_stop" {
 		return context.WithTimeout(ctx, duration)
 	}
-	return context.WithCancel(ctx)
+	return ctx, func() {}
 }
