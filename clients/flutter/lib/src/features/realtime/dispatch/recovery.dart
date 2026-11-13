@@ -44,7 +44,7 @@ Future<void> dispatchRecovery(
         if (workspace.selectedChannel?.kind == ChannelKind.text)
           conversation.refreshSelectedTextHistory(strict: true, replace: true),
         if (conversation.selectedDirectMessage != null)
-          refreshDirectEvent(conversation, null, true),
+          refreshDirectEvent(conversation, null, true, current),
         if (screenViewersChanged != null)
           Future<void>.sync(screenViewersChanged),
       ]);

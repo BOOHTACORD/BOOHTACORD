@@ -12,6 +12,7 @@ Future<bool> dispatchConversationEvent(
   WorkspaceController workspace,
   ConversationController conversation,
   void Function(RealtimeEvent) notifyMessage,
+  bool Function() current,
 ) async {
   final payload = event.payload;
   switch (event.kind) {
@@ -46,14 +47,17 @@ Future<bool> dispatchConversationEvent(
           () => refreshDirectEvent(
             conversation,
             payload['message_id'] as String?,
+            false,
+            current,
           ),
           () => conversation.directMessageHistory
               .map((message) => (id: message.id, value: message as Object))
               .toList(),
         );
       }
+      if (!current()) return true;
       await workspace.refreshDirectMessages(strict: true);
-      if (event.kind == 'direct_message.message_created') notifyMessage(event);
+      if (current() && event.kind == 'direct_message.message_created') notifyMessage(event);
       return true;
     default:
       return false;
