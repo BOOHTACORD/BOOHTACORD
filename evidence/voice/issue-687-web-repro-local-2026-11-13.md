@@ -78,3 +78,12 @@ passed the strict mute test on this run; ten repeated local Windows Firefox
 peer tests passed, so the earlier Linux result remains intermittent and its
 cause is not established. The separate lifecycle CI reported failure after
 `roster-transport-restored`; the public artifact contains no further diagnosis.
+
+On hosted source `d7f788fd3ba8b9e4698e5e9eedbc6748a129d021`, both
+Windows audio services were running but Firefox still timed out with a
+suspended AudioContext. Starting services alone did not fix the failure. A
+local forced-null-context experiment likewise produced no progressing audio
+clock, so it is not used as a passing substitute. The research workflow now
+keeps Chromium and Edge on Windows and runs Firefox graph and local LiveKit
+tests on Linux with a private PulseAudio sink and a checksum-verified bundle
+from the same workflow run. Hosted validation of this change is pending.
