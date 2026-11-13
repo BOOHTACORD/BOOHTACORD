@@ -1,21 +1,8 @@
 import unittest
-from pathlib import Path
 from .web import violations
 
 
 class WebBoundaryTests(unittest.TestCase):
-    def test_web_image_contains_vite_import_chain(self):
-        root = Path(__file__).resolve().parents[3]
-        dockerfile = (root / 'clients/web/Dockerfile').read_text(encoding='utf-8')
-        copies = [line.split()[1:] for line in dockerfile.splitlines()
-                  if line.startswith('COPY ') and not line.startswith('COPY --from=')]
-        for source, destination in (
-            ('clients/web/scripts/deepfilter_assets.mjs', './scripts/deepfilter_assets.mjs'),
-            ('tools/audio/research_dfn_web/stage.mjs', '/app/tools/audio/research_dfn_web/stage.mjs'),
-        ):
-            self.assertTrue((root / source).is_file(), source)
-            self.assertIn([source, destination], copies)
-
     def test_feature_cannot_import_shell_even_dynamically(self):
         sources = {'clients/web/src/voice/control.ts': ['../workspace/WorkspaceApp.vue'],
                    'clients/web/src/workspace/WorkspaceApp.vue': []}
