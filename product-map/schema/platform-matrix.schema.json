@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.boohtacord.invalid/product-map/platform-matrix.schema.json",
+  "type": "object",
+  "required": ["web", "windows", "macos", "android", "ios"],
+  "additionalProperties": false,
+  "properties": {
+    "web": {"$ref": "#/$defs/decision"},
+    "windows": {"$ref": "#/$defs/decision"},
+    "macos": {"$ref": "#/$defs/decision"},
+    "android": {"$ref": "#/$defs/decision"},
+    "ios": {"$ref": "#/$defs/decision"}
+  },
+  "$defs": {
+    "decision": {
+      "type": "object",
+      "required": ["applicability", "state", "revision"],
+      "additionalProperties": false,
+      "properties": {
+        "applicability": {"enum": ["SUPPORTED", "NOT_APPLICABLE", "PLATFORM_EXCEPTION", "PLANNED", "UNKNOWN"]},
+        "state": {"enum": ["NOT_STARTED", "PARTIAL", "IMPLEMENTED", "UNKNOWN"]},
+        "revision": {"type": ["integer", "null"], "minimum": 1},
+        "reason": {"type": "string", "minLength": 1},
+        "owner": {"type": "string", "minLength": 1},
+        "alternative": {"type": "string", "minLength": 1},
+        "review_date": {"type": "string", "minLength": 1},
+        "tracking_issue": {"type": "integer", "minimum": 1}
+      },
+      "allOf": [
+        {"if": {"properties": {"state": {"const": "IMPLEMENTED"}}, "required": ["state"]},
+         "then": {"properties": {"revision": {"type": "integer", "minimum": 1}}}},
+        {"if": {"properties": {"applicability": {"enum": ["NOT_APPLICABLE", "PLATFORM_EXCEPTION"]}}, "required": ["applicability"]},
+         "then": {"required": ["reason", "owner", "alternative", "review_date", "tracking_issue"]}}
+      ]
+    }
+  }
+}

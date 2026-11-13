@@ -1,0 +1,42 @@
+{
+  "components": [
+    {"id": "cmp.web.support_contact", "source": {"parity_id": "support.pair-dm", "platform": "web"}},
+    {"id": "cmp.flutter.support_contact", "source": {"parity_id": "support.pair-dm", "platform": "android"}},
+    {"id": "cmp.web.support_consent", "source": {"parity_id": "product-support-public-github", "platform": "web"}},
+    {"id": "cmp.flutter.support_consent", "source": {"parity_id": "product-support-public-github", "platform": "android"}}
+  ],
+  "features": [
+    {
+      "id": "support.pair-dm",
+      "title": "Личная переписка с поддержкой",
+      "domain": "support",
+      "target_revision": null,
+      "behavior_revisions": [],
+      "parity_ids": ["support.pair-dm"],
+      "components": ["cmp.web.support_contact", "cmp.flutter.support_contact"],
+      "platforms": {
+        "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "macos": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "android": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "ios": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null}
+      }
+    },
+    {
+      "id": "product-support-public-github",
+      "title": "Публикация обращения в поддержку",
+      "domain": "support",
+      "target_revision": null,
+      "behavior_revisions": [],
+      "parity_ids": ["product-support-public-github"],
+      "components": ["cmp.web.support_consent", "cmp.flutter.support_consent"],
+      "platforms": {
+        "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "macos": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "android": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "ios": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null}
+      }
+    }
+  ]
+}

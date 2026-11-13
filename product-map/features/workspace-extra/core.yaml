@@ -1,0 +1,58 @@
+{
+  "components": [
+    {"id": "cmp.flutter.profile", "source": {"parity_id": "settings.profile", "platform": "android"}},
+    {"id": "cmp.flutter.workspace", "source": {"parity_id": "navigation.search", "platform": "android"}},
+    {"id": "cmp.web.channel_navigation", "source": {"parity_id": "navigation.channel-favorites", "platform": "web"}},
+    {"id": "cmp.flutter.channel_navigation", "source": {"parity_id": "navigation.channel-favorites", "platform": "android"}}
+  ],
+  "features": [
+    {
+      "id": "settings.profile",
+      "title": "Профиль и настройки",
+      "domain": "settings",
+      "target_revision": null,
+      "behavior_revisions": [],
+      "parity_ids": ["settings.profile"],
+      "components": ["cmp.web.workspace", "cmp.flutter.profile"],
+      "platforms": {
+        "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "macos": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "android": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "ios": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null}
+      }
+    },
+    {
+      "id": "navigation.search",
+      "title": "Поиск и навигация",
+      "domain": "navigation",
+      "target_revision": null,
+      "behavior_revisions": [],
+      "parity_ids": ["navigation.search"],
+      "components": ["cmp.web.workspace", "cmp.flutter.workspace"],
+      "platforms": {
+        "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "macos": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "android": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "ios": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null}
+      }
+    },
+    {
+      "id": "navigation.channel-favorites",
+      "title": "Избранные каналы",
+      "domain": "navigation",
+      "target_revision": null,
+      "behavior_revisions": [],
+      "parity_ids": ["navigation.channel-favorites"],
+      "components": ["cmp.web.channel_navigation", "cmp.flutter.channel_navigation"],
+      "platforms": {
+        "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "macos": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "android": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "ios": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null}
+      }
+    }
+  ]
+}

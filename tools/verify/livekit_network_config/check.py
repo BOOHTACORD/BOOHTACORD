@@ -103,6 +103,8 @@ def main():
         verify_review(root, revision, review["repository_artifacts"])
     speaker_activity = read(root, "evidence/media/livekit-network-speaker-activity-2026-11-10.json")
     expected_artifacts |= speaker_activity["repository_artifacts"]
+    product_map_source = read(root, "evidence/media/livekit-network-product-map-2026-11-10.json")
+    expected_artifacts |= product_map_source["repository_artifacts"]
     for path, expected in expected_artifacts.items():
         content = evidence_content(root, HISTORICAL_EVIDENCE_REVISION, path)
         content = content.replace(b"\r\n", b"\n")

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "task": "CICD-13",
+  "dependencies": [
+    "CICD-12",
+    "CICD-08",
+    "CICD-18",
+    "CICD-07"
+  ],
+  "scope": "Prepare Apple publications from current source; shared native identity metadata only",
+  "base_revision": "6ba6dd2dd3e51a67b195c2ab13c304623f0c3c2e",
+  "reason": "macos-v1.0.53 is already immutable at a93965f4ceb435ef08d3e3011340f397f7c5af17; latest source must use a new version",
+  "version": "1.0.54",
+  "native_build": "90",
+  "release_order": 69,
+  "shared_identity_policy": "All native identities must match the one Flutter pubspec version; only macOS and iOS publication requested",
+  "ios_distribution": "ru.boohtacord.app.test, without remote push as previously authorized; signing overrides stay outside Git",
+  "previous_local_builds": {
+    "version": "1.0.53+89",
+    "macos": "PASS",
+    "ios": "PASS",
+    "focused_tests": 24
+  },
+  "implementation_changes": "NONE",
+  "visual_behavior_changes": "NONE except version labels",
+  "ci": "NOT_RUN",
+  "macos_publication": "NOT_RUN",
+  "testflight_publication": "NOT_RUN",
+  "physical_media": "NOT_RUN",
+  "release_gate": "PENDING",
+  "local_verification": {
+    "native_release_source_assets": "8 PASS",
+    "identity_fixture_tests": "3 PASS",
+    "identity_consistency": "all four native identities match pubspec",
+    "contracts": "25 tests PASS, OpenAPI parity 135 public operations"
+  }
+}

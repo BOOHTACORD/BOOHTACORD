@@ -1,0 +1,88 @@
+{
+  "components": [
+    {"id":"cmp.web.workspace","source":{"parity_id":"auth.session","platform":"web"}},
+    {"id":"cmp.flutter.session","source":{"parity_id":"auth.session","platform":"android"}},
+    {"id":"cmp.flutter.conversation","source":{"parity_id":"chat.text-dm","platform":"android"}},
+    {"id":"cmp.flutter.screen_viewer","source":{"parity_id":"screen.viewer.commands","platform":"android"}},
+    {"id":"cmp.web.screen_participants","source":{"parity_id":"screen.viewer.compact_participants","platform":"web"}},
+    {"id":"cmp.flutter.screen_participants","source":{"parity_id":"screen.viewer.compact_participants","platform":"android"}},
+    {"id":"cmp.flutter.native_notifications","source":{"parity_id":"notifications.foreground","platform":"android"}},
+    {"id":"cmp.web.notification_settings","source":{"parity_id":"notifications.addressed_background_v1","platform":"web"}},
+    {"id":"cmp.android.push_driver","source":{"parity_id":"notifications.addressed_background_v1","platform":"android"}},
+    {"id":"cmp.ios.push_adapter","source":{"parity_id":"notifications.addressed_background_v1","platform":"ios"}}
+  ],
+  "features": [
+    {
+      "id":"auth.session", "title":"Вход и сессии", "domain":"auth", "target_revision":null,
+      "behavior_revisions":[], "parity_ids":["auth.session"],
+      "components":["cmp.web.workspace","cmp.flutter.session"],
+      "platforms": {
+        "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "macos":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "android":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "ios":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null}
+      }
+    },
+    {
+      "id":"chat.text-dm", "title":"Текстовые каналы и личные сообщения", "domain":"chat", "target_revision":null,
+      "behavior_revisions":[], "parity_ids":["chat.text-dm"],
+      "components":["cmp.web.workspace","cmp.flutter.conversation"],
+      "platforms": {
+        "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "macos":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "android":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "ios":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null}
+      }
+    },
+    {
+      "id":"screen.viewer.commands", "title":"Просмотр демонстрации", "domain":"screen", "target_revision":null,
+      "behavior_revisions":[], "parity_ids":["screen.viewer.commands"],
+      "components":["cmp.web.workspace","cmp.flutter.screen_viewer"],
+      "platforms": {
+        "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "macos":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "android":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "ios":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null}
+      }
+    },
+    {
+      "id":"screen.viewer.compact_participants", "title":"Участники демонстрации", "domain":"screen", "target_revision":null,
+      "behavior_revisions":[], "parity_ids":["screen.viewer.compact_participants"],
+      "components":["cmp.web.screen_participants","cmp.flutter.screen_participants"],
+      "platforms": {
+        "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "macos":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "android":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "ios":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null}
+      }
+    },
+    {
+      "id":"notifications.foreground", "title":"Уведомления в активном приложении", "domain":"notifications", "target_revision":null,
+      "behavior_revisions":[], "parity_ids":["notifications.foreground"],
+      "components":["cmp.web.workspace","cmp.flutter.native_notifications"],
+      "platforms": {
+        "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "macos":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "android":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "ios":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null}
+      }
+    },
+    {
+      "id":"notifications.addressed_background_v1", "title":"Фоновые адресные уведомления", "domain":"notifications", "target_revision":null,
+      "behavior_revisions":[], "parity_ids":["notifications.addressed_background_v1"],
+      "components":["cmp.web.notification_settings","cmp.android.push_driver","cmp.ios.push_adapter"],
+      "platforms": {
+        "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "macos":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "android":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "ios":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null}
+      }
+    }
+  ]
+}

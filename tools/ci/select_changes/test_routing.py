@@ -25,6 +25,8 @@ class RoutingTests(unittest.TestCase):
             (['tools/qa/critical_client_acceptance/select_stream.mjs'], {'contracts', 'web'}, False, False),
             (['tools/qa/critical_client_acceptance/select_stream.test.mjs'], {'contracts', 'web'}, False, False),
             (['tools/ci/select_changes/dependencies.json'], {'contracts'}, False, False),
+            (['tools/product_map/viewer/app.js'], {'contracts'}, False, False),
+            (['product-map/features/voice.yaml'], {'contracts'}, False, False),
             (['tools/ci/select_changes/test_routing.py'], {'contracts'}, False, False),
             (['tools/ci/actual_acceptance/plan-v1.json'], {'contracts'}, False, False),
             (['tools/ci/actual_acceptance/test_plan.py'], {'contracts'}, False, False),

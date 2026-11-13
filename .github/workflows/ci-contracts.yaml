@@ -29,9 +29,13 @@ jobs:
         with:
           go-version: '1.26.4'
           cache-dependency-path: .out/ci/cache-inputs/go.json
+      - name: Prepare public Node SDK and locked dependency cache inputs
+        run: python3 -m tools.ci.toolchains.cache_inputs npm
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: .out/ci/cache-inputs/npm.json
       - name: Test bounded disposable browser worker policy
         run: node --test clients/web/tests/browser_runtime/workers.test.mjs
       - name: Test owned browser startup and failure diagnostic privacy
@@ -62,6 +66,44 @@ jobs:
         run: |
           python -m unittest tools.verify.client_parity.test_policy tools.release.ios_artifact.test_verify
           python -m tools.verify.client_parity.run --base "$PARITY_BASE"
+      - name: Verify product-map parity projection and generated viewer
+        env:
+          PRODUCT_MAP_BASE: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
+          PRODUCT_MAP_EVENT: ${{ github.event_name }}
+        run: |
+          python -m unittest tools.product_map.catalog.test_validation tools.product_map.catalog.test_resolve tools.product_map.catalog.test_pilot tools.product_map.catalog.test_enrich tools.product_map.catalog.test_curated tools.product_map.projection.test_importer tools.product_map.projection.test_compare tools.product_map.projection.test_real_registry tools.product_map.projection.test_status tools.product_map.projection.test_render tools.product_map.viewer.test_document
+          python -m unittest tools.product_map.impact.test_analyze tools.product_map.impact.test_changes
+          python -m unittest tools.product_map.catalog.test_history
+          python -m unittest tools.product_map.catalog.test_feature_projection
+          python -m unittest tools.product_map.catalog.test_sessions
+          python -m unittest tools.product_map.catalog.test_melody
+          python -m unittest tools.product_map.markdown.test_render tools.product_map.markdown.test_output tools.product_map.markdown.test_architecture
+          python -m unittest tools.product_map.schema.test_schema
+          python -m unittest tools.product_map.architecture.test_model tools.product_map.architecture.test_catalog
+          python -m unittest tools.product_map.viewer.test_synthetic
+          python -m unittest tools.product_map.ownership.test_new_paths tools.product_map.ownership.test_git_tree
+          python -m unittest tools.product_map.ownership.test_coverage
+          python -m unittest tools.product_map.ownership.test_scopes
+          python -m tools.product_map.ownership.report
+          python -m unittest tools.product_map.release.test_github_api
+          python -m unittest tools.product_map.evidence_download.test_run tools.product_map.evidence_download.test_transport
+          python -m unittest tools.product_map.release_verification.test_match tools.product_map.release_verification.test_live
+          node --test tools/product_map/viewer/graph.test.cjs tools/product_map/viewer/filters.test.cjs tools/product_map/viewer/links.test.cjs tools/product_map/viewer/system_graph.test.cjs
+          if [ "$PRODUCT_MAP_EVENT" = pull_request ] || [ "$PRODUCT_MAP_EVENT" = merge_group ]; then
+            test -n "$PRODUCT_MAP_BASE" || { echo 'Missing product-map base SHA' >&2; exit 1; }
+            python -m tools.product_map check-transition --base "$PRODUCT_MAP_BASE"
+            python -m tools.product_map.ownership.run --base "$PRODUCT_MAP_BASE"
+            python -m tools.product_map impact --base "$PRODUCT_MAP_BASE"
+          fi
+          python -m unittest tools.product_map.release.test_snapshot tools.product_map.release.test_source tools.product_map.release.test_build tools.product_map.release.test_workflows tools.product_map.release.test_asset_gate tools.product_map.release.test_publication tools.product_map.release.test_producer tools.product_map.release.test_archive
+          python -m tools.product_map validate-parity
+          python -m tools.product_map generate --check
+      - name: Verify product-map viewer at mobile widths
+        run: |
+          npm ci --prefix clients/web --ignore-scripts
+          clients/web/node_modules/.bin/playwright install --with-deps chromium
+          node --test tools/product_map/viewer/viewport.browser.cjs
+          node tools/product_map/viewer/benchmark.browser.cjs
       - name: Verify generated tracing contract bindings
         run: node tools/observability/flow_contract/generate.mjs --check
       - name: Verify publisher signatures and desktop promotion guards

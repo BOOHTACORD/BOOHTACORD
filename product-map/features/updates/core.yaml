@@ -1,0 +1,41 @@
+{
+  "components": [
+    {"id": "cmp.web.required_update", "source": {"parity_id": "updates.required_gate", "platform": "web"}},
+    {"id": "cmp.flutter.required_update", "source": {"parity_id": "updates.required_gate", "platform": "android"}},
+    {"id": "cmp.flutter.update_controller", "source": {"parity_id": "client.update-awareness", "platform": "android"}}
+  ],
+  "features": [
+    {
+      "id": "updates.required_gate",
+      "title": "Обязательное обновление",
+      "domain": "updates",
+      "target_revision": null,
+      "behavior_revisions": [],
+      "parity_ids": ["updates.required_gate"],
+      "components": ["cmp.web.required_update", "cmp.flutter.required_update"],
+      "platforms": {
+        "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "macos": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "android": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "ios": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null}
+      }
+    },
+    {
+      "id": "client.update-awareness",
+      "title": "Доступное обновление",
+      "domain": "updates",
+      "target_revision": null,
+      "behavior_revisions": [],
+      "parity_ids": ["client.update-awareness"],
+      "components": ["cmp.web.workspace", "cmp.flutter.update_controller"],
+      "platforms": {
+        "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "macos": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "android": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "ios": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null}
+      }
+    }
+  ]
+}

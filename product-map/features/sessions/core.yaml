@@ -1,0 +1,37 @@
+{
+  "components": [
+    {"id":"cmp.web.own_sessions_panel","paths":["clients/web/src/identity/own_sessions/OwnSessionsPanel.vue"],"depends_on":["cmp.web.own_sessions_state"]},
+    {"id":"cmp.web.own_sessions_state","paths":["clients/web/src/identity/own_sessions/state.ts"],"depends_on":["cmp.web.own_sessions_client"]},
+    {"id":"cmp.web.own_sessions_client","paths":["clients/web/src/identity/own_sessions/client.ts"]},
+    {"id":"cmp.flutter.own_sessions_panel","paths":["clients/flutter/lib/src/features/session/own_sessions/panel.dart"],"depends_on":["cmp.flutter.own_sessions_controller"]},
+    {"id":"cmp.flutter.own_sessions_controller","paths":["clients/flutter/lib/src/features/session/own_sessions/controller.dart"]},
+    {"id":"cmp.flutter.own_sessions_facade","paths":["clients/flutter/lib/src/features/session/own_sessions/facade.dart"],"depends_on":["cmp.flutter.own_sessions_api"]},
+    {"id":"cmp.flutter.own_sessions_api","paths":["clients/flutter/lib/src/features/session/own_sessions/api.dart"]},
+    {"id":"cmp.backend.own_session_routes","paths":["backend/internal/app/own_session_routes/routes.go"],"depends_on":["cmp.backend.list_own_sessions","cmp.backend.revoke_own_sessions"]},
+    {"id":"cmp.backend.list_own_sessions","paths":["backend/internal/identity/list_own_sessions/api/handler.go"]},
+    {"id":"cmp.backend.revoke_own_sessions","paths":["backend/internal/identity/revoke_own_sessions/api/handler.go"]}
+  ],
+  "features": [
+    {
+      "id":"auth.own_sessions", "title":"Управление своими сеансами", "domain":"auth",
+      "description":"Просмотр и завершение сеансов собственного аккаунта.",
+      "target_revision":null, "behavior_revisions":[], "parity_ids":[], "depends_on":["auth.session"],
+      "owned_roots":[
+        {"path":"clients/web/src/identity/own_sessions/","component":"cmp.web.own_sessions_panel"},
+        {"path":"clients/flutter/lib/src/features/session/own_sessions/","component":"cmp.flutter.own_sessions_panel"},
+        {"path":"backend/internal/identity/list_own_sessions/","component":"cmp.backend.list_own_sessions"},
+        {"path":"backend/internal/identity/revoke_own_sessions/","component":"cmp.backend.revoke_own_sessions"}
+      ],
+      "components":["cmp.web.own_sessions_panel","cmp.web.own_sessions_state","cmp.web.own_sessions_client",
+        "cmp.flutter.own_sessions_panel","cmp.flutter.own_sessions_controller","cmp.flutter.own_sessions_facade",
+        "cmp.flutter.own_sessions_api","cmp.backend.own_session_routes","cmp.backend.list_own_sessions","cmp.backend.revoke_own_sessions"],
+      "platforms": {
+        "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "macos":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "android":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
+        "ios":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null}
+      }
+    }
+  ]
+}

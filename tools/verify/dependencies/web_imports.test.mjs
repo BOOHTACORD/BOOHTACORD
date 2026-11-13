@@ -1,6 +1,19 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
+import { readFileSync } from 'node:fs'
 import { importsOf } from './web_imports.mjs'
+
+test('web image includes the Vite asset import chain', () => {
+  const root = new URL('../../../', import.meta.url)
+  const dockerfile = readFileSync(new URL('clients/web/Dockerfile', root), 'utf8')
+  for (const [source, destination] of [
+    ['clients/web/scripts/deepfilter_assets.mjs', './scripts/deepfilter_assets.mjs'],
+    ['tools/audio/research_dfn_web/stage.mjs', '/app/tools/audio/research_dfn_web/stage.mjs'],
+  ]) {
+    assert.ok(readFileSync(new URL(source, root)).length > 0)
+    assert.ok(dockerfile.split(/\r?\n/).includes(`COPY ${source} ${destination}`))
+  }
+})
 
 test('compiler imports include type, re-export and dynamic imports', () => {
   assert.deepEqual(importsOf(`import type { X } from './types'

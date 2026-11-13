@@ -1,0 +1,22 @@
+# Управление голосом
+
+ID: `voice.controls`
+
+Описание: Join, mute/deafen, PTT, volume, lease revocation and reconnect retain the same user intent and server ACL.
+
+[← Матрица](../index.md)
+
+## Платформы
+
+| Платформа | Исходники | Релиз | Runtime |
+| --- | --- | --- | --- |
+| web | UNKNOWN | UNKNOWN | NOT\_VERIFIED |
+| windows | UNKNOWN | UNKNOWN | NOT\_VERIFIED |
+| macos | UNKNOWN | UNKNOWN | NOT\_VERIFIED |
+| android | UNKNOWN | UNKNOWN | NOT\_VERIFIED |
+| ios | UNKNOWN | UNKNOWN | NOT\_VERIFIED |
+
+## Компоненты
+
+- cmp.flutter.voice\_controller: [clients/flutter/lib/src/features/voice/lifecycle/controller.dart](../../../../clients/flutter/lib/src/features/voice/lifecycle/controller.dart)
+- cmp.web.voice\_controls: [clients/web/src/voice/VoiceDock.vue](../../../../clients/web/src/voice/VoiceDock.vue)
