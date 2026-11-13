@@ -2,6 +2,7 @@
 #define BOOHTA_RNNOISE_CAPTURE_PROCESSOR_H_
 #include <atomic>
 #include "microphone_controls/processor.h"
+#include "deepfilter/resample_16k/resampler.h"
 #include <cstdint>
 #include <cstdlib>
 extern "C" {
@@ -36,6 +37,7 @@ class RnnoiseCaptureProcessor {
  private:
   bool ProcessNoise(float* pcm, int frames, int capacity);
   bool ProcessDeepFilter(float* pcm, int frames, int capacity, uint64_t generation);
+  deepfilter::Resampler16k resampler_;
   DenoiseState* state_;
   deepfilter::CaptureHook* const hook_;
   std::atomic<Engine> requested_{Engine::kBrowser};

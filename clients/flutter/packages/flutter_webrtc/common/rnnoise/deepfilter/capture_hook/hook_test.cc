@@ -96,10 +96,12 @@ int main() {
   connected.Initialize(48000, 1);
   assert(runtime.Launch());
   connected.SetEngine(Engine::kDeepFilter);
+  const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(5);
+  while (!runtime.Prepared() && std::chrono::steady_clock::now() < deadline) std::this_thread::yield();
+  assert(runtime.Prepared());
   for (float& x : pcm) x = 2000.f;
   assert(connected.Process(pcm, 480, 480));
   for (float x : pcm) assert(x == 0.f);
-  const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(5);
   while (runtime.Snapshot().state != LifecycleState::active && std::chrono::steady_clock::now() < deadline)
     std::this_thread::yield();
   assert(runtime.Snapshot().state == LifecycleState::active);

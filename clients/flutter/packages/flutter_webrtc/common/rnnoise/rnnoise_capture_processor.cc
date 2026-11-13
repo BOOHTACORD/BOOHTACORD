@@ -43,6 +43,7 @@ bool RnnoiseCaptureProcessor::ProcessNoise(float* pcm, int frames, int capacity)
   const auto generation = generation_.load();
   if (generation != applied_generation_) {
     if (state_) rnnoise_init(state_);
+    resampler_.Reset();
     applied_generation_ = generation;
   }
   if (requested_.load() == Engine::kDeepFilter) return ProcessDeepFilter(pcm, frames, capacity, generation);
