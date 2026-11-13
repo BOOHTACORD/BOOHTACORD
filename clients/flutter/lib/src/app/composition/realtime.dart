@@ -6,6 +6,7 @@ import '../../features/voice/lifecycle/controller.dart';
 import '../../features/voice/roster_state/controller.dart';
 import '../../features/workspace/load_topology/controller.dart';
 import '../../features/workspace/load_members/controller.dart';
+import '../../features/workspace/load_directs/controller.dart';
 import '../../features/notifications/message_events/controller.dart';
 import '../../features/notifications/remote_lifecycle/controller.dart';
 import 'owners.dart';
@@ -43,6 +44,7 @@ void configureRealtime(AppOwners app) {
       app.permissions.invalidateRealtime();
       app.workspace.invalidateRealtimeTopology();
       app.workspace.invalidateRealtimeMembers();
+      app.workspace.invalidateRealtimeDirects();
       app.maintenance.authSocketEnd();
       app.voiceRoster.sharedSocketEnd();
     },
