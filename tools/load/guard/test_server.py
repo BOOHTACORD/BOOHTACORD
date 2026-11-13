@@ -7,6 +7,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 from .server import Guard
+from .sample_failure import SampleFailure
 
 
 class GuardWireTests(unittest.TestCase):
@@ -27,6 +28,11 @@ class GuardWireTests(unittest.TestCase):
                         with self.assertRaises(urllib.error.HTTPError) as failed:
                             urllib.request.urlopen(req)
                         self.assertEqual(failed.exception.code, 503)
+                        with patch.object(guard, 'sample', side_effect=SampleFailure('fixture_verification')):
+                            with self.assertRaises(urllib.error.HTTPError) as categorized:
+                                urllib.request.urlopen(req)
+                            self.assertEqual(categorized.exception.code, 503)
+                            self.assertEqual(categorized.exception.headers.get('X-QA-Guard-Stage'), 'fixture_verification')
                         restore = urllib.request.Request('http://127.0.0.1:4890/fault/restore',
                             method='POST', headers={'X-Load-Nonce': 'private'})
                         with urllib.request.urlopen(restore) as response:

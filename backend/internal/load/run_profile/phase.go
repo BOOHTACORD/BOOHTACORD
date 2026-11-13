@@ -17,21 +17,29 @@ func (r *Runner) phase(ctx context.Context, guard observe_resources.Guard, name 
 		phase.Requests = r.budget.Load() - before
 		phase.RequestsPerSecond = float64(phase.Requests) / phase.Seconds
 	}()
-	timer := time.NewTimer(duration)
-	defer timer.Stop()
 	if r.Profile == "faults" {
 		faults := map[string]string{"warmup": "db_pressure", "ramp": "sfu_outage", "steady": "slow_telemetry", "spike": "disk_pressure"}
 		if fault := faults[name]; fault != "" {
 			if err := guard.Fault(ctx, fault); err != nil {
+				phase.Failure = "fault_" + observe_resources.Category(err)
+				if ctx.Err() != nil {
+					phase.Failure = "canceled"
+				}
 				return phase, err
 			}
 		}
 	}
 	if name == "recovery" {
 		if err := guard.Fault(ctx, "restore"); err != nil {
+			phase.Failure = "restore_" + observe_resources.Category(err)
+			if ctx.Err() != nil {
+				phase.Failure = "canceled"
+			}
 			return phase, err
 		}
 	}
+	timer := time.NewTimer(duration)
+	defer timer.Stop()
 	for iteration := 0; ; iteration++ {
 		select {
 		case <-ctx.Done():
