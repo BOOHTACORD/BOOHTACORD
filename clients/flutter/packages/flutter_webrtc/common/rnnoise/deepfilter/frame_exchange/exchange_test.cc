@@ -73,4 +73,22 @@ int main() {
   assert(delayed.WorkerPop(8, worker)); assert(delayed.WorkerPush(worker));
   assert(delayed.Capture(input, 8, false, output) == ExchangeStatus::ready);
   for (float sample : output) assert(sample == 0.3f);
+
+  FrameExchange<2> late;
+  for (int i = 0; i < 4; ++i) {
+    assert(late.Capture(input, 1, false, output) == ExchangeStatus::no_frame);
+    assert(late.WorkerPop(1, worker));
+  }
+  worker.sequence = 0;
+  assert(late.WorkerPush(worker));
+  assert(late.Capture(input, 1, false, output) == ExchangeStatus::overload);
+  for (float sample : output) assert(sample == 0.0f);
+
+  FrameExchange<2> future;
+  assert(future.Capture(input, 1, false, output) == ExchangeStatus::no_frame);
+  assert(future.WorkerPop(1, worker));
+  worker.generation = 1; worker.sequence = 100;
+  assert(future.WorkerPush(worker));
+  assert(future.Capture(input, 1, false, output) == ExchangeStatus::overload);
+  for (float sample : output) assert(sample == 0.0f);
 }

@@ -51,3 +51,8 @@ An overflow requires the owner to stop the pipeline and fall back; the test
 does not claim self-recovery after an overflow. No result here proves those
 owner responsibilities, fallback, production
 thread scheduling, actual microphone quality, or end-to-end latency.
+
+The capture-side prototype rejects output from future sequences or more than
+the queue capacity in capture intervals old and emits silence on rejection.
+The caller still must stop the affected generation and initiate fallback; a
+sequence bound is not a measured wall-clock or end-to-end latency guarantee.

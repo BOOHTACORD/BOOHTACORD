@@ -16,7 +16,8 @@ enum class ExchangeStatus { ready, buffering, no_frame, invalid_audio, overload 
 // Input and output each reference 480 floats of normalized mono PCM in [-1,
 // 1], and may overlap. Failure and underflow return silence; fallback policy
 // belongs to the owner. Startup buffering is reported separately from underrun;
-// its delay and suitability must be measured before integration.
+// its delay and suitability must be measured before integration. Frames more
+// than Capacity capture intervals old, or from the future, fail closed.
 template <std::size_t Capacity>
 class FrameExchange {
  public:
@@ -46,11 +47,13 @@ class FrameExchange {
     std::fill_n(output, 480, 0.0f);
     if (sequence_ == std::numeric_limits<std::uint64_t>::max()) return ExchangeStatus::overload;
     frame.generation = generation; frame.sequence = sequence_++;
+    const auto current_sequence = frame.sequence;
     if (!input_.TryPush(frame)) return ExchangeStatus::overload;
     if (warmup_remaining_ > 0) { --warmup_remaining_; return ExchangeStatus::buffering; }
     const auto result = TakeCurrentFrame(output_, generation, false, has_last_, last_sequence_, frame);
     if (result == FrameStatus::invalid_audio) return ExchangeStatus::invalid_audio;
     if (result != FrameStatus::ready) return ExchangeStatus::no_frame;
+    if (frame.sequence > current_sequence || current_sequence - frame.sequence > Capacity) return ExchangeStatus::overload;
     for (float sample : frame.samples) if (std::fabs(sample) > 1.0f) return ExchangeStatus::invalid_audio;
     has_last_ = true; last_sequence_ = frame.sequence;
     if (emitted_sequence) *emitted_sequence = frame.sequence;
