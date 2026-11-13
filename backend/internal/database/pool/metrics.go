@@ -13,6 +13,7 @@ type Metrics struct {
 	exportDuration metric.Float64Histogram
 	registration   metric.Registration
 	pool           *pgxpool.Pool
+	sessionPool    *pgxpool.Pool
 	pending        prometheus.Gauge
 	acquires       *prometheus.CounterVec
 	duration       *prometheus.HistogramVec
@@ -45,8 +46,7 @@ func (m *Metrics) Collect(c chan<- prometheus.Metric) {
 	if m.pool == nil {
 		return
 	}
-	s := m.pool.Stat()
-	for name, value := range map[string]float64{"acquired": float64(s.AcquiredConns()), "idle": float64(s.IdleConns()), "total": float64(s.TotalConns()), "max": float64(s.MaxConns()), "constructing": float64(s.ConstructingConns()), "empty_acquires_total": float64(s.EmptyAcquireCount()), "empty_acquire_wait_seconds_total": s.EmptyAcquireWaitTime().Seconds(), "canceled_acquires_total": float64(s.CanceledAcquireCount())} {
+	for name, value := range m.snapshot() {
 		kind := prometheus.GaugeValue
 		if name == "empty_acquires_total" || name == "empty_acquire_wait_seconds_total" || name == "canceled_acquires_total" {
 			kind = prometheus.CounterValue

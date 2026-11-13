@@ -17,11 +17,12 @@ func (m *Metrics) startExport() {
 		value := &dto.Metric{}
 		_ = m.pending.Write(value)
 		o.ObserveFloat64(pending, value.GetGauge().GetValue())
-		s := m.pool.Stat()
-		o.ObserveFloat64(wait, s.EmptyAcquireWaitTime().Seconds())
-		o.ObserveInt64(events, s.EmptyAcquireCount(), metric.WithAttributes(attribute.String("stat", "empty_acquires")))
-		o.ObserveInt64(events, s.CanceledAcquireCount(), metric.WithAttributes(attribute.String("stat", "canceled_acquires")))
-		for name, value := range map[string]float64{"acquired": float64(s.AcquiredConns()), "idle": float64(s.IdleConns()), "total": float64(s.TotalConns()), "max": float64(s.MaxConns()), "constructing": float64(s.ConstructingConns())} {
+		s := m.snapshot()
+		o.ObserveFloat64(wait, s["empty_acquire_wait_seconds_total"])
+		o.ObserveInt64(events, int64(s["empty_acquires_total"]), metric.WithAttributes(attribute.String("stat", "empty_acquires")))
+		o.ObserveInt64(events, int64(s["canceled_acquires_total"]), metric.WithAttributes(attribute.String("stat", "canceled_acquires")))
+		for _, name := range []string{"acquired", "idle", "total", "max", "constructing"} {
+			value := s[name]
 			o.ObserveFloat64(stats, value, metric.WithAttributes(attribute.String("stat", name)))
 		}
 		return nil
