@@ -28,7 +28,7 @@ type Sessions interface {
 }
 
 // SessionLookupTimeout reuses the five-second roster snapshot/revalidation budget.
-// It bounds only the database lookup, not the lifetime of an authenticated SSE request.
+// It bounds only the database lookup, not the lifetime of an authenticated request.
 const SessionLookupTimeout = 5 * time.Second
 
 type Service struct {
