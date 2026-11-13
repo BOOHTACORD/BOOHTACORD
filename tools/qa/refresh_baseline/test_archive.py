@@ -26,14 +26,20 @@ class ArchiveTests(unittest.TestCase):
             historical = git('rev-parse', 'HEAD')
             fixture = root / 'contracts/voice-sound-pcm.fixtures.json'
             fixture.write_text('{"joined":"shared-pcm"}', encoding='utf-8')
-            git('add', 'contracts')
+            stage = root / 'tools/audio/research_dfn_web/stage.mjs'
+            stage.parent.mkdir(parents=True)
+            stage.write_text('export const fixture = true', encoding='utf-8')
+            (stage.parent / 'private.txt').write_text('not included', encoding='utf-8')
+            git('add', 'contracts', 'tools')
             git('commit', '--quiet', '-m', 'shared sound fixtures')
             current = git('rev-parse', 'HEAD')
             for revision, expected in ((historical, False), (current, True)):
                 with tarfile.open(fileobj=io.BytesIO(run.archive_source(root, revision))) as archive:
                     names = archive.getnames()
                     self.assertEqual(expected, 'contracts/voice-sound-pcm.fixtures.json' in names)
+                    self.assertEqual(expected, 'tools/audio/research_dfn_web/stage.mjs' in names)
                     self.assertNotIn('backend/private.txt', names)
+                    self.assertNotIn('tools/audio/research_dfn_web/private.txt', names)
                     self.assertIn('contracts/client-build.json', names)
 
     def test_rejects_escape(self):
