@@ -13,5 +13,11 @@ On the disposable stack at local commit 37c2c953, the database lock was seen
 initially, but the 20-second, one-account profile failed `fault_lost`: a blocked
 request outlasted the two-second fault. Cleanup passed. This is not capacity or
 successful fault acceptance. The subsequent change bounds requests within fault
-phase duration, retains their error counts, and passes focused Go tests. A fresh
-real-stack run of that change and the complete fault matrix remain NOT_RUN.
+phase duration, retains their error counts, and passes focused Go tests.
+
+At local commit 78931e5c, the same short run passed its database fault phase,
+then failed in the next phase with five fanout errors after a 1013 socket close.
+Cleanup passed. The harness now detects a failed current socket and explicitly
+reconnects it during a fault profile, recording the reconnect and preserving the
+original close/error observations. Focused tests pass; this latest recovery
+change has not yet been validated against the real disposable stack.
