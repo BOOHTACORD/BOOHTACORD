@@ -8,7 +8,6 @@ import (
 	rosterws "voice-platform/backend/internal/observability/roster_ws_metrics"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 type Recorder struct {
@@ -26,6 +25,7 @@ type Recorder struct {
 	reconnectOutcomes              *prometheus.CounterVec
 	maintenanceReads               *prometheus.CounterVec
 	registry                       *prometheus.Registry
+	resourceRegistry               *prometheus.Registry
 	realtime                       *realtimeConnections
 	capabilities                   *realtimeCapabilities
 	roster                         *voiceRosterMetrics
@@ -37,6 +37,8 @@ func New() *Recorder {
 	guildLifecycle := newGuildLifecycleMetrics()
 	registry := prometheus.NewRegistry()
 	registry.MustRegister(prometheus.NewGoCollector(), prometheus.NewProcessCollector(prometheus.ProcessCollectorOpts{}))
+	resourceRegistry := prometheus.NewRegistry()
+	resourceRegistry.MustRegister(prometheus.NewProcessCollector(prometheus.ProcessCollectorOpts{}))
 	routeRequests := observehttp.New(registry)
 	voiceSFURevocations := prometheus.NewCounterVec(prometheus.CounterOpts{
 		Name: "voice_platform_voice_sfu_revocations_total",
@@ -57,7 +59,7 @@ func New() *Recorder {
 	registry.MustRegister(voiceSFURevocations, realtime.active, realtime.total, realtime.ready, realtime.revalidation, realtime.revalidationFailures, realtime.rejected, reconnectOutcomes, eventDeliveryLatency, uploadFailures.total, clientScreen.total, clientScreen.fps, clientScreen.bitrate, roster.snapshots, roster.failures, roster.duration, roster.rooms, clientUpdates.checks, clientUpdates.reloads, clientUpdates.valid, clientUpdates.lastSuccess, clientUpdates.revision)
 	registry.MustRegister(clientScreen.qualityMetrics.collectors()...)
 	registry.MustRegister(guildLifecycle.settings, guildLifecycle.welcome, roster.calls, incident.Default)
-	return &Recorder{maintenanceReads: maintenanceReads, rosterDependencies: rosterdependency.New(registry), rosterWS: rosterws.New(registry), guildLifecycle: guildLifecycle, clientScreen: clientScreen, clientUpdates: clientUpdates, routeRequests: routeRequests, eventDeliveryLatency: eventDeliveryLatency, eventStages: eventStages, handler: promhttp.HandlerFor(registry, promhttp.HandlerOpts{}), reconnectOutcomes: reconnectOutcomes, realtime: realtime, capabilities: capabilities, roster: roster, registry: registry, uploadFailures: uploadFailures, voiceSFURevocations: voiceSFURevocations}
+	return &Recorder{maintenanceReads: maintenanceReads, rosterDependencies: rosterdependency.New(registry), rosterWS: rosterws.New(registry), guildLifecycle: guildLifecycle, clientScreen: clientScreen, clientUpdates: clientUpdates, routeRequests: routeRequests, eventDeliveryLatency: eventDeliveryLatency, eventStages: eventStages, handler: resourceView(registry, resourceRegistry), reconnectOutcomes: reconnectOutcomes, realtime: realtime, capabilities: capabilities, roster: roster, registry: registry, resourceRegistry: resourceRegistry, uploadFailures: uploadFailures, voiceSFURevocations: voiceSFURevocations}
 }
 
 func (recorder *Recorder) RegisterCollector(collector prometheus.Collector) error {

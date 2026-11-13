@@ -13,7 +13,7 @@ class OutageApi extends ApiClient {
   final socket = SocketFake();
 
   @override
-  Future<WebSocket> openRealtime({String? after}) {
+  Future<WebSocket> openRealtime({String? after, HttpClient? client}) {
     opens++;
     if (opens <= 9) return Future.error(const SocketException('offline'));
     return Future.value(socket);
@@ -45,11 +45,13 @@ void main() {
       expect(api.opens, attempt + 2);
     }
     expect(owner.socket, same(api.socket));
-    owner.receive(jsonEncode({
-      'event_id': 'ready',
-      'kind': 'connection.ready',
-      'payload': {},
-    }));
+    owner.receive(
+      jsonEncode({
+        'event_id': 'ready',
+        'kind': 'connection.ready',
+        'payload': {},
+      }),
+    );
     expect(owner.connected, isTrue);
     expect(owner.attempt, 0);
     expect(owner.retry, isNull);

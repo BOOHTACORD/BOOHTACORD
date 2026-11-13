@@ -33,7 +33,7 @@ func (c *Coordinator) Subscribe(id string) (*Subscription, error) {
 		if len(c.accounts) >= c.config.MaxAccounts {
 			return nil, ErrAdmission
 		}
-		a = &account{id: id, subs: make(map[*Subscription]struct{})}
+		a = &account{id: id, generation: uuid.NewString(), subs: make(map[*Subscription]struct{})}
 		c.accounts[id] = a
 	}
 	sub := &Subscription{owner: c, account: a, events: make(chan State, 1)}

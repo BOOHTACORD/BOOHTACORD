@@ -35,7 +35,7 @@ void main() {
             'payload': <String, dynamic>{},
           },
           {
-            'event_id': 'state',
+            'event_id': '11111111-1111-4111-8111-111111111111',
             'kind': 'maintenance.snapshot',
             'occurred_at': '2026-11-09T00:00:00Z',
             'payload': {

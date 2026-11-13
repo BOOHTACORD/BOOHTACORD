@@ -1,10 +1,14 @@
 import '../../conversation/lifecycle/controller.dart';
 
 extension ConversationLoadChannelHistory on ConversationController {
-  Future<void> loadChannelHistory(GuildChannel channel) async {
+  Future<void> loadChannelHistory(
+    GuildChannel channel, {
+    bool Function()? socketCurrent,
+  }) async {
     invalidateSelection();
     final active = admission(selection: true);
-    if (!active()) return;
+    bool current() => active() && (socketCurrent?.call() ?? true);
+    if (!current()) return;
     final loadSequence = ++textHistoryLoadSequence;
     messages = const [];
     nextMessageCursor = null;
@@ -18,7 +22,7 @@ extension ConversationLoadChannelHistory on ConversationController {
       changed();
       try {
         final page = await api.messagePage(channel.id);
-        if (!active()) return;
+        if (!current()) return;
         if (textHistoryLoadSequence == loadSequence &&
             selectedChannel?.id == channel.id) {
           acknowledgeMessageIds(
@@ -28,7 +32,7 @@ extension ConversationLoadChannelHistory on ConversationController {
           nextMessageCursor = page.nextCursor;
         }
       } catch (cause) {
-        if (!active()) return;
+        if (!current()) return;
         if (textHistoryLoadSequence == loadSequence &&
             selectedChannel?.id == channel.id) {
           error = formatError(cause);

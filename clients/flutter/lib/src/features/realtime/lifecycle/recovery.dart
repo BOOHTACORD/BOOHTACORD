@@ -1,17 +1,26 @@
 import 'dart:async';
 
 import 'controller.dart';
+import 'session_deadline.dart';
 
 extension RealtimeRecovery on RealtimeController {
   void retryNow() {
     if (!admission()()) return;
     if (socket != null || connecting) return;
+    sessionDeadline?.cancel();
+    sessionDeadline = null;
+    generation++;
+    checkingSession = false;
     retry?.cancel();
     retry = null;
     unawaited(connect());
   }
 
   void handleClosed() {
+    liveness?.stop();
+    liveness = null;
+    sessionDeadline?.cancel();
+    sessionDeadline = null;
     socketAttempt.end();
     handshake?.finish('failed', reason: 'network');
     handshake = null;
@@ -37,8 +46,13 @@ extension RealtimeRecovery on RealtimeController {
     final active = admission();
     if (!active() || checkingSession) return;
     checkingSession = true;
+    final deadline = RealtimeSessionDeadline(
+      (abort, pending) =>
+          api.currentRealtimeSession(abort, () => pending() && active()),
+    );
+    sessionDeadline = deadline;
     try {
-      final account = await api.currentSession();
+      final account = await deadline.result.future;
       if (!active()) return;
       if (account == null) {
         await expire();
@@ -47,6 +61,7 @@ extension RealtimeRecovery on RealtimeController {
     } catch (_) {
       // A transient REST failure does not establish expiration.
     } finally {
+      if (identical(sessionDeadline, deadline)) sessionDeadline = null;
       if (active()) checkingSession = false;
     }
     if (active()) scheduleRetry();

@@ -31,6 +31,12 @@ func (r *Runner) monitor(ctx context.Context, g observe_resources.Guard, stop ch
 		case <-ticker.C:
 			s, err := g.Check(ctx)
 			if err != nil {
+				if ctx.Err() != nil {
+					return
+				}
+				r.mu.Lock()
+				r.guardFailure = observe_resources.Category(err)
+				r.mu.Unlock()
 				stop <- "guard_resource_stop"
 				cancel()
 				return

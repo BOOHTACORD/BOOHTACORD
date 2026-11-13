@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'event.dart';
 
 part 'delivery_pump.dart';
+part 'delivery_security.dart';
 
 // Only these server journal kinds can be used as replay cursors. Ephemeral
 // presence/profile/permission/audience hints must never advance the cursor.
@@ -35,11 +36,14 @@ class RealtimeDelivery {
   final _queue = Queue<RealtimeEvent>();
   final _seen = <(String?, String)>{};
   final _revocations = <String, Future<void>>{};
+  final _securityBusy = <String>{};
+  final _securityPending = <String, RealtimeEvent>{};
   String? cursor;
   bool _busy = false, _needsRecovery = true;
   int _epoch = 0;
 
   void accept(RealtimeEvent event) {
+    if (_acceptSecurity(event)) return;
     if (event.kind == 'voice.lease_revoked') {
       if (_seen.contains((event.kind, event.id)) ||
           _revocations.containsKey(event.id)) {
@@ -67,8 +71,9 @@ class RealtimeDelivery {
   }
 
   Future<void> _recoverAndApply(RealtimeEvent event) async {
+    final epoch = _epoch;
     await recover();
-    if (event.kind == 'connection.ready') await apply(event);
+    if (epoch == _epoch && event.kind == 'connection.ready') await apply(event);
   }
 
   void _fail() {
@@ -79,7 +84,7 @@ class RealtimeDelivery {
   void disconnected() {
     // An interrupted application cannot be claimed durable. The next socket
     // starts from a full snapshot instead of acknowledging that event.
-    if (_busy || _queue.isNotEmpty) {
+    if (_busy || _queue.isNotEmpty || _securityBusy.isNotEmpty) {
       reset();
       return;
     }
@@ -92,6 +97,8 @@ class RealtimeDelivery {
     _queue.clear();
     _seen.clear();
     _revocations.clear();
+    _securityBusy.clear();
+    _securityPending.clear();
     cursor = null;
     _needsRecovery = true;
   }

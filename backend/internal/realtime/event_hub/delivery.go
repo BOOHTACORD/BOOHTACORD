@@ -25,7 +25,11 @@ func (hub *Hub) PublishContext(ctx context.Context, event Event) error {
 
 func (hub *Hub) publishLocked(event Event) {
 	for subscription := range hub.subscribers {
-		if !subscription.dropped {
+		if subscription.dropped {
+			if subscription.AllowsKind(event.Kind) {
+				subscription.retainCriticalLocked(event)
+			}
+		} else {
 			hub.deliverLocked(subscription, event)
 		}
 	}

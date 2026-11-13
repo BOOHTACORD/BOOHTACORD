@@ -4,15 +4,17 @@ Future<void> refreshDirectEvent(
   ConversationController conversation, [
   String? messageID,
   bool replace = false,
+  bool Function()? socketCurrent,
 ]) async {
   final current = conversation.selectedDirectMessage;
   final active = conversation.admission(selection: true);
-  if (current == null || !active()) return;
+  bool valid() => active() && (socketCurrent?.call() ?? true);
+  if (current == null || !valid()) return;
   final page = await conversation.api.directMessageHistoryPage(
     current.id,
     at: messageID,
   );
-  if (!active() || conversation.selectedDirectMessage?.id != current.id) return;
+  if (!valid() || conversation.selectedDirectMessage?.id != current.id) return;
   final byId = {
     if (!replace)
       for (final message in conversation.directMessageHistory)
