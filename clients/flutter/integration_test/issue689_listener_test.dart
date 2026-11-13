@@ -88,7 +88,9 @@ void main() {
     if (Platform.isAndroid) {
       await binding.convertFlutterSurfaceToImage();
       await tester.pumpAndSettle();
-      await binding.takeScreenshot('android-listener-realtime-recovered');
+    }
+    if (Platform.isAndroid || Platform.isIOS) {
+      await binding.takeScreenshot('native-listener-realtime-recovered');
     }
     await tester.runAsync(app.leaveVoice);
     await waitFor(
@@ -96,7 +98,14 @@ void main() {
       () => app.voicePhase == VoicePhase.idle && app.room == null,
     );
     await tester.runAsync(app.session.logout);
-    await waitFor(tester, () => app.phase == AppPhase.signedOut);
+    await waitFor(
+      tester,
+      () =>
+          app.phase == AppPhase.signedOut &&
+          app.maintenanceKnown &&
+          api.publicSockets.isNotEmpty &&
+          api.publicSockets.last.readyState == WebSocket.open,
+    );
     expect(tester.takeException(), isNull);
   });
 }

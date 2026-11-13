@@ -1,4 +1,5 @@
 import json
+import subprocess
 from pathlib import Path
 import tempfile
 import unittest
@@ -8,6 +9,21 @@ from .test_events import fixture
 
 
 class RunnerTests(unittest.TestCase):
+    def test_failed_audio_link_cannot_be_hidden_by_passing_vendor_tests(self):
+        with tempfile.TemporaryDirectory() as directory, patch.object(run, 'ROOT', Path(directory)), \
+             patch.object(run.sys, 'platform', 'darwin'), patch.object(run, 'prepare'), \
+             patch.object(run.subprocess, 'run') as call:
+            def command(args, **options):
+                if 'tools.verify.apple_audio_link.check' in args:
+                    raise subprocess.CalledProcessError(1, args)
+                if args[1] == 'test':
+                    options['stdout'].write(''.join(json.dumps(row) + '\n' for row in fixture()))
+            call.side_effect = command
+            with self.assertRaises(subprocess.CalledProcessError):
+                run.main()
+            result = json.loads((Path(directory) / '.out/checks/macos-unit/result.json').read_text())
+            self.assertEqual('FAIL', result['status'])
+
     def test_non_apple_execution_is_blocked_and_cannot_leave_success(self):
         with tempfile.TemporaryDirectory() as directory, patch.object(run, 'ROOT', Path(directory)), \
              patch.object(run.sys, 'platform', 'win32'), patch.object(run.subprocess, 'run') as call:

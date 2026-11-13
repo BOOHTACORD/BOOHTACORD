@@ -12,6 +12,8 @@ import 'package:boohtacord_desktop/src/services/api_client.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/show_screen_share_setup/component.dart';
 import 'package:boohtacord_desktop/src/features/workspace/navigation/favorites/preferences.dart';
 
+import 'issue689_support.dart' show waitFor;
+
 class QaTls extends HttpOverrides {
   QaTls(this.pin);
   final String pin;
@@ -73,13 +75,14 @@ void main() {
     expect(state.phase, AppPhase.ready);
     expect(tester.takeException(), isNull);
     await tester.pumpAndSettle();
+    await waitFor(tester, () => state.realtime.connected);
     // This stack starts empty. Seed the channel used by later navigation checks
     // through the actual authenticated admin API, not a widget fixture.
     if (state.topology!.categories.isEmpty) {
       await tester.runAsync(() async {
         await api.createCategory('Native QA');
-        await state.refreshTopology();
-        final category = state.topology!.categories.firstWhere(
+        final topology = await api.topology();
+        final category = topology.categories.firstWhere(
           (value) => value.name == 'Native QA',
         );
         await api.createChannel(
@@ -89,6 +92,12 @@ void main() {
         );
         await state.refreshTopology();
       });
+      await waitFor(
+        tester,
+        () => state.topology!.categories
+            .expand((category) => category.channels)
+            .any((channel) => channel.name == 'Native QA Text'),
+      );
       await tester.pumpAndSettle();
     }
     await binding.takeScreenshot('native-navigation');
@@ -271,6 +280,10 @@ void main() {
     expect(find.text('Голос не подключён'), findsOneWidget);
     await binding.takeScreenshot('native-connection-status');
     await tester.runAsync(state.logout);
+    await waitFor(
+      tester,
+      () => state.phase == AppPhase.signedOut && state.maintenanceKnown,
+    );
     await tester.pumpAndSettle();
     expect(state.phase, AppPhase.signedOut);
     await binding.takeScreenshot('native-signed-out');
