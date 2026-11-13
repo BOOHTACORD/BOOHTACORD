@@ -104,7 +104,7 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
       realtime.connect(event => processRealtime([event],()=>deliver(event)), undefined, undefined, {
         onHintBatch: events => processRealtime(events,()=>deliverProtectedHintBatch(events, deliver).then(() => refreshEditedHints(original, events))),
         onRecovery: () => processRealtime([],()=>Promise.all([refreshProtectedState(stores), permissions.refresh(), guildProfile.refresh(), voice.refreshScreenWatchers(), contextHints.recover()]).then(() => undefined)),
-        checkSession: async () => (await loadCurrentSession())?.accountId === accountID,
+        checkSession: async signal => (await loadCurrentSession(undefined, signal))?.accountId === accountID,
         onSessionExpired,
         onSocketStart: () => { maintenance.start(); roster?.socketStart() },
         onSocketEnd: () => { maintenance.stop(); roster?.socketEnd() },

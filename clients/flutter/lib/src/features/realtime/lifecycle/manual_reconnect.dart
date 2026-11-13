@@ -3,6 +3,10 @@ import 'controller.dart';
 extension RealtimeManualReconnect on RealtimeController {
   Future<void> reconnectNow() async {
     if (!admission()()) return;
+    openingDeadline?.cancel();
+    openingDeadline = null;
+    openingClient?.close(force: true);
+    openingClient = null;
     generation++;
     final active = admission();
     socketAttempt.end();

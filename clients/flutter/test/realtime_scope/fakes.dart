@@ -11,7 +11,7 @@ class RealtimeApiFake extends ApiClient {
   int opens = 0;
   String? after;
   @override
-  Future<WebSocket> openRealtime({String? after}) {
+  Future<WebSocket> openRealtime({String? after, HttpClient? client}) {
     opens++;
     this.after = after;
     return opening.future;

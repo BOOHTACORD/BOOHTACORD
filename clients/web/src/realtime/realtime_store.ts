@@ -7,7 +7,7 @@ import { createCoalescedDelivery } from './hint_batch/controller'
 import { createReconnectSchedule } from './reconnect_schedule/controller'
 import type { RealtimeConnectOptions, RealtimeSocket, RealtimeSocketFactory } from './realtime_connection_types'
 import { startTracedCompletion } from '../telemetry/client_tracing'
-import { createSocketAttempt } from './socket_attempt'
+import { boundedSessionCheck, createSocketAttempt } from './socket_attempt'
 export type { RealtimeConnectOptions, RealtimeSocket, RealtimeSocketFactory } from './realtime_connection_types'
 export type RealtimeState = 'IDLE' | 'CONNECTING' | 'CONNECTED' | 'DISCONNECTED' | 'ERROR'
 export const useRealtimeStore = defineStore('realtime', () => {
@@ -18,7 +18,7 @@ export const useRealtimeStore = defineStore('realtime', () => {
   let active = false, generation = 0
   let delivery: Pick<ReturnType<typeof createRealtimeDelivery>, 'accept' | 'cursor' | 'disconnected' | 'reset'> | null = null
   let pendingConnection: (() => void) | null = null, retryNow: (() => void) | null = null
-  let endSocketAttempt = () => {}
+  let endSocketAttempt = () => {}, cancelSession = () => {}
   function connect(onEvent: EventHandler, factory: RealtimeSocketFactory = (url) => new WebSocket(url), url?: string, options: RealtimeConnectOptions = {}): void {
     if (active) return
     active = true
@@ -38,9 +38,9 @@ export const useRealtimeStore = defineStore('realtime', () => {
       if (active && ownGeneration === generation) retry.schedule()
     }
     async function checkAndRetry(failedAttempt: number): Promise<void> {
-      let valid: boolean | null = null
-      try { valid = await (options.checkSession ?? (async () => (await loadCurrentSession()) !== null))() }
-      catch { /* A network failure does not prove session revocation. */ }
+      let valid: boolean | null = null; const pending = boundedSessionCheck(options.checkSession ?? (async signal => (await loadCurrentSession(undefined, signal)) !== null)); cancelSession = pending.cancel
+      try { valid = await pending.result }
+      catch { /* A network failure does not prove session revocation. */ } finally { if (cancelSession === pending.cancel) cancelSession = () => {} }
       if (!active || ownGeneration !== generation || failedAttempt !== attemptNumber) return
       if (valid === false) {
         disconnect()
@@ -77,13 +77,13 @@ export const useRealtimeStore = defineStore('realtime', () => {
         schedule()
         return
       }
-      socket = current
+      socket = current; attempt.arm(() => { finish(true); fail(current) })
       current.onopen = () => { if (socket === current) { state.value = 'CONNECTED'; error.value = null } }
       current.onmessage = (message) => {
         if (socket !== current) return
         try {
           const event: RealtimeEvent = parseRealtimeEvent(JSON.parse(message.data))
-          if (event.kind === 'connection.ready') {finish();retry.ready()}
+          if (event.kind === 'connection.ready') {attempt.ready();finish();retry.ready()}
           delivery?.accept(event)
         } catch (cause) {
           error.value = cause instanceof Error ? cause.message : 'РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ realtime-СЃРѕР±С‹С‚РёРµ.'
@@ -95,7 +95,7 @@ export const useRealtimeStore = defineStore('realtime', () => {
     }
     retryNow = () => {
       if (!active || ownGeneration !== generation) return
-      retry.stop()
+      retry.stop(); cancelSession()
       const current = socket
       socket = null; attempt.end()
       current?.close()
@@ -105,7 +105,7 @@ export const useRealtimeStore = defineStore('realtime', () => {
     open()
   }
   function disconnect(): void {
-    active = false; endSocketAttempt(); endSocketAttempt = () => {}
+    active = false; cancelSession(); endSocketAttempt(); endSocketAttempt = () => {}
     generation++; stopSchedule()
     delivery?.reset(); delivery = null
     const current = socket

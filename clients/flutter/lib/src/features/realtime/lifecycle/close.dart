@@ -2,6 +2,10 @@ import 'controller.dart';
 
 extension RealtimeCleanup on RealtimeController {
   Future<void> close() async {
+    openingDeadline?.cancel();
+    openingDeadline = null;
+    openingClient?.close(force: true);
+    openingClient = null;
     socketAttempt.end();
     handshake?.finish('cancelled', reason: 'disposed');
     handshake = null;

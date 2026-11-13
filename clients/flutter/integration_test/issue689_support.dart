@@ -47,9 +47,9 @@ class SocketOnlyApi extends ApiClient {
   final publicSockets = <TrackedPublicSocket>[];
 
   @override
-  Future<WebSocket> openRealtime({String? after}) {
+  Future<WebSocket> openRealtime({String? after, HttpClient? client}) {
     sockets++;
-    return super.openRealtime(after: after);
+    return super.openRealtime(after: after, client: client);
   }
 
   @override
