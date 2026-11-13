@@ -84,7 +84,7 @@ it('ignores stale acknowledgements after mute and fails closed on processor erro
   f.node.port.onmessage({ data: { type: 'unmuted', intent } })
   f.node.port.onmessage({ data: { type: 'error', reason: 'overload' } })
   await expect(second).rejects.toThrow('processor failed')
-  expect(f.output.enabled).toBe(false); expect(f.onFailure).toHaveBeenCalledOnce()
+  expect(f.output.enabled).toBe(false); expect(f.onFailure).toHaveBeenCalledWith('overload')
   await f.processor.destroy()
 })
 
@@ -93,7 +93,15 @@ it('does not load a model or connect audio when the context rate is unsupported'
   const processor = new DeepFilterTrackProcessor({ loadAssets, onFailure })
   await expect(processor.init({ track: {}, audioContext: { sampleRate: 44100 } } as never)).rejects.toThrow('48 kHz')
   expect(loadAssets).not.toHaveBeenCalled(); expect(processor.processedTrack).toBeUndefined()
-  expect(onFailure).toHaveBeenCalledOnce()
+  expect(onFailure).toHaveBeenCalledWith('sample-rate')
+})
+
+it('reports unavailable model assets without creating a graph', async () => {
+  const onFailure = vi.fn(), loadAssets = vi.fn().mockRejectedValue(new Error('unavailable'))
+  const processor = new DeepFilterTrackProcessor({ loadAssets, onFailure })
+  await expect(processor.init({ track: {}, audioContext: { sampleRate: 48000 } } as never)).rejects.toThrow('unavailable')
+  expect(onFailure).toHaveBeenCalledWith('asset-load')
+  expect(processor.processedTrack).toBeUndefined()
 })
 
 it('does not construct a stale graph when destroyed during asset loading', async () => {

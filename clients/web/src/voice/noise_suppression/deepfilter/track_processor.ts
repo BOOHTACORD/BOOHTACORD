@@ -1,9 +1,11 @@
 import type { AudioProcessorOptions, Track, TrackProcessor } from 'livekit-client'
 import { loadDeepFilterAssets } from './asset_loader'
 import { disposePort } from './dispose_port'
+import { bounded } from './bounded'
+import type { NoiseSuppressionFallbackReason } from '../types'
 
 type Assets = Awaited<ReturnType<typeof loadDeepFilterAssets>>
-type Options = { loadAssets?: (signal: AbortSignal) => Promise<Assets>; onFailure?: () => void; timeoutMs?: number }
+type Options = { loadAssets?: (signal: AbortSignal) => Promise<Assets>; onFailure?: (reason: NoiseSuppressionFallbackReason) => void; timeoutMs?: number }
 
 /** Research graph only. The caller owns capture, context and final track enablement. */
 export class DeepFilterTrackProcessor implements TrackProcessor<Track.Kind.Audio, AudioProcessorOptions> {
@@ -24,24 +26,14 @@ export class DeepFilterTrackProcessor implements TrackProcessor<Track.Kind.Audio
   private cancelUnmute?: (error?: Error) => void
   constructor(private readonly options: Options = {}) {}
 
-  private async bounded<T>(promise: Promise<T>, signal?: AbortSignal): Promise<T> {
-    let timer: ReturnType<typeof setTimeout> | undefined
-    let cancel: (() => void) | undefined
-    try { return await Promise.race([promise, new Promise<never>((_, reject) => {
-      timer = setTimeout(() => reject(new Error('processor timeout')), this.options.timeoutMs ?? 15000)
-      cancel = () => reject(new Error('processor cancelled'))
-      if (signal?.aborted) cancel(); else signal?.addEventListener('abort', cancel, { once: true })
-    })]) } finally { if (timer) clearTimeout(timer); if (cancel) signal?.removeEventListener('abort', cancel) }
-  }
-
-  private fail(): void {
+  private fail(reason: NoiseSuppressionFallbackReason = 'processor-error'): void {
     if (this.failed) return
     this.failed = true
     if (this.processedTrack) this.processedTrack.enabled = false
     this.cancelReady?.()
     this.cancelUnmute?.(new Error('processor failed'))
     this.node?.port.postMessage({ type: 'mute' })
-    this.options.onFailure?.()
+    this.options.onFailure?.(reason)
   }
 
   async init(opts: AudioProcessorOptions): Promise<void> {
@@ -51,12 +43,16 @@ export class DeepFilterTrackProcessor implements TrackProcessor<Track.Kind.Audio
     if (generation !== this.generation) return
     const preparation = this.preparation = new AbortController()
     this.failed = false; this.sourceTrack = opts.track
+    let reason: NoiseSuppressionFallbackReason = 'sample-rate'
     try {
       if (opts.audioContext.sampleRate !== 48000) throw new Error('DeepFilter requires 48 kHz')
-      const assets = await this.bounded((this.options.loadAssets ?? (signal => loadDeepFilterAssets(15000, signal)))(preparation.signal), preparation.signal)
+      reason = 'asset-load'
+      const assets = await bounded((this.options.loadAssets ?? (signal => loadDeepFilterAssets(15000, signal)))(preparation.signal), this.options.timeoutMs ?? 15000, preparation.signal)
       if (generation !== this.generation) return
-      await this.bounded(opts.audioContext.audioWorklet.addModule('/audio/deepfilternet/research-d375b2d/deepfilter/worklet.js'), preparation.signal)
+      reason = 'init-timeout'
+      await bounded(opts.audioContext.audioWorklet.addModule('/audio/deepfilternet/research-d375b2d/deepfilter/worklet.js'), this.options.timeoutMs ?? 15000, preparation.signal)
       if (generation !== this.generation) return
+      reason = 'processor-error'
       const entropy = crypto.getRandomValues(new Uint8Array(65536))
       const node = new AudioWorkletNode(opts.audioContext, 'boohtacord-deepfilter-research', {
         numberOfInputs: 1, numberOfOutputs: 1, channelCount: 1, channelCountMode: 'explicit',
@@ -68,9 +64,9 @@ export class DeepFilterTrackProcessor implements TrackProcessor<Track.Kind.Audio
         if (generation !== this.generation) return
         if (event.data.type === 'ready') this.ready?.()
         else if (event.data.type === 'unmuted') this.acknowledge?.(event.data.intent)
-        else if (event.data.type === 'error') this.fail()
+        else if (event.data.type === 'error') this.fail(event.data.reason === 'overload' ? 'overload' : 'processor-error')
       }
-      await this.bounded(new Promise<void>(resolve => { this.ready = resolve; this.cancelReady = resolve }), preparation.signal)
+      await bounded(new Promise<void>(resolve => { this.ready = resolve; this.cancelReady = resolve }), this.options.timeoutMs ?? 15000, preparation.signal)
       this.ready = undefined; this.cancelReady = undefined
       if (generation !== this.generation) return
       if (this.failed) throw new Error('processor failed')
@@ -81,7 +77,7 @@ export class DeepFilterTrackProcessor implements TrackProcessor<Track.Kind.Audio
       this.processedTrack.enabled = false
       this.source.connect(node); node.connect(this.destination)
     } catch (error) {
-      if (generation === this.generation) { this.fail(); await this.destroy(); throw error }
+      if (generation === this.generation) { this.fail(error instanceof Error && error.message.includes('timeout') ? 'init-timeout' : reason); await this.destroy(); throw error }
     }
   }
 
@@ -94,12 +90,12 @@ export class DeepFilterTrackProcessor implements TrackProcessor<Track.Kind.Audio
     if (!this.node || this.failed) throw new Error('processor unavailable')
     this.cancelUnmute?.()
     const intent = ++this.intent
-    await this.bounded(new Promise<void>((resolve, reject) => {
+    await bounded(new Promise<void>((resolve, reject) => {
       const finish = (error?: Error) => { this.acknowledge = undefined; this.cancelUnmute = undefined; error ? reject(error) : resolve() }
       this.acknowledge = received => { if (received === intent) finish() }
       this.cancelUnmute = finish
       this.node!.port.postMessage({ type: 'unmute', intent })
-    })).catch(error => { this.fail(); throw error })
+    }), Math.min(this.options.timeoutMs ?? 1000, 1000)).catch(error => { this.fail(); throw error })
   }
   async restart(opts: AudioProcessorOptions): Promise<void> { await this.destroy(); await this.init(opts) }
   async destroy(): Promise<void> {

@@ -8,10 +8,10 @@ errors. Its experimental `reset()` clones the pristine initialized state;
 its cost and memory use must be measured in a real AudioWorklet. An isolated
 experimental AudioWorklet now exercises the model. A research-only loader pins
 the experimental asset hashes and bounds fetch size and time; it is not wired
-to the client or a reproducible release. An experimental TrackProcessor
-creates and mutes a derived browser track and cancels stale preparation; it is
-not connected to LiveKit. Adapter integration, overload fallback and release
-delivery do not exist yet.
+to a reproducible release. An experimental TrackProcessor is wired to the Web
+microphone adapter behind an off-by-default flag, with tested mock publication
+and asset-failure fallback. The settings UI, server media acceptance, confirmed
+overload recovery and release delivery do not exist yet.
 
 The preliminary build applied WorkAdventure/noise-suppression commit
 `7e00a1b7522f044a31776fddc249a97a98de94ed`'s tract 0.23 patch. Its

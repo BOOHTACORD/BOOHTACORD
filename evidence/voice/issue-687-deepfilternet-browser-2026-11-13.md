@@ -43,6 +43,21 @@ Enabling the server's loopback candidate did not resolve it. The cause is
 unknown; this is not evidence that DeepFilterNet media works through LiveKit.
 The test server was stopped and experimental assets removed from public paths.
 
-This research processor is not connected to LiveKit or an application setting.
-Its runtime cost, sustained operation, real microphone, voice quality,
-delivery, safe fallback and platform acceptance are not established.
+The experimental processor is now wired to the Web microphone adapter behind
+`VITE_DEEPFILTER_ENABLED=true`, with the flag disabled by default. In Windows
+Chromium and Firefox, an explicitly enabled synthetic LiveKit LocalAudioTrack
+passed through that adapter to a mock publisher, and mute silenced its output.
+When the WASM request was forced to fail, both browsers restored a simulated
+browser suppression setting and reported `asset-load` before mock publication.
+These tests override capture settings and do not connect to a LiveKit server.
+The selection UI and release assets are absent; no default user receives this
+engine. Real fallback, physical microphone, runtime cost, sustained operation,
+voice quality, delivery and platform acceptance remain unestablished.
+
+The adapter now requires an explicit browser report that built-in noise
+suppression is off before enabling DeepFilter. Disabled builds, ignored or
+unreported capture settings fall back without attaching the model. Unit tests
+also cover an unavailable model, a failed fallback, a timed-out unmute and
+reported failure reasons. These tests do not replace real-device verification.
+The local real-stack gate remains BLOCKED: Ubuntu WSL and Docker did not
+respond during this iteration; no unrelated services were restarted.
