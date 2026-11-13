@@ -80,6 +80,7 @@ jobs:
       - name: Test experimental audio through local LiveKit
         shell: pwsh
         run: |
+          Get-Service -Name Audiosrv, AudioEndpointBuilder | Select-Object Name, Status
           $archive = "$env:RUNNER_TEMP/livekit.zip"
           Invoke-WebRequest 'https://github.com/livekit/livekit/releases/download/v1.13.7/livekit_1.13.7_windows_amd64.zip' -OutFile $archive
           $hash = (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant()

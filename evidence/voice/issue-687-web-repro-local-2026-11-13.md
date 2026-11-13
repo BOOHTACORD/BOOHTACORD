@@ -59,3 +59,12 @@ Edge passed locally with the new module. Physical microphone and listening
 acceptance remain NOT_RUN. Hosted confirmation remains pending.
 The local LiveKit synthetic sender/receiver/mute test also passed again in
 all three browsers with the rebuilt module; it is not a physical microphone test.
+
+Hosted source `41288a36909c242989623829c26fabd85ea9ccfa` rebuilt and
+verified the pinned WASM on an independent Windows runner; Chromium research
+tests passed. Firefox on that runner timed out in three audio graph tests after
+its loader passed. On Linux, the separate Firefox direct WebRTC test observed
+a nonzero received peak during its post-mute window. The causes are UNKNOWN.
+The local Firefox versions of both scenarios passed; that does not override CI.
+Bounded AudioContext readiness and aggregate peak diagnostics were added without
+relaxing the silence assertion. New hosted diagnostics remain pending.

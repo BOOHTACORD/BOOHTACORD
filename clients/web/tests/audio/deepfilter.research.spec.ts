@@ -9,7 +9,9 @@ test('experimental DeepFilter worklet processes and mutes synthetic audio', asyn
       fetch(`${root}/model.bin`).then(response => response.arrayBuffer()),
     ])
     const module = await WebAssembly.compile(bytes)
-    const context = new AudioContext({ sampleRate: 48000 }); await context.resume()
+    const helper = '/tests/audio/audio_context_fixture.ts'
+    const { resumeAudio } = await import(/* @vite-ignore */ helper)
+    const context = new AudioContext({ sampleRate: 48000 }); await resumeAudio(context)
     const oscillator = context.createOscillator(), gain = context.createGain()
     oscillator.frequency.value = 440; gain.gain.value = .2; oscillator.connect(gain)
     const readings: { rms: number; peak: number; nonfinite: number }[] = [], errors: string[] = []
@@ -61,7 +63,9 @@ test('invalid model fails closed without raw-audio passthrough', async ({ page }
   const result = await page.evaluate(async () => {
     const root = '/audio/dfn-research'
     const module = await WebAssembly.compile(await (await fetch(`${root}/dfn_bg.wasm`)).arrayBuffer())
-    const context = new AudioContext({ sampleRate: 48000 }); await context.resume()
+    const helper = '/tests/audio/audio_context_fixture.ts'
+    const { resumeAudio } = await import(/* @vite-ignore */ helper)
+    const context = new AudioContext({ sampleRate: 48000 }); await resumeAudio(context)
     const oscillator = context.createOscillator(), gain = context.createGain(), readings: { peak: number }[] = []
     oscillator.connect(gain); gain.gain.value = .2
     let node: AudioWorkletNode | undefined, started = false

@@ -5,7 +5,9 @@ test('experimental track graph handles real browser audio and mute', async ({ pa
   const result = await page.evaluate(async () => {
     const path = '/src/voice/noise_suppression/deepfilter/track_processor.ts'
     const { DeepFilterTrackProcessor } = await import(/* @vite-ignore */ path)
-    const context = new AudioContext({ sampleRate: 48000 }); await context.resume()
+    const helper = '/tests/audio/audio_context_fixture.ts'
+    const { resumeAudio } = await import(/* @vite-ignore */ helper)
+    const context = new AudioContext({ sampleRate: 48000 }); await resumeAudio(context)
     await context.audioWorklet.addModule('/tests/audio/meter.worklet.js')
     const oscillator = context.createOscillator(), gain = context.createGain(), input = context.createMediaStreamDestination()
     oscillator.connect(gain); gain.gain.value = .2; gain.connect(input); oscillator.start()
