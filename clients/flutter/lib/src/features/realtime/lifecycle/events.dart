@@ -38,11 +38,20 @@ extension RealtimeEvents on RealtimeController {
   }
 
   void receive(dynamic raw) {
-    if (!admission()() || raw is! String) return;
+    if (!admission()()) return;
+    if (raw is! String) {
+      delivery.reset();
+      handleClosed();
+      return;
+    }
     synchronizeDeliveryScope();
     try {
       final source = jsonDecode(raw);
-      if (source is! Map<String, dynamic>) return;
+      if (source is! Map<String, dynamic>) {
+        delivery.reset();
+        handleClosed();
+        return;
+      }
       final id = source['event_id'],
           kind = source['kind'],
           payload = source['payload'];
@@ -94,6 +103,9 @@ extension RealtimeEvents on RealtimeController {
           telemetry: RealtimeTelemetry.parse(source['telemetry']),
         ),
       );
+    } on FormatException {
+      delivery.reset();
+      handleClosed();
     } catch (_) {
       // Malformed envelopes confer no authority and cannot become cursors.
     }
