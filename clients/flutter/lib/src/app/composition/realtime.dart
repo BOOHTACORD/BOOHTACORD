@@ -38,6 +38,7 @@ void configureRealtime(AppOwners app) {
       app.voiceRoster.sharedSocketStart();
     },
     onSocketEnd: () {
+      app.permissions.invalidateRealtime();
       app.maintenance.authSocketEnd();
       app.voiceRoster.sharedSocketEnd();
     },
