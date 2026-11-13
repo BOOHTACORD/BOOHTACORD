@@ -1,4 +1,5 @@
 export interface RealtimeSocket {
+  readonly protocol?: string
   close(): void
   onclose: ((event: CloseEvent) => void) | null
   onerror: ((event: Event) => void) | null
