@@ -23,5 +23,15 @@
   lock, but 1013 has another server-side cause and neither the precise close
   source nor the guard's reason was recorded. No fanout measurement occurred.
   Reports are retained outside the repository under the local QA artifacts.
+- At `cb44a4b3ff26393746b6ce65be282c558db4e4dd`, the next isolated run again
+  stopped on the guard, categorized only as a non-200 response; one 1013 close
+  was observed and no fanout sample was recorded. At `bd71bfee6d1077a0ad7cbf806c2e1c18683a465a`,
+  the following run stopped in the ramp fault operation with one successful
+  fanout. Its later `unavailable` monitor category may have been caused by
+  owner cancellation, so it is not evidence of an independent guard failure.
+  Both runs failed and cleaned up owned resources. The reporting path now
+  ignores cancellation and preserves earlier stop reasons; these changes need
+  another source-bound profile. Linux race coverage for this latest reporting
+  edit is NOT_RUN because the available WSL environment has no C compiler.
 - Production event delivery, comparative capacity and fault recovery remain
   separate and are not established by these tests.

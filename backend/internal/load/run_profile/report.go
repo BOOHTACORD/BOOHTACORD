@@ -13,6 +13,7 @@ import (
 
 type Phase struct {
 	Name              string
+	Failure           string
 	Active            int
 	Seconds           float64
 	Errors            int

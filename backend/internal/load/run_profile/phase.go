@@ -23,12 +23,20 @@ func (r *Runner) phase(ctx context.Context, guard observe_resources.Guard, name 
 		faults := map[string]string{"warmup": "db_pressure", "ramp": "sfu_outage", "steady": "slow_telemetry", "spike": "disk_pressure"}
 		if fault := faults[name]; fault != "" {
 			if err := guard.Fault(ctx, fault); err != nil {
+				phase.Failure = "fault_" + observe_resources.Category(err)
+				if ctx.Err() != nil {
+					phase.Failure = "canceled"
+				}
 				return phase, err
 			}
 		}
 	}
 	if name == "recovery" {
 		if err := guard.Fault(ctx, "restore"); err != nil {
+			phase.Failure = "restore_" + observe_resources.Category(err)
+			if ctx.Err() != nil {
+				phase.Failure = "canceled"
+			}
 			return phase, err
 		}
 	}

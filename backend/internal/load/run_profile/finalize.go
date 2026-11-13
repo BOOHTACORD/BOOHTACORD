@@ -8,8 +8,10 @@ func finalize(report *Report) {
 	}
 	for _, status := range report.Criteria {
 		if status == "FAIL" {
+			if report.Outcome == "PASS" || report.StopReason == "" {
+				report.StopReason = "measured_criterion_failed"
+			}
 			report.Outcome = "FAIL"
-			report.StopReason = "measured_criterion_failed"
 			return
 		}
 	}
