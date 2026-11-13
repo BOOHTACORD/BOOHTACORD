@@ -42,7 +42,11 @@ Future<void> dispatchRecovery(
         workspace.refreshDirectMessages(strict: true),
         Future<void>.sync(permissionsChanged),
         if (workspace.selectedChannel?.kind == ChannelKind.text)
-          conversation.refreshSelectedTextHistory(strict: true, replace: true),
+          conversation.refreshSelectedTextHistory(
+            strict: true,
+            replace: true,
+            socketCurrent: current,
+          ),
         if (conversation.selectedDirectMessage != null)
           refreshDirectEvent(conversation, null, true, current),
         if (screenViewersChanged != null)
