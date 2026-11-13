@@ -23,6 +23,20 @@ func (a *Actor) Message(ctx context.Context, receivers []*Actor, attachments []s
 	if uuid.Validate(message.ID) != nil {
 		return errors.New("invalid message receipt")
 	}
+	releases := make([]func(), 0, len(receivers))
+	defer func() {
+		for _, release := range releases {
+			release()
+		}
+	}()
+	for _, receiver := range receivers {
+		release, err := receiver.Socket.Track(message.ID)
+		if err != nil {
+			a.Results.Observe("fanout", 503, time.Since(started))
+			return err
+		}
+		releases = append(releases, release)
+	}
 	for _, receiver := range receivers {
 		elapsed, err := receiver.Socket.Wait(ctx, message.ID, started)
 		status := 200
