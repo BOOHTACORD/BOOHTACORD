@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { loadCurrentSession } from '../identity/current_session'
-import { parseRealtimeEvent, realtimeTraceURL, realtimeURL, type RealtimeEvent } from './realtime_client'
+import { parseRealtimeEvent, realtimeTraceURL, realtimeURL, NewRealtimeEnvelopeError, type RealtimeEvent } from './realtime_client'
 import { createRealtimeDelivery, type EventHandler } from './realtime_event_delivery'
 import { createCoalescedDelivery } from './hint_batch/controller'
 import { createReconnectSchedule } from './reconnect_schedule/controller'
@@ -85,7 +85,7 @@ export const useRealtimeStore = defineStore('realtime', () => {
           if (event.kind === 'connection.heartbeat') return
           if (event.kind === 'connection.ready') {attempt.ready();finish();retry.ready()}
           delivery?.accept(event)
-        } catch (cause) {
+        } catch (cause) { if (cause instanceof NewRealtimeEnvelopeError) { fail(current); return }
           error.value = cause instanceof Error ? cause.message : 'РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ realtime-СЃРѕР±С‹С‚РёРµ.'
           state.value = 'ERROR'
         }
