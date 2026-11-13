@@ -38,5 +38,14 @@
   `resource_snapshot`; it saw one 1013 close and one successful fanout. The
   steady phase was canceled after the guard stop; cleanup passed. The category
   identifies the guard's resource-sampling step, not its underlying cause.
+- At `7b8dd0e25cd8862c8789e9760f17821994fbf113`, the next run failed during
+  fault setup with a resource threshold result; ramp and steady reported zero
+  workload requests, and cleanup passed. Its recorded samples do not identify
+  which threshold was crossed. This does not prove a server capacity failure.
+- A separate synthetic concurrency regression exposed overlapping reads of the
+  guard's previous CPU sample and, on this host, a zero time interval causing
+  division by zero. Reads are now serialized and nonpositive intervals fail
+  closed. This establishes a controller defect, not that it caused any earlier
+  profile failure; a source-bound retest is still required.
 - Production event delivery, comparative capacity and fault recovery remain
   separate and are not established by these tests.
