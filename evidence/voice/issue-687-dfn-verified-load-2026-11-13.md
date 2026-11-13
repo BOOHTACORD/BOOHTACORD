@@ -7,10 +7,10 @@ oversize input, relative path, and write/delete attempts while the handle is
 open. The module loader checks that hash before loading and searches System32
 for dependencies; a fixture verifies a rejected hash never loads the module.
 
-These checks do **not** authenticate ancestor directories or prevent their
-replacement between hashing and `LoadLibraryExW`. They are not a complete
-release trust boundary. Signing, an appropriate stable installation path,
-reparse-point/ancestor threat assessment and update behavior remain open.
+The original checks did not protect ancestor directories between hashing and
+`LoadLibraryExW`; the later parent-directory experiment is documented below.
+These experiments are not a complete release trust boundary. Signing, a stable
+installation path, the remaining path threats and update behavior remain open.
 
 The noninstrumented Rust research DLL built with
 `-C target-feature=+crt-static -C link-arg=/Brepro` had SHA-256
