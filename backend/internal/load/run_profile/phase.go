@@ -51,6 +51,8 @@ func (r *Runner) phase(ctx context.Context, guard observe_resources.Guard, name 
 	}
 	timer := time.NewTimer(duration)
 	defer timer.Stop()
+	workCtx, cancelWork := operationContext(ctx, r.Profile, name, duration)
+	defer cancelWork()
 	for iteration := 0; ; iteration++ {
 		select {
 		case <-ctx.Done():
@@ -69,20 +71,20 @@ func (r *Runner) phase(ctx context.Context, guard observe_resources.Guard, name 
 				a := r.actors[index]
 				var err error
 				if r.Profile == "reconnect" && name == "spike" {
-					err = a.Reconnect(ctx)
+					err = a.Reconnect(workCtx)
 				} else {
-					err = a.Read(ctx)
+					err = a.Read(workCtx)
 					if err == nil {
-						err = a.Message(ctx, r.actors, nil)
+						err = a.Message(workCtx, r.actors, nil)
 					}
 				}
 				if err == nil && iteration == 0 {
-					err = a.ACL(ctx)
+					err = a.ACL(workCtx)
 				}
 				if err == nil && r.Profile == "uploads" && (name == "steady" || name == "spike") && index < 4 && iteration == 0 {
-					err = a.Upload(ctx, r.actors)
+					err = a.Upload(workCtx, r.actors)
 					if err == nil && index == 0 {
-						err = a.UploadLimit(ctx)
+						err = a.UploadLimit(workCtx)
 					}
 				}
 				if err != nil {

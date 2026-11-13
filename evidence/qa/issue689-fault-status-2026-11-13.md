@@ -9,5 +9,9 @@ inspection invalidates the result. The timer and ownership checks remain in forc
 Twenty-five controller tests passed under Linux. The load runner now requires
 confirmed fault state before and after each fault phase; a lost or unverified
 fault fails the phase. Focused Go tests cover inactive and expired faults.
-The database observation has not yet been exercised against the real disposable
-stack. Full fault phases and capacity remain NOT_RUN.
+On the disposable stack at local commit 37c2c953, the database lock was seen
+initially, but the 20-second, one-account profile failed `fault_lost`: a blocked
+request outlasted the two-second fault. Cleanup passed. This is not capacity or
+successful fault acceptance. The subsequent change bounds requests within fault
+phase duration, retains their error counts, and passes focused Go tests. A fresh
+real-stack run of that change and the complete fault matrix remain NOT_RUN.
