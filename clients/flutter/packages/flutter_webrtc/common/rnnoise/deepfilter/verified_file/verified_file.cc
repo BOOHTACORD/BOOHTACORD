@@ -56,11 +56,14 @@ VerifiedFile::~VerifiedFile() { if (handle_ != INVALID_HANDLE_VALUE) CloseHandle
 bool VerifiedFile::Open(const std::wstring& path, const char* sha256, std::uint64_t max_bytes) {
   std::array<unsigned char, 32> expected{};
   if (handle_ != INVALID_HANDLE_VALUE || !AbsoluteLocal(path) || !Parse(sha256, expected)) return false;
+  auto parents = std::make_unique<ParentLocks>();
+  if (!parents->Open(path)) return false;
   const HANDLE file = CreateFileW(path.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING,
                                   FILE_FLAG_OPEN_REPARSE_POINT | FILE_FLAG_SEQUENTIAL_SCAN, nullptr);
   if (file == INVALID_HANDLE_VALUE) return false;
   if (!Verify(file, expected, max_bytes)) { CloseHandle(file); return false; }
   handle_ = file;
+  parents_ = std::move(parents);
   return true;
 }
 }  // namespace boohta::deepfilter

@@ -4,6 +4,8 @@
 #define NOMINMAX
 #endif
 #include <windows.h>
+#include "parent_locks.h"
+#include <memory>
 #include <cstdint>
 #include <string>
 
@@ -19,6 +21,7 @@ class VerifiedFile {
   bool Open(const std::wstring& path, const char* sha256, std::uint64_t max_bytes);
  private:
   HANDLE handle_ = INVALID_HANDLE_VALUE;
+  std::unique_ptr<ParentLocks> parents_;
 };
 }  // namespace boohta::deepfilter
 #endif

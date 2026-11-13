@@ -29,3 +29,19 @@ This was a prewarmed three-second test with a stub WebRTC interface, not an
 installed application, physical microphone, signed release, acoustic study or
 sustained load test. Normal Windows client construction does not instantiate
 the verified engine; the model and DLL are not delivered in production.
+
+## Parent-directory lock experiment
+
+At source `661ad393ecf83284ce7d6c4349ef711bdf62fe0b` with the
+`deepfilter/verified_file` changes in this packet, a test first reproduced
+that a path containing `..` was accepted. The revised Windows verifier rejects
+ambiguous components and opens each directory without delete sharing, rejecting
+reparse points, before it opens and hashes the file. The test checks that a
+parent rename is denied while the verifier lives and succeeds after it closes;
+a real Windows directory symbolic link was created and rejected. An MSVC
+Release build and all 18 native CTest cases passed on this host.
+
+This guards ordinary ancestor replacement while those handles remain open. It
+is still research code: drive-device mapping, privileged interference, signing,
+release packaging and installed-client behavior have not been established as a
+complete release trust boundary. The normal client does not construct this loader.
