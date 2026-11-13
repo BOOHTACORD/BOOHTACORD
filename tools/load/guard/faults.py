@@ -28,7 +28,7 @@ class Faults:
             elif name == 'db_pressure':
                 target = owned(self.stack, 'db')
                 command = ['docker', 'exec', '-e', 'PGAPPNAME=qa_load_fault', target, 'psql', '-U', 'qa', '-d', 'qa', '-XAt', '-c',
-                           f"BEGIN; SET LOCAL statement_timeout='{seconds * 1000 + 500}ms'; LOCK users IN ACCESS EXCLUSIVE MODE; SELECT pg_sleep({seconds}); ROLLBACK;"]
+                           f"BEGIN; SET LOCAL statement_timeout='{seconds * 1000 + 500}ms'; LOCK channels IN ACCESS EXCLUSIVE MODE; SELECT pg_sleep({seconds}); ROLLBACK;"]
                 self.processes.append(subprocess.Popen(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL))
             else:
                 self.pressure.parent.mkdir(exist_ok=True)
@@ -65,7 +65,7 @@ class Faults:
             active = role in paused and result.stdout.strip() == 'true'
         elif name == 'db_pressure' and process and process.poll() is None:
             sql = ("SELECT EXISTS (SELECT 1 FROM pg_locks l JOIN pg_stat_activity a ON a.pid=l.pid "
-                   "WHERE a.application_name='qa_load_fault' AND l.relation='users'::regclass "
+                   "WHERE a.application_name='qa_load_fault' AND l.relation='channels'::regclass "
                    "AND l.mode='AccessExclusiveLock' AND l.granted);")
             active = query(self.stack, sql) == 't' and process.poll() is None
         with self.lock:
