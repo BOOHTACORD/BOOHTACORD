@@ -14,7 +14,7 @@ def otel_labels(name):
                 'requests': ['http.response.status_code', 'platform'], 'duration': ['http.response.status_code', 'platform']}[suffix]
     if name.startswith('boohtacord.incident.database.'):
         suffix = name.removeprefix('boohtacord.incident.database.')
-        return {'pool': ['stat'], 'pool.events': ['stat'], 'pool.empty.acquire.wait': [],
+        return {'pool': ['stat'], 'pool.partition': ['partition', 'stat'], 'pool.events': ['stat'], 'pool.empty.acquire.wait': [],
                 'acquires.pending': [], 'acquires': ['outcome'], 'acquire.duration': ['outcome']}[suffix]
     if name.startswith('boohtacord.incident.'):
         suffix = name.removeprefix('boohtacord.incident.')

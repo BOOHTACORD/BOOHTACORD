@@ -10,6 +10,7 @@ import (
 
 func (m *Metrics) startExport() {
 	stats, _ := m.meter.Float64ObservableGauge("boohtacord.incident.database.pool", metric.WithDescription("Current native pgxpool connection statistics."))
+	partitions, _ := m.meter.Float64ObservableGauge("boohtacord.incident.database.pool.partition", metric.WithDescription("Current connections by bounded pool partition and state."))
 	wait, _ := m.meter.Float64ObservableCounter("boohtacord.incident.database.pool.empty.acquire.wait", metric.WithDescription("Cumulative time for successful acquisitions waiting on an empty pool."), metric.WithUnit("s"))
 	events, _ := m.meter.Int64ObservableCounter("boohtacord.incident.database.pool.events", metric.WithDescription("Cumulative native empty and canceled acquisition counts."))
 	pending, _ := m.meter.Float64ObservableGauge("boohtacord.incident.database.acquires.pending", metric.WithDescription("In-flight acquisition attempts including wait and construction."))
@@ -25,8 +26,13 @@ func (m *Metrics) startExport() {
 			value := s[name]
 			o.ObserveFloat64(stats, value, metric.WithAttributes(attribute.String("stat", name)))
 		}
+		for _, partition := range m.partitions() {
+			for state, value := range partitionValues(partition.pool) {
+				o.ObserveFloat64(partitions, value, metric.WithAttributes(attribute.String("partition", partition.name), attribute.String("stat", state)))
+			}
+		}
 		return nil
-	}, stats, pending, wait, events)
+	}, stats, partitions, pending, wait, events)
 }
 func (m *Metrics) exportAcquire(outcome string, elapsed time.Duration) {
 	labels := metric.WithAttributes(attribute.String("outcome", outcome))
