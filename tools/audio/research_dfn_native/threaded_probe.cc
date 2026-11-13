@@ -1,5 +1,6 @@
 // Isolated synthetic worker experiment; this is not a production audio callback.
 #include "../../../clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/worker_step/worker.h"
+#include "../../../clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/capture_bridge/bridge.h"
 #include "research_engine.h"
 #define NOMINMAX
 #include <windows.h>
@@ -26,17 +27,17 @@ int main(int argc, char** argv) {
   auto free_state = reinterpret_cast<Free>(GetProcAddress(dll, "research_free"));
   if (!create || !process || !free_state) { FreeLibrary(dll); return 4; }
   ResearchEngine engine{create, process, free_state, argv[2]};
-  FrameExchange<8> exchange(delay);
+  CaptureBridge<8> bridge(delay);
   WorkerStep<ResearchEngine, 8> step(engine);
   std::atomic<bool> stop{false}, failed{false};
   std::atomic<unsigned> processed{0};
-  float input[480]{}, output[480]{};
-  if (exchange.Capture(input, 1, false, output) != (delay ? ExchangeStatus::buffering : ExchangeStatus::no_frame)) {
+  float pcm[480]{};
+  if (bridge.Capture(pcm, 480, 480, 48000, 1, 1, false) != (delay ? ExchangeStatus::buffering : ExchangeStatus::no_frame)) {
     FreeLibrary(dll); return 5;
   }
   std::thread worker([&] {
     while (!stop.load()) {
-      const auto status = step.Run(exchange, 1);
+      const auto status = step.Run(bridge.WorkerExchange(), 1);
       if (status == WorkerStatus::processed) ++processed;
       else if (status != WorkerStatus::idle) { failed.store(true); break; }
       else std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -51,9 +52,9 @@ int main(int argc, char** argv) {
   double peak = 0;
   auto next = Clock::now();
   for (int frame = 0; frame < 300 && processed.load() && !failed.load(); ++frame) {
-    for (int i = 0; i < 480; ++i) input[i] = 0.2f * std::sin((frame * 480 + i) * 0.05f);
+    for (int i = 0; i < 480; ++i) pcm[i] = 6553.6f * std::sin((frame * 480 + i) * 0.05f);
     std::uint64_t emitted;
-    const auto status = exchange.Capture(input, 1, false, output, &emitted);
+    const auto status = bridge.Capture(pcm, 480, 480, 48000, 1, 1, false, &emitted);
     if (status == ExchangeStatus::ready) {
       const auto current = static_cast<std::uint64_t>(frame + 1);
       if (emitted > current || current - emitted >= lag_counts.size()) { failed.store(true); break; }
@@ -62,7 +63,7 @@ int main(int argc, char** argv) {
     else if (status == ExchangeStatus::buffering) ++buffering;
     else if (status == ExchangeStatus::no_frame) ++underruns;
     else { ++overloads; break; }
-    for (float sample : output) peak = std::max(peak, static_cast<double>(std::fabs(sample)));
+    for (float sample : pcm) peak = std::max(peak, static_cast<double>(std::fabs(sample)));
     next += std::chrono::milliseconds(10); std::this_thread::sleep_until(next);
   }
   stop.store(true); worker.join();

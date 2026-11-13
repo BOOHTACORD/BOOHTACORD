@@ -11,6 +11,8 @@ They are intentionally not automatic CTests:
 the caller must supply absolute paths to an independently built research DLL
 and model and check both hashes before execution. Do not run an unknown DLL.
 
+The threaded probe converts S16-scale WebRTC-style PCM through the experimental
+capture bridge before worker processing. It does not use the client capture hook.
 The local experiment used DLL SHA-256
 `8b79e0942e7e01e909ad3797e5c0ffa20296db41dce8a80bf67d6a440a860730` and
 model SHA-256 `c94d91f70911001c946e0fabb4aa9adc37045f45a03b56008cb0c8244cb63616`.

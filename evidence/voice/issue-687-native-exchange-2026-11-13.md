@@ -56,3 +56,18 @@ The capture-side prototype rejects output from future sequences or more than
 the queue capacity in capture intervals old and emits silence on rejection.
 The caller still must stop the affected generation and initiate fallback; a
 sequence bound is not a measured wall-clock or end-to-end latency guarantee.
+
+The capture-bridge prototype translates 480 mono 48 kHz WebRTC float samples
+on the S16 scale into normalized frames and translates ready output back.
+Focused tests cover both scales, invalid formats and samples, output corruption,
+overflow, mute with invalid input, and the existing worker with a fake engine.
+On these failures it retains the input for the owning fallback; the owner must
+never publish retained input when muted or after a failed format check. Native
+MSVC CTest passed 10/10 after a full build.
+
+The threaded research probe was then changed to use that bridge with the same
+independently hash-checked DLL and model. One approximately three-second run
+with four startup frames observed 297 ready, 3 buffering, 0 underruns and 0
+overloads, p95/max frame lag 4. It used synthetic PCM and is not a physical
+microphone, production capture callback, sustained run or end-to-end latency
+measurement. The bridge and worker remain unconnected to the released client.
