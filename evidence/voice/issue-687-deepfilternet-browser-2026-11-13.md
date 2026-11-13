@@ -18,6 +18,13 @@ hashes and compiled the WASM in Chromium and Firefox. Unit tests check bad
 hashes, invalid content type, oversized streaming responses and timeouts;
 these checks do not establish release asset provenance or delivery.
 
-This research node is not connected to LiveKit or an application setting.
+An experimental TrackProcessor loaded the same assets and processed a
+synthetic MediaStream track in Chromium and Firefox; its derived track was
+disabled after mute. Firefox stopped delivering frames in that state, while
+the separate direct-worklet test showed zero output. Unit tests cover stale
+preparation cancellation, unsupported sample rate and unmute/error races.
+These runs did not publish to LiveKit or use a physical microphone.
+
+This research processor is not connected to LiveKit or an application setting.
 Its runtime cost, sustained operation, real microphone, voice quality,
 delivery, safe fallback and platform acceptance are not established.

@@ -32,9 +32,10 @@ async function checksum(bytes: Uint8Array): Promise<string> {
   return Array.from(new Uint8Array(digest), value => value.toString(16).padStart(2, '0')).join('')
 }
 
-export async function loadDeepFilterAssets(timeoutMs = 15000): Promise<{ module: WebAssembly.Module; model: Uint8Array }> {
+export async function loadDeepFilterAssets(timeoutMs = 15000, signal?: AbortSignal): Promise<{ module: WebAssembly.Module; model: Uint8Array }> {
   const controller = new AbortController()
   let timer: ReturnType<typeof setTimeout> | undefined
+  let cancel: (() => void) | undefined
   try {
     return await Promise.race([
       (async () => {
@@ -47,7 +48,15 @@ export async function loadDeepFilterAssets(timeoutMs = 15000): Promise<{ module:
         if (hashes[0] !== researchIdentity.wasmSha256 || hashes[1] !== researchIdentity.modelSha256) throw new Error('asset checksum mismatch')
         return { module: await WebAssembly.compile(wasm as Uint8Array<ArrayBuffer>), model }
       })(),
-      new Promise<never>((_, reject) => { timer = setTimeout(() => { controller.abort(); reject(new Error('asset timeout')) }, timeoutMs) }),
+      new Promise<never>((_, reject) => {
+        timer = setTimeout(() => { controller.abort(); reject(new Error('asset timeout')) }, timeoutMs)
+        cancel = () => { controller.abort(); reject(new Error('asset cancelled')) }
+        if (signal?.aborted) cancel(); else signal?.addEventListener('abort', cancel, { once: true })
+      }),
     ])
-  } finally { if (timer !== undefined) clearTimeout(timer); controller.abort() }
+  } finally {
+    if (timer !== undefined) clearTimeout(timer)
+    if (cancel) signal?.removeEventListener('abort', cancel)
+    controller.abort()
+  }
 }

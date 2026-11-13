@@ -69,3 +69,14 @@ it('bounds compilation time as well as network time', async () => {
   vi.mocked(WebAssembly.compile).mockImplementation(() => new Promise(() => {}))
   await expect(loadDeepFilterAssets(10)).rejects.toThrow('asset timeout')
 })
+
+it('aborts outstanding asset requests when preparation is cancelled', async () => {
+  const aborted = vi.fn(), controller = new AbortController()
+  vi.stubGlobal('fetch', vi.fn().mockImplementation((_url, options) => new Promise((_resolve, reject) => {
+    options.signal.addEventListener('abort', () => { aborted(); reject(new Error('aborted')) })
+  })))
+  const loading = loadDeepFilterAssets(1000, controller.signal)
+  controller.abort()
+  await expect(loading).rejects.toThrow('asset cancelled')
+  expect(aborted).toHaveBeenCalledTimes(2)
+})
