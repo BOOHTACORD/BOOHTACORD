@@ -18,12 +18,14 @@ type Metrics struct {
 	acquires       *prometheus.CounterVec
 	duration       *prometheus.HistogramVec
 	stats          map[string]*prometheus.Desc
+	partitionStats *prometheus.Desc
 }
 
 func NewMetrics() *Metrics {
 	m := &Metrics{meter: otel.Meter("boohtacord/incident-pool"), pending: prometheus.NewGauge(prometheus.GaugeOpts{Name: "voice_platform_database_acquires_pending", Help: "In-flight acquisition attempts; includes connection construction, not only saturation waiters."}),
 		acquires: prometheus.NewCounterVec(prometheus.CounterOpts{Name: "voice_platform_database_acquires_total", Help: "Pool acquisition outcomes, including failure and timeout."}, []string{"outcome"}),
 		duration: prometheus.NewHistogramVec(prometheus.HistogramOpts{Name: "voice_platform_database_acquire_duration_seconds", Help: "Pool acquisition latency including failures."}, []string{"outcome"}), stats: make(map[string]*prometheus.Desc)}
+	m.partitionStats = prometheus.NewDesc("voice_platform_database_partition_connections", "Connections by bounded pool partition and state.", []string{"partition", "state"}, nil)
 	for _, name := range []string{"acquired", "idle", "total", "max", "constructing", "empty_acquires_total", "empty_acquire_wait_seconds_total", "canceled_acquires_total"} {
 		m.stats[name] = prometheus.NewDesc("voice_platform_database_pool_"+name, "Native pgxpool statistic: "+name, nil, nil)
 	}
@@ -38,6 +40,7 @@ func (m *Metrics) Describe(c chan<- *prometheus.Desc) {
 	for _, d := range m.stats {
 		c <- d
 	}
+	c <- m.partitionStats
 }
 func (m *Metrics) Collect(c chan<- prometheus.Metric) {
 	m.pending.Collect(c)
@@ -52,5 +55,10 @@ func (m *Metrics) Collect(c chan<- prometheus.Metric) {
 			kind = prometheus.CounterValue
 		}
 		c <- prometheus.MustNewConstMetric(m.stats[name], kind, value)
+	}
+	for _, partition := range m.partitions() {
+		for state, value := range partitionValues(partition.pool) {
+			c <- prometheus.MustNewConstMetric(m.partitionStats, prometheus.GaugeValue, value, partition.name, state)
+		}
 	}
 }
