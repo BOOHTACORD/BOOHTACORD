@@ -12,11 +12,13 @@ def isolated_sink():
     with tempfile.TemporaryDirectory(prefix='boohta-firefox-audio-') as directory:
         root = Path(directory)
         socket = root / 'pulse.sock'
+        runtime = root / 'runtime'
+        runtime.mkdir(mode=0o700)
         config = root / 'null.pa'
         config.write_text(f'load-module module-native-protocol-unix socket={socket} auth-anonymous=1\n'
                           'load-module module-null-sink sink_name=boohta_test\n'
                           'set-default-sink boohta_test\n', encoding='utf-8')
-        env = {**os.environ, 'PULSE_SERVER': 'unix:' + str(socket)}
+        env = {**os.environ, 'PULSE_SERVER': 'unix:' + str(socket), 'PULSE_RUNTIME_PATH': str(runtime)}
         process = subprocess.Popen(['pulseaudio', '--daemonize=no', '--exit-idle-time=-1',
                                     '--disable-shm=true', '-n', '-F', str(config)],
                                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=env)

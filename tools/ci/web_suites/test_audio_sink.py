@@ -17,6 +17,7 @@ class AudioSinkTests(unittest.TestCase):
                 config = Path(socket).parent / 'null.pa'
                 self.assertIn('module-null-sink', config.read_text())
                 self.assertIn(socket, config.read_text())
+                self.assertEqual(Path(env['PULSE_RUNTIME_PATH']).parent, Path(socket).parent)
                 self.assertEqual(probe.call_args.kwargs['env']['PULSE_SERVER'], env['PULSE_SERVER'])
             start.assert_called_once(); process.terminate.assert_called_once(); process.wait.assert_called_once()
 

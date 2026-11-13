@@ -8,8 +8,10 @@ errors. The consuming AudioWorklet, versioned same-origin loader, cancellation,
 overload fallback and safe lifetime integration do not exist yet.
 
 The preliminary build applied WorkAdventure/noise-suppression commit
-`7e00a1b7522f044a31776fddc249a97a98de94ed`'s tract 0.23 patch
-(SHA-256 `495df6892ac879c0db80ccdb2aecbe939e4efc555d6c4fc8af2fab573d214d16`),
+`7e00a1b7522f044a31776fddc249a97a98de94ed`'s tract 0.23 patch. Its
+canonical Git blob SHA-256 is `88c73ae73ac1aaa99a72e8795e7fd41a67f4cd0f7cb49c1f69aeb70fe8c4abc9`;
+the CRLF checkout used for the experiment hashes to
+`495df6892ac879c0db80ccdb2aecbe939e4efc555d6c4fc8af2fab573d214d16`. The build
 excluded unused dataset/HDF5 workspace dependencies, and pinned tract 0.23.8,
 wasm-bindgen 0.2.118 and js-sys 0.3.95. The resulting experimental Cargo.lock
 SHA-256 is `83b27804cbfbe8167d62b2f839bf4d3bbd4adb1ea1deecc9b35c97ee6e98aa0b`;
