@@ -28,7 +28,10 @@ extension WorkspaceTopology on WorkspaceController {
             .firstOrNull;
       }
       if (previous == null && selectedChannel?.kind == ChannelKind.text) {
-        await selectChannel(selectedChannel!);
+        await selectChannel(
+          selectedChannel!,
+          socketCurrent: strict ? current : null,
+        );
       }
     } catch (cause) {
       if (strict && current()) rethrow;

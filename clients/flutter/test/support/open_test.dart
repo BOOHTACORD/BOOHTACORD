@@ -47,7 +47,7 @@ WorkspaceController controller(
   api,
   scope,
   effects: WorkspaceEffects(
-    selectChannel: (_) async {},
+    selectChannel: (_, {socketCurrent}) async {},
     openDirect: (value) async => opened.add(value.id),
     invalidateText: () {},
     clearText: () {},

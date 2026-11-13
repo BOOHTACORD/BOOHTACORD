@@ -354,8 +354,8 @@
         "scope": "Flutter captures socket admission for ready and recovery sequences and does not start later steps after closure. Already-running store operations and native acceptance remain separate."
       },
       "issue689_flutter_topology_socket_fence": {
-        "focused": "clients/flutter/test/realtime_scope/topology_socket_fence_test.dart",
-        "scope": "Flutter rejects old realtime topology results and failures after socket end or a newer refresh while preserving independent initial loading. Native and full-stack acceptance remain separate."
+        "focused": ["clients/flutter/test/realtime_scope/topology_socket_fence_test.dart", "clients/flutter/test/realtime_scope/topology_history_socket_fence_test.dart"],
+        "scope": "Flutter rejects old realtime topology results, failures and subsequent initial channel history after socket end or a newer refresh while preserving independent initial loading. Native and full-stack acceptance remain separate."
       },
       "issue689_flutter_members_socket_fence": {
         "focused": "clients/flutter/test/realtime_scope/members_socket_fence_test.dart",
