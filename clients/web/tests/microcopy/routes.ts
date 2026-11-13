@@ -6,6 +6,7 @@ export async function routes(page: Page) {
   await fixtureRoutes(page)
   await page.route('**/api/v1/**', async route => {
     const path = new URL(route.request().url()).pathname
+    if (path.endsWith('/me/join-sound')) return route.fulfill({ status: 404 })
     const permissions = { 'channel.text.create': true, 'channel.text.delete': true, 'channel.voice.create': true, 'channel.voice.delete': true, 'category.create': true, 'category.delete': true }
     const timestamp = new Date().toISOString()
     const probe = { status: 'ready', sampled_at: timestamp, pending_revocations: 0, available_bytes: 1e10, total_bytes: 2e10, reserved_bytes: 0, protected_bytes: 0, headroom_bytes: 1e10 }
