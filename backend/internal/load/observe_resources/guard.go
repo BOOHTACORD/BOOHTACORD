@@ -47,6 +47,14 @@ func (g Guard) Check(ctx context.Context) (Snapshot, error) {
 			return s, ErrResourceSnapshot
 		case "resource_metrics":
 			return s, ErrResourceMetrics
+		case "resource_metrics_timeout":
+			return s, ErrMetricsTimeout
+		case "resource_metrics_http":
+			return s, ErrMetricsHTTP
+		case "resource_metrics_unavailable":
+			return s, ErrMetricsUnavailable
+		case "resource_metrics_invalid":
+			return s, ErrMetricsInvalid
 		}
 	}
 	if response.StatusCode != 200 {

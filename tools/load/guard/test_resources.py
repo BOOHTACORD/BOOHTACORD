@@ -48,7 +48,7 @@ class ResourceSnapshotTests(unittest.TestCase):
                 patch('tools.load.guard.resources.snapshot', side_effect=OSError('private details')):
             with self.assertRaises(SampleFailure) as failure:
                 Resources(stack).read()
-            self.assertEqual(str(failure.exception), 'resource_metrics')
+            self.assertEqual(str(failure.exception), 'resource_metrics_unavailable')
 
 
 if __name__ == '__main__':

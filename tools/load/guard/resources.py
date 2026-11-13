@@ -4,6 +4,7 @@ import subprocess
 import threading
 import time
 from .metrics import snapshot
+from .metrics_failure import stage
 from .ownership import owned
 from .sample_failure import SampleFailure
 from tools.qa.client_lifecycle.services import output
@@ -31,8 +32,8 @@ class Resources:
         cpu_limit = min(nanos / 1_000_000_000, os.cpu_count() or 1)
         try:
             values = snapshot()
-        except (OSError, ValueError):
-            raise SampleFailure('resource_metrics') from None
+        except (OSError, ValueError) as cause:
+            raise SampleFailure(stage(cause)) from None
         now = time.monotonic()
         try:
             cpu_seconds = values['process_cpu_seconds_total']
