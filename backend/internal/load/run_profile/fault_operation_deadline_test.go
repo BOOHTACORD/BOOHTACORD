@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 	"time"
+	"voice-platform/backend/internal/load/connect_realtime"
 	"voice-platform/backend/internal/load/exercise_actor"
 	"voice-platform/backend/internal/load/observe_resources"
 	"voice-platform/backend/internal/load/record_results"
@@ -35,7 +36,7 @@ func TestFaultPhaseCancelsBlockedOperationAtPhaseDeadline(t *testing.T) {
 	m.Guard = s.URL
 	runner := &Runner{Profile: "faults", results: record_results.New()}
 	actor := &exercise_actor.Actor{Manifest: validate_target.Manifest{Origin: s.URL, MaxRequests: 100},
-		Client: s.Client(), Results: runner.results, Budget: &runner.budget}
+		Client: s.Client(), Socket: connect_realtime.New(runner.results), Results: runner.results, Budget: &runner.budget}
 	runner.actors = []*exercise_actor.Actor{actor}
 	start := time.Now()
 	phase, err := runner.phase(context.Background(), observe_resources.Guard{Manifest: m, Client: s.Client()}, "warmup", 40*time.Millisecond)

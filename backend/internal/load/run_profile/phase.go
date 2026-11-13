@@ -64,34 +64,14 @@ func (r *Runner) phase(ctx context.Context, guard observe_resources.Guard, name 
 		}
 		var group sync.WaitGroup
 		failures := make(chan error, len(r.actors))
-		for index, actor := range r.actors {
+		for index := range r.actors {
 			group.Add(1)
 			go func(index int) {
 				defer group.Done()
-				a := r.actors[index]
-				var err error
-				if r.Profile == "reconnect" && name == "spike" {
-					err = a.Reconnect(workCtx)
-				} else {
-					err = a.Read(workCtx)
-					if err == nil {
-						err = a.Message(workCtx, r.actors, nil)
-					}
-				}
-				if err == nil && iteration == 0 {
-					err = a.ACL(workCtx)
-				}
-				if err == nil && r.Profile == "uploads" && (name == "steady" || name == "spike") && index < 4 && iteration == 0 {
-					err = a.Upload(workCtx, r.actors)
-					if err == nil && index == 0 {
-						err = a.UploadLimit(workCtx)
-					}
-				}
-				if err != nil {
+				if err := r.exercise(ctx, workCtx, name, iteration, index); err != nil {
 					failures <- err
 				}
 			}(index)
-			_ = actor
 		}
 		group.Wait()
 		close(failures)

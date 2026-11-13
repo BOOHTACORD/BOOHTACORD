@@ -39,7 +39,6 @@ func (s *Socket) Connect(ctx context.Context, client *http.Client, origin string
 	s.Close()
 	s.mu.Lock()
 	last := s.last
-	s.failure = false
 	s.resync = false
 	s.mu.Unlock()
 	address := strings.Replace(origin, "https://", "wss://", 1) + "/api/v1/realtime"
@@ -60,6 +59,7 @@ func (s *Socket) Connect(ctx context.Context, client *http.Client, origin string
 	s.mu.Lock()
 	s.conn = conn
 	s.cancel = cancel
+	s.failure = false
 	s.mu.Unlock()
 	ready := make(chan bool, 1)
 	go s.read(readCtx, conn, ready, resume)
