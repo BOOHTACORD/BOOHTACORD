@@ -25,11 +25,14 @@ func (hub *Hub) PublishToAccountsTransient(accountIDs []string, event Event) {
 	hub.mu.Lock()
 	defer hub.mu.Unlock()
 	for subscription := range hub.subscribers {
-		if subscription.dropped {
-			continue
-		}
 		if _, targeted := targets[subscription.accountID]; targeted {
-			hub.deliverLocked(subscription, event)
+			if subscription.dropped {
+				if subscription.AllowsKind(event.Kind) {
+					subscription.retainCriticalLocked(event)
+				}
+			} else {
+				hub.deliverLocked(subscription, event)
+			}
 		}
 	}
 }
@@ -90,7 +93,7 @@ func (hub *Hub) publishToAccounts(ctx context.Context, accountIDs []string, even
 			continue
 		}
 		if subscription.dropped {
-			if !subscription.retainCriticalLocked(event) {
+			if subscription.AllowsKind(event.Kind) && !subscription.retainCriticalLocked(event) {
 				saturated = true
 			}
 		} else if !hub.deliverLocked(subscription, event) {

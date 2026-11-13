@@ -27,8 +27,13 @@ def proof(run,jobs,receipt,producer):
     record=authority(receipt['producer']);intent.require(record['source_revision']==source
         and record['run_id']==producer['id'] and record['run_attempt']==producer['run_attempt'])
     delivery=receipt['delivery'];ack=delivery['readback']
+    sources=ack.get('sources');images=ack.get('running_images')
+    components=set(sources) if isinstance(sources,dict) else set()
+    intent.require(components in ({'api','web'},{'api','web','join-sound-processor'})
+        and sources=={name:source for name in components} and isinstance(images,dict) and set(images)==components
+        and all(isinstance(value,str) and re.fullmatch(r'sha256:[0-9a-f]{64}',value) for value in images.values()))
     intent.require(delivery['status']=='PASS' and delivery['source_revision']==source and ack['status']=='PASS'
-        and ack['source_revision']==source and ack['sources']=={'api':source,'web':source}
+        and ack['source_revision']==source
         and ack['health']=='PASS' and ack['persistent_volumes']=='PASS')
     started=datetime.fromisoformat(run['run_started_at'].replace('Z','+00:00'))
     finished=datetime.fromisoformat(run['updated_at'].replace('Z','+00:00'))

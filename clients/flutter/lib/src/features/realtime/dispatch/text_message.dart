@@ -4,11 +4,16 @@ import '../../workspace/lifecycle/controller.dart';
 Future<void> refreshTextEvent(
   ConversationController conversation,
   WorkspaceController workspace,
-  String? messageID,
-) async {
+  String? messageID, [
+  bool Function()? socketCurrent,
+]) async {
   final active = conversation.admission();
-  await conversation.refreshSelectedTextHistory(strict: true, at: messageID);
-  if (!active()) return;
+  await conversation.refreshSelectedTextHistory(
+    strict: true,
+    at: messageID,
+    socketCurrent: socketCurrent,
+  );
+  if (!active() || !(socketCurrent?.call() ?? true)) return;
   final welcome = conversation.messages
       .where(
         (message) =>

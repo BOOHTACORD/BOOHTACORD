@@ -17,21 +17,42 @@ func (r *Runner) phase(ctx context.Context, guard observe_resources.Guard, name 
 		phase.Requests = r.budget.Load() - before
 		phase.RequestsPerSecond = float64(phase.Requests) / phase.Seconds
 	}()
-	timer := time.NewTimer(duration)
-	defer timer.Stop()
 	if r.Profile == "faults" {
 		faults := map[string]string{"warmup": "db_pressure", "ramp": "sfu_outage", "steady": "slow_telemetry", "spike": "disk_pressure"}
 		if fault := faults[name]; fault != "" {
-			if err := guard.Fault(ctx, fault); err != nil {
+			if err := guard.FaultFor(ctx, fault, duration); err != nil {
+				phase.Failure = "fault_" + observe_resources.Category(err)
+				if ctx.Err() != nil {
+					phase.Failure = "canceled"
+				}
 				return phase, err
 			}
+			if err := guard.WaitFault(ctx, fault); err != nil {
+				phase.Failure = "fault_unverified"
+				return phase, err
+			}
+			defer func() {
+				if err == nil {
+					if check := guard.FaultActive(ctx, fault); check != nil {
+						phase.Failure, err = "fault_lost", check
+					}
+				}
+			}()
 		}
 	}
 	if name == "recovery" {
 		if err := guard.Fault(ctx, "restore"); err != nil {
+			phase.Failure = "restore_" + observe_resources.Category(err)
+			if ctx.Err() != nil {
+				phase.Failure = "canceled"
+			}
 			return phase, err
 		}
 	}
+	timer := time.NewTimer(duration)
+	defer timer.Stop()
+	workCtx, cancelWork := operationContext(ctx, r.Profile, name, duration)
+	defer cancelWork()
 	for iteration := 0; ; iteration++ {
 		select {
 		case <-ctx.Done():
@@ -43,34 +64,14 @@ func (r *Runner) phase(ctx context.Context, guard observe_resources.Guard, name 
 		}
 		var group sync.WaitGroup
 		failures := make(chan error, len(r.actors))
-		for index, actor := range r.actors {
+		for index := range r.actors {
 			group.Add(1)
 			go func(index int) {
 				defer group.Done()
-				a := r.actors[index]
-				var err error
-				if r.Profile == "reconnect" && name == "spike" {
-					err = a.Reconnect(ctx)
-				} else {
-					err = a.Read(ctx)
-					if err == nil {
-						err = a.Message(ctx, r.actors, nil)
-					}
-				}
-				if err == nil && iteration == 0 {
-					err = a.ACL(ctx)
-				}
-				if err == nil && r.Profile == "uploads" && (name == "steady" || name == "spike") && index < 4 && iteration == 0 {
-					err = a.Upload(ctx, r.actors)
-					if err == nil && index == 0 {
-						err = a.UploadLimit(ctx)
-					}
-				}
-				if err != nil {
+				if err := r.exercise(ctx, workCtx, name, iteration, index); err != nil {
 					failures <- err
 				}
 			}(index)
-			_ = actor
 		}
 		group.Wait()
 		close(failures)

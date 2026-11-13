@@ -20,7 +20,8 @@ void configureWorkspace(AppOwners app) {
       audioPanelOpened: () {
         unawaited(app.audioDevices.bootstrap());
       },
-      selectChannel: (channel) => app.conversation.loadChannelHistory(channel),
+      selectChannel: (channel, {socketCurrent}) => app.conversation
+          .loadChannelHistory(channel, socketCurrent: socketCurrent),
       openDirect: (direct) => app.conversation.loadDirectHistory(direct),
       invalidateText: () => app.conversation.invalidateSelection(),
       clearText: () => app.conversation.clearText(),

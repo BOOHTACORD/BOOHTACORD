@@ -8,7 +8,7 @@ import 'fakes.dart';
 
 class OpeningFailureApi extends RealtimeApiFake {
   @override
-  Future<WebSocket> openRealtime({String? after}) async {
+  Future<WebSocket> openRealtime({String? after, HttpClient? client}) async {
     opens++;
     throw const SocketException('synthetic owned connection failure');
   }

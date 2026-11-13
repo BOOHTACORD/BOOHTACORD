@@ -30,15 +30,16 @@ type Hub struct {
 }
 
 type Subscription struct {
-	hub          *Hub
-	accountID    string
-	becameOnline bool
-	events       chan Event
-	overflowed   chan struct{}
-	critical     []Event
-	dropped      bool
-	capabilities map[string]struct{}
-	once         sync.Once
+	hub           *Hub
+	accountID     string
+	becameOnline  bool
+	events        chan Event
+	overflowed    chan struct{}
+	critical      []Event
+	dropped       bool
+	closeRequired bool
+	capabilities  map[string]struct{}
+	once          sync.Once
 }
 
 func New(queueSize int) *Hub {

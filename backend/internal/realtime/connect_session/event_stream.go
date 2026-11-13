@@ -9,26 +9,22 @@ import (
 	sessionapi "voice-platform/backend/internal/identity/authenticate_session/api"
 	observestate "voice-platform/backend/internal/maintenance/observe_state"
 	eventhub "voice-platform/backend/internal/realtime/event_hub"
+	"voice-platform/backend/internal/realtime/heartbeat"
 	guard "voice-platform/backend/internal/voice/authorize_roster_delivery"
 )
 
 func streamEvents(connection *websocket.Conn, authenticator sessionapi.Authenticator, cookie *http.Cookie, subscription *eventhub.Subscription, hub *eventhub.Hub, newID Identifier, now Clock, observer ConnectionObserver, replayedIDs map[replayKey]struct{}, maintenance *observestate.Subscription, roster RosterStream, maxRosterBytes int) {
 	closed := connection.CloseRead(context.Background()).Done()
+	heartbeats, stopHeartbeat := heartbeat.Ticks(connection)
+	defer stopHeartbeat()
 	var events <-chan eventhub.Event
 	var overflowed <-chan struct{}
 	var maintenanceEvents <-chan observestate.State
-	var rosterEvents <-chan RosterDelivery
+	rosterEvents := rosterEventsOrNil(roster)
 	var checks <-chan rosterCheckResult
 	var cancelCheck context.CancelFunc
 	var version uint64
-	defer func() {
-		if cancelCheck != nil {
-			cancelCheck()
-		}
-	}()
-	if roster != nil {
-		rosterEvents = roster.Events()
-	}
+	defer cancelPendingCheck(&cancelCheck)
 	firstMaintenance := true
 	if maintenance != nil {
 		maintenanceEvents = maintenance.Events()
@@ -40,6 +36,10 @@ func streamEvents(connection *websocket.Conn, authenticator sessionapi.Authentic
 		select {
 		case <-closed:
 			return
+		case <-heartbeats:
+			if !writeHeartbeat(connection, newID, now) {
+				return
+			}
 		case delivery, ok := <-rosterEvents:
 			if !ok {
 				return

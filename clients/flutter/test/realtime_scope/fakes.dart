@@ -10,8 +10,18 @@ class RealtimeApiFake extends ApiClient {
   final checking = Completer<void>();
   int opens = 0;
   String? after;
+  Future<void>? abortSignal;
   @override
-  Future<WebSocket> openRealtime({String? after}) {
+  Future<SessionUser?> currentRealtimeSession(
+    Future<void> abort,
+    bool Function() isCurrent,
+  ) {
+    abortSignal = abort;
+    return currentSession();
+  }
+
+  @override
+  Future<WebSocket> openRealtime({String? after, HttpClient? client}) {
     opens++;
     this.after = after;
     return opening.future;
@@ -25,6 +35,8 @@ class RealtimeApiFake extends ApiClient {
 }
 
 class SocketFake extends Stream<dynamic> implements WebSocket {
+  @override
+  String? get protocol => null;
   final events = StreamController<dynamic>();
   bool closed = false;
   @override

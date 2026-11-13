@@ -23,8 +23,17 @@ extension _GuestEvents on MaintenanceGuestSocket {
       }
       final kind = source['kind'],
           payload = source['payload'] as Map<String, dynamic>;
+      if (isMaintenanceKind(kind) && !validNewRealtimeEnvelope(source)) {
+        _fail(epoch);
+        return;
+      }
       if (kind == 'connection.ready' && !_ready && payload.isEmpty) {
         _ready = true;
+        _liveness?.observe(kind as String, source);
+        return;
+      }
+      if (kind == 'connection.heartbeat') {
+        if (_liveness?.observe(kind as String, source) != true) _fail(epoch);
         return;
       }
       if (!_ready ||
@@ -45,6 +54,7 @@ extension _GuestEvents on MaintenanceGuestSocket {
         _timeout = null;
         _attempt = 0;
       }
+      _liveness?.observe(kind, source);
     } catch (_) {
       _fail(epoch);
     }

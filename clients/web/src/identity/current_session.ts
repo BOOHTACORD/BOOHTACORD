@@ -8,8 +8,8 @@ export interface CurrentSession {
 
 export type SessionRequest = (input: string, init: RequestInit) => Promise<Response>
 
-export async function loadCurrentSession(request: SessionRequest = tracedFetch): Promise<CurrentSession | null> {
-  const response = await request(`${apiBaseUrl}/auth/session`, { credentials: 'same-origin', headers: { accept: 'application/json' } })
+export async function loadCurrentSession(request: SessionRequest = tracedFetch, signal?: AbortSignal): Promise<CurrentSession | null> {
+  const response = await request(`${apiBaseUrl}/auth/session`, { credentials: 'same-origin', headers: { accept: 'application/json' }, ...(signal ? { signal } : {}) })
   if (response.status === 401) return null
   if (!response.ok) throw new Error(`Не удалось определить текущую сессию (${response.status}).`)
   const source: unknown = await response.json()
