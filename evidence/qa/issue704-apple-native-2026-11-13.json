@@ -1,0 +1,562 @@
+{
+  "issue": 704,
+  "date": "2026-11-13",
+  "status": "BLOCKED",
+  "scope": "Scoped native Apple checks for #689; full #704 platform gate remains open",
+  "source": {
+    "remote_master_at_start": "d9c81545792762859c113ae558df0ddd2609c818",
+    "apple_link_fix_commit": "1d242e562e0171f66e6fa20d2c853f17b52049bf",
+    "private_qa_checkout": "5be06717f43bd24c842561ded33fee18651610fa",
+    "private_qa_note": "Cherry-pick of the same link fix. Debug bundle override ru.boohtacord.issue704qa; iOS QA entitlements omit APNs/app groups. Loopback fixture sources match main. macOS real-stack overlays use ports 4850/4851/4852/4890/4891/4895 and normal window_manager initialization; macOS integration screenshot calls unsupported and skipped in this private fixture only. Visual checkpoints and fixture hash manifest retained locally.",
+    "final_fixture_sha256": {
+      "clients/flutter/integration_test/issue689_listener_test.dart": "dc17ceb27f74185c61e61e2fe78966394ab4f175eac5503ade8de901f3b87ce9",
+      "clients/flutter/integration_test/local_qa_test.dart": "4444ba3cca1aa86b3a7e64dc2f22a8c4543fe8076ceeeff50f998f04ba755d76"
+    }
+  },
+  "environment": {
+    "macos": "27.2.1 (26B131), arm64 MacBook Pro",
+    "xcode": "27.2 (27B52)",
+    "flutter": "3.47.7",
+    "dart": "3.13.5",
+    "simulator": "iPhone 18 Pro, iOS 27.0, dedicated QA simulator",
+    "physical_device": "iPhone 17, iOS 27.2 (24B119), wired, Developer Mode enabled",
+    "app_version": "1.0.54 (90)",
+    "backend": "Owned local Go/PostgreSQL/LiveKit/Tempo stack; no production mutation",
+    "docker": "29.5.2, dedicated Colima boohtacord-qa; Egress linux/amd64 fallback",
+    "network": "NO_PROXY/no_proxy=localhost,127.0.0.1,::1; ephemeral certificate pin and disposable credentials supplied through a mode-0600 temporary file"
+  },
+  "checks": [
+    {
+      "name": "Apple package strict downstream link and synthetic PCM",
+      "status": "PASS",
+      "before": "FAIL: undefined NoiseEngineName, ParseNoiseEngine, ProcessDeepFilter and supported symbols",
+      "after": "PASS after adding noise_engine_names.cc and deepfilter/capture_hook/process.cc to Swift package sources",
+      "logs": [
+        "apple-audio-red/report.json",
+        "apple-audio-green/report.json"
+      ],
+      "limitation": "No physical media, DeepFilter model or audio-quality acceptance"
+    },
+    {
+      "name": "macOS-only updater refusal and re-arm",
+      "status": "PASS",
+      "tests": 2,
+      "skipped": 0,
+      "log": "recovery-retry.log"
+    },
+    {
+      "name": "macOS vendor capture options plus new strict link gate",
+      "status": "PASS",
+      "tests": 8,
+      "skipped": 0,
+      "log": "macos-native-gate.log"
+    },
+    {
+      "name": "Python migration guards",
+      "status": "PASS",
+      "tests": 14,
+      "log": "migration-tests.log"
+    },
+    {
+      "name": "Legacy SSE guard",
+      "status": "PASS",
+      "active_findings": 0,
+      "log": "no-sse.log"
+    },
+    {
+      "name": "Spec traceability",
+      "status": "PASS",
+      "log": "spec-traceability.log",
+      "limitation": "Committed requirement index checked; original Windows product brief unavailable on this Mac"
+    },
+    {
+      "name": "Flutter unit suite on macOS",
+      "status": "BLOCKED",
+      "passed": 1933,
+      "skipped": 1,
+      "log": "../local-features/20261113-141332/flutter-unit.log",
+      "limitation": "runtime_export_test.dart opt-in TRACE_QA_NATIVE case skipped; not an all-green suite"
+    },
+    {
+      "name": "Selected Flutter component captures",
+      "status": "PASS",
+      "tests": 642,
+      "skipped": 0,
+      "log": "../local-features/20261113-141332/flutter-component-captures.log",
+      "limitation": "Component captures are not native/media acceptance; only the separately listed native images were visually reviewed"
+    },
+    {
+      "name": "macOS native loopback WebSocket cases",
+      "status": "PASS",
+      "tests": 4,
+      "skipped": 0,
+      "log": "macos-loopback-fixed-2.log",
+      "scope": "Silent heartbeat recovery, malformed-envelope recovery, lease revoke with synthetic client queue, duplicate dispatch",
+      "limitation": "Synthetic loopback peers/session identity, queue capacity 2; no server pressure or ACL acceptance"
+    },
+    {
+      "name": "Physical iPhone native loopback WebSocket cases",
+      "status": "PASS",
+      "tests": 4,
+      "skipped": 0,
+      "log": "physical-loopback-fixed-clean.log",
+      "scope": "Same four loopback cases on an installed, development-signed QA app",
+      "limitation": "No APNs, real network switching, background or actual audio acceptance"
+    },
+    {
+      "name": "iOS Simulator owned-stack roster",
+      "status": "PASS",
+      "tests": 1,
+      "log": "../local-features/20261113-141332/ios-runtime-issue689_roster_test.log"
+    },
+    {
+      "name": "iOS Simulator history response fencing across socket close",
+      "status": "PASS",
+      "tests": 1,
+      "log": "../local-features/20261113-141332/ios-runtime-issue689_topology_history_test.log"
+    },
+    {
+      "name": "iOS Simulator required-update catalog gate",
+      "status": "PASS",
+      "tests": 1,
+      "log": "../local-features/20261113-141332/ios-runtime-update_required_test.log",
+      "limitation": "No installer or signed release rollback"
+    },
+    {
+      "name": "iOS Simulator listener and app WebSocket reconnect",
+      "status": "PASS",
+      "tests": 1,
+      "log": "ios-listener-final.log",
+      "scope": "Actual owned Go API and LiveKit room; listener without microphone; logout waits for ready guest socket",
+      "limitation": "No microphone or decoded audio evidence"
+    },
+    {
+      "name": "macOS owned-stack roster and listener",
+      "status": "PASS",
+      "tests": 2,
+      "log": "macos-realstack-automated.log",
+      "limitation": "Private fixture overlays described above; automatic repeat without UI accessibility inspection"
+    },
+    {
+      "name": "macOS visual checkpoint run",
+      "status": "FAIL",
+      "log": "macos-realstack-review.log",
+      "reason": "Both UI checkpoints reviewed, but Flutter detected an active SemanticsHandle after external accessibility inspection during the first test. Original failure retained; separate no-UI repeat passed."
+    },
+    {
+      "name": "iOS Simulator complete native smoke after synchronization repair",
+      "status": "PASS",
+      "tests": 1,
+      "skipped": 0,
+      "log": "ios-smoke-final.log",
+      "scope": "auth/workspace/context search/support consent/profile/audio/admin/favorites/logout; capture chooser cancelled before media",
+      "limitation": "Fixture injects voice error for status-card capture; no actual audio outage proven"
+    },
+    {
+      "name": "Final Python harness and selection checks",
+      "status": "PASS",
+      "tests": 24,
+      "log": "harness-final.log"
+    }
+  ],
+  "canonical_local_feature_run": {
+    "path": ".out/local-features/20261113-141332/report.json",
+    "status": "FAIL",
+    "source": "1d242e562e0171f66e6fa20d2c853f17b52049bf",
+    "features": [
+      "auth",
+      "connection_status",
+      "voice",
+      "update_required",
+      "chat",
+      "screen",
+      "support"
+    ],
+    "reason": "Initial native attempts lacked Docker buildx; listener teardown raced a new guest handshake; one unit opt-in skipped; Xcode generated two untracked iOS SwiftPM lockfiles during the run, causing source-stability BLOCKED. Scoped subsequent results do not rewrite this report or establish a full local-feature PASS."
+  },
+  "artifacts": [
+    {
+      "receipt": ".out/issue704/macos-loopback-artifact.json",
+      "receipt_sha256": "755b373cb1a7204591bac8c6958480e1b17477617ee9a27bcf96d5061dd42265",
+      "bundle": "ru.boohtacord.issue704qa",
+      "version": "1.0.54",
+      "build": "90",
+      "manifest_sha256": "5196d9fd6f9cc8d68a8452c746f506f4c22003e28adb896c60d58893e265cece",
+      "codesign_verify": "PASS",
+      "signature_scope": "Development or ad-hoc QA; not notarization/distribution"
+    },
+    {
+      "receipt": ".out/issue704/physical-loopback-artifact.json",
+      "receipt_sha256": "7f29aea6f72bb01f47d8f39acb561c8c310ea92f45ca0edf282ee75f5a69784b",
+      "bundle": "ru.boohtacord.issue704qa",
+      "version": "1.0.54",
+      "build": "90",
+      "manifest_sha256": "9470c88e641b936eea1444fb686ac007ddb6817f6bc66ef04259aa1739306a42",
+      "codesign_verify": "PASS",
+      "signature_scope": "Development or ad-hoc QA; not notarization/distribution"
+    },
+    {
+      "receipt": ".out/issue704/macos-realstack-artifact.json",
+      "receipt_sha256": "bed2b04052d7c1205a07c02806eb13501a38dc3b55b63bec0f62deb7e722b69e",
+      "bundle": "ru.boohtacord.issue704qa",
+      "version": "1.0.54",
+      "build": "90",
+      "manifest_sha256": "a21a84341f747442727806eee085ca5c0716efff4441744b25ef4c31340bd271",
+      "codesign_verify": "PASS",
+      "signature_scope": "Development or ad-hoc QA; not notarization/distribution"
+    },
+    {
+      "bundle": "ru.boohtacord.app",
+      "version": "1.0.54",
+      "build": "90",
+      "manifest_sha256": "d61a1053b058fe1db1cec05b01b077cc6e024c9b2baededb849fdaaadb4ae80d",
+      "codesign_verify": "PASS",
+      "receipt": ".out/issue704/ios-smoke-artifact.json",
+      "receipt_sha256": "2a080cc90557bd505a48786e5757cff2bf8b497e1aa5c72a9efe5cb79a1765bd",
+      "signature_scope": "Simulator debug; final smoke only, earlier per-target binaries overwritten"
+    }
+  ],
+  "screenshots": [
+    {
+      "path": ".out/issue704/macos-realstack/roster-empty-recovered.png",
+      "sha256": "a5e2abdbab34cd23bf38e502766c68093b491672bd4ef2f649f2231de02158bc",
+      "dimensions": "2880x1800",
+      "review": "PASS",
+      "observation": "Empty roster after manual reconnect; three-column shell fits; no phantom participant.",
+      "data": "Owned disposable fixture only; no real messages/user identities"
+    },
+    {
+      "path": ".out/issue704/macos-realstack/listener-populated-recovered.png",
+      "sha256": "3056404b72d1b0f2b290b7c5ff106219e512558ff0e68cca437f482b18105403",
+      "dimensions": "2880x1800",
+      "review": "PASS",
+      "observation": "One fixture listener visible in room, right member indication and connected voice dock agree; mute icon present; no clipping in the tested viewport.",
+      "data": "Owned disposable fixture only; no real messages/user identities"
+    },
+    {
+      "path": ".out/issue704/ios-listener-final/native-listener-realtime-recovered.png",
+      "sha256": "93273edefba506ed3ce41b41ac10b9a781bf8dbe4926c3bc60753406a1a44e5c",
+      "dimensions": "1206x2622",
+      "review": "PASS",
+      "observation": "One muted fixture listener, selected voice channel and voice dock agree after app-socket recovery; controls readable and within viewport.",
+      "data": "Owned disposable fixture only; no real messages/user identities"
+    },
+    {
+      "path": ".out/local-features/20261113-141332/ios-runtime-issue689_roster_test/android-maintenance-unknown.png",
+      "sha256": "49655ad485cb8fa0fbc6a00ffe63d1e810b793afbbbcbdc3a1ee90645f69610a",
+      "dimensions": "1206x2622",
+      "review": "PASS",
+      "observation": "Actual iOS capture despite historical Android filename: unknown-maintenance banner and login form readable; version remains visible.",
+      "data": "Owned disposable fixture only; no real messages/user identities"
+    },
+    {
+      "path": ".out/local-features/20261113-141332/ios-runtime-issue689_roster_test/android-maintenance-unknown-scrolled.png",
+      "sha256": "49655ad485cb8fa0fbc6a00ffe63d1e810b793afbbbcbdc3a1ee90645f69610a",
+      "dimensions": "1206x2622",
+      "review": "PASS",
+      "observation": "Actual iOS capture: scrolled banner/auth layout fits and version not clipped.",
+      "data": "Owned disposable fixture only; no real messages/user identities"
+    },
+    {
+      "path": ".out/local-features/20261113-141332/ios-runtime-issue689_roster_test/android-roster-socket.png",
+      "sha256": "f53c36702823499c149e0cb641ce29ea9d3d10752a1a934f717ab23813d4e6b8",
+      "dimensions": "1206x2622",
+      "review": "PASS",
+      "observation": "Actual iOS capture: empty room after reconnect, shell and help/settings controls fit.",
+      "data": "Owned disposable fixture only; no real messages/user identities"
+    },
+    {
+      "path": ".out/issue704/ios-smoke-final/native-auth.png",
+      "sha256": "5fa71ba2d0476e11bb98c2c5cdf5bdd1984aff04fdc35767022b5a3ce8fa8802",
+      "dimensions": "1206x2622",
+      "review": "PASS",
+      "observation": "Empty login form and version fit viewport.",
+      "data": "Owned disposable fixture only"
+    },
+    {
+      "path": ".out/issue704/ios-smoke-final/native-signed-out.png",
+      "sha256": "5fa71ba2d0476e11bb98c2c5cdf5bdd1984aff04fdc35767022b5a3ce8fa8802",
+      "dimensions": "1206x2622",
+      "review": "PASS",
+      "observation": "Logout returns to empty login form; version visible.",
+      "data": "Owned disposable fixture only"
+    },
+    {
+      "path": ".out/issue704/ios-smoke-final/native-navigation.png",
+      "sha256": "8596b7cbe1a885021ccad3d0d69085676c24479b91558e40691184e981aeb64a",
+      "dimensions": "1206x2622",
+      "review": "PASS",
+      "observation": "Owned channel visible; navigation drawer open.",
+      "data": "Owned disposable fixture only"
+    },
+    {
+      "path": ".out/issue704/ios-smoke-final/native-channel-favorites.png",
+      "sha256": "d89666ef3ac9db0082926e1bb71ba2f4dc5e9ec7d171d8ee33a0c15e42debfeb",
+      "dimensions": "1206x2622",
+      "review": "PASS",
+      "observation": "Favorite shortcut and selected channel agree; star visible.",
+      "data": "Owned disposable fixture only"
+    },
+    {
+      "path": ".out/issue704/ios-smoke-final/native-context-search.png",
+      "sha256": "b9f9d8036b8e7f92eca3cd0ea1f7316008fa05215a0be72deec669bc805b2d62",
+      "dimensions": "1206x2622",
+      "review": "PASS",
+      "observation": "Empty current-channel search; disabled submit readable.",
+      "data": "Owned disposable fixture only"
+    },
+    {
+      "path": ".out/issue704/ios-smoke-final/native-profile.png",
+      "sha256": "53d15e3b359bfb90af84a96d51a71c0043ded98ecf678867d0041b9d76b1e77d",
+      "dimensions": "1206x2622",
+      "review": "PASS",
+      "observation": "Profile form readable; horizontal tabs and longer content scroll.",
+      "data": "Owned disposable fixture only"
+    },
+    {
+      "path": ".out/issue704/ios-smoke-final/native-audio.png",
+      "sha256": "631e1c8de620530d28a2208ec6b6ac990e768ff4c8bde9950d84e195ffa38e5a",
+      "dimensions": "1206x2622",
+      "review": "PASS",
+      "observation": "Device selectors and local-test controls fit; capture/playback not activated.",
+      "data": "Owned disposable fixture only"
+    },
+    {
+      "path": ".out/issue704/ios-smoke-final/native-audio-advanced.png",
+      "sha256": "0f30f62ee87f6ebd9f39789dd0ad282428e4ef4670502169340a81008e997978",
+      "dimensions": "1206x2622",
+      "review": "PASS",
+      "observation": "Expanded voice diagnostics readable at scrolled position; not audio quality evidence.",
+      "data": "Owned disposable fixture only"
+    },
+    {
+      "path": ".out/issue704/ios-smoke-final/native-admin.png",
+      "sha256": "d1643975d615c1bacd0b9700292fc13e13a545ac653069e8531f1ec0dc04195c",
+      "dimensions": "1206x2622",
+      "review": "PASS",
+      "observation": "Member roles and actions fit; scrollable list.",
+      "data": "Owned disposable fixture only"
+    },
+    {
+      "path": ".out/issue704/ios-smoke-final/native-connection-status.png",
+      "sha256": "bb47caf1ef93b7e5e1ea324364fdc0094319375604b69255df0b3540624efeb5",
+      "dimensions": "1206x2622",
+      "review": "PASS",
+      "observation": "Distinct chat/voice/roster indicators readable; voice error is synthetic.",
+      "data": "Owned disposable fixture only"
+    },
+    {
+      "path": ".out/issue704/ios-smoke-final/native-public-support-default.png",
+      "sha256": "6afa59bd1f25427ecf46f368d4b4d8112265f734cfc069a90021c1d034f45aac",
+      "dimensions": "1206x2622",
+      "review": "REVIEW_REQUIRED",
+      "observation": "Consent warning readable; hint flush against left edge needs visual follow-up.",
+      "data": "Owned disposable fixture only"
+    },
+    {
+      "path": ".out/issue704/ios-smoke-final/native-workspace.png",
+      "sha256": "6afa59bd1f25427ecf46f368d4b4d8112265f734cfc069a90021c1d034f45aac",
+      "dimensions": "1206x2622",
+      "review": "REVIEW_REQUIRED",
+      "observation": "Consent warning readable; hint flush against left edge needs visual follow-up.",
+      "data": "Owned disposable fixture only"
+    },
+    {
+      "path": ".out/issue704/ios-smoke-final/native-screen-text-independent-fps.png",
+      "sha256": "7e60798c2b1496c96e019bc008ef3a6abdf1d1b9c8edf47ff7d3592e6cc1b60d",
+      "dimensions": "1206x2622",
+      "review": "REVIEW_REQUIRED",
+      "observation": "Resolution/FPS controls readable; fixed footer partly occludes content-mode chips at captured scroll position.",
+      "data": "Owned disposable fixture only"
+    },
+    {
+      "path": ".out/issue704/ios-smoke-final/native-screen-motion-independent-fps.png",
+      "sha256": "157ee8c30d44dda0457ece58f984e3c3bb25a00af19cd2838117ea19cf3dbaab",
+      "dimensions": "1206x2622",
+      "review": "PASS",
+      "observation": "Motion selected, full content-mode chips and explanatory block readable; cancel used before capture.",
+      "data": "Owned disposable fixture only"
+    }
+  ],
+  "matrix": [
+    {
+      "case": "WS-01",
+      "status": "PARTIAL",
+      "observation": "guest/auth handoff and synthetic unknown maintenance banner; maintenance on/off not covered"
+    },
+    {
+      "case": "WS-02",
+      "status": "NOT_RUN",
+      "observation": "CLI maintenance public/auth propagation"
+    },
+    {
+      "case": "WS-03",
+      "status": "NOT_RUN",
+      "observation": "restart while maintenance state unavailable"
+    },
+    {
+      "case": "WS-04",
+      "status": "PARTIAL",
+      "observation": "login/logout and observed guest socket closure; multi-account switching not run"
+    },
+    {
+      "case": "WS-05",
+      "status": "PARTIAL",
+      "observation": "heartbeat/malformed reconnect and manual retry; HTTP rejection matrix and jitter not run"
+    },
+    {
+      "case": "WS-06",
+      "status": "PARTIAL",
+      "observation": "initial roster snapshot observed; replay-barrier fault matrix not run"
+    },
+    {
+      "case": "WS-07",
+      "status": "PARTIAL",
+      "observation": "stale history fenced; durable hint crash/replay and ACL matrix not run"
+    },
+    {
+      "case": "WS-08",
+      "status": "PARTIAL",
+      "observation": "synthetic client queue revocation/dedup; actual server 64/client 256 pressure not run"
+    },
+    {
+      "case": "WS-09",
+      "status": "NOT_RUN",
+      "observation": "native guest privacy field audit"
+    },
+    {
+      "case": "WS-10",
+      "status": "NOT_RUN",
+      "observation": "native Origin/quota/NAT20 acceptance"
+    },
+    {
+      "case": "VR-01",
+      "status": "PARTIAL",
+      "observation": "empty roster on both Apple UIs; full matrix combinations not run"
+    },
+    {
+      "case": "VR-02",
+      "status": "PARTIAL",
+      "observation": "one authenticated listener shown and leaves; >=2-account transfer/parity not run"
+    },
+    {
+      "case": "VR-03",
+      "status": "NOT_RUN",
+      "observation": "physical mute/screen/tracks and audible sounds"
+    },
+    {
+      "case": "VR-04",
+      "status": "NOT_RUN",
+      "observation": "webhook ordering/reconciliation fault matrix"
+    },
+    {
+      "case": "VR-05",
+      "status": "NOT_RUN",
+      "observation": "SFU/DB outage must display unavailable"
+    },
+    {
+      "case": "VR-06",
+      "status": "NOT_RUN",
+      "observation": "differing ACL and lease visibility across real accounts"
+    },
+    {
+      "case": "VR-07",
+      "status": "PARTIAL",
+      "observation": "local synthetic lease revoke prevents stale dispatch; real ACL/kick/session pending-delivery matrix not run"
+    },
+    {
+      "case": "VR-08",
+      "status": "PARTIAL",
+      "observation": "topology response fenced; rename/delete matrix not run"
+    },
+    {
+      "case": "VR-09",
+      "status": "NOT_RUN",
+      "observation": "multitab/late/stale revision/restart matrix"
+    },
+    {
+      "case": "VR-10",
+      "status": "NOT_RUN",
+      "observation": "background/foreground/sleep/network switching"
+    },
+    {
+      "case": "CF-01",
+      "status": "NOT_RUN",
+      "observation": "text/DM edit/delete/reaction/unread/notification native matrix"
+    },
+    {
+      "case": "CF-02",
+      "status": "PARTIAL",
+      "observation": "actual LiveKit listener room persists application socket reconnect; microphone, remote media and revocation independence not established"
+    },
+    {
+      "case": "CF-03",
+      "status": "NOT_RUN",
+      "observation": "APNs/background delivery"
+    },
+    {
+      "case": "CF-04",
+      "status": "PARTIAL",
+      "observation": "required-update synthetic catalog gate; actual old installed release/installer not run"
+    },
+    {
+      "case": "CF-05",
+      "status": "PARTIAL",
+      "observation": "guarded native roster/listener reject legacy requests and observe new socket; full process trace audit not run"
+    },
+    {
+      "case": "SEC-01",
+      "status": "NOT_RUN",
+      "observation": "complete native privacy/leak audit"
+    },
+    {
+      "case": "CUT-01",
+      "status": "PARTIAL",
+      "observation": "repository no-SSE guard and native guarded routes; production legacy-route readback not run"
+    },
+    {
+      "case": "CUT-02",
+      "status": "NOT_RUN",
+      "observation": "signed distribution candidate/rollback/version matrix/observability"
+    },
+    {
+      "case": "NATIVE-VISUAL",
+      "status": "REVIEW_REQUIRED",
+      "observation": "Support empty-chat hint has no left inset; text-mode share chooser chips partly occluded by footer at captured scroll offset. No baseline approval."
+    }
+  ],
+  "remaining": [
+    "Run a stable-source complete local-feature gate with the trace-export dependency available; fully review selected component images.",
+    "Run remaining WS/VR/CF/SEC/CUT matrix subcases against the owned server on both Apple runtimes, including two-account ACL/session revocation, account switching, outage/replay/barrier/quota and real server queue pressure.",
+    "Physical iOS and macOS background/foreground, sleep/wake and network switching with actual media; paired receiver and audible confirmation are absent.",
+    "APNs/background delivery needs a QA provisioning profile with Push Notifications entitlement and controlled APNs sender. Current private QA app deliberately has no APNs entitlement.",
+    "Signed distribution candidate installation, forced-update installer, rollback and observability readback remain NOT_RUN. Development QA signatures do not prove CUT-02.",
+    "Keep #704 open; these scoped passes do not close #689 or physical audio issue #655."
+  ],
+  "local_log_sha256": {
+    "../local-features/20261113-141332/flutter-component-captures.log": "a417153de4b8dbd301f9c19562d5d2f2fcfed0c1caef6093f74081da71889d04",
+    "../local-features/20261113-141332/flutter-unit.log": "2859c2142451226f33aa53de11ebbb5ffa360aee571868a8d76e6ee2298e9304",
+    "../local-features/20261113-141332/ios-runtime-issue689_roster_test.log": "80ca934f97ab36ddaf17aef4ddea7b550c7d39a8983e2abbf099eb19d9aef878",
+    "../local-features/20261113-141332/ios-runtime-issue689_topology_history_test.log": "eaeae49e9dc8829938cba326aeac8a131c67a0a2dc1491bf08f234fbbd8c273b",
+    "../local-features/20261113-141332/ios-runtime-update_required_test.log": "d849a17c3b0d194d08f7c5f725c81be0ac5bbc2d41515a995743e91a57856c1f",
+    "apple-audio-green/report.json": "817e8d16813e78722031abeb4c9c5575af737f7a8a71b49b84d5b904912baf63",
+    "apple-audio-red/report.json": "8ca81327c4bf42456dff86d336f97f1fab1731fe5920ff7320960be94f1faadc",
+    "ios-listener-final.log": "c1c1bd0e52094ce295fc74a9b2713ca38b57bfea01b2500f5bb2e18d3f2119f8",
+    "macos-loopback-fixed-2.log": "fd45985d9de467d737aa0c12c6c6fbef9a83d3fabbccfcb21f78ccc6f9197eb4",
+    "macos-native-gate.log": "360a12f4ece7371030e0c88cad6164e7ff3c850bc3e302fb811b387797739006",
+    "macos-realstack-automated.log": "de02bf78546367f834c90193fc6520d2562245efd158afee0f4e90ed6c10cc30",
+    "macos-realstack-review.log": "f5166c33f89b482b6a0e2c1054e864879a97408cf8e65631be67f9978ee3b48f",
+    "migration-tests.log": "0bfe520772d610b488e917e177d885356306f6941122fbbf796849bef0e19fc0",
+    "no-sse.log": "bc4f1adb0f1e4d526e172a51b5459701b69e8148b6dc6d8542c4979e7dbdec95",
+    "physical-loopback-fixed-clean.log": "3e063a8d00bca4cbc73182ecbdae87c7f8bfb1552e077f12e01327b7adf6351b",
+    "recovery-retry.log": "87c364ec169d1d3ad2982e85487eef2bb8c2e45a769a198c5718292b19467748",
+    "spec-traceability.log": "17ff753f6b2fc1a23f300b33e40e73728dc2c3e11d55f4c50e1aecb568fca75a",
+    "ios-smoke-final.log": "468aa952d191a3ad68546bcf0ca2bf59e3f2162684746f5b30b658eff4fe37bc",
+    "ios-smoke-topology-red.log": "c19bf1c46361e24b34f4fb07ce1e101e895c808f751ca737a9b43f4e33c2e187",
+    "harness-final.log": "aae7e3727dd8d7de7ec76244d42ca239e07d6e37378489a36b419a4533d5d222",
+    "run-macos-realstack-automated.py": "f0748976c0bb378e2051a40d4a1cc3bcd3ba19ebc8e0865699c38e7430790d48",
+    "run-macos-realstack.py": "2444ac3ef7bc5af8bcaf0b3cc8cd0a70b88ac771b52c6159629882382a94ebd4",
+    "spec-traceability-final.log": "17ff753f6b2fc1a23f300b33e40e73728dc2c3e11d55f4c50e1aecb568fca75a"
+  },
+  "artifact_limitations": "Source SHA and fixture digests are recorded, but per-target simulator binaries were overwritten. Full acceptance requires retaining each target artifact; final simulator manifest binds only the final smoke."
+}

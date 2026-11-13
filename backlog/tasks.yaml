@@ -8,6 +8,11 @@ action_catalog:
   verification: backlog/VERIFICATION_TODO.md
   completed: DONE.md
 tasks:
+  - id: RT704-002
+    title: Synchronize native realtime acceptance fixtures and record scoped Apple evidence (GitHub #704)
+    requirements: [REQ-PLATFORM-01, REQ-QUALITY-01]
+    depends_on: [RT704-001]
+    evidence: [clients/flutter/integration_test/issue689_listener_test.dart, clients/flutter/integration_test/local_qa_test.dart, evidence/qa/issue704-apple-native-2026-11-13.json, evidence/qa/issue704-apple-native-2026-11-13.md]
   - id: RT704-001
     title: Gate Apple audio package linkage before native realtime acceptance (GitHub #704)
     requirements: [REQ-PLATFORM-01, REQ-QUALITY-01]
