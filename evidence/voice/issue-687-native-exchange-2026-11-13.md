@@ -71,3 +71,13 @@ with four startup frames observed 297 ready, 3 buffering, 0 underruns and 0
 overloads, p95/max frame lag 4. It used synthetic PCM and is not a physical
 microphone, production capture callback, sustained run or end-to-end latency
 measurement. The bridge and worker remain unconnected to the released client.
+
+An atomic lifecycle prototype tracks stopped, starting, active, muted and
+failed states with a generation. Tests cover stale worker success/failure,
+invalid generation bits and 10,000 races between an old failure and a new
+start; the complete Windows MSVC suite passed 11/11. A separate synthetic
+three-second research-model run exercised activation and stop, with 297 ready,
+3 buffering, 0 underruns and 0 overloads. This does not test lifecycle changes
+inside a real capture callback or establish publication/mute synchronization.
+The client still needs to own, join and connect the worker, synchronize mute
+with publication, expose actual state/fallback, and pass physical acceptance.
