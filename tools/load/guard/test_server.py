@@ -11,6 +11,29 @@ from .sample_failure import SampleFailure
 
 
 class GuardWireTests(unittest.TestCase):
+    def test_fault_status_requires_auth_and_reports_inactive(self):
+        with tempfile.TemporaryDirectory() as directory:
+            stack = SimpleNamespace(work=Path(directory))
+            manifest = dict(Nonce='private', Accounts=[{}])
+            with patch('tools.load.guard.server.verify_marker'):
+                guard = Guard(stack, manifest)
+                guard.start()
+                try:
+                    url = 'http://127.0.0.1:4890/fault-status/sfu_outage'
+                    with self.assertRaises(urllib.error.HTTPError) as denied:
+                        urllib.request.urlopen(url)
+                    self.assertEqual(denied.exception.code, 403)
+                    request = urllib.request.Request(url, headers={'X-Load-Nonce': 'private'})
+                    with patch.object(guard.faults, 'active', return_value=False):
+                        with self.assertRaises(urllib.error.HTTPError) as inactive:
+                            urllib.request.urlopen(request)
+                        self.assertEqual(inactive.exception.code, 409)
+                    with patch.object(guard.faults, 'active', return_value=True):
+                        with urllib.request.urlopen(request) as response:
+                            self.assertEqual(response.status, 204)
+                finally:
+                    guard.close()
+
     def test_authentication_and_restore_during_health_failure(self):
         with tempfile.TemporaryDirectory() as directory:
             stack = SimpleNamespace(work=Path(directory))
