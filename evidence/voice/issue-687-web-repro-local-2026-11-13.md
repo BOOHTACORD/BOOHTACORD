@@ -68,3 +68,13 @@ a nonzero received peak during its post-mute window. The causes are UNKNOWN.
 The local Firefox versions of both scenarios passed; that does not override CI.
 Bounded AudioContext readiness and aggregate peak diagnostics were added without
 relaxing the silence assertion. New hosted diagnostics remain pending.
+
+On hosted source `d85b65c740d5edfcad22f09436cc21fdd29d0aa7`,
+Windows Firefox reported `AudioContext resume timed out; state=suspended`;
+`Audiosrv` and `AudioEndpointBuilder` were both stopped. Chromium passed.
+The workflow now starts those services in its disposable runner before the
+audio checks; hosted verification of the change is pending. Linux Firefox
+passed the strict mute test on this run; ten repeated local Windows Firefox
+peer tests passed, so the earlier Linux result remains intermittent and its
+cause is not established. The separate lifecycle CI reported failure after
+`roster-transport-restored`; the public artifact contains no further diagnosis.
