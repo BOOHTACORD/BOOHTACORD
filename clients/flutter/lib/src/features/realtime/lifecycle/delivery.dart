@@ -71,8 +71,9 @@ class RealtimeDelivery {
   }
 
   Future<void> _recoverAndApply(RealtimeEvent event) async {
+    final epoch = _epoch;
     await recover();
-    if (event.kind == 'connection.ready') await apply(event);
+    if (epoch == _epoch && event.kind == 'connection.ready') await apply(event);
   }
 
   void _fail() {
