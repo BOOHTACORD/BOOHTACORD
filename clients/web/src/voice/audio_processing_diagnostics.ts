@@ -46,9 +46,9 @@ export function audioProcessingStatus(diagnostic: AudioProcessingDiagnostic): st
 }
 
 export function noiseSuppressionModeLabel(mode: NoiseSuppressionRuntimeState['effectiveMode']): string {
-  return mode === 'rnnoise' ? 'RNNoise' : mode === 'browser' ? 'Стандартное — браузер' : mode === 'off' ? 'Выключено' : 'Неизвестно'
+  return mode === 'rnnoise' ? 'RNNoise' : mode === 'deepfilter' ? 'DeepFilterNet3' : mode === 'browser' ? 'Стандартное — браузер' : mode === 'off' ? 'Выключено' : 'Неизвестно'
 }
 export function noiseSuppressionFallbackLabel(reason?: NoiseSuppressionRuntimeState['fallbackReason']): string {
-  const labels = { 'release-disabled': 'RNNoise отключён в этой сборке', unsupported: 'Браузер не поддерживает фильтр', 'sample-rate': 'Частота AudioContext отличается от 48 кГц', 'asset-load': 'Фильтр не удалось загрузить', 'init-timeout': 'Превышено время подготовки фильтра', 'processor-error': 'Ошибка аудиопроцессора', overload: 'Аудиопроцессор перегружен' }
+  const labels = { 'release-disabled': 'Фильтр отключён в этой сборке', unsupported: 'Браузер не поддерживает фильтр', 'sample-rate': 'Частота AudioContext отличается от 48 кГц', 'asset-load': 'Фильтр не удалось загрузить', 'init-timeout': 'Превышено время подготовки фильтра', 'processor-error': 'Ошибка аудиопроцессора', overload: 'Аудиопроцессор перегружен' }
   return reason ? labels[reason] : ''
 }

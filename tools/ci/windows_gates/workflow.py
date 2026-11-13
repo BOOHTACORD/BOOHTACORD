@@ -24,6 +24,7 @@ def validate(document):
             require(job['runs-on']=='windows-2022' and not job.get('if') and not job.get('continue-on-error')
                     and not job.get('strategy') and job.get('needs')==('windows-build' if name=='windows-gui-sfu' else None))
         unit,build,gui=(jobs[n] for n in ('windows-native-unit','windows-build','windows-gui-sfu'))
+        command(unit,'python -m tools.ci.native.audio')
         flutter_index=command(unit,'python -m tools.ci.native.flutter')
         publisher_index=command(unit,'node --test tools/release/android/publish.test.mjs tools/release/android/publish_retries.test.mjs tools/release/android/publish_conflicts.test.mjs tools/release/windows/publish.test.mjs tools/release/native_contract/publish.test.mjs')
         require(publisher_index<flutter_index)

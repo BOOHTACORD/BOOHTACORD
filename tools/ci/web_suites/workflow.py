@@ -9,6 +9,14 @@ RECEIPT = 'python3 -m tools.ci.receipts.run web --parts .out/ci/web-parts'
 CAPTURES = {'.out/' + name + '/**' for name in WEB_ROOTS}
 SFU_CAPTURES = {'.out/screen-profile-browser-results/**/screen-share-sfu-smoke.json',
                 '.out/restricted-networks/*.json'}
+AUDIO_FIXTURES = ('node --test tools/audio/assets/test_options.mjs '
+                  'tools/audio/assets/test_verify.mjs tools/audio/corpus/test_manifest.mjs '
+                  'tools/audio/speech_fixture/test_frames.mjs tools/audio/speech_fixture/test_runner.mjs')
+AUDIO_RESEARCH = ('python3 -m unittest tools.audio.research_v02.test_verify '
+                  'tools.audio.blind_quality.test_trials tools.audio.blind_quality.test_output '
+                  'tools.audio.blind_quality.test_score tools.ci.web_suites.test_audio_sink '
+                  'tools.ci.web_suites.test_firefox_audio')
+FIREFOX_AUDIO = 'python3 -m tools.ci.web_suites.firefox_audio'
 
 
 def require(value):
@@ -52,9 +60,19 @@ def validate(document):
             if name == 'browser':
                 allowed |= {'python3 -m tools.ci.artifact_policy.run ' + operation + ' web "$WEB_PROFILE"'
                             for operation in ('begin', 'finish')}
+            if name == 'sfu':
+                allowed.update({AUDIO_FIXTURES, AUDIO_RESEARCH, FIREFOX_AUDIO})
+                audio = [s for s in job['steps'] if s.get('run') in (AUDIO_FIXTURES, AUDIO_RESEARCH)]
+                require(len(audio) == 2 and all(s.get('if') is None and not s.get('continue-on-error')
+                        and job['steps'].index(s) < job['steps'].index(command) for s in audio))
+                firefox = [s for s in job['steps'] if s.get('run') == FIREFOX_AUDIO]
+                require(len(firefox) == 1 and firefox[0].get('if') is None
+                        and not firefox[0].get('continue-on-error')
+                        and job['steps'].index(firefox[0]) > job['steps'].index(command))
             require({s['run'] for s in job['steps'] if 'run' in s} == allowed)
             node = [i for i, s in enumerate(job['steps']) if s.get('uses', '').startswith('actions/setup-node@')]
             require(len(node) == 1 and node[0] < job['steps'].index(command))
+            if name == 'sfu': require(all(node[0] < job['steps'].index(s) for s in audio))
             mandatory = [s for s in uploads(job) if s['with']['name'] == PREFIX + profile]
             require(len(mandatory) == 1 and mandatory[0].get('if') == 'always()')
             require(mandatory[0]['with']['path'] == '.out/ci/web-parts/' + profile + '.json'
