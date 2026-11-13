@@ -20,6 +20,19 @@ directories inspected for license or notice files. `crunchy` 0.2.2 and
 `realfft` 3.3.0 declare MIT, but neither packaged source directory contains a
 top-level license or notice file. Their exact notices require further review.
 
+Follow-up: the `crunchy` 0.2.2 package records commit `1bf90cf2d0a8cfcb2c5592275a23ab028dff6468`;
+the [matching upstream Cargo manifest](https://github.com/eira-fransham/crunchy/blob/1bf90cf2d0a8cfcb2c5592275a23ab028dff6468/Cargo.toml)
+declares MIT. A later descendant commit `313e516a63d460ae504131ecbbd36aa971df6c83`
+contains a complete MIT notice; its exact bytes were retained as a research draft,
+SHA-256 `3eab77734a181b2a2e8418af9004f960f715f04aac4d76a26cf774f63a7b13d1`.
+The `realfft` 3.3.0 package records commit `ed26ea38de34ce029f518beeccd7b83439016466`;
+its README declares MIT. Descendant commit `9fdcf59c60c7ecacbf75774d378a068811a2e6ea`
+adds a complete MIT notice, retained byte-for-byte as a draft, SHA-256
+`080766c57f9e48f00218f4e43c7d671d4b6ffee85a39417b5ab3c916dfe29b0d`.
+The later notices were absent at the two recorded package commits. Their
+applicability and the actual release dependency graph still require review;
+these drafts are not a completed distribution notice.
+
 The corresponding Web research tree was inspected with the same command,
 substituting `--features wasm --target wasm32-unknown-unknown`. Its Cargo.lock
 SHA-256 was `83b27804cbfbe8167d62b2f839bf4d3bbd4adb1ea1deecc9b35c97ee6e98aa0b`.
@@ -34,8 +47,19 @@ had no top-level packaged license/notice file. The two tract crates report a
 dirty VCS source in their package metadata; upstream notices and exact source
 provenance still need independent verification.
 The MIT text from nom's repository root at the `nom-language` crate's recorded
-commit is retained in the draft research notices. The other missing notices
-remain unresolved.
+commit is retained in the draft research notices.
+
+Follow-up: both tract packages record upstream commit
+`248335349c0f59a5772d737480b8b39250097374` as dirty. Git blob hashes matched
+all packaged source files other than the manifests: two for `tract-extra`
+and 20 for `tract-transformers`. Each `Cargo.toml.orig` differs from the
+corresponding committed manifest only in changing `0.23.8-pre` to `0.23.8`;
+packaged Cargo.lock files and Cargo-generated normalized manifests were not
+compared by this check. The upstream commit's root `LICENSE` and `LICENSE-MIT`
+are retained byte-for-byte in the Web research notice directory, SHA-256
+`f7ef673bf046d823dcd775bdd0768432bd8855f81d0e5e1290a0a48c42e2dca3` and
+`23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3`.
+This narrows the source discrepancy but is not a complete release audit.
 
 This tree includes normal and build dependencies and is an inventory of Cargo
 metadata, not a complete review of distributed files or license texts. Audit
