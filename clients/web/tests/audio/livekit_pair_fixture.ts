@@ -47,7 +47,7 @@ export const livekitPairFixture = {
       ? { engine: processor.runtimeState.effectiveMode, modelId: processor.runtimeState.modelId, sampleRate: context!.sampleRate }
       : { engine, sampleRate: context!.sampleRate }
   },
-  async mute() { processor?.mute(); await localTrack?.mute(); return true },
+  async mute() { processor?.mute(); await localTrack?.mute(); return { localMuted: localTrack?.isMuted === true, outputEnabled: processor?.processedTrack?.enabled ?? null } },
   read() { return { readings: readings.splice(0), state: activeRoom?.state } },
   async resetMeter() {
     if (!meter) throw new Error('Receiver meter is not ready')

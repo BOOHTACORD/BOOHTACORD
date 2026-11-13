@@ -94,3 +94,13 @@ Linux. The Firefox LiveKit test failed during peer connection on the loopback
 Docker fixture. The Linux fixture now uses a selected private interface for
 ICE, loopback-only signaling, explicitly bound UDP, and ephemeral credentials.
 Hosted verification and a working Firefox/SFU test remain pending.
+
+Hosted source `87205a0eb8fe30130933156d4954fd65b6b2be35` connected
+Firefox to the private-interface SFU and received nonzero processed audio,
+but produced no meter windows after mute. The test meter previously ignored
+render quanta without an input channel. It now counts those quanta as missing
+input and measures their silent output while the graph clock advances; a unit
+test covers both absent and nonzero inputs. The SFU test additionally checks
+the muted local track, disabled processor output, connected room and finite
+post-mute output. Local Firefox and Chromium SFU tests passed with the changes;
+hosted verification remains pending. This is not physical or listening proof.
