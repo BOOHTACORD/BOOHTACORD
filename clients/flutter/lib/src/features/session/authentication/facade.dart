@@ -8,6 +8,17 @@ mixin AuthSessionFacade on ApiFacadeBase {
   Future<SessionUser?> currentSession() =>
       transport.run(() => _authSession.currentSession(), allowClosed: true);
 
+  Future<SessionUser?> currentRealtimeSession(
+    Future<void> abortTrigger,
+    bool Function() isCurrent,
+  ) => transport.run(
+    () => _authSession.currentSession(
+      abortTrigger: abortTrigger,
+      isCurrent: isCurrent,
+    ),
+    allowClosed: true,
+  );
+
   Future<void> authenticate(
     String login,
     String password, {

@@ -11,6 +11,7 @@ import (
 	"github.com/coder/websocket"
 	observestate "voice-platform/backend/internal/maintenance/observe_state"
 	admitpublic "voice-platform/backend/internal/realtime/admit_public_connection"
+	"voice-platform/backend/internal/realtime/heartbeat"
 	ratelimit "voice-platform/backend/internal/security/rate_limit"
 )
 
@@ -50,7 +51,7 @@ func New(origin string, observer *observestate.Observer, rate *ratelimit.Limiter
 		}
 		defer release()
 		// Exact configured origin (or absent native Origin) was checked above.
-		connection, err := websocket.Accept(writer, request, &websocket.AcceptOptions{InsecureSkipVerify: true})
+		connection, err := websocket.Accept(writer, request, &websocket.AcceptOptions{InsecureSkipVerify: true, Subprotocols: []string{heartbeat.Protocol}})
 		if err != nil {
 			return
 		}

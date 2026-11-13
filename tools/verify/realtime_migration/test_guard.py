@@ -1,6 +1,8 @@
 import tempfile
+import hashlib
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from tools.verify.realtime_migration.guard import scan
 
@@ -14,7 +16,7 @@ class MigrationGuardTest(unittest.TestCase):
             path.write_text("client.requests.some(path => ['/api/v1/voice/rosters/events', '/api/v1/maintenance/events'].includes(path))) throw Error('legacy or duplicate stream')\nnew EventSource('/actual')\n", encoding='utf8')
             self.assertEqual(scan(root), [('tools/qa/voice_roster_multiclient/scenario.cjs', 2)])
 
-    def test_finds_first_party_runtime_streams_but_not_tests_or_exact_fixture(self):
+    def test_finds_streams_in_runtime_and_unlisted_tests_but_not_exact_fixture(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             files = {
@@ -30,9 +32,14 @@ class MigrationGuardTest(unittest.TestCase):
                 path = root / name
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text(data, encoding='utf8')
-            result = scan(root)
+            fixture = 'backend/internal/load/roster_matrix/open_legacy.go'
+            digest = hashlib.sha256(files[fixture].encode()).hexdigest()
+            with patch('tools.verify.realtime_migration.guard.FIXTURE_HASHES', {fixture: digest}, create=True):
+                result = scan(root)
             self.assertEqual({row[0] for row in result}, {
-                'clients/web/src/demo.ts', 'clients/flutter/lib/demo.dart', 'backend/internal/voice/example.go'})
+                'clients/web/src/demo.ts', 'clients/flutter/lib/demo.dart', 'backend/internal/voice/example.go',
+                'backend/internal/voice/example_test.go', 'tools/qa/feature/test_check.py',
+                'tools/qa/feature/example.test.mjs'})
 
     def test_similar_path_does_not_inherit_legacy_exception(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -57,6 +57,9 @@ func writeOverflow(connection *websocket.Conn, subscription *eventhub.Subscripti
 	if hub != nil && !writeEvent(ctx, connection, newID, now, "presence.snapshot", map[string]any{"online_user_ids": hub.OnlineAccounts()}) {
 		return false
 	}
-	subscription.AcknowledgeOverflow()
+	if !subscription.AcknowledgeOverflow() {
+		_ = connection.Close(websocket.StatusTryAgainLater, "realtime resynchronization required")
+		return false
+	}
 	return true
 }

@@ -35,6 +35,8 @@ class TrackedPublicSocket extends Stream<dynamic> implements WebSocket {
   @override
   int get readyState => inner.readyState;
   @override
+  String? get protocol => inner.protocol;
+  @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
@@ -47,9 +49,9 @@ class SocketOnlyApi extends ApiClient {
   final publicSockets = <TrackedPublicSocket>[];
 
   @override
-  Future<WebSocket> openRealtime({String? after}) {
+  Future<WebSocket> openRealtime({String? after, HttpClient? client}) {
     sockets++;
-    return super.openRealtime(after: after);
+    return super.openRealtime(after: after, client: client);
   }
 
   @override

@@ -58,7 +58,7 @@ void main() {
       owner.retryNow();
       expect(api.opens, 1);
       expect(owner.retry, isNull);
-      await tester.pump(const Duration(seconds: 35));
+      await tester.pump(const Duration(seconds: 14));
       expect(api.opens, 1);
       await owner.close();
       expect(owner.attempt, 0);

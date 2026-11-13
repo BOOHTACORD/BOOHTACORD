@@ -58,4 +58,7 @@ func TestGuardStopCancelsAdmissionAndStillRestoresAndLogsOut(t *testing.T) {
 	if report.Outcome != "FAIL" || report.Cleanup != "PASS" || restores.Load() != 1 || logout.Load() != 1 || time.Since(started) > 3*time.Second {
 		t.Fatal(report)
 	}
+	if report.GuardFailure != "resource_threshold" {
+		t.Fatalf("missing safe guard category: %+v", report)
+	}
 }

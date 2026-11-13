@@ -13,7 +13,6 @@ const state = <String, dynamic>{
   'revision': 1,
   'active': false,
 };
-
 void main() {
   test('valid maintenance snapshots and changes are ephemeral', () async {
     final events = <RealtimeEvent>[];
@@ -27,10 +26,21 @@ void main() {
       recover: () {},
     );
     addTearDown(owner.dispose);
-    void receive(String id, String kind, Map<String, dynamic> payload) =>
-        owner.receive(
-          jsonEncode({'event_id': id, 'kind': kind, 'payload': payload}),
-        );
+    var sequence = 0;
+    void receive(
+      String id,
+      String kind,
+      Map<String, dynamic> payload,
+    ) => owner.receive(
+      jsonEncode({
+        'event_id': kind.startsWith('maintenance.')
+            ? '11111111-1111-4111-8111-${(++sequence).toString().padLeft(12, '0')}'
+            : id,
+        'occurred_at': '2026-11-13T00:00:00Z',
+        'kind': kind,
+        'payload': payload,
+      }),
+    );
     receive('message', 'message.created', {});
     await Future<void>.delayed(Duration.zero);
     for (final kind in ['maintenance.snapshot', 'maintenance.changed']) {
@@ -91,7 +101,12 @@ void main() {
           expect(owner.delivery.cursor, 'message');
           owner.connected = true;
           owner.receive(
-            jsonEncode({'event_id': 'bad', 'kind': kind, 'payload': payload}),
+            jsonEncode({
+              'event_id': generation,
+              'occurred_at': '2026-11-13T00:00:00Z',
+              'kind': kind,
+              'payload': payload,
+            }),
           );
           await Future<void>.delayed(Duration.zero);
           expect(owner.connected, isFalse, reason: '$payload');

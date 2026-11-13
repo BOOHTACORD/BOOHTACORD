@@ -17,20 +17,15 @@ func (s *Socket) apply(conn *websocket.Conn, event Event, replay bool) bool {
 	}
 	if event.Kind == "message.created" {
 		s.last = event.ID
-		s.seen[event.Payload.MessageID] = time.Now()
+		if !s.remember(event.Payload.MessageID, time.Now()) {
+			s.failure = true
+			s.signalLocked()
+			return false
+		}
 		if replay {
 			s.results.Observe("replay", 200, 0)
 		}
-		if len(s.seen) > 512 {
-			for key := range s.seen {
-				delete(s.seen, key)
-				break
-			}
-		}
 	}
-	select {
-	case s.wake <- struct{}{}:
-	default:
-	}
+	s.signalLocked()
 	return true
 }

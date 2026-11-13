@@ -30,6 +30,8 @@ jobs:
           python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
       - name: Verify selected Python interpreter
         run: python -m tools.ci.toolchains.runtime python
+      - name: Test native audio processors and frame queues
+        run: python -m tools.ci.native.audio
       - name: Compile the standalone recovery monitor before the Flutter toolchain
         shell: cmd
         run: |

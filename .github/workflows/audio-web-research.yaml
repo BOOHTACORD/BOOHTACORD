@@ -1,0 +1,119 @@
+name: Web audio research build
+on:
+  pull_request:
+    paths: ['tools/audio/**', '.gitattributes', 'clients/web/tests/audio/**',
+      'clients/web/src/voice/noise_suppression/**', 'clients/web/scripts/deepfilter_assets*',
+      'clients/web/vite.config.ts', 'clients/web/package*.json', '.github/workflows/audio-web-research.yaml']
+  push:
+    branches: [master]
+    paths: ['tools/audio/**', '.gitattributes', 'clients/web/tests/audio/**',
+      'clients/web/src/voice/noise_suppression/**', 'clients/web/scripts/deepfilter_assets*',
+      'clients/web/vite.config.ts', 'clients/web/package*.json', '.github/workflows/audio-web-research.yaml']
+permissions:
+  contents: read
+jobs:
+  windows-wasm:
+    runs-on: windows-2022
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: {persist-credentials: false}
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Rikorose/DeepFilterNet
+          ref: d375b2d8309e0935d165700c91da9de862a99c31
+          path: .out/dfn-web-source
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: workadventure/noise-suppression
+          ref: 7e00a1b7522f044a31776fddc249a97a98de94ed
+          path: .out/dfn-web-patch
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Prepare public Node SDK and locked dependency cache inputs
+        run: python -m tools.ci.toolchains.cache_inputs npm
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: .out/ci/cache-inputs/npm.json
+      - name: Install pinned research tools
+        shell: pwsh
+        run: |
+          rustup toolchain install 1.97.1 --profile minimal --no-self-update
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          rustup target add wasm32-unknown-unknown --toolchain 1.97.1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $env:RUSTUP_TOOLCHAIN = '1.97.1'
+          cargo install wasm-bindgen-cli --version 0.2.118 --locked --root "$env:RUNNER_TEMP/dfn-tools"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npm ci --prefix clients/web
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Build and validate research bundle
+        shell: pwsh
+        run: |
+          $env:RUSTUP_TOOLCHAIN = '1.97.1'
+          python -m tools.audio.research_dfn_web.build --source .out/dfn-web-source --patch-source .out/dfn-web-patch --work "$env:RUNNER_TEMP/dfn-web" --bindgen "$env:RUNNER_TEMP/dfn-tools/bin/wasm-bindgen.exe"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node tools/audio/research_dfn_web/stage.mjs "$env:RUNNER_TEMP/dfn-web/bundle" "$env:RUNNER_TEMP/dfn-stage"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Check opt-in Web bundle
+        shell: pwsh
+        run: |
+          $env:VITE_PUBLIC_ORIGIN = 'https://localhost:4810'
+          $env:VITE_DEEPFILTER_ENABLED = 'true'
+          $env:BOOHTA_DEEPFILTER_RESEARCH_BUNDLE = "$env:RUNNER_TEMP/dfn-web/bundle"
+          npm --prefix clients/web run build
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $asset = 'clients/web/dist/audio/deepfilternet/research-d375b2d/dfn_bg.wasm'
+          $hash = (Get-FileHash -LiteralPath $asset -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($hash -ne '9e7d6eb2932f903a1d599288c5a57fe8dd510f2f5917441968e915adc5cf3caf') { throw 'WASM identity mismatch' }
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: deepfilter-research-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/dfn-web/bundle
+          if-no-files-found: error
+      - name: Install Chromium
+        shell: pwsh
+        run: |
+          Push-Location clients/web
+          try {
+            npx playwright install chromium
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          } finally { Pop-Location }
+      - run: ./tools/audio/research_dfn_web/ci_windows.ps1
+  linux-firefox:
+    runs-on: ubuntu-24.04
+    needs: windows-wasm
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with: {python-version: "${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}"}
+      - run: python -m tools.ci.toolchains.runtime python
+      - run: python -m tools.ci.toolchains.cache_inputs npm
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: .out/ci/cache-inputs/npm.json
+      - run: npm ci --prefix clients/web
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: deepfilter-research-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/dfn-bundle
+      - run: node tools/audio/research_dfn_web/stage.mjs "$RUNNER_TEMP/dfn-bundle" "$RUNNER_TEMP/dfn-stage"
+      - run: |
+          cd clients/web
+          npx playwright install --with-deps firefox
+          sudo apt-get install -y --no-install-recommends pulseaudio pulseaudio-utils
+      - name: Test Firefox graph and local LiveKit
+        env:
+          BOOHTA_RESEARCH_ASSET_DIR: ${{ runner.temp }}/dfn-stage
+        run: python -m tools.audio.research_dfn_web.firefox_research

@@ -6,6 +6,7 @@ import '../social_hints/hints.dart';
 import 'maintenance_payload.dart';
 import 'roster_payload.dart';
 import 'resync_payload.dart';
+import 'new_envelope.dart';
 
 extension RealtimeEvents on RealtimeController {
   void synchronizeDeliveryScope() {
@@ -22,28 +23,41 @@ extension RealtimeEvents on RealtimeController {
   }
 
   Future<void> applyEvent(RealtimeEvent event) async {
-    if (deliveryTicket?.isActive != true ||
+    final active = admission();
+    if (!active() || deliveryTicket?.isActive != true ||
         deliveryServer != api.transport.session.serverRevision ||
         deliveryInstallation != api.transport.session.telemetry.installation) {
       return;
     }
-    if (await SocialHints.forTransport(api.transport).receiveAsync(event)) {
+    final consumed = await SocialHints.forTransport(api.transport).receiveAsync(event);
+    if (!active() || consumed) {
       return;
     }
     await dispatch(event);
-    changed();
+    if (active()) changed();
   }
 
   void receive(dynamic raw) {
-    if (!admission()() || raw is! String) return;
+    if (!admission()()) return;
+    if (raw is! String) {
+      delivery.reset();
+      handleClosed();
+      return;
+    }
     synchronizeDeliveryScope();
     try {
       final source = jsonDecode(raw);
-      if (source is! Map<String, dynamic>) return;
+      if (source is! Map<String, dynamic>) {
+        delivery.reset();
+        handleClosed();
+        return;
+      }
       final id = source['event_id'],
           kind = source['kind'],
           payload = source['payload'];
-      if ((isMaintenanceKind(kind) && !validMaintenancePayload(payload)) ||
+      if (((isMaintenanceKind(kind) || isRosterKind(kind)) &&
+              !validNewRealtimeEnvelope(source)) ||
+          (isMaintenanceKind(kind) && !validMaintenancePayload(payload)) ||
           (isRosterKind(kind) && !validRosterPayload(kind, payload))) {
         delivery.reset();
         handleClosed();
@@ -64,6 +78,11 @@ extension RealtimeEvents on RealtimeController {
           !validResyncPayload(payload)) {
         return;
       }
+      if (liveness?.observe(kind, source) == false) {
+        handleClosed();
+        return;
+      }
+      if (kind == 'connection.heartbeat') return;
       if (kind == 'connection.ready') {
         if (connected) return;
         connected = true;
@@ -84,6 +103,9 @@ extension RealtimeEvents on RealtimeController {
           telemetry: RealtimeTelemetry.parse(source['telemetry']),
         ),
       );
+    } on FormatException {
+      delivery.reset();
+      handleClosed();
     } catch (_) {
       // Malformed envelopes confer no authority and cannot become cursors.
     }

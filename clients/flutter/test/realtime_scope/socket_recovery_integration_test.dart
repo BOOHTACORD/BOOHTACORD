@@ -13,7 +13,7 @@ class LoopbackSocketApi extends ApiClient {
   final String endpoint;
   int opens = 0;
   @override
-  Future<WebSocket> openRealtime({String? after}) {
+  Future<WebSocket> openRealtime({String? after, HttpClient? client}) {
     opens++;
     return WebSocket.connect(endpoint);
   }
