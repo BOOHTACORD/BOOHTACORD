@@ -22,8 +22,10 @@ extension VoiceLeaseEventsRevocation on VoiceController {
       );
     }
     final accepted = disconnect.server(revocation.leaseId, revocation.reason);
+    final wasRecovering = voiceRecoveryActive;
     if (accepted) cancelVoiceRecovery();
     if (accepted && room == null && !voiceAdmissionPending) {
+      if (wasRecovering) voiceChannel = null;
       showVoiceDisconnect();
       return;
     }

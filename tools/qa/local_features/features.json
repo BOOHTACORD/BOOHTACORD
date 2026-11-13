@@ -533,6 +533,8 @@
       "clients/web/src/voice/TouchPttButton.vue",
       "clients/web/src/design/design_v2_audio_presentation.css",
       "clients/flutter/lib/src/features/voice/*",
+      "clients/flutter/test/voice_connection_recovery_visible_test.dart",
+      "clients/flutter/test/voice_connection_recovery_transfer_test.dart",
       "clients/flutter/packages/livekit_client/lib/src/audio/*",
       "clients/flutter/packages/livekit_client/lib/src/core/engine.dart",
       "clients/flutter/packages/livekit_client/lib/src/core/connectivity_recovery.dart",
@@ -609,6 +611,8 @@
     "flutter": [
       "test/voice_disconnect/visual_capture_test.dart",
       "test/voice_disconnect_notice_widget_test.dart",
+      "test/voice_connection_recovery_visible_test.dart",
+      "test/voice_connection_recovery_transfer_test.dart",
       "test/voice_manual_join_actions_accessibility_test.dart",
       "test/workspace_screen_test.dart",
       "test/web_parity/voice_geometry_test.dart",
@@ -920,6 +924,7 @@
             "tests": [
               "clients/flutter/test/voice_connection_recovery_test.dart",
               "clients/flutter/test/voice_connection_recovery_release_test.dart",
+              "clients/flutter/test/voice_connection_recovery_visible_test.dart",
               "clients/flutter/test/voice_reconnect_policy_test.dart",
               "clients/flutter/test/voice_disconnect_race_test.dart"
             ],
@@ -931,6 +936,7 @@
             "tests": [
               "clients/flutter/test/voice_connection_recovery_test.dart",
               "clients/flutter/test/voice_connection_recovery_release_test.dart",
+              "clients/flutter/test/voice_connection_recovery_visible_test.dart",
               "clients/flutter/test/voice_reconnect_policy_test.dart",
               "clients/flutter/test/voice_disconnect_race_test.dart"
             ],
@@ -1016,6 +1022,8 @@
       }
     ],
     "parity_review": {
+      "issue648_transfer_recovery_review": "Shared Flutter clears stale channel intent on accepted transfer revocation during recovery. Android emulator and Web were exercised on an isolated stack with injected release failure; iOS and production remain NOT_RUN.",
+      "issue648_recovery_review": "The shared Flutter recovery indicator changed; Android emulator outage and manual leave passed on an isolated stack. Windows initial media admission failed before outage, iOS and physical devices are not verified. Web was not changed; its existing regression checks remain required. Screen presentation is reviewed because the voice dock is shared.",
       "issue689_follow_up": "Issue 689 migrates voice roster and revocation hints to WebSocket. Web and shared Flutter tests cover parts of delivery; physical voice and iOS runtime acceptance remain open.",
       "issue687": "Web and Windows offer experimental DeepFilter only with disabled-by-default build flags. Flutter preflights model readiness and falls back for initial capture; normal Windows builds do not instantiate or deliver the engine. Web and Windows use a soft VAD envelope. Shared Flutter tests cover unchanged modes; Android/iOS runtime, real-stack and physical media acceptance remain NOT_RUN/BLOCKED.",
       "issue": 676,
@@ -1563,6 +1571,7 @@
       }
     ],
     "parity_review": {
+      "issue648_recovery_review": "The shared Flutter recovery indicator changed; Android emulator outage and manual leave passed on an isolated stack. Windows initial media admission failed before outage, iOS and physical devices are not verified. Web was not changed; its existing regression checks remain required. Screen presentation is reviewed because the voice dock is shared.",
       "issue689_follow_up": "Issue 689 adds Web application-socket liveness, new-event validation and permission-request fencing while preserving screen feature behavior. Screen regression suites remain required on Web and native platforms; full current-source native media acceptance remains open.",
       "issue687": "Shared Flutter microphone preferences add a Windows-gated experimental DeepFilter mode; screen-share code is unchanged. Web, Android and iOS screen regression and real-device media acceptance remain NOT_RUN.",
       "issue": 676,
