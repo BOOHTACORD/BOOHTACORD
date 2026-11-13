@@ -5,6 +5,8 @@ import 'dart:math';
 
 import '../../realtime/lifecycle/event.dart';
 import '../../realtime/lifecycle/liveness.dart';
+import '../../realtime/lifecycle/new_envelope.dart';
+import '../../realtime/lifecycle/maintenance_payload.dart';
 import 'state.dart';
 
 part 'guest_connection.dart';

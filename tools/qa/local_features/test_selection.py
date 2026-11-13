@@ -26,6 +26,10 @@ class SelectionTest(unittest.TestCase):
         catalog = json.loads(Path(__file__).with_name('features.json').read_text(encoding='utf8'))
         self.assertIn('integration_test/issue689_heartbeat_test.dart', native_targets(catalog, ['connection_status']))
 
+    def test_connection_feature_runs_native_envelope_scenario(self):
+        catalog = json.loads(Path(__file__).with_name('features.json').read_text(encoding='utf8'))
+        self.assertIn('integration_test/issue689_envelope_test.dart', native_targets(catalog, ['connection_status']))
+
     def test_required_update_feature_selects_the_real_native_scenario(self):
         catalog = json.loads(Path(__file__).with_name('features.json').read_text(encoding='utf8'))
         self.assertIn('integration_test/update_required_test.dart', native_targets(catalog, ['update_required']))

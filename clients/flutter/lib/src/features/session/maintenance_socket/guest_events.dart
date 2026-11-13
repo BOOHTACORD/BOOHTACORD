@@ -23,6 +23,10 @@ extension _GuestEvents on MaintenanceGuestSocket {
       }
       final kind = source['kind'],
           payload = source['payload'] as Map<String, dynamic>;
+      if (isMaintenanceKind(kind) && !validNewRealtimeEnvelope(source)) {
+        _fail(epoch);
+        return;
+      }
       if (kind == 'connection.ready' && !_ready && payload.isEmpty) {
         _ready = true;
         _liveness?.observe(kind as String, source);
