@@ -1,13 +1,17 @@
 import '../../../models.dart';
 import '../lifecycle/controller.dart';
+import 'ownership.dart';
 
 extension WorkspaceTopology on WorkspaceController {
   Future<void> refreshTopology({bool strict = false}) async {
     final ticket = scope.capture();
     if (!accepts(ticket)) return;
+    final owner = topologyRefreshOwner(this);
+    final sequence = owner.begin(realtime: strict);
+    bool current() => accepts(ticket) && owner.current(sequence);
     try {
       final result = await api.topology();
-      if (!accepts(ticket)) return;
+      if (!current()) return;
       topology = result;
       final all = result.categories.expand((category) => category.channels);
       if (selectedChannel != null &&
@@ -18,17 +22,22 @@ extension WorkspaceTopology on WorkspaceController {
       }
       final previous = selectedChannel;
       selectedChannel = all.where((c) => c.id == previous?.id).firstOrNull;
-      if (navigationSection == NavigationSection.channels)
+      if (navigationSection == NavigationSection.channels) {
         selectedChannel ??= all
             .where((channel) => channel.kind == ChannelKind.text)
             .firstOrNull;
+      }
       if (previous == null && selectedChannel?.kind == ChannelKind.text) {
         await selectChannel(selectedChannel!);
       }
     } catch (cause) {
-      if (strict) rethrow;
-      if (accepts(ticket)) effects.error(effects.message(cause));
+      if (strict && current()) rethrow;
+      if (current()) effects.error(effects.message(cause));
+    } finally {
+      owner.finish(sequence);
     }
-    if (accepts(ticket)) changed();
+    if (current()) changed();
   }
+
+  void invalidateRealtimeTopology() => topologyRefreshOwner(this).socketEnd();
 }
