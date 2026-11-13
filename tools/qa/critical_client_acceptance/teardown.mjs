@@ -1,10 +1,13 @@
 import assert from 'node:assert/strict'
 import { owned } from './control.mjs'
 import { api, channel, expect, login, security, status } from '../client_lifecycle/request.mjs'
+import { withVoiceJoinDiagnostics } from './voice_join_network.mjs'
 async function join(page) {
-  await channel(page, 'VoiceLab')
-  await page.getByRole('button', { name: 'Без микрофона', exact: true }).click()
-  await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён', { timeout: 22000 })
+  return withVoiceJoinDiagnostics(page, async () => {
+    await channel(page, 'VoiceLab')
+    await page.getByRole('button', { name: 'Без микрофона', exact: true }).click()
+    await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён', { timeout: 22000 })
+  })
 }
 async function mediaClosed(page) {
   try {
