@@ -39,6 +39,14 @@ export const usePermissionStore = defineStore('effective-permissions', () => {
     return task
   }
 
+  async function refreshRealtime(): Promise<void> {
+    if (!activeAccount) return
+    generation++; inFlight = null
+    const ownGeneration = generation
+    await refresh()
+    if (generation === ownGeneration && error.value) throw new Error(error.value)
+  }
+
   function onFocus(): void { if (Date.now() - lastLoadedAt > 15_000) void refresh() }
   function start(accountId: string): void {
     stop(); activeAccount = accountId; generation++; void refresh()
@@ -49,5 +57,5 @@ export const usePermissionStore = defineStore('effective-permissions', () => {
     window.removeEventListener('focus', onFocus); if (timer) clearInterval(timer); timer = null; inFlight = null
   }
 
-  return { snapshot, loading, error, role, allows, refresh, start, stop }
+  return { snapshot, loading, error, role, allows, refresh, refreshRealtime, start, stop }
 })
