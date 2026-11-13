@@ -30,8 +30,9 @@ class ConcurrentResourcesTests(unittest.TestCase):
         active = 0
         maximum = 0
 
-        def snapshot():
+        def snapshot(*, resource_only):
             nonlocal active, maximum
+            self.assertTrue(resource_only)
             with lock:
                 active += 1
                 maximum = max(maximum, active)
