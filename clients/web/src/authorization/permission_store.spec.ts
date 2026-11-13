@@ -27,4 +27,23 @@ describe('permission store lifecycle', () => {
     second.resolve(snapshot('account-b')); await newRequest; expect(store.snapshot?.accountId).toBe('account-b')
     store.stop()
   })
+
+  it('supersedes an earlier request when a permission invalidation arrives', async () => {
+    const first = deferred<ReturnType<typeof snapshot>>(); const second = deferred<ReturnType<typeof snapshot>>()
+    loadPermissions.mockReturnValueOnce(first.promise).mockReturnValueOnce(second.promise)
+    const store = usePermissionStore(); store.start('account-a')
+    const pending = store.refreshRealtime()
+    expect(loadPermissions).toHaveBeenCalledTimes(2)
+    second.resolve({ ...snapshot('account-a'), revision: 2 }); await pending
+    first.resolve(snapshot('account-a')); await Promise.resolve(); await Promise.resolve()
+    expect(store.snapshot?.revision).toBe(2)
+    store.stop()
+  })
+
+  it('reports an inconclusive realtime refresh as failure', async () => {
+    loadPermissions.mockResolvedValueOnce(snapshot('account-a')).mockRejectedValueOnce(new Error('offline'))
+    const store = usePermissionStore(); store.start('account-a'); await store.refresh()
+    await expect(store.refreshRealtime()).rejects.toThrow('offline')
+    store.stop()
+  })
 })
