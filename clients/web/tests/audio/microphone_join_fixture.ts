@@ -47,6 +47,13 @@ const gate = {
       processingState: voiceRoom.readNoiseSuppressionState?.(),
     }
   },
+  async switchMode(mode: NoiseSuppressionMode) {
+    const publications = (room as unknown as Room).localParticipant.audioTrackPublications
+    const previous = [...publications.keys()][0]
+    await room!.applyMicrophoneProcessing!({ autoGainControl: false, echoCancellation: false, noiseSuppressionMode: mode })
+    return { processing: room!.readNoiseSuppressionState!(),
+      replaced: previous !== [...publications.keys()][0], publications: publications.size }
+  },
   async mute() { await room?.setMicrophone?.(false, { autoGainControl: false, echoCancellation: false, noiseSuppressionMode: 'off' }) },
   async stop() {
     try { await room?.disconnect() }

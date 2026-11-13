@@ -23,9 +23,8 @@ reported `noiseSuppression: true` on a fresh enabled capture, but applying
 `false` left it `true`; a fresh disabled capture reported `false`, and applying
 `true` left it `false`. Firefox reported the requested state after both changes.
 These observations are device- and browser-specific and do not prove acoustic
-quality. Reacquisition during an active Chromium/SFU call has not been tested
-on the real stack; the conservative result may still mute publication when
-neither the requested mode nor browser fallback can be confirmed.
+quality. The conservative result may still mute publication when neither the
+requested mode nor browser fallback can be confirmed.
 
 Validation: the focused capture-guard and recapture tests and production Web
 build passed. Browser tests in Chromium, Firefox and Edge exercised actual
@@ -40,10 +39,15 @@ browser tests then passed. The v0.2 model is not included.
 
 The full `voice` real-stack and visual gate is **BLOCKED**: the local Docker
 daemon did not answer a bounded probe. A separate pinned LiveKit 1.13.7
-Windows binary was run on loopback and then stopped. Eight browser join and
-signalling-restart cases for browser, off and RNNoise fallback all **FAIL**:
-the receiver could not establish its peer connection before the sender path
-started. The same setup failure occurred for baseline modes and does not
-identify a cause in the changed adapter. A production release, physical speech
+Windows server initially failed to establish a loopback ICE connection. With
+signalling on loopback and ICE restricted to the host's private interface,
+eight browser join and signalling-restart cases passed; four additional audio
+input lifecycle cases passed through an actual receiving peer. A further test
+passed switching browser -> RNNoise v0.1 -> off -> browser during a live SFU
+call, with one publication, synthetic audio at the receiver and silence on mute.
+The audio lifecycle run logged LiveKit `removeTrack` warnings during reconnect;
+the test assertions passed but the warnings merit separate investigation. The
+SFU was stopped after each run. These are synthetic Chromium tests, not speech
+quality or full product UI acceptance. A production release, physical speech
 quality, end-to-end latency, long-running media and Windows native acceptance
 remain **NOT_RUN**. No server deployment was performed.
