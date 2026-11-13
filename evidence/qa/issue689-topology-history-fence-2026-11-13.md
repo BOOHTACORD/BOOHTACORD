@@ -14,7 +14,11 @@ when initially run under Windows, where `os.killpg` is unavailable.
 This is unit/tooling evidence. Current-source Android, Web/Windows regression,
 visual, full matrix and production evidence remain open.
 
-A native Android scenario is registered to hold an actual owned-API history
-response across socket closure and capture the resulting screen. Its execution,
-source-resolution visual review and iOS counterpart are NOT_RUN until recorded
-separately; registering or analyzing the scenario does not establish a pass.
+At GitHub commit c7ac7d1f1fcb60a72a24cee53e5c94a17210c7c1 the Android emulator
+ran the registered scenario with the owned API: the delayed response did not
+update history after socket closure, and the loading indicator cleared. The
+runtime report is `Q:\Codex\issue689-android-topology-c7ac\runtime.json`.
+The source-resolution screenshot shows the connection-status panel, but an open
+navigation drawer obscures the history area. A follow-up capture closes the
+drawer; its execution and visual review, iOS and physical-device coverage remain
+NOT_RUN. Media was not exercised.

@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'issue689_support.dart' show waitFor;
 import 'issue689_topology_history_api.dart';
+import 'issue689_topology_history_capture.dart';
 import 'local_qa_test.dart' show QaTls;
 
 void main() {
@@ -111,9 +112,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Synthetic history fence'), findsNothing);
     if (Platform.isAndroid) {
-      await binding.convertFlutterSurfaceToImage();
-      await tester.pumpAndSettle();
-      await binding.takeScreenshot('android-topology-history-fenced');
+      await captureFencedHistory(tester, binding);
     }
     expect(tester.takeException(), isNull);
   });
