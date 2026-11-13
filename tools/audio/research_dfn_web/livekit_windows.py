@@ -12,6 +12,12 @@ from urllib.request import urlopen
 
 PRIVATE = tuple(ipaddress.ip_network(value) for value in ('10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16'))
 
+def bounded_timeout(value):
+    try: seconds = int(value)
+    except ValueError: raise ValueError('Invalid browser deadline') from None
+    if not 1 <= seconds <= 1900: raise ValueError('Invalid browser deadline')
+    return seconds
+
 
 def is_private_test_ip(value):
     try:
@@ -60,6 +66,7 @@ def main():
     parser.add_argument('--web', required=True, type=Path)
     parser.add_argument('--config', default='tests/audio/playwright.deepfilter.config.ts')
     parser.add_argument('--test', default='deepfilter_livekit')
+    parser.add_argument('--timeout', type=bounded_timeout, default=150)
     args = parser.parse_args()
     host, key, secret = local_address(), 'probe' + secrets.token_hex(8), secrets.token_urlsafe(36)
     with socket.socket() as probe:
@@ -87,7 +94,7 @@ def main():
             child = subprocess.Popen(['node', 'node_modules/@playwright/test/cli.js', 'test',
                                       '--config', args.config, args.test], cwd=args.web, env=env,
                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            deadline = time.monotonic() + 150
+            deadline = time.monotonic() + args.timeout
             while child.poll() is None and time.monotonic() < deadline:
                 time.sleep(.5)
                 if server.poll() is not None: raise RuntimeError('Local LiveKit exited unexpectedly')

@@ -70,3 +70,12 @@ restricted candidate interfaces. It stops on a wildcard listener and removes
 its temporary configuration. No tokens or audio are intentionally logged.
 The workflow `audio-web-research.yaml` is configured to exercise this chain;
 its hosted result and release acceptance must be verified separately.
+
+An optional local-only Chromium endurance scenario alternates v0.2 and
+DeepFilterNet3 through one synthetic LiveKit call and checks received audio
+and publication state. It requires both verified research asset sets, the
+v0.2 build-time digest and `BOOHTA_ENDURANCE_SECONDS` (10–1800). Invoke the
+Windows runner with `--config tests/audio/playwright.endurance.config.ts`,
+`--test endurance.research.spec.ts` and a suitable bounded `--timeout` (at most
+1900 seconds). Remove temporary v0.2 public assets after testing. It is not a
+speech, per-engine uninterrupted endurance, device or release acceptance test.

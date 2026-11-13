@@ -1,7 +1,12 @@
 import unittest
-from .livekit_windows import is_private_test_ip, make_config, probe_environment
+from .livekit_windows import is_private_test_ip, make_config, probe_environment, bounded_timeout
 
 class IsolatedServerConfigTest(unittest.TestCase):
+    def test_browser_deadline_is_bounded(self):
+        self.assertEqual(bounded_timeout('150'), 150)
+        self.assertEqual(bounded_timeout('1900'), 1900)
+        for value in ('0', '1901', '-1', 'abc'):
+            with self.subTest(value=value), self.assertRaises(ValueError): bounded_timeout(value)
     def test_private_interface_must_not_be_loopback_or_public(self):
         self.assertTrue(is_private_test_ip('192.168.4.7'))
         self.assertTrue(is_private_test_ip('10.0.0.2'))
