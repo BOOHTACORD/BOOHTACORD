@@ -307,6 +307,11 @@
         "focused": ["clients/web/src/realtime/new_envelope.spec.ts", "clients/web/src/realtime/roster_payload.spec.ts", "clients/web/src/realtime/maintenance_payload.spec.ts", "clients/web/src/maintenance/guest_socket.spec.ts", "clients/web/tests/connection_status/envelope.browser.spec.ts"],
         "scope": "Web validates complete maintenance and roster envelopes, including optional telemetry, and reconnects after malformed new events. Flutter, backlog pressure and full real-stack acceptance remain separate."
       },
+      "issue689_web_malformed_frame": {
+        "browser": "clients/web/tests/connection_status/playwright.config.ts",
+        "focused": ["clients/web/src/realtime/malformed_frame.spec.ts", "clients/web/tests/connection_status/malformed_frame.browser.spec.ts"],
+        "scope": "Authenticated Web closes and retries on non-JSON or binary realtime frames; Chromium uses a real loopback WebSocket. Full-stack and other event validation remain separate."
+      },
       "issue689_flutter_envelope_validation": {
         "focused": ["clients/flutter/test/realtime_scope/new_envelope_test.dart", "clients/flutter/test/realtime_scope/new_roster_envelope_test.dart", "clients/flutter/test/realtime_scope/maintenance_event_test.dart", "clients/flutter/test/realtime_scope/roster_event_test.dart", "clients/flutter/test/maintenance_socket/guest_loopback_test.dart"],
         "native": "integration_test/issue689_envelope_test.dart",
@@ -460,7 +465,7 @@
       }
     ],
     "parity_review": {
-      "issue689_follow_up": "Issue 689 adds heartbeat recovery, strict new-event envelopes, security-hint priority and stale permission-request fencing in Web and shared Flutter; Flutter also fences a ready continuation after socket close. Complete current-source Android and iOS runtime acceptance remain open.",
+      "issue689_follow_up": "Issue 689 adds heartbeat recovery, strict new-event envelopes, Web malformed-frame recovery, security-hint priority and stale permission-request fencing in Web and shared Flutter; Flutter also fences a ready continuation after socket close. Complete current-source Android and iOS runtime acceptance remain open.",
       "issue": 582,
       "decisions": {
         "web": "implementation_and_regression",
