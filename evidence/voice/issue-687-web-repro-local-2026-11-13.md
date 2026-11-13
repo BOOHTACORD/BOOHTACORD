@@ -29,3 +29,15 @@ bundle and browser/SFU checks; its result is NOT_RUN until GitHub executes it.
 The work does not establish independent-machine reproducibility, complete
 third-party notices, physical Web microphone quality, signed delivery,
 30-minute stability or production acceptance. No deployment was performed.
+
+The first hosted run on source `37ef9043ae8d9aa448716ba43dd725ed7c9ec04b`
+failed before the Windows builds because Python 3.12.15 is unavailable for
+Windows 2022. It also exposed a CI cache-policy mismatch and an import verifier
+that did not recognize TypeScript extension substitution or the two generated
+worklet dependencies. This packet uses the project-approved Windows Python,
+adds the research workflow to the locked npm-cache contract, and limits the
+Windows Playwright exception and generated-import mappings to their exact
+owners. The corresponding local policy and dependency tests passed; hosted
+results for the subsequent commit remain pending. On the local Windows host,
+two unrelated Linux-specific runner guest-update tests could not run because
+Perl/LXC were absent; the focused action-pin suite passed separately.

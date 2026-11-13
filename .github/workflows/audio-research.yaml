@@ -30,7 +30,9 @@ jobs:
           node-version-file: .node-version
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
-          python-version: '3.12.15'
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
       - run: >-
           node --test tools/audio/browser_fixture/credentials.test.mjs
           clients/web/scripts/deepfilter_assets.test.mjs
@@ -62,7 +64,9 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
-          python-version: '3.12.15'
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
       - name: Install pinned research toolchain
         shell: pwsh
         run: |

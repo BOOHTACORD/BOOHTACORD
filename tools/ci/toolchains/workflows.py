@@ -3,7 +3,8 @@ import yaml
 from .spec import ROOT, approved_versions
 
 NPM = {'ci-actual-acceptance.yaml', 'ci-frontend.yaml', 'client-lifecycle-acceptance.yaml',
-       'next-client-acceptance.yaml', 'qa-compatible-rollback.yaml', 'web-ci-shadow.yaml'}
+       'next-client-acceptance.yaml', 'qa-compatible-rollback.yaml', 'web-ci-shadow.yaml',
+       'audio-web-research.yaml'}
 
 
 def validate(documents, root):
@@ -38,7 +39,10 @@ def validate(documents, root):
                     raise ValueError('Cache state must not suppress locked dependency installation')
                 if 'tools.ci.web_suites.run' in command and step.get('if') is not None:
                     raise ValueError('Cache state must not suppress a complete locked Web profile')
-                if 'playwright install' in command and '--with-deps chromium' not in command:
+                windows_audio = (name == 'audio-web-research.yaml' and job.get('runs-on') == 'windows-2022'
+                                 and 'npx playwright install chromium firefox' in
+                                 [line.strip() for line in command.splitlines()])
+                if 'playwright install' in command and '--with-deps chromium' not in command and not windows_audio:
                     raise ValueError('Browser binaries cannot replace required OS dependencies')
 
 
