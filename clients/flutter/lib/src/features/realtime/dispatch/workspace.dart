@@ -61,6 +61,7 @@ class WorkspaceRealtimeDispatch {
       workspace,
       conversation,
       notifyMessage,
+      current,
     )) {
       return;
     }

@@ -365,6 +365,10 @@
         "focused": "clients/flutter/test/realtime_scope/directs_socket_fence_test.dart",
         "scope": "Flutter rejects old socket-scoped direct lists, candidate results and failures while preserving independent initial loading. Native and full-stack acceptance remain separate."
       },
+      "issue689_flutter_direct_history_socket_fence": {
+        "focused": "clients/flutter/test/realtime_scope/direct_history_socket_fence_test.dart",
+        "scope": "Flutter ignores direct history from an ended socket and does not start subsequent navigation or notification work. Native and full-stack acceptance remain separate."
+      },
       "issue689_flutter_connect_deadline": {
         "focused": ["clients/flutter/test/realtime_scope/open_deadline_test.dart", "clients/flutter/test/realtime_scope/open_deadline_integration_test.dart", "clients/flutter/test/realtime_scope/retry_policy_test.dart"],
         "scope": "Shared Flutter bounds the entire socket upgrade and ready handshake, cancels abandoned HTTP clients and closes late sockets. Loopback tests cover an unanswered upgrade; Android, iOS and production acceptance remain separate."
@@ -489,7 +493,7 @@
       }
     ],
     "parity_review": {
-      "issue689_follow_up": "Issue 689 adds heartbeat recovery, strict new-event envelopes, malformed and non-object frame recovery including Web replay reset, security-hint priority and stale permission-request fencing in Web and shared Flutter; Flutter also fences old ready and recovery continuations. Complete current-source Android and iOS runtime acceptance remain open.",
+      "issue689_follow_up": "Issue 689 adds heartbeat recovery, strict new-event envelopes, malformed and non-object frame recovery including Web replay reset, security-hint priority and stale permission-request fencing in Web and shared Flutter; Flutter also fences old ready, recovery and direct-history continuations. Complete current-source Android and iOS runtime acceptance remain open.",
       "issue": 582,
       "decisions": {
         "web": "implementation_and_regression",
