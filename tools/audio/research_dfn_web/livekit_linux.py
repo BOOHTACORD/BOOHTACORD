@@ -34,8 +34,8 @@ def private_sfu(inherited):
     with tempfile.TemporaryDirectory(prefix='boohta-livekit-linux-') as directory:
         config = Path(directory) / 'fixture.yaml'
         config.write_text(make_server_config(key, secret), encoding='utf-8')
-        subprocess.run(docker_command(name, str(config), host), check=True, stdout=subprocess.DEVNULL)
         try:
+            subprocess.run(docker_command(name, str(config), host), check=True, stdout=subprocess.DEVNULL)
             for attempt in range(30):
                 try:
                     with urlopen('http://127.0.0.1:17880', timeout=1) as response:

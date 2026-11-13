@@ -24,6 +24,14 @@ class LinuxLiveKitIsolationTests(unittest.TestCase):
             self.assertEqual(run.call_count, 2)
             self.assertEqual(run.call_args_list[-1].args[0][:3], ['docker', 'rm', '-f'])
 
+    def test_start_failure_still_attempts_container_cleanup(self):
+        with patch('tools.audio.research_dfn_web.livekit_linux.local_address', return_value='10.1.2.3'), \
+             patch('tools.audio.research_dfn_web.livekit_linux.subprocess.run', side_effect=[RuntimeError('start'), None]) as run:
+            with self.assertRaises(RuntimeError):
+                with private_sfu({}): pass
+            self.assertEqual(run.call_count, 2)
+            self.assertEqual(run.call_args_list[-1].args[0][:3], ['docker', 'rm', '-f'])
+
     def test_random_credential_inputs_are_bounded(self):
         value = make_server_config('probe0123', 'secret0123')
         self.assertIn('probe0123: secret0123', value)
