@@ -22,31 +22,38 @@ func startSessionMonitor(parent context.Context, connection *websocket.Conn, aut
 		interval = 1500 * time.Millisecond
 	}
 	go func() {
+		first := time.NewTimer(sessionMonitorFirstDelay(original.SessionDigest, interval))
+		defer first.Stop()
+		select {
+		case <-ctx.Done():
+			return
+		case <-first.C:
+		}
 		ticker := time.NewTicker(interval)
 		defer ticker.Stop()
 		for {
+			lookup, stop := context.WithTimeout(ctx, time.Second)
+			started := time.Now()
+			principal, err := authenticator.Authenticate(lookup, cookie.Value)
+			stop()
+			valid := err == nil && principal.AccountID == original.AccountID && principal.SessionDigest == original.SessionDigest
+			observeRevalidation(observer, time.Since(started), valid)
+			if ctx.Err() != nil {
+				return
+			}
+			if !valid {
+				status := websocket.StatusTryAgainLater
+				reason := "session verification unavailable"
+				if err == nil || errors.Is(err, auth.ErrUnauthenticated) {
+					status, reason = websocket.StatusPolicyViolation, "session is no longer valid"
+				}
+				_ = connection.Close(status, reason)
+				return
+			}
 			select {
 			case <-ctx.Done():
 				return
 			case <-ticker.C:
-				lookup, stop := context.WithTimeout(ctx, time.Second)
-				started := time.Now()
-				principal, err := authenticator.Authenticate(lookup, cookie.Value)
-				stop()
-				valid := err == nil && principal.AccountID == original.AccountID && principal.SessionDigest == original.SessionDigest
-				observeRevalidation(observer, time.Since(started), valid)
-				if ctx.Err() != nil {
-					return
-				}
-				if !valid {
-					status := websocket.StatusTryAgainLater
-					reason := "session verification unavailable"
-					if err == nil || errors.Is(err, auth.ErrUnauthenticated) {
-						status, reason = websocket.StatusPolicyViolation, "session is no longer valid"
-					}
-					_ = connection.Close(status, reason)
-					return
-				}
 			}
 		}
 	}()
