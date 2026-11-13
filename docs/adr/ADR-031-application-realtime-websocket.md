@@ -37,6 +37,9 @@ Web authenticated socket attempts allow 15 seconds to receive
 and aborted on timeout or ownership change; an inconclusive check is not treated
 as proof of logout. Initial-roster availability and silent-connection liveness
 have separate requirements and are not proven by this deadline.
+Flutter uses the same 10-second session-revalidation bound. Timeout, explicit
+close and manual replacement abort that HTTP request; a cancelled or late
+response cannot by itself expire the replacement connection.
 
 The public socket uses bounded admission and the configured Origin policy. No
 public event carries protected account, roster, session or message information.

@@ -10,6 +10,16 @@ class RealtimeApiFake extends ApiClient {
   final checking = Completer<void>();
   int opens = 0;
   String? after;
+  Future<void>? abortSignal;
+  @override
+  Future<SessionUser?> currentRealtimeSession(
+    Future<void> abort,
+    bool Function() isCurrent,
+  ) {
+    abortSignal = abort;
+    return currentSession();
+  }
+
   @override
   Future<WebSocket> openRealtime({String? after, HttpClient? client}) {
     opens++;
