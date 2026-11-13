@@ -11,7 +11,7 @@ namespace boohta::deepfilter {
 enum class ExchangeStatus { ready, buffering, no_frame, invalid_audio, overload };
 
 // Capture and Worker are each called by exactly one thread. The owner must
-// advance generation on mute, unmute and failure, synchronize publication
+// monotonically advance generation on mute, unmute and failure, synchronize publication
 // with mute intent, and reset the worker model on a generation change.
 // Input and output each reference 480 floats of normalized mono PCM in [-1,
 // 1], and may overlap. Failure and underflow return silence; fallback policy
@@ -62,7 +62,7 @@ class FrameExchange {
   }
 
   bool WorkerPop(std::uint64_t generation, AudioFrame& frame) noexcept {
-    for (std::size_t i = 0; i < Capacity && input_.TryPop(frame); ++i)
+    for (std::size_t i = 0; i < Capacity && input_.TryPopThroughGeneration(generation, frame); ++i)
       if (frame.generation == generation) return true;
     frame = AudioFrame{};
     return false;

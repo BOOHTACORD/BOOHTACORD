@@ -91,4 +91,13 @@ int main() {
   assert(future.WorkerPush(worker));
   assert(future.Capture(input, 1, false, output) == ExchangeStatus::overload);
   for (float sample : output) assert(sample == 0.0f);
+
+  FrameExchange<4> worker_race;
+  for (float& sample : input) sample = 0.5f;
+  assert(worker_race.Capture(input, 1, false, output) == ExchangeStatus::no_frame);
+  assert(worker_race.Capture(input, 2, false, output) == ExchangeStatus::no_frame);
+  assert(worker_race.WorkerPop(1, worker) && worker.generation == 1);
+  assert(!worker_race.WorkerPop(1, worker));
+  assert(worker_race.WorkerPop(2, worker) && worker.generation == 2);
+  for (float sample : worker.samples) assert(sample == 0.5f);
 }

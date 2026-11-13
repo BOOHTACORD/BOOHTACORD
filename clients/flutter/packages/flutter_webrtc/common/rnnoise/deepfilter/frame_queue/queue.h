@@ -37,6 +37,16 @@ class FrameQueue {
     return true;
   }
 
+  // Consumer only. A worker using an older snapshot must leave newer frames
+  // queued for the next generation instead of discarding their audio.
+  bool TryPopThroughGeneration(std::uint64_t generation, AudioFrame& frame) noexcept {
+    const auto tail = tail_.load(std::memory_order_relaxed);
+    if (tail == head_.load(std::memory_order_acquire) || slots_[tail].generation > generation) return false;
+    frame = slots_[tail];
+    tail_.store((tail + 1) % (Capacity + 1), std::memory_order_release);
+    return true;
+  }
+
  private:
   std::array<AudioFrame, Capacity + 1> slots_{};
   alignas(64) std::atomic<std::size_t> head_{0};

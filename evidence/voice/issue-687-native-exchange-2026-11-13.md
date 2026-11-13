@@ -91,3 +91,17 @@ and 0 overloads in one short run. The guard's final state check does not
 serialize mute with publication after it returns; that remains a required
 responsibility of the actual capture/publish owner. These are not device,
 long-duration, acoustic, network, or release acceptance results.
+
+The worker previously discarded a newer input frame if it had read an older
+generation immediately before a switch. A focused regression reproduced this;
+the SPSC consumer now leaves newer frames queued. Queue and exchange tests,
+including concurrent generation changes, passed in the 13/13 MSVC suite.
+
+A worker owner prototype now starts inference off the callback and joins the
+worker on shutdown. Fake-engine tests cover processing, mute, engine failure,
+fallback and recovery; the runtime test passed 20 repeated runs. One synthetic
+three-second run using the hash-checked real research model through this owner
+reported 297 ready, 3 buffering, 0 underruns and 0 overloads; p95/max frame lag
+was 4. This does not establish real-client behavior, bounded shutdown if the
+engine hangs, thread scheduling under load, physical speech quality, or the
+separate synchronization needed between mute and actual track publication.

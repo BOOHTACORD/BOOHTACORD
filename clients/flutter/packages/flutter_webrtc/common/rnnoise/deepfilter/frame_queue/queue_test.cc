@@ -43,6 +43,13 @@ int main() {
   assert(!queue.TryPop(result));
   assert(allocations.load(std::memory_order_relaxed) == before);
 
+  frame.generation = 8; frame.samples.fill(0.25f);
+  assert(queue.TryPush(frame));
+  assert(!queue.TryPopThroughGeneration(7, result));
+  assert(!queue.TryPopThroughGeneration(7, result));
+  assert(queue.TryPopThroughGeneration(8, result));
+  assert(result.generation == 8 && result.samples[0] == 0.25f);
+
   constexpr unsigned count = 10000;
   const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
   std::thread producer([&] {
@@ -58,7 +65,7 @@ int main() {
     }
   });
   for (unsigned i = 0; i < count; ++i) {
-    while (!queue.TryPop(result)) {
+    while (!queue.TryPopThroughGeneration(i / 1000, result)) {
       assert(std::chrono::steady_clock::now() < deadline);
       std::this_thread::yield();
     }
