@@ -8,9 +8,9 @@ import 'package:boohtacord_desktop/src/app.dart';
 import 'package:boohtacord_desktop/src/app_state.dart';
 import 'package:boohtacord_desktop/src/features/session/lifecycle/controller.dart';
 import 'package:boohtacord_desktop/src/features/voice/roster_state/phase.dart';
-import 'package:boohtacord_desktop/src/models.dart';
 
 import 'issue689_support.dart';
+import 'issue689_voice_fixture.dart';
 import 'local_qa_test.dart' show QaTls;
 
 void main() {
@@ -48,22 +48,13 @@ void main() {
       tester,
       () => app.phase == AppPhase.ready && app.realtime.connected,
     );
-    await tester.runAsync(() async {
-      await api.createCategory('Listener QA');
-      await app.refreshTopology();
-      final category = app.topology!.categories.firstWhere(
-        (c) => c.name == 'Listener QA',
-      );
-      await api.createChannel(
-        categoryId: category.id,
-        name: 'Listener voice',
-        kind: ChannelKind.voice,
-      );
-      await app.refreshTopology();
-    });
-    final voice = app.topology!.categories
-        .expand((c) => c.channels)
-        .firstWhere((c) => c.name == 'Listener voice');
+    final voice = await createVoiceFixture(
+      tester,
+      api,
+      app,
+      categoryName: 'Listener QA',
+      channelName: 'Listener voice',
+    );
     await tester.runAsync(() => app.joinVoice(voice, listenerOnly: true));
     await waitFor(
       tester,
