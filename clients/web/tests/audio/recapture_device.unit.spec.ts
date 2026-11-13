@@ -37,3 +37,21 @@ it('stays muted without retrying when device replacement cannot unpublish the ol
   expect(f.adapter.readOutputTrack()?.enabled).toBe(false)
   await f.adapter.dispose()
 })
+
+it('republishes the selected device when reconnection needs a fresh capture', async () => {
+  vi.stubEnv('VITE_RNNOISE_ENABLED', 'true')
+  const f = fixture(); await f.adapter.switchDevice('selected', 'prejoin')
+  await f.adapter.setEnabled(true, rnnoise)
+  const track = await f.dependencies.createTrack.mock.results[0].value
+  vi.mocked(track.restartTrack).mockImplementationOnce(async () => {
+    track.mediaStreamTrack = { enabled: true, stop: vi.fn(), getSettings: () => ({ noiseSuppression: true }) } as unknown as MediaStreamTrack
+  })
+  f.adapter.prepareReconnect()
+  expect(await f.adapter.reapplyDevice()).toBe(true)
+  expect(f.dependencies.createTrack).toHaveBeenLastCalledWith(expect.objectContaining({
+    deviceId: { exact: 'selected' }, noiseSuppression: false,
+  }))
+  expect(f.dependencies.publishTrack).toHaveBeenCalledTimes(2)
+  expect(f.adapter.inputSelection).toMatchObject({ deviceId: 'selected', outcome: 'success' })
+  await f.adapter.dispose()
+})

@@ -24,7 +24,10 @@ candidate device, republishes muted, and reports an error without retrying when
 old-track removal cannot be confirmed. A Chromium test against local LiveKit
 used two synthetic tones and a simulated ignored constraint: after switching,
 the actual receiver observed the selected device's 880 Hz tone. This is not a
-physical hotplug or speech test.
+physical hotplug or speech test. The same test forced an ignored constraint
+during a signalling reconnect: the selected input was recaptured, the receiver
+subscribed to the replacement and received its tone. LiveKit logged its
+`removeTrack` warning during that reconnect despite the passing media checks.
 
 On this Windows host, brief headless Chromium and Firefox `getUserMedia` probes
 used a physical microphone without recording or retaining samples. Chromium

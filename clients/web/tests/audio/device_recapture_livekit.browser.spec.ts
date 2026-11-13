@@ -25,6 +25,15 @@ test('a replacement capture keeps the chosen device audible through LiveKit', as
     const result = await inputGate(sender, 'read')
     expect(result.selected).toBe('mic-2')
     expect(result.captures.map((capture: any) => capture.deviceId)).toEqual(['mic-1', 'mic-2', 'mic-2'])
+    const before = (await inputGate(receiver, 'read')).receivedSubscriptions
+    await inputGate(sender, 'ignoreNextConstraint')
+    await inputGate(sender, 'reconnect')
+    await expect.poll(async () => (await inputGate(sender, 'read')).captures.length, { timeout: 15000 }).toBeGreaterThanOrEqual(5)
+    await expect.poll(async () => (await inputGate(receiver, 'read')).receivedSubscriptions, { timeout: 15000 }).toBeGreaterThan(before)
+    await hear(880)
+    const restored = await inputGate(sender, 'read')
+    expect(restored).toMatchObject({ selected: 'mic-2', publications: 1 })
+    expect(restored.captures.at(-1).deviceId).toBe('mic-2')
   } catch (error) { failed = true; throw error }
   finally { await closeInputs([sender, receiver], [senderContext, receiverContext], failed) }
 })
