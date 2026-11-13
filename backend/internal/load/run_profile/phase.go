@@ -20,7 +20,7 @@ func (r *Runner) phase(ctx context.Context, guard observe_resources.Guard, name 
 	if r.Profile == "faults" {
 		faults := map[string]string{"warmup": "db_pressure", "ramp": "sfu_outage", "steady": "slow_telemetry", "spike": "disk_pressure"}
 		if fault := faults[name]; fault != "" {
-			if err := guard.Fault(ctx, fault); err != nil {
+			if err := guard.FaultFor(ctx, fault, duration); err != nil {
 				phase.Failure = "fault_" + observe_resources.Category(err)
 				if ctx.Err() != nil {
 					phase.Failure = "canceled"
