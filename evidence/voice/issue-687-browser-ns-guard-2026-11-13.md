@@ -45,7 +45,7 @@ eight browser join and signalling-restart cases passed; four additional audio
 input lifecycle cases passed through an actual receiving peer. A further test
 passed switching browser -> RNNoise v0.1 -> off -> browser during a live SFU
 call, with one publication, synthetic audio at the receiver and silence on mute.
-With the separate research bundle and opt-in flag, a further local Chromium test
+With the separate research bundle and opt-in flag, local Chromium and Edge tests
 passed browser -> experimental DeepFilterNet3 -> browser on the production
 microphone adapter through the SFU, checking receiver audio, one publication
 and mute. The research model and bundle are not release-approved.
