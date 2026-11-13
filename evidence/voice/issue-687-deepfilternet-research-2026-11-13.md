@@ -99,5 +99,26 @@ synthetic 480-sample frames, maximum absolute difference from the separate
 WorkAdventure build was 2.80e-8. This is not a browser or leak acceptance,
 physical sound test, reproducible release build, or permission to ship binaries.
 
+The same local prototype was extended with a reset that clones its pristine
+initialized state. Its experimental WASM SHA-256 is
+`0745651e0b7a0993e8a4d71320840d28754c112425906b6f0e93f4c770724fec`.
+After 100 synthetic signal frames, reset output matched a freshly initialized
+state on 100 silent and 100 signal frames (maximum difference zero). Thirty
+Node reset calls measured median 0.0118 ms, maximum 0.0448 ms on this host;
+this is not an AudioWorklet deadline, device benchmark or a privacy guarantee.
+The tracked probe also passed five allocation/free cycles with the rebuilt API.
+
+An isolated experimental AudioWorklet was exercised in Windows Chromium and
+Firefox using the same local WASM and model, without adding those assets to
+the release build. Both browsers passed synthetic tone processing, mute,
+reset/unmute and destruction, and rejected a corrupt model without raw audio
+passthrough (two browser tests each). The meter test waits for pre-reset
+messages to drain; it does not measure the immediate acoustic transition.
+Unit tests additionally cover bounded frame buffering, nonfinite samples,
+overload, engine errors and per-instance entropy isolation/zeroization.
+This research node is not connected to LiveKit or an application setting.
+Its runtime cost, sustained operation, real microphone, voice quality,
+delivery, safe fallback and platform acceptance are not established.
+
 Unknown: behavior on real capture, bounded fallback and mute, cross-browser
 support, native Windows real-time integration, speech quality and latency.

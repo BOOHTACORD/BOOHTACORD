@@ -4,8 +4,11 @@
 commit `d375b2d8309e0935d165700c91da9de862a99c31`. It exposes a wasm-bindgen
 object with an explicit `free()` instead of leaking the upstream raw pointer.
 It validates frame length and nonfinite input/output and returns sanitized
-errors. The consuming AudioWorklet, versioned same-origin loader, cancellation,
-overload fallback and safe lifetime integration do not exist yet.
+errors. Its experimental `reset()` clones the pristine initialized state;
+its cost and memory use must be measured in a real AudioWorklet. An isolated
+experimental AudioWorklet now exercises the model; the versioned same-origin
+loader, LiveKit integration, cancellation, overload fallback and release
+delivery do not exist yet.
 
 The preliminary build applied WorkAdventure/noise-suppression commit
 `7e00a1b7522f044a31776fddc249a97a98de94ed`'s tract 0.23 patch. Its
@@ -20,7 +23,8 @@ The official model SHA-256 is
 `c94d91f70911001c946e0fabb4aa9adc37045f45a03b56008cb0c8244cb63616`.
 
 `node tools/audio/research_dfn_web/probe.mjs <generated-js> <wasm> <model>`
-exercises five initialization, invalid-frame, processing and free cycles. It
+exercises five initialization, invalid-frame, processing and free cycles, then
+compares output after reset to a fresh state on synthetic frames. It
 prints only aggregate WASM memory sizes, not audio. The probe does not prove
 browser cleanup, absence of leaks, timing, model licensing, acoustic quality or
 release readiness. See `evidence/voice/issue-687-deepfilternet-research-2026-11-13.md`.

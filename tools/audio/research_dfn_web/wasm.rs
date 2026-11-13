@@ -4,7 +4,7 @@ use wasm_bindgen::prelude::*;
 use crate::tract::*;
 
 #[wasm_bindgen]
-pub struct Denoiser { inner: DfTract }
+pub struct Denoiser { inner: DfTract, pristine: DfTract }
 
 #[wasm_bindgen]
 impl Denoiser {
@@ -16,10 +16,13 @@ impl Denoiser {
             .with_thresholds(f32::NEG_INFINITY, f32::INFINITY, f32::INFINITY);
         let inner = DfTract::new(params, &runtime).map_err(|_| JsValue::from_str("model initialization failed"))?;
         if inner.hop_size != 480 { return Err(JsValue::from_str("invalid frame size")); }
-        Ok(Denoiser { inner })
+        let pristine = inner.clone();
+        Ok(Denoiser { inner, pristine })
     }
 
     pub fn frame_size(&self) -> usize { self.inner.hop_size }
+
+    pub fn reset(&mut self) { self.inner = self.pristine.clone(); }
 
     pub fn process(&mut self, input: &[f32]) -> Result<js_sys::Float32Array, JsValue> {
         if input.len() != 480 || !input.iter().all(|value| value.is_finite()) {

@@ -26,5 +26,20 @@ for (let i = 0; i < 5; i++) {
   if (!rejected) throw new Error('Freed object remained usable')
   sizes.push(wasm.memory.buffer.byteLength)
 }
+const reset = new api.Denoiser(model, 25), fresh = new api.Denoiser(model, 25)
+for (let n = 0; n < 100; n++) {
+  reset.process(Float32Array.from({ length: 480 }, (_, i) => .3 * Math.sin((n * 480 + i) * .05)))
+}
+reset.reset()
+let difference = 0
+for (let n = 0; n < 200; n++) {
+  const input = n < 100 ? new Float32Array(480)
+    : Float32Array.from({ length: 480 }, (_, i) => .1 * Math.sin((n * 480 + i) * .07))
+  const a = reset.process(input), b = fresh.process(input)
+  for (let i = 0; i < 480; i++) difference = Math.max(difference, Math.abs(a[i] - b[i]))
+}
+reset.free(); fresh.free()
+if (difference > 1e-6) throw new Error('Reset differs from fresh model')
 console.log(JSON.stringify({ cycles: sizes.length, wasmBytes: sizes,
-  ownershipProbe: 'PASS', clientIntegration: 'NOT_RUN', acousticQuality: 'NOT_ASSESSED' }))
+  ownershipProbe: 'PASS', resetMaxDifference: difference,
+  clientIntegration: 'NOT_RUN', acousticQuality: 'NOT_ASSESSED' }))
