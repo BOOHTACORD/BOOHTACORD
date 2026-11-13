@@ -48,6 +48,10 @@ class Faults:
             if self.generation is generation:
                 self.restore()
 
+    def sfu_outage_active(self):
+        with self.lock:
+            return self.current == 'sfu_outage'
+
     def active(self, name):
         with self.lock:
             if self.current != name:

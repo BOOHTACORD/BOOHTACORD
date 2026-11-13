@@ -31,7 +31,7 @@ class Resources:
             raise ValueError('Owned API CPU quota must be bounded')
         cpu_limit = min(nanos / 1_000_000_000, os.cpu_count() or 1)
         try:
-            values = snapshot()
+            values = snapshot(resource_only=True)
         except (OSError, ValueError) as cause:
             raise SampleFailure(stage(cause)) from None
         now = time.monotonic()

@@ -48,6 +48,7 @@ def aggregate(text):
     return result
 
 
-def snapshot():
-    with urllib.request.urlopen('http://127.0.0.1:4820/metrics', timeout=2) as response:
+def snapshot(resource_only=False):
+    url = 'http://127.0.0.1:4820/metrics' + ('?view=resources' if resource_only else '')
+    with urllib.request.urlopen(url, timeout=2) as response:
         return aggregate(response.read(2 << 20).decode())

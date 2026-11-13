@@ -22,7 +22,7 @@ class ResourceSnapshotTests(unittest.TestCase):
             },
         ])
         with patch('tools.load.guard.resources.owned', return_value=stack.api) as owned, \
-                patch('tools.load.guard.resources.snapshot', side_effect=lambda: next(snapshots)), \
+                patch('tools.load.guard.resources.snapshot', side_effect=lambda **_: next(snapshots)), \
                 patch('tools.load.guard.resources.time.monotonic', side_effect=(10.0, 11.0)), \
                 patch('tools.load.guard.resources.os.cpu_count', return_value=20), \
                 patch('tools.load.guard.resources.output', return_value='2000000000'):
