@@ -48,6 +48,10 @@ bool RnnoiseCaptureProcessor::ProcessNoise(float* pcm, int frames, int capacity)
   }
   if (requested_.load() == Engine::kDeepFilter) return ProcessDeepFilter(pcm, frames, capacity, generation);
   if (requested_.load() != Engine::kRnnoise) return false;
+#ifdef BOOHTA_RNNOISE_V02_RESEARCH
+  if (rate_.load() == 16000 && frames == 160)
+    return ProcessResearchV02At16k(pcm, frames, capacity, generation);
+#endif
   Failure error = Failure::kNone;
   if (!state_) error = Failure::kUnavailable;
   else if (!pcm || rate_.load() != 48000 || channels_.load() != 1 ||

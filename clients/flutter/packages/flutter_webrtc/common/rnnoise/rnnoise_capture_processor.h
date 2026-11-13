@@ -36,6 +36,9 @@ class RnnoiseCaptureProcessor {
   MicrophoneControls controls;
  private:
   bool ProcessNoise(float* pcm, int frames, int capacity);
+#ifdef BOOHTA_RNNOISE_V02_RESEARCH
+  bool ProcessResearchV02At16k(float* pcm, int frames, int capacity, uint64_t generation);
+#endif
   bool ProcessDeepFilter(float* pcm, int frames, int capacity, uint64_t generation);
   deepfilter::Resampler16k resampler_;
   DenoiseState* state_;

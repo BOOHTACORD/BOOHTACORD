@@ -37,3 +37,20 @@ The native `rnnoise_v02_pcm` executable takes an existing mono 48 kHz float32le
 input and a new output filename. It pads partial frames and appends 120 ms of
 silence, like `tools/audio/speech_fixture/run.mjs`; an existing output is never
 overwritten. It is for offline comparisons only, not microphone capture.
+
+To exercise the actual capture processor against the research v0.2 core without
+changing the client, run:
+
+```
+python -m tools.audio.research_v02.native_adapter.run --source <verified-upstream-checkout> --output .out/audio-research/<new-directory>
+```
+
+The local-only CMake targets use an ABI bridge for the changed initialization
+signature, run the existing capture processor checks and compare 100 synthetic
+48 kHz frames with direct v0.2 calls. A separate experimental target exercises
+16 -> 48 -> 16 kHz conversion and safe silence on invalid input or a stale
+generation. The ordinary nonexperimental path still rejects 16 kHz. The test
+bridge includes a deterministic callback for its stale-generation test only.
+It is not integrated into Flutter or a release; initialization-failure
+handling, realtime/device testing, model rights and complete acceptance remain
+open.

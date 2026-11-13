@@ -46,6 +46,7 @@ jobs:
           python -m unittest tools.audio.speech_metrics.test_score
           tools.audio.speech_metrics.test_batch tools.audio.research_dfn_native.test_prepare
           tools.audio.research_dfn_native.test_fingerprint
+          tools.audio.research_v02.native_adapter.test_run
           tools.audio.research_dfn_web.test_prepare tools.audio.research_dfn_web.test_build
           tools.audio.research_dfn_web.test_livekit_windows
 
