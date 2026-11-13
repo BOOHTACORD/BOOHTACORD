@@ -6,6 +6,19 @@ import '../../telemetry/realtime/process.dart';
 import '../lifecycle/event.dart';
 import 'direct_message.dart';
 
+Future<void> dispatchReady(
+  FutureOr<void> Function(int)? guildChanged,
+  FutureOr<void> Function() permissionsChanged,
+  FutureOr<void> Function()? screenViewersChanged,
+  bool Function() current,
+) async {
+  if (!current()) return;
+  await guildChanged?.call(0);
+  if (!current()) return;
+  await permissionsChanged();
+  if (current()) await screenViewersChanged?.call();
+}
+
 Future<void> dispatchRecovery(
   RealtimeEvent event,
   WorkspaceController workspace,
@@ -13,13 +26,17 @@ Future<void> dispatchRecovery(
   FutureOr<void> Function() permissionsChanged,
   FutureOr<void> Function(int)? guildChanged,
   FutureOr<void> Function()? screenViewersChanged,
+  bool Function() current,
 ) async {
+  if (!current()) return;
   await guildChanged?.call(0);
+  if (!current()) return;
   await processEffect(
     event,
     conversation.api.transport.session.telemetry,
     () async {
       await workspace.refreshTopology(strict: true);
+      if (!current()) return;
       await Future.wait<void>([
         workspace.refreshMembers(strict: true),
         workspace.refreshDirectMessages(strict: true),
