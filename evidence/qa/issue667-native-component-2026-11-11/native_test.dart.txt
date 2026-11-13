@@ -1,0 +1,58 @@
+import 'package:boohtacord_desktop/src/app_state.dart';
+import 'package:boohtacord_desktop/src/screens/workspace_ui/voice_participant_room/component.dart';
+import 'package:boohtacord_desktop/src/services/api_client.dart';
+import 'package:boohtacord_desktop/src/theme.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
+import 'package:livekit_client/livekit_client.dart';
+import 'package:livekit_client/src/proto/livekit_models.pb.dart' as lk;
+
+void main() {
+  final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  testWidgets('native large-text voice cards remain reachable', (tester) async {
+    await tester.pumpWidget(const MaterialApp(home: Scaffold(body: Text('Preparing'))));
+    await tester.pump();
+    debugPrint('QA696_NATIVE_STARTED');
+    final room = Room();
+    final remote = await tester.runAsync(() => RemoteParticipant.createFromInfo(
+      room: room,
+      info: lk.ParticipantInfo(sid: 'sid-1', identity: 'one', name: 'One'),
+    ));
+    expect(remote, isNotNull);
+    final state = AppState(ApiClient());
+    addTearDown(state.dispose);
+    await tester.pumpWidget(MaterialApp(
+      theme: guildTheme(),
+      home: MediaQuery(
+        data: const MediaQueryData(size: Size(320, 600), textScaler: TextScaler.linear(2)),
+        child: Scaffold(body: Center(child: SizedBox(
+          width: 320,
+          height: 600,
+          child: WorkspaceVoiceParticipantRoom(
+            state: state,
+            room: room,
+            participants: [remote!.participant],
+            screens: const [],
+            onScreenSelected: (_) {},
+          ),
+        ))),
+      ),
+    ));
+    await tester.pumpAndSettle();
+    final first = tester.getRect(find.byKey(const ValueKey('voice-participant-card:self')));
+    final other = find.byKey(const ValueKey('voice-participant-card:sid-1'));
+    final second = tester.getRect(other);
+    expect(first.width, greaterThanOrEqualTo(260));
+    expect(second.top, greaterThanOrEqualTo(first.bottom));
+    await binding.convertFlutterSurfaceToImage();
+    await tester.pump();
+    await binding.takeScreenshot('voice-large-native');
+    await tester.ensureVisible(other);
+    await tester.pumpAndSettle();
+    expect(other.hitTestable(), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.runAsync(room.dispose);
+  });
+}
