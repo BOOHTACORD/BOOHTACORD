@@ -8,6 +8,7 @@ REVIEWS = {
     'livekit-network-roster-retry-2026-11-09.json': 'd85b56aad5b028ce66f9e23bda97b872c76fb166',
     'livekit-network-recovery-roster-integration-2026-11-09.json': 'be97f71727a6d263390ebe13c30ad93228c71760',
     'livekit-network-transfer-recovery-2026-11-09.json': 'c96af5782b34d968fbc43de831cf816840316de5',
+    'livekit-network-voice-large-text-2026-11-09.json': '102626410c375a6103409d6976f6f7713e6f6d94',
 }
 
 
