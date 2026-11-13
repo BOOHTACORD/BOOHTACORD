@@ -47,6 +47,7 @@ void configureRealtime(AppOwners app) {
     dispatch: WorkspaceRealtimeDispatch(
       app.workspace,
       app.conversation,
+      captureCurrent: () => app.realtime.admission(),
       voiceRevoked: app.voice.dispatchVoiceRevocation,
       permissionsChanged: app.permissions.refreshStrict,
       notifyMessage: notifications.call,
