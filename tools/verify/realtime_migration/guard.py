@@ -3,6 +3,7 @@ import re
 import hashlib
 import json
 from pathlib import Path
+from .fixture_imports import imports_of_fixtures
 
 ROOT = Path(__file__).resolve().parents[3]
 ROOTS = ('backend/internal', 'backend/cmd', 'clients/web/src', 'clients/web/artifacts',
@@ -44,6 +45,7 @@ def scan(root, require_roots=False):
             if not path.is_file() or path.suffix not in EXTENSIONS or relative in EXCEPTIONS:
                 continue
             content = path.read_text(encoding='utf8')
+            findings.extend(imports_of_fixtures(relative, content, FIXTURE_HASHES))
             if relative in FIXTURE_HASHES:
                 digest = hashlib.sha256(content.encode('utf8')).hexdigest()
                 if digest == FIXTURE_HASHES[relative]:
