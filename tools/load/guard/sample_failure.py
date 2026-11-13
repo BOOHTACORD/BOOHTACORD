@@ -4,7 +4,9 @@ import subprocess
 
 class SampleFailure(RuntimeError):
     def __init__(self, stage):
-        if stage not in {'fixture_verification', 'resource_snapshot', 'resource_metrics'}:
+        if stage not in {'fixture_verification', 'resource_snapshot', 'resource_metrics',
+                         'resource_metrics_timeout', 'resource_metrics_http',
+                         'resource_metrics_unavailable', 'resource_metrics_invalid'}:
             raise ValueError('Unknown guard stage')
         super().__init__(stage)
 

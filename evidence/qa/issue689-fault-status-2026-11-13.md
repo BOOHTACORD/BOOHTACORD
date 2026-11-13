@@ -27,3 +27,10 @@ bounded to 30 seconds; longer phases fail before injecting a fault. Database
 statement and controller auto-restore timeouts both remain bounded. A timer from
 an earlier generation cannot restore a later fault. Controller and Go tests pass;
 this duration protocol still needs real-stack and safety-threshold validation.
+
+At local commit e816d813, a short concurrent diagnostic run passed the database
+phase and reached the SFU fault, then stopped on `resource_metrics`; cleanup
+passed. The earlier category does not identify timeout, HTTP, connection or parse
+failure, so the cause remains unproven. The guard now reports only those bounded
+categories without exception text; it still stops on every metrics failure. The
+new categories need a separate real-stack run without concurrent client suites.
