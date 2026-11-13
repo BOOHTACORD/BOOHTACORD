@@ -18,3 +18,14 @@ source resolution: the login and registration tabs, empty login/password fields,
 sign-in button and version 1.0.54 (90) were visible. The debug artifact contains
 the existing RNNoise v0.1 component, not the requested v0.2. No voice call,
 audio or signed production APK was tested. No release was published.
+
+Follow-up Windows build on `9c9fe0d6e186b8d803b0d2861bc88df7126c134a`:
+`flutter build windows --release --no-pub` passed with experimental flags off.
+The first link failed after an incomplete Firebase SDK extraction. The missing
+`firebase_app.lib` was copied from the previously used local SDK, with matching
+source and destination SHA-256
+`a13b250c60f1cb92a1fb65b8ae389a20f67bb84555fdf1fc37cd784da44bcde5`;
+this is a local reuse check, not an independent SDK authenticity verification.
+The resulting EXE SHA-256 was
+`e5c522519c1499f26fec7ba971da7c66ee6c25517f3ac9563b6e35497e83008d`
+and Windows reported `NotSigned`. It was not packaged, installed or released.

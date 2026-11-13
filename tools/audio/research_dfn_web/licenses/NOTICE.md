@@ -18,6 +18,13 @@ license file. `NOM-MIT.txt` retains the repository-root MIT text at the crate's
 recorded source commit `2cec1b3e4c9ccac62c902d60c00de6d1549ccbe1`, SHA-256
 `4dbda04344456f09a7a588140455413a9ac59b6b26a1ef7cdf9c800c012d87f0`.
 
+The published `tract-extra` and `tract-transformers` 0.23.8 packages report
+dirty source at `248335349c0f59a5772d737480b8b39250097374`. Their packaged
+source files match that commit; their original Cargo manifests differ in the
+version suffix. `TRACT-NOTICE.txt` and `TRACT-MIT.txt` retain the root license
+files from that commit. Packaged lockfiles and the actual release dependency
+graph still require review; see the native license inventory evidence.
+
 The native and Web research trees respectively include `unicode-ident` 1.0.12
 and 1.0.27 with additional Unicode license conditions. Their packaged Unicode
 license texts are retained as `UNICODE-IDENT-1.0.12.txt` (SHA-256

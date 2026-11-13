@@ -18,6 +18,14 @@ def bounded_timeout(value):
     if not 1 <= seconds <= 1900: raise ValueError('Invalid browser deadline')
     return seconds
 
+def validate_endurance(test, duration, timeout):
+    if test != 'endurance.research.spec.ts': return
+    if not duration or not duration.isascii() or not duration.isdecimal():
+        raise ValueError('An explicit endurance duration is required')
+    seconds = int(duration)
+    if not 10 <= seconds <= 1800 or timeout < seconds + 60:
+        raise ValueError('Endurance duration or cleanup margin is invalid')
+
 
 def is_private_test_ip(value):
     try:
@@ -68,6 +76,7 @@ def main():
     parser.add_argument('--test', default='deepfilter_livekit')
     parser.add_argument('--timeout', type=bounded_timeout, default=150)
     args = parser.parse_args()
+    validate_endurance(args.test, os.environ.get('BOOHTA_ENDURANCE_SECONDS'), args.timeout)
     host, key, secret = local_address(), 'probe' + secrets.token_hex(8), secrets.token_urlsafe(36)
     with socket.socket() as probe:
         probe.bind(('127.0.0.1', 17880))

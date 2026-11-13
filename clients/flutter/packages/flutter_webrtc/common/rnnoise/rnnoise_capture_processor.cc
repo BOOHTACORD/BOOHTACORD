@@ -17,8 +17,7 @@ RnnoiseCaptureProcessor::RnnoiseCaptureProcessor(StateAllocator allocate, deepfi
       float silence[480] = {};
       rnnoise_process_frame(state_, silence, silence);
     });
-    warmed_ = true;
-    state_ready_.store(rnnoise_init(state_) == 0);
+    warmed_ = true; state_ready_.store(rnnoise_init(state_) == 0);
   }
 }
 RnnoiseCaptureProcessor::~RnnoiseCaptureProcessor() { rnnoise_destroy(state_); }
