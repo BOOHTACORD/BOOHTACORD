@@ -16,6 +16,9 @@ def main():
     try:
         if sys.platform != 'darwin': raise RuntimeError('macOS unit route requires an Apple host')
         report['status'] = 'FAIL'
+        subprocess.run([sys.executable, '-m', 'tools.verify.apple_audio_link.check',
+                        '--output', str(destination / 'apple-audio-link')], cwd=ROOT, check=True)
+        report['apple_audio_link'] = 'PASS'
         prepare(ROOT, 'livekit_client')
         package = ROOT / 'clients/flutter/packages/livekit_client'
         subprocess.run(['flutter', 'pub', 'get', '--enforce-lockfile'], cwd=package, check=True)
