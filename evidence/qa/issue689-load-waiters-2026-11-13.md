@@ -53,5 +53,10 @@
   A regression now rejects empty measured phases and starts the workload timer
   after fault setup. Neither this change nor any current result proves the
   fault remains active throughout a longer phase; that requires separate proof.
+- At `facce7bb0defc1c474bb91d4ec66d6fd64532d9e`, the isolated 20-second,
+  one-account profile returned PASS with 642 requests, nonzero workload in each
+  phase and successful cleanup. This is a bounded harness result only: the
+  fault lifetime is shorter than some phases and continuous activation was
+  not verified; production, multi-user capacity and media remain NOT_RUN.
 - Production event delivery, comparative capacity and fault recovery remain
   separate and are not established by these tests.
