@@ -5,8 +5,10 @@ import 'package:livekit_client/livekit_client.dart';
 import '../../../../services/client_telemetry.dart';
 import '../state.dart';
 import 'capture.dart';
+import 'desktop_switch.dart';
 
-mixin AudioInputSwitch on AudioDeviceState, AudioInputTrackCapture {
+mixin AudioInputSwitch
+    on AudioDeviceState, AudioInputTrackCapture, AudioInputDesktopSwitch {
   Future<void> switchAudioInput(String deviceId) async {
     final ticket = scope.capture();
     final settings = preferences;
@@ -35,12 +37,11 @@ mixin AudioInputSwitch on AudioDeviceState, AudioInputTrackCapture {
           ?.track;
       if (track is LocalAudioTrack) {
         if (_usesDesktopAudioDeviceModule) {
-          await nativeNoise.reset();
-          if (!current()) return;
-          await targetRoom!.setAudioInputDevice(device);
-          if (!current()) return;
-          track.currentOptions = track.currentOptions.copyWith(
-            deviceId: device.deviceId,
+          await switchDesktopInput(
+            track,
+            device,
+            current,
+            selectDevice: () => targetRoom!.setAudioInputDevice(device),
           );
         } else {
           await switchInputTrack(

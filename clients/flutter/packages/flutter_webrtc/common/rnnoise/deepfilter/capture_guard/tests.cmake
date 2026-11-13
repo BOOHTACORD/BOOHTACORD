@@ -1,0 +1,8 @@
+add_executable(deepfilter_capture_guard_test deepfilter/capture_guard/guard_test.cc)
+target_compile_features(deepfilter_capture_guard_test PRIVATE cxx_std_17)
+if(MSVC)
+  target_compile_options(deepfilter_capture_guard_test PRIVATE /UNDEBUG)
+else()
+  target_compile_options(deepfilter_capture_guard_test PRIVATE -UNDEBUG)
+endif()
+add_test(NAME deepfilter_capture_guard_test COMMAND deepfilter_capture_guard_test)

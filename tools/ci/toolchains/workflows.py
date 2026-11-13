@@ -3,7 +3,8 @@ import yaml
 from .spec import ROOT, approved_versions
 
 NPM = {'ci-actual-acceptance.yaml', 'ci-contracts.yaml', 'ci-frontend.yaml', 'client-lifecycle-acceptance.yaml',
-       'next-client-acceptance.yaml', 'qa-compatible-rollback.yaml', 'web-ci-shadow.yaml'}
+       'next-client-acceptance.yaml', 'qa-compatible-rollback.yaml', 'web-ci-shadow.yaml',
+       'audio-web-research.yaml'}
 
 
 def validate(documents, root):
@@ -38,7 +39,14 @@ def validate(documents, root):
                     raise ValueError('Cache state must not suppress locked dependency installation')
                 if 'tools.ci.web_suites.run' in command and step.get('if') is not None:
                     raise ValueError('Cache state must not suppress a complete locked Web profile')
-                if 'playwright install' in command and '--with-deps chromium' not in command:
+                lines = [line.strip() for line in command.splitlines()]
+                research = name == 'audio-web-research.yaml'
+                windows_audio = research and job.get('runs-on') == 'windows-2022' and 'npx playwright install chromium' in lines
+                linux_audio = research and job.get('runs-on') == 'ubuntu-24.04' and 'npx playwright install --with-deps firefox' in lines
+                installs = [line for line in lines if 'playwright install' in line]
+                if research and (windows_audio or linux_audio) and len(installs) != 1:
+                    raise ValueError('Research browser install must be unique')
+                if installs and '--with-deps chromium' not in command and not (windows_audio or linux_audio):
                     raise ValueError('Browser binaries cannot replace required OS dependencies')
 
 

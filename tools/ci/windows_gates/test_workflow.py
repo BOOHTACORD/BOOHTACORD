@@ -10,6 +10,17 @@ ROOT=Path(__file__).resolve().parents[3]
 class WorkflowTests(unittest.TestCase):
     def document(self):return yaml.load((ROOT/'.github/workflows/flutter-windows.yaml').read_text(),Loader=yaml.BaseLoader)
     def test_actual_graph(self):validate(self.document())
+    def test_native_audio_suite_is_mandatory(self):
+        steps=self.document()['jobs']['windows-native-unit']['steps']
+        audio=[s for s in steps if s.get('run')=='python -m tools.ci.native.audio']
+        self.assertEqual(len(audio),1)
+        for change in ('missing','conditional','ignored'):
+            d=self.document();steps=d['jobs']['windows-native-unit']['steps']
+            step=next(s for s in steps if s.get('run')=='python -m tools.ci.native.audio')
+            if change=='missing':steps.remove(step)
+            if change=='conditional':step['if']='false'
+            if change=='ignored':step['continue-on-error']='true'
+            with self.subTest(change=change),self.assertRaises(ValueError):validate(d)
     def test_publisher_suite_cannot_be_omitted_skipped_or_delayed(self):
         for change in ('missing','conditional','ignored','late','native','windows'):
             d=self.document();steps=d['jobs']['windows-native-unit']['steps']

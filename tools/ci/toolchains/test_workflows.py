@@ -14,6 +14,46 @@ class ToolchainWorkflowTests(unittest.TestCase):
     def test_actual_sdk_and_dependency_cache_contract(self):
         validate(self.documents(), ROOT)
 
+    def test_contract_dependencies_match_audio_metric_pins(self):
+        base = set((ROOT / 'tools/requirements-ci.txt').read_text().splitlines())
+        audio = (ROOT / 'tools/audio/speech_metrics/requirements.txt').read_text().splitlines()
+        pins = {line.split()[0] for line in audio if line.strip() and not line.startswith('#')}
+        self.assertTrue(pins)
+        self.assertTrue(pins.issubset(base))
+
+    def test_research_windows_browser_exception_is_narrow(self):
+        for mutation in ('platform', 'browser', 'cache', 'extra'):
+            documents = self.documents()
+            job = documents['audio-web-research.yaml']['jobs']['windows-wasm']
+            steps = job['steps']
+            if mutation == 'platform': job['runs-on'] = 'ubuntu-24.04'
+            if mutation == 'browser':
+                step = next(s for s in steps if 'npx playwright install chromium' in s.get('run', ''))
+                step['run'] = step['run'].replace('npx playwright install chromium', 'npx playwright install firefox')
+            if mutation == 'extra':
+                step = next(s for s in steps if 'npx playwright install chromium' in s.get('run', ''))
+                step['run'] += '\nnpx playwright install firefox'
+            if mutation == 'cache':
+                step = next(s for s in steps if s.get('uses', '').startswith('actions/setup-node@'))
+                step['with'].pop('cache-dependency-path', None)
+            with self.subTest(mutation=mutation), self.assertRaises(ValueError): validate(documents, ROOT)
+
+    def test_research_firefox_install_exception_is_narrow(self):
+        for mutation in ('platform', 'browser', 'cache', 'extra'):
+            documents = self.documents()
+            job = documents['audio-web-research.yaml']['jobs']['linux-firefox']
+            if mutation == 'platform': job['runs-on'] = 'windows-2022'
+            if mutation == 'browser':
+                step = next(s for s in job['steps'] if 'npx playwright install --with-deps firefox' in s.get('run', ''))
+                step['run'] = step['run'].replace('--with-deps firefox', 'firefox')
+            if mutation == 'extra':
+                step = next(s for s in job['steps'] if 'npx playwright install --with-deps firefox' in s.get('run', ''))
+                step['run'] += '\nnpx playwright install chromium'
+            if mutation == 'cache':
+                step = next(s for s in job['steps'] if s.get('uses', '').startswith('actions/setup-node@'))
+                step['with'].pop('cache-dependency-path', None)
+            with self.subTest(mutation=mutation), self.assertRaises(ValueError): validate(documents, ROOT)
+
     def test_wrong_sdk_key_or_conditional_install_is_rejected(self):
         for mutation in ('go', 'npm', 'skip'):
             documents = self.documents()

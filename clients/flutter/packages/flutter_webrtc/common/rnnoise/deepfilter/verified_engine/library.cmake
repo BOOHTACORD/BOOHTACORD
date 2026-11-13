@@ -1,0 +1,10 @@
+if(WIN32 AND (BOOHTA_DEEPFILTER_EXPERIMENTAL_NATIVE OR BOOHTA_RNNOISE_TESTS))
+  add_library(deepfilter_verified_file STATIC deepfilter/verified_file/verified_file.cc
+    deepfilter/verified_file/parent_locks.cc)
+  target_compile_features(deepfilter_verified_file PUBLIC cxx_std_17)
+  target_link_libraries(deepfilter_verified_file PUBLIC bcrypt)
+  add_library(deepfilter_verified_module STATIC deepfilter/verified_module/module.cc)
+  target_link_libraries(deepfilter_verified_module PUBLIC deepfilter_verified_file)
+  add_library(deepfilter_verified_engine STATIC deepfilter/verified_engine/engine.cc)
+  target_link_libraries(deepfilter_verified_engine PUBLIC deepfilter_verified_module)
+endif()
