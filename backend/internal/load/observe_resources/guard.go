@@ -45,6 +45,8 @@ func (g Guard) Check(ctx context.Context) (Snapshot, error) {
 			return s, ErrFixtureVerification
 		case "resource_snapshot":
 			return s, ErrResourceSnapshot
+		case "resource_metrics":
+			return s, ErrResourceMetrics
 		}
 	}
 	if response.StatusCode != 200 {

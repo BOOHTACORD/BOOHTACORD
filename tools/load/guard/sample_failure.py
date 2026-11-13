@@ -4,7 +4,7 @@ import subprocess
 
 class SampleFailure(RuntimeError):
     def __init__(self, stage):
-        if stage not in {'fixture_verification', 'resource_snapshot'}:
+        if stage not in {'fixture_verification', 'resource_snapshot', 'resource_metrics'}:
             raise ValueError('Unknown guard stage')
         super().__init__(stage)
 
@@ -16,5 +16,7 @@ def checked_inputs(stack, manifest, resources, verifier):
         raise SampleFailure('fixture_verification') from None
     try:
         return resources.read()
+    except SampleFailure:
+        raise
     except (OSError, ValueError, RuntimeError, subprocess.SubprocessError):
         raise SampleFailure('resource_snapshot') from None

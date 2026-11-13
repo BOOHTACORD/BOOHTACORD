@@ -11,6 +11,7 @@ var (
 	ErrThreshold           = errors.New("resource threshold exceeded")
 	ErrFixtureVerification = errors.New("fixture verification unavailable")
 	ErrResourceSnapshot    = errors.New("resource snapshot unavailable")
+	ErrResourceMetrics     = errors.New("resource metrics unavailable")
 )
 
 // Category exposes a fixed vocabulary without retaining error details.
@@ -32,6 +33,8 @@ func Category(err error) string {
 		return "fixture_verification"
 	case errors.Is(err, ErrResourceSnapshot):
 		return "resource_snapshot"
+	case errors.Is(err, ErrResourceMetrics):
+		return "resource_metrics"
 	default:
 		return "unknown"
 	}

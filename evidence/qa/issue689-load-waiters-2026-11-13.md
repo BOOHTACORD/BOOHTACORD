@@ -33,5 +33,10 @@
   ignores cancellation and preserves earlier stop reasons; these changes need
   another source-bound profile. Linux race coverage for this latest reporting
   edit is NOT_RUN because the available WSL environment has no C compiler.
+- The isolated run at `16db13d4d19962f0153b12668d60be4e7c24222c` failed with
+  the first stop reason `guard_resource_stop` and the fixed category
+  `resource_snapshot`; it saw one 1013 close and one successful fanout. The
+  steady phase was canceled after the guard stop; cleanup passed. The category
+  identifies the guard's resource-sampling step, not its underlying cause.
 - Production event delivery, comparative capacity and fault recovery remain
   separate and are not established by these tests.

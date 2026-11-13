@@ -19,6 +19,7 @@ func TestGuard503ExposesOnlyAllowlistedFailureStage(t *testing.T) {
 	for _, item := range []struct{ stage, want string }{
 		{"fixture_verification", "fixture_verification"},
 		{"resource_snapshot", "resource_snapshot"},
+		{"resource_metrics", "resource_metrics"},
 		{"private-detail", "denied"},
 	} {
 		stage = item.stage

@@ -4,6 +4,7 @@ import subprocess
 import time
 from .metrics import snapshot
 from .ownership import owned
+from .sample_failure import SampleFailure
 from tools.qa.client_lifecycle.services import output
 
 
@@ -22,7 +23,10 @@ class Resources:
         if nanos <= 0:
             raise ValueError('Owned API CPU quota must be bounded')
         cpu_limit = min(nanos / 1_000_000_000, os.cpu_count() or 1)
-        values = snapshot()
+        try:
+            values = snapshot()
+        except (OSError, ValueError):
+            raise SampleFailure('resource_metrics') from None
         now = time.monotonic()
         try:
             cpu_seconds = values['process_cpu_seconds_total']
