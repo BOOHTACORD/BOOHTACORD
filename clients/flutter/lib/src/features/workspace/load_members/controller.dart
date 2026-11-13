@@ -3,51 +3,9 @@ import '../../profile/revision/cache.dart';
 import '../../profile/revision/member_refresh.dart';
 import '../lifecycle/controller.dart';
 import 'direct_names.dart';
+export 'members_refresh.dart';
 
 extension WorkspaceMembers on WorkspaceController {
-  Future<void> refreshMembers({bool strict = false}) async {
-    final ticket = scope.capture();
-    if (!accepts(ticket)) return;
-    final previousIds = members.map((member) => member.id).toSet();
-    membersLoading = true;
-    membersError = null;
-    changed();
-    try {
-      final result = await api.members();
-      if (accepts(ticket)) {
-        final current = {for (final member in members) member.id: member};
-        final returnedIds = result.map((member) => member.id).toSet();
-        final incoming = result
-            .map((member) {
-              final previous = current[member.id];
-              return previous == null
-                  ? member
-                  : memberProfileRevisions.preserveNewer(member, previous);
-            })
-            .toList(growable: true);
-        incoming.addAll(
-          members.where(
-            (member) =>
-                !previousIds.contains(member.id) &&
-                !returnedIds.contains(member.id),
-          ),
-        );
-        members = incoming;
-        for (final member in members) {
-          updateDirectNamesForMember(this, member.id, member.displayName);
-        }
-      }
-    } catch (cause) {
-      if (strict) rethrow;
-      if (accepts(ticket)) membersError = effects.message(cause);
-    } finally {
-      if (accepts(ticket)) {
-        membersLoading = false;
-        changed();
-      }
-    }
-  }
-
   MemberPresence memberPresence(GuildMember member) =>
       guildPresence.resolve(member.id, member.presence);
 
