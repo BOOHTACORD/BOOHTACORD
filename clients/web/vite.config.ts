@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { resolvePublicOrigin } from './src/social_preview/origin.ts'
+import { deepfilterAssetsPlugin } from './scripts/deepfilter_assets.mjs'
 
 const document = JSON.parse(readFileSync(new URL('../../contracts/client-build.json', import.meta.url), 'utf8'))
 const build = document.builds.web
@@ -20,7 +21,7 @@ export default defineConfig(({ mode }) => {
       __APP_VERSION__: JSON.stringify(build.version),
       __APP_NATIVE_BUILD__: JSON.stringify(build.native_build),
     },
-    plugins: [vue(), {
+    plugins: [vue(), deepfilterAssetsPlugin({ enabled: environment.VITE_DEEPFILTER_ENABLED === 'true', bundle: process.env.BOOHTA_DEEPFILTER_RESEARCH_BUNDLE }), {
       name: 'social-preview-origin',
       transformIndexHtml: (html) => html.replaceAll('__SOCIAL_ORIGIN__', socialOrigin),
     }, {

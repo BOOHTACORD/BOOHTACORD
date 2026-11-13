@@ -32,7 +32,11 @@ jobs:
         with:
           python-version: '3.12.15'
       - run: >-
-          node --test tools/audio/research_dfn_web/quality_core.test.mjs
+          node --test tools/audio/browser_fixture/credentials.test.mjs
+          clients/web/scripts/deepfilter_assets.test.mjs
+          tools/audio/browser_fixture/research_assets.test.mjs
+          tools/audio/research_dfn_web/stage.test.mjs
+          tools/audio/research_dfn_web/quality_core.test.mjs
           tools/audio/research_dfn_web/quality_cli.test.mjs
           tools/audio/research_dfn_web/speech_cli.test.mjs
       - run: 'python -m pip install --require-hashes --only-binary=:all: -r tools/audio/speech_metrics/requirements.txt'
@@ -40,6 +44,8 @@ jobs:
           python -m unittest tools.audio.speech_metrics.test_score
           tools.audio.speech_metrics.test_batch tools.audio.research_dfn_native.test_prepare
           tools.audio.research_dfn_native.test_fingerprint
+          tools.audio.research_dfn_web.test_prepare tools.audio.research_dfn_web.test_build
+          tools.audio.research_dfn_web.test_livekit_windows
 
   windows-native-research:
     runs-on: windows-2022

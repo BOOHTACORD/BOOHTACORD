@@ -1,0 +1,119 @@
+name: Web audio research build
+
+on:
+  pull_request:
+    paths:
+      - 'tools/audio/**'
+      - '.gitattributes'
+      - 'clients/web/tests/audio/**'
+      - 'clients/web/src/voice/noise_suppression/**'
+      - 'clients/web/scripts/deepfilter_assets*'
+      - 'clients/web/vite.config.ts'
+      - 'clients/web/package*.json'
+      - '.github/workflows/audio-web-research.yaml'
+  push:
+    branches: [master]
+    paths:
+      - 'tools/audio/**'
+      - '.gitattributes'
+      - 'clients/web/tests/audio/**'
+      - 'clients/web/src/voice/noise_suppression/**'
+      - 'clients/web/scripts/deepfilter_assets*'
+      - 'clients/web/vite.config.ts'
+      - 'clients/web/package*.json'
+      - '.github/workflows/audio-web-research.yaml'
+
+permissions:
+  contents: read
+
+jobs:
+  windows-wasm:
+    runs-on: windows-2022
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Rikorose/DeepFilterNet
+          ref: d375b2d8309e0935d165700c91da9de862a99c31
+          path: .out/dfn-web-source
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: workadventure/noise-suppression
+          ref: 7e00a1b7522f044a31776fddc249a97a98de94ed
+          path: .out/dfn-web-patch
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12.15'
+      - name: Install pinned research tools
+        shell: pwsh
+        run: |
+          rustup toolchain install 1.97.1 --profile minimal --no-self-update
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          rustup target add wasm32-unknown-unknown --toolchain 1.97.1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $env:RUSTUP_TOOLCHAIN = '1.97.1'
+          cargo install wasm-bindgen-cli --version 0.2.118 --locked --root "$env:RUNNER_TEMP/dfn-tools"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npm ci --prefix clients/web
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Build and validate research bundle
+        shell: pwsh
+        run: |
+          $env:RUSTUP_TOOLCHAIN = '1.97.1'
+          python -m tools.audio.research_dfn_web.build --source .out/dfn-web-source --patch-source .out/dfn-web-patch --work "$env:RUNNER_TEMP/dfn-web" --bindgen "$env:RUNNER_TEMP/dfn-tools/bin/wasm-bindgen.exe"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node tools/audio/research_dfn_web/stage.mjs "$env:RUNNER_TEMP/dfn-web/bundle" "$env:RUNNER_TEMP/dfn-stage"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Check opt-in Web bundle
+        shell: pwsh
+        run: |
+          $env:VITE_PUBLIC_ORIGIN = 'https://localhost:4810'
+          $env:VITE_DEEPFILTER_ENABLED = 'true'
+          $env:BOOHTA_DEEPFILTER_RESEARCH_BUNDLE = "$env:RUNNER_TEMP/dfn-web/bundle"
+          npm --prefix clients/web run build
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $asset = 'clients/web/dist/audio/deepfilternet/research-d375b2d/dfn_bg.wasm'
+          $hash = (Get-FileHash -LiteralPath $asset -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($hash -ne '0745651e0b7a0993e8a4d71320840d28754c112425906b6f0e93f4c770724fec') { throw 'WASM identity mismatch' }
+      - name: Test experimental audio through local LiveKit
+        shell: pwsh
+        run: |
+          $archive = "$env:RUNNER_TEMP/livekit.zip"
+          Invoke-WebRequest 'https://github.com/livekit/livekit/releases/download/v1.13.7/livekit_1.13.7_windows_amd64.zip' -OutFile $archive
+          $hash = (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($hash -ne 'e539e7d2f75807b9c9202cd2a0bf2cb3d52fc4c52978a6953e0f47bc339fe77f') { throw 'LiveKit archive identity mismatch' }
+          Expand-Archive -LiteralPath $archive -DestinationPath "$env:RUNNER_TEMP/livekit"
+          Push-Location clients/web
+          try {
+            npx playwright install chromium firefox
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          } finally { Pop-Location }
+          $env:BOOHTA_RESEARCH_ASSET_DIR = "$env:RUNNER_TEMP/dfn-stage"
+          Push-Location clients/web
+          try {
+            foreach ($config in @('playwright.deepfilter.config.ts', 'playwright.deepfilter.firefox.config.ts')) {
+              node node_modules/@playwright/test/cli.js test -c "tests/audio/$config" deepfilter_loader.research.spec.ts deepfilter_track.research.spec.ts deepfilter.research.spec.ts
+              if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            }
+            $env:CHROMIUM_EXECUTABLE_PATH = Join-Path ${env:ProgramFiles(x86)} 'Microsoft/Edge/Application/msedge.exe'
+            if (-not (Test-Path -LiteralPath $env:CHROMIUM_EXECUTABLE_PATH)) { throw 'Microsoft Edge not found' }
+            node node_modules/@playwright/test/cli.js test -c tests/audio/playwright.deepfilter.config.ts deepfilter_loader.research.spec.ts deepfilter_track.research.spec.ts deepfilter.research.spec.ts
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          } finally { Pop-Location }
+          Remove-Item Env:CHROMIUM_EXECUTABLE_PATH
+          $server = "$env:RUNNER_TEMP/livekit/livekit-server.exe"
+          python -m tools.audio.research_dfn_web.livekit_windows --binary $server --web clients/web --config tests/audio/playwright.deepfilter.config.ts --test deepfilter_livekit.research.spec.ts
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m tools.audio.research_dfn_web.livekit_windows --binary $server --web clients/web --config tests/audio/playwright.deepfilter.firefox.config.ts --test deepfilter_livekit.research.spec.ts
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $env:CHROMIUM_EXECUTABLE_PATH = Join-Path ${env:ProgramFiles(x86)} 'Microsoft/Edge/Application/msedge.exe'
+          python -m tools.audio.research_dfn_web.livekit_windows --binary $server --web clients/web --config tests/audio/playwright.deepfilter.config.ts --test deepfilter_livekit.research.spec.ts
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
