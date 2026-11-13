@@ -47,5 +47,11 @@
   division by zero. Reads are now serialized and nonpositive intervals fail
   closed. This establishes a controller defect, not that it caused any earlier
   profile failure; a source-bound retest is still required.
+- The profile at `e8229f256a1cd1758b1a6426e353e984e8c42fc1` returned PASS and
+  cleaned up, but its ramp phase performed zero requests after fault setup took
+  longer than the phase timer. Treat that result as invalid, not acceptance.
+  A regression now rejects empty measured phases and starts the workload timer
+  after fault setup. Neither this change nor any current result proves the
+  fault remains active throughout a longer phase; that requires separate proof.
 - Production event delivery, comparative capacity and fault recovery remain
   separate and are not established by these tests.

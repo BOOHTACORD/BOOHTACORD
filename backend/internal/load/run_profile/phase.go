@@ -17,8 +17,6 @@ func (r *Runner) phase(ctx context.Context, guard observe_resources.Guard, name 
 		phase.Requests = r.budget.Load() - before
 		phase.RequestsPerSecond = float64(phase.Requests) / phase.Seconds
 	}()
-	timer := time.NewTimer(duration)
-	defer timer.Stop()
 	if r.Profile == "faults" {
 		faults := map[string]string{"warmup": "db_pressure", "ramp": "sfu_outage", "steady": "slow_telemetry", "spike": "disk_pressure"}
 		if fault := faults[name]; fault != "" {
@@ -40,6 +38,8 @@ func (r *Runner) phase(ctx context.Context, guard observe_resources.Guard, name 
 			return phase, err
 		}
 	}
+	timer := time.NewTimer(duration)
+	defer timer.Stop()
 	for iteration := 0; ; iteration++ {
 		select {
 		case <-ctx.Done():

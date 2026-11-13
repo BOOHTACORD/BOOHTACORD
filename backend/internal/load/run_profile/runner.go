@@ -71,7 +71,7 @@ func (r *Runner) Run(parent context.Context) (report Report) {
 			}
 			return report
 		}
-		phase, err := r.phase(ctx, guard, name, time.Duration(float64(r.Manifest.MaxSeconds)*.75*weights[index]*float64(time.Second)))
+		phase, err := r.measuredPhase(ctx, guard, name, time.Duration(float64(r.Manifest.MaxSeconds)*.75*weights[index]*float64(time.Second)))
 		report.Phases = append(report.Phases, phase)
 		if err != nil {
 			report.StopReason = "phase_operation"
