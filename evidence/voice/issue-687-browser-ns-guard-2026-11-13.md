@@ -45,10 +45,12 @@ eight browser join and signalling-restart cases passed; four additional audio
 input lifecycle cases passed through an actual receiving peer. A further test
 passed switching browser -> RNNoise v0.1 -> off -> browser during a live SFU
 call, with one publication, synthetic audio at the receiver and silence on mute.
-With the separate research bundle and opt-in flag, local Chromium and Edge tests
+With the separate research bundle and opt-in flag, local Chromium, Edge and Firefox tests
 passed browser -> experimental DeepFilterNet3 -> browser on the production
 microphone adapter through the SFU, checking receiver audio, one publication
-and mute. The research model and bundle are not release-approved.
+and mute. Firefox's simulated input may not support the browser suppression
+constraint; in that case the test checks that the unsupported state is truthful.
+The research model and bundle are not release-approved.
 The audio lifecycle run logged LiveKit `removeTrack` warnings during reconnect;
 the test assertions passed but the warnings merit separate investigation. The
 SFU was stopped after each run. These are synthetic Chromium tests, not speech

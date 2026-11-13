@@ -13,6 +13,7 @@ def main():
             'deepfilter_track.research.spec.ts', 'deepfilter.research.spec.ts', cwd=web, env=env)
         with private_sfu(env) as sfu_env:
             run('node', cli, 'test', '-c', config, 'deepfilter_livekit.research.spec.ts',
+                'deepfilter_switch_livekit.research.spec.ts',
                 cwd=web, env=sfu_env)
 
 
