@@ -1,6 +1,7 @@
 """Authenticated local guard, with restoration independent of workload health."""
 import hmac
 import json
+import subprocess
 import threading
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -30,6 +31,14 @@ class Guard:
             def do_GET(self):
                 if not self.authorized():
                     self.send_error(403)
+                    return
+                if self.path.startswith('/fault-status/'):
+                    try:
+                        active = parent.faults.active(self.path.removeprefix('/fault-status/'))
+                        self.send_response(204 if active else 409)
+                        self.end_headers()
+                    except (OSError, ValueError, RuntimeError, subprocess.SubprocessError):
+                        self.send_error(503)
                     return
                 if self.path != '/snapshot':
                     self.send_error(404)
