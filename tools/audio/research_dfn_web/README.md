@@ -31,3 +31,9 @@ compares output after reset to a fresh state on synthetic frames. It
 prints only aggregate WASM memory sizes, not audio. The probe does not prove
 browser cleanup, absence of leaks, timing, model licensing, acoustic quality or
 release readiness. See `evidence/voice/issue-687-deepfilternet-research-2026-11-13.md`.
+
+For licensed offline 48 kHz mono float32le fixtures, `speech.mjs` accepts
+`--input <file> --sha256 <hash> --output <new-file> --glue <js> --wasm <wasm>
+--model <tar.gz>`. It verifies the input and pinned research assets, pads frames
+and appends the same 120 ms tail as the RNNoise fixture. It will not overwrite
+the destination. Do not use private calls or record microphone audio with it.
