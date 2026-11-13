@@ -52,6 +52,27 @@ void main() {
           app.realtime.connected &&
           app.workspace.topology != null,
     );
+    await tester.runAsync(() async {
+      await api.createCategory('History fence QA');
+      final topology = await api.topology();
+      final category = topology.categories.firstWhere(
+        (item) => item.name == 'History fence QA',
+      );
+      await api.createChannel(
+        categoryId: category.id,
+        name: 'History QA',
+        kind: ChannelKind.text,
+      );
+      await app.workspace.refreshTopology();
+    });
+    await waitFor(
+      tester,
+      () =>
+          app.workspace.topology?.categories
+              .expand((category) => category.channels)
+              .any((channel) => channel.kind == ChannelKind.text) ==
+          true,
+    );
     final channel = app.workspace.topology!.categories
         .expand((category) => category.channels)
         .firstWhere((channel) => channel.kind == ChannelKind.text);
@@ -77,10 +98,13 @@ void main() {
       app.conversation.clearText();
       api.heldChannel = channel.id;
       final pending = app.workspace.refreshTopology(strict: true);
-      await api.held.future.timeout(const Duration(seconds: 10));
-      await app.realtime.close();
-      api.release.complete();
-      await pending;
+      try {
+        await api.held.future.timeout(const Duration(seconds: 10));
+        await app.realtime.close();
+      } finally {
+        if (!api.release.isCompleted) api.release.complete();
+        await pending;
+      }
     });
     expect(app.conversation.messages, isEmpty);
     expect(app.conversation.loadingMessages, isFalse);
