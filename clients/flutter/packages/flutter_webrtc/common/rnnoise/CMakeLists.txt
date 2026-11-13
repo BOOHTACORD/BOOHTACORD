@@ -82,6 +82,10 @@ if(BOOHTA_RNNOISE_TESTS)
     add_executable(deepfilter_real_research_probe
       ${CMAKE_CURRENT_SOURCE_DIR}/../../../../../../tools/audio/research_dfn_native/worker_probe.cc)
     target_compile_features(deepfilter_real_research_probe PRIVATE cxx_std_17)
+    add_executable(deepfilter_threaded_research_probe
+      ${CMAKE_CURRENT_SOURCE_DIR}/../../../../../../tools/audio/research_dfn_native/threaded_probe.cc)
+    target_compile_features(deepfilter_threaded_research_probe PRIVATE cxx_std_17)
+    target_link_libraries(deepfilter_threaded_research_probe PRIVATE Threads::Threads)
   endif()
   add_executable(microphone_controls_test microphone_controls/processor_test.cc)
   target_link_libraries(microphone_controls_test PRIVATE boohta_rnnoise)

@@ -55,4 +55,20 @@ int main() {
   assert(bad_output.WorkerPush(worker));
   assert(bad_output.Capture(input, 1, false, output) == ExchangeStatus::invalid_audio);
   for (float sample : output) assert(sample == 0.0f);
+
+  FrameExchange<4> delayed(2);
+  for (int frame = 1; frame <= 3; ++frame) {
+    for (auto& sample : input) sample = 0.1f * frame;
+    const auto status = delayed.Capture(input, 7, false, output);
+    assert(status == (frame < 3 ? ExchangeStatus::buffering : ExchangeStatus::ready));
+    for (float sample : output) assert(sample == (frame < 3 ? 0.0f : 0.1f));
+    assert(delayed.WorkerPop(7, worker)); assert(delayed.WorkerPush(worker));
+  }
+  assert(delayed.Capture(input, 8, false, output) == ExchangeStatus::buffering);
+  for (float sample : output) assert(sample == 0.0f);
+  assert(delayed.WorkerPop(8, worker)); assert(delayed.WorkerPush(worker));
+  assert(delayed.Capture(input, 8, false, output) == ExchangeStatus::buffering);
+  assert(delayed.WorkerPop(8, worker)); assert(delayed.WorkerPush(worker));
+  assert(delayed.Capture(input, 8, false, output) == ExchangeStatus::ready);
+  for (float sample : output) assert(sample == 0.3f);
 }

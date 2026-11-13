@@ -8,25 +8,31 @@
 #include <limits>
 
 namespace boohta::deepfilter {
-enum class ExchangeStatus { ready, no_frame, invalid_audio, overload };
+enum class ExchangeStatus { ready, buffering, no_frame, invalid_audio, overload };
 
 // Capture and Worker are each called by exactly one thread. The owner must
 // advance generation on mute, unmute and failure, synchronize publication
 // with mute intent, and reset the worker model on a generation change.
 // Input and output each reference 480 floats of normalized mono PCM in [-1,
 // 1], and may overlap. Failure and underflow return silence; fallback policy
-// belongs to the owner.
+// belongs to the owner. Startup buffering is reported separately from underrun;
+// its delay and suitability must be measured before integration.
 template <std::size_t Capacity>
 class FrameExchange {
  public:
+  explicit FrameExchange(std::size_t startup_frames = 0) noexcept
+      : startup_frames_(std::min(startup_frames, Capacity - 1)), warmup_remaining_(startup_frames_) {}
   ExchangeStatus Capture(const float* input, std::uint64_t generation,
                          bool muted, float* output) noexcept {
     if (!output) return ExchangeStatus::invalid_audio;
     const auto silence = [output](ExchangeStatus status) noexcept {
       std::fill_n(output, 480, 0.0f); return status;
     };
-    if (generation != last_generation_) { last_generation_ = generation; has_last_ = false; }
     AudioFrame frame{};
+    if (generation != last_generation_) {
+      last_generation_ = generation; has_last_ = false; warmup_remaining_ = startup_frames_;
+      TakeCurrentFrame(output_, generation, true, false, 0, frame);
+    }
     if (muted) {
       TakeCurrentFrame(output_, generation, true, false, 0, frame);
       return silence(ExchangeStatus::no_frame);
@@ -40,6 +46,7 @@ class FrameExchange {
     if (sequence_ == std::numeric_limits<std::uint64_t>::max()) return ExchangeStatus::overload;
     frame.generation = generation; frame.sequence = sequence_++;
     if (!input_.TryPush(frame)) return ExchangeStatus::overload;
+    if (warmup_remaining_ > 0) { --warmup_remaining_; return ExchangeStatus::buffering; }
     const auto result = TakeCurrentFrame(output_, generation, false, has_last_, last_sequence_, frame);
     if (result == FrameStatus::invalid_audio) return ExchangeStatus::invalid_audio;
     if (result != FrameStatus::ready) return ExchangeStatus::no_frame;
@@ -59,6 +66,8 @@ class FrameExchange {
 
  private:
   FrameQueue<Capacity> input_, output_;
+  const std::size_t startup_frames_;
+  std::size_t warmup_remaining_;
   std::uint64_t sequence_ = 0, last_sequence_ = 0, last_generation_ = 0;
   bool has_last_ = false;
 };

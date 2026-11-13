@@ -26,6 +26,19 @@ model SHA-256 `c94d91f70911001c946e0fabb4aa9adc37045f45a03b56008cb0c8244cb63616`
 This synchronous experiment is not a production build, microphone, worker
 scheduling, long-duration, latency, fallback or speech-quality test.
 
+In a separate approximately three-second synthetic run, a worker thread
+initialized and processed the same model while the caller paced 300 frames at
+10 ms. It observed 297 ready frames, 3 underruns and 0 overloads; 298 frames
+had been processed when the worker stopped. This is a smoke experiment, not
+an end-to-end latency or 30-minute acceptance. The underruns are a NO-GO for
+claiming a stable realtime pipeline; their cause has not been established.
+In subsequent single short runs, the same probe observed: no startup buffer,
+297 ready / 3 underruns; two startup frames, 297 ready / 1 intentional
+buffering / 2 underruns; four startup frames, 297 ready / 3 intentional
+buffering / 0 underruns. One frame was primed before each timed loop. These
+are exploratory observations, not a validated buffer choice or a measured
+end-to-end delay. No setting has been enabled in the client.
+
 The caller must advance the generation for mute, unmute and failure, reset
 the model on generation changes, and synchronize publication with mute intent.
 An overflow requires the owner to stop the pipeline and fall back; the test
