@@ -301,9 +301,11 @@
         "boohtacord.incident.database.pool",
         "boohtacord.incident.database.pool.empty.acquire.wait",
         "boohtacord.incident.database.pool.events",
+        "boohtacord.incident.database.pool.partition",
         "voice_platform_database_acquire_duration_seconds",
         "voice_platform_database_acquires_pending",
         "voice_platform_database_acquires_total",
+        "voice_platform_database_partition_connections",
         "voice_platform_database_pool_acquired",
         "voice_platform_database_pool_canceled_acquires_total",
         "voice_platform_database_pool_constructing",
@@ -782,8 +784,8 @@
       "producer": [
         {
           "path": "backend/internal/database/pool/metrics.go",
-          "line": 25,
-          "sha256": "eae79b1377d5833d103ca5d4214e0e8e9e888f1c9e296cffcd21c6936ca62404"
+          "line": 26,
+          "sha256": "188b9043d0804789517e87f1698f010bd61acac1076df829448b60ad0eb2dbde"
         }
       ],
       "source_name": "voice_platform_database_acquires_total",
@@ -814,8 +816,8 @@
       "producer": [
         {
           "path": "backend/internal/database/pool/metrics.go",
-          "line": 28,
-          "sha256": "eae79b1377d5833d103ca5d4214e0e8e9e888f1c9e296cffcd21c6936ca62404"
+          "line": 30,
+          "sha256": "188b9043d0804789517e87f1698f010bd61acac1076df829448b60ad0eb2dbde"
         }
       ],
       "source_name": "voice_platform_database_pool_canceled_acquires_total",
@@ -844,8 +846,8 @@
       "producer": [
         {
           "path": "backend/internal/database/pool/metrics.go",
-          "line": 28,
-          "sha256": "eae79b1377d5833d103ca5d4214e0e8e9e888f1c9e296cffcd21c6936ca62404"
+          "line": 30,
+          "sha256": "188b9043d0804789517e87f1698f010bd61acac1076df829448b60ad0eb2dbde"
         }
       ],
       "source_name": "voice_platform_database_pool_empty_acquire_wait_seconds_total",
@@ -874,8 +876,8 @@
       "producer": [
         {
           "path": "backend/internal/database/pool/metrics.go",
-          "line": 28,
-          "sha256": "eae79b1377d5833d103ca5d4214e0e8e9e888f1c9e296cffcd21c6936ca62404"
+          "line": 30,
+          "sha256": "188b9043d0804789517e87f1698f010bd61acac1076df829448b60ad0eb2dbde"
         }
       ],
       "source_name": "voice_platform_database_pool_empty_acquires_total",
@@ -904,8 +906,8 @@
       "producer": [
         {
           "path": "backend/internal/database/pool/metrics.go",
-          "line": 28,
-          "sha256": "eae79b1377d5833d103ca5d4214e0e8e9e888f1c9e296cffcd21c6936ca62404"
+          "line": 30,
+          "sha256": "188b9043d0804789517e87f1698f010bd61acac1076df829448b60ad0eb2dbde"
         }
       ],
       "source_name": "voice_platform_database_pool_total",
@@ -1902,8 +1904,8 @@
       "producer": [
         {
           "path": "backend/internal/database/pool/metrics.go",
-          "line": 31,
-          "sha256": "eae79b1377d5833d103ca5d4214e0e8e9e888f1c9e296cffcd21c6936ca62404"
+          "line": 33,
+          "sha256": "188b9043d0804789517e87f1698f010bd61acac1076df829448b60ad0eb2dbde"
         }
       ],
       "source_name": "boohtacord.incident.database.acquire.duration",
@@ -2727,8 +2729,8 @@
       "producer": [
         {
           "path": "backend/internal/database/pool/export.go",
-          "line": 13,
-          "sha256": "4a7c3179cd130d5587de80ad7594c64c57fcbffa81e109936e9c9abafb587dba"
+          "line": 14,
+          "sha256": "29c76bee6c72bc3d4e0cf2b624b9387cce18aa2299ef2582d277e72327184052"
         }
       ],
       "source_name": "boohtacord.incident.database.pool.empty.acquire.wait",
@@ -2813,8 +2815,8 @@
       "producer": [
         {
           "path": "backend/internal/database/pool/export.go",
-          "line": 15,
-          "sha256": "4a7c3179cd130d5587de80ad7594c64c57fcbffa81e109936e9c9abafb587dba"
+          "line": 16,
+          "sha256": "29c76bee6c72bc3d4e0cf2b624b9387cce18aa2299ef2582d277e72327184052"
         }
       ],
       "source_name": "boohtacord.incident.database.acquires.pending",
@@ -2850,7 +2852,7 @@
         {
           "path": "backend/internal/database/pool/export.go",
           "line": 12,
-          "sha256": "4a7c3179cd130d5587de80ad7594c64c57fcbffa81e109936e9c9abafb587dba"
+          "sha256": "29c76bee6c72bc3d4e0cf2b624b9387cce18aa2299ef2582d277e72327184052"
         }
       ],
       "source_name": "boohtacord.incident.database.pool",
@@ -2876,6 +2878,45 @@
           "path": "docker/observability/dashboards/incidents.json",
           "dashboard_uid": "boohtacord-incidents",
           "panel": 14
+        }
+      ],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "OTLP",
+        "runtime_status": "NOT_RUN",
+        "boundary": "API OTLP -> Collector -> Prometheus exporter -> private Prometheus; client spans additionally pass authenticated sanitizing relay",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "database",
+      "producer": [
+        {
+          "path": "backend/internal/database/pool/export.go",
+          "line": 13,
+          "sha256": "29c76bee6c72bc3d4e0cf2b624b9387cce18aa2299ef2582d277e72327184052"
+        }
+      ],
+      "source_name": "boohtacord.incident.database.pool.partition",
+      "exported_name": "boohtacord_incident_database_pool_partition",
+      "type": "Float64ObservableGauge",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "partition",
+        "stat"
+      ],
+      "label_scope": "bounded per-instrument Add/Record/Observe keys; conditional applicability documented inline",
+      "buckets": "SDK default / explicit definition map",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [
+        {
+          "path": "docker/observability/dashboards/incidents.json",
+          "dashboard_uid": "boohtacord-incidents",
+          "panel": 13
         }
       ],
       "decision": "keep",
@@ -4335,8 +4376,8 @@
       "producer": [
         {
           "path": "backend/internal/database/pool/metrics.go",
-          "line": 24,
-          "sha256": "eae79b1377d5833d103ca5d4214e0e8e9e888f1c9e296cffcd21c6936ca62404"
+          "line": 25,
+          "sha256": "188b9043d0804789517e87f1698f010bd61acac1076df829448b60ad0eb2dbde"
         }
       ],
       "source_name": "voice_platform_database_acquires_pending",
@@ -4366,7 +4407,40 @@
         {
           "path": "backend/internal/database/pool/metrics.go",
           "line": 28,
-          "sha256": "eae79b1377d5833d103ca5d4214e0e8e9e888f1c9e296cffcd21c6936ca62404"
+          "sha256": "188b9043d0804789517e87f1698f010bd61acac1076df829448b60ad0eb2dbde"
+        }
+      ],
+      "source_name": "voice_platform_database_partition_connections",
+      "exported_name": "voice_platform_database_partition_connections",
+      "type": "Gauge",
+      "unit": "1",
+      "declared_unit": "1",
+      "unit_scope": "Declared SDK unit, or physical suffix semantics when SDK declares dimensionless; translator uses declared unit.",
+      "attributes_or_labels": [
+        "partition",
+        "state"
+      ],
+      "label_scope": "declared constructor labels",
+      "buckets": "not applicable",
+      "frequency": "per bounded operation/sample; observable collection every15s or private scrape on demand",
+      "storage": "private Prometheus when the declared delivery target is configured",
+      "consumers": [],
+      "decision": "keep",
+      "reason": "Existing bounded operational distribution/state; native and mirrored names are distinct delivery contracts and must not be added together.",
+      "delivery": {
+        "transport": "private-prometheus",
+        "runtime_status": "NOT_RUN",
+        "boundary": "private API registry /metrics only; not automatically delivered to Collector",
+        "proof": "Source contract only. Final-SHA evidence must name stored series/trace, versions, source and result independently."
+      }
+    },
+    {
+      "scenario": "database",
+      "producer": [
+        {
+          "path": "backend/internal/database/pool/metrics.go",
+          "line": 30,
+          "sha256": "188b9043d0804789517e87f1698f010bd61acac1076df829448b60ad0eb2dbde"
         }
       ],
       "source_name": "voice_platform_database_pool_acquired",
@@ -4395,8 +4469,8 @@
       "producer": [
         {
           "path": "backend/internal/database/pool/metrics.go",
-          "line": 28,
-          "sha256": "eae79b1377d5833d103ca5d4214e0e8e9e888f1c9e296cffcd21c6936ca62404"
+          "line": 30,
+          "sha256": "188b9043d0804789517e87f1698f010bd61acac1076df829448b60ad0eb2dbde"
         }
       ],
       "source_name": "voice_platform_database_pool_constructing",
@@ -4425,8 +4499,8 @@
       "producer": [
         {
           "path": "backend/internal/database/pool/metrics.go",
-          "line": 28,
-          "sha256": "eae79b1377d5833d103ca5d4214e0e8e9e888f1c9e296cffcd21c6936ca62404"
+          "line": 30,
+          "sha256": "188b9043d0804789517e87f1698f010bd61acac1076df829448b60ad0eb2dbde"
         }
       ],
       "source_name": "voice_platform_database_pool_idle",
@@ -4455,8 +4529,8 @@
       "producer": [
         {
           "path": "backend/internal/database/pool/metrics.go",
-          "line": 28,
-          "sha256": "eae79b1377d5833d103ca5d4214e0e8e9e888f1c9e296cffcd21c6936ca62404"
+          "line": 30,
+          "sha256": "188b9043d0804789517e87f1698f010bd61acac1076df829448b60ad0eb2dbde"
         }
       ],
       "source_name": "voice_platform_database_pool_max",
@@ -5735,8 +5809,8 @@
       "producer": [
         {
           "path": "backend/internal/database/pool/metrics.go",
-          "line": 26,
-          "sha256": "eae79b1377d5833d103ca5d4214e0e8e9e888f1c9e296cffcd21c6936ca62404"
+          "line": 27,
+          "sha256": "188b9043d0804789517e87f1698f010bd61acac1076df829448b60ad0eb2dbde"
         }
       ],
       "source_name": "voice_platform_database_acquire_duration_seconds",
@@ -6196,8 +6270,8 @@
       "producer": [
         {
           "path": "backend/internal/database/pool/metrics.go",
-          "line": 30,
-          "sha256": "eae79b1377d5833d103ca5d4214e0e8e9e888f1c9e296cffcd21c6936ca62404"
+          "line": 32,
+          "sha256": "188b9043d0804789517e87f1698f010bd61acac1076df829448b60ad0eb2dbde"
         }
       ],
       "source_name": "boohtacord.incident.database.acquires",
@@ -7105,8 +7179,8 @@
       "producer": [
         {
           "path": "backend/internal/database/pool/export.go",
-          "line": 14,
-          "sha256": "4a7c3179cd130d5587de80ad7594c64c57fcbffa81e109936e9c9abafb587dba"
+          "line": 15,
+          "sha256": "29c76bee6c72bc3d4e0cf2b624b9387cce18aa2299ef2582d277e72327184052"
         }
       ],
       "source_name": "boohtacord.incident.database.pool.events",
