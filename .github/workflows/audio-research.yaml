@@ -67,7 +67,7 @@ jobs:
         run: |
           python -m tools.audio.research_dfn_native.prepare --source .out/dfn-upstream --output "$env:RUNNER_TEMP/dfn-src" --without-allocation-counter
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          $env:RUSTFLAGS = '-C link-arg=/Brepro'
+          $env:RUSTFLAGS = '-C target-feature=+crt-static -C link-arg=/Brepro'
           Push-Location "$env:RUNNER_TEMP/dfn-src"
           try {
             foreach ($name in @('dfn-a', 'dfn-b')) {

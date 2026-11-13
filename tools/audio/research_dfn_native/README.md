@@ -15,13 +15,13 @@ python -m tools.audio.research_dfn_native.prepare --source <upstream-repo> --out
 In that directory, using the pinned Cargo.lock and a populated Cargo cache:
 
 ```powershell
-$env:RUSTFLAGS='-C link-arg=/Brepro'
+$env:RUSTFLAGS='-C target-feature=+crt-static -C link-arg=/Brepro'
 cargo build --release --locked --offline --no-default-features --features capi -p deep_filter --target-dir <new-build-directory>
 ```
 
-Two separate instrumented builds on the same Windows machine and source path
-were byte-identical with that linker flag. This is not proof of reproducibility
-across source paths, machines, compiler versions or a release pipeline.
+Two noninstrumented builds on the same Windows machine and source path were
+byte-identical with those flags. This is not proof of reproducibility across
+source paths, machines, compiler versions or a release pipeline.
 
 The preparation checks the upstream model hash and refuses source-layout drift.
 It removes unused workspace/HDF5 dependencies and injects `safe.rs` and the
