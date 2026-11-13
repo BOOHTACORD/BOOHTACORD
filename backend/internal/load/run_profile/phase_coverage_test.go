@@ -14,6 +14,10 @@ import (
 func TestFaultSetupCannotConsumePhaseAndStillPassWithoutWork(t *testing.T) {
 	manifest := validate_target.Manifest{Owner: "qa-owner", Dataset: "qa", Origin: "https://localhost", Commit: "commit"}
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/fault-status/db_pressure" {
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
 		if r.Method == http.MethodPost {
 			time.Sleep(30 * time.Millisecond)
 			w.WriteHeader(http.StatusNoContent)
@@ -38,6 +42,10 @@ func TestFaultSetupCannotConsumePhaseAndStillPassWithoutWork(t *testing.T) {
 func TestPhaseDurationStartsAfterFaultSetup(t *testing.T) {
 	manifest := validate_target.Manifest{Owner: "qa-owner", Dataset: "qa", Origin: "https://localhost", Commit: "commit"}
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/fault-status/db_pressure" {
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
 		if r.Method == http.MethodPost {
 			time.Sleep(80 * time.Millisecond)
 			w.WriteHeader(http.StatusNoContent)
