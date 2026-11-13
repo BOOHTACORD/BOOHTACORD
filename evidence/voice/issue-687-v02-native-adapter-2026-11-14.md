@@ -38,3 +38,7 @@ four research tests and the 21-test standard native suite passed on Windows.
 The final `native_v02_init_test.exe` SHA-256 was
 `f360447b9baab5948b43e0ce89d84bd1856a3670d6a1886fecdb75c40383ff7b`.
 These injected failures do not prove production recovery or real-time safety.
+An additional model-free RNNoise stub exercises construction failure, reset
+failure, unchanged fallback audio and successful recovery in the ordinary
+native CTest suite. On Windows the expanded suite passed 22/22; the stub does
+not test the actual v0.2 model.
