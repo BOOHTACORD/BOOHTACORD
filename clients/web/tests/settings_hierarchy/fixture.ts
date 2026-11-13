@@ -18,7 +18,7 @@ bindMicrophoneAccount(id)
 const categories = [{ id: 'category', name: 'Общее', position: 0, channels: [{ id, name: 'Общий чат', kind: 'TEXT' as const, position: 0, admissionClosed: false }] }]
 const section = ref((params.get('section') ?? 'guild') as AdminSection)
 const activation = ref<'VAD'|'PTT'>('VAD'), ptt = ref<string|null>(null)
-const processing = ref<AudioProcessingOptions>({ autoGainControl: false, echoCancellation: true, noiseSuppressionMode: 'browser' })
+const processing = ref<AudioProcessingOptions>({ autoGainControl: false, echoCancellation: true, noiseSuppressionMode: params.get('noiseMode') === 'deepfilter' ? 'deepfilter' : 'browser' })
 const microphoneShortcut = ref<VoiceShortcutBinding|null>(null), deafenShortcut = ref<VoiceShortcutBinding|null>(null)
 const hasAvatar = params.get('avatar') === '1'
 const profile = ref<OwnProfile>({ account_id: id, login: hasAvatar ? 'pistol121' : 'fixture', display_name: hasAvatar ? 'Pistol121' : 'Тестовый участник', role: 'ADMINISTRATOR', avatar_url: hasAvatar ? '/profile-avatar-fixture.svg' : null })

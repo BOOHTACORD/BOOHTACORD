@@ -50,8 +50,8 @@ passed through that adapter to a mock publisher, and mute silenced its output.
 When the WASM request was forced to fail, both browsers restored a simulated
 browser suppression setting and reported `asset-load` before mock publication.
 These tests override capture settings and do not connect to a LiveKit server.
-The selection UI and release assets are absent; no default user receives this
-engine. Real fallback, physical microphone, runtime cost, sustained operation,
+The selection UI is available only when explicitly enabled; release assets are
+absent and no default user receives this engine. Real fallback, physical microphone, runtime cost, sustained operation,
 voice quality, delivery and platform acceptance remain unestablished.
 
 The adapter now requires an explicit browser report that built-in noise

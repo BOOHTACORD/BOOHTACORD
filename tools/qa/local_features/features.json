@@ -529,13 +529,17 @@
           "clients/web/src/voice/noise_suppression/deepfilter/capture_guard.spec.ts",
           "clients/web/src/voice/local_deepfilter_probe.spec.ts",
           "clients/web/src/voice/audio_check_deepfilter.spec.ts",
+          "clients/web/src/voice/noise_suppression_select.spec.ts",
+          "clients/web/src/voice/noise_suppression_status.spec.ts",
+          "clients/web/src/voice/audio_device_selection.spec.ts",
+          "clients/web/tests/settings_hierarchy/audio_deepfilter.browser.spec.ts",
           "clients/web/src/voice/microphone_processing/dsp.spec.ts",
           "clients/web/src/voice/noise_suppression/microphone_adapter/asset_fallback.spec.ts",
           "clients/web/tests/audio/rnnoise.browser.spec.ts",
           "clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/frame_queue/queue_test.cc",
           "clients/flutter/packages/flutter_webrtc/common/rnnoise/microphone_controls/processor_test.cc"
         ],
-        "scope": "RNNoise v0.2 selection and the experimental Web DeepFilter track are behind disabled-by-default build flags; release assets and settings UI are not supplied. Native DeepFilter worker research is not connected to capture. This registration is not a real-stack, physical, acoustic or release PASS."
+        "scope": "RNNoise v0.2 and the experimental Web DeepFilter mode are behind disabled-by-default build flags; DeepFilter release assets are not supplied. A component-only settings preview passed; real-stack visual review remains BLOCKED. Native DeepFilter worker research is not connected to capture. This registration is not a physical, acoustic or release PASS."
       },
       "speaker_activity_interval": {
         "focused": ["tools/verify/livekit_network_config/test_speaker_activity.py"],
@@ -1576,12 +1580,19 @@
       "clients/web/src/design/design_v2_profile_presentation.css",
       "clients/web/tests/settings_hierarchy/fixture.ts",
       "clients/web/tests/settings_hierarchy/hierarchy.browser.spec.ts",
+      "clients/web/tests/settings_hierarchy/hierarchy_details.browser.spec.ts",
+      "clients/web/tests/settings_hierarchy/hierarchy_helpers.ts",
+      "clients/web/tests/settings_hierarchy/audio_deepfilter.browser.spec.ts",
       "clients/web/tests/settings_hierarchy/join_sound.browser.spec.ts",
       "clients/web/tests/control_consistency/controls.browser.spec.ts",
       "clients/web/tests/microcopy/behavior.browser.spec.ts",
       "clients/web/tests/microcopy/zoom.browser.spec.ts",
       "clients/web/src/notification/*",
       "clients/web/src/voice/AudioSettings.vue",
+      "clients/web/src/voice/AudioProcessingSettings.vue",
+      "clients/web/src/voice/NoiseSuppressionSelect.vue",
+      "clients/web/src/voice/audio_device_selection.ts",
+      "clients/web/src/voice/noise_suppression_status.ts",
       "clients/web/src/voice/AudioDeviceCheck.vue",
       "clients/web/src/voice/ProcessingDetails.vue",
       "clients/web/src/voice/audio_diagnostics/Diagnostics.vue",
@@ -1704,6 +1715,7 @@
       }
     ],
     "parity_review": {
+      "issue687": "Web exposes experimental DeepFilter selection only behind a disabled-by-default build flag and preserves saved unavailable choices. Flutter settings are unchanged; Android and iOS regression and real-device acceptance remain NOT_RUN.",
       "issue": 676,
       "decisions": {
         "web": "implementation_and_regression",

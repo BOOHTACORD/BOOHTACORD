@@ -9,8 +9,8 @@ its cost and memory use must be measured in a real AudioWorklet. An isolated
 experimental AudioWorklet now exercises the model. A research-only loader pins
 the experimental asset hashes and bounds fetch size and time; it is not wired
 to a reproducible release. An experimental TrackProcessor is wired to the Web
-microphone adapter behind an off-by-default flag, with tested mock publication
-and asset-failure fallback. The settings UI, server media acceptance, confirmed
+microphone adapter and settings behind an off-by-default flag, with tested mock
+publication and asset-failure fallback. Server media acceptance, confirmed
 overload recovery and release delivery do not exist yet.
 
 The preliminary build applied WorkAdventure/noise-suppression commit
