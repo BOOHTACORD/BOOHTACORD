@@ -1,0 +1,117 @@
+# Issue 687: native frame-exchange research
+
+On Windows x64 with MSVC 19.44, the native CMake/CTest suite passed 9/9
+tests, including the new fixed-capacity frame exchange and its allocation
+probe. The probe exercised 1000 synchronous capture/worker exchanges and
+observed no C++ `operator new` calls during those operations. It does not
+observe other allocators or prove a realtime deadline.
+
+Tests cover silence on underrun, invalid PCM and queue overflow, discarding
+stale generations, mute, and identical input/output buffers. A controlled
+two-thread test exchanges 10,000 frames in order; the existing queue test
+separately exercises one producer and one consumer concurrently.
+The exchange is not wired to libDF, WebRTC capture, or a Windows client.
+
+A separate worker-step prototype was exercised with a fake engine. Tests cover
+reset on generation changes, discarded stale inputs, engine errors and C++
+exceptions, invalid output and a full output queue. Failed generations stay
+disabled until a new generation. This does not exercise a Rust panic or real
+libDF model, and it does not start or schedule a production worker thread.
+
+An explicitly invoked Windows research probe then used the isolated C ABI and
+the actual libDF model with this exchange and worker step for 220 synthetic
+frames, then muted and reset for a new generation. It passed with DLL SHA-256
+`8b79e0942e7e01e909ad3797e5c0ffa20296db41dce8a80bf67d6a440a860730` and
+model SHA-256 `c94d91f70911001c946e0fabb4aa9adc37045f45a03b56008cb0c8244cb63616`.
+This synchronous experiment is not a production build, microphone, worker
+scheduling, long-duration, latency, fallback or speech-quality test.
+
+In a separate approximately three-second synthetic run, a worker thread
+initialized and processed the same model while the caller paced 300 frames at
+10 ms. It observed 297 ready frames, 3 underruns and 0 overloads; 298 frames
+had been processed when the worker stopped. This is a smoke experiment, not
+an end-to-end latency or 30-minute acceptance. The underruns are a NO-GO for
+claiming a stable realtime pipeline; their cause has not been established.
+In subsequent single short runs, the same probe observed: no startup buffer,
+297 ready / 3 underruns; two startup frames, 297 ready / 1 intentional
+buffering / 2 underruns; four startup frames, 297 ready / 3 intentional
+buffering / 0 underruns. One frame was primed before each timed loop. These
+are exploratory observations, not a validated buffer choice or a measured
+end-to-end delay. No setting has been enabled in the client.
+
+After adding sequence diagnostics, another set of single three-second runs
+reported p95 and maximum of four frame intervals for all three settings; the
+same ready/buffering/underrun counts were observed. The nominal pacing was
+10 ms per frame, but frame-index lag excludes model lookahead and real capture,
+transport and playout. It cannot establish the issue's 80 ms end-to-end limit.
+
+The caller must advance the generation for mute, unmute and failure, reset
+the model on generation changes, and synchronize publication with mute intent.
+An overflow requires the owner to stop the pipeline and fall back; the test
+does not claim self-recovery after an overflow. No result here proves those
+owner responsibilities, fallback, production
+thread scheduling, actual microphone quality, or end-to-end latency.
+
+The capture-side prototype rejects output from future sequences or more than
+the queue capacity in capture intervals old and emits silence on rejection.
+The caller still must stop the affected generation and initiate fallback; a
+sequence bound is not a measured wall-clock or end-to-end latency guarantee.
+
+The capture-bridge prototype translates 480 mono 48 kHz WebRTC float samples
+on the S16 scale into normalized frames and translates ready output back.
+Focused tests cover both scales, invalid formats and samples, output corruption,
+overflow, mute with invalid input, and the existing worker with a fake engine.
+On these failures it retains the input for the owning fallback; the owner must
+never publish retained input when muted or after a failed format check. Native
+MSVC CTest passed 10/10 after a full build.
+
+The threaded research probe was then changed to use that bridge with the same
+independently hash-checked DLL and model. One approximately three-second run
+with four startup frames observed 297 ready, 3 buffering, 0 underruns and 0
+overloads, p95/max frame lag 4. It used synthetic PCM and is not a physical
+microphone, production capture callback, sustained run or end-to-end latency
+measurement. The bridge and worker remain unconnected to the released client.
+
+An atomic lifecycle prototype tracks stopped, starting, active, muted and
+failed states with a generation. Tests cover stale worker success/failure,
+invalid generation bits and 10,000 races between an old failure and a new
+start; the complete Windows MSVC suite passed 11/11. A separate synthetic
+three-second research-model run exercised activation and stop, with 297 ready,
+3 buffering, 0 underruns and 0 overloads. This does not test lifecycle changes
+inside a real capture callback or establish publication/mute synchronization.
+The client still needs to own, join and connect the worker, synchronize mute
+with publication, expose actual state/fallback, and pass physical acceptance.
+
+The capture-guard prototype joins the bridge with lifecycle snapshots. Its
+tests exercise preservation of input on processing failure, silence on mute or
+a generation change during processing, invalid format and buffer/underrun
+classification. Windows MSVC native CTest passed 12/12. The synthetic model
+probe now runs through the guard, reporting 297 ready, 3 buffered, 0 underruns
+and 0 overloads in one short run. The guard's final state check does not
+serialize mute with publication after it returns; that remains a required
+responsibility of the actual capture/publish owner. These are not device,
+long-duration, acoustic, network, or release acceptance results.
+
+The worker previously discarded a newer input frame if it had read an older
+generation immediately before a switch. A focused regression reproduced this;
+the SPSC consumer now leaves newer frames queued. Queue and exchange tests,
+including concurrent generation changes, passed in the 13/13 MSVC suite.
+
+A worker owner prototype now starts inference off the callback and joins the
+worker on shutdown. Fake-engine tests cover processing, mute, engine failure,
+fallback and recovery; the runtime test passed 20 repeated runs. One synthetic
+three-second run using the hash-checked real research model through this owner
+reported 297 ready, 3 buffering, 0 underruns and 0 overloads; p95/max frame lag
+was 4. This does not establish real-client behavior, bounded shutdown if the
+engine hangs, thread scheduling under load, physical speech quality, or the
+separate synchronization needed between mute and actual track publication.
+
+The shared capture processor now accepts an injected experimental DeepFilter
+hook. Without an injected available engine it reports unavailable; the normal
+WebRTC adapter does not supply one yet. A fake-engine test exercised selection,
+buffering, underrun, fallback, stale generation and switching back to browser.
+Windows MSVC CTest passed 15/15. One three-second synthetic test drove the same
+capture processor through the runtime with the verified research DLL and model:
+300 submitted frames, 297 processed and zero fallbacks after prewarming. It did
+not exercise an installed client, microphone, RTC track, physical audio, model
+packaging, long-term stability, or mute/publication synchronization.

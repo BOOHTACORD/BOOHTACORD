@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 
 const component = readFileSync(new URL('./AudioSettings.vue', import.meta.url), 'utf8')
+const processing = readFileSync(new URL('./AudioProcessingSettings.vue', import.meta.url), 'utf8')
 const deviceCheck = readFileSync(new URL('./AudioDeviceCheck.vue', import.meta.url), 'utf8')
 const styles = readFileSync(new URL('../design/design_v2_audio.css', import.meta.url), 'utf8')
 const presentation = readFileSync(new URL('../design/design_v2_audio_presentation.css', import.meta.url), 'utf8')
@@ -21,7 +22,8 @@ describe('Design V2 audio settings', () => {
   it('shows a settings toolbar, segmented activation and visible processing controls', () => {
     expect(workspace).toContain('<SettingsWorkspaceHeader panel="audio"')
     expect(component).toContain('class="audio-activation-selector"')
-    expect(component).toContain('class="audio-processing-row"')
+    expect(component).toContain('<AudioProcessingSettings')
+    expect(processing).toContain('class="audio-processing-row"')
     expect(presentation).toContain('.audio-settings-panel { display: contents;')
   })
 

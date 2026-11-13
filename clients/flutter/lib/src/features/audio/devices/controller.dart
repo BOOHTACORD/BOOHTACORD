@@ -4,6 +4,7 @@ import 'package:livekit_client/livekit_client.dart';
 
 import 'bootstrap.dart';
 import 'input_selection/capture.dart';
+import 'input_selection/desktop_switch.dart';
 import 'input_selection/selection.dart';
 import 'input_selection/switch.dart';
 import 'inventory.dart';
@@ -20,6 +21,7 @@ class AudioDeviceController extends AudioDeviceState
         AudioDeviceScan,
         AudioDeviceInventory,
         AudioInputTrackCapture,
+        AudioInputDesktopSwitch,
         AudioInputSwitch,
         AudioInputSelection,
         AudioOutputSelection,
@@ -40,6 +42,7 @@ class AudioDeviceController extends AudioDeviceState
     // Meter widgets subscribe directly; avoid rebuilding the workspace at 10 Hz.
   }
 
+  @override
   void watch() {
     if (isDisposed) return;
     subscription ??= (changes ?? Hardware.instance.onDeviceChange.stream)

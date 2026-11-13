@@ -40,7 +40,8 @@ export async function startMicrophoneCheck(
   let analyser: AnalyserNode
   try {
     await context.resume?.()
-    probe = borrowed || processing.noiseSuppressionMode !== 'rnnoise' ? undefined : await prepareLocalMicrophoneProbe(stream, context, processing)
+    probe = borrowed || (processing.noiseSuppressionMode !== 'rnnoise' && processing.noiseSuppressionMode !== 'deepfilter')
+      ? undefined : await prepareLocalMicrophoneProbe(stream, context, processing)
     source = context.createMediaStreamSource(probe?.stream ?? stream)
     analyser = context.createAnalyser()
     analyser.fftSize = 256

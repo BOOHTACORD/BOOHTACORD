@@ -7,6 +7,11 @@ from pathlib import Path
 SRC = 'clients/web/src/'
 SHARED = {'config', 'validation', 'design', 'telemetry', 'shared'}
 ROOTS = {'App.vue', 'main.ts', 'workspace'}
+WORKLET = SRC + 'voice/noise_suppression/deepfilter/worklet.js'
+STAGER = 'tools/audio/research_dfn_web/stage.mjs'
+BUILDER = 'tools/audio/research_dfn_web/build.py'
+GENERATED = {'./core.js': (SRC + 'voice/noise_suppression/deepfilter/core.ts', STAGER),
+             './dfn.js': (BUILDER, STAGER)}
 
 
 def owner(path):
@@ -22,8 +27,13 @@ def violations(sources):
             if not uri.startswith('.'):
                 continue
             base = posixpath.normpath(posixpath.join(posixpath.dirname(path), uri.split('?')[0]))
-            candidates = [base, *(base + suffix for suffix in ('.ts', '.vue', '.js', '.json', '/index.ts'))]
-            target = next((value for value in candidates if value in sources), None)
+            if path == WORKLET and uri in GENERATED:
+                required = GENERATED[uri]
+                target = required[0] if all(value in sources for value in required) else None
+            else:
+                substitution = [base[:-3] + '.ts'] if path.endswith(('.ts', '.vue')) and base.endswith('.js') else []
+                candidates = [*substitution, base, *(base + suffix for suffix in ('.ts', '.vue', '.js', '.json', '/index.ts'))]
+                target = next((value for value in candidates if value in sources), None)
             if target is None:
                 errors.append(f'{path}: missing local dependency: {uri}')
                 continue
