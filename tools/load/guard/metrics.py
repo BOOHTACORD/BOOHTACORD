@@ -4,6 +4,7 @@ import re
 import urllib.request
 from .roster_ws_metrics import roster_counter
 from .realtime_delivery_metrics import delivery_metric, stage_metric
+from .pool_partition_metrics import pool_partition_metric
 
 ALLOWED = frozenset(('go_goroutines', 'go_memstats_alloc_bytes', 'go_gc_duration_seconds_sum',
     'go_gc_duration_seconds_count', 'process_cpu_seconds_total', 'process_resident_memory_bytes',
@@ -28,6 +29,9 @@ ALLOWED = frozenset(('go_goroutines', 'go_memstats_alloc_bytes', 'go_gc_duration
 def aggregate(text):
     result = {}
     for line in text.splitlines():
+        partition = pool_partition_metric(line)
+        if partition is not None:
+            result[partition[0]] = partition[1]
         delivery = delivery_metric(line) or stage_metric(line)
         if delivery is not None:
             result[delivery[0]] = delivery[1]
