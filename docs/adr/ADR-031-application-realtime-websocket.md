@@ -43,9 +43,15 @@ response cannot by itself expire the replacement connection.
 
 The server can emit a payload-free heartbeat every 15 seconds on public and
 authenticated sockets that negotiate `boohtacord.heartbeat.v1` as a WebSocket
-subprotocol. Legacy connections receive no new event. This server support alone
-does not detect a blackhole on clients: client watchdogs, background behaviour,
-mixed-version rollout and rollback remain separate release gates.
+subprotocol. Legacy connections receive no new event. Web requests the
+subprotocol and expires a ready socket after 45 seconds without a valid event;
+it also checks elapsed silence when a page becomes visible and reconnects on a
+browser online notification. If protocol negotiation fails before opening, Web
+alternates the next attempt with a legacy handshake, and tries the modern
+protocol again after an established connection closes. A legacy connection has
+no heartbeat-based silence detection; a transient handshake failure can also
+lead to this fallback. Flutter watchdogs, actual background/network switching,
+mixed-version rollout and production rollback remain separate release gates.
 
 The public socket uses bounded admission and the configured Origin policy. No
 public event carries protected account, roster, session or message information.
