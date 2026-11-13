@@ -43,7 +43,7 @@ func TestComposedPublicRealtimeRouteDoesNotRequireSession(t *testing.T) {
 	defer stop(context.Background())
 	resources := &lifecycle.Stack{}
 	defer resources.Close(context.Background())
-	handler, _, err := routes(context.Background(), resources, routeTestPool(t), config, eventhub.New(64), httpmetrics.New(), unavailableUpdates{}, nil, previews, viewers, public, nil)
+	handler, _, err := routes(context.Background(), resources, routeTestPool(t), routeTestPool(t), config, eventhub.New(64), httpmetrics.New(), unavailableUpdates{}, nil, previews, viewers, public, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
