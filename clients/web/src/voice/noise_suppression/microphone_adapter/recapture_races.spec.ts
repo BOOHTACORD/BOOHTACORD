@@ -1,5 +1,5 @@
 import { afterEach, expect, it, vi } from 'vitest'
-import { browser, fixture, rnnoise } from './recapture_fixture'
+import { browser, fixture, rnnoise } from '../../../../tests/audio/recapture_fixture'
 
 afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks() })
 

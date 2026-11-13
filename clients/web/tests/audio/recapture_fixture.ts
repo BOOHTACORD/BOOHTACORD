@@ -1,6 +1,6 @@
 import { vi } from 'vitest'
 import type { LocalAudioTrack } from 'livekit-client'
-import { LiveKitMicrophoneAdapter } from './controller'
+import { LiveKitMicrophoneAdapter } from '../../src/voice/noise_suppression/microphone_adapter/controller'
 
 export const browser = { noiseSuppressionMode: 'browser', autoGainControl: false, echoCancellation: true } as const
 export const rnnoise = { ...browser, noiseSuppressionMode: 'rnnoise' } as const
