@@ -22,6 +22,8 @@ def main():
     with isolated_sink() if linux else nullcontext(dict(os.environ)) as env:
         run('node', cli, 'test', '-c', 'tests/audio/playwright.firefox.config.ts',
             'rnnoise.browser.spec.ts', cwd=web, env=env)
+        run('node', cli, 'test', '-c', 'tests/audio/playwright.firefox.config.ts',
+            'rnnoise.browser.spec.ts', '--grep', 'real WebRTC receiver', '--repeat-each=5', cwd=web, env=env)
 
 
 if __name__ == '__main__':

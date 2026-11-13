@@ -20,3 +20,6 @@ class FirefoxAudioTests(unittest.TestCase):
         self.assertIn('pulseaudio', calls[1].args)
         self.assertEqual(calls[2].kwargs['env']['PULSE_SERVER'], 'unix:/private/test.sock')
         self.assertIn('rnnoise.browser.spec.ts', calls[2].args)
+        self.assertIn('--repeat-each=5', calls[3].args)
+        self.assertIn('real WebRTC receiver', calls[3].args)
+        self.assertEqual(calls[3].kwargs['env']['PULSE_SERVER'], 'unix:/private/test.sock')
