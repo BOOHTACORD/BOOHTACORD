@@ -11,3 +11,7 @@
 - Follow-up: non-object JSON also triggers recovery. Three new unit cases first
   reproduced the omission; 18 related Web tests, typecheck and three Chromium
   real-loopback cases passed. Flutter coverage is recorded separately.
+- Follow-up: malformed frames and invalid new-event envelopes now clear the Web
+  replay cursor before retry, including with batched delivery. Four focused
+  regressions cover scheduled and manual retries; prior code reused the cursor.
+  The current source still needs full-stack and visual acceptance.

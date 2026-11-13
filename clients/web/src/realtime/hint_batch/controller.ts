@@ -86,6 +86,7 @@ export function createCoalescedDelivery(onEvent: EventHandler, recovery: EventHa
       base.accept(event)
     },
     cursor: base.cursor,
+    abort: base.abort,
     disconnected(): void {
       generation++; outstanding = 0
       if (timer !== null) clearTimeout(timer)

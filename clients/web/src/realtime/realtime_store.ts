@@ -16,7 +16,7 @@ export const useRealtimeStore = defineStore('realtime', () => {
   let socket: RealtimeSocket | null = null
   let stopSchedule = () => {}
   let active = false, generation = 0
-  let delivery: Pick<ReturnType<typeof createRealtimeDelivery>, 'accept' | 'cursor' | 'disconnected' | 'reset'> | null = null
+  let delivery: Pick<ReturnType<typeof createRealtimeDelivery>, 'accept' | 'abort' | 'cursor' | 'disconnected' | 'reset'> | null = null
   let pendingConnection: (() => void) | null = null, retryNow: (() => void) | null = null
   let endSocketAttempt = () => {}, cancelSession = () => {}
   function connect(onEvent: EventHandler, factory?: RealtimeSocketFactory, url?: string, options: RealtimeConnectOptions = {}): void {
@@ -79,13 +79,13 @@ export const useRealtimeStore = defineStore('realtime', () => {
       socket = current; attempt.watch(current, () => fail(current)); attempt.arm(() => { finish(true); fail(current) })
       current.onopen = () => { if (socket === current) { protocol?.connected(current); state.value = 'CONNECTED'; error.value = null } }
       current.onmessage = (message) => {
-        if (socket !== current) return; if (typeof message.data !== 'string') { fail(current); return }
-        try { const source: unknown = JSON.parse(message.data); if (!source || typeof source !== 'object' || Array.isArray(source)) { fail(current); return }
+        if (socket !== current) return; if (typeof message.data !== 'string') { delivery?.abort(new Error('Некорректное realtime-событие.')); return }
+        try { const source: unknown = JSON.parse(message.data); if (!source || typeof source !== 'object' || Array.isArray(source)) { delivery?.abort(new Error('Некорректное realtime-событие.')); return }
           const event: RealtimeEvent = parseRealtimeEvent(source); if (!attempt.observe(event.kind)) { fail(current); return }
           if (event.kind === 'connection.heartbeat') return
           if (event.kind === 'connection.ready') {attempt.ready();finish();retry.ready()}
           delivery?.accept(event)
-        } catch (cause) { if (cause instanceof NewRealtimeEnvelopeError || cause instanceof SyntaxError) { fail(current); return }
+        } catch (cause) { if (cause instanceof NewRealtimeEnvelopeError || cause instanceof SyntaxError) { delivery?.abort(new Error('Некорректное realtime-событие.')); return }
           error.value = cause instanceof Error ? cause.message : 'РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ realtime-СЃРѕР±С‹С‚РёРµ.'
           state.value = 'ERROR'
         }
