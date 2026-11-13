@@ -14,6 +14,13 @@ class ToolchainWorkflowTests(unittest.TestCase):
     def test_actual_sdk_and_dependency_cache_contract(self):
         validate(self.documents(), ROOT)
 
+    def test_contract_dependencies_match_audio_metric_pins(self):
+        base = set((ROOT / 'tools/requirements-ci.txt').read_text().splitlines())
+        audio = (ROOT / 'tools/audio/speech_metrics/requirements.txt').read_text().splitlines()
+        pins = {line.split()[0] for line in audio if line.strip() and not line.startswith('#')}
+        self.assertTrue(pins)
+        self.assertTrue(pins.issubset(base))
+
     def test_research_windows_browser_exception_is_narrow(self):
         for mutation in ('platform', 'browser', 'cache'):
             documents = self.documents()

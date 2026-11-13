@@ -41,3 +41,9 @@ owners. The corresponding local policy and dependency tests passed; hosted
 results for the subsequent commit remain pending. On the local Windows host,
 two unrelated Linux-specific runner guest-update tests could not run because
 Perl/LXC were absent; the focused action-pin suite passed separately.
+
+Hosted source `2baf02dfe317acaf375e8811716b356477f98544` passed the
+frontend fast checks but contracts discovered the speech metric tests without
+their Python dependencies. The shared CI requirements now use the same exact
+audio pins, checked by a focused test and the reviewed input inventory. Local
+toolchain policy and speech metric tests pass; the new hosted run is pending.
