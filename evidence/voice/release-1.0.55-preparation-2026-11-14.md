@@ -31,3 +31,16 @@ Validation: ten focused Docker-input/tag tests, three client-identity tests,
 26 contract/parity regressions, OpenAPI parity (137 operations), product-map
 parity and generated-map freshness passed. Publication and production runtime
 are NOT_RUN here and must be verified from the subsequent workflow results.
+
+The common version fallback has a shell parity decision in the existing feature
+registry. The canonical local runner was invoked with --real-stack, all registered
+features and the iOS projection on Windows. Report 20261114-230635 is BLOCKED:
+1,991 Flutter tests passed/three platform skips, 872 component tests passed/one
+skip; iOS runtime unavailable, source stability PASS. It is not native iOS
+acceptance, and no passing real-stack/device result is claimed by that invocation.
+At source resolution, the 1440x480 and 390x480 scale-2 profile captures show a
+wrapped synthetic display name and content clipped at the reserved IME boundary.
+Both PNGs are byte-identical to the 48d886070 acceptance capture. The version
+label is not visible in those images; its actual text is covered by the focused
+profile widget/package test. Other generated images were not fully reviewed,
+and no new screenshot baseline or broad visual acceptance was approved.
