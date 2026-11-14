@@ -10,9 +10,11 @@ def main():
     config = 'tests/audio/playwright.deepfilter.firefox.config.ts'
     with isolated_sink() as env:
         run('node', cli, 'test', '-c', config, 'deepfilter_loader.research.spec.ts',
-            'deepfilter_track.research.spec.ts', 'deepfilter.research.spec.ts', cwd=web, env=env)
+            'deepfilter_track.research.spec.ts', 'deepfilter.research.spec.ts',
+            'deepfilter_preflight.research.spec.ts', cwd=web, env=env)
         with private_sfu(env) as sfu_env:
             run('node', cli, 'test', '-c', config, 'deepfilter_livekit.research.spec.ts',
+                'deepfilter_switch_livekit.research.spec.ts',
                 cwd=web, env=sfu_env)
 
 

@@ -3,6 +3,7 @@
 #include "../capture_hook/runtime_hook.h"
 #include "../verified_engine/engine.h"
 #include <memory>
+#include <cstring>
 namespace boohta::deepfilter {
 // The caller must detach and stop capture before destroying this owner.
 class ExperimentalOwner {
@@ -13,7 +14,10 @@ class ExperimentalOwner {
     auto engine = std::make_unique<VerifiedEngine>();
     if (!engine->Open(dll, dll_hash, model, model_hash)) return false;
     auto runtime = std::make_unique<Runtime>(*engine, 4);
-    auto hook = std::make_unique<Hook>(*runtime);
+    const char* identity = model_hash && std::strcmp(model_hash,
+        "c94d91f70911001c946e0fabb4aa9adc37045f45a03b56008cb0c8244cb63616") == 0
+        ? "deepfilternet3-research-d375b2d" : nullptr;
+    auto hook = std::make_unique<Hook>(*runtime, identity);
     if (!runtime->Launch()) return false;
     engine_ = std::move(engine);
     runtime_ = std::move(runtime);

@@ -4,13 +4,13 @@ on:
   pull_request:
     paths:
       - 'tools/audio/**'
-      - 'clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/**'
+      - 'clients/flutter/packages/flutter_webrtc/common/rnnoise/**'
       - '.github/workflows/audio-research.yaml'
   push:
     branches: [master]
     paths:
       - 'tools/audio/**'
-      - 'clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/**'
+      - 'clients/flutter/packages/flutter_webrtc/common/rnnoise/**'
       - '.github/workflows/audio-research.yaml'
   workflow_call:
 
@@ -46,6 +46,9 @@ jobs:
           python -m unittest tools.audio.speech_metrics.test_score
           tools.audio.speech_metrics.test_batch tools.audio.research_dfn_native.test_prepare
           tools.audio.research_dfn_native.test_fingerprint
+          tools.audio.research_v02.native_adapter.test_run
+          tools.audio.research_v02.native_client.test_boundary
+          tools.audio.windows_v02_probe.test_runner
           tools.audio.research_dfn_web.test_prepare tools.audio.research_dfn_web.test_build
           tools.audio.research_dfn_web.test_livekit_windows
 

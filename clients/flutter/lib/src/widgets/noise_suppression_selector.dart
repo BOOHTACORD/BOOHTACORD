@@ -19,9 +19,11 @@ class _NoiseModeSelector extends StatelessWidget {
     final modes = NoiseSuppressionMode.values
         .where(
           (mode) =>
-              mode != NoiseSuppressionMode.deepfilter ||
-              deepEnabled ||
-              processing.noiseSuppressionMode == mode,
+              (mode != NoiseSuppressionMode.auto ||
+                  processing.noiseSuppressionMode == mode) &&
+              (mode != NoiseSuppressionMode.deepfilter ||
+                  deepEnabled ||
+                  processing.noiseSuppressionMode == mode),
         )
         .toList();
     String selectedLabel(NoiseSuppressionMode mode) => switch (mode) {
@@ -32,6 +34,7 @@ class _NoiseModeSelector extends StatelessWidget {
         compact ? 'RNNoise' : 'RNNoise — экспериментальное',
       NoiseSuppressionMode.deepfilter =>
         deepEnabled ? 'DeepFilterNet3' : 'DeepFilterNet3 — недоступен',
+      NoiseSuppressionMode.auto => 'Автоматически — стандартный режим',
     };
     return DropdownButtonFormField<NoiseSuppressionMode>(
       key: ValueKey(processing.noiseSuppressionMode),

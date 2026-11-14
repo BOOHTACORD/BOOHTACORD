@@ -5,7 +5,8 @@ import type { AudioProcessingOptions } from './types'
 const browser: AudioProcessingOptions = { autoGainControl: false, echoCancellation: true, noiseSuppressionMode: 'browser' }
 const rnnoise = { ...browser, noiseSuppressionMode: 'rnnoise' } as const
 function fixture() {
-  const source = { enabled: true, stop: vi.fn(), getSettings: () => ({ noiseSuppression: true }) }
+  let reported = true
+  const source = { enabled: true, stop: vi.fn(), getSettings: () => ({ noiseSuppression: reported }) }
   const processed = { enabled: true }
   const events: string[] = []
   const track = {
@@ -13,7 +14,7 @@ function fixture() {
     mute: vi.fn(async () => { events.push('mute'); source.enabled = false; processed.enabled = false }),
     unmute: vi.fn(async () => { events.push('unmute'); source.enabled = true }),
     stop: vi.fn(() => source.stop()),
-    applyConstraints: vi.fn(async () => undefined),
+    applyConstraints: vi.fn(async (constraints: MediaTrackConstraints) => { reported = constraints.noiseSuppression === true }),
     restartTrack: vi.fn(async (_options?: MediaTrackConstraints): Promise<void> => undefined),
     setProcessor: vi.fn(async () => { events.push('process'); track.mediaStreamTrack = processed as typeof source }),
     stopProcessor: vi.fn(async () => { track.mediaStreamTrack = source; events.push('destroy') }),
@@ -129,7 +130,7 @@ describe('single microphone lifecycle owner', () => {
     const f = fixture()
     await f.adapter.setEnabled(true, rnnoise)
     expect(f.events.indexOf('process')).toBeLessThan(f.events.indexOf('publish:false'))
-    expect(f.adapter.readCaptureSettings()).toEqual({ noiseSuppression: true })
+    expect(f.adapter.readCaptureSettings()).toEqual({ noiseSuppression: false })
   })
   it('respects mute that arrives during pending processor initialization before publish', async () => {
     const f = fixture()
@@ -158,12 +159,16 @@ describe('single microphone lifecycle owner', () => {
     expect(f.dependencies.publishTrack).not.toHaveBeenCalled()
     expect(f.track.stop).toHaveBeenCalledOnce()
   })
-  it('keeps requested RNNoise while falling back and does not mistake missing settings for browser success', async () => {
+  it('does not publish if RNNoise fails and fallback settings cannot be confirmed', async () => {
     const f = fixture()
-    f.track.setProcessor.mockRejectedValue(new Error('load'))
-    f.source.getSettings = () => ({}) as never
-    await f.adapter.setEnabled(true, rnnoise)
-    expect(f.adapter.runtimeState).toMatchObject({ requestedMode: 'rnnoise', effectiveMode: 'unknown', status: 'fallback', fallbackReason: 'processor-error' })
+    f.track.setProcessor.mockImplementation(async () => {
+      f.source.getSettings = () => ({}) as never
+      throw new Error('load')
+    })
+    await expect(f.adapter.setEnabled(true, rnnoise)).rejects.toThrow('Браузер не подтвердил')
+    expect(f.dependencies.publishTrack).not.toHaveBeenCalled()
+    expect(f.source.enabled).toBe(false)
+    expect(f.adapter.runtimeState.requestedMode).toBe('rnnoise')
     expect(f.track.applyConstraints).toHaveBeenLastCalledWith({ autoGainControl: false, echoCancellation: true, noiseSuppression: true })
   })
   it('rolls constraints back and retains requested preferences if applying a profile fails', async () => {
@@ -179,7 +184,7 @@ describe('single microphone lifecycle owner', () => {
     await f.adapter.setEnabled(true, rnnoise)
     await f.adapter.switchDevice('device-local')
     expect(f.track.restartTrack).toHaveBeenCalledWith(expect.objectContaining({ deviceId: { exact: 'device-local' }, noiseSuppression: false }))
-    expect(f.adapter.readCaptureSettings()).toEqual({ noiseSuppression: true })
+    expect(f.adapter.readCaptureSettings()).toEqual({ noiseSuppression: false })
   })
   it('applies a prejoin selection to the very first capture without creating a probe', async () => {
     const f = fixture()

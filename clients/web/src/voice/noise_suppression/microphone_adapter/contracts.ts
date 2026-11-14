@@ -8,6 +8,7 @@ export interface MicrophoneProcessor extends TrackProcessor<Track.Kind.Audio, Au
   readonly sourceTrack?: MediaStreamTrack
 }
 export interface MicrophoneAdapterDependencies {
+  preflightAuto?(engine: 'rnnoise' | 'deepfilter'): Promise<boolean>
   createTrack(options: MediaTrackConstraints): Promise<LocalAudioTrack>
   publishTrack(track: LocalAudioTrack, options: MicrophonePublishOptions): Promise<unknown>
   unpublishTrack(track: LocalAudioTrack): Promise<unknown>

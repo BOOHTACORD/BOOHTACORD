@@ -1,5 +1,5 @@
 /** Preferences stay independent of the browser capture constraint contract. */
-export type NoiseSuppressionMode = 'off' | 'browser' | 'rnnoise' | 'deepfilter'
+export type NoiseSuppressionMode = 'off' | 'browser' | 'rnnoise' | 'deepfilter' | 'auto'
 export interface AudioProcessingOptions {
   autoGainControl: boolean
   echoCancellation: boolean
@@ -27,10 +27,10 @@ export function normalizeAudioProcessing(value: unknown): AudioProcessingOptions
   return {
     autoGainControl: typeof stored.autoGainControl === 'boolean' ? stored.autoGainControl : true,
     echoCancellation: typeof stored.echoCancellation === 'boolean' ? stored.echoCancellation : true,
-    noiseSuppressionMode: mode === 'off' || mode === 'browser' || mode === 'rnnoise' || mode === 'deepfilter'
+    noiseSuppressionMode: mode === 'off' || mode === 'browser' || mode === 'rnnoise' || mode === 'deepfilter' || mode === 'auto'
       ? mode : stored.noiseSuppression === false ? 'off' : 'browser',
   }
 }
 export function browserProcessingConstraints(options: AudioProcessingOptions): BrowserAudioProcessingConstraints {
-  return { autoGainControl: options.autoGainControl, echoCancellation: options.echoCancellation, noiseSuppression: options.noiseSuppressionMode === 'browser' }
+  return { autoGainControl: options.autoGainControl, echoCancellation: options.echoCancellation, noiseSuppression: options.noiseSuppressionMode === 'browser' || options.noiseSuppressionMode === 'auto' }
 }

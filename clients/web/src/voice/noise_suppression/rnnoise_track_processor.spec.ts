@@ -40,6 +40,7 @@ describe('bounded initialization diagnostics', () => {
   it('fails closed before graph creation when the enabled v0.2 asset is missing', async () => {
     supportedEnvironment()
     vi.stubEnv('VITE_RNNOISE_V02_ENABLED', 'true')
+    vi.stubEnv('VITE_RNNOISE_V02_WASM_SHA256', '0'.repeat(64))
     vi.stubGlobal('window', { isSecureContext: true, location: { origin: 'https://voice.test' } })
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('', { status: 404 })))
     const addModule = vi.fn(), failure = vi.fn()
@@ -49,6 +50,20 @@ describe('bounded initialization diagnostics', () => {
     expect(addModule).not.toHaveBeenCalled()
     expect(failure).toHaveBeenCalledWith('asset-load')
     expect(processor.processedTrack).toBeUndefined()
+    expect(processor.runtimeState).toMatchObject({ effectiveMode: 'unknown', status: 'error', fallbackReason: 'asset-load' })
+  })
+  it('reports an asset failure without creating a graph when v0.2 is not bound to a digest', async () => {
+    supportedEnvironment()
+    vi.stubEnv('VITE_RNNOISE_V02_ENABLED', 'true')
+    vi.stubEnv('VITE_RNNOISE_V02_WASM_SHA256', '')
+    vi.stubGlobal('window', { isSecureContext: true, location: { origin: 'https://voice.test' } })
+    const fetcher = vi.fn(), addModule = vi.fn(), failure = vi.fn()
+    vi.stubGlobal('fetch', fetcher)
+    const processor = new RnnoiseTrackProcessor({ onFailure: failure })
+    await expect(processor.init({ kind: 'audio', track: { getSettings: () => ({ sampleRate: 48000 }) },
+      audioContext: { sampleRate: 48000, audioWorklet: { addModule } } } as never)).rejects.toThrow('WASM identity missing')
+    expect(fetcher).not.toHaveBeenCalled(); expect(addModule).not.toHaveBeenCalled()
+    expect(failure).toHaveBeenCalledWith('asset-load')
     expect(processor.runtimeState).toMatchObject({ effectiveMode: 'unknown', status: 'error', fallbackReason: 'asset-load' })
   })
 })

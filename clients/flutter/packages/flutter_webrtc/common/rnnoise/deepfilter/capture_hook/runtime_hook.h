@@ -9,7 +9,9 @@ namespace boohta::deepfilter {
 template <typename Engine, std::size_t Capacity>
 class RuntimeHook final : public CaptureHook {
  public:
-  explicit RuntimeHook(WorkerRuntime<Engine, Capacity>& runtime) noexcept : runtime_(runtime) {}
+  explicit RuntimeHook(WorkerRuntime<Engine, Capacity>& runtime, const char* model_id = nullptr) noexcept
+      : runtime_(runtime), model_id_(model_id) {}
+  const char* ModelId() const noexcept override { return model_id_; }
   void Reset(bool enabled) noexcept override { if (enabled) runtime_.Start(); else runtime_.Mute(); }
   bool Available() const noexcept override { return runtime_.Available(); }
   HookReadiness Readiness() const noexcept override {
@@ -21,6 +23,7 @@ class RuntimeHook final : public CaptureHook {
   }
  private:
   WorkerRuntime<Engine, Capacity>& runtime_;
+  const char* const model_id_; // Borrowed static identity; owner outlives capture.
 };
 }  // namespace boohta::deepfilter
 #endif

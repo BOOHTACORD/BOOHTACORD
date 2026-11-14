@@ -1,3 +1,4 @@
+find_package(Threads REQUIRED)
 add_executable(deepfilter_capture_hook_test deepfilter/capture_hook/hook_test.cc)
 target_link_libraries(deepfilter_capture_hook_test PRIVATE boohta_rnnoise Threads::Threads)
 if(MSVC)

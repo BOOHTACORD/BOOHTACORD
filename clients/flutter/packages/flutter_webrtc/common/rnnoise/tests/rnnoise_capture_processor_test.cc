@@ -37,9 +37,16 @@ int main() {
   assert(fresh.Process(comparison.data(), 480, 480));
   assert(frame == comparison);
   processor.Initialize(16000, 1); frame = original;
+#ifdef BOOHTA_RNNOISE_V02_RESEARCH
+  assert(processor.Process(frame.data(), 160, 160));
+  assert(frame != original);
+  assert(processor.EffectiveEngine() == RnnoiseCaptureProcessor::Engine::kRnnoise);
+  frame = original;
+#else
   assert(!processor.Process(frame.data(), 160, 160));
   assert(frame == original);
   assert(processor.EffectiveEngine() == RnnoiseCaptureProcessor::Engine::kUnknown);
+#endif
   processor.Initialize(48000, 2);
   assert(!processor.Process(frame.data(), 480, 480));
   assert(frame == original);

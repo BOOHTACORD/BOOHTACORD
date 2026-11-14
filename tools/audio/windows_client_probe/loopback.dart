@@ -4,6 +4,8 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 
 /// Local-only peer pair. No SDP, candidates or audio samples are logged.
 class LocalAudioLoopback {
+  LocalAudioLoopback({this.mutePlayback = false});
+  final bool mutePlayback;
   RTCPeerConnection? sender;
   RTCPeerConnection? receiver;
   bool receivedTrack = false;
@@ -30,7 +32,10 @@ class LocalAudioLoopback {
       }
     };
     receiver!.onTrack = (event) {
-      if (event.track.kind == 'audio') receivedTrack = true;
+      if (event.track.kind == 'audio') {
+        receivedTrack = true;
+        if (mutePlayback) unawaited(Helper.setVolume(0, event.track));
+      }
     };
     await sender!.addTrack(stream.getAudioTracks().single, stream);
     final offer = await sender!.createOffer();

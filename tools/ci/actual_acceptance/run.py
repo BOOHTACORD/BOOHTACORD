@@ -13,7 +13,7 @@ from tools.qa.local_features.process import stop_group
 from . import catalog,session
 from .plan import PROFILES,require,document
 from .evidence import collect,collect_failure
-from .failure_stage import last_failure_stage,last_short_stage_geometry
+from .failure_stage import last_failure_stage,last_short_stage_geometry,last_failure_frame
 
 
 def execute(profile,baseline):
@@ -53,6 +53,8 @@ def execute(profile,baseline):
         report.update(status='BLOCKED' if owner is None else 'FAIL',failure_type=type(error).__name__)
         stage=last_failure_stage(log)
         if stage:report['failure_stage']=stage
+        frame=last_failure_frame(log)
+        if frame:report['failure_frame']=frame
         if stage in {'screen-share-short-height', 'screen-short-geometry-ok', 'screen-short-frames-ok',
                      'screen-preview-card-ok', 'screen-preview-decoded-ok', 'screen-preview-refresh-ok'}:
             geometry=last_short_stage_geometry(log)

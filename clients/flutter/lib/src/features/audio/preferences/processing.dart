@@ -1,4 +1,4 @@
-enum NoiseSuppressionMode { off, browser, rnnoise, deepfilter }
+enum NoiseSuppressionMode { off, browser, rnnoise, deepfilter, auto }
 
 class AudioProcessingPreferences {
   const AudioProcessingPreferences({
@@ -16,7 +16,8 @@ class AudioProcessingPreferences {
   final bool echoCancellation;
   final NoiseSuppressionMode noiseSuppressionMode;
   bool get noiseSuppression =>
-      noiseSuppressionMode == NoiseSuppressionMode.browser;
+      noiseSuppressionMode == NoiseSuppressionMode.browser ||
+      noiseSuppressionMode == NoiseSuppressionMode.auto;
 
   AudioProcessingPreferences copyWith({
     bool? autoGainControl,

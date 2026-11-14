@@ -16,6 +16,7 @@ let receiver: Room | undefined
 let receiveContext: AudioContext | undefined
 let analyser: AnalyserNode | undefined
 let playback: HTMLMediaElement | undefined
+let receivedSubscriptions = 0
 let stopInputListener: (() => void) | undefined
 let store: ReturnType<typeof useAudioSettingsStore> | undefined
 let refresh: (() => void) | undefined
@@ -63,11 +64,13 @@ const gate = {
   async mute(muted = true) { await session!.setMicrophoneMuted(muted); microphoneTrack.value = session!.active?.room.readMicrophoneTrack?.(); return this.read() },
   async deafen(enabled: boolean) { await session!.setDeafened(enabled); return this.read() },
   async reconnect() { await (session!.active!.room as unknown as Room).simulateScenario('resume-reconnect') },
+  ignoreNextConstraint() { input!.ignoreNextConstraint() },
   unplug(id: string) { input!.unplug(id) },
   removeAll() { input!.removeAll() },
   read() {
-    return { selected: store?.selectedInput, selection: session?.inputSelection, warning: store?.inputWarning,
+    return { selected: store?.selectedInput, selection: session?.inputSelection, warning: store?.inputWarning, receivedSubscriptions,
       microphone: session?.active?.microphone, enabled: session?.active?.room.readMicrophoneTrack?.()?.enabled,
+      publications: (session?.active?.room as unknown as Room | undefined)?.localParticipant.audioTrackPublications.size,
       processing: session?.active?.room.readNoiseSuppressionState?.(),
       ownedCapture: (session?.active?.room as unknown as Room | undefined)?.localParticipant.getTrackPublication(Track.Source.Microphone)?.audioTrack?.isUserProvided,
       captures: input?.captures.map(({ deviceId, track }) => ({ deviceId, ended: track.readyState === 'ended' })),
@@ -79,6 +82,7 @@ const gate = {
     receiver = new Room()
     receiver.on(RoomEvent.TrackSubscribed, track => {
       if (track.kind !== Track.Kind.Audio) return
+      receivedSubscriptions++
       playback = track.attach(); playback.muted = true; document.body.append(playback); void playback.play()
       analyser = receiveContext!.createAnalyser(); analyser.fftSize = 4096; analyser.smoothingTimeConstant = 0
       const source = receiveContext!.createMediaStreamSource(new MediaStream([track.mediaStreamTrack]))

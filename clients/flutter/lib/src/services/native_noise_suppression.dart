@@ -6,12 +6,15 @@ import 'package:flutter/services.dart';
 import 'audio_preferences.dart';
 import 'native_noise_suppression_state.dart';
 import 'native_noise_model_preflight.dart';
+import 'native_noise_auto_research.dart';
 export 'native_noise_suppression_state.dart';
 
 part 'native_noise_prepare.dart';
 part 'native_noise_fallback.dart';
 part 'native_noise_state_read.dart';
 part 'native_noise_monitor.dart';
+part 'native_noise_research_debug.dart';
+part 'native_noise_auto_preflight.dart';
 
 typedef NativeNoiseInvoker = Future<Object?> Function(
   String method,
@@ -40,17 +43,21 @@ abstract class _NativeNoiseCore extends ChangeNotifier {
   int _generation = 0;
   bool _disposed = false, _fallback = false, _polling = false;
   bool _allowDeepFilter;
-  @visibleForTesting
-  void debugAllowDeepFilter() {
-    assert(() {
-      _allowDeepFilter = true;
-      return true;
-    }());
-  }
+  NoiseSuppressionMode _selectedMode = NoiseSuppressionMode.browser;
+  NoiseSuppressionMode _debugAutoMode = researchAutoEngine(
+    const String.fromEnvironment('BOOHTA_RESEARCH_AUTO_ENGINE'),
+    debug: kDebugMode,
+    windows: !kIsWeb && defaultTargetPlatform == TargetPlatform.windows,
+  );
 
   Timer? _timer;
   NativeNoiseSuppressionState state = const NativeNoiseSuppressionState();
   Future<void> refresh();
+  Future<NoiseSuppressionMode> _prepareSelected(
+    NoiseSuppressionMode mode,
+    NoiseSuppressionMode selected,
+    int generation,
+  );
   void _read(Map value);
   Future<T> run<T>(Future<T> Function() operation) {
     final next = _queued++ == 0
@@ -76,7 +83,10 @@ abstract class _NativeNoiseCore extends ChangeNotifier {
     _fallback = false;
     _update(NativeNoiseSuppressionState(requestedMode: state.requestedMode));
     unawaited(
-      _invoke('resetNoiseSuppression', null).catchError((Object _) => null),
+      _invoke(
+        'resetNoiseSuppression',
+        null,
+      ).then<void>((_) {}, onError: (Object _, StackTrace _) {}),
     );
   }
 
@@ -93,6 +103,8 @@ class NativeNoiseSuppression extends _NativeNoiseCore
         _NativeNoiseStateRead,
         _NativeNoisePrepare,
         _NativeNoiseFallback,
-        _NativeNoiseMonitor {
+        _NativeNoiseMonitor,
+        _NativeNoiseAutoPreflight,
+        _NativeNoiseResearchDebug {
   NativeNoiseSuppression({super.invoke, super.allowExperimentalDeepFilter});
 }
