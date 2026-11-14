@@ -25,9 +25,13 @@ def create(private_path, public_path, openssl='openssl'):
     except BaseException:
         private_path.unlink(missing_ok=True)
         raise
-    der = subprocess.check_output([openssl, 'pkey', '-in', str(private_path), '-pubout', '-outform', 'DER'])
-    if len(der) != 44 or der[:12].hex() != '302a300506032b6570032100':
-        raise ValueError('Unexpected Ed25519 public key encoding')
+    try:
+        der = subprocess.check_output([openssl, 'pkey', '-in', str(private_path), '-pubout', '-outform', 'DER'])
+        if len(der) != 44 or der[:12].hex() != '302a300506032b6570032100':
+            raise ValueError('Unexpected Ed25519 public key encoding')
+    except BaseException:
+        private_path.unlink(missing_ok=True)
+        raise
     raw = der[12:]
     key_id = 'boohtacord-desktop-' + hashlib.sha256(raw).hexdigest()[:16]
     public_path.parent.mkdir(parents=True, exist_ok=True)

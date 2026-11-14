@@ -34,6 +34,18 @@ class MissingOpenSSLTest(unittest.TestCase):
             self.assertFalse(private.exists())
             self.assertFalse(public.exists())
 
+    def test_failed_public_extraction_removes_new_private_key(self):
+        for output in (RuntimeError('extraction failed'), b'invalid DER'):
+            with self.subTest(output=output), tempfile.TemporaryDirectory() as directory:
+                private, public = Path(directory)/'publisher.pem', Path(directory)/'publisher.pub'
+                with patch('shutil.which', return_value='openssl'), patch('subprocess.run'):
+                    with patch('subprocess.check_output', side_effect=output if isinstance(output, Exception) else None,
+                               return_value=output):
+                        with self.assertRaises((RuntimeError, ValueError)):
+                            create(private, public, 'openssl')
+                self.assertFalse(private.exists())
+                self.assertFalse(public.exists())
+
 class PublisherTest(unittest.TestCase):
     def setUp(self):
         self.directory=tempfile.TemporaryDirectory();self.addCleanup(self.directory.cleanup)
