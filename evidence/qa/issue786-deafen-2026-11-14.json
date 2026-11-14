@@ -46,6 +46,12 @@
         "observation": "All 10 new runtime paths are mapped to voice-control product components. The existing unclassified baseline is unchanged."
       },
       {
+        "name": "livekit_network_config_source_hashes",
+        "result": "PASS",
+        "command": "python3 -m tools.verify.livekit_network_config.check",
+        "observation": "The issue #786 Flutter remote-track source is bound by a source-only revalidation record. No deployed network or physical-media acceptance is claimed."
+      },
+      {
         "name": "contracts_verifier",
         "result": "BLOCKED",
         "command": "pwsh -NoProfile -File tools/verify/contracts/verify-contracts.ps1",
@@ -60,6 +66,12 @@
         "name": "web_browser_acceptance",
         "result": "PASS",
         "observation": "Accessibility, mini_player, screen_share_ui, and voice_interface stages passed in the final local-feature run. Focused reruns also passed: participant status 5/5, deafened participant row 1/1, deafen with mini stream audio controls 1/1."
+      },
+      {
+        "name": "web_sfu_audio_deafen_fixture_followup",
+        "result": "NOT_RUN",
+        "command": "clients/web: ./node_modules/.bin/playwright test -c tests/audio/playwright.config.ts tests/audio/audio_input.browser.spec.ts",
+        "observation": "A focused follow-up was added after CI found the synthetic fixture's non-UUID lease ID. Local rerun was unavailable because this isolated worktree has no clients/web/node_modules/.bin/playwright; the next CI run executes the updated SFU audio suite."
       },
       {
         "name": "flutter_full_unit_suite",
@@ -89,11 +101,13 @@
     ]
   },
   "post_run_registry_update": {
-    "timestamp_utc": "2026-11-14T16:57:25Z",
-    "scope": "Added issue #786 parity-review entries for changed common client feature scopes and mapped the 10 new runtime paths to voice-control product components after local QA/CI exposed the metadata requirements. No product implementation or behavior-test files changed after the local-feature run.",
+    "timestamp_utc": "2026-11-14T17:17:22Z",
+    "scope": "Added issue #786 parity-review entries for changed common client feature scopes, mapped the 10 new runtime paths to voice-control product components, regenerated the product-map viewer, and recorded the source-only Flutter remote-track revalidation required by CI. Added a focused synthetic SFU test route after CI exposed the fixture's placeholder lease ID; no application runtime code changed after the local-feature run.",
     "verification": [
       "python3 -m tools.verify.client_parity.run --base origin/master",
       "python3 -m tools.product_map.ownership.run --base f67209d302a8a419333ead811dc1f21be9fd2b41",
+      "python3 -m tools.verify.livekit_network_config.check",
+      "python3 -m unittest tools.verify.livekit_network_config.test_model",
       "python3 -m json.tool tools/qa/local_features/features.json"
     ]
   },

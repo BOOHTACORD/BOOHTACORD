@@ -26,7 +26,7 @@ const gate = {
   async mount(mode: NoiseSuppressionMode = 'off') {
     input = installSyntheticInputs()
     session = new VoiceSession({
-      acquire: async channelId => ({ id: 'qa-lease', channelId, transferred: false }),
+      acquire: async channelId => ({ id: '11111111-1111-4111-8111-111111111111', channelId, transferred: false }),
       credential: async () => (await fetch('/tests/audio/livekit-token?role=sender')).json(),
       release: async () => undefined,
     }, (credential, processing, joinMode, inputId) => connectLiveKitRoom(credential, defaultLiveKitRoomFactory, processing, undefined, joinMode, inputId))

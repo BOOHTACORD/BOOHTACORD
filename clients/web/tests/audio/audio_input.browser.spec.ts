@@ -22,8 +22,14 @@ for (const mode of ['off', 'browser', 'rnnoise'] as const) {
     const senderContext = await browser.newContext(), receiverContext = await browser.newContext()
     const sender = await senderContext.newPage(), receiver = await receiverContext.newPage()
     let hadFailure = false
+    const deafenWrites: boolean[] = []
     try {
       await sender.route('**/api/v1/auth/session', route => route.fulfill({ json: { account_id: 'qa-account', role: 'MEMBER' } }))
+      await sender.route('**/api/v1/voice/leases/*/deafen/v1', async route => {
+        expect(route.request().method()).toBe('PUT')
+        deafenWrites.push(route.request().postDataJSON().deafened)
+        await route.fulfill({ status: 204 })
+      })
       if (mode === 'rnnoise') await sender.route('**/audio/rnnoise/**', route => route.fulfill({ status: 404, body: 'Synthetic asset fallback' }))
       await sender.goto('/tests/audio/fixture.html'); await receiver.goto('/tests/audio/fixture.html')
       await Promise.all([ready(sender), ready(receiver)])
@@ -53,6 +59,7 @@ for (const mode of ['off', 'browser', 'rnnoise'] as const) {
       await inputGate(sender, 'deafen', [true])
       await choose(sender, 'mic-1'); await silence(receiver)
       await inputGate(sender, 'deafen', [false]); await hear(receiver, 440)
+      expect(deafenWrites).toEqual([true, false])
       await inputGate(sender, 'unplug', ['mic-1'])
       await expect(sender.getByText(/Используется системный микрофон|Сохранён предыдущий источник|Микрофон недоступен/)).toBeVisible()
       await hear(receiver, 880)
