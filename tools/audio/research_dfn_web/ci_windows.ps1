@@ -20,6 +20,10 @@ python -m tools.audio.research_dfn_web.livekit_windows --binary $server --web cl
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 $env:VITE_DEEPFILTER_ENABLED = 'true'
 $env:BOOHTA_DEEPFILTER_RESEARCH_BUNDLE = "$env:RUNNER_TEMP/dfn-web/bundle"
+$env:VITE_AUTO_DEEPFILTER_RESEARCH = 'true'
+python -m tools.audio.research_dfn_web.livekit_windows --binary $server --web clients/web --config tests/audio/playwright.auto_deepfilter.config.ts --test auto_deepfilter.local.ts
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+Remove-Item Env:VITE_AUTO_DEEPFILTER_RESEARCH
 python -m tools.audio.research_dfn_web.livekit_windows --binary $server --web clients/web --config tests/audio/playwright.deepfilter.config.ts --test deepfilter_switch_livekit.research.spec.ts
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 $env:CHROMIUM_EXECUTABLE_PATH = Join-Path ${env:ProgramFiles(x86)} 'Microsoft/Edge/Application/msedge.exe'
