@@ -18,5 +18,6 @@ ID: `voice.controls`
 
 ## Компоненты
 
+- cmp.flutter.native\_auto\_research: [clients/flutter/lib/src/services/native\_noise\_auto\_research.dart](../../../../clients/flutter/lib/src/services/native_noise_auto_research.dart), [clients/flutter/lib/src/services/native\_noise\_research\_debug.dart](../../../../clients/flutter/lib/src/services/native_noise_research_debug.dart)
 - cmp.flutter.voice\_controller: [clients/flutter/lib/src/features/voice/lifecycle/controller.dart](../../../../clients/flutter/lib/src/features/voice/lifecycle/controller.dart)
 - cmp.web.voice\_controls: [clients/web/src/voice/VoiceDock.vue](../../../../clients/web/src/voice/VoiceDock.vue)
