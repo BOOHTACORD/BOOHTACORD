@@ -21,7 +21,7 @@ func capabilityClass(request *http.Request) string {
 	var roster, maintenance bool
 	for _, value := range requestedCapabilities(request) {
 		switch value {
-		case "voice_roster_v1":
+		case "voice_roster_v1", "voice_roster_v2":
 			roster = true
 		case "maintenance_v1":
 			maintenance = true

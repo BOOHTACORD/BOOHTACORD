@@ -35,6 +35,7 @@ void main() {
                         'display_name': 'Мика',
                         'screen_sharing': true,
                         'microphone_muted': false,
+                        'deafened': true,
                       },
                     ],
                   },
@@ -51,13 +52,14 @@ void main() {
       final rosters = await api.voiceParticipants();
 
       expect(request.method, 'GET');
-      expect(request.url.path, '/api/v1/voice/participants');
+      expect(request.url.path, '/api/v2/voice/participants');
       expect(request.headers['cookie'], 'session=test-session');
       expect(request.headers['cache-control'], 'no-store');
       expect(rosters, hasLength(2));
       expect(rosters.first.participants.single.displayName, 'Мика');
       expect(rosters.first.participants.single.screenSharing, isTrue);
       expect(rosters.first.participants.single.microphoneMuted, isFalse);
+      expect(rosters.first.participants.single.deafened, isTrue);
       expect(rosters.last.participants, isEmpty);
     },
   );

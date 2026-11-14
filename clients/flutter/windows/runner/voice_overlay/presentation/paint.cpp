@@ -42,7 +42,8 @@ void VoiceOverlayWindow::Paint() {
     DrawTextW(dc, member.display_name.c_str(), -1, &name,
               DT_LEFT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS);
     RECT state{bounds.right - Layout(74), y, bounds.right - Layout(14), y + kRowHeight - Layout(3)};
-    DrawTextW(dc, member.microphone_muted ? L"MIC OFF" : L"MIC ON", -1,
+    const wchar_t* state_label = member.deafened ? L"DEAFENED" : member.microphone_muted ? L"MIC OFF" : L"MIC ON";
+    DrawTextW(dc, state_label, -1,
               &state, DT_RIGHT | DT_VCENTER | DT_SINGLELINE);
     y += kRowHeight;
   }

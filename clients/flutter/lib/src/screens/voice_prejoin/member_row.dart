@@ -80,11 +80,15 @@ class VoiceRosterMemberRow extends StatelessWidget {
               ),
             ),
           Tooltip(
-            message: participant.microphoneMuted
+            message: participant.deafened
+                ? 'Не слышит участников'
+                : participant.microphoneMuted
                 ? 'Микрофон выключен'
                 : 'Микрофон включён',
             child: Icon(
-              participant.microphoneMuted
+              participant.deafened
+                  ? Icons.headset_off
+                  : participant.microphoneMuted
                   ? Icons.mic_off_outlined
                   : Icons.mic_none_outlined,
               size: 16,

@@ -12,6 +12,7 @@ struct VoiceOverlayMember {
   std::wstring display_name;
   bool speaking;
   bool microphone_muted;
+  bool deafened;
 };
 
 class VoiceOverlayWindow {

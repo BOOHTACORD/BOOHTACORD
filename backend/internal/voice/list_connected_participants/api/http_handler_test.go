@@ -23,6 +23,21 @@ func (stub *listerStub) List(_ context.Context, actor string) (listconnectedpart
 	stub.actor = actor
 	return stub.result, stub.err
 }
+func (stub *listerStub) ListV2(ctx context.Context, actor string) (listconnectedparticipants.ResultV2, error) {
+	result, err := stub.List(ctx, actor)
+	if err != nil {
+		return listconnectedparticipants.ResultV2{}, err
+	}
+	out := listconnectedparticipants.ResultV2{Channels: make([]listconnectedparticipants.ChannelRosterV2, 0, len(result.Channels))}
+	for _, channel := range result.Channels {
+		item := listconnectedparticipants.ChannelRosterV2{ChannelID: channel.ChannelID, Participants: make([]listconnectedparticipants.ParticipantV2, 0, len(channel.Participants))}
+		for _, member := range channel.Participants {
+			item.Participants = append(item.Participants, listconnectedparticipants.ParticipantV2{AccountID: member.AccountID, DisplayName: member.DisplayName, ScreenSharing: member.ScreenSharing, MicrophoneMuted: member.MicrophoneMuted, Deafened: member.Deafened})
+		}
+		out.Channels = append(out.Channels, item)
+	}
+	return out, nil
+}
 
 func TestHandlerReturnsProtectedUncachedRosterWithoutJoiningVoice(t *testing.T) {
 	stub := &listerStub{result: listconnectedparticipants.Result{Channels: []listconnectedparticipants.ChannelRoster{{
@@ -32,8 +47,19 @@ func TestHandlerReturnsProtectedUncachedRosterWithoutJoiningVoice(t *testing.T) 
 	request = request.WithContext(sessionapi.WithPrincipal(request.Context(), authenticatesession.Principal{AccountID: "33333333-3333-4333-8333-333333333333"}))
 	recorder := httptest.NewRecorder()
 	NewHandler(stub).ServeHTTP(recorder, request)
-	if recorder.Code != http.StatusOK || recorder.Header().Get("Cache-Control") != "no-store" || stub.actor != "33333333-3333-4333-8333-333333333333" || !strings.Contains(recorder.Body.String(), `"screen_sharing":true`) || !strings.Contains(recorder.Body.String(), `"display_name":"Мария"`) {
+	if recorder.Code != http.StatusOK || recorder.Header().Get("Cache-Control") != "no-store" || stub.actor != "33333333-3333-4333-8333-333333333333" || !strings.Contains(recorder.Body.String(), `"screen_sharing":true`) || !strings.Contains(recorder.Body.String(), `"display_name":"Мария"`) || strings.Contains(recorder.Body.String(), `"deafened"`) {
 		t.Fatalf("status=%d headers=%v body=%s actor=%s", recorder.Code, recorder.Header(), recorder.Body.String(), stub.actor)
+	}
+}
+
+func TestV2HandlerAddsDeafenedStatus(t *testing.T) {
+	stub := &listerStub{result: listconnectedparticipants.Result{Channels: []listconnectedparticipants.ChannelRoster{{ChannelID: "11111111-1111-4111-8111-111111111111", Participants: []listconnectedparticipants.Participant{{AccountID: "22222222-2222-4222-8222-222222222222", DisplayName: "Мария", Deafened: true}}}}}}
+	request := httptest.NewRequest(http.MethodGet, "/api/v2/voice/participants", nil)
+	request = request.WithContext(sessionapi.WithPrincipal(request.Context(), authenticatesession.Principal{AccountID: "33333333-3333-4333-8333-333333333333"}))
+	recorder := httptest.NewRecorder()
+	NewV2Handler(stub).ServeHTTP(recorder, request)
+	if recorder.Code != http.StatusOK || !strings.Contains(recorder.Body.String(), `"deafened":true`) {
+		t.Fatalf("status=%d body=%s", recorder.Code, recorder.Body.String())
 	}
 }
 

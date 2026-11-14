@@ -1,4 +1,5 @@
 import { RemoteParticipantController, type RemoteMicrophonePublication, type SpeakingPlayback } from './remote_participant_controller'
+import { remoteParticipantDeafened } from './voice_deafen_attribute'
 import type { ScreenViewerPublication } from './screen_viewer_controller'
 
 export interface LiveKitRemoteParticipant {
@@ -18,6 +19,7 @@ export function bindLiveKitRemoteParticipants(
 ): RemoteParticipantController {
   return new RemoteParticipantController(() => [...participants()].map((participant) => ({
     accountId: accountId(participant),
+    deafened: remoteParticipantDeafened(participant.attributes),
     id: participantId(participant),
     microphone: participant.getTrackPublication(microphoneSource) as RemoteMicrophonePublication | undefined,
     name: participant.name,

@@ -1,11 +1,12 @@
 import { tracedFetch } from '../telemetry/client_tracing'
-import { apiBaseUrl } from '../config/runtime'
+import { apiV2BaseUrl } from '../config/runtime'
 
 export interface VoiceRosterMember {
   accountId: string
   displayName: string
   screenSharing: boolean
   microphoneMuted: boolean
+  deafened: boolean
 }
 
 export interface VoiceRoomRoster {
@@ -38,16 +39,17 @@ export function parseVoiceRosters(value: unknown): VoiceRoomRoster[] {
     const participants = channel.participants.map((entry): VoiceRosterMember => {
       const member = record(entry)
       const accountId = nonempty(member.account_id)
-      if (members.has(accountId) || typeof member.screen_sharing !== 'boolean' || typeof member.microphone_muted !== 'boolean') throw new Error('Некорректный состав голосовых каналов.')
+      const keys = Object.keys(member).sort().join(',')
+      if (members.has(accountId) || typeof member.screen_sharing !== 'boolean' || typeof member.microphone_muted !== 'boolean' || (keys !== 'account_id,display_name,microphone_muted,screen_sharing' && keys !== 'account_id,deafened,display_name,microphone_muted,screen_sharing') || (Object.hasOwn(member, 'deafened') && typeof member.deafened !== 'boolean')) throw new Error('Некорректный состав голосовых каналов.')
       members.add(accountId)
-      return { accountId, displayName: nonempty(member.display_name), screenSharing: member.screen_sharing, microphoneMuted: member.microphone_muted }
+      return { accountId, displayName: nonempty(member.display_name), screenSharing: member.screen_sharing, microphoneMuted: member.microphone_muted, deafened: member.deafened === true }
     })
     return { channelId, participants }
   })
 }
 
 export async function loadVoiceRosters(request: VoiceRosterRequest = tracedFetch): Promise<VoiceRoomRoster[]> {
-  const response = await request(`${apiBaseUrl}/voice/participants`, {
+  const response = await request(`${apiV2BaseUrl}/voice/participants`, {
     credentials: 'same-origin', cache: 'no-store', headers: { accept: 'application/json' },
   })
   if (!response.ok) throw new Error(`Не удалось обновить состав голосовых каналов (${response.status}).`)

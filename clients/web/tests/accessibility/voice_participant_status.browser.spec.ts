@@ -5,7 +5,7 @@ for (const [props,label] of [
  [{microphoneMuted:false},'В голосовом канале'],
  [{microphoneMuted:true},'Микрофон выключен'],
  [{microphoneMuted:false,microphoneUnavailable:true},'Микрофон недоступен'],
- [{microphoneMuted:false,deafened:true},'Звук и микрофон выключены'],
+ [{microphoneMuted:false,deafened:true},'Не слышит участников'],
  [{microphoneMuted:false,speaking:true},'Говорит'],
 ] as const) {
  test(`participant status exposes named icon: ${label}`, async({page})=>{

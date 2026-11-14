@@ -47,7 +47,13 @@ void main() {
     );
     final arguments = visible.arguments as Map;
     final member = (arguments['members'] as List).single as Map;
-    expect(member.keys.toSet(), {'displayName', 'speaking', 'microphoneMuted'});
+    expect(member.keys.toSet(), {
+      'displayName',
+      'speaking',
+      'microphoneMuted',
+      'deafened',
+    });
+    expect(member['deafened'], isFalse);
     expect(member['displayName'], 'Alice');
     expect(calls.last.arguments['visible'], isFalse);
     feed.dispose();

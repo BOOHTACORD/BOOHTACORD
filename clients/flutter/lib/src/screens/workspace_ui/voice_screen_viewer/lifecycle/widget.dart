@@ -27,7 +27,6 @@ class WorkspaceVoiceScreenViewer extends WorkspaceVoiceScreenViewerContext
     required super.screenAudioAvailable,
     required super.screenAudioVolume,
     required super.screenAudioMuted,
-    required super.deafened,
     required super.onToggleScreenAudio,
     required super.onScreenAudioVolumeChanged,
     required super.onFullscreen,

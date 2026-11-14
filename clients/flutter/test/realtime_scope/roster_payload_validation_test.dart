@@ -12,6 +12,13 @@ void main() {
       }),
       isTrue,
     );
+    expect(
+      validRosterPayload('voice.roster.unavailable.v2', {
+        'version': 2,
+        'code': 'temporarily_unavailable',
+      }),
+      isTrue,
+    );
     for (final payload in [
       {'version': 1, 'code': 'database timeout'},
       {'version': 1, 'code': 'temporarily_unavailable', 'detail': 'private'},
@@ -20,6 +27,20 @@ void main() {
     ]) {
       expect(validRosterPayload('voice.roster.unavailable', payload), isFalse);
     }
+  });
+
+  test('version 2 requires a strict replicated deafen field', () {
+    final value = snapshot()..['version'] = 2;
+    final participant =
+        ((value['channels'] as List).first
+                as Map<String, dynamic>)['participants']
+            as List;
+    final first = participant.first as Map<String, dynamic>;
+    first['deafened'] = true;
+    expect(validRosterPayload('voice.roster.snapshot.v2', value), isTrue);
+    first.remove('deafened');
+    expect(validRosterPayload('voice.roster.snapshot.v2', value), isFalse);
+    expect(validRosterPayload('voice.roster.snapshot', snapshot()), isTrue);
   });
 
   test('rejects duplicates, malformed flags and overly long Unicode names', () {

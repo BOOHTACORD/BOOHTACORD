@@ -56,7 +56,6 @@ extension VoiceRoomScreenViewerRenderer on WorkspaceVoiceRoomStateContext {
         : state.screenShareVolume(selectedScreen),
     screenAudioMuted:
         selectedScreen != null && state.screenShareAudioMuted(selectedScreen),
-    deafened: state.deafened,
     onToggleScreenAudio: selectedScreen == null
         ? null
         : () => unawaited(state.toggleScreenShareAudio(selectedScreen)),

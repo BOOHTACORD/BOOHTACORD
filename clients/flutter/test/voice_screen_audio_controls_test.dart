@@ -17,7 +17,6 @@ void main() {
             screenAudioAvailable: false,
             screenAudioVolume: null,
             screenAudioMuted: false,
-            deafened: false,
             onToggleScreenAudio: null,
             onScreenAudioVolumeChanged: null,
           ),
@@ -48,7 +47,6 @@ void main() {
               screenAudioAvailable: true,
               screenAudioVolume: 125,
               screenAudioMuted: muted,
-              deafened: false,
               onToggleScreenAudio: () => setState(() => muted = !muted),
               onScreenAudioVolumeChanged: (value) => changedVolume = value,
             ),
@@ -101,7 +99,6 @@ void main() {
             screenAudioAvailable: true,
             screenAudioVolume: 125,
             screenAudioMuted: false,
-            deafened: false,
             onToggleScreenAudio: _ignore,
             onScreenAudioVolumeChanged: _ignoreVolume,
           ),
@@ -128,20 +125,21 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('deafen disables screen-share mute and gain controls', (
+  testWidgets('deafen leaves screen-share mute and gain controls active', (
     tester,
   ) async {
+    var toggled = false;
+    var changedVolume = -1;
     await tester.pumpWidget(
-      const MaterialApp(
+      MaterialApp(
         home: Scaffold(
           body: VoiceScreenAudioControls(
             showingLocalScreen: false,
             screenAudioAvailable: true,
             screenAudioVolume: 100,
             screenAudioMuted: false,
-            deafened: true,
-            onToggleScreenAudio: null,
-            onScreenAudioVolumeChanged: null,
+            onToggleScreenAudio: () => toggled = true,
+            onScreenAudioVolumeChanged: (value) => changedVolume = value,
           ),
         ),
       ),
@@ -149,7 +147,7 @@ void main() {
 
     expect(
       tester.widget<IconButton>(find.byType(IconButton)).onPressed,
-      isNull,
+      isNotNull,
     );
     expect(
       tester
@@ -157,14 +155,22 @@ void main() {
             find.byKey(const ValueKey('screen-share-audio-volume-slider')),
           )
           .onChanged,
-      isNull,
+      isNotNull,
     );
     expect(
       find.text(
         'Удалённый звук выключен; аудиодорожка сейчас не воспроизводится.',
       ),
-      findsOneWidget,
+      findsNothing,
     );
+    await tester.tap(find.byTooltip('Выключить звук трансляции'));
+    expect(toggled, isTrue);
+    tester
+        .widget<Slider>(
+          find.byKey(const ValueKey('screen-share-audio-volume-slider')),
+        )
+        .onChanged!(176);
+    expect(changedVolume, 176);
   });
 
   testWidgets('local screen preview explains that it has no audio', (
@@ -178,7 +184,6 @@ void main() {
             screenAudioAvailable: false,
             screenAudioVolume: null,
             screenAudioMuted: false,
-            deafened: false,
             onToggleScreenAudio: null,
             onScreenAudioVolumeChanged: null,
           ),
@@ -208,7 +213,6 @@ void main() {
               screenAudioAvailable: true,
               screenAudioVolume: volume,
               screenAudioMuted: muted,
-              deafened: false,
               onToggleScreenAudio: () => unawaited(
                 toggleScreenAudioWithCallbacks(
                   volume: volume,
@@ -249,7 +253,6 @@ void main() {
               screenAudioAvailable: true,
               screenAudioVolume: volume,
               screenAudioMuted: muted,
-              deafened: false,
               onToggleScreenAudio: () => unawaited(
                 toggleScreenAudioWithCallbacks(
                   volume: volume,
@@ -284,7 +287,6 @@ void main() {
             screenAudioAvailable: true,
             screenAudioVolume: null,
             screenAudioMuted: false,
-            deafened: false,
             onToggleScreenAudio: _ignore,
             onScreenAudioVolumeChanged: null,
           ),

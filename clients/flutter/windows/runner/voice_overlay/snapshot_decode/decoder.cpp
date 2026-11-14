@@ -38,12 +38,14 @@ std::optional<DecodedOverlaySnapshot> DecodeOverlaySnapshot(const EncodableValue
     const auto* name_value = Find(*member, "displayName");
     const auto* speaking_value = Find(*member, "speaking");
     const auto* muted_value = Find(*member, "microphoneMuted");
+    const auto* deafened_value = Find(*member, "deafened");
     const auto* name = name_value ? std::get_if<std::string>(name_value) : nullptr;
     const auto* speaking = speaking_value ? std::get_if<bool>(speaking_value) : nullptr;
     const auto* muted = muted_value ? std::get_if<bool>(muted_value) : nullptr;
+    const auto* deafened = deafened_value ? std::get_if<bool>(deafened_value) : nullptr;
     const auto wide = name ? Name(*name) : std::nullopt;
-    if (!wide || !speaking || !muted) return std::nullopt;
-    projected.push_back({*wide, *speaking, *muted});
+    if (!wide || !speaking || !muted || (deafened_value && !deafened)) return std::nullopt;
+    projected.push_back({*wide, *speaking, *muted, deafened ? *deafened : false});
   }
   return DecodedOverlaySnapshot{true, projected};
 }

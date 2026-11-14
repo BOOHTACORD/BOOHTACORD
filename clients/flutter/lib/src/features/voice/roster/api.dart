@@ -7,9 +7,13 @@ class VoiceRosterApi {
   final ApiTransport transport;
 
   Future<List<VoiceRoomRoster>> voiceParticipants() async {
+    final legacyUri = transport.uri('/voice/participants');
+    final uri = legacyUri.replace(
+      path: legacyUri.path.replaceFirst(RegExp(r'/v1(?=/|$)'), '/v2'),
+    );
     final data = await transport.checked(
       await transport.client.get(
-        transport.uri('/voice/participants'),
+        uri,
         headers: {...await transport.headers(), 'cache-control': 'no-store'},
       ),
     );

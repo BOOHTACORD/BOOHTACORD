@@ -9,7 +9,6 @@ class VoiceScreenAudioControls extends StatelessWidget {
     required this.screenAudioAvailable,
     required this.screenAudioVolume,
     required this.screenAudioMuted,
-    required this.deafened,
     required this.onToggleScreenAudio,
     required this.onScreenAudioVolumeChanged,
   });
@@ -18,7 +17,6 @@ class VoiceScreenAudioControls extends StatelessWidget {
   final bool screenAudioAvailable;
   final int? screenAudioVolume;
   final bool screenAudioMuted;
-  final bool deafened;
   final VoidCallback? onToggleScreenAudio;
   final ValueChanged<int>? onScreenAudioVolumeChanged;
 
@@ -61,9 +59,7 @@ class VoiceScreenAudioControls extends StatelessWidget {
             const SizedBox(width: 8),
             Expanded(
               child: Text(
-                deafened
-                    ? 'Удалённый звук выключен; аудиодорожка сейчас не воспроизводится.'
-                    : 'Аудиодорожка есть; личная настройка громкости недоступна.',
+                'Аудиодорожка есть; личная настройка громкости недоступна.',
                 style: const TextStyle(color: GcColors.muted, fontSize: 12),
               ),
             ),
@@ -78,14 +74,6 @@ class VoiceScreenAudioControls extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (deafened)
-            const Padding(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 4),
-              child: Text(
-                'Удалённый звук выключен; аудиодорожка сейчас не воспроизводится.',
-                style: TextStyle(color: GcColors.muted, fontSize: 12),
-              ),
-            ),
           SizedBox(
             key: const ValueKey('screen-share-audio-toolbar-row'),
             width: double.infinity,
@@ -136,11 +124,9 @@ class VoiceScreenAudioControls extends StatelessWidget {
         padding: EdgeInsets.zero,
       ),
       visualDensity: VisualDensity.compact,
-      onPressed: deafened ? null : onToggleScreenAudio,
+      onPressed: onToggleScreenAudio,
       icon: Icon(
-        _muted || deafened
-            ? Icons.volume_off_outlined
-            : Icons.volume_up_outlined,
+        _muted ? Icons.volume_off_outlined : Icons.volume_up_outlined,
         size: compact ? 20 : 18,
       ),
     ),
@@ -155,7 +141,7 @@ class VoiceScreenAudioControls extends StatelessWidget {
       max: 200,
       divisions: 200,
       semanticFormatterCallback: (value) => '${value.round()} процентов',
-      onChanged: deafened || onScreenAudioVolumeChanged == null
+      onChanged: onScreenAudioVolumeChanged == null
           ? null
           : (value) => onScreenAudioVolumeChanged!(value.round()),
     ),

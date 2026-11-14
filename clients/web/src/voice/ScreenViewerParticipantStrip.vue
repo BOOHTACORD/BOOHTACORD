@@ -72,12 +72,12 @@ function watchesSelectedScreen(participantId: string | undefined): boolean {
         <span v-if="ownScreenSharing" class="voice-viewer-stream-indicator" role="img" aria-label="Показывает экран" title="Показывает экран"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18v13H3zM8 21h8m-4-4v4" /></svg></span>
         <VoiceParticipantStatus compact :deafened="selfDeafened" :microphone-muted="selfMicrophoneMuted" :microphone-unavailable="selfMicrophoneUnavailable" :speaking="selfSpeaking" />
       </li>
-      <li v-for="participant in participants" :key="participant.id" class="voice-viewer-participant" :class="{ 'is-speaking': participant.speaking && !participant.microphoneMuted }">
+      <li v-for="participant in participants" :key="participant.id" class="voice-viewer-participant" :class="{ 'is-speaking': participant.speaking && !participant.microphoneMuted && !participant.deafened }">
         <span class="voice-viewer-participant-avatar" :style="{ backgroundColor: avatarBackground(participant.accountId ?? participant.id), color: avatarForeground(participant.accountId ?? participant.id) }" aria-hidden="true"><img v-if="avatarUrl(participant.accountId)" :src="avatarUrl(participant.accountId)" alt=""><template v-else>{{ initial(participant.name) }}</template></span>
         <span class="voice-viewer-participant-name" :title="displayName(participant.name)">{{ displayName(participant.name) }}</span>
         <span v-if="watchesSelectedScreen(participant.id)" class="voice-viewer-watching-indicator" role="img" :aria-label="watcherLabel()" :title="watcherLabel()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.2-6 9.5-6 9.5 6 9.5 6-3.2 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg></span>
         <span v-if="sharesScreen(participant.id)" class="voice-viewer-stream-indicator" role="img" aria-label="Показывает экран" title="Показывает экран"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18v13H3zM8 21h8m-4-4v4" /></svg></span>
-        <VoiceParticipantStatus compact :microphone-muted="participant.microphoneMuted" :speaking="participant.speaking" />
+        <VoiceParticipantStatus compact :deafened="participant.deafened" :microphone-muted="participant.microphoneMuted" :speaking="participant.speaking" />
       </li>
     </ul>
   </section>

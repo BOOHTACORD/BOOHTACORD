@@ -14,6 +14,9 @@ import (
 type Lister interface {
 	List(context.Context, string) (listconnectedparticipants.Result, error)
 }
+type V2Lister interface {
+	ListV2(context.Context, string) (listconnectedparticipants.ResultV2, error)
+}
 
 func NewHandler(lister Lister) http.Handler {
 	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
@@ -30,6 +33,35 @@ func NewHandler(lister Lister) http.Handler {
 		snapshot, cancel := context.WithTimeout(request.Context(), authenticatesession.SessionLookupTimeout)
 		defer cancel()
 		result, err := lister.List(snapshot, principal.AccountID)
+		if err != nil && listconnectedparticipants.FailureStatus(err) == http.StatusServiceUnavailable {
+			writer.Header().Set("Retry-After", "1")
+			writeError(writer, request, http.StatusServiceUnavailable, "VOICE_PRESENCE_UNAVAILABLE")
+			return
+		}
+		if err != nil {
+			writeError(writer, request, http.StatusInternalServerError, "INTERNAL")
+			return
+		}
+		writer.Header().Set("Content-Type", "application/json; charset=utf-8")
+		_ = json.NewEncoder(writer).Encode(result)
+	})
+}
+
+func NewV2Handler(lister V2Lister) http.Handler {
+	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Cache-Control", "no-store")
+		if request.Method != http.MethodGet {
+			writer.WriteHeader(http.StatusMethodNotAllowed)
+			return
+		}
+		principal, ok := sessionapi.PrincipalFrom(request.Context())
+		if !ok {
+			writeError(writer, request, http.StatusInternalServerError, "INTERNAL")
+			return
+		}
+		snapshot, cancel := context.WithTimeout(request.Context(), authenticatesession.SessionLookupTimeout)
+		defer cancel()
+		result, err := lister.ListV2(snapshot, principal.AccountID)
 		if err != nil && listconnectedparticipants.FailureStatus(err) == http.StatusServiceUnavailable {
 			writer.Header().Set("Retry-After", "1")
 			writeError(writer, request, http.StatusServiceUnavailable, "VOICE_PRESENCE_UNAVAILABLE")

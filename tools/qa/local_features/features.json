@@ -515,7 +515,7 @@
     }
   },
   "voice": {
-    "native_targets": ["integration_test/issue689_listener_test.dart", "integration_test/issue689_roster_test.dart"],
+    "native_targets": ["integration_test/issue689_listener_test.dart", "integration_test/issue689_roster_test.dart", "integration_test/issue786_deafen_test.dart"],
     "paths": [
       "clients/flutter/packages/flutter_webrtc/common/rnnoise/Package.swift",
       "tools/verify/apple_audio_link/*",
@@ -526,6 +526,7 @@
       "tools/verify/livekit_network_config/test_speaker_activity.py",
       "evidence/qa/voice-speaker-activity-2026-11-10.md",
       "clients/web/src/voice/*",
+      "clients/web/src/config/runtime.ts",
       "clients/web/src/conversation/ConversationPane.vue",
       "clients/web/src/design/design_v2_voice_room.css",
       "clients/web/src/design/voice_roster.css",
@@ -578,6 +579,8 @@
       "clients/flutter/lib/src/screens/voice_prejoin/**",
       "clients/flutter/lib/src/widgets/voice_disconnect/join_actions.dart",
       "clients/flutter/integration_test/roster_qa_test.dart",
+      "clients/flutter/integration_test/issue786_deafen_test.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/participant_deafened/*",
       "clients/flutter/integration_test/mobile_navigation_qa_test.dart",
       "clients/flutter/integration_test/admin_dialogs_qa_test.dart",
       "clients/flutter/integration_test/accessibility_qa_test.dart",
@@ -639,6 +642,34 @@
       "test/realtime_scope/roster_event_test.dart"
     ],
     "acceptance": {
+      "issue786_deafen_screen_audio": {
+        "issue": 786,
+        "focused": [
+          "backend/internal/media/set_voice_deafen",
+          "backend/internal/media/snapshot_livekit_presence/snapshot_rooms_test.go",
+          "backend/internal/voice/list_connected_participants/service_test.go",
+          "backend/internal/realtime/connect_session/roster_stream.go",
+          "backend/internal/voice/list_connected_participants/api/http_handler_test.go",
+          "clients/web/src/voice/voice_deafen_publisher.spec.ts",
+          "clients/web/tests/accessibility/voice_participant_status.browser.spec.ts",
+          "clients/web/src/voice/livekit_screen_viewer_adapter.spec.ts",
+          "clients/web/src/voice/remote_participant_controller.spec.ts",
+          "clients/web/src/voice/screen_audio_copy.spec.ts",
+          "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts",
+          "clients/web/tests/mini_player/mini.browser.spec.ts",
+          "clients/web/src/voice/voice_roster_client.spec.ts",
+          "clients/web/src/channel/channel_navigation_badges.spec.ts",
+          "clients/web/src/realtime/roster_payload.spec.ts",
+          "clients/flutter/test/voice_screen_audio_controls_test.dart",
+          "clients/flutter/test/screen_share_audio_publication_test.dart",
+          "clients/flutter/test/voice_roster_member_row_test.dart",
+          "clients/flutter/test/voice_overlay/projection_test.dart",
+          "clients/flutter/test/realtime_scope/roster_payload_validation_test.dart",
+          "clients/flutter/test/voice_roster_api/roster_success_test.dart",
+          "clients/flutter/integration_test/issue786_deafen_test.dart"
+        ],
+        "scope": "Web and Flutter deafen suppresses only participant microphone audio while retaining the selected stream audio track, its mute and volume controls, and the existing mic restore behavior. A server-authenticated lease owner publishes a whitelisted LiveKit deafened attribute; Web/Flutter participant and roster status prefer deafened over microphone-muted. Existing strict roster clients remain compatible through an explicit v2 contract. Automated and registered local runtime outcomes are separate from paired physical media acceptance; no platform media capability is claimed."
+      },
       "issue687": {
         "focused": [
           "clients/web/src/voice/noise_suppression/rnnoise_model.spec.ts",

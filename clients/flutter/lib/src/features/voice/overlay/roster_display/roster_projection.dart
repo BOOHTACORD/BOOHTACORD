@@ -11,12 +11,14 @@ VoiceOverlaySnapshot projectVoiceOverlayRoster({
   int maxParticipants = 8,
 }) {
   final members = roster.map((member) {
-    final speaking = speakingAccountIds.contains(member.accountId) &&
+    final speaking =
+        speakingAccountIds.contains(member.accountId) &&
         !member.microphoneMuted;
     return VoiceOverlayMemberInput(
       displayName: member.displayName,
       speaking: speaking,
       microphoneMuted: member.microphoneMuted,
+      deafened: member.deafened,
     );
   });
   return projectVoiceOverlay(

@@ -12,7 +12,7 @@ import MemberPopover from './MemberPopover.vue'
 import { groupMembersByPresence } from './member_presence'
 import type { GuildVoicePresence } from './guild_voice_presence'
 
-const props = defineProps<{ activeVoiceChannel: TopologyChannel | null; selectedVoiceChannel: TopologyChannel | null; participants: VoiceVolumeParticipant[]; voicePresence?: ReadonlyMap<string, GuildVoicePresence>; presenceResolver: (userID: string, fallback: MemberPresence) => MemberPresence; role: 'MEMBER' | 'ADMINISTRATOR'; accountID?: string; selfMicrophoneMuted: boolean; selfMicrophoneUnavailable: boolean; selfName: string | null; open: boolean; modal: boolean }>()
+const props = defineProps<{ activeVoiceChannel: TopologyChannel | null; selectedVoiceChannel: TopologyChannel | null; participants: VoiceVolumeParticipant[]; voicePresence?: ReadonlyMap<string, GuildVoicePresence>; presenceResolver: (userID: string, fallback: MemberPresence) => MemberPresence; role: 'MEMBER' | 'ADMINISTRATOR'; accountID?: string; selfMicrophoneMuted: boolean; selfMicrophoneUnavailable: boolean; selfDeafened?: boolean; selfName: string | null; open: boolean; modal: boolean }>()
 const emit = defineEmits<{ openDM: [userID: string]; setVolume: [participantID: string, volume: number]; memberCount: [count: number] }>()
 const directory = useMemberDirectory()
 const guildMembers = computed(() => directory.members)
@@ -47,7 +47,8 @@ function closeProfile(restoreFocus = true): void {
   if (restoreFocus) void nextTick(() => trigger.value?.focus())
 }
 function setVolume(volume: number): void { if (selectedVoiceParticipant.value) emit('setVolume', selectedVoiceParticipant.value.id, volume) }
-function voiceStateLabel(muted: boolean, speaking: boolean, unavailable = false): string {
+function voiceStateLabel(muted: boolean, speaking: boolean, unavailable = false, deafened = false): string {
+  if (deafened) return 'Не слышит участников'
   if (unavailable) return 'Микрофон недоступен'
   if (muted) return 'Микрофон выключен'
   return speaking ? 'Говорит' : 'В голосовом канале'
@@ -65,10 +66,10 @@ onMounted(() => { if (!props.selectedVoiceChannel) void loadRoster() })
     <section v-if="voiceRoomVisible" class="members-voice-roster" aria-label="Подключённые к голосовому каналу" :inert="Boolean(selectedID) && modal">
       <h3 class="members-group">В голосовом канале · {{ participants.length + 1 }}</h3>
       <ul class="member-list">
-        <li class="member-card member member-self"><span class="member-avatar" :style="{ backgroundColor: avatarBackground(accountID ?? selfName ?? 'Вы'), color: avatarForeground(accountID ?? selfName ?? 'Вы') }" aria-hidden="true">{{ avatarInitials(selfName ?? 'Вы') }}</span><span class="member-copy"><span :title="selfName ?? 'Вы'" class="member-name">{{ selfName || 'Вы' }}</span></span><VoiceParticipantStatus compact :microphone-muted="selfMicrophoneMuted" :microphone-unavailable="selfMicrophoneUnavailable" /></li>
+        <li class="member-card member member-self"><span class="member-avatar" :style="{ backgroundColor: avatarBackground(accountID ?? selfName ?? 'Вы'), color: avatarForeground(accountID ?? selfName ?? 'Вы') }" aria-hidden="true">{{ avatarInitials(selfName ?? 'Вы') }}</span><span class="member-copy"><span :title="selfName ?? 'Вы'" class="member-name">{{ selfName || 'Вы' }}</span></span><VoiceParticipantStatus compact :deafened="selfDeafened" :microphone-muted="selfMicrophoneMuted" :microphone-unavailable="selfMicrophoneUnavailable" /></li>
         <li v-for="participant in participants" :key="participant.id">
-          <button class="member-card member" :class="{ 'member-speaking': participant.speaking }" type="button" :title="`${participant.name || 'Участник'} · ${voiceStateLabel(participant.microphoneMuted, participant.speaking)}`" :disabled="!participant.accountId" :aria-label="`Профиль: ${participant.name || 'Участник'} · ${voiceStateLabel(participant.microphoneMuted, participant.speaking)}`" @click="participant.accountId && openProfile(participant.accountId, $event)">
-            <span class="member-avatar" :style="{ backgroundColor: avatarBackground(participant.accountId ?? participant.id), color: avatarForeground(participant.accountId ?? participant.id) }" aria-hidden="true">{{ avatarInitials(participant.name) }}</span><span class="member-copy"><span class="member-name">{{ participant.name || 'Участник' }}</span></span><VoiceParticipantStatus compact :microphone-muted="participant.microphoneMuted" :speaking="participant.speaking" />
+          <button class="member-card member" :class="{ 'member-speaking': participant.speaking && !participant.deafened }" type="button" :title="`${participant.name || 'Участник'} · ${voiceStateLabel(participant.microphoneMuted, participant.speaking, false, participant.deafened)}`" :disabled="!participant.accountId" :aria-label="`Профиль: ${participant.name || 'Участник'} · ${voiceStateLabel(participant.microphoneMuted, participant.speaking, false, participant.deafened)}`" @click="participant.accountId && openProfile(participant.accountId, $event)">
+            <span class="member-avatar" :style="{ backgroundColor: avatarBackground(participant.accountId ?? participant.id), color: avatarForeground(participant.accountId ?? participant.id) }" aria-hidden="true">{{ avatarInitials(participant.name) }}</span><span class="member-copy"><span class="member-name">{{ participant.name || 'Участник' }}</span></span><VoiceParticipantStatus compact :deafened="participant.deafened" :microphone-muted="participant.microphoneMuted" :speaking="participant.speaking" />
           </button>
         </li>
       </ul>
@@ -85,6 +86,6 @@ onMounted(() => { if (!props.selectedVoiceChannel) void loadRoster() })
       <button v-if="memberCursor && !membersError" class="members-more" type="button" :disabled="membersLoading" @click="loadRoster(memberCursor)">{{ membersLoading ? 'Загружаем…' : 'Показать ещё' }}</button>
     </section>
     <div v-if="selectedID && modal" class="member-sheet-scrim" aria-hidden="true" @click="closeProfile()" />
-    <MemberPopover v-if="selectedID" :key="selectedID" :member-i-d="selectedID" :self="selectedID === props.accountID" :viewer-role="props.role" :same-voice="Boolean(openedFromVoiceRoster && activeVoiceChannel && selectedVoiceParticipant)" :volume="selectedVoiceParticipant?.volume ?? 100" :anchor="trigger" :voice-status="openedFromVoiceRoster && selectedVoiceParticipant ? voiceStateLabel(selectedVoiceParticipant.microphoneMuted, selectedVoiceParticipant.speaking) : undefined" :modal="modal" @close="closeProfile" @open-d-m="emit('openDM', $event)" @set-volume="setVolume" />
+    <MemberPopover v-if="selectedID" :key="selectedID" :member-i-d="selectedID" :self="selectedID === props.accountID" :viewer-role="props.role" :same-voice="Boolean(openedFromVoiceRoster && activeVoiceChannel && selectedVoiceParticipant)" :volume="selectedVoiceParticipant?.volume ?? 100" :anchor="trigger" :voice-status="openedFromVoiceRoster && selectedVoiceParticipant ? voiceStateLabel(selectedVoiceParticipant.microphoneMuted, selectedVoiceParticipant.speaking, false, selectedVoiceParticipant.deafened) : undefined" :modal="modal" @close="closeProfile" @open-d-m="emit('openDM', $event)" @set-volume="setVolume" />
   </aside>
 </template>

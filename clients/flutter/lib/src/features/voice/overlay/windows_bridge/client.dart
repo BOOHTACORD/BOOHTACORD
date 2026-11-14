@@ -29,6 +29,7 @@ class WindowsVoiceOverlayClient {
               'displayName': member.displayName,
               'speaking': member.speaking,
               'microphoneMuted': member.microphoneMuted,
+              'deafened': member.deafened,
             },
           )
           .toList(growable: false),

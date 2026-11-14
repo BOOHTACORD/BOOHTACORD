@@ -8,7 +8,6 @@ export class ScreenViewerLifecycle {
   private video: HTMLVideoElement | null = null
   private audio: HTMLAudioElement | null = null
   private muted = false
-  private deafened = false
   private volume = 100
   private hasEnded = false
   private operation = 0
@@ -25,7 +24,6 @@ export class ScreenViewerLifecycle {
   get operationGeneration(): number { return this.operation }
   get subscriptionFailed(): boolean { return this.failedTrackSid !== null }
   hasAttachedVideo(element: HTMLVideoElement | null): boolean { return this.media.hasAttachedVideo(this.selected?.video.track ?? null, element) }
-  setDeafened(value: boolean): void { this.deafened = value; this.applyAudioState() }
   setAudioMuted(value: boolean): void { this.muted = value; this.applyAudioState(); this.changed() }
   setAudioVolume(value: number): void { this.volume = normalizeAudioVolume(value); this.applyAudioState() }
   markSubscriptionFailed(trackSid: string, participantId: string): boolean {
@@ -44,7 +42,7 @@ export class ScreenViewerLifecycle {
     const audioChanged = previous.audio !== current.audio
     if (audioChanged && !previous.isLocal) previous.audio?.setSubscribed?.(false)
     this.selected = current
-    const binding = this.media.bind(current, this.video, this.audio, this.muted, this.deafened, this.volume)
+    const binding = this.media.bind(current, this.video, this.audio, this.muted, this.volume)
     if (audioChanged && !current.isLocal) current.audio?.setSubscribed?.(true)
     if (binding.videoChanged) this.operation += 1
     if (binding.changed || audioChanged || previous !== current) this.changed()
@@ -59,19 +57,19 @@ export class ScreenViewerLifecycle {
       if (this.hasEnded) this.release(false, true)
       this.video = video
       this.audio = audio
-      this.media.bind(null, video, audio, this.muted, this.deafened, this.volume)
+      this.media.bind(null, video, audio, this.muted, this.volume)
       this.changed()
       return
     }
     this.selected = next
     this.video = video; this.audio = audio; this.hasEnded = false; this.retryUsed = false; this.failedTrackSid = null; this.operation += 1
-    this.media.bind(next, video, audio, this.muted, this.deafened, this.volume)
+    this.media.bind(next, video, audio, this.muted, this.volume)
     setScreenSubscribed(next, true)
     this.changed()
   }
   rebindElements(video: HTMLVideoElement | null, audio: HTMLAudioElement | null): void {
     if (this.selected) { this.rebind(this.selected, video, audio); return }
-    const changed = this.media.bind(null, video, audio, this.muted, this.deafened, this.volume)
+    const changed = this.media.bind(null, video, audio, this.muted, this.volume)
     this.video = video; this.audio = audio
     if (changed.videoChanged) this.operation += 1
     if (changed.changed) this.changed()
@@ -101,7 +99,7 @@ export class ScreenViewerLifecycle {
     const audioChanged = previous.audio !== next.audio
     if (audioChanged && !next.isLocal) previous.audio?.setSubscribed?.(false)
     this.selected = next
-    const binding = this.media.bind(next, video, audio, this.muted, this.deafened, this.volume)
+    const binding = this.media.bind(next, video, audio, this.muted, this.volume)
     this.video = video; this.audio = audio
     if (audioChanged && !next.isLocal) next.audio?.setSubscribed?.(true)
     if (binding.videoChanged) this.operation += 1
@@ -111,7 +109,7 @@ export class ScreenViewerLifecycle {
     const previous = this.selected
     if (previous) { this.media.detachTracks(); setScreenSubscribed(previous, false) }
     this.selected = null; this.hasEnded = ended; this.retryUsed = false; this.failedTrackSid = null; this.operation += 1
-    if (!preserveOutput) this.media.bind(null, this.video, this.audio, this.muted, this.deafened, this.volume)
+    if (!preserveOutput) this.media.bind(null, this.video, this.audio, this.muted, this.volume)
   }
-  private applyAudioState(): void { this.media.setAudioState(this.muted, this.deafened, this.volume) }
+  private applyAudioState(): void { this.media.setAudioState(this.muted, this.volume) }
   }

@@ -12,24 +12,28 @@ class VoiceRosterMember {
     required this.displayName,
     required this.screenSharing,
     required this.microphoneMuted,
+    this.deafened = false,
   });
 
   final String accountId;
   final String displayName;
   final bool screenSharing;
   final bool microphoneMuted;
+  final bool deafened;
 
   factory VoiceRosterMember.fromJson(Map<String, dynamic> json) {
     final accountId = json['account_id'];
     final displayName = json['display_name'];
     final screenSharing = json['screen_sharing'];
     final microphoneMuted = json['microphone_muted'];
+    final deafened = json['deafened'];
     if (accountId is! String ||
         accountId.trim().isEmpty ||
         displayName is! String ||
         displayName.trim().isEmpty ||
         screenSharing is! bool ||
-        microphoneMuted is! bool) {
+        microphoneMuted is! bool ||
+        (deafened != null && deafened is! bool)) {
       throw const FormatException('Invalid voice roster member.');
     }
     return VoiceRosterMember(
@@ -37,6 +41,7 @@ class VoiceRosterMember {
       displayName: displayName,
       screenSharing: screenSharing,
       microphoneMuted: microphoneMuted,
+      deafened: deafened == true,
     );
   }
 }
@@ -462,7 +467,11 @@ class ChatMessagePage {
 }
 
 class VoiceCredential {
-  const VoiceCredential({required this.url, required this.token, this.microphoneAllowed = true});
+  const VoiceCredential({
+    required this.url,
+    required this.token,
+    this.microphoneAllowed = true,
+  });
   final String url;
   final String token;
   final bool microphoneAllowed;

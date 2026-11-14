@@ -35,3 +35,13 @@ bool isScreenShareAudioPublication(
   RemoteParticipant participant,
   RemoteTrackPublication publication,
 ) => screenShareAudioPublication(participant)?.sid == publication.sid;
+
+/// True when an audio publication carries participant voice and may be silenced
+/// by deafen. Explicit and reliably identified legacy screen audio stay active.
+bool isVoiceAudioPublicationForDeafen(
+  RemoteParticipant participant,
+  RemoteTrackPublication publication,
+) {
+  if (publication.source == TrackSource.screenShareAudio) return false;
+  return !isScreenShareAudioPublication(participant, publication);
+}

@@ -3,6 +3,8 @@ import type { VoiceRoomRoster } from '../voice/voice_roster_client'
 
 export interface GuildVoicePresence {
   channelName: string
+  deafened: boolean
+  microphoneMuted: boolean
   screenSharing: boolean
 }
 
@@ -19,7 +21,12 @@ export function buildGuildVoicePresence(
     if (!channelName) continue
     for (const participant of room.participants) {
       if (!members.has(participant.accountId)) {
-        members.set(participant.accountId, { channelName, screenSharing: participant.screenSharing })
+        members.set(participant.accountId, {
+          channelName,
+          deafened: participant.deafened,
+          microphoneMuted: participant.microphoneMuted,
+          screenSharing: participant.screenSharing,
+        })
       }
     }
   }

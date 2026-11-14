@@ -34,7 +34,7 @@ void main() {
         microphoneUnavailable: true,
         deafened: true,
       ).label,
-      'Звук и микрофон выключены',
+      'Не слышит участников',
     );
     expect(
       VoiceParticipantPresentation.resolve(

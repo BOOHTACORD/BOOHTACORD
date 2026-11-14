@@ -2063,8 +2063,8 @@ void main() {
       matching: find.byIcon(Icons.headset_off),
     );
     expect(statusIcon, findsOneWidget);
-    expect(find.text('Звук и микрофон выключены'), findsNothing);
-    expect(find.byTooltip('Звук и микрофон выключены'), findsOneWidget);
+    expect(find.text('Не слышит участников'), findsNothing);
+    expect(find.byTooltip('Не слышит участников'), findsOneWidget);
 
     await tester.pumpWidget(const SizedBox.shrink());
     state.dispose();
@@ -5956,6 +5956,10 @@ class _NavigationRemoteParticipant implements RemoteParticipant {
 
   @override
   String? get metadata => 'account:account-2';
+
+  @override
+  UnmodifiableMapView<String, String> get attributes =>
+      UnmodifiableMapView(const {});
 
   @override
   String get name => 'Streamer';

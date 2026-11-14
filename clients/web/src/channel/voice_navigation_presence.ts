@@ -5,6 +5,7 @@ export interface VoiceNavigationMember {
   id: string
   name: string
   microphoneMuted: boolean
+  deafened: boolean
   microphoneUnavailable: boolean
   speaking: boolean
   isSpeaking: boolean
@@ -25,6 +26,7 @@ interface VoiceNavigationProfile {
 
 interface VoiceNavigationConnection {
   microphoneMuted: boolean
+  deafened: boolean
   microphonePermissionDenied: boolean
   selfSpeaking: boolean
   voiceVolumeParticipants: VoiceVolumeParticipant[]
@@ -45,9 +47,10 @@ export function buildVoiceNavigationPresence(
       id: participant.accountId || participant.id,
       name: participant.name?.trim() || 'Участник',
       microphoneMuted: participant.microphoneMuted,
+      deafened: participant.deafened,
       microphoneUnavailable: false,
       speaking: participant.speaking,
-      isSpeaking: participant.speaking && !participant.microphoneMuted,
+      isSpeaking: participant.speaking && !participant.microphoneMuted && !participant.deafened,
       screenSharing: connection.screenViewerCards.some((screen) => screen.participantId === participant.id && !screen.isLocal),
       self: false,
     })),
@@ -55,9 +58,10 @@ export function buildVoiceNavigationPresence(
       id: profile?.account_id || 'self',
       name: profile?.display_name?.trim() || 'Вы',
       microphoneMuted: selfMuted,
+      deafened: connection.deafened,
       microphoneUnavailable: selfUnavailable,
       speaking: connection.selfSpeaking,
-      isSpeaking: connection.selfSpeaking && !selfMuted && !selfUnavailable,
+      isSpeaking: connection.selfSpeaking && !selfMuted && !selfUnavailable && !connection.deafened,
       screenSharing: connection.screenViewerCards.some((screen) => screen.isLocal),
       self: true,
     },

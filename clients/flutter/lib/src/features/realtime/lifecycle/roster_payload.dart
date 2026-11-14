@@ -8,7 +8,10 @@ final _date = RegExp(
 );
 
 bool isRosterKind(Object? kind) =>
-    kind == 'voice.roster.snapshot' || kind == 'voice.roster.unavailable';
+    kind == 'voice.roster.snapshot' ||
+    kind == 'voice.roster.unavailable' ||
+    kind == 'voice.roster.snapshot.v2' ||
+    kind == 'voice.roster.unavailable.v2';
 bool _keys(Map<String, dynamic> value, List<String> names) =>
     value.length == names.length && names.every(value.containsKey);
 bool _id(Object? value) => value is String && _uuid.hasMatch(value);
@@ -33,7 +36,7 @@ bool validRealtimeTimestamp(Object? value) {
           int.parse(zone.substring(4, 6)) <= 59);
 }
 
-bool _participants(Object? value) {
+bool _participants(Object? value, int version) {
   if (value is! List) return false;
   final seen = <String>{};
   for (final item in value) {
@@ -43,6 +46,7 @@ bool _participants(Object? value) {
           'display_name',
           'screen_sharing',
           'microphone_muted',
+          if (version == 2) 'deafened',
         ])) {
       return false;
     }
@@ -53,7 +57,8 @@ bool _participants(Object? value) {
         name.runes.isEmpty ||
         name.runes.length > 64 ||
         item['screen_sharing'] is! bool ||
-        item['microphone_muted'] is! bool) {
+        item['microphone_muted'] is! bool ||
+        (version == 2 && item['deafened'] is! bool)) {
       return false;
     }
   }
@@ -67,7 +72,13 @@ bool validRosterPayload(Object? kind, Object? value) {
         value['version'] == 1 &&
         value['code'] == 'temporarily_unavailable';
   }
-  if (kind != 'voice.roster.snapshot' ||
+  if (kind == 'voice.roster.unavailable.v2') {
+    return _keys(value, ['version', 'code']) &&
+        value['version'] == 2 &&
+        value['code'] == 'temporarily_unavailable';
+  }
+  final version = kind == 'voice.roster.snapshot.v2' ? 2 : 1;
+  if ((kind != 'voice.roster.snapshot' && kind != 'voice.roster.snapshot.v2') ||
       !_keys(value, [
         'version',
         'generation',
@@ -78,7 +89,7 @@ bool validRosterPayload(Object? kind, Object? value) {
     return false;
   }
   final revision = value['revision'], channels = value['channels'];
-  if (value['version'] != 1 ||
+  if (value['version'] != version ||
       !_id(value['generation']) ||
       revision is! num ||
       !revision.isFinite ||
@@ -98,7 +109,7 @@ bool validRosterPayload(Object? kind, Object? value) {
     final channelID = channel['channel_id'];
     if (!_id(channelID) ||
         !seen.add((channelID as String).toLowerCase()) ||
-        !_participants(channel['participants'])) {
+        !_participants(channel['participants'], version)) {
       return false;
     }
   }

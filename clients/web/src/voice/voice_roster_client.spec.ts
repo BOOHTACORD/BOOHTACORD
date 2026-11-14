@@ -11,10 +11,10 @@ describe('voice rosters for an authenticated non-participant', () => {
     const request = vi.fn().mockResolvedValue(new Response(JSON.stringify(body), { status: 200 }))
 
     expect(await loadVoiceRosters(request)).toEqual([
-      { channelId: 'voice-1', participants: [{ accountId: 'user-1', displayName: 'Мика', screenSharing: true, microphoneMuted: false }] },
+      { channelId: 'voice-1', participants: [{ accountId: 'user-1', displayName: 'Мика', screenSharing: true, microphoneMuted: false, deafened: false }] },
       { channelId: 'voice-2', participants: [] },
     ])
-    expect(request).toHaveBeenCalledWith('/api/v1/voice/participants', expect.objectContaining({ credentials: 'same-origin' }))
+    expect(request).toHaveBeenCalledWith('/api/v2/voice/participants', expect.objectContaining({ credentials: 'same-origin' }))
   })
 
   it('does not present an unavailable snapshot as an empty room', async () => {
@@ -26,5 +26,12 @@ describe('voice rosters for an authenticated non-participant', () => {
     expect(() => parseVoiceRosters({ channels: [{ channel_id: 'voice-1', participants: [{ account_id: '', display_name: 'Мика', screen_sharing: false }] }] })).toThrow()
     expect(() => parseVoiceRosters({ channels: [{ channel_id: 'voice-1', participants: [{ account_id: 'user-1', display_name: 'Мика', screen_sharing: false }] }] })).toThrow()
     expect(() => parseVoiceRosters({ channels: [{ channel_id: 'voice-1', participants: [] }, { channel_id: 'voice-1', participants: [] }] })).toThrow()
+  })
+
+  it('parses the strict v2 replicated deafen state', () => {
+    expect(parseVoiceRosters({ channels: [{ channel_id: 'voice-1', participants: [{ account_id: 'user-1', display_name: 'Мика', screen_sharing: false, microphone_muted: true, deafened: true }] }] })).toEqual([
+      { channelId: 'voice-1', participants: [{ accountId: 'user-1', displayName: 'Мика', screenSharing: false, microphoneMuted: true, deafened: true }] },
+    ])
+    expect(() => parseVoiceRosters({ channels: [{ channel_id: 'voice-1', participants: [{ account_id: 'user-1', display_name: 'Мика', screen_sharing: false, microphone_muted: true, deafened: 'true' }] }] })).toThrow()
   })
 })

@@ -13,7 +13,10 @@ type ConnectedLease struct {
 	LeaseID         string
 	ScreenSharing   bool
 	MicrophoneMuted bool
+	Deafened        bool
 }
+
+const VoiceDeafenedAttribute = "boohtacord.voice.deafened.v1"
 
 // SnapshotRooms returns ICE-connected lease identities in current VOICE rooms.
 // Caller must intersect them with current database leases before disclosure.
@@ -75,6 +78,7 @@ func (client Client) SnapshotRooms(ctx context.Context, channelIDs []string) (ma
 				continue
 			}
 			connected := ConnectedLease{LeaseID: leaseID, MicrophoneMuted: true}
+			connected.Deafened = participant.GetAttributes()[VoiceDeafenedAttribute] == "true"
 			for _, track := range participant.GetTracks() {
 				if track != nil && track.GetType() == livekit.TrackType_AUDIO && track.GetSource() == livekit.TrackSource_MICROPHONE && !track.GetMuted() {
 					connected.MicrophoneMuted = false

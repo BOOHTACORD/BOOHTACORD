@@ -20,6 +20,7 @@ def native_target(target):
         'integration_test/local_qa_test.dart': 'auth, authenticated workspace, profile/audio/admin panels, logout',
         'integration_test/issue689_roster_test.dart': 'auth, public/auth maintenance handoff, synthetic unknown banner, voice roster socket and manual reconnect',
         'integration_test/issue689_listener_test.dart': 'real SFU listener, roster and app socket recovery; no microphone capture',
+        'integration_test/issue786_deafen_test.dart': 'authenticated voice lease updates the replicated deafen attribute and v2 roster; no microphone capture or paired media claim',
         'integration_test/issue689_delivery_revocation_test.dart': 'native revocation delivery under synthetic backlog; no actual socket pressure',
         'integration_test/issue689_heartbeat_test.dart': 'native silent socket recovery against loopback; no real network switching or media',
         'integration_test/issue689_envelope_test.dart': 'native malformed maintenance envelope recovery against loopback; no real network switching or media',

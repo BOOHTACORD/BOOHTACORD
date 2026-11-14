@@ -54,5 +54,11 @@ extension VoiceEventsRemoteParticipants on VoiceController {
     listener.on<ActiveSpeakersChangedEvent>(
       (_) => refreshRemoteVoiceNavigation(this, room, owns),
     );
+    listener.on<ParticipantAttributesChanged>((event) {
+      if (!owns() || !identical(this.room, room)) return;
+      if (event.attributes.containsKey('boohtacord.voice.deafened.v1')) {
+        refreshRemoteVoiceNavigation(this, room, owns);
+      }
+    });
   }
 }

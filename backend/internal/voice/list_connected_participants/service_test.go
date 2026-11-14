@@ -30,6 +30,20 @@ func TestListIntersectsLiveKitActiveWithCurrentLeaseAndIncludesEmptyRooms(t *tes
 	}
 }
 
+func TestListV2CarriesDeafenedWhileV1ProjectionStaysCompatible(t *testing.T) {
+	secondRoom := "55555555-5555-4555-8555-555555555555"
+	presence := &presenceStub{connected: map[string][]snapshotlivekitpresence.ConnectedLease{channelID: {{LeaseID: leaseID, MicrophoneMuted: true, Deafened: true}}}}
+	service := New(&repositoryStub{channels: []Channel{{ID: channelID, Leases: []Lease{{ID: leaseID, AccountID: memberID, DisplayName: "Мария"}}}, {ID: secondRoom}}}, presence)
+	v1, err := service.List(context.Background(), actorID)
+	if err != nil || len(v1.Channels[0].Participants) != 1 || v1.Channels[0].Participants[0].Deafened != true {
+		t.Fatalf("v1 internal snapshot=%+v err=%v", v1, err)
+	}
+	v2, err := service.ListV2(context.Background(), actorID)
+	if err != nil || len(v2.Channels[0].Participants) != 1 || !v2.Channels[0].Participants[0].Deafened {
+		t.Fatalf("v2 snapshot=%+v err=%v", v2, err)
+	}
+}
+
 func TestListFailsClosedOnRepositoryOrPresenceFailure(t *testing.T) {
 	presence := &presenceStub{}
 	_, err := New(&repositoryStub{err: errors.New("db unavailable")}, presence).List(context.Background(), actorID)

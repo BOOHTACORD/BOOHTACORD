@@ -13,7 +13,7 @@ export class ScreenViewerMediaBinding {
 
   constructor(private readonly mixer: Pick<AudioMixer, 'attach'> = new AudioMixer()) {}
 
-  bind(stream: ScreenViewerStream | null, video: HTMLVideoElement | null, audio: HTMLAudioElement | null, muted: boolean, deafened: boolean, volume: number): ScreenViewerBindingChange {
+  bind(stream: ScreenViewerStream | null, video: HTMLVideoElement | null, audio: HTMLAudioElement | null, muted: boolean, volume: number): ScreenViewerBindingChange {
     const videoTargetChanged = this.videoElement !== video
     const audioTargetChanged = this.audioElement !== audio
     if (videoTargetChanged) this.videoBinding.update(null, this.videoElement)
@@ -28,7 +28,7 @@ export class ScreenViewerMediaBinding {
     const audioChanged = this.audioBinding.update(audioTrack, audio)
     const outputCreated = Boolean(stream && stream.audio && !stream.isLocal && audio && !this.audioOutput && (this.audioOutput = this.mixer.attach(audio)))
     if (stream && !videoTargetChanged && !audioTargetChanged && !videoChanged && !audioChanged && !outputCreated) return { changed: false, videoChanged: false }
-    this.audioOutput?.setMuted(deafened || muted)
+    this.audioOutput?.setMuted(muted)
     this.audioOutput?.setVolume(volume)
     const outputDisposed = !stream && this.disposeAudioOutput()
     const changed = videoTargetChanged || audioTargetChanged || videoChanged || audioChanged || outputCreated || outputDisposed
@@ -45,8 +45,8 @@ export class ScreenViewerMediaBinding {
     return this.videoBinding.matches(track, element)
   }
 
-  setAudioState(muted: boolean, deafened: boolean, volume: number): void {
-    this.audioOutput?.setMuted(deafened || muted)
+  setAudioState(muted: boolean, volume: number): void {
+    this.audioOutput?.setMuted(muted)
     this.audioOutput?.setVolume(volume)
   }
 

@@ -10,12 +10,12 @@ describe('remote participant controller', () => {
       isSpeaking: vi.fn(() => speaking),
       onChange: (listener: () => void) => { playbackListeners.add(listener); return () => playbackListeners.delete(listener) },
     }
-    const controller = new RemoteParticipantController(() => [{ accountId: 'account-a', id: 'account-a', microphone: undefined, name: 'Alice' }], playback)
+    const controller = new RemoteParticipantController(() => [{ accountId: 'account-a', deafened: true, id: 'account-a', microphone: undefined, name: 'Alice' }], playback)
     const changed = vi.fn()
     controller.onChange(changed)
 
     controller.refresh()
-    expect(controller.cards()).toEqual([{ accountId: 'account-a', id: 'account-a', microphoneMuted: true, name: 'Alice', speaking: false }])
+    expect(controller.cards()).toEqual([{ accountId: 'account-a', deafened: true, id: 'account-a', microphoneMuted: true, name: 'Alice', speaking: false }])
 
     speaking = true
     playbackListeners.forEach((listener) => listener())

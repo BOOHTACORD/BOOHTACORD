@@ -11,7 +11,7 @@ function storage() {
 describe('voice volume controls', () => {
   it('applies and persists separate remote microphone and selected-stream levels', async () => {
     const remote = { setVolume: vi.fn() }
-    const participantCards = { cards: () => [{ accountId: 'remote-a', id: 'track-a', microphoneMuted: true, name: 'Alice', speaking: false }], onChange: vi.fn(() => () => undefined) }
+    const participantCards = { cards: () => [{ accountId: 'remote-a', id: 'track-a', microphoneMuted: true, deafened: false, name: 'Alice', speaking: false }], onChange: vi.fn(() => () => undefined) }
     const screen = { onChange: vi.fn(() => () => undefined), selectedAccountId: 'remote-a', setAudioVolume: vi.fn() }
     const preferences = new VoiceVolumePreferences(storage())
     const controls = createVoiceVolumeControls({ participantCards: () => participantCards, remoteVoices: () => remote as never, screenViewer: () => screen as never }, async () => ({ accountId: 'owner-a' }), preferences)
@@ -24,14 +24,14 @@ describe('voice volume controls', () => {
     expect(remote.setVolume).toHaveBeenLastCalledWith('track-a', 175)
     expect(screen.setAudioVolume).toHaveBeenCalledWith(100)
     expect(screen.setAudioVolume).toHaveBeenLastCalledWith(35)
-    expect(controls.participants.value).toEqual([{ accountId: 'remote-a', id: 'track-a', microphoneMuted: true, name: 'Alice', speaking: false, volume: 175 }])
+    expect(controls.participants.value).toEqual([{ accountId: 'remote-a', id: 'track-a', microphoneMuted: true, deafened: false, name: 'Alice', speaking: false, volume: 175 }])
     expect(preferences.participant('remote-a')).toBe(175)
     expect(preferences.screen('remote-a')).toBe(35)
   })
 
   it('keeps audio at defaults and reports a non-blocking error when the account lookup fails', async () => {
     const remote = { setVolume: vi.fn() }
-    const participantCards = { cards: () => [{ accountId: 'remote-a', id: 'track-a', microphoneMuted: false, name: 'Alice', speaking: false }], onChange: () => () => undefined }
+    const participantCards = { cards: () => [{ accountId: 'remote-a', id: 'track-a', microphoneMuted: false, deafened: false, name: 'Alice', speaking: false }], onChange: () => () => undefined }
     const controls = createVoiceVolumeControls({ participantCards: () => participantCards, remoteVoices: () => remote as never, screenViewer: () => null }, async () => Promise.reject(new Error('session unavailable')), new VoiceVolumePreferences(storage()))
 
     await controls.start()
@@ -45,7 +45,7 @@ describe('voice volume controls', () => {
     { name: 'account lookup fails', loadAccount: async () => Promise.reject(new Error('session unavailable')) },
   ])('still changes the remote gain when $name', async ({ loadAccount }) => {
     const remote = { setVolume: vi.fn() }
-    const participantCards = { cards: () => [{ accountId: 'remote-a', id: 'track-a', microphoneMuted: false, name: 'Alice', speaking: false }], onChange: () => () => undefined }
+    const participantCards = { cards: () => [{ accountId: 'remote-a', id: 'track-a', microphoneMuted: false, deafened: false, name: 'Alice', speaking: false }], onChange: () => () => undefined }
     const controls = createVoiceVolumeControls({ participantCards: () => participantCards, remoteVoices: () => remote as never, screenViewer: () => null }, loadAccount, new VoiceVolumePreferences(null))
 
     await controls.start()
@@ -60,7 +60,7 @@ describe('voice volume controls', () => {
     preferences.bind('previous-owner')
     preferences.setParticipant('remote-a', 175)
     const remote = { setVolume: vi.fn() }
-    const participantCards = { cards: () => [{ accountId: 'remote-a', id: 'track-a', microphoneMuted: false, name: 'Alice', speaking: false }], onChange: () => () => undefined }
+    const participantCards = { cards: () => [{ accountId: 'remote-a', id: 'track-a', microphoneMuted: false, deafened: false, name: 'Alice', speaking: false }], onChange: () => () => undefined }
     const controls = createVoiceVolumeControls({ participantCards: () => participantCards, remoteVoices: () => remote as never, screenViewer: () => null }, async () => Promise.reject(new Error('session unavailable')), preferences)
 
     await controls.start()

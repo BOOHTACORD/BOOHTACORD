@@ -13,12 +13,14 @@ describe('channel navigation counters', () => {
     const html = await renderToString(createSSRApp(ChannelNavigation, {
       accountId: 'user-1',
       activeVoiceChannelId: 'voice-1', selectedChannelId: 'voice-1',
-      voicePresence: { channelId: 'voice-1', memberCount: 1, members: [{ id: 'user-1', name: 'Мика', microphoneMuted: false, microphoneUnavailable: false, speaking: false, isSpeaking: false, screenSharing: false, self: false }] },
+      voicePresence: { channelId: 'voice-1', memberCount: 1, members: [{ id: 'user-1', name: 'Мика', microphoneMuted: true, deafened: true, microphoneUnavailable: false, speaking: false, isSpeaking: false, screenSharing: false, self: false }] },
       topology: { revision: 1, categories: [{ id: 'cat-1', name: 'Игры', position: 0, channels: [
         { id: 'voice-1', name: 'Команда', kind: 'VOICE', position: 0, admissionClosed: false },
       ] }] },
     }).use(pinia))
     expect(html).toContain('<img src="/api/v1/members/user-1/avatar" alt=""')
+    expect(html).toContain('aria-label="Не слышит участников"')
+    expect(html).not.toContain('aria-label="Микрофон выключен"')
   })
 
   it('shows caller-local TEXT unread and mention badges without adding them to VOICE', async () => {
@@ -46,5 +48,21 @@ describe('channel navigation counters', () => {
     }))
     expect(html).toMatch(/class="voice-member-avatar"[^>]*>[\s\S]*?AL[\s\S]*?<\/span>/)
     expect(html).toContain('M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14')
+  })
+
+  it('shows replicated deafen in a voice roster preview before joining', async () => {
+    const html = await renderToString(createSSRApp(ChannelNavigation, {
+      accountId: 'user-1',
+      activeVoiceChannelId: undefined,
+      selectedChannelId: 'voice-1',
+      voicePresence: null,
+      voiceRosters: [{ channelId: 'voice-1', participants: [{ accountId: 'user-2', displayName: 'Alex', screenSharing: false, microphoneMuted: true, deafened: true }] }],
+      topology: { revision: 1, categories: [{ id: 'cat-1', name: 'ОБЩЕНИЕ', position: 0, channels: [
+        { id: 'voice-1', name: 'Общий', kind: 'VOICE', position: 0, admissionClosed: false },
+      ] }] },
+    }).use(createPinia()))
+
+    expect(html).toContain('aria-label="Не слышит участников"')
+    expect(html).not.toContain('aria-label="Микрофон выключен"')
   })
 })

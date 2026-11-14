@@ -4,6 +4,7 @@ export interface RemoteMicrophonePublication {
 
 export interface RemoteParticipantSource {
   accountId: string | null
+  deafened?: boolean
   id: string
   microphone?: RemoteMicrophonePublication
   name?: string
@@ -11,6 +12,7 @@ export interface RemoteParticipantSource {
 
 export interface RemoteParticipantCard {
   accountId: string | null
+  deafened: boolean
   id: string
   microphoneMuted: boolean
   name: string | undefined
@@ -42,6 +44,7 @@ export class RemoteParticipantController {
   refresh(): void {
     this.current = this.source().map((participant) => ({
       accountId: participant.accountId,
+      deafened: participant.deafened === true,
       id: participant.id,
       microphoneMuted: !participant.microphone || participant.microphone.isMuted === true,
       name: participant.name,

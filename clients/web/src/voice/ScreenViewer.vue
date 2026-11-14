@@ -50,7 +50,7 @@ let stageControlsHideTimer: number | null = null
 const selectedStream = computed(() => props.cards.find((stream) => stream.id === props.selectedId) ?? null)
 const {metrics:receiverMetrics,sampledAt:receiverSampledAt,refresh:refreshReceiverMetrics}=useScreenReceiverDiagnostics(selectedStream,()=>props.ended)
 const adjustable = computed(() => Boolean(selectedStream.value?.hasAudio && selectedStream.value.accountId && !selectedStream.value.isLocal))
-const audioMessage = computed(() => selectedStream.value ? screenAudioMessage({ isLocal: Boolean(selectedStream.value.isLocal), hasAudio: selectedStream.value.hasAudio, adjustable: adjustable.value, deafened: props.deafened }) : '')
+const audioMessage = computed(() => selectedStream.value ? screenAudioMessage({ isLocal: Boolean(selectedStream.value.isLocal), hasAudio: selectedStream.value.hasAudio, adjustable: adjustable.value }) : '')
 function reportPlaybackError(cause:unknown,audioOutput=false):void {if(cause instanceof DOMException&&cause.name==='NotAllowedError'){if(audioOutput){audioPlaybackBlocked.value=true;playbackFeedback.value='Браузер заблокировал звук. Нажмите «Повторить» ещё раз после разрешения звука.';return}videoPlaybackBlocked.value=true;playbackFeedback.value='Браузер заблокировал воспроизведение. Нажмите «Повторить» после разрешения.'}}
 function playFromGesture(stream=selectedStream.value):void {
   const generation=++playbackRequestGeneration
@@ -180,7 +180,7 @@ async function toggleFullscreen(): Promise<void> {
 </script>
 <template>
   <section ref="viewerElement" class="screen-viewer stream-wrap" :class="{ 'screen-viewer--compact': !mini }" aria-label="Демонстрация экрана">
-    <ScreenMiniToolbar v-if="mini && selectedId" :name="selectedStream?.participantName ?? 'Демонстрация'" :paused="videoPaused" :ended="ended" :ready="videoReady" :has-audio="Boolean(selectedStream?.hasAudio && !selectedStream.isLocal)" :muted="audioMuted || selectedAudioVolume === 0" :deafened="deafened"
+    <ScreenMiniToolbar v-if="mini && selectedId" :name="selectedStream?.participantName ?? 'Демонстрация'" :paused="videoPaused" :ended="ended" :ready="videoReady" :has-audio="Boolean(selectedStream?.hasAudio && !selectedStream.isLocal)" :muted="audioMuted || selectedAudioVolume === 0"
     @pause="toggleVideoPause" @audio="emit('toggleAudio');audioPlaybackBlocked && playFromGesture()" @expand="emit('update:expanded', true)" @close="clearViewing" />
     <div ref="stage" class="screen-stage" :class="{ 'screen-stage--waiting': !selectedStream }" @pointermove="revealStageControls" @pointerdown="revealStageControls">
       <p v-if="error" class="state state-error" role="alert">{{ error }}</p>
@@ -208,7 +208,7 @@ async function toggleFullscreen(): Promise<void> {
         <button class="screen-stage-action screen-stage-action--size" type="button" :aria-label="fullscreenActive ? 'Свернуть просмотр' : 'Развернуть на весь экран'" :title="fullscreenActive ? 'Свернуть просмотр' : 'Развернуть на весь экран'" @click="toggleFullscreen"><svg viewBox="0 0 24 24" aria-hidden="true"><path v-if="fullscreenActive" d="M8 3v5H3M16 3v5h5M3 16h5v5M21 16h-5v5"/><path v-else d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg><span>{{ fullscreenActive ? 'Свернуть' : 'Развернуть' }}</span></button>
         <button v-if="!selectedStream.isLocal" class="screen-stage-action screen-stage-action--stop" type="button" aria-label="Прекратить просмотр" title="Прекратить просмотр этой трансляции" @click="stopWatching"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg><span>Прекратить просмотр</span></button>
         <div v-if="selectedStream" class="stream-quality-row">
-          <ScreenViewerAudioControl v-if="selectedStream.hasAudio && !selectedStream.isLocal" :adjustable="adjustable" :deafened="deafened" :muted="audioMuted" :volume="selectedAudioVolume" @toggle="emit('toggleAudio');audioPlaybackBlocked&&playFromGesture()" @set-volume="emit('setAudioVolume', $event)" />
+          <ScreenViewerAudioControl v-if="selectedStream.hasAudio && !selectedStream.isLocal" :adjustable="adjustable" :muted="audioMuted" :volume="selectedAudioVolume" @toggle="emit('toggleAudio');audioPlaybackBlocked&&playFromGesture()" @set-volume="emit('setAudioVolume', $event)" />
           <p v-if="audioMessage" class="stream-audio-status gc-sr-only" role="status">{{ audioMessage }}</p>
           <div class="stream-toolbar-actions">
             <button v-if="ownScreenSharing" type="button" class="stream-tool-button stream-stop-screen-button" aria-label="Остановить свою трансляцию" title="Остановить свою трансляцию" @click="emit('stopScreen')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" /></svg><span>Остановить</span></button>

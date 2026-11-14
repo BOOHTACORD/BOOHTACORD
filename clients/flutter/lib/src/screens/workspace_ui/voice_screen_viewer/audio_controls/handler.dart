@@ -19,7 +19,6 @@ extension WorkspaceVoiceScreenViewerWorkspaceAudioControlsAction
         screenAudioAvailable: screenAudioAvailable,
         screenAudioVolume: screenAudioVolume,
         screenAudioMuted: screenAudioMuted,
-        deafened: deafened,
         onToggleScreenAudio: onToggleScreenAudio,
         onScreenAudioVolumeChanged: onScreenAudioVolumeChanged,
       );

@@ -16,7 +16,7 @@ class VoiceParticipantPresentation {
     final isSpeaking =
         speaking && !muted && !microphoneUnavailable && !deafened;
     final label = deafened
-        ? 'Звук и микрофон выключены'
+        ? 'Не слышит участников'
         : microphoneUnavailable
         ? 'Микрофон недоступен'
         : muted

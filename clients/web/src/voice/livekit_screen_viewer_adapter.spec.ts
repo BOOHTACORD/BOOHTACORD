@@ -127,6 +127,7 @@ describe('LiveKit screen viewer adapter', () => {
 
     expect(playback.attach).toHaveBeenCalledWith('11111111-1111-4111-8111-111111111111', track, undefined, '11111111-1111-4111-8111-111111111111')
     expect(playback.setDeafened).toHaveBeenCalledWith(true)
+    expect('setDeafened' in binding.viewer).toBe(false)
     expect(playback.detach).toHaveBeenCalledWith('11111111-1111-4111-8111-111111111111')
     expect(playback.clear).toHaveBeenCalledOnce()
   })

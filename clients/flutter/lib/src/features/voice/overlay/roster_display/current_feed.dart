@@ -69,6 +69,7 @@ VoiceOverlaySnapshot currentVoiceOverlaySnapshot({
           activeRoster,
           accountId,
           voice.microphoneMuted,
+          deafened: voice.deafened,
         );
   return projectVoiceOverlayRoster(
     settings: settings,
