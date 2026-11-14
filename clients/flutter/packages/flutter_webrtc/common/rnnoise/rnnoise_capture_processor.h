@@ -3,6 +3,7 @@
 #include <atomic>
 #include "microphone_controls/processor.h"
 #include "deepfilter/resample_16k/resampler.h"
+#include "preflight/worker.h"
 #include <cstdint>
 #include <cstdlib>
 extern "C" {
@@ -35,6 +36,7 @@ class RnnoiseCaptureProcessor {
   bool supported() const;
   static const char* ModelId();
   MicrophoneControls controls;
+  RnnoisePreflight preflight;
  private:
   bool ProcessNoise(float* pcm, int frames, int capacity);
 #ifdef BOOHTA_RNNOISE_V02_RESEARCH

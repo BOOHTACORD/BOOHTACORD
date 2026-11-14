@@ -14,11 +14,11 @@ add_library(boohta_rnnoise STATIC ${_rnnoise_core}
 target_include_directories(boohta_rnnoise PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/upstream/include PRIVATE upstream/src)
 target_compile_features(boohta_rnnoise PUBLIC cxx_std_17)
+include(preflight/library.cmake)
 target_compile_definitions(boohta_rnnoise PUBLIC $<$<BOOL:${BOOHTA_RNNOISE_V02_RESEARCH}>:BOOHTA_RNNOISE_V02_RESEARCH>)
 set_target_properties(boohta_rnnoise PROPERTIES POSITION_INDEPENDENT_CODE ON)
 if(MSVC)
   target_compile_definitions(boohta_rnnoise PRIVATE _USE_MATH_DEFINES)
-  # Flutter Windows uses VS 2022; stock RNNoise uses C99 inline declarations.
   target_compile_options(boohta_rnnoise PRIVATE $<$<COMPILE_LANGUAGE:C>:/std:c11>)
 else()
   target_link_libraries(boohta_rnnoise PUBLIC m)

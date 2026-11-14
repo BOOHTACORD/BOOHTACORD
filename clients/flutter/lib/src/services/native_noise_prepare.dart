@@ -3,9 +3,12 @@ part of 'native_noise_suppression.dart';
 mixin _NativeNoisePrepare on _NativeNoiseCore {
   Future<NoiseSuppressionMode> prepare(NoiseSuppressionMode mode) async {
     final generation = _generation;
-    // Research injection is debug-only; production remains on browser until
-    // model identity and performance preflight have been implemented.
-    final selected = mode == NoiseSuppressionMode.auto ? _debugAutoMode : mode;
+    final selected = mode == NoiseSuppressionMode.auto
+        ? await _selectAuto(generation)
+        : mode;
+    if (_disposed || generation != _generation) {
+      return NoiseSuppressionMode.browser;
+    }
     _selectedMode = selected;
     final nativeMode =
         selected == NoiseSuppressionMode.rnnoise ||

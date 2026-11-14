@@ -4,6 +4,7 @@
     {"id":"cmp.flutter.voice_controller","source":{"parity_id":"voice.controls","platform":"android"}},
     {"id":"cmp.flutter.native_auto_research","paths":["clients/flutter/lib/src/services/native_noise_auto_research.dart","clients/flutter/lib/src/services/native_noise_research_debug.dart"]},
     {"id":"cmp.flutter.deepfilter_preflight","paths":["clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/preflight/benchmark.h"]},
+    {"id":"cmp.flutter.native_auto_preflight","paths":["clients/flutter/lib/src/services/native_noise_auto_preflight.dart","clients/flutter/packages/flutter_webrtc/common/rnnoise/preflight/worker.h","clients/flutter/packages/flutter_webrtc/common/rnnoise/preflight/warmup.h"]},
     {"id":"cmp.web.voice_recovery","source":{"parity_id":"voice.long_recovery","platform":"web"}},
     {"id":"cmp.flutter.voice_recovery","source":{"parity_id":"voice.long_recovery","platform":"android"}},
     {"id":"cmp.web.voice_roster_recovery","source":{"parity_id":"voice.roster_long_recovery","platform":"web"}},
@@ -33,7 +34,7 @@
     {
       "id":"voice.controls", "title":"Управление голосом", "domain":"voice", "target_revision":null,
       "behavior_revisions":[], "parity_ids":["voice.controls"],
-      "components":["cmp.web.voice_controls","cmp.flutter.voice_controller","cmp.flutter.native_auto_research","cmp.flutter.deepfilter_preflight"],
+      "components":["cmp.web.voice_controls","cmp.flutter.voice_controller","cmp.flutter.native_auto_research","cmp.flutter.deepfilter_preflight","cmp.flutter.native_auto_preflight"],
       "platforms": {
         "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
         "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},

@@ -1,7 +1,7 @@
 #include "rnnoise_capture_processor.h"
 #include "deepfilter/capture_hook/interface.h"
 #include <cmath>
-#include <mutex>
+#include "preflight/warmup.h"
 namespace boohta {
 RnnoiseCaptureProcessor::RnnoiseCaptureProcessor(StateAllocator allocate, deepfilter::CaptureHook* hook)
     : state_(static_cast<DenoiseState*>(allocate(rnnoise_get_size()))), hook_(hook) {
@@ -11,12 +11,8 @@ RnnoiseCaptureProcessor::RnnoiseCaptureProcessor(StateAllocator allocate, deepfi
   if (!state_ready_.load()) failure_.store(Failure::kUnavailable);
   // Stock v0.1 lazily allocates its global FFT tables on the first process call.
   // Warm on the control thread exactly once before any realtime callback.
-  static std::once_flag fft_ready;
   if (state_ready_.load()) {
-    std::call_once(fft_ready, [this] {
-      float silence[480] = {};
-      rnnoise_process_frame(state_, silence, silence);
-    });
+    WarmRnnoiseFft(state_);
     warmed_ = true; state_ready_.store(rnnoise_init(state_) == 0);
   }
 }

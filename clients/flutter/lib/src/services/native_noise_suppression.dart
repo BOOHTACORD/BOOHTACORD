@@ -14,6 +14,7 @@ part 'native_noise_fallback.dart';
 part 'native_noise_state_read.dart';
 part 'native_noise_monitor.dart';
 part 'native_noise_research_debug.dart';
+part 'native_noise_auto_preflight.dart';
 
 typedef NativeNoiseInvoker = Future<Object?> Function(
   String method,
@@ -60,6 +61,7 @@ abstract class _NativeNoiseCore extends ChangeNotifier {
   Timer? _timer;
   NativeNoiseSuppressionState state = const NativeNoiseSuppressionState();
   Future<void> refresh();
+  Future<NoiseSuppressionMode> _selectAuto(int generation);
   void _read(Map value);
   Future<T> run<T>(Future<T> Function() operation) {
     final next = _queued++ == 0
@@ -106,6 +108,7 @@ class NativeNoiseSuppression extends _NativeNoiseCore
         _NativeNoisePrepare,
         _NativeNoiseFallback,
         _NativeNoiseMonitor,
+        _NativeNoiseAutoPreflight,
         _NativeNoiseResearchDebug {
   NativeNoiseSuppression({super.invoke, super.allowExperimentalDeepFilter});
 }

@@ -19,6 +19,7 @@ ID: `voice.controls`
 ## Компоненты
 
 - cmp.flutter.deepfilter\_preflight: [clients/flutter/packages/flutter\_webrtc/common/rnnoise/deepfilter/preflight/benchmark.h](../../../../clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/preflight/benchmark.h)
+- cmp.flutter.native\_auto\_preflight: [clients/flutter/lib/src/services/native\_noise\_auto\_preflight.dart](../../../../clients/flutter/lib/src/services/native_noise_auto_preflight.dart), [clients/flutter/packages/flutter\_webrtc/common/rnnoise/preflight/worker.h](../../../../clients/flutter/packages/flutter_webrtc/common/rnnoise/preflight/worker.h), [clients/flutter/packages/flutter\_webrtc/common/rnnoise/preflight/warmup.h](../../../../clients/flutter/packages/flutter_webrtc/common/rnnoise/preflight/warmup.h)
 - cmp.flutter.native\_auto\_research: [clients/flutter/lib/src/services/native\_noise\_auto\_research.dart](../../../../clients/flutter/lib/src/services/native_noise_auto_research.dart), [clients/flutter/lib/src/services/native\_noise\_research\_debug.dart](../../../../clients/flutter/lib/src/services/native_noise_research_debug.dart)
 - cmp.flutter.voice\_controller: [clients/flutter/lib/src/features/voice/lifecycle/controller.dart](../../../../clients/flutter/lib/src/features/voice/lifecycle/controller.dart)
 - cmp.web.voice\_controls: [clients/web/src/voice/VoiceDock.vue](../../../../clients/web/src/voice/VoiceDock.vue)
