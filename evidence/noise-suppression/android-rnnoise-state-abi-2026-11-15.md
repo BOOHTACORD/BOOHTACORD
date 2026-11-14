@@ -34,6 +34,9 @@ their released 1.0.55 packages are not replaced. Web has no implementation chang
 - Three client-identity tests, the unchanged Flutter profile/package-version
   synchronization test, client parity and 26 contract tests passed. OpenAPI
   lint/parity passed for 137 public operations and four private exclusions.
+- The reviewed native-input inventory was synchronized for the test-only
+  AndroidX/JUnit Gradle dependency diff; the auxiliary SDK audit and 21 cache,
+  workflow and Flutter-setup regressions passed. Production SDK pins are unchanged.
 
 Logs are retained locally under .out/android-jni-before.log,
 .out/android-jni-after.log and .out/rnnoise-abi-after.log. This direct JNI test
