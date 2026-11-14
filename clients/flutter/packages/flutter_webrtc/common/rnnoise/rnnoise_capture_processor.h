@@ -35,6 +35,7 @@ class RnnoiseCaptureProcessor {
   int channels() const { return channels_.load(); }
   bool supported() const;
   static const char* ModelId();
+  const char* DeepFilterModelId() const;
   MicrophoneControls controls;
   RnnoisePreflight preflight;
  private:

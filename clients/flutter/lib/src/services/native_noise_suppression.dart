@@ -50,18 +50,14 @@ abstract class _NativeNoiseCore extends ChangeNotifier {
     windows: !kIsWeb && defaultTargetPlatform == TargetPlatform.windows,
   );
 
-  @visibleForTesting
-  void debugAllowDeepFilter() {
-    assert(() {
-      _allowDeepFilter = true;
-      return true;
-    }());
-  }
-
   Timer? _timer;
   NativeNoiseSuppressionState state = const NativeNoiseSuppressionState();
   Future<void> refresh();
-  Future<NoiseSuppressionMode> _selectAuto(int generation);
+  Future<NoiseSuppressionMode> _prepareSelected(
+    NoiseSuppressionMode mode,
+    NoiseSuppressionMode selected,
+    int generation,
+  );
   void _read(Map value);
   Future<T> run<T>(Future<T> Function() operation) {
     final next = _queued++ == 0

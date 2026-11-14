@@ -677,6 +677,8 @@
           "clients/flutter/test/voice_scope/native_auto_engine_test.dart",
           "clients/flutter/test/voice_scope/native_auto_preflight_test.dart",
           "clients/flutter/test/voice_scope/native_auto_preflight_lifecycle_test.dart",
+          "clients/flutter/test/voice_scope/native_auto_deepfilter_preflight_test.dart",
+          "clients/flutter/test/voice_scope/native_auto_fallback_test.dart",
           "clients/flutter/test/voice_scope/auto_capture_test.dart",
           "clients/flutter/test/audio_devices/auto_native_settings_test.dart",
           "clients/flutter/test/voice_scope/deepfilter_settings_test.dart",
@@ -1884,7 +1886,7 @@
       }
     ],
     "parity_review": {
-      "issue687_auto_internal": "Web and shared Flutter preserve an internal Auto request while retaining existing defaults; Flutter currently resolves it to WebRTC and hides it from normal settings. Focused Web and Flutter regression tests pass; Android/iOS runtime, real-stack and visual acceptance remain BLOCKED or NOT_RUN. Model-aware native Auto and user-facing controls are not complete.",
+      "issue687_auto_internal": "Web and shared Flutter preserve an internal Auto request and existing defaults; Auto is hidden from normal settings. Native Auto selects pinned RNNoise v0.2 only after asynchronous inference preflight; explicitly enabled verified DeepFilter waits for its worker preflight, then falls back through measured RNNoise to WebRTC. Focused tests pass; actual Auto device/real-stack and Android/iOS runtime acceptance remain BLOCKED or NOT_RUN. Web performance preflight, adaptation and user-facing controls are not complete.",
       "idle_afk_follow_up": "PR #783 adds the AFK channel and inactivity timeout to Web/Flutter guild settings. The 2026-11-14 follow-up clarifies that active speech resets the timer in both clients; save behavior is unchanged. Focused copy, save/conflict and heartbeat regressions pass; dedicated AFK device routing remains NOT_RUN.",
       "issue687": "Web and Flutter expose experimental DeepFilter selection behind disabled-by-default flags; Flutter limits the option to Windows and retains unavailable saved choices. Android/iOS do not offer it, and native runtime and real-device acceptance remain NOT_RUN/BLOCKED.",
       "issue": 676,

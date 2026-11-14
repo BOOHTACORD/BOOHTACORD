@@ -4,6 +4,9 @@
 #include <cmath>
 
 namespace boohta {
+const char* RnnoiseCaptureProcessor::DeepFilterModelId() const {
+  return hook_ && hook_->Available() ? hook_->ModelId() : nullptr;
+}
 bool RnnoiseCaptureProcessor::supported() const {
   return requested_.load() == Engine::kDeepFilter ? hook_ && hook_->Available() : state_ready_.load();
 }

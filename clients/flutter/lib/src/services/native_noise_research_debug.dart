@@ -2,6 +2,14 @@ part of 'native_noise_suppression.dart';
 
 mixin _NativeNoiseResearchDebug on _NativeNoiseCore {
   @visibleForTesting
+  void debugAllowDeepFilter() {
+    assert(() {
+      _allowDeepFilter = true;
+      return true;
+    }());
+  }
+
+  @visibleForTesting
   void debugSelectAutoEngine(NoiseSuppressionMode mode) {
     assert(() {
       if (mode == NoiseSuppressionMode.auto ||

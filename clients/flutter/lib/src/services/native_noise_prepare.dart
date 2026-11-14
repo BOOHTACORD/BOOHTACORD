@@ -1,11 +1,12 @@
 part of 'native_noise_suppression.dart';
 
 mixin _NativeNoisePrepare on _NativeNoiseCore {
-  Future<NoiseSuppressionMode> prepare(NoiseSuppressionMode mode) async {
-    final generation = _generation;
-    final selected = mode == NoiseSuppressionMode.auto
-        ? await _selectAuto(generation)
-        : mode;
+  @override
+  Future<NoiseSuppressionMode> _prepareSelected(
+    NoiseSuppressionMode mode,
+    NoiseSuppressionMode selected,
+    int generation,
+  ) async {
     if (_disposed || generation != _generation) {
       return NoiseSuppressionMode.browser;
     }
