@@ -1,4 +1,5 @@
 part of 'processing.dart';
+
 extension AudioProcessingRuntime on AudioDeviceState {
   Future<void> _applyTrackProcessing(
     LocalAudioTrack track,
@@ -22,36 +23,53 @@ extension AudioProcessingRuntime on AudioDeviceState {
           ?.track;
       if (track is! LocalAudioTrack || isDisposed) return;
       final recovery = ++nativeRecoveryRevision;
-      Future<void> restoreBrowser() async {
+      final tryBackup =
+          audioProcessing.noiseSuppressionMode == NoiseSuppressionMode.auto &&
+          captureNoiseOverride == NoiseSuppressionMode.deepfilter;
+      bool current() =>
+          recovery == nativeRecoveryRevision &&
+          identical(targetRoom, room) &&
+          !isDisposed;
+      Future<void> restoreProcessing() async {
         await track.mute(stopOnMute: false);
+        if (!current()) return;
         await nativeNoise.reset();
-        await nativeNoise.useFallback(reason, captureApplied: false);
-        final browser = audioProcessing.copyWith(
-          noiseSuppressionMode: NoiseSuppressionMode.browser,
-        );
-        await _applyTrackProcessing(track, browser);
-        if (recovery != nativeRecoveryRevision ||
-            !identical(targetRoom, room) ||
-            isDisposed) {
-          return;
+        if (!current()) return;
+        final mode = tryBackup
+            ? await nativeNoise.prepareAutoBackup()
+            : NoiseSuppressionMode.browser;
+        if (!current()) return;
+        if (mode == NoiseSuppressionMode.browser) {
+          await nativeNoise.useFallback(reason, captureApplied: false);
         }
-        captureNoiseOverride = NoiseSuppressionMode.browser;
-        nativeNoise.confirmFallback(reason);
+        if (!current()) return;
+        await _applyTrackProcessing(
+          track,
+          audioProcessing.copyWith(noiseSuppressionMode: mode),
+        );
+        if (!current()) return;
+        captureNoiseOverride = mode;
+        if (mode == NoiseSuppressionMode.browser) {
+          nativeNoise.confirmFallback(reason);
+        }
         if (!microphoneMutedIntent) await track.unmute(stopOnMute: false);
       }
 
       try {
-        await restoreBrowser().timeout(const Duration(milliseconds: 850));
+        await restoreProcessing().timeout(
+          Duration(milliseconds: tryBackup ? 3000 : 850),
+        );
       } catch (_) {
         nativeRecoveryRevision++;
         microphoneMutedIntent = true;
         unawaited(track.mute(stopOnMute: false).catchError((_) => false));
-        nativeNoise.failMuted('browser-recovery-failed');
+        nativeNoise.failMuted(
+          tryBackup ? 'auto-recovery-failed' : 'browser-recovery-failed',
+        );
         audioSettingsError =
             'Не удалось восстановить микрофон. Отправка звука выключена.';
       }
       notifyListeners();
     });
   }
-
 }

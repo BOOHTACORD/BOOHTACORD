@@ -1,6 +1,20 @@
 part of 'native_noise_suppression.dart';
 
 mixin _NativeNoiseAutoPreflight on _NativeNoiseCore {
+  Future<NoiseSuppressionMode> prepareAutoBackup() async {
+    if (_disposed ||
+        state.requestedMode != NoiseSuppressionMode.auto ||
+        _selectedMode != NoiseSuppressionMode.deepfilter) {
+      return NoiseSuppressionMode.browser;
+    }
+    final generation = _generation;
+    final selected = await _selectAuto(generation, includeDeepFilter: false);
+    if (_disposed || generation != _generation) {
+      return NoiseSuppressionMode.browser;
+    }
+    return _prepareSelected(NoiseSuppressionMode.auto, selected, generation);
+  }
+
   Future<NoiseSuppressionMode> prepare(NoiseSuppressionMode mode) async {
     final generation = _generation;
     final selected = mode == NoiseSuppressionMode.auto
