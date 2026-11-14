@@ -76,7 +76,10 @@ abstract class _NativeNoiseCore extends ChangeNotifier {
     _fallback = false;
     _update(NativeNoiseSuppressionState(requestedMode: state.requestedMode));
     unawaited(
-      _invoke('resetNoiseSuppression', null).catchError((Object _) => null),
+      _invoke(
+        'resetNoiseSuppression',
+        null,
+      ).then<void>((_) {}, onError: (Object _, StackTrace _) {}),
     );
   }
 

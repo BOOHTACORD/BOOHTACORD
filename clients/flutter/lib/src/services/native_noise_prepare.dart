@@ -3,6 +3,11 @@ part of 'native_noise_suppression.dart';
 mixin _NativeNoisePrepare on _NativeNoiseCore {
   Future<NoiseSuppressionMode> prepare(NoiseSuppressionMode mode) async {
     final generation = _generation;
+    // No native model is selected automatically until identity and performance
+    // preflight are available. Keep the request visible in state.
+    final selected = mode == NoiseSuppressionMode.auto
+        ? NoiseSuppressionMode.browser
+        : mode;
     final nativeMode =
         mode == NoiseSuppressionMode.rnnoise ||
         mode == NoiseSuppressionMode.deepfilter;
@@ -25,7 +30,7 @@ mixin _NativeNoisePrepare on _NativeNoiseCore {
     );
     try {
       final raw = await _call('setNoiseSuppressionEngine', {
-        'engine': mode.name,
+        'engine': selected.name,
       });
       if (_disposed || generation != _generation) {
         return NoiseSuppressionMode.browser;
@@ -74,7 +79,7 @@ mixin _NativeNoisePrepare on _NativeNoiseCore {
           return NoiseSuppressionMode.browser;
         }
       }
-      return mode;
+      return selected;
     } catch (_) {
       if (!_disposed && generation == _generation) {
         _update(
@@ -85,7 +90,7 @@ mixin _NativeNoisePrepare on _NativeNoiseCore {
           ),
         );
       }
-      return nativeMode ? NoiseSuppressionMode.browser : mode;
+      return nativeMode ? NoiseSuppressionMode.browser : selected;
     }
   }
 

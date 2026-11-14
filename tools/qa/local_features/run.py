@@ -9,7 +9,7 @@ from pathlib import Path
 from .policy import validate_selection, changed_paths
 from .report import write_report
 from .doctor import devices, boot_android
-from .selection import flutter_stage_result, native_targets, records_test_summary, stage_timeout
+from .selection import flutter_stage_result, native_targets, records_test_summary, stage_timeout, host_command
 from .source_identity import source_identity, source_stability
 
 
@@ -51,7 +51,7 @@ def main():
         skipped = None
         with (destination/(name+'.log')).open('w') as log:
             try:
-                outcome=subprocess.run(command,cwd=cwd,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=stage_timeout(name))
+                outcome=subprocess.run(host_command(command),cwd=cwd,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=stage_timeout(name))
                 output = (destination/(name+'.log')).read_text(errors='replace') if records_test_summary(name) else ''
                 status, skipped = flutter_stage_result(name, outcome.returncode, output)
             except (OSError, subprocess.TimeoutExpired): status='BLOCKED'
