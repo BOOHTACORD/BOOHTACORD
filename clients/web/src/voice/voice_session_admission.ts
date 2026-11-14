@@ -47,16 +47,19 @@ export class VoiceSessionAdmission {
         this.state.monitor.notifyAdmitted(acquired.id, acquired.channelId)
         action?.step('credential')
         const credential = await within(() => this.state.admission.credential(acquired.id))
+        const effectiveJoinMode = joinMode === 'listener' || credential.microphoneAllowed === false
+          ? 'listener'
+          : 'with-microphone'
         action?.step('connect')
         const joined = await within(() => this.state.joinRoom(
           credential,
           this.state.audioProcessing.value,
-          joinMode,
+          effectiveJoinMode,
           this.state.inputDeviceId(),
         ))
         joinedRoom = joined.room
         const current: ActiveVoiceSession = {
-          listenerOnly: joinMode === 'listener',
+          listenerOnly: effectiveJoinMode === 'listener',
           microphoneAllowed: credential.microphoneAllowed,
           channelId: acquired.channelId,
           leaseId: acquired.id,

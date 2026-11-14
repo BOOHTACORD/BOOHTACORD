@@ -37,7 +37,7 @@ onMounted(() => { void state.load() }); onBeforeUnmount(state.dispose)
       <option :value="0" disabled>Сначала выберите AFK-канал</option>
       <option v-for="seconds in [60, 300, 600, 900, 1800, 3600, 7200, 14400, 28800, 86400]" :key="seconds" :value="seconds">{{ seconds < 3600 ? `${seconds / 60} мин.` : `${seconds / 3600} ч.` }}</option>
     </select>
-    <small>Считается с последнего действия в приложении. В AFK-канале микрофон будет отключён.</small>
+    <small>Таймер сбрасывают действия в BOOHTACORD и активная речь в голосе. В AFK-канале микрофон будет отключён.</small>
     <p v-if="error" role="alert">{{ error }}</p>
     <div class="settings-actions"><span role="status" aria-live="polite">{{ busy ? revision ? 'Сохраняем…' : 'Загружаем…' : dirty ? 'Есть несохранённые изменения' : saved ? 'Настройки сохранены.' : 'Изменения не внесены' }}</span>
     <button class="gc-button gc-button--secondary" type="button" :disabled="busy || !dirty" @click="state.cancel">Отменить</button>

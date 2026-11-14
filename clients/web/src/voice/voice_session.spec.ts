@@ -20,6 +20,41 @@ describe('voice session', () => {
     await session.join('voice-1', true, 'listener')
     expect(join).toHaveBeenCalledWith(expect.any(Object), expect.any(Object), 'listener', 'mic-2')
   })
+  it('forces listener mode when the server credential forbids microphone publication', async () => {
+    const api = admission()
+    vi.mocked(api.credential).mockResolvedValue({
+      url: 'wss://rtc.example',
+      token: 'temporary',
+      expiresAt: '2026-09-17T12:00:00Z',
+      microphoneAllowed: false,
+    })
+    const room = { disconnect: vi.fn().mockResolvedValue(undefined), on: vi.fn() }
+    const join = vi.fn(async () => ({ room: room as never, microphone: 'MUTED' as const }))
+    const session = new VoiceSession(api, join)
+
+    await expect(session.join('voice-afk')).resolves.toMatchObject({ listenerOnly: true, microphoneAllowed: false, microphone: 'MUTED' })
+    expect(join).toHaveBeenCalledWith(expect.any(Object), expect.any(Object), 'listener', 'default')
+  })
+  it('does not try to unmute while the active credential forbids microphone publication', async () => {
+    const api = admission()
+    vi.mocked(api.credential).mockResolvedValue({
+      url: 'wss://rtc.example',
+      token: 'temporary',
+      expiresAt: '2026-09-17T12:00:00Z',
+      microphoneAllowed: false,
+    })
+    const room = {
+      disconnect: vi.fn().mockResolvedValue(undefined),
+      on: vi.fn(),
+      localParticipant: { setMicrophoneEnabled: vi.fn().mockResolvedValue(undefined) },
+    }
+    const session = new VoiceSession(api, async () => ({ room: room as never, microphone: 'MUTED' }))
+
+    await session.join('voice-afk')
+    await expect(session.setMicrophoneMuted(false)).resolves.toBe('MUTED')
+
+    expect(room.localParticipant.setMicrophoneEnabled).not.toHaveBeenCalled()
+  })
   it('marks a room active only after a lease, credential and room join succeed', async () => {
     const api = admission()
     const room = { disconnect: vi.fn().mockResolvedValue(undefined), on: vi.fn() }

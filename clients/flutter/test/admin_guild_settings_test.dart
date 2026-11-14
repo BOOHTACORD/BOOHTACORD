@@ -133,6 +133,12 @@ void main() {
       ),
     );
     expect(find.text('Сначала выберите AFK-канал'), findsOneWidget);
+    expect(
+      find.text(
+        'Таймер сбрасывают действия в BOOHTACORD и активная речь в голосе. В AFK-канале микрофон будет выключен.',
+      ),
+      findsOneWidget,
+    );
     expect(find.text('5 мин.'), findsNothing);
     final timeout = tester.widget<DropdownButtonFormField<int>>(
       find.byKey(ValueKey('afk-timeout:${state.revision}:0')),

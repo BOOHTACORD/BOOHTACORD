@@ -22,6 +22,7 @@ test('native guild select, save pending/disabled and failure preserve the form',
   await expect(afkTimeout).toBeDisabled()
   await expect(afkTimeout).toHaveValue('0')
   await expect(afkTimeout.locator('option:checked')).toHaveText('Сначала выберите AFK-канал')
+  await expect(page.getByText('Таймер сбрасывают действия в BOOHTACORD и активная речь в голосе. В AFK-канале микрофон будет отключён.')).toBeVisible()
   await page.screenshot({ path: testInfo.outputPath('guild-settings-afk-disabled.png'), fullPage: true })
   const select = page.getByLabel('Приветствия новых участников')
   await expect(select).toBeEnabled()

@@ -23,4 +23,6 @@ ID: `voice.idle-afk`
 - cmp.backend.idle\_afk\_migration: [backend/internal/database/migrate/migrations/0068\_idle\_presence\_afk\_voice.sql](../../../../backend/internal/database/migrate/migrations/0068_idle_presence_afk_voice.sql)
 - cmp.backend.idle\_presence: [backend/internal/realtime/event\_hub/activity.go](../../../../backend/internal/realtime/event_hub/activity.go), [backend/internal/realtime/connect\_session/event\_stream.go](../../../../backend/internal/realtime/connect_session/event_stream.go)
 - cmp.flutter.idle\_afk: [clients/flutter/lib/src/guild\_presence\_state.dart](../../../../clients/flutter/lib/src/guild_presence_state.dart)
+- cmp.flutter.voice\_activity\_heartbeat: [clients/flutter/lib/src/features/realtime/lifecycle/voice\_activity\_heartbeat.dart](../../../../clients/flutter/lib/src/features/realtime/lifecycle/voice_activity_heartbeat.dart)
 - cmp.web.idle\_afk: [clients/web/src/identity/guild\_presence.ts](../../../../clients/web/src/identity/guild_presence.ts)
+- cmp.web.voice\_activity\_heartbeat: [clients/web/src/realtime/voice\_activity\_heartbeat.ts](../../../../clients/web/src/realtime/voice_activity_heartbeat.ts)

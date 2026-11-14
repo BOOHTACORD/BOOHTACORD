@@ -31,6 +31,19 @@ test('guild roster labels voice members and uses a screen icon while they stream
  await page.evaluate(()=>(window as any).__membersFixture.patch({voicePresence:[]}))
  await expect(voiceStatus).toHaveCount(0)
 })
+test('idle members stay in the online group and keep an idle row status',async({page},info)=>{
+ await mount(page)
+ await page.evaluate(()=>{
+  const fixture=(window as any).__membersFixture
+  fixture.directory.members=[...fixture.directory.members,{user_id:'idle-member',login:'idle',display_name:'Отошёл',role:'MEMBER',presence:'idle'}]
+ })
+ await expect(page.getByRole('heading',{name:'В сети — 11',exact:true})).toBeVisible()
+ await expect(page.getByRole('heading',{name:'Не активен — 1',exact:true})).toHaveCount(0)
+ const idle=page.getByRole('button',{name:'Профиль: Отошёл · Не активен',exact:true})
+ await expect(idle).toBeVisible()
+ await expect(idle.locator('.member-presence-dot--idle')).toBeVisible()
+ await page.screenshot({path:info.outputPath('idle-member-in-online-group.png')})
+})
 for(const width of [320,390,1024,1440])for(const scale of [100,200])test(`roster and profile ${width} text ${scale}`,async({page},info)=>{
  await mount(page,width,scale)
  await page.screenshot({path:info.outputPath('roster.png')})
