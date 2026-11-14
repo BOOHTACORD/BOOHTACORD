@@ -17,3 +17,21 @@ test('browser capture uses a safe RNNoise track and preserves mute', async ({ pa
   expect(result.active).toMatchObject({ requestedMode: 'rnnoise', effectiveMode: 'rnnoise', status: 'active' })
   expect(result.muted).toBe(true)
 })
+
+test('Auto preserves requested and effective mode through capture and mute', async ({ page, browserName }) => {
+  await page.goto('/tests/audio/fixture.html')
+  const result = await page.evaluate(async () => {
+    const path = '/tests/audio/adapter_recapture_fixture.ts'
+    return (await import(/* @vite-ignore */ path)).runAutoCapture()
+  })
+  if (browserName === 'chromium') expect(result.rejected).toBe(false)
+  if (result.rejected) {
+    expect(result.active).toMatchObject({ requestedMode: 'auto', effectiveMode: 'unknown', status: 'error' })
+    expect(result.publications).toBe(0)
+    expect(result.capturesStopped).toBe(true)
+  } else {
+    expect(result.active).toMatchObject({ requestedMode: 'auto', effectiveMode: 'browser', status: 'active' })
+    expect(result.muted).toBe(true)
+    expect(result.publishedMuted).toBe(true)
+  }
+})
