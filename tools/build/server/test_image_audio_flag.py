@@ -86,3 +86,18 @@ class WebAudioFlagTests(unittest.TestCase):
                     imports.add(target.relative_to(root).as_posix())
         self.assertTrue(imports, 'No shared JSON import boundary was inspected')
         self.assertFalse(imports - copied, f'Missing shared build inputs: {sorted(imports - copied)}')
+
+    def test_web_build_context_contains_vite_script_dependencies(self):
+        root = Path(__file__).resolve().parents[3]
+        dockerfile = (root / 'clients/web/Dockerfile').read_text(encoding='utf-8')
+        copied = set()
+        for line in dockerfile.split('RUN npm run build')[0].splitlines():
+            if line.startswith('COPY '): copied.update(shlex.split(line)[1:-1])
+        config = (root / 'clients/web/vite.config.ts').read_text(encoding='utf-8')
+        scripts = re.findall(r'''from\s*['"](\./scripts/[^'"]+\.mjs)['"]''', config)
+        self.assertTrue(scripts, 'No Vite script dependency was inspected')
+        for script in scripts:
+            target = 'clients/web/' + script.removeprefix('./')
+            with self.subTest(script=script):
+                self.assertTrue(any(target == p or target.startswith(p.rstrip('/')+'/')
+                                    for p in copied), f'Missing Vite build input: {target}')
