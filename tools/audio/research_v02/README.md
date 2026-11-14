@@ -30,6 +30,13 @@ Production Web builds reject the enabled flag and the presence of the v0.2
 public asset directory, even with the flag off; local Vite development is
 allowed for isolated research. This guard must not be removed until model
 redistribution and release acceptance are established.
+
+For the local-only Web Auto smoke, use the independent research WASM digest as
+`VITE_RNNOISE_V02_WASM_SHA256`, set `VITE_RNNOISE_V02_ENABLED=true` and set
+`BOOHTA_RESEARCH_ASSET_DIR` to the verified directory containing the v0.2
+manifest and WASM. Then run `node node_modules/playwright/cli.js test -c
+tests/audio/playwright.auto_v02.config.ts` from `clients/web`. The fixture server
+exposes only those two research files and does not place them in public assets.
 This scalar probe has no SIMD, runtime dispatch, production integration, release
 license clearance, or proof of real-time behavior. SHA matching alone does not
 establish perceived quality or source authenticity.
