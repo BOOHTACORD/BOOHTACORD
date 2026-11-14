@@ -14,11 +14,13 @@ var ErrStaleClaim = errors.New("stale voice lease revocation notification claim"
 
 const claimPending = `
 WITH candidates AS (
-    SELECT lease_id
-    FROM voice_sfu_revocations
-    WHERE notification_emitted_at IS NULL
-      AND (notification_claim_token IS NULL OR notification_claimed_at < now() - interval '30 seconds')
-    ORDER BY requested_at, lease_id
+    SELECT revocation.lease_id
+    FROM voice_sfu_revocations AS revocation
+    JOIN voice_leases AS lease ON lease.id = revocation.lease_id
+    WHERE revocation.notification_emitted_at IS NULL
+      AND (lease.revocation_reason <> 'AFK_MOVE' OR revocation.completed_at IS NOT NULL)
+      AND (revocation.notification_claim_token IS NULL OR revocation.notification_claimed_at < now() - interval '30 seconds')
+    ORDER BY revocation.requested_at, revocation.lease_id
     LIMIT $1
     FOR UPDATE SKIP LOCKED
 ), claimed AS (
@@ -29,8 +31,8 @@ WITH candidates AS (
     WHERE revocation.lease_id = candidates.lease_id
     RETURNING revocation.lease_id, revocation.requested_at, revocation.trace_cause
 )
-SELECT claimed.lease_id::text, lease.user_id::text, lease.revocation_reason, claimed.requested_at, claimed.trace_cause
-FROM claimed JOIN voice_leases AS lease ON lease.id = claimed.lease_id
+SELECT claimed.lease_id::text, lease.user_id::text, lease.revocation_reason, claimed.requested_at, claimed.trace_cause, revocation.target_channel_id::text
+FROM claimed JOIN voice_leases AS lease ON lease.id = claimed.lease_id JOIN voice_sfu_revocations AS revocation ON revocation.lease_id=claimed.lease_id
 ORDER BY claimed.requested_at, claimed.lease_id`
 
 const markEmitted = `
@@ -43,6 +45,7 @@ WHERE lease_id = $1::uuid AND notification_claim_token = $2::uuid
 
 type Item struct {
 	LeaseID, UserID, Reason, ClaimToken string
+	TargetChannelID                     *string
 	RequestedAt                         time.Time
 	TraceCause                          []byte
 }
@@ -76,7 +79,7 @@ func (repository Repository) Claim(context context.Context, limit int) ([]Item, 
 	items := make([]Item, 0, limit)
 	for rows.Next() {
 		item := Item{ClaimToken: claimToken}
-		if err := rows.Scan(&item.LeaseID, &item.UserID, &item.Reason, &item.RequestedAt, &item.TraceCause); err != nil {
+		if err := rows.Scan(&item.LeaseID, &item.UserID, &item.Reason, &item.RequestedAt, &item.TraceCause, &item.TargetChannelID); err != nil {
 			return nil, fmt.Errorf("scan voice lease revocation notification: %w", err)
 		}
 		items = append(items, item)

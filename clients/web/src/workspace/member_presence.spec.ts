@@ -12,7 +12,7 @@ describe('guild member presence groups', () => {
     expect(grouped.online.map((member) => member.user_id)).toEqual(['1'])
     expect(grouped.offline.map((member) => member.user_id)).toEqual(['2'])
     expect(grouped.unknown.map((member) => member.user_id)).toEqual(['3'])
-    expect(Object.keys(grouped)).toEqual(['online', 'offline', 'unknown'])
+    expect(Object.keys(grouped)).toEqual(['online', 'idle', 'offline', 'unknown'])
   })
 
   it('fails closed to unknown for a missing or unrecognized wire status', () => {

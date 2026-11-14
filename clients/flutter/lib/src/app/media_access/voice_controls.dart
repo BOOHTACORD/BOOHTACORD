@@ -23,6 +23,8 @@ mixin AppVoiceControlsAccess on AppOwners {
 
   set microphoneMuted(bool value) => voice.microphoneMuted = value;
 
+  bool get microphoneAllowed => voice.microphoneAllowed;
+
   bool get microphoneUnavailable => voice.microphoneUnavailable;
 
   set microphoneUnavailable(bool value) => voice.microphoneUnavailable = value;

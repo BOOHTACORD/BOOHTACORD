@@ -11,6 +11,12 @@ part 'toggle.dart';
 
 extension VoiceMicrophoneCapture on VoiceController {
   Future<bool> applyMicrophoneMuted(bool muted) {
+    if (!muted && !microphoneAllowed) {
+      audio.microphoneMutedIntent = true;
+      microphoneMuted = true;
+      microphoneUnavailable = false;
+      return Future<bool>.value(false);
+    }
     final ticket = scope.capture();
     final revision = operationRevision;
     final request = ++microphoneRevision;

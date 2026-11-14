@@ -39,15 +39,23 @@ export function parseRealtimeEvent(value: unknown): RealtimeEvent {
   if (!validNotificationRealtime(kind,payload)) throw new Error('Некорректное событие уведомлений.')
   if (!validMaintenanceRealtime(kind, payload)) throw new NewRealtimeEnvelopeError('Некорректное realtime-событие.')
   if (!validVoiceRosterRealtime(kind, payload)) throw new NewRealtimeEnvelopeError('Некорректное realtime-событие.')
-  if (kind === 'presence.snapshot' && (Object.keys(payload).length !== 1 || !Array.isArray(payload.online_user_ids) || !payload.online_user_ids.every(uuid))) throw new Error('Некорректное realtime-событие.')
-  if (kind === 'presence.changed' && (Object.keys(payload).length !== 2 || !uuid(payload.user_id) || (payload.presence !== 'online' && payload.presence !== 'offline'))) throw new Error('Некорректное realtime-событие.')
+  if (
+    kind === 'presence.snapshot' &&
+    ((!keys(payload, ['online_user_ids']) && !keys(payload, ['online_user_ids', 'idle_user_ids'])) ||
+      !Array.isArray(payload.online_user_ids) ||
+      !payload.online_user_ids.every(uuid) ||
+      (payload.idle_user_ids !== undefined && (!Array.isArray(payload.idle_user_ids) || !payload.idle_user_ids.every(uuid))))
+  ) {
+    throw new Error('Некорректное realtime-событие.')
+  }
+  if (kind === 'presence.changed' && ((!keys(payload, ['user_id', 'presence']) && !keys(payload, ['user_id', 'presence', 'activity_state'])) || !uuid(payload.user_id) || (payload.presence !== 'online' && payload.presence !== 'offline') || (payload.activity_state !== undefined && (payload.presence !== 'online' || (payload.activity_state !== 'active' && payload.activity_state !== 'idle'))))) throw new Error('Некорректное realtime-событие.')
   if (['message.created', 'message.updated', 'message.deleted', 'message.reactions_updated', 'message.pins_updated'].includes(kind) && (!keys(payload, ['channel_id', 'message_id']) || !uuid(payload.channel_id) || !uuid(payload.message_id))) throw new Error('Некорректное realtime-событие.')
   if ((kind === 'direct_message.message_created' || kind === 'direct_message.reactions_updated') && (!keys(payload, ['direct_message_id', 'message_id']) || !uuid(payload.direct_message_id) || !uuid(payload.message_id))) throw new Error('Некорректное realtime-событие.')
   if ((kind === 'direct_message.message_updated' || kind === 'direct_message.message_deleted') && (!keys(payload, ['direct_message_id', 'message_id', 'revision']) || !uuid(payload.direct_message_id) || !uuid(payload.message_id) || !revision(payload.revision))) throw new Error('Некорректное realtime-событие.')
   if ((kind === 'channel.updated' || kind === 'guild.profile.updated') && (!keys(payload, ['revision']) || !revision(payload.revision))) throw new Error('Некорректное realtime-событие.')
   if (kind === 'member.profile.updated' && (!keys(payload, ['user_id', 'revision']) || !uuid(payload.user_id) || !revision(payload.revision))) throw new Error('Некорректное realtime-событие.')
   if (kind === 'screen_viewers.changed' && Object.keys(payload).length !== 0) throw new Error('Некорректное realtime-событие.')
-  if (kind === 'voice.lease_revoked' && (!keys(payload, ['lease_id', 'reason']) || !uuid(payload.lease_id) || !isVoiceLeaseRevocationReason(payload.reason))) throw new Error('Некорректное realtime-событие.')
+  if (kind === 'voice.lease_revoked' && ((!keys(payload, ['lease_id', 'reason']) && !keys(payload, ['lease_id', 'reason', 'target_channel_id'])) || !uuid(payload.lease_id) || !isVoiceLeaseRevocationReason(payload.reason) || (payload.target_channel_id !== undefined && (!uuid(payload.target_channel_id) || payload.reason !== 'AFK_MOVE')) || (payload.reason === 'AFK_MOVE' && payload.target_channel_id === undefined))) throw new Error('Некорректное realtime-событие.')
   if (kind === 'screen_preview.updated' && (!keys(payload, ['lease_id', 'generation_id', 'revision']) || !parseScreenPreviewHint(payload))) throw new Error('Некорректное realtime-событие.')
   if (kind === 'screen_preview.invalidated' && (!keys(payload, ['lease_id', 'generation_id']) || !uuid(payload.lease_id) || !uuid(payload.generation_id))) throw new Error('Некорректное realtime-событие.')
   if (kind === 'role.permissions.updated' && (!keys(payload, ['role', 'revision']) || payload.role !== 'MEMBER' || !revision(payload.revision))) throw new Error('Некорректное realtime-событие.')

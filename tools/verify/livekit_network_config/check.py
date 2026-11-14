@@ -105,6 +105,8 @@ def main():
     expected_artifacts |= speaker_activity["repository_artifacts"]
     product_map_source = read(root, "evidence/media/livekit-network-product-map-2026-11-10.json")
     expected_artifacts |= product_map_source["repository_artifacts"]
+    afk_source = read(root, "evidence/media/livekit-network-afk-source-2026-11-14.json")
+    expected_artifacts |= afk_source["repository_artifacts"]
     for path, expected in expected_artifacts.items():
         content = evidence_content(root, HISTORICAL_EVIDENCE_REVISION, path)
         content = content.replace(b"\r\n", b"\n")

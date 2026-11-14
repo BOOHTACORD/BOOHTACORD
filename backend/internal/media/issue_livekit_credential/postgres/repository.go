@@ -11,9 +11,10 @@ import (
 
 const selectActiveLease = `
 SELECT lease.id::text, lease.channel_id::text, account.display_name,
- COALESCE(sound.id::text,''), COALESCE(sound.revision::text,'')
+ COALESCE(sound.id::text,''), COALESCE(sound.revision::text,''), (settings.afk_channel_id IS DISTINCT FROM channel.id)
 FROM voice_leases AS lease
 JOIN channels AS channel ON channel.id = lease.channel_id
+JOIN guild_settings AS settings ON settings.singleton=TRUE
 JOIN sessions AS session ON session.token_digest = lease.session_token_digest
 JOIN users AS account ON account.id = lease.user_id
 LEFT JOIN join_sounds AS sound ON sound.account_id=account.id AND sound.enabled=true AND sound.id IS NOT NULL
@@ -32,7 +33,7 @@ type Repository struct{ database Database }
 func New(database Database) Repository { return Repository{database: database} }
 func (repository Repository) FindActive(context context.Context, input issuelivekitcredential.Input) (issuelivekitcredential.Lease, error) {
 	var lease issuelivekitcredential.Lease
-	err := repository.database.QueryRow(context, selectActiveLease, input.LeaseID, input.ActorID, input.SessionDigest[:]).Scan(&lease.ID, &lease.ChannelID, &lease.DisplayName, &lease.JoinSoundID, &lease.JoinSoundRevision)
+	err := repository.database.QueryRow(context, selectActiveLease, input.LeaseID, input.ActorID, input.SessionDigest[:]).Scan(&lease.ID, &lease.ChannelID, &lease.DisplayName, &lease.JoinSoundID, &lease.JoinSoundRevision, &lease.MicrophoneAllowed)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return issuelivekitcredential.Lease{}, issuelivekitcredential.ErrLeaseUnavailable
 	}

@@ -74,6 +74,7 @@ class WorkspaceDirectMessageNavigation extends StatelessWidget {
                     : state.memberPresence(member);
                 final label = switch (presence) {
                   MemberPresence.online => 'В сети',
+                  MemberPresence.idle => 'Не активен',
                   MemberPresence.offline => 'Не в сети',
                   MemberPresence.unknown => 'Статус неизвестен',
                 };
@@ -97,6 +98,7 @@ class WorkspaceDirectMessageNavigation extends StatelessWidget {
                             shape: BoxShape.circle,
                             color: switch (presence) {
                               MemberPresence.online => GcColors.success,
+                              MemberPresence.idle => GcColors.warning,
                               MemberPresence.offline => GcColors.muted,
                               MemberPresence.unknown => GcColors.warning,
                             },

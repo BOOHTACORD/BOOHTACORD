@@ -10,5 +10,6 @@ mixin GuildSettingsFacade on ApiFacadeBase {
     String name,
     String? channel,
     int revision,
-  ) => transport.run(() => _guildSettings.write(name, channel, revision));
+    [String? afkChannelID, int afkTimeoutSeconds = 0]
+  ) => transport.run(() => _guildSettings.write(name, channel, revision, afkChannelID, afkTimeoutSeconds));
 }

@@ -63,6 +63,7 @@ extension WorkspaceMembersPanelStateWorkspaceMemberTileAction
     final voiceStatus = guildMemberVoiceStatus(state, member.id);
     final presence = switch (memberPresence) {
       MemberPresence.online => ('В сети', GcColors.success),
+      MemberPresence.idle => ('Не активен', GcColors.warning),
       MemberPresence.offline => ('Не в сети', GcColors.muted),
       MemberPresence.unknown => ('Статус неизвестен', GcColors.warning),
     };

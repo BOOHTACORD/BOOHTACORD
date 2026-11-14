@@ -2,6 +2,7 @@ import { defaultAudioProcessing, setMicrophone, type AudioProcessingOptions, typ
 
 export interface DeafenableVoiceSession {
   microphone: MicrophoneState
+  microphoneAllowed?: boolean
   room: VoiceRoom
 }
 
@@ -41,7 +42,7 @@ export class VoiceDeafen {
     this.microphoneBeforeDeafen = null
     current.room.setDeafened?.(false)
     this.deafened = false
-    if (microphone === 'PUBLISHED') current.microphone = await setMicrophone(current.room, true, this.processing())
+    if (microphone === 'PUBLISHED' && current.microphoneAllowed !== false) current.microphone = await setMicrophone(current.room, true, this.processing())
     return current.microphone
   }
 }

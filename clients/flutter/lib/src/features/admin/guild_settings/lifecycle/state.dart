@@ -10,6 +10,7 @@ class AdminGuildSettingsState extends State<AdminGuildSettings> {
   late final state = GuildSettingsController(
     widget.api.readGuildSettings,
     widget.api.updateGuildSettings,
+    writeAfk: (name, welcome, revision, channel, timeout) => widget.api.updateGuildSettings(name, welcome, revision, channel, timeout),
   );
   final name = TextEditingController();
   @override
@@ -30,7 +31,7 @@ class AdminGuildSettingsState extends State<AdminGuildSettings> {
 
   Future<void> _save() async {
     state.name = name.text;
-    await state.save(_channels.map((channel) => channel.id).toList());
+    await state.save(_channels.map((channel) => channel.id).toList(), _voiceChannels.map((channel) => channel.id).toList());
     if (mounted && state.saved) {
       name.text = state.name;
       await widget.onSaved();
@@ -48,6 +49,7 @@ class AdminGuildSettingsState extends State<AdminGuildSettings> {
             channel.kind == ChannelKind.text && !channel.admissionClosed,
       )
       .toList();
+  List<GuildChannel> get _voiceChannels => widget.channels.where((channel) => channel.kind == ChannelKind.voice && !channel.admissionClosed).toList();
   @override
   void dispose() {
     state.dispose();
@@ -61,10 +63,13 @@ class AdminGuildSettingsState extends State<AdminGuildSettings> {
     telemetry: AdminTelemetryPanel(api: widget.api),
     name: name,
     channels: _channels,
+    voiceChannels: _voiceChannels,
     onSave: _save,
     onLoad: _load,
     onCancel: _cancel,
     onNameChanged: (value) => state.name = value,
     onWelcomeChanged: (value) => state.welcome = value,
+    onAfkChannelChanged: (value) => state.afkChannel = value,
+    onAfkTimeoutChanged: (value) => state.afkTimeout = value,
   );
 }

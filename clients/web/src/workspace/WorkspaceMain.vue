@@ -81,6 +81,7 @@ const emit = defineEmits<{ returnVoice: [channelId: string]; toggleNav: []; togg
     :selected-screen-stream-id="voiceConnection.selectedScreenStreamId"
     :self-microphone-muted="voiceConnection.microphoneMuted"
     :self-microphone-unavailable="voiceConnection.microphonePermissionDenied"
+    :microphone-allowed="voiceConnection.active?.microphoneAllowed !== false"
     :self-deafened="voiceConnection.deafened"
     :deafen-changing="voiceConnection.deafenChanging"
     :self-speaking="voiceConnection.selfSpeaking"

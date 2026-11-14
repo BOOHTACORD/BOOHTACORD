@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
@@ -79,6 +80,15 @@ class RealtimeController extends ChangeNotifier {
   bool connected = false;
   bool checkingSession = false;
   bool disposed = false;
+  DateTime? _lastActivityReport;
+
+  void reportActivity() {
+    final current = socket;
+    final now = DateTime.now();
+    if (!connected || current == null || (_lastActivityReport != null && now.difference(_lastActivityReport!) < const Duration(seconds: 10))) return;
+    _lastActivityReport = now;
+    try { current.add(jsonEncode({'type': 'activity'})); } catch (_) { /* Reconnect refreshes activity state. */ }
+  }
 
   ActionScope? handshake;
   bool hadConnection = false;

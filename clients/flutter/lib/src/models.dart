@@ -462,12 +462,13 @@ class ChatMessagePage {
 }
 
 class VoiceCredential {
-  const VoiceCredential({required this.url, required this.token});
+  const VoiceCredential({required this.url, required this.token, this.microphoneAllowed = true});
   final String url;
   final String token;
+  final bool microphoneAllowed;
 }
 
-enum MemberPresence { online, offline, unknown }
+enum MemberPresence { online, idle, offline, unknown }
 
 class GuildMember {
   const GuildMember({
@@ -501,6 +502,7 @@ class GuildMember {
     role: json['role'] as String,
     presence: switch (json['presence']) {
       'online' => MemberPresence.online,
+      'idle' => MemberPresence.idle,
       'offline' => MemberPresence.offline,
       _ => MemberPresence.unknown,
     },

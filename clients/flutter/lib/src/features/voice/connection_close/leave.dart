@@ -101,6 +101,7 @@ extension VoiceConnectionCloseLeave on VoiceController {
     mutedScreenShareAudioIdentities.clear();
     transientScreenShareVolumes.clear();
     microphoneMuted = false;
+    microphoneAllowed = true;
     microphoneUnavailable = false;
     deafened = false;
     deafenChanging = false;

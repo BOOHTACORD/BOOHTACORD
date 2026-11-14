@@ -1,5 +1,5 @@
 export const voiceLeaseRevocationReasons = [
-  'TRANSFER', 'KICK', 'CHANNEL_CLOSED', 'SESSION_REVOKED', 'BANNED', 'LOGOUT', 'VOLUNTARY_LEAVE',
+  'TRANSFER', 'KICK', 'CHANNEL_CLOSED', 'SESSION_REVOKED', 'BANNED', 'LOGOUT', 'VOLUNTARY_LEAVE', 'AFK_MOVE',
 ] as const
 
 export type VoiceLeaseRevocationReason = typeof voiceLeaseRevocationReasons[number]
@@ -17,5 +17,6 @@ export function voiceLeaseRevocationMessage(reason: VoiceLeaseRevocationReason):
     case 'BANNED': return 'Доступ к гильдии отозван; голосовое подключение завершено.'
     case 'LOGOUT': return 'Сеанс завершён; голосовое подключение остановлено.'
     case 'VOLUNTARY_LEAVE': return 'Голосовое подключение завершено.'
+    case 'AFK_MOVE': return 'Вы перемещены в AFK-канал из-за неактивности.'
   }
 }

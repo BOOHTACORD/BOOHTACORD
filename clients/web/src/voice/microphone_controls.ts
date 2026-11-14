@@ -8,7 +8,7 @@ export interface MicrophoneSession {
 
 export function createMicrophoneControls(
   session: MicrophoneSession,
-  active: Ref<unknown | null>,
+  active: Ref<{ microphoneAllowed?: boolean } | null>,
   state: Ref<string>,
   deafened: Ref<boolean>,
   microphoneMuted: Ref<boolean>,
@@ -16,7 +16,7 @@ export function createMicrophoneControls(
   error: Ref<string | null>,
 ) {
   async function setMicrophoneMuted(muted: boolean): Promise<void> {
-    if (!active.value || deafened.value) return
+    if (!active.value || active.value.microphoneAllowed === false || deafened.value) return
     error.value = null
     try {
       const microphone = await session.setMicrophoneMuted(muted)

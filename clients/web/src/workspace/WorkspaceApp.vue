@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted, onBeforeUnmount } from 'vue'
 import GuildName from '../guild/profile/GuildName.vue'
 import ChannelTopologyActions from '../channel/member_topology/ChannelTopologyActions.vue'
 import AdminConfirmation from '../channel/AdminConfirmation.vue'
@@ -28,6 +29,10 @@ const emit = defineEmits<{ sessionExpired: []; loggedOut: [] }>()
 const controls = useWorkspaceVoiceControls(props.accountId)
 const { voiceConnection, leaveVoice } = controls
 const realtimeStore = useRealtimeStore()
+const reportActivity = () => realtimeStore.reportActivity()
+const activityEvents = ['pointerdown', 'pointermove', 'keydown', 'touchstart', 'wheel'] as const
+onMounted(() => activityEvents.forEach((event) => window.addEventListener(event, reportActivity, { passive: true })))
+onBeforeUnmount(() => activityEvents.forEach((event) => window.removeEventListener(event, reportActivity)))
 const expireSession = () => expireWorkspaceSession(voiceConnection, () => emit('sessionExpired'))
 const { busy: logoutBusy, error: logoutError, signOut } = bindWorkspaceLogout(voiceConnection, leaveVoice, realtimeStore, () => emit('loggedOut'))
 const { activeVoiceChannel, audioSettings, loadAudioDevices, joinVoice, selectAudioDevice, selectedChannel, selectedChannelId, topologyStore, voiceActivation, adminSection, confirmScreenShare, openScreenShareSetup, screenShareSetupOpen, selectedScreenProfile, selectedScreenMode,
@@ -69,7 +74,7 @@ const { activeVoiceChannel, audioSettings, loadAudioDevices, joinVoice, selectAu
           />
           </div>
         </div>
-        <VoiceDock :notice="voiceConnection.disconnectNotice" class="mobile-voice-dock" :activation-mode="voiceActivation.mode" :touch-ptt-enabled="voiceActivation.touchPttEnabled" :set-touch-ptt-pressed="voiceActivation.setTouchPttPressed" :channel="activeVoiceChannel" :participant-count="voiceConnection.voiceVolumeParticipants.length + 1" :active-session="voiceConnection.active !== null" :error="voiceConnection.error" :deafen-changing="voiceConnection.deafenChanging" :deafened="voiceConnection.deafened"
+        <VoiceDock :notice="voiceConnection.disconnectNotice" class="mobile-voice-dock" :activation-mode="voiceActivation.mode" :touch-ptt-enabled="voiceActivation.touchPttEnabled" :set-touch-ptt-pressed="voiceActivation.setTouchPttPressed" :channel="activeVoiceChannel" :participant-count="voiceConnection.voiceVolumeParticipants.length + 1" :active-session="voiceConnection.active !== null" :error="voiceConnection.error" :deafen-changing="voiceConnection.deafenChanging" :deafened="voiceConnection.deafened" :microphone-allowed="voiceConnection.active?.microphoneAllowed !== false"
           :microphone-muted="voiceConnection.microphoneMuted" :microphone-permission-denied="voiceConnection.microphonePermissionDenied" :screen-share-state="voiceConnection.screenState" :connection-quality="voiceConnection.connectionQuality" :ping-ms="voiceConnection.pingMs" :state="voiceConnection.state" @leave="leaveVoice" @start-screen="openScreenShareSetup" @stop-screen="voiceConnection.stopScreen"
           @toggle-deafen="voiceConnection.toggleDeafen" @toggle-microphone="voiceConnection.toggleMicrophone" />
         <WorkspaceUserFooter :online="realtimeStore.state === 'CONNECTED'" :role="props.role" :display-name="profile?.display_name" :avatar-u-r-l="profile?.avatar_url" :account-i-d="profile?.account_id" @open-support="requestSupport" :support-opening="directMessageStore.supportOpening" @open-profile="requestPanel('profile')" @open-settings="requestPanel('audio')" />

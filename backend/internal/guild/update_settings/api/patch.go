@@ -21,9 +21,11 @@ func (h Handler) Patch(w http.ResponseWriter, r *http.Request) {
 	ctx, span := h.Observer.StartSettings(r.Context())
 	details := guildlifecycle.Details{UserID: principal.AccountID, UserName: principal.DisplayName, SessionDigest: principal.SessionDigest}
 	var body struct {
-		Name     json.RawMessage `json:"name"`
-		Welcome  json.RawMessage `json:"welcome_channel_id"`
-		Revision int64           `json:"expected_revision"`
+		Name       json.RawMessage `json:"name"`
+		Welcome    json.RawMessage `json:"welcome_channel_id"`
+		AFKChannel json.RawMessage `json:"afk_channel_id"`
+		AFKTimeout json.RawMessage `json:"afk_timeout_seconds"`
+		Revision   int64           `json:"expected_revision"`
 	}
 	decoder := json.NewDecoder(http.MaxBytesReader(w, r.Body, 8<<10))
 	decoder.DisallowUnknownFields()
@@ -34,8 +36,8 @@ func (h Handler) Patch(w http.ResponseWriter, r *http.Request) {
 			err = guildsettings.ErrInvalid
 		}
 	}
-	input := guildsettings.Input{ActorID: principal.AccountID, ExpectedRevision: body.Revision, SetName: body.Name != nil, SetWelcome: body.Welcome != nil}
-	tracehttp.SetGuildSettingsActions(r.Context(), input.SetName || !input.SetWelcome, input.SetWelcome)
+	input := guildsettings.Input{ActorID: principal.AccountID, ExpectedRevision: body.Revision, SetName: body.Name != nil, SetWelcome: body.Welcome != nil, SetAFK: body.AFKChannel != nil || body.AFKTimeout != nil}
+	tracehttp.SetGuildSettingsActions(r.Context(), input.SetName || (!input.SetWelcome && !input.SetAFK), input.SetWelcome, input.SetAFK)
 	if err == nil && input.SetName {
 		if string(body.Name) == "null" {
 			err = guildsettings.ErrInvalid
@@ -49,12 +51,30 @@ func (h Handler) Patch(w http.ResponseWriter, r *http.Request) {
 			err = guildsettings.ErrInvalid
 		}
 	}
+	if err == nil && input.SetAFK {
+		if body.AFKChannel == nil || body.AFKTimeout == nil || string(body.AFKTimeout) == "null" {
+			err = guildsettings.ErrInvalid
+		} else {
+			if string(body.AFKChannel) != "null" {
+				err = json.Unmarshal(body.AFKChannel, &input.AFKChannelID)
+				if err == nil && input.AFKChannelID == "" {
+					err = guildsettings.ErrInvalid
+				}
+			}
+			if err == nil {
+				err = json.Unmarshal(body.AFKTimeout, &input.AFKTimeoutSeconds)
+			}
+		}
+	}
 	details.Revision = body.Revision
 	if input.SetName {
 		details.ChangedFields = append(details.ChangedFields, "name")
 	}
 	if input.SetWelcome {
 		details.ChangedFields = append(details.ChangedFields, "welcome_channel_id")
+	}
+	if input.SetAFK {
+		details.ChangedFields = append(details.ChangedFields, "afk_channel_id", "afk_timeout_seconds")
 	}
 	if err == nil {
 		input, err = guildsettings.Validate(input)

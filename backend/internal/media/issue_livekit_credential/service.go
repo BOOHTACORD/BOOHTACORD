@@ -19,7 +19,10 @@ type Input struct {
 	ActorID, LeaseID string
 	SessionDigest    [sha256.Size]byte
 }
-type Lease struct{ ID, ChannelID, DisplayName, JoinSoundID, JoinSoundRevision string }
+type Lease struct {
+	ID, ChannelID, DisplayName, JoinSoundID, JoinSoundRevision string
+	MicrophoneAllowed                                          bool
+}
 type Store interface {
 	FindActive(context.Context, Input) (Lease, error)
 }
@@ -47,14 +50,25 @@ func (service Service) Issue(context context.Context, input Input) (result livek
 	if err != nil {
 		return livekitcredential.Credential{}, fmt.Errorf("find active voice lease: %w", err)
 	}
-	credential, err := service.issuer.Issue(lease.ID, lease.ChannelID, input.ActorID, lease.DisplayName)
+	var credential livekitcredential.Credential
+	var issuedErr error
 	if issuer, ok := service.issuer.(interface {
+		IssueWithSoundAndMicrophonePolicy(string, string, string, string, string, string, bool) (livekitcredential.Credential, error)
+	}); ok && lease.JoinSoundID != "" {
+		credential, issuedErr = issuer.IssueWithSoundAndMicrophonePolicy(lease.ID, lease.ChannelID, input.ActorID, lease.DisplayName, lease.JoinSoundID, lease.JoinSoundRevision, lease.MicrophoneAllowed)
+	} else if issuer, ok := service.issuer.(interface {
+		IssueWithMicrophonePolicy(string, string, string, string, bool) (livekitcredential.Credential, error)
+	}); ok {
+		credential, issuedErr = issuer.IssueWithMicrophonePolicy(lease.ID, lease.ChannelID, input.ActorID, lease.DisplayName, lease.MicrophoneAllowed)
+	} else if issuer, ok := service.issuer.(interface {
 		IssueWithSound(string, string, string, string, string, string) (livekitcredential.Credential, error)
 	}); ok && lease.JoinSoundID != "" {
-		credential, err = issuer.IssueWithSound(lease.ID, lease.ChannelID, input.ActorID, lease.DisplayName, lease.JoinSoundID, lease.JoinSoundRevision)
+		credential, issuedErr = issuer.IssueWithSound(lease.ID, lease.ChannelID, input.ActorID, lease.DisplayName, lease.JoinSoundID, lease.JoinSoundRevision)
+	} else {
+		credential, issuedErr = service.issuer.Issue(lease.ID, lease.ChannelID, input.ActorID, lease.DisplayName)
 	}
-	if err != nil {
-		return livekitcredential.Credential{}, fmt.Errorf("issue livekit credential: %w", err)
+	if issuedErr != nil {
+		return livekitcredential.Credential{}, fmt.Errorf("issue livekit credential: %w", issuedErr)
 	}
 	return credential, nil
 }
