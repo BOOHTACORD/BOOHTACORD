@@ -20,6 +20,8 @@
     {"id":"cmp.backend.voice_join_sound_processor","paths":["backend/internal/voice/join_sound/processor/remote.go"]},
     {"id":"cmp.web.idle_afk","source":{"parity_id":"idle_afk.status_and_voice","platform":"web"}},
     {"id":"cmp.flutter.idle_afk","source":{"parity_id":"idle_afk.status_and_voice","platform":"android"}},
+    {"id":"cmp.web.voice_activity_heartbeat","paths":["clients/web/src/realtime/voice_activity_heartbeat.ts"]},
+    {"id":"cmp.flutter.voice_activity_heartbeat","paths":["clients/flutter/lib/src/features/realtime/lifecycle/voice_activity_heartbeat.dart"]},
     {"id":"cmp.backend.idle_presence","paths":["backend/internal/realtime/event_hub/activity.go","backend/internal/realtime/connect_session/event_stream.go"]},
     {"id":"cmp.backend.afk_routing","paths":["backend/internal/voice/route_inactive_members/service.go","backend/internal/voice/route_inactive_members/worker/worker.go"]},
     {"id":"cmp.backend.afk_settings","paths":["backend/internal/guild/update_settings/api/patch.go","backend/internal/guild/update_settings/postgres/repository.go"]},
@@ -103,7 +105,7 @@
         {"path":"backend/internal/guild/update_settings/","component":"cmp.backend.afk_settings"},
         {"path":"backend/internal/database/migrate/migrations/","component":"cmp.backend.idle_afk_migration"}
       ],
-      "components":["cmp.web.idle_afk","cmp.flutter.idle_afk","cmp.backend.idle_presence","cmp.backend.afk_routing","cmp.backend.afk_settings","cmp.backend.idle_afk_migration"],
+      "components":["cmp.web.idle_afk","cmp.flutter.idle_afk","cmp.web.voice_activity_heartbeat","cmp.flutter.voice_activity_heartbeat","cmp.backend.idle_presence","cmp.backend.afk_routing","cmp.backend.afk_settings","cmp.backend.idle_afk_migration"],
       "platforms": {
         "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
         "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
