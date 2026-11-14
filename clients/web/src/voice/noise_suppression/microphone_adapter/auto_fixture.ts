@@ -1,7 +1,7 @@
 import { vi } from 'vitest'
-import type { AudioProcessingOptions } from '../../../src/voice/noise_suppression/types'
+import type { AudioProcessingOptions } from '../types'
 import type { LocalAudioTrack } from 'livekit-client'
-import { LiveKitMicrophoneAdapter } from '../../../src/voice/noise_suppression/microphone_adapter/controller'
+import { LiveKitMicrophoneAdapter } from './controller'
 
 export function fixture() {
   let reported = true

@@ -1,7 +1,7 @@
 import { afterEach, expect, it, vi } from 'vitest'
 import type { AudioProcessingOptions } from '../types'
 import * as capabilities from '../capabilities'
-import { fixture } from '../../../../tests/audio/auto_preflight/unit_fixture'
+import { fixture } from './auto_fixture'
 
 afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks() })
 const options = { autoGainControl: false, echoCancellation: true, noiseSuppressionMode: 'deepfilter' } as unknown as AudioProcessingOptions

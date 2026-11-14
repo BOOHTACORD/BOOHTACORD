@@ -1,6 +1,6 @@
 import { afterEach, expect, it, vi } from 'vitest'
 import * as capabilities from '../capabilities'
-import { fixture } from '../../../../tests/audio/auto_preflight/unit_fixture'
+import { fixture } from './auto_fixture'
 afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks() })
 const options = { autoGainControl: false, echoCancellation: true, noiseSuppressionMode: 'auto' as const }
 function enabled() {
