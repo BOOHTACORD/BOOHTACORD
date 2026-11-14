@@ -6,8 +6,8 @@ mixin _NativeNoiseMonitor on _NativeNoiseCore {
     _timer = Timer.periodic(const Duration(milliseconds: 200), (_) {
       if (_polling ||
           _fallback ||
-          (state.requestedMode != NoiseSuppressionMode.rnnoise &&
-              state.requestedMode != NoiseSuppressionMode.deepfilter)) {
+          (_selectedMode != NoiseSuppressionMode.rnnoise &&
+              _selectedMode != NoiseSuppressionMode.deepfilter)) {
         return;
       }
       _polling = true;

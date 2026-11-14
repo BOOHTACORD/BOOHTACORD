@@ -6,12 +6,14 @@ import 'package:flutter/services.dart';
 import 'audio_preferences.dart';
 import 'native_noise_suppression_state.dart';
 import 'native_noise_model_preflight.dart';
+import 'native_noise_auto_research.dart';
 export 'native_noise_suppression_state.dart';
 
 part 'native_noise_prepare.dart';
 part 'native_noise_fallback.dart';
 part 'native_noise_state_read.dart';
 part 'native_noise_monitor.dart';
+part 'native_noise_research_debug.dart';
 
 typedef NativeNoiseInvoker = Future<Object?> Function(
   String method,
@@ -40,6 +42,13 @@ abstract class _NativeNoiseCore extends ChangeNotifier {
   int _generation = 0;
   bool _disposed = false, _fallback = false, _polling = false;
   bool _allowDeepFilter;
+  NoiseSuppressionMode _selectedMode = NoiseSuppressionMode.browser;
+  NoiseSuppressionMode _debugAutoMode = researchAutoEngine(
+    const String.fromEnvironment('BOOHTA_RESEARCH_AUTO_ENGINE'),
+    debug: kDebugMode,
+    windows: !kIsWeb && defaultTargetPlatform == TargetPlatform.windows,
+  );
+
   @visibleForTesting
   void debugAllowDeepFilter() {
     assert(() {
@@ -96,6 +105,7 @@ class NativeNoiseSuppression extends _NativeNoiseCore
         _NativeNoiseStateRead,
         _NativeNoisePrepare,
         _NativeNoiseFallback,
-        _NativeNoiseMonitor {
+        _NativeNoiseMonitor,
+        _NativeNoiseResearchDebug {
   NativeNoiseSuppression({super.invoke, super.allowExperimentalDeepFilter});
 }

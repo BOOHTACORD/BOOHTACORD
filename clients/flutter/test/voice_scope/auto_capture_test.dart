@@ -7,6 +7,39 @@ import 'fakes.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  test(
+    'Auto native selection is not reset to browser before capture',
+    () async {
+      const channel = MethodChannel('FlutterWebRTC.Method');
+      final engines = <String>[];
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
+            if (call.method == 'setNoiseSuppressionEngine') {
+              engines.add((call.arguments as Map)['engine'] as String);
+            }
+            return {
+              'supported': true,
+              'effectiveEngine': 'rnnoise',
+              'processedFrames': 3,
+            };
+          });
+      addTearDown(
+        () => TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(channel, null),
+      );
+      final harness = VoiceHarness();
+      addTearDown(harness.dispose);
+      harness.audio.nativeNoise.debugSelectAutoEngine(
+        NoiseSuppressionMode.rnnoise,
+      );
+      harness.audio.audioProcessing = const AudioProcessingPreferences(
+        noiseSuppressionMode: NoiseSuppressionMode.auto,
+      );
+      final selected = await harness.audio.prepareNoiseForCapture();
+      expect(selected.noiseSuppressionMode, NoiseSuppressionMode.rnnoise);
+      expect(engines, ['rnnoise']);
+    },
+  );
   test('initial Auto capture confirms the selected browser fallback', () async {
     const channel = MethodChannel('FlutterWebRTC.Method');
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger

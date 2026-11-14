@@ -3,16 +3,15 @@ part of 'native_noise_suppression.dart';
 mixin _NativeNoisePrepare on _NativeNoiseCore {
   Future<NoiseSuppressionMode> prepare(NoiseSuppressionMode mode) async {
     final generation = _generation;
-    // No native model is selected automatically until identity and performance
-    // preflight are available. Keep the request visible in state.
-    final selected = mode == NoiseSuppressionMode.auto
-        ? NoiseSuppressionMode.browser
-        : mode;
+    // Research injection is debug-only; production remains on browser until
+    // model identity and performance preflight have been implemented.
+    final selected = mode == NoiseSuppressionMode.auto ? _debugAutoMode : mode;
+    _selectedMode = selected;
     final nativeMode =
-        mode == NoiseSuppressionMode.rnnoise ||
-        mode == NoiseSuppressionMode.deepfilter;
+        selected == NoiseSuppressionMode.rnnoise ||
+        selected == NoiseSuppressionMode.deepfilter;
     _fallback = false;
-    if (mode == NoiseSuppressionMode.deepfilter && !_allowDeepFilter) {
+    if (selected == NoiseSuppressionMode.deepfilter && !_allowDeepFilter) {
       _update(
         NativeNoiseSuppressionState(
           requestedMode: mode,
@@ -47,7 +46,7 @@ mixin _NativeNoisePrepare on _NativeNoiseCore {
         return NoiseSuppressionMode.browser;
       }
       _read(value);
-      if (mode == NoiseSuppressionMode.deepfilter) {
+      if (selected == NoiseSuppressionMode.deepfilter) {
         final result = await waitForNoiseModel(
           enabled: true,
           active: () => !_disposed && generation == _generation,
