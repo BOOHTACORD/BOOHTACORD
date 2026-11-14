@@ -35,6 +35,8 @@ int wmain(int argc, wchar_t** argv) {
   while (!runtime.Prepared() && runtime.Snapshot().state == LifecycleState::starting && Clock::now() < deadline)
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
   const auto prepare_ms = std::chrono::duration_cast<std::chrono::milliseconds>(Clock::now() - started).count();
+  std::printf("preflight_p95_us=%lld preflight_max_us=%lld\n",
+      static_cast<long long>(engine.preflight_p95_us()), static_cast<long long>(engine.preflight_max_us()));
   if (!runtime.Prepared() || std::strcmp(capture.failure_reason(), "awaiting-audio") != 0) return 5;
   float pcm[480]{};
   adapter.Process(1, 480, 480, pcm);

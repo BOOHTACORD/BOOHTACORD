@@ -19,6 +19,15 @@ class InstallerTests(unittest.TestCase):
         self.root_patch.start()
         self.addCleanup(self.root_patch.stop)
 
+    def test_research_model_is_rejected_before_packaging(self):
+        release = self.root / 'Release'
+        release.mkdir()
+        (release / 'rnnoise-v02-research-only.txt').write_text('research only')
+        with patch('tools.build.windows.installer.prepare_packager') as prepare:
+            with self.assertRaisesRegex(ValueError, 'research'):
+                package(release)
+            prepare.assert_not_called()
+
     def test_pinned_tool_is_measured_through_dotnet_then_packaged(self):
         def measure(command, **options):
             self.assertEqual(command, ['dotnet', 'tool', 'list', '--tool-path', str(self.tools)])

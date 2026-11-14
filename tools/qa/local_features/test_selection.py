@@ -2,10 +2,20 @@ import unittest
 import json
 from pathlib import Path
 
-from .selection import flutter_stage_result, flutter_unit_result, native_targets, stage_timeout
+from .selection import flutter_stage_result, flutter_unit_result, native_targets, stage_timeout, host_command
 
 
 class SelectionTest(unittest.TestCase):
+    def test_windows_resolves_batch_tools_without_changing_arguments(self):
+        self.assertEqual(host_command(['flutter', 'test', '--no-pub'], system='nt',
+                                      find=lambda name: 'C:/sdk/flutter.bat', python='C:/python.exe'),
+                         ['C:/sdk/flutter.bat', 'test', '--no-pub'])
+        self.assertEqual(host_command(['python3', '-m', 'module'], system='nt',
+                                      find=lambda name: None, python='C:/python.exe'),
+                         ['C:/python.exe', '-m', 'module'])
+        self.assertEqual(host_command(['npm', 'test'], system='posix',
+                                      find=lambda name: '/unexpected', python='/python'), ['npm', 'test'])
+
     def test_selected_features_add_native_targets_without_removing_smoke(self):
         catalog = {'connection': {'native_targets': ['integration_test/issue689_roster_test.dart']}}
         self.assertEqual(native_targets(catalog, ['connection']), [

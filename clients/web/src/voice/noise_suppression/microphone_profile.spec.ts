@@ -11,6 +11,8 @@ describe('microphone profile boundary', () => {
     expect(normalizeAudioProcessing({ noiseSuppression: legacy }).noiseSuppressionMode).toBe(expected)
   })
   it('keeps valid preferences and safely rejects unknown modes', () => {
+    expect(normalizeAudioProcessing({ noiseSuppressionMode: 'auto' }).noiseSuppressionMode).toBe('auto')
+    expect(normalizeAudioProcessing({ noiseSuppressionMode: 'off' }).noiseSuppressionMode).toBe('off')
     expect(normalizeAudioProcessing({ autoGainControl: false, noiseSuppressionMode: 'rnnoise' })).toEqual({ autoGainControl: false, echoCancellation: true, noiseSuppressionMode: 'rnnoise' })
     expect(normalizeAudioProcessing({ noiseSuppressionMode: 'future' }).noiseSuppressionMode).toBe('browser')
   })

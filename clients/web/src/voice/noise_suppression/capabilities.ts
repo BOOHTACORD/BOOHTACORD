@@ -7,6 +7,11 @@ export function supportsRnnoise(): boolean {
 export function supportedContextRate(context: Pick<AudioContext, 'sampleRate'>): boolean {
   return context.sampleRate === 48000
 }
+/** Research selection only; performance-based adaptation is not implemented. */
+export function selectAutoEngine(input: { v02: boolean, supported: boolean, deepfilterResearch?: boolean }): 'browser' | 'rnnoise' | 'deepfilter' {
+  if (input.supported && input.deepfilterResearch) return 'deepfilter'
+  return input.v02 && input.supported ? 'rnnoise' : 'browser'
+}
 /** Build-time flag: changing it requires a fresh bundle; stored preferences survive. */
 export function rnnoiseReleaseEnabled(): boolean {
   return import.meta.env.VITE_RNNOISE_ENABLED !== 'false'

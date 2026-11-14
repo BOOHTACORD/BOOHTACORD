@@ -116,4 +116,6 @@ jobs:
       - name: Test Firefox graph and local LiveKit
         env:
           BOOHTA_RESEARCH_ASSET_DIR: ${{ runner.temp }}/dfn-stage
+          BOOHTA_DEEPFILTER_RESEARCH_BUNDLE: ${{ runner.temp }}/dfn-bundle
+          VITE_DEEPFILTER_ENABLED: 'true'
         run: python -m tools.audio.research_dfn_web.firefox_research

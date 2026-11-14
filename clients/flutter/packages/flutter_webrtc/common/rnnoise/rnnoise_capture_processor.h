@@ -3,6 +3,7 @@
 #include <atomic>
 #include "microphone_controls/processor.h"
 #include "deepfilter/resample_16k/resampler.h"
+#include "preflight/worker.h"
 #include <cstdint>
 #include <cstdlib>
 extern "C" {
@@ -33,14 +34,22 @@ class RnnoiseCaptureProcessor {
   int sample_rate() const { return rate_.load(); }
   int channels() const { return channels_.load(); }
   bool supported() const;
+  static const char* ModelId();
+  const char* DeepFilterModelId() const;
   MicrophoneControls controls;
+  RnnoisePreflight preflight;
  private:
   bool ProcessNoise(float* pcm, int frames, int capacity);
+#ifdef BOOHTA_RNNOISE_V02_RESEARCH
+  bool ProcessResearchV02At16k(float* pcm, int frames, int capacity, uint64_t generation);
+#endif
   bool ProcessDeepFilter(float* pcm, int frames, int capacity, uint64_t generation);
   deepfilter::Resampler16k resampler_;
   DenoiseState* state_;
   deepfilter::CaptureHook* const hook_;
+  bool warmed_ = false;  // Set during construction, before the audio thread starts.
   std::atomic<Engine> requested_{Engine::kBrowser};
+  std::atomic<bool> state_ready_{false};
   std::atomic<Failure> failure_{Failure::kAwaitingAudio};
   std::atomic<uint64_t> generation_{1}, processed_{0}, fallback_{0};
   std::atomic<int> rate_{0}, channels_{0};

@@ -3,6 +3,7 @@
 #include "../frame_queue/queue.h"
 #include "../verified_module/module.h"
 #include <memory>
+#include <atomic>
 #include <string>
 
 namespace boohta::deepfilter {
@@ -19,7 +20,12 @@ class VerifiedEngine {
   bool Reset();
   bool Process(AudioFrame& frame);
   bool Close();
+  std::int64_t preflight_p95_us() const { return preflight_p95_us_.load(); }
+  std::int64_t preflight_max_us() const { return preflight_max_us_.load(); }
  private:
+  bool CreateState();
+  bool preflight_passed_ = false;
+  std::atomic<std::int64_t> preflight_p95_us_{0}, preflight_max_us_{0};
   using Create = int (__cdecl *)(const unsigned char*, std::size_t, void**);
   using ProcessFn = int (__cdecl *)(void*, const float*, float*, std::size_t);
   using Free = int (__cdecl *)(void*);

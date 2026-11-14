@@ -7,6 +7,12 @@ const files = new Map([
 ])
 export function researchAsset(url) {
   const path = url?.split('?', 1)[0]
+  const rnnoise = '/audio/rnnoise/v0.2-904a876/'
+  if (path?.startsWith(rnnoise)) {
+    const file = path.slice(rnnoise.length)
+    const type = new Map([['rnnoise-manifest.json', 'application/json'], ['rnnoise.wasm', 'application/wasm']]).get(file)
+    return type ? [file, type] : undefined
+  }
   const root = roots.find(prefix => path?.startsWith(prefix))
   if (!root) return undefined
   const file = path.slice(root.length), type = files.get(file)

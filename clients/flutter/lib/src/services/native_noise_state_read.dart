@@ -9,10 +9,10 @@ mixin _NativeNoiseStateRead on _NativeNoiseCore {
     final effective = value['effectiveEngine'];
     final reason = value['failureReason'] as String?;
     final nativeMode =
-        state.requestedMode == NoiseSuppressionMode.rnnoise ||
-        state.requestedMode == NoiseSuppressionMode.deepfilter;
+        _selectedMode == NoiseSuppressionMode.rnnoise ||
+        _selectedMode == NoiseSuppressionMode.deepfilter;
     final active =
-        effective == state.requestedMode.name &&
+        effective == _selectedMode.name &&
         frames > 0 &&
         (reason == null || reason.isEmpty);
     _update(
@@ -20,7 +20,7 @@ mixin _NativeNoiseStateRead on _NativeNoiseCore {
         requestedMode: state.requestedMode,
         effectiveMode: nativeMode
             ? active
-                  ? state.requestedMode.name
+                  ? _selectedMode.name
                   : 'unknown'
             : effective == 'browser' || effective == 'off'
             ? effective as String

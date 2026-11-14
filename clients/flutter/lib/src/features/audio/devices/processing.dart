@@ -33,7 +33,8 @@ mixin AudioDeviceProcessing on AudioDeviceState {
       audioProcessing.noiseSuppressionMode,
     );
     captureNoiseOverride = mode;
-    if (mode != audioProcessing.noiseSuppressionMode) {
+    if (mode == NoiseSuppressionMode.browser &&
+        mode != audioProcessing.noiseSuppressionMode) {
       await nativeNoise.useFallback(
         nativeNoise.state.failureReason ?? 'unsupported',
         unsupported: true,

@@ -28,7 +28,8 @@ extension AudioProcessingChange on AudioDeviceState {
       await nativeNoise.reset();
       var mode = await nativeNoise.prepare(next.noiseSuppressionMode);
       if (!current()) return;
-      if (mode != next.noiseSuppressionMode) {
+      if (mode == NoiseSuppressionMode.browser &&
+          mode != next.noiseSuppressionMode) {
         await nativeNoise.useFallback(
           nativeNoise.state.failureReason ?? 'unsupported',
           captureApplied: false,
@@ -55,7 +56,8 @@ extension AudioProcessingChange on AudioDeviceState {
         }
       }
       if (!current()) return;
-      if (mode != next.noiseSuppressionMode) {
+      if (mode == NoiseSuppressionMode.browser &&
+          mode != next.noiseSuppressionMode) {
         await nativeNoise.useFallback(
           nativeNoise.state.failureReason ?? 'unsupported',
           unsupported:
