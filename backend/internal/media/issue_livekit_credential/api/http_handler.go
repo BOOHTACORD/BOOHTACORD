@@ -43,10 +43,11 @@ func NewHandler(issuer Issuer) http.Handler {
 		}
 		writer.Header().Set("Content-Type", "application/json; charset=utf-8")
 		_ = json.NewEncoder(writer).Encode(struct {
-			URL       string    `json:"url"`
-			Token     string    `json:"token"`
-			ExpiresAt time.Time `json:"expires_at"`
-		}{credential.URL, credential.Token, credential.ExpiresAt})
+			URL               string    `json:"url"`
+			Token             string    `json:"token"`
+			ExpiresAt         time.Time `json:"expires_at"`
+			MicrophoneAllowed bool      `json:"microphone_allowed"`
+		}{credential.URL, credential.Token, credential.ExpiresAt, credential.MicrophoneAllowed})
 	})
 }
 func writeError(writer http.ResponseWriter, request *http.Request, status int, code, message string) {

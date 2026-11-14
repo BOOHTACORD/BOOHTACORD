@@ -27,6 +27,14 @@ extension WorkspaceMembersPanelStateWorkspaceBuildPanelAction
             .toList(),
       ),
       (
+        title: 'Не активен',
+        members: state.members
+            .where(
+              (member) => state.memberPresence(member) == MemberPresence.idle,
+            )
+            .toList(),
+      ),
+      (
         title: 'Не в сети',
         members: state.members
             .where(

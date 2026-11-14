@@ -18,6 +18,7 @@ type Config struct{ URL, APIKey, APISecret string }
 type Credential struct {
 	URL, Token, LeaseID string
 	ExpiresAt           time.Time
+	MicrophoneAllowed   bool
 }
 type Signer struct {
 	config Config
@@ -33,12 +34,18 @@ func New(config Config) (Signer, error) {
 }
 
 func (signer Signer) Issue(leaseID, channelID, accountID, displayName string) (Credential, error) {
-	return signer.issue(leaseID, channelID, accountID, displayName, nil)
+	return signer.issue(leaseID, channelID, accountID, displayName, nil, true)
 }
 func (signer Signer) IssueWithSound(leaseID, channelID, accountID, displayName, id, revision string) (Credential, error) {
-	return signer.issue(leaseID, channelID, accountID, displayName, map[string]string{"boohtacord.join_sound_id": id, "boohtacord.join_sound_revision": revision})
+	return signer.issue(leaseID, channelID, accountID, displayName, map[string]string{"boohtacord.join_sound_id": id, "boohtacord.join_sound_revision": revision}, true)
 }
-func (signer Signer) issue(leaseID, channelID, accountID, displayName string, attributes map[string]string) (Credential, error) {
+func (signer Signer) IssueWithMicrophonePolicy(leaseID, channelID, accountID, displayName string, microphoneAllowed bool) (Credential, error) {
+	return signer.issue(leaseID, channelID, accountID, displayName, nil, microphoneAllowed)
+}
+func (signer Signer) IssueWithSoundAndMicrophonePolicy(leaseID, channelID, accountID, displayName, id, revision string, microphoneAllowed bool) (Credential, error) {
+	return signer.issue(leaseID, channelID, accountID, displayName, map[string]string{"boohtacord.join_sound_id": id, "boohtacord.join_sound_revision": revision}, microphoneAllowed)
+}
+func (signer Signer) issue(leaseID, channelID, accountID, displayName string, attributes map[string]string, microphoneAllowed bool) (Credential, error) {
 	if leaseID == "" || channelID == "" || accountID == "" || displayName == "" {
 		return Credential{}, ErrInvalidConfig
 	}
@@ -46,7 +53,11 @@ func (signer Signer) issue(leaseID, channelID, accountID, displayName string, at
 	grant.SetCanPublish(true)
 	grant.SetCanSubscribe(true)
 	grant.SetCanPublishData(false)
-	grant.SetCanPublishSources([]livekit.TrackSource{livekit.TrackSource_MICROPHONE, livekit.TrackSource_SCREEN_SHARE, livekit.TrackSource_SCREEN_SHARE_AUDIO})
+	sources := []livekit.TrackSource{livekit.TrackSource_SCREEN_SHARE, livekit.TrackSource_SCREEN_SHARE_AUDIO}
+	if microphoneAllowed {
+		sources = append([]livekit.TrackSource{livekit.TrackSource_MICROPHONE}, sources...)
+	}
+	grant.SetCanPublishSources(sources)
 	token, err := auth.NewAccessToken(signer.config.APIKey, signer.config.APISecret).
 		SetIdentity("voice-lease:" + leaseID).
 		SetName(displayName).
@@ -58,5 +69,5 @@ func (signer Signer) issue(leaseID, channelID, accountID, displayName string, at
 	if err != nil {
 		return Credential{}, fmt.Errorf("sign livekit credential: %w", err)
 	}
-	return Credential{URL: signer.config.URL, Token: token, LeaseID: leaseID, ExpiresAt: signer.now().Add(validity)}, nil
+	return Credential{URL: signer.config.URL, Token: token, LeaseID: leaseID, ExpiresAt: signer.now().Add(validity), MicrophoneAllowed: microphoneAllowed}, nil
 }

@@ -33,15 +33,16 @@ func (service Service) Dispatch(context context.Context, limit int) (int, error)
 		return 0, fmt.Errorf("claim lease revocation notifications: %w", err)
 	}
 	for index, item := range items {
+		payload := map[string]any{"lease_id": item.LeaseID, "reason": item.Reason}
+		if item.TargetChannelID != nil {
+			payload["target_channel_id"] = *item.TargetChannelID
+		}
 		err := service.publisher.PublishToAccountsDurable(context, []string{item.UserID}, eventhub.Event{
 			EventID:    uuid.NewSHA1(uuid.NameSpaceOID, []byte("voice.lease_revoked:"+item.LeaseID)).String(),
 			Kind:       "voice.lease_revoked",
 			Cause:      causal.Decode(item.TraceCause),
 			OccurredAt: item.RequestedAt,
-			Payload: map[string]any{
-				"lease_id": item.LeaseID,
-				"reason":   item.Reason,
-			},
+			Payload:    payload,
 		})
 		if err != nil {
 			return index, fmt.Errorf("persist lease revocation event: %w", err)

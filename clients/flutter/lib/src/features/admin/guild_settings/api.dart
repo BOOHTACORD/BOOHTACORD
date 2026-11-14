@@ -18,6 +18,7 @@ class GuildSettingsApi {
     String name,
     String? channel,
     int revision,
+    [String? afkChannelID, int afkTimeoutSeconds = 0]
   ) async => _parse(
     await transport.checked(
       await transport.client.patch(
@@ -27,6 +28,8 @@ class GuildSettingsApi {
           'name': name,
           'welcome_channel_id': channel,
           'expected_revision': revision,
+          'afk_channel_id': afkChannelID,
+          'afk_timeout_seconds': afkTimeoutSeconds,
         }),
       ),
     ),

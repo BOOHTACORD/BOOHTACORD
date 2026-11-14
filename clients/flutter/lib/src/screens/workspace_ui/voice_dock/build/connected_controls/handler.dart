@@ -15,14 +15,18 @@ extension VoiceDockConnectedControlsRenderer on WorkspaceVoiceDockContext {
       else
         WorkspaceVoiceDockButton(
           compact: compact,
-          tooltip: state.microphoneUnavailable
+          tooltip: !state.microphoneAllowed
+              ? 'Микрофон выключен в AFK-канале'
+              : state.microphoneUnavailable
               ? 'Микрофон недоступен · повторить включение'
               : state.audioActivationMode == AudioActivationMode.ptt
               ? 'Микрофон управляется push-to-talk'
               : state.microphoneMuted
               ? 'Включить микрофон'
               : 'Выключить микрофон',
-          semanticsLabel: state.microphoneUnavailable
+          semanticsLabel: !state.microphoneAllowed
+              ? 'Микрофон выключен в AFK-канале'
+              : state.microphoneUnavailable
               ? 'Повторить включение микрофона — микрофон недоступен'
               : state.audioActivationMode == AudioActivationMode.ptt
               ? 'Микрофон управляется push-to-talk'
@@ -37,6 +41,7 @@ extension VoiceDockConnectedControlsRenderer on WorkspaceVoiceDockContext {
               state.audioActivationMode != AudioActivationMode.ptt,
           toggled: !state.microphoneMuted,
           enabled:
+              state.microphoneAllowed &&
               state.audioActivationMode != AudioActivationMode.ptt &&
               !state.deafened,
           onTap: state.toggleMicrophone,

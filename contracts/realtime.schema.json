@@ -75,11 +75,16 @@
           "payload": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["lease_id", "reason"],
+              "required": ["lease_id", "reason"],
             "properties": {
               "lease_id": { "type": "string", "format": "uuid" },
-              "reason": { "type": "string", "enum": ["TRANSFER", "KICK", "CHANNEL_CLOSED", "SESSION_REVOKED", "BANNED", "LOGOUT", "VOLUNTARY_LEAVE"] }
-            }
+              "reason": { "type": "string", "enum": ["TRANSFER", "KICK", "CHANNEL_CLOSED", "SESSION_REVOKED", "BANNED", "LOGOUT", "VOLUNTARY_LEAVE", "AFK_MOVE"] },
+              "target_channel_id": { "type": "string", "format": "uuid" }
+              },
+              "allOf": [
+                {"if": {"properties": {"reason": {"const": "AFK_MOVE"}}, "required": ["reason"]}, "then": {"required": ["target_channel_id"]}},
+                {"if": {"properties": {"reason": {"enum": ["TRANSFER", "KICK", "CHANNEL_CLOSED", "SESSION_REVOKED", "BANNED", "LOGOUT", "VOLUNTARY_LEAVE"]}}, "required": ["reason"]}, "then": {"not": {"required": ["target_channel_id"]}}}
+              ]
           }
         }
       }
@@ -195,7 +200,7 @@
             "type": "object",
             "additionalProperties": false,
             "required": ["online_user_ids"],
-            "properties": { "online_user_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } } }
+            "properties": { "online_user_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } }, "idle_user_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } } }
           }
         }
       }
@@ -210,7 +215,8 @@
             "required": ["user_id", "presence"],
             "properties": {
               "user_id": { "type": "string", "format": "uuid" },
-              "presence": { "type": "string", "enum": ["online", "offline"] }
+              "presence": { "type": "string", "enum": ["online", "offline"] },
+              "activity_state": { "type": "string", "enum": ["active", "idle"] }
             }
           }
         }

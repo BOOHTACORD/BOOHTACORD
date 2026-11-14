@@ -26,7 +26,9 @@ extension VoiceMicrophoneMode on VoiceController {
       audioActivationMode = next;
       audioActivationError = null;
       if (room != null && voicePhase != VoicePhase.leaving) {
-        await applyMicrophoneMuted(deafened ? true : microphoneMutedBeforePtt);
+        await applyMicrophoneMuted(
+          !microphoneAllowed || deafened ? true : microphoneMutedBeforePtt,
+        );
         if (!active(ticket, revision)) return;
       }
     }
@@ -45,8 +47,8 @@ extension VoiceMicrophoneMode on VoiceController {
       if (room != null) {
         await applyMicrophoneMuted(
           previous == AudioActivationMode.ptt
-              ? !pushToTalkPressed || deafened
-              : deafened || microphoneMutedBeforePtt,
+              ? !microphoneAllowed || !pushToTalkPressed || deafened
+              : !microphoneAllowed || deafened || microphoneMutedBeforePtt,
         );
         if (!active(ticket, revision)) return;
       }

@@ -54,7 +54,7 @@ func writeOverflow(connection *websocket.Conn, subscription *eventhub.Subscripti
 	if !writeEvent(ctx, connection, newID, now, "connection.resync_required", map[string]any{"reason": "event_overflow"}) {
 		return false
 	}
-	if hub != nil && !writeEvent(ctx, connection, newID, now, "presence.snapshot", map[string]any{"online_user_ids": hub.OnlineAccounts()}) {
+	if hub != nil && !writeEvent(ctx, connection, newID, now, "presence.snapshot", map[string]any{"online_user_ids": hub.OnlineAccounts(), "idle_user_ids": hub.IdleAccountsSnapshot()}) {
 		return false
 	}
 	if !subscription.AcknowledgeOverflow() {

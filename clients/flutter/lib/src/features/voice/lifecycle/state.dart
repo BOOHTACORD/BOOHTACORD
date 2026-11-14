@@ -85,6 +85,7 @@ abstract class VoiceState extends ChangeNotifier
   bool voiceStatusDismissedAfterLeave = false;
   GuildChannel? voiceChannel;
   bool microphoneMuted = false;
+  bool microphoneAllowed = true;
   bool microphoneUnavailable = false;
   bool deafened = false;
   bool deafenChanging = false;

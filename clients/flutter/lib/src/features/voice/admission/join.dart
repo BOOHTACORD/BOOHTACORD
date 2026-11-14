@@ -45,6 +45,7 @@ extension VoiceAdmissionJoin on VoiceController {
     try {
       final result = await api.voiceCredential(channel.id, transfer: transfer);
       admittedLease = result.$1;
+      microphoneAllowed = result.$2.microphoneAllowed;
       if (!active(ticket, revision) ||
           disconnect.generation != disconnectGeneration) {
         throw CancelledVoiceAdmission();
@@ -90,7 +91,7 @@ extension VoiceAdmissionJoin on VoiceController {
       await applySavedVoiceVolumes(candidate);
       check();
       if (!listenerOnly) ActionScope.current?.step('microphone');
-      await enableVoiceMicrophone(candidate, listenerOnly, ticket, revision);
+      await enableVoiceMicrophone(candidate, listenerOnly || !microphoneAllowed, ticket, revision);
       check();
       voiceParticipantSoundTracker.seed(
         candidate.remoteParticipants.values.map(

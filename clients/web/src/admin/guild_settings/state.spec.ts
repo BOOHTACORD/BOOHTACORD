@@ -3,6 +3,23 @@ import { createGuildSettingsState } from './state'
 import { GuildSettingsError } from './client'
 const initial={name:'Первая',revision:1,welcomeChannelId:null}
 describe('admin guild settings',()=>{
+ it('defaults a newly selected AFK channel to five minutes and saves both settings',async()=>{
+  const channel='11111111-1111-4111-8111-111111111111'
+  const write=vi.fn().mockResolvedValue({...initial,revision:2,afkChannelId:channel,afkTimeoutSeconds:300})
+  const state=createGuildSettingsState(async()=>initial,write);await state.load();state.changeAfkChannel(channel)
+  expect(state.afkTimeout.value).toBe(300);expect(state.dirty.value).toBe(true)
+  await state.save([], [channel])
+  expect(write).toHaveBeenCalledWith({name:initial.name,expected_revision:1,welcome_channel_id:null,afk_channel_id:channel,afk_timeout_seconds:300})
+  expect(state.saved.value).toBe(true);expect(state.dirty.value).toBe(false)
+ })
+ it('disables AFK routing by clearing the channel and timeout together',async()=>{
+  const channel='11111111-1111-4111-8111-111111111111'
+  const configured={...initial,afkChannelId:channel,afkTimeoutSeconds:600}
+  const write=vi.fn().mockResolvedValue({...initial,revision:2})
+  const state=createGuildSettingsState(async()=>configured,write);await state.load();state.changeAfkChannel(null)
+  await state.save([], [])
+  expect(write).toHaveBeenCalledWith({name:initial.name,expected_revision:1,welcome_channel_id:null,afk_channel_id:null,afk_timeout_seconds:0})
+ })
  it('preserves the draft on conflict, refreshes revision, requires explicit retry',async()=>{
   const read=vi.fn().mockResolvedValueOnce(initial).mockResolvedValueOnce({...initial,name:'Чужая',revision:2})
   const write=vi.fn().mockRejectedValueOnce(new GuildSettingsError(409)).mockResolvedValueOnce({...initial,name:'Моя',revision:3})

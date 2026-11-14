@@ -12,6 +12,7 @@ extension VoiceAdmissionEnable on VoiceController {
   ) async {
     if (listen) {
       listenerOnly = true;
+      pushToTalkPressed = false;
       microphoneMuted = true;
       microphoneUnavailable = false;
       voicePhase = VoicePhase.listener;

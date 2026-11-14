@@ -33,6 +33,7 @@ class VoiceLeasesApi {
       VoiceCredential(
         url: credential['url'] as String,
         token: credential['token'] as String,
+        microphoneAllowed: credential['microphone_allowed'] as bool? ?? true,
       ),
     );
   }

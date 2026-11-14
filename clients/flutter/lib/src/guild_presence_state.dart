@@ -3,6 +3,7 @@ import 'models.dart';
 /// Resolves REST presence hints with the authoritative realtime presence feed.
 class GuildPresenceState {
   Set<String>? _onlineUserIds;
+  Set<String> _idleUserIds = {};
   final Map<String, MemberPresence> _changes = {};
   bool _unavailable = false;
 
@@ -15,18 +16,23 @@ class GuildPresenceState {
     final onlineUserIds = _onlineUserIds;
     if (onlineUserIds == null) return fallback;
     return onlineUserIds.contains(userId)
-        ? MemberPresence.online
+        ? (_idleUserIds.contains(userId) ? MemberPresence.idle : MemberPresence.online)
         : MemberPresence.offline;
   }
 
   /// Applies a validated snapshot, returning false and invalidating presence
   /// if the event payload is malformed.
-  bool acceptSnapshot(dynamic rawIds) {
+  bool acceptSnapshot(dynamic rawIds, [dynamic rawIdleIds]) {
     if (rawIds is! List || rawIds.any((id) => id is! String || !_isUuid(id))) {
       invalidate();
       return false;
     }
     _onlineUserIds = rawIds.cast<String>().toSet();
+    if (rawIdleIds != null && (rawIdleIds is! List || rawIdleIds.any((id) => id is! String || !_isUuid(id)))) {
+      invalidate();
+      return false;
+    }
+    _idleUserIds = rawIdleIds == null ? {} : rawIdleIds.cast<String>().toSet();
     _changes.clear();
     _unavailable = false;
     return true;
@@ -34,21 +40,23 @@ class GuildPresenceState {
 
   /// Applies a single online/offline update. Changes received while the feed
   /// is unavailable remain hidden until the next complete snapshot.
-  bool acceptChange(dynamic rawUserId, dynamic rawPresence) {
+  bool acceptChange(dynamic rawUserId, dynamic rawPresence, [dynamic rawActivityState]) {
     if (rawUserId is! String ||
         !_isUuid(rawUserId) ||
-        (rawPresence != 'online' && rawPresence != 'offline')) {
+        (rawPresence != 'online' && rawPresence != 'offline') ||
+        (rawActivityState != null && (rawPresence != 'online' || (rawActivityState != 'active' && rawActivityState != 'idle')))) {
       invalidate();
       return false;
     }
     _changes[rawUserId] = rawPresence == 'online'
-        ? MemberPresence.online
+        ? (rawActivityState == 'idle' ? MemberPresence.idle : MemberPresence.online)
         : MemberPresence.offline;
     return true;
   }
 
   void invalidate() {
     _onlineUserIds = null;
+    _idleUserIds = {};
     _changes.clear();
     _unavailable = true;
   }

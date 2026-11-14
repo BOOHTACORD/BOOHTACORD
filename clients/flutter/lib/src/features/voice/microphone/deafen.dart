@@ -46,8 +46,8 @@ extension VoiceMicrophoneDeafen on VoiceController {
           }
         }
         final shouldUnmute = audioActivationMode == AudioActivationMode.ptt
-            ? pushToTalkPressed
-            : !mutedBeforeDeafen;
+            ? microphoneAllowed && pushToTalkPressed
+            : microphoneAllowed && !mutedBeforeDeafen;
         if (shouldUnmute && !await applyMicrophoneMuted(false)) {
           throw StateError(
             audioActivationError ?? 'Не удалось включить микрофон.',

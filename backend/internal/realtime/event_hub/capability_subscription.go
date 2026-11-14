@@ -1,5 +1,7 @@
 package eventhub
 
+import "time"
+
 func (subscription *Subscription) AllowsKind(kind string) bool {
 	capability := requiredCapability(kind)
 	if capability == "" {
@@ -17,7 +19,7 @@ func (hub *Hub) SubscribeAccountWithCapabilities(accountID string, onlineEvent E
 		}
 	}
 	if onlineEvent.Kind == "" {
-		return hub.subscribe(accountID, nil, set)
+		return hub.subscribe(accountID, nil, set, time.Now())
 	}
-	return hub.subscribe(accountID, &onlineEvent, set)
+	return hub.subscribe(accountID, &onlineEvent, set, time.Now())
 }

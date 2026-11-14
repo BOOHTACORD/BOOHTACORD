@@ -9,6 +9,7 @@ export interface VoiceAdmission {
 
 export interface ActiveVoiceSession extends JoinedVoiceRoom {
   listenerOnly?: boolean
+  microphoneAllowed?: boolean
   channelId: string
   leaseId: string
   screenProfile: ScreenProfile | null

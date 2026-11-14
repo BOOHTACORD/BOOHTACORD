@@ -3130,5 +3130,69 @@
         }
       }
     ]
+  },
+  "idle_afk": {
+    "paths": [
+      "backlog/tasks.yaml",
+      "backend/internal/app/worker_runtime/start.go",
+      "backend/internal/database/migrate/migrations/0068_idle_presence_afk_voice.sql",
+      "backend/internal/guild/update_settings/**",
+      "backend/internal/identity/list_members/**",
+      "backend/internal/media/issue_livekit_credential/**",
+      "backend/internal/media/livekit_credential/**",
+      "backend/internal/observability/trace_http/guild_actions.go",
+      "backend/internal/realtime/connect_session/**",
+      "backend/internal/realtime/event_hub/**",
+      "backend/internal/realtime/replay_event/postgres/**",
+      "backend/internal/voice/notify_lease_revocation/**",
+      "backend/internal/voice/route_inactive_members/**",
+      "clients/flutter/lib/src/app/composition/realtime.dart",
+      "clients/flutter/lib/src/features/admin/guild_settings/**",
+      "clients/flutter/lib/src/features/realtime/**",
+      "clients/flutter/lib/src/features/voice/**",
+      "clients/flutter/lib/src/guild_presence_state.dart",
+      "clients/flutter/lib/src/models.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/members_panel/**",
+      "clients/flutter/lib/src/screens/workspace_ui/direct_message_navigation/**",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_dock/**",
+      "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/**",
+      "clients/flutter/lib/src/services/voice_lease_revocation.dart",
+      "clients/web/src/admin/guild_settings/**",
+      "clients/web/tests/control_consistency/behavior.browser.spec.ts",
+      "clients/web/src/conversation/ConversationPane.vue",
+      "clients/web/src/design/shell.css",
+      "clients/web/src/identity/guild_presence*",
+      "clients/web/src/identity/profile_client.ts",
+      "clients/web/src/realtime/**",
+      "clients/web/src/voice/**",
+      "clients/web/src/workspace/**",
+      "contracts/openapi.yaml",
+      "contracts/realtime.schema.json",
+      "docs/adr/ADR-032-idle-presence-and-afk-voice.md",
+      "evidence/idle-afk-2026-11-14.md",
+      "tools/verify/openapi_parity/requirements.txt",
+      "tools/qa/local_features/features.json"
+    ],
+    "web": ["tests/control_consistency/playwright.config.ts"],
+    "flutter": [
+      "test/guild_presence_state_test.dart",
+      "test/admin_guild_settings_test.dart",
+      "test/voice_lease_revocation_test.dart"
+    ],
+    "acceptance": {
+      "idle_presence_and_afk_voice": {
+        "focused": [
+          "backend/internal/realtime/event_hub/idle_presence_test.go",
+          "clients/web/src/identity/guild_presence_idle.spec.ts",
+          "clients/web/tests/control_consistency/behavior.browser.spec.ts",
+          "backend/internal/voice/route_inactive_members/service_integration_test.go",
+          "backend/internal/voice/notify_lease_revocation/integration_database_test.go",
+          "clients/flutter/test/guild_presence_state_test.dart",
+          "clients/flutter/test/admin_guild_settings_test.dart",
+          "clients/flutter/test/voice_lease_revocation_test.dart"
+        ],
+        "scope": "Server-reported activity transitions connected accounts online/idle, member lists show both groups, administrator AFK channel and timeout settings route inactive voice leases, and server-issued room credentials exclude microphone publication in AFK. Shared authenticated Web real-stack and Android runtime smoke are recorded in evidence/idle-afk-2026-11-14.md; dedicated paired-client idle timing and UI-driven AFK move remain NOT_RUN."
+      }
+    }
   }
 }

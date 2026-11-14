@@ -1,14 +1,15 @@
 package guildsettings
 
 import (
-	"github.com/google/uuid"
 	"strings"
 	"unicode"
 	"unicode/utf8"
+
+	"github.com/google/uuid"
 )
 
 func Validate(input Input) (Input, error) {
-	if input.ExpectedRevision < 1 || (!input.SetName && !input.SetWelcome) {
+	if input.ExpectedRevision < 1 || (!input.SetName && !input.SetWelcome && !input.SetAFK) {
 		return Input{}, ErrInvalid
 	}
 	if input.SetName {
@@ -32,6 +33,19 @@ func Validate(input Input) (Input, error) {
 			return Input{}, ErrInvalid
 		}
 		input.WelcomeChannelID = id.String()
+	}
+	if input.SetAFK {
+		if input.AFKChannelID == "" {
+			if input.AFKTimeoutSeconds != 0 {
+				return Input{}, ErrInvalid
+			}
+		} else {
+			id, err := uuid.Parse(input.AFKChannelID)
+			if err != nil || id == uuid.Nil || input.AFKTimeoutSeconds < 60 || input.AFKTimeoutSeconds > 86400 {
+				return Input{}, ErrInvalid
+			}
+			input.AFKChannelID = id.String()
+		}
 	}
 	return input, nil
 }

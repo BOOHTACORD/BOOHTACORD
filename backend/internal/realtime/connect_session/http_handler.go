@@ -107,7 +107,7 @@ func NewHandlerWithRoster(authenticator sessionapi.Authenticator, revalidationIn
 		if request.URL.Query().Has("after") && replayComplete {
 			observeReconnectOutcome(observer, "replayed")
 		}
-		if events != nil && !writeEvent(writeContext, connection, newID, now, "presence.snapshot", map[string]any{"online_user_ids": events.OnlineAccounts()}) {
+		if events != nil && !writeEvent(writeContext, connection, newID, now, "presence.snapshot", map[string]any{"online_user_ids": events.OnlineAccounts(), "idle_user_ids": events.IdleAccountsSnapshot()}) {
 			return
 		}
 		if observer != nil {

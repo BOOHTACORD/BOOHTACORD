@@ -57,6 +57,7 @@ export class VoiceSessionAdmission {
         joinedRoom = joined.room
         const current: ActiveVoiceSession = {
           listenerOnly: joinMode === 'listener',
+          microphoneAllowed: credential.microphoneAllowed,
           channelId: acquired.channelId,
           leaseId: acquired.id,
           screenProfile: null,

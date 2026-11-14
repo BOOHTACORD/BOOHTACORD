@@ -34,7 +34,7 @@ export function useWorkspaceComposition(props: Props, controls: ReturnType<typeo
   const voiceRoster = createRosterSocketState(() => realtimeStore.reconnect())
   const guildVoicePresence = computed(() => buildGuildVoicePresence(voiceRoster.error.value ? null : voiceRoster.channels.value, topologyStore.topology?.categories.flatMap(({ channels }) => channels) ?? []))
   const guildMemberCount = ref<number | null>(null)
-  const workspaceRealtime = createWorkspaceRealtime({ topology: topologyStore, messages: messageStore, directMessages: directMessageStore }, realtimeStore, guildPresence, voiceConnection, props.accountId, expireSession, undefined, voiceRoster)
+  const workspaceRealtime = createWorkspaceRealtime({ topology: topologyStore, messages: messageStore, directMessages: directMessageStore }, realtimeStore, guildPresence, voiceConnection, props.accountId, expireSession, undefined, voiceRoster, channelID => joinVoice(channelID, true, 'listener'))
   watch(() => realtimeStore.state, (state) => { if (state === 'ERROR' || state === 'DISCONNECTED') guildPresence.invalidate() })
   const { profile, profileError, profileLoading, refreshProfile, setProfile } = useCurrentProfile()
   useAuthorDirectoryLifecycle(profile)

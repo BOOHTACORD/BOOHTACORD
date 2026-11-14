@@ -35,7 +35,7 @@ import { checked, refreshProtectedState } from './protected_refresh/full'
 import type { createRosterSocketState } from '../voice/roster_socket/state'
 export type { WorkspaceRealtimeStores } from './protected_refresh/types'
 export { refreshProtectedState } from './protected_refresh/full'
-export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtime: ReturnType<typeof useRealtimeStore>, presence: ReturnType<typeof useGuildPresence>, voice: ReturnType<typeof useVoiceConnectionStore>, accountID: string, onSessionExpired: () => void, maintenanceState?: ReturnType<typeof createMaintenanceState>, roster?: ReturnType<typeof createRosterSocketState>) {
+export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtime: ReturnType<typeof useRealtimeStore>, presence: ReturnType<typeof useGuildPresence>, voice: ReturnType<typeof useVoiceConnectionStore>, accountID: string, onSessionExpired: () => void, maintenanceState?: ReturnType<typeof createMaintenanceState>, roster?: ReturnType<typeof createRosterSocketState>, moveToAfk?: (channelID: string) => Promise<void>) {
   let gate = createProtectedRefreshGate()
   const original = stores
   stores = coalesceStores(original, gate)
@@ -81,7 +81,7 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
     if (event.kind === 'screen_preview.updated') { const hint = parseScreenPreviewHint(event.payload); if (hint) previews.accept(hint); return }
     if (event.kind === 'screen_preview.invalidated') { previews.invalidate(event.payload.lease_id as string, event.payload.generation_id as string); return }
     if (event.kind === 'screen_viewers.changed') return voice.refreshScreenWatchers()
-    if (event.kind === 'voice.lease_revoked') return applyVoiceLeaseRevocation(voice, voiceNavigation, event.payload.lease_id as string, event.payload.reason as VoiceLeaseRevocationReason)
+    if (event.kind === 'voice.lease_revoked') return applyVoiceLeaseRevocation(voice, voiceNavigation, event.payload.lease_id as string, event.payload.reason as VoiceLeaseRevocationReason, event.payload.target_channel_id as string | undefined, moveToAfk)
     if (event.kind === 'message.created' || event.kind === 'message.updated' || event.kind === 'message.deleted') {
       const previousUnread = notify ? notifications.capture(event) : null
       const visible = shouldRefreshTextHistory(event, stores.messages.channelId, Boolean(stores.directMessages.directMessageId))

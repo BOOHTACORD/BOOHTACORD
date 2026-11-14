@@ -18,6 +18,7 @@ class VoiceLeaseRevocation {
       'BANNED',
       'LOGOUT',
       'VOLUNTARY_LEAVE',
+      'AFK_MOVE',
     };
     if (leaseId is! String ||
         reason is! String ||
@@ -35,6 +36,7 @@ class VoiceLeaseRevocation {
     'SESSION_REVOKED' => 'Сессия отозвана; голосовое подключение завершено.',
     'BANNED' => 'Доступ к гильдии отозван; голосовое подключение завершено.',
     'LOGOUT' => 'Сеанс завершён; голосовое подключение остановлено.',
+    'AFK_MOVE' => 'Вы перемещены в AFK-канал из-за неактивности.',
     _ => 'Голосовое подключение завершено.',
   };
 }

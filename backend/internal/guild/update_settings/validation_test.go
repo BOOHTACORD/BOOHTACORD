@@ -32,3 +32,23 @@ func TestWelcomePatchPresenceAndRevision(t *testing.T) {
 		t.Fatal("disable rejected")
 	}
 }
+
+func TestAFKSettingsRequireAnActiveChannelAndBoundedTimeout(t *testing.T) {
+	channel := "11111111-1111-4111-8111-111111111111"
+	for _, input := range []Input{
+		{SetAFK: true, ExpectedRevision: 1, AFKTimeoutSeconds: 300},
+		{SetAFK: true, ExpectedRevision: 1, AFKChannelID: "invalid", AFKTimeoutSeconds: 300},
+		{SetAFK: true, ExpectedRevision: 1, AFKChannelID: channel, AFKTimeoutSeconds: 59},
+		{SetAFK: true, ExpectedRevision: 1, AFKChannelID: channel, AFKTimeoutSeconds: 86401},
+	} {
+		if _, err := Validate(input); err == nil {
+			t.Fatalf("invalid AFK settings accepted: %#v", input)
+		}
+	}
+	if _, err := Validate(Input{SetAFK: true, ExpectedRevision: 1, AFKTimeoutSeconds: 0}); err != nil {
+		t.Fatalf("disable AFK routing rejected: %v", err)
+	}
+	if _, err := Validate(Input{SetAFK: true, ExpectedRevision: 1, AFKChannelID: channel, AFKTimeoutSeconds: 60}); err != nil {
+		t.Fatalf("valid AFK settings rejected: %v", err)
+	}
+}
