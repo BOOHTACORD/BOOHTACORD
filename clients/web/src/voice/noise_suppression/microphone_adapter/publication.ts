@@ -21,21 +21,7 @@ export abstract class MicrophoneAdapterPublication extends MicrophoneAdapterStat
       await this.track.mute()
       await this.configure(options, generation)
       this.assertCurrent(generation)
-      // All publication starts muted. Only restoreIntent can begin transmission.
-      this.silence()
-      try {
-        await this.dependencies.publishTrack(this.track, microphonePublishOptions)
-      } catch (cause) {
-        this.assertCurrent(generation)
-        // LiveKit cancels in-flight addTrack requests when it restarts signaling.
-        // Its next publishTrack waits for reconnection; retain the muted capture
-        // and allow one retry instead of closing the room during that recovery.
-        if (!(cause instanceof Error) || cause.message !== 'Cancelled publication by calling unpublish' || !this.dependencies.isReconnecting?.()) throw cause
-        this.silence()
-        await this.dependencies.publishTrack(this.track, microphonePublishOptions)
-      }
-      this.published = true
-      this.assertCurrent(generation)
+      await this.publishMuted(generation)
       this.options = options
       this.watchSource()
       this.confirmInput(fallback ? 'fallback' : 'success', 'prejoin', fallback ? 'Сохранённый микрофон недоступен. Используется системный микрофон.' : undefined)
@@ -45,6 +31,47 @@ export abstract class MicrophoneAdapterPublication extends MicrophoneAdapterStat
       if (!this.closed) this.confirmInput('error', 'prejoin', 'Не удалось включить микрофон. Отправка звука выключена.')
       throw cause
     }
+  }
+  protected async publishMuted(generation: number): Promise<void> {
+    if (this.published) return
+    this.silence()
+    try {
+      try { await this.dependencies.publishTrack(this.track!, microphonePublishOptions) }
+      catch (cause) {
+        this.assertCurrent(generation)
+        if (!(cause instanceof Error) || cause.message !== 'Cancelled publication by calling unpublish' || !this.dependencies.isReconnecting?.()) throw cause
+        this.silence()
+        await this.dependencies.publishTrack(this.track!, microphonePublishOptions)
+      }
+    } catch (cause) {
+      this.silence()
+      try { await this.dependencies.unpublishTrack(this.track!) }
+      catch { this.failMuted() }
+      throw cause
+    }
+    this.published = true
+    this.assertCurrent(generation)
+  }
+  protected async reacquire(options: AudioProcessingOptions, generation: number): Promise<void> {
+    const old = this.track
+    this.stopEnded?.(); this.stopEnded = undefined
+    this.silence()
+    if (old) {
+      await old.mute()
+      if (this.published) {
+        try { await this.dependencies.unpublishTrack(old); this.published = false }
+        catch (cause) { this.failMuted(); throw cause }
+      }
+      old.stop(); this.track = undefined; this.source = undefined
+    }
+    this.assertCurrent(generation)
+    const next = await this.dependencies.createTrack({ ...microphoneConstraints(options), ...inputConstraints(this.deviceId) })
+    // A late capture is never published or left live after disposal.
+    if (this.closed || generation !== this.generation) { next.mediaStreamTrack.enabled = false; next.stop(); this.assertCurrent(generation) }
+    this.track = next; this.source = next.mediaStreamTrack
+    this.silence()
+    await next.mute()
+    this.assertCurrent(generation)
   }
   dispose(): Promise<void> {
     if (this.closed) return this.queue.then(() => undefined)

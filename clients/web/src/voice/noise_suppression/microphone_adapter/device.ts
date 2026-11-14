@@ -9,6 +9,12 @@ export abstract class MicrophoneAdapterDevice extends MicrophoneAdapterIntent {
     return this.enqueue(async (generation) => {
       if (phase === 'reconnect') deviceId = this.deviceId
       const previous = this.deviceId
+      const stopOnUncertainRemoval = (error: unknown) => {
+        if (this.state.status === 'error' && !this.desiredEnabled) {
+          this.confirmInput('error', phase, 'Микрофон недоступен. Отправка звука выключена. Выберите устройство и включите микрофон снова.')
+          throw error
+        }
+      }
       if (!force && previous === deviceId && this.inputValue.outcome === 'success') return true
       if (!this.track) {
         this.deviceId = deviceId
@@ -25,13 +31,17 @@ export abstract class MicrophoneAdapterDevice extends MicrophoneAdapterIntent {
         return true
       } catch (cause) {
         this.assertCurrent(generation)
+        stopOnUncertainRemoval(cause)
         for (const fallback of [...new Set([previous, 'default'])]) {
           try {
             await this.restartInput(fallback, generation)
             this.deviceId = fallback
             this.confirmInput('fallback', phase, fallback === previous ? 'Не удалось переключить микрофон. Сохранён предыдущий источник.' : 'Выбранный микрофон недоступен. Используется системный микрофон.')
             return false
-          } catch { this.assertCurrent(generation) }
+          } catch (error) {
+            this.assertCurrent(generation)
+            stopOnUncertainRemoval(error)
+          }
         }
         this.failMuted()
         this.confirmInput('error', phase, 'Микрофон недоступен. Отправка звука выключена. Выберите устройство и включите микрофон снова.')
@@ -49,7 +59,10 @@ export abstract class MicrophoneAdapterDevice extends MicrophoneAdapterIntent {
     this.source = this.track!.mediaStreamTrack
     this.silence()
     this.assertCurrent(generation)
-    await this.configure(this.options, generation)
+    const previous = this.deviceId
+    this.deviceId = deviceId
+    try { await this.configure(this.options, generation); await this.publishMuted(generation) }
+    finally { this.deviceId = previous }
     await this.restoreIntent(generation)
     this.watchSource()
   }

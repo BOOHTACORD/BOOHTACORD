@@ -4,6 +4,7 @@ import base64
 import hashlib
 import os
 from pathlib import Path
+import shutil
 import subprocess
 
 
@@ -12,15 +13,25 @@ def create(private_path, public_path, openssl='openssl'):
     public_path = Path(public_path)
     if private_path.exists() or public_path.exists():
         raise ValueError('Refusing to replace an existing publisher key')
+    if openssl is None or not shutil.which(os.fspath(openssl)):
+        raise FileNotFoundError('OpenSSL executable is unavailable')
     private_path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
     descriptor = os.open(private_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
     try:
-        subprocess.run([openssl, 'genpkey', '-algorithm', 'ED25519'], stdout=descriptor, check=True)
-    finally:
-        os.close(descriptor)
-    der = subprocess.check_output([openssl, 'pkey', '-in', str(private_path), '-pubout', '-outform', 'DER'])
-    if len(der) != 44 or der[:12].hex() != '302a300506032b6570032100':
-        raise ValueError('Unexpected Ed25519 public key encoding')
+        try:
+            subprocess.run([openssl, 'genpkey', '-algorithm', 'ED25519'], stdout=descriptor, check=True)
+        finally:
+            os.close(descriptor)
+    except BaseException:
+        private_path.unlink(missing_ok=True)
+        raise
+    try:
+        der = subprocess.check_output([openssl, 'pkey', '-in', str(private_path), '-pubout', '-outform', 'DER'])
+        if len(der) != 44 or der[:12].hex() != '302a300506032b6570032100':
+            raise ValueError('Unexpected Ed25519 public key encoding')
+    except BaseException:
+        private_path.unlink(missing_ok=True)
+        raise
     raw = der[12:]
     key_id = 'boohtacord-desktop-' + hashlib.sha256(raw).hexdigest()[:16]
     public_path.parent.mkdir(parents=True, exist_ok=True)

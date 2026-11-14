@@ -1,7 +1,18 @@
 """Select only registered native scenarios and bound every stage."""
 import re
+import os
+import shutil
+import sys
 
 from .native import native_target
+
+
+def host_command(command, *, system=None, find=None, python=None):
+    if (system or os.name) != 'nt': return command
+    executable = command[0]
+    if executable == 'python3': executable = python or sys.executable
+    elif executable in {'npm', 'flutter'}: executable = (find or shutil.which)(executable) or executable
+    return [executable, *command[1:]]
 
 
 def native_targets(catalog, features):

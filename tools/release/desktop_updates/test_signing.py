@@ -5,12 +5,46 @@ from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from unittest.mock import patch
 from .keys import create
 from .sign import sign
 from .verify import verify
 from .promote import promote
 
 OPENSSL=os.environ.get('BOOHTACORD_TEST_OPENSSL') or ('/opt/homebrew/opt/openssl@3/bin/openssl' if Path('/opt/homebrew/opt/openssl@3/bin/openssl').is_file() else shutil.which('openssl'))
+
+class MissingOpenSSLTest(unittest.TestCase):
+    def test_missing_tool_leaves_no_publisher_key(self):
+        with tempfile.TemporaryDirectory() as directory:
+            private, public = Path(directory)/'publisher.pem', Path(directory)/'publisher.pub'
+            with patch('shutil.which', return_value=None), self.assertRaises(FileNotFoundError):
+                create(private, public, 'missing-openssl')
+            self.assertFalse(private.exists())
+            self.assertFalse(public.exists())
+
+    def test_failed_generation_removes_partial_private_key(self):
+        with tempfile.TemporaryDirectory() as directory:
+            private, public = Path(directory)/'publisher.pem', Path(directory)/'publisher.pub'
+            def fail(*args, **kwargs):
+                os.write(kwargs['stdout'], b'partial key')
+                raise RuntimeError('generation failed')
+            with patch('shutil.which', return_value='openssl'), patch('subprocess.run', side_effect=fail):
+                with self.assertRaisesRegex(RuntimeError, 'generation failed'):
+                    create(private, public, 'openssl')
+            self.assertFalse(private.exists())
+            self.assertFalse(public.exists())
+
+    def test_failed_public_extraction_removes_new_private_key(self):
+        for output in (RuntimeError('extraction failed'), b'invalid DER'):
+            with self.subTest(output=output), tempfile.TemporaryDirectory() as directory:
+                private, public = Path(directory)/'publisher.pem', Path(directory)/'publisher.pub'
+                with patch('shutil.which', return_value='openssl'), patch('subprocess.run'):
+                    with patch('subprocess.check_output', side_effect=output if isinstance(output, Exception) else None,
+                               return_value=output):
+                        with self.assertRaises((RuntimeError, ValueError)):
+                            create(private, public, 'openssl')
+                self.assertFalse(private.exists())
+                self.assertFalse(public.exists())
 
 class PublisherTest(unittest.TestCase):
     def setUp(self):

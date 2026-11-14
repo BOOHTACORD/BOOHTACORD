@@ -1,13 +1,21 @@
 part of 'native_noise_suppression.dart';
 
 mixin _NativeNoisePrepare on _NativeNoiseCore {
-  Future<NoiseSuppressionMode> prepare(NoiseSuppressionMode mode) async {
-    final generation = _generation;
+  @override
+  Future<NoiseSuppressionMode> _prepareSelected(
+    NoiseSuppressionMode mode,
+    NoiseSuppressionMode selected,
+    int generation,
+  ) async {
+    if (_disposed || generation != _generation) {
+      return NoiseSuppressionMode.browser;
+    }
+    _selectedMode = selected;
     final nativeMode =
-        mode == NoiseSuppressionMode.rnnoise ||
-        mode == NoiseSuppressionMode.deepfilter;
+        selected == NoiseSuppressionMode.rnnoise ||
+        selected == NoiseSuppressionMode.deepfilter;
     _fallback = false;
-    if (mode == NoiseSuppressionMode.deepfilter && !_allowDeepFilter) {
+    if (selected == NoiseSuppressionMode.deepfilter && !_allowDeepFilter) {
       _update(
         NativeNoiseSuppressionState(
           requestedMode: mode,
@@ -25,7 +33,7 @@ mixin _NativeNoisePrepare on _NativeNoiseCore {
     );
     try {
       final raw = await _call('setNoiseSuppressionEngine', {
-        'engine': mode.name,
+        'engine': selected.name,
       });
       if (_disposed || generation != _generation) {
         return NoiseSuppressionMode.browser;
@@ -42,7 +50,7 @@ mixin _NativeNoisePrepare on _NativeNoiseCore {
         return NoiseSuppressionMode.browser;
       }
       _read(value);
-      if (mode == NoiseSuppressionMode.deepfilter) {
+      if (selected == NoiseSuppressionMode.deepfilter) {
         final result = await waitForNoiseModel(
           enabled: true,
           active: () => !_disposed && generation == _generation,
@@ -74,7 +82,7 @@ mixin _NativeNoisePrepare on _NativeNoiseCore {
           return NoiseSuppressionMode.browser;
         }
       }
-      return mode;
+      return selected;
     } catch (_) {
       if (!_disposed && generation == _generation) {
         _update(
@@ -85,7 +93,7 @@ mixin _NativeNoisePrepare on _NativeNoiseCore {
           ),
         );
       }
-      return nativeMode ? NoiseSuppressionMode.browser : mode;
+      return nativeMode ? NoiseSuppressionMode.browser : selected;
     }
   }
 

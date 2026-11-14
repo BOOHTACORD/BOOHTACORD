@@ -5,5 +5,5 @@ import base from './playwright.config'
 export default defineConfig({
   ...base,
   use: { ...base.use, browserName: 'firefox', launchOptions: { args: [],
-    firefoxUserPrefs: { 'media.autoplay.default': 0, 'media.navigator.streams.fake': true } } },
+    firefoxUserPrefs: { 'media.autoplay.default': 0, 'media.navigator.streams.fake': true, 'media.navigator.permission.disabled': true } } },
 })

@@ -66,7 +66,7 @@ def windows_archive(path,manifest,raw_manifest):
             seen.add(name.lower());size+=item.file_size
             require(len(seen)<=10000 and size<=2_000_000_000)
             if item.is_dir():continue
-            require(PurePosixPath(name).name.lower()!='ci-purpose.json')
+            require(PurePosixPath(name).name.lower() not in ('ci-purpose.json','rnnoise-v02-research-only.txt'))
             with archive.open(item) as stream:hashed=hashlib.file_digest(stream,'sha256').hexdigest()
             files[name]={'bytes':item.file_size,'sha256':hashed}
         require({'artifact-manifest.json','SHA256SUMS','boohtacord_desktop.exe','BOOHTACORDRecovery.exe',

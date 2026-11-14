@@ -24,6 +24,7 @@ int wmain(int argc, wchar_t** argv) {
     assert(!owner.hook());
     assert(owner.Open(argv[1], dll_hash.c_str(), model, hash));
     assert(owner.hook() && !owner.Open(argv[1], dll_hash.c_str(), model, hash));
+    assert(owner.hook()->ModelId() == nullptr); // The fixture is not the pinned production model.
     {
       WebrtcCaptureAdapter adapter(owner.hook());
       adapter.Initialize(48000, 1);

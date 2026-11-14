@@ -5,6 +5,7 @@
 #include <cmath>
 #include <cstdio>
 #include <thread>
+#include <cstring>
 using namespace boohta;
 using namespace boohta::deepfilter;
 using Clock = std::chrono::steady_clock;
@@ -18,6 +19,8 @@ int wmain(int argc, wchar_t** argv) {
   if (!owner.Open(argv[1], hash.c_str(), argv[3],
       "c94d91f70911001c946e0fabb4aa9adc37045f45a03b56008cb0c8244cb63616")) return 3;
   WebrtcCaptureAdapter adapter(owner.hook());
+  const auto identity = adapter.processor.DeepFilterModelId();
+  if (!identity || std::strcmp(identity, "deepfilternet3-research-d375b2d") != 0) return 5;
   adapter.Initialize(48000, 1);
   auto& capture = adapter.processor;
   capture.SetEngine(RnnoiseCaptureProcessor::Engine::kDeepFilter);

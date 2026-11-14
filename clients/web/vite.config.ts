@@ -2,8 +2,10 @@ import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { resolvePublicOrigin } from './src/social_preview/origin.ts'
 import { deepfilterAssetsPlugin } from './scripts/deepfilter_assets.mjs'
+import { rnnoiseV02ReleaseGuard } from './scripts/research_asset_guard.mjs'
 
 const document = JSON.parse(readFileSync(new URL('../../contracts/client-build.json', import.meta.url), 'utf8'))
 const build = document.builds.web
@@ -11,7 +13,7 @@ const buildInfo = { schema_version:1, application_family:document.application_fa
 const buildInfoJSON = JSON.stringify(buildInfo, null, 2) + '\n'
 const digest = createHash('sha256').update(buildInfoJSON).digest('hex')
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode, command }) => {
   const environment = loadEnv(mode, process.cwd(), 'VITE_')
   const socialOrigin = resolvePublicOrigin(environment.VITE_PUBLIC_ORIGIN, mode)
   return {
@@ -21,7 +23,8 @@ export default defineConfig(({ mode }) => {
       __APP_VERSION__: JSON.stringify(build.version),
       __APP_NATIVE_BUILD__: JSON.stringify(build.native_build),
     },
-    plugins: [vue(), deepfilterAssetsPlugin({ enabled: environment.VITE_DEEPFILTER_ENABLED === 'true', bundle: process.env.BOOHTA_DEEPFILTER_RESEARCH_BUNDLE }), {
+    plugins: [vue(), rnnoiseV02ReleaseGuard({ command, enabled: environment.VITE_RNNOISE_V02_ENABLED === 'true', publicDir: resolve(process.cwd(), 'public') }),
+      deepfilterAssetsPlugin({ enabled: environment.VITE_DEEPFILTER_ENABLED === 'true', bundle: process.env.BOOHTA_DEEPFILTER_RESEARCH_BUNDLE }), {
       name: 'social-preview-origin',
       transformIndexHtml: (html) => html.replaceAll('__SOCIAL_ORIGIN__', socialOrigin),
     }, {

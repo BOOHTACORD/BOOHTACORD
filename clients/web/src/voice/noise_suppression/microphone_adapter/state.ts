@@ -1,7 +1,7 @@
 import type { LocalAudioTrack } from 'livekit-client'
 import { defaultAudioProcessing } from '../../media_publishing'
 import type { BrowserAudioProcessingSettings } from '../../audio_processing_diagnostics'
-import { type AudioProcessingOptions, type NoiseSuppressionFallbackReason, type NoiseSuppressionRuntimeState } from '../types'
+import { type AudioProcessingOptions, type NoiseSuppressionFallbackReason, type NoiseSuppressionRuntimeState, type NoiseSuppressionMode } from '../types'
 import { type AudioInputPhase, type AudioInputSelection } from '../../audio_input_selection'
 import { reportAudioInputSwitch } from '../../audio_input_reporting'
 
@@ -29,7 +29,7 @@ export abstract class MicrophoneAdapterState {
   protected abstract restoreIntent(generation: number): Promise<void>
   protected abstract removeProcessor(): Promise<void>
   protected abstract failMuted(reason?: NoiseSuppressionFallbackReason): void
-  protected abstract recoverProcessor(processor: MicrophoneProcessor, reason: NoiseSuppressionFallbackReason, generation: number): void
+  protected abstract recoverProcessor(processor: MicrophoneProcessor, reason: NoiseSuppressionFallbackReason, generation: number, failedMode: NoiseSuppressionMode): void
   protected abstract changeProfile(options: AudioProcessingOptions, generation: number): Promise<void>
   protected abstract watchSource(): void
   abstract switchDevice(deviceId: string, phase?: AudioInputPhase, force?: boolean, fallbackWarning?: string): Promise<boolean>

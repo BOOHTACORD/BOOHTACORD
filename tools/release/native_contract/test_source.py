@@ -41,6 +41,7 @@ class SourceTests(unittest.TestCase):
             with patch.object(source,'ROOT',root),patch.object(source,'output',side_effect=output), \
                  patch.object(source,'load',return_value={'version':'1.2.3','native_build':'4'}), \
                  patch.object(source.subprocess,'run',side_effect=run),patch.dict(os.environ,{
+                    'PATH':os.environ.get('PATH',''), 'SystemRoot':os.environ.get('SystemRoot',''),
                     'GITHUB_REPOSITORY':'BOOHTACORD/BOOHTACORD','GITHUB_REF':'refs/tags/windows-v1.2.3',
                     'GITHUB_EVENT_NAME':'push',
                     'GITHUB_SHA':revision,'GITHUB_ACTIONS':'true','GITHUB_RUN_ID':'12','GITHUB_RUN_ATTEMPT':'1'},clear=True):
@@ -77,6 +78,7 @@ class SourceTests(unittest.TestCase):
             with patch.object(source,'ROOT',root),patch.object(source,'output',side_effect=output), \
                  patch.object(source,'load',return_value={'version':'1.2.3','native_build':'4'}), \
                  patch.object(source.subprocess,'run',side_effect=run),patch.dict(os.environ,{
+                    'PATH':os.environ.get('PATH',''), 'SystemRoot':os.environ.get('SystemRoot',''),
                     'GITHUB_REPOSITORY':'BOOHTACORD/BOOHTACORD','GITHUB_REF':'refs/heads/master',
                     'GITHUB_SHA':revision,'GITHUB_EVENT_NAME':'workflow_dispatch','NATIVE_RELEASE_DRY_RUN':'false',
                     'GITHUB_ACTIONS':'true','GITHUB_RUN_ID':'12','GITHUB_RUN_ATTEMPT':'1'},clear=True):

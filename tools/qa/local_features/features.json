@@ -677,6 +677,25 @@
           "clients/web/src/voice/noise_suppression/rnnoise_loader.spec.ts",
           "clients/web/src/voice/noise_suppression/rnnoise_track_processor.spec.ts",
           "clients/web/src/voice/noise_suppression/rnnoise_unmute_race.spec.ts",
+          "clients/web/src/voice/noise_suppression/microphone_adapter/rnnoise_capture_guard.spec.ts",
+          "clients/web/src/voice/noise_suppression/rnnoise_v02_integrity.spec.ts",
+          "clients/web/tests/audio/research_asset_guard.unit.spec.ts",
+          "clients/web/tests/audio/recapture.unit.spec.ts",
+          "clients/web/tests/audio/recapture_races.unit.spec.ts",
+          "clients/web/tests/audio/recapture_device.unit.spec.ts",
+          "clients/web/tests/audio/adapter_recapture.browser.spec.ts",
+          "clients/web/tests/audio/device_recapture_livekit.browser.spec.ts",
+          "clients/web/tests/audio/microphone_switch_livekit.browser.spec.ts",
+          "clients/web/tests/audio/deepfilter_switch_livekit.research.spec.ts",
+          "clients/web/tests/audio/auto_deepfilter.local.ts",
+            "clients/web/tests/audio/auto_preflight.local.ts",
+            "clients/web/tests/audio/deepfilter_preflight.research.spec.ts",
+            "clients/web/src/voice/noise_suppression/auto_preflight/benchmark.spec.ts",
+            "clients/web/src/voice/noise_suppression/auto_preflight/client.spec.ts",
+            "clients/web/src/voice/noise_suppression/auto_preflight/worker_runner.spec.ts",
+            "clients/web/src/voice/noise_suppression/microphone_adapter/auto_preflight.spec.ts",
+          "clients/web/src/voice/noise_suppression/auto_policy.spec.ts",
+          "clients/web/src/voice/noise_suppression/microphone_adapter/auto.spec.ts",
           "clients/web/src/voice/noise_suppression/microphone_adapter/deepfilter.spec.ts",
           "clients/web/src/voice/noise_suppression/deepfilter/track_processor.spec.ts",
           "clients/web/src/voice/noise_suppression/deepfilter/unmute_timeout.spec.ts",
@@ -692,6 +711,19 @@
           "clients/web/tests/audio/rnnoise.browser.spec.ts",
           "clients/flutter/test/voice_scope/noise_model_preflight_test.dart",
           "clients/flutter/test/voice_scope/native_deepfilter_test.dart",
+          "clients/flutter/test/voice_scope/native_auto_policy_test.dart",
+          "clients/flutter/test/voice_scope/native_auto_engine_test.dart",
+          "clients/flutter/test/voice_scope/native_auto_preflight_test.dart",
+          "clients/flutter/test/voice_scope/native_auto_preflight_lifecycle_test.dart",
+            "clients/flutter/test/voice_scope/native_auto_probe_monitor_test.dart",
+            "clients/flutter/test/voice_scope/native_auto_probe_mute_test.dart",
+            "clients/flutter/test/voice_scope/native_auto_probe_failure_test.dart",
+            "clients/flutter/test/voice_scope/native_auto_backup_lifecycle_test.dart",
+            "clients/flutter/test/audio_devices/auto_runtime_fallback_test.dart",
+          "clients/flutter/test/voice_scope/native_auto_deepfilter_preflight_test.dart",
+          "clients/flutter/test/voice_scope/native_auto_fallback_test.dart",
+          "clients/flutter/test/voice_scope/auto_capture_test.dart",
+          "clients/flutter/test/audio_devices/auto_native_settings_test.dart",
           "clients/flutter/test/voice_scope/deepfilter_settings_test.dart",
           "clients/flutter/test/voice_scope/deepfilter_capture_gate_test.dart",
           "clients/flutter/test/audio_devices/deepfilter_settings_gate_test.dart",
@@ -699,9 +731,11 @@
           "clients/flutter/test/audio_devices/deepfilter_input_gate_test.dart",
           "clients/flutter/test/audio_devices/deepfilter_input_fallback_test.dart",
           "clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/frame_queue/queue_test.cc",
+          "clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/preflight/benchmark_test.cc",
+          "clients/flutter/packages/flutter_webrtc/common/rnnoise/preflight/worker_test.cc",
           "clients/flutter/packages/flutter_webrtc/common/rnnoise/microphone_controls/processor_test.cc"
         ],
-        "scope": "RNNoise v0.2 and experimental Web/Windows DeepFilter modes are behind disabled-by-default build flags; DeepFilter release assets are not supplied. Flutter tests cover model readiness and browser fallback for initial capture, settings and desktop device changes using fakes; native hook is not instantiated by the normal client. Real-stack, Windows device, physical audio, visual and release acceptance remain NOT_RUN/BLOCKED."
+        "scope": "RNNoise v0.2 and experimental Web/Windows DeepFilter modes are behind disabled-by-default build flags; DeepFilter release assets are not supplied. Web adapter tests require a confirmed disabled browser noise suppressor before attaching either model; ignored constraints trigger muted recapture, and an unconfirmed fallback fails muted. Flutter tests cover model readiness and browser fallback for initial capture, settings and desktop device changes using fakes; native hook is not instantiated by the normal client. Real-stack, Windows device, physical audio, visual and release acceptance remain NOT_RUN/BLOCKED."
       },
       "speaker_activity_interval": {
         "focused": ["tools/verify/livekit_network_config/test_speaker_activity.py"],
@@ -1062,6 +1096,9 @@
       }
     ],
     "parity_review": {
+      "issue687_native_auto_internal": "Internal shared Flutter Auto preserves explicit OFF and mute intent and remains hidden from the normal selector. Verified experimental DeepFilter falls back to measured RNNoise v0.2, then WebRTC. Separate marked optimized Windows probes passed six-second physical capture with direct peers and private local LiveKit for both engines. Cold bootstrap uses the total two-second preflight deadline. Product UI, sustained/acoustic/device/reconnect acceptance and Android/iOS runtime remain unverified.",
+        "issue687_web_auto_internal": "Internal Web Auto measures explicitly opted-in DeepFilter and enabled RNNoise v0.2 in disposable WASM Workers before selection. Runtime DeepFilter failure retries measured RNNoise, then confirmed browser NS; mute intent and fallback cause survive recovery/health updates. Local Chromium/Firefox preflight and Chromium private-SFU publication/mute passed; controlled overload recovered real RNNoise v0.2 with received synthetic audio. Requested/effective modes stay distinct and Auto UI remains hidden. Noise adaptation, physical/acoustic/device acceptance, model rights and production delivery remain open.",
+      "issue687_browser_capture_guard": "Web rechecks browser noise-suppression settings and safely reacquires the microphone when live constraints are ignored; unconfirmed model fallback fails muted. Flutter, Android and iOS implementations are unchanged; their native and real-stack regression checks remain required. Browser component and mocked-publication tests do not establish real SFU or physical speech acceptance.",
       "issue667_voice_large_text_review": "Shared Flutter voice participant cards switch to one column at narrow widths with large text. Web source is unchanged and its regression remains required; Android and iOS share the layout, but native runtime, screen reader and physical acceptance for this change remain NOT_RUN. Component tests and a 320 dp capture are recorded in the issue 667 evidence.",
       "issue648_transfer_recovery_review": "Shared Flutter clears stale channel intent on accepted transfer revocation during recovery. Android emulator and Web were exercised on an isolated stack with injected release failure; iOS and production remain NOT_RUN.",
       "issue648_recovery_review": "The shared Flutter recovery indicator changed; Android emulator outage and manual leave passed on an isolated stack. Windows initial media admission failed before outage, iOS and physical devices are not verified. Web was not changed; its existing regression checks remain required. Screen presentation is reviewed because the voice dock is shared.",
@@ -1616,6 +1653,7 @@
     ],
     "parity_review": {
       "issue786_deafen_screen_audio": "2026-11-14 issue #786 updates voice participant status and roster presentation only. Screen capture, preview lifecycle, viewer selection and media controls remain covered by existing regressions; paired physical media acceptance is NOT_RUN and native runtime acceptance is BLOCKED.",
+      "issue687_auto_capture": "The shared Flutter voice microphone capture confirms an internal Auto WebRTC fallback only after capture succeeds. Screen-sharing code and Web behavior are unchanged. Android/iOS native runtime, screen-sharing regression and real media acceptance remain NOT_RUN/BLOCKED.",
       "idle_afk_follow_up": "PR #783 adds workspace activity reporting used by idle presence. Screen-share capture, preview and viewer behavior are unchanged; existing screen regressions remain required.",
       "issue667_voice_large_text_review": "Shared Flutter voice participant cards switch to one column at narrow widths with large text. Web source is unchanged and its regression remains required; Android and iOS share the layout, but native runtime, screen reader and physical acceptance for this change remain NOT_RUN. Component tests and a 320 dp capture are recorded in the issue 667 evidence.",
       "issue648_recovery_review": "The shared Flutter recovery indicator changed; Android emulator outage and manual leave passed on an isolated stack. Windows initial media admission failed before outage, iOS and physical devices are not verified. Web was not changed; its existing regression checks remain required. Screen presentation is reviewed because the voice dock is shared.",
@@ -1893,6 +1931,7 @@
       }
     ],
     "parity_review": {
+      "issue687_auto_internal": "Web and shared Flutter preserve an internal Auto request and existing defaults; Auto is hidden from normal settings. Native Auto selects pinned RNNoise v0.2 only after asynchronous inference preflight; explicitly enabled verified DeepFilter waits for its worker preflight, then falls back through measured RNNoise to WebRTC. Focused tests pass; actual Auto device/real-stack and Android/iOS runtime acceptance remain BLOCKED or NOT_RUN. Web performance preflight, adaptation and user-facing controls are not complete.",
       "idle_afk_follow_up": "PR #783 adds the AFK channel and inactivity timeout to Web/Flutter guild settings. The 2026-11-14 follow-up clarifies that active speech resets the timer in both clients; save behavior is unchanged. Focused copy, save/conflict and heartbeat regressions pass; dedicated AFK device routing remains NOT_RUN.",
       "issue687": "Web and Flutter expose experimental DeepFilter selection behind disabled-by-default flags; Flutter limits the option to Windows and retains unavailable saved choices. Android/iOS do not offer it, and native runtime and real-device acceptance remain NOT_RUN/BLOCKED.",
       "issue": 676,
@@ -3266,6 +3305,7 @@
     },
     "parity_review": {
       "issue786_deafen_screen_audio": "2026-11-14 issue #786 adds participant deafen state and audio filtering; AFK activity reporting and status transitions are unchanged. Web browser, Flutter unit and component capture regressions pass; Android/iOS paired runtime and physical media verification remain NOT_RUN/BLOCKED.",
+      "issue687_auto_rejoin": "Internal Auto confirms its WebRTC fallback after microphone capture; the AFK no-publication guard remains before capture. Focused Auto and AFK regressions are required, while paired native runtime acceptance remains NOT_RUN.",
       "issue": 783,
       "decisions": {
         "web": "implementation_and_regression",

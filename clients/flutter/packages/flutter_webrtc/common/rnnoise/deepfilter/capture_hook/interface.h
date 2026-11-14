@@ -12,6 +12,7 @@ class CaptureHook {
   virtual void Reset(bool enabled) noexcept = 0;
   virtual bool Available() const noexcept = 0;
   virtual HookReadiness Readiness() const noexcept = 0;
+  virtual const char* ModelId() const noexcept { return nullptr; }
   virtual GuardStatus Capture(float* pcm, int frames, int capacity, int rate, int channels) noexcept = 0;
 };
 }  // namespace boohta::deepfilter

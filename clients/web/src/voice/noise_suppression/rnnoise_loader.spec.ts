@@ -19,6 +19,7 @@ describe('RNNoise same origin manifest guard', () => {
   })
   it('loads the pinned v0.2 identity only when explicitly enabled', async () => {
     vi.stubEnv('VITE_RNNOISE_V02_ENABLED', 'true')
+    vi.stubEnv('VITE_RNNOISE_V02_WASM_SHA256', '0'.repeat(64))
     vi.stubGlobal('window', { location: { origin: 'https://voice.test' } })
     vi.stubGlobal('crypto', { subtle: { digest: async () => new Uint8Array(32).buffer } })
     vi.spyOn(WebAssembly, 'compile').mockResolvedValue({} as WebAssembly.Module)
@@ -51,11 +52,13 @@ describe('RNNoise same origin manifest guard', () => {
     expect((await loadRnnoiseAssets('/same-path/manifest.json')).modelId).toBe('rnnoise-stock-v0.1')
     model = rnnoiseModels.v02
     vi.stubEnv('VITE_RNNOISE_V02_ENABLED', 'true')
+    vi.stubEnv('VITE_RNNOISE_V02_WASM_SHA256', '0'.repeat(64))
     expect((await loadRnnoiseAssets('/same-path/manifest.json')).modelId).toBe('rnnoise-stock-v0.2')
     expect(fetcher).toHaveBeenCalledTimes(4)
   })
   it('rejects the wrong model manifest before fetching its WASM', async () => {
     vi.stubEnv('VITE_RNNOISE_V02_ENABLED', 'true')
+    vi.stubEnv('VITE_RNNOISE_V02_WASM_SHA256', '0'.repeat(64))
     vi.stubGlobal('window', { location: { origin: 'https://voice.test' } })
     const fetcher = vi.fn().mockResolvedValue(new Response(JSON.stringify(rnnoiseModels.v01),
       { headers: { 'content-type': 'application/json' } }))

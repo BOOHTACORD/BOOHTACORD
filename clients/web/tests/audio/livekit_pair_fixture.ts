@@ -12,6 +12,7 @@ let meterSource: MediaStreamAudioSourceNode | undefined
 let remoteElement: HTMLMediaElement | undefined
 const readings: MeterReading[] = []
 let resetAcknowledged: (() => void) | undefined
+let subscriptions = 0
 async function connect(role: 'sender' | 'receiver') {
   const credentials = await (await fetch(`/tests/audio/livekit-token?role=${role}`, { cache: 'no-store' })).json()
   const room = new Room()
@@ -20,6 +21,8 @@ async function connect(role: 'sender' | 'receiver') {
   await context.audioWorklet.addModule('/tests/audio/meter.worklet.js')
   if (role === 'receiver') room.on(RoomEvent.TrackSubscribed, track => {
     if (track.kind !== Track.Kind.Audio) return
+    subscriptions++
+    meterSource?.disconnect(); meter?.disconnect(); meter?.port.close(); remoteElement?.remove(); readings.length = 0
     // Chromium requires remote playout attachment, even for aggregate meter use.
     remoteElement = track.attach(); remoteElement.muted = true; document.body.append(remoteElement); void remoteElement.play()
     meterSource = context!.createMediaStreamSource(new MediaStream([track.mediaStreamTrack]))
@@ -48,7 +51,7 @@ export const livekitPairFixture = {
       : { engine, sampleRate: context!.sampleRate }
   },
   async mute() { processor?.mute(); await localTrack?.mute(); return { localMuted: localTrack?.isMuted === true, outputEnabled: processor?.processedTrack?.enabled ?? null } },
-  read() { return { readings: readings.splice(0), state: activeRoom?.state } },
+  read() { return { readings: readings.splice(0), state: activeRoom?.state, subscriptions } },
   async resetMeter() {
     if (!meter) throw new Error('Receiver meter is not ready')
     await new Promise<void>(resolve => { resetAcknowledged = resolve; meter!.port.postMessage('reset') })
@@ -60,6 +63,7 @@ export const livekitPairFixture = {
     await processor?.destroy(); localTrack?.stop(); oscillator?.stop(); await context?.close()
     activeRoom = undefined; processor = undefined; localTrack = undefined; context = undefined
     readings.length = 0
+    subscriptions = 0
   },
 }
 ;(window as unknown as { livekitAudioGate: typeof livekitPairFixture }).livekitAudioGate = livekitPairFixture

@@ -4,14 +4,15 @@ import { LiveKitMicrophoneAdapter } from './controller'
 import type { NoiseSuppressionRuntimeState } from '../types'
 
 it('retains the missing-asset reason while restoring the standard engine', async () => {
-  const source = { enabled: true, stop: vi.fn(), getSettings: () => ({ noiseSuppression: true }) }
+  let reported = true
+  const source = { enabled: true, stop: vi.fn(), getSettings: () => ({ noiseSuppression: reported }) }
   let callbacks!: { onState: (state: NoiseSuppressionRuntimeState) => void; onFailure: (reason: 'asset-load') => void }
   const processor = { processedTrack: undefined, mute: vi.fn(), destroy: vi.fn(), name: 'test' }
   const track = {
     mediaStreamTrack: source,
     mute: vi.fn(async () => { source.enabled = false }),
     unmute: vi.fn(async () => { source.enabled = true }),
-    stop: vi.fn(), applyConstraints: vi.fn(async () => undefined),
+    stop: vi.fn(), applyConstraints: vi.fn(async (value: MediaTrackConstraints) => { reported = value.noiseSuppression === true }),
     stopProcessor: vi.fn(async () => undefined),
     setProcessor: vi.fn(async () => {
       callbacks.onState({ requestedMode: 'rnnoise', effectiveMode: 'unknown', status: 'error', fallbackReason: 'asset-load' })
