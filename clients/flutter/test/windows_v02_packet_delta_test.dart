@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../tools/audio/windows_v02_probe/packet_delta.dart';
+import '../../../tools/qa/windows_v02_probe/packet_delta.dart';
 
 void main() {
   test('ignores retired reports and counts only growth of a stable report', () {
