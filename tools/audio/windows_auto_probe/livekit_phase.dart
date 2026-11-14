@@ -66,6 +66,7 @@ Future<Map<String, Object?>> runAutoLivekitPhase(
     final recovery = await checkRecovery(sender, receiver, audio, expected);
     result['recovery'] = recovery;
     if (recovery['success'] == false) throw StateError('recovery-media-failed');
+    stage = 'controls';
     final controls = await checkControls(sender, receiver, audio, expected);
     result['controls'] = controls;
     if (controls['success'] == false) throw StateError('controls-check-failed');
