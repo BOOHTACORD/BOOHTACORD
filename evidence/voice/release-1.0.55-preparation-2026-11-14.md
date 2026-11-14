@@ -23,6 +23,9 @@ Shared Flutter version/build becomes 1.0.55+91, native release order 70; the
 independent Web release order becomes 63 and version 1.0.55. iOS identity is
 kept consistent with the shared manifest; no iOS release is requested.
 The existing macos-v1.0.54 publication is immutable and is not replaced.
+The existing profile/package-version synchronization test caught stale Dart
+development defaults in CI. Updating app_version.dart to 1.0.55/91/order 70
+makes that unchanged focused test pass on Windows; it is not a test waiver.
 
 Validation: ten focused Docker-input/tag tests, three client-identity tests,
 26 contract/parity regressions, OpenAPI parity (137 operations), product-map
