@@ -101,7 +101,7 @@ export async function connectLiveKitRoom(
     throw cause
   }
 
-  if (joinMode === 'listener') return { room, microphone: 'MUTED' }
+  if (joinMode === 'listener' || credential.microphoneAllowed === false) return { room, microphone: 'MUTED' }
 
   try {
     activeAction()?.step('microphone')

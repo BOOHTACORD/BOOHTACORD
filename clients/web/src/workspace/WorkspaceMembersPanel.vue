@@ -79,7 +79,6 @@ onMounted(() => { if (!props.selectedVoiceChannel) void loadRoster() })
       <p v-else-if="!guildMembers.length" class="members-empty">В гильдии пока нет участников.</p>
       <div v-else class="members-presence-groups">
         <GuildPresenceGroup title="В сети" :members="presenceGroups.online" :voice-presence="props.voicePresence" @open="openProfile" />
-        <GuildPresenceGroup title="Не активен" :members="presenceGroups.idle" :voice-presence="props.voicePresence" @open="openProfile" />
         <GuildPresenceGroup title="Не в сети" :members="presenceGroups.offline" :voice-presence="props.voicePresence" @open="openProfile" />
         <GuildPresenceGroup title="Статус неизвестен" :members="presenceGroups.unknown" :voice-presence="props.voicePresence" @open="openProfile" />
       </div>

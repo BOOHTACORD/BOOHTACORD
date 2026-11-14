@@ -12,12 +12,12 @@ tasks:
     title: Add realtime idle presence across Web and Flutter clients
     requirements: [REQ-VOICE-01, REQ-UI-01, REQ-SECURITY-01]
     depends_on: [T-022]
-    evidence: [backend/internal/realtime/event_hub/idle_presence_test.go, clients/web/src/identity/guild_presence_idle.spec.ts, clients/flutter/test/guild_presence_state_test.dart, tools/qa/local_features/features.json]
+    evidence: [backend/internal/realtime/event_hub/idle_presence_test.go, clients/web/src/identity/guild_presence_idle.spec.ts, clients/web/src/realtime/voice_activity_heartbeat.spec.ts, clients/web/src/workspace/member_presence.spec.ts, clients/web/tests/member_roster/roster.browser.spec.ts, clients/flutter/test/guild_presence_state_test.dart, clients/flutter/test/realtime_voice_activity_heartbeat_test.dart, clients/flutter/test/workspace_screen_test.dart, tools/qa/local_features/features.json]
   - id: AFK-001
     title: Configure an AFK voice channel and move inactive members with microphone locked
     requirements: [REQ-VOICE-01, REQ-UI-01, REQ-SECURITY-01]
     depends_on: [IDLE-001, T-022, T-020]
-    evidence: [backend/internal/guild/update_settings/validation_test.go, backend/internal/media/livekit_credential/afk_test.go, backend/internal/voice/route_inactive_members/service_integration_test.go, backend/internal/voice/notify_lease_revocation/integration_database_test.go, clients/web/src/admin/guild_settings/state.spec.ts, clients/flutter/test/admin_guild_settings_test.dart, tools/qa/local_features/features.json]
+    evidence: [backend/internal/guild/update_settings/validation_test.go, backend/internal/media/livekit_credential/afk_test.go, backend/internal/voice/route_inactive_members/service_integration_test.go, backend/internal/voice/notify_lease_revocation/integration_database_test.go, clients/web/src/admin/guild_settings/state.spec.ts, clients/web/src/voice/livekit_gateway.spec.ts, clients/web/src/voice/voice_session.spec.ts, clients/flutter/test/admin_guild_settings_test.dart, clients/flutter/test/voice_lease_revocation_test.dart, tools/qa/local_features/features.json]
   - id: RT704-002
     title: Synchronize native realtime acceptance fixtures and record scoped Apple evidence (GitHub #704)
     requirements: [REQ-PLATFORM-01, REQ-QUALITY-01]

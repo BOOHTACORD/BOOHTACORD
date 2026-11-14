@@ -2,7 +2,7 @@
 
 ID: `idle_afk.status_and_voice`
 
-Описание: After the configured inactivity window, a connected member is marked idle and moved to the configured AFK voice channel; microphone publication stays disabled there.
+Описание: Workspace input or active microphone speech resets the inactivity timer. Online and idle members appear in the same &#x27;В сети&#x27; group, with idle shown only as the member&#x27;s status. After the configured interval without either, the connected member is marked idle and moved to the configured AFK voice channel; microphone publication stays disabled there.
 
 [← Матрица](../index.md)
 
