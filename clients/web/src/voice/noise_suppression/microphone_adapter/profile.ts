@@ -1,5 +1,4 @@
-import { deepfilterReleaseEnabled, rnnoiseReleaseEnabled, supportsRnnoise } from '../capabilities'
-import { selectAutoEngine } from '../auto_policy'
+import { deepfilterReleaseEnabled, rnnoiseReleaseEnabled, selectAutoEngine, supportsRnnoise } from '../capabilities'
 import { browserProcessingConstraints, type AudioProcessingOptions, type NoiseSuppressionFallbackReason } from '../types'
 import { browserSuppressionDisabled } from '../deepfilter/capture_guard'
 
