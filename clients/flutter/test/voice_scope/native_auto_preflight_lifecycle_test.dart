@@ -11,6 +11,50 @@ void main() {
     'rnnoiseP95Us': 200,
     'rnnoiseMaxUs': 400,
   };
+  test(
+    'unresponsive cold bootstrap falls back within the total deadline',
+    () async {
+      final engines = <String>[];
+      final native = NativeNoiseSuppression(
+        invoke: (method, args) async {
+          if (method == 'getNoiseSuppressionCapabilities') {
+            return Completer<Object?>().future;
+          }
+          engines.add(args!['engine'] as String);
+          return {'effectiveEngine': 'browser'};
+        },
+      );
+      addTearDown(native.dispose);
+      expect(
+        await native
+            .prepare(NoiseSuppressionMode.auto)
+            .timeout(const Duration(seconds: 3)),
+        NoiseSuppressionMode.browser,
+      );
+      expect(engines, ['browser']);
+      expect(native.state.requestedMode, NoiseSuppressionMode.auto);
+    },
+  );
+  test('cold factory startup can exceed ordinary channel timeout within preflight deadline', () async {
+    final native = NativeNoiseSuppression(
+      invoke: (method, args) async {
+        if (method == 'getNoiseSuppressionCapabilities') {
+          await Future<void>.delayed(const Duration(milliseconds: 450));
+          return eligible;
+        }
+        return {
+          'supported': true,
+          'effectiveEngine': 'rnnoise',
+          'processedFrames': 1,
+        };
+      },
+    );
+    addTearDown(native.dispose);
+    expect(
+      await native.prepare(NoiseSuppressionMode.auto),
+      NoiseSuppressionMode.rnnoise,
+    );
+  });
   test('Auto waits for the worker before setting the capture engine', () async {
     var polls = 0;
     final engines = <String>[];

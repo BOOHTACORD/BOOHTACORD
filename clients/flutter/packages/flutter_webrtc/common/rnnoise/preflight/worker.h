@@ -22,16 +22,22 @@ class RnnoisePreflight {
     return true;
   }
   int state() const { return state_.load(std::memory_order_acquire); }
+  int stage() const { return stage_.load(); }
   std::int64_t p95_us() const { return p95_.load(); }
   std::int64_t max_us() const { return max_.load(); }
  private:
   void Run() noexcept {
     try {
+      stage_.store(1);
       std::unique_ptr<DenoiseState, decltype(&rnnoise_destroy)> model(
           static_cast<DenoiseState*>(std::malloc(rnnoise_get_size())), rnnoise_destroy);
+      stage_.store(2);
       if (!model || rnnoise_init(model.get()) != 0) { state_.store(3); return; }
+      stage_.store(3);
       WarmRnnoiseFft(model.get());
+      stage_.store(4);
       if (rnnoise_init(model.get()) != 0) { state_.store(3); return; }
+      stage_.store(5);
       const auto result = deepfilter::RunPreflight([&](deepfilter::AudioFrame& frame) {
         for (float& value : frame.samples) value *= 32768.f;
         const auto probability = rnnoise_process_frame(model.get(), frame.samples.data(), frame.samples.data());
@@ -42,10 +48,12 @@ class RnnoisePreflight {
             std::chrono::steady_clock::now().time_since_epoch()).count();
       });
       p95_.store(result.p95_us); max_.store(result.max_us);
+      stage_.store(6);
       state_.store(result.ready ? 2 : 3, std::memory_order_release);
     } catch (...) { state_.store(3, std::memory_order_release); }
   }
   std::atomic<int> state_{0}; // idle, running, passed, failed
+  std::atomic<int> stage_{0}; // idle, allocation, init, warmup, reinit, measure, done
   std::atomic<std::int64_t> p95_{0}, max_{0};
   std::thread worker_;
 };

@@ -11,6 +11,7 @@ inline bool HandleMicrophoneControls(const MethodCallProxy& call,
     EncodableMap capabilities;
     capabilities[EncodableValue("rnnoiseModelId")] = EncodableValue(processor.ModelId());
     capabilities[EncodableValue("rnnoisePreflightState")] = EncodableValue(processor.preflight.state());
+    capabilities[EncodableValue("rnnoisePreflightStage")] = EncodableValue(processor.preflight.stage());
     capabilities[EncodableValue("rnnoiseP95Us")] = EncodableValue(processor.preflight.p95_us());
     capabilities[EncodableValue("rnnoiseMaxUs")] = EncodableValue(processor.preflight.max_us());
     if (const auto model = processor.DeepFilterModelId())

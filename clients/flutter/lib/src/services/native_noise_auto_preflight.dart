@@ -52,7 +52,13 @@ mixin _NativeNoiseAutoPreflight on _NativeNoiseCore {
         generation == _generation &&
         clock.elapsedMilliseconds < 2000) {
       try {
-        final value = await _call('getNoiseSuppressionCapabilities');
+        // First capability access may bootstrap the native factory. Keep this
+        // inside the overall preflight deadline, not the hot control timeout.
+        final remaining = const Duration(seconds: 2) - clock.elapsed;
+        final value = await _invoke(
+          'getNoiseSuppressionCapabilities',
+          null,
+        ).timeout(remaining);
         if (_disposed || generation != _generation || value is! Map) {
           break;
         }
