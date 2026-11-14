@@ -2,7 +2,7 @@ import '../../../services/voice_lease_revocation.dart';
 import '../lifecycle/controller.dart';
 
 extension VoiceLeaseEventsRevocation on VoiceController {
-  Future<void> dispatchVoiceRevocation(Map<String, dynamic> payload) async {
+  Future<void> dispatchVoiceRevocation(Map<String, dynamic> payload, {Future<void> Function(String)? moveToAfk}) async {
     if (disposed || !scope.capture().isActive) return;
     if (payload['reason'] == 'VOLUNTARY_LEAVE' &&
         voiceRecoveryReleasedLeases.contains(payload['lease_id'])) {
@@ -27,6 +27,8 @@ extension VoiceLeaseEventsRevocation on VoiceController {
     if (accepted && room == null && !voiceAdmissionPending) {
       if (wasRecovering) voiceChannel = null;
       showVoiceDisconnect();
+      final target = payload['target_channel_id'];
+      if (revocation.reason == 'AFK_MOVE' && target is String) await moveToAfk?.call(target);
       return;
     }
     if (voiceAdmissionPending) {
@@ -41,6 +43,8 @@ extension VoiceLeaseEventsRevocation on VoiceController {
       }
     } else {
       await handleVoiceLeaseRevoked(revocation.leaseId, revocation.reason);
+      final target = payload['target_channel_id'];
+      if (accepted && revocation.reason == 'AFK_MOVE' && target is String) await moveToAfk?.call(target);
     }
   }
 

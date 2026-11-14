@@ -37,4 +37,21 @@ void main() {
     expect(harness.audio.nativeNoise.state.effectiveMode, 'browser');
     expect(harness.audio.nativeNoise.state.status, 'unsupported');
   });
+
+  test(
+    'Auto cannot publish while AFK microphone permission is denied',
+    () async {
+      final harness = VoiceHarness();
+      addTearDown(harness.dispose);
+      harness.owner.room = harness.room;
+      harness.owner.microphoneAllowed = false;
+      harness.audio.audioProcessing = const AudioProcessingPreferences(
+        noiseSuppressionMode: NoiseSuppressionMode.auto,
+      );
+      expect(await harness.owner.applyMicrophoneMuted(false), isFalse);
+      expect(harness.room.localParticipant.enabled, isEmpty);
+      expect(harness.owner.microphoneMuted, isTrue);
+      expect(harness.audio.microphoneMutedIntent, isTrue);
+    },
+  );
 }

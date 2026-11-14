@@ -4,7 +4,7 @@ extension VoiceMicrophonePtt on VoiceController {
   Future<void> setPushToTalkPressed(bool pressed) async {
     final ticket = scope.capture();
     final revision = operationRevision;
-    if (!active(ticket, revision)) return;
+    if (!active(ticket, revision) || !microphoneAllowed) return;
     if (audioActivationMode != AudioActivationMode.ptt ||
         pushToTalkPressed == pressed) {
       return;

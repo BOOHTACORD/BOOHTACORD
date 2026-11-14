@@ -6,6 +6,7 @@ extension VoiceMicrophoneToggle on VoiceController {
     final revision = operationRevision;
     if (!active(ticket, revision) ||
         room == null ||
+        !microphoneAllowed ||
         deafened ||
         audioActivationMode == AudioActivationMode.ptt) {
       return;

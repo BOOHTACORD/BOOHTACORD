@@ -26,6 +26,7 @@ const (
 	PresenceOnline  Presence = "online"
 	PresenceOffline Presence = "offline"
 	PresenceUnknown Presence = "unknown"
+	PresenceIdle    Presence = "idle"
 )
 
 type Member struct {
@@ -43,6 +44,7 @@ type Store interface {
 	Find(context.Context, string) (Member, error)
 }
 type PresenceReader interface{ IsOnline(string) bool }
+type PresenceStateReader interface{ PresenceState(string) string }
 type Service struct {
 	store    Store
 	presence PresenceReader
@@ -103,6 +105,16 @@ func (service Service) Get(ctx context.Context, memberID string) (Member, error)
 func (service Service) memberPresence(accountID string) Presence {
 	if service.presence == nil {
 		return PresenceUnknown
+	}
+	if states, ok := service.presence.(PresenceStateReader); ok {
+		switch states.PresenceState(accountID) {
+		case "online":
+			return PresenceOnline
+		case "idle":
+			return PresenceIdle
+		default:
+			return PresenceOffline
+		}
 	}
 	if service.presence.IsOnline(accountID) {
 		return PresenceOnline

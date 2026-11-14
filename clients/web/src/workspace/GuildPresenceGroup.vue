@@ -8,6 +8,7 @@ const props = defineProps<{ title: string; members: GuildMember[]; voicePresence
 const emit = defineEmits<{ open: [userID: string, event: MouseEvent] }>()
 function statusLabel(presence: MemberPresence): string {
   if (presence === 'online') return 'В сети'
+  if (presence === 'idle') return 'Не активен'
   if (presence === 'offline') return 'Не в сети'
   return 'Статус неизвестен'
 }

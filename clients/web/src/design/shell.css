@@ -27,6 +27,7 @@
 .member-avatar-wrap .member-avatar { width: 100%; height: 100%; }
 .member-presence-dot { position: absolute; right: -1px; bottom: -1px; width: 10px; height: 10px; border: 2px solid var(--gc-aside); border-radius: var(--gc-radius-full); }
 .member-presence-dot--online { background: var(--gc-success); }
+.member-presence-dot--idle { background: var(--gc-warning); }
 .member-presence-dot--offline { background: var(--gc-text-muted); }
 .member-presence-dot--unknown { border-style: dashed; background: var(--gc-aside); }
 .member-popover { position: absolute; right: var(--gc-space-4); z-index: 4; display: grid; width: 288px; max-width: calc(100% - var(--gc-space-8)); gap: var(--gc-space-4); border: 1px solid var(--gc-border-subtle); border-radius: var(--gc-radius-md); padding: var(--gc-space-4); background: var(--gc-surface-raised); box-shadow: var(--gc-shadow-shell); }.member-popover header { display: flex; align-items: center; justify-content: space-between; color: var(--gc-text-muted); font-size: var(--gc-text-caption); }.member-popover header button { width: 32px; height: 32px; border: 0; border-radius: var(--gc-radius-sm); color: var(--gc-text-secondary); background: transparent; font-size: var(--gc-text-section); }

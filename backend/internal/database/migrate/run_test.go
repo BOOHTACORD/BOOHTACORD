@@ -81,6 +81,7 @@ func TestRunExecutesEmbeddedMigrations(t *testing.T) {
 		{"protect_support_service_account", "TG_OP='DELETE'", "RETURN OLD", "RETURN NEW", "ERRCODE='42501'"},
 		{"CREATE TABLE IF NOT EXISTS voice_sound_preferences", "account_id UUID PRIMARY KEY", "revision BIGINT NOT NULL"},
 		{"CREATE TABLE IF NOT EXISTS join_sounds", "next_upload_at", "262144"},
+		{"ADD COLUMN IF NOT EXISTS afk_channel_id", "ADD COLUMN IF NOT EXISTS afk_timeout_seconds", "guild_settings_afk_enabled_pair_check", "AFK_MOVE", "ADD COLUMN IF NOT EXISTS target_channel_id"},
 	}
 	if len(executor.statements) != len(expected) {
 		t.Fatalf("migration count = %d", len(executor.statements))
@@ -90,6 +91,24 @@ func TestRunExecutesEmbeddedMigrations(t *testing.T) {
 			if !strings.Contains(executor.statements[index], fragment) {
 				t.Fatalf("migration %d lacks %q", index+1, fragment)
 			}
+		}
+	}
+}
+
+func TestAFKMigrationAddsColumnsIdempotently(t *testing.T) {
+	statement, err := files.ReadFile("migrations/0068_idle_presence_afk_voice.sql")
+	if err != nil {
+		t.Fatal("read AFK migration:", err)
+	}
+	for _, fragment := range []string{
+		"ADD COLUMN IF NOT EXISTS afk_channel_id",
+		"ADD COLUMN IF NOT EXISTS afk_timeout_seconds",
+		"ADD COLUMN IF NOT EXISTS target_channel_id",
+		"DROP CONSTRAINT IF EXISTS guild_settings_afk_enabled_pair_check",
+		"DROP CONSTRAINT IF EXISTS voice_leases_revocation_reason_check",
+	} {
+		if !strings.Contains(string(statement), fragment) {
+			t.Fatalf("AFK migration is not repeatable; missing %q", fragment)
 		}
 	}
 }

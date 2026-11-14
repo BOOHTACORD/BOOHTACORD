@@ -11,6 +11,7 @@ export interface LiveKitCredential {
   url: string
   token: string
   expiresAt: string
+  microphoneAllowed?: boolean
 }
 
 export type VoiceRequest = (input: string, init: RequestInit) => Promise<Response>
@@ -68,9 +69,10 @@ function credential(value: unknown): LiveKitCredential {
   const url = string(body?.url)
   const token = string(body?.token)
   const expiresAt = string(body?.expires_at)
-  if (!url || !token || !expiresAt) throw new Error('Сервер вернул некорректный media credential.')
+  const microphoneAllowed = body?.microphone_allowed === undefined ? true : body.microphone_allowed
+  if (!url || !token || !expiresAt || typeof microphoneAllowed !== 'boolean') throw new Error('Сервер вернул некорректный media credential.')
 
-  return { url, token, expiresAt }
+  return { url, token, expiresAt, microphoneAllowed }
 }
 
 function mutation(method: string, body?: unknown): RequestInit {

@@ -5,13 +5,18 @@ type PresenceEvent = { kind: string; payload: Record<string, unknown> }
 
 export function useGuildPresence() {
   const onlineUserIDs = ref<Set<string> | null>(null)
+  const idleUserIDs = ref<Set<string>>(new Set())
   const changes = ref(new Map<string, MemberPresence>())
   const unavailable = ref(false)
 
   function acceptRealtimeEvent(event: PresenceEvent): boolean {
     if (event.kind === 'presence.snapshot') {
       const ids = event.payload.online_user_ids
-      onlineUserIDs.value = Array.isArray(ids) && ids.every((id) => typeof id === 'string') ? new Set(ids) : null
+      const idle = event.payload.idle_user_ids
+      const validOnline = Array.isArray(ids) && ids.every((id) => typeof id === 'string')
+      const validIdle = idle === undefined || (Array.isArray(idle) && idle.every((id) => typeof id === 'string'))
+      onlineUserIDs.value = validOnline && validIdle ? new Set(ids as string[]) : null
+      idleUserIDs.value = validOnline && validIdle && Array.isArray(idle) ? new Set(idle) : new Set()
       changes.value = new Map()
       unavailable.value = onlineUserIDs.value === null
       return true
@@ -19,8 +24,10 @@ export function useGuildPresence() {
     if (event.kind !== 'presence.changed') return false
     const userID = event.payload.user_id
     const state = event.payload.presence
+    const activityState = event.payload.activity_state
     if (typeof userID === 'string' && (state === 'online' || state === 'offline')) {
-      changes.value = new Map(changes.value).set(userID, state)
+      const resolved = state === 'offline' ? 'offline' : activityState === 'idle' ? 'idle' : 'online'
+      changes.value = new Map(changes.value).set(userID, resolved)
     }
     return true
   }
@@ -30,11 +37,13 @@ export function useGuildPresence() {
     const changed = changes.value.get(userID)
     if (changed) return changed
     if (!onlineUserIDs.value) return fallback
+    if (idleUserIDs.value.has(userID)) return 'idle'
     return onlineUserIDs.value.has(userID) ? 'online' : 'offline'
   }
 
   function invalidate(): void {
     onlineUserIDs.value = null
+    idleUserIDs.value = new Set()
     changes.value = new Map()
     unavailable.value = true
   }

@@ -31,7 +31,11 @@ extension WorkspaceScreenStateBuildAction on WorkspaceScreenStateContext {
           !widget.maintenanceBannerVisible &&
           defaultTargetPlatform != TargetPlatform.macOS &&
           defaultTargetPlatform != TargetPlatform.windows,
-      child: LayoutBuilder(
+      child: Listener(
+        onPointerDown: (_) => widget.state.realtime.reportActivity(),
+        onPointerMove: (_) => widget.state.realtime.reportActivity(),
+        onPointerSignal: (_) => widget.state.realtime.reportActivity(),
+        child: LayoutBuilder(
         builder: (context, constraints) {
           final layout = workspaceLayout(constraints.maxWidth);
           final compact = layout.compact;
@@ -104,6 +108,7 @@ extension WorkspaceScreenStateBuildAction on WorkspaceScreenStateContext {
               : swipeContent;
           return renderWorkspaceScreenBackGuard(presentedContent);
         },
+        ),
       ),
     ),
   );

@@ -9,6 +9,7 @@ import '../../features/workspace/load_members/controller.dart';
 import '../../features/workspace/load_directs/controller.dart';
 import '../../features/notifications/message_events/controller.dart';
 import '../../features/notifications/remote_lifecycle/controller.dart';
+import '../../models.dart';
 import 'owners.dart';
 
 void configureRealtime(AppOwners app) {
@@ -52,7 +53,10 @@ void configureRealtime(AppOwners app) {
       app.workspace,
       app.conversation,
       captureCurrent: () => app.realtime.admission(),
-      voiceRevoked: app.voice.dispatchVoiceRevocation,
+      voiceRevoked: (payload) => app.voice.dispatchVoiceRevocation(payload, moveToAfk: (channelId) async {
+        final channel = app.workspace.topology?.categories.expand((category) => category.channels).where((channel) => channel.id == channelId && channel.kind == ChannelKind.voice).firstOrNull;
+        if (channel != null) await app.voice.joinVoice(channel, listenerOnly: true);
+      }),
       permissionsChanged: app.permissions.refreshStrict,
       notifyMessage: notifications.call,
       notificationHint: app.remoteNotifications.realtime,

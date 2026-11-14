@@ -4,7 +4,7 @@ import { normalizeAvatarImage } from './avatar_image'
 import { capacityError } from './authentication_flow/retry_after'
 
 export interface OwnProfile { account_id: string; login: string; display_name: string; role: 'MEMBER' | 'ADMINISTRATOR'; avatar_url?: string; profile_revision?: number }
-export type MemberPresence = 'online' | 'offline' | 'unknown'
+export type MemberPresence = 'online' | 'idle' | 'offline' | 'unknown'
 export interface GuildMember { user_id: string; login: string; display_name: string; role: 'MEMBER' | 'ADMINISTRATOR'; presence: MemberPresence; avatar_url?: string; profile_revision?: number }
 export interface MemberPage { members: GuildMember[]; next_cursor?: string }
 export type ProfileRequest = (url: string, init: RequestInit) => Promise<Response>
@@ -56,6 +56,6 @@ export async function loadMember(userID: string, request: ProfileRequest = trace
 function parseMember(value: unknown): GuildMember {
   const member = record(value)
   if (member.role !== 'MEMBER' && member.role !== 'ADMINISTRATOR') throw new Error('Сервер вернул некорректную роль участника.')
-  const presence = member.presence === 'online' || member.presence === 'offline' ? member.presence : 'unknown'
+  const presence = member.presence === 'online' || member.presence === 'idle' || member.presence === 'offline' ? member.presence : 'unknown'
   return { user_id: stringField(member.user_id), login: stringField(member.login), display_name: stringField(member.display_name), role: member.role, presence, ...(typeof member.avatar_url === 'string' ? { avatar_url: member.avatar_url } : {}), ...(Number.isSafeInteger(member.profile_revision) && Number(member.profile_revision) > 0 ? { profile_revision: Number(member.profile_revision) } : {}) }
 }

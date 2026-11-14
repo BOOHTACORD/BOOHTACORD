@@ -3,7 +3,7 @@ import { fixtureRoutes, id } from './routes'
 
 test.use({ channel: 'chromium' })
 
-test('native guild select, save pending/disabled and failure preserve the form', async ({ page }) => {
+test('native guild select, save pending/disabled and failure preserve the form', async ({ page }, testInfo) => {
   await fixtureRoutes(page)
   let release!: () => void, writes = 0, payload: unknown
   let fail = false
@@ -16,6 +16,13 @@ test('native guild select, save pending/disabled and failure preserve the form',
   await page.goto('/tests/control_consistency/fixture.html?surface=guild')
   const name = page.getByLabel('Название гильдии', { exact: true })
   await expect(name).toBeEnabled(); await name.fill('Гильдия после правки')
+  const afkChannel = page.getByLabel('AFK-канал', { exact: true })
+  const afkTimeout = page.getByLabel('Перемещать после неактивности', { exact: true })
+  await expect(afkChannel).toHaveValue('')
+  await expect(afkTimeout).toBeDisabled()
+  await expect(afkTimeout).toHaveValue('0')
+  await expect(afkTimeout.locator('option:checked')).toHaveText('Сначала выберите AFK-канал')
+  await page.screenshot({ path: testInfo.outputPath('guild-settings-afk-disabled.png'), fullPage: true })
   const select = page.getByLabel('Приветствия новых участников')
   await expect(select).toBeEnabled()
   await select.focus(); await select.press('#')
@@ -28,7 +35,7 @@ test('native guild select, save pending/disabled and failure preserve the form',
   const bounds = await busy.boundingBox()
   await page.mouse.click(bounds!.x + bounds!.width / 2, bounds!.y + bounds!.height / 2)
   expect(writes).toBe(1)
-  expect(payload).toEqual({ name: 'Гильдия после правки', welcome_channel_id: id, expected_revision: 1 })
+  expect(payload).toEqual({ name: 'Гильдия после правки', welcome_channel_id: id, afk_channel_id: null, afk_timeout_seconds: 0, expected_revision: 1 })
   release(); await expect(page.locator('.guild-settings').getByRole('status')).toContainText('сохранены')
   fail = true; await name.fill('Несохранённая правка'); await save.click()
   await expect(page.locator('.guild-settings').getByRole('alert')).toContainText('503')

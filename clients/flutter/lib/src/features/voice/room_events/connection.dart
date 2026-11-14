@@ -78,11 +78,15 @@ extension VoiceEventsConnection on VoiceController {
       unawaited(applySavedVoiceVolumes(room));
       if (deafened) unawaited(deafenRemoteAudio(room));
       if (audioActivationMode == AudioActivationMode.ptt) {
-        if (pushToTalkPressed && !deafened) {
+        if (microphoneAllowed && pushToTalkPressed && !deafened) {
           listenerOnly = false;
           voicePhase = VoicePhase.connected;
         }
-        unawaited(applyMicrophoneMuted(!pushToTalkPressed || deafened));
+        unawaited(
+          applyMicrophoneMuted(
+            !microphoneAllowed || !pushToTalkPressed || deafened,
+          ),
+        );
       }
       notifyListeners();
     });

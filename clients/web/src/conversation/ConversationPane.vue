@@ -51,6 +51,7 @@ const props = withDefaults(defineProps<{
   screenAudioMuted: boolean
   selfMicrophoneMuted: boolean
   selfMicrophoneUnavailable: boolean
+  microphoneAllowed?: boolean
   selfSpeaking: boolean
   voiceVolumeError: string | null
   voiceVolumeParticipants: VoiceVolumeParticipant[]
@@ -65,13 +66,14 @@ const props = withDefaults(defineProps<{
   screenViewerEnded: false,
   selectedScreenProfile: 'P1080_30',
   selectedScreenStreamId: null,
+  microphoneAllowed: true,
 })
 const emit = defineEmits<{ clearScreenStream: []; join: [channelId: string, transfer?: boolean, joinMode?: VoiceJoinMode]; leave: []; refreshScreen: []; retryScreenStream: [automatic?: boolean]; returnVoice: [channelId: string]; selectScreenStream: [id: string, video: HTMLVideoElement | null, audio: HTMLAudioElement | null]; setParticipantVolume: [id: string, percent: number]; setScreenVolume: [percent: number]; toggleScreenAudio: []; startScreen: [profile: ScreenProfile]; stopScreen: []; transfer: [channelId: string]; toggleNav: []; toggleMembers: [] }>()
 const selectedScreenProfile = computed(() => props.selectedScreenProfile)
 const inlineMiniPlayerTarget = shallowRef<HTMLElement | null>(null)
 const activeMiniPlayerTarget = computed(() => props.visible && inlineMiniPlayerTarget.value ? inlineMiniPlayerTarget.value : props.miniPlayerTarget ?? null)
-const microphoneActionLabel = computed(() => props.activationMode === 'PTT' ? 'Микрофон управляется push-to-talk' : props.selfMicrophoneUnavailable ? 'Повторить доступ к микрофону' : props.selfMicrophoneMuted || props.selfDeafened ? 'Включить микрофон' : 'Выключить микрофон')
-const microphoneActionDisabled = computed(() => props.activationMode === 'PTT' || props.selfDeafened || props.deafenChanging || props.voiceState === 'JOINING' || props.voiceState === 'RECONNECTING' || props.voiceState === 'LEAVING')
+const microphoneActionLabel = computed(() => !props.microphoneAllowed ? 'Микрофон выключен в AFK-канале' : props.activationMode === 'PTT' ? 'Микрофон управляется push-to-talk' : props.selfMicrophoneUnavailable ? 'Повторить доступ к микрофону' : props.selfMicrophoneMuted || props.selfDeafened ? 'Включить микрофон' : 'Выключить микрофон')
+const microphoneActionDisabled = computed(() => !props.microphoneAllowed || props.activationMode === 'PTT' || props.selfDeafened || props.deafenChanging || props.voiceState === 'JOINING' || props.voiceState === 'RECONNECTING' || props.voiceState === 'LEAVING')
 const { screenExpanded,
   voiceChannel, miniVisible, keepVoiceRoom, selectedScreenName, screenViewerRef, watchScreen, dismissLocalPreview } = useConversationScreenState(props)
 function clearScreenPreview(): void {
@@ -119,7 +121,7 @@ function setInlineMiniPlayerTarget(target: HTMLElement | null): void { inlineMin
             />
           </template>
           <div v-if="!voiceIsActive || voiceState === 'LEAVING' || !selectedScreenStreamId" class="room-wrap">
-            <VoiceRoomConnected :activation-mode="activationMode" :deafen-changing="deafenChanging" v-if="!voiceChannel.admissionClosed && activeVoiceChannel?.id === voiceChannel.id" :room-name="voiceChannel.name" :voice-state="voiceState" :screen-state="screenState" :screen-error="screenError" :screen-diagnostics="screenDiagnostics" :screen-profile="screenProfile" :selected-screen-profile="selectedScreenProfile" :screen-viewer-cards="screenViewerCards" :screen-watcher-ids="screenWatcherIds" :owner-screen-watcher-ids="ownerScreenWatcherIds" :selected-screen-stream-id="selectedScreenStreamId" :voice-volume-error="voiceVolumeError" :voice-volume-participants="voiceVolumeParticipants" :self-account-id="accountId" :self-name="selfDisplayName" :self-deafened="selfDeafened" :self-microphone-muted="selfMicrophoneMuted" :self-microphone-unavailable="selfMicrophoneUnavailable" :self-speaking="selfSpeaking" :toggle-microphone="toggleMicrophone" :toggle-deafen="toggleDeafen" @set-volume="(id, percent) => emit('setParticipantVolume', id, percent)" @watch-screen="watchScreen" @start-screen="emit('startScreen', $event)" @stop-screen="emit('stopScreen')" @leave="emit('leave')" @refresh-screen="emit('refreshScreen')" />
+            <VoiceRoomConnected :activation-mode="activationMode" :deafen-changing="deafenChanging" v-if="!voiceChannel.admissionClosed && activeVoiceChannel?.id === voiceChannel.id" :room-name="voiceChannel.name" :voice-state="voiceState" :screen-state="screenState" :screen-error="screenError" :screen-diagnostics="screenDiagnostics" :screen-profile="screenProfile" :selected-screen-profile="selectedScreenProfile" :screen-viewer-cards="screenViewerCards" :screen-watcher-ids="screenWatcherIds" :owner-screen-watcher-ids="ownerScreenWatcherIds" :selected-screen-stream-id="selectedScreenStreamId" :voice-volume-error="voiceVolumeError" :voice-volume-participants="voiceVolumeParticipants" :self-account-id="accountId" :self-name="selfDisplayName" :self-deafened="selfDeafened" :self-microphone-muted="selfMicrophoneMuted" :self-microphone-unavailable="selfMicrophoneUnavailable" :microphone-allowed="microphoneAllowed" :self-speaking="selfSpeaking" :toggle-microphone="toggleMicrophone" :toggle-deafen="toggleDeafen" @set-volume="(id, percent) => emit('setParticipantVolume', id, percent)" @watch-screen="watchScreen" @start-screen="emit('startScreen', $event)" @stop-screen="emit('stopScreen')" @leave="emit('leave')" @refresh-screen="emit('refreshScreen')" />
             <VoicePrejoin :notice="voiceDisconnectNotice" v-else-if="!voiceChannel.admissionClosed" :channel-id="voiceChannel.id" :voice-error="voiceError" :voice-state="voiceState" :voice-transfer-required="voiceTransferRequired" :roster="voiceRoster ?? null" :roster-error="voiceRosterError ?? null" @join="(id, transfer, mode) => emit('join', id, transfer, mode)" @transfer="emit('transfer', $event)" />
           </div>
         </section>

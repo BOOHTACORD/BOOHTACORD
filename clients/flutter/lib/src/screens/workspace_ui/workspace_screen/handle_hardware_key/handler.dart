@@ -14,6 +14,7 @@ mixin WorkspaceScreenStateWorkspaceHandleHardwareKeyBinding
 extension WorkspaceScreenStateWorkspaceHandleHardwareKeyAction
     on WorkspaceScreenStateContext {
   bool executeWorkspaceScreenStateWorkspaceHandleHardwareKey(KeyEvent event) {
+    if (event is KeyDownEvent) widget.state.realtime.reportActivity();
     if (!workspaceShortcutAvailability.foreground ||
         ModalRoute.of(context)?.isCurrent == false) {
       return false;

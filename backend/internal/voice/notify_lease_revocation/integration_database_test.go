@@ -77,3 +77,38 @@ func TestRepositoryPostgresCommitRetryAndSFUIndependence(t *testing.T) {
 		t.Fatalf("emitted revocation reclaimed: %#v, %v", items, err)
 	}
 }
+
+func TestAFKMoveNotificationWaitsForSFUCleanup(t *testing.T) {
+	pool := newNotificationTestPool(t)
+	ctx := context.Background()
+	ownerID, categoryID := uuid.NewString(), uuid.NewString()
+	channelID, afkChannelID, leaseID := uuid.NewString(), uuid.NewString(), uuid.NewString()
+	sessionDigest := make([]byte, 32)
+	login := "afk_notice_" + ownerID[:8]
+	for _, seed := range []struct {
+		query string
+		args  []any
+	}{
+		{`INSERT INTO users(id,login,display_name,password_hash,role) VALUES($1,$2,$2,'test-only','MEMBER')`, []any{ownerID, login}},
+		{`INSERT INTO categories(id,name,position) VALUES($1,'AFK notice test',0)`, []any{categoryID}},
+		{`INSERT INTO channels(id,category_id,name,kind,position) VALUES($1,$3,'Voice','VOICE',0),($2,$3,'AFK','VOICE',1)`, []any{channelID, afkChannelID, categoryID}},
+		{`INSERT INTO sessions(token_digest,user_id) VALUES($1,$2)`, []any{sessionDigest, ownerID}},
+		{`INSERT INTO voice_leases(id,user_id,channel_id,session_token_digest,revoked_at,revocation_reason) VALUES($1,$2,$3,$4,now(),'AFK_MOVE')`, []any{leaseID, ownerID, channelID, sessionDigest}},
+		{`INSERT INTO voice_sfu_revocations(lease_id,channel_id,target_channel_id) VALUES($1,$2,$3)`, []any{leaseID, channelID, afkChannelID}},
+	} {
+		if _, err := pool.Exec(ctx, seed.query, seed.args...); err != nil {
+			t.Fatal("seed AFK notification fixture:", err)
+		}
+	}
+	repository := NewRepository(NewPoolDatabase(pool))
+	if items, err := repository.Claim(ctx, 10); err != nil || len(items) != 0 {
+		t.Fatalf("pending SFU cleanup was announced: %#v, %v", items, err)
+	}
+	if _, err := pool.Exec(ctx, `UPDATE voice_sfu_revocations SET completed_at=now() WHERE lease_id=$1`, leaseID); err != nil {
+		t.Fatal("complete SFU cleanup:", err)
+	}
+	items, err := repository.Claim(ctx, 10)
+	if err != nil || len(items) != 1 || items[0].Reason != "AFK_MOVE" || items[0].TargetChannelID == nil || *items[0].TargetChannelID != afkChannelID {
+		t.Fatalf("completed AFK revocation claim = %#v, %v", items, err)
+	}
+}
