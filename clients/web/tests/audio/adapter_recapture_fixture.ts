@@ -1,6 +1,7 @@
 import { LocalAudioTrack } from 'livekit-client'
 import { LiveKitMicrophoneAdapter } from '../../src/voice/noise_suppression/microphone_adapter/controller'
 import { RnnoiseTrackProcessor } from '../../src/voice/noise_suppression/rnnoise_track_processor'
+import { preflightWebEngine } from '../../src/voice/noise_suppression/auto_preflight/client'
 
 export async function runAdapterRecapture() {
   const context = new AudioContext({ sampleRate: 48000 })
@@ -8,6 +9,7 @@ export async function runAdapterRecapture() {
   const events: string[] = []
   const captures: MediaStreamTrack[] = []
   const adapter = new LiveKitMicrophoneAdapter({
+    preflightAuto: preflightWebEngine,
     async createTrack(options) {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: options })
       const track = stream.getAudioTracks()[0]
@@ -41,6 +43,7 @@ export async function runAutoCapture() {
   let publications = 0
   const captures: MediaStreamTrack[] = []
   const adapter = new LiveKitMicrophoneAdapter({
+    preflightAuto: preflightWebEngine,
     async createTrack(options) {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: options })
       const track = stream.getAudioTracks()[0]

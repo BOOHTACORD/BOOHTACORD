@@ -5,6 +5,7 @@ import { LiveKitMicrophoneAdapter } from './controller'
 import { MicrophoneControlsProcessor } from '../../microphone_processing/processor'
 import { RnnoiseTrackProcessor } from '../rnnoise_track_processor'
 import { DeepFilterTrackProcessor } from '../deepfilter/track_processor'
+import { preflightWebEngine } from '../auto_preflight/client'
 export function bindLiveKitMicrophone(room: VoiceRoom, liveKitRoom: Room, sdk: typeof import('livekit-client'), profile: VoiceAudioProfile = selectedVoiceAudioProfile()): void {
   const { RoomEvent, Track, LocalAudioTrack, ConnectionState } = sdk
   // Retain the SDK-owned context for processing before first publication.
@@ -15,6 +16,7 @@ export function bindLiveKitMicrophone(room: VoiceRoom, liveKitRoom: Room, sdk: t
     setAudioContext(context)
   }
   const microphone = new LiveKitMicrophoneAdapter({
+    preflightAuto: preflightWebEngine,
     createTrack: async (options) => {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: options, video: false })
       const tracks = stream.getTracks()

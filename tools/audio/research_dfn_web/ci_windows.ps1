@@ -7,11 +7,11 @@ Expand-Archive -LiteralPath $archive -DestinationPath "$env:RUNNER_TEMP/livekit"
 $env:BOOHTA_RESEARCH_ASSET_DIR = "$env:RUNNER_TEMP/dfn-stage"
 Push-Location clients/web
 try {
-  node node_modules/@playwright/test/cli.js test -c tests/audio/playwright.deepfilter.config.ts deepfilter_loader.research.spec.ts deepfilter_track.research.spec.ts deepfilter.research.spec.ts
+  node node_modules/@playwright/test/cli.js test -c tests/audio/playwright.deepfilter.config.ts deepfilter_loader.research.spec.ts deepfilter_track.research.spec.ts deepfilter.research.spec.ts deepfilter_preflight.research.spec.ts
   if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
   $env:CHROMIUM_EXECUTABLE_PATH = Join-Path ${env:ProgramFiles(x86)} 'Microsoft/Edge/Application/msedge.exe'
   if (-not (Test-Path -LiteralPath $env:CHROMIUM_EXECUTABLE_PATH)) { throw 'Microsoft Edge not found' }
-  node node_modules/@playwright/test/cli.js test -c tests/audio/playwright.deepfilter.config.ts deepfilter_loader.research.spec.ts deepfilter_track.research.spec.ts deepfilter.research.spec.ts
+  node node_modules/@playwright/test/cli.js test -c tests/audio/playwright.deepfilter.config.ts deepfilter_loader.research.spec.ts deepfilter_track.research.spec.ts deepfilter.research.spec.ts deepfilter_preflight.research.spec.ts
   if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 } finally { Pop-Location }
 Remove-Item Env:CHROMIUM_EXECUTABLE_PATH

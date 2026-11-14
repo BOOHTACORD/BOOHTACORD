@@ -4,13 +4,15 @@ import { browserSuppressionDisabled } from '../deepfilter/capture_guard'
 
 import { MicrophoneAdapterPublication } from './publication'
 export abstract class MicrophoneAdapterProfile extends MicrophoneAdapterPublication {
-  protected async configure(options: AudioProcessingOptions, generation: number): Promise<void> {
+  protected async configure(options: AudioProcessingOptions, generation: number, includeDeepFilter = true): Promise<void> {
     const requested = options.noiseSuppressionMode
-    const mode = requested === 'auto' ? selectAutoEngine({
+    const mode = requested === 'auto' ? await selectAutoEngine({
       v02: import.meta.env.VITE_RNNOISE_V02_ENABLED === 'true' && rnnoiseReleaseEnabled(),
       supported: supportsRnnoise(),
-      deepfilterResearch: import.meta.env.DEV && import.meta.env.VITE_AUTO_DEEPFILTER_RESEARCH === 'true' && deepfilterReleaseEnabled(),
+      deepfilterResearch: includeDeepFilter && import.meta.env.DEV && import.meta.env.VITE_AUTO_DEEPFILTER_RESEARCH === 'true' && deepfilterReleaseEnabled(),
+      probe: this.dependencies.preflightAuto,
     }) : requested
+    this.assertCurrent(generation)
     const selected = mode === requested ? options : { ...options, noiseSuppressionMode: mode }
     if (mode === 'rnnoise' && !rnnoiseReleaseEnabled()) { await this.fallback(options, 'release-disabled', generation); return }
     if (mode === 'deepfilter' && !deepfilterReleaseEnabled()) { await this.fallback(options, 'release-disabled', generation); return }
@@ -53,6 +55,14 @@ export abstract class MicrophoneAdapterProfile extends MicrophoneAdapterPublicat
     } catch (cause) {
       this.assertCurrent(generation)
       const reason = (cause as { reason?: NoiseSuppressionFallbackReason })?.reason ?? this.state.fallbackReason ?? 'processor-error'
+      if (requested === 'auto' && mode === 'deepfilter') {
+        this.silence()
+        await this.removeProcessor()
+        await this.configure(options, generation, false)
+        this.assertCurrent(generation)
+        this.state = { ...this.state, fallbackReason: reason, ...(this.state.effectiveMode === 'browser' ? { status: 'fallback' } : {}) }
+        return
+      }
       await this.fallback(options, reason, generation)
     }
   }
