@@ -15,6 +15,7 @@ ENV VITE_PUBLIC_ORIGIN=${VITE_PUBLIC_ORIGIN}
 ENV SOURCE_REVISION=${SOURCE_REVISION}
 COPY clients/web/index.html clients/web/tsconfig.json clients/web/vite.config.ts ./
 COPY clients/web/scripts/deepfilter_assets.mjs ./scripts/deepfilter_assets.mjs
+COPY clients/web/scripts/research_asset_guard.mjs ./scripts/research_asset_guard.mjs
 COPY tools/audio/research_dfn_web/stage.mjs /app/tools/audio/research_dfn_web/stage.mjs
 COPY clients/web/src ./src
 COPY clients/web/public ./public
