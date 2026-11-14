@@ -8,6 +8,7 @@ test('web image includes the Vite asset import chain', () => {
   const dockerfile = readFileSync(new URL('clients/web/Dockerfile', root), 'utf8')
   for (const [source, destination] of [
     ['clients/web/scripts/deepfilter_assets.mjs', './scripts/deepfilter_assets.mjs'],
+    ['clients/web/scripts/research_asset_guard.mjs', './scripts/research_asset_guard.mjs'],
     ['tools/audio/research_dfn_web/stage.mjs', '/app/tools/audio/research_dfn_web/stage.mjs'],
   ]) {
     assert.ok(readFileSync(new URL(source, root)).length > 0)
