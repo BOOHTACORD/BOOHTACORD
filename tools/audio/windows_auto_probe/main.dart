@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'phase.dart';
+import 'livekit_phase.dart';
 
 // Local research only. No recordings, SDP, tokens or device IDs are retained.
 Future<void> main() async {
@@ -17,18 +18,30 @@ Future<void> main() async {
   final result = <String, Object?>{};
   try {
     final root = File(Platform.resolvedExecutable).parent.path;
-    if (!kDebugMode ||
+    if (!const bool.fromEnvironment('BOOHTA_AUTO_PROBE') ||
         const String.fromEnvironment('BOOHTA_RESEARCH_AUTO_ENGINE') != '' ||
         !await File(
           '$root${Platform.pathSeparator}rnnoise-v02-research-only.txt',
         ).exists()) {
-      throw StateError('isolated-debug-research-build-required');
+      throw StateError('isolated-research-build-required');
     }
     final phases = <Map<String, Object?>>[];
     result['phases'] = phases;
-    for (final deepfilter in [false, true]) {
+    result['buildMode'] = kDebugMode
+        ? 'debug'
+        : kProfileMode
+        ? 'profile'
+        : 'release';
+    final candidates = kDebugMode
+        ? [false, true]
+        : [const bool.fromEnvironment('BOOHTA_EXPERIMENTAL_DEEPFILTER')];
+    for (final deepfilter in candidates) {
       result['stage'] = deepfilter ? 'auto-deepfilter' : 'auto-rnnoise';
-      phases.add(await runAutoPhase(deepfilter));
+      phases.add(
+        await (Platform.environment.containsKey('BOOHTA_PROBE_SENDER_TOKEN')
+            ? runAutoLivekitPhase(deepfilter)
+            : runAutoPhase(deepfilter)),
+      );
     }
     result['success'] = phases.every((phase) => phase['success'] == true);
   } catch (error) {

@@ -5,6 +5,7 @@ import 'package:boohtacord_desktop/src/services/native_noise_suppression.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
 import '../windows_client_probe/loopback.dart';
+import 'capabilities.dart';
 
 Future<Map<String, Object?>> runAutoPhase(bool deepfilter) async {
   final native = NativeNoiseSuppression(
@@ -17,7 +18,16 @@ Future<Map<String, Object?>> runAutoPhase(bool deepfilter) async {
     final expected = deepfilter
         ? NoiseSuppressionMode.deepfilter
         : NoiseSuppressionMode.rnnoise;
-    if (selected != expected) throw StateError('unexpected-engine');
+    final capabilities = await probeCapabilities();
+    if (selected != expected) {
+      return {
+        'success': false,
+        'selected': selected.name,
+        'expected': expected.name,
+        'capabilities': capabilities,
+        'failureReason': native.state.failureReason,
+      };
+    }
     stream = await navigator.mediaDevices.getUserMedia({
       'audio': {
         'echoCancellation': true,
@@ -35,6 +45,7 @@ Future<Map<String, Object?>> runAutoPhase(bool deepfilter) async {
     final counters = await loopback.counters();
     return {
       'selected': selected.name,
+      'capabilities': capabilities,
       'requested': state.requestedMode.name,
       'effective': state.effectiveMode,
       'status': state.status,
@@ -42,6 +53,11 @@ Future<Map<String, Object?>> runAutoPhase(bool deepfilter) async {
       'fallbackFrames': state.fallbackFrames,
       'sampleRate': state.sampleRate,
       'channels': state.channels,
+      'trackEnabled': stream.getAudioTracks().single.enabled,
+      'senderState': (await loopback.sender!.getConnectionState())?.name,
+      'receiverState': (await loopback.receiver!.getConnectionState())?.name,
+      'senderIce': loopback.sender!.iceConnectionState?.name,
+      'receiverIce': loopback.receiver!.iceConnectionState?.name,
       ...counters,
       'remoteAudioTrack': loopback.receivedTrack,
       'success':
