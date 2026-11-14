@@ -25,6 +25,8 @@ def prepare_packager():
 
 
 def package(release: Path, *, signing=None):
+    if (release / 'rnnoise-v02-research-only.txt').exists():
+        raise ValueError('RNNoise v0.2 research build cannot be packaged for release')
     identity = load('windows')
     executable = prepare_packager()
     destination = ROOT / '.out/releases/windows'

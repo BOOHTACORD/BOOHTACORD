@@ -15,7 +15,7 @@ def rewrite_sums(directory):
     (directory/'SHA256SUMS').write_text(''.join(v['sha256']+'  '+k+'\n' for k,v in files.items()))
 
 
-def fixture(root,platform):
+def fixture(root,platform,research=False):
     directory=root/'assets';directory.mkdir();identity=load(platform)
     context={'repository':'BOOHTACORD/BOOHTACORD','platform':platform,'tag':platform+'-v'+identity['version'],
              'source_revision':output('git','rev-parse','HEAD'),'identity':identity,'execution':{'run_id':'local','run_attempt':'1'}}
@@ -25,6 +25,7 @@ def fixture(root,platform):
         native=root/'native';native.mkdir()
         for name in ('boohtacord_desktop.exe','BOOHTACORDRecovery.exe','flutter_windows.dll','libwebrtc.dll'):
             (native/name).write_bytes(b'synthetic native fixture; never executed')
+        if research:(native/'rnnoise-v02-research-only.txt').write_text('research only')
         appid='boohtacord_desktop';signing={'status':'unsigned'}
     else:
         native=directory
@@ -51,6 +52,11 @@ def fixture(root,platform):
 
 
 class AssetTests(unittest.TestCase):
+    def test_windows_research_marker_is_never_a_release(self):
+        with tempfile.TemporaryDirectory() as name:
+            directory,context=fixture(Path(name),'windows',research=True)
+            with self.assertRaises(ValueError):assets.validate(directory,context)
+
     def test_windows_package_name_requires_actual_version_stable_channel_and_identity(self):
         for change in ('version','channel','identity'):
             with tempfile.TemporaryDirectory() as name:

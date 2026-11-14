@@ -7,14 +7,14 @@ if(MSVC OR BOOHTA_RNNOISE_TEST_MSVC_OVERLAY)
   rnnoise_generate_msvc_stack_overlays("${CMAKE_CURRENT_SOURCE_DIR}/upstream/src"
     "${CMAKE_CURRENT_BINARY_DIR}/generated_msvc_compatibility" _rnnoise_pitch_lpc)
 endif()
-add_library(boohta_rnnoise STATIC
-  upstream/src/denoise.c upstream/src/kiss_fft.c ${_rnnoise_pitch_lpc}
-  upstream/src/rnn.c upstream/src/rnn_data.c
+include(research_v02/library.cmake)
+add_library(boohta_rnnoise STATIC ${_rnnoise_core}
   rnnoise_capture_processor.cc noise_engine_names.cc deepfilter/capture_hook/process.cc
   microphone_controls/processor.cc)
 target_include_directories(boohta_rnnoise PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/upstream/include PRIVATE upstream/src)
 target_compile_features(boohta_rnnoise PUBLIC cxx_std_17)
+target_compile_definitions(boohta_rnnoise PUBLIC $<$<BOOL:${BOOHTA_RNNOISE_V02_RESEARCH}>:BOOHTA_RNNOISE_V02_RESEARCH>)
 set_target_properties(boohta_rnnoise PROPERTIES POSITION_INDEPENDENT_CODE ON)
 if(MSVC)
   target_compile_definitions(boohta_rnnoise PRIVATE _USE_MATH_DEFINES)
@@ -31,7 +31,7 @@ if(BOOHTA_RNNOISE_TESTS)
   include(deepfilter/capture_bridge/tests.cmake)
   include(deepfilter/capture_guard/tests.cmake)
   include(deepfilter/capture_hook/tests.cmake)
-  include(tests/init_failure.cmake)
+  include(research_v02/tests.cmake)
   include(deepfilter/worker_runtime/tests.cmake)
   include(deepfilter/lifecycle/tests.cmake)
   include(deepfilter/verified_file/tests.cmake)
