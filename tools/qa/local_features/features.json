@@ -3143,7 +3143,9 @@
     "paths": [
       "backlog/tasks.yaml",
       "backend/internal/app/worker_runtime/start.go",
+      "backend/internal/database/migrate/afk_migration_integration_test.go",
       "backend/internal/database/migrate/migrations/0068_idle_presence_afk_voice.sql",
+      "backend/internal/database/migrate/run_test.go",
       "backend/internal/guild/update_settings/**",
       "backend/internal/identity/list_members/**",
       "backend/internal/media/issue_livekit_credential/**",
@@ -3177,10 +3179,13 @@
       "contracts/openapi.yaml",
       "contracts/realtime.schema.json",
       "docs/adr/ADR-032-idle-presence-and-afk-voice.md",
+      "docs/observability/signal-catalog.json",
       "docs/product-map/generated/**",
       "evidence/idle-afk-2026-11-14.md",
+      "evidence/media/livekit-network-afk-source-2026-11-14.json",
       "product-map/features/voice/core.yaml",
       "tools/ci/toolchains/native-inputs.json",
+      "tools/verify/livekit_network_config/check.py",
       "tools/verify/openapi_parity/requirements.txt",
       "tools/qa/local_features/features.json"
     ],
