@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'phase.dart';
 import 'livekit_phase.dart';
+import 'monitor.dart';
 
 // Local research only. No recordings, SDP, tokens or device IDs are retained.
 Future<void> main() async {
@@ -26,6 +27,14 @@ Future<void> main() async {
       throw StateError('isolated-research-build-required');
     }
     final phases = <Map<String, Object?>>[];
+    final seconds = probeSeconds(
+      Platform.environment['BOOHTA_AUTO_PROBE_SECONDS'],
+    );
+    if (seconds > 6 &&
+        (kDebugMode ||
+            !Platform.environment.containsKey('BOOHTA_PROBE_SENDER_TOKEN'))) {
+      throw StateError('optimized-local-sfu-required-for-endurance');
+    }
     result['phases'] = phases;
     result['buildMode'] = kDebugMode
         ? 'debug'
@@ -39,7 +48,7 @@ Future<void> main() async {
       result['stage'] = deepfilter ? 'auto-deepfilter' : 'auto-rnnoise';
       phases.add(
         await (Platform.environment.containsKey('BOOHTA_PROBE_SENDER_TOKEN')
-            ? runAutoLivekitPhase(deepfilter)
+            ? runAutoLivekitPhase(deepfilter, seconds: seconds)
             : runAutoPhase(deepfilter)),
       );
     }

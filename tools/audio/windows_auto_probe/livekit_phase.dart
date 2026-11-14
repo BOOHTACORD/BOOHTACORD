@@ -8,8 +8,13 @@ import 'package:livekit_client/livekit_client.dart' as lk;
 
 import '../windows_livekit_probe/metrics.dart';
 import 'capabilities.dart';
+import 'monitor.dart';
+import 'livekit_progress.dart';
 
-Future<Map<String, Object?>> runAutoLivekitPhase(bool deepfilter) async {
+Future<Map<String, Object?>> runAutoLivekitPhase(
+  bool deepfilter, {
+  int seconds = 6,
+}) async {
   final native = NativeNoiseSuppression(
     allowExperimentalDeepFilter: deepfilter,
   );
@@ -43,7 +48,6 @@ Future<Map<String, Object?>> runAutoLivekitPhase(bool deepfilter) async {
         .timeout(const Duration(seconds: 20));
     stage = 'auto-prepare';
     final selected = await native.prepare(NoiseSuppressionMode.auto);
-    final baseline = native.state;
     final expected = deepfilter
         ? NoiseSuppressionMode.deepfilter
         : NoiseSuppressionMode.rnnoise;
@@ -61,16 +65,17 @@ Future<Map<String, Object?>> runAutoLivekitPhase(bool deepfilter) async {
     );
     await muted.future.timeout(const Duration(seconds: 15));
     stage = 'media';
-    await Future<void>.delayed(const Duration(seconds: 6));
-    await native.refresh();
+    final progress = await monitorAuto(
+      seconds: seconds,
+      read: () => readAutoSample(native, receiver, expected.name),
+    );
     final state = native.state;
     final counters = await inboundCounters(receiver);
     result.addAll({
       'requested': state.requestedMode.name,
       'effective': state.effectiveMode,
       'status': state.status,
-      'processedDelta': state.processedFrames - baseline.processedFrames,
-      'fallbackDelta': state.fallbackFrames - baseline.fallbackFrames,
+      ...progress,
       'sampleRate': state.sampleRate,
       'channels': state.channels,
       ...counters,
@@ -79,11 +84,7 @@ Future<Map<String, Object?>> runAutoLivekitPhase(bool deepfilter) async {
       'success':
           published != null &&
           counters['receivedPackets']! > 0 &&
-          state.requestedMode == NoiseSuppressionMode.auto &&
-          state.effectiveMode == expected.name &&
-          state.status == 'active' &&
-          state.processedFrames > baseline.processedFrames &&
-          state.fallbackFrames == baseline.fallbackFrames,
+          progress['success'] == true,
     });
   } catch (error) {
     result.addAll({

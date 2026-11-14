@@ -23,6 +23,13 @@ through the environment. Receiver playback is muted. Only
 bounded engine states and packet/byte/frame counters are saved. No PCM, SDP,
 device or participant identifiers, or credentials are saved.
 
+For optimized local SFU endurance, set BOOHTA_AUTO_PROBE_SECONDS=1800 and
+the supervisor --timeout to 1900. Duration accepts only 6..1800 ASCII seconds;
+longer debug or direct-peer runs are rejected. Every interval (at most five
+seconds) must advance both processing and received packets with no fallback
+and the expected active engine; a successful first interval cannot hide a stall.
+This continuous physical-capture check does not imply speech was present.
+
 This is method-channel and local media evidence. It does not prove listening
 quality, production calls, AEC/AGC effectiveness, reconnection, hotplug,
 long-duration stability, model rights or signed release acceptance.

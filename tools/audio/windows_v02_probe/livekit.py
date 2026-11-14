@@ -11,10 +11,19 @@ import tempfile
 import time
 from urllib.request import urlopen
 
-from tools.audio.research_dfn_web.livekit_windows import local_address, make_config, wildcard_listener
+from tools.audio.research_dfn_web.livekit_windows import bounded_timeout, local_address, make_config, wildcard_listener
 from tools.audio.research_v02.verify import check_output
 
 HERE = Path(__file__).resolve().parent
+
+
+def validate_window(value, timeout):
+    if value is None: return
+    if not value.isascii() or not value.isdecimal() or len(value) > 4:
+        raise ValueError('Invalid probe duration')
+    seconds = int(value)
+    if not 6 <= seconds <= 1800 or timeout < seconds + 60:
+        raise ValueError('Invalid probe duration or cleanup margin')
 
 
 def main():
@@ -22,7 +31,9 @@ def main():
     for name in ('server', 'client', 'web', 'result'):
         parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--server-sha256', required=True)
+    parser.add_argument('--timeout', type=bounded_timeout, default=90)
     args = parser.parse_args()
+    validate_window(os.environ.get('BOOHTA_AUTO_PROBE_SECONDS'), args.timeout)
     result = args.result.resolve()
     check_output(result)
     if result.exists() or not result.parent.is_dir(): raise ValueError('Result must be a new local research file')
@@ -55,7 +66,7 @@ def main():
             if wildcard_listener(server.pid): raise RuntimeError('Unexpected wildcard listener')
             client = subprocess.Popen([str(args.client.resolve())], cwd=args.client.parent, env=env,
                                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, creationflags=subprocess.CREATE_NO_WINDOW)
-            deadline = time.monotonic() + 90
+            deadline = time.monotonic() + args.timeout
             while client.poll() is None and time.monotonic() < deadline:
                 time.sleep(.5)
                 if server.poll() is not None or wildcard_listener(server.pid): raise RuntimeError('Local SFU safety check failed')

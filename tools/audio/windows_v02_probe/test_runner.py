@@ -5,10 +5,18 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from .livekit import main
+from .livekit import main, validate_window
 
 
 class RunnerBoundaryTest(unittest.TestCase):
+    def test_endurance_requires_bounded_duration_and_cleanup_margin(self):
+        validate_window(None, 90)
+        validate_window('1800', 1900)
+        for duration, timeout in [('5', 90), ('1801', 1900), ('1800', 1800),
+                                  ('-6', 90), ('6.0', 90), ('６', 90), ('000006', 90)]:
+            with self.subTest(duration=duration), self.assertRaises(ValueError):
+                validate_window(duration, timeout)
+
     def setUp(self):
         directory = tempfile.TemporaryDirectory()
         self.addCleanup(directory.cleanup)
