@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:boohtacord_desktop/src/services/audio_preferences.dart';
-import 'package:boohtacord_desktop/src/features/audio/devices/controller.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart' as rtc;
 import 'package:livekit_client/livekit_client.dart' as lk;
 
@@ -11,6 +10,7 @@ import '../../qa/native_audio_auto/monitor.dart';
 import 'livekit_progress.dart';
 import '../../qa/native_audio_auto/receiver_mute.dart';
 import 'recovery.dart';
+import 'controls.dart';
 import '../../qa/native_audio_auto/failure_latch.dart';
 
 Future<Map<String, Object?>> runAutoLivekitPhase(
@@ -18,13 +18,7 @@ Future<Map<String, Object?>> runAutoLivekitPhase(
   int seconds = 6,
 }) async {
   final sender = lk.Room(), receiver = lk.Room();
-  final audio = AudioDeviceController(readRoom: () => sender)
-    ..audioProcessing = const AudioProcessingPreferences(
-      noiseSuppressionMode: NoiseSuppressionMode.auto,
-      echoCancellation: true,
-      autoGainControl: false,
-    )
-    ..microphoneMutedIntent = false;
+  final audio = createProbeAudio(sender);
   final native = audio.nativeNoise;
   final failure = FailureLatch();
   native.addListener(() => failure.observe(native.state.failureReason));
@@ -72,6 +66,9 @@ Future<Map<String, Object?>> runAutoLivekitPhase(
     final recovery = await checkRecovery(sender, receiver, audio, expected);
     result['recovery'] = recovery;
     if (recovery['success'] == false) throw StateError('recovery-media-failed');
+    final controls = await checkControls(sender, receiver, audio, expected);
+    result['controls'] = controls;
+    if (controls['success'] == false) throw StateError('controls-check-failed');
     stage = 'media';
     final progress = await monitorAuto(
       seconds: seconds,
