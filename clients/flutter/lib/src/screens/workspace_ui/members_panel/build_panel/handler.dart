@@ -22,15 +22,9 @@ extension WorkspaceMembersPanelStateWorkspaceBuildPanelAction
         title: 'В сети',
         members: state.members
             .where(
-              (member) => state.memberPresence(member) == MemberPresence.online,
-            )
-            .toList(),
-      ),
-      (
-        title: 'Не активен',
-        members: state.members
-            .where(
-              (member) => state.memberPresence(member) == MemberPresence.idle,
+              (member) =>
+                  state.memberPresence(member) == MemberPresence.online ||
+                  state.memberPresence(member) == MemberPresence.idle,
             )
             .toList(),
       ),

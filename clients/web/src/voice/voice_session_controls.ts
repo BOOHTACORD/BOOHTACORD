@@ -24,6 +24,7 @@ export class VoiceSessionControls {
   async setMicrophoneMuted(muted: boolean): Promise<MicrophoneState> {
     const current = this.state.current()
     if (!current) throw new Error('Сначала подключитесь к голосовому каналу.')
+    if (!muted && current.microphoneAllowed === false) return current.microphone
     if (this.state.deafen.isDeafened && !muted) return current.microphone
     const microphone = await setMicrophone(current.room, !muted, this.state.audioProcessing.value)
     if (this.state.current() !== current) throw new Error('Голосовое подключение закрыто.')

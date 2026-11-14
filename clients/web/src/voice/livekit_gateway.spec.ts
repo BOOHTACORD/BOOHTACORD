@@ -52,6 +52,16 @@ describe('LiveKit voice gateway', () => {
     )
   })
 
+  it('keeps an AFK credential connected without attempting microphone publication', async () => {
+    const fakeRoom = room(async () => undefined)
+    const afkCredential = { ...credential, microphoneAllowed: false }
+
+    await expect(connectLiveKitRoom(afkCredential, () => fakeRoom)).resolves.toMatchObject({ microphone: 'MUTED' })
+    expect(fakeRoom.connect).toHaveBeenCalledOnce()
+    expect(fakeRoom.localParticipant.setMicrophoneEnabled).not.toHaveBeenCalled()
+    expect(fakeRoom.disconnect).not.toHaveBeenCalled()
+  })
+
   it('preserves the SDK connect method and enables only voice subscriptions on join', async () => {
     const fakeRoom = room(async () => undefined)
     const nativeConnect = fakeRoom.connect

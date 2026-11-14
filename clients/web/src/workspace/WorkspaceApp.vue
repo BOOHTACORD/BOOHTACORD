@@ -9,6 +9,7 @@ import VoiceDock from '../voice/VoiceDock.vue'
 import ScreenShareSetupDialog from '../voice/ScreenShareSetupDialog.vue'
 import AudioSettings from '../voice/AudioSettings.vue'
 import { useRealtimeStore } from '../realtime/realtime_store'
+import { startVoiceActivityHeartbeat } from '../realtime/voice_activity_heartbeat'
 import { bindWorkspaceLogout } from './logout_flow'
 import { expireWorkspaceSession } from './session_expiry_media'
 import { useWorkspaceVoiceControls } from './voice_controls'
@@ -30,9 +31,19 @@ const controls = useWorkspaceVoiceControls(props.accountId)
 const { voiceConnection, leaveVoice } = controls
 const realtimeStore = useRealtimeStore()
 const reportActivity = () => realtimeStore.reportActivity()
+let stopVoiceActivityHeartbeat: () => void = () => {}
 const activityEvents = ['pointerdown', 'pointermove', 'keydown', 'touchstart', 'wheel'] as const
-onMounted(() => activityEvents.forEach((event) => window.addEventListener(event, reportActivity, { passive: true })))
-onBeforeUnmount(() => activityEvents.forEach((event) => window.removeEventListener(event, reportActivity)))
+onMounted(() => {
+  activityEvents.forEach((event) => window.addEventListener(event, reportActivity, { passive: true }))
+  stopVoiceActivityHeartbeat = startVoiceActivityHeartbeat(
+    () => voiceConnection.state === 'CONNECTED' && voiceConnection.selfSpeaking && !voiceConnection.microphoneMuted && !voiceConnection.deafened && voiceConnection.active?.microphoneAllowed !== false,
+    reportActivity,
+  )
+})
+onBeforeUnmount(() => {
+  activityEvents.forEach((event) => window.removeEventListener(event, reportActivity))
+  stopVoiceActivityHeartbeat()
+})
 const expireSession = () => expireWorkspaceSession(voiceConnection, () => emit('sessionExpired'))
 const { busy: logoutBusy, error: logoutError, signOut } = bindWorkspaceLogout(voiceConnection, leaveVoice, realtimeStore, () => emit('loggedOut'))
 const { activeVoiceChannel, audioSettings, loadAudioDevices, joinVoice, selectAudioDevice, selectedChannel, selectedChannelId, topologyStore, voiceActivation, adminSection, confirmScreenShare, openScreenShareSetup, screenShareSetupOpen, selectedScreenProfile, selectedScreenMode,

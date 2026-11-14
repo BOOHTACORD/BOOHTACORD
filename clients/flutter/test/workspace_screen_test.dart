@@ -5373,6 +5373,13 @@ void main() {
         role: 'MEMBER',
         presence: MemberPresence.unknown,
       ),
+      GuildMember(
+        id: '44444444-4444-4444-8444-444444444444',
+        login: 'idle',
+        displayName: 'Отошёл',
+        role: 'MEMBER',
+        presence: MemberPresence.idle,
+      ),
     ];
     final api = _PortraitApi(
       membersResult: members,
@@ -5409,9 +5416,21 @@ void main() {
       findsNothing,
     );
     expect(
-      find.descendant(of: membersPanel, matching: find.text('В СЕТИ — 1')),
+      find.descendant(of: membersPanel, matching: find.text('В СЕТИ — 2')),
       findsOneWidget,
     );
+    expect(
+      find.descendant(of: membersPanel, matching: find.text('НЕ АКТИВЕН — 1')),
+      findsNothing,
+    );
+    expect(
+      find.descendant(of: membersPanel, matching: find.text('Отошёл')),
+      findsOneWidget,
+    );
+    final idleMemberName = tester.widget<Text>(
+      find.descendant(of: membersPanel, matching: find.text('Отошёл')),
+    );
+    expect(idleMemberName.semanticsLabel, 'Отошёл, Не активен');
     expect(
       find.descendant(of: membersPanel, matching: find.text('НЕ В СЕТИ — 1')),
       findsOneWidget,
@@ -5434,12 +5453,12 @@ void main() {
     expect(
       find.descendant(
         of: membersPanel,
-        matching: find.text('СТАТУС НЕИЗВЕСТЕН — 3'),
+        matching: find.text('СТАТУС НЕИЗВЕСТЕН — 4'),
       ),
       findsOneWidget,
     );
     expect(
-      find.descendant(of: membersPanel, matching: find.text('В СЕТИ — 1')),
+      find.descendant(of: membersPanel, matching: find.text('В СЕТИ — 2')),
       findsNothing,
     );
 

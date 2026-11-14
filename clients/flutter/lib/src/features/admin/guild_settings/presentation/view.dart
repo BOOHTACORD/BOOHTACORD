@@ -156,7 +156,7 @@ class GuildSettingsPresentation extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.only(top: 8),
                     child: Text(
-                      'Считается с последнего действия в приложении. В AFK-канале микрофон будет выключен.',
+                      'Таймер сбрасывают действия в BOOHTACORD и активная речь в голосе. В AFK-канале микрофон будет выключен.',
                     ),
                   ),
                   if (state.error != null)
