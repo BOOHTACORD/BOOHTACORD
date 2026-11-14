@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "catalog_revision": 34,
+  "catalog_revision": 40,
   "application_family": "boohtacord",
   "entries": [
     {
@@ -10,14 +10,14 @@
       "arch": "any",
       "state": "published",
       "target": {
-        "release_id": "web-browser-stable-r46",
-        "release_order": 46,
-        "version": "1.0.32",
+        "release_id": "web-browser-stable-r63",
+        "release_order": 63,
+        "version": "1.0.55",
         "native_build": null,
         "priority": "normal",
-        "published_at": "2026-10-05T03:27:05Z",
-        "summary": "BOOHTACORD 1.0.32: быстрые клавиши голоса, причины отключения, настройки аудио и обновлённая админка.",
-        "release_notes_url": "https://github.com/BOOHTACORD/BOOHTACORD/releases",
+        "published_at": "2026-11-14T20:52:57.538Z",
+        "summary": "BOOHTACORD Web 1.0.55.",
+        "release_notes_url": "https://github.com/BOOHTACORD/BOOHTACORD/pull/791",
         "requirements": {
           "supported_arches": [
             "any"
@@ -36,14 +36,14 @@
       "arch": "arm64",
       "state": "published",
       "target": {
-        "release_id": "android-direct-stable-r48",
-        "release_order": 48,
-        "version": "1.0.34",
-        "native_build": "67",
+        "release_id": "android-direct-stable-r71",
+        "release_order": 71,
+        "version": "1.0.56",
+        "native_build": "92",
         "priority": "normal",
-        "published_at": "2026-10-05T10:14:29Z",
-        "summary": "BOOHTACORD Android 1.0.34: исправлен вылет при включении микрофона в голосовом канале.",
-        "release_notes_url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/android-v1.0.34",
+        "published_at": "2026-11-14T23:20:04Z",
+        "summary": "BOOHTACORD android 1.0.56 build 92.",
+        "release_notes_url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/android-v1.0.56",
         "requirements": {
           "supported_arches": [
             "arm64"
@@ -51,7 +51,7 @@
         },
         "action": {
           "kind": "open_download_page",
-          "url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/android-v1.0.34"
+          "url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/android-v1.0.56"
         }
       }
     },
@@ -62,14 +62,14 @@
       "arch": "armv7",
       "state": "published",
       "target": {
-        "release_id": "android-direct-stable-r48",
-        "release_order": 48,
-        "version": "1.0.34",
-        "native_build": "67",
+        "release_id": "android-direct-stable-r71",
+        "release_order": 71,
+        "version": "1.0.56",
+        "native_build": "92",
         "priority": "normal",
-        "published_at": "2026-10-05T10:14:29Z",
-        "summary": "BOOHTACORD Android 1.0.34: исправлен вылет при включении микрофона в голосовом канале.",
-        "release_notes_url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/android-v1.0.34",
+        "published_at": "2026-11-14T23:20:04Z",
+        "summary": "BOOHTACORD android 1.0.56 build 92.",
+        "release_notes_url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/android-v1.0.56",
         "requirements": {
           "supported_arches": [
             "armv7"
@@ -77,7 +77,7 @@
         },
         "action": {
           "kind": "open_download_page",
-          "url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/android-v1.0.34"
+          "url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/android-v1.0.56"
         }
       }
     },
@@ -88,14 +88,14 @@
       "arch": "x64",
       "state": "published",
       "target": {
-        "release_id": "android-direct-stable-r48",
-        "release_order": 48,
-        "version": "1.0.34",
-        "native_build": "67",
+        "release_id": "android-direct-stable-r71",
+        "release_order": 71,
+        "version": "1.0.56",
+        "native_build": "92",
         "priority": "normal",
-        "published_at": "2026-10-05T10:14:29Z",
-        "summary": "BOOHTACORD Android 1.0.34: исправлен вылет при включении микрофона в голосовом канале.",
-        "release_notes_url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/android-v1.0.34",
+        "published_at": "2026-11-14T23:20:04Z",
+        "summary": "BOOHTACORD android 1.0.56 build 92.",
+        "release_notes_url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/android-v1.0.56",
         "requirements": {
           "supported_arches": [
             "x64"
@@ -103,7 +103,7 @@
         },
         "action": {
           "kind": "open_download_page",
-          "url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/android-v1.0.34"
+          "url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/android-v1.0.56"
         }
       }
     },
@@ -146,8 +146,52 @@
       "distribution": "direct",
       "channel": "stable",
       "arch": "arm64",
-      "state": "unconfigured",
-      "target": null
+      "state": "published",
+      "target": {
+        "release_id": "macos-direct-stable-r70",
+        "release_order": 70,
+        "version": "1.0.55",
+        "native_build": "91",
+        "priority": "normal",
+        "published_at": "2026-11-14T21:57:46Z",
+        "summary": "BOOHTACORD macos 1.0.55 build 91.",
+        "release_notes_url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/macos-v1.0.55",
+        "requirements": {
+          "supported_arches": [
+            "arm64"
+          ]
+        },
+        "action": {
+          "kind": "open_download_page",
+          "url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/macos-v1.0.55"
+        }
+      }
+    },
+    {
+      "platform": "macos",
+      "distribution": "direct",
+      "channel": "stable",
+      "arch": "x64",
+      "state": "published",
+      "target": {
+        "release_id": "macos-direct-stable-r70",
+        "release_order": 70,
+        "version": "1.0.55",
+        "native_build": "91",
+        "priority": "normal",
+        "published_at": "2026-11-14T21:57:46Z",
+        "summary": "BOOHTACORD macos 1.0.55 build 91.",
+        "release_notes_url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/macos-v1.0.55",
+        "requirements": {
+          "supported_arches": [
+            "x64"
+          ]
+        },
+        "action": {
+          "kind": "open_download_page",
+          "url": "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/macos-v1.0.55"
+        }
+      }
     }
   ]
 }

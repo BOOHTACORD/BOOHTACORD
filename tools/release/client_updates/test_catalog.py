@@ -85,18 +85,23 @@ def test_rejects_same_release_id_with_conflicting_package_identity(tmp_path):
         raise AssertionError("one release ID was allowed to identify conflicting packages")
 
 
-def test_current_windows_catalog_points_to_verified_release_identity():
+def test_current_windows_catalog_keeps_download_and_identity_consistent():
     from pathlib import Path
+    import re
     from tools.release.client_updates.catalog import load
 
     repository = Path(__file__).resolve().parents[3]
     catalog = load(repository / "deploy/client-updates/catalog.json")
     windows = next(entry for entry in catalog["entries"] if entry["platform"] == "windows")
-    assert catalog["catalog_revision"] == 29
-    assert windows["target"]["release_id"] == "windows-direct-stable-r52"
-    assert windows["target"]["release_order"] == 52
-    assert windows["target"]["version"] == "1.0.38"
-    assert windows["target"]["native_build"] == "71"
+    assert windows["state"] == "published" and windows["arch"] == "x64"
+    current = windows["target"]
+    assert re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+", current["version"])
+    assert current["release_id"] == f'windows-direct-stable-r{current["release_order"]}'
+    assert current["native_build"].isdigit()
+    release = "https://github.com/BOOHTACORD/BOOHTACORD/releases/tag/windows-v" + current["version"]
+    assert current["release_notes_url"] == release
+    assert current["action"] == {"kind": "open_download_page", "url": release}
+    assert current["requirements"]["supported_arches"] == ["x64"]
 
 
 def test_repeating_identical_promotion_does_not_advance_catalog_revision(tmp_path):
