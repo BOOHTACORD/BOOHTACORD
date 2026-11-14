@@ -28,6 +28,7 @@ func TestRouteInactiveRevokesLeaseAndStoresAFKDestination(t *testing.T) {
 	ctx := context.Background()
 	userID, categoryID := uuid.NewString(), uuid.NewString()
 	sourceID, afkID, leaseID := uuid.NewString(), uuid.NewString(), uuid.NewString()
+	sessionDigest := make([]byte, 32)
 	login := "afk_" + userID[:8]
 	for _, seed := range []struct {
 		query string
@@ -37,7 +38,8 @@ func TestRouteInactiveRevokesLeaseAndStoresAFKDestination(t *testing.T) {
 		{`INSERT INTO categories(id,name,position) VALUES($1,'AFK test',0)`, []any{categoryID}},
 		{`INSERT INTO channels(id,category_id,name,kind,position) VALUES($1,$3,'Source','VOICE',0),($2,$3,'AFK','VOICE',1)`, []any{sourceID, afkID, categoryID}},
 		{`UPDATE guild_settings SET afk_channel_id=$1,afk_timeout_seconds=60 WHERE singleton=TRUE`, []any{afkID}},
-		{`INSERT INTO voice_leases(id,user_id,channel_id,session_token_digest) VALUES($1,$2,$3,$4)`, []any{leaseID, userID, sourceID, make([]byte, 32)}},
+		{`INSERT INTO sessions(token_digest,user_id) VALUES($1,$2)`, []any{sessionDigest, userID}},
+		{`INSERT INTO voice_leases(id,user_id,channel_id,session_token_digest) VALUES($1,$2,$3,$4)`, []any{leaseID, userID, sourceID, sessionDigest}},
 	} {
 		if _, err := pool.Exec(ctx, seed.query, seed.args...); err != nil {
 			t.Fatal("seed AFK routing fixture:", err)
