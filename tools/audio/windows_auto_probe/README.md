@@ -19,7 +19,7 @@ research engine overrides. The optimized SFU probe uses the production
 AudioDeviceController, its Auto preparation/capture options and runtime monitor,
 bound only to the temporary room with no account/preferences. No installed
 client state or persisted settings are used. Debug SFU builds are rejected.
-Each phase captures six seconds of microphone input. By default it uses two
+By default each phase captures six seconds of microphone input and uses two
 local WebRTC peers with no ICE servers. The existing isolated local LiveKit
 runner selects the SFU variant by supplying its ephemeral sender/receiver tokens
 through the environment. Receiver playback is muted. Only
@@ -40,6 +40,15 @@ after reconnection before explicitly unmuting. Every replacement receiver track
 is muted; later playback-control failures invalidate the result. These checks
 exercise the SDK and production audio controller, not the complete workspace UI.
 
-This is method-channel and local media evidence. It does not prove listening
-quality, production calls, AEC/AGC effectiveness, reconnection, hotplug,
-long-duration stability, model rights or signed release acceptance.
+This is bounded method-channel and local media evidence. Listening quality,
+production calls, acoustic AEC/AGC effectiveness, full workspace recovery,
+hotplug, model rights and signed release acceptance need separate evidence.
+
+For the optional actual-controller configuration matrix, set
+BOOHTA_AUTO_PROBE_CONTROLS=1. It checks all four AEC/AGC settings, exactly one
+NS in capture options, mute preservation during processing changes and advancing
+engine/RTP counters. Then it requires two distinct non-alias input devices for
+the input-switch round trip. Fewer devices returns BLOCKED and fails the whole
+run while retaining completed rows. Configuration checks do not measure acoustic
+AEC/AGC effectiveness. Default short runs do not prove optional/endurance cases;
+only the explicitly selected, successful case can supply that bounded evidence.

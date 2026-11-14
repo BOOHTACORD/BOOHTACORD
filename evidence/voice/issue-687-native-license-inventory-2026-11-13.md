@@ -65,3 +65,9 @@ This tree includes normal and build dependencies and is an inventory of Cargo
 metadata, not a complete review of distributed files or license texts. Audit
 the actual release graph, non-Rust dependencies and compound conditions, then
 bundle the required notices. No production binary or release was approved.
+
+2026-11-14 integrity recheck: all 264 retained notice files for the 131-package
+native research inventory still match their manifest hashes. The two missing
+packaged notices remain crunchy 0.2.2 and realfft 3.3.0; the later upstream
+drafts above do not turn this integrity check into redistribution approval.
+Aggregate result: `.out/audio-research/native-notice-integrity-1114.json`.
