@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../tools/audio/windows_auto_probe/receiver_mute.dart';
+import '../../../../tools/qa/native_audio_auto/receiver_mute.dart';
 
 void main() {
   test(

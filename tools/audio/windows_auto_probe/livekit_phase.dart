@@ -7,11 +7,11 @@ import 'package:flutter_webrtc/flutter_webrtc.dart' as rtc;
 import 'package:livekit_client/livekit_client.dart' as lk;
 
 import 'capabilities.dart';
-import 'monitor.dart';
+import '../../qa/native_audio_auto/monitor.dart';
 import 'livekit_progress.dart';
-import 'receiver_mute.dart';
+import '../../qa/native_audio_auto/receiver_mute.dart';
 import 'recovery.dart';
-import 'failure_latch.dart';
+import '../../qa/native_audio_auto/failure_latch.dart';
 
 Future<Map<String, Object?>> runAutoLivekitPhase(
   bool deepfilter, {

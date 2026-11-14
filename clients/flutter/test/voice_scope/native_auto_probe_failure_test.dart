@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../tools/audio/windows_auto_probe/failure_latch.dart';
+import '../../../../tools/qa/native_audio_auto/failure_latch.dart';
 
 void main() {
   test('the first terminal failure survives later successful recovery', () {

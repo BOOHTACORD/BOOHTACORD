@@ -3,7 +3,7 @@ import 'package:boohtacord_desktop/src/services/native_noise_suppression.dart';
 import 'package:livekit_client/livekit_client.dart';
 
 import '../windows_livekit_probe/metrics.dart';
-import 'monitor.dart';
+import '../../qa/native_audio_auto/monitor.dart';
 import 'capabilities.dart';
 
 Future<Map<String, Object?>> readAutoObservation(

@@ -6,7 +6,7 @@ import 'package:boohtacord_desktop/src/features/audio/devices/controller.dart';
 import 'package:livekit_client/livekit_client.dart';
 
 import 'livekit_progress.dart';
-import 'monitor.dart';
+import '../../qa/native_audio_auto/monitor.dart';
 
 Future<Map<String, Object?>> checkRecovery(
   Room sender,

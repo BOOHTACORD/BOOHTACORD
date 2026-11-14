@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'phase.dart';
 import 'livekit_phase.dart';
-import 'monitor.dart';
+import '../../qa/native_audio_auto/monitor.dart';
 
 // Local research only. No recordings, SDP, tokens or device IDs are retained.
 Future<void> main() async {

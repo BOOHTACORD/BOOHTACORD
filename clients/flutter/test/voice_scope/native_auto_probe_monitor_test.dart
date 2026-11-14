@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../tools/audio/windows_auto_probe/monitor.dart';
+import '../../../../tools/qa/native_audio_auto/monitor.dart';
 
 void main() {
   AutoSample sample(
