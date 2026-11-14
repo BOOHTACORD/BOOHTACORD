@@ -22,6 +22,18 @@ class MissingOpenSSLTest(unittest.TestCase):
             self.assertFalse(private.exists())
             self.assertFalse(public.exists())
 
+    def test_failed_generation_removes_partial_private_key(self):
+        with tempfile.TemporaryDirectory() as directory:
+            private, public = Path(directory)/'publisher.pem', Path(directory)/'publisher.pub'
+            def fail(*args, **kwargs):
+                os.write(kwargs['stdout'], b'partial key')
+                raise RuntimeError('generation failed')
+            with patch('shutil.which', return_value='openssl'), patch('subprocess.run', side_effect=fail):
+                with self.assertRaisesRegex(RuntimeError, 'generation failed'):
+                    create(private, public, 'openssl')
+            self.assertFalse(private.exists())
+            self.assertFalse(public.exists())
+
 class PublisherTest(unittest.TestCase):
     def setUp(self):
         self.directory=tempfile.TemporaryDirectory();self.addCleanup(self.directory.cleanup)

@@ -18,9 +18,13 @@ def create(private_path, public_path, openssl='openssl'):
     private_path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
     descriptor = os.open(private_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
     try:
-        subprocess.run([openssl, 'genpkey', '-algorithm', 'ED25519'], stdout=descriptor, check=True)
-    finally:
-        os.close(descriptor)
+        try:
+            subprocess.run([openssl, 'genpkey', '-algorithm', 'ED25519'], stdout=descriptor, check=True)
+        finally:
+            os.close(descriptor)
+    except BaseException:
+        private_path.unlink(missing_ok=True)
+        raise
     der = subprocess.check_output([openssl, 'pkey', '-in', str(private_path), '-pubout', '-outform', 'DER'])
     if len(der) != 44 or der[:12].hex() != '302a300506032b6570032100':
         raise ValueError('Unexpected Ed25519 public key encoding')
