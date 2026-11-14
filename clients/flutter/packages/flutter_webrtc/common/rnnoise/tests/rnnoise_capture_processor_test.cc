@@ -24,6 +24,9 @@ int main() {
   assert(frame == original);
   processor.SetEngine(RnnoiseCaptureProcessor::Engine::kRnnoise);
   assert(processor.EffectiveEngine() != RnnoiseCaptureProcessor::Engine::kRnnoise);
+  // Android JNI indexes its legacy OFF/WebRTC/RNNoise/UNKNOWN table.
+  assert(static_cast<int>(processor.EffectiveEngine()) == 3);
+  assert(std::string(processor.failure_reason()) == "awaiting-audio");
   assert(processor.Process(frame.data(), 480, 480));
   assert(frame != original);
   assert(processor.processed_frames() == 1);

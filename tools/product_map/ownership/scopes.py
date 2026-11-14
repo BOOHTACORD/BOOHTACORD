@@ -3,7 +3,8 @@ import re
 from pathlib import PurePosixPath
 
 BOUNDARIES = (('backend/internal/', 4), ('clients/web/src/', 5),
-              ('clients/flutter/lib/src/features/', 7))
+              ('clients/flutter/lib/src/features/', 7),
+              ('deploy/client-updates/promotions/', 3))
 
 
 def validate_feature_scopes(features, root):

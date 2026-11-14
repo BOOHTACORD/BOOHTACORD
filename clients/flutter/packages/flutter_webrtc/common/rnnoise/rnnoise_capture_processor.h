@@ -15,7 +15,9 @@ namespace deepfilter { class CaptureHook; }
 // PCM until Process returns and must stop capture before destroying this object.
 class RnnoiseCaptureProcessor {
  public:
-  enum class Engine { kOff, kBrowser, kRnnoise, kDeepFilter, kUnknown };
+  // Android JNI exposes these legacy numeric codes; append new engines only.
+  enum class Engine { kOff = 0, kBrowser = 1, kRnnoise = 2,
+                      kUnknown = 3, kDeepFilter = 4 };
   enum class Failure { kAwaitingAudio, kNone, kFormat, kNonFinite, kUnavailable, kProcessor, kUnderrun };
   using StateAllocator = void* (*)(size_t);
   explicit RnnoiseCaptureProcessor(StateAllocator allocate = std::malloc, deepfilter::CaptureHook* hook = nullptr);

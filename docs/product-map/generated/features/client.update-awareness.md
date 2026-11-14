@@ -18,5 +18,6 @@ ID: `client.update-awareness`
 
 ## Компоненты
 
+- cmp.delivery.windows\_catalog\_promotion: [tools/release/windows\_promotion/intent.py](../../../../tools/release/windows_promotion/intent.py), [deploy/client-updates/catalog.json](../../../../deploy/client-updates/catalog.json)
 - cmp.flutter.update\_controller: [clients/flutter/lib/src/features/updates/controller.dart](../../../../clients/flutter/lib/src/features/updates/controller.dart)
 - cmp.web.workspace: [clients/web/src/workspace/WorkspaceApp.vue](../../../../clients/web/src/workspace/WorkspaceApp.vue)

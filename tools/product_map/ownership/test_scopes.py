@@ -51,3 +51,24 @@ class ScopeTests(unittest.TestCase):
         self.assertIn('auth.registration', result['direct_features'])
         self.assertIn('cmp.backend.register_user', result['components'])
         self.assertEqual(result['unclassified_runtime_paths'], [])
+
+    def test_promotion_scope_accepts_only_the_declared_delivery_leaf(self):
+        (self.root / 'deploy/client-updates/promotions').mkdir(parents=True)
+        def feature(path):
+            return [{'id': 'client.update-awareness', 'components': ['cmp.delivery.promotion'],
+                     'owned_roots': [{'path': path, 'component': 'cmp.delivery.promotion'}]}]
+        validate_feature_scopes(feature('deploy/client-updates/promotions/'), self.root)
+        for path in ('deploy/', 'deploy/client-updates/'):
+            with self.subTest(path=path), self.assertRaisesRegex(ValueError, 'capability leaf'):
+                validate_feature_scopes(feature(path), self.root)
+
+    def test_real_future_promotion_is_owned_but_sibling_deployment_data_is_not(self):
+        root = Path(__file__).resolve().parents[3]
+        registry = json.loads((root / 'tools/qa/local_features/features.json').read_text(encoding='utf-8'))
+        catalog = load_curated_catalog(root, registry)
+        future = 'deploy/client-updates/promotions/' + '0' * 64 + '.json'
+        sibling = 'deploy/client-updates/other.json'
+        result = analyze([future, sibling], catalog)
+        self.assertIn('client.update-awareness', result['direct_features'])
+        self.assertIn('cmp.delivery.windows_catalog_promotion', result['components'])
+        self.assertEqual(result['unclassified_runtime_paths'], [sibling])
