@@ -22,7 +22,8 @@
     {"id":"cmp.flutter.idle_afk","source":{"parity_id":"idle_afk.status_and_voice","platform":"android"}},
     {"id":"cmp.backend.idle_presence","paths":["backend/internal/realtime/event_hub/activity.go","backend/internal/realtime/connect_session/event_stream.go"]},
     {"id":"cmp.backend.afk_routing","paths":["backend/internal/voice/route_inactive_members/service.go","backend/internal/voice/route_inactive_members/worker/worker.go"]},
-    {"id":"cmp.backend.afk_settings","paths":["backend/internal/guild/update_settings/api/patch.go","backend/internal/guild/update_settings/postgres/repository.go"]}
+    {"id":"cmp.backend.afk_settings","paths":["backend/internal/guild/update_settings/api/patch.go","backend/internal/guild/update_settings/postgres/repository.go"]},
+    {"id":"cmp.backend.idle_afk_migration","paths":["backend/internal/database/migrate/migrations/0068_idle_presence_afk_voice.sql"]}
   ],
   "features": [
     {
@@ -99,9 +100,10 @@
       "owned_roots":[
         {"path":"backend/internal/realtime/event_hub/","component":"cmp.backend.idle_presence"},
         {"path":"backend/internal/voice/route_inactive_members/","component":"cmp.backend.afk_routing"},
-        {"path":"backend/internal/guild/update_settings/","component":"cmp.backend.afk_settings"}
+        {"path":"backend/internal/guild/update_settings/","component":"cmp.backend.afk_settings"},
+        {"path":"backend/internal/database/migrate/migrations/","component":"cmp.backend.idle_afk_migration"}
       ],
-      "components":["cmp.web.idle_afk","cmp.flutter.idle_afk","cmp.backend.idle_presence","cmp.backend.afk_routing","cmp.backend.afk_settings"],
+      "components":["cmp.web.idle_afk","cmp.flutter.idle_afk","cmp.backend.idle_presence","cmp.backend.afk_routing","cmp.backend.afk_settings","cmp.backend.idle_afk_migration"],
       "platforms": {
         "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
         "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
