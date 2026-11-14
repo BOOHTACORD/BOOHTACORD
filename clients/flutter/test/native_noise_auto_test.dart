@@ -26,27 +26,6 @@ void main() {
   });
 
   test(
-    'Auto requests WebRTC without sending an unknown native engine',
-    () async {
-      final calls = <Map<String, Object?>?>[];
-      final native = NativeNoiseSuppression(
-        invoke: (method, arguments) async {
-          calls.add(arguments);
-          return {'supported': true, 'effectiveEngine': 'browser'};
-        },
-      );
-      expect(
-        await native.prepare(NoiseSuppressionMode.auto),
-        NoiseSuppressionMode.browser,
-      );
-      expect(calls.single?['engine'], 'browser');
-      expect(native.state.requestedMode, NoiseSuppressionMode.auto);
-      expect(native.state.effectiveMode, 'browser');
-      native.dispose();
-    },
-  );
-
-  test(
     'Auto remains on browser fallback if the native channel fails',
     () async {
       final native = NativeNoiseSuppression(

@@ -3,6 +3,29 @@ import 'package:boohtacord_desktop/src/services/native_noise_suppression.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  test('Auto uses WebRTC when native capability identity is missing', () async {
+    final calls = <Map<String, Object?>?>[];
+    final methods = <String>[];
+    final native = NativeNoiseSuppression(
+      invoke: (method, arguments) async {
+        calls.add(arguments);
+        methods.add(method);
+        return {'supported': true, 'effectiveEngine': 'browser'};
+      },
+    );
+    addTearDown(native.dispose);
+    expect(
+      await native.prepare(NoiseSuppressionMode.auto),
+      NoiseSuppressionMode.browser,
+    );
+    expect(methods, [
+      'getNoiseSuppressionCapabilities',
+      'setNoiseSuppressionEngine',
+    ]);
+    expect(calls.last, {'engine': 'browser'});
+    expect(native.state.requestedMode, NoiseSuppressionMode.auto);
+    expect(native.state.effectiveMode, 'browser');
+  });
   const eligible = {
     'rnnoiseModelId': 'rnnoise-stock-v0.2',
     'rnnoisePreflightState': 2,
