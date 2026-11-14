@@ -6,12 +6,12 @@ import 'package:boohtacord_desktop/src/features/audio/devices/controller.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart' as rtc;
 import 'package:livekit_client/livekit_client.dart' as lk;
 
-import '../windows_livekit_probe/metrics.dart';
 import 'capabilities.dart';
 import 'monitor.dart';
 import 'livekit_progress.dart';
 import 'receiver_mute.dart';
 import 'recovery.dart';
+import 'failure_latch.dart';
 
 Future<Map<String, Object?>> runAutoLivekitPhase(
   bool deepfilter, {
@@ -26,6 +26,8 @@ Future<Map<String, Object?>> runAutoLivekitPhase(
     )
     ..microphoneMutedIntent = false;
   final native = audio.nativeNoise;
+  final failure = FailureLatch();
+  native.addListener(() => failure.observe(native.state.failureReason));
   final listener = receiver.createListener();
   final playback = ReceiverMute<rtc.MediaStreamTrack>(
     (track) => rtc.Helper.setVolume(0, track),
@@ -75,22 +77,20 @@ Future<Map<String, Object?>> runAutoLivekitPhase(
       seconds: seconds,
       read: () => readAutoSample(native, receiver, expected.name),
     );
-    final state = native.state;
-    final counters = await inboundCounters(receiver);
+    final observation = await readAutoObservation(
+      native,
+      receiver,
+      failure.reason,
+    );
     result.addAll({
-      'requested': state.requestedMode.name,
-      'effective': state.effectiveMode,
-      'status': state.status,
+      ...observation,
       ...progress,
-      'sampleRate': state.sampleRate,
-      'channels': state.channels,
-      ...counters,
       'published': published != null,
       'receiverPlaybackMuted': playback.ready.isCompleted && !playback.failed,
       'success':
           published != null &&
           !playback.failed &&
-          counters['receivedPackets']! > 0 &&
+          (observation['receivedPackets'] as int) > 0 &&
           progress['success'] == true,
     });
   } catch (error) {

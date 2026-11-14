@@ -4,6 +4,25 @@ import 'package:livekit_client/livekit_client.dart';
 
 import '../windows_livekit_probe/metrics.dart';
 import 'monitor.dart';
+import 'capabilities.dart';
+
+Future<Map<String, Object?>> readAutoObservation(
+  NativeNoiseSuppression native,
+  Room receiver,
+  String? firstFailure,
+) async {
+  final state = native.state;
+  return {
+    'requested': state.requestedMode.name,
+    'effective': state.effectiveMode,
+    'status': state.status,
+    'firstNativeFailure': firstFailure,
+    'sampleRate': state.sampleRate,
+    'channels': state.channels,
+    'terminalCapabilities': await probeCapabilities(),
+    ...await inboundCounters(receiver),
+  };
+}
 
 Future<AutoSample> readAutoSample(
   NativeNoiseSuppression native,
