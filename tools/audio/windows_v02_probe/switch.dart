@@ -7,6 +7,7 @@ import 'package:flutter_webrtc/flutter_webrtc.dart' as rtc;
 import 'package:livekit_client/livekit_client.dart' as lk;
 
 import '../../qa/windows_v02_probe/packet_delta.dart';
+import '../../qa/windows_v02_probe/capture_flags.dart';
 import 'reports.dart';
 import 'support.dart';
 
@@ -29,6 +30,9 @@ Future<void> main() async {
   });
   try {
     await requireResearchMarker();
+    final flags = captureFlags(Platform.environment);
+    result['requestedAec'] = flags.aec;
+    result['requestedAgc'] = flags.agc;
     await Future<void>.delayed(const Duration(milliseconds: 500));
     stage = 'connect';
     await receiver
@@ -46,10 +50,10 @@ Future<void> main() async {
     stage = 'publish';
     final pub = await sender.localParticipant!.setMicrophoneEnabled(
       true,
-      audioCaptureOptions: const lk.AudioCaptureOptions(
-        echoCancellation: true,
+      audioCaptureOptions: lk.AudioCaptureOptions(
+        echoCancellation: flags.aec,
         noiseSuppression: false,
-        autoGainControl: false,
+        autoGainControl: flags.agc,
       ),
     );
     if (pub == null) throw StateError('publication-missing');
