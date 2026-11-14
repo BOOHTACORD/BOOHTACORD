@@ -41,9 +41,9 @@ export abstract class MicrophoneAdapterProfile extends MicrophoneAdapterPublicat
       onFailure: (reason) => {
         if (!this.closed && generation === this.generation && this.processor === processor)
           this.state = { requestedMode: requested, effectiveMode: 'unknown', status: 'error', fallbackReason: reason }
-        this.recoverProcessor(processor, reason, generation)
+        this.recoverProcessor(processor, reason, generation, mode)
       },
-      onState: (state) => { if (!this.closed && generation === this.generation && this.processor === processor) this.state = { ...state, requestedMode: requested } },
+      onState: (state) => { if (!this.closed && generation === this.generation && this.processor === processor) this.state = { ...state, requestedMode: requested, fallbackReason: state.fallbackReason ?? this.state.fallbackReason } },
     }, selected)
     this.processor = processor
     processor.mute()

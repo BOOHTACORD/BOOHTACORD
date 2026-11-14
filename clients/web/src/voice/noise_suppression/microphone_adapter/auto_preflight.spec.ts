@@ -52,3 +52,35 @@ it('retries measured RNNoise when selected DeepFilter fails to initialize', asyn
   expect(f.adapter.runtimeState).toMatchObject({ requestedMode: 'auto', effectiveMode: 'rnnoise', status: 'active' })
   await f.adapter.dispose()
 })
+
+for (const muted of [false, true]) it(`runtime DeepFilter failure tries measured RNNoise, muted=${muted}`, async () => {
+  vi.stubEnv('VITE_AUTO_DEEPFILTER_RESEARCH', 'true')
+  vi.stubEnv('VITE_DEEPFILTER_ENABLED', 'true')
+  const f = enabled()
+  await f.adapter.setEnabled(true, options)
+  const callbacks = f.dependencies.createProcessor.mock.calls[0][0] as { onFailure(reason: string): void }
+  callbacks.onFailure('overload')
+  expect(f.output.enabled).toBe(false)
+  await f.adapter.setEnabled(!muted, options)
+  expect(f.dependencies.preflightAuto.mock.calls).toEqual([['deepfilter'], ['rnnoise']])
+  const resumed = f.dependencies.createProcessor.mock.calls[1][0] as { onState(state: unknown): void }
+  resumed.onState({ requestedMode: 'rnnoise', effectiveMode: 'rnnoise', status: 'active' })
+  expect(f.adapter.runtimeState).toMatchObject({ requestedMode: 'auto', effectiveMode: 'rnnoise', status: 'active', fallbackReason: 'overload' })
+  expect(f.output.enabled).toBe(!muted)
+  await f.adapter.dispose()
+})
+
+it('uses confirmed browser NS after runtime failure when RNNoise is rejected', async () => {
+  vi.stubEnv('VITE_AUTO_DEEPFILTER_RESEARCH', 'true')
+  vi.stubEnv('VITE_DEEPFILTER_ENABLED', 'true')
+  const f = enabled()
+  f.dependencies.preflightAuto.mockImplementation(async engine => engine === 'deepfilter')
+  await f.adapter.setEnabled(true, options)
+  const callbacks = f.dependencies.createProcessor.mock.calls[0][0] as { onFailure(reason: string): void }
+  callbacks.onFailure('overload')
+  await f.adapter.setEnabled(true, options)
+  expect(f.dependencies.preflightAuto.mock.calls).toEqual([['deepfilter'], ['rnnoise']])
+  expect(f.adapter.runtimeState).toMatchObject({ requestedMode: 'auto', effectiveMode: 'browser', status: 'fallback', fallbackReason: 'overload' })
+  expect(f.track.applyConstraints).toHaveBeenLastCalledWith({ autoGainControl: false, echoCancellation: true, noiseSuppression: true })
+  await f.adapter.dispose()
+})

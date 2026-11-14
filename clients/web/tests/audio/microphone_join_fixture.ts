@@ -5,12 +5,18 @@ import type { NoiseSuppressionMode } from '../../src/voice/noise_suppression/typ
 
 let room: VoiceRoom | undefined
 let track: LocalAudioTrack | undefined
+let processingHistory: string[] = []
 
 const gate = {
   async join(mode: NoiseSuppressionMode, interruptPublication: boolean) {
     const credential = await (await fetch('/tests/audio/livekit-token?role=sender', { cache: 'no-store' })).json()
     const voiceRoom = await defaultLiveKitRoomFactory()
     room = voiceRoom
+    processingHistory = []
+    voiceRoom.onNoiseSuppressionState?.(state => {
+      const value = `${state.requestedMode}:${state.effectiveMode}:${state.status}`
+      if (processingHistory.length < 32 && processingHistory.at(-1) !== value) processingHistory.push(value)
+    })
     const sdk = voiceRoom as unknown as Room
     // Chromium's fake capture device supplies synthetic audio. Use the actual
     // production capture/processor/publication path and retain its cleanup probe.
@@ -54,6 +60,7 @@ const gate = {
     return { processing: room!.readNoiseSuppressionState!(),
       replaced: previous !== [...publications.keys()][0], publications: publications.size }
   },
+  readProcessing() { return { state: room?.readNoiseSuppressionState?.(), history: [...processingHistory] } },
   async mute() { await room?.setMicrophone?.(false, { autoGainControl: false, echoCancellation: false, noiseSuppressionMode: 'off' }) },
   async stop() {
     try { await room?.disconnect() }
