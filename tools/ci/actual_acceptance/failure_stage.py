@@ -91,3 +91,19 @@ def last_short_stage_geometry(log):
             continue
         geometry = {**dimensions, 'dockCoversStage': value['dockCoversStage']}
     return geometry
+
+
+def last_failure_frame(log):
+    if log is None: return None
+    try:
+        text = Path(log).read_text(encoding='utf-8', errors='replace').replace('\\', '/')
+    except OSError:
+        return None
+    stages = [m for m in MARKER.finditer(text) if m.group(1) in STAGES]
+    if not stages: return None
+    owned = (r'critical_client_acceptance/(?:roster_outage|media|voice_interface|teardown)'
+             r'|client_lifecycle/(?:journey/scenario|request)')
+    pattern = r'(?:^|[/ (])tools/qa/('+owned+r')\.mjs:([1-9][0-9]{0,3}):[1-9][0-9]{0,3}(?=[)\s]|$)'
+    match = re.search(pattern, text[stages[-1].end():])
+    if match is None: return None
+    return {'file': match.group(1).rsplit('/', 1)[-1]+'.mjs', 'line': int(match.group(2))}

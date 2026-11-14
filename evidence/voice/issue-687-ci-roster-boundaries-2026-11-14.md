@@ -25,3 +25,12 @@ the attempted WSL run failed to start its distribution with E_FAIL. No mocked
 fcntl or weakened CI gate was substituted. Real lifecycle rerun is required.
 This change improves localization; it does not fix or waive the runtime failure.
 No release or server deployment.
+
+The a6617bac3 CI rerun failed after `roster-sfu-restored`: outage event/banner,
+failure UI and recovered API had already passed. The later assertion is still
+unidentified. The controller now retains the first allowlisted QA source frame
+after the last completed stage: fixed basename and line 1..9999 only. Error
+messages, absolute paths, unknown files and earlier stack frames are excluded.
+Two focused regression tests cover Unix/Windows paths and hostile/invalid input.
+They are explicitly registered in the lifecycle gate. This remains diagnostic
+work, not a claimed runtime fix. The current head must be rerun in real CI.
