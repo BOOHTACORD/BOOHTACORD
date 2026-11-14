@@ -40,6 +40,12 @@
         "observation": "Recorded the #786 Web/iOS/Android regression decisions for each changed common feature scope. Existing platform decisions are retained; runtime evidence limits remain explicit."
       },
       {
+        "name": "product_map_component_ownership",
+        "result": "PASS",
+        "command": "python3 -m tools.product_map.ownership.run --base f67209d302a8a419333ead811dc1f21be9fd2b41",
+        "observation": "All 10 new runtime paths are mapped to voice-control product components. The existing unclassified baseline is unchanged."
+      },
+      {
         "name": "contracts_verifier",
         "result": "BLOCKED",
         "command": "pwsh -NoProfile -File tools/verify/contracts/verify-contracts.ps1",
@@ -84,9 +90,10 @@
   },
   "post_run_registry_update": {
     "timestamp_utc": "2026-11-14T16:57:25Z",
-    "scope": "Added issue #786 parity-review entries after the local-feature run exposed that each touched common client feature needed an explicit Web/iOS/Android regression decision. No product implementation or behavior-test files changed after that run.",
+    "scope": "Added issue #786 parity-review entries for changed common client feature scopes and mapped the 10 new runtime paths to voice-control product components after local QA/CI exposed the metadata requirements. No product implementation or behavior-test files changed after the local-feature run.",
     "verification": [
       "python3 -m tools.verify.client_parity.run --base origin/master",
+      "python3 -m tools.product_map.ownership.run --base f67209d302a8a419333ead811dc1f21be9fd2b41",
       "python3 -m json.tool tools/qa/local_features/features.json"
     ]
   },
