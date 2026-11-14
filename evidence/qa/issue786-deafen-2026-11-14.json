@@ -34,6 +34,12 @@
         "observation": "137 public operations and 4 private exclusions."
       },
       {
+        "name": "client_parity_review",
+        "result": "PASS",
+        "command": "python3 -m tools.verify.client_parity.run --base origin/master",
+        "observation": "Recorded the #786 Web/iOS/Android regression decisions for each changed common feature scope. Existing platform decisions are retained; runtime evidence limits remain explicit."
+      },
+      {
         "name": "contracts_verifier",
         "result": "BLOCKED",
         "command": "pwsh -NoProfile -File tools/verify/contracts/verify-contracts.ps1",
@@ -74,6 +80,14 @@
         "result": "NOT_RUN",
         "observation": "No Web-to-physical-Flutter paired media run was completed. No physical media capability or capacity claim is made."
       }
+    ]
+  },
+  "post_run_registry_update": {
+    "timestamp_utc": "2026-11-14T16:57:25Z",
+    "scope": "Added issue #786 parity-review entries after the local-feature run exposed that each touched common client feature needed an explicit Web/iOS/Android regression decision. No product implementation or behavior-test files changed after that run.",
+    "verification": [
+      "python3 -m tools.verify.client_parity.run --base origin/master",
+      "python3 -m json.tool tools/qa/local_features/features.json"
     ]
   },
   "visual_review": {
