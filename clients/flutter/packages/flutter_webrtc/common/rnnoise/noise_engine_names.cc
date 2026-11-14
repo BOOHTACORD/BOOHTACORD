@@ -1,6 +1,13 @@
 #include "rnnoise_capture_processor.h"
 #include <cstring>
 namespace boohta {
+const char* RnnoiseCaptureProcessor::ModelId() {
+#ifdef BOOHTA_RNNOISE_V02_RESEARCH
+  return "rnnoise-stock-v0.2";
+#else
+  return "rnnoise-stock-v0.1";
+#endif
+}
 const char* NoiseEngineName(RnnoiseCaptureProcessor::Engine engine) {
   switch (engine) {
     case RnnoiseCaptureProcessor::Engine::kOff: return "off";

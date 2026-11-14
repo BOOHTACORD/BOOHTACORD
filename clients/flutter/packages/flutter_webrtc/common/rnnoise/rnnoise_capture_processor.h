@@ -33,6 +33,7 @@ class RnnoiseCaptureProcessor {
   int sample_rate() const { return rate_.load(); }
   int channels() const { return channels_.load(); }
   bool supported() const;
+  static const char* ModelId();
   MicrophoneControls controls;
  private:
   bool ProcessNoise(float* pcm, int frames, int capacity);
