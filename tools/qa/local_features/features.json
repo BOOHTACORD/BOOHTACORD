@@ -1590,6 +1590,7 @@
       }
     ],
     "parity_review": {
+      "issue687_auto_capture": "The shared Flutter voice microphone capture confirms an internal Auto WebRTC fallback only after capture succeeds. Screen-sharing code and Web behavior are unchanged. Android/iOS native runtime, screen-sharing regression and real media acceptance remain NOT_RUN/BLOCKED.",
       "issue667_voice_large_text_review": "Shared Flutter voice participant cards switch to one column at narrow widths with large text. Web source is unchanged and its regression remains required; Android and iOS share the layout, but native runtime, screen reader and physical acceptance for this change remain NOT_RUN. Component tests and a 320 dp capture are recorded in the issue 667 evidence.",
       "issue648_recovery_review": "The shared Flutter recovery indicator changed; Android emulator outage and manual leave passed on an isolated stack. Windows initial media admission failed before outage, iOS and physical devices are not verified. Web was not changed; its existing regression checks remain required. Screen presentation is reviewed because the voice dock is shared.",
       "issue689_follow_up": "Issue 689 adds Web application-socket liveness, new-event validation and permission-request fencing while preserving screen feature behavior. Screen regression suites remain required on Web and native platforms; full current-source native media acceptance remains open.",

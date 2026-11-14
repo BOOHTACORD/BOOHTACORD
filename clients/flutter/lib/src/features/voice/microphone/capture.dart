@@ -65,7 +65,9 @@ extension VoiceMicrophoneCapture on VoiceController {
               (audio.audioProcessing.noiseSuppressionMode ==
                       NoiseSuppressionMode.rnnoise ||
                   audio.audioProcessing.noiseSuppressionMode ==
-                      NoiseSuppressionMode.deepfilter)) {
+                      NoiseSuppressionMode.deepfilter ||
+                  audio.audioProcessing.noiseSuppressionMode ==
+                      NoiseSuppressionMode.auto)) {
             audio.nativeNoise.confirmFallback(
               audio.nativeNoise.state.failureReason ?? 'unsupported',
               unsupported:
