@@ -64,6 +64,37 @@ it('retains Auto and falls back safely when research initialization fails', asyn
   await f.adapter.dispose()
 })
 
+it('uses explicitly opted-in DeepFilter for Auto and safely falls back on failure', async () => {
+  vi.stubEnv('VITE_AUTO_DEEPFILTER_RESEARCH', 'true')
+  vi.stubEnv('VITE_DEEPFILTER_ENABLED', 'true')
+  vi.spyOn(capabilities, 'supportsRnnoise').mockReturnValue(true)
+  const f = fixture()
+  const auto = { ...options, noiseSuppressionMode: 'auto' } as AudioProcessingOptions
+  await f.adapter.setEnabled(true, auto)
+  expect(f.dependencies.createProcessor.mock.calls[0][1]?.noiseSuppressionMode).toBe('deepfilter')
+  expect(f.adapter.runtimeState).toMatchObject({ requestedMode: 'auto', effectiveMode: 'deepfilter', status: 'active' })
+  await f.adapter.dispose()
+
+  const failed = fixture()
+  failed.track.setProcessor.mockRejectedValueOnce(new Error('unavailable'))
+  await failed.adapter.setEnabled(true, auto)
+  expect(failed.adapter.runtimeState).toMatchObject({ requestedMode: 'auto', effectiveMode: 'browser', status: 'fallback' })
+  await failed.adapter.dispose()
+})
+
+it('never enables research DeepFilter Auto in a production build', async () => {
+  vi.stubEnv('DEV', false)
+  vi.stubEnv('VITE_AUTO_DEEPFILTER_RESEARCH', 'true')
+  vi.stubEnv('VITE_DEEPFILTER_ENABLED', 'true')
+  vi.stubEnv('VITE_RNNOISE_V02_ENABLED', 'false')
+  vi.spyOn(capabilities, 'supportsRnnoise').mockReturnValue(true)
+  const f = fixture()
+  await f.adapter.setEnabled(true, { ...options, noiseSuppressionMode: 'auto' } as AudioProcessingOptions)
+  expect(f.dependencies.createProcessor).not.toHaveBeenCalled()
+  expect(f.adapter.runtimeState).toMatchObject({ requestedMode: 'auto', effectiveMode: 'browser' })
+  await f.adapter.dispose()
+})
+
 it('never promotes explicit off to an automatic engine', async () => {
   vi.stubEnv('VITE_RNNOISE_V02_ENABLED', 'true')
   vi.spyOn(capabilities, 'supportsRnnoise').mockReturnValue(true)

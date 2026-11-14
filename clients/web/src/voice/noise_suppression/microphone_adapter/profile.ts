@@ -6,7 +6,11 @@ import { MicrophoneAdapterPublication } from './publication'
 export abstract class MicrophoneAdapterProfile extends MicrophoneAdapterPublication {
   protected async configure(options: AudioProcessingOptions, generation: number): Promise<void> {
     const requested = options.noiseSuppressionMode
-    const mode = requested === 'auto' ? selectAutoEngine({ v02: import.meta.env.VITE_RNNOISE_V02_ENABLED === 'true' && rnnoiseReleaseEnabled(), supported: supportsRnnoise() }) : requested
+    const mode = requested === 'auto' ? selectAutoEngine({
+      v02: import.meta.env.VITE_RNNOISE_V02_ENABLED === 'true' && rnnoiseReleaseEnabled(),
+      supported: supportsRnnoise(),
+      deepfilterResearch: import.meta.env.DEV && import.meta.env.VITE_AUTO_DEEPFILTER_RESEARCH === 'true' && deepfilterReleaseEnabled(),
+    }) : requested
     const selected = mode === requested ? options : { ...options, noiseSuppressionMode: mode }
     if (mode === 'rnnoise' && !rnnoiseReleaseEnabled()) { await this.fallback(options, 'release-disabled', generation); return }
     if (mode === 'deepfilter' && !deepfilterReleaseEnabled()) { await this.fallback(options, 'release-disabled', generation); return }
