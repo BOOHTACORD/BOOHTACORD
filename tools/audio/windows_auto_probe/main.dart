@@ -30,6 +30,16 @@ Future<void> main() async {
     final seconds = probeSeconds(
       Platform.environment['BOOHTA_AUTO_PROBE_SECONDS'],
     );
+    if (kDebugMode &&
+        Platform.environment.containsKey('BOOHTA_PROBE_SENDER_TOKEN')) {
+      throw StateError('optimized-controller-sfu-required');
+    }
+    final recovery = Platform.environment['BOOHTA_AUTO_PROBE_RECOVERY'];
+    if (recovery != null &&
+        (!['signal', 'full', 'muted-full'].contains(recovery) ||
+            !Platform.environment.containsKey('BOOHTA_PROBE_SENDER_TOKEN'))) {
+      throw StateError('valid-local-sfu-recovery-required');
+    }
     if (seconds > 6 &&
         (kDebugMode ||
             !Platform.environment.containsKey('BOOHTA_PROBE_SENDER_TOKEN'))) {

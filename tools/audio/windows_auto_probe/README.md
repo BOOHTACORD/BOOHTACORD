@@ -14,8 +14,11 @@ isolated directory, with the verified research DLL/model beside the executable.
 Set `BOOHTA_AUDIO_PROBE_RESULT` to a new file below `.out/audio-research`; use a
 supervisor with a bounded deadline. Do not replace the installed client.
 
-The probe calls the actual shared NativeNoiseSuppression Auto service without
-research engine overrides: first RNNoise eligibility, then enabled DeepFilter.
+The direct probe calls the shared NativeNoiseSuppression Auto service without
+research engine overrides. The optimized SFU probe uses the production
+AudioDeviceController, its Auto preparation/capture options and runtime monitor,
+bound only to the temporary room with no account/preferences. No installed
+client state or persisted settings are used. Debug SFU builds are rejected.
 Each phase captures six seconds of microphone input. By default it uses two
 local WebRTC peers with no ICE servers. The existing isolated local LiveKit
 runner selects the SFU variant by supplying its ephemeral sender/receiver tokens
@@ -29,6 +32,13 @@ longer debug or direct-peer runs are rejected. Every interval (at most five
 seconds) must advance both processing and received packets with no fallback
 and the expected active engine; a successful first interval cannot hide a stall.
 This continuous physical-capture check does not imply speech was present.
+
+BOOHTA_AUTO_PROBE_RECOVERY accepts signal, full or muted-full for the optimized
+SFU probe. It requires observed interruption/reconnected events and advancing
+engine/RTP counters afterward. Muted-full checks muted publication/track intent
+after reconnection before explicitly unmuting. Every replacement receiver track
+is muted; later playback-control failures invalidate the result. These checks
+exercise the SDK and production audio controller, not the complete workspace UI.
 
 This is method-channel and local media evidence. It does not prove listening
 quality, production calls, AEC/AGC effectiveness, reconnection, hotplug,
