@@ -26,7 +26,8 @@ export function installRosterFailureObserver(browser = window) {
     socket.addEventListener('error', () => { browser.__qaRosterTransport.failed++ })
     socket.addEventListener('message', event => {
       try {
-        if (typeof event.data === 'string' && JSON.parse(event.data)?.kind === 'voice.roster.unavailable') {
+        const kind = typeof event.data === 'string' ? JSON.parse(event.data)?.kind : null
+        if (kind === 'voice.roster.unavailable' || kind === 'voice.roster.unavailable.v2') {
           browser.__qaRosterUnavailableCount++
         }
       } catch { /* Malformed frames do not become a successful observation. */ }

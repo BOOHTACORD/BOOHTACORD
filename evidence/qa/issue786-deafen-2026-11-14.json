@@ -74,6 +74,12 @@
         "observation": "A focused follow-up was added after CI found the synthetic fixture's non-UUID lease ID. Local rerun was unavailable because this isolated worktree has no clients/web/node_modules/.bin/playwright; the next CI run executes the updated SFU audio suite."
       },
       {
+        "name": "actual_lifecycle_v2_roster_observer",
+        "result": "PASS",
+        "command": "node --test tools/qa/critical_client_acceptance/roster_websocket_observer.test.mjs",
+        "observation": "CI's lifecycle profile exposed that the QA observer counted only v1 unavailable roster frames while the #786 client requests v2. The observer now counts both versions; its focused unit passes. Full actual lifecycle acceptance must be rerun."
+      },
+      {
         "name": "flutter_full_unit_suite",
         "result": "PASS_WITH_ONE_SKIPPED_TEST",
         "command": "/opt/homebrew/share/flutter/bin/flutter test",
@@ -101,13 +107,14 @@
     ]
   },
   "post_run_registry_update": {
-    "timestamp_utc": "2026-11-14T17:17:22Z",
-    "scope": "Added issue #786 parity-review entries for changed common client feature scopes, mapped the 10 new runtime paths to voice-control product components, regenerated the product-map viewer, and recorded the source-only Flutter remote-track revalidation required by CI. Added a focused synthetic SFU test route after CI exposed the fixture's placeholder lease ID; no application runtime code changed after the local-feature run.",
+    "timestamp_utc": "2026-11-14T17:42:32Z",
+    "scope": "Added issue #786 parity-review entries for changed common client feature scopes, mapped the 10 new runtime paths to voice-control product components, regenerated the product-map viewer, and recorded the source-only Flutter remote-track revalidation required by CI. Added a synthetic SFU test route for the placeholder lease and updated the actual-acceptance roster observer to recognize v2 unavailable events after CI exposed the harness mismatch; no application runtime code changed after the local-feature run.",
     "verification": [
       "python3 -m tools.verify.client_parity.run --base origin/master",
-      "python3 -m tools.product_map.ownership.run --base f67209d302a8a419333ead811dc1f21be9fd2b41",
+      "python3 -m tools.product_map.ownership.run --base d7a1a9982efad93b7ad5d9001860ee19a82c60af",
       "python3 -m tools.verify.livekit_network_config.check",
       "python3 -m unittest tools.verify.livekit_network_config.test_model",
+      "node --test tools/qa/critical_client_acceptance/roster_websocket_observer.test.mjs",
       "python3 -m json.tool tools/qa/local_features/features.json"
     ]
   },
