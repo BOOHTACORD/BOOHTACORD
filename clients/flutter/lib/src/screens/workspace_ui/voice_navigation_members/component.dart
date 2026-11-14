@@ -1,4 +1,5 @@
 import '../participant_muted/component.dart';
+import '../participant_deafened/component.dart';
 import '../participant_name/component.dart';
 import '../voice_navigation_member_row/component.dart';
 import '../voice_participant_account_id/component.dart';
@@ -28,9 +29,11 @@ class WorkspaceVoiceNavigationMembers extends StatelessWidget {
             name: workspaceParticipantName(participant),
             accountId: workspaceVoiceParticipantAccountId(participant),
             muted: workspaceParticipantMuted(participant),
+            deafened: workspaceParticipantDeafened(participant),
             speaking:
                 participant.isSpeaking &&
-                !workspaceParticipantMuted(participant),
+                !workspaceParticipantMuted(participant) &&
+                !workspaceParticipantDeafened(participant),
             screenSharing: participant.videoTrackPublications.any(
               (publication) =>
                   publication.source == TrackSource.screenShareVideo &&

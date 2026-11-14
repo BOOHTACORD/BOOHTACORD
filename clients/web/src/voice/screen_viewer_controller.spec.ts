@@ -109,17 +109,4 @@ describe('screen viewer controller', () => {
     expect(() => controller.select('not-in-room', {} as HTMLVideoElement, {} as HTMLAudioElement)).toThrow('Недоступная демонстрация')
   })
 
-  it('mutes the one selected screen-audio element while deafened', () => {
-    const selected = stream('alice')
-    const controller = new ScreenViewerController(() => [selected])
-    const audio = { muted: false } as HTMLAudioElement
-
-    controller.select('alice', {} as HTMLVideoElement, audio)
-    controller.setDeafened(true)
-
-    expect(audio.muted).toBe(true)
-    controller.setDeafened(false)
-    expect(audio.muted).toBe(false)
-  })
-
 })

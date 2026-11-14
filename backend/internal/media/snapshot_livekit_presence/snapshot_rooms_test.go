@@ -27,7 +27,7 @@ func TestSnapshotRoomsOnlyReturnsActiveLeasesFromExactRequestedRooms(t *testing.
 				t.Fatal("participants grant not room-scoped")
 			}
 			_, _ = writer.Write([]byte(`{"participants":[` +
-				`{"identity":"voice-lease:` + activeLease + `","state":"ACTIVE","tracks":[{"type":"VIDEO","source":"SCREEN_SHARE"},{"type":"AUDIO","source":"MICROPHONE","muted":true}]},` +
+				`{"identity":"voice-lease:` + activeLease + `","state":"ACTIVE","attributes":{"boohtacord.voice.deafened.v1":"true"},"tracks":[{"type":"VIDEO","source":"SCREEN_SHARE"},{"type":"AUDIO","source":"MICROPHONE","muted":true}]},` +
 				`{"identity":"voice-lease:44444444-4444-4444-8444-444444444444","state":"JOINED"},` +
 				`{"identity":"voice-lease:55555555-5555-4555-8555-555555555555","state":"DISCONNECTED"},` +
 				`{"identity":"system:agent","state":"ACTIVE"}]}`))
@@ -38,8 +38,11 @@ func TestSnapshotRoomsOnlyReturnsActiveLeasesFromExactRequestedRooms(t *testing.
 	defer server.Close()
 	client, _ := New(Config{URL: server.URL, APIKey: "test-key", APISecret: "test-secret"})
 	result, err := client.SnapshotRooms(context.Background(), []string{roomID, emptyID})
-	if err != nil || len(result) != 1 || len(result[roomID]) != 1 || result[roomID][0] != (ConnectedLease{LeaseID: activeLease, ScreenSharing: true, MicrophoneMuted: true}) {
+	if err != nil || len(result) != 1 || len(result[roomID]) != 1 || result[roomID][0].LeaseID != activeLease || !result[roomID][0].ScreenSharing || !result[roomID][0].MicrophoneMuted {
 		t.Fatalf("SnapshotRooms() = %+v, %v", result, err)
+	}
+	if !result[roomID][0].Deafened {
+		t.Fatal("snapshot did not preserve remote deafen")
 	}
 }
 

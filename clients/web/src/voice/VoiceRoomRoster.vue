@@ -24,7 +24,7 @@ function initial(name: string): string { return Array.from(name.trim())[0]?.toLo
         <span v-if="member.screenSharing" class="voice-roster-live" role="img" aria-label="Показывает экран" title="Показывает экран">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H4zM9 20h6m-3-4v4" /></svg><span>Идёт трансляция</span>
         </span>
-        <VoiceParticipantStatus compact :microphone-muted="member.microphoneMuted ?? true" />
+        <VoiceParticipantStatus compact :deafened="member.deafened" :microphone-muted="member.microphoneMuted ?? true" />
       </li>
     </ul>
     <p v-else class="voice-roster-empty">Пока никого нет.</p>

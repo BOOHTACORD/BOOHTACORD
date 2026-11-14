@@ -23,6 +23,24 @@ type Participant struct {
 	DisplayName     string `json:"display_name"`
 	ScreenSharing   bool   `json:"screen_sharing"`
 	MicrophoneMuted bool   `json:"microphone_muted"`
+	Deafened        bool   `json:"-"`
+}
+
+// ParticipantV2 is the additive roster contract. Keep Participant's JSON shape
+// stable for v1 clients that reject unknown fields.
+type ParticipantV2 struct {
+	AccountID       string `json:"account_id"`
+	DisplayName     string `json:"display_name"`
+	ScreenSharing   bool   `json:"screen_sharing"`
+	MicrophoneMuted bool   `json:"microphone_muted"`
+	Deafened        bool   `json:"deafened"`
+}
+type ChannelRosterV2 struct {
+	ChannelID    string          `json:"channel_id"`
+	Participants []ParticipantV2 `json:"participants"`
+}
+type ResultV2 struct {
+	Channels []ChannelRosterV2 `json:"channels"`
 }
 type ChannelRoster struct {
 	ChannelID    string        `json:"channel_id"`
@@ -105,11 +123,27 @@ func (service Service) List(ctx context.Context, actorID string) (Result, error)
 			}
 			seen[lease.AccountID] = true
 			current.Participants = append(current.Participants, Participant{
-				LeaseID: lease.ID, AccountID: lease.AccountID, DisplayName: lease.DisplayName, ScreenSharing: presence.ScreenSharing, MicrophoneMuted: presence.MicrophoneMuted,
+				LeaseID: lease.ID, AccountID: lease.AccountID, DisplayName: lease.DisplayName, ScreenSharing: presence.ScreenSharing, MicrophoneMuted: presence.MicrophoneMuted, Deafened: presence.Deafened,
 			})
 		}
 		sort.Slice(current.Participants, func(i, j int) bool { return current.Participants[i].AccountID < current.Participants[j].AccountID })
 		result.Channels = append(result.Channels, current)
 	}
 	return result, nil
+}
+
+func (service Service) ListV2(ctx context.Context, actorID string) (ResultV2, error) {
+	v1, err := service.List(ctx, actorID)
+	if err != nil {
+		return ResultV2{}, err
+	}
+	v2 := ResultV2{Channels: make([]ChannelRosterV2, 0, len(v1.Channels))}
+	for _, channel := range v1.Channels {
+		out := ChannelRosterV2{ChannelID: channel.ChannelID, Participants: make([]ParticipantV2, 0, len(channel.Participants))}
+		for _, member := range channel.Participants {
+			out.Participants = append(out.Participants, ParticipantV2{AccountID: member.AccountID, DisplayName: member.DisplayName, ScreenSharing: member.ScreenSharing, MicrophoneMuted: member.MicrophoneMuted, Deafened: member.Deafened})
+		}
+		v2.Channels = append(v2.Channels, out)
+	}
+	return v2, nil
 }

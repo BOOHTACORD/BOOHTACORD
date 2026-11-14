@@ -39,6 +39,14 @@ describe('voice roster realtime contract', () => {
     }
   })
 
+  it('requires the exact replicated deafen field in v2 snapshots', () => {
+    const member = { account_id: id, display_name: 'Участник', screen_sharing: false, microphone_muted: true, deafened: true }
+    const value = { version: 2, generation: id, revision: 1, observed_at: when, channels: [{ channel_id: id, participants: [member] }] }
+    expect(parseRealtimeEvent(envelope('voice.roster.snapshot.v2', value)).kind).toBe('voice.roster.snapshot.v2')
+    const invalid = envelope('voice.roster.snapshot.v2', { ...value, channels: [{ channel_id: id, participants: [{ ...member, deafened: 'true' }] }] })
+    expect(() => parseRealtimeEvent(invalid)).toThrow()
+  })
+
   it('does not put roster events in the durable replay cursor', () => {
     const delivery = createRealtimeDelivery(() => {}, undefined, error => { throw error })
     delivery.accept(parseRealtimeEvent(envelope('message.created', { channel_id: id, message_id: id })))

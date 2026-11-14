@@ -29,13 +29,22 @@
     {"id":"cmp.backend.idle_presence","paths":["backend/internal/realtime/event_hub/activity.go","backend/internal/realtime/connect_session/event_stream.go"]},
     {"id":"cmp.backend.afk_routing","paths":["backend/internal/voice/route_inactive_members/service.go","backend/internal/voice/route_inactive_members/worker/worker.go"]},
     {"id":"cmp.backend.afk_settings","paths":["backend/internal/guild/update_settings/api/patch.go","backend/internal/guild/update_settings/postgres/repository.go"]},
-    {"id":"cmp.backend.idle_afk_migration","paths":["backend/internal/database/migrate/migrations/0068_idle_presence_afk_voice.sql"]}
+    {"id":"cmp.backend.idle_afk_migration","paths":["backend/internal/database/migrate/migrations/0068_idle_presence_afk_voice.sql"]},
+    {"id":"cmp.backend.voice_deafen_routes","paths":["backend/internal/app/media_routes/voice_deafen/configure.go","backend/internal/app/media_routes/voice_deafen_routes.go"]},
+    {"id":"cmp.backend.voice_deafen_api","paths":["backend/internal/media/set_voice_deafen/api/handler.go"]},
+    {"id":"cmp.backend.voice_deafen_service","paths":["backend/internal/media/set_voice_deafen/deafen.go"]},
+    {"id":"cmp.backend.voice_deafen_repository","paths":["backend/internal/media/set_voice_deafen/postgres/repository.go"]},
+    {"id":"cmp.backend.voice_deafen_livekit_writer","paths":["backend/internal/media/set_voice_deafen/livekit/writer.go"]},
+    {"id":"cmp.flutter.voice_deafen_api","paths":["clients/flutter/lib/src/features/voice/microphone/deafen_api.dart"]},
+    {"id":"cmp.flutter.voice_deafen_status","paths":["clients/flutter/lib/src/screens/workspace_ui/participant_deafened/component.dart"]},
+    {"id":"cmp.web.voice_deafen_attribute","paths":["clients/web/src/voice/voice_deafen_attribute.ts"]},
+    {"id":"cmp.web.voice_deafen_publisher","paths":["clients/web/src/voice/voice_deafen_publisher.ts"]}
   ],
   "features": [
     {
       "id":"voice.controls", "title":"Управление голосом", "domain":"voice", "target_revision":null,
       "behavior_revisions":[], "parity_ids":["voice.controls"],
-      "components":["cmp.web.voice_controls","cmp.flutter.voice_controller","cmp.flutter.native_auto_research","cmp.flutter.deepfilter_preflight","cmp.flutter.native_auto_preflight","cmp.web.auto_preflight"],
+      "components":["cmp.web.voice_controls","cmp.flutter.voice_controller","cmp.backend.voice_deafen_routes","cmp.backend.voice_deafen_api","cmp.backend.voice_deafen_service","cmp.backend.voice_deafen_repository","cmp.backend.voice_deafen_livekit_writer","cmp.flutter.voice_deafen_api","cmp.flutter.voice_deafen_status","cmp.web.voice_deafen_attribute","cmp.web.voice_deafen_publisher","cmp.flutter.native_auto_research","cmp.flutter.deepfilter_preflight","cmp.flutter.native_auto_preflight","cmp.web.auto_preflight"],
       "platforms": {
         "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
         "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},

@@ -1,5 +1,6 @@
 import '../participant_member/component.dart';
 import '../participant_muted/component.dart';
+import '../participant_deafened/component.dart';
 import '../participant_name/component.dart';
 import '../voice_participant_account_id/component.dart';
 import '../voice_strip_person/component.dart';
@@ -172,6 +173,7 @@ class WorkspaceVoiceParticipantStrip extends StatelessWidget {
                       participant,
                     )?.avatarUrl,
                     muted: workspaceParticipantMuted(participant),
+                    deafened: workspaceParticipantDeafened(participant),
                     speaking: participant.isSpeaking,
                     screenSharing: participant.videoTrackPublications.any(
                       (publication) =>

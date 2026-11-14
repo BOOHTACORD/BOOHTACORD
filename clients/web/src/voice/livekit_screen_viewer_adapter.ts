@@ -153,7 +153,7 @@ export function bindLiveKitScreenViewer(
     pauseVoiceParticipantSounds: () => participantSounds.pause(),
     resetVoiceParticipantSounds: () => participantSounds.reset(),
     seedVoiceParticipantSounds: () => participantSounds.seed(room.remoteParticipants.keys()),
-    setDeafened: (deafened) => { voicePlayback.setDeafened(deafened); viewer.setDeafened(deafened) },
+    setDeafened: (deafened) => { voicePlayback.setDeafened(deafened) },
     subscribeMicrophones,
     viewer,
   }

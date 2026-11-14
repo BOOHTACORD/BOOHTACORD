@@ -46,10 +46,10 @@ void main() {
       members: members,
     );
 
-    expect(
-      state.members.map((member) => member.displayName),
-      ['Alice', 'Carol'],
-    );
+    expect(state.members.map((member) => member.displayName), [
+      'Alice',
+      'Carol',
+    ]);
   });
 
   test('reconnect clears speaking flags while retaining channel members', () {
@@ -93,15 +93,15 @@ void main() {
         speakingAccountIds: const {'account-2'},
       );
 
-      expect(
-        state.members.map((member) => member.displayName),
-        ['Alice', 'Bob'],
-      );
+      expect(state.members.map((member) => member.displayName), [
+        'Alice',
+        'Bob',
+      ]);
       expect(state.members.map((member) => member.speaking), [false, true]);
-      expect(
-        state.members.map((member) => member.microphoneMuted),
-        [false, false],
-      );
+      expect(state.members.map((member) => member.microphoneMuted), [
+        false,
+        false,
+      ]);
       expect(state.members.toString(), isNot(contains('account-')));
     },
   );
@@ -126,4 +126,31 @@ void main() {
     expect(state.members.single.speaking, isFalse);
     expect(state.members.single.microphoneMuted, isTrue);
   });
+
+  test(
+    'deafened roster members show status and are not projected as speakers',
+    () {
+      final state = projectVoiceOverlayRoster(
+        settings: const VoiceOverlaySettings(
+          enabled: true,
+          onlySpeakers: false,
+        ),
+        voiceChannelId: 'voice-a',
+        rosterChannelId: 'voice-a',
+        voiceStatus: VoiceOverlayVoiceStatus.connected,
+        roster: const [
+          VoiceRosterMember(
+            accountId: 'account-2',
+            displayName: 'Bob',
+            screenSharing: false,
+            microphoneMuted: true,
+            deafened: true,
+          ),
+        ],
+        speakingAccountIds: const {'account-2'},
+      );
+      expect(state.members.single.deafened, isTrue);
+      expect(state.members.single.speaking, isFalse);
+    },
+  );
 }

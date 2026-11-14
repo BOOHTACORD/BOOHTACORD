@@ -15,24 +15,27 @@ export function timestamp(value: unknown): boolean {
   return zone.toUpperCase() === 'Z' || (Number(zone.slice(1, 3)) <= 23 && Number(zone.slice(4, 6)) <= 59)
 }
 
-function participants(value: unknown): boolean {
+function participants(value: unknown, version: number): boolean {
   if (!Array.isArray(value)) return false
   const seen = new Set<string>()
   return value.every(item => {
-    if (!record(item) || !keys(item, ['account_id', 'display_name', 'screen_sharing', 'microphone_muted']) || !id(item.account_id) || seen.has(item.account_id.toLowerCase())) return false
+    const fields = version === 2 ? ['account_id', 'display_name', 'screen_sharing', 'microphone_muted', 'deafened'] : ['account_id', 'display_name', 'screen_sharing', 'microphone_muted']
+    if (!record(item) || !keys(item, fields) || !id(item.account_id) || seen.has(item.account_id.toLowerCase())) return false
     seen.add(item.account_id.toLowerCase())
-    return typeof item.display_name === 'string' && [...item.display_name].length >= 1 && [...item.display_name].length <= 64 && typeof item.screen_sharing === 'boolean' && typeof item.microphone_muted === 'boolean'
+    return typeof item.display_name === 'string' && [...item.display_name].length >= 1 && [...item.display_name].length <= 64 && typeof item.screen_sharing === 'boolean' && typeof item.microphone_muted === 'boolean' && (version === 1 || typeof item.deafened === 'boolean')
   })
 }
 
 export function validVoiceRosterRealtime(kind: string, payload: Record<string, unknown>): boolean {
   if (kind === 'voice.roster.unavailable') return keys(payload, ['version', 'code']) && payload.version === 1 && payload.code === 'temporarily_unavailable'
-  if (kind !== 'voice.roster.snapshot') return true
-  if (!keys(payload, ['version', 'generation', 'revision', 'observed_at', 'channels']) || payload.version !== 1 || !id(payload.generation) || !Number.isSafeInteger(payload.revision) || Number(payload.revision) < 1 || !timestamp(payload.observed_at) || !Array.isArray(payload.channels)) return false
+  if (kind === 'voice.roster.unavailable.v2') return keys(payload, ['version', 'code']) && payload.version === 2 && payload.code === 'temporarily_unavailable'
+  if (kind !== 'voice.roster.snapshot' && kind !== 'voice.roster.snapshot.v2') return true
+  const version = kind.endsWith('.v2') ? 2 : 1
+  if (!keys(payload, ['version', 'generation', 'revision', 'observed_at', 'channels']) || payload.version !== version || !id(payload.generation) || !Number.isSafeInteger(payload.revision) || Number(payload.revision) < 1 || !timestamp(payload.observed_at) || !Array.isArray(payload.channels)) return false
   const seen = new Set<string>()
   return payload.channels.every(channel => {
     if (!record(channel) || !keys(channel, ['channel_id', 'participants']) || !id(channel.channel_id) || seen.has(channel.channel_id.toLowerCase())) return false
     seen.add(channel.channel_id.toLowerCase())
-    return participants(channel.participants)
+    return participants(channel.participants, version)
   })
 }

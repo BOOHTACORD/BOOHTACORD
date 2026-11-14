@@ -6,8 +6,9 @@ List<VoiceRosterMember> liveOverlayMembers(
   Room room,
   VoiceRoomRoster? roster,
   String? self,
-  bool microphoneMuted,
-) {
+  bool microphoneMuted, {
+  bool deafened = false,
+}) {
   final cached = {
     for (final member in roster?.participants ?? const <VoiceRosterMember>[])
       member.accountId: member,
@@ -20,6 +21,7 @@ List<VoiceRosterMember> liveOverlayMembers(
         displayName: cached[self]?.displayName ?? room.localParticipant!.name,
         screenSharing: room.localParticipant!.isScreenShareEnabled(),
         microphoneMuted: microphoneMuted,
+        deafened: deafened,
       ),
     );
   }
@@ -34,6 +36,7 @@ List<VoiceRosterMember> liveOverlayMembers(
         displayName: cached[account]?.displayName ?? peer.name,
         screenSharing: peer.isScreenShareEnabled(),
         microphoneMuted: !peer.isMicrophoneEnabled(),
+        deafened: cached[account]?.deafened ?? false,
       ),
     );
   }

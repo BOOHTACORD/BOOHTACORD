@@ -42,6 +42,7 @@ func StartVoiceParticipantRoutes(ctx context.Context, mux *http.ServeMux, databa
 		return nil, nil, err
 	}
 	mux.Handle("GET /api/v1/voice/participants", sessionapi.Require(sessions)(rosterapi.NewHandler(service)))
+	mux.Handle("GET /api/v2/voice/participants", sessionapi.Require(sessions)(rosterapi.NewV2Handler(service)))
 	mux.Handle("POST /internal/livekit/roster", watchroster.NewWebhookHandler(apiKey, apiSecret, notifier))
 	return factory.Open, stop, nil
 }

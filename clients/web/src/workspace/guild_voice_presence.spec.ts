@@ -11,13 +11,13 @@ const channels: TopologyChannel[] = [
 describe('guild voice presence', () => {
   it('maps connected members to the voice channel and preserves their stream state', () => {
     const rosters: VoiceRoomRoster[] = [
-      { channelId: 'voice-1', participants: [{ accountId: 'member-1', displayName: 'Мика', screenSharing: true, microphoneMuted: false }] },
-      { channelId: 'text-1', participants: [{ accountId: 'member-2', displayName: 'Алекс', screenSharing: false, microphoneMuted: true }] },
-      { channelId: 'deleted-channel', participants: [{ accountId: 'member-3', displayName: 'Дима', screenSharing: false, microphoneMuted: false }] },
+      { channelId: 'voice-1', participants: [{ accountId: 'member-1', displayName: 'Мика', screenSharing: true, microphoneMuted: false, deafened: false }] },
+      { channelId: 'text-1', participants: [{ accountId: 'member-2', displayName: 'Алекс', screenSharing: false, microphoneMuted: true, deafened: false }] },
+      { channelId: 'deleted-channel', participants: [{ accountId: 'member-3', displayName: 'Дима', screenSharing: false, microphoneMuted: false, deafened: false }] },
     ]
 
     expect(buildGuildVoicePresence(rosters, channels)).toEqual(new Map([
-      ['member-1', { channelName: 'Общий голосовой', screenSharing: true }],
+      ['member-1', { channelName: 'Общий голосовой', screenSharing: true, microphoneMuted: false, deafened: false }],
     ]))
   })
 

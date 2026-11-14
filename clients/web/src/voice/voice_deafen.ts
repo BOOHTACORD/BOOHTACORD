@@ -32,17 +32,34 @@ export class VoiceDeafen {
 
     if (deafened) {
       this.microphoneBeforeDeafen = current.microphone
-      if (current.microphone === 'PUBLISHED') current.microphone = await setMicrophone(current.room, false, this.processing())
-      current.room.setDeafened?.(true)
-      this.deafened = true
-      return current.microphone
+      try {
+        if (current.microphone === 'PUBLISHED') current.microphone = await setMicrophone(current.room, false, this.processing())
+        await current.room.setDeafened?.(true)
+        this.deafened = true
+        return current.microphone
+      } catch (cause) {
+        try { await current.room.setDeafened?.(false) } catch { /* retain the original failure */ }
+        if (current.microphone !== 'PUBLISHED' && this.microphoneBeforeDeafen === 'PUBLISHED' && current.microphoneAllowed !== false) {
+          try { current.microphone = await setMicrophone(current.room, true, this.processing()) } catch { /* keep the microphone safely muted */ }
+        }
+        this.microphoneBeforeDeafen = null
+        throw cause
+      }
     }
 
     const microphone = this.microphoneBeforeDeafen
-    this.microphoneBeforeDeafen = null
-    current.room.setDeafened?.(false)
-    this.deafened = false
-    if (microphone === 'PUBLISHED' && current.microphoneAllowed !== false) current.microphone = await setMicrophone(current.room, true, this.processing())
-    return current.microphone
+    try {
+      await current.room.setDeafened?.(false)
+      if (microphone === 'PUBLISHED' && current.microphoneAllowed !== false) current.microphone = await setMicrophone(current.room, true, this.processing())
+      this.microphoneBeforeDeafen = null
+      this.deafened = false
+      return current.microphone
+    } catch (cause) {
+      try { await current.room.setDeafened?.(true) } catch { /* retain the original failure */ }
+      if (current.microphone === 'PUBLISHED') {
+        try { current.microphone = await setMicrophone(current.room, false, this.processing()) } catch { /* keep local state fail-closed */ }
+      }
+      throw cause
+    }
   }
 }

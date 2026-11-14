@@ -6,7 +6,7 @@ it('restores by account across new SID/name, rejoin, logout and another owner', 
   const prefs = new VoiceVolumePreferences({ getItem: key => saved.get(key) ?? null, setItem: (key, value) => { saved.set(key, value) } })
   let owner = 'owner', id = 'old-sid', name = 'Alice', changed = () => {}
   const remote = { setVolume: vi.fn() }
-  const cards = { cards: () => [{ accountId: 'peer', id, name, microphoneMuted: false, speaking: false }], onChange: (listener: () => void) => { changed = listener; return () => { changed = () => {} } } }
+  const cards = { cards: () => [{ accountId: 'peer', id, name, microphoneMuted: false, deafened: false, speaking: false }], onChange: (listener: () => void) => { changed = listener; return () => { changed = () => {} } } }
   const controls = createVoiceVolumeControls({ participantCards: () => cards, remoteVoices: () => remote as never, screenViewer: () => null }, async () => ({ accountId: owner }), prefs)
   await controls.start(); controls.setParticipantVolume(id, 175)
   id = 'new-sid'; name = 'Renamed'; changed()

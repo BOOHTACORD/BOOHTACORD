@@ -26,10 +26,10 @@ export function createRosterSocketState(reconnectSocket: () => void) {
     }
   }
   function accept(event: RealtimeEvent): boolean {
-    if (event.kind !== 'voice.roster.snapshot' && event.kind !== 'voice.roster.unavailable') return false
+    if (event.kind !== 'voice.roster.snapshot.v2' && event.kind !== 'voice.roster.unavailable.v2' && event.kind !== 'voice.roster.snapshot' && event.kind !== 'voice.roster.unavailable') return false
     if (!active || !socket) return true
     clearInitial()
-    if (!validVoiceRosterRealtime(event.kind, event.payload) || event.kind === 'voice.roster.unavailable') { unavailable(); return true }
+    if (!validVoiceRosterRealtime(event.kind, event.payload) || event.kind === 'voice.roster.unavailable' || event.kind === 'voice.roster.unavailable.v2') { unavailable(); return true }
     const nextGeneration = event.payload.generation as string, nextRevision = event.payload.revision as number
     if (generation === nextGeneration && (nextRevision < revision ||
       (nextRevision === revision && status.value !== 'stale_reconnecting' && status.value !== 'unavailable'))) return true

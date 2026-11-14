@@ -14,6 +14,7 @@ import { bindLiveKitScreenPublisher } from './screen_publisher/livekit_port'
 import { screenPublisherEventHandlers } from './screen_publisher/events'
 import { bindLiveKitScreenMetadata } from './screen_profile_metadata/livekit_binding'
 import { bindVoiceSounds } from './sound_events/livekit'
+import { publishVoiceDeafened } from './voice_deafen_publisher'
 
 export function wireLiveKitRoom(
   room: VoiceRoom,
@@ -97,7 +98,11 @@ export async function defaultLiveKitRoomFactory(): Promise<VoiceRoom> {
   room.screenViewer = viewer.viewer
   room.participantCards = viewer.participants
   room.remoteVoices = viewer.remoteVoices
-  room.setDeafened = viewer.setDeafened
+  let voiceLeaseId: string | null = null
+  room.setDeafened = async deafened => {
+    viewer.setDeafened(deafened)
+    if (voiceLeaseId) await publishVoiceDeafened(voiceLeaseId, deafened)
+  }
   const audioProfile = selectedVoiceAudioProfile()
   bindLiveKitMicrophone(room, liveKitRoom, sdk, audioProfile)
   bindVoiceAudioDiagnostics(room, liveKitRoom, audioProfile); bindNetworkDiagnostics(room, liveKitRoom)
@@ -119,6 +124,7 @@ export async function defaultLiveKitRoomFactory(): Promise<VoiceRoom> {
   const metadata = bindLiveKitScreenMetadata(liveKitRoom, Track.Source.ScreenShare, () => screenPublisher.generation())
   room.screenPublisher = screenPublisher
   room.bindScreenPreviewLease = async leaseId => {
+    voiceLeaseId = leaseId
     await metadata.bindLease(leaseId)
     await preview.bindLease(leaseId)
   }

@@ -13,7 +13,7 @@ function stream(id: string): ScreenViewerStream {
 }
 
 describe('selected screen sound', () => {
-  it('mutes the selected stream without changing voice deafen and retains mute across switching', () => {
+  it('mutes the selected stream and retains mute across switching', () => {
     const first = stream('alice')
     const second = stream('bob')
     const firstOutput = { dispose: vi.fn(), setMuted: vi.fn(), setVolume: vi.fn() }
@@ -26,9 +26,7 @@ describe('selected screen sound', () => {
     controller.select('alice', {} as HTMLVideoElement, audio)
     controller.setAudioMuted(true)
     controller.select('bob', {} as HTMLVideoElement, audio)
-    controller.setDeafened(true)
     controller.setAudioMuted(false)
-    controller.setDeafened(false)
 
     expect(firstOutput.setMuted).toHaveBeenLastCalledWith(false)
     expect(firstOutput.dispose).not.toHaveBeenCalled()

@@ -22,7 +22,6 @@ abstract class WorkspaceVoiceScreenViewerContext extends StatelessWidget {
     required this.screenAudioAvailable,
     required this.screenAudioVolume,
     required this.screenAudioMuted,
-    required this.deafened,
     required this.onToggleScreenAudio,
     required this.onScreenAudioVolumeChanged,
     required this.onFullscreen,
@@ -48,7 +47,6 @@ abstract class WorkspaceVoiceScreenViewerContext extends StatelessWidget {
   final bool screenAudioAvailable;
   final int? screenAudioVolume;
   final bool screenAudioMuted;
-  final bool deafened;
   final VoidCallback? onToggleScreenAudio;
   final ValueChanged<int>? onScreenAudioVolumeChanged;
   final VoidCallback onFullscreen;

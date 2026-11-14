@@ -66,7 +66,7 @@ onBeforeUnmount(() => {
         <div class="participant-card-copy">
           <div class="participant-card-name-row">
             <span class="participant-name">{{ participant.name || 'Участник' }}</span>
-            <VoiceParticipantStatus class="participant-card-status" compact :microphone-muted="participant.microphoneMuted" :speaking="participant.speaking" />
+            <VoiceParticipantStatus class="participant-card-status" compact :deafened="participant.deafened" :microphone-muted="participant.microphoneMuted" :speaking="participant.speaking" />
             <div v-if="participant.accountId" class="participant-card-actions">
               <details class="participant-volume">
                 <summary :aria-label="`Настройки громкости ${participant.name || 'участника'}`" title="Настройки участника"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></summary>

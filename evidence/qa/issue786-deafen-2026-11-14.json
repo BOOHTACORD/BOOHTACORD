@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "issue": 786,
+  "leaf": "VD786-001",
+  "date": "2026-11-14",
+  "status": "BLOCKED",
+  "gate_closed": false,
+  "scope": "Web and Flutter deafen state, participant status, and screen-share audio independence",
+  "base": "f67209d302a8a419333ead811dc1f21be9fd2b41",
+  "tested_source": "f67209d302a8a419333ead811dc1f21be9fd2b41 worktree-sha256=3bc0bb3792afe1c8980385a704c2c5f6125e9ebbd203696e1e5f8785f32324d9",
+  "timestamp_utc": "2026-11-14T16:51:16Z",
+  "verification": {
+    "local_feature_command": "./tools/qa/local_features/check.sh --feature auth --feature chat --feature connection_status --feature idle_afk --feature screen --feature shell --feature support --feature update_required --feature voice --base origin/master --real-stack",
+    "run": ".out/local-features/20261114-192949",
+    "report_status": "FAIL",
+    "report_sha256": "767cae49ea8ece3b0a38b7148c455f58d7a352dd4262ead9a518e7b615fb3b09",
+    "source_stability": "PASS",
+    "checks": [
+      {
+        "name": "focused_go_tests",
+        "result": "PASS",
+        "command": "GOCACHE=/private/tmp/go-cache-issue786 go test ./internal/media/set_voice_deafen/... ./internal/media/snapshot_livekit_presence ./internal/voice/list_connected_participants/... ./internal/realtime/connect_session ./internal/app/media_routes ./internal/app/runtime"
+      },
+      {
+        "name": "traceability",
+        "result": "PASS_WITH_SOURCE_LIMITATION",
+        "command": "pwsh -NoProfile -File tools/verify/spec_traceability/verify-spec-traceability.ps1",
+        "observation": "39 requirements referenced. The approved product brief path from AGENTS.md is unavailable on this host; source validation used the committed requirement index."
+      },
+      {
+        "name": "openapi_route_parity",
+        "result": "PASS",
+        "command": "python3 -m tools.verify.openapi_parity.validate",
+        "observation": "137 public operations and 4 private exclusions."
+      },
+      {
+        "name": "client_parity_review",
+        "result": "PASS",
+        "command": "python3 -m tools.verify.client_parity.run --base origin/master",
+        "observation": "Recorded the #786 Web/iOS/Android regression decisions for each changed common feature scope. Existing platform decisions are retained; runtime evidence limits remain explicit."
+      },
+      {
+        "name": "product_map_component_ownership",
+        "result": "PASS",
+        "command": "python3 -m tools.product_map.ownership.run --base f67209d302a8a419333ead811dc1f21be9fd2b41",
+        "observation": "All 10 new runtime paths are mapped to voice-control product components. The existing unclassified baseline is unchanged."
+      },
+      {
+        "name": "livekit_network_config_source_hashes",
+        "result": "PASS",
+        "command": "python3 -m tools.verify.livekit_network_config.check",
+        "observation": "The issue #786 Flutter remote-track source is bound by a source-only revalidation record. No deployed network or physical-media acceptance is claimed."
+      },
+      {
+        "name": "contracts_verifier",
+        "result": "BLOCKED",
+        "command": "pwsh -NoProfile -File tools/verify/contracts/verify-contracts.ps1",
+        "observation": "The contract test suite could not import the required Python package jsonschema."
+      },
+      {
+        "name": "web_unit_and_build",
+        "result": "PASS",
+        "observation": "Both stages passed in the final local-feature run."
+      },
+      {
+        "name": "web_browser_acceptance",
+        "result": "PASS",
+        "observation": "Accessibility, mini_player, screen_share_ui, and voice_interface stages passed in the final local-feature run. Focused reruns also passed: participant status 5/5, deafened participant row 1/1, deafen with mini stream audio controls 1/1."
+      },
+      {
+        "name": "web_sfu_audio_deafen_fixture_followup",
+        "result": "NOT_RUN",
+        "command": "clients/web: ./node_modules/.bin/playwright test -c tests/audio/playwright.config.ts tests/audio/audio_input.browser.spec.ts",
+        "observation": "A focused follow-up was added after CI found the synthetic fixture's non-UUID lease ID. Local rerun was unavailable because this isolated worktree has no clients/web/node_modules/.bin/playwright; the next CI run executes the updated SFU audio suite."
+      },
+      {
+        "name": "actual_lifecycle_v2_roster_observer",
+        "result": "PASS",
+        "command": "node --test tools/qa/critical_client_acceptance/roster_websocket_observer.test.mjs",
+        "observation": "CI's lifecycle profile exposed that the QA observer counted only v1 unavailable roster frames while the #786 client requests v2. The observer now counts both versions; its focused unit passes. Full actual lifecycle acceptance must be rerun."
+      },
+      {
+        "name": "flutter_full_unit_suite",
+        "result": "PASS_WITH_ONE_SKIPPED_TEST",
+        "command": "/opt/homebrew/share/flutter/bin/flutter test",
+        "observation": "1,943 tests passed and 1 was skipped. The local-feature checker labels its flutter-unit stage BLOCKED when a test is skipped."
+      },
+      {
+        "name": "flutter_component_captures",
+        "result": "PASS"
+      },
+      {
+        "name": "real_stack_and_android_runtime",
+        "result": "BLOCKED_BY_STACK_STARTUP",
+        "observation": "Both real-stack viewport stages and the registered Android #786 integration target failed before feature assertions because the disposable service did not become ready. The Tempo container logs from this run show its configured /etc/tempo.yaml mount is a directory, so the API/SFU stack never becomes ready."
+      },
+      {
+        "name": "ios_runtime",
+        "result": "BLOCKED",
+        "observation": "No available iOS Simulator runtime on this host."
+      },
+      {
+        "name": "paired_cross_client_media_acceptance",
+        "result": "NOT_RUN",
+        "observation": "No Web-to-physical-Flutter paired media run was completed. No physical media capability or capacity claim is made."
+      }
+    ]
+  },
+  "post_run_registry_update": {
+    "timestamp_utc": "2026-11-14T17:42:32Z",
+    "scope": "Added issue #786 parity-review entries for changed common client feature scopes, mapped the 10 new runtime paths to voice-control product components, regenerated the product-map viewer, and recorded the source-only Flutter remote-track revalidation required by CI. Added a synthetic SFU test route for the placeholder lease and updated the actual-acceptance roster observer to recognize v2 unavailable events after CI exposed the harness mismatch; no application runtime code changed after the local-feature run.",
+    "verification": [
+      "python3 -m tools.verify.client_parity.run --base origin/master",
+      "python3 -m tools.product_map.ownership.run --base d7a1a9982efad93b7ad5d9001860ee19a82c60af",
+      "python3 -m tools.verify.livekit_network_config.check",
+      "python3 -m unittest tools.verify.livekit_network_config.test_model",
+      "node --test tools/qa/critical_client_acceptance/roster_websocket_observer.test.mjs",
+      "python3 -m json.tool tools/qa/local_features/features.json"
+    ]
+  },
+  "visual_review": {
+    "status": "PASS_SCOPED",
+    "screenshots_inspected_at_source_resolution": 3,
+    "screenshots": [
+      {
+        "path": ".out/local-features/20261114-192949/images/web-screen_share_ui/disclosure.browser-partici-cb61d-t-aligned-and-close-outside/participant-card-deafened.png",
+        "sha256": "015444fb22d7bbce2202527f6bbcf97f215a6a1c651ece2a64a9f1c9944ffbaa",
+        "resolution_px": [876, 656],
+        "visual_observation": "The self participant row shows one red headphones-off icon; the stream participant retains its separate microphone-muted icon. The two-card layout has no visible overflow. This browser fixture uses a placeholder stream, not decoded media."
+      },
+      {
+        "path": ".out/local-features/20261114-192949/images/web-voice_interface/controls.browser-all-voice-06cb0-stay-accessible-at-1440x900/deafened-desktop.png",
+        "sha256": "d5962b9cf1f081402c3d2c2ada0393a201f21b1c6556298e6bf4cae30c39e2d9",
+        "resolution_px": [1440, 900],
+        "visual_observation": "Participant status and voice dock both show deafen with the headphones-off icon. The screen-share action and leave action remain visible; the layout has no visible clipping."
+      },
+      {
+        "path": ".out/local-features/20261114-192949/images/web-voice_interface/controls.browser-mobile-do-3f210-ith-drawer-closed-text-200-/closed-deafened.png",
+        "sha256": "258de975a20f1b7f2ee4577f42a40d1461b8fff0279c81814f3b895127a2f719",
+        "resolution_px": [320, 900],
+        "visual_observation": "At 200% text scale the red headphones-off state remains visible, participant names truncate within their cards, and the bottom controls fit the viewport without horizontal overflow."
+      }
+    ],
+    "limits": [
+      "These screenshots validate rendered UI only; the local stack prevented native runtime and media verification.",
+      "No screenshot baseline was approved."
+    ]
+  }
+}

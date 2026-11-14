@@ -45,7 +45,8 @@ extension VoiceRosterSharedSocket on VoiceRosterController {
     initialTimer?.cancel();
     initialTimer = null;
     if (!validRosterPayload(event.kind, event.payload) ||
-        event.kind == 'voice.roster.unavailable') {
+        event.kind == 'voice.roster.unavailable' ||
+        event.kind == 'voice.roster.unavailable.v2') {
       markLost(revision);
       return true;
     }

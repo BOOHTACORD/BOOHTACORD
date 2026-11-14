@@ -2,6 +2,8 @@ import 'package:livekit_client/livekit_client.dart'
     hide ChatMessage, voiceReconnectAttemptLimit;
 
 import '../lifecycle/controller.dart';
+import '../screen_viewer/audio_publication.dart';
+import 'deafen_api.dart';
 
 extension VoiceMicrophoneDeafen on VoiceController {
   Future<void> toggleDeafen() async {
@@ -32,15 +34,25 @@ extension VoiceMicrophoneDeafen on VoiceController {
         }
         for (final participant in room.remoteParticipants.values) {
           for (final publication in participant.audioTrackPublications) {
+            if (!isVoiceAudioPublicationForDeafen(participant, publication)) {
+              continue;
+            }
             await publication.disable();
             if (!active(ticket, revision)) return;
           }
         }
         if (!active(ticket, revision)) return;
+        final lease = leaseId;
+        if (lease == null) throw StateError('Голосовая аренда недоступна.');
+        await publishVoiceDeafened(api.transport, lease, true);
+        if (!active(ticket, revision)) return;
         deafened = true;
       } else {
         for (final participant in room.remoteParticipants.values) {
           for (final publication in participant.audioTrackPublications) {
+            if (!isVoiceAudioPublicationForDeafen(participant, publication)) {
+              continue;
+            }
             await publication.enable();
             if (!active(ticket, revision)) return;
           }
@@ -54,6 +66,10 @@ extension VoiceMicrophoneDeafen on VoiceController {
           );
         }
         if (!active(ticket, revision)) return;
+        final lease = leaseId;
+        if (lease == null) throw StateError('Голосовая аренда недоступна.');
+        await publishVoiceDeafened(api.transport, lease, false);
+        if (!active(ticket, revision)) return;
         deafened = false;
         mutedBeforeDeafen = false;
       }
@@ -62,6 +78,9 @@ extension VoiceMicrophoneDeafen on VoiceController {
       if (identical(this.room, room) && voicePhase != VoicePhase.leaving) {
         for (final participant in room.remoteParticipants.values) {
           for (final publication in participant.audioTrackPublications) {
+            if (!isVoiceAudioPublicationForDeafen(participant, publication)) {
+              continue;
+            }
             try {
               if (wasDeafened) {
                 await publication.disable();
@@ -94,6 +113,9 @@ extension VoiceMicrophoneDeafen on VoiceController {
     if (!active(ticket, revision)) return;
     for (final participant in room.remoteParticipants.values) {
       for (final publication in participant.audioTrackPublications) {
+        if (!isVoiceAudioPublicationForDeafen(participant, publication)) {
+          continue;
+        }
         await publication.disable();
         if (!active(ticket, revision)) return;
       }

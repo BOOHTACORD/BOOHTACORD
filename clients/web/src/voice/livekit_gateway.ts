@@ -57,7 +57,7 @@ export interface VoiceRoom {
   participantCards?: RemoteParticipantController
   remoteVoices?: RemoteVoicePlaybackController
   screenViewer?: ScreenViewerController
-  setDeafened?(deafened: boolean): void
+  setDeafened?(deafened: boolean): Promise<void> | void
   setMicrophone?(enabled: boolean, options: AudioProcessingOptions): Promise<void>
   disposeMicrophone?(): Promise<void>
   readMicrophoneTrack?(): MediaStreamTrack | undefined

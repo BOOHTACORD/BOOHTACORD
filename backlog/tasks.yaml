@@ -8,6 +8,11 @@ action_catalog:
   verification: backlog/VERIFICATION_TODO.md
   completed: DONE.md
 tasks:
+  - id: VD786-001
+    title: Decouple deafen state from screen-share audio across Web and Flutter (GitHub #786)
+    requirements: [REQ-VOICE-01, REQ-UI-01, REQ-SECURITY-01, REQ-QUALITY-01]
+    depends_on: [RT689-040, FV2-011]
+    evidence: [backend/internal/media/set_voice_deafen, backend/internal/voice/list_connected_participants/service_test.go, clients/web/src/voice/livekit_screen_viewer_adapter.spec.ts, clients/web/src/voice/remote_participant_controller.spec.ts, clients/flutter/test/voice_screen_audio_controls_test.dart, clients/flutter/test/screen_share_audio_publication_test.dart, clients/flutter/integration_test/issue786_deafen_test.dart, tools/qa/local_features/features.json, evidence/qa/issue786-deafen-2026-11-14.json]
   - id: IDLE-001
     title: Add realtime idle presence across Web and Flutter clients
     requirements: [REQ-VOICE-01, REQ-UI-01, REQ-SECURITY-01]

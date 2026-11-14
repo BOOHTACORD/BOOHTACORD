@@ -1,7 +1,7 @@
 import { timestamp } from './roster_payload'
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-const kinds = new Set(['maintenance.snapshot', 'maintenance.changed', 'voice.roster.snapshot', 'voice.roster.unavailable'])
+const kinds = new Set(['maintenance.snapshot', 'maintenance.changed', 'voice.roster.snapshot', 'voice.roster.unavailable', 'voice.roster.snapshot.v2', 'voice.roster.unavailable.v2'])
 const object = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null && !Array.isArray(value)
 const exact = (value: Record<string, unknown>, keys: string[]) => Object.keys(value).length === keys.length && keys.every(key => Object.hasOwn(value, key))
 

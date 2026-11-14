@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:boohtacord_desktop/src/app_state.dart';
 import 'package:boohtacord_desktop/src/models.dart';
 import 'package:boohtacord_desktop/src/screens/workspace_ui/voice_participant_strip/component.dart';
@@ -20,6 +22,10 @@ class _Participant extends Fake implements RemoteParticipant {
 
   @override
   String get metadata => 'account:$accountId';
+
+  @override
+  UnmodifiableMapView<String, String> get attributes =>
+      UnmodifiableMapView(const {});
 
   @override
   bool get isSpeaking => false;

@@ -73,9 +73,20 @@ extension VoiceEventsRemoteTracks on VoiceController {
         );
       }
       if (event.track is RemoteAudioTrack) {
-        if (deafened) unawaited(event.publication.disable());
-        final source =
-            isScreenShareAudioPublication(event.participant, event.publication)
+        final screenAudio = isScreenShareAudioPublication(
+          event.participant,
+          event.publication,
+        );
+        if (screenAudio) {
+          unawaited(event.publication.enable());
+        } else if (deafened &&
+            isVoiceAudioPublicationForDeafen(
+              event.participant,
+              event.publication,
+            )) {
+          unawaited(event.publication.disable());
+        }
+        final source = screenAudio
             ? TrackSource.screenShareAudio
             : event.publication.source;
         unawaited(applySavedAudioVolume(event.participant, source));
@@ -102,6 +113,16 @@ extension VoiceEventsRemoteTracks on VoiceController {
           if (event.participant.identity ==
               selectedRemoteScreenViewerIdentity) {
             subscribeRemoteScreenForViewing(room, event.participant.identity);
+            final screenAudio = screenShareAudioPublication(event.participant);
+            if (screenAudio != null) {
+              if (deafened) unawaited(screenAudio.enable());
+              unawaited(
+                applySavedAudioVolume(
+                  event.participant,
+                  TrackSource.screenShareAudio,
+                ),
+              );
+            }
           } else {
             unawaited(setRemoteTrackSubscription(event.publication, false));
           }

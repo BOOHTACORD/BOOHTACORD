@@ -129,12 +129,16 @@ test('short viewport controls, pause, expand and close preserve media identity a
  expect(await page.evaluate(()=>(window as any).__miniFixture.events)).toEqual(['select','clear','clear'])
 })
 
-test('deafen prevents mini audio overrides, absent audio is explicit, source end and logout remove controls',async({page})=>{
+test('deafen preserves mini stream audio controls; absent audio, source end and logout update controls',async({page})=>{
  await mount(page);await navigate(page,'text')
  await page.evaluate(()=>{(window as any).__miniFixture.connection.deafened=true})
- await expect(page.getByRole('button',{name:'Включить звук трансляции',exact:true})).toBeDisabled()
+ const streamAudio=page.getByRole('button',{name:'Выключить звук трансляции',exact:true})
+ await expect(streamAudio).toBeEnabled()
+ await streamAudio.click()
+ const mutedStreamAudio=page.getByRole('button',{name:'Включить звук трансляции',exact:true})
+ await expect(mutedStreamAudio).toBeEnabled()
  await page.evaluate(()=>{const c=(window as any).__miniFixture.connection;c.deafened=false;c.screenViewerCards[0].hasAudio=false})
- await expect(page.getByRole('button',{name:'Выключить звук трансляции',exact:true})).toBeDisabled()
+ await expect(mutedStreamAudio).toBeDisabled()
  await page.evaluate(()=>{const c=(window as any).__miniFixture.connection;c.screenViewerEnded=true;c.screenViewerCards=[]})
  await expect(page.getByRole('button',{name:'Остановить просмотр',exact:true})).toBeEnabled()
  await expect(page.getByRole('button',{name:'Приостановить трансляцию',exact:true})).toBeDisabled()

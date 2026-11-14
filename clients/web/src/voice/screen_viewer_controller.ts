@@ -44,7 +44,6 @@ export class ScreenViewerController {
   }
   onChange(listener: () => void): () => void { this.listeners.add(listener); return () => this.listeners.delete(listener) }
 
-  setDeafened(deafened: boolean): void { this.lifecycle.setDeafened(deafened) }
   setWatchers(watchers: ScreenViewerWatcher[]): void {
     if (watchers.length === this.viewerList.length && watchers.every((watcher, index) => {
       const previous = this.viewerList[index]

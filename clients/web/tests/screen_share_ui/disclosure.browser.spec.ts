@@ -302,10 +302,11 @@ test('participant volume controls overlay mute state with a watcher badge, keep 
 
   await open(page, 'participant-cards&deafened', 876, 100, 656)
   const deafenedStatus = page.locator('.participant-self .participant-card-status')
-  await expect(deafenedStatus).toHaveAttribute('aria-label', 'Звук и микрофон выключены')
-  await expect(deafenedStatus.locator('.voice-person-state-icon')).toHaveCount(2)
+  await expect(deafenedStatus).toHaveAttribute('aria-label', 'Не слышит участников')
+  await expect(deafenedStatus.locator('.voice-person-state-icon')).toHaveCount(1)
   const deafenIconSizes = await deafenedStatus.locator('.voice-person-state-icon').evaluateAll(elements => elements.map(element => ({ width: getComputedStyle(element).width, height: getComputedStyle(element).height })))
-  expect(deafenIconSizes).toEqual([{ width: '16px', height: '16px' }, { width: '16px', height: '16px' }])
+  expect(deafenIconSizes).toEqual([{ width: '16px', height: '16px' }])
+  await page.screenshot({ path: info.outputPath('participant-card-deafened.png') })
 })
 
 test('participant volume button sits slightly below the mute icon when the watcher badge adds a row', async ({ page }) => {

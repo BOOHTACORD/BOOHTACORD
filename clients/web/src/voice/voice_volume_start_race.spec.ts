@@ -17,7 +17,7 @@ describe('voice volume account lookup', () => {
     let lookupCount = 0
     const loadAccount = () => ++lookupCount === 1 ? firstAccount : Promise.resolve({ accountId: 'current-owner' })
     const remote = { setVolume: vi.fn() }
-    const participantCards = { cards: () => [{ accountId: 'remote-a', id: 'track-a', microphoneMuted: false, name: 'Alice', speaking: false }], onChange: () => () => undefined }
+    const participantCards = { cards: () => [{ accountId: 'remote-a', id: 'track-a', microphoneMuted: false, deafened: false, name: 'Alice', speaking: false }], onChange: () => () => undefined }
     const controls = createVoiceVolumeControls({ participantCards: () => participantCards, remoteVoices: () => remote as never, screenViewer: () => null }, loadAccount, preferences)
 
     const staleStart = controls.start()
@@ -42,7 +42,7 @@ describe('voice volume account lookup', () => {
     const firstAccount = new Promise<{ accountId: string }>((_resolve, reject) => { rejectFirst = reject })
     let lookupCount = 0
     const remote = { setVolume: vi.fn() }
-    const participantCards = { cards: () => [{ accountId: 'remote-a', id: 'track-a', microphoneMuted: false, name: 'Alice', speaking: false }], onChange: () => () => undefined }
+    const participantCards = { cards: () => [{ accountId: 'remote-a', id: 'track-a', microphoneMuted: false, deafened: false, name: 'Alice', speaking: false }], onChange: () => () => undefined }
     const controls = createVoiceVolumeControls({ participantCards: () => participantCards, remoteVoices: () => remote as never, screenViewer: () => null }, () => ++lookupCount === 1 ? firstAccount : Promise.resolve({ accountId: 'current-owner' }), new VoiceVolumePreferences(local))
 
     const staleStart = controls.start()

@@ -107,5 +107,8 @@ func routes(ctx context.Context, resources *lifecycle.Stack, database, sessionDa
 	if err := mediaroutes.ConfigureScreenDescriptorRoutes(mux, database, sessionService, configuration.PublicOrigin, configuration.LiveKitPrivateHTTPURL, configuration.LiveKitAPIKey, configuration.LiveKitAPISecret); err != nil {
 		return nil, screenpreview.Service{}, fmt.Errorf("configure screen profile descriptor updates: %w", err)
 	}
+	if err := mediaroutes.ConfigureVoiceDeafenRoutes(mux, database, sessionService, configuration.PublicOrigin, configuration.LiveKitPrivateHTTPURL, configuration.LiveKitAPIKey, configuration.LiveKitAPISecret); err != nil {
+		return nil, screenpreview.Service{}, fmt.Errorf("configure voice deafen updates: %w", err)
+	}
 	return installationapi.Headers(requestid.Middleware(httpmetrics.LoggingMiddleware(slog.Default(), metrics.Middleware(tracehttp.Middleware(otel.Tracer("boohtacord/api"), mux, configuration.OriginMiddleware(mux)), mux))), configuration.CentralTelemetry), previewService, nil
 }
