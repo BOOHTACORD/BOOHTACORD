@@ -1,5 +1,7 @@
 #include "engine.h"
 #include <algorithm>
+#include <chrono>
+#include "../preflight/benchmark.h"
 
 namespace boohta::deepfilter {
 namespace {
@@ -32,6 +34,21 @@ bool VerifiedEngine::Open(const std::wstring& dll, const char* dll_hash,
 }
 bool VerifiedEngine::Reset() {
   if (!create_ || !Close()) return false;
+  if (!CreateState()) return false;
+  if (!preflight_passed_) {
+    const auto result = RunPreflight([this](AudioFrame& frame) { return Process(frame); }, [] {
+      return std::chrono::duration_cast<std::chrono::microseconds>(
+          std::chrono::steady_clock::now().time_since_epoch()).count();
+    });
+    preflight_p95_us_.store(result.p95_us); preflight_max_us_.store(result.max_us);
+    if (!result.ready) { Close(); return false; }
+    // Discard synthetic model history before admitting captured audio.
+    if (!Close() || !CreateState()) return false;
+    preflight_passed_ = true;
+  }
+  return true;
+}
+bool VerifiedEngine::CreateState() {
   void* state = nullptr;
   if (create_(reinterpret_cast<const unsigned char*>(model_path_.data()), model_path_.size(), &state) != 0 || !state)
     return false;

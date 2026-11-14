@@ -683,6 +683,7 @@
           "clients/flutter/test/audio_devices/deepfilter_input_gate_test.dart",
           "clients/flutter/test/audio_devices/deepfilter_input_fallback_test.dart",
           "clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/frame_queue/queue_test.cc",
+          "clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/preflight/benchmark_test.cc",
           "clients/flutter/packages/flutter_webrtc/common/rnnoise/microphone_controls/processor_test.cc"
         ],
         "scope": "RNNoise v0.2 and experimental Web/Windows DeepFilter modes are behind disabled-by-default build flags; DeepFilter release assets are not supplied. Web adapter tests require a confirmed disabled browser noise suppressor before attaching either model; ignored constraints trigger muted recapture, and an unconfirmed fallback fails muted. Flutter tests cover model readiness and browser fallback for initial capture, settings and desktop device changes using fakes; native hook is not instantiated by the normal client. Real-stack, Windows device, physical audio, visual and release acceptance remain NOT_RUN/BLOCKED."
