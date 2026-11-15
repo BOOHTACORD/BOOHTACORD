@@ -31,7 +31,8 @@ test('processing switches preserve one live publication and receiver audio', asy
         expect(state.processing.status).toBe('unsupported')
       else expect(state.processing.effectiveMode).toBe(mode)
       if (mode === 'rnnoise') expect(state.processing.modelId).toBe(
-        process.env.VITE_RNNOISE_V02_ENABLED === 'true' ? 'rnnoise-stock-v0.2' : 'rnnoise-stock-v0.1')
+        process.env.VITE_RNNOISE_V02_ENABLED === 'true' ? 'rnnoise-stock-v0.2'
+          : process.env.VITE_RNNOISE_V02_ENABLED === 'false' ? 'rnnoise-stock-v0.1' : 'rnnoise-release-v0.2')
       if (state.replaced) await expect.poll(async () => {
         const next = await receiver.evaluate(() => (window as any).livekitAudioGate.read())
         return next.subscriptions

@@ -2,6 +2,7 @@ import { LocalAudioTrack } from 'livekit-client'
 import { LiveKitMicrophoneAdapter } from '../../src/voice/noise_suppression/microphone_adapter/controller'
 import { RnnoiseTrackProcessor } from '../../src/voice/noise_suppression/rnnoise_track_processor'
 import { preflightWebEngine } from '../../src/voice/noise_suppression/auto_preflight/client'
+import { DeepFilterTrackProcessor } from '../../src/voice/noise_suppression/deepfilter/track_processor'
 
 export async function runAdapterRecapture() {
   const context = new AudioContext({ sampleRate: 48000 })
@@ -19,7 +20,8 @@ export async function runAdapterRecapture() {
     },
     async publishTrack(track) { events.push(`publish:${String(track.mediaStreamTrack.enabled)}`) },
     async unpublishTrack() { events.push('unpublish') },
-    createProcessor(callbacks) { return new RnnoiseTrackProcessor(callbacks) },
+    createProcessor(callbacks, options) { return options?.noiseSuppressionMode === 'deepfilter'
+      ? new DeepFilterTrackProcessor({ onFailure: callbacks.onFailure }) : new RnnoiseTrackProcessor(callbacks) },
   })
   const browser = { noiseSuppressionMode: 'browser', autoGainControl: false, echoCancellation: false } as const
   const rnnoise = { ...browser, noiseSuppressionMode: 'rnnoise' } as const
@@ -52,7 +54,8 @@ export async function runAutoCapture() {
     },
     async publishTrack(track) { publications++; publishedMuted = !track.mediaStreamTrack.enabled },
     async unpublishTrack() {},
-    createProcessor(callbacks) { return new RnnoiseTrackProcessor(callbacks) },
+    createProcessor(callbacks, options) { return options?.noiseSuppressionMode === 'deepfilter'
+      ? new DeepFilterTrackProcessor({ onFailure: callbacks.onFailure }) : new RnnoiseTrackProcessor(callbacks) },
   })
   const auto = { noiseSuppressionMode: 'auto', autoGainControl: false, echoCancellation: false } as const
   try {

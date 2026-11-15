@@ -43,6 +43,7 @@ Candidate: Windows 1.0.56+92/r71; Web 1.0.56/r64.
 | Ordinary browser DeepFilter track, mute and worker preflight | PASS |
 | Browser runtime total | PASS, 7 tests |
 | Ordinary RNNoise, DeepFilter and Auto through local LiveKit with receiver/mute checks | PASS, 3 tests |
+| Complete ordinary browser/SFU regression, including capture and live processing switches | PASS, 26 tests |
 | Ordinary Web production build | PASS |
 | Browser versioned selection desktop/mobile | PASS, 3 tests |
 
