@@ -31,17 +31,13 @@ jobs:
           path: .out/dfn-web-patch
           persist-credentials: false
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
-        with:
-          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+        with: {python-version: "${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}"}
       - name: Verify selected Python interpreter
         run: python -m tools.ci.toolchains.runtime python
       - name: Prepare public Node SDK and locked dependency cache inputs
         run: python -m tools.ci.toolchains.cache_inputs npm
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version-file: .node-version
-          cache: npm
-          cache-dependency-path: .out/ci/cache-inputs/npm.json
+        with: {node-version-file: .node-version, cache: npm, cache-dependency-path: .out/ci/cache-inputs/npm.json}
       - name: Install pinned research tools
         shell: pwsh
         run: |
@@ -62,33 +58,9 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           node tools/audio/research_dfn_web/stage.mjs "$env:RUNNER_TEMP/dfn-web/bundle" "$env:RUNNER_TEMP/dfn-stage"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          repository: emscripten-core/emsdk
-          ref: e4fe26ef59168ff44f4c23c466e497bf60b3411e
-          path: .out/emsdk
-          persist-credentials: false
       - name: Rebuild official RNNoise and verify both shipped Web runtimes
         shell: pwsh
-        run: |
-          $env:PYTHONUTF8 = '1'
-          python -m pip install pytest==8.4.2
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          python -m pytest tools/audio/release_source tools/audio/release_notices tools/audio/release_deepfilter --import-mode=importlib -q
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          & ./.out/emsdk/emsdk.bat install 4.0.20
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          & ./.out/emsdk/emsdk.bat activate 4.0.20
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          $env:EM_CONFIG = (Resolve-Path .out/emsdk/.emscripten).Path
-          python -m tools.audio.release_rnnoise.build --output "$env:RUNNER_TEMP/rnnoise-production" --emcc .out/emsdk/upstream/emscripten/emcc.bat
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          python -m tools.audio.release_web_assets.verify_rebuild --rnnoise "$env:RUNNER_TEMP/rnnoise-production" --deepfilter "$env:RUNNER_TEMP/dfn-web/bundle"
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          node --test tools/audio/release_web_assets/bundle.test.mjs
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          python -m unittest tools.audio.release_web_assets.test_verify_rebuild
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        run: ./tools/audio/release_web_assets/ci_build.ps1
       - name: Check ordinary Web bundle without research flags
         shell: pwsh
         run: |
@@ -114,17 +86,7 @@ jobs:
       - run: ./tools/audio/research_dfn_web/ci_windows.ps1
       - name: Exercise ordinary engine loading, processing and mute in Chromium
         shell: pwsh
-        run: |
-          Remove-Item Env:BOOHTA_RESEARCH_ASSET_DIR -ErrorAction SilentlyContinue
-          Remove-Item Env:BOOHTA_DEEPFILTER_RESEARCH_BUNDLE -ErrorAction SilentlyContinue
-          Remove-Item Env:VITE_DEEPFILTER_ENABLED -ErrorAction SilentlyContinue
-          Push-Location clients/web
-          try {
-            npx playwright test -c tests/audio/playwright.production.config.ts
-            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          } finally { Pop-Location }
-          python -m tools.audio.research_dfn_web.livekit_windows --binary "$env:RUNNER_TEMP/livekit/livekit-server.exe" --web clients/web --config tests/audio/playwright.production_sfu.config.ts --test production_livekit.local.ts
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        run: ./tools/audio/release_web_assets/ci_runtime.ps1
   linux-firefox:
     runs-on: ubuntu-24.04
     needs: windows-wasm
@@ -137,10 +99,7 @@ jobs:
       - run: python -m tools.ci.toolchains.runtime python
       - run: python -m tools.ci.toolchains.cache_inputs npm
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version-file: .node-version
-          cache: npm
-          cache-dependency-path: .out/ci/cache-inputs/npm.json
+        with: {node-version-file: .node-version, cache: npm, cache-dependency-path: .out/ci/cache-inputs/npm.json}
       - run: npm ci --prefix clients/web
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
