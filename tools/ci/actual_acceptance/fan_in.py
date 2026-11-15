@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import re
 from tools.ci.artifact_policy.capture_data import safe_json,strict_json,logical_path
+from tools.ci.component_receipts.history import archive_pattern,select_archives,valid_attempt
 from .plan import require
 from .validation import profiles,validate_result
 
@@ -15,11 +16,17 @@ def read(path,limit=2_000_000):
     return path.read_bytes()
 
 
-def verify(root,selected,source,run,attempt):
-    require(root.is_dir() and not root.is_symlink() and set(p.name for p in root.iterdir())==set(selected))
+def verify(root,selected,source,run,attempt,*,receipts=None):
+    require(root.is_dir() and not root.is_symlink())
+    if receipts is None:
+        require(set(p.name for p in root.iterdir())==set(selected))
+        receipts={profile:(root/profile,attempt) for profile in selected}
+    require(set(receipts)==set(selected))
     namespaces=set()
     for profile in selected:
-        folder=root/profile;require(folder.is_dir() and not folder.is_symlink());result=validate_result(strict_json(read(folder/'result.json')),profile,source,run,attempt)
+        folder,actual_attempt=receipts[profile];valid_attempt(actual_attempt,attempt)
+        require(folder.is_dir() and not folder.is_symlink() and folder.resolve().is_relative_to(root.resolve()))
+        result=validate_result(strict_json(read(folder/'result.json')),profile,source,run,actual_attempt)
         require(result['port_namespace'] not in namespaces);namespaces.add(result['port_namespace'])
         expected={'result.json'};total=0
         for receipt in result['reports']:
@@ -42,9 +49,31 @@ def verify(root,selected,source,run,attempt):
         require(actual==expected)
 
 
+def verify_downloaded(root,selected,source,run,attempt,runtime_result):
+    if runtime_result is None:
+        # Preserve the original strict flat-layout verifier for manual callers.
+        return verify(root,selected,source,run,attempt)
+    require(runtime_result=='success')
+    names={p.name for p in root.iterdir()} if root.is_dir() else set()
+    if names==set(selected):
+        # The pinned download action flattens a single matching artifact.
+        receipts=None
+        if len(selected)==1:
+            profile=selected[0];row=strict_json(read(root/profile/'result.json'))
+            receipts={profile:(root/profile,valid_attempt(row.get('run_attempt'),attempt))}
+    else:
+        archives=select_archives(root,selected,attempt,archive_pattern('actual',source,run))
+        receipts={}
+        for profile,(folder,original_attempt) in archives.items():
+            require({p.name for p in folder.iterdir()}=={profile})
+            receipts[profile]=folder/profile,original_attempt
+    verify(root,selected,source,run,attempt,receipts=receipts)
+
+
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--profiles',required=True);args=parser.parse_args()
-    verify(Path('.out/actual-download'),profiles(args.profiles),os.environ['GITHUB_SHA'],os.environ['GITHUB_RUN_ID'],os.environ['GITHUB_RUN_ATTEMPT'])
+    verify_downloaded(Path('.out/actual-download').absolute(),profiles(args.profiles),os.environ['GITHUB_SHA'],
+                      os.environ['GITHUB_RUN_ID'],os.environ['GITHUB_RUN_ATTEMPT'],os.environ.get('RUNTIME_RESULT'))
     print('PASS: selected original actual controllers, source, captures and cleanup; release/physical NOT_RUN')
 
 

@@ -12,6 +12,15 @@ def workflow(name):return yaml.load((ROOT/'.github/workflows'/name).read_text(),
 
 
 class WorkflowTests(unittest.TestCase):
+    def test_history_keeps_source_run_scope_and_requires_latest_runtime_success(self):
+        fan=workflow('ci-actual-acceptance.yaml')['jobs']['actual-acceptance']
+        download=next(s for s in fan['steps'] if s.get('uses','').startswith('actions/download-artifact@'))
+        self.assertEqual(download['with'], {'pattern':'actual-*-${{ github.sha }}-${{ github.run_id }}-*',
+                         'merge-multiple':'false','path':'.out/actual-download'})
+        validate=next(s for s in fan['steps'] if 'actual_acceptance.fan_in' in s.get('run',''))
+        self.assertEqual(validate['env']['RUNTIME_RESULT'],'${{ needs.runtime.result }}')
+        self.assertIn('test "$RUNTIME_RESULT" = success',validate['run'])
+
     def test_original_controllers_are_reused_in_disposable_vms_with_strict_fan_in(self):
         doc=workflow('ci-actual-acceptance.yaml');runtime=doc['jobs']['runtime'];fan=doc['jobs']['actual-acceptance']
         self.assertEqual(GITHUB_LINUX,runtime['runs-on']);self.assertEqual('false',runtime['strategy']['fail-fast'])

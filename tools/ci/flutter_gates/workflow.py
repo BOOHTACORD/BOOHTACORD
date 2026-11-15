@@ -50,7 +50,8 @@ def validate(document):
             and not aggregate.get('continue-on-error'))
     downloads = [s for s in aggregate.get('steps', []) if s.get('uses') == 'actions/download-artifact@v8']
     require(len(downloads) == 1 and not downloads[0].get('if') and downloads[0].get('with') == {
-        'pattern': 'flutter-part-' + CONTEXT + '-*', 'path': '.out/ci/flutter-parts', 'merge-multiple': 'true'})
+        'pattern': 'flutter-part-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-*-*',
+        'path': '.out/ci/flutter-parts', 'merge-multiple': 'false'})
     step = command(aggregate, 'python3 -m tools.ci.flutter_gates.aggregate')
     require(step.get('env') == {'FLUTTER_NEEDS': '${{ toJSON(needs) }}',
                               'FLUTTER_EVIDENCE_NAMESPACE': '${{ inputs.evidence_namespace }}'})
