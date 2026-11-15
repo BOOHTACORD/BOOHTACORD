@@ -9,11 +9,14 @@ test('web image includes the Vite asset import chain', () => {
   for (const [source, destination] of [
     ['clients/web/scripts/deepfilter_assets.mjs', './scripts/deepfilter_assets.mjs'],
     ['clients/web/scripts/research_asset_guard.mjs', './scripts/research_asset_guard.mjs'],
+    ['clients/web/scripts/noise_release_assets.mjs', './scripts/noise_release_assets.mjs'],
     ['tools/audio/research_dfn_web/stage.mjs', '/app/tools/audio/research_dfn_web/stage.mjs'],
   ]) {
     assert.ok(readFileSync(new URL(source, root)).length > 0)
     assert.ok(dockerfile.split(/\r?\n/).includes(`COPY ${source} ${destination}`))
   }
+  for (const path of ['tools/audio/release_web_assets', 'tools/audio/runtime_assets'])
+    assert.ok(dockerfile.split(/\r?\n/).includes(`COPY ${path} /app/${path}`))
 })
 
 test('compiler imports include type, re-export and dynamic imports', () => {

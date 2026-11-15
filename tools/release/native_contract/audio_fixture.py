@@ -12,6 +12,8 @@ def populate(native):
     shutil.copyfile(ROOT / 'tools/audio/runtime_assets/deepfilter/model.bin', native / 'boohta_deepfilter_model.tar.gz')
     notices = native / 'licenses/deepfilter'
     notices.mkdir(parents=True)
+    for name in ('LICENSE', 'LICENSE-MIT', 'LICENSE-APACHE', 'README.md', 'LICENSE-Rust-1.97.1.html'):
+        shutil.copyfile(ROOT / 'tools/audio/runtime_assets/deepfilter' / name, notices / ('DeepFilterNet-' + name))
     sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     package = notices / 'synthetic-1.0'
     package.mkdir()

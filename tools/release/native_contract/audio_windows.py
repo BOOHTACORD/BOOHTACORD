@@ -9,6 +9,9 @@ def verify(archive):
     lock = json.loads((ROOT / 'tools/audio/release_source/lock.json').read_text(encoding='utf-8'))
     require(json.loads(archive.read('rnnoise-engine.json')) == lock)
     require(hashlib.sha256(archive.read('LICENSE-RNNoise-0.2.txt')).hexdigest() == lock['files']['COPYING'])
+    upstream = json.loads((ROOT / 'tools/audio/runtime_assets/deepfilter/engine.json').read_text(encoding='utf-8'))
+    for name in ('LICENSE', 'LICENSE-MIT', 'LICENSE-APACHE', 'README.md', 'LICENSE-Rust-1.97.1.html'):
+        require(hashlib.sha256(archive.read('licenses/deepfilter/DeepFilterNet-' + name)).hexdigest() == upstream['files'][name])
     info = json.loads(archive.read('deepfilter-engine.json'))
     require(info['scope'] == 'production' and info['version'] == 'DeepFilterNet3'
             and info['sourceCommit'] == '7b14b895fe7fc42cab72b4a4c1e49c982bd6404b'
