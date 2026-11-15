@@ -11,8 +11,10 @@ SOURCE = 'a' * 40
 
 
 class InstallReadbackOrderTests(unittest.TestCase):
-    def invoke(self, root, *, fail=False, stale=False):
+    def invoke(self, root, *, fail=False, stale=False, signed=True):
         events=[]; bundle=root/'bundle'; bundle.write_bytes(b'x')
+        if signed:
+            current=root/('e'*40); current.mkdir(); (current/'manifest.json').write_text('{}')
         manifest={'source_revision': SOURCE, 'compatibility': {'migrations': {}}}
         before={'volumes': {'opaque': 'b'*64}, 'schema_sha256': 'c'*64}
         args=SimpleNamespace(bundle=bundle, revision=SOURCE, sha256='d'*64, release_root=root,
@@ -61,3 +63,8 @@ class InstallReadbackOrderTests(unittest.TestCase):
         current=next(event[1] for event in events if isinstance(event,tuple) and event[0]=='current-manifest')
         self.assertEqual(current['source_revision'],'e'*40)
         self.assertEqual(current['compatibility'],{'migrations':{}})
+
+    def test_legacy_unsigned_current_cannot_enable_migration_noop(self):
+        with tempfile.TemporaryDirectory() as tmp: events=self.invoke(Path(tmp), signed=False)
+        current=next(event[1] for event in events if isinstance(event,tuple) and event[0]=='current-manifest')
+        self.assertIsNone(current)

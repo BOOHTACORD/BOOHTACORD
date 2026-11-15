@@ -44,6 +44,7 @@ def install(args, *, diagnostics=None):
             manifest = verify_bundle(incoming, args.public_key, args.revision)
             mark('running_release_check')
             current = current_manifest(root, args.public_key)
+            authenticated_current = current if (root / current['source_revision'] / 'manifest.json').is_file() else None
             expected_current = getattr(args, 'expected_current_revision', None)
             require(expected_current is None or current['source_revision'] == expected_current,
                     'Running source changed while delivery was waiting; rerun preflight')
@@ -72,7 +73,7 @@ def install(args, *, diagnostics=None):
             mark('image_load')
             load_images(destination, manifest)
             mark('deployment')
-            intervals = deploy(destination, manifest, current)
+            intervals = deploy(destination, manifest, authenticated_current)
             mark('runtime_verification')
             verify_running(destination, manifest)
             mark('readback')

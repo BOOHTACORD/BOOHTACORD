@@ -23,11 +23,12 @@ public API health OK. Browser speech acceptance remains NOT_RUN as requested.
 
 The permanent installer change applies the same rule after authenticating
 both manifests. It adapts the recognized launcher in private temporary space
-only for identical nonempty inventories. New, changed, missing or empty
+only for identical nonempty inventories with a verified signed current manifest.
+Legacy unsigned installations and new, changed, missing or empty
 inventories retain the migration command; unknown historical launchers retain
 their behavior. It preserves signed runtime files and existing safety checks.
 
-PASS: 12 focused installer/rollout tests on Linux, including actual Bash SQL
+PASS: 13 focused installer/rollout tests on Linux, including actual Bash SQL
 invocation/no-op, unknown/changed inventories, symlink rejection, stale source,
 single-writer preflight and passing authenticated current state to rollout.
 PASS: the exact repository source-hash check. No DSP, Flutter or server image
