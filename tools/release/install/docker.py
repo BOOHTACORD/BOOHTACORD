@@ -7,6 +7,7 @@ from pathlib import Path
 from .timings import parse as rollout_timings
 from .guards import installed_digests, writer_topology
 from .paths import compose_arguments, rollout_script
+from .rollout_control import prepare as prepare_rollout
 from tools.release.bundle.manifest import require
 
 
@@ -29,7 +30,7 @@ def load_images(directory, manifest):
         }, sort_keys=True) + "\n", encoding="utf-8")
 
 
-def deploy(directory, manifest):
+def deploy(directory, manifest, current=None):
     arguments = compose_arguments(directory)
     configuration = json.loads(docker('compose', *arguments, 'config', '--format', 'json'))
     writer_topology(configuration, docker('compose', *arguments, 'ps', '-q', 'api'))
@@ -40,7 +41,8 @@ def deploy(directory, manifest):
         phases = Path(temporary)/'phases.txt'
         phases.touch(mode=0o600)
         environment['VOICE_PLATFORM_DELIVERY_PHASES'] = str(phases)
-        subprocess.run(["bash", str(rollout_script(directory))], env=environment, check=True)
+        script = prepare_rollout(rollout_script(directory), current, manifest, Path(temporary))
+        subprocess.run(["bash", str(script)], env=environment, check=True)
         with phases.open('r', encoding='utf-8') as stream:
             return rollout_timings(stream.read(8193))
 
