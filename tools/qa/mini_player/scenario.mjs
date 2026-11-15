@@ -104,7 +104,7 @@ try {
  report.checks.automatic_TEXT_DM_settings_one_output_no_resubscription = 'PASS'
  phase = 'return full then expanded mini return'
  await returnFull(); await snapshot('return full',true)
- await viewer.getByLabel('Дополнительные действия',{exact:true}).click(); await viewer.getByRole('button',{name:'Развернуть на всю область',exact:true}).click()
+ await viewer.getByLabel('Дополнительные действия',{exact:true}).click(); await viewer.getByRole('button',{name:'Вернуть просмотр в приложение',exact:true}).click()
  await expect(viewer.locator('.voice-room--screen-expanded')).toBeVisible(); await snapshot('expanded',true); await capture('expanded-viewer')
  const actions=viewer.locator('details.stream-more-actions'); if(await actions.getAttribute('open')===null)await actions.locator('summary').click(); await viewer.getByRole('button',{name:'Вернуть в окно канала',exact:true}).click(); await expect(viewer.locator('.voice-room--screen-expanded')).toHaveCount(0); await snapshot('expanded return',true); await channel(viewer,'QaText'); await expect(viewer.locator('.voice-room--mini')).toBeVisible(); await snapshot('full to mini',true)
  await returnFull(); await snapshot('mini return full',true)
@@ -114,17 +114,17 @@ try {
  await channel(viewer,'QaText')
  for (const width of [1024,768,393,320]) { await viewer.setViewportSize({width,height:900}); const s=await snapshot('viewport '+width,true); assert.equal(s.document_overflow,false)
    const mini=viewer.locator('.voice-room--mini'),box=await mini.boundingBox(); assert.ok(box&&box.x>=0&&box.x+box.width<=width+1)
-   await mini.getByRole('button',{name:'Развернуть на всю область',exact:true}).focus(); await expect(mini.getByRole('button',{name:'Развернуть на всю область',exact:true})).toBeFocused(); await capture('mini-width-'+width)
+   await mini.getByRole('button',{name:'Вернуть просмотр в приложение',exact:true}).focus(); await expect(mini.getByRole('button',{name:'Вернуть просмотр в приложение',exact:true})).toBeFocused(); await capture('mini-width-'+width)
  }
  report.checks.viewport_320_adaptive_keyboard_labels = 'PASS'
  await viewer.setViewportSize({width:1440,height:1000})
  phase = 'mute and stop exactly once'
  const mini=viewer.locator('.voice-room--mini'); await mini.getByRole('button',{name:'Выключить звук трансляции',exact:true}).click(); await expect(mini.getByRole('button',{name:'Включить звук трансляции',exact:true})).toHaveAttribute('aria-pressed','false')
  assert.equal((await snapshot('muted actual output',true)).audio_muted,true); await mini.getByRole('button',{name:'Включить звук трансляции',exact:true}).click(); assert.equal((await snapshot('unmuted actual output',true)).audio_muted,false); await expect(mini.getByRole('button',{name:'Выключить звук трансляции',exact:true})).toHaveAttribute('aria-pressed','true')
- const stopBefore={...signaling}; await mini.getByRole('button',{name:'Остановить просмотр',exact:true}).click(); await clean('explicit stop'); await viewer.waitForTimeout(300)
+ const stopBefore={...signaling}; await mini.getByRole('button',{name:'Выйти из просмотра',exact:true}).click(); await clean('explicit stop'); await viewer.waitForTimeout(300)
  assert.equal(signaling.unsubscribe-stopBefore.unsubscribe,2); assert.equal(signaling.subscribe,stopBefore.subscribe)
  report.checks.stop_two_publications_exactly_once_and_mute = 'PASS'
-phase='automatic route retention and explicit stop'; await select(); const autoBefore={...signaling}; await channel(viewer,'QaText'); await expect(viewer.locator('.voice-room--mini')).toBeVisible(); await snapshot('automatic route retention',true); assert.equal(signaling.subscribe,autoBefore.subscribe); assert.equal(signaling.unsubscribe,autoBefore.unsubscribe); await viewer.locator('.voice-room--mini').getByRole('button',{name:'Остановить просмотр',exact:true}).click(); await clean('automatic route explicit stop'); await viewer.waitForTimeout(300); assert.equal(signaling.unsubscribe-autoBefore.unsubscribe,2)
+phase='automatic route retention and explicit stop'; await select(); const autoBefore={...signaling}; await channel(viewer,'QaText'); await expect(viewer.locator('.voice-room--mini')).toBeVisible(); await snapshot('automatic route retention',true); assert.equal(signaling.subscribe,autoBefore.subscribe); assert.equal(signaling.unsubscribe,autoBefore.unsubscribe); await viewer.locator('.voice-room--mini').getByRole('button',{name:'Выйти из просмотра',exact:true}).click(); await clean('automatic route explicit stop'); await viewer.waitForTimeout(300); assert.equal(signaling.unsubscribe-autoBefore.unsubscribe,2)
 report.checks.automatic_route_retention_and_explicit_stop = 'PASS'
 phase='source removal clears'; await automaticText(); await publisher.getByTestId('voice-dock').getByRole('button',{name:'Остановить демонстрацию экрана',exact:true}).click(); await clean('publisher removal'); report.checks.source_removal_cleanup='PASS'
  phase='republish'; await publisher.getByTestId('voice-dock').getByRole('button',{name:'Начать демонстрацию экрана',exact:true}).click(); await start.first().click(); await expect(publisher.getByTestId('voice-dock').getByRole('button',{name:'Остановить демонстрацию экрана',exact:true})).toBeVisible({timeout:30000})

@@ -21,6 +21,31 @@ describe('selected-stream toolbar layout', () => {
     expect(css).toContain('min-height: 44px;')
   })
 
+  it('keeps toolbar actions neutral, ordered and explicit about local playback', () => {
+    const viewer = source('./ScreenViewer.vue')
+    const audio = source('./ScreenViewerAudioControl.vue')
+    const mini = source('./ScreenMiniToolbar.vue')
+    const css = source('../design/design_v2_screen_viewer.css')
+    const position = (text: string) => viewer.indexOf(text, viewer.indexOf('<template>'))
+
+    expect(viewer).not.toContain('Прекратить просмотр')
+    expect(viewer.match(/aria-label="К участникам"/g)).toHaveLength(1)
+    expect(viewer).toContain('Включить полноэкранный режим')
+    expect(viewer).toContain('Выйти из полноэкранного режима')
+    expect(position('<ScreenViewerAudioControl')).toBeLessThan(position('Приостановить локальное воспроизведение'))
+    expect(position('Приостановить локальное воспроизведение')).toBeLessThan(position('Включить полноэкранный режим'))
+    expect(position('Включить полноэкранный режим')).toBeLessThan(position('<ScreenReceiverDiagnosticsPanel'))
+    expect(position('<ScreenReceiverDiagnosticsPanel')).toBeLessThan(position('class="stream-more-actions"'))
+    expect(position('class="stream-more-actions"')).toBeLessThan(position('Остановить свою трансляцию'))
+    expect(position('Остановить свою трансляцию')).toBeLessThan(position('aria-label="К участникам"'))
+    expect(audio).toContain(':aria-controls="compact && adjustable ? \'screen-viewer-volume-panel\' : undefined"')
+    expect(audio).toContain('role="group" aria-label="Громкость звука выбранной демонстрации"')
+    expect(mini).toContain('Приостановить локальное воспроизведение')
+    expect(mini).toContain('Вернуть просмотр в приложение')
+    expect(css).toContain('.screen-volume-popover')
+    expect(css).toContain('height: 44px;')
+  })
+
   it('retains participant status in the collapsible viewer panel', () => {
     const viewer = source('./ScreenViewer.vue')
     const rail = source('./ScreenViewerRail.vue')

@@ -1272,6 +1272,7 @@
       "clients/web/src/voice/VoiceParticipantVolumes.vue",
       "clients/web/src/voice/participant_screen_actions.spec.ts",
       "clients/web/src/voice/voice_room_presentation.spec.ts",
+      "clients/web/src/voice/screen_viewer_reference.spec.ts",
       "clients/web/src/voice/stream_start_presentation.spec.ts",
       "clients/web/src/voice/screen_preview/participant_leases.ts",
       "clients/web/src/voice/screen_preview/visibility.ts",
@@ -1472,9 +1473,10 @@
       "viewer_controls": {
         "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
         "focused": [
-          "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts"
+          "clients/web/tests/screen_share_ui/disclosure.browser.spec.ts",
+          "clients/web/tests/screen_share_ui/compact.browser.spec.ts"
         ],
-        "scope": "Mouse movement reveals overlay actions that fade and slide down after inactivity; keyboard focus and touch remain accessible. The primary overlay action enters/exits browser fullscreen without enabling app-area expansion; the separate menu action expands to the app area. Viewer controls also stop viewing a remote screen share and expose the current voice microphone mute action in browser fullscreen."
+        "scope": "Mouse movement reveals overlay actions that fade and slide down after inactivity; keyboard focus and touch remain accessible. Browser fullscreen is explicitly labeled and remains distinct from app-area expansion. Remote viewers have one neutral return action; only the owner can stop their own publication. Pause labels identify local playback. At narrow widths, the audio icon opens an accessible volume popover with keyboard dismissal and focus restoration. The current voice microphone mute action remains available in browser fullscreen."
       },
       "flutter_transient_controls": {
         "focused": [

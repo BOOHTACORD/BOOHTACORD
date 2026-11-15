@@ -24,6 +24,7 @@ const video = ref<HTMLVideoElement | null>(null)
 const audio = ref<HTMLAudioElement | null>(null)
 const stage = ref<HTMLDivElement | null>(null)
 const viewerElement = ref<HTMLElement | null>(null)
+const compactViewerControls = ref(false)
 const moreActions = ref<HTMLDetailsElement | null>(null)
 const auxiliaryPanel = ref<'streams' | 'participants' | null>(null)
 const auxiliaryTrigger = ref<HTMLElement | null>(null)
@@ -54,6 +55,7 @@ const { firstFrameMs, presentationSource, actualVideoQuality, markVideoReady,pla
 let fullscreenControls: ReturnType<typeof createScreenFullscreenControls> | null = null
 let stopReporting: (() => void) | null = null
 let stageControlsHideTimer: number | null = null
+let stageResizeObserver: ResizeObserver | null = null
 const selectedStream = computed(() => props.cards.find((stream) => stream.id === props.selectedId) ?? null)
 const {metrics:receiverMetrics,sampledAt:receiverSampledAt,refresh:refreshReceiverMetrics}=useScreenReceiverDiagnostics(selectedStream,()=>props.ended)
 const adjustable = computed(() => Boolean(selectedStream.value?.hasAudio && selectedStream.value.accountId && !selectedStream.value.isLocal))
@@ -114,7 +116,8 @@ function revealStageControls(): void {
   stageControlsVisible.value = true
   if (stageControlsHideTimer !== null) window.clearTimeout(stageControlsHideTimer)
   stageControlsHideTimer = window.setTimeout(() => {
-    if (!moreActions.value?.open && !viewerElement.value?.querySelector('.stream-diagnostics[open]')) stageControlsVisible.value = false
+    const pinnedControl = viewerElement.value?.querySelector('.stream-diagnostics[open], .screen-audio-control [aria-expanded="true"]')
+    if (!moreActions.value?.open && !pinnedControl) stageControlsVisible.value = false
     stageControlsHideTimer = null
   }, 1800)
 }
@@ -138,7 +141,7 @@ watch(()=>props.selectedId,id=>{videoPaused.value=false;if(requestedSelectionId=
 watch(() => props.expanded, async () => {
   await nextTick()
   const target = props.mini
-    ? viewerElement.value?.querySelector<HTMLElement>('.screen-mini-actions button[aria-label="Развернуть на всю область"]')
+    ? viewerElement.value?.querySelector<HTMLElement>('.screen-mini-actions button[aria-label="Вернуть просмотр в приложение"]')
     : viewerElement.value?.querySelector<HTMLElement>('.stream-more-actions > summary')
       ?? viewerElement.value?.querySelector<HTMLElement>('.stream-return-to-participants')
       ?? viewerElement.value?.querySelector<HTMLElement>('.screen-stage-action')
@@ -162,12 +165,19 @@ onMounted(() => {
     sampledAt: receiverSampledAt.value ?? undefined,
     frameWidth: video.value?.videoWidth, frameHeight: video.value?.videoHeight,
   }), () => document.visibilityState === 'visible')
+  if (stage.value) {
+    const updateControlDensity = (width: number) => { compactViewerControls.value = width < 720 }
+    updateControlDensity(stage.value.getBoundingClientRect().width)
+    stageResizeObserver = new ResizeObserver(entries => updateControlDensity(entries[0]?.contentRect.width ?? 0))
+    stageResizeObserver.observe(stage.value)
+  }
   window.addEventListener('keydown', handleKeydown)
   document.addEventListener('pointerdown', dismissPanels, true)
 })
 onBeforeUnmount(() => {
   stopReporting?.()
   fullscreenControls?.dispose()
+  stageResizeObserver?.disconnect()
   if (stageControlsHideTimer !== null) window.clearTimeout(stageControlsHideTimer)
   window.removeEventListener('keydown', handleKeydown)
   document.removeEventListener('pointerdown', dismissPanels, true)
@@ -195,7 +205,7 @@ async function toggleFullscreen(): Promise<void> {
       <p v-else-if="selectedStream && !videoReady" class="state screen-loading-state" role="status">{{ mini ? 'Подключение…' : 'Получаем первый кадр демонстрации…' }}</p>
       <p v-else-if="!selectedId && cards.length === 0" class="state">Участники пока не показывают экран.</p>
       <p v-else-if="!selectedId" class="state">Выберите демонстрацию. Загружается только один выбранный поток.</p>
-      <span v-if="videoPaused" class="screen-pause-label" role="status">Видео на паузе</span>
+      <span v-if="videoPaused" class="screen-pause-label" role="status">Локальное воспроизведение приостановлено</span>
       <video ref="video" v-show="selectedId" class="screen-player" autoplay playsinline :muted="selectedStream?.isLocal ?? false" aria-label="Выбранная демонстрация" @loadedmetadata="refreshVideoQuality" @resize="refreshVideoQuality" @loadeddata="markVideoReady" @emptied="resetVideoFrame"></video>
       <div class="screen-stage-top">
         <span v-if="selectedStream" class="screen-stage-label"><span class="screen-stage-avatar" :style="{ backgroundColor: avatarBackground(selectedStream.accountId ?? selectedStream.participantId), color: avatarForeground(selectedStream.accountId ?? selectedStream.participantId) }" aria-hidden="true">{{ selectedStream.participantName.slice(0, 2).toLocaleUpperCase('ru-RU') }}</span>{{ selectedStream.isLocal ? 'Ваш экран' : `Экран ${selectedStream.participantName || 'участника'}` }}<b>ЭФИР</b><small v-if="selectedStream.isLocal && !selectedStream.hasAudio" title="Предпросмотр без звука">Без звука</small></span>
@@ -212,17 +222,16 @@ async function toggleFullscreen(): Promise<void> {
         </div>
       </div>
       <div v-if="!mini && selectedStream" class="screen-stage-actions" :class="{ 'screen-stage-actions--visible': stageControlsVisible }" role="group" aria-label="Управление просмотром" @focusin="revealStageControls">
-        <button class="screen-stage-action screen-stage-action--size" type="button" :aria-label="fullscreenActive ? 'Свернуть просмотр' : 'Развернуть на весь экран'" :title="fullscreenActive ? 'Свернуть просмотр' : 'Развернуть на весь экран'" @click="toggleFullscreen"><svg viewBox="0 0 24 24" aria-hidden="true"><path v-if="fullscreenActive" d="M8 3v5H3M16 3v5h5M3 16h5v5M21 16h-5v5"/><path v-else d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg><span>{{ fullscreenActive ? 'Свернуть' : 'Развернуть' }}</span></button>
-        <button v-if="!selectedStream.isLocal" class="screen-stage-action screen-stage-action--stop" type="button" aria-label="Прекратить просмотр" title="Прекратить просмотр этой трансляции" @click="stopWatching"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg><span>Прекратить просмотр</span></button>
         <div v-if="selectedStream" class="stream-quality-row">
-          <ScreenViewerAudioControl v-if="selectedStream.hasAudio && !selectedStream.isLocal" :adjustable="adjustable" :muted="audioMuted" :volume="selectedAudioVolume" @toggle="emit('toggleAudio');audioPlaybackBlocked&&playFromGesture()" @set-volume="emit('setAudioVolume', $event)" />
+          <ScreenViewerAudioControl v-if="selectedStream.hasAudio && !selectedStream.isLocal" :adjustable="adjustable" :compact="compactViewerControls" :muted="audioMuted" :volume="selectedAudioVolume" @toggle="emit('toggleAudio');audioPlaybackBlocked&&playFromGesture()" @set-volume="emit('setAudioVolume', $event)" @volume-panel="revealStageControls" />
           <p v-if="audioMessage" class="stream-audio-status gc-sr-only" role="status">{{ audioMessage }}</p>
           <div class="stream-toolbar-actions">
-            <button v-if="ownScreenSharing" type="button" class="stream-tool-button stream-stop-screen-button" aria-label="Остановить свою трансляцию" title="Остановить свою трансляцию" @click="emit('stopScreen')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" /></svg><span>Остановить</span></button>
+            <button type="button" class="stream-tool-button stream-pause-button" :disabled="ended || !videoReady" :aria-label="videoPaused ? 'Продолжить локальное воспроизведение' : 'Приостановить локальное воспроизведение'" :title="videoPaused ? 'Продолжить локальное воспроизведение' : 'Приостановить локальное воспроизведение'" :aria-pressed="videoPaused" @click="toggleVideoPause"><svg viewBox="0 0 24 24" aria-hidden="true"><path v-if="videoPaused" d="m8 4 12 8-12 8Z"/><path v-else d="M8 4v16M16 4v16"/></svg></button>
+            <button class="screen-stage-action screen-stage-action--size" type="button" :aria-label="fullscreenActive ? 'Выйти из полноэкранного режима' : 'Включить полноэкранный режим'" :title="fullscreenActive ? 'Выйти из полноэкранного режима' : 'Включить полноэкранный режим'" @click="toggleFullscreen"><svg viewBox="0 0 24 24" aria-hidden="true"><path v-if="fullscreenActive" d="M8 3v5H3M16 3v5h5M3 16h5v5M21 16h-5v5"/><path v-else d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg><span>{{ fullscreenActive ? 'Выйти' : 'На весь экран' }}</span></button>
             <button v-if="fullscreenActive" type="button" class="stream-tool-button stream-microphone-toggle" :class="{ 'is-muted': selfMicrophoneMuted || selfMicrophoneUnavailable || deafened }" :aria-label="microphoneActionLabel || (selfMicrophoneMuted || selfMicrophoneUnavailable || deafened ? 'Включить микрофон' : 'Выключить микрофон')" :title="microphoneActionLabel || (selfMicrophoneMuted || selfMicrophoneUnavailable || deafened ? 'Включить микрофон' : 'Выключить микрофон')" :aria-pressed="!selfMicrophoneMuted && !selfMicrophoneUnavailable && !deafened" :disabled="microphoneActionDisabled" @click="emit('toggleMicrophone')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/><path v-if="selfMicrophoneMuted || selfMicrophoneUnavailable || deafened" d="m3 3 18 18"/></svg></button>
-            <button type="button" class="stream-tool-button" :disabled="ended || !videoReady" :aria-label="videoPaused ? 'Продолжить трансляцию' : 'Приостановить трансляцию'" :title="videoPaused ? 'Продолжить трансляцию' : 'Приостановить трансляцию'" :aria-pressed="videoPaused" @click="toggleVideoPause"><svg viewBox="0 0 24 24" aria-hidden="true"><path v-if="videoPaused" d="m8 4 12 8-12 8Z"/><path v-else d="M8 4v16M16 4v16"/></svg></button>
             <ScreenReceiverDiagnosticsPanel @toggle="revealStageControls" :actual-video-quality="actualVideoQuality" :has-audio="selectedStream.hasAudio" :is-local="Boolean(selectedStream.isLocal)" :metrics="receiverMetrics" :sampled-at="receiverSampledAt" :target-profile="selectedStream.targetProfile" :descriptor="selectedStream.descriptor" :metadata-receipt-key="selectedStream.id" :sender-diagnostics="selectedStream.isLocal ? sourceDiagnostics : undefined" :profile-source="selectedStream.profileSource" :participant-name="selectedStream.participantName" :presented-fps="playbackFps" />
             <details v-if="ownScreenSharing" ref="moreActions" class="stream-more-actions" @toggle="revealStageControls"><summary class="stream-tool-button" aria-label="Дополнительные действия"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></summary><div class="stream-voice-return"><p class="gc-sr-only">{{ participantAudioMessage(deafened) }}</p><button type="button" @click="changeQuality">Качество трансляции</button></div></details>
+            <button v-if="ownScreenSharing" type="button" class="stream-tool-button stream-stop-screen-button" aria-label="Остановить свою трансляцию" title="Остановить свою трансляцию" @click="emit('stopScreen')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" /></svg><span>Остановить</span></button>
             <button class="stream-tool-button stream-return-to-participants" type="button" aria-label="К участникам" title="К участникам" @click="stopWatching"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="gc-sr-only">К участникам</span></button>
           </div>
         </div>
