@@ -19,8 +19,20 @@ document.documentElement.style.fontSize = params.get('scale') === '200' ? '200%'
 if (params.has('unsupported')) Object.defineProperty(navigator, 'mediaDevices', { value: {}, configurable: true })
 const events: unknown[] = []
 const state = reactive({ open: true, expanded: false, selectedId: params.has('unselected') ? null : (params.has('watching-remote') || params.has('remote-audio') ? 'remote-screen' : 'local-screen') as string | null, profile: params.get('profile') ?? 'P1080_60', source: 'ACTIVE', fps: 1, sampledAt: null as number | null, hasAudio: false, audioMuted: false, microphoneMuted: true })
+const viewerScreens = ref<ScreenViewerCard[]>([
+  { accountId: 'local-user', hasAudio: false, id: 'local-screen', isLocal: true, participantId: 'local-user', participantName: 'Локальная трансляция', ...(params.has('preview-unavailable') ? { thumbnailUrl: '/broken-screen-preview.svg' } : params.has('no-thumbnail') ? {} : { thumbnailUrl: '/screen-preview.svg' }) },
+  { accountId: 'member-sharing', hasAudio: true, id: 'remote-screen', isLocal: false, participantId: 'member-sharing', participantName: 'Участник показывает экран', targetProfile: '1080p · 60 FPS', ...(params.has('preview-unavailable') ? { thumbnailUrl: '/broken-screen-preview.svg' } : params.has('no-thumbnail') ? {} : { thumbnailUrl: '/screen-preview.svg' }) },
+  ...(params.has('eight-streams') ? Array.from({ length: 6 }, (_, index) => ({
+    accountId: `member-${index + 3}`, hasAudio: false, id: `screen-${index + 3}`, isLocal: false, participantId: `member-${index + 3}`,
+    participantName: `Участник с длинным именем ${index + 3}`, targetProfile: index % 2 ? '720p · 30 FPS' : undefined,
+    ...(params.has('preview-unavailable') ? { thumbnailUrl: '/broken-screen-preview.svg' } : params.has('no-thumbnail') ? {} : { thumbnailUrl: '/screen-preview.svg' }),
+  })) : []),
+])
 replaceScreenPreviewParticipantLeases([['participant-card-sharing', 'fixture-preview-lease']])
-Object.assign(window, { __screenUI: { events, patch: (value: object) => Object.assign(state, value), isPreviewVisible: () => screenPreviewCardVisibility.isVisible('fixture-preview-lease') } })
+Object.assign(window, { __screenUI: {
+  events, patch: (value: object) => Object.assign(state, value), isPreviewVisible: () => screenPreviewCardVisibility.isVisible('fixture-preview-lease'),
+  closeStream: (id: string) => { viewerScreens.value = viewerScreens.value.filter((stream) => stream.id !== id); if (state.selectedId === id) state.selectedId = null },
+} })
 const diagnostics = (): ScreenDiagnostics => ({ source: state.source as ScreenDiagnostics['source'], audioTrack: 'ABSENT', connectionQuality: 'GOOD', measured: { width: 1920, height: 654, framesPerSecond: state.fps }, roundTripTimeMs: 42 })
 const viewerParticipants: VoiceVolumeParticipant[] = [
   { accountId: 'member-speaking', id: 'member-speaking', microphoneMuted: false, name: 'Участник говорит', speaking: true, volume: 100 },
@@ -30,10 +42,6 @@ const viewerParticipants: VoiceVolumeParticipant[] = [
   ...(params.has('twenty-participants') ? Array.from({ length: 17 }, (_, index) => ({ accountId: `member-twenty-${index}`, id: `member-twenty-${index}`, microphoneMuted: index % 2 === 0, name: `Участник с длинным именем ${index + 1}`, speaking: false, volume: 100 })) : []),
 ]
 const fixtureViewerParticipants = params.has('single-participant') ? [] : viewerParticipants
-const viewerScreens: ScreenViewerCard[] = [
-  { accountId: 'local-user', hasAudio: false, id: 'local-screen', isLocal: true, participantId: 'local-user', participantName: 'Локальная трансляция' },
-  { accountId: 'member-sharing', hasAudio: true, id: 'remote-screen', isLocal: false, participantId: 'member-sharing', participantName: 'Участник показывает экран' },
-]
 const pinia = createPinia()
 const authors = useAuthorDirectory(pinia)
 authors.acceptOwnProfile({ account_id: 'local-user', login: 'local', display_name: 'Локальный участник', role: 'MEMBER', avatar_url: '/avatar', profile_revision: 2 })
@@ -84,7 +92,7 @@ const IntermittentDiagnosis = defineComponent({
 const viewerStrip = () => h('section', { class: ['voice-room', state.expanded && 'voice-room--screen-expanded'], style: `height:${params.get('height') ?? '760'}px` }, [
   h(ScreenViewer, {
     audioMuted: state.audioMuted,
-    cards: params.has('single-stream') ? viewerScreens.filter(card => card.id === state.selectedId) : viewerScreens,
+    cards: params.has('single-stream') ? (state.selectedId ? viewerScreens.value.filter(card => card.id === state.selectedId) : viewerScreens.value.slice(0, 1)) : viewerScreens.value,
     deafened: false,
     ended: false,
     error: params.has('subscription-error') ? 'Не удалось подписаться на демонстрацию.' : null,
@@ -107,7 +115,7 @@ const viewerStrip = () => h('section', { class: ['voice-room', state.expanded &&
     onStopScreen: () => events.push('stop-screen'),
     onClear: () => { events.push('clear'); state.selectedId = null },
     'onUpdate:expanded': (expanded: boolean) => { state.expanded = expanded },
-    onSelect: (id: string) => { state.selectedId = id },
+    onSelect: (id: string) => { events.push({ select: id }); state.selectedId = id },
   }),
 ])
 createApp({ render: () => params.has('participant-cards') ? listenerParticipantCards() :

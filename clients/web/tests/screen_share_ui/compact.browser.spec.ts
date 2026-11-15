@@ -63,6 +63,7 @@ for (const width of [390, 1440]) {
     await expect(page.locator('.screen-loading-state')).not.toBeVisible()
     const stage = page.locator('.screen-stage')
     const room = page.locator('.voice-room')
+    await expect(page.getByRole('button', { name: /^Трансляции/ })).toHaveCount(0)
     expect((await stage.boundingBox())!.height).toBeGreaterThanOrEqual((await room.boundingBox())!.height - 26)
     await expect(page.getByTestId('stream-rail')).toHaveCount(0)
     await expect(page.getByTestId('viewer-participants')).not.toBeVisible()
@@ -143,6 +144,139 @@ test('stream switcher remains available without taking video height', async ({ p
   await expect(page.locator('.screen-stage-label')).toContainText('Участник показывает экран')
   await expect(page.getByTestId('stream-rail')).not.toBeVisible()
   expect((await stage.boundingBox())!.height).toBe(height)
+})
+
+test('an unselected single stream gets one large 16:9 card', async ({ page }, info) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls&unselected&single-stream&no-thumbnail')
+  await page.getByRole('button', { name: 'Трансляции · 1', exact: true }).click()
+
+  const card = page.getByTestId('stream-select')
+  await expect(card).toHaveCount(1)
+  await expect(card).toHaveAttribute('aria-pressed', 'false')
+  await expect(card).toContainText('Эфир')
+  await expect(card).toContainText('Предпросмотр загружается')
+  const preview = await card.locator('.stream-card-preview').boundingBox()
+  expect(preview).not.toBeNull()
+  expect(preview!.width / preview!.height).toBeCloseTo(16 / 9, 1)
+  expect(preview!.width).toBeGreaterThan(300)
+  await expect(page.getByTestId('stream-rail').locator('video')).toHaveCount(0)
+  await page.screenshot({ path: info.outputPath('single-stream-switcher.png') })
+})
+
+test('two streams fill the popover evenly and distinguish live from selected', async ({ page }, info) => {
+  await page.route('**/screen-preview.svg', route => route.fulfill({
+    status: 200,
+    contentType: 'image/svg+xml',
+    body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900"><rect width="1600" height="900" fill="#26354c"/><text x="50" y="450" fill="white">Preview</text></svg>',
+  }))
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls')
+  await page.getByRole('button', { name: 'Трансляции · 2', exact: true }).click()
+
+  const cards = page.getByTestId('stream-select')
+  await expect(cards).toHaveCount(2)
+  await expect(cards.nth(0).locator('.stream-card-preview img')).toBeVisible()
+  await expect(cards.nth(1).locator('.stream-card-preview img')).toBeVisible()
+  await expect.poll(() => cards.nth(1).locator('.stream-card-preview img').evaluate(element => (element as HTMLImageElement).complete && (element as HTMLImageElement).naturalWidth > 0)).toBe(true)
+  await expect(cards.nth(0)).toContainText('Эфир')
+  await expect(cards.nth(0)).toContainText('Смотрим')
+  await expect(cards.nth(1)).toContainText('Эфир')
+  await expect(cards.nth(1)).not.toContainText('Смотрим')
+  await expect(cards.nth(1)).toContainText('Цель: 1080p · 60 FPS')
+  await expect(cards.nth(0)).toHaveAttribute('aria-pressed', 'true')
+  await expect(cards.nth(1)).toHaveAttribute('aria-pressed', 'false')
+  const bounds = await cards.evaluateAll(elements => elements.map(element => {
+    const card = element.getBoundingClientRect()
+    const preview = element.querySelector('.stream-card-preview')!.getBoundingClientRect()
+    return { left: card.left, width: card.width, ratio: preview.width / preview.height }
+  }))
+  expect(Math.abs(bounds[0].width - bounds[1].width)).toBeLessThanOrEqual(1)
+  expect(Math.abs((bounds[0].left + bounds[0].width) - bounds[1].left)).toBeLessThanOrEqual(12)
+  expect(bounds[0].ratio).toBeCloseTo(16 / 9, 1)
+  await page.screenshot({ path: info.outputPath('stream-switcher-two-cards.png') })
+})
+
+test('many streams use a responsive grid with internal vertical scrolling', async ({ page }, info) => {
+  await page.route('**/screen-preview.svg', route => route.fulfill({ status: 200, contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 9"><rect width="16" height="9" fill="#26354c"/></svg>' }))
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls&eight-streams')
+  await page.getByRole('button', { name: 'Трансляции · 8', exact: true }).click()
+
+  const rail = page.getByTestId('stream-rail')
+  await expect(rail.getByTestId('stream-select')).toHaveCount(8)
+  await expect(rail.getByTestId('stream-select').nth(2)).toHaveAccessibleName('Экран Участник с длинным именем 3 · Эфир')
+  await expect(rail.getByTestId('stream-select').nth(2)).toHaveAttribute('title', 'Экран Участник с длинным именем 3 · Эфир')
+  const desktop = await rail.evaluate(element => {
+    const style = getComputedStyle(element)
+    return { columns: style.gridTemplateColumns.split(' ').length, clientHeight: element.clientHeight, scrollHeight: element.scrollHeight, overflowY: style.overflowY }
+  })
+  expect(desktop.columns).toBe(2)
+  expect(desktop.overflowY).toBe('auto')
+  expect(desktop.scrollHeight).toBeGreaterThan(desktop.clientHeight)
+  await page.screenshot({ path: info.outputPath('stream-switcher-eight-desktop.png') })
+
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls&eight-streams')
+  await page.getByRole('button', { name: 'Трансляции · 8', exact: true }).click()
+  const narrow = await page.getByTestId('stream-rail').evaluate(element => ({
+    columns: getComputedStyle(element).gridTemplateColumns.split(' ').length,
+    viewportWidth: innerWidth,
+    right: element.getBoundingClientRect().right,
+    scrollHeight: element.scrollHeight,
+    clientHeight: element.clientHeight,
+  }))
+  expect(narrow.columns).toBe(1)
+  expect(narrow.right).toBeLessThanOrEqual(narrow.viewportWidth)
+  expect(narrow.scrollHeight).toBeGreaterThan(narrow.clientHeight)
+  await page.screenshot({ path: info.outputPath('stream-switcher-eight-mobile.png') })
+})
+
+test('preview loading and failure keep the live publication available', async ({ page }) => {
+  await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls&no-thumbnail')
+  await page.getByRole('button', { name: 'Трансляции · 2', exact: true }).click()
+  const loadingCard = page.getByTestId('stream-select').nth(1)
+  await expect(loadingCard).toContainText('Эфир')
+  await expect(loadingCard).toContainText('Предпросмотр загружается')
+
+  await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls&preview-unavailable')
+  await page.getByRole('button', { name: 'Трансляции · 2', exact: true }).click()
+  const unavailableCard = page.getByTestId('stream-select').nth(1)
+  await expect(unavailableCard).toContainText('Эфир')
+  await expect(unavailableCard).toContainText('Предпросмотр недоступен')
+  await expect(unavailableCard).toHaveAttribute('aria-pressed', 'false')
+})
+
+test('keyboard selection changes one viewer stream, closes the popover and restores focus', async ({ page }) => {
+  await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls')
+  const trigger = page.getByRole('button', { name: 'Трансляции · 2', exact: true })
+  await trigger.click()
+  const remote = page.getByTestId('stream-select').nth(1)
+  await remote.focus()
+  await page.keyboard.press('Enter')
+
+  await expect(page.locator('.screen-stage-label')).toContainText('Участник показывает экран')
+  await expect(page.getByTestId('stream-rail')).not.toBeVisible()
+  await expect(trigger).toBeFocused()
+  await expect(page.locator('.screen-player')).toHaveCount(1)
+  await expect(page.locator('.screen-viewer-panel-content video')).toHaveCount(0)
+  await expect.poll(() => page.evaluate(() => (window as any).__screenUI.events)).toContainEqual({ select: 'remote-screen' })
+})
+
+test('closing one publication refreshes the open switcher and offers the remaining stream', async ({ page }) => {
+  await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls')
+  const trigger = page.getByRole('button', { name: 'Трансляции · 2', exact: true })
+  await trigger.click()
+  await page.evaluate(() => (window as any).__screenUI.closeStream('local-screen'))
+
+  await expect(page.locator('.screen-stage-label')).toHaveCount(0)
+  const refreshedTrigger = page.getByRole('button', { name: 'Трансляции · 1', exact: true })
+  await expect(refreshedTrigger).toBeVisible()
+  await expect(page.getByTestId('stream-select')).toHaveCount(1)
+  await expect(page.getByTestId('stream-select')).toContainText('Участник показывает экран')
+  await page.getByTestId('stream-select').click()
+  await expect(page.locator('.screen-stage-label')).toContainText('Участник показывает экран')
+  await expect(page.getByTestId('stream-rail')).not.toBeVisible()
 })
 
 test('participant panel uses the open video space without a full-width blank area', async ({ page }, info) => {
