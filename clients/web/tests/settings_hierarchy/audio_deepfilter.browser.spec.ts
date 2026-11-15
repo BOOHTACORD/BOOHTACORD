@@ -11,7 +11,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 393, height: 852 
       await expect(selector.locator('..')).toHaveCSS('flex-direction', 'column')
     }
     const option = selector.locator('option[value="deepfilter"]')
-    if (process.env.VITE_DEEPFILTER_ENABLED === 'true') {
+    if (process.env.VITE_DEEPFILTER_ENABLED !== 'false') {
       await expect(option).toHaveCount(1)
       await expect(option).toHaveText('DeepFilterNet3')
       await selector.selectOption('deepfilter')
@@ -31,6 +31,6 @@ test('a saved DeepFilter choice remains visible in either build', async ({ page 
   const selector = page.getByRole('combobox', { name: 'Режим шумоподавления' })
   await expect(selector).toHaveValue('deepfilter')
   const option = selector.locator('option[value="deepfilter"]')
-  if (process.env.VITE_DEEPFILTER_ENABLED === 'true') await expect(option).not.toHaveAttribute('disabled', '')
+  if (process.env.VITE_DEEPFILTER_ENABLED !== 'false') await expect(option).not.toHaveAttribute('disabled', '')
   else { await expect(option).toHaveAttribute('disabled', ''); await expect(option).toContainText('недоступен') }
 })

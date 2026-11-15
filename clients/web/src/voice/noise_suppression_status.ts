@@ -4,7 +4,8 @@ import type { NoiseSuppressionMode, NoiseSuppressionRuntimeState } from './noise
 export function noiseSuppressionStatus(mode: NoiseSuppressionMode, runtime: NoiseSuppressionRuntimeState): string {
   if (runtime.status === 'error') return 'Обработка микрофона остановлена. Отправка звука выключена.'
   if ((mode !== 'rnnoise' && mode !== 'deepfilter') || runtime.requestedMode !== mode) return ''
-  const name = mode === 'rnnoise' ? 'RNNoise' : 'DeepFilterNet3'
+  const version = runtime.modelId?.endsWith('v0.2') ? ' 0.2' : runtime.modelId?.endsWith('v0.1') ? ' 0.1' : ''
+  const name = mode === 'rnnoise' ? 'RNNoise' + version : 'DeepFilterNet3'
   return {
     idle: '', initializing: `Проверяем работу ${name}…`, active: `${name} активен.`,
     fallback: runtime.effectiveMode === 'browser'

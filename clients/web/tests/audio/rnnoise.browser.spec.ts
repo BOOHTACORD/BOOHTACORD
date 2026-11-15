@@ -19,7 +19,8 @@ test('scalar WASM graph survives CSP; mute resets DSP and faults silence output'
 test('sample rate mismatch and malformed/404 assets fail explicitly', async ({ page, request }) => {
   expect((await evaluate(page, 'invalidRate')).failures).toEqual(['sample-rate'])
   for (const variant of ['html', 'missing', 'bad-model', 'missing-wasm']) expect(await evaluate(page, 'badAsset', `/audio/rnnoise/${variant}/rnnoise-manifest.json`)).toBe(true)
-  const wasm = await request.get('/audio/rnnoise/v0.1-cdf196b/rnnoise.wasm')
+  const version = process.env.VITE_RNNOISE_V02_ENABLED === 'false' ? 'v0.1-cdf196b' : 'v0.2-904a876'
+  const wasm = await request.get(`/audio/rnnoise/${version}/rnnoise.wasm`)
   expect(wasm.headers()['content-type']).toContain('application/wasm')
   const missing = await request.get('/audio/rnnoise/missing/rnnoise.wasm')
   expect(missing.status()).toBe(404); expect(missing.headers()['content-type']).not.toContain('text/html')
@@ -34,7 +35,8 @@ test('mute wins over pending unmute and a later unmute can complete', async ({ p
 })
 test('real WebRTC receiver hears processed synthetic output and mute silence', async ({ page }) => {
   const result = await evaluate(page, 'rtcPair')
-  expect(result.modelId).toBe(process.env.VITE_RNNOISE_V02_ENABLED === 'true' ? 'rnnoise-stock-v0.2' : 'rnnoise-stock-v0.1')
+  expect(result.modelId).toBe(process.env.VITE_RNNOISE_V02_ENABLED === 'true' ? 'rnnoise-stock-v0.2'
+    : process.env.VITE_RNNOISE_V02_ENABLED === 'false' ? 'rnnoise-stock-v0.1' : 'rnnoise-release-v0.2')
   expect(result.sender).toBe('connected'); expect(result.receiver).toBe('connected')
   expect(result.active.some((reading: any) => reading.rms > 0.001)).toBe(true)
   expect(result.muted.length).toBeGreaterThan(0)

@@ -16,7 +16,7 @@ class ExperimentalOwner {
     auto runtime = std::make_unique<Runtime>(*engine, 4);
     const char* identity = model_hash && std::strcmp(model_hash,
         "c94d91f70911001c946e0fabb4aa9adc37045f45a03b56008cb0c8244cb63616") == 0
-        ? "deepfilternet3-research-d375b2d" : nullptr;
+        ? "deepfilternet3-c94d91f7" : nullptr;
     auto hook = std::make_unique<Hook>(*runtime, identity);
     if (!runtime->Launch()) return false;
     engine_ = std::move(engine);

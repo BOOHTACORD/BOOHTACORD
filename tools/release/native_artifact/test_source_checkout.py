@@ -19,6 +19,8 @@ class NativeSourceCheckoutTests(unittest.TestCase):
         native = Path('clients/flutter/packages/flutter_webrtc/common/rnnoise')
         paths = [p.relative_to(ROOT) for p in (ROOT / native / 'upstream').rglob('*') if p.is_file()]
         paths += [native / 'msvc_stack_array_compat.cmake', Path('tools/audio/rnnoise_build_lock.json')]
+        paths += [Path('tools/audio/release_source/lock.json'),
+                  Path('tools/audio/runtime_assets/rnnoise/LICENSE-RNNoise-0.2.txt')]
         if (ROOT / '.gitattributes').exists():
             paths.append(Path('.gitattributes'))
         self.pinned = [p for p in paths if str(p).startswith(str(native))]
@@ -50,9 +52,12 @@ class NativeSourceCheckoutTests(unittest.TestCase):
                                  (self.source / path).read_bytes())
         sidecars = self.checkout / 'release'
         sidecars.mkdir()
+        import shutil
+        shutil.copyfile(self.checkout / 'tools/audio/release_source/lock.json', sidecars / 'rnnoise-engine.json')
+        shutil.copyfile(self.checkout / 'tools/audio/runtime_assets/rnnoise/LICENSE-RNNoise-0.2.txt', sidecars / 'LICENSE-RNNoise-0.2.txt')
         component = write_audio_component(sidecars, root=self.checkout, platform='windows')
-        self.assertEqual(component['msvc_overlay_sha256'],
-                         'e55494df7d9e18b3d146cdff0c668f616c43e8c0a43bb6572bd005926d382b7e')
+        self.assertEqual(component['model_id'], 'rnnoise-release-v0.2')
+        self.assertEqual(component['version'], '0.2')
 
     def test_checkout_control_proves_autocrlf_is_enabled_outside_pinned_sources(self):
         self.assertEqual(self.git('config', '--get', 'core.autocrlf', cwd=self.checkout).strip(), b'true')

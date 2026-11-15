@@ -32,9 +32,13 @@ mixin _NativeNoisePrepare on _NativeNoiseCore {
       ),
     );
     try {
-      final raw = await _call('setNoiseSuppressionEngine', {
-        'engine': selected.name,
-      });
+      final arguments = <String, Object?>{'engine': selected.name};
+      final raw = nativeMode && mode != NoiseSuppressionMode.auto
+          ? await _invoke(
+              'setNoiseSuppressionEngine',
+              arguments,
+            ).timeout(const Duration(seconds: 2))
+          : await _call('setNoiseSuppressionEngine', arguments);
       if (_disposed || generation != _generation) {
         return NoiseSuppressionMode.browser;
       }

@@ -7,7 +7,8 @@ test('two isolated browsers send processed microphone PCM through actual LiveKit
     await receiver.evaluate(() => (window as any).livekitAudioGate.receiver())
     expect(await sender.evaluate(() => (window as any).livekitAudioGate.sender())).toEqual({
       engine: 'rnnoise', sampleRate: 48000,
-      modelId: process.env.VITE_RNNOISE_V02_ENABLED === 'true' ? 'rnnoise-stock-v0.2' : 'rnnoise-stock-v0.1',
+      modelId: process.env.VITE_RNNOISE_V02_ENABLED === 'true' ? 'rnnoise-stock-v0.2'
+        : process.env.VITE_RNNOISE_V02_ENABLED === 'false' ? 'rnnoise-stock-v0.1' : 'rnnoise-release-v0.2',
     })
     await expect.poll(async () => {
       const sample = await receiver.evaluate(() => (window as any).livekitAudioGate.read())

@@ -7,17 +7,21 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import '../windows_client_probe/loopback.dart';
 import 'capabilities.dart';
 
-Future<Map<String, Object?>> runAutoPhase(bool deepfilter) async {
+Future<Map<String, Object?>> runAutoPhase(
+  bool deepfilter, {
+  bool automatic = true,
+}) async {
   final native = NativeNoiseSuppression(
     allowExperimentalDeepFilter: deepfilter,
   );
   final loopback = LocalAudioLoopback(mutePlayback: true);
   MediaStream? stream;
   try {
-    final selected = await native.prepare(NoiseSuppressionMode.auto);
     final expected = deepfilter
         ? NoiseSuppressionMode.deepfilter
         : NoiseSuppressionMode.rnnoise;
+    final requested = automatic ? NoiseSuppressionMode.auto : expected;
+    final selected = await native.prepare(requested);
     final capabilities = await probeCapabilities();
     if (selected != expected) {
       return {
@@ -63,7 +67,7 @@ Future<Map<String, Object?>> runAutoPhase(bool deepfilter) async {
       'success':
           loopback.receivedTrack &&
           counters['receivedPackets']! > 0 &&
-          state.requestedMode == NoiseSuppressionMode.auto &&
+          state.requestedMode == requested &&
           state.effectiveMode == expected.name &&
           state.status == 'active' &&
           state.processedFrames > 0 &&

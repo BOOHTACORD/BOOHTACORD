@@ -11,7 +11,7 @@ from . import assets
 
 
 def rewrite_sums(directory):
-    files={p.name:{'sha256':assets.digest(p)} for p in directory.iterdir() if p.name!='SHA256SUMS'}
+    files={p.relative_to(directory).as_posix():{'sha256':assets.digest(p)} for p in directory.rglob('*') if p.is_file() and p.name!='SHA256SUMS'}
     (directory/'SHA256SUMS').write_text(''.join(v['sha256']+'  '+k+'\n' for k,v in files.items()))
 
 
@@ -23,6 +23,8 @@ def fixture(root,platform,research=False):
     tag=context['tag']
     if platform=='windows':
         native=root/'native';native.mkdir()
+        from .audio_fixture import populate
+        populate(native)
         for name in ('boohtacord_desktop.exe','BOOHTACORDRecovery.exe','flutter_windows.dll','libwebrtc.dll'):
             (native/name).write_bytes(b'synthetic native fixture; never executed')
         if research:(native/'rnnoise-v02-research-only.txt').write_text('research only')
@@ -42,7 +44,8 @@ def fixture(root,platform,research=False):
     rewrite_sums(native)
     if platform=='windows':
         with zipfile.ZipFile(directory/f'BOOHTACORD-{tag}-x64.zip','w') as archive:
-            for p in native.iterdir():archive.write(p,p.name)
+            for p in native.rglob('*'):
+                if p.is_file():archive.write(p,p.relative_to(native).as_posix())
         (directory/'artifact-manifest.json').write_bytes((native/'artifact-manifest.json').read_bytes())
         (directory/'fixtureSetup.exe').write_bytes(b'synthetic Setup; never executed')
         (directory/('boohtacord_desktop-'+identity['version']+'-stable-full.nupkg')).write_bytes(b'synthetic package')

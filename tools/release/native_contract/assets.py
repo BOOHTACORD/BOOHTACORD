@@ -75,6 +75,8 @@ def windows_archive(path,manifest,raw_manifest):
                 and files['SHA256SUMS']['bytes']<=4_000_000)
         require(archive.read('artifact-manifest.json')==raw_manifest)
         checksums(archive.read('SHA256SUMS').decode('utf-8'),{k:v for k,v in files.items() if k!='SHA256SUMS'})
+        from .audio_windows import verify
+        verify(archive)
     require(manifest['files']=={k:v for k,v in files.items() if k not in COMMON})
 
 

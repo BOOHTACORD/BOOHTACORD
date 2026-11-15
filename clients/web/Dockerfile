@@ -16,6 +16,9 @@ ENV SOURCE_REVISION=${SOURCE_REVISION}
 COPY clients/web/index.html clients/web/tsconfig.json clients/web/vite.config.ts ./
 COPY clients/web/scripts/deepfilter_assets.mjs ./scripts/deepfilter_assets.mjs
 COPY clients/web/scripts/research_asset_guard.mjs ./scripts/research_asset_guard.mjs
+COPY clients/web/scripts/noise_release_assets.mjs ./scripts/noise_release_assets.mjs
+COPY tools/audio/release_web_assets /app/tools/audio/release_web_assets
+COPY tools/audio/runtime_assets /app/tools/audio/runtime_assets
 COPY tools/audio/research_dfn_web/stage.mjs /app/tools/audio/research_dfn_web/stage.mjs
 COPY clients/web/src ./src
 COPY clients/web/public ./public

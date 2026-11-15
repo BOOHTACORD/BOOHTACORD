@@ -30,7 +30,9 @@ test('Auto preserves requested and effective mode through capture and mute', asy
     expect(result.publications).toBe(0)
     expect(result.capturesStopped).toBe(true)
   } else {
-    expect(result.active).toMatchObject({ requestedMode: 'auto', effectiveMode: 'browser', status: 'active' })
+    expect(result.active).toMatchObject({ requestedMode: 'auto', status: 'active' })
+    expect(['rnnoise', 'deepfilter', 'browser']).toContain(result.active.effectiveMode)
+    expect(result.publications).toBe(1)
     expect(result.muted).toBe(true)
     expect(result.publishedMuted).toBe(true)
   }

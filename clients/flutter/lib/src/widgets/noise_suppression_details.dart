@@ -37,9 +37,13 @@ class _NoiseDetails extends StatelessWidget {
           Text('PCM: ${runtime.sampleRate} Гц; каналы: ${runtime.channels}.'),
         if (requestedMode == NoiseSuppressionMode.rnnoise &&
             _NoiseStatusText._rnnoiseConfirmed(runtime, requestedMode))
-          const Text(
-            'Модель RNNoise: rnnoise-stock-v0.1. Время инициализации нативного DSP: недоступно.',
+          Text(
+            'Модель RNNoise: ${runtime.rnnoiseModelId ?? 'версия не получена'}. Время инициализации нативного DSP: недоступно.',
           ),
+        if (matches &&
+            runtime.deepfilterModelId != null &&
+            requestedMode == NoiseSuppressionMode.deepfilter)
+          Text('Модель DeepFilterNet3: ${runtime.deepfilterModelId}.'),
         const Text('Эти данные не оценивают качество звука.'),
       ],
     );

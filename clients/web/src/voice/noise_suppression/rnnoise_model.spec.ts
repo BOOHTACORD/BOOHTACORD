@@ -2,8 +2,9 @@ import { describe, expect, it } from 'vitest'
 import { selectRnnoiseModel, rnnoiseModels } from './rnnoise_model'
 
 describe('RNNoise model selection', () => {
-  it('keeps the existing model unless v0.2 is explicitly enabled', () => {
-    for (const value of [undefined, '', 'false', 'TRUE']) expect(selectRnnoiseModel(value)).toBe(rnnoiseModels.v01)
+  it('uses the official release by default and retains explicit rollback and research selection', () => {
+    for (const value of [undefined, '', 'TRUE']) expect(selectRnnoiseModel(value)).toBe(rnnoiseModels.release)
+    expect(selectRnnoiseModel('false')).toBe(rnnoiseModels.v01)
     expect(selectRnnoiseModel('true')).toBe(rnnoiseModels.v02)
   })
 

@@ -31,7 +31,10 @@ abstract class _NativeNoiseCore extends ChangeNotifier {
            ? allowExperimentalDeepFilter
            : !kIsWeb &&
                  defaultTargetPlatform == TargetPlatform.windows &&
-                 const bool.fromEnvironment('BOOHTA_EXPERIMENTAL_DEEPFILTER');
+                 const bool.fromEnvironment(
+                   'BOOHTA_EXPERIMENTAL_DEEPFILTER',
+                   defaultValue: true,
+                 );
   static const _channel = MethodChannel('FlutterWebRTC.Method');
   static Future<Object?> _defaultInvoke(
     String method,
