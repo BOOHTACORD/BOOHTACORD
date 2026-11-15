@@ -72,7 +72,7 @@ def install(args, *, diagnostics=None):
             mark('image_load')
             load_images(destination, manifest)
             mark('deployment')
-            intervals = deploy(destination, manifest)
+            intervals = deploy(destination, manifest, current)
             mark('runtime_verification')
             verify_running(destination, manifest)
             mark('readback')
