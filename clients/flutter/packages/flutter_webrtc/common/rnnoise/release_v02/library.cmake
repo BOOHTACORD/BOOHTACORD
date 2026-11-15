@@ -1,5 +1,4 @@
-find_package(Python3 REQUIRED COMPONENTS Interpreter)
-get_filename_component(_release_root "${CMAKE_CURRENT_LIST_DIR}/../../../../../../.." ABSOLUTE)
+set(_release_root "${_noise_release_root}")
 execute_process(COMMAND "${Python3_EXECUTABLE}" -m tools.audio.release_source.run
   --output "${CMAKE_CURRENT_BINARY_DIR}/rnnoise-release-source"
   WORKING_DIRECTORY "${_release_root}" OUTPUT_VARIABLE _release_source
@@ -26,6 +25,8 @@ set(_rnnoise_core $<TARGET_OBJECTS:boohta_rnnoise_v02_release>
 set(BOOHTA_RNNOISE_V02_RESEARCH TRUE)
 set(BOOHTA_RNNOISE_RELEASE_V02_ACTIVE TRUE)
 if(BINARY_NAME)
+  install(FILES "${_release_root}/tools/audio/release_source/lock.json"
+    DESTINATION "$<TARGET_FILE_DIR:${BINARY_NAME}>" RENAME rnnoise-engine.json COMPONENT Runtime)
   install(FILES "${_release_source}/COPYING"
     DESTINATION "$<TARGET_FILE_DIR:${BINARY_NAME}>" RENAME LICENSE-RNNoise-0.2.txt COMPONENT Runtime)
 endif()

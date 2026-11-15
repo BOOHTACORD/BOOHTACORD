@@ -8,6 +8,8 @@ class NativeArtifactMetadataTests(unittest.TestCase):
     def test_unsigned_artifact_is_explicit_and_manifest_is_checksummed(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
+            from .test_audio_component import release_fixture
+            release_fixture(root)
             artifact = root / 'client.exe'; artifact.write_bytes(b'artifact fixture')
             result = write(root, 'windows', ['x64'], 'boohtacord_desktop', {'status': 'unsigned'})
             self.assertEqual(result['signing'], {'status': 'unsigned'})

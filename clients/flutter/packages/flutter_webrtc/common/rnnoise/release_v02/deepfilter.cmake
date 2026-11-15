@@ -1,0 +1,28 @@
+if(WIN32 AND BINARY_NAME AND (NOT BOOHTA_DEEPFILTER_EXPERIMENTAL_NATIVE OR BOOHTA_DEEPFILTER_PRODUCTION_ACTIVE))
+  set(_engine_root "${_noise_release_root}")
+  execute_process(COMMAND "${Python3_EXECUTABLE}" -m tools.audio.release_deepfilter.ensure
+    WORKING_DIRECTORY "${_engine_root}" OUTPUT_VARIABLE _engine_output RESULT_VARIABLE _engine_result)
+  if(NOT _engine_result EQUAL 0)
+    message(FATAL_ERROR "The production DeepFilter engine or notices failed verification")
+  endif()
+  string(STRIP "${_engine_output}" _engine_output)
+  string(REGEX REPLACE ".*\n" "" _engine_path "${_engine_output}")
+  if(NOT EXISTS "${_engine_path}/engine.json")
+    message(FATAL_ERROR "Verified production DeepFilter path is missing")
+  endif()
+  file(SHA256 "${_engine_path}/boohta_deepfilter.dll" BOOHTA_DEEPFILTER_DLL_SHA256)
+  file(SHA256 "${_engine_path}/boohta_deepfilter_model.tar.gz" BOOHTA_DEEPFILTER_MODEL_SHA256)
+  set(BOOHTA_DEEPFILTER_DLL_SHA256 "${BOOHTA_DEEPFILTER_DLL_SHA256}" CACHE STRING "Source-bound DLL hash" FORCE)
+  set(BOOHTA_DEEPFILTER_MODEL_SHA256 "${BOOHTA_DEEPFILTER_MODEL_SHA256}" CACHE STRING "Source-bound model hash" FORCE)
+  set(BOOHTA_DEEPFILTER_EXPERIMENTAL_NATIVE ON CACHE BOOL "Bundled native DeepFilter engine" FORCE)
+  set(BOOHTA_DEEPFILTER_PRODUCTION_ACTIVE ON CACHE BOOL "Verified production assets" FORCE)
+  install(FILES "${_engine_path}/boohta_deepfilter.dll" "${_engine_path}/boohta_deepfilter_model.tar.gz"
+    DESTINATION "$<TARGET_FILE_DIR:${BINARY_NAME}>" COMPONENT Runtime)
+  install(FILES "${_engine_path}/engine.json" DESTINATION "$<TARGET_FILE_DIR:${BINARY_NAME}>"
+    RENAME deepfilter-engine.json COMPONENT Runtime)
+  install(DIRECTORY "${_engine_path}/notices/" DESTINATION "$<TARGET_FILE_DIR:${BINARY_NAME}>/licenses/deepfilter" COMPONENT Runtime)
+  foreach(_notice LICENSE LICENSE-MIT LICENSE-APACHE README.md LICENSE-Rust-1.97.1.html)
+    install(FILES "${_engine_path}/DeepFilterNet-${_notice}"
+      DESTINATION "$<TARGET_FILE_DIR:${BINARY_NAME}>/licenses/deepfilter" COMPONENT Runtime)
+  endforeach()
+endif()

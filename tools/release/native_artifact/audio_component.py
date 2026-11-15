@@ -7,6 +7,9 @@ ROOT = Path(__file__).resolve().parents[3]
 
 
 def write_audio_component(directory, *, root=ROOT, platform=None):
+    if platform == 'windows':
+        from .audio_release import write_release
+        return write_release(directory, root)
     lock = json.loads((root / 'tools/audio/rnnoise_build_lock.json').read_text())
     upstream = root / 'clients/flutter/packages/flutter_webrtc/common/rnnoise/upstream'
     model_hash = hashlib.sha256((upstream / 'src/rnn_data.c').read_bytes()).hexdigest()
@@ -18,14 +21,8 @@ def write_audio_component(directory, *, root=ROOT, platform=None):
         'externalReferences': [{'type': 'vcs', 'url': lock['sourceUrl'] + '/tree/' + lock['sourceCommit']}],
         'properties': [{'name': 'rnnoise:model-sha256', 'value': model_hash},
                        {'name': 'rnnoise:source-archive-sha256', 'value': lock['sourceArchiveSha256']}]}]}
-    overlay_hash = None
-    if platform == 'windows':
-        overlay = root / 'clients/flutter/packages/flutter_webrtc/common/rnnoise/msvc_stack_array_compat.cmake'
-        overlay_hash = hashlib.sha256(overlay.read_bytes()).hexdigest()
-        sbom['components'][0]['properties'].append({'name': 'rnnoise:msvc-overlay-sha256', 'value': overlay_hash})
     (directory / 'rnnoise-component.cdx.json').write_text(json.dumps(sbom, indent=2) + '\n', encoding='utf-8')
     (directory / 'LICENSE-RNNoise.txt').write_text((upstream / 'COPYING').read_text(), encoding='utf-8')
     result = {'source_commit': lock['sourceCommit'], 'model_sha256': model_hash,
             'sbom': 'rnnoise-component.cdx.json', 'license': 'LICENSE-RNNoise.txt'}
-    if overlay_hash: result['msvc_overlay_sha256'] = overlay_hash
     return result

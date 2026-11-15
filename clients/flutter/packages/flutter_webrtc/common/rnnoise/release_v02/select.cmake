@@ -1,4 +1,8 @@
 option(BOOHTA_RNNOISE_RELEASE_V02 "Bundle the official RNNoise 0.2 distribution on Windows" ${WIN32})
+if(BOOHTA_RNNOISE_RELEASE_V02 OR (WIN32 AND BINARY_NAME))
+  include("${CMAKE_CURRENT_LIST_DIR}/root.cmake")
+endif()
+include("${CMAKE_CURRENT_LIST_DIR}/deepfilter.cmake")
 if(BOOHTA_RNNOISE_RELEASE_V02 AND NOT DEFINED ENV{BOOHTA_RNNOISE_V02_SOURCE})
   include("${CMAKE_CURRENT_LIST_DIR}/library.cmake")
 else()
