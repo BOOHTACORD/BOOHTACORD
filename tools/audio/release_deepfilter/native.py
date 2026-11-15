@@ -11,6 +11,7 @@ import sys
 from tools.audio.research_dfn_native.prepare import COMMIT, MODEL_SHA
 from tools.audio.release_notices.collect import collect
 from .compiler import select
+from .notices import stage
 
 ROOT = Path(__file__).resolve().parents[3]
 
@@ -45,10 +46,7 @@ def build(source, output, target):
     subprocess.run([sys.executable, '-m', 'tools.audio.research_dfn_native.fingerprint',
                     '--dll', str(dll), '--dll-sha256', sha(dll), '--model', str(model)],
                    cwd=ROOT, check=True)
-    for name in ('LICENSE', 'LICENSE-MIT', 'LICENSE-APACHE', 'README.md'):
-        shutil.copyfile(work / name, output / ('DeepFilterNet-' + name))
-    shutil.copyfile(ROOT / 'tools/audio/runtime_assets/deepfilter/LICENSE-Rust-1.97.1.html',
-                    output / 'DeepFilterNet-LICENSE-Rust-1.97.1.html')
+    stage(work, output)
     (output / 'cargo-metadata.json').write_bytes(metadata)
     collect(json.loads(metadata), output / 'notices')
     manifest = dict(scope='production', version='DeepFilterNet3', backend='libDF 0.5.7-pre',

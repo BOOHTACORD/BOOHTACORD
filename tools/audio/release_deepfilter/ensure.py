@@ -6,10 +6,12 @@ from pathlib import Path
 import subprocess
 from .native import build, ROOT
 from .signing import prepare
+from . import notices as notice_files
 from tools.audio.research_dfn_native.prepare import COMMIT, MODEL_SHA
 
 
 def validate(output):
+    notice_files.validate(output)
     info = json.loads((output / 'engine.json').read_text(encoding='utf-8'))
     if (info['sourceCommit'] != COMMIT or info['modelSha256'] != MODEL_SHA or
             info['scope'] != 'production' or info['allocationCounter'] or info['panic'] != 'unwind'):
@@ -33,7 +35,7 @@ def validate(output):
 
 def ensure():
     cache = Path(os.environ.get('BOOHTA_ENGINE_CACHE_ROOT', ROOT / '.out/audio-engines')).resolve()
-    output = cache / 'windows-deepfilter-v3'
+    output = cache / 'windows-deepfilter-v3-canonical-notices'
     if output.exists():
         return validate(prepare(validate(output)))
     cache.mkdir(parents=True, exist_ok=True)
