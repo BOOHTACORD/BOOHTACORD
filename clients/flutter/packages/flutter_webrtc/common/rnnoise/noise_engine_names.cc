@@ -2,7 +2,9 @@
 #include <cstring>
 namespace boohta {
 const char* RnnoiseCaptureProcessor::ModelId() {
-#ifdef BOOHTA_RNNOISE_V02_RESEARCH
+#ifdef BOOHTA_RNNOISE_RELEASE_V02
+  return "rnnoise-release-v0.2";
+#elif defined(BOOHTA_RNNOISE_V02_RESEARCH)
   return "rnnoise-stock-v0.2";
 #else
   return "rnnoise-stock-v0.1";
