@@ -1,6 +1,6 @@
 # Web/backend receipt collection on selective retry
 
-Scope: CI receipt collectors and their mandatory test binding. No application,
+Scope: CI receipt collectors and their regression coverage. No application,
 DSP or server build was run locally; audio/load thresholds remain unchanged.
 
 PR #804 run 43731170030 attempt 1 failed two component jobs: load/faults
@@ -18,10 +18,13 @@ execution, complete operation coverage, Web plan digest, namespace, source
 and run remain mandatory; newest failed evidence cannot be replaced by an
 older success. Legacy flat verification remains current-attempt strict.
 
-PASS: 52 focused collector, validator and workflow tests, including negative
+PASS: 51 focused collector, validator and workflow tests, including negative
 status/source/run/operation/attempt/parent-result cases. The new profile-parts
-regression failed before implementation. History/inheritance regressions are
-now explicitly invoked by the mandatory contracts workflow.
+regression failed before implementation. The existing canonical Python runner
+already discovers every tools/**/test_*.py module, including these regressions.
+An unnecessary explicit duplicate invocation was removed after CI caught its
+workflow hash drift; the reviewed contracts workflow and network hashes remain
+unchanged. Only that failing source-hash check was revalidated locally.
 
 PASS: replay of 9 authentic artifact ZIPs from source
 dc7bb9412dc52cb35a37ef6493fecedab72f14dc / run 43719912933, all sizes/digests

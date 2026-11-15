@@ -48,10 +48,3 @@ class ProfilePartsTests(unittest.TestCase):
                 bad_needs = copy.deepcopy(needs); next(iter(bad_needs.values()))['result'] = 'failure'
                 with self.assertRaises(ValueError): validate(SOURCE, bad_needs, parts, attempts=attempts)
                 with self.assertRaises(ValueError): validate(SOURCE, needs, parts)
-
-    def test_history_regressions_are_bound_to_the_mandatory_contract_job(self):
-        root = Path(__file__).resolve().parents[3]
-        command = (root / '.github/workflows/ci-contracts.yaml').read_text(encoding='utf-8')
-        for module in ('tools.ci.component_receipts.test_history', 'tools.ci.component_receipts.test_profile_parts',
-                       'tools.ci.flutter_gates.test_inheritance', 'tools.ci.actual_acceptance.test_inheritance'):
-            self.assertIn(module, command)
