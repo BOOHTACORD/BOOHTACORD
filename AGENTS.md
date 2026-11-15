@@ -25,6 +25,26 @@
 
 Do not log passwords, session/reset/media tokens, DM bodies, message text, attachment contents or high-cardinality usernames/DM IDs. Production mutations require secure session cookies and CSRF/Origin validation. Keep PostgreSQL, storage and LiveKit management interfaces private.
 
+## CI readiness before every commit
+
+Before each commit, inventory staged, unstaged, untracked and merge-base-to-HEAD
+changes against the target branch. Run `python -m tools.ci.preflight.run --base <target-ref>`
+and follow [the CI readiness playbook](docs/development/codex-ci-readiness.md).
+Review contracts, schemas, consumers and fixtures; requirements and backlog;
+generated product-map and observability state; manifests and lockfiles;
+migrations, deployment and config; feature registry, tests and applicable
+evidence. Contracts is a mandatory PR gate regardless of paths. Unknown scope
+must not weaken checks. The preflight does not attest manual or runtime checks:
+complete the report and repeat inventory after checks before deciding to commit.
+
+An evidence record under `evidence/` is required only where project rules or the
+work require one. Runtime outputs and profile evidence under `.out/` or Actions
+artifacts are not a reason to commit those outputs. Never fabricate PASS or
+weaken tests, workflow, snapshots or source identity to make a gate pass. Stop
+the commit on failed checks, missing companions, stale output or unexplained blocks;
+NOT_RUN/BLOCKED does not close a required gate. Review exact files before staging;
+exclude secrets, `.env`, temporary data, media and unrelated generated outputs.
+
 ## Local feature acceptance
 
 For changes to Web, Android or iOS behaviour/UI, register or update the scenario in `tools/qa/local_features/features.json`, add focused behaviour tests before implementation, then run `./tools/qa/local_features/check.sh --feature <feature> --base <base-ref> --real-stack` including the applicable native runtime target. Inspect the generated screenshots at source resolution and record visual observations. A missing scenario/device or failed check must stay `NOT_RUN`/`BLOCKED`/`FAIL`; component captures do not prove native/media acceptance. See `tools/qa/local_features/README.md` for scope and Before/After review. Never approve a new screenshot baseline solely to silence a difference.
