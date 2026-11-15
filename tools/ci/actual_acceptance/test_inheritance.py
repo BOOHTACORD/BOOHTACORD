@@ -10,6 +10,17 @@ from . import test_fan_in
 
 
 class InheritedActualTests(unittest.TestCase):
+    def test_real_entrypoint_resolves_the_workflow_relative_download_directory(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            archive = root / '.out/actual-download' / ('actual-sfu-' + 'a' * 40 + '-123-1')
+            archive.mkdir(parents=True); self.make(archive, '1')
+            context = {'GITHUB_SHA': 'a' * 40, 'GITHUB_RUN_ID': '123', 'GITHUB_RUN_ATTEMPT': '2',
+                       'RUNTIME_RESULT': 'success'}
+            with patch('os.getcwd', return_value=str(root)), patch.dict(os.environ, context), \
+                 patch('sys.argv', ['fan-in', '--profiles', '["sfu"]']):
+                fan_in.main()
+
     def make(self, root, attempt):
         folder, report = test_fan_in.FanInTests().make(root)
         file = folder / 'result.json'

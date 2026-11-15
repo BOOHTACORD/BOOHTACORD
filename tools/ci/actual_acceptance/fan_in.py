@@ -72,7 +72,7 @@ def verify_downloaded(root,selected,source,run,attempt,runtime_result):
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--profiles',required=True);args=parser.parse_args()
-    verify_downloaded(Path('.out/actual-download'),profiles(args.profiles),os.environ['GITHUB_SHA'],
+    verify_downloaded(Path('.out/actual-download').absolute(),profiles(args.profiles),os.environ['GITHUB_SHA'],
                       os.environ['GITHUB_RUN_ID'],os.environ['GITHUB_RUN_ATTEMPT'],os.environ.get('RUNTIME_RESULT'))
     print('PASS: selected original actual controllers, source, captures and cleanup; release/physical NOT_RUN')
 

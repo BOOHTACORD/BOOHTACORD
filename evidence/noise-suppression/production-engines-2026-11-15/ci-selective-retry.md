@@ -15,7 +15,7 @@ Current parent jobs must all succeed. Foreign, missing, future, failed or
 tampered evidence cannot fall back to an older success. Legacy flat manual
 verification remains strict to the current attempt.
 
-PASS: 34 focused collector, validator and workflow tests. New regression
+PASS: 35 focused collector, validator and workflow tests. New regression
 tests failed against the previous implementation before the fix.
 PASS: replay of 9 original hosted artifact ZIPs, with sizes/SHA-256 checked:
 Flutter dart/Kotlin/macOS attempt 1, Android attempt 2; actual next/SFU
@@ -25,3 +25,9 @@ validators. The original Git blob supplied the Linux plan bytes (hash
 4f0f7a3b261feefcbf8429d44f598146dc54c1404224d172d8d8d4e6c1bec8d3),
 avoiding Windows checkout line-ending conversion during this local replay.
 The failed hosted run/check state was not altered by this component replay.
+
+The first PR run caught a relative entrypoint path rejected by the strict
+archive selector. A real-entrypoint regression reproduced that failure;
+the entrypoint now makes the path absolute without resolving symlinks away.
+Only this collector was changed and checked locally. The obsolete run was
+cancelled; GitHub starts its normal mandatory checks for the amended PR.
