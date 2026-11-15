@@ -29,9 +29,9 @@ def collect(metadata, output):
         root = Path(package['manifest_path']).resolve().parent
         candidates = [p for p in root.iterdir() if p.is_file() and
                       re.search(r'licen[cs]e|copying|copyright|notice', p.name, re.I)]
-        for directory in ('LICENSES', 'licenses'):
-            if (root / directory).is_dir():
-                candidates.extend(p for p in (root / directory).rglob('*') if p.is_file())
+        for directory in root.iterdir():
+            if directory.is_dir() and directory.name.casefold() == 'licenses':
+                candidates.extend(p for p in directory.rglob('*') if p.is_file())
         notices = {}
         for file in candidates:
             if not file.resolve().is_relative_to(root.parent):
