@@ -1,6 +1,8 @@
 {
   "auth": {
-    "native_targets": ["integration_test/issue689_roster_test.dart"],
+    "native_targets": [
+      "integration_test/issue689_roster_test.dart"
+    ],
     "paths": [
       "clients/web/src/identity/*",
       "clients/flutter/lib/src/screens/auth*",
@@ -172,7 +174,13 @@
     }
   },
   "connection_status": {
-    "native_targets": ["integration_test/issue689_roster_test.dart", "integration_test/issue689_delivery_revocation_test.dart", "integration_test/issue689_heartbeat_test.dart", "integration_test/issue689_envelope_test.dart", "integration_test/issue689_topology_history_test.dart"],
+    "native_targets": [
+      "integration_test/issue689_roster_test.dart",
+      "integration_test/issue689_delivery_revocation_test.dart",
+      "integration_test/issue689_heartbeat_test.dart",
+      "integration_test/issue689_envelope_test.dart",
+      "integration_test/issue689_topology_history_test.dart"
+    ],
     "paths": [
       "clients/web/src/workspace/connection_status/**",
       "clients/web/src/authorization/permission_store.ts",
@@ -267,16 +275,28 @@
         "scope": "Flutter maintenance state rejects stale ownership and revisions and retains unknown status across socket handoffs. Transport and native runtime remain separate."
       },
       "issue689_flutter_maintenance_guest": {
-        "focused": ["clients/flutter/test/maintenance_socket/guest_test.dart", "clients/flutter/test/maintenance_socket/guest_handoff_test.dart", "clients/flutter/test/maintenance_socket/guest_loopback_test.dart"],
+        "focused": [
+          "clients/flutter/test/maintenance_socket/guest_test.dart",
+          "clients/flutter/test/maintenance_socket/guest_handoff_test.dart",
+          "clients/flutter/test/maintenance_socket/guest_loopback_test.dart"
+        ],
         "scope": "Flutter guest owner accepts only public maintenance events, cancels handshakes and rejects stale owners; loopback verifies no cookie or client messages. Application handoff and native runtime remain separate."
       },
       "issue689_flutter_maintenance_handoff": {
-        "focused": ["clients/flutter/test/maintenance_socket/controller_test.dart", "clients/flutter/test/maintenance_socket/app_handoff_test.dart", "clients/flutter/test/maintenance_socket/server_failure_test.dart", "clients/flutter/test/maintenance_socket/unknown_banner_test.dart"],
+        "focused": [
+          "clients/flutter/test/maintenance_socket/controller_test.dart",
+          "clients/flutter/test/maintenance_socket/app_handoff_test.dart",
+          "clients/flutter/test/maintenance_socket/server_failure_test.dart",
+          "clients/flutter/test/maintenance_socket/unknown_banner_test.dart"
+        ],
         "native": "integration_test/issue689_roster_test.dart",
         "scope": "Flutter transfers maintenance ownership across guest, authenticated, logout and server-change flows, showing unknown status without inventing an inactive value. Native and visual gates remain separate."
       },
       "issue689_flutter_roster_contract": {
-        "focused": ["clients/flutter/test/realtime_scope/roster_event_test.dart", "clients/flutter/test/realtime_scope/roster_payload_validation_test.dart"],
+        "focused": [
+          "clients/flutter/test/realtime_scope/roster_event_test.dart",
+          "clients/flutter/test/realtime_scope/roster_payload_validation_test.dart"
+        ],
         "scope": "Flutter validates versioned voice roster payloads and safe unavailable codes, rejects malformed frames and preserves durable replay cursors; native delivery remains separate acceptance work."
       },
       "issue689_flutter_roster_state": {
@@ -284,50 +304,92 @@
         "scope": "Flutter shared-socket roster state covers initial timeout, stale retention, scope changes and reconnect without a separate roster request. Production wiring and native runtime remain separate."
       },
       "issue689_flutter_roster_socket": {
-        "focused": ["clients/flutter/test/voice_roster_state/app_composition_test.dart", "clients/flutter/test/realtime_scope/manual_reconnect_test.dart"],
+        "focused": [
+          "clients/flutter/test/voice_roster_state/app_composition_test.dart",
+          "clients/flutter/test/realtime_scope/manual_reconnect_test.dart"
+        ],
         "native": "integration_test/issue689_roster_test.dart",
         "scope": "Flutter routes roster snapshots and availability through its authenticated socket, retains stale state and retries on that socket. Android emulator and full real-stack acceptance remain separate."
       },
       "issue689_web_connect_deadline": {
         "browser": "clients/web/tests/connection_status/playwright.config.ts",
-        "focused": ["clients/web/src/realtime/open_deadline.spec.ts", "clients/web/src/identity/current_session_signal.spec.ts", "clients/web/tests/connection_status/open_deadline.browser.spec.ts"],
+        "focused": [
+          "clients/web/src/realtime/open_deadline.spec.ts",
+          "clients/web/src/identity/current_session_signal.spec.ts",
+          "clients/web/tests/connection_status/open_deadline.browser.spec.ts"
+        ],
         "scope": "Web authenticated socket attempts have a bounded open-to-ready deadline and cancel a stalled session check. A loopback HTTP server tests an upgrade that does not answer; Flutter, device and real-stack acceptance remain separate."
       },
       "issue689_web_silent_socket": {
         "browser": "clients/web/tests/connection_status/playwright.config.ts",
-        "focused": ["clients/web/src/realtime/heartbeat_watch.spec.ts", "clients/web/src/realtime/heartbeat_contract.spec.ts", "clients/web/src/realtime/legacy_protocol.spec.ts", "clients/web/tests/connection_status/heartbeat.browser.spec.ts"],
+        "focused": [
+          "clients/web/src/realtime/heartbeat_watch.spec.ts",
+          "clients/web/src/realtime/heartbeat_contract.spec.ts",
+          "clients/web/src/realtime/legacy_protocol.spec.ts",
+          "clients/web/tests/connection_status/heartbeat.browser.spec.ts"
+        ],
         "scope": "Web negotiates server heartbeats, expires silent public and authenticated sockets and rechecks on visibility or online events; a failed handshake alternates with a legacy handshake lacking the watchdog. Native clients, physical network switching and production rollback remain separate."
       },
       "issue689_flutter_silent_socket": {
-        "focused": ["clients/flutter/test/realtime_scope/heartbeat_liveness_test.dart", "clients/flutter/test/realtime_scope/heartbeat_loopback_test.dart", "clients/flutter/test/maintenance_socket/heartbeat_test.dart"],
+        "focused": [
+          "clients/flutter/test/realtime_scope/heartbeat_liveness_test.dart",
+          "clients/flutter/test/realtime_scope/heartbeat_loopback_test.dart",
+          "clients/flutter/test/maintenance_socket/heartbeat_test.dart"
+        ],
         "native": "integration_test/issue689_heartbeat_test.dart",
         "scope": "Shared Flutter negotiates heartbeats, expires silent guest and authenticated sockets and checks staleness when resuming. Native loopback exercises the watchdog on the device; real-stack background network switching, iOS and production acceptance remain separate."
       },
       "issue689_web_envelope_validation": {
         "browser": "clients/web/tests/connection_status/playwright.config.ts",
-        "focused": ["clients/web/src/realtime/new_envelope.spec.ts", "clients/web/src/realtime/roster_payload.spec.ts", "clients/web/src/realtime/maintenance_payload.spec.ts", "clients/web/src/maintenance/guest_socket.spec.ts", "clients/web/tests/connection_status/envelope.browser.spec.ts"],
+        "focused": [
+          "clients/web/src/realtime/new_envelope.spec.ts",
+          "clients/web/src/realtime/roster_payload.spec.ts",
+          "clients/web/src/realtime/maintenance_payload.spec.ts",
+          "clients/web/src/maintenance/guest_socket.spec.ts",
+          "clients/web/tests/connection_status/envelope.browser.spec.ts"
+        ],
         "scope": "Web validates complete maintenance and roster envelopes, including optional telemetry, and reconnects after malformed new events. Flutter, backlog pressure and full real-stack acceptance remain separate."
       },
       "issue689_web_malformed_frame": {
         "browser": "clients/web/tests/connection_status/playwright.config.ts",
-        "focused": ["clients/web/src/realtime/malformed_frame.spec.ts", "clients/web/src/realtime/malformed_cursor.spec.ts", "clients/web/tests/connection_status/malformed_frame.browser.spec.ts"],
+        "focused": [
+          "clients/web/src/realtime/malformed_frame.spec.ts",
+          "clients/web/src/realtime/malformed_cursor.spec.ts",
+          "clients/web/tests/connection_status/malformed_frame.browser.spec.ts"
+        ],
         "scope": "Authenticated Web clears replay state and retries on malformed JSON, non-object JSON or binary realtime frames; Chromium uses a real loopback WebSocket. Full-stack and other event validation remain separate."
       },
       "issue689_flutter_malformed_frame": {
-        "focused": ["clients/flutter/test/realtime_scope/malformed_frame_test.dart", "clients/flutter/test/realtime_scope/malformed_loopback_test.dart"],
+        "focused": [
+          "clients/flutter/test/realtime_scope/malformed_frame_test.dart",
+          "clients/flutter/test/realtime_scope/malformed_loopback_test.dart"
+        ],
         "scope": "Authenticated Flutter closes and retries after malformed JSON, non-object JSON or binary frames; loopback tests use real sockets on the host. Native and full-stack acceptance remain separate."
       },
       "issue689_flutter_envelope_validation": {
-        "focused": ["clients/flutter/test/realtime_scope/new_envelope_test.dart", "clients/flutter/test/realtime_scope/new_roster_envelope_test.dart", "clients/flutter/test/realtime_scope/maintenance_event_test.dart", "clients/flutter/test/realtime_scope/roster_event_test.dart", "clients/flutter/test/maintenance_socket/guest_loopback_test.dart"],
+        "focused": [
+          "clients/flutter/test/realtime_scope/new_envelope_test.dart",
+          "clients/flutter/test/realtime_scope/new_roster_envelope_test.dart",
+          "clients/flutter/test/realtime_scope/maintenance_event_test.dart",
+          "clients/flutter/test/realtime_scope/roster_event_test.dart",
+          "clients/flutter/test/maintenance_socket/guest_loopback_test.dart"
+        ],
         "native": "integration_test/issue689_envelope_test.dart",
         "scope": "Shared Flutter validates new maintenance and roster envelopes and resets invalid guest or authenticated connections. Native loopback covers a malformed maintenance envelope; backlog and full real-stack acceptance remain separate."
       },
       "issue689_web_security_priority": {
-        "focused": ["clients/web/src/realtime/hint_batch/security_priority.spec.ts", "clients/web/src/realtime/hint_batch/overflow.spec.ts", "clients/web/src/realtime/hint_batch/replay.spec.ts"],
+        "focused": [
+          "clients/web/src/realtime/hint_batch/security_priority.spec.ts",
+          "clients/web/src/realtime/hint_batch/overflow.spec.ts",
+          "clients/web/src/realtime/hint_batch/replay.spec.ts"
+        ],
         "scope": "Web processes session and permission hints ahead of a blocked message batch, serializes permission refreshes, and resets on failure. Flutter, actual slow readers and full real-stack acceptance remain separate."
       },
       "issue689_web_permission_incarnation": {
-        "focused": ["clients/web/src/authorization/permission_store.spec.ts", "clients/web/src/workspace/workspace_realtime_dispatch.spec.ts"],
+        "focused": [
+          "clients/web/src/authorization/permission_store.spec.ts",
+          "clients/web/src/workspace/workspace_realtime_dispatch.spec.ts"
+        ],
         "scope": "A new Web permission hint supersedes an older in-flight permission request and reports a failed refresh; stale responses cannot overwrite its result. Flutter and real-stack acceptance remain separate."
       },
       "issue689_flutter_permission_incarnation": {
@@ -355,7 +417,10 @@
         "scope": "Flutter captures socket admission for ready and recovery sequences and does not start later steps after closure. Already-running store operations and native acceptance remain separate."
       },
       "issue689_flutter_topology_socket_fence": {
-        "focused": ["clients/flutter/test/realtime_scope/topology_socket_fence_test.dart", "clients/flutter/test/realtime_scope/topology_history_socket_fence_test.dart"],
+        "focused": [
+          "clients/flutter/test/realtime_scope/topology_socket_fence_test.dart",
+          "clients/flutter/test/realtime_scope/topology_history_socket_fence_test.dart"
+        ],
         "native": "integration_test/issue689_topology_history_test.dart",
         "scope": "Flutter rejects old realtime topology results, failures and subsequent initial channel history after socket end or a newer refresh while preserving independent initial loading. Native and full-stack acceptance remain separate."
       },
@@ -376,19 +441,35 @@
         "scope": "Flutter ignores text history from an ended socket and does not start subsequent topology or notification work. Native and full-stack acceptance remain separate."
       },
       "issue689_flutter_connect_deadline": {
-        "focused": ["clients/flutter/test/realtime_scope/open_deadline_test.dart", "clients/flutter/test/realtime_scope/open_deadline_integration_test.dart", "clients/flutter/test/realtime_scope/retry_policy_test.dart"],
+        "focused": [
+          "clients/flutter/test/realtime_scope/open_deadline_test.dart",
+          "clients/flutter/test/realtime_scope/open_deadline_integration_test.dart",
+          "clients/flutter/test/realtime_scope/retry_policy_test.dart"
+        ],
         "scope": "Shared Flutter bounds the entire socket upgrade and ready handshake, cancels abandoned HTTP clients and closes late sockets. Loopback tests cover an unanswered upgrade; Android, iOS and production acceptance remain separate."
       },
       "issue689_flutter_session_deadline": {
-        "focused": ["clients/flutter/test/realtime_scope/session_deadline_test.dart", "clients/flutter/test/realtime_scope/session_cancel_integration_test.dart", "clients/flutter/test/realtime_scope/session_cancel_late_test.dart", "clients/flutter/test/realtime_scope/session_expiration_test.dart"],
+        "focused": [
+          "clients/flutter/test/realtime_scope/session_deadline_test.dart",
+          "clients/flutter/test/realtime_scope/session_cancel_integration_test.dart",
+          "clients/flutter/test/realtime_scope/session_cancel_late_test.dart",
+          "clients/flutter/test/realtime_scope/session_expiration_test.dart"
+        ],
         "scope": "Flutter bounds socket-loss session revalidation, aborts the HTTP request on timeout or replacement, and ignores a late unauthorized response. Android/iOS runtime remains separate."
       },
       "issue689_web_roster_incarnation": {
-        "focused": ["clients/web/src/realtime/hint_batch/incarnation.spec.ts", "clients/web/src/realtime/roster_incarnation.spec.ts", "clients/web/src/voice/roster_socket/state.spec.ts"],
+        "focused": [
+          "clients/web/src/realtime/hint_batch/incarnation.spec.ts",
+          "clients/web/src/realtime/roster_incarnation.spec.ts",
+          "clients/web/src/voice/roster_socket/state.spec.ts"
+        ],
         "scope": "Web delivery discards snapshots and unfinished queued work from disconnected socket incarnations while preserving the last applied durable cursor. Focused source tests do not establish real network, native or physical acceptance."
       },
       "issue689_workspace_async_incarnation": {
-        "focused": ["clients/web/src/workspace/realtime_incarnation.spec.ts", "clients/web/src/workspace/workspace_realtime_dispatch.spec.ts"],
+        "focused": [
+          "clients/web/src/workspace/realtime_incarnation.spec.ts",
+          "clients/web/src/workspace/workspace_realtime_dispatch.spec.ts"
+        ],
         "scope": "Web suppresses late notifications and follow-up edited-message refreshes from a disconnected socket. Already-running store requests and native runtime remain separate."
       },
       "issue689_maintenance_contract": {
@@ -412,7 +493,10 @@
         "scope": "Web coalesced hint delivery bounds pending and in-flight work, demands recovery on overflow and does not acknowledge stale work; real socket pressure and lease-revocation acceptance remain separate."
       },
       "issue689_flutter_socket_lifecycle": {
-        "focused": ["clients/flutter/test/realtime_scope/socket_attempt_test.dart", "clients/flutter/test/realtime_scope/socket_recovery_integration_test.dart"],
+        "focused": [
+          "clients/flutter/test/realtime_scope/socket_attempt_test.dart",
+          "clients/flutter/test/realtime_scope/socket_recovery_integration_test.dart"
+        ],
         "scope": "Flutter reports exactly one start and end per realtime connection attempt, including a failed handshake and recovery; feature composition and Android runtime are separate."
       },
       "issue689_flutter_revocation_pressure": {
@@ -437,15 +521,27 @@
         "scope": "Shared-socket roster state distinguishes unknown, fresh, retained and unavailable values, rejects stale revisions and expires a missing initial snapshot. Workspace integration and real browser acceptance remain separate."
       },
       "issue689_web_roster_socket": {
-        "focused": ["clients/web/src/workspace/workspace_roster_socket.spec.ts", "clients/web/src/voice/roster_socket/state.spec.ts", "clients/web/src/realtime/realtime_client.spec.ts"],
+        "focused": [
+          "clients/web/src/workspace/workspace_roster_socket.spec.ts",
+          "clients/web/src/voice/roster_socket/state.spec.ts",
+          "clients/web/src/realtime/realtime_client.spec.ts"
+        ],
         "scope": "Web consumes negotiated roster snapshots on the existing authenticated socket, preserves unknown and retained states and retries through that socket. Real browser network, visual and media acceptance remain separate."
       },
       "issue689_web_authenticated_maintenance": {
-        "focused": ["clients/web/src/maintenance/auth_owner.spec.ts", "clients/web/src/workspace/workspace_maintenance.spec.ts"],
+        "focused": [
+          "clients/web/src/maintenance/auth_owner.spec.ts",
+          "clients/web/src/workspace/workspace_maintenance.spec.ts"
+        ],
         "scope": "Negotiated authenticated maintenance updates feature state without unrelated protected refreshes; guest handoff and browser runtime remain separate acceptance work."
       },
       "issue689_web_maintenance_handoff": {
-        "focused": ["clients/web/src/maintenance/owner.spec.ts", "clients/web/src/maintenance/guest_socket.spec.ts", "clients/web/src/maintenance/maintenance_status.spec.ts", "clients/web/src/workspace/workspace_maintenance.spec.ts"],
+        "focused": [
+          "clients/web/src/maintenance/owner.spec.ts",
+          "clients/web/src/maintenance/guest_socket.spec.ts",
+          "clients/web/src/maintenance/maintenance_status.spec.ts",
+          "clients/web/src/workspace/workspace_maintenance.spec.ts"
+        ],
         "scope": "Web maintenance ownership switches between public and authenticated sockets and ignores callbacks from the previous owner. Real-browser login, logout, restart and network traces remain separate acceptance work."
       },
       "issue689_resync": {
@@ -516,7 +612,11 @@
     }
   },
   "voice": {
-    "native_targets": ["integration_test/issue689_listener_test.dart", "integration_test/issue689_roster_test.dart", "integration_test/issue786_deafen_test.dart"],
+    "native_targets": [
+      "integration_test/issue689_listener_test.dart",
+      "integration_test/issue689_roster_test.dart",
+      "integration_test/issue786_deafen_test.dart"
+    ],
     "paths": [
       "clients/flutter/packages/flutter_webrtc/common/rnnoise/Package.swift",
       "tools/verify/apple_audio_link/*",
@@ -688,12 +788,12 @@
           "clients/web/tests/audio/microphone_switch_livekit.browser.spec.ts",
           "clients/web/tests/audio/deepfilter_switch_livekit.research.spec.ts",
           "clients/web/tests/audio/auto_deepfilter.local.ts",
-            "clients/web/tests/audio/auto_preflight.local.ts",
-            "clients/web/tests/audio/deepfilter_preflight.research.spec.ts",
-            "clients/web/src/voice/noise_suppression/auto_preflight/benchmark.spec.ts",
-            "clients/web/src/voice/noise_suppression/auto_preflight/client.spec.ts",
-            "clients/web/src/voice/noise_suppression/auto_preflight/worker_runner.spec.ts",
-            "clients/web/src/voice/noise_suppression/microphone_adapter/auto_preflight.spec.ts",
+          "clients/web/tests/audio/auto_preflight.local.ts",
+          "clients/web/tests/audio/deepfilter_preflight.research.spec.ts",
+          "clients/web/src/voice/noise_suppression/auto_preflight/benchmark.spec.ts",
+          "clients/web/src/voice/noise_suppression/auto_preflight/client.spec.ts",
+          "clients/web/src/voice/noise_suppression/auto_preflight/worker_runner.spec.ts",
+          "clients/web/src/voice/noise_suppression/microphone_adapter/auto_preflight.spec.ts",
           "clients/web/src/voice/noise_suppression/auto_policy.spec.ts",
           "clients/web/src/voice/noise_suppression/microphone_adapter/auto.spec.ts",
           "clients/web/src/voice/noise_suppression/microphone_adapter/deepfilter.spec.ts",
@@ -715,11 +815,11 @@
           "clients/flutter/test/voice_scope/native_auto_engine_test.dart",
           "clients/flutter/test/voice_scope/native_auto_preflight_test.dart",
           "clients/flutter/test/voice_scope/native_auto_preflight_lifecycle_test.dart",
-            "clients/flutter/test/voice_scope/native_auto_probe_monitor_test.dart",
-            "clients/flutter/test/voice_scope/native_auto_probe_mute_test.dart",
-            "clients/flutter/test/voice_scope/native_auto_probe_failure_test.dart",
-            "clients/flutter/test/voice_scope/native_auto_backup_lifecycle_test.dart",
-            "clients/flutter/test/audio_devices/auto_runtime_fallback_test.dart",
+          "clients/flutter/test/voice_scope/native_auto_probe_monitor_test.dart",
+          "clients/flutter/test/voice_scope/native_auto_probe_mute_test.dart",
+          "clients/flutter/test/voice_scope/native_auto_probe_failure_test.dart",
+          "clients/flutter/test/voice_scope/native_auto_backup_lifecycle_test.dart",
+          "clients/flutter/test/audio_devices/auto_runtime_fallback_test.dart",
           "clients/flutter/test/voice_scope/native_auto_deepfilter_preflight_test.dart",
           "clients/flutter/test/voice_scope/native_auto_fallback_test.dart",
           "clients/flutter/test/voice_scope/auto_capture_test.dart",
@@ -733,12 +833,22 @@
           "clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/frame_queue/queue_test.cc",
           "clients/flutter/packages/flutter_webrtc/common/rnnoise/deepfilter/preflight/benchmark_test.cc",
           "clients/flutter/packages/flutter_webrtc/common/rnnoise/preflight/worker_test.cc",
-          "clients/flutter/packages/flutter_webrtc/common/rnnoise/microphone_controls/processor_test.cc"
+          "clients/flutter/packages/flutter_webrtc/common/rnnoise/microphone_controls/processor_test.cc",
+          "clients/flutter/test/noise_engine_versions_test.dart",
+          "clients/web/src/voice/production_noise_engines.spec.ts",
+          "clients/web/tests/audio/playwright.production.config.ts"
         ],
-        "scope": "RNNoise v0.2 and experimental Web/Windows DeepFilter modes are behind disabled-by-default build flags; DeepFilter release assets are not supplied. Web adapter tests require a confirmed disabled browser noise suppressor before attaching either model; ignored constraints trigger muted recapture, and an unconfirmed fallback fails muted. Flutter tests cover model readiness and browser fallback for initial capture, settings and desktop device changes using fakes; native hook is not instantiated by the normal client. Real-stack, Windows device, physical audio, visual and release acceptance remain NOT_RUN/BLOCKED."
+        "scope": "Ordinary Web and Windows builds supply pinned RNNoise 0.2 and DeepFilterNet3 with notices. Settings show actual model versions. Auto measures eligibility, and unconfirmed capture or fallback stays muted. Production browser and isolated Windows local-RTP diagnostics are registered separately from synthetic unit tests; speech quality, listening and full workspace/device acceptance require their own evidence.",
+        "production_engines": {
+          "browser": "clients/web/tests/audio/playwright.production.config.ts",
+          "native": "tools/audio/release_deepfilter/probe.dart",
+          "scope": "Ordinary Web and Windows builds bundle official RNNoise 0.2 and DeepFilterNet3 by default. Settings display model versions; synthetic processing, local RTP and mute gates do not prove speech quality or blind listening acceptance."
+        }
       },
       "speaker_activity_interval": {
-        "focused": ["tools/verify/livekit_network_config/test_speaker_activity.py"],
+        "focused": [
+          "tools/verify/livekit_network_config/test_speaker_activity.py"
+        ],
         "scope": "LiveKit active speaker reports use a 150 ms interval for Web and native clients; speaker sensitivity and smoothing retain LiveKit defaults. End-to-end timing, flicker and native media acceptance remain separate."
       },
       "issue59": {
@@ -1098,7 +1208,7 @@
     "parity_review": {
       "android_rnnoise_state_abi": "Android JNI previously indexed UNKNOWN=4 into its legacy four-element table and threw before microphone frames. Legacy numeric codes OFF=0/WebRTC=1/RNNoise=2/UNKNOWN=3 are restored; DeepFilter is appended as 4. A real Android API-35 x86_64 JNI instrumentation test failed before with ArrayIndexOutOfBoundsException and passed after for pending, one synthetic frame, reset and recovery. 25 Windows-host native C++ tests passed, including both engine hooks. Web implementation is unchanged. Physical speech, actual SFU/microphone, iOS and macOS device acceptance are NOT_RUN; this is state-ABI proof only.",
       "issue687_native_auto_internal": "Internal shared Flutter Auto preserves explicit OFF and mute intent and remains hidden from the normal selector. Verified experimental DeepFilter falls back to measured RNNoise v0.2, then WebRTC. Separate marked optimized Windows probes passed six-second physical capture with direct peers and private local LiveKit for both engines. Cold bootstrap uses the total two-second preflight deadline. Product UI, sustained/acoustic/device/reconnect acceptance and Android/iOS runtime remain unverified.",
-        "issue687_web_auto_internal": "Internal Web Auto measures explicitly opted-in DeepFilter and enabled RNNoise v0.2 in disposable WASM Workers before selection. Runtime DeepFilter failure retries measured RNNoise, then confirmed browser NS; mute intent and fallback cause survive recovery/health updates. Local Chromium/Firefox preflight and Chromium private-SFU publication/mute passed; controlled overload recovered real RNNoise v0.2 with received synthetic audio. Requested/effective modes stay distinct and Auto UI remains hidden. Noise adaptation, physical/acoustic/device acceptance, model rights and production delivery remain open.",
+      "issue687_web_auto_internal": "Internal Web Auto measures explicitly opted-in DeepFilter and enabled RNNoise v0.2 in disposable WASM Workers before selection. Runtime DeepFilter failure retries measured RNNoise, then confirmed browser NS; mute intent and fallback cause survive recovery/health updates. Local Chromium/Firefox preflight and Chromium private-SFU publication/mute passed; controlled overload recovered real RNNoise v0.2 with received synthetic audio. Requested/effective modes stay distinct and Auto UI remains hidden. Noise adaptation, physical/acoustic/device acceptance, model rights and production delivery remain open.",
       "issue687_browser_capture_guard": "Web rechecks browser noise-suppression settings and safely reacquires the microphone when live constraints are ignored; unconfirmed model fallback fails muted. Flutter, Android and iOS implementations are unchanged; their native and real-stack regression checks remain required. Browser component and mocked-publication tests do not establish real SFU or physical speech acceptance.",
       "issue667_voice_large_text_review": "Shared Flutter voice participant cards switch to one column at narrow widths with large text. Web source is unchanged and its regression remains required; Android and iOS share the layout, but native runtime, screen reader and physical acceptance for this change remain NOT_RUN. Component tests and a 320 dp capture are recorded in the issue 667 evidence.",
       "issue648_transfer_recovery_review": "Shared Flutter clears stale channel intent on accepted transfer revocation during recovery. Android emulator and Web were exercised on an isolated stack with injected release failure; iOS and production remain NOT_RUN.",
@@ -1117,7 +1227,9 @@
       "revision": "pr-683-web-chat-ux-2026-11-08",
       "issue272_roster_recovery": "Issue 689 replaced roster SSE with the shared WebSocket. Flutter retries that connection with bounded jitter throughout an outage; the long-outage unit test covers repeated failures. Android, iOS and real Web outage acceptance remain NOT_RUN.",
       "idle_afk_speech_activity": "2026-11-14 AFK follow-up: Web and shared Flutter report activity while the local microphone is enabled and speech is detected, resetting AFK inactivity. Voice admission, mute/deafen controls and transport policy are unchanged. Focused Web/Flutter voice regressions pass; dedicated Android/iOS AFK route runtime acceptance is NOT_RUN.",
-      "issue786_deafen_screen_audio": "2026-11-14 issue #786: Web and shared Flutter add server-published deafen state with headphones-off priority; it suppresses remote voice microphone audio and restores the local microphone while selected screen-share audio and its mute/volume controls remain independent. Web browser suites, Flutter unit tests and component captures pass. Android runtime is blocked before assertions by the Tempo config mount; iOS runtime is BLOCKED without a Simulator. Paired physical Web-to-Flutter media acceptance is NOT_RUN; no media capability or capacity claim is made."
+      "issue786_deafen_screen_audio": "2026-11-14 issue #786: Web and shared Flutter add server-published deafen state with headphones-off priority; it suppresses remote voice microphone audio and restores the local microphone while selected screen-share audio and its mute/volume controls remain independent. Web browser suites, Flutter unit tests and component captures pass. Android runtime is blocked before assertions by the Tempo config mount; iOS runtime is BLOCKED without a Simulator. Paired physical Web-to-Flutter media acceptance is NOT_RUN; no media capability or capacity claim is made.",
+      "issue687_production_engines": "Web and Windows enable RNNoise 0.2 and DeepFilterNet3 with versioned labels. Android, iOS and macOS keep their existing native engine/build selection; no mobile readiness claim. Local browser/native processing evidence is recorded independently from speech-quality and full workspace acceptance.",
+      "issue687_production_delivery": "RNNoise 0.2 and DeepFilterNet3 enabled in ordinary Web and Windows builds with version labels. Shared audio state retains Android/iOS/macOS existing engine selection. This overlapping scenario has no new device acceptance claim; browser/native engine evidence is separate."
     }
   },
   "screen": {
@@ -1942,7 +2054,9 @@
         "android": "implementation_and_regression"
       },
       "scope": "2026-10-24 (#553 Flutter follow-up): the shared members-panel path adds the current voice-channel caption and screen-share icon; audio and settings controls are unchanged. The widget behavior is shared by Android and iOS. 2026-10-24 (#570): compact Flutter member rows show the channel name without a redundant prefix and wrap it to two lines; Web and settings controls are unchanged. 2026-10-25 (#554): Account notification preferences and explicit device consent are wired into Web and shared Flutter settings; focused settings tests and local visual captures passed. Web and shared Flutter local regressions passed; physical Android/iOS and provider delivery remain NOT_RUN. 2026-10-31 (VC-001 path review): the shared settings path matcher includes the voice event-sound preference control. Other settings behavior and profile/session flows remain unchanged; physical audio output remains NOT_RUN. 2026-11-01 (PR #642): The member-list presentation changed within the broad shared workspace UI path; settings controls and their behavior are unchanged. Web settings are unchanged, and Android/iOS share the Flutter member-panel rendering. Focused widget coverage targets the panel; Android/iOS native runtime acceptance remains unverified. 2026-11-03 (PR #646): Web and shared Flutter audio settings expose device checks, microphone activation, shortcuts and common processing at the first level; playback reset is separate and technical diagnostics are collapsed. Android/iOS use the shared Flutter presentation. Web and Flutter tests/captures pass; Android runtime is locally BLOCKED by host disk capacity and iOS runtime is NOT_RUN. Voice transport, permissions and audio capture contracts are unchanged. 2026-11-05 (PR #654): Windows native and Web audio settings explain system Communications attenuation. Native guidance is collapsed by default; small-window and large-text tests exercise expansion and diagnostics. iOS and Android share the settings layout without Windows help; their LiveKit policy requests external audio mixing. Automated configuration/UI checks do not prove physical music levels; physical Windows/Web/Android/iOS and Bluetooth acceptance remain NOT_RUN, tracked in evidence/qa/voice-music-coexistence-2026-11-05.md. 2026-11-06: Shared Flutter audio settings now choose columns from the workspace width after horizontal insets; focused widget tests cover one full-width column at 1040 dp and two aligned columns at 1440 dp. Web is unchanged, Android and iOS share this layout. Native visual/runtime acceptance remains NOT_RUN. 2026-11-05 (PR #658): shared Flutter local speaker check prioritizes exact device labels and fails on ambiguous fallback; Web is unchanged, Android and iOS share the resolver. Focused regression tests cover the shared logic; physical platform acceptance remains NOT_RUN.",
-      "revision": "open-pr-677-integration-2026-11-08"
+      "revision": "open-pr-677-integration-2026-11-08",
+      "issue687_production_engines": "Web and Windows enable RNNoise 0.2 and DeepFilterNet3 with versioned labels. Android, iOS and macOS keep their existing native engine/build selection; no mobile readiness claim. Local browser/native processing evidence is recorded independently from speech-quality and full workspace acceptance.",
+      "issue687_production_delivery": "RNNoise 0.2 and DeepFilterNet3 enabled in ordinary Web and Windows builds with version labels. Shared audio state retains Android/iOS/macOS existing engine selection. This overlapping scenario has no new device acceptance claim; browser/native engine evidence is separate."
     }
   },
   "admin": {
@@ -2393,29 +2507,81 @@
     }
   },
   "update_required": {
-    "paths": ["clients/flutter/lib/src/features/updates/*", "clients/flutter/lib/src/app.dart", "clients/web/src/updates/*", "clients/web/src/App.vue", "backend/internal/client_updates/catalog/*", "contracts/client-release-catalog.schema.json", "contracts/openapi.yaml"],
-    "web": ["tests/update_required/playwright.config.ts"],
-    "flutter": ["test/updates/required_test.dart", "test/updates/required_guard_test.dart", "test/updates/required_back_test.dart", "test/updates/required_action_test.dart", "test/updates/required_action_failure_test.dart", "test/updates/required_api_test.dart", "test/updates/required_stale_test.dart"],
-    "native_targets": ["integration_test/update_required_test.dart"],
-    "acceptance": {"required_update_gate": {"scope": "A supported client below the configured minimum presents a non-snoozable update gate without discarding a mounted draft; real catalog and native runtime acceptance required.", "status": "NOT_RUN"}},
+    "paths": [
+      "clients/flutter/lib/src/features/updates/*",
+      "clients/flutter/lib/src/app.dart",
+      "clients/web/src/updates/*",
+      "clients/web/src/App.vue",
+      "backend/internal/client_updates/catalog/*",
+      "contracts/client-release-catalog.schema.json",
+      "contracts/openapi.yaml"
+    ],
+    "web": [
+      "tests/update_required/playwright.config.ts"
+    ],
+    "flutter": [
+      "test/updates/required_test.dart",
+      "test/updates/required_guard_test.dart",
+      "test/updates/required_back_test.dart",
+      "test/updates/required_action_test.dart",
+      "test/updates/required_action_failure_test.dart",
+      "test/updates/required_api_test.dart",
+      "test/updates/required_stale_test.dart"
+    ],
+    "native_targets": [
+      "integration_test/update_required_test.dart"
+    ],
+    "acceptance": {
+      "required_update_gate": {
+        "scope": "A supported client below the configured minimum presents a non-snoozable update gate without discarding a mounted draft; real catalog and native runtime acceptance required.",
+        "status": "NOT_RUN"
+      }
+    },
     "parity_review": {
       "issue": 689,
-      "decisions": {"web": "implementation_and_regression", "ios": "implementation_and_regression", "android": "implementation_and_regression"},
+      "decisions": {
+        "web": "implementation_and_regression",
+        "ios": "implementation_and_regression",
+        "android": "implementation_and_regression"
+      },
       "scope": "Required-update presentation is registered for Web and shared Flutter. Browser and widget tests cover the gate; current-source native release, real catalog and iOS runtime acceptance remain NOT_RUN."
     },
-    "parity": [{
-      "id": "updates.required_gate",
-      "expected": "A client below a configured minimum must show an update gate while preserving the mounted draft.",
-      "issue": 689,
-      "status": "NOT_VERIFIED",
-      "source": "Current checkout; exact release source and runtime are verified separately.",
-      "shipped": "Not established for the current release candidate.",
-      "platforms": {
-        "web": {"entrypoint": "clients/web/src/updates/RequiredUpdateGate.vue", "tests": ["clients/web/tests/update_required/required.browser.spec.ts"], "runtime": "NOT_VERIFIED", "conditions": "Configured minimum and browser runtime acceptance required."},
-        "ios": {"entrypoint": "clients/flutter/lib/src/features/updates/required_page.dart", "tests": ["clients/flutter/test/updates/required_test.dart"], "runtime": "NOT_RUN", "conditions": "Requires iOS runtime, configured catalog and signed build."},
-        "android": {"entrypoint": "clients/flutter/lib/src/features/updates/required_page.dart", "tests": ["clients/flutter/test/updates/required_test.dart"], "runtime": "NOT_VERIFIED", "conditions": "Requires Android runtime and configured catalog acceptance for this release."}
+    "parity": [
+      {
+        "id": "updates.required_gate",
+        "expected": "A client below a configured minimum must show an update gate while preserving the mounted draft.",
+        "issue": 689,
+        "status": "NOT_VERIFIED",
+        "source": "Current checkout; exact release source and runtime are verified separately.",
+        "shipped": "Not established for the current release candidate.",
+        "platforms": {
+          "web": {
+            "entrypoint": "clients/web/src/updates/RequiredUpdateGate.vue",
+            "tests": [
+              "clients/web/tests/update_required/required.browser.spec.ts"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Configured minimum and browser runtime acceptance required."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/lib/src/features/updates/required_page.dart",
+            "tests": [
+              "clients/flutter/test/updates/required_test.dart"
+            ],
+            "runtime": "NOT_RUN",
+            "conditions": "Requires iOS runtime, configured catalog and signed build."
+          },
+          "android": {
+            "entrypoint": "clients/flutter/lib/src/features/updates/required_page.dart",
+            "tests": [
+              "clients/flutter/test/updates/required_test.dart"
+            ],
+            "runtime": "NOT_VERIFIED",
+            "conditions": "Requires Android runtime and configured catalog acceptance for this release."
+          }
+        }
       }
-    }]
+    ]
   },
   "shell": {
     "paths": [
@@ -3317,7 +3483,8 @@
       },
       "revision": "PR #783",
       "scope": "Idle presence and AFK routing are implemented for Web and shared Flutter clients. Feature-level paired Web/mobile timing and automatic-move observation remain NOT_RUN; no iOS/Android device runtime is inferred from shared code or tests. See evidence/idle-afk-2026-11-14.md.",
-      "speech_activity_follow_up": "2026-11-14 follow-up: active local voice speech reports authenticated activity heartbeats in Web and shared Flutter, so speaking resets the AFK inactivity timer. AFK assignment, timeout saving, and voice admission are unchanged. Focused regressions pass; paired Android/iOS device routing remains NOT_RUN."
+      "speech_activity_follow_up": "2026-11-14 follow-up: active local voice speech reports authenticated activity heartbeats in Web and shared Flutter, so speaking resets the AFK inactivity timer. AFK assignment, timeout saving, and voice admission are unchanged. Focused regressions pass; paired Android/iOS device routing remains NOT_RUN.",
+      "issue687_production_delivery": "RNNoise 0.2 and DeepFilterNet3 enabled in ordinary Web and Windows builds with version labels. Shared audio state retains Android/iOS/macOS existing engine selection. This overlapping scenario has no new device acceptance claim; browser/native engine evidence is separate."
     },
     "parity": [
       {

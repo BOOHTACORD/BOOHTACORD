@@ -74,6 +74,10 @@ void FlutterWebRTC::HandleMethodCall(
     state[EncodableValue("fallbackFrames")] = EncodableValue(static_cast<int64_t>(processor.fallback_frames()));
     state[EncodableValue("sampleRate")] = EncodableValue(processor.sample_rate());
     state[EncodableValue("channels")] = EncodableValue(processor.channels());
+    state[EncodableValue("rnnoiseModelId")] = EncodableValue(processor.ModelId());
+    if (const char* model = processor.DeepFilterModelId()) {
+      state[EncodableValue("deepfilterModelId")] = EncodableValue(model);
+    }
     result->Success(EncodableValue(state));
     return;
   }

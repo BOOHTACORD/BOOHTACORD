@@ -1,4 +1,4 @@
-name: Web audio research build
+name: Web audio engines and source rebuild
 on:
   pull_request:
     paths: ['tools/audio/**', '.gitattributes', 'clients/web/tests/audio/**',
@@ -62,12 +62,37 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           node tools/audio/research_dfn_web/stage.mjs "$env:RUNNER_TEMP/dfn-web/bundle" "$env:RUNNER_TEMP/dfn-stage"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-      - name: Check opt-in Web bundle
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: emscripten-core/emsdk
+          ref: e4fe26ef59168ff44f4c23c466e497bf60b3411e
+          path: .out/emsdk
+          persist-credentials: false
+      - name: Rebuild official RNNoise and verify both shipped Web runtimes
+        shell: pwsh
+        run: |
+          $env:PYTHONUTF8 = '1'
+          python -m pip install pytest==8.4.2
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m pytest tools/audio/release_source tools/audio/release_notices tools/audio/release_deepfilter --import-mode=importlib -q
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & ./.out/emsdk/emsdk.bat install 4.0.20
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & ./.out/emsdk/emsdk.bat activate 4.0.20
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $env:EM_CONFIG = (Resolve-Path .out/emsdk/.emscripten).Path
+          python -m tools.audio.release_rnnoise.build --output "$env:RUNNER_TEMP/rnnoise-production" --emcc .out/emsdk/upstream/emscripten/emcc.bat
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m tools.audio.release_web_assets.verify_rebuild --rnnoise "$env:RUNNER_TEMP/rnnoise-production" --deepfilter "$env:RUNNER_TEMP/dfn-web/bundle"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node --test tools/audio/release_web_assets/bundle.test.mjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest tools.audio.release_web_assets.test_verify_rebuild
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Check ordinary Web bundle without research flags
         shell: pwsh
         run: |
           $env:VITE_PUBLIC_ORIGIN = 'https://localhost:4810'
-          $env:VITE_DEEPFILTER_ENABLED = 'true'
-          $env:BOOHTA_DEEPFILTER_RESEARCH_BUNDLE = "$env:RUNNER_TEMP/dfn-web/bundle"
           npm --prefix clients/web run build
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           $asset = 'clients/web/dist/audio/deepfilternet/research-d375b2d/dfn_bg.wasm'
@@ -87,6 +112,17 @@ jobs:
             if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           } finally { Pop-Location }
       - run: ./tools/audio/research_dfn_web/ci_windows.ps1
+      - name: Exercise ordinary engine loading, processing and mute in Chromium
+        shell: pwsh
+        run: |
+          Remove-Item Env:BOOHTA_RESEARCH_ASSET_DIR -ErrorAction SilentlyContinue
+          Remove-Item Env:BOOHTA_DEEPFILTER_RESEARCH_BUNDLE -ErrorAction SilentlyContinue
+          Remove-Item Env:VITE_DEEPFILTER_ENABLED -ErrorAction SilentlyContinue
+          Push-Location clients/web
+          try {
+            npx playwright test -c tests/audio/playwright.production.config.ts
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          } finally { Pop-Location }
   linux-firefox:
     runs-on: ubuntu-24.04
     needs: windows-wasm

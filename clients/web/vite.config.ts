@@ -6,6 +6,7 @@ import { resolve } from 'node:path'
 import { resolvePublicOrigin } from './src/social_preview/origin.ts'
 import { deepfilterAssetsPlugin } from './scripts/deepfilter_assets.mjs'
 import { rnnoiseV02ReleaseGuard } from './scripts/research_asset_guard.mjs'
+import { rnnoiseProductionAssets } from './scripts/noise_release_assets.mjs'
 
 const document = JSON.parse(readFileSync(new URL('../../contracts/client-build.json', import.meta.url), 'utf8'))
 const build = document.builds.web
@@ -24,7 +25,9 @@ export default defineConfig(({ mode, command }) => {
       __APP_NATIVE_BUILD__: JSON.stringify(build.native_build),
     },
     plugins: [vue(), rnnoiseV02ReleaseGuard({ command, enabled: environment.VITE_RNNOISE_V02_ENABLED === 'true', publicDir: resolve(process.cwd(), 'public') }),
-      deepfilterAssetsPlugin({ enabled: environment.VITE_DEEPFILTER_ENABLED === 'true', bundle: process.env.BOOHTA_DEEPFILTER_RESEARCH_BUNDLE }), {
+      rnnoiseProductionAssets({ enabled: environment.VITE_RNNOISE_ENABLED !== 'false' &&
+        environment.VITE_RNNOISE_V02_ENABLED !== 'false' && environment.VITE_RNNOISE_V02_ENABLED !== 'true' }),
+      deepfilterAssetsPlugin({ enabled: environment.VITE_DEEPFILTER_ENABLED !== 'false', bundle: process.env.BOOHTA_DEEPFILTER_RESEARCH_BUNDLE }), {
       name: 'social-preview-origin',
       transformIndexHtml: (html) => html.replaceAll('__SOCIAL_ORIGIN__', socialOrigin),
     }, {

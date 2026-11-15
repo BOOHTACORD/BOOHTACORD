@@ -9,6 +9,7 @@ const options = { autoGainControl: false, echoCancellation: true, noiseSuppressi
 
 it('keeps Auto requested while using browser fallback without experimental v0.2', async () => {
   vi.stubEnv('VITE_RNNOISE_V02_ENABLED', 'false')
+  vi.stubEnv('VITE_DEEPFILTER_ENABLED', 'false')
   const f = fixture()
   await f.adapter.setEnabled(true, { ...options, noiseSuppressionMode: 'auto' } as AudioProcessingOptions)
   expect(f.dependencies.createProcessor).not.toHaveBeenCalled()
@@ -18,6 +19,7 @@ it('keeps Auto requested while using browser fallback without experimental v0.2'
 
 it('fails muted when Auto cannot confirm browser suppression', async () => {
   vi.stubEnv('VITE_RNNOISE_V02_ENABLED', 'false')
+  vi.stubEnv('VITE_DEEPFILTER_ENABLED', 'false')
   const f = fixture()
   f.source.getSettings = () => ({}) as never
   await expect(f.adapter.setEnabled(true, { ...options, noiseSuppressionMode: 'auto' } as AudioProcessingOptions)).rejects.toThrow('Браузер не подтвердил')
@@ -27,6 +29,7 @@ it('fails muted when Auto cannot confirm browser suppression', async () => {
 
 it('selects the research RNNoise backend while retaining the Auto request', async () => {
   vi.stubEnv('VITE_RNNOISE_V02_ENABLED', 'true')
+  vi.stubEnv('VITE_DEEPFILTER_ENABLED', 'false')
   vi.stubEnv('VITE_RNNOISE_ENABLED', 'true')
   vi.spyOn(capabilities, 'supportsRnnoise').mockReturnValue(true)
   const f = fixture()
@@ -38,6 +41,7 @@ it('selects the research RNNoise backend while retaining the Auto request', asyn
 
 it('retains Auto and falls back safely when research initialization fails', async () => {
   vi.stubEnv('VITE_RNNOISE_V02_ENABLED', 'true')
+  vi.stubEnv('VITE_DEEPFILTER_ENABLED', 'false')
   vi.stubEnv('VITE_RNNOISE_ENABLED', 'true')
   vi.spyOn(capabilities, 'supportsRnnoise').mockReturnValue(true)
   const f = fixture()
@@ -60,13 +64,13 @@ it('uses explicitly opted-in DeepFilter for Auto and safely falls back on failur
   await f.adapter.dispose()
 
   const failed = fixture()
-  failed.track.setProcessor.mockRejectedValueOnce(new Error('unavailable'))
+  failed.track.setProcessor.mockRejectedValue(new Error('unavailable'))
   await failed.adapter.setEnabled(true, auto)
   expect(failed.adapter.runtimeState).toMatchObject({ requestedMode: 'auto', effectiveMode: 'browser', status: 'fallback' })
   await failed.adapter.dispose()
 })
 
-it('never enables research DeepFilter Auto in a production build', async () => {
+it('uses measured DeepFilter in an ordinary production build', async () => {
   vi.stubEnv('DEV', false)
   vi.stubEnv('VITE_AUTO_DEEPFILTER_RESEARCH', 'true')
   vi.stubEnv('VITE_DEEPFILTER_ENABLED', 'true')
@@ -74,13 +78,14 @@ it('never enables research DeepFilter Auto in a production build', async () => {
   vi.spyOn(capabilities, 'supportsRnnoise').mockReturnValue(true)
   const f = fixture()
   await f.adapter.setEnabled(true, { ...options, noiseSuppressionMode: 'auto' } as AudioProcessingOptions)
-  expect(f.dependencies.createProcessor).not.toHaveBeenCalled()
-  expect(f.adapter.runtimeState).toMatchObject({ requestedMode: 'auto', effectiveMode: 'browser' })
+  expect(f.dependencies.createProcessor.mock.calls[0][1]?.noiseSuppressionMode).toBe('deepfilter')
+  expect(f.adapter.runtimeState).toMatchObject({ requestedMode: 'auto', effectiveMode: 'deepfilter' })
   await f.adapter.dispose()
 })
 
 it('never promotes explicit off to an automatic engine', async () => {
   vi.stubEnv('VITE_RNNOISE_V02_ENABLED', 'true')
+  vi.stubEnv('VITE_DEEPFILTER_ENABLED', 'false')
   vi.spyOn(capabilities, 'supportsRnnoise').mockReturnValue(true)
   const f = fixture()
   await f.adapter.setEnabled(true, { ...options, noiseSuppressionMode: 'off' } as AudioProcessingOptions)
@@ -91,6 +96,7 @@ it('never promotes explicit off to an automatic engine', async () => {
 
 it('transitions between browser Auto and explicit off without creating a model', async () => {
   vi.stubEnv('VITE_RNNOISE_V02_ENABLED', 'false')
+  vi.stubEnv('VITE_DEEPFILTER_ENABLED', 'false')
   const f = fixture()
   const auto = { ...options, noiseSuppressionMode: 'auto' } as AudioProcessingOptions
   const off = { ...options, noiseSuppressionMode: 'off' } as AudioProcessingOptions

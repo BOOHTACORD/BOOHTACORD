@@ -78,10 +78,13 @@ mixin _NativeNoiseAutoPreflight on _NativeNoiseCore {
         }
         if (includeDeepFilter &&
             _allowDeepFilter &&
-            value['deepfilterModelId'] == 'deepfilternet3-research-d375b2d') {
+            (value['deepfilterModelId'] == 'deepfilternet3-research-d375b2d' ||
+             value['deepfilterModelId'] == 'deepfilternet3-c94d91f7')) {
           return NoiseSuppressionMode.deepfilter;
         }
-        if (value['rnnoiseModelId'] != 'rnnoise-stock-v0.2') break;
+        if (value['rnnoiseModelId'] != 'rnnoise-stock-v0.2' &&
+            value['rnnoiseModelId'] != 'rnnoise-release-v0.2')
+          break;
         if (value['rnnoisePreflightState'] == 1) {
           await Future<void>.delayed(const Duration(milliseconds: 25));
           continue;

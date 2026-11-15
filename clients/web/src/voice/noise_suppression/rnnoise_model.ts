@@ -1,3 +1,5 @@
+import productionManifest from '../../../../../tools/audio/runtime_assets/rnnoise/rnnoise-manifest.json'
+
 export interface RnnoiseModelIdentity {
   version: string
   sourceCommit: string
@@ -5,9 +7,12 @@ export interface RnnoiseModelIdentity {
   modelSha256: string
   modelId: string
   manifestPath: string
+  wasmSha256?: string
 }
 
-export const rnnoiseModels: Readonly<Record<'v01' | 'v02', Readonly<RnnoiseModelIdentity>>> = {
+export const rnnoiseModels: Readonly<Record<'v01' | 'v02' | 'release', Readonly<RnnoiseModelIdentity>>> = {
+  release: { ...productionManifest,
+    manifestPath: '/audio/rnnoise/v0.2-904a876/rnnoise-manifest.json' },
   v01: {
     version: 'v0.1-cdf196b',
     sourceCommit: 'cdf196b1e9de2f8ff1003328ebf9a4316477429d',
@@ -26,7 +31,7 @@ export const rnnoiseModels: Readonly<Record<'v01' | 'v02', Readonly<RnnoiseModel
   },
 }
 
-/** The newer model stays disabled until release assets and acceptance are ready. */
+/** Explicit legacy/research opt-ins remain separate from the ordinary release. */
 export function selectRnnoiseModel(flag: unknown): Readonly<RnnoiseModelIdentity> {
-  return flag === 'true' ? rnnoiseModels.v02 : rnnoiseModels.v01
+  return flag === 'true' ? rnnoiseModels.v02 : flag === 'false' ? rnnoiseModels.v01 : rnnoiseModels.release
 }

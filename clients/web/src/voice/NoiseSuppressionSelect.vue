@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { deepfilterReleaseEnabled, rnnoiseReleaseEnabled } from './noise_suppression/capabilities'
 import type { NoiseSuppressionMode } from './noise_suppression/types'
+import { selectRnnoiseModel } from './noise_suppression/rnnoise_model'
+
+const rnnoiseLabel = selectRnnoiseModel(import.meta.env.VITE_RNNOISE_V02_ENABLED).modelId === 'rnnoise-stock-v0.1'
+  ? 'RNNoise 0.1' : 'RNNoise 0.2'
 defineProps<{ mode: NoiseSuppressionMode }>()
 const emit = defineEmits<{ change: [mode: NoiseSuppressionMode] }>()
 </script>
@@ -11,10 +15,11 @@ const emit = defineEmits<{ change: [mode: NoiseSuppressionMode] }>()
     <select class="gc-field" aria-label="Режим шумоподавления" :value="mode" @change="emit('change', ($event.target as HTMLSelectElement).value as NoiseSuppressionMode)">
       <option value="off">Выключено</option>
       <option value="browser">Стандартное — WebRTC</option>
-      <option v-if="rnnoiseReleaseEnabled()" value="rnnoise">RNNoise — экспериментальное</option>
+      <option v-if="rnnoiseReleaseEnabled()" value="rnnoise">{{ rnnoiseLabel }}</option>
       <option v-if="!rnnoiseReleaseEnabled() && mode === 'rnnoise'" value="rnnoise" disabled>RNNoise — недоступен в этой сборке</option>
       <option v-if="deepfilterReleaseEnabled()" value="deepfilter">DeepFilterNet3</option>
       <option v-if="!deepfilterReleaseEnabled() && mode === 'deepfilter'" value="deepfilter" disabled>DeepFilterNet3 — недоступен в этой сборке</option>
+      <option value="auto">Автоматически</option>
     </select>
   </label>
   <p v-if="mode === 'deepfilter' && deepfilterReleaseEnabled()" class="state">Может повысить нагрузку процессора и задержку.</p>

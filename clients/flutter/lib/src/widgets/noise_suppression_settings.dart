@@ -40,7 +40,10 @@ class NoiseSuppressionSettings extends StatelessWidget {
         defaultTargetPlatform == TargetPlatform.windows &&
         (kDebugMode && allowExperimentalDeepFilter != null
             ? allowExperimentalDeepFilter!
-            : const bool.fromEnvironment('BOOHTA_EXPERIMENTAL_DEEPFILTER'));
+            : const bool.fromEnvironment(
+                'BOOHTA_EXPERIMENTAL_DEEPFILTER',
+                defaultValue: true,
+              ));
     final showStatus =
         ((requestedMode == NoiseSuppressionMode.rnnoise ||
                 requestedMode == NoiseSuppressionMode.deepfilter) &&

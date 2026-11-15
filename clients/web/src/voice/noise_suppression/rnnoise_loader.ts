@@ -1,10 +1,10 @@
 import { rnnoiseModels, selectRnnoiseModel, type RnnoiseModelIdentity } from './rnnoise_model'
-export const RNNOISE_MANIFEST_PATH = rnnoiseModels.v01.manifestPath
+export const RNNOISE_MANIFEST_PATH = rnnoiseModels.release.manifestPath
 export interface RnnoiseAssets { module: WebAssembly.Module; modelId: string; wasmSha256: string }
 const loading = new Map<string, Promise<RnnoiseAssets>>()
 export async function loadRnnoiseAssets(manifestPath?: string, timeoutMs = 8000): Promise<RnnoiseAssets> {
   const model = selectRnnoiseModel(import.meta.env.VITE_RNNOISE_V02_ENABLED)
-  const expectedWasm = model === rnnoiseModels.v02 ? import.meta.env.VITE_RNNOISE_V02_WASM_SHA256 : undefined
+  const expectedWasm = model === rnnoiseModels.v02 ? import.meta.env.VITE_RNNOISE_V02_WASM_SHA256 : model.wasmSha256
   if (model === rnnoiseModels.v02 && (typeof expectedWasm !== 'string' || !/^[a-f0-9]{64}$/.test(expectedWasm)))
     throw new Error('RNNoise v0.2 WASM identity missing')
   const url = new URL(manifestPath ?? model.manifestPath, window.location.origin)

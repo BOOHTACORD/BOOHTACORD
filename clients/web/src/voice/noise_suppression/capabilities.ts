@@ -25,7 +25,7 @@ export async function selectAutoEngine(input: {
 export function rnnoiseReleaseEnabled(): boolean {
   return import.meta.env.VITE_RNNOISE_ENABLED !== 'false'
 }
-/** Research opt-in only; assets and release acceptance are not yet supplied. */
+/** Ordinary builds bundle the verified engine; explicit false is a rollback. */
 export function deepfilterReleaseEnabled(): boolean {
-  return import.meta.env.VITE_DEEPFILTER_ENABLED === 'true'
+  return import.meta.env.VITE_DEEPFILTER_ENABLED !== 'false'
 }

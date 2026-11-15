@@ -1,15 +1,16 @@
 import { deepfilterReleaseEnabled, rnnoiseReleaseEnabled, selectAutoEngine, supportsRnnoise } from '../capabilities'
 import { browserProcessingConstraints, type AudioProcessingOptions, type NoiseSuppressionFallbackReason } from '../types'
 import { browserSuppressionDisabled } from '../deepfilter/capture_guard'
+import { selectRnnoiseModel } from '../rnnoise_model'
 
 import { MicrophoneAdapterPublication } from './publication'
 export abstract class MicrophoneAdapterProfile extends MicrophoneAdapterPublication {
   protected async configure(options: AudioProcessingOptions, generation: number, includeDeepFilter = true): Promise<void> {
     const requested = options.noiseSuppressionMode
     const mode = requested === 'auto' ? await selectAutoEngine({
-      v02: import.meta.env.VITE_RNNOISE_V02_ENABLED === 'true' && rnnoiseReleaseEnabled(),
+      v02: selectRnnoiseModel(import.meta.env.VITE_RNNOISE_V02_ENABLED).modelId !== 'rnnoise-stock-v0.1' && rnnoiseReleaseEnabled(),
       supported: supportsRnnoise(),
-      deepfilterResearch: includeDeepFilter && import.meta.env.DEV && import.meta.env.VITE_AUTO_DEEPFILTER_RESEARCH === 'true' && deepfilterReleaseEnabled(),
+      deepfilterResearch: includeDeepFilter && deepfilterReleaseEnabled(),
       probe: this.dependencies.preflightAuto,
     }) : requested
     this.assertCurrent(generation)
@@ -51,7 +52,7 @@ export abstract class MicrophoneAdapterProfile extends MicrophoneAdapterPublicat
       await this.track!.setProcessor(processor)
       this.assertCurrent(generation)
       if (!processor.processedTrack || this.state.status === 'error') throw new Error('Аудиофильтр не предоставил рабочий выход.')
-      if (this.state.status !== 'active') this.state = { ...this.state, requestedMode: requested, effectiveMode: mode, status: 'active', ...(mode === 'deepfilter' ? { modelId: 'deepfilternet3-research-d375b2d' } : {}) }
+      if (this.state.status !== 'active') this.state = { ...this.state, requestedMode: requested, effectiveMode: mode, status: 'active', ...(mode === 'deepfilter' ? { modelId: 'deepfilternet3-c94d91f7' } : {}) }
     } catch (cause) {
       this.assertCurrent(generation)
       const reason = (cause as { reason?: NoiseSuppressionFallbackReason })?.reason ?? this.state.fallbackReason ?? 'processor-error'

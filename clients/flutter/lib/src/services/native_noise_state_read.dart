@@ -37,6 +37,12 @@ mixin _NativeNoiseStateRead on _NativeNoiseCore {
             : 0,
         sampleRate: value['sampleRate'] as int?,
         channels: value['channels'] as int?,
+        rnnoiseModelId: value['rnnoiseModelId'] is String
+            ? value['rnnoiseModelId'] as String
+            : state.rnnoiseModelId,
+        deepfilterModelId: value['deepfilterModelId'] is String
+            ? value['deepfilterModelId'] as String
+            : state.deepfilterModelId,
       ),
     );
   }
