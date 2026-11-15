@@ -7,6 +7,8 @@ import yaml
 from .markdown import targets
 from .evidence import references
 
+VENDORED = ('clients/flutter/packages/', 'backend/vendor/', 'tools/audio/runtime_assets/')
+
 
 def local_target(owner, target):
     return posixpath.normpath(posixpath.join(posixpath.dirname(owner), target))
@@ -37,7 +39,7 @@ def main():
     paths = files | {str(parent).replace('\\', '/') for name in files for parent in Path(name).parents}
     # Vendored package docs describe their upstream repository, not this project.
     documents = {name: (root / name).read_text(encoding='utf-8') for name in files
-                 if name.endswith('.md') and not name.startswith(('clients/flutter/packages/', 'backend/vendor/'))}
+                 if name.endswith('.md') and not name.startswith(VENDORED)}
     errors = check_links(documents, paths)
     tasks = yaml.safe_load((root / 'backlog/tasks.yaml').read_text(encoding='utf-8'))
     errors += [f'backlog/tasks.yaml: missing evidence reference: {path}'
