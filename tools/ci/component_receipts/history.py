@@ -20,6 +20,11 @@ def archive_pattern(kind, source, run, namespace='flutter'):
                           + r'(?P<attempt>[1-9][0-9]*)-(?P<profile>dart|android|android-kotlin|macos)')
     if kind == 'actual':
         return re.compile(r'actual-(?P<profile>lifecycle|next|sfu)-' + context + r'(?P<attempt>[1-9][0-9]*)')
+    if kind == 'backend':
+        return re.compile('backend-part-' + context + r'(?P<attempt>[1-9][0-9]*)-(?P<profile>static|database|load)')
+    if kind == 'web' and re.fullmatch('[a-z][a-z0-9-]{0,39}', namespace):
+        return re.compile('web-part-' + re.escape(namespace) + '-' + context
+                          + r'(?P<attempt>[1-9][0-9]*)-(?P<profile>fast|browser-shell|browser-content|browser-conversations|browser-voice|sfu-network)')
     raise ValueError('Unknown receipt archive family')
 
 

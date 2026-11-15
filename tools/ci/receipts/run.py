@@ -26,10 +26,14 @@ def main():
     path.write_text(json.dumps(receipt, sort_keys=True) + '\n', encoding='utf-8')
     if args.parts:
         if args.gate == 'web':
-            from tools.ci.web_suites.fan_in import read_reports, validate_results
+            from tools.ci.web_suites.fan_in import validate_results
+            from tools.ci.web_suites.catalog import execution, PROFILES
         else:
-            from tools.ci.backend_gates.results import read_reports, validate as validate_results
-        summary = validate_results(revision, json.loads(os.environ[args.gate.upper() + '_NEEDS']), read_reports(args.parts))
+            from tools.ci.backend_gates.results import execution, PROFILES, validate as validate_results
+        from tools.ci.component_receipts.parts import read_parts
+        rows, attempts = read_parts(args.parts, args.gate, revision, execution(), PROFILES)
+        summary = validate_results(revision, json.loads(os.environ[args.gate.upper() + '_NEEDS']), rows, attempts=attempts)
+        summary['original_profile_attempts'] = attempts
         result_code = 0
         report = ROOT / ('.out/ci/' + args.gate + '-fan-in.json')
         report.parent.mkdir(parents=True, exist_ok=True)

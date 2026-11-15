@@ -87,7 +87,8 @@ def validate(document):
         require(job['runs-on'] == GITHUB_LINUX and job['timeout-minutes'] == '5')
         consumers = [s for s in job['steps'] if s.get('uses', '').startswith('actions/download-artifact@')]
         require(len(consumers) == 1 and consumers[0].get('if') is None
-                and consumers[0]['with'] == {'pattern':PREFIX + '*', 'path':'.out/ci/web-parts', 'merge-multiple':'true'})
+                and consumers[0]['with'] == {'pattern':'web-part-${{ inputs.evidence_namespace }}-${{ github.sha }}-${{ github.run_id }}-*-*',
+                    'path':'.out/ci/web-parts', 'merge-multiple':'false'})
         checks = [s for s in job['steps'] if 'tools.ci.receipts.run' in s.get('run', '')]
         require(len(checks) == 1 and checks[0].get('if') is None and checks[0]['run'] == RECEIPT
                 and checks[0].get('env') == {'WEB_NEEDS':'${{ toJSON(needs) }}'})

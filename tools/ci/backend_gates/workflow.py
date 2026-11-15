@@ -53,7 +53,8 @@ def validate(document):
         steps=job['steps']
         downloads=[s for s in steps if s.get('uses','').startswith('actions/download-artifact@')]
         require(len(downloads)==1 and downloads[0].get('if') is None and downloads[0]['with'] == {
-            'pattern':PREFIX+'*','path':'.out/ci/backend-parts','merge-multiple':'true'})
+            'pattern':'backend-part-${{ github.sha }}-${{ github.run_id }}-*-*',
+            'path':'.out/ci/backend-parts','merge-multiple':'false'})
         receipts=[s for s in steps if 'tools.ci.receipts.run' in s.get('run','')]
         require(len(receipts)==1 and receipts[0].get('if') is None and not receipts[0].get('continue-on-error')
                 and receipts[0]['run'] == 'python3 -m tools.ci.receipts.run backend --parts .out/ci/backend-parts'

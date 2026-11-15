@@ -4,6 +4,7 @@ import math
 import os
 from pathlib import Path
 import re
+from tools.ci.component_receipts.parts import profile_execution
 
 PROFILES = ('static', 'database', 'load')
 OPERATIONS = {
@@ -41,7 +42,7 @@ def read_reports(directory):
     return rows
 
 
-def validate(source, needs, rows):
+def validate(source, needs, rows, *, attempts=None):
     try:
         require(isinstance(source,str) and re.fullmatch('[0-9a-f]{40}',source))
         require(set(needs) == set(PROFILES) and all(v.get('result') == 'success' for v in needs.values()))
@@ -52,7 +53,7 @@ def validate(source, needs, rows):
             name=row['profile']
             require(name in PROFILES and name not in durations and row['source_revision'] == source
                     and row['status'] == 'PASS' and row['operations'] == list(OPERATIONS[name])
-                    and row['execution'] == execution())
+                    and row['execution'] == profile_execution(execution(), PROFILES, attempts, name))
             seconds=row['seconds']
             require(type(seconds) in (int,float) and math.isfinite(seconds) and seconds > 0)
             durations[name]=seconds
