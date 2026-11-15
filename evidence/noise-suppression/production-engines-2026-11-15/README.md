@@ -22,6 +22,9 @@ Candidate: Windows 1.0.56+92/r71; Web 1.0.56/r64.
   `14123930408`, source `9a44c83602fa44981aeeaa65e8321c1f714783d4`.
   That producer archive was independently downloaded and SHA256 checked.
   New CI rebuilds both engines and compares the shipped bytes before browser QA.
+- The external Tract compatibility patch also carries the original WorkAdventure
+  MIT notice, copied from pinned commit `7e00a1b7522f044a31776fddc249a97a98de94ed`.
+  It is served beside the Web engine as `LICENSE-WorkAdventure.txt`.
 - Public settings show RNNoise 0.2, DeepFilterNet3 and Auto. Runtime details
   retain actual model IDs. Explicit legacy/disabled selections remain rollback
   controls; no research RNNoise weights enter the production distribution.
