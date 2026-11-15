@@ -30,10 +30,17 @@ const auxiliaryTrigger = ref<HTMLElement | null>(null)
 function togglePanel(panel: 'streams' | 'participants', event: MouseEvent): void {
   auxiliaryTrigger.value = event.currentTarget as HTMLElement
   auxiliaryPanel.value = auxiliaryPanel.value === panel ? null : panel
+  if (auxiliaryPanel.value && event.detail === 0) {
+    void nextTick(() => viewerElement.value?.querySelector<HTMLElement>('#screen-viewer-auxiliary-panel')?.focus({ preventScroll: true }))
+  }
+}
+function closePanel(restoreFocus = false): void {
+  auxiliaryPanel.value = null
+  if (restoreFocus) auxiliaryTrigger.value?.focus({ preventScroll: true })
 }
 function dismissPanels(event: PointerEvent): void {
   if (!(event.target instanceof Element)) return
-  if (!event.target.closest('.screen-viewer-panels')) auxiliaryPanel.value = null
+  if (!event.target.closest('.screen-viewer-panels')) closePanel()
 }
 const fullscreenActive = ref(false)
 const fullscreenFeedback = ref('')
@@ -194,11 +201,11 @@ async function toggleFullscreen(): Promise<void> {
         <span v-if="selectedStream" class="screen-stage-label"><span class="screen-stage-avatar" :style="{ backgroundColor: avatarBackground(selectedStream.accountId ?? selectedStream.participantId), color: avatarForeground(selectedStream.accountId ?? selectedStream.participantId) }" aria-hidden="true">{{ selectedStream.participantName.slice(0, 2).toLocaleUpperCase('ru-RU') }}</span>{{ selectedStream.isLocal ? 'Ваш экран' : `Экран ${selectedStream.participantName || 'участника'}` }}<b>ЭФИР</b><small v-if="selectedStream.isLocal && !selectedStream.hasAudio" title="Предпросмотр без звука">Без звука</small></span>
         <div v-if="!mini" class="screen-viewer-panels">
           <div class="screen-viewer-panel-toggles">
-            <button v-if="cards.length > 1 || !selectedStream && cards.length" type="button" :aria-expanded="auxiliaryPanel === 'streams'" @click="togglePanel('streams', $event)">Трансляции · {{ cards.length }}</button>
-            <button type="button" :aria-expanded="auxiliaryPanel === 'participants'" @click="togglePanel('participants', $event)">Участники · {{ participants.length + 1 }}<span> · Зрители · {{ screenWatcherIds.length }}</span></button>
+            <button v-if="cards.length > 1 || !selectedStream && cards.length" type="button" aria-controls="screen-viewer-auxiliary-panel" :aria-expanded="auxiliaryPanel === 'streams'" @click="togglePanel('streams', $event)">Трансляции · {{ cards.length }}</button>
+            <button type="button" aria-controls="screen-viewer-auxiliary-panel" :aria-expanded="auxiliaryPanel === 'participants'" @click="togglePanel('participants', $event)">Участники · {{ participants.length + 1 }}<span> · Зрители · {{ screenWatcherIds.length }}</span></button>
           </div>
-          <div v-if="auxiliaryPanel" class="screen-viewer-panel-content" :class="{ 'screen-viewer-panel-content--participants': auxiliaryPanel === 'participants', 'screen-viewer-panel-content--participants-multiple': auxiliaryPanel === 'participants' && participants.length > 0 }">
-            <button class="screen-viewer-panel-close" type="button" aria-label="Закрыть панель просмотра" @click="auxiliaryPanel = null; auxiliaryTrigger?.focus()">×</button>
+          <div v-show="auxiliaryPanel" id="screen-viewer-auxiliary-panel" class="screen-viewer-panel-content" :class="{ 'screen-viewer-panel-content--participants': auxiliaryPanel === 'participants', 'screen-viewer-panel-content--participants-multiple': auxiliaryPanel === 'participants' && participants.length > 1 }" role="region" :aria-label="auxiliaryPanel === 'participants' ? 'Участники голосового канала' : 'Демонстрации в канале'" :aria-hidden="!auxiliaryPanel" tabindex="-1">
+            <button class="screen-viewer-panel-close" type="button" aria-label="Закрыть панель просмотра" @click="closePanel(true)">×</button>
             <ScreenViewerRail v-if="auxiliaryPanel === 'streams'" :cards="cards" :selected-id="selectedId" :show-return-to-voice="false" @select="select" />
             <ScreenViewerParticipantStrip v-if="auxiliaryPanel === 'participants'" :participants="participants" :screens="cards" :selected-id="selectedId" :screen-watcher-ids="screenWatcherIds" :self-account-id="selfAccountId" :self-deafened="deafened" :self-microphone-muted="selfMicrophoneMuted" :self-microphone-unavailable="selfMicrophoneUnavailable" :self-name="selfName" :self-speaking="selfSpeaking" :own-screen-sharing="Boolean(ownScreenSharing)" />
           </div>
