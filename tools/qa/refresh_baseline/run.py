@@ -24,10 +24,14 @@ def extract(data, destination):
 
 def archive_source(root, revision):
     paths = ['clients/web', 'contracts']
-    optional = 'tools/audio/research_dfn_web/stage.mjs'
-    found = subprocess.check_output(['git', 'ls-tree', '-r', '--name-only', revision, '--', optional], cwd=root)
-    if found.decode('utf-8').strip() == optional:
-        paths.append(optional)
+    optional = ['tools/audio/research_dfn_web/stage.mjs',
+                'tools/audio/release_web_assets/bundle.mjs',
+                'tools/audio/release_web_assets/vite.mjs',
+                'tools/audio/release_web_assets/identity.json',
+                'tools/audio/runtime_assets']
+    found = subprocess.check_output(['git', 'ls-tree', '-r', '--name-only', revision, '--', *optional], cwd=root)
+    names = found.decode('utf-8').splitlines()
+    paths += [path for path in optional if any(name == path or name.startswith(path + '/') for name in names)]
     return subprocess.check_output(['git', 'archive', revision, *paths], cwd=root)
 
 

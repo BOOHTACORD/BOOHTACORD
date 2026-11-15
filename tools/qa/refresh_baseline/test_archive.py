@@ -30,9 +30,19 @@ class ArchiveTests(unittest.TestCase):
             stage.parent.mkdir(parents=True)
             stage.write_text('export const fixture = true', encoding='utf-8')
             (stage.parent / 'private.txt').write_text('not included', encoding='utf-8')
+            shared = ['tools/audio/release_web_assets/bundle.mjs',
+                      'tools/audio/release_web_assets/vite.mjs',
+                      'tools/audio/release_web_assets/identity.json',
+                      'tools/audio/runtime_assets/deepfilter/model.bin']
+            for relative in shared:
+                file = root / relative
+                file.parent.mkdir(parents=True, exist_ok=True)
+                file.write_bytes(b'qualified fixture bytes')
+            (root / 'tools/audio/release_web_assets/private.txt').write_text('not included', encoding='utf-8')
             git('add', 'contracts', 'tools')
             git('commit', '--quiet', '-m', 'shared sound fixtures')
             current = git('rev-parse', 'HEAD')
+            (root / shared[-1]).write_bytes(b'uncommitted future mutation')
             for revision, expected in ((historical, False), (current, True)):
                 with tarfile.open(fileobj=io.BytesIO(run.archive_source(root, revision))) as archive:
                     names = archive.getnames()
@@ -40,6 +50,11 @@ class ArchiveTests(unittest.TestCase):
                     self.assertEqual(expected, 'tools/audio/research_dfn_web/stage.mjs' in names)
                     self.assertNotIn('backend/private.txt', names)
                     self.assertNotIn('tools/audio/research_dfn_web/private.txt', names)
+                    self.assertNotIn('tools/audio/release_web_assets/private.txt', names)
+                    for relative in shared:
+                        self.assertEqual(expected, relative in names, relative)
+                    if expected:
+                        self.assertEqual(archive.extractfile(shared[-1]).read(), b'qualified fixture bytes')
                     self.assertIn('contracts/client-build.json', names)
 
     def test_rejects_escape(self):
