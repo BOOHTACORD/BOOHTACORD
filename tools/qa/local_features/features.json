@@ -1230,7 +1230,8 @@
       "issue786_deafen_screen_audio": "2026-11-14 issue #786: Web and shared Flutter add server-published deafen state with headphones-off priority; it suppresses remote voice microphone audio and restores the local microphone while selected screen-share audio and its mute/volume controls remain independent. Web browser suites, Flutter unit tests and component captures pass. Android runtime is blocked before assertions by the Tempo config mount; iOS runtime is BLOCKED without a Simulator. Paired physical Web-to-Flutter media acceptance is NOT_RUN; no media capability or capacity claim is made.",
       "issue687_production_engines": "Web and Windows enable RNNoise 0.2 and DeepFilterNet3 with versioned labels. Android, iOS and macOS keep their existing native engine/build selection; no mobile readiness claim. Local browser/native processing evidence is recorded independently from speech-quality and full workspace acceptance.",
       "issue687_production_delivery": "RNNoise 0.2 and DeepFilterNet3 enabled in ordinary Web and Windows builds with version labels. Shared audio state retains Android/iOS/macOS existing engine selection. This overlapping scenario has no new device acceptance claim; browser/native engine evidence is separate.",
-      "issue787_pr1_web_roster": "PR #797 (issue #787 PR1) changes only the Web screen-viewer participant popup/roster presentation and browser accessibility. No Flutter, shared native, Android or iOS implementation changed; native behavior and existing platform decisions are unchanged. Focused Web screen-share regressions and 393/1440px browser lifecycle checks pass. Android/iOS runtime and paired native media acceptance remain NOT_RUN; no media or capacity claim is added."
+      "issue787_pr1_web_roster": "PR #797 (issue #787 PR1) changes only the Web screen-viewer participant popup/roster presentation and browser accessibility. No Flutter, shared native, Android or iOS implementation changed; native behavior and existing platform decisions are unchanged. Focused Web screen-share regressions and 393/1440px browser lifecycle checks pass. Android/iOS runtime and paired native media acceptance remain NOT_RUN; no media or capacity claim is added.",
+      "issue787_pr2_stream_switcher": "2026-11-16 issue #787 PR2 adds a Web-only adaptive popup/grid around the existing cached-JPEG stream switcher. Selection still uses the existing ScreenViewer select path; only the selected LiveKit stream is rendered, and preview cards use cached images. Flutter/shared native implementations and media contracts are unchanged. Focused Web browser coverage passes; Android/iOS stream-switcher runtime, paired media quality and capacity acceptance remain NOT_RUN."
     }
   },
   "screen": {
@@ -1380,7 +1381,8 @@
       "clients/flutter/lib/src/features/voice/screen_preview/**",
       "clients/flutter/test/screen_preview_client_test.dart",
       "clients/flutter/test/screen_preview_sender_stop_test.dart",
-      "clients/flutter/lib/src/features/screen/thumbnail_state/**"
+      "clients/flutter/lib/src/features/screen/thumbnail_state/**",
+      "evidence/qa/issue787-web-stream-switcher-2026-11-16.md"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",
@@ -1632,6 +1634,14 @@
         ],
         "scope": "A still-published screen without a subscribed track exposes explicit retry only when bounded controller recovery is exhausted for the same publication, participant and selection. Viewport/text/keyboard captures are Flutter components, not physical first-frame proof. Separate phone-to-Windows stop/restart/Watch acceptance remains mandatory for closing579.",
         "capture": "BOOHTACORD_QA579_CAPTURE_DIR=<absolute owned directory>; flutter test test/features/voice/viewer_pending/presentation_test.dart"
+      },
+      "issue787_pr2_stream_switcher": {
+        "browser": "clients/web/tests/screen_share_ui/playwright.config.ts",
+        "focused": [
+          "clients/web/tests/screen_share_ui/compact.browser.spec.ts",
+          "clients/web/tests/screen_share_ui/fixture.ts"
+        ],
+        "scope": "Web stream-switcher popup/grid only: preserve the hidden single-selected-stream switcher, show one large card when selection is empty, two equal cards for two streams, responsive one/two-column 16:9 cards for 3+ streams with internal scroll, cached JPEG loading/unavailable state, distinct publication-live and viewer-selected labels, configured target prefix, keyboard selection/focus restoration and live-list refresh after unpublish. Preview cards use server-cached JPEGs; they do not create additional WebRTC video subscriptions. Flutter/native UI, paired media quality and capacity remain NOT_RUN."
       }
     },
     "parity": [
@@ -1787,7 +1797,8 @@
       "revision": "pr-683-web-chat-ux-2026-11-08",
       "issue272_roster_recovery": "Issue 689 replaced roster SSE with the shared WebSocket. Flutter retries that connection with bounded jitter throughout an outage; the long-outage unit test covers repeated failures. Android, iOS and real Web outage acceptance remain NOT_RUN.",
       "idle_afk_speech_activity": "2026-11-14 AFK follow-up: the shared voice activity heartbeat prevents an actively speaking user from being treated as idle. Screen capture, publishing and viewer behavior are unchanged; Web/Flutter voice and screen regressions remain in scope. Focused Web/Flutter regressions pass; dedicated Android/iOS runtime acceptance is NOT_RUN.",
-      "issue787_pr1_web_roster": "PR #797 (issue #787 PR1) changes only the Web screen-viewer participant popup/roster presentation and browser accessibility. No Flutter, shared native, Android or iOS implementation changed; native behavior and existing platform decisions are unchanged. Focused Web screen-share regressions and 393/1440px browser lifecycle checks pass. Android/iOS runtime and paired native media acceptance remain NOT_RUN; no media or capacity claim is added."
+      "issue787_pr1_web_roster": "PR #797 (issue #787 PR1) changes only the Web screen-viewer participant popup/roster presentation and browser accessibility. No Flutter, shared native, Android or iOS implementation changed; native behavior and existing platform decisions are unchanged. Focused Web screen-share regressions and 393/1440px browser lifecycle checks pass. Android/iOS runtime and paired native media acceptance remain NOT_RUN; no media or capacity claim is added.",
+      "issue787_pr2_stream_switcher": "2026-11-16 issue #787 PR2 adds a Web-only adaptive popup/grid around the existing cached-JPEG stream switcher. Selection still uses the existing ScreenViewer select path; only the selected LiveKit stream is rendered, and preview cards use cached images. Flutter/shared native implementations and media contracts are unchanged. Focused Web browser coverage passes; Android/iOS stream-switcher runtime, paired media quality and capacity acceptance remain NOT_RUN."
     }
   },
   "screen_metrics": {
@@ -2939,7 +2950,8 @@
       "revision": "pr-683-web-chat-ux-2026-11-08",
       "idle_presence_grouping": "2026-11-14 follow-up: online and idle members share the “В сети” roster group in Web and shared Flutter; idle remains visible as a distinct status marker. Offline grouping and presence source are unchanged. Focused roster tests and browser capture pass; paired native runtime acceptance remains NOT_RUN.",
       "issue787_pr1_web_roster": "PR #797 (issue #787 PR1) changes only the Web screen-viewer participant popup/roster presentation and browser accessibility. No Flutter, shared native, Android or iOS implementation changed; native behavior and existing platform decisions are unchanged. Focused Web screen-share regressions and 393/1440px browser lifecycle checks pass. Android/iOS runtime and paired native media acceptance remain NOT_RUN; no media or capacity claim is added.",
-      "issue687_native_release_version": "Native source release is 1.0.58+94/r73; fallback profile label matches package metadata. Windows publishes this candidate; existing Android/iOS/macOS published catalogs remain unchanged. Web stays 1.0.56/r64. Additional device/UI acceptance is NOT_RUN at owner request; mandatory GitHub CI and release integrity gates remain enforced."
+      "issue687_native_release_version": "Native source release is 1.0.58+94/r73; fallback profile label matches package metadata. Windows publishes this candidate; existing Android/iOS/macOS published catalogs remain unchanged. Web stays 1.0.56/r64. Additional device/UI acceptance is NOT_RUN at owner request; mandatory GitHub CI and release integrity gates remain enforced.",
+      "issue787_pr2_stream_switcher": "2026-11-16 issue #787 PR2 adds a Web-only adaptive popup/grid around the existing cached-JPEG stream switcher. Selection still uses the existing ScreenViewer select path; only the selected LiveKit stream is rendered, and preview cards use cached images. Flutter/shared native implementations and media contracts are unchanged. Focused Web browser coverage passes; Android/iOS stream-switcher runtime, paired media quality and capacity acceptance remain NOT_RUN."
     }
   },
   "screen_track_name": {
@@ -3491,7 +3503,8 @@
       "scope": "Idle presence and AFK routing are implemented for Web and shared Flutter clients. Feature-level paired Web/mobile timing and automatic-move observation remain NOT_RUN; no iOS/Android device runtime is inferred from shared code or tests. See evidence/idle-afk-2026-11-14.md.",
       "speech_activity_follow_up": "2026-11-14 follow-up: active local voice speech reports authenticated activity heartbeats in Web and shared Flutter, so speaking resets the AFK inactivity timer. AFK assignment, timeout saving, and voice admission are unchanged. Focused regressions pass; paired Android/iOS device routing remains NOT_RUN.",
       "issue687_production_delivery": "RNNoise 0.2 and DeepFilterNet3 enabled in ordinary Web and Windows builds with version labels. Shared audio state retains Android/iOS/macOS existing engine selection. This overlapping scenario has no new device acceptance claim; browser/native engine evidence is separate.",
-      "issue787_pr1_web_roster": "PR #797 (issue #787 PR1) changes only the Web screen-viewer participant popup/roster presentation and browser accessibility. No Flutter, shared native, Android or iOS implementation changed; native behavior and existing platform decisions are unchanged. Focused Web screen-share regressions and 393/1440px browser lifecycle checks pass. Android/iOS runtime and paired native media acceptance remain NOT_RUN; no media or capacity claim is added."
+      "issue787_pr1_web_roster": "PR #797 (issue #787 PR1) changes only the Web screen-viewer participant popup/roster presentation and browser accessibility. No Flutter, shared native, Android or iOS implementation changed; native behavior and existing platform decisions are unchanged. Focused Web screen-share regressions and 393/1440px browser lifecycle checks pass. Android/iOS runtime and paired native media acceptance remain NOT_RUN; no media or capacity claim is added.",
+      "issue787_pr2_stream_switcher": "2026-11-16 issue #787 PR2 adds a Web-only adaptive popup/grid around the existing cached-JPEG stream switcher. Selection still uses the existing ScreenViewer select path; only the selected LiveKit stream is rendered, and preview cards use cached images. Flutter/shared native implementations and media contracts are unchanged. Focused Web browser coverage passes; Android/iOS stream-switcher runtime, paired media quality and capacity acceptance remain NOT_RUN."
     },
     "parity": [
       {
