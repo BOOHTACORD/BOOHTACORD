@@ -151,9 +151,9 @@ jobs:
       - name: Download only this execution's complete backend result set
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
-          pattern: backend-part-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-*
+          pattern: backend-part-${{ github.sha }}-${{ github.run_id }}-*-*
           path: .out/ci/backend-parts
-          merge-multiple: true
+          merge-multiple: false
       - name: Require every successful exact-source backend profile
         env:
           BACKEND_NEEDS: ${{ toJSON(needs) }}

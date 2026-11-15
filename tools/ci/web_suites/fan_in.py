@@ -4,6 +4,7 @@ import re
 import json
 from pathlib import Path
 from . import catalog
+from tools.ci.component_receipts.parts import profile_execution
 
 
 def require(value):
@@ -26,7 +27,7 @@ def read_reports(directory):
     return rows
 
 
-def validate_results(source, needs, rows):
+def validate_results(source, needs, rows, *, attempts=None):
     try:
         require(isinstance(source, str) and re.fullmatch('[0-9a-f]{40}', source))
         require(set(needs) == {'fast', 'browser', 'sfu'}
@@ -42,7 +43,7 @@ def validate_results(source, needs, rows):
             require(profile in expected and profile not in seen)
             require(row['source_revision'] == source and row['plan_sha256'] == catalog.digest(plan)
                     and row['status'] == 'PASS' and row['operations'] == expected[profile]
-                    and row['execution'] == catalog.execution())
+                    and row['execution'] == profile_execution(catalog.execution(), catalog.PROFILES, attempts, profile))
             seconds = row['seconds']
             require(type(seconds) in (int, float) and math.isfinite(seconds) and seconds > 0)
             seen.add(profile)
