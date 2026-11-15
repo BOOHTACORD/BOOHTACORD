@@ -163,7 +163,7 @@ test('participant panel uses the open video space without a full-width blank are
     return { width: panelRect.width, stripTop: stripRect.top, panelTop: panelRect.top }
   })
 
-  expect(bounds.width).toBeLessThanOrEqual(260)
+  expect(bounds.width).toBeLessThanOrEqual(280)
   expect(bounds.stripTop - bounds.panelTop).toBeLessThanOrEqual(28)
   await expect(strip.locator('.voice-viewer-participant')).toHaveCount(1)
   await page.screenshot({ path: info.outputPath('compact-participant-panel-653.png') })

@@ -39,8 +39,14 @@ describe('selected-stream toolbar layout', () => {
     expect(participants).toContain('в комнате')
     expect(participants).toContain('<VoiceParticipantStatus')
     expect(participants).toContain('sharesScreen')
+    expect(participants).toContain('viewer-name-tooltip-self')
+    expect(participants).toContain('voice-viewer-participant-indicators')
     expect(css).toContain('.voice-room .voice-viewer-participant-strip')
     expect(css).toContain('width: 176px;')
+    expect(css).toContain('repeat(auto-fit, minmax(min(100%, 240px), 1fr))')
+    expect(css).toContain('-webkit-line-clamp: 2;')
+    expect(viewer).toContain('aria-controls="screen-viewer-auxiliary-panel"')
+    expect(viewer).toContain('event.detail === 0')
   })
 
   it('offers quality changes only to the active sender and exposes receiver statistics', () => {
