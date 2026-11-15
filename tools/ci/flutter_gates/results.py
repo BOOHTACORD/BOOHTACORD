@@ -5,6 +5,7 @@ import re
 from tools.ci.native.process import ROOT
 from .profiles import OPERATIONS
 from .artifacts import VISUALS
+from tools.ci.component_receipts.history import valid_attempt
 
 FIELDS = {'schema_version', 'source_revision', 'profile', 'run_id', 'run_attempt', 'namespace',
           'status', 'completed', 'seconds', 'sdk', 'artifacts'}
@@ -30,18 +31,24 @@ def validate_artifacts(profile, measured):
             raise ValueError('Public native artifact needs a measured finite size and digest')
 
 
-def validate(parts, needs, source, run_id, attempt, namespace='flutter'):
+def validate(parts, needs, source, run_id, attempt, namespace='flutter', *, attempts=None):
     if (not isinstance(needs, dict) or set(needs) != set(OPERATIONS)
             or any(not isinstance(v, dict) or v.get('result') != 'success' for v in needs.values())
             or not isinstance(parts, list) or len(parts) != len(OPERATIONS)):
         raise ValueError('All native profile jobs must succeed')
+    if attempts is not None:
+        if set(attempts) != set(OPERATIONS):
+            raise ValueError('Every native profile execution is mandatory')
+        for value in attempts.values():
+            valid_attempt(value, attempt)
     seen = {}
     for part in parts:
         if (not isinstance(part, dict) or set(part) != FIELDS
                 or type(part['schema_version']) is not int or part['schema_version'] != 1
                 or part['profile'] not in OPERATIONS or part['profile'] in seen
                 or part['source_revision'] != source or part['run_id'] != run_id
-                or part['run_attempt'] != attempt or part['namespace'] != namespace or part['status'] != 'PASS'
+                or part['run_attempt'] != (attempts or {}).get(part['profile'], attempt)
+                or part['namespace'] != namespace or part['status'] != 'PASS'
                 or part['completed'] != list(OPERATIONS[part['profile']])
                 or part['sdk'] != expected_sdk()
                 or type(part['seconds']) not in (int, float)
