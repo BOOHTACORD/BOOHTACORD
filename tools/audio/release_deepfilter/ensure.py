@@ -35,7 +35,7 @@ def validate(output):
 
 def ensure():
     cache = Path(os.environ.get('BOOHTA_ENGINE_CACHE_ROOT', ROOT / '.out/audio-engines')).resolve()
-    output = cache / 'windows-deepfilter-v3-canonical-notices'
+    output = cache / 'windows-deepfilter-v3-physical-notices'
     if output.exists():
         return validate(prepare(validate(output)))
     cache.mkdir(parents=True, exist_ok=True)
