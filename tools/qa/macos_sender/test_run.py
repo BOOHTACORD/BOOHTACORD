@@ -28,6 +28,8 @@ class CopyPlanTests(unittest.TestCase):
    hook=(flutter/'macos/../../../tools/build/desktop_updater/sdk.py').resolve()
    copied_sdk=work/'tools/build/desktop_updater/sdk.py'
    self.assertEqual(flutter,work/'clients/flutter')
+   self.assertTrue((work/'flutter').is_symlink())
+   self.assertEqual((work/'flutter').resolve(),flutter.resolve())
    self.assertEqual(hook,copied_sdk.resolve())
    self.assertNotEqual(copied_sdk.resolve(),(run.ROOT/'tools/build/desktop_updater/sdk.py').resolve())
    self.assertTrue((work/'tools/build/desktop_updater/licenses/Sparkle-2.10.0.txt').is_file())

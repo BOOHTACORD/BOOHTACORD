@@ -40,6 +40,7 @@ def prepare_private_macos_build_support(work):
  work=Path(work)
  flutter=work/'clients'/'flutter'
  flutter.mkdir(parents=True,exist_ok=False)
+ (work/'flutter').symlink_to(Path('clients/flutter'),target_is_directory=True)
  updater_source=ROOT/'tools/build/desktop_updater'
  updater_copy=work/'tools/build/desktop_updater'
  if not (updater_source/'sdk.py').is_file():raise FileNotFoundError('Pinned desktop updater build support is missing')
