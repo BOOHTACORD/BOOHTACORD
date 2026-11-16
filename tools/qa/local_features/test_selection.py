@@ -32,6 +32,12 @@ class SelectionTest(unittest.TestCase):
         self.assertIn('integration_test/issue689_listener_test.dart', selected)
         self.assertIn('integration_test/issue689_roster_test.dart', selected)
 
+    def test_android_voice_capture_is_selected_only_for_android(self):
+        catalog = json.loads(Path(__file__).with_name('features.json').read_text(encoding='utf8'))
+        target = 'integration_test/android_noise_sfu_test.dart'
+        self.assertIn(target, native_targets(catalog, ['voice'], platform='android'))
+        self.assertNotIn(target, native_targets(catalog, ['voice'], platform='ios'))
+
     def test_connection_feature_runs_native_heartbeat_scenario(self):
         catalog = json.loads(Path(__file__).with_name('features.json').read_text(encoding='utf8'))
         self.assertIn('integration_test/issue689_heartbeat_test.dart', native_targets(catalog, ['connection_status']))

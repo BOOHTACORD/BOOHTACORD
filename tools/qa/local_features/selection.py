@@ -15,9 +15,11 @@ def host_command(command, *, system=None, find=None, python=None):
     return [executable, *command[1:]]
 
 
-def native_targets(catalog, features):
+def native_targets(catalog, features, platform=None):
     default = 'integration_test/local_qa_test.dart'
     extra = {target for feature in features for target in catalog[feature].get('native_targets', [])}
+    if platform:
+        extra.update(target for feature in features for target in catalog[feature].get(platform + '_native_targets', []))
     for target in extra:
         native_target(target)
     return [default, *sorted(extra - {default})]

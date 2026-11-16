@@ -83,7 +83,7 @@ def main():
             if not ids:
                 stages.append({'name':platform+'-runtime','status':'BLOCKED'})
             else:
-                for index, target in enumerate(native_targets(catalog, features)):
+                for index, target in enumerate(native_targets(catalog, features, platform=platform)):
                     name = platform+'-runtime' + ('' if index == 0 else '-'+Path(target).stem)
                     stage(name,['python3','-m','tools.qa.local_features.native',
                                 '--platform',platform,'--device',ids[0], '--target',target,

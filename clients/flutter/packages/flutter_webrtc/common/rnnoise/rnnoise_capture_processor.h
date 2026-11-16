@@ -20,7 +20,8 @@ class RnnoiseCaptureProcessor {
                       kUnknown = 3, kDeepFilter = 4 };
   enum class Failure { kAwaitingAudio, kNone, kFormat, kNonFinite, kUnavailable, kProcessor, kUnderrun };
   using StateAllocator = void* (*)(size_t);
-  explicit RnnoiseCaptureProcessor(StateAllocator allocate = std::malloc, deepfilter::CaptureHook* hook = nullptr);
+  explicit RnnoiseCaptureProcessor(StateAllocator allocate = std::malloc, deepfilter::CaptureHook* hook = nullptr,
+                                   bool android_16k = false);
   ~RnnoiseCaptureProcessor();
   RnnoiseCaptureProcessor(const RnnoiseCaptureProcessor&) = delete;
   RnnoiseCaptureProcessor& operator=(const RnnoiseCaptureProcessor&) = delete;
@@ -49,6 +50,7 @@ class RnnoiseCaptureProcessor {
   deepfilter::Resampler16k resampler_;
   DenoiseState* state_;
   deepfilter::CaptureHook* const hook_;
+  const bool android_16k_;
   bool warmed_ = false;  // Set during construction, before the audio thread starts.
   std::atomic<Engine> requested_{Engine::kBrowser};
   std::atomic<bool> state_ready_{false};

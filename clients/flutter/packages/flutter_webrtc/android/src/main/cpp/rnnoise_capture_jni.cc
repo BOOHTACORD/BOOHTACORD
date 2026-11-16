@@ -7,7 +7,7 @@ static RnnoiseCaptureProcessor* Processor(jlong handle) {
 }
 extern "C" JNIEXPORT jlong JNICALL
 Java_com_cloudwebrtc_webrtc_audio_RnnoiseCaptureAdapter_nativeCreate(JNIEnv*, jclass) {
-  return reinterpret_cast<jlong>(new (std::nothrow) RnnoiseCaptureProcessor());
+  return reinterpret_cast<jlong>(new (std::nothrow) RnnoiseCaptureProcessor(std::malloc, nullptr, true));
 }
 extern "C" JNIEXPORT void JNICALL
 Java_com_cloudwebrtc_webrtc_audio_RnnoiseCaptureAdapter_nativeDestroy(JNIEnv*, jclass, jlong handle) {

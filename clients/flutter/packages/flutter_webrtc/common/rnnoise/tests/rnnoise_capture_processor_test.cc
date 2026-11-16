@@ -50,6 +50,27 @@ int main() {
   assert(frame == original);
   assert(processor.EffectiveEngine() == RnnoiseCaptureProcessor::Engine::kUnknown);
 #endif
+  // Android's capture post-processor can provide mono 10 ms frames at 16 kHz.
+  RnnoiseCaptureProcessor android(std::malloc, nullptr, true);
+  android.Initialize(16000, 1);
+  android.SetEngine(RnnoiseCaptureProcessor::Engine::kRnnoise);
+  auto short_frame = original;
+  assert(android.Process(short_frame.data(), 160, 160));
+  assert(short_frame != original);
+  assert(android.EffectiveEngine() == RnnoiseCaptureProcessor::Engine::kRnnoise);
+  assert(android.processed_frames() == 1);
+  android.Reset();
+  short_frame = original;
+  assert(android.Process(short_frame.data(), 160, 160));
+  RnnoiseCaptureProcessor fresh_android(std::malloc, nullptr, true);
+  fresh_android.Initialize(16000, 1);
+  fresh_android.SetEngine(RnnoiseCaptureProcessor::Engine::kRnnoise);
+  auto fresh_frame = original;
+  assert(fresh_android.Process(fresh_frame.data(), 160, 160));
+  assert(short_frame == fresh_frame);
+  short_frame[3] = std::numeric_limits<float>::quiet_NaN();
+  assert(!android.Process(short_frame.data(), 160, 160));
+  assert(std::isnan(short_frame[3]));
   processor.Initialize(48000, 2);
   assert(!processor.Process(frame.data(), 480, 480));
   assert(frame == original);

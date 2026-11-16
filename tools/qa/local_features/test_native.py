@@ -45,4 +45,5 @@ class NativeTargetTests(unittest.TestCase):
         self.assertIn('revocation', native_target('integration_test/issue689_delivery_revocation_test.dart'))
         self.assertIn('topology history', native_target('integration_test/issue689_topology_history_test.dart'))
         self.assertIn('required update', native_target('integration_test/update_required_test.dart'))
+        self.assertIn('RNNoise', native_target('integration_test/android_noise_sfu_test.dart'))
         with self.assertRaises(ValueError): native_target('../unrelated.dart')

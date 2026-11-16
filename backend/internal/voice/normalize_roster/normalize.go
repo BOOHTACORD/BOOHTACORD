@@ -2,7 +2,6 @@
 package normalizeroster
 
 import (
-	"encoding/json"
 	"errors"
 	"sort"
 	"strings"
@@ -42,7 +41,7 @@ func Canonicalize(input roster.Result, maxBytes int) (roster.Result, []byte, err
 		result.Channels = append(result.Channels, roster.ChannelRoster{ChannelID: id, Participants: participants})
 	}
 	sort.Slice(result.Channels, func(i, j int) bool { return result.Channels[i].ChannelID < result.Channels[j].ChannelID })
-	encoded, err := json.Marshal(result)
+	encoded, err := encodeRosterV2(result)
 	if err != nil {
 		return roster.Result{}, nil, ErrInvalidSnapshot
 	}

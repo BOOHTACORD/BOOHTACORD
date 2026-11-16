@@ -48,38 +48,45 @@ class _NoiseModeSelector extends StatelessWidget {
         deepEnabled ? 'DeepFilterNet3' : 'DeepFilterNet3 — недоступен',
       NoiseSuppressionMode.auto => 'Автоматически',
     };
-    return DropdownButtonFormField<NoiseSuppressionMode>(
-      key: ValueKey(processing.noiseSuppressionMode),
-      initialValue: processing.noiseSuppressionMode,
-      isExpanded: true,
-      selectedItemBuilder: (context) => [
-        for (final mode in modes)
-          Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: Text(
-              selectedLabel(mode),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+    return Theme(
+      data: !kIsWeb && defaultTargetPlatform == TargetPlatform.android
+          ? Theme.of(context).copyWith(focusColor: GcColors.selected)
+          : Theme.of(context),
+      child: DropdownButtonFormField<NoiseSuppressionMode>(
+        key: ValueKey(processing.noiseSuppressionMode),
+        initialValue: processing.noiseSuppressionMode,
+        isExpanded: true,
+        selectedItemBuilder: (context) => [
+          for (final mode in modes)
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: Text(
+                selectedLabel(mode),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
-      ],
-      decoration: const InputDecoration(labelText: 'Шумоподавление'),
-      items: [
-        for (final mode in modes)
-          DropdownMenuItem(
-            value: mode,
-            enabled:
-                (mode != NoiseSuppressionMode.rnnoise ||
-                    runtime.status != 'unsupported') &&
-                (mode != NoiseSuppressionMode.deepfilter || deepEnabled),
-            child: Text(selectedLabel(mode)),
-          ),
-      ],
-      onChanged: (mode) {
-        if (mode != null) {
-          onChanged(processing.copyWith(noiseSuppressionMode: mode));
-        }
-      },
+        ],
+        decoration: const InputDecoration(labelText: 'Шумоподавление'),
+        items: [
+          for (final mode in modes)
+            DropdownMenuItem(
+              value: mode,
+              enabled:
+                  (mode != NoiseSuppressionMode.rnnoise ||
+                      runtime.status != 'unsupported' ||
+                      (!kIsWeb &&
+                          defaultTargetPlatform == TargetPlatform.android)) &&
+                  (mode != NoiseSuppressionMode.deepfilter || deepEnabled),
+              child: Text(selectedLabel(mode)),
+            ),
+        ],
+        onChanged: (mode) {
+          if (mode != null) {
+            onChanged(processing.copyWith(noiseSuppressionMode: mode));
+          }
+        },
+      ),
     );
   }
 }
