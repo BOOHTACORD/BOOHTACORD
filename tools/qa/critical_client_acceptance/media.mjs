@@ -31,7 +31,7 @@ export async function media(a, b, member, channelId, report, input) {
       socket.send(message)
     })
   })
-  await a.addInitScript(installRosterFailureObserver)
+  for (const page of [a, member]) await page.addInitScript(installRosterFailureObserver)
   const rosterNetwork = observeRosterNetwork(a)
   const miniSubscriptions = await observeMiniSubscriptions(member)
   await a.reload()

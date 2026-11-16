@@ -82,7 +82,10 @@ function dynamicMetric(
 ): ScreenTelemetryMetric {
   if (stale) return unavailable('stale')
   if (unsupported) return unavailable('unsupported')
-  return measured(value, maximum, integral)
+  const metricValue = integral && value !== undefined && Number.isFinite(value) && value >= 0 && value <= maximum
+    ? Math.round(value)
+    : value
+  return measured(metricValue, maximum, integral)
 }
 
 function dynamicReason(value: string | undefined, unsupported: boolean, stale: boolean): ScreenTelemetryCategoricalMetric {
@@ -133,7 +136,7 @@ export function buildWebScreenTelemetryEnvelope(input: {
     },
     encode: {
       fps: dynamicMetric(diagnostics.selectedLayer?.framesPerSecond ?? diagnostics.measured?.framesPerSecond, 240, unsupported, stale),
-      bitrate_bps: dynamicMetric(diagnostics.selectedLayer?.bitrateBps ?? diagnostics.bitrateBps, 100_000_000, unsupported, stale),
+      bitrate_bps: dynamicMetric(diagnostics.selectedLayer?.bitrateBps ?? diagnostics.bitrateBps, 100_000_000, unsupported, stale, true),
     },
     transport: {
       packet_loss_percent: dynamicMetric(loss, 100, unsupported, stale),

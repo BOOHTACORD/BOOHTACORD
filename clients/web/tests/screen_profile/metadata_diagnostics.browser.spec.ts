@@ -33,6 +33,9 @@ for (const width of [320, 393, 1440]) {
     await expect(panel).toBeVisible()
     await expect(panel).toContainText('SDK отправителя · лимиты, не измеренный FPS')
     const bounds = await panel.boundingBox()
+    expect(bounds).not.toBeNull()
+    expect(bounds!.y).toBeGreaterThanOrEqual(0)
+    expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(900)
     expect(bounds?.x).toBeGreaterThanOrEqual(0)
     expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width)
     const out = resolve('../../.out/qa-batch5-20261013/reader328/web')
@@ -44,3 +47,21 @@ for (const width of [320, 393, 1440]) {
     await expect(panel).not.toBeVisible()
   })
 }
+
+test('repositions the open diagnostics panel when receiver measurements arrive', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 700 })
+  await page.goto('/tests/screen_profile/metadata_diagnostics.fixture.html')
+  await page.addStyleTag({ content: '.stream-diagnostics { position: fixed; right: 16px; bottom: 16px; }' })
+  await page.getByLabel('Статистика', { exact: true }).click()
+  const panel = page.getByRole('dialog', { name: 'Статистика трансляции' })
+  await expect(panel).toBeVisible()
+  await page.evaluate(() => (window as unknown as { qaReceiverMetrics: () => void }).qaReceiverMetrics())
+  await expect.poll(async () => {
+    const bounds = await panel.boundingBox()
+    return bounds ? bounds.y + bounds.height : Number.POSITIVE_INFINITY
+  }).toBeLessThanOrEqual(700)
+  const summary = panel.locator('.stream-diagnostics-technical > summary')
+  await summary.scrollIntoViewIfNeeded()
+  await summary.click()
+  await expect(panel.locator('.stream-diagnostics-technical')).toHaveAttribute('open', '')
+})

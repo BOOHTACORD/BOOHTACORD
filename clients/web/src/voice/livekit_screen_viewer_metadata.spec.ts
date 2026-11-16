@@ -15,6 +15,34 @@ const descriptor = (profile: string, operation: number) => JSON.stringify({
 afterEach(() => vi.unstubAllGlobals())
 
 describe('LiveKit screen descriptor metadata events', () => {
+  it('matches descriptors when the room name becomes available after the viewer binding is created', () => {
+    vi.stubGlobal('window', { location: { origin: 'https://app.example.test' } })
+    let roomName: string | undefined
+    const video = { trackName: 'screenshare-1080p-30fps', setSubscribed: vi.fn() }
+    const participant = {
+      identity: 'voice-lease:a', metadata: `account:${accountId}`, name: 'Alice',
+      attributes: { [attributeKey]: descriptor('P720_60', 2) },
+      getTrackPublication: (source: string) => source === 'screen-video' ? video : undefined,
+    }
+    const room: LiveKitScreenViewerRoom = {
+      get name() { return roomName },
+      on: () => undefined,
+      remoteParticipants: new Map([['alice', participant]]),
+    }
+    const binding = bindLiveKitScreenViewer(room, {
+      activeSpeakersChanged: 'active-speakers-changed', attributesChanged: 'participant-attributes-changed',
+      localTrackPublished: 'local-track-published', localTrackUnpublished: 'local-track-unpublished',
+      participantConnected: 'participant-connected', participantDisconnected: 'participant-disconnected',
+      trackMuted: 'track-muted', trackPublished: 'track-published', trackSubscribed: 'track-subscribed',
+      trackUnmuted: 'track-unmuted', trackUnpublished: 'track-unpublished', trackUnsubscribed: 'track-unsubscribed',
+    }, { microphone: 'microphone', screenAudio: 'screen-audio', screenVideo: 'screen-video' })
+
+    roomName = 'voice:channel-a'
+    binding.refresh()
+
+    expect(binding.viewer.cards()[0]).toMatchObject({ targetProfile: '720p · 60 FPS', profileSource: 'sender-metadata' })
+  })
+
   it('reads late-join attributes and refreshes the viewer on newer participant attributes', () => {
     vi.stubGlobal('window', { location: { origin: 'https://app.example.test' } })
     const listeners = new Map<string, (...args: any[]) => void>()
