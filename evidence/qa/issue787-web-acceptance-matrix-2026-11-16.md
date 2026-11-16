@@ -47,3 +47,19 @@ Also reviewed the owned real-stack `screen-share-compact-statistics.png` capture
 - Hardware media-quality and load/capacity evidence: **NOT_RUN**.
 
 Issue #787 remains open until the remaining platform and release acceptance gates have evidence.
+
+
+## Follow-up: participant preview target provenance (2026-11-16)
+
+Commit `47bfd7f37d15b3178f1a4ee7452aa0029969c224` updates the participant preview caption to distinguish the configured target from measured quality (for example, `Плавность · Цель: 720p · 30 FPS`). Added focused presentation and browser assertions before the implementation.
+
+- Focused unit: `screen_profile_metadata/presentation.spec.ts` — **5 passed**.
+- Focused browser regression: participant preview caption — **1 passed**.
+- Registered Web real-stack run used `--feature screen --feature idle_afk --feature screen_track_name --feature voice --platform web --base 778f18a7fa9600bdf3316c644b8788f1a110e85d --real-stack`.
+- Report: `.out/local-features/20261116-130710/index.html` (`report.json`). All 14 stages **PASS**, zero skipped tests; includes Web unit/build/accessibility, screen profile/UI, the related voice feature suites, 1440/393 real-stack runs and source stability. The report's `REVIEW_REQUIRED` label is its manual-screenshot-review policy; the affected screenshots below were reviewed at source resolution.
+- Source-resolution review:
+  - Participant-card 876×656: SHA-256 `f2aa6f046d3e3d424f3e82d03b8bc50a68cb2b8eca8e416cb00e16dfc5ecee1d`. The full target is legible; the live badge, preview control and participant row do not overlap.
+  - Narrow participant-card capture 390×740 (390×200 CSS viewport): SHA-256 `c37ced93fb448f1e9fce70c931aa3ad8aed037d2da120d144c1db5b457ba584c`. The `Цель:` provenance stays visible; the long target value is ellipsized before the live badge, with no collision.
+  - Owned real-stack desktop capture 2880×1800 (1440 CSS px): SHA-256 `131fd23591d851668d1cb460833000b65804aacc7762d8245c3b94a3063493c0`. The target prefix is visible and participant cards/control layout remain intact.
+  - Owned real-stack mobile capture 1179×2556 (393 CSS px): SHA-256 `367ccedf36daa3eedccaf5d22da073a2e251b3c64809c029f6fb4cbfadeb97f0`. The full mode and target caption fits; cards stack without horizontal overflow.
+- The isolated publisher/viewer browser baseline also passed **20/20**. Its generated-canvas sample measured a first frame at about **474 ms**, encoded FPS P05 **59.69**, decoded FPS P05 **58.91**, and presented callback FPS P05 **52** with no >500 ms gaps. This is synthetic browser/isolated-LiveKit data only: `thresholdClaims=false`; it is not physical monitor capture, device QoE, hardware or capacity evidence.
