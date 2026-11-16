@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import type { ScreenViewerCard } from './screen_viewer_controller'
 import { screenPreviewLeaseForParticipant } from './screen_preview/participant_leases'
 import { screenPreviewCardVisibility } from './screen_preview/visibility'
+import { screenPreviewCaptionLabel } from './screen_profile_metadata/presentation'
 
 const props = defineProps<{ screen: ScreenViewerCard; selected?: boolean }>()
 const emit = defineEmits<{ select: [id: string] }>()
@@ -32,10 +33,7 @@ watch([preview, leaseId], observePreview, { flush: 'post' })
 onBeforeUnmount(stopObserving)
 
 const caption = computed(() => {
-  const mode = props.screen.descriptor?.mode
-  const profile = props.screen.targetProfile
-  if (mode) return `${mode === 'motion' ? 'Плавность' : 'Текст'}${profile ? ` · ${profile}` : ''}`
-  return profile ?? ''
+  return screenPreviewCaptionLabel(props.screen.descriptor?.mode, props.screen.targetProfile)
 })
 </script>
 
