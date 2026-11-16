@@ -7,8 +7,10 @@ import '../../../core/http/api_failure.dart';
 import '../../../core/session/scope.dart';
 import '../../media/report_metrics/api.dart';
 import '../../../services/screen_share_diagnostics.dart';
+import '../../../services/screen_share_metrics.dart';
 import 'controller.dart';
 import 'report_payload.dart';
+import 'telemetry_envelope.dart';
 
 extension ScreenReportSample on ScreenShareMetricsController {
   Future<void> reportLatest(LocalVideoTrack track, int revision) async {
@@ -44,6 +46,7 @@ extension ScreenReportSample on ScreenShareMetricsController {
     );
     reportCadence.markAttempt(nowMs);
     reportBusyGeneration = revision;
+    _reportEphemeralTelemetry(currentReport, nowMs);
     logScreenShareDiagnostic(
       ScreenShareDiagnosticEvent.senderReportStarted,
       platform: defaultTargetPlatform,
@@ -109,5 +112,53 @@ extension ScreenReportSample on ScreenShareMetricsController {
     if (status >= 400 && status < 500) return '4xx';
     if (status >= 500 && status < 600) return '5xx';
     return 'other';
+  }
+
+  void _reportEphemeralTelemetry(
+    ScreenShareSenderReport currentReport,
+    double nowMs,
+  ) {
+    if (telemetryBusyGeneration == gate.generation) return;
+    final platform = nativeScreenTelemetryPlatform(defaultTargetPlatform);
+    final ownerLeaseId = api.transport.session.telemetry.snapshot().leaseId;
+    final scope = readTelemetryScope?.call();
+    if (platform == null ||
+        ownerLeaseId == null ||
+        scope == null ||
+        scope.ownerLeaseId != ownerLeaseId) {
+      return;
+    }
+    Map<String, Object?> envelope;
+    try {
+      envelope = buildFlutterScreenTelemetryEnvelope(
+        scope: scope,
+        platform: platform,
+        report: currentReport,
+        measurementFields: reportMeasurementFields,
+        sequence: ++telemetrySequence,
+        sampledAtMonotonicMs: sampledAtMonotonicMs,
+        nowMonotonicMs: nowMs,
+      );
+    } on ArgumentError {
+      return;
+    }
+    final revision = gate.generation;
+    final abort = reportAbort;
+    if (abort == null) return;
+    telemetryBusyGeneration = revision;
+    unawaited(() async {
+      try {
+        await api.reportScreenTelemetry(
+          ownerLeaseId,
+          envelope,
+          timeout: const Duration(seconds: 10),
+          abortTrigger: abort.future,
+        );
+      } catch (_) {
+        // This ephemeral path is best-effort and must never affect screen media.
+      } finally {
+        if (telemetryBusyGeneration == revision) telemetryBusyGeneration = null;
+      }
+    }());
   }
 }

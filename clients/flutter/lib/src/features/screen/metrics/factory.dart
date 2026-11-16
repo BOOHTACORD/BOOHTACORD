@@ -4,6 +4,7 @@ import '../../../core/session/scope.dart';
 import '../../../services/api_client.dart';
 import '../profile/quality.dart';
 import 'controller.dart';
+import 'telemetry_envelope.dart';
 import '../runtime_apply/options.dart';
 
 export 'controller.dart' show ScreenShareMetricsController;
@@ -17,6 +18,7 @@ ScreenShareMetricsController createScreenShareMetricsController(
   required void Function() changed,
   Future<void> Function(ScreenAdaptationObservation)? Function()?
   captureObservation,
+  ScreenTelemetryPublicationScope? Function()? readTelemetryScope,
 }) => ScreenShareMetricsController(
   api,
   scope,
@@ -25,4 +27,5 @@ ScreenShareMetricsController createScreenShareMetricsController(
   readQuality: readQuality,
   changed: changed,
   captureObservation: captureObservation,
+  readTelemetryScope: readTelemetryScope,
 );

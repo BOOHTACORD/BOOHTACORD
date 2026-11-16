@@ -5,10 +5,11 @@ import { screenDescriptorMetadataEnabled } from './enabled'
 import { ScreenProfileMetadataPublisher } from './publisher'
 import type { ScreenProfile } from '../screen_profile/policy'
 import type { ScreenProfileMode } from './types'
+import type { ScreenTelemetryPublicationScope } from '../screen_sender_telemetry'
 
 export function bindLiveKitScreenMetadata(room: Room, screenSource: Track.Source, generation: () => number) {
   if (!screenDescriptorMetadataEnabled()) {
-    return { bindLease: async () => undefined, publish: async () => undefined, clear: async () => undefined, reconnected: () => undefined }
+    return { bindLease: async () => undefined, publish: async () => undefined, clear: async () => undefined, reconnected: () => undefined, readTelemetryScope: () => undefined }
   }
   let leaseId = ''
   let activeProfile: ScreenProfile | undefined
@@ -53,5 +54,10 @@ export function bindLiveKitScreenMetadata(room: Room, screenSource: Track.Source
     if (activeProfile) void publish(activeProfile, activeMode).catch(() => undefined)
   }
 
-  return { bindLease, publish, clear, reconnected }
+  function readTelemetryScope(): ScreenTelemetryPublicationScope | undefined {
+    const scope = publisher?.telemetryScope(leaseId)
+    return scope && scope.publicationGeneration === generation() ? scope : undefined
+  }
+
+  return { bindLease, publish, clear, reconnected, readTelemetryScope }
 }

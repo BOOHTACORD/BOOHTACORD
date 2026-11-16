@@ -9,6 +9,7 @@ import '../profile/quality.dart';
 import '../../../services/screen_share_metrics.dart';
 import '../../../services/screen_share_metrics_generation_gate.dart';
 import '../../../telemetry/report_media/sender.dart';
+import 'telemetry_envelope.dart';
 import 'layers.dart';
 import '../runtime_apply/options.dart';
 import 'report_cadence.dart';
@@ -25,8 +26,10 @@ class ScreenShareMetricsController {
     required this.readQuality,
     required this.changed,
     this.captureObservation,
+    this.readTelemetryScope,
   });
   final void Function() changed;
+  final ScreenTelemetryPublicationScope? Function()? readTelemetryScope;
   final Future<void> Function(ScreenAdaptationObservation)? Function()?
   captureObservation;
   ScreenShareSenderReport? report;
@@ -56,6 +59,8 @@ class ScreenShareMetricsController {
   double? sampledAtMonotonicMs;
   Completer<void>? reportAbort;
   int? reportBusyGeneration;
+  int telemetrySequence = 0;
+  int? telemetryBusyGeneration;
   int? reportServerRevision;
 
   void start(LocalVideoTrack track) {
@@ -90,6 +95,8 @@ class ScreenShareMetricsController {
     reportTimer?.cancel();
     reportTimer = null;
     reportBusyGeneration = null;
+    telemetrySequence = 0;
+    telemetryBusyGeneration = null;
     statsPoller?.clear();
     statsPoller = null;
     track = null;

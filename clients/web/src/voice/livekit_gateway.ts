@@ -23,6 +23,7 @@ import { activeAction } from '../telemetry/action_scope/scope'
 import type { LocalVideoTrack } from 'livekit-client'
 import type { ScreenPublisherPort } from './screen_publisher/types'
 import type { ScreenProfile } from './screen_profile/policy'
+import type { ScreenTelemetryPublicationScope } from './screen_sender_telemetry'
 
 export {
   readScreenShareDiagnostics,
@@ -43,6 +44,7 @@ export interface VoiceRoom {
   bindScreenPreviewLease?(leaseId: string): Promise<void> | void
   publishScreenProfileMetadata?(profile: ScreenProfile, mode?: 'motion' | 'text'): Promise<void>
   clearScreenProfileMetadata?(): Promise<void>
+  readScreenTelemetryScope?(): ScreenTelemetryPublicationScope | undefined
   stopScreenPreview?(): Promise<void>
   applyScreenPreview?(leaseId: string, bytes: Uint8Array): void
   clearScreenPreview?(leaseId: string): void

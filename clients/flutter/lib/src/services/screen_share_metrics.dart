@@ -12,5 +12,10 @@ String? nativeScreenMetricsPlatform(TargetPlatform platform) =>
       _ => null,
     };
 
+String? nativeScreenTelemetryPlatform(TargetPlatform platform) {
+  final value = nativeScreenMetricsPlatform(platform);
+  return value?.replaceFirst('_native', '');
+}
+
 // flutter_webrtc forwards RTCStats.timestamp_us without converting its unit.
 double webRtcStatsTimestampMs(num timestampUs) => timestampUs / 1000;

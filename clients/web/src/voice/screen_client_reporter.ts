@@ -8,6 +8,7 @@ export type { ScreenClientReport, ScreenClientReportInput, WebPlatform } from '.
 import type { ScreenClientReport, ScreenClientReportInput, WebPlatform } from './report_media/types'
 import { senderMeasurements, receiverMeasurements } from './report_media/measurements'
 import { bounded, pixelDimension, lossFields, sampleAge, senderFields } from './report_media/fields'
+import { buildWebScreenTelemetryEnvelope, postScreenTelemetryEnvelope, type ScreenTelemetryPublicationScope } from './screen_sender_telemetry'
 
 export function webPlatform(userAgent: string): WebPlatform {
   if (/iPhone|iPad|iPod/i.test(userAgent)) return 'ios_web'
@@ -68,9 +69,16 @@ export async function postScreenClientReport(report: ScreenClientReport, request
   if (!response.ok) throw new Error('screen metrics rejected')
 }
 
-export function startScreenClientReporting(read: () => ScreenClientReport | null, visible: () => boolean): () => void {
+export function startScreenClientReporting(
+  read: () => ScreenClientReport | null,
+  visible: () => boolean,
+  readTelemetryScope: () => ScreenTelemetryPublicationScope | undefined = () => undefined,
+  readScreenDiagnostics?: () => ScreenDiagnostics,
+): () => void {
   const owner=telemetrySession.snapshot()
   let busy = false
+  let telemetryBusy = false
+  let sequence = 0
   const interval = globalThis.setInterval(() => {
     if (busy || !visible()) return
     const report = read()
@@ -78,6 +86,18 @@ export function startScreenClientReporting(read: () => ScreenClientReport | null
     recordMediaSample({...report},owner)
     busy = true
     void postScreenClientReport(report, tracedFetch, owner.leaseId ?? undefined).catch(() => {}).finally(() => { busy = false })
+    if (report.direction === 'sender' && owner.leaseId && readScreenDiagnostics && !telemetryBusy) {
+      try {
+        const scope = readTelemetryScope()
+        if (scope?.ownerLeaseId === owner.leaseId) {
+          const envelope = buildWebScreenTelemetryEnvelope({ scope, diagnostics: readScreenDiagnostics(), sequence: ++sequence, nowMs: Date.now() })
+          if (envelope) {
+            telemetryBusy = true
+            void postScreenTelemetryEnvelope(owner.leaseId, envelope).catch(() => {}).finally(() => { telemetryBusy = false })
+          }
+        }
+      } catch { /* A telemetry contract failure must not affect screen publishing. */ }
+    }
   }, 5000)
   return () => globalThis.clearInterval(interval)
 }

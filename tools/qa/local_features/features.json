@@ -1233,7 +1233,8 @@
       "issue787_pr1_web_roster": "PR #797 (issue #787 PR1) changes only the Web screen-viewer participant popup/roster presentation and browser accessibility. No Flutter, shared native, Android or iOS implementation changed; native behavior and existing platform decisions are unchanged. Focused Web screen-share regressions and 393/1440px browser lifecycle checks pass. Android/iOS runtime and paired native media acceptance remain NOT_RUN; no media or capacity claim is added.",
       "issue787_pr2_stream_switcher": "2026-11-16 issue #787 PR2 adds a Web-only adaptive popup/grid around the existing cached-JPEG stream switcher. Selection still uses the existing ScreenViewer select path; only the selected LiveKit stream is rendered, and preview cards use cached images. Flutter/shared native implementations and media contracts are unchanged. Focused Web browser coverage passes; Android/iOS stream-switcher runtime, paired media quality and capacity acceptance remain NOT_RUN.",
       "issue787_pr3_web_toolbar": "PR #810 (issue #787 PR3, 2026-11-16): Web screen-viewer controls use one neutral remote-view exit, owner-only broadcast stop, explicit local-playback pause, separate browser-fullscreen/app-return labels, and a narrow-stage volume popover. Flutter/shared native, Android, and iOS implementations are unchanged. Focused Web screen_share_ui/mini_player tests and 1440/393px real-stack checks pass. The broad Web gate is BLOCKED by one existing skipped screen_profile publisher/viewer baseline test. Native runtime, paired media, and capacity acceptance remain NOT_RUN; no media-quality or capacity claim is made.",
-      "issue787_pr4_web_diagnostics": "Issue #787 PR4 (2026-11-16) covers Web-only screen-viewer diagnostics presentation and receiver-local metrics. No Flutter/shared native, Android, or iOS implementation changes. Focused Web tests and the registered viewer_diagnostics local feature acceptance cover provenance, current receiver data, packet-loss windows, and selected-pair RTT; native runtime, paired cross-client telemetry, and media/capacity acceptance remain NOT_RUN until evidence exists."
+      "issue787_pr4_web_diagnostics": "Issue #787 PR4 (2026-11-16) covers Web-only screen-viewer diagnostics presentation and receiver-local metrics. No Flutter/shared native, Android, or iOS implementation changes. Focused Web tests and the registered viewer_diagnostics local feature acceptance cover provenance, current receiver data, packet-loss windows, and selected-pair RTT; native runtime, paired cross-client telemetry, and media/capacity acceptance remain NOT_RUN until evidence exists.",
+      "issue787_pr6_sender_telemetry": "2026-11-16 issue #787 PR6 obtains telemetry scope only from the active confirmed screen publication within the current voice lease and reuses existing reporting cadence. Voice join/leave, heartbeat, admission and AFK behavior are unchanged. Focused checks pass; the Colima-shared local-feature run passed selected Web real-stack viewports and Android runtime. The broader run remains BLOCKED by skipped browser/Flutter profiles and unavailable iOS hardware, and reports a pre-existing Android #786 deafen failure reproduced on PR5 base. Paired sender-to-viewer acceptance remains NOT_RUN."
     }
   },
   "screen": {
@@ -1814,7 +1815,8 @@
       "issue787_pr1_web_roster": "PR #797 (issue #787 PR1) changes only the Web screen-viewer participant popup/roster presentation and browser accessibility. No Flutter, shared native, Android or iOS implementation changed; native behavior and existing platform decisions are unchanged. Focused Web screen-share regressions and 393/1440px browser lifecycle checks pass. Android/iOS runtime and paired native media acceptance remain NOT_RUN; no media or capacity claim is added.",
       "issue787_pr2_stream_switcher": "2026-11-16 issue #787 PR2 adds a Web-only adaptive popup/grid around the existing cached-JPEG stream switcher. Selection still uses the existing ScreenViewer select path; only the selected LiveKit stream is rendered, and preview cards use cached images. Flutter/shared native implementations and media contracts are unchanged. Focused Web browser coverage passes; Android/iOS stream-switcher runtime, paired media quality and capacity acceptance remain NOT_RUN.",
       "issue787_pr3_web_toolbar": "PR #810 (issue #787 PR3, 2026-11-16): Web screen-viewer controls use one neutral remote-view exit, owner-only broadcast stop, explicit local-playback pause, separate browser-fullscreen/app-return labels, and a narrow-stage volume popover. Flutter/shared native, Android, and iOS implementations are unchanged. Focused Web screen_share_ui/mini_player tests and 1440/393px real-stack checks pass. The broad Web gate is BLOCKED by one existing skipped screen_profile publisher/viewer baseline test. Native runtime, paired media, and capacity acceptance remain NOT_RUN; no media-quality or capacity claim is made.",
-      "issue787_pr4_web_diagnostics": "Issue #787 PR4 (2026-11-16) covers Web-only screen-viewer diagnostics presentation and receiver-local metrics. No Flutter/shared native, Android, or iOS implementation changes. Focused Web tests and the registered viewer_diagnostics local feature acceptance cover provenance, current receiver data, packet-loss windows, and selected-pair RTT; native runtime, paired cross-client telemetry, and media/capacity acceptance remain NOT_RUN until evidence exists."
+      "issue787_pr4_web_diagnostics": "Issue #787 PR4 (2026-11-16) covers Web-only screen-viewer diagnostics presentation and receiver-local metrics. No Flutter/shared native, Android, or iOS implementation changes. Focused Web tests and the registered viewer_diagnostics local feature acceptance cover provenance, current receiver data, packet-loss windows, and selected-pair RTT; native runtime, paired cross-client telemetry, and media/capacity acceptance remain NOT_RUN until evidence exists.",
+      "issue787_pr6_sender_telemetry": "2026-11-16 issue #787 PR6 sends bounded, ephemeral measurements for the current confirmed screen publication using the existing sender sampler/cadence. Capture, LiveKit media transport, viewer subscription selection and screen UI are unchanged. Focused Web/Flutter tests pass. Paired sender-to-viewer/native media acceptance remains NOT_RUN pending the real-stack rerun and platform evidence."
     }
   },
   "screen_metrics": {
@@ -1822,7 +1824,24 @@
       "clients/flutter/lib/src/features/screen/metrics/*",
       "clients/flutter/lib/src/features/media/report_metrics/*",
       "clients/flutter/lib/src/telemetry/report_media/sender.dart",
-      "clients/flutter/lib/src/services/screen_share_diagnostics.dart"
+      "clients/flutter/lib/src/services/screen_share_diagnostics.dart",
+      "clients/flutter/lib/src/features/screen/sender_metadata/binding.dart",
+      "clients/flutter/lib/src/services/screen_share_metrics.dart",
+      "clients/flutter/test/screen_share_report_isolation_test.dart",
+      "clients/flutter/test/screen_share_telemetry_envelope_test.dart",
+      "clients/flutter/test/screen_telemetry_report_api_test.dart",
+      "clients/web/src/voice/connection_state/media.ts",
+      "clients/web/src/voice/livekit_gateway.ts",
+      "clients/web/src/voice/livekit_room_factory.ts",
+      "clients/web/src/voice/screen_client_reporter.ts",
+      "clients/web/src/voice/screen_profile_metadata/livekit_binding.spec.ts",
+      "clients/web/src/voice/screen_profile_metadata/livekit_binding.ts",
+      "clients/web/src/voice/screen_profile_metadata/publisher.ts",
+      "clients/web/src/voice/screen_sender_reporting.spec.ts",
+      "clients/web/src/voice/screen_sender_reporting.ts",
+      "clients/web/src/voice/screen_sender_telemetry.spec.ts",
+      "clients/web/src/voice/screen_sender_telemetry.ts",
+      "clients/web/src/voice/voice_screen_session.ts"
     ],
     "web": [],
     "flutter": [
@@ -1838,7 +1857,9 @@
       "test/screen_share_sender_stalled_test.dart",
       "test/screen_share_diagnostics_test.dart",
       "test/screen_metrics_report_api_test.dart",
-      "test/screen_share_report_error_class_test.dart"
+      "test/screen_share_report_error_class_test.dart",
+      "test/screen_share_telemetry_envelope_test.dart",
+      "test/screen_telemetry_report_api_test.dart"
     ],
     "acceptance": {
       "issue325": {
@@ -1857,6 +1878,19 @@
           "tools/qa/macos_sender/test_process_resources.py",
           "tools/qa/macos_sender/capture_observer_test.dart"
         ]
+      },
+      "issue787_sender_telemetry": {
+        "capability_matrix": "evidence/qa/issue787-sender-capability-matrix-2026-11-16.md",
+        "focused": [
+          "clients/web/src/voice/screen_sender_telemetry.spec.ts",
+          "clients/web/src/voice/screen_sender_reporting.spec.ts",
+          "clients/web/src/voice/screen_profile_metadata/livekit_binding.spec.ts",
+          "clients/flutter/test/screen_share_telemetry_envelope_test.dart",
+          "clients/flutter/test/screen_telemetry_report_api_test.dart",
+          "clients/flutter/test/screen_share_report_isolation_test.dart"
+        ],
+        "runtime": "./tools/qa/local_features/check.sh --feature screen_metrics --base origin/master --real-stack",
+        "scope": "Issue #787 sender telemetry relay and per-platform capability provenance. Focused checks cover the bounded ephemeral contract and the existing reporting cadence. Paired browser/native device delivery and media-quality acceptance remain separate evidence gates."
       }
     },
     "parity": [
@@ -1926,7 +1960,8 @@
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "issue787_pr4_web_diagnostics": "Issue #787 PR4 changes Web screen diagnostics presentation and reads only the current viewer's selected receiver measurements. Flutter and native code are unchanged; their established parity decisions remain unchanged. Web tests and the registered local-feature scenario cover the presentation and receiver-local calculations; paired cross-platform sender telemetry remains unverified."
+      "issue787_pr4_web_diagnostics": "Issue #787 PR4 changes Web screen diagnostics presentation and reads only the current viewer's selected receiver measurements. Flutter and native code are unchanged; their established parity decisions remain unchanged. Web tests and the registered local-feature scenario cover the presentation and receiver-local calculations; paired cross-platform sender telemetry remains unverified.",
+      "issue787_pr6_sender_telemetry": "2026-11-16 issue #787 PR6 implements Web and Flutter sender envelopes with common availability/provenance semantics; no new stats polling or durable storage. Focused Web/Flutter tests and targeted Dart analysis pass. The Colima-shared local-feature run passed Web real-stack viewports at 1440 and 393 CSS px and Android runtime; the broader run remains BLOCKED/FAIL for the skipped publisher/viewer and Flutter telemetry profiles, unavailable iOS device, and pre-existing Android #786 deafen failure reproduced on PR5 base. Capability matrix: evidence/qa/issue787-sender-capability-matrix-2026-11-16.md. Paired sender-to-viewer and hardware media acceptance remain NOT_RUN."
     }
   },
   "settings": {
@@ -3526,7 +3561,8 @@
       "issue787_pr1_web_roster": "PR #797 (issue #787 PR1) changes only the Web screen-viewer participant popup/roster presentation and browser accessibility. No Flutter, shared native, Android or iOS implementation changed; native behavior and existing platform decisions are unchanged. Focused Web screen-share regressions and 393/1440px browser lifecycle checks pass. Android/iOS runtime and paired native media acceptance remain NOT_RUN; no media or capacity claim is added.",
       "issue787_pr2_stream_switcher": "2026-11-16 issue #787 PR2 adds a Web-only adaptive popup/grid around the existing cached-JPEG stream switcher. Selection still uses the existing ScreenViewer select path; only the selected LiveKit stream is rendered, and preview cards use cached images. Flutter/shared native implementations and media contracts are unchanged. Focused Web browser coverage passes; Android/iOS stream-switcher runtime, paired media quality and capacity acceptance remain NOT_RUN.",
       "issue787_pr3_web_toolbar": "PR #810 (issue #787 PR3, 2026-11-16): Web screen-viewer controls use one neutral remote-view exit, owner-only broadcast stop, explicit local-playback pause, separate browser-fullscreen/app-return labels, and a narrow-stage volume popover. Flutter/shared native, Android, and iOS implementations are unchanged. Focused Web screen_share_ui/mini_player tests and 1440/393px real-stack checks pass. The broad Web gate is BLOCKED by one existing skipped screen_profile publisher/viewer baseline test. Native runtime, paired media, and capacity acceptance remain NOT_RUN; no media-quality or capacity claim is made.",
-      "issue787_pr4_web_diagnostics": "Issue #787 PR4 (2026-11-16) covers Web-only screen-viewer diagnostics presentation and receiver-local metrics. No Flutter/shared native, Android, or iOS implementation changes. Focused Web tests and the registered viewer_diagnostics local feature acceptance cover provenance, current receiver data, packet-loss windows, and selected-pair RTT; native runtime, paired cross-client telemetry, and media/capacity acceptance remain NOT_RUN until evidence exists."
+      "issue787_pr4_web_diagnostics": "Issue #787 PR4 (2026-11-16) covers Web-only screen-viewer diagnostics presentation and receiver-local metrics. No Flutter/shared native, Android, or iOS implementation changes. Focused Web tests and the registered viewer_diagnostics local feature acceptance cover provenance, current receiver data, packet-loss windows, and selected-pair RTT; native runtime, paired cross-client telemetry, and media/capacity acceptance remain NOT_RUN until evidence exists.",
+      "issue787_pr6_sender_telemetry": "2026-11-16 issue #787 PR6 adds bounded screen-sender telemetry to existing screen reporting and does not change AFK activity, idle timers, or routing. The overlap is through shared voice/screen source paths only; AFK behavior is unchanged. Sender focused tests pass; the Colima-shared local-feature run passed selected Web real-stack and Android runtime checks. The broad suite retains a pre-existing Android #786 deafen failure reproduced on PR5 base, while iOS hardware is unavailable and paired sender-to-viewer acceptance remains NOT_RUN."
     },
     "parity": [
       {

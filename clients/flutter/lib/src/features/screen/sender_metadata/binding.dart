@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:uuid/uuid.dart';
 
 import '../lifecycle/controller.dart';
+import '../metrics/telemetry_envelope.dart';
 import '../rollout/policy.dart';
 import 'confirmed_profile.dart';
 import 'latest_writer.dart';
@@ -36,6 +37,14 @@ class NativeScreenDescriptorBinding {
           track,
           includeCodecStats: false,
         );
+        if (owner.readRoom() == room &&
+            identical(owner.activeTrack, track) &&
+            owner.phase == ScreenSharePhase.sharing) {
+          _confirmedCaptureWidth = _positiveInt(fresh?.capture['actual_width']);
+          _confirmedCaptureHeight = _positiveInt(
+            fresh?.capture['actual_height'],
+          );
+        }
         // Reuse the existing stats collector; metadata adds no getStats loop.
         String? codec;
         final sampledAt = owner.metrics.sampledAt;
@@ -73,6 +82,38 @@ class NativeScreenDescriptorBinding {
   String? _lease, _publication, _track;
   String? _mediaSession;
   int _generation = 0;
+  int? _confirmedCaptureWidth, _confirmedCaptureHeight;
+
+  ScreenTelemetryPublicationScope? telemetryScope(String? activeLeaseId) {
+    final trackId = owner.activeTrack?.mediaStreamTrack.id;
+    final descriptor = runtime.lastDescriptor;
+    final descriptorScope = descriptor?['scope'];
+    if (owner.disposed ||
+        owner.phase != ScreenSharePhase.sharing ||
+        !owner.scope.capture().isActive ||
+        activeLeaseId == null ||
+        _lease != activeLeaseId ||
+        _publication == null ||
+        _track == null ||
+        _track != trackId ||
+        _mediaSession == null ||
+        _generation < 1 ||
+        runtime.status != ScreenDescriptorWriteStatus.applied ||
+        descriptor?['publisher_state'] != 'sharing' ||
+        descriptorScope is! Map ||
+        descriptorScope['media_session_id'] != _mediaSession ||
+        descriptorScope['publication_generation'] != _generation) {
+      return null;
+    }
+    return ScreenTelemetryPublicationScope(
+      ownerLeaseId: activeLeaseId,
+      mediaSessionId: _mediaSession!,
+      publicationGeneration: _generation,
+      captureWidth: _confirmedCaptureWidth,
+      captureHeight: _confirmedCaptureHeight,
+      captureFps: owner.selectedQuality.frameRate,
+    );
+  }
 
   void published() {
     if (!const ScreenMediaRollout().descriptor) return;
@@ -85,6 +126,9 @@ class NativeScreenDescriptorBinding {
     if (_lease == lease) return;
     _lease = lease;
     _publication = null;
+    _track = null;
+    _mediaSession = null;
+    _confirmedCaptureWidth = _confirmedCaptureHeight = null;
     runtime.invalidate();
     if (owner.activeTrack != null) refresh();
   }
@@ -107,6 +151,7 @@ class NativeScreenDescriptorBinding {
     }
     if (publication == null || publication.isEmpty) return;
     if (_publication != publication || _track != track.mediaStreamTrack.id) {
+      _confirmedCaptureWidth = _confirmedCaptureHeight = null;
       final ticket = owner.scope.capture();
       final transport = owner.api.transport;
       final transportTicket = transport.session.scope.capture();
@@ -170,6 +215,7 @@ class NativeScreenDescriptorBinding {
     _timer = null;
     runtime.stop();
     _publication = _track = _mediaSession = null;
+    _confirmedCaptureWidth = _confirmedCaptureHeight = null;
   }
 
   void dispose() {
@@ -177,4 +223,7 @@ class NativeScreenDescriptorBinding {
     _timer = null;
     runtime.invalidate();
   }
+
+  int? _positiveInt(Object? value) =>
+      value is int && value > 0 && value <= 16384 ? value : null;
 }

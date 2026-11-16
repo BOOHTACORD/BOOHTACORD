@@ -9,7 +9,9 @@
     {"id": "cmp.backend.screen_telemetry_api", "paths": ["backend/internal/media/screen_telemetry_relay/api/http_handler.go"], "depends_on": ["cmp.backend.screen_telemetry_service"]},
     {"id": "cmp.backend.screen_telemetry_service", "paths": ["backend/internal/media/screen_telemetry_relay/contract.go", "backend/internal/media/screen_telemetry_relay/contract_types.go", "backend/internal/media/screen_telemetry_relay/service.go"]},
     {"id": "cmp.backend.screen_telemetry_gate", "paths": ["backend/internal/media/screen_telemetry_relay/memory/gate.go"]},
-    {"id": "cmp.backend.screen_telemetry_viewer_acl", "paths": ["backend/internal/media/screen_viewer_presence/postgres/audience.go"]}
+    {"id": "cmp.backend.screen_telemetry_viewer_acl", "paths": ["backend/internal/media/screen_viewer_presence/postgres/audience.go"]},
+    {"id": "cmp.web.screen_telemetry_sender", "paths": ["clients/web/src/voice/screen_sender_telemetry.ts"]},
+    {"id": "cmp.flutter.screen_telemetry_sender", "paths": ["clients/flutter/lib/src/features/screen/metrics/telemetry_envelope.dart"]}
   ],
   "features": [
     {
@@ -51,7 +53,7 @@
       "target_revision": null,
       "behavior_revisions": [],
       "parity_ids": ["screen.diagnostics"],
-      "components": ["cmp.web.voice_controls", "cmp.flutter.screen_diagnostics", "cmp.backend.screen_telemetry_routes", "cmp.backend.screen_telemetry_api", "cmp.backend.screen_telemetry_service", "cmp.backend.screen_telemetry_gate", "cmp.backend.screen_telemetry_viewer_acl"],
+      "components": ["cmp.web.voice_controls", "cmp.flutter.screen_diagnostics", "cmp.web.screen_telemetry_sender", "cmp.flutter.screen_telemetry_sender", "cmp.backend.screen_telemetry_routes", "cmp.backend.screen_telemetry_api", "cmp.backend.screen_telemetry_service", "cmp.backend.screen_telemetry_gate", "cmp.backend.screen_telemetry_viewer_acl"],
       "platforms": {
         "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
         "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
