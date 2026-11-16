@@ -408,6 +408,36 @@ test('participant popup uses its container width and exposes long names to keybo
   await page.screenshot({ path: info.outputPath('viewer-participants-container-adaptive.png') })
 })
 
+test('six participant roster keeps two usable columns without horizontal scrolling', async ({ page }, info) => {
+  await page.route(/\/api\/v1\/members\/[^/]+\/avatar(?:\?.*)?$/, route => route.fulfill({
+    status: 200,
+    contentType: 'image/svg+xml',
+    body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" fill="#278b82"/><circle cx="20" cy="14" r="7" fill="#f4f5fa"/><path d="M7 39c1-9 6-14 13-14s12 5 13 14" fill="#f4f5fa"/></svg>',
+  }))
+  await open(page, 'viewer-strip&six-participants', 720)
+  await page.getByRole('button', { name: /Участники · 6/ }).click()
+
+  const panel = page.locator('.screen-viewer-panel-content--participants')
+  const roster = panel.locator('ul')
+  const cards = roster.locator('.voice-viewer-participant')
+  await expect(cards).toHaveCount(6)
+  const geometry = await roster.evaluate(element => {
+    const firstCard = element.querySelector<HTMLElement>('.voice-viewer-participant')
+    return {
+      columns: getComputedStyle(element).gridTemplateColumns.split(' ').length,
+      cardWidth: firstCard?.getBoundingClientRect().width ?? 0,
+      scrollWidth: element.scrollWidth,
+      clientWidth: element.clientWidth,
+    }
+  })
+  expect(geometry.columns).toBe(2)
+  expect(geometry.cardWidth).toBeGreaterThanOrEqual(240)
+  expect(geometry.scrollWidth).toBeLessThanOrEqual(geometry.clientWidth + 1)
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  await clean(page)
+  await page.screenshot({ path: info.outputPath('viewer-participants-six-720.png') })
+})
+
 test('large participant rosters scroll inside the popup without widening the page', async ({ page }, info) => {
   await open(page, 'viewer-strip&twenty-participants', 720)
   await page.getByRole('button', { name: /Участники · 20/ }).click()
