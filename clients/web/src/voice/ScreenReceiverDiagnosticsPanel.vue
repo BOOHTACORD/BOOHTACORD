@@ -182,6 +182,7 @@ async function copyStatistics(): Promise<void> {
 const mobile = ref(false)
 const panel = ref<HTMLDivElement | null>(null)
 let placementFrame = 0
+let placementObserver: ResizeObserver | undefined
 
 function updatePlacement(): void {
   const root = diagnostics.value
@@ -213,8 +214,16 @@ function updatePlacement(): void {
 function close(): void {
   if (diagnostics.value) diagnostics.value.open = false
   isOpen.value = false
+  placementObserver?.disconnect()
+  placementObserver = undefined
   clearInterval(ageTimer); ageTimer = undefined
   diagnostics.value?.querySelector('summary')?.focus()
+}
+function observePanelSize(): void {
+  placementObserver?.disconnect()
+  if (!panel.value || typeof ResizeObserver === 'undefined') return
+  placementObserver = new ResizeObserver(() => updatePlacement())
+  placementObserver.observe(panel.value)
 }
 function handleToggle(): void {
   teleportTarget.value = document.fullscreenElement ?? 'body'
@@ -226,7 +235,12 @@ function handleToggle(): void {
     monotonicNow.value = performance.now()
     ageTimer = setInterval(() => { now.value = Date.now(); monotonicNow.value = performance.now() }, 1000)
   }
-  if (isOpen.value) void nextTick(() => panel.value?.querySelector<HTMLButtonElement>('header button')?.focus())
+  if (isOpen.value) void nextTick(() => {
+    panel.value?.querySelector<HTMLButtonElement>('header button')?.focus()
+    observePanelSize()
+    updatePlacement()
+  })
+  else { placementObserver?.disconnect(); placementObserver = undefined }
   updatePlacement()
 }
 function handleKeydown(event: KeyboardEvent): void {
@@ -247,6 +261,7 @@ onMounted(() => {
 })
 onBeforeUnmount(() => {
   clearInterval(ageTimer)
+  placementObserver?.disconnect()
   cancelAnimationFrame(placementFrame)
   window.removeEventListener('resize', handleResize)
   window.removeEventListener('scroll', updatePlacement, true)

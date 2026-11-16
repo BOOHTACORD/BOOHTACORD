@@ -63,7 +63,7 @@ export function bindLiveKitScreenViewer(
   sources: LiveKitScreenSources,
   voicePlayback: RemoteVoicePlaybackController = new RemoteVoicePlayback(),
 ): LiveKitScreenViewerBinding {
-  const registry = new LiveKitScreenRegistry(typeof window === 'undefined' ? '' : window.location.origin, room.name ?? '')
+  const registry = new LiveKitScreenRegistry(typeof window === 'undefined' ? '' : window.location.origin, () => room.name ?? '')
   const viewer = new ScreenViewerController(() => registry.streams())
   const participantSounds = new VoiceParticipantSoundTracker((event) => streamStartChime.playVoiceEvent(event))
   const presence = bindLiveKitScreenViewerPresence(room, {

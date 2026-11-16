@@ -21,7 +21,7 @@ export class LiveKitScreenRegistry {
 
   constructor(
     private readonly originId = '',
-    private readonly roomId = '',
+    private readonly roomId: string | (() => string) = '',
     private readonly descriptorMetadataEnabled = screenDescriptorMetadataEnabled(),
   ) {}
 
@@ -66,7 +66,7 @@ export class LiveKitScreenRegistry {
       : previous?.floor
     const raw = participant.attributes?.[SCREEN_DESCRIPTOR_ATTRIBUTE]
     const candidate = parseScreenDescriptor(raw, {
-      originId: this.originId, roomId: this.roomId, accountId: participant.accountId ?? '',
+      originId: this.originId, roomId: typeof this.roomId === 'function' ? this.roomId() : this.roomId, accountId: participant.accountId ?? '',
     })
     const clearsDescriptor = raw === '' || (raw !== undefined && !candidate)
     let descriptor = clearsDescriptor || changedTrack ? undefined : previous?.descriptor

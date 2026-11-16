@@ -49,6 +49,20 @@ describe('Web screen sender telemetry envelope', () => {
     })
   })
 
+  it('rounds the derived bitrate to the integer bps accepted by the relay contract', () => {
+    const envelope = buildWebScreenTelemetryEnvelope({
+      scope,
+      diagnostics: {
+        source: 'ACTIVE', audioTrack: 'ABSENT', connectionQuality: 'GOOD', measured: null, senderStatsAvailable: true,
+        selectedLayer: { bitrateBps: 1_400_000.6 },
+      } as unknown as ScreenDiagnostics,
+      sequence: 8,
+      nowMs: 100_000,
+    })!
+
+    expect(envelope.encode.bitrate_bps).toEqual({ value: 1_400_001, availability: 'measured', provenance: 'sender_measured' })
+  })
+
   it('marks unavailable or stale samples explicitly without inventing numbers', () => {
     const unavailable = buildWebScreenTelemetryEnvelope({
       scope: { ...scope, captureWidth: undefined, captureHeight: undefined, captureFps: undefined },

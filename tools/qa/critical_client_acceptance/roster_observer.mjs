@@ -2,6 +2,7 @@
 export function installRosterFailureObserver(browser = window) {
   const Native = browser.WebSocket
   browser.__qaRosterUnavailableCount = 0
+  browser.__qaScreenTelemetryCount = 0
   browser.__qaRosterTransport = { created: 0, opened: 0, failed: 0, closed_by_client: 0, latest_closed_by_client: false }
   browser.__qaRosterTransportSource = null
   browser.WebSocket = new Proxy(Native, { construct(target, args, newTarget) {
@@ -27,6 +28,7 @@ export function installRosterFailureObserver(browser = window) {
     socket.addEventListener('message', event => {
       try {
         const kind = typeof event.data === 'string' ? JSON.parse(event.data)?.kind : null
+        if (kind === 'screen_telemetry.updated') browser.__qaScreenTelemetryCount++
         if (kind === 'voice.roster.unavailable' || kind === 'voice.roster.unavailable.v2') {
           browser.__qaRosterUnavailableCount++
         }

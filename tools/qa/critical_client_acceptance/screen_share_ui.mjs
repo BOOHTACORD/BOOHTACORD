@@ -7,6 +7,16 @@ import { openViewerPanel, selectVisibleStream } from './select_stream.mjs'
 // Only the OS-picker boundary is synthetic. Admission, publication, subscription,
 // decoding and stop use the owned Go API/SFU and the production Web application.
 export async function screenShareInterface(sender, receiver, input, report, subscriptions) {
+  const descriptorResponses = []
+  const telemetryResponses = []
+  const descriptorResponse = response => {
+    try {
+      const url = new URL(response.url())
+      if (url.origin === 'https://localhost:4810' && /\/api\/v1\/voice\/leases\/[^/]+\/screen-profile\/v1$/.test(url.pathname)) descriptorResponses.push(response.status())
+      if (url.origin === 'https://localhost:4810' && /\/api\/v1\/voice\/leases\/[^/]+\/screen-telemetry$/.test(url.pathname)) telemetryResponses.push(response.status())
+    } catch { /* Keep acceptance diagnostics bounded and content-free. */ }
+  }
+  sender.on('response', descriptorResponse)
   await sender.evaluate(() => {
     const original = navigator.mediaDevices.getDisplayMedia.bind(navigator.mediaDevices)
     window.__qaShareUI = { original, mode: 'cancel', captures: 0, activated: [], track: null, timer: null, sound: null, oscillator: null, stream: null }
@@ -69,11 +79,51 @@ export async function screenShareInterface(sender, receiver, input, report, subs
     const stats = receiver.getByRole('dialog', { name: 'Статистика трансляции' })
     await expect(stats.getByRole('heading', { name: 'У вас', exact: true })).toBeVisible()
     await expect(stats.getByRole('heading', { name: 'Отправитель', exact: true })).toBeVisible()
-    await expect(stats.locator('.screen-diagnostics-target')).toHaveText('Профиль из имени дорожки: 720p · 30 FPS')
+    await expect(stats.locator('.screen-diagnostics-target')).toHaveText('Цель: 720p · 30 FPS')
     await expect(stats.locator('.screen-diagnostics-summary')).toContainText('Видео у вас')
-    await expect(stats.locator('.screen-diagnostics-summary')).toContainText('Нет измерений от отправителя.')
+    const senderSummary = stats.locator('.screen-diagnostics-summary__group[aria-labelledby="screen-summary-sender"]')
+    await expect.poll(() => senderSummary.innerText(), { timeout: 20000 }).toContain('Актуально')
+    await expect(senderSummary).toContainText('640 × 360 пикс. · измерено')
+    await expect(senderSummary).not.toContainText('Нет измерений от отправителя.')
+    await expect.poll(() => receiver.evaluate(() => window.__qaScreenTelemetryCount ?? 0), { timeout: 20000 }).toBeGreaterThan(0)
+    await expect.poll(() => descriptorResponses.includes(204), { timeout: 10000 }).toBe(true)
+    await expect.poll(() => telemetryResponses.length, { timeout: 10000 }).toBeGreaterThan(0)
+    assert.ok(telemetryResponses.every(status => status === 204), 'Every sender telemetry request must be accepted by the relay.')
+    const events = await receiver.evaluate(() => window.__qaScreenTelemetryCount ?? 0)
+    console.log('stage=screen-telemetry-pair-status:descriptor=' + descriptorResponses.join(',') + ';post=' + telemetryResponses.join(',') + ';events=' + events)
+    console.log('stage=screen-share-sender-telemetry-received')
     await receiver.screenshot({ path: input.directory + '/screen-share-compact-statistics.png' })
-    await stats.locator('.stream-diagnostics-technical > summary').click()
+    await stats.evaluate(panel => { panel.scrollTop = panel.scrollHeight })
+    const technicalSummary = stats.locator('.stream-diagnostics-technical > summary')
+    await technicalSummary.evaluate(node => node.scrollIntoView({ block: 'nearest', inline: 'nearest' }))
+    const diagnosticsViewport = await technicalSummary.evaluate(node => {
+      const panel = node.closest('.stream-diagnostics-panel')
+      const rect = node.getBoundingClientRect()
+      const panelRect = panel?.getBoundingClientRect()
+      const style = panel ? getComputedStyle(panel) : null
+      const trigger = document.querySelector('.stream-diagnostics > summary')
+      const triggerRect = trigger?.getBoundingClientRect()
+      return {
+        top: Math.round(rect.top), bottom: Math.round(rect.bottom), viewportHeight: window.innerHeight,
+        panelTop: panelRect ? Math.round(panelRect.top) : -1,
+        panelBottom: panelRect ? Math.round(panelRect.bottom) : -1,
+        panelInlineTop: panel?.style.top ?? '',
+        panelInlineMaxHeight: panel?.style.maxHeight ?? '',
+        panelComputedMaxHeight: style?.maxHeight ?? '',
+        triggerTop: triggerRect ? Math.round(triggerRect.top) : -1,
+        triggerBottom: triggerRect ? Math.round(triggerRect.bottom) : -1,
+        scrollTop: panel ? Math.round(panel.scrollTop) : -1,
+        scrollHeight: panel ? Math.round(panel.scrollHeight) : -1,
+        clientHeight: panel ? Math.round(panel.clientHeight) : -1,
+        overflowY: style?.overflowY ?? 'missing',
+      }
+    })
+    console.log('stage=screen-diagnostics-viewport:' + JSON.stringify(diagnosticsViewport))
+    await expect.poll(() => technicalSummary.evaluate(node => {
+      const rect = node.getBoundingClientRect()
+      return rect.top >= 0 && rect.bottom <= window.innerHeight
+    })).toBe(true)
+    await technicalSummary.click()
     await expect(stats.locator('.stream-diagnostics-technical')).toHaveAttribute('open', '')
     const confirmation = await stats.locator('.screen-diagnostics-details section[aria-labelledby="screen-diagnostics-config"] dl > div').filter({ hasText: 'Состояние публикации' }).locator('dd').innerText()
     assert.ok(['Конфигурация передана отправителем', 'Обновление конфигурации ожидается', 'Нет подтверждения от отправителя'].includes(confirmation))
@@ -99,6 +149,7 @@ export async function screenShareInterface(sender, receiver, input, report, subs
     for (const page of [sender, receiver]) await expect(page.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён')
     report.screen_share_interface = { boundary: 'synthetic canvas and quiet oscillator; OS picker NOT_RUN', actual_api_sfu: true, cancel_without_publication: true, permission_denied_visible: true, owner_preview_decoded: true, listener_participant_card_thumbnail_visible: true, owner_stopped_from_viewer: true, receiver_view_decoded: true, owner_and_viewer_audience_visible: true, ended_source_track: true, voice_retained: true, selected_configuration_measured_separate: true, configuration_observed: confirmation, diagnostics_optional: true, ...observation, media_quality: 'NOT_RUN' }
   } finally {
+    sender.off('response', descriptorResponse)
     await sender.evaluate(() => {
       const state = window.__qaShareUI
       navigator.mediaDevices.getDisplayMedia = state.original
