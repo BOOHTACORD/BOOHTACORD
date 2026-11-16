@@ -80,6 +80,7 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
     if (event.kind === 'role.permissions.updated' || event.kind === 'auth.permissions.invalidated') return permissions.refreshRealtime()
     if (event.kind === 'screen_preview.updated') { const hint = parseScreenPreviewHint(event.payload); if (hint) previews.accept(hint); return }
     if (event.kind === 'screen_preview.invalidated') { previews.invalidate(event.payload.lease_id as string, event.payload.generation_id as string); return }
+    if (event.kind === 'screen_telemetry.updated') { voice.acceptScreenTelemetry(event.payload); return }
     if (event.kind === 'screen_viewers.changed') return voice.refreshScreenWatchers()
     if (event.kind === 'voice.lease_revoked') return applyVoiceLeaseRevocation(voice, voiceNavigation, event.payload.lease_id as string, event.payload.reason as VoiceLeaseRevocationReason, event.payload.target_channel_id as string | undefined, moveToAfk)
     if (event.kind === 'message.created' || event.kind === 'message.updated' || event.kind === 'message.deleted') {
@@ -112,7 +113,7 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
         checkSession: async signal => (await loadCurrentSession(undefined, signal))?.accountId === accountID,
         onSessionExpired,
         onSocketStart: () => { maintenance.start(); roster?.socketStart() },
-        onSocketEnd: () => { incarnation++; maintenance.stop(); roster?.socketEnd() },
+        onSocketEnd: () => { incarnation++; maintenance.stop(); roster?.socketEnd(); voice.clearScreenTelemetry() },
       })
     },
     stop(): void { active = false; lifecycle += 1; contextHints.reset(); previews.clear(); gate.close(); realtime.disconnect(); notifications.stop() },

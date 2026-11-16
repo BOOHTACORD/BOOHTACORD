@@ -16,7 +16,7 @@ it('routes negotiated maintenance into feature state without REST refresh', asyn
   let deliver!: (event: RealtimeEvent) => Promise<void>
   const realtime = { connect: vi.fn((handler, _factory, _url, options: RealtimeConnectOptions) => { deliver = handler; options.onSocketStart?.() }), disconnect: vi.fn() }
   const presence = { acceptRealtimeEvent: vi.fn(() => false) }
-  const voice = { active: null, refreshScreenWatchers: vi.fn() }
+  const voice = { active: null, clearScreenTelemetry: vi.fn(), refreshScreenWatchers: vi.fn() }
   const workspace = createWorkspaceRealtime(stores, realtime as never, presence as never, voice as never, 'account', vi.fn(), state)
   workspace.start()
   await deliver({ eventId: 'event', occurredAt: '2026-11-09T00:00:00Z', kind: 'maintenance.snapshot', payload: { version: 1, generation: '11111111-1111-4111-8111-111111111111', revision: 1, active: true } })

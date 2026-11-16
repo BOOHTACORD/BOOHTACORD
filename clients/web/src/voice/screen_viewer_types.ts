@@ -1,5 +1,6 @@
 import type { TrackPublication } from 'livekit-client'
 import type { ScreenShareDescriptorV1 } from './screen_profile_metadata/types'
+import type { ReceivedScreenTelemetry } from './screen_receiver_telemetry'
 
 export interface ScreenViewerTrack {
   receiver?: Pick<RTCRtpReceiver, 'getStats'>
@@ -33,6 +34,7 @@ export interface ScreenViewerStream {
 }
 
 export type ScreenViewerCard = Pick<ScreenViewerStream, 'accountId' | 'descriptor' | 'hasAudio' | 'id' | 'isLocal' | 'ownerLeaseId' | 'participantId' | 'participantName' | 'profileSource' | 'targetProfile'> & {
+  senderTelemetry?: ReceivedScreenTelemetry
   thumbnailUrl?: string
   videoMuted?: boolean
   readReceiverStats?: () => Promise<import('./screen_receiver_diagnostics').ScreenReceiverSnapshot | undefined>

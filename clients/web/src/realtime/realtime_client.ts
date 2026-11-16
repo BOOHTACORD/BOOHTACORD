@@ -2,12 +2,13 @@ import { validNotificationRealtime } from '../notification/remote_push/realtime'
 import { apiBaseUrl } from '../config/runtime'
 import { isVoiceLeaseRevocationReason } from '../voice/voice_lease_revocation_reason'
 import { parseScreenPreviewHint } from '../voice/screen_preview/client'
+import { parseScreenTelemetryEvent } from '../voice/screen_receiver_telemetry'
 import { validMaintenanceRealtime } from './maintenance_payload'
 import { validVoiceRosterRealtime } from './roster_payload'
 import { NewRealtimeEnvelopeError, validateNewRealtimeEnvelope } from './new_envelope'
 export { NewRealtimeEnvelopeError } from './new_envelope'
 
-export type RealtimeKind = 'maintenance.snapshot' | 'maintenance.changed' | 'voice.roster.snapshot' | 'voice.roster.unavailable' | 'voice.roster.snapshot.v2' | 'voice.roster.unavailable.v2' | 'notification.queued' | 'notification.preferences_changed' | 'connection.ready' | 'connection.heartbeat' | 'connection.resync_required' | 'voice.lease_revoked' | 'channel.updated' | 'presence.snapshot' | 'presence.changed' | 'message.created' | 'message.updated' | 'message.deleted' | 'direct_message.message_created' | 'direct_message.message_updated' | 'direct_message.message_deleted' | 'role.permissions.updated' | 'auth.permissions.invalidated' | 'session.state_changed' | 'guild.profile.updated' | 'member.profile.updated' | 'screen_preview.updated' | 'screen_preview.invalidated' | 'screen_viewers.changed' | 'message.reactions_updated' | 'message.pins_updated' | 'direct_message.reactions_updated'
+export type RealtimeKind = 'maintenance.snapshot' | 'maintenance.changed' | 'voice.roster.snapshot' | 'voice.roster.unavailable' | 'voice.roster.snapshot.v2' | 'voice.roster.unavailable.v2' | 'notification.queued' | 'notification.preferences_changed' | 'connection.ready' | 'connection.heartbeat' | 'connection.resync_required' | 'voice.lease_revoked' | 'channel.updated' | 'presence.snapshot' | 'presence.changed' | 'message.created' | 'message.updated' | 'message.deleted' | 'direct_message.message_created' | 'direct_message.message_updated' | 'direct_message.message_deleted' | 'role.permissions.updated' | 'auth.permissions.invalidated' | 'session.state_changed' | 'guild.profile.updated' | 'member.profile.updated' | 'screen_preview.updated' | 'screen_preview.invalidated' | 'screen_viewers.changed' | 'screen_telemetry.updated' | 'message.reactions_updated' | 'message.pins_updated' | 'direct_message.reactions_updated'
 export interface RealtimeEvent {
   eventId: string
   kind: RealtimeKind
@@ -32,7 +33,7 @@ export function parseRealtimeEvent(value: unknown): RealtimeEvent {
   const kind = source?.kind
   const payload = record(source?.payload)
   if (source) validateNewRealtimeEnvelope(source)
-  if (!source || typeof source.event_id !== 'string' || typeof source.occurred_at !== 'string' || Number.isNaN(Date.parse(source.occurred_at)) || typeof kind !== 'string' || !['maintenance.snapshot', 'maintenance.changed', 'voice.roster.snapshot', 'voice.roster.unavailable', 'voice.roster.snapshot.v2', 'voice.roster.unavailable.v2', 'notification.queued', 'notification.preferences_changed', 'connection.ready', 'connection.heartbeat', 'connection.resync_required', 'voice.lease_revoked', 'channel.updated', 'presence.snapshot', 'presence.changed', 'message.created', 'message.updated', 'message.deleted', 'direct_message.message_created', 'direct_message.message_updated', 'direct_message.message_deleted', 'role.permissions.updated', 'auth.permissions.invalidated', 'session.state_changed', 'guild.profile.updated', 'member.profile.updated', 'screen_preview.updated', 'screen_preview.invalidated', 'screen_viewers.changed', 'message.reactions_updated', 'message.pins_updated', 'direct_message.reactions_updated'].includes(kind) || !payload) {
+  if (!source || typeof source.event_id !== 'string' || typeof source.occurred_at !== 'string' || Number.isNaN(Date.parse(source.occurred_at)) || typeof kind !== 'string' || !['maintenance.snapshot', 'maintenance.changed', 'voice.roster.snapshot', 'voice.roster.unavailable', 'voice.roster.snapshot.v2', 'voice.roster.unavailable.v2', 'notification.queued', 'notification.preferences_changed', 'connection.ready', 'connection.heartbeat', 'connection.resync_required', 'voice.lease_revoked', 'channel.updated', 'presence.snapshot', 'presence.changed', 'message.created', 'message.updated', 'message.deleted', 'direct_message.message_created', 'direct_message.message_updated', 'direct_message.message_deleted', 'role.permissions.updated', 'auth.permissions.invalidated', 'session.state_changed', 'guild.profile.updated', 'member.profile.updated', 'screen_preview.updated', 'screen_preview.invalidated', 'screen_viewers.changed', 'screen_telemetry.updated', 'message.reactions_updated', 'message.pins_updated', 'direct_message.reactions_updated'].includes(kind) || !payload) {
     throw new Error('Сервер вернул некорректное realtime-событие.')
   }
   if (kind === 'connection.heartbeat' && (!uuid(source.event_id) || !keys(source, ['event_id', 'kind', 'occurred_at', 'payload']) || Object.keys(payload).length !== 0)) throw new Error('Некорректное realtime-событие.')
@@ -58,6 +59,10 @@ export function parseRealtimeEvent(value: unknown): RealtimeEvent {
   if (kind === 'voice.lease_revoked' && ((!keys(payload, ['lease_id', 'reason']) && !keys(payload, ['lease_id', 'reason', 'target_channel_id'])) || !uuid(payload.lease_id) || !isVoiceLeaseRevocationReason(payload.reason) || (payload.target_channel_id !== undefined && (!uuid(payload.target_channel_id) || payload.reason !== 'AFK_MOVE')) || (payload.reason === 'AFK_MOVE' && payload.target_channel_id === undefined))) throw new Error('Некорректное realtime-событие.')
   if (kind === 'screen_preview.updated' && (!keys(payload, ['lease_id', 'generation_id', 'revision']) || !parseScreenPreviewHint(payload))) throw new Error('Некорректное realtime-событие.')
   if (kind === 'screen_preview.invalidated' && (!keys(payload, ['lease_id', 'generation_id']) || !uuid(payload.lease_id) || !uuid(payload.generation_id))) throw new Error('Некорректное realtime-событие.')
+  if (kind === 'screen_telemetry.updated') {
+    const telemetryEvent = parseScreenTelemetryEvent(payload)
+    if (Date.parse(telemetryEvent.serverReceivedAt) > Date.parse(source.occurred_at)) throw new Error('Некорректное realtime-событие телеметрии экрана.')
+  }
   if (kind === 'role.permissions.updated' && (!keys(payload, ['role', 'revision']) || payload.role !== 'MEMBER' || !revision(payload.revision))) throw new Error('Некорректное realtime-событие.')
   if ((kind === 'auth.permissions.invalidated' || kind === 'session.state_changed') && Object.keys(payload).length !== 0) throw new Error('Некорректное realtime-событие.')
   const metadata=record(source.telemetry)
@@ -70,7 +75,7 @@ export function parseRealtimeEvent(value: unknown): RealtimeEvent {
 export interface RealtimeLocation { protocol: string; host: string }
 
 export function realtimeURL(location: RealtimeLocation = window.location, after?: string): string {
-  const base = `${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}${apiBaseUrl}/realtime?capabilities=role_permissions_v1,flow_tracing_v1,screen_previews_v1,screen_viewers_v1,message_social_v1,notifications_v1,maintenance_v1,voice_roster_v2`
+  const base = `${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}${apiBaseUrl}/realtime?capabilities=role_permissions_v1,flow_tracing_v1,screen_previews_v1,screen_viewers_v1,screen_telemetry_v1,message_social_v1,notifications_v1,maintenance_v1,voice_roster_v2`
   return after ? `${base}&after=${encodeURIComponent(after)}` : base
 }
 

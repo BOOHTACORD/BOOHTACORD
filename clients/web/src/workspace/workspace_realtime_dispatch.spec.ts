@@ -23,7 +23,7 @@ function fixture() {
     messages: { channelId: null as string | null, refresh: vi.fn(async () => {}), error: null },
     directMessages: { directMessageId: directID as string | null, refreshNavigation: vi.fn(async () => {}), refreshHistory: vi.fn(async () => {}), error: null },
   }
-  const voice = { active: { leaseId: leaseID }, state: 'CONNECTED', refreshScreenWatchers: vi.fn(async () => {}), revokeLease: vi.fn(async () => true) }
+  const voice = { active: { leaseId: leaseID }, state: 'CONNECTED', acceptScreenTelemetry: vi.fn(() => true), clearScreenTelemetry: vi.fn(), refreshScreenWatchers: vi.fn(async () => {}), revokeLease: vi.fn(async () => true) }
   let deliver!: (event: RealtimeEvent) => void | Promise<void>
   const realtime = { connect: vi.fn((handler) => { deliver = handler }), disconnect: vi.fn() }
   const presence = { acceptRealtimeEvent: vi.fn(() => false) }
@@ -136,5 +136,13 @@ describe('workspace typed realtime dispatch', () => {
     const value = fixture()
     await value.deliver(hint('screen_viewers.changed', {}))
     expect(value.voice.refreshScreenWatchers).toHaveBeenCalledOnce()
+  })
+
+  it('routes validated screen sender telemetry only to the selected screen viewer', async () => {
+    const value = fixture()
+    const payload = { owner_lease_id: leaseID, server_received_at: '2026-11-16T10:00:00Z', envelope: {} }
+    await value.deliver(hint('screen_telemetry.updated', payload))
+    expect(value.voice.acceptScreenTelemetry).toHaveBeenCalledWith(payload)
+    expect(value.stores.topology.refresh).not.toHaveBeenCalled()
   })
 })

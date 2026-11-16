@@ -797,6 +797,31 @@ test('receiver summary reports measured loss and selected-pair RTT separately fr
   await expect(sender.getByText('Нет измерений от отправителя.', { exact: true })).toBeVisible()
 })
 
+test('selected cross-platform sender telemetry keeps receiver stats local and expires from server receipt time', async ({ page }, info) => {
+  await page.clock.install({ time: new Date('2026-11-16T10:00:00Z') })
+  for (const width of [393, 1440]) {
+    await open(page, 'receiver&receiver-measured&sender-telemetry', width)
+    await page.locator('summary[aria-label="Статистика"]').click()
+    const panel = page.getByRole('dialog', { name: 'Статистика трансляции' })
+    const receiver = panel.locator('.screen-diagnostics-summary__group').nth(0)
+    const sender = panel.locator('.screen-diagnostics-summary__group').nth(1)
+    const senderDetails = panel.locator('.screen-diagnostics-details section').nth(1)
+    await expect(receiver.getByText('0,5 %', { exact: true })).toBeVisible()
+    await expect(receiver.getByText('42 мс', { exact: true })).toBeVisible()
+    await expect(sender.getByText('1920 × 1080 пикс. · измерено', { exact: true })).toBeVisible()
+    await expect(sender.getByText(/android/)).toBeVisible()
+    await panel.getByText('Диагностика', { exact: true }).click()
+    await expect(senderDetails.getByText('4 Мбит/с · задано', { exact: true })).toBeVisible()
+    await expect(senderDetails.getByText('RTT отправителя', { exact: true })).toHaveCount(0)
+    await page.screenshot({ path: info.outputPath(`sender-telemetry-${width}.png`) })
+    if (width === 393) {
+      await page.clock.fastForward(16_000)
+      await expect(sender.getByText('Нет измерений от отправителя.', { exact: true })).toBeVisible()
+      await expect(sender.getByText('1920 × 1080 пикс. · измерено', { exact: true })).toHaveCount(0)
+    }
+  }
+})
+
 test('clipboard failure stays visible and mobile tab reaches disclosure and copy before returning to close', async ({ page }) => {
   await open(page, 'receiver', 390)
   await page.evaluate(() => Object.defineProperty(navigator, 'clipboard', { value: { writeText: () => Promise.reject(new Error('denied')) }, configurable: true }))

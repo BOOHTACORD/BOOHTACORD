@@ -25,6 +25,8 @@ ID: `screen.diagnostics`
 - cmp.backend.screen\_telemetry\_viewer\_acl: [backend/internal/media/screen\_viewer\_presence/postgres/audience.go](../../../../backend/internal/media/screen_viewer_presence/postgres/audience.go)
 - cmp.flutter.screen\_diagnostics: [clients/flutter/lib/src/features/screen/lifecycle/controller.dart](../../../../clients/flutter/lib/src/features/screen/lifecycle/controller.dart)
 - cmp.flutter.screen\_telemetry\_sender: [clients/flutter/lib/src/features/screen/metrics/telemetry\_envelope.dart](../../../../clients/flutter/lib/src/features/screen/metrics/telemetry_envelope.dart)
+- cmp.web.screen\_telemetry\_receiver\_parser: [clients/web/src/voice/screen\_receiver\_telemetry.ts](../../../../clients/web/src/voice/screen_receiver_telemetry.ts)
+- cmp.web.screen\_telemetry\_receiver\_presentation: [clients/web/src/voice/screen\_receiver\_telemetry\_presentation.ts](../../../../clients/web/src/voice/screen_receiver_telemetry_presentation.ts)
 - cmp.web.screen\_telemetry\_sender: [clients/web/src/voice/screen\_sender\_telemetry.ts](../../../../clients/web/src/voice/screen_sender_telemetry.ts)
 - cmp.web.voice\_controls: [clients/web/src/voice/VoiceDock.vue](../../../../clients/web/src/voice/VoiceDock.vue)
 

@@ -2,12 +2,14 @@ import { AudioMixer } from './audio_gain'
 import { createScreenReceiverReader } from './screen_receiver_reader'
 import { validScreenThumbnail } from './screen_thumbnail'
 import { ScreenViewerLifecycle } from './screen_viewer_lifecycle'
+import { SelectedScreenTelemetry } from './screen_receiver_telemetry'
 import type { ScreenViewerCard, ScreenViewerStream, ScreenViewerWatcher } from './screen_viewer_types'
 export type { ScreenViewerCard, ScreenViewerPublication, ScreenViewerStream, ScreenViewerTrack, ScreenViewerWatcher } from './screen_viewer_types'
 
 export class ScreenViewerController {
   private readonly listeners = new Set<() => void>()
   private readonly lifecycle: ScreenViewerLifecycle
+  private readonly senderTelemetry = new SelectedScreenTelemetry()
   private readonly receiverReader = createScreenReceiverReader()
   private readonly thumbnailUrls = new Map<string, string>()
   private viewerList: ScreenViewerWatcher[] = []
@@ -16,7 +18,7 @@ export class ScreenViewerController {
 
   constructor(source: () => ScreenViewerStream[], mixer: Pick<AudioMixer, 'attach'> = new AudioMixer()) {
     this.source = source
-    this.lifecycle = new ScreenViewerLifecycle(source, mixer, () => this.notify())
+    this.lifecycle = new ScreenViewerLifecycle(source, mixer, () => this.lifecycleChanged())
   }
 
   private readonly source: () => ScreenViewerStream[]
@@ -38,6 +40,7 @@ export class ScreenViewerController {
       ...(ownerLeaseId ? { ownerLeaseId } : {}),
       ...(descriptor ? { descriptor } : {}), ...(profileSource ? { profileSource } : {}),
       ...(targetProfile ? { targetProfile } : {}), ...(video.isMuted === true ? { videoMuted: true } : {}),
+      ...(id === this.lifecycle.selectedId && this.senderTelemetry.current() ? { senderTelemetry: this.senderTelemetry.current() } : {}),
       ...(this.thumbnailUrls.get(participantId) ? { thumbnailUrl: this.thumbnailUrls.get(participantId) } : {}),
       ...(!isLocal && video.track?.getReceiverStats ? { readReceiverStats: this.receiverReader(video.track) } : {}),
     }))
@@ -62,6 +65,17 @@ export class ScreenViewerController {
   }
   setAudioMuted(muted: boolean): void { this.lifecycle.setAudioMuted(muted) }
   setAudioVolume(percent: number): void { this.lifecycle.setAudioVolume(percent) }
+  acceptSenderTelemetry(payload: unknown): boolean {
+    this.syncTelemetrySelection()
+    if (!this.senderTelemetry.accept(payload)) return false
+    this.notify()
+    return true
+  }
+  clearSenderTelemetry(): void {
+    this.senderTelemetry.clear()
+    this.syncTelemetrySelection()
+    this.notify()
+  }
   clear(): void { this.setWatchers([]); this.lifecycle.clear(); void this.watcherRefresh() }
   stop(): void { this.watcherRefresh = async () => undefined; this.clearThumbnails(); this.setWatchers([]); this.setOwnerWatchers([]); this.lifecycle.stop(); this.listeners.clear() }
   reconcile(): void {
@@ -95,5 +109,18 @@ export class ScreenViewerController {
   }
 
   private clearThumbnails(): void { for (const url of this.thumbnailUrls.values()) URL.revokeObjectURL(url); this.thumbnailUrls.clear() }
+  private lifecycleChanged(): void { this.syncTelemetrySelection(); this.notify() }
+  private syncTelemetrySelection(): void {
+    const selected = this.source().find(stream => stream.id === this.lifecycle.selectedId)
+    const descriptor = selected?.descriptor
+    this.senderTelemetry.setSelection(selected && !selected.isLocal && selected.ownerLeaseId && descriptor?.publisher_state === 'sharing'
+      ? {
+          streamId: selected.id,
+          ownerLeaseId: selected.ownerLeaseId,
+          mediaSessionId: descriptor.scope.media_session_id,
+          publicationGeneration: descriptor.scope.publication_generation,
+        }
+      : null)
+  }
   private notify(): void { this.listeners.forEach((listener) => listener()) }
 }

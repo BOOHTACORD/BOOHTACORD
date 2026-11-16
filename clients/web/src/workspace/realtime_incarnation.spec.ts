@@ -20,7 +20,7 @@ function setup() {
   let options!: RealtimeConnectOptions, deliver!: (event: RealtimeEvent) => Promise<void>
   const realtime = { connect: vi.fn((handler, _factory, _url, supplied: RealtimeConnectOptions) => { deliver = handler; options = supplied; supplied.onSocketStart?.() }), disconnect: vi.fn() }
   const workspace = createWorkspaceRealtime(stores, realtime as never, { acceptRealtimeEvent: () => false } as never,
-    { active: null, refreshScreenWatchers: vi.fn() } as never, 'account', vi.fn())
+    { active: null, clearScreenTelemetry: vi.fn(), refreshScreenWatchers: vi.fn() } as never, 'account', vi.fn())
   workspace.start()
   return { stores, options, deliver, workspace }
 }

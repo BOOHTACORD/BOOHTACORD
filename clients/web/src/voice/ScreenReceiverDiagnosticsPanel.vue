@@ -8,6 +8,8 @@ import { screenCaptureLabel, screenEncodingLabel, screenModeLabel, screenTargetL
 import type { ScreenDiagnostics } from './screen_diagnostics'
 import type { ScreenShareDescriptorV1 } from './screen_profile_metadata/types'
 import { screenSampleAge } from './screen_profile_metadata/profile'
+import { type ReceivedScreenTelemetry } from './screen_receiver_telemetry'
+import { presentSenderTelemetry } from './screen_receiver_telemetry_presentation'
 
 interface DiagnosticRow { label: string; value: string }
 interface UnavailableRow { label: string; reason: string }
@@ -25,9 +27,11 @@ const props = defineProps<{
   presentedFps?: number | null
   metadataReceiptKey?: string
   senderDiagnostics?: ScreenDiagnostics
+  senderTelemetry?: ReceivedScreenTelemetry
 }>()
 const receivedAt = ref<number | null>(null)
 const now = ref(Date.now())
+const monotonicNow = ref(performance.now())
 let ageTimer: ReturnType<typeof setInterval> | undefined
 watch(() => [props.metadataReceiptKey, props.descriptor] as const, () => {
   receivedAt.value = props.descriptor ? Date.now() : null
@@ -110,6 +114,8 @@ const receiverTechnicalRows = computed<DiagnosticRow[]>(() => {
 })
 
 const senderRows = computed<DiagnosticRow[]>(() => {
+  const telemetry = presentSenderTelemetry(props.senderTelemetry, monotonicNow.value)
+  if (props.senderTelemetry && telemetry.fresh) return telemetry.rows
   const diagnostics = props.senderDiagnostics
   const layer = diagnostics?.selectedLayer?.state === 'ACTIVE' ? diagnostics.selectedLayer : undefined
   const rows: (DiagnosticRow | null)[] = []
@@ -126,6 +132,10 @@ const senderRows = computed<DiagnosticRow[]>(() => {
 })
 
 const senderSummaryRows = computed<DiagnosticRow[]>(() => senderRows.value.slice(0, 2))
+const senderReceiptStatus = computed(() => {
+  const telemetry = presentSenderTelemetry(props.senderTelemetry, monotonicNow.value)
+  return telemetry.fresh ? `${telemetry.freshness} · ${telemetry.platform}` : null
+})
 const configurationRows = computed<DiagnosticRow[]>(() => {
   const rows: DiagnosticRow[] = []
   if (targetSummary.value) rows.push({ label: 'Профиль', value: targetSummary.value })
@@ -147,7 +157,7 @@ const unavailableRows = computed<UnavailableRow[]>(() => {
     if (props.metrics.packetLossPercent == null) rows.push({ label: 'Потери пакетов', reason: 'Нет валидного окна дельт received/lost.' })
     if (props.metrics.rttMs == null) rows.push({ label: 'RTT', reason: 'Текущая статистика не содержит RTT для единственного выбранного WebRTC пути.' })
   }
-  if (senderRows.value.length === 0) rows.push({ label: 'Фактические измерения отправителя', reason: 'Текущий viewer не получил измерения отправителя.' })
+  if (senderRows.value.length === 0) rows.push({ label: 'Фактические измерения отправителя', reason: props.senderTelemetry && !senderReceiptStatus.value ? 'Последние данные отправителя устарели.' : 'Текущий viewer не получил измерения отправителя.' })
   if (!targetSummary.value) rows.push({ label: 'Целевой профиль', reason: 'Профиль не передан отправителем.' })
   rows.push({ label: 'Возраст захвата', reason: 'Отправитель не передаёт сопоставимое измерение capture-age.' })
   return rows
@@ -213,7 +223,8 @@ function handleToggle(): void {
   if (isOpen.value) {
     copyFeedback.value = ''
     now.value = Date.now()
-    ageTimer = setInterval(() => { now.value = Date.now() }, 1000)
+    monotonicNow.value = performance.now()
+    ageTimer = setInterval(() => { now.value = Date.now(); monotonicNow.value = performance.now() }, 1000)
   }
   if (isOpen.value) void nextTick(() => panel.value?.querySelector<HTMLButtonElement>('header button')?.focus())
   updatePlacement()
@@ -262,6 +273,7 @@ onBeforeUnmount(() => {
           </section>
           <section class="screen-diagnostics-summary__group" aria-labelledby="screen-summary-sender">
             <h3 id="screen-summary-sender">Отправитель</h3>
+            <p v-if="senderReceiptStatus">Данные отправителя: {{ senderReceiptStatus }}</p>
             <p v-if="targetSummary" class="screen-diagnostics-target">{{ targetSummary }}</p>
             <dl v-if="senderSummaryRows.length">
               <div v-for="row in senderSummaryRows" :key="row.label"><dt>{{ row.label }}</dt><dd>{{ row.value }}</dd></div>
@@ -283,6 +295,7 @@ onBeforeUnmount(() => {
             </section>
             <section aria-labelledby="screen-diagnostics-sender">
               <h3 id="screen-diagnostics-sender">Отправитель</h3>
+              <p v-if="senderReceiptStatus">Актуальность: {{ senderReceiptStatus }}</p>
               <dl v-if="senderRows.length">
                 <div v-for="row in senderRows" :key="row.label"><dt>{{ row.label }}</dt><dd>{{ row.value }}</dd></div>
               </dl>
