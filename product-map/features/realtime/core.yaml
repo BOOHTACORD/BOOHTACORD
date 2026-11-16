@@ -4,7 +4,12 @@
     {"id": "cmp.flutter.realtime", "source": {"parity_id": "realtime.recovery", "platform": "android"}},
     {"id": "cmp.web.realtime_client", "source": {"parity_id": "screen.audience", "platform": "web"}},
     {"id": "cmp.flutter.screen_audience", "source": {"parity_id": "screen.audience", "platform": "android"}},
-    {"id": "cmp.flutter.screen_diagnostics", "source": {"parity_id": "screen.diagnostics", "platform": "android"}}
+    {"id": "cmp.flutter.screen_diagnostics", "source": {"parity_id": "screen.diagnostics", "platform": "android"}},
+    {"id": "cmp.backend.screen_telemetry_routes", "paths": ["backend/internal/app/media_routes/screen_telemetry_relay/configure.go", "backend/internal/app/media_routes/screen_telemetry_routes.go"], "depends_on": ["cmp.backend.screen_telemetry_api", "cmp.backend.screen_telemetry_service", "cmp.backend.screen_telemetry_gate", "cmp.backend.screen_telemetry_viewer_acl"]},
+    {"id": "cmp.backend.screen_telemetry_api", "paths": ["backend/internal/media/screen_telemetry_relay/api/http_handler.go"], "depends_on": ["cmp.backend.screen_telemetry_service"]},
+    {"id": "cmp.backend.screen_telemetry_service", "paths": ["backend/internal/media/screen_telemetry_relay/contract.go", "backend/internal/media/screen_telemetry_relay/contract_types.go", "backend/internal/media/screen_telemetry_relay/service.go"]},
+    {"id": "cmp.backend.screen_telemetry_gate", "paths": ["backend/internal/media/screen_telemetry_relay/memory/gate.go"]},
+    {"id": "cmp.backend.screen_telemetry_viewer_acl", "paths": ["backend/internal/media/screen_viewer_presence/postgres/audience.go"]}
   ],
   "features": [
     {
@@ -46,7 +51,7 @@
       "target_revision": null,
       "behavior_revisions": [],
       "parity_ids": ["screen.diagnostics"],
-      "components": ["cmp.web.voice_controls", "cmp.flutter.screen_diagnostics"],
+      "components": ["cmp.web.voice_controls", "cmp.flutter.screen_diagnostics", "cmp.backend.screen_telemetry_routes", "cmp.backend.screen_telemetry_api", "cmp.backend.screen_telemetry_service", "cmp.backend.screen_telemetry_gate", "cmp.backend.screen_telemetry_viewer_acl"],
       "platforms": {
         "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
         "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
