@@ -12,6 +12,34 @@ Do not start physical window capture or claim visible presentation while the Mac
 
 All attempts archive old receipts before preflight and write RUNNING/FAIL/PASS only from fresh native events with a matching case index. Only the returned subprocess PID is terminated, never other apps. Cleanup must finish the owned namespace case, stop the browser peer, close the owned app, then send the worker Enter to remove labelled resources and private builds. Original synthetic screenshots remain under ignored .out; never stage generated media. Missing physical platforms, audible quality, historical startup root cause and broader lifecycle/hardware cases remain NOT_RUN/PARTIAL.
 
+## Paired native macOS sender → production Web viewer (#787)
+
+After the existing runner has produced a fresh Debug app and the coordinated Flutter SDK lease has been released, start one real Web viewer against the same owned API/SFU stack. The receiver uses the existing `qa_sender_peer` fixture, joins `QaVoice`, selects the native publication in the production Web app, and waits for a decoded frame plus a fresh sender sample in the selected stream's statistics panel. It observes the authenticated `/api/v1/realtime` WebSocket but retains only event count and fixed platform/client checks; raw event payloads, lease IDs and track SIDs are never written. The output screenshot is a synthetic QA window capture, not a quality or capacity result.
+
+In terminal A, start the Web viewer from the checkout root. Use a free case index from 1–20 and keep `QA_STAGE_OUT` within the run's ignored `.out` directory:
+
+```sh
+export QA_STAGE_INPUT=<owned-work>/browser-private.json
+export QA_STAGE_OUT=.out/<run-name>
+export QA_STAGE_INDEX=20
+export QA_STAGE_SCREENSHOT="$QA_STAGE_OUT/receiver-$QA_STAGE_INDEX-web-pair.png"
+export NODE_PATH=<checkout-with-web-dependencies>/clients/web/node_modules
+node tools/qa/macos_sender/web_pair_receiver.mjs
+```
+
+In terminal B, wait until `receiver-20-ready.json` exists, then launch the actual native sender with that same run name, work path and index:
+
+```sh
+while [ ! -f "$QA_STAGE_OUT/receiver-$QA_STAGE_INDEX-ready.json" ]; do sleep 1; done
+BOOHTACORD_QA_RUN_NAME=<run-name> BOOHTACORD_QA_STAGE=1 \
+BOOHTACORD_QA_RESOLUTION=1080 BOOHTACORD_QA_FPS=60 BOOHTACORD_QA_STATIC=0 \
+BOOHTACORD_QA_PUBLISH_SECONDS=110 BOOHTACORD_QA_CAPTURE_COUNTERS=0 \
+QA_NATIVE_MODE=motion python3 -m tools.qa.macos_sender.observe \
+  --work <owned-work> --mode healthy --index "$QA_STAGE_INDEX"
+```
+
+Both receipts must be fresh and report `PASS`. The Web receipt includes only authenticated-session/voice state, selected decoded output, the count and fixed scope of native telemetry events, sender freshness, and the separate `Цель:` label. It does not establish a five-minute/two-device gate, physical-compositor presentation, audio fidelity, hardware quality or capacity. Clean up the owned Web viewer and native app, run the known-key namespace cleanup, then send the runner its cleanup Enter.
+
 The published classifier regression reproduces a Dart HTTP TimeoutException being mislabeled network because LiveKit exports an identically named exception. Narrowing the classifier import preserves the transport deadline and cancellation behavior. The direct-loopback IO probe creates a real IOClient inside a test-only HttpOverrides scope so the Flutter-test default HTTP400 stub cannot substitute for the real transport; five requests are checked in one test. Physical retries retain their original build/source hashes.
 
 ## Stage baseline and regression runtime (#329, #332)

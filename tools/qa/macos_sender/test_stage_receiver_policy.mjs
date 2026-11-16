@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {requireReceiverEvidence,requireMetadataEvidence,requireFunctionalEvidence,requireFaultVideoProgress} from './stage_receiver_policy.mjs'
+import {requireReceiverEvidence,requireMetadataEvidence,requireFunctionalEvidence,requireFaultVideoProgress,requireNativeWebTelemetryEvidence,isNativeScreenTelemetryEvent,observeNativeScreenTelemetry} from './stage_receiver_policy.mjs'
 test('staticfirstframe can succeed withzero steadycallbacks, never unknownmarker',()=>{
  const report={roomConnectionToFirstCallbackMs:12,firstFrameEvidence:{callbackCount:1,firstFrameId:0},measurement:{presentation:{frameCallbacks:0}}}
  assert.equal(requireReceiverEvidence(report,true),true)
@@ -29,4 +29,47 @@ test('Mac functional flow requires compatible mode plus separately restarted low
 test('isolated fault must retain actually increasing decoded callbacks throughout sampled intervals',()=>{
  assert.equal(requireFaultVideoProgress([{callbacks:1},{callbacks:10},{callbacks:30}]),true)
  for(const rows of [[],[{callbacks:1}],[{callbacks:3},{callbacks:3}],[{callbacks:3},{callbacks:2}],[{callbacks:null},{callbacks:3}]])assert.throws(()=>requireFaultVideoProgress(rows))
+})
+
+test('native macOS telemetry pairing requires an authenticated Web viewer, scoped realtime event and fresh selected sender sample',()=>{
+ const valid={status:'PASS',scope:'Native sender to selected Web viewer; flow only',sender_platform:'macos',sender_client:'flutter',web_session_authenticated:true,voice_connected:true,selected_stream_decoded:true,realtime_event_count:1,scoped_native_event:true,fresh_sender_sample_visible:true,target_labeled_separately:true,no_sensitive_fields_in_receipt:true}
+ assert.equal(requireNativeWebTelemetryEvidence(valid),true)
+ for(const bad of [
+  {...valid,web_session_authenticated:false},
+  {...valid,voice_connected:false},
+  {...valid,selected_stream_decoded:false},
+  {...valid,realtime_event_count:0},
+  {...valid,scoped_native_event:false},
+  {...valid,fresh_sender_sample_visible:false},
+  {...valid,target_labeled_separately:false},
+  {...valid,sender_platform:'web'},
+  {...valid,sender_client:'web'},
+  {...valid,raw_identifiers_or_payloads_stored:true},
+  {...valid,raw_track_sid:'forbidden'},
+ ])assert.throws(()=>requireNativeWebTelemetryEvidence(bad))
+})
+
+test('native telemetry scope is observed as a boolean without retaining event identifiers',()=>{
+ const event={kind:'screen_telemetry.updated',payload:{owner_lease_id:'11111111-1111-4111-8111-111111111111',server_received_at:'2026-11-16T12:00:00Z',envelope:{schema_version:1,media_session_id:'qa_session_1',publication_generation:1,platform:'macos',client_kind:'flutter',capability_version:1,sequence:1}}}
+ assert.equal(isNativeScreenTelemetryEvent(event),true)
+ for(const bad of [
+  {...event,kind:'screen_viewers.changed'},
+  {...event,payload:{...event.payload,envelope:{...event.payload.envelope,platform:'web'}}},
+  {...event,payload:{...event.payload,envelope:{...event.payload.envelope,client_kind:'web'}}},
+  {...event,payload:{...event.payload,envelope:{...event.payload.envelope,publication_generation:0}}},
+  {...event,payload:{...event.payload,envelope:{...event.payload.envelope,capability_version:17}}},
+  {...event,payload:{...event.payload,envelope:{...event.payload.envelope,sequence:'1'}}},
+  {...event,payload:{...event.payload,server_received_at:'yesterday'}},
+  {...event,payload:{...event.payload,owner_lease_id:'private-id'}},
+ ])assert.equal(isNativeScreenTelemetryEvent(bad),false)
+})
+
+test('native telemetry observer records only the scoped-event boolean in its receipt',()=>{
+ const event={kind:'screen_telemetry.updated',payload:{owner_lease_id:'11111111-1111-4111-8111-111111111111',server_received_at:'2026-11-16T12:00:00Z',envelope:{schema_version:1,media_session_id:'qa_session_1',publication_generation:1,platform:'macos',client_kind:'flutter',capability_version:1,sequence:1}}}
+ const report={scoped_native_event:false}
+ assert.equal(observeNativeScreenTelemetry(report,event),true)
+ assert.deepEqual(report,{scoped_native_event:true})
+ const invalid={scoped_native_event:false}
+ assert.equal(observeNativeScreenTelemetry(invalid,{...event,payload:{...event.payload,envelope:{...event.payload.envelope,platform:'web'}}}),false)
+ assert.deepEqual(invalid,{scoped_native_event:false})
 })

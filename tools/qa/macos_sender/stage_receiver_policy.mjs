@@ -1,4 +1,7 @@
 import assert from 'node:assert/strict'
+const privateUuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+const privateSession=/^[A-Za-z0-9_-]{1,256}$/
+const privateDateTime=/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?(?:Z|[+-]\d{2}:\d{2})$/
 export function requireReceiverEvidence(report,staticScene=false){
  assert.ok(Number.isFinite(report.roomConnectionToFirstCallbackMs)&&report.roomConnectionToFirstCallbackMs>=0,'Fresh first callback unavailable')
  if(staticScene){
@@ -36,4 +39,32 @@ export function requireFaultVideoProgress(rows){
  assert.ok(rows.length>=2,'Decoded fault progress unavailable')
  for(let i=0;i<rows.length;i++)assert.ok(Number.isFinite(rows[i].callbacks)&&rows[i].callbacks>=0&&(i===0||rows[i].callbacks>rows[i-1].callbacks),'Decoded callbacks froze or became unknown during sampled fault intervals')
  return true
+}
+
+export function requireNativeWebTelemetryEvidence(value){
+ const fields=['status','scope','sender_platform','sender_client','web_session_authenticated','voice_connected','selected_stream_decoded','realtime_event_count','scoped_native_event','fresh_sender_sample_visible','target_labeled_separately','no_sensitive_fields_in_receipt']
+ assert.deepEqual(Object.keys(value??{}).sort(),fields.sort(),'Native/Web receipt must contain sanitized allowlisted fields only')
+ assert.equal(value.status,'PASS','Native/Web pairing incomplete')
+ assert.equal(value.sender_platform,'macos','Expected a physical macOS sender')
+ assert.equal(value.sender_client,'flutter','Expected the Flutter sender')
+ for(const field of ['web_session_authenticated','voice_connected','selected_stream_decoded','scoped_native_event','fresh_sender_sample_visible','target_labeled_separately','no_sensitive_fields_in_receipt'])assert.equal(value[field],true,`Missing ${field}`)
+ assert.ok(Number.isSafeInteger(value.realtime_event_count)&&value.realtime_event_count>0,'No authenticated realtime telemetry event observed')
+ return true
+}
+
+export function isNativeScreenTelemetryEvent(event){
+ const payload=event?.payload,envelope=payload?.envelope
+ return event?.kind==='screen_telemetry.updated'&&typeof payload?.owner_lease_id==='string'&&privateUuid.test(payload.owner_lease_id)&&
+  typeof payload?.server_received_at==='string'&&privateDateTime.test(payload.server_received_at)&&!Number.isNaN(Date.parse(payload.server_received_at))&&
+  envelope?.schema_version===1&&envelope?.platform==='macos'&&envelope?.client_kind==='flutter'&&
+  typeof envelope?.media_session_id==='string'&&privateSession.test(envelope.media_session_id)&&
+  Number.isSafeInteger(envelope?.publication_generation)&&envelope.publication_generation>0&&
+  Number.isSafeInteger(envelope?.capability_version)&&envelope.capability_version>0&&envelope.capability_version<=16&&
+  Number.isSafeInteger(envelope?.sequence)&&envelope.sequence>0
+}
+
+export function observeNativeScreenTelemetry(report,event){
+ const scoped=isNativeScreenTelemetryEvent(event)
+ if(scoped)report.scoped_native_event=true
+ return scoped
 }
