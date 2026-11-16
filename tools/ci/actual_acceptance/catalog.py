@@ -13,6 +13,7 @@ OPERATIONS={
          'tools/qa/critical_client_acceptance/select_stream.test.mjs',
          'tools/qa/client_lifecycle/login_diagnostics.test.mjs',
          'tools/qa/client_lifecycle/voice_workspace_search.test.mjs',
+         'tools/qa/macos_sender/test_stage_receiver_policy.mjs',
          'clients/web/artifacts/design-v2/reference-live-state.test.mjs'],
         [PY,'-m','tools.qa.refresh_baseline.run','--revision','BASELINE'],
         [PY,'-m','tools.qa.client_lifecycle.run','--critical','--width','1440','--output-root','.out/client-lifecycle'],

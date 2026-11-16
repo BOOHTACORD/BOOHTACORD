@@ -17,6 +17,7 @@ class NodeInventoryTest(unittest.TestCase):
         self.assertIn('clients/web/artifacts/design-v2/reference-live-state.test.mjs', paths)
         self.assertIn('tools/qa/critical_client_acceptance/roster_websocket_observer.test.mjs', paths)
         self.assertIn('tools/qa/critical_client_acceptance/roster_websocket_network.test.mjs', paths)
+        self.assertIn('tools/qa/macos_sender/test_stage_receiver_policy.mjs', paths)
 
 
 if __name__ == '__main__':
