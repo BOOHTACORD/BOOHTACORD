@@ -17,7 +17,7 @@ Retested the merged Web screen-viewer UX and the registered `screen` Web feature
   - Mini-player: **24 passed**.
   - Screen share UI: **58 passed**.
   - Real-stack Web lifecycle: **PASS** at 1440 and 393 px; source-stability: **PASS**.
-  - Overall: **BLOCKED** only because `web-screen_profile` skipped one gated publisher/viewer baseline test. It requires short-lived publisher/viewer tokens and explicit confirmation of an isolated test SFU; the generic feature runner does not supply these inputs.
+  - Initial overall result: **BLOCKED** because the generic runner skipped the gated publisher/viewer baseline without publisher/viewer inputs and an isolated test SFU. The follow-up below supplied short-lived credentials and an isolated disposable LiveKit fixture; it supersedes that initial status for the synthetic browser baseline.
 - Without the documented `linux/amd64` Egress override, Docker could not start the pinned host-native image because it lacked the configured `egress` user. The documented override allowed both real-stack viewport runs to pass.
 
 The 1440/393 real-stack logs include server preview refresh, screen descriptor HTTP 204, seven sender telemetry POSTs HTTP 204, and one selected-viewer `screen_telemetry.updated` event. This confirms the paired Web path in the owned test stack; it is not physical-device or capacity evidence.
@@ -42,7 +42,7 @@ Also reviewed the owned real-stack `screen-share-compact-statistics.png` capture
 
 ## Remaining acceptance status
 
-- `web-screen_profile` numeric publisher/viewer baseline: **BLOCKED** by the gated skipped test above.
+- `web-screen_profile` synthetic browser publisher/viewer baseline: **PASS (20/20)** in the follow-up run below. This does not establish physical capture, hardware QoE or capacity.
 - Flutter Android/iOS/macOS/Windows paired sender → Web, native capture-picker, and physical-device visual/media checks: **NOT_RUN**.
 - Hardware media-quality and load/capacity evidence: **NOT_RUN**.
 
