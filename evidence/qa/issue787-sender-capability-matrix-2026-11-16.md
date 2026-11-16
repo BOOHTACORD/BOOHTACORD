@@ -46,3 +46,14 @@ The feature registry includes the focused tests and capability-matrix record und
 - The 1440 real-stack report also includes existing Flutter screen captures. Their earlier source-resolution review found the audience roster strip, mini-player, and desktop viewer controls within their bounds; component captures remain BLOCKED because of the skipped test noted above.
 - Hardware, paired sender/viewer media-quality, network-quality, and capacity acceptance remain NOT_RUN. No media capability or capacity conclusion is drawn from these tests.
 - After this run, only the prose decision records for PR6 in `tools/qa/local_features/features.json` were clarified to reflect the observed report: selected Web/Android profiles passed, skipped profiles and missing iOS hardware remain blocked, and the baseline #786 failure remains separate. The scenario IDs, selection, commands, assertions, implementation, and captures were not changed; `source-stability` applies to the exact candidate used during the recorded run.
+
+## Host runtime availability re-check (2026-11-16)
+
+To choose the next paired Flutter → Web acceptance target, the QA host runtime inventory was checked:
+
+- `flutter devices --machine` listed macOS and Chrome only.
+- `adb devices -l` listed no attached Android device.
+- `xcrun simctl list devices booted` listed no booted iOS simulator.
+- No Windows runtime was available on this macOS host.
+
+This is a device-availability check only. It is not paired telemetry, capture, visual, media-quality, or capacity evidence. Flutter → Web runs for Android, iOS, macOS and Windows remain NOT_RUN; the earlier macOS lifecycle attempt did not pair with a viewer and its native visual review was NOT_RUN while the Mac UI was locked. No platform gate is promoted by this inventory.
