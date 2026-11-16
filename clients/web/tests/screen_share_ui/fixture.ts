@@ -9,6 +9,7 @@ import VoiceParticipantVolumes from '../../src/voice/VoiceParticipantVolumes.vue
 import type { ScreenViewerCard } from '../../src/voice/screen_viewer_controller'
 import type { VoiceVolumeParticipant } from '../../src/voice/voice_volume_controls'
 import type { ScreenDiagnostics } from '../../src/voice/screen_diagnostics'
+import type { ReceivedScreenTelemetry } from '../../src/voice/screen_receiver_telemetry'
 import { useScreenReceiverDiagnostics } from '../../src/voice/use_screen_receiver_diagnostics'
 import { useAuthorDirectory } from '../../src/identity/author_directory'
 import { replaceScreenPreviewParticipantLeases } from '../../src/voice/screen_preview/participant_leases'
@@ -34,6 +35,28 @@ Object.assign(window, { __screenUI: {
   closeStream: (id: string) => { viewerScreens.value = viewerScreens.value.filter((stream) => stream.id !== id); if (state.selectedId === id) state.selectedId = null },
 } })
 const diagnostics = (): ScreenDiagnostics => ({ source: state.source as ScreenDiagnostics['source'], audioTrack: 'ABSENT', connectionQuality: 'GOOD', measured: { width: 1920, height: 654, framesPerSecond: state.fps }, roundTripTimeMs: 42 })
+const telemetryReceivedAt = performance.now()
+const telemetryServerReceivedAt = new Date().toISOString()
+const fixtureSenderTelemetry: ReceivedScreenTelemetry | undefined = params.has('sender-telemetry') ? {
+  ownerLeaseId: '11111111-1111-4111-8111-111111111111', serverReceivedAt: telemetryServerReceivedAt, serverReceivedAtMs: Date.parse(telemetryServerReceivedAt), receivedAtMonotonicMs: telemetryReceivedAt,
+  envelope: {
+    schema_version: 1, media_session_id: 'session-fixture', publication_generation: 1, platform: 'android', client_kind: 'flutter', capability_version: 1, sequence: 2,
+    capture: {
+      width: { value: 1920, availability: 'measured', provenance: 'sender_measured' },
+      height: { value: 1080, availability: 'measured', provenance: 'sender_measured' },
+      fps: { value: 30, availability: 'measured', provenance: 'sender_measured' },
+    },
+    encode: {
+      fps: { value: 29, availability: 'measured', provenance: 'sender_measured' },
+      bitrate_bps: { value: 4_000_000, availability: 'configured_only', provenance: 'configured' },
+    },
+    transport: {
+      packet_loss_percent: { availability: 'not_exposed', provenance: 'unavailable' },
+      rtt_ms: { availability: 'not_exposed', provenance: 'unavailable' },
+      quality_limitation_reason: { value: 'none', availability: 'measured', provenance: 'sender_measured' },
+    },
+  },
+} : undefined
 const viewerParticipants: VoiceVolumeParticipant[] = [
   { accountId: 'member-speaking', id: 'member-speaking', microphoneMuted: false, name: 'Участник говорит', speaking: true, volume: 100 },
   { accountId: 'member-sharing', id: 'member-sharing', microphoneMuted: true, name: 'Участник показывает экран', speaking: false, volume: 100 },
@@ -134,6 +157,7 @@ createApp({ render: () => params.has('participant-cards') ? listenerParticipantC
         packetsLost: 5, packetLossPercent: 0.5, packetLossWindowMs: 10_000, rttMs: 42,
       } : null,
       sampledAt: params.has('receiver-measured') ? Date.now() : null,
+      senderTelemetry: fixtureSenderTelemetry,
       targetProfile: '1080p · 60 FPS', participantName: 'Synthetic QA',
     }) : [
       h('button', { id: 'opener', onClick: () => { state.open = true } }, 'Показать экран'),

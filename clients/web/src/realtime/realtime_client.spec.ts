@@ -2,9 +2,26 @@ import { describe, expect, it } from 'vitest'
 
 import { parseRealtimeEvent, realtimeURL, realtimeTraceURL } from './realtime_client'
 
+const telemetryMetric = (value: number) => ({ value, availability: 'measured', provenance: 'sender_measured' })
+function validTelemetryPayload() {
+  return {
+    owner_lease_id: '11111111-1111-4111-8111-111111111111', server_received_at: '2026-11-16T10:00:00Z',
+    envelope: {
+      schema_version: 1, media_session_id: 'session-a', publication_generation: 1, platform: 'web', client_kind: 'web', capability_version: 1, sequence: 1,
+      capture: { width: telemetryMetric(1920), height: telemetryMetric(1080), fps: telemetryMetric(30) },
+      encode: { fps: telemetryMetric(30), bitrate_bps: telemetryMetric(4_000_000) },
+      transport: {
+        packet_loss_percent: { availability: 'unsupported', provenance: 'unavailable' },
+        rtt_ms: { availability: 'not_exposed', provenance: 'unavailable' },
+        quality_limitation_reason: { value: 'none', availability: 'measured', provenance: 'sender_measured' },
+      },
+    },
+  }
+}
+
 describe('realtime client contract', () => {
   it('uses the same host and no credential in its websocket URL', () => {
-    expect(realtimeURL({ protocol: 'https:', host: 'voice.example.test' })).toBe('wss://voice.example.test/api/v1/realtime?capabilities=role_permissions_v1,flow_tracing_v1,screen_previews_v1,screen_viewers_v1,message_social_v1,notifications_v1,maintenance_v1,voice_roster_v2')
+    expect(realtimeURL({ protocol: 'https:', host: 'voice.example.test' })).toBe('wss://voice.example.test/api/v1/realtime?capabilities=role_permissions_v1,flow_tracing_v1,screen_previews_v1,screen_viewers_v1,screen_telemetry_v1,message_social_v1,notifications_v1,maintenance_v1,voice_roster_v2')
   })
 
   it('carries a W3C traceparent through the browser WebSocket handshake', () => {
@@ -17,6 +34,8 @@ describe('realtime client contract', () => {
     expect(parseRealtimeEvent({ event_id: 'event-1', kind: 'connection.resync_required', occurred_at: '2026-09-17T12:00:00Z', payload: { reason: 'replay_unavailable' } })).toMatchObject({ kind: 'connection.resync_required' })
     expect(parseRealtimeEvent({ event_id: 'event-2', kind: 'screen_preview.updated', occurred_at: '2026-10-07T10:00:00Z', payload: { lease_id: '11111111-1111-4111-8111-111111111111', generation_id: '22222222-2222-4222-8222-222222222222', revision: 1 } })).toMatchObject({ kind: 'screen_preview.updated' })
     expect(parseRealtimeEvent({ event_id: 'event-viewers', kind: 'screen_viewers.changed', occurred_at: '2026-10-18T10:00:00Z', payload: {} })).toMatchObject({ kind: 'screen_viewers.changed', payload: {} })
+    expect(parseRealtimeEvent({ event_id: 'event-telemetry', kind: 'screen_telemetry.updated', occurred_at: '2026-11-16T10:00:00Z', payload: validTelemetryPayload() })).toMatchObject({ kind: 'screen_telemetry.updated', payload: validTelemetryPayload() })
+    expect(() => parseRealtimeEvent({ event_id: 'event-telemetry-invalid', kind: 'screen_telemetry.updated', occurred_at: '2026-10-18T10:00:00Z', payload: { owner_lease_id: 'not-a-uuid' } })).toThrow(/телеметрии экрана/i)
     expect(() => parseRealtimeEvent({ event_id: 'event-viewers-extra', kind: 'screen_viewers.changed', occurred_at: '2026-10-18T10:00:00Z', payload: { account_id: '11111111-1111-4111-8111-111111111111' } })).toThrow(/некорректное/i)
     expect(() => parseRealtimeEvent({ event_id: 'event-3', kind: 'screen_preview.updated', occurred_at: '2026-10-07T10:00:00Z', payload: { lease_id: '11111111-1111-4111-8111-222222222222', generation_id: '22222222-2222-4222-8222-222222222222', revision: 1, jpeg: 'secret' } })).toThrow(/некорректное/i)
     expect(() => parseRealtimeEvent({ kind: 'unknown' })).toThrow('некорректное')

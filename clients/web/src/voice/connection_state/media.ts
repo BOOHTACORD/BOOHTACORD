@@ -47,6 +47,6 @@ export function createVoiceMediaState(session:VoiceSession,active:Ref<ActiveVoic
     visibleAccountIds = next
   }, { immediate: true })
   return {screenError,screenDiagnostics,screenProfile,screenState,screenViewerError,screenViewerEnded,selectedScreenStreamId,
-    refreshScreenDiagnostics,startScreen,stopScreen,screenViewer,refreshScreenWatchers: screenViewer.refreshWatchers,deafenChanging,toggleDeafen,setMicrophoneMuted,toggleMicrophone,
+    refreshScreenDiagnostics,startScreen,stopScreen,screenViewer,acceptScreenTelemetry: screenViewer.acceptSenderTelemetry,clearScreenTelemetry: screenViewer.clearSenderTelemetry,refreshScreenWatchers: screenViewer.refreshWatchers,deafenChanging,toggleDeafen,setMicrophoneMuted,toggleMicrophone,
     volume,voiceVolumeParticipants,screenViewerCards,screenWatcherIds,ownerScreenWatcherIds}
 }

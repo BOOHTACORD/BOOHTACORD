@@ -17,7 +17,7 @@ it('dispatches roster through the authenticated socket without unrelated refresh
   let options!: RealtimeConnectOptions
   const realtime = { connect: vi.fn((handler, _factory, _url, supplied: RealtimeConnectOptions) => { deliver = handler; options = supplied; supplied.onSocketStart?.() }), disconnect: vi.fn() }
   const presence = { acceptRealtimeEvent: vi.fn(() => false) }
-  const voice = { active: null, refreshScreenWatchers: vi.fn() }
+  const voice = { active: null, clearScreenTelemetry: vi.fn(), refreshScreenWatchers: vi.fn() }
   const workspace = createWorkspaceRealtime(stores, realtime as never, presence as never, voice as never, 'account', vi.fn(), undefined, roster)
   roster.start(); workspace.start()
   await deliver({ eventId: 'event', occurredAt: '2026-11-09T00:00:00Z', kind: 'voice.roster.snapshot', payload: { version: 1, generation: '11111111-1111-4111-8111-111111111111', revision: 1, observed_at: '2026-11-09T00:00:00Z', channels: [] } })

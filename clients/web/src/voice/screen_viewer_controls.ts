@@ -119,5 +119,5 @@ export function createScreenViewerControls(
     controller.setAudioMuted(!controller.audioMuted)
   }
 
-  return { audioMuted, clear, refreshWatchers: () => controller?.refreshWatchers() ?? Promise.resolve(), retry, select, start, stop, toggleAudio }
+  return { audioMuted, acceptSenderTelemetry: (payload: unknown) => controller?.acceptSenderTelemetry(payload) ?? false, clear, clearSenderTelemetry: () => controller?.clearSenderTelemetry(), refreshWatchers: () => controller?.refreshWatchers() ?? Promise.resolve(), retry, select, start, stop, toggleAudio }
 }
