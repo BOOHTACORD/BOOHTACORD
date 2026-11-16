@@ -37,3 +37,10 @@ it('calculates actual duration per decoded/emitted frame and cumulative SDK free
   expect(compareScreenReceiverStats(before, next)).toMatchObject({ freezeCount: 2, freezeDurationMs: 500, statsWindowMs: 1000 })
   expect(compareScreenReceiverStats(before, next).jitterBufferMsPerFrame).toBeCloseTo(5)
 })
+
+it('preserves only bounded receiver RTT as an instantaneous WebRTC measurement', () => {
+  const current = { timestamp: 2000, framesDecoded: 30, framesDropped: 0, rttMs: 42 }
+  expect(compareScreenReceiverStats(null, current).rttMs).toBe(42)
+  expect(compareScreenReceiverStats(null, { ...current, rttMs: -1 }).rttMs).toBeNull()
+  expect(compareScreenReceiverStats(null, { ...current, rttMs: 60_001 }).rttMs).toBeNull()
+})

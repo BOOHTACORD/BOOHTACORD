@@ -16,7 +16,7 @@ describe('media telemetry measurements', () => {
     const input = { platform: 'desktop_web' as const, selected: true, hasTrack: true, videoReady: true,
       playbackFps: 29, sampledAt: Date.now(), packetLossWindowMs: 10000,
       receiverMetrics: { decodedFps: 30, bitrateKbps: 6000, jitterMs: 2, packetsLost: 999,
-        droppedFrames: 0, packetLossPercent: 1.5 } }
+        droppedFrames: 0, packetLossPercent: 1.5, rttMs: null } }
     expect(buildScreenClientReport(input)).toMatchObject({ packet_loss_percent: 1.5, packet_loss_window_ms: 10000 })
     expect(buildScreenClientReport({ ...input, sampledAt: Date.now() - 16000 })).toBeNull()
   })

@@ -127,7 +127,15 @@ createApp({ render: () => params.has('participant-cards') ? listenerParticipantC
     params.has('diagnosis-local') ? h(DiagnosisPanel, { selectedId: 'local-screen', ended: false, hasAudio: false, local: true, videoReady: true, presentedFps: 30, presentedFrames: 900, sampledAt: null, metrics: null }) :
     params.has('diagnosis') ? h(DiagnosisPanel, { selectedId: 'synthetic:screen', ended: false, hasAudio: state.hasAudio, local: false, videoReady: true, presentedFps: 30, presentedFrames: 900, sampledAt: state.sampledAt, metrics: null }) :
     params.has('sender') ? h(ScreenDiagnosticsPanel, { diagnostics: diagnostics(), profile: state.profile === 'null' ? null : state.profile as any, onRefresh: () => events.push('refresh') }) :
-    params.has('receiver') ? h(ScreenReceiverDiagnosticsPanel, { actualVideoQuality: '1920 × 654 · 1 FPS', hasAudio: false, isLocal: false, metrics: null, sampledAt: null, targetProfile: '1080p · 60 FPS', participantName: 'Synthetic QA' }) : [
+    params.has('receiver') ? h(ScreenReceiverDiagnosticsPanel, {
+      actualVideoQuality: '1920 × 654 · 1 FPS', hasAudio: false, isLocal: false,
+      metrics: params.has('receiver-measured') ? {
+        bitrateKbps: 1_500, decodedFps: 30, droppedFrames: 2, jitterMs: 7,
+        packetsLost: 5, packetLossPercent: 0.5, packetLossWindowMs: 10_000, rttMs: 42,
+      } : null,
+      sampledAt: params.has('receiver-measured') ? Date.now() : null,
+      targetProfile: '1080p · 60 FPS', participantName: 'Synthetic QA',
+    }) : [
       h('button', { id: 'opener', onClick: () => { state.open = true } }, 'Показать экран'),
       state.open ? h(ScreenShareSetupDialog, { initialProfile: state.profile as any, updating: params.has('updating'), onCancel: () => { events.push('cancel'); state.open = false }, onStart: (profile: string, mode: string) => { events.push({ profile, mode, activation: navigator.userActivation.isActive }); state.open = false } }) : null,
     ],
