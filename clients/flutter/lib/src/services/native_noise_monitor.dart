@@ -3,6 +3,7 @@ part of 'native_noise_suppression.dart';
 mixin _NativeNoiseMonitor on _NativeNoiseCore {
   void monitor(Future<void> Function(String reason) recover) {
     _timer?.cancel();
+    var androidTimeouts = 0;
     _timer = Timer.periodic(const Duration(milliseconds: 200), (_) {
       if (_polling ||
           _fallback ||
@@ -16,7 +17,17 @@ mixin _NativeNoiseMonitor on _NativeNoiseCore {
         run(() async {
           if (generation != _generation || _disposed) return;
           try {
-            await refresh();
+            try {
+              await refresh();
+              androidTimeouts = 0;
+            } on TimeoutException {
+              if (!kIsWeb &&
+                  defaultTargetPlatform == TargetPlatform.android &&
+                  ++androidTimeouts < 3) {
+                return;
+              }
+              rethrow;
+            }
             final reason = state.failureReason;
             if (reason != null &&
                 reason.isNotEmpty &&

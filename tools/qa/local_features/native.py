@@ -14,6 +14,7 @@ from .policy import local_api
 from .process import run_owned
 from .update_catalog import write_catalog
 from .android_back.exercise import android_back_on_capture
+from .android_microphone import android_microphone_permission
 
 def native_target(target):
     scopes = {
@@ -21,6 +22,7 @@ def native_target(target):
         'integration_test/issue689_roster_test.dart': 'auth, public/auth maintenance handoff, synthetic unknown banner, voice roster socket and manual reconnect',
         'integration_test/issue689_listener_test.dart': 'real SFU listener, roster and app socket recovery; no microphone capture',
         'integration_test/issue786_deafen_test.dart': 'authenticated voice lease updates the replicated deafen attribute and v2 roster; no microphone capture or paired media claim',
+        'integration_test/android_noise_sfu_test.dart': 'Android RNNoise microphone capture in an owned LiveKit room; physical acoustic quality not tested',
         'integration_test/issue689_delivery_revocation_test.dart': 'native revocation delivery under synthetic backlog; no actual socket pressure',
         'integration_test/issue689_heartbeat_test.dart': 'native silent socket recovery against loopback; no real network switching or media',
         'integration_test/issue689_envelope_test.dart': 'native malformed maintenance envelope recovery against loopback; no real network switching or media',
@@ -101,7 +103,7 @@ def main():
                 defines.write_text(json.dumps({'QA_API_BASE':'https://localhost:4810/api/v1',
                                                'QA_CERT_SHA256':pin,'QA_PASSWORD':stack.password}))
                 defines.chmod(0o600)
-                with android_back_on_capture(args.platform,args.device,args.target,destination):
+                with android_back_on_capture(args.platform,args.device,args.target,destination), android_microphone_permission(args.platform,args.device,args.target):
                     run_owned(['flutter','drive','--driver','test_driver/local_qa.dart',
                         '--target',args.target,'-d',args.device,
                         '--dart-define-from-file',str(defines)],cwd=root/'clients/flutter',

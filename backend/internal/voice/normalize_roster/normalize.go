@@ -42,7 +42,7 @@ func Canonicalize(input roster.Result, maxBytes int) (roster.Result, []byte, err
 		result.Channels = append(result.Channels, roster.ChannelRoster{ChannelID: id, Participants: participants})
 	}
 	sort.Slice(result.Channels, func(i, j int) bool { return result.Channels[i].ChannelID < result.Channels[j].ChannelID })
-	encoded, err := json.Marshal(result)
+	encoded, err := encodeRosterV2(result)
 	if err != nil {
 		return roster.Result{}, nil, ErrInvalidSnapshot
 	}
@@ -76,4 +76,20 @@ func normalizeParticipants(input []roster.Participant) ([]roster.Participant, er
 	}
 	sort.Slice(result, func(i, j int) bool { return result[i].AccountID < result[j].AccountID })
 	return result, nil
+}
+
+// Encode public v2 state for change detection without leaking lease proofs.
+func encodeRosterV2(input roster.Result) ([]byte, error) {
+	out := roster.ResultV2{Channels: make([]roster.ChannelRosterV2, 0, len(input.Channels))}
+	for _, channel := range input.Channels {
+		item := roster.ChannelRosterV2{ChannelID: channel.ChannelID, Participants: make([]roster.ParticipantV2, 0, len(channel.Participants))}
+		for _, p := range channel.Participants {
+			item.Participants = append(item.Participants, roster.ParticipantV2{
+				AccountID: p.AccountID, DisplayName: p.DisplayName, ScreenSharing: p.ScreenSharing,
+				MicrophoneMuted: p.MicrophoneMuted, Deafened: p.Deafened,
+			})
+		}
+		out.Channels = append(out.Channels, item)
+	}
+	return json.Marshal(out)
 }

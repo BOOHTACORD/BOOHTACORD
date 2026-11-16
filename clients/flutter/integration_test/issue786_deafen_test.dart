@@ -11,6 +11,7 @@ import 'package:boohtacord_desktop/src/features/voice/roster_state/phase.dart';
 
 import 'issue689_support.dart';
 import 'issue689_voice_fixture.dart';
+import 'issue786_deafen_support.dart';
 import 'local_qa_test.dart' show QaTls;
 
 void main() {
@@ -66,54 +67,27 @@ void main() {
       tester,
       () =>
           app.voiceRoster.phase == VoiceRosterPhase.fresh &&
-          app.voiceRosters?.any(
-                (room) =>
-                    room.channelId == channel.id &&
-                    room.participants.any(
-                      (member) =>
-                          member.accountId == app.user?.accountId &&
-                          !member.deafened,
-                    ),
-              ) ==
-              true,
+          rosterHasDeafened(app, channel.id, false),
     );
 
     await tester.runAsync(app.voice.toggleDeafen);
     await waitFor(
       tester,
-      () =>
-          app.voice.deafened &&
-          app.voiceRosters?.any(
-                (room) =>
-                    room.channelId == channel.id &&
-                    room.participants.any(
-                      (member) =>
-                          member.accountId == app.user?.accountId &&
-                          member.deafened,
-                    ),
-              ) ==
-              true,
+      () => app.voice.deafened && rosterHasDeafened(app, channel.id, true),
     );
     await tester.pumpAndSettle();
     if (Platform.isAndroid || Platform.isIOS) {
+      if (Platform.isAndroid) {
+        await binding.convertFlutterSurfaceToImage();
+        await tester.pumpAndSettle();
+      }
       await binding.takeScreenshot('issue786-deafened-v2-roster');
     }
 
     await tester.runAsync(app.voice.toggleDeafen);
     await waitFor(
       tester,
-      () =>
-          !app.voice.deafened &&
-          app.voiceRosters?.any(
-                (room) =>
-                    room.channelId == channel.id &&
-                    room.participants.any(
-                      (member) =>
-                          member.accountId == app.user?.accountId &&
-                          !member.deafened,
-                    ),
-              ) ==
-              true,
+      () => !app.voice.deafened && rosterHasDeafened(app, channel.id, false),
     );
     await tester.runAsync(app.leaveVoice);
     await waitFor(

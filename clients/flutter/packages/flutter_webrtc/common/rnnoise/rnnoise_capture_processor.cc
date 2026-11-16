@@ -2,9 +2,10 @@
 #include "deepfilter/capture_hook/interface.h"
 #include <cmath>
 #include "preflight/warmup.h"
+#include "android_16k/process.h"
 namespace boohta {
-RnnoiseCaptureProcessor::RnnoiseCaptureProcessor(StateAllocator allocate, deepfilter::CaptureHook* hook)
-    : state_(static_cast<DenoiseState*>(allocate(rnnoise_get_size()))), hook_(hook) {
+RnnoiseCaptureProcessor::RnnoiseCaptureProcessor(StateAllocator allocate, deepfilter::CaptureHook* hook, bool android_16k)
+    : state_(static_cast<DenoiseState*>(allocate(rnnoise_get_size()))), hook_(hook), android_16k_(android_16k) {
   // v0.1 rnnoise_create does not check malloc. Keep pinned source untouched and
   // initialize only successful allocations so unavailable is an honest fallback.
   state_ready_.store(state_ && rnnoise_init(state_) == 0);
@@ -48,10 +49,11 @@ bool RnnoiseCaptureProcessor::ProcessNoise(float* pcm, int frames, int capacity)
   if (rate_.load() == 16000 && frames == 160)
     return ProcessResearchV02At16k(pcm, frames, capacity, generation);
 #endif
+  const bool convert = android_16k_ && rate_.load() == 16000 && frames == 160;
   Failure error = Failure::kNone;
   if (!state_ready_.load()) error = Failure::kUnavailable;
-  else if (!pcm || rate_.load() != 48000 || channels_.load() != 1 ||
-           frames != 480 || capacity < frames) error = Failure::kFormat;
+  else if (!pcm || channels_.load() != 1 || capacity < frames ||
+           (!convert && (rate_.load() != 48000 || frames != 480))) error = Failure::kFormat;
   else for (int i = 0; i < frames; ++i) {
     if (!std::isfinite(pcm[i]) || std::fabs(pcm[i]) > 32768.f) {
       error = Failure::kNonFinite; break;
@@ -60,11 +62,13 @@ bool RnnoiseCaptureProcessor::ProcessNoise(float* pcm, int frames, int capacity)
   if (error != Failure::kNone) {
     failure_.store(error); fallback_.fetch_add(1);
     state_ready_.store(warmed_ && state_ && rnnoise_init(state_) == 0);
+    if (convert) resampler_.Reset();
     return false;
   }
   // RNNoise v0.1 consumes fullband float PCM on the same S16 amplitude scale
   // used by WebRTC AudioBuffer. There is no normalized-float conversion here.
-  rnnoise_process_frame(state_, pcm, pcm);
+  if (convert) ProcessAndroid16k(state_, resampler_, pcm);
+  else rnnoise_process_frame(state_, pcm, pcm);
   if (generation == generation_.load() && requested_.load() == Engine::kRnnoise)
     failure_.store(Failure::kNone);
   processed_.fetch_add(1);
