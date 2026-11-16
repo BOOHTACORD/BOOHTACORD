@@ -18,6 +18,11 @@ type Principal struct {
 	SessionDigest [32]byte
 }
 
+type Watcher struct {
+	LeaseID   string
+	AccountID string
+}
+
 type Authority interface {
 	AuthorizeOwner(context.Context, Principal, string) (channelID, ownerAccountID string, err error)
 	AuthorizeViewer(context.Context, Principal, string, string) (channelID, ownerAccountID, viewerAccountID string, err error)

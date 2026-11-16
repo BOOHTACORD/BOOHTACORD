@@ -34,6 +34,34 @@ type testDatabase struct {
 	row   testRow
 }
 
+type audienceDatabaseStub struct {
+	*testDatabase
+	queryRows *watcherRows
+}
+
+func (database *audienceDatabaseStub) Query(_ context.Context, query string, args ...any) (Rows, error) {
+	database.query, database.args = query, args
+	return database.queryRows, nil
+}
+
+type watcherRows struct {
+	values [][]string
+	index  int
+}
+
+func (rows *watcherRows) Next() bool { return rows.index < len(rows.values) }
+func (rows *watcherRows) Scan(dest ...any) error {
+	if len(dest) != 2 || rows.index >= len(rows.values) {
+		return errors.New("unexpected audience scan")
+	}
+	*dest[0].(*string) = rows.values[rows.index][0]
+	*dest[1].(*string) = rows.values[rows.index][1]
+	rows.index++
+	return nil
+}
+func (*watcherRows) Err() error { return nil }
+func (*watcherRows) Close()     {}
+
 func (database *testDatabase) QueryRow(_ context.Context, query string, args ...any) Row {
 	database.query, database.args = query, args
 	return database.row
@@ -80,5 +108,24 @@ func TestInactiveCrossChannelOrBlockedLeaseDoesNotAuthorize(t *testing.T) {
 	_, _, _, err := New(database).AuthorizeViewer(context.Background(), presence.Principal{AccountID: "outsider"}, "viewer-lease", "owner-lease")
 	if !errors.Is(err, presence.ErrDenied) {
 		t.Fatalf("authorization error=%v", err)
+	}
+}
+
+func TestActiveWatcherAudienceRechecksExactLeasesAndVoiceChannelACL(t *testing.T) {
+	ownerID := "22222222-2222-4222-8222-222222222222"
+	viewerID := "44444444-4444-4444-8444-444444444444"
+	accountID := "33333333-3333-4333-8333-333333333333"
+	database := &audienceDatabaseStub{testDatabase: &testDatabase{}, queryRows: &watcherRows{values: [][]string{{viewerID, accountID}}}}
+	watchers, err := New(database).ActiveWatchers(context.Background(), ownerID, []string{viewerID})
+	if err != nil || len(watchers) != 1 || watchers[0].LeaseID != viewerID || watchers[0].AccountID != accountID {
+		t.Fatalf("watchers=%+v err=%v", watchers, err)
+	}
+	for _, clause := range []string{"viewer.channel_id = owner.channel_id", "viewer.id = ANY($2::uuid[])", "owner.revoked_at IS NULL", "owner_session.revoked_at IS NULL", "viewer.revoked_at IS NULL", "viewer_session.revoked_at IS NULL", "channel.kind = 'VOICE'", "channel.admission_closed_at IS NULL", "viewer_account.blocked_at IS NULL"} {
+		if !strings.Contains(database.query, clause) {
+			t.Fatalf("audience ACL omitted %q", clause)
+		}
+	}
+	if len(database.args) != 2 || database.args[0] != ownerID {
+		t.Fatalf("query arguments=%#v", database.args)
 	}
 }

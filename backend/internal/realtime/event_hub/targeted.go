@@ -37,6 +37,32 @@ func (hub *Hub) PublishToAccountsTransient(accountIDs []string, event Event) {
 	}
 }
 
+// PublishToAccountsTransientCoalesced emits a private, non-journaled event and
+// replaces a queued event with the same transient key for each recipient.
+func (hub *Hub) PublishToAccountsTransientCoalesced(accountIDs []string, event Event, key string) {
+	if hub == nil || len(accountIDs) == 0 {
+		return
+	}
+	targets := make(map[string]struct{}, len(accountIDs))
+	for _, accountID := range accountIDs {
+		if accountID != "" {
+			targets[accountID] = struct{}{}
+		}
+	}
+	if len(targets) == 0 {
+		return
+	}
+	event.TransientKey = key
+	hub.mu.Lock()
+	defer hub.mu.Unlock()
+	for subscription := range hub.subscribers {
+		if _, targeted := targets[subscription.accountID]; !targeted || subscription.dropped {
+			continue
+		}
+		hub.deliverCoalescedLocked(subscription, event, key)
+	}
+}
+
 func (subscription *Subscription) AccountID() string {
 	if subscription == nil {
 		return ""

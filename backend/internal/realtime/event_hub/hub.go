@@ -9,12 +9,13 @@ import (
 )
 
 type Event struct {
-	EventID    string             `json:"event_id"`
-	Kind       string             `json:"kind"`
-	OccurredAt time.Time          `json:"occurred_at"`
-	Payload    map[string]any     `json:"payload"`
-	Cause      causal.Cause       `json:"-"`
-	Telemetry  *TelemetryEnvelope `json:"telemetry,omitempty"`
+	EventID      string             `json:"event_id"`
+	Kind         string             `json:"kind"`
+	OccurredAt   time.Time          `json:"occurred_at"`
+	Payload      map[string]any     `json:"payload"`
+	Cause        causal.Cause       `json:"-"`
+	Telemetry    *TelemetryEnvelope `json:"telemetry,omitempty"`
+	TransientKey string             `json:"-"`
 }
 
 type Hub struct {

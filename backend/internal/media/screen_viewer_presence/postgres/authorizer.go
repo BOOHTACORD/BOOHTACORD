@@ -5,17 +5,34 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	presence "voice-platform/backend/internal/media/screen_viewer_presence"
 )
 
 type Row interface{ Scan(...any) error }
+type Rows interface {
+	Next() bool
+	Scan(...any) error
+	Err() error
+	Close()
+}
 type Database interface {
 	QueryRow(context.Context, string, ...any) Row
 }
-type Authorizer struct{ database Database }
+type AudienceDatabase interface {
+	Query(context.Context, string, ...any) (Rows, error)
+}
+type Authorizer struct {
+	database Database
+	audience AudienceDatabase
+}
 
-func New(database Database) Authorizer { return Authorizer{database: database} }
+func New(database Database) Authorizer {
+	authorizer := Authorizer{database: database}
+	authorizer.audience, _ = database.(AudienceDatabase)
+	return authorizer
+}
 
 func (authorizer Authorizer) AuthorizeOwner(ctx context.Context, principal presence.Principal, ownerLeaseID string) (string, string, error) {
 	var channelID, ownerAccountID string
@@ -29,6 +46,37 @@ func (authorizer Authorizer) AuthorizeViewer(ctx context.Context, principal pres
 	err := authorizer.database.QueryRow(ctx, viewerAuthorization, viewerLeaseID, ownerLeaseID, principal.AccountID, principal.SessionDigest[:]).Scan(&channelID, &ownerAccountID, &viewerAccountID)
 	channelID, ownerAccountID, viewerAccountID, err = authorizationResult(channelID, ownerAccountID, viewerAccountID, err)
 	return channelID, ownerAccountID, viewerAccountID, err
+}
+
+func (authorizer Authorizer) ActiveWatchers(ctx context.Context, ownerLeaseID string, viewerLeaseIDs []string) ([]presence.Watcher, error) {
+	if authorizer.audience == nil || len(viewerLeaseIDs) == 0 {
+		return nil, presence.ErrUnavailable
+	}
+	ids := make([]uuid.UUID, 0, len(viewerLeaseIDs))
+	for _, id := range viewerLeaseIDs {
+		parsed, err := uuid.Parse(id)
+		if err != nil {
+			return nil, presence.ErrDenied
+		}
+		ids = append(ids, parsed)
+	}
+	rows, err := authorizer.audience.Query(ctx, activeWatchers, ownerLeaseID, ids)
+	if err != nil {
+		return nil, presence.ErrUnavailable
+	}
+	defer rows.Close()
+	watchers := make([]presence.Watcher, 0, len(viewerLeaseIDs))
+	for rows.Next() {
+		var watcher presence.Watcher
+		if err := rows.Scan(&watcher.LeaseID, &watcher.AccountID); err != nil {
+			return nil, presence.ErrUnavailable
+		}
+		watchers = append(watchers, watcher)
+	}
+	if rows.Err() != nil {
+		return nil, presence.ErrUnavailable
+	}
+	return watchers, nil
 }
 
 func authorizationResult(channelID, ownerAccountID, viewerAccountID string, err error) (string, string, string, error) {

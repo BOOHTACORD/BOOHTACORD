@@ -47,12 +47,13 @@ $realtime = Get-Content -Raw -LiteralPath $realtimePath | ConvertFrom-Json
 . (Join-Path $PSScriptRoot 'voice.ps1')
 . (Join-Path $PSScriptRoot 'screen_preview.ps1')
 . (Join-Path $PSScriptRoot 'screen_viewer_presence.ps1')
+. (Join-Path $PSScriptRoot 'screen_telemetry.ps1')
 . (Join-Path $PSScriptRoot 'security.ps1')
 . (Join-Path $PSScriptRoot 'role_permissions.ps1')
 . (Join-Path $PSScriptRoot 'telemetry.ps1')
 Push-Location (Join-Path $PSScriptRoot '../../..')
 try {
-    python -m unittest tools.verify.openapi_parity.test_parity tools.verify.openapi_parity.test_source tools.verify.realtime_schema.test_maintenance tools.verify.realtime_schema.test_roster tools.verify.realtime_schema.test_heartbeat
+    python -m unittest tools.verify.openapi_parity.test_parity tools.verify.openapi_parity.test_source tools.verify.realtime_schema.test_maintenance tools.verify.realtime_schema.test_roster tools.verify.realtime_schema.test_heartbeat tools.verify.realtime_schema.test_screen_telemetry
     if ($LASTEXITCODE -ne 0) { throw 'OpenAPI parity tests failed.' }
     python -m tools.verify.openapi_parity.lint
     if ($LASTEXITCODE -ne 0) { throw 'OpenAPI schema lint failed.' }

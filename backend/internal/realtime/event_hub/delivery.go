@@ -52,6 +52,42 @@ func (hub *Hub) deliverLocked(subscription *Subscription, event Event) bool {
 	}
 }
 
+func (hub *Hub) deliverCoalescedLocked(subscription *Subscription, event Event, key string) bool {
+	if capability := requiredCapability(event.Kind); capability != "" {
+		if _, supported := subscription.capabilities[capability]; !supported {
+			return true
+		}
+	}
+	if key == "" || subscription.dropped {
+		return hub.deliverLocked(subscription, event)
+	}
+
+	queued := make([]Event, 0, cap(subscription.events))
+	replaced := false
+	for {
+		select {
+		case previous := <-subscription.events:
+			if previous.Kind == event.Kind && previous.TransientKey == key {
+				replaced = true
+				continue
+			}
+			queued = append(queued, previous)
+		default:
+			if !replaced && len(queued) == cap(subscription.events) {
+				for _, previous := range queued {
+					subscription.events <- previous
+				}
+				return hub.deliverLocked(subscription, event)
+			}
+			queued = append(queued, event)
+			for _, next := range queued {
+				subscription.events <- next
+			}
+			return true
+		}
+	}
+}
+
 func requiredCapability(kind string) string {
 	switch kind {
 	case "notification.queued", "notification.preferences_changed":
@@ -64,6 +100,8 @@ func requiredCapability(kind string) string {
 		return "screen_previews_v1"
 	case "screen_viewers.changed":
 		return "screen_viewers_v1"
+	case "screen_telemetry.updated":
+		return "screen_telemetry_v1"
 	default:
 		return ""
 	}

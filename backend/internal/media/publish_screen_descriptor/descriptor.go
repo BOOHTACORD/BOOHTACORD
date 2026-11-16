@@ -14,6 +14,11 @@ type Scope struct {
 	OperationRevision     uint64 `json:"operation_revision"`
 }
 
+type Publication struct {
+	TrackSID string
+	Scope    Scope
+}
+
 type Layer struct {
 	RID           *string `json:"rid"`
 	Width         int     `json:"width"`

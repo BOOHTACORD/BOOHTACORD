@@ -9,7 +9,7 @@
     "event_id": { "type": "string", "format": "uuid" },
     "kind": {
       "type": "string",
-      "enum": ["maintenance.snapshot", "maintenance.changed", "voice.roster.snapshot", "voice.roster.unavailable", "voice.roster.snapshot.v2", "voice.roster.unavailable.v2", "notification.queued", "notification.preferences_changed", "connection.ready", "connection.heartbeat", "connection.resync_required", "voice.lease_revoked", "channel.updated", "guild.profile.updated", "member.profile.updated", "presence.snapshot", "presence.changed", "message.created", "message.updated", "message.deleted", "direct_message.message_created", "direct_message.message_updated", "direct_message.message_deleted", "role.permissions.updated", "auth.permissions.invalidated", "session.state_changed", "screen_preview.updated", "screen_preview.invalidated", "screen_viewers.changed", "message.reactions_updated", "message.pins_updated", "direct_message.reactions_updated"]
+      "enum": ["maintenance.snapshot", "maintenance.changed", "voice.roster.snapshot", "voice.roster.unavailable", "voice.roster.snapshot.v2", "voice.roster.unavailable.v2", "notification.queued", "notification.preferences_changed", "connection.ready", "connection.heartbeat", "connection.resync_required", "voice.lease_revoked", "channel.updated", "guild.profile.updated", "member.profile.updated", "presence.snapshot", "presence.changed", "message.created", "message.updated", "message.deleted", "direct_message.message_created", "direct_message.message_updated", "direct_message.message_deleted", "role.permissions.updated", "auth.permissions.invalidated", "session.state_changed", "screen_preview.updated", "screen_preview.invalidated", "screen_viewers.changed", "screen_telemetry.updated", "message.reactions_updated", "message.pins_updated", "direct_message.reactions_updated"]
     },
     "occurred_at": { "type": "string", "format": "date-time" },
     "payload": { "type": "object" },
@@ -57,6 +57,57 @@
     "VoiceRosterUnavailableV2": {
       "type": "object", "additionalProperties": false, "required": ["version", "code"],
       "properties": {"version": {"const": 2}, "code": {"const": "temporarily_unavailable"}}
+    },
+    "ScreenTelemetryField": {
+      "type": "object", "additionalProperties": false, "required": ["availability", "provenance"],
+      "properties": {
+        "value": {"type": "number"},
+        "availability": {"type": "string", "enum": ["measured", "configured_only", "unsupported", "not_exposed", "permission_denied", "not_applicable", "stale"]},
+        "provenance": {"type": "string", "enum": ["sender_measured", "configured", "unavailable"]}
+      },
+      "allOf": [
+        {"if": {"properties": {"availability": {"const": "measured"}}, "required": ["availability"]}, "then": {"required": ["value"], "properties": {"provenance": {"const": "sender_measured"}}}},
+        {"if": {"properties": {"availability": {"const": "configured_only"}}, "required": ["availability"]}, "then": {"required": ["value"], "properties": {"provenance": {"const": "configured"}}}},
+        {"if": {"properties": {"availability": {"enum": ["unsupported", "not_exposed", "permission_denied", "not_applicable", "stale"]}}, "required": ["availability"]}, "then": {"not": {"required": ["value"]}, "properties": {"provenance": {"const": "unavailable"}}}}
+      ]
+    },
+    "ScreenTelemetryQualityReason": {
+      "type": "object", "additionalProperties": false, "required": ["availability", "provenance"],
+      "properties": {
+        "value": {"type": "string", "enum": ["none", "bandwidth", "cpu", "encoder"]},
+        "availability": {"type": "string", "enum": ["measured", "unsupported", "not_exposed", "permission_denied", "not_applicable", "stale"]},
+        "provenance": {"type": "string", "enum": ["sender_measured", "unavailable"]}
+      },
+      "allOf": [
+        {"if": {"properties": {"availability": {"const": "measured"}}, "required": ["availability"]}, "then": {"required": ["value"], "properties": {"provenance": {"const": "sender_measured"}}}},
+        {"if": {"properties": {"availability": {"enum": ["unsupported", "not_exposed", "permission_denied", "not_applicable", "stale"]}}, "required": ["availability"]}, "then": {"not": {"required": ["value"]}, "properties": {"provenance": {"const": "unavailable"}}}}
+      ]
+    },
+    "ScreenTelemetryEnvelopeV1": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_version", "media_session_id", "publication_generation", "platform", "client_kind", "capability_version", "sequence", "capture", "encode", "transport"],
+      "properties": {
+        "schema_version": {"const": 1},
+        "media_session_id": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,256}$"},
+        "publication_generation": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+        "platform": {"type": "string", "enum": ["web", "android", "ios", "macos", "windows"]},
+        "client_kind": {"type": "string", "enum": ["web", "flutter"]},
+        "capability_version": {"type": "integer", "minimum": 1, "maximum": 16},
+        "sequence": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+        "sender_sample_age_ms": {"type": "integer", "minimum": 0, "maximum": 60000},
+        "capture": {"type": "object", "additionalProperties": false, "required": ["width", "height", "fps"], "properties": {"width": {"allOf": [{"$ref": "#/$defs/ScreenTelemetryField"}, {"properties": {"value": {"type": "integer", "minimum": 1, "maximum": 16384}}}]}, "height": {"allOf": [{"$ref": "#/$defs/ScreenTelemetryField"}, {"properties": {"value": {"type": "integer", "minimum": 1, "maximum": 16384}}}]}, "fps": {"allOf": [{"$ref": "#/$defs/ScreenTelemetryField"}, {"properties": {"value": {"type": "number", "minimum": 0, "maximum": 240}}}]}}},
+        "encode": {"type": "object", "additionalProperties": false, "required": ["fps", "bitrate_bps"], "properties": {"fps": {"allOf": [{"$ref": "#/$defs/ScreenTelemetryField"}, {"properties": {"value": {"type": "number", "minimum": 0, "maximum": 240}}}]}, "bitrate_bps": {"allOf": [{"$ref": "#/$defs/ScreenTelemetryField"}, {"properties": {"value": {"type": "integer", "minimum": 0, "maximum": 100000000}}}]}}},
+        "transport": {"type": "object", "additionalProperties": false, "required": ["packet_loss_percent", "rtt_ms", "quality_limitation_reason"], "properties": {"packet_loss_percent": {"allOf": [{"$ref": "#/$defs/ScreenTelemetryField"}, {"properties": {"value": {"type": "number", "minimum": 0, "maximum": 100}}}]}, "rtt_ms": {"allOf": [{"$ref": "#/$defs/ScreenTelemetryField"}, {"properties": {"value": {"type": "number", "minimum": 0, "maximum": 60000}}}]}, "quality_limitation_reason": {"$ref": "#/$defs/ScreenTelemetryQualityReason"}}}
+      },
+      "allOf": [
+        {"if": {"properties": {"platform": {"const": "web"}}, "required": ["platform"]}, "then": {"properties": {"client_kind": {"const": "web"}}}},
+        {"if": {"properties": {"platform": {"enum": ["android", "ios", "macos", "windows"]}}, "required": ["platform"]}, "then": {"properties": {"client_kind": {"const": "flutter"}}}}
+      ]
+    },
+    "ScreenTelemetryEventV1": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner_lease_id", "server_received_at", "envelope"],
+      "properties": {"owner_lease_id": {"type": "string", "format": "uuid"}, "server_received_at": {"type": "string", "format": "date-time"}, "envelope": {"$ref": "#/$defs/ScreenTelemetryEnvelopeV1"}}
     }
   },
   "allOf": [
@@ -277,6 +328,10 @@
           "payload": { "type": "object", "additionalProperties": false, "maxProperties": 0 }
         }
       }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "screen_telemetry.updated" } }, "required": ["kind"] },
+      "then": { "properties": { "payload": { "$ref": "#/$defs/ScreenTelemetryEventV1" } } }
     },
     {"if": {"properties": {"kind": {"enum": ["message.reactions_updated","message.pins_updated"]}},"required": ["kind"]},"then": {"properties": {"payload": {"type": "object","additionalProperties": false,"required": ["channel_id","message_id"],"properties": {"channel_id": {"type": "string","format": "uuid"},"message_id": {"type": "string","format": "uuid"}}}}}},
     {"if": {"properties": {"kind": {"enum": ["direct_message.reactions_updated"]}},"required": ["kind"]},"then": {"properties": {"payload": {"type": "object","additionalProperties": false,"required": ["direct_message_id","message_id"],"properties": {"direct_message_id": {"type": "string","format": "uuid"},"message_id": {"type": "string","format": "uuid"}}}}}}
