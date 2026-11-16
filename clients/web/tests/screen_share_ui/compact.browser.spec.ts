@@ -17,9 +17,11 @@ test('stream viewer keeps return to participants visible in the bottom toolbar',
     const controls = page.getByRole('group', { name: 'Управление просмотром' })
     await expect(controls).toHaveCSS('opacity', '1')
     await expect(controls.getByRole('button', { name: 'Диагностика просмотра', exact: true })).toHaveCount(0)
-    await expect(controls.getByRole('button', { name: 'Развернуть на весь экран', exact: true })).toBeVisible()
+    await expect(controls.getByRole('button', { name: 'Включить полноэкранный режим', exact: true })).toBeVisible()
+    await expect(controls.getByRole('button', { name: 'Прекратить просмотр', exact: true })).toHaveCount(0)
 
     const returnButton = controls.locator('.stream-toolbar-actions').getByRole('button', { name: 'К участникам', exact: true })
+    await expect(page.getByRole('button', { name: 'К участникам', exact: true })).toHaveCount(1)
     await expect(returnButton).toBeVisible()
     await expect(controls.locator('.stream-more-actions')).toHaveCount(0)
     await expect(returnButton).toHaveAttribute('title', 'К участникам')
@@ -48,6 +50,8 @@ test('owner keeps return to participants in the toolbar and quality controls in 
   const menu = controls.locator('.stream-voice-return')
   await expect(menu.getByRole('button', { name: 'Качество трансляции', exact: true })).toBeVisible()
   await expect(menu.getByRole('button', { name: 'К участникам', exact: true })).toHaveCount(0)
+  await expect(controls.getByRole('button', { name: 'Остановить свою трансляцию', exact: true })).toHaveClass(/stream-stop-screen-button/)
+  await expect(controls.getByRole('button', { name: 'Прекратить просмотр', exact: true })).toHaveCount(0)
 })
 
 for (const width of [390, 1440]) {
@@ -85,7 +89,7 @@ for (const width of [390, 1440]) {
     await page.screenshot({ path: info.outputPath(`compact-controls-${width}.png`) })
     await page.getByLabel('Дополнительные действия', { exact: true }).click()
     await expect(controls.getByRole('button', { name: 'Диагностика просмотра', exact: true })).toHaveCount(0)
-    await expect(controls.getByRole('button', { name: 'Развернуть на всю область', exact: true })).toHaveCount(0)
+    await expect(controls.getByRole('button', { name: 'Вернуть просмотр в приложение', exact: true })).toHaveCount(0)
     await expect(controls.locator('.stream-toolbar-actions').getByRole('button', { name: 'К участникам', exact: true })).toHaveAttribute('title', 'К участникам')
   })
 }
@@ -108,13 +112,43 @@ test('pausing and resuming a stream controls its video and audio together', asyn
   })
   await expect(page.locator('.screen-loading-state')).not.toBeVisible()
   await page.locator('.screen-stage').hover()
-  await page.getByRole('button', { name: 'Приостановить трансляцию', exact: true }).click()
+  await page.getByRole('button', { name: 'Приостановить локальное воспроизведение', exact: true }).click()
   await expect.poll(() => page.locator('video').evaluate(element => (element as HTMLVideoElement).paused)).toBe(true)
   await expect.poll(() => page.evaluate(() => (window as any).__screenUI.audioPlayback)).toEqual({ paused: true, pauseCalls: 1, playCalls: 0 })
 
-  await page.getByRole('button', { name: 'Продолжить трансляцию', exact: true }).click()
+  await page.getByRole('button', { name: 'Продолжить локальное воспроизведение', exact: true }).click()
   await expect.poll(() => page.locator('video').evaluate(element => (element as HTMLVideoElement).paused)).toBe(false)
   await expect.poll(() => page.evaluate(() => (window as any).__screenUI.audioPlayback)).toEqual({ paused: false, pauseCalls: 1, playCalls: 1 })
+})
+
+test('narrow viewer opens an accessible volume popover and restores focus on Escape', async ({ page }, info) => {
+  for (const width of [320, 390]) {
+    await page.setViewportSize({ width, height: 844 })
+    await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls&watching-remote&single-stream')
+    const stage = page.locator('.screen-stage')
+    await stage.hover()
+
+    const opener = page.getByRole('button', { name: 'Открыть регулировку громкости трансляции', exact: true })
+    await expect(opener).toBeVisible()
+    await expect(opener).toHaveAttribute('aria-expanded', 'false')
+    await opener.click()
+
+    const popover = page.getByRole('group', { name: 'Громкость звука выбранной демонстрации', exact: true })
+    const slider = popover.getByRole('slider', { name: 'Громкость звука выбранной демонстрации' })
+    await expect(popover).toBeVisible()
+    await expect(slider).toBeVisible()
+    await expect(slider).toHaveAttribute('min', '0')
+    await expect(slider).toHaveAttribute('max', '200')
+    await expect(popover.getByRole('button', { name: 'Выключить звук трансляции', exact: true })).toBeVisible()
+    const bounds = await Promise.all([popover.boundingBox(), stage.boundingBox()])
+    expect(bounds[0]!.x).toBeGreaterThanOrEqual(bounds[1]!.x)
+    expect(bounds[0]!.x + bounds[0]!.width).toBeLessThanOrEqual(bounds[1]!.x + bounds[1]!.width)
+    await page.screenshot({ path: info.outputPath(`viewer-volume-popover-${width}.png`) })
+
+    await page.keyboard.press('Escape')
+    await expect(popover).toBeHidden()
+    await expect(opener).toBeFocused()
+  }
 })
 
 
@@ -307,14 +341,14 @@ test('statistics stay usable inside browser fullscreen', async ({ page }) => {
   await page.goto('/tests/screen_share_ui/fixture.html?viewer-controls&watching-remote&single-stream')
   const stage = page.locator('.screen-stage')
   await stage.hover()
-  await page.getByRole('button', { name: 'Развернуть на весь экран', exact: true }).click()
+  await page.getByRole('button', { name: 'Включить полноэкранный режим', exact: true }).click()
   await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(true)
   await page.getByLabel('Статистика', { exact: true }).click()
   const panel = page.getByRole('dialog', { name: 'Статистика трансляции' })
   await expect(panel).toBeVisible()
   expect(await panel.evaluate(element => document.fullscreenElement?.contains(element))).toBe(true)
   await panel.getByRole('button', { name: 'Закрыть статистику', exact: true }).click()
-  await page.getByRole('button', { name: 'Свернуть просмотр', exact: true }).click()
+  await page.getByRole('button', { name: 'Выйти из полноэкранного режима', exact: true }).click()
   await expect.poll(() => stage.evaluate(element => document.fullscreenElement === element)).toBe(false)
 })
 

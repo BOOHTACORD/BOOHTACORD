@@ -48,7 +48,7 @@ describe('screen viewer reference composition', () => {
     expect(viewer).toContain(':muted="selectedStream?.isLocal ?? false"')
     expect(source('./screen_audio_copy.ts')).toContain('Предпросмотр собственного экрана без звука')
     expect(viewer).toContain('ScreenViewerAudioControl v-if="selectedStream.hasAudio && !selectedStream.isLocal"')
-    expect(source('./ScreenViewerAudioControl.vue')).toContain('v-if="adjustable"')
+    expect(source('./ScreenViewerAudioControl.vue')).toContain('v-if="adjustable && !compact"')
     expect(source('../conversation/ConversationPane.vue')).toContain(':deafened="selfDeafened"')
     expect(viewer).toContain('data-testid="stream-rail"')
     expect(viewer).toContain('data-testid="stream-select"')

@@ -18,6 +18,7 @@
 .screen-stage-avatar { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 50%; font-size: 0.6875rem; font-weight: 600; }
 .screen-stage-label b, .stream-option-copy b { flex: none; border-radius: 6px; padding: 2px 6px; color: #FF9AD5; background: #3D1831; font-size: 0.75rem; line-height: 1rem; font-weight: 600; }
 .voice-room .stream-quality-row { display: flex; width: 100%; height: 48px; min-height: 48px; align-items: center; gap: 8px; border: 1px solid var(--gc-border-subtle); border-radius: 10px; padding: 4px 8px; background: var(--gc-sidebar); }
+.screen-audio-control { position: relative; display: flex; min-width: 0; align-items: center; gap: 8px; }
 .stream-quality-row .screen-audio-toggle, .stream-tool-button { display: grid; width: 36px; height: 36px; min-height: 36px; flex: none; place-items: center; border: 0; border-radius: 8px; padding: 0; color: var(--gc-text-secondary); background: transparent; cursor: pointer; }
 .stream-tool-button:hover, .stream-tool-button:focus-visible { color: var(--gc-text-primary); background: var(--gc-surface-hover); }
 .stream-microphone-toggle.is-muted { color: var(--gc-danger); background: var(--gc-danger-bg); }
@@ -28,6 +29,12 @@
 .stream-quality-row .volume-control input::-webkit-slider-thumb { appearance: none; width: 10px; height: 10px; border: 0; border-radius: 50%; background: var(--gc-text-primary); }
 .stream-quality-row .volume-control input::-moz-range-thumb { width: 10px; height: 10px; border: 0; border-radius: 50%; background: var(--gc-text-primary); }
 .voice-room .stream-quality-row .volume-control output { color: var(--gc-text-muted); font-size: 0.75rem; }
+.screen-volume-popover { position: absolute; z-index: 12; bottom: calc(100% + 8px); left: 0; box-sizing: border-box; display: grid; width: min(248px, calc(100vw - 24px)); gap: 8px; border: 1px solid var(--gc-border-subtle); border-radius: 10px; padding: 10px; background: var(--gc-surface-raised); box-shadow: var(--gc-shadow-popup); }
+.screen-volume-popover .volume-control { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 4px 8px; color: var(--gc-text-secondary); font-size: 0.75rem; }
+.screen-volume-popover .volume-control input { grid-column: 1 / -1; width: 100%; min-width: 0; height: 44px; }
+.screen-volume-popover .volume-control output { color: var(--gc-text-primary); }
+.voice-room .stream-quality-row .screen-volume-mute { display: flex; width: 100%; min-height: 44px; align-items: center; justify-content: flex-start; gap: 8px; border: 1px solid var(--gc-border-subtle); padding: 0 10px; font: inherit; font-size: 0.75rem; }
+.screen-volume-mute svg { width: 18px; height: 18px; flex: 0 0 18px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
 .stream-toolbar-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
 .voice-room .stream-toolbar-actions .stream-stop-screen-button { display: flex; width: auto; min-width: 36px; height: 36px; min-height: 36px; align-items: center; justify-content: center; gap: 6px; border-radius: 8px; padding: 0 10px; color: var(--gc-danger); background: var(--gc-danger-bg); font-size: 0.75rem; font-weight: 600; }
 .voice-room .stream-toolbar-actions .stream-stop-screen-button:hover, .voice-room .stream-toolbar-actions .stream-stop-screen-button:focus-visible { color: var(--gc-on-danger); background: var(--gc-danger-solid); }
@@ -83,7 +90,11 @@
   .screen-stage-action svg { width: 16px; height: 16px; flex-basis: 16px; }
   .voice-room .screen-stage-avatar { display: none; }
   .voice-room .stream-quality-row { height: 56px; min-height: 56px; gap: 2px; padding: 4px; }
-  .voice-room .stream-quality-row .volume-control { display: none; }
+  .voice-room .stream-quality-row > .screen-audio-control > .volume-control { display: none; }
+  .screen-audio-control { position: static; }
+  .screen-volume-popover { right: 0; left: auto; }
+  .voice-room .stream-quality-row .screen-volume-popover .volume-control { display: grid; width: 100%; max-width: none; min-height: 0; flex: none; }
+  .voice-room .stream-quality-row .screen-volume-popover .volume-control input { width: 100%; min-width: 0; height: 44px; background: linear-gradient(to right, var(--gc-text-secondary) var(--screen-audio-level), #404654 var(--screen-audio-level)) center / 100% 4px no-repeat; }
   .voice-room .stream-quality-row .screen-audio-toggle, .voice-room .stream-toolbar-actions .stream-tool-button { width: 44px; height: 44px; min-height: 44px; }
   .voice-room .stream-toolbar-actions .stream-stop-screen-button { width: 44px; min-width: 44px; padding: 0; }
   .stream-stop-screen-button span { display: none; }
