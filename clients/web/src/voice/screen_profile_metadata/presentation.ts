@@ -17,6 +17,12 @@ export function screenModeLabel(mode: ScreenShareDescriptorV1['mode'] | undefine
   return mode === 'motion' ? 'Плавность' : mode === 'text' ? 'Текст' : 'Нет данных от отправителя'
 }
 
+export function screenPreviewCaptionLabel(mode: ScreenShareDescriptorV1['mode'] | undefined, targetProfile?: string): string {
+  const modeLabel = mode ? screenModeLabel(mode) : ''
+  const targetLabel = targetProfile ? `Цель: ${targetProfile}` : ''
+  return [modeLabel, targetLabel].filter(Boolean).join(' · ')
+}
+
 export function screenCaptureLabel(descriptor?: ScreenShareDescriptorV1): string {
   if (!descriptor) return 'Нет данных от отправителя'
   const capture = descriptor.effective_profile.capture

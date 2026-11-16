@@ -164,7 +164,7 @@ test('listener room embeds the stream preview in an equal-sized participant card
   await expect(preview).toBeVisible()
   await expect(preview.locator('img')).toHaveAttribute('src', '/synthetic-screen.svg')
   await expect.poll(() => preview.locator('img').evaluate(image => (image as HTMLImageElement).naturalWidth)).toBe(640)
-  await expect(preview.locator('.participant-screen-preview__caption')).toHaveText('1080p · 60 FPS')
+  await expect(preview.locator('.participant-screen-preview__caption')).toHaveText('Цель: 1080p · 60 FPS')
   await expect(preview.getByText('Экран', { exact: false })).toHaveCount(0)
   await expect(preview.locator('.participant-screen-preview__live')).toHaveCSS('top', '10px')
   await expect(preview.locator('.participant-screen-preview__live')).toHaveCSS('right', '10px')

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
-import { screenCaptureLabel, screenEncodingLabel, screenModeLabel, screenTargetLabel, screenTargetSourceLabel, screenDescriptorStatusLabel, screenDescriptorProvenanceLabel, screenDescriptorReceivedAge } from './presentation'
+import { screenCaptureLabel, screenEncodingLabel, screenModeLabel, screenPreviewCaptionLabel, screenTargetLabel, screenTargetSourceLabel, screenDescriptorStatusLabel, screenDescriptorProvenanceLabel, screenDescriptorReceivedAge } from './presentation'
 
 const fixture = JSON.parse(readFileSync(new URL('../../../../../contracts/screen-share-profile-v1.fixtures.json', import.meta.url), 'utf8')).validDescriptor
 
@@ -13,6 +13,12 @@ describe('screen descriptor presentation', () => {
     expect(screenModeLabel(descriptor.mode)).toBe('Плавность')
     expect(screenCaptureLabel(descriptor)).toContain('до 30 FPS')
     expect(screenEncodingLabel(descriptor)).toContain('Мбит/с')
+  })
+
+  it('prefixes configured preview quality with its target provenance', () => {
+    expect(screenPreviewCaptionLabel('motion', '1080p · 60 FPS')).toBe('Плавность · Цель: 1080p · 60 FPS')
+    expect(screenPreviewCaptionLabel(undefined, '1080p · 60 FPS')).toBe('Цель: 1080p · 60 FPS')
+    expect(screenPreviewCaptionLabel(undefined, undefined)).toBe('')
   })
 
   it('labels legacy hints as estimates and missing publisher data as unavailable', () => {
