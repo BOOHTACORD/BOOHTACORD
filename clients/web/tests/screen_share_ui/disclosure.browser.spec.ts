@@ -34,15 +34,28 @@ test('200% text keeps action labels and diagnostic words intact at desktop width
   expect(cancelLineCount).toBe(1)
   await page.screenshot({ path: info.outputPath('launch-text-200-1024.png') })
 
-  await open(page, 'receiver', 1024, 200)
+  await open(page, 'receiver&receiver-measured', 1024, 200)
   await page.locator('summary[aria-label="Статистика"]').click()
   const panel = page.getByRole('dialog', { name: 'Статистика трансляции' })
+  const receiver = panel.locator('.screen-diagnostics-summary__group').nth(0)
   await expect(panel).toBeVisible()
+  await expect(panel.getByRole('heading', { name: 'У вас' })).toBeVisible()
+  await expect(panel.getByRole('heading', { name: 'Отправитель' })).toBeVisible()
+  await expect(receiver.getByText('0,5 %', { exact: true })).toBeVisible()
+  const panelBounds = await panel.evaluate(element => {
+    const rect = element.getBoundingClientRect()
+    return { left: rect.left, right: rect.right, width: rect.width }
+  })
+  expect(panelBounds.left).toBeGreaterThanOrEqual(0)
+  expect(panelBounds.right).toBeLessThanOrEqual(1024)
   await page.screenshot({ path: info.outputPath('receiver-text-200-1024.png') })
-  const rows = page.locator('.stream-diagnostics-panel > dl dt, .stream-diagnostics-panel > dl dd')
+  await panel.getByText('Диагностика', { exact: true }).click()
+  await expect(panel.getByRole('heading', { name: 'Недоступно' })).toBeVisible()
+  const rows = panel.locator('.screen-diagnostics-summary dt, .screen-diagnostics-summary dd, .screen-diagnostics-details dt, .screen-diagnostics-details dd')
   const splitWords = await rows.evaluateAll(elements => {
     const broken: string[] = []
     for (const element of elements) {
+      if (!element.getClientRects().length) continue
       const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT)
       for (let node = walker.nextNode(); node; node = walker.nextNode()) {
         const text = node.textContent ?? ''
@@ -717,12 +730,15 @@ test('receiver has selected/applied/measured levels and optional copyable techni
   await open(page, 'receiver')
   await page.locator('summary[aria-label="Статистика"]').click()
   const panel = page.getByRole('dialog', { name: 'Статистика трансляции' })
-  await expect(panel.getByText('Выбрано отправителем', { exact: true })).toBeVisible()
-  await expect(panel.getByText('Нет подтверждения от отправителя', { exact: true })).toBeVisible()
-  await expect(panel.getByText('Сейчас у зрителя', { exact: true })).toBeVisible()
+  const receiver = panel.locator('.screen-diagnostics-summary__group').nth(0)
+  const sender = panel.locator('.screen-diagnostics-summary__group').nth(1)
+  await expect(sender.getByText('Цель: 1080p · 60 FPS', { exact: true })).toBeVisible()
+  await expect(sender.getByText('Нет измерений от отправителя.', { exact: true })).toBeVisible()
+  await expect(receiver.getByText('Видео у вас', { exact: true })).toBeVisible()
   await expect(panel.getByText('Декодирование', { exact: true })).not.toBeVisible()
-  await panel.getByText('Технические данные', { exact: true }).click()
-  await expect(panel.getByText('Декодирование', { exact: true })).toBeVisible()
+  await panel.getByText('Диагностика', { exact: true }).click()
+  await expect(panel.getByText('Декодирование', { exact: true })).not.toBeVisible()
+  await expect(panel.getByRole('heading', { name: 'Недоступно' })).toBeVisible()
   await panel.getByRole('button', { name: 'Копировать статистику' }).click()
   await expect(panel.getByRole('status')).toHaveText('Статистика скопирована')
   const copy = await page.evaluate(() => navigator.clipboard.readText())
@@ -731,6 +747,54 @@ test('receiver has selected/applied/measured levels and optional copyable techni
   await page.keyboard.press('Escape')
   await expect(panel).toHaveCount(0)
   await expect(page.locator('summary[aria-label="Статистика"]')).toBeFocused()
+})
+
+test('receiver summary separates local measurements from sender data and keeps unknowns in diagnostics', async ({ page }, info) => {
+  await open(page, 'receiver', 390)
+  await page.locator('summary[aria-label="Статистика"]').click()
+  const panel = page.getByRole('dialog', { name: 'Статистика трансляции' })
+  const senderSummary = panel.locator('.screen-diagnostics-summary__group').nth(1)
+  await expect(panel.getByRole('heading', { name: 'У вас' })).toBeVisible()
+  await expect(panel.getByRole('heading', { name: 'Отправитель' })).toBeVisible()
+  await expect(senderSummary.getByText('Нет измерений от отправителя.', { exact: true })).toBeVisible()
+  await expect(panel.getByText('Возраст захвата неизвестен', { exact: true })).toHaveCount(0)
+  await expect(panel.getByText('Диагностика', { exact: true })).toBeVisible()
+  await page.screenshot({ path: info.outputPath('receiver-summary-mobile.png') })
+
+  await panel.getByText('Диагностика', { exact: true }).click()
+  await expect(panel.getByRole('heading', { name: 'Приёмник' })).toBeVisible()
+  await expect(panel.getByRole('heading', { name: 'Конфигурация' })).toBeVisible()
+  await expect(panel.getByRole('heading', { name: 'Недоступно' })).toBeVisible()
+  await page.screenshot({ path: info.outputPath('receiver-diagnostics-mobile.png') })
+
+  for (const width of [320, 720, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 })
+    await expect(panel).toBeVisible()
+    const bounds = await panel.evaluate(element => {
+      const rect = element.getBoundingClientRect()
+      return { left: rect.left, right: rect.right, pageWidth: document.documentElement.scrollWidth }
+    })
+    expect(bounds.left).toBeGreaterThanOrEqual(0)
+    expect(bounds.right).toBeLessThanOrEqual(width)
+    expect(bounds.pageWidth).toBeLessThanOrEqual(width)
+    if (width === 320 || width === 1440) {
+      await page.screenshot({ path: info.outputPath(`receiver-diagnostics-${width}.png`) })
+    }
+  }
+})
+
+test('receiver summary reports measured loss and selected-pair RTT separately from the target', async ({ page }) => {
+  await open(page, 'receiver&receiver-measured', 1024)
+  await page.locator('summary[aria-label="Статистика"]').click()
+  const panel = page.getByRole('dialog', { name: 'Статистика трансляции' })
+  const receiver = panel.locator('.screen-diagnostics-summary__group').nth(0)
+  const sender = panel.locator('.screen-diagnostics-summary__group').nth(1)
+  await expect(receiver.getByText('0,5 %', { exact: true })).toBeVisible()
+  await expect(receiver.getByText('42 мс', { exact: true })).toBeVisible()
+  await expect(receiver.getByText('Декодирование', { exact: true })).toBeVisible()
+  await expect(receiver.getByText('30 FPS', { exact: true })).toBeVisible()
+  await expect(sender.getByText('Цель: 1080p · 60 FPS', { exact: true })).toBeVisible()
+  await expect(sender.getByText('Нет измерений от отправителя.', { exact: true })).toBeVisible()
 })
 
 test('clipboard failure stays visible and mobile tab reaches disclosure and copy before returning to close', async ({ page }) => {

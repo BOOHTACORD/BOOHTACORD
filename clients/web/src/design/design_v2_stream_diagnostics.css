@@ -1,6 +1,6 @@
 .stream-diagnostics > summary.stream-tool-button { display: grid; width: 36px; min-width: 36px; height: 36px; min-height: 36px; place-items: center; border: 0; padding: 0; background: transparent; }
 .stream-diagnostics-backdrop { display: none; }
-.stream-diagnostics-panel { box-sizing: border-box; width: min(20rem, calc(100vw - 32px)); padding: 20px; color: var(--gc-text-primary); background: var(--gc-surface-raised); }
+.stream-diagnostics-panel { box-sizing: border-box; width: min(42rem, calc(100vw - 32px)); padding: 20px; color: var(--gc-text-primary); background: var(--gc-surface-raised); }
 .stream-diagnostics-panel header { display: flex; align-items: center; justify-content: space-between; }
 .stream-diagnostics-panel h2 { margin: 0; font-size: 1rem; line-height: 1.5rem; }
 .stream-diagnostics-panel header button { width: 28px; height: 28px; border: 0; color: var(--gc-text-secondary); background: transparent; font-size: 1.4375rem; cursor: pointer; }
@@ -38,3 +38,16 @@
 .screen-sender-details { margin-block: 8px; }
 .screen-sender-details > summary { min-height: 44px; align-content: center; cursor: pointer; }
 .screen-sender-details summary:focus-visible { outline: 2px solid var(--gc-focus); outline-offset: 2px; }
+
+.screen-diagnostics-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.screen-diagnostics-summary__group { min-width: 0; border: 1px solid var(--gc-border-subtle); border-radius: var(--gc-radius-md); padding: 12px; }
+.screen-diagnostics-summary__group h3, .screen-diagnostics-details h3 { margin: 0 0 8px; color: var(--gc-text-primary); font-size: 0.8125rem; line-height: 1.25rem; }
+.screen-diagnostics-summary__group > p, .screen-diagnostics-details section > p { margin: 0; color: var(--gc-text-muted); font-size: 0.75rem; line-height: 1.25rem; }
+.screen-diagnostics-summary__group .screen-diagnostics-target { margin-bottom: 8px; color: var(--gc-text-secondary); }
+.screen-diagnostics-details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding-top: 12px; }
+.screen-diagnostics-details section { min-width: 0; }
+.screen-diagnostics-details ul { margin: 0; padding-left: 1.125rem; color: var(--gc-text-muted); font-size: 0.75rem; line-height: 1.4; }
+.screen-diagnostics-details li + li { margin-top: 6px; }
+.screen-diagnostics-details li strong { color: var(--gc-text-secondary); }
+@media (max-width: 900px) { .screen-diagnostics-details { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 720px) { .screen-diagnostics-summary { grid-template-columns: minmax(0, 1fr); } }

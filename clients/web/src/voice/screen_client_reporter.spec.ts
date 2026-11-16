@@ -8,7 +8,7 @@ describe('anonymous screen client reports', () => {
     expect(buildScreenClientReport(base)).toMatchObject({ platform: 'ios_web', direction: 'receiver', state: 'waiting_subscription' })
     expect(buildScreenClientReport({ ...base, hasTrack: true })).toMatchObject({ state: 'waiting_first_frame' })
     expect(buildScreenClientReport({ ...base, hasTrack: true, videoReady: true, playbackFps: 0 })).toMatchObject({ state: 'stalled', presented_fps: 0 })
-    expect(buildScreenClientReport({ ...base, hasTrack: true, videoReady: true, playbackFps: 26.5, receiverMetrics: { decodedFps: 29.7, bitrateKbps: 1100, packetsLost: 2, packetLossPercent: null, droppedFrames: 1, jitterMs: 4 } })).toMatchObject({
+    expect(buildScreenClientReport({ ...base, hasTrack: true, videoReady: true, playbackFps: 26.5, receiverMetrics: { decodedFps: 29.7, bitrateKbps: 1100, packetsLost: 2, packetLossPercent: null, droppedFrames: 1, jitterMs: 4, rttMs: null } })).toMatchObject({
       platform: 'ios_web', direction: 'receiver', state: 'playing', presented_fps: 26.5, decoded_fps: 29.7, bitrate_kbps: 1100, packets_lost: 2, dropped_frames: 1, jitter_ms: 4,
     })
     expect(buildScreenClientReport({ ...base, hasTrack: true, videoReady: true, playbackFps: 26, receiverMetrics: null, frameWidth: 540, frameHeight: 1170 })).toMatchObject({ frame_width: 540, frame_height: 1170 })
