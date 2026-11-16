@@ -23,10 +23,17 @@ describe('LiveKit screen metadata lease binding', () => {
 
     try {
       await metadata.bindLease('lease-a')
+      expect(metadata.readTelemetryScope()).toBeUndefined()
       await metadata.publish('P1080_30')
+      expect(metadata.readTelemetryScope()).toEqual({
+        ownerLeaseId: 'lease-a', mediaSessionId: expect.any(String), publicationGeneration: 2,
+        captureWidth: 1920, captureHeight: 1080, captureFps: 30,
+      })
       await metadata.bindLease('lease-a')
       await metadata.publish('P720_30')
+      expect(metadata.readTelemetryScope()).toMatchObject({ ownerLeaseId: 'lease-a', captureWidth: 1920, captureHeight: 1080, captureFps: 30 })
       await metadata.bindLease('lease-b')
+      expect(metadata.readTelemetryScope()).toBeUndefined()
       await metadata.publish('P1080_30')
 
       const descriptor = (index: number) => update.mock.calls[index]?.[1] as ScreenShareDescriptorV1

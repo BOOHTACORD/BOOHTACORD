@@ -7,6 +7,7 @@ import { ScreenPublisherAdapter } from './screen_publisher/adapter'
 import type { ScreenPublisherScope } from './screen_publisher/types'
 import { ScreenAdaptationBinding } from './screen_adaptation/runtime_apply/binding'
 import type { AdaptationRuntimeOptions } from './screen_adaptation/runtime_apply/types'
+import type { ScreenTelemetryPublicationScope } from './screen_sender_telemetry'
 
 export interface ScreenVoiceSession { leaseId: string; room: VoiceRoom; screenProfile: ScreenProfile | null }
 export class VoiceScreenSession {
@@ -74,6 +75,12 @@ export class VoiceScreenSession {
     const current = this.current()
     if (!current || !current.screenProfile) throw new Error('Демонстрация экрана не запущена.')
     return this.adaptation.read(() => readScreenShareDiagnostics(current.room))
+  }
+  readTelemetryScope(): ScreenTelemetryPublicationScope | undefined {
+    const current = this.current()
+    if (!current || !current.screenProfile || this.publisher.active?.scope.owner !== current) return undefined
+    const scope = current.room.readScreenTelemetryScope?.()
+    return scope?.ownerLeaseId === current.leaseId ? scope : undefined
   }
   onScreenEnded(listener: () => void): () => void {
     this.screenEndedListeners.add(listener)

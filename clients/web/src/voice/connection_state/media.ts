@@ -26,7 +26,7 @@ export function createVoiceMediaState(session:VoiceSession,active:Ref<ActiveVoic
   const selectedScreenStreamId = ref<string | null>(null)
   const { dispose: disposeScreenControls, refreshScreenDiagnostics, startScreen, stopScreen } = createScreenControls(session.screen, active, screenError, screenProfile, screenState, screenDiagnostics)
   onScopeDispose(disposeScreenControls)
-  installScreenSenderReporting(screenState, screenDiagnostics, refreshScreenDiagnostics, undefined, () => screenProfile.value)
+  installScreenSenderReporting(screenState, screenDiagnostics, refreshScreenDiagnostics, undefined, () => screenProfile.value, () => session.screen.readTelemetryScope())
   const screenViewer = createScreenViewerControls(session, rawScreenViewerCards, selectedScreenStreamId, screenViewerError, screenViewerEnded, rawScreenWatcherIds, rawOwnerScreenWatcherIds)
   const { deafenChanging, toggleDeafen } = createDeafenControls(session, deafened, microphoneMuted, microphonePermissionDenied, error)
   const { setMicrophoneMuted, toggleMicrophone } = createMicrophoneControls(session, active, state, deafened, microphoneMuted, microphonePermissionDenied, error)

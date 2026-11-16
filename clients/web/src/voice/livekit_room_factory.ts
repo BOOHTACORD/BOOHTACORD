@@ -130,6 +130,7 @@ export async function defaultLiveKitRoomFactory(): Promise<VoiceRoom> {
   }
   room.publishScreenProfileMetadata = metadata.publish
   room.clearScreenProfileMetadata = metadata.clear
+  room.readScreenTelemetryScope = metadata.readTelemetryScope
   liveKitRoom.on(RoomEvent.Reconnected, metadata.reconnected)
   const screenPublisherEvents = screenPublisherEventHandlers(screenPublisher, Track.Source.ScreenShare, profileGuard)
   liveKitRoom.on(RoomEvent.LocalTrackPublished, screenPublisherEvents.published); liveKitRoom.on(RoomEvent.LocalTrackUnpublished, screenPublisherEvents.unpublished)

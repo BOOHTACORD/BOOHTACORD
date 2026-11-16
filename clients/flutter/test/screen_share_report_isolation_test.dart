@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:boohtacord_desktop/src/core/session/scope.dart';
 import 'package:boohtacord_desktop/src/features/screen/metrics/controller.dart';
+import 'package:boohtacord_desktop/src/features/screen/metrics/telemetry_envelope.dart';
 import 'package:boohtacord_desktop/src/features/screen/profile/quality.dart';
 import 'package:boohtacord_desktop/src/services/api_client.dart';
 import 'package:flutter/foundation.dart';
@@ -33,6 +34,8 @@ void main() {
         return response.future;
       }),
     );
+    const leaseId = '11111111-1111-4111-8111-111111111111';
+    expect(api.transport.session.telemetry.bindMediaLease(leaseId), isTrue);
     final track = _ScreenTrack(sender);
     final metrics = ScreenShareMetricsController(
       api,
@@ -41,6 +44,11 @@ void main() {
       isSharing: () => true,
       readQuality: () => ScreenShareQuality.balanced,
       changed: () {},
+      readTelemetryScope: () => const ScreenTelemetryPublicationScope(
+        ownerLeaseId: leaseId,
+        mediaSessionId: 'media-session-1',
+        publicationGeneration: 3,
+      ),
       captureObservation: () => (observation) async {
         observations++;
       },
@@ -51,7 +59,16 @@ void main() {
     final firstSampleAt = metrics.sampledAt;
     await Future<void>.delayed(const Duration(milliseconds: 1100));
 
-    expect(posts, 1, reason: 'only one stalled HTTP export may be active');
+    expect(
+      posts,
+      2,
+      reason: 'one admin export and one ephemeral relay may be active',
+    );
+    expect(
+      sender.requests,
+      greaterThanOrEqualTo(2),
+      reason: 'the relay must reuse the existing getStats polling loop',
+    );
     expect(sender.requests, greaterThanOrEqualTo(2));
     expect(observations, greaterThanOrEqualTo(2));
     expect(metrics.sampledAt, isNotNull);
@@ -60,6 +77,7 @@ void main() {
     metrics.stop();
     response.complete(http.Response('', 204));
     await Future<void>.delayed(Duration.zero);
+    api.transport.session.telemetry.endMedia();
     api.transport.raw.close();
   });
 

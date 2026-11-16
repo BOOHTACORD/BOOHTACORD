@@ -1,5 +1,6 @@
 import { screenProfile, type ScreenProfile } from '../screen_profile/policy'
 import { SCREEN_DESCRIPTOR_ATTRIBUTE } from './descriptor'
+import type { ScreenTelemetryPublicationScope } from '../screen_sender_telemetry'
 import type { ScreenDescriptorLayer, ScreenDescriptorOwner, ScreenShareDescriptorV1, ScreenProfileMode } from './types'
 
 export interface DescriptorAttributePort { setAttributes(attributes: Record<string, string>): Promise<void> }
@@ -11,6 +12,7 @@ export class ScreenProfileMetadataPublisher {
   private lastProfile: ScreenProfile | undefined
   private lastMode: ScreenProfileMode | undefined
   private lastDescriptor: ScreenShareDescriptorV1 | undefined
+  private publishedDescriptor: ScreenShareDescriptorV1 | undefined
   private profileRevision = 0
   private operationRevision = 0
 
@@ -19,6 +21,19 @@ export class ScreenProfileMetadataPublisher {
     private readonly owner: ScreenDescriptorOwner,
     private readonly createId: () => string = () => crypto.randomUUID(),
   ) {}
+
+  telemetryScope(ownerLeaseId: string): ScreenTelemetryPublicationScope | undefined {
+    const descriptor = this.publishedDescriptor
+    if (!descriptor || descriptor.publisher_state !== 'sharing' || !ownerLeaseId) return undefined
+    return {
+      ownerLeaseId,
+      mediaSessionId: descriptor.scope.media_session_id,
+      publicationGeneration: descriptor.scope.publication_generation,
+      captureWidth: descriptor.effective_profile.capture.max_width,
+      captureHeight: descriptor.effective_profile.capture.max_height,
+      captureFps: descriptor.effective_profile.capture.max_fps,
+    }
+  }
 
   async publish(profile: ScreenProfile, generation: number, capture: CaptureSnapshot, encodings: SenderEncodingSnapshot[], mode: ScreenProfileMode = 'motion'): Promise<void> {
     if (!Number.isSafeInteger(capture.width) || capture.width < 2 || !Number.isSafeInteger(capture.height) || capture.height < 2) {
@@ -44,10 +59,12 @@ export class ScreenProfileMetadataPublisher {
       this.lastProfile = profile
       this.lastMode = mode
       this.profileRevision = nextRevision
+      this.publishedDescriptor = descriptor
     }
   }
 
   async clear(): Promise<void> {
+    this.publishedDescriptor = undefined
     let descriptor: ScreenShareDescriptorV1 | undefined
     if (this.lastDescriptor) {
       descriptor = { ...this.lastDescriptor, scope: { ...this.lastDescriptor.scope, operation_revision: ++this.operationRevision }, publisher_state: 'idle' }

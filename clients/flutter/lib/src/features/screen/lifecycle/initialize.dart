@@ -23,6 +23,9 @@ void initializeScreenSharing(
     readQuality: () => owner.quality,
     changed: owner.changed,
     captureObservation: owner.adaptation.collector,
+    readTelemetryScope: () => owner.descriptor.telemetryScope(
+      owner.api.transport.session.telemetry.snapshot().leaseId,
+    ),
   );
   owner.thumbnail = ScreenThumbnailController(
     owner.scope,
