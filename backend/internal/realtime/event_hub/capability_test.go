@@ -77,3 +77,39 @@ func TestTransientScreenViewerHintsAreTargetedCapabilityGatedAndNotJournaled(t *
 		t.Fatalf("transient hint was persisted %d times", journal.appended)
 	}
 }
+
+func TestCoalescedTelemetryKeepsOnlyNewestQueuedSamplePerPublication(t *testing.T) {
+	hub := New(2)
+	journal := &fakeJournal{}
+	hub.SetJournal(journal)
+	subscription := hub.SubscribeAccountWithCapabilities("viewer", Event{}, []string{"screen_telemetry_v1"})
+	legacy := hub.Subscribe("legacy")
+	defer subscription.Close()
+	defer legacy.Close()
+
+	hub.PublishToAccountsTransientCoalesced([]string{"viewer"}, Event{Kind: "ordinary.event", Payload: map[string]any{}}, "")
+	first := Event{Kind: "screen_telemetry.updated", TransientKey: "lease/session/4", Payload: map[string]any{"sequence": 1}}
+	latest := Event{Kind: "screen_telemetry.updated", TransientKey: "lease/session/4", Payload: map[string]any{"sequence": 2}}
+	hub.PublishToAccountsTransientCoalesced([]string{"viewer"}, first, first.TransientKey)
+	hub.PublishToAccountsTransientCoalesced([]string{"viewer"}, latest, latest.TransientKey)
+
+	if event := <-subscription.Events(); event.Kind != "ordinary.event" {
+		t.Fatalf("first queued event = %#v", event)
+	}
+	if event := <-subscription.Events(); event.Kind != "screen_telemetry.updated" || event.Payload["sequence"] != 2 {
+		t.Fatalf("coalesced event = %#v", event)
+	}
+	select {
+	case event := <-subscription.Events():
+		t.Fatalf("unexpected queued event: %#v", event)
+	default:
+	}
+	select {
+	case event := <-legacy.Events():
+		t.Fatalf("legacy subscription received a versioned telemetry event: %#v", event)
+	default:
+	}
+	if journal.appended != 0 {
+		t.Fatalf("transient samples were journaled %d times", journal.appended)
+	}
+}

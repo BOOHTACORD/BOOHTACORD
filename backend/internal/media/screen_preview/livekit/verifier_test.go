@@ -2,6 +2,7 @@ package screenpreviewlivekit
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
@@ -64,6 +65,35 @@ func TestCurrentTrackRejectsInvalidIdentifiersAndUnavailableService(t *testing.T
 	}
 	if _, err := client.CurrentTrack(context.Background(), uuid.NewString(), uuid.NewString()); !errors.Is(err, ErrUnavailable) {
 		t.Fatalf("unavailable service error = %v", err)
+	}
+}
+
+func TestCurrentPublicationRequiresValidMatchingScreenDescriptor(t *testing.T) {
+	channelID, leaseID := uuid.NewString(), uuid.NewString()
+	ownerAccountID := uuid.NewString()
+	roomID := "voice:" + channelID
+	descriptor := `{"schema_version":1,"scope":{"origin_id":"https://voice.example.test","account_id":"` + ownerAccountID + `","room_id":"` + roomID + `","media_session_id":"session-a","publication_generation":4,"operation_revision":7},"mode":"text","publisher_state":"sharing","viewer_state":"idle","requested_profile_id":"P1080_30","effective_profile":{"capture":{"max_width":1920,"max_height":1080,"max_fps":30},"encoding":{"codec":null,"layers":[{"rid":null,"width":1920,"height":1080,"max_fps":30,"max_bitrate_bps":2000000,"scale_down_by":1,"active":true}]}},"layer_topology":"single-layer","profile_revision":1,"capabilities":{"live_update":true,"republish_without_recapture":true,"simulcast":false},"reason_codes":["user-request"]}`
+	body, err := json.Marshal(map[string]any{"participants": []any{map[string]any{
+		"identity": "voice-lease:" + leaseID, "state": "ACTIVE",
+		"attributes": map[string]string{"boohtacord.screen-share.v1": descriptor},
+		"tracks":     []any{map[string]any{"sid": "screen-track-1", "type": "VIDEO", "source": "SCREEN_SHARE", "muted": false}},
+	}}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	transport := roundTripFunc(func(request *http.Request) (*http.Response, error) {
+		return jsonResponse(request, string(body)), nil
+	})
+	client, err := New(Config{URL: "http://livekit.test", APIKey: "api-key", APISecret: "api-secret", HTTPTransport: transport})
+	if err != nil {
+		t.Fatal(err)
+	}
+	publication, err := client.CurrentPublication(context.Background(), channelID, leaseID, ownerAccountID)
+	if err != nil || publication.TrackSID != "screen-track-1" || publication.Scope.MediaSessionID != "session-a" || publication.Scope.PublicationGeneration != 4 {
+		t.Fatalf("publication=%+v err=%v", publication, err)
+	}
+	if _, err := client.CurrentPublication(context.Background(), channelID, leaseID, uuid.NewString()); !errors.Is(err, ErrNoPublication) {
+		t.Fatalf("cross-account descriptor error=%v", err)
 	}
 }
 

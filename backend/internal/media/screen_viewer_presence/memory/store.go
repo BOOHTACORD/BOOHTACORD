@@ -124,6 +124,39 @@ func (store *Store) Viewers(ownerLeaseID, trackSID string) []string {
 	return result
 }
 
+// Watchers returns the current selected-viewer lease identities for one live
+// track. Callers must reauthorize these leases before delivering private data.
+func (store *Store) Watchers(ownerLeaseID, trackSID string) []presence.Watcher {
+	store.mu.Lock()
+	now := store.now()
+	watchers := make([]presence.Watcher, 0, 4)
+	var expiredOwners []string
+	for currentKey, current := range store.entries {
+		if now.Sub(current.lastSeen) >= store.ttl {
+			delete(store.entries, currentKey)
+			if current.timer != nil {
+				current.timer.Stop()
+			}
+			expiredOwners = append(expiredOwners, current.ownerAccountID)
+			continue
+		}
+		if currentKey.ownerLeaseID == ownerLeaseID && current.trackSID == trackSID {
+			watchers = append(watchers, presence.Watcher{LeaseID: currentKey.viewerLeaseID, AccountID: current.viewerAccountID})
+		}
+	}
+	store.mu.Unlock()
+	for _, owner := range expiredOwners {
+		store.notify(owner)
+	}
+	sort.Slice(watchers, func(i, j int) bool {
+		if watchers[i].AccountID == watchers[j].AccountID {
+			return watchers[i].LeaseID < watchers[j].LeaseID
+		}
+		return watchers[i].AccountID < watchers[j].AccountID
+	})
+	return watchers
+}
+
 func (store *Store) Clear(ownerLeaseID, trackSID string) bool {
 	store.mu.Lock()
 	var changedOwners []string

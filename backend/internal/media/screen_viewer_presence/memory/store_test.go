@@ -24,6 +24,9 @@ func TestWatchHeartbeatExpiresWithoutChangingAudienceUntilStale(t *testing.T) {
 	if got := store.Viewers("owner-lease", "TR_screen"); len(got) != 1 || got[0] != "viewer" {
 		t.Fatalf("viewers=%v", got)
 	}
+	if got := store.Watchers("owner-lease", "TR_screen"); len(got) != 1 || got[0] != (presence.Watcher{LeaseID: "viewer-lease", AccountID: "viewer"}) {
+		t.Fatalf("watchers=%+v", got)
+	}
 	if len(changed) != 0 {
 		t.Fatalf("heartbeat notifications=%v", changed)
 	}
@@ -31,6 +34,9 @@ func TestWatchHeartbeatExpiresWithoutChangingAudienceUntilStale(t *testing.T) {
 	now = now.Add(21 * time.Second)
 	if got := store.Viewers("owner-lease", "TR_screen"); len(got) != 0 {
 		t.Fatalf("expired viewers=%v", got)
+	}
+	if got := store.Watchers("owner-lease", "TR_screen"); len(got) != 0 {
+		t.Fatalf("expired watcher leases=%+v", got)
 	}
 	if len(changed) != 1 || changed[0] != "owner" {
 		t.Fatalf("expiry notifications=%v", changed)

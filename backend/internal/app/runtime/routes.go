@@ -104,6 +104,9 @@ func routes(ctx context.Context, resources *lifecycle.Stack, database, sessionDa
 	if err := mediaroutes.ConfigureScreenViewerPresenceRoutes(mux, database, sessionService, configuration.LiveKitPrivateHTTPURL, configuration.LiveKitAPIKey, configuration.LiveKitAPISecret, screenViewers, events); err != nil {
 		return nil, screenpreview.Service{}, fmt.Errorf("configure screen viewer presence: %w", err)
 	}
+	if err := mediaroutes.ConfigureScreenTelemetryRoutes(mux, database, sessionService, configuration.LiveKitPrivateHTTPURL, configuration.LiveKitAPIKey, configuration.LiveKitAPISecret, screenViewers, events); err != nil {
+		return nil, screenpreview.Service{}, fmt.Errorf("configure screen telemetry relay: %w", err)
+	}
 	if err := mediaroutes.ConfigureScreenDescriptorRoutes(mux, database, sessionService, configuration.PublicOrigin, configuration.LiveKitPrivateHTTPURL, configuration.LiveKitAPIKey, configuration.LiveKitAPISecret); err != nil {
 		return nil, screenpreview.Service{}, fmt.Errorf("configure screen profile descriptor updates: %w", err)
 	}

@@ -3754,6 +3754,29 @@
         "security": [{"SessionCookie": []}]
       }
     },
+    "/api/v1/voice/leases/{ownerLeaseID}/screen-telemetry": {
+      "post": {
+        "operationId": "publishScreenTelemetryV1",
+        "description": "Authenticated active screen publisher only. Accepts a strict bounded ScreenTelemetryEnvelopeV1 and relays it ephemerally only to currently selected, reauthorized viewers of the same active publication. The server stamps freshness, rejects stale generations and out-of-order samples, coalesces realtime delivery, and never journals or stores telemetry values. No media payload, track ID, username, address, SDP, SSRC, token or free text is accepted. Telemetry failure does not affect screen or voice media. Mutation requires the deployment Origin.",
+        "parameters": [
+          {"name": "ownerLeaseID", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid"}},
+          {"name": "Origin", "in": "header", "required": true, "schema": {"type": "string"}, "description": "Exact configured PUBLIC_ORIGIN; required on every public mutation."}
+        ],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ScreenTelemetryEnvelopeV1"}}}},
+        "responses": {
+          "204": {"description": "Ephemeral telemetry accepted; no body.", "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}}},
+          "400": {"description": "Malformed, oversized, private-field, or out-of-range telemetry payload.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}, "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}}},
+          "401": {"description": "No active server-side session.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}, "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}}},
+          "403": {"description": "Origin rejected.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}, "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}}},
+          "404": {"description": "Owner lease or active screen publication is not authorized.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}, "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}}},
+          "409": {"description": "Publication generation changed or the sample sequence is stale.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}, "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}}},
+          "429": {"description": "Sample interval is below the bounded minimum.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}, "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}}},
+          "503": {"description": "Bounded relay state or required ACL/LiveKit dependency is unavailable; media remains independent.", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}, "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}}},
+          "500": {"description": "Internal failure before dispatch; middleware may return an empty body.", "headers": {"X-Request-ID": {"$ref": "#/components/headers/RequestID"}}, "x-empty-body-possible": true}
+        },
+        "security": [{"SessionCookie": []}]
+      }
+    },
     "/api/v1/voice/screen-metrics": {
       "post": {
         "operationId": "reportClientScreenMetrics",
@@ -11080,6 +11103,87 @@
           "detail": {
             "type": "string"
           }
+        }
+      },
+      "ScreenTelemetryNumericMetric": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["availability", "provenance"],
+        "properties": {
+          "value": {"type": "number"},
+          "availability": {"type": "string", "enum": ["measured", "configured_only", "unsupported", "not_exposed", "permission_denied", "not_applicable", "stale"]},
+          "provenance": {"type": "string", "enum": ["sender_measured", "configured", "unavailable"]}
+        },
+        "allOf": [
+          {"if": {"properties": {"availability": {"const": "measured"}}, "required": ["availability"]}, "then": {"required": ["value"], "properties": {"provenance": {"const": "sender_measured"}}}},
+          {"if": {"properties": {"availability": {"const": "configured_only"}}, "required": ["availability"]}, "then": {"required": ["value"], "properties": {"provenance": {"const": "configured"}}}},
+          {"if": {"properties": {"availability": {"enum": ["unsupported", "not_exposed", "permission_denied", "not_applicable", "stale"]}}, "required": ["availability"]}, "then": {"not": {"required": ["value"]}, "properties": {"provenance": {"const": "unavailable"}}}}
+        ]
+      },
+      "ScreenTelemetryQualityReason": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["availability", "provenance"],
+        "properties": {
+          "value": {"type": "string", "enum": ["none", "bandwidth", "cpu", "encoder"]},
+          "availability": {"type": "string", "enum": ["measured", "unsupported", "not_exposed", "permission_denied", "not_applicable", "stale"]},
+          "provenance": {"type": "string", "enum": ["sender_measured", "unavailable"]}
+        },
+        "allOf": [
+          {"if": {"properties": {"availability": {"const": "measured"}}, "required": ["availability"]}, "then": {"required": ["value"], "properties": {"provenance": {"const": "sender_measured"}}}},
+          {"if": {"properties": {"availability": {"enum": ["unsupported", "not_exposed", "permission_denied", "not_applicable", "stale"]}}, "required": ["availability"]}, "then": {"not": {"required": ["value"]}, "properties": {"provenance": {"const": "unavailable"}}}}
+        ]
+      },
+      "ScreenTelemetryEnvelopeV1": {
+        "title": "Ephemeral screen sender telemetry envelope v1",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["schema_version", "media_session_id", "publication_generation", "platform", "client_kind", "capability_version", "sequence", "capture", "encode", "transport"],
+        "properties": {
+          "schema_version": {"const": 1},
+          "media_session_id": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,256}$"},
+          "publication_generation": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+          "platform": {"type": "string", "enum": ["web", "android", "ios", "macos", "windows"]},
+          "client_kind": {"type": "string", "enum": ["web", "flutter"]},
+          "capability_version": {"type": "integer", "minimum": 1, "maximum": 16},
+          "sequence": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+          "sender_sample_age_ms": {"type": "integer", "minimum": 0, "maximum": 60000},
+          "capture": {
+            "type": "object", "additionalProperties": false, "required": ["width", "height", "fps"],
+            "properties": {
+              "width": {"allOf": [{"$ref": "#/components/schemas/ScreenTelemetryNumericMetric"}, {"properties": {"value": {"type": "integer", "minimum": 1, "maximum": 16384}}}]},
+              "height": {"allOf": [{"$ref": "#/components/schemas/ScreenTelemetryNumericMetric"}, {"properties": {"value": {"type": "integer", "minimum": 1, "maximum": 16384}}}]},
+              "fps": {"allOf": [{"$ref": "#/components/schemas/ScreenTelemetryNumericMetric"}, {"properties": {"value": {"type": "number", "minimum": 0, "maximum": 240}}}]}
+            }
+          },
+          "encode": {
+            "type": "object", "additionalProperties": false, "required": ["fps", "bitrate_bps"],
+            "properties": {
+              "fps": {"allOf": [{"$ref": "#/components/schemas/ScreenTelemetryNumericMetric"}, {"properties": {"value": {"type": "number", "minimum": 0, "maximum": 240}}}]},
+              "bitrate_bps": {"allOf": [{"$ref": "#/components/schemas/ScreenTelemetryNumericMetric"}, {"properties": {"value": {"type": "integer", "minimum": 0, "maximum": 100000000}}}]}
+            }
+          },
+          "transport": {
+            "type": "object", "additionalProperties": false, "required": ["packet_loss_percent", "rtt_ms", "quality_limitation_reason"],
+            "properties": {
+              "packet_loss_percent": {"allOf": [{"$ref": "#/components/schemas/ScreenTelemetryNumericMetric"}, {"properties": {"value": {"type": "number", "minimum": 0, "maximum": 100}}}]},
+              "rtt_ms": {"allOf": [{"$ref": "#/components/schemas/ScreenTelemetryNumericMetric"}, {"properties": {"value": {"type": "number", "minimum": 0, "maximum": 60000}}}]},
+              "quality_limitation_reason": {"$ref": "#/components/schemas/ScreenTelemetryQualityReason"}
+            }
+          }
+        },
+        "allOf": [
+          {"if": {"properties": {"platform": {"const": "web"}}, "required": ["platform"]}, "then": {"properties": {"client_kind": {"const": "web"}}}},
+          {"if": {"properties": {"platform": {"enum": ["android", "ios", "macos", "windows"]}}, "required": ["platform"]}, "then": {"properties": {"client_kind": {"const": "flutter"}}}}
+        ]
+      },
+      "ScreenTelemetryEventV1": {
+        "type": "object", "additionalProperties": false,
+        "required": ["owner_lease_id", "server_received_at", "envelope"],
+        "properties": {
+          "owner_lease_id": {"type": "string", "format": "uuid"},
+          "server_received_at": {"type": "string", "format": "date-time"},
+          "envelope": {"$ref": "#/components/schemas/ScreenTelemetryEnvelopeV1"}
         }
       },
       "PublishedScreenProfile": {
