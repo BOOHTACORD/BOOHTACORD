@@ -19,3 +19,15 @@ class CopyPlanTests(unittest.TestCase):
    self.assertNotIn("profile/content_mode.dart",entry.read_text())
    self.assertNotIn('contentMode:stageContentMode',entry.read_text())
    self.assertIn('Legacy baseline has no independent mode',entry.read_text())
+
+ def test_private_macos_source_preserves_repository_relative_updater_hook(self):
+  import tempfile
+  with tempfile.TemporaryDirectory() as d:
+   work=run.Path(d)/'owned';work.mkdir()
+   flutter=run.prepare_private_macos_build_support(work)
+   hook=(flutter/'macos/../../../tools/build/desktop_updater/sdk.py').resolve()
+   copied_sdk=work/'tools/build/desktop_updater/sdk.py'
+   self.assertEqual(flutter,work/'clients/flutter')
+   self.assertEqual(hook,copied_sdk.resolve())
+   self.assertNotEqual(copied_sdk.resolve(),(run.ROOT/'tools/build/desktop_updater/sdk.py').resolve())
+   self.assertTrue((work/'tools/build/desktop_updater/licenses/Sparkle-2.10.0.txt').is_file())

@@ -36,6 +36,16 @@ def qa_copy_plan():
   if not Path(__file__).with_name(original).is_file() or not destination.startswith(('integration_test/qa98325_','test/qa98325_')) or '..' in destination:raise ValueError('Unbounded QA source copy destination')
  return plan
 
+def prepare_private_macos_build_support(work):
+ work=Path(work)
+ flutter=work/'clients'/'flutter'
+ flutter.mkdir(parents=True,exist_ok=False)
+ updater_source=ROOT/'tools/build/desktop_updater'
+ updater_copy=work/'tools/build/desktop_updater'
+ if not (updater_source/'sdk.py').is_file():raise FileNotFoundError('Pinned desktop updater build support is missing')
+ shutil.copytree(updater_source,updater_copy,ignore=shutil.ignore_patterns('__pycache__'))
+ return flutter
+
 def adapt_legacy_mode_entry(flutter):
  if (flutter/'lib/src/features/screen/profile/content_mode.dart').is_file():return
  entry=flutter/'integration_test/qa98325_native_app.dart';source=entry.read_text()
@@ -74,7 +84,7 @@ def main():
    with socket.create_connection(('127.0.0.1',5060)) as socket_plain:
     with ssl._create_unverified_context().wrap_socket(socket_plain,server_hostname='localhost') as secure:pin=hashlib.sha256(secure.getpeercert(binary_form=True)).hexdigest()
    private_json(work/'browser-private.json',{'password':stack.password})
-   flutter=work/'flutter'
+   flutter=prepare_private_macos_build_support(work)
    subprocess.run(['rsync','-a','--exclude','/build/','--exclude','/.dart_tool/','--exclude','/macos/Pods/','--exclude','/macos/Flutter/ephemeral/','--exclude','.git','--exclude','.env',str(source)+'/',str(flutter)+'/'],check=True)
    bundle=flutter/'macos/Runner/Configs/AppInfo.xcconfig';bundle.write_text(bundle.read_text().replace('ru.boohtacord.boohtacordDesktop','ru.boohtacord.localqa'))
    for original,new in qa_copy_plan():shutil.copy2(Path(__file__).with_name(original),flutter/new)
