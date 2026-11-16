@@ -625,6 +625,9 @@
     "paths": [
       "clients/flutter/integration_test/android_noise_capture_test.dart",
       "clients/flutter/integration_test/android_noise_sfu_test.dart",
+      "clients/flutter/integration_test/android_noise_sfu_support.dart",
+      "clients/flutter/test/android_noise_monitor_test.dart",
+      "clients/flutter/test/android_noise_monitor_errors_test.dart",
       "evidence/noise-suppression/android-16khz-retry-2026-11-16.md",
       "clients/flutter/packages/flutter_webrtc/android/src/androidTest/java/com/cloudwebrtc/webrtc/audio/Rnnoise16kTest.java",
       "clients/flutter/packages/flutter_webrtc/android/src/main/cpp/rnnoise_capture_jni.cc",
@@ -734,6 +737,8 @@
       "tests/voice_disconnect_notice/playwright.config.ts"
     ],
     "flutter": [
+      "test/android_noise_monitor_test.dart",
+      "test/android_noise_monitor_errors_test.dart",
       "test/voice_disconnect/visual_capture_test.dart",
       "test/voice_disconnect_notice_widget_test.dart",
       "test/voice_connection_recovery_visible_test.dart",
@@ -1222,7 +1227,7 @@
     ],
     "parity_review": {
       "android_rnnoise_state_abi": "Android JNI previously indexed UNKNOWN=4 into its legacy four-element table and threw before microphone frames. Legacy numeric codes OFF=0/WebRTC=1/RNNoise=2/UNKNOWN=3 are restored; DeepFilter is appended as 4. A real Android API-35 x86_64 JNI instrumentation test failed before with ArrayIndexOutOfBoundsException and passed after for pending, one synthetic frame, reset and recovery. 25 Windows-host native C++ tests passed, including both engine hooks. Web implementation is unchanged. Physical speech, actual SFU/microphone, iOS and macOS device acceptance are NOT_RUN; this is state-ABI proof only.",
-      "android_rnnoise_16k": "Android capture converts 16 kHz mono frames to the RNNoise 48 kHz model and back. Android retry and contrast change only Android UI. Web, iOS, macOS and Windows processing remain unchanged; native host regression and Android emulator JNI, loopback and real SFU capture were exercised. Physical-device audio quality and capacity remain NOT_RUN.",
+      "android_rnnoise_16k": "Android capture converts 16 kHz mono frames to the RNNoise 48 kHz model and back. Android permits bounded retries of transient native status timeouts; sustained timeouts and native failures retain fallback. Android retry and contrast change only Android UI. Web, iOS, macOS and Windows processing remain unchanged; native host regression and Android emulator JNI, loopback and real SFU capture were exercised. Physical-device audio quality and capacity remain NOT_RUN.",
       "issue687_native_auto_internal": "Internal shared Flutter Auto preserves explicit OFF and mute intent and remains hidden from the normal selector. Verified experimental DeepFilter falls back to measured RNNoise v0.2, then WebRTC. Separate marked optimized Windows probes passed six-second physical capture with direct peers and private local LiveKit for both engines. Cold bootstrap uses the total two-second preflight deadline. Product UI, sustained/acoustic/device/reconnect acceptance and Android/iOS runtime remain unverified.",
       "issue687_web_auto_internal": "Internal Web Auto measures explicitly opted-in DeepFilter and enabled RNNoise v0.2 in disposable WASM Workers before selection. Runtime DeepFilter failure retries measured RNNoise, then confirmed browser NS; mute intent and fallback cause survive recovery/health updates. Local Chromium/Firefox preflight and Chromium private-SFU publication/mute passed; controlled overload recovered real RNNoise v0.2 with received synthetic audio. Requested/effective modes stay distinct and Auto UI remains hidden. Noise adaptation, physical/acoustic/device acceptance, model rights and production delivery remain open.",
       "issue687_browser_capture_guard": "Web rechecks browser noise-suppression settings and safely reacquires the microphone when live constraints are ignored; unconfirmed model fallback fails muted. Flutter, Android and iOS implementations are unchanged; their native and real-stack regression checks remain required. Browser component and mocked-publication tests do not establish real SFU or physical speech acceptance.",

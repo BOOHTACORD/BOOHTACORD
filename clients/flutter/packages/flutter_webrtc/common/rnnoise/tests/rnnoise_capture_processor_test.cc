@@ -70,7 +70,14 @@ int main() {
   assert(short_frame == fresh_frame);
   short_frame[3] = std::numeric_limits<float>::quiet_NaN();
   assert(!android.Process(short_frame.data(), 160, 160));
+  assert(std::string(android.failure_reason()) == "invalid-audio-samples");
+#ifdef BOOHTA_RNNOISE_V02_RESEARCH
+  // The Windows v0.2 path deliberately mutes invalid input.
+  for (int i = 0; i < 160; ++i) assert(short_frame[i] == 0.f);
+#else
+  // The Android v0.1 path leaves fallback handling to its caller.
   assert(std::isnan(short_frame[3]));
+#endif
   processor.Initialize(48000, 2);
   assert(!processor.Process(frame.data(), 480, 480));
   assert(frame == original);

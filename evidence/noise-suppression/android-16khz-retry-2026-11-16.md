@@ -17,6 +17,18 @@ dedicated QA emulator, passed from a clean application install. Captures and
 runtime results are under `.out/wsl-android-rnnoise-sfu3/`; this does not prove
 physical microphone quality or a paired listener's experience.
 
+Further emulator runs exposed a separate transient status-read timeout after
+RNNoise had processed frames. The previous monitor immediately attempted a
+WebRTC fallback, which sometimes failed and muted capture. Diagnostics showed
+`TimeoutException` from the native status call. Android now tolerates two
+consecutive status timeouts and initiates the existing recovery on the third;
+successful reads reset the counter. Other exceptions, reported processor
+failures and non-Android platforms retain immediate recovery. Focused tests
+passed for these cases. On the isolated API/LiveKit stack the strengthened
+Android scenario remained active and processed additional frames over three
+seconds; `.out/noise-postci-fixed1/android-rnnoise-active.png` was visually
+inspected at 1080x1920. This is not physical speech or acoustic-quality proof.
+
 The focused host C++ processor test also passed. Flutter CI analysis passed with
 the repository's `--no-fatal-infos` setting; changed-file analysis passed with
 no findings. The registered real-stack run
@@ -66,6 +78,7 @@ the active status. These captures do not prove a physical-device interface.
 Physical phone, acoustic noise reduction, call quality and update installation:
 NOT_RUN. A separate debug APK uses application ID `ru.boohtacord.app.noisecheck`,
 display name `BOOHTACORD Тест`, and the same audio implementation as the tested
-worktree. On the dedicated API 35 emulator it installed alongside the original
+16 kHz candidate; it predates the status-timeout handling above. On the
+dedicated API 35 emulator it installed alongside the original
 package, opened the sign-in screen, and passed the same 16 kHz loopback test.
 It cannot update the release-signed app or share its local session.

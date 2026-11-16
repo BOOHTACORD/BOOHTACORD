@@ -9,6 +9,7 @@ import 'package:flutter_webrtc/flutter_webrtc.dart' as rtc;
 import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'android_noise_sfu_support.dart';
 import 'issue689_support.dart';
 import 'issue689_voice_fixture.dart';
 import 'local_qa_test.dart' show QaTls;
@@ -83,15 +84,12 @@ void main() {
       expect(state.sampleRate, 16000);
       expect(state.failureReason, isEmpty);
       expect(app.voice.microphoneUnavailable, isFalse);
-      app.toggleWorkspacePanel(WorkspacePanel.audio);
-      await tester.pumpAndSettle();
-      final closeNavigation = find.byTooltip('Закрыть навигацию');
-      if (closeNavigation.evaluate().isNotEmpty) {
-        await tester.tap(closeNavigation);
-        await tester.pumpAndSettle();
-      }
+      await verifyContinuedNoise(tester, app);
+      await openAudioSettings(tester, app);
+      final audioList = find.byKey(const ValueKey('audio-settings-list'));
+      await waitFor(tester, () => audioList.evaluate().isNotEmpty);
       final scrollable = find.descendant(
-        of: find.byKey(const ValueKey('audio-settings-list')),
+        of: audioList,
         matching: find.byType(Scrollable),
       );
       await tester.scrollUntilVisible(
