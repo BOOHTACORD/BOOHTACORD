@@ -29,6 +29,7 @@ export function installVoiceConnectionLifecycle(
   refreshAudioProcessingDiagnostics: () => void,
   terminal?: VoiceDisconnectState,
   unexpectedDisconnect?: (target: VoiceRecoveryTarget) => void,
+  audioPlaybackBlocked?: Ref<boolean>,
 ): void {
   let reconnect:((outcome:Outcome)=>void)|null=null
   session.setConnectionObserver({
@@ -44,6 +45,9 @@ export function installVoiceConnectionLifecycle(
       reconnect?.(active.value&&!terminal?.notice.value?'completed':'cancelled');reconnect=null
       if (active.value && !terminal?.notice.value) state.value = active.value.microphone === 'PUBLISHED' ? 'CONNECTED' : 'LISTENER'
     },
+    audioPlaybackChanged: blocked => {
+      audioPlaybackBlocked && (audioPlaybackBlocked.value = Boolean(active.value && blocked))
+    },
     disconnected: (reason) => {
       reconnect?.('failed');reconnect=null
       const disconnected = active.value
@@ -55,6 +59,7 @@ export function installVoiceConnectionLifecycle(
       screenViewer.stop()
       volume.stop()
       active.value = null
+      if (audioPlaybackBlocked) audioPlaybackBlocked.value = false
       refreshAudioProcessingDiagnostics()
       deafened.value = false
       microphoneMuted.value = false

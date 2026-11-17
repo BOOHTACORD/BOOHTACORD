@@ -2,6 +2,7 @@
 import os
 import socket
 import subprocess
+from pathlib import Path
 from urllib.parse import urlsplit
 
 LABEL = 'boohtacord.qa.owner'
@@ -21,6 +22,13 @@ def ports_available(ports):
             # TIME_WAIT from the previous owned run is not an active service.
             listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             listener.bind(('127.0.0.1', port))
+
+
+def read_only_directory_mount(source, target):
+    directory = Path(source)
+    if not directory.is_dir() or not target.startswith('/'):
+        raise ValueError('Read-only config mounts require an existing source directory and absolute target')
+    return '--mount', f'type=bind,source={directory.resolve()},target={target},readonly'
 
 
 def local_origin(value):

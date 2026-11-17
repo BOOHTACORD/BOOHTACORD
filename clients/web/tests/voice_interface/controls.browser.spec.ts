@@ -69,6 +69,32 @@ test('empty voice roster centers its message and the dock hides voluntary-leave 
   await expect(page.getByTestId('voice-dock').getByText('Администратор отключил вас от голосового канала.', { exact: true })).toHaveCount(1)
 })
 
+test('mobile connected voice explains browser background recovery without redirecting to another client', async ({ page }, info) => {
+  await open(page, 390)
+  const notice = page.getByText('В фоне браузер может приостановить голос. После возврата соединение проверяется.', { exact: true })
+  await expect(notice).toBeVisible()
+  await page.screenshot({ path: info.outputPath('mobile-background-voice-notice.png') })
+  await page.setViewportSize({ width: 390, height: 480 })
+  await expect(notice).toBeHidden()
+  await page.setViewportSize({ width: 390, height: 900 })
+  await expect(notice).toBeVisible()
+
+  await open(page, 1440)
+  await expect(notice).toBeHidden()
+
+  await open(page, 390)
+  const resumeAudio = page.getByRole('button', { name: 'Возобновить звук' })
+  await patch(page, { audioPlaybackBlocked: true })
+  await expect(resumeAudio).toBeVisible()
+  await resumeAudio.click()
+  expect(await page.evaluate(() => (window as any).__voiceFixture.events)).toContain('resumeAudioPlayback')
+  await patch(page, { audioPlaybackBlocked: false })
+  await expect(resumeAudio).toHaveCount(0)
+
+  await patch(page, { active: false, state: 'IDLE' })
+  await expect(notice).toHaveCount(0)
+})
+
 test('connected voice room shows profile avatars on remote and self participant cards', async ({ page }, info) => {
   await open(page)
   const cards = page.getByTestId('voice-participants').getByTestId('participant-card')

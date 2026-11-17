@@ -25,9 +25,10 @@ const props = withDefaults(defineProps<{
   connectionQuality?: VoiceConnectionQuality
   pingMs?: number | null
   participantCount?: number
+  audioPlaybackBlocked?: boolean
   state: VoiceConnectionState
-}>(), { screenShareState: 'IDLE', connectionQuality: 'UNKNOWN', pingMs: null, microphoneAllowed: true })
-const emit = defineEmits<{ leave: []; startScreen: []; stopScreen: []; toggleDeafen: []; toggleMicrophone: [] }>()
+}>(), { screenShareState: 'IDLE', connectionQuality: 'UNKNOWN', pingMs: null, microphoneAllowed: true, audioPlaybackBlocked: false })
+const emit = defineEmits<{ leave: []; startScreen: []; stopScreen: []; toggleDeafen: []; toggleMicrophone: []; resumeAudio: [] }>()
 const captureUnavailableNotice = ref<string | null>(null)
 watch(() => props.state, state => { if (state === 'LEAVING' || state === 'IDLE') captureUnavailableNotice.value = null })
 function leave() { captureUnavailableNotice.value = null; emit('leave') }
@@ -55,6 +56,11 @@ const status = computed(() => {
       <span class="status-dot" :class="{ connected }" aria-hidden="true"></span>
       <div class="voice-dock-copy"><p class="voice-status" role="status" aria-atomic="true">{{ status }}</p><p v-if="channel && connected" class="voice-dock-subtitle" :title="channel.name">{{ channel.name }}<template v-if="participantCount"> · {{ voiceRoomSummary(participantCount, 0) }}</template></p></div>
 
+    </div>
+    <p v-if="connected" class="voice-mobile-background-notice" role="note">В фоне браузер может приостановить голос. После возврата соединение проверяется.</p>
+    <div v-if="connected && audioPlaybackBlocked" class="voice-audio-playback-blocked">
+      <p role="status">Браузер заблокировал воспроизведение звука.</p>
+      <button class="gc-button gc-button--secondary" type="button" @click="emit('resumeAudio')">Возобновить звук</button>
     </div>
     <p v-if="notice && notice.reason !== 'VOLUNTARY_LEAVE'" class="state state-error">{{ notice.message }}</p>
     <p v-else-if="error" class="state state-error" role="alert">{{ error }}</p>

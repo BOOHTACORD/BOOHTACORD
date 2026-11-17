@@ -15,7 +15,7 @@ const params = new URLSearchParams(location.search)
 document.documentElement.style.fontSize = params.get('scale') === '200' ? '200%' : '100%'
 const channel = { id: 'voice-fixture', name: 'Общая голосовая комната', kind: 'VOICE' as const, position: 0, admissionClosed: false }
 const initialMode = params.get('mode') === 'PTT' ? 'PTT' : 'VAD'
-const state = reactive({ state: 'CONNECTED' as VoiceConnectionState, active: true, transferRequired: false, muted: initialMode === 'PTT', pttPressed: false, deafened: false, denied: false, deafenChanging: false, mode: initialMode as VoiceActivationMode, screen: 'IDLE' as ScreenShareState, selected: null as string | null, error: null as string | null, notice: null as VoiceDisconnectNotice | null, voiceVolumeParticipants: [{ id: 'peer', accountId: 'peer', name: 'Тестовый участник', microphoneMuted: false, speaking: false, volume: 100 }] })
+const state = reactive({ state: 'CONNECTED' as VoiceConnectionState, active: true, transferRequired: false, muted: initialMode === 'PTT', pttPressed: false, deafened: false, denied: false, deafenChanging: false, audioPlaybackBlocked: false, mode: initialMode as VoiceActivationMode, screen: 'IDLE' as ScreenShareState, selected: null as string | null, error: null as string | null, notice: null as VoiceDisconnectNotice | null, voiceVolumeParticipants: [{ id: 'peer', accountId: 'peer', name: 'Тестовый участник', microphoneMuted: false, speaking: false, volume: 100 }] })
 const events: string[] = []
 function toggleMicrophone() { events.push('microphone'); state.muted = !state.muted }
 function setTouchPttPressed(pressed: boolean) { events.push(pressed ? 'ptt:press' : 'ptt:release'); state.pttPressed = pressed; state.muted = !pressed }
@@ -23,6 +23,7 @@ function toggleDeafen() { events.push('deafen'); state.deafened = !state.deafene
 function leave() { events.push('leave'); state.state = 'LEAVING' }
 function startScreen() { events.push('startScreen'); state.screen = 'STARTING' }
 function stopScreen() { events.push('stopScreen'); state.screen = 'STOPPING' }
+function resumeAudioPlayback() { events.push('resumeAudioPlayback') }
 const cards: ScreenViewerCard[] = [{ id: 'screen-peer', participantId: 'peer', participantName: 'Тестовый участник', isLocal: false, hasAudio: false }]
 const pinia = createPinia()
 const authors = useAuthorDirectory(pinia)
@@ -36,7 +37,7 @@ createApp({ render: () => h('div', { class: 'app-shell', style: 'display:grid;gr
       ? h('div', { 'data-testid': 'dock-participants', style: 'flex:1;min-height:48px;padding:12px' }, 'Участники · Тестовый участник')
       : h('div', { style: 'flex:1' }),
     params.has('members') ? h(WorkspaceMembersPanel, { activeVoiceChannel: state.active && state.state !== 'LEAVING' ? channel : null, selectedVoiceChannel: channel, participants: [{ id: 'peer', accountId: 'peer', name: 'Тестовый участник', speaking: false, microphoneMuted: false, volume: 100 }], presenceResolver: (_id: string, fallback: any) => fallback, role: 'MEMBER', selfMicrophoneMuted: false, selfMicrophoneUnavailable: false, selfName: 'Тестовый клиент', open: true, modal: false, style: 'position:relative;width:100%' }) : null,
-    h(VoiceDock, { class: 'mobile-voice-dock', channel: state.active ? channel : null, activeSession: state.active, error: state.error, notice: state.notice, activationMode: state.mode, touchPttEnabled: params.get('touchPtt') === '1' || browserSupportsTouchPtt(), setTouchPttPressed, deafened: state.deafened, deafenChanging: state.deafenChanging, microphoneMuted: state.muted, microphonePermissionDenied: state.denied, screenShareState: state.screen, connectionQuality: 'GOOD', pingMs: 42, participantCount: 2, state: state.state, onLeave: leave, onStartScreen: startScreen, onStopScreen: stopScreen, onToggleMicrophone: toggleMicrophone, onToggleDeafen: toggleDeafen }),
+    h(VoiceDock, { class: 'mobile-voice-dock', channel: state.active ? channel : null, activeSession: state.active, error: state.error, notice: state.notice, activationMode: state.mode, touchPttEnabled: params.get('touchPtt') === '1' || browserSupportsTouchPtt(), setTouchPttPressed, deafened: state.deafened, deafenChanging: state.deafenChanging, microphoneMuted: state.muted, microphonePermissionDenied: state.denied, audioPlaybackBlocked: state.audioPlaybackBlocked, screenShareState: state.screen, connectionQuality: 'GOOD', pingMs: 42, participantCount: 2, state: state.state, onLeave: leave, onStartScreen: startScreen, onStopScreen: stopScreen, onToggleMicrophone: toggleMicrophone, onToggleDeafen: toggleDeafen, onResumeAudio: resumeAudioPlayback }),
   ]),
   h('main', { class: 'main', style: 'min-width:0' }, [h(ConversationPane, {
     accountId: 'self', activeVoiceChannel: state.active ? channel : null, visible: true, channel, directMessage: null, navOpen: false, membersOpen: false, showMembers: false,

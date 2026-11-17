@@ -8,6 +8,7 @@
     {"id":"cmp.web.noise_distribution_notices","paths":["clients/web/public/audio/deepfilternet/research-d375b2d/LICENSE-WorkAdventure.txt"]},
     {"id":"cmp.web.auto_preflight","paths":["clients/web/src/voice/noise_suppression/auto_preflight/benchmark.ts","clients/web/src/voice/noise_suppression/auto_preflight/client.ts","clients/web/src/voice/noise_suppression/auto_preflight/probe.worker.ts","clients/web/src/voice/noise_suppression/auto_preflight/worker_runner.ts","clients/web/src/voice/noise_suppression/microphone_adapter/auto_fixture.ts"]},
     {"id":"cmp.web.voice_recovery","source":{"parity_id":"voice.long_recovery","platform":"web"}},
+    {"id":"cmp.web.browser_resume_lifecycle","paths":["clients/web/src/voice/browser_resume/lifecycle.ts"]},
     {"id":"cmp.flutter.voice_recovery","source":{"parity_id":"voice.long_recovery","platform":"android"}},
     {"id":"cmp.web.voice_roster_recovery","source":{"parity_id":"voice.roster_long_recovery","platform":"web"}},
     {"id":"cmp.flutter.voice_roster_recovery","source":{"parity_id":"voice.roster_long_recovery","platform":"android"}},
@@ -57,7 +58,7 @@
     {
       "id":"voice.long_recovery", "title":"Восстановление голосового канала", "domain":"voice", "target_revision":null,
       "behavior_revisions":[], "parity_ids":["voice.long_recovery"],
-      "components":["cmp.web.voice_recovery","cmp.flutter.voice_recovery"],
+      "components":["cmp.web.voice_recovery","cmp.web.browser_resume_lifecycle","cmp.flutter.voice_recovery"],
       "platforms": {
         "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
         "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},

@@ -24,6 +24,7 @@ import type { LocalVideoTrack } from 'livekit-client'
 import type { ScreenPublisherPort } from './screen_publisher/types'
 import type { ScreenProfile } from './screen_profile/policy'
 import type { ScreenTelemetryPublicationScope } from './screen_sender_telemetry'
+import type { BrowserVoiceConnectionState } from './browser_resume/lifecycle'
 
 export {
   readScreenShareDiagnostics,
@@ -64,6 +65,10 @@ export interface VoiceRoom {
   disposeMicrophone?(): Promise<void>
   readMicrophoneTrack?(): MediaStreamTrack | undefined
   readAudioInputSelection?(): AudioInputSelection
+  readConnectionState?(): BrowserVoiceConnectionState
+  readAudioPlaybackAllowed?(): boolean
+  startAudioPlayback?(): Promise<void>
+  onAudioPlaybackStatusChanged?(listener: (allowed: boolean) => void): () => void
   onAudioInputSelection?(listener: (selection: AudioInputSelection) => void): () => void
   readNoiseSuppressionState?(): NoiseSuppressionRuntimeState
   onNoiseSuppressionState?(listener: (state: NoiseSuppressionRuntimeState) => void): () => void

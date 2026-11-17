@@ -19,4 +19,5 @@ ID: `voice.long_recovery`
 ## Компоненты
 
 - cmp.flutter.voice\_recovery: [clients/flutter/lib/src/features/voice/connection\_close/recovery.dart](../../../../clients/flutter/lib/src/features/voice/connection_close/recovery.dart)
+- cmp.web.browser\_resume\_lifecycle: [clients/web/src/voice/browser\_resume/lifecycle.ts](../../../../clients/web/src/voice/browser_resume/lifecycle.ts)
 - cmp.web.voice\_recovery: [clients/web/src/voice/connection\_state/store.ts](../../../../clients/web/src/voice/connection_state/store.ts)

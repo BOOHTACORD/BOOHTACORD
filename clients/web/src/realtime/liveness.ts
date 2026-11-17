@@ -5,14 +5,23 @@ const SILENCE_LIMIT_MS = 45_000
 
 export function createLivenessWatch(socket: RealtimeSocket, onTimeout: () => void) {
   let ready = false, listening = false, lastSeen = 0, timer: ReturnType<typeof setTimeout> | null = null
+  let network: EventTarget | null = null
   const visible = () => { if (ready && document.visibilityState === 'visible' && Date.now() - lastSeen >= SILENCE_LIMIT_MS) onTimeout() }
   const online = () => { if (ready) onTimeout() }
+  const offline = () => { if (ready) onTimeout() }
+  const networkChanged = () => visible()
   function stop(): void {
     if (timer !== null) clearTimeout(timer)
     timer = null; ready = false
     if (listening) {
       if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', visible)
-      if (typeof window !== 'undefined') window.removeEventListener('online', online)
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('online', online)
+        window.removeEventListener('offline', offline)
+        window.removeEventListener('pageshow', visible)
+      }
+      network?.removeEventListener('change', networkChanged)
+      network = null
       listening = false
     }
   }
@@ -24,7 +33,15 @@ export function createLivenessWatch(socket: RealtimeSocket, onTimeout: () => voi
       if (!ready) return true
       if (!listening) {
         if (typeof document !== 'undefined') document.addEventListener('visibilitychange', visible)
-        if (typeof window !== 'undefined') window.addEventListener('online', online)
+        if (typeof window !== 'undefined') {
+          window.addEventListener('online', online)
+          window.addEventListener('offline', offline)
+          window.addEventListener('pageshow', visible)
+        }
+        if (typeof navigator !== 'undefined') {
+          network = (navigator as Navigator & { connection?: EventTarget }).connection ?? null
+          network?.addEventListener('change', networkChanged)
+        }
         listening = true
       }
       lastSeen = Date.now()

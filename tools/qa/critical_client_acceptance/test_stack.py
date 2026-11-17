@@ -33,8 +33,8 @@ class LoopbackTransportTests(unittest.TestCase):
                     patch('tools.qa.critical_client_acceptance.stack.time.sleep'), \
                     patch.object(stack, 'container') as container:
                 stack.start()
-            config = (work/'livekit.yaml').read_text()
-            egress_config = (work/'egress.yaml').read_text()
+            config = (work/'livekit-config'/'livekit.yaml').read_text()
+            egress_config = (work/'egress-config'/'egress.yaml').read_text()
             self.assertIn('enable_loopback_candidate: true', config)
             self.assertIn('includes: ["eth0"]', config)
             self.assertIn('bind_addresses: ["0.0.0.0"]', config)
@@ -53,10 +53,17 @@ class LoopbackTransportTests(unittest.TestCase):
             pairs = list(zip(args, args[1:]))
             self.assertEqual(args[:2], ('sfu', IMAGE))
             self.assertTrue(calls['sfu'].kwargs.get('network', True))
+            self.assertIn('--mount', args)
+            self.assertIn(f'type=bind,source={(work / "livekit-config").resolve()},target=/qa-config,readonly', args)
             self.assertIn(('--publish', '127.0.0.1:4880:4880/tcp'), pairs)
             self.assertIn(('--publish', '127.0.0.1:4881:4881/tcp'), pairs)
             self.assertIn(('--publish', '127.0.0.1:4882:4882/udp'), pairs)
             self.assertEqual(calls['sfu'].kwargs['command'],
-                             ('--config', '/qa.yaml', '--node-ip', '127.0.0.1'))
+                             ('--config', '/qa-config/livekit.yaml', '--node-ip', '127.0.0.1'))
+            self.assertIn('--env', calls['egress'].args)
+            self.assertIn('EGRESS_CONFIG_FILE=/egress-config/egress.yaml', calls['egress'].args)
+            self.assertIn('--mount', calls['egress'].args)
+            self.assertIn(f'type=bind,source={(work / "egress-config").resolve()},target=/egress-config,readonly',
+                          calls['egress'].args)
             self.assertIn(f'{stack.preview_root}:/screen-previews', calls['egress'].args)
             self.assertEqual(calls['egress'].kwargs['memory'], '2g')

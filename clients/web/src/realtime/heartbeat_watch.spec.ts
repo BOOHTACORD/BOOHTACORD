@@ -70,6 +70,60 @@ it('rechecks elapsed silence immediately when a hidden page becomes visible', as
   store.disconnect()
 })
 
+it('rechecks elapsed silence on pageshow after a browser page restore', () => {
+  vi.useFakeTimers(); setActivePinia(createPinia()); vi.setSystemTime(new Date('2026-11-13T00:00:00Z'))
+  const sockets: Socket[] = [], store = useRealtimeStore()
+  const visibleDocument = Object.assign(new EventTarget(), { visibilityState: 'visible' })
+  const restoredWindow = Object.assign(new EventTarget(), { location: { host: 'local' } })
+  vi.stubGlobal('document', visibleDocument)
+  vi.stubGlobal('window', restoredWindow)
+  store.connect(() => {}, () => { const socket = new Socket(); sockets.push(socket); return socket }, 'ws://local',
+    { checkSession: async () => true, random: () => 0 })
+  sockets[0].emit('connection.ready', {})
+  vi.setSystemTime(new Date('2026-11-13T00:00:46Z'))
+
+  window.dispatchEvent(new Event('pageshow'))
+
+  expect(sockets[0].close).toHaveBeenCalledOnce()
+  store.disconnect()
+})
+
+it('reconnects the application socket when the browser goes offline', () => {
+  vi.useFakeTimers(); setActivePinia(createPinia())
+  const offlineWindow = Object.assign(new EventTarget(), { location: { host: 'local' } })
+  vi.stubGlobal('window', offlineWindow)
+  const socket = new Socket(), store = useRealtimeStore()
+  store.connect(() => {}, () => socket, 'ws://local', { checkSession: async () => true })
+  socket.emit('connection.ready', {})
+
+  window.dispatchEvent(new Event('offline'))
+
+  expect(socket.close).toHaveBeenCalledOnce()
+  store.disconnect()
+})
+
+it('uses NetworkInformation change to recheck only when heartbeat silence is stale', () => {
+  vi.useFakeTimers(); setActivePinia(createPinia()); vi.setSystemTime(new Date('2026-11-13T00:00:00Z'))
+  const sockets: Socket[] = [], store = useRealtimeStore()
+  const visibleDocument = Object.assign(new EventTarget(), { visibilityState: 'visible' })
+  const connection = new EventTarget()
+  const networkWindow = Object.assign(new EventTarget(), { location: { host: 'local' } })
+  vi.stubGlobal('document', visibleDocument)
+  vi.stubGlobal('window', networkWindow)
+  vi.stubGlobal('navigator', Object.assign(new EventTarget(), { connection }))
+  store.connect(() => {}, () => { const socket = new Socket(); sockets.push(socket); return socket }, 'ws://local',
+    { checkSession: async () => true, random: () => 0 })
+  sockets[0].emit('connection.ready', {})
+
+  connection.dispatchEvent(new Event('change'))
+  expect(sockets[0].close).not.toHaveBeenCalled()
+  vi.setSystemTime(new Date('2026-11-13T00:00:46Z'))
+  connection.dispatchEvent(new Event('change'))
+
+  expect(sockets[0].close).toHaveBeenCalledOnce()
+  store.disconnect()
+})
+
 it('reconnects the application socket after the browser comes online', () => {
   vi.useFakeTimers(); setActivePinia(createPinia())
   const onlineWindow = Object.assign(new EventTarget(), { location: { host: 'local' } })

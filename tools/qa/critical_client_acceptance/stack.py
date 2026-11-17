@@ -5,7 +5,7 @@ import subprocess
 import time
 
 from tools.audio.livekit_fixture import IMAGE
-from tools.qa.client_lifecycle.services import local_docker, ports_available
+from tools.qa.client_lifecycle.services import local_docker, ports_available, read_only_directory_mount
 from tools.qa.client_lifecycle.stack import Stack as Base, ready
 
 EGRESS_IMAGE = 'ghcr.io/boohtacord/egress@sha256:5900cca3897505ed264ad887a70dde4d26be9bea3f6a203f803e611772a09040'
@@ -29,7 +29,9 @@ class Stack(Base):
         self.preview_root.mkdir(parents=True, exist_ok=True)
         self.preview_root.chmod(0o777)
         self.environment['SCREEN_PREVIEW_DIRECTORY'] = '/screen-previews'
-        config = self.work/'livekit.yaml'
+        config_root = self.work/'livekit-config'
+        config_root.mkdir(exist_ok=True)
+        config = config_root/'livekit.yaml'
         config.write_text(f'''port: 4880
 bind_addresses: ["0.0.0.0"]
 redis:
@@ -56,10 +58,12 @@ webhook:
                        '--publish', '127.0.0.1:4880:4880/tcp',
                        '--publish', '127.0.0.1:4881:4881/tcp',
                        '--publish', '127.0.0.1:4882:4882/udp',
-                       '-v', str(config)+':/qa.yaml:ro', network=True,
-                       command=('--config', '/qa.yaml', '--node-ip', '127.0.0.1'))
+                       *read_only_directory_mount(config_root, '/qa-config'), network=True,
+                       command=('--config', '/qa-config/livekit.yaml', '--node-ip', '127.0.0.1'))
         ready('http://127.0.0.1:4880')
-        egress_config = self.work/'egress.yaml'
+        egress_config_root = self.work/'egress-config'
+        egress_config_root.mkdir(exist_ok=True)
+        egress_config = egress_config_root/'egress.yaml'
         egress_config.write_text(f'''log_level: info
 ws_url: ws://{self.owner}-sfu:4880
 insecure: true
@@ -73,10 +77,10 @@ redis:
             raise ValueError('Unsupported BOOHTACORD_QA_EGRESS_PLATFORM')
         egress_platform_args = ('--platform='+egress_platform,) if egress_platform else ()
         self.container('egress', egress_image(), *egress_platform_args,
-                       '--env', 'EGRESS_CONFIG_FILE=/egress.yaml',
+                       '--env', 'EGRESS_CONFIG_FILE=/egress-config/egress.yaml',
                        '--env', 'LIVEKIT_API_KEY=qa-only',
                        '--env', 'LIVEKIT_API_SECRET=qa-local-only-secret-12345',
-                       '-v', str(egress_config)+':/egress.yaml:ro',
+                       *read_only_directory_mount(egress_config_root, '/egress-config'),
                        '-v', str(self.preview_root)+':/screen-previews',
                        memory='2g')
         for _ in range(150):
@@ -95,7 +99,7 @@ redis:
         if role == 'api':
             args = (*args, '-v', str(self.preview_root)+':/screen-previews')
         if role == 'proxy':
-            path = self.work/'Caddyfile'
+            path = self.work/'caddy-config'/'Caddyfile'
             path.write_text(path.read_text().replace('  handle /api/* {', '''  handle /qa-sfu* {
     uri strip_prefix /qa-sfu
     reverse_proxy 127.0.0.1:4880

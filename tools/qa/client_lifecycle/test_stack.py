@@ -29,6 +29,32 @@ class StackLinuxRuntimeTests(unittest.TestCase):
         self.assertIn('API_ADDR=0.0.0.0:8080', args)
         self.assertEqual(stack.api, stack.owner+'-api')
 
+    def test_stack_mounts_tempo_and_proxy_config_directories(self):
+        stack = self.make_stack()
+        with patch('tools.qa.client_lifecycle.stack.local_docker'), \
+                patch('tools.qa.client_lifecycle.stack.ports_available'), \
+                patch('tools.qa.client_lifecycle.stack.run'), \
+                patch('tools.qa.client_lifecycle.stack.ready'), \
+                patch.object(stack, 'container') as container:
+            stack.start()
+
+        calls = {entry.args[0]: entry for entry in container.call_args_list}
+        tempo_args = calls['tempo'].args
+        self.assertIn('--mount', tempo_args)
+        tempo_mount = tempo_args[tempo_args.index('--mount') + 1]
+        self.assertEqual(tempo_mount,
+                         f'type=bind,source={(stack.work / "tempo-config").resolve()},target=/etc/tempo-config,readonly')
+        self.assertEqual(calls['tempo'].kwargs['command'],
+                         ('-config.file=/etc/tempo-config/tempo.yaml',))
+
+        proxy_args = calls['proxy'].args
+        self.assertIn('--mount', proxy_args)
+        proxy_mount = proxy_args[proxy_args.index('--mount') + 1]
+        self.assertEqual(proxy_mount,
+                         f'type=bind,source={(stack.work / "caddy-config").resolve()},target=/etc/caddy,readonly')
+        self.assertTrue((stack.work/'tempo-config'/'tempo.yaml').is_file())
+        self.assertTrue((stack.work/'caddy-config'/'Caddyfile').is_file())
+
     def test_migrations_run_against_database_service_in_owned_network(self):
         stack = self.make_stack()
         with patch('tools.qa.client_lifecycle.stack.run') as run:

@@ -18,6 +18,7 @@ export interface ActiveVoiceSession extends JoinedVoiceRoom {
 export type RoomJoiner = (credential: LiveKitCredential, processing?: AudioProcessingOptions, joinMode?: VoiceJoinMode, inputDeviceId?: string) => Promise<JoinedVoiceRoom>
 export interface VoiceConnectionObserver {
   admitted?(leaseID: string, channelID: string): void
+  audioPlaybackChanged?(blocked: boolean): void
   disconnected(reason?: number): void
   reconnected(): void
   reconnecting(): void

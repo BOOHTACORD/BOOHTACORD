@@ -25,6 +25,8 @@ interface VoiceAdmissionState {
 }
 
 export class VoiceSessionAdmission {
+  private readonly disconnectingRooms = new WeakSet<ActiveVoiceSession['room']>()
+
   constructor(private readonly state: VoiceAdmissionState) {}
 
   async join(
@@ -103,7 +105,8 @@ export class VoiceSessionAdmission {
 
   async handleDisconnected(room: ActiveVoiceSession['room'], reason?: number): Promise<void> {
     const current = this.state.current()
-    if (!current || current.room !== room) return
+    if (!current || current.room !== room || this.disconnectingRooms.has(room)) return
+    this.disconnectingRooms.add(room)
     try { await room.stopScreenPreview?.() } catch { /* Lease release follows settled local cleanup. */ }
     this.state.screen.cancel()
     this.state.stopInputSelection()?.()

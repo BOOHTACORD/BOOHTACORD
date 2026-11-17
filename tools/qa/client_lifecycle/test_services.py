@@ -1,8 +1,10 @@
 """Safety boundaries for an autonomous disposable acceptance stack."""
 import unittest
 import socket
+import tempfile
+from pathlib import Path
 from unittest.mock import patch
-from .services import local_origin, local_docker, remove_owned, ports_available
+from .services import local_origin, local_docker, read_only_directory_mount, remove_owned, ports_available
 
 
 class SafetyTests(unittest.TestCase):
@@ -32,6 +34,16 @@ class SafetyTests(unittest.TestCase):
         with patch.dict('os.environ', {'DOCKER_HOST': 'ssh://production'}):
             with self.assertRaises(ValueError):
                 local_docker()
+
+    def test_read_only_config_mount_uses_an_existing_directory(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory)
+            self.assertEqual(read_only_directory_mount(source, '/etc/tempo-config'), (
+                '--mount', f'type=bind,source={source.resolve()},target=/etc/tempo-config,readonly'))
+            config_file = source/'tempo.yaml'
+            config_file.write_text('server: {}')
+            with self.assertRaises(ValueError):
+                read_only_directory_mount(config_file, '/etc/tempo.yaml')
 
     def test_cleanup_rejects_foreign_container(self):
         with patch('tools.qa.client_lifecycle.services.output', return_value='foreign'), \

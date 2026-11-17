@@ -15,6 +15,7 @@ import { screenPublisherEventHandlers } from './screen_publisher/events'
 import { bindLiveKitScreenMetadata } from './screen_profile_metadata/livekit_binding'
 import { bindVoiceSounds } from './sound_events/livekit'
 import { publishVoiceDeafened } from './voice_deafen_publisher'
+import { mediaStateForRoomResume } from './browser_resume/lifecycle'
 
 export function wireLiveKitRoom(
   room: VoiceRoom,
@@ -89,6 +90,15 @@ export async function defaultLiveKitRoomFactory(): Promise<VoiceRoom> {
     diagnosticsTrack = undefined
   })
   const room = wireLiveKitRoom(liveKitRoom as unknown as VoiceRoom, viewer)
+  room.readConnectionState = () => mediaStateForRoomResume(String(liveKitRoom.state))
+  room.readAudioPlaybackAllowed = () => liveKitRoom.canPlaybackAudio
+  room.startAudioPlayback = () => liveKitRoom.startAudio()
+  room.onAudioPlaybackStatusChanged = listener => {
+    const update = () => listener(liveKitRoom.canPlaybackAudio)
+    liveKitRoom.on(RoomEvent.AudioPlaybackStatusChanged, update)
+    update()
+    return () => liveKitRoom.off(RoomEvent.AudioPlaybackStatusChanged, update)
+  }
   const sounds = bindVoiceSounds(liveKitRoom), connect = room.connect.bind(room), disconnect = room.disconnect.bind(room)
   room.connect = async (...args) => { await connect(...args); sounds.seed() }
   room.disconnect = async () => { sounds.pause(); await disconnect() }
