@@ -10,7 +10,9 @@ class StackTests(unittest.TestCase):
             root=Path(t); stack=Stack(root,root)
             with patch('tools.qa.client_lifecycle.stack.Stack.container') as create:
                 stack.container('proxy','caddy:test','-v','fixture',network=False)
-            config=(root/'Caddyfile').read_text()
+            config_path=root/'caddy-config'/'Caddyfile'
+            self.assertTrue(config_path.is_file())
+            config=config_path.read_text()
             self.assertIn(stack.owner+'-api:8080',config)
             self.assertIn(stack.owner+'-sfu:4880',config)
             self.assertIn('127.0.0.1:4810:4810',create.call_args.args)

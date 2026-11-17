@@ -1,4 +1,8 @@
 /* Connected dock presentation; state, controls and measured quality remain live. */
+.voice-mobile-background-notice { display: none; }
+.voice-audio-playback-blocked { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; border-left: 2px solid var(--gc-warning); border-radius: 4px; padding: 8px; background: var(--gc-warning-bg); }
+.voice-audio-playback-blocked p { margin: 0; color: var(--gc-text-primary); font-size: var(--gc-text-caption); line-height: 1.4; }
+.voice-audio-playback-blocked button { flex: 0 0 auto; }
 .voice-dock .voice-icon { stroke-width: 2; }
 .voice-ptt-button { touch-action: none; user-select: none; -webkit-user-select: none; }
 .voice-dock .voice-ptt-button[aria-pressed=false]:not(:disabled),
@@ -34,6 +38,7 @@
   .sidebar .mobile-voice-dock .voice-dock-subtitle { margin-top: 2px; }
 }
 @media (max-width: 720px) {
+  .voice-dock.connected .voice-mobile-background-notice { display: block; margin: 8px 0 0; color: var(--gc-text-secondary); font-size: var(--gc-text-caption); line-height: 1.4; overflow-wrap: anywhere; }
   .sidebar.is-open .voice-dock.connected .voice-status { color: #78e6a0; font-weight: 500; }
   .sidebar.is-open .mobile-voice-dock.connected .voice-dock-header { height: auto; min-height: 38px; }
   .sidebar.is-open .mobile-voice-dock .voice-dock-headset { top: 2px; }
@@ -42,6 +47,9 @@
   .sidebar.is-open .mobile-voice-dock .voice-actions .voice-icon-button:first-child[aria-pressed=true]:not(:hover) { color: var(--gc-text-secondary); background: transparent; }
   .sidebar.is-open .mobile-voice-dock .voice-actions .voice-icon-button:not(.voice-icon-button--danger)::before { background: var(--gc-surface-raised); }
   .sidebar.is-open .mobile-voice-dock .voice-actions .voice-icon-button:not(.voice-icon-button--danger):hover:not(:disabled)::before { background: var(--gc-surface-hover); }
+}
+@media (max-width: 720px) and (max-height: 520px) {
+  .voice-dock.connected .voice-mobile-background-notice { display: none; }
 }
 
 .voice-dock { position: relative; min-width: 0; max-width: 100%; }

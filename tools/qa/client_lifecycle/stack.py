@@ -7,7 +7,8 @@ import subprocess
 import time
 import urllib.request
 from pathlib import Path
-from .services import LABEL, TEMPO, caddy_config, local_docker, ports_available, remove_owned, run
+from .services import (LABEL, TEMPO, caddy_config, local_docker, ports_available,
+                       read_only_directory_mount, remove_owned, run)
 
 # The upload-space guard needs at least 2 GiB free plus one maximum-sized upload.
 # This is only the tmpfs limit; the disposable API container still has a 1 GiB memory cap.
@@ -63,12 +64,14 @@ class Stack:
         self.container('db', 'postgres:17.6-alpine', '--tmpfs', '/var/lib/postgresql/data',
                        '-e', 'POSTGRES_DB=qa', '-e', 'POSTGRES_USER=qa',
                        '-e', 'POSTGRES_PASSWORD=qa-disposable-only')
-        (self.work/'tempo.yaml').write_text(TEMPO)
-        (self.work/'tempo.yaml').chmod(0o644)
+        tempo_config = self.work/'tempo-config'
+        tempo_config.mkdir(exist_ok=True)
+        (tempo_config/'tempo.yaml').write_text(TEMPO)
+        (tempo_config/'tempo.yaml').chmod(0o644)
         self.container('tempo', 'grafana/tempo:2.10.3', '--publish', '127.0.0.1:4812:3200',
                        '--tmpfs', '/tmp:mode=1777',
-                       '-v', str(self.work/'tempo.yaml')+':/etc/tempo.yaml:ro',
-                       command=('-config.file=/etc/tempo.yaml',))
+                       *read_only_directory_mount(tempo_config, '/etc/tempo-config'),
+                       command=('-config.file=/etc/tempo-config/tempo.yaml',))
         run('docker', 'exec', self.owner+'-db', 'sh', '-c',
             'until pg_isready -U qa -d qa; do sleep .2; done', stdout=subprocess.DEVNULL)
         ready('http://127.0.0.1:4812/ready')
@@ -80,9 +83,11 @@ class Stack:
         self.bootstrap()
         self.seed_admin_members()
         self.restart()
-        (self.work/'Caddyfile').write_text(caddy_config(self.root))
+        caddy_config_root = self.work/'caddy-config'
+        caddy_config_root.mkdir(exist_ok=True)
+        (caddy_config_root/'Caddyfile').write_text(caddy_config(self.root))
         self.container('proxy', 'caddy:2.10.0-alpine', '-v', str(self.root)+':'+str(self.root)+':ro',
-                       '-v', str(self.work/'Caddyfile')+':/etc/caddy/Caddyfile:ro', network=False)
+                       *read_only_directory_mount(caddy_config_root, '/etc/caddy'), network=False)
         ready('https://localhost:4810/api/v1/health')
 
     def migrate(self):

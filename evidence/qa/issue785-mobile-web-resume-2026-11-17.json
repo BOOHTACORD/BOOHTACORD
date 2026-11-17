@@ -1,0 +1,737 @@
+{
+  "schema_version": 1,
+  "issue": 785,
+  "leaf": "T-022",
+  "date": "2026-11-17",
+  "status": "BLOCKED",
+  "gate_closed": false,
+  "scope": "Best-effort mobile browser voice recovery after foreground resume",
+  "user_direction": "Keep the recovery path in the browser; do not redirect users to another client.",
+  "related_issue_status_checked_utc": "2026-11-16T22:09:55Z",
+  "related_issues": {
+    "785": {
+      "state": "open",
+      "updated_at": "2026-11-14T13:15:51Z"
+    },
+    "689": {
+      "state": "open",
+      "updated_at": "2026-11-13T06:46:49Z"
+    },
+    "781": {
+      "state": "open",
+      "updated_at": "2026-11-13T12:43:10Z"
+    },
+    "773": {
+      "state": "merged",
+      "merge_commit": "b46b79c000bc3168983af27b304c4443a3773ed4"
+    }
+  },
+  "base": "68b7353f4fec6342fc14a2f4fae4d032aff464d5",
+  "tested_source": "68b7353f4fec6342fc14a2f4fae4d032aff464d5 worktree-sha256=adae188c0b0d666ddbf1f1c67da117502dbdf1463b1fba921367a89442636aed",
+  "timestamp_utc": "2026-11-17T09:21:40Z",
+  "verification": {
+    "local_feature_command": "./tools/qa/local_features/check.sh --feature voice --feature auth --feature chat --feature connection_status --feature idle_afk --feature screen --feature screen_metrics --feature shell --feature support --feature telemetry --platform web --base origin/master --real-stack",
+    "run": ".out/local-features/20261117-120741",
+    "report_status": "BLOCKED",
+    "report_sha256": "5c974f05a77370cfb72a397c4d934eed70892e770e4628b391c33f5bafbb7b9d",
+    "source_stability": "PASS",
+    "checks": [
+      {
+        "name": "browser_resume_unit_tests",
+        "result": "PASS",
+        "command": "npm test -- src/voice/browser_voice_resume.spec.ts src/voice/browser_voice_resume_session.spec.ts",
+        "observation": "5 tests passed. Covers visible-page reconciliation, hidden-page suppression, LiveKit signal reconnect versus media disconnect, blocked playback, explicit user-gesture resume, and observer cleanup."
+      },
+      {
+        "name": "browser_disconnect_resume_race_regression",
+        "result": "PASS",
+        "command": "npm test -- src/voice/browser_voice_resume.spec.ts src/voice/browser_voice_resume_session.spec.ts src/voice/voice_session.spec.ts",
+        "executed_at_utc": "2026-11-16T22:02:45Z",
+        "observation": "19 tests passed. A new race test first reproduced two disconnect notifications when LiveKit's disconnected event coincided with pageshow; per-room idempotency now performs screen cleanup and lease release once."
+      },
+      {
+        "name": "browser_resume_responsibility_module_tests",
+        "result": "PASS",
+        "command": "npm test -- src/voice/browser_resume/lifecycle.spec.ts src/voice/browser_resume/session.spec.ts src/voice/voice_session.spec.ts",
+        "executed_at_utc": "2026-11-16T22:08:25Z",
+        "observation": "19 tests passed after moving executable browser-resume behavior into the focused voice/browser_resume module."
+      },
+      {
+        "name": "browser_production_build_after_module_move",
+        "result": "PASS",
+        "command": "VITE_PUBLIC_ORIGIN=https://localhost:4810 npm run build",
+        "executed_at_utc": "2026-11-16T22:08:25Z",
+        "observation": "vue-tsc and Vite production build passed after the module move. Existing LiveKit dynamic-import and bundle-size warnings remain."
+      },
+      {
+        "name": "spec_traceability_after_backlog_evidence_path_update",
+        "result": "PASS_WITH_SOURCE_LIMITATION",
+        "command": "pwsh -NoProfile -File tools/verify/spec_traceability/verify-spec-traceability.ps1",
+        "executed_at_utc": "2026-11-16T22:08:25Z",
+        "observation": "All 39 requirement IDs remain referenced. The approved brief path is unavailable on this host; validation used the committed requirement index."
+      },
+      {
+        "name": "qa_disposable_stack_mount_regressions",
+        "result": "PASS",
+        "command": "python3 -m unittest tools.qa.client_lifecycle.test_services.SafetyTests.test_read_only_config_mount_uses_an_existing_directory tools.qa.client_lifecycle.test_stack.StackLinuxRuntimeTests.test_stack_mounts_tempo_and_proxy_config_directories tools.qa.critical_client_acceptance.test_stack.LoopbackTransportTests.test_owned_sfu_listens_on_bridge_and_advertises_loopback_candidates",
+        "executed_at_utc": "2026-11-16T22:06:11Z",
+        "observation": "3 tests passed for the read-only config directory mounts used by the disposable integration stack."
+      },
+      {
+        "name": "web_production_build",
+        "result": "PASS",
+        "command": "VITE_PUBLIC_ORIGIN=https://localhost:4810 npm run build",
+        "executed_at_utc": "2026-11-16T22:03:24Z",
+        "observation": "vue-tsc and Vite production build passed on the source revision with per-room disconnect idempotency. Existing bundle-size and LiveKit dynamic-import warnings remain."
+      },
+      {
+        "name": "focused_browser_regressions",
+        "result": "PASS",
+        "observation": "Voice interface resume scenario passed; accessibility at 320x640 and 200% text passed; navigation at 320x480 passed after the notice was hidden for very short mobile viewports."
+      },
+      {
+        "name": "cross_platform_local_feature_attempt",
+        "result": "BLOCKED_BY_QA_RUNTIME",
+        "run": ".out/local-features/20261116-224538",
+        "observation": "On the earlier source revision, Flutter reported 2,002 passing tests and one skipped test (runner status BLOCKED); Flutter component captures passed. Android integration targets failed before their assertions because the disposable QA service did not become ready. No iOS simulator runtime was available. This run preceded only browser-copy and short-viewport CSS adjustments; native source files were unchanged."
+      },
+      {
+        "name": "spec_traceability",
+        "result": "PASS_WITH_SOURCE_LIMITATION",
+        "command": "pwsh -NoProfile -File tools/verify/spec_traceability/verify-spec-traceability.ps1",
+        "observation": "All 39 requirement IDs are referenced. The approved brief path in AGENTS.md is unavailable on this host, so validation used the committed requirement index."
+      },
+      {
+        "name": "final_web_local_feature_run",
+        "result": "FAIL",
+        "run": ".out/local-features/20261116-234736",
+        "observation": "Web unit, build, accessibility, navigation, voice_disconnect_notice, and voice_interface suites passed; the mobile browser resume scenario is included in voice_interface. web-screen_profile is BLOCKED because one registered baseline publisher/viewer test is skipped. Both real-stack viewport journeys (1440 and 393) reached voice-interface acceptance and then failed because participant-screen-preview img was absent. The same selector failure occurred in the client_lifecycle critical smoke. Causality for this screen-preview failure has not been established. Source stability passed during the Web run."
+      },
+      {
+        "name": "real_stack_smoke",
+        "result": "FAIL_SCREEN_PREVIEW",
+        "command": "BOOHTACORD_QA_EGRESS_PLATFORM=linux/amd64 DOCKER_CONTEXT=colima-boohtacord-qa VITE_PUBLIC_ORIGIN=https://localhost:4810 python3 -m tools.qa.client_lifecycle.run --critical --portable-proxy --width 393",
+        "observation": "Disposable services, migrations, auth, ACL, messaging, and voice UI stages ran. The smoke stopped when the participant-screen-preview img did not appear. This blocks the combined integration run; no causal link to the browser-resume change has been established. Logs: .out/local-features/20261116-234736/web-real-stack-1440.log and web-real-stack-393.log."
+      },
+      {
+        "name": "android_chrome_emulator_background_resume",
+        "result": "PASS_SCOPED",
+        "environment": {
+          "device": "Android 15 emulator, API 35, sdk_gphone64_arm64",
+          "browser": "Chrome 124.0.6367.219",
+          "viewport_css_px": [
+            412,
+            783
+          ],
+          "device_scale_factor": 2.625,
+          "stack": "Disposable Go/PostgreSQL/LiveKit QA stack"
+        },
+        "scenario": "Joined the temporary voice channel as a listener in Android Chrome, sent Chrome to Home for 10 seconds, then restored the same tab.",
+        "observation": "The page reported visibility:hidden then visibility:visible. On return the voice status was «Голос подключён» and the browser-background notice remained visible. One participant was present; no paired sender or decoded audio was used.",
+        "screenshot": ".out/local-features/issue785-android-chrome-20261117/background-resume.png",
+        "screenshot_sha256": "c3f129081fcbf597201bba2a34e565595d1042db8392cd3a250fc597bf11a46c"
+      },
+      {
+        "name": "android_chrome_emulator_paired_rtp_after_home",
+        "result": "BLOCKED",
+        "command": "node .out/issue785-paired-browser.mjs",
+        "automation_exit_code": 1,
+        "environment": {
+          "device": "Android 15 emulator, API 35, sdk_gphone64_arm64",
+          "browser": "Chrome 124.0.6367.219",
+          "sender": "Playwright Chromium with synthetic microphone",
+          "receiver": "Android Chrome listener-only",
+          "stack": "Disposable Go/PostgreSQL/Caddy/LiveKit QA stack",
+          "instrumentation": "ADB and Playwright CDP remained attached; remote debugging may alter renderer suspension behavior."
+        },
+        "scenario": {
+          "android_home_top_resumed_activity_confirmed": "com.google.android.apps.nexuslauncher/.NexusLauncherActivity",
+          "background_seconds": 12,
+          "same_chrome_tab_restored": true,
+          "voice_status_after_return": "Голос подключён",
+          "active_receiver_peer_connections_after_return": 1,
+          "connected_receiver_peer_connections_after_return": 1
+        },
+        "media_counters": {
+          "receiver_before": {
+            "inbound_audio_packets": 16,
+            "inbound_audio_bytes": 6878
+          },
+          "receiver_after": {
+            "inbound_audio_packets": 636,
+            "inbound_audio_bytes": 313719
+          },
+          "sender_before": {
+            "outbound_audio_packets": 663,
+            "outbound_audio_bytes": 319270
+          },
+          "sender_after": {
+            "outbound_audio_packets": 1282,
+            "outbound_audio_bytes": 626100
+          }
+        },
+        "visibility_lifecycle": {
+          "events_recorded": [
+            "visible"
+          ],
+          "result": "NOT_OBSERVED",
+          "observation": "Home was foregrounded, but the listener recorded no hidden/visible event pair. The automation exited nonzero on that assertion; this run does not prove visibilitychange recovery."
+        },
+        "screenshot": ".out/local-features/issue785-browser-paired/android-chrome-paired-audio-after-resume.png",
+        "screenshot_sha256": "b895c6510d6fb47c5adf55fb75ff213509705e55ee1abc97cc872994732c422f",
+        "screenshot_resolution_px": [
+          1082,
+          2055
+        ],
+        "observation": "The paired Android Chrome page returned from a 12-second Home interval with «Голос подключён» and one connected peer. Receiver and sender RTP counters were sampled before Home and after return and increased across the combined interval; samples do not localize packet delivery within the hidden interval. This is scoped emulator evidence, not decoded-audio, physical-device, long-duration or background-SLA acceptance.",
+        "media_result": "PASS_SCOPED",
+        "exit_reason": "The QA runner exited 1 because Android Chrome did not report the hidden/visible lifecycle event pair."
+      },
+      {
+        "name": "android_chrome_emulator_paired_rtp_after_home_lifecycle_rerun",
+        "result": "PASS_SCOPED",
+        "command": "python3 .out/issue785-pair-orchestrator.py",
+        "automation_exit_code": 0,
+        "environment": {
+          "device": "Android 15 emulator, API 35, sdk_gphone64_arm64",
+          "browser": "Chrome 124.0.6367.219",
+          "sender": "Playwright Chromium with synthetic microphone",
+          "receiver": "Android Chrome listener-only",
+          "stack": "Disposable Go/PostgreSQL/Caddy/LiveKit QA stack"
+        },
+        "scenario": {
+          "android_home_top_resumed_activity_confirmed": true,
+          "background_seconds": 12,
+          "same_chrome_tab_restored": true,
+          "voice_status_after_return": "Голос подключён",
+          "active_receiver_peer_connections_after_return": 1,
+          "connected_receiver_peer_connections_after_return": 1
+        },
+        "media_counters": {
+          "receiver_before": {
+            "inbound_audio_packets": 1,
+            "inbound_audio_bytes": 590
+          },
+          "receiver_after": {
+            "inbound_audio_packets": 629,
+            "inbound_audio_bytes": 311308
+          },
+          "sender_before": {
+            "outbound_audio_packets": 644,
+            "outbound_audio_bytes": 311334
+          },
+          "sender_after": {
+            "outbound_audio_packets": 1275,
+            "outbound_audio_bytes": 623797
+          }
+        },
+        "media_result": "PASS_SCOPED",
+        "visibility_lifecycle": {
+          "events_recorded_after_baseline": [],
+          "baseline_visibility": "visible",
+          "result": "NOT_OBSERVED",
+          "observation": "The OS Home activity was confirmed. Persistent visibility/page-lifecycle logging recorded only its visible baseline; Chrome emitted no hidden, freeze, resume, pagehide, pageshow or online event during the 12-second interval or return. RTP advanced and the peer remained connected, so this demonstrates scoped emulator media continuity without exercising the browser resume hook."
+        },
+        "screenshot": ".out/local-features/issue785-browser-paired-rerun/android-chrome-paired-audio-after-resume.png",
+        "screenshot_sha256": "fc53420642bfd392116fd9fbc1c4db836862e622680c865404b61eac78891bb4",
+        "screenshot_resolution_px": [
+          1082,
+          2055
+        ],
+        "cleanup": {
+          "owned_containers_networks_and_images_removed": true,
+          "adb_forward_reverse_mappings_removed": true,
+          "shared_colima_profile_left_running": true
+        },
+        "observation": "The same tab returned with one connected peer and «Голос подключён». Before/after RTP counters increased across Home and post-resume observation, but did not measure packet delivery during the hidden interval. This run kept CDP attached and recorded no lifecycle event pair; see the subsequent detached-CDP rerun."
+      },
+      {
+        "name": "physical_mobile_browser_media_acceptance",
+        "result": "NOT_RUN",
+        "observation": "No physical Android/iOS device, decoded-audio assertion, long-duration run, or 60-minute acceptance was completed. The scoped Android emulator pair recorded RTP counters only; no continuous-background or physical-device claim is made."
+      },
+      {
+        "name": "sandboxed_local_feature_attempt",
+        "result": "BLOCKED",
+        "command": "./tools/qa/local_features/check.sh --feature voice --feature auth --feature chat --feature connection_status --feature idle_afk --feature screen --feature screen_metrics --feature shell --feature support --platform web --base origin/master --real-stack",
+        "run": ".out/local-features/20261117-012435",
+        "observation": "The sandbox denied temporary localhost listeners (EPERM), so WebServer and disposable proxy stages could not start. The same selection was rerun with loopback access; see web_local_feature_browser_resume_and_real_stack_20261117."
+      },
+      {
+        "name": "web_local_feature_browser_resume_and_real_stack_20261117",
+        "result": "PASS_SCOPED",
+        "command": "BOOHTACORD_QA_EGRESS_PLATFORM=linux/amd64 ./tools/qa/local_features/check.sh --feature voice --feature auth --feature chat --feature connection_status --feature idle_afk --feature screen --feature screen_metrics --feature shell --feature support --platform web --base origin/master --real-stack",
+        "executed_at_utc": "2026-11-16T22:25:34Z",
+        "run": ".out/local-features/20261117-012534",
+        "report_status": "BLOCKED",
+        "tested_source": "fa7a41ec3d220b01d3a407e763ac1fe51a489396 worktree-sha256=4898fdd9e955b129e8ead70c639b68ca910ee18445771e6ed80991bce5886a1b",
+        "observation": "Web unit: 585 files / 2,026 tests PASS; build PASS; all selected browser suites PASS except web-screen_profile, which is BLOCKED with one skipped registered publisher/viewer test. The issue-specific mobile browser resume UI passed, including honest background copy and no redirect to another client. Authenticated real-stack journeys passed at 1440px and 393px; source stability PASS. This confirms the issue-specific browser path, not physical device or decoded-audio acceptance."
+      },
+      {
+        "name": "web_local_feature_pr_readiness_run_20261117",
+        "result": "PASS_SCOPED",
+        "command": "BOOHTACORD_QA_EGRESS_PLATFORM=linux/amd64 ./tools/qa/local_features/check.sh --feature voice --feature auth --feature chat --feature connection_status --feature idle_afk --feature screen --feature screen_metrics --feature shell --feature support --feature settings --platform web --base origin/master --real-stack",
+        "run": ".out/local-features/20261117-104824",
+        "completed_at_utc": "2026-11-17T08:02:16Z",
+        "report_status": "BLOCKED",
+        "tested_source": "fa7a41ec3d220b01d3a407e763ac1fe51a489396 worktree-sha256=04e1c5bb8477e07a915482587135a9ec3322d64748e1d5a3f82bca655b319cd6",
+        "observation": "Web unit, production build, accessibility, all selected browser suites except web-screen_profile, and authenticated real-stack journeys at 1440px and 393px passed. The issue-specific voice-interface resume scenario passed. The aggregate remains BLOCKED by one skipped registered web-screen_profile test. Source stability passed for the exact tested worktree; this is scoped browser acceptance and does not claim physical-device or continuous background audio."
+      },
+      {
+        "name": "flutter_targeted_voice_background_and_recovery_unit_tests",
+        "result": "PASS",
+        "command": "flutter test --no-pub test/features/background_microphone/session_test.dart test/features/background_microphone/controller_test.dart test/voice_connection_recovery_test.dart test/voice_connection_recovery_visible_test.dart test/voice_connection_recovery_transfer_test.dart test/voice_connection_recovery_release_test.dart test/realtime_scope/heartbeat_liveness_test.dart test/android_microphone_fgs_contract_test.dart",
+        "observation": "27 tests passed. FGS admission/stop, listener-only fallback, stale callback fencing, bounded recovery, terminal ACL outcomes, heartbeat resume and manifest contract passed."
+      },
+      {
+        "name": "android_api35_registered_native_feature_run_20261117",
+        "result": "FAIL",
+        "command": "BOOHTACORD_QA_EGRESS_PLATFORM=linux/amd64 ./tools/qa/local_features/check.sh --feature voice --feature auth --feature chat --feature connection_status --feature idle_afk --feature screen --feature screen_metrics --feature shell --feature support --platform android --base origin/master --real-stack",
+        "executed_at_utc": "2026-11-16T22:43:30Z",
+        "run": ".out/local-features/20261117-014330",
+        "report_status": "FAIL",
+        "tested_source": "fa7a41ec3d220b01d3a407e763ac1fe51a489396 worktree-sha256=6cf83afaa5481de9cd989a2f3d5cee02cf792bb98e17c8c2dc16e1ff69f1e1eb",
+        "environment": {
+          "device": "Android 15 emulator, API 35, sdk_gphone64_arm64",
+          "physical_device": false
+        },
+        "observation": "Flutter unit: 2,002 passed and one skipped (stage BLOCKED by local-feature policy); component captures PASS; standard Android runtime and issue689 delivery-revocation, envelope, heartbeat, listener, roster and topology-history targets PASS. The separate issue786 deafen test FAILed while awaiting the v2 roster deafened flag. Source stability PASS. This broad run does not establish issue785 background media acceptance."
+      },
+      {
+        "name": "android_api35_issue689_listener_smoke",
+        "result": "PASS_SCOPED",
+        "run": ".out/local-features/20261117-014330/android-runtime-issue689_listener_test",
+        "runtime_record": ".out/local-features/20261117-014330/android-runtime-issue689_listener_test/runtime.json",
+        "screenshot": ".out/local-features/20261117-014330/android-runtime-issue689_listener_test/native-listener-realtime-recovered.png",
+        "screenshot_sha256": "b76d56cf1640ac556854778fae74eb16c5d0e21b4a7f93a30995c968c2dc53d0",
+        "observation": "Android API 35 app maintained the listener Room and fresh roster across application WebSocket reconnect. Runtime record explicitly reports no microphone capture and media NOT_RUN; the test did not background the app or check audio packets."
+      },
+      {
+        "name": "android_api36_release_variant_fgs_manifest_audit",
+        "result": "PASS_SCOPED",
+        "executed_at_utc": "2026-11-16T23:06:42Z",
+        "command": "flutter build apk --release (after flutter pub get --offline), using the machine-local Android debug keystore only for manifest inspection",
+        "artifact": "clients/flutter/build/app/outputs/flutter-apk/app-release.apk",
+        "artifact_sha256": "1eac190f81ad4803b3b2f44863e6e2f66242cd57106b683bfa13645ae66bccfa",
+        "manifest_observations": {
+          "target_sdk": 36,
+          "permissions": [
+            "android.permission.FOREGROUND_SERVICE",
+            "android.permission.FOREGROUND_SERVICE_MICROPHONE",
+            "android.permission.RECORD_AUDIO"
+          ],
+          "microphone_service": {
+            "exported": false,
+            "foreground_service_type": "0x80 (microphone)"
+          },
+          "screen_projection_service_type": "0x20 (mediaProjection)"
+        },
+        "limitations": [
+          "Debug-signed local artifact; not a production release or installation acceptance.",
+          "The initial --no-pub attempt kept a stale debug GeneratedPluginRegistrant with dev-only integration_test; a normal release build regenerated the registry and passed."
+        ]
+      },
+      {
+        "name": "ios27_release_variant_no_codesign_build",
+        "result": "PASS_SCOPED",
+        "executed_at_utc": "2026-11-16T23:09:42Z",
+        "command": "flutter build ios --release --no-codesign",
+        "artifact": "clients/flutter/build/ios/iphoneos/Runner.app/Runner",
+        "artifact_sha256": "eef88cd55c153636e783f0fe11fb9f983d2450a1b54bbc4c0ca820f054346042",
+        "environment": {
+          "sdk": "iOS 27.0",
+          "bundle_id": "ru.boohtacord.app",
+          "code_signing": "disabled"
+        },
+        "bundled_info_plist": {
+          "UIBackgroundModes": [
+            "audio",
+            "remote-notification"
+          ],
+          "NSMicrophoneUsageDescription": "Микрофон нужен для разговора в голосовых каналах."
+        },
+        "observation": "Release-variant native compilation and bundled plist inspection passed; no simulator execution, device media or release signing."
+      },
+      {
+        "name": "ios_simulator_lifecycle_media_acceptance",
+        "result": "NOT_RUN",
+        "command": "xcrun simctl list runtimes; xcrun simctl list devices available",
+        "observation": "Xcode has the iOS 27 SDK, but the host has no installed iOS Simulator runtime or available simulator device."
+      },
+      {
+        "name": "native_physical_60_minute_paired_background_media_acceptance",
+        "result": "NOT_RUN",
+        "observation": "No physical Android/iPhone, screen-lock test, 60-minute paired run, decoded-audio evidence or sender/receiver media timeline was available."
+      },
+      {
+        "name": "android_chrome_emulator_paired_rtp_after_home_without_cdp",
+        "result": "PASS_SCOPED",
+        "command": "python3 .out/issue785-pair-orchestrator.py",
+        "executed_at_utc": "2026-11-16T23:19:43Z",
+        "environment": {
+          "device": "Android 15 emulator, API 35, sdk_gphone64_arm64",
+          "browser": "Chrome 124.0.6367.219",
+          "sender": "Playwright Chromium with synthetic microphone",
+          "receiver": "Android Chrome listener-only",
+          "stack": "Disposable Go/PostgreSQL/Caddy/LiveKit QA stack"
+        },
+        "scenario": {
+          "android_home_top_resumed_activity_confirmed": true,
+          "background_seconds": 12,
+          "same_chrome_tab_restored": true,
+          "cdp_disconnected_during_background": true,
+          "visibility_events": [
+            "visible",
+            "hidden",
+            "visible"
+          ],
+          "voice_status_after_return": "Голос подключён",
+          "active_receiver_peer_connections_after_return": 1,
+          "connected_receiver_peer_connections_after_return": 1,
+          "resume_gesture_needed": false
+        },
+        "media_counters": {
+          "receiver_before": {
+            "inbound_audio_packets": 20,
+            "inbound_audio_bytes": 8820
+          },
+          "receiver_after": {
+            "inbound_audio_packets": 712,
+            "inbound_audio_bytes": 353203
+          },
+          "sender_before": {
+            "outbound_audio_packets": 785,
+            "outbound_audio_bytes": 378317
+          },
+          "sender_after": {
+            "outbound_audio_packets": 1477,
+            "outbound_audio_bytes": 722700
+          }
+        },
+        "observation": "After returning from Android Home, the same listener-only Chrome tab recorded visible → hidden → visible in persisted lifecycle events. The connected voice dock remained visible with two participants and no app redirect. Cumulative receiver audio RTP had increased by 692 packets and 344,383 bytes when sampled after resume; the test had no stats sample during the hidden interval, so it does not establish uninterrupted hidden-state delivery or decoded audio.",
+        "media_result": "PASS_SCOPED",
+        "lifecycle_result": "PASS_SCOPED",
+        "screenshot": ".out/local-features/issue785-browser-paired-no-cdp/android-chrome-paired-audio-after-resume.png",
+        "screenshot_sha256": "52c459b742bc74c61599dd0731a7ba49b0fa1604222438dd3d7bb21c40fe3bda",
+        "screenshot_resolution_px": [
+          1082,
+          2055
+        ],
+        "limitations": [
+          "Android 15 emulator only; not a physical device.",
+          "Twelve-second Home interval only; does not satisfy the issue’s 60-minute paired-media criterion.",
+          "RTP counters show browser transport statistics after return; no decoded-audio or in-hidden-interval sample was captured.",
+          "No iOS browser/runtime coverage in this run."
+        ]
+      },
+      {
+        "name": "android_chrome_emulator_paired_rtp_after_home_without_cdp_immediate_sample",
+        "result": "PASS_SCOPED",
+        "command": "python3 .out/issue785-pair-orchestrator.py",
+        "executed_at_utc": "2026-11-16T23:24:33Z",
+        "environment": {
+          "device": "Android 15 emulator, API 35, sdk_gphone64_arm64",
+          "browser": "Chrome 124.0.6367.219",
+          "sender": "Playwright Chromium with synthetic microphone",
+          "receiver": "Android Chrome listener-only",
+          "stack": "Disposable Go/PostgreSQL/Caddy/LiveKit QA stack",
+          "application_source_sha": "fa7a41ec3d220b01d3a407e763ac1fe51a489396",
+          "api_source_sha": "fa7a41ec3d220b01d3a407e763ac1fe51a489396",
+          "livekit_client": "2.22.3",
+          "network": "Android emulator virtual network; no Wi-Fi/LTE handoff"
+        },
+        "scenario": {
+          "android_home_top_resumed_activity_confirmed": true,
+          "background_seconds": 12,
+          "same_chrome_tab_restored": true,
+          "cdp_disconnected_during_background": true,
+          "visibility_events": [
+            "visible",
+            "hidden",
+            "visible"
+          ],
+          "voice_status_after_return": "Голос подключён",
+          "active_receiver_peer_connections_after_return": 1,
+          "connected_receiver_peer_connections_after_return": 1,
+          "resume_gesture_needed": false
+        },
+        "media_counters": {
+          "receiver_before_home": {
+            "inbound_audio_packets": 16,
+            "inbound_audio_bytes": 9398
+          },
+          "receiver_first_sample_after_return": {
+            "inbound_audio_packets": 711,
+            "inbound_audio_bytes": 352533
+          },
+          "receiver_after_ui_acceptance": {
+            "inbound_audio_packets": 711,
+            "inbound_audio_bytes": 352533
+          },
+          "sender_before_home": {
+            "outbound_audio_packets": 581,
+            "outbound_audio_bytes": 279443
+          },
+          "sender_after_return": {
+            "outbound_audio_packets": 1276,
+            "outbound_audio_bytes": 623214
+          }
+        },
+        "observation": "After Android Home, the same listener-only Chrome tab persisted visible → hidden → visible. The first receiver RTP sample was taken after CDP reattachment and visibility restoration, before waiting for voice UI acceptance: counters were 711 packets/352,533 bytes versus 16/9,398 before Home. The dock remained connected with two participants. These cumulative counters do not timestamp packet arrival within the hidden interval and do not prove decoded or audible audio.",
+        "media_result": "PASS_SCOPED",
+        "lifecycle_result": "PASS_SCOPED",
+        "screenshot": ".out/local-features/issue785-browser-paired-no-cdp-immediate/android-chrome-paired-audio-after-resume.png",
+        "screenshot_sha256": "11c826e7fc87ef656758776209fb96b900b474e3c2bd827b07dc30799f994ab3",
+        "screenshot_resolution_px": [
+          1082,
+          2055
+        ],
+        "limitations": [
+          "Android 15 emulator only; not a physical device.",
+          "Twelve-second Home interval only; does not satisfy the issue’s 60-minute paired-media criterion.",
+          "RTP counters are cumulative transport statistics and do not prove decoded audio or precise packet timing during hidden state.",
+          "No iOS browser/runtime coverage in this run."
+        ]
+      },
+      {
+        "name": "mobile_web_resume_source_failure_mode_audit",
+        "result": "PASS_SCOPED",
+        "base_source_sha": "fa7a41ec3d220b01d3a407e763ac1fe51a489396",
+        "files_reviewed": [
+          "clients/web/src/realtime/liveness.ts",
+          "clients/web/src/voice/voice_session.ts",
+          "clients/web/src/voice/livekit_room_factory.ts",
+          "clients/web/src/voice/VoiceDock.vue"
+        ],
+        "observation": "At base, liveness.ts observed stale application-WebSocket heartbeat on visibilitychange/online; VoiceSession did not observe browser resume to reconcile LiveKit media; the room adapter did not expose LiveKit playback permission/startAudio, and VoiceDock had no gesture action for blocked playback. The current change covers these browser failure modes with separate WS/media recovery and a user-gesture audio resume action.",
+        "causal_status": "SOURCE_CONFIRMED_BROWSER_FAILURE_MODES; ORIGINAL_PHYSICAL_DEVICE_ROOT_CAUSE_NOT_PROVEN",
+        "limit": "No physical Android/iOS paired timeline has established the original report’s native cause. The emulator browser playback was allowed on return, and RTP cumulative counters do not timestamp packets inside the hidden interval."
+      },
+      {
+        "name": "ios_audio_session_owner_and_policy_source_audit",
+        "result": "PASS_SCOPED",
+        "environment": {
+          "livekit_client": "2.13.0 (repository path dependency)",
+          "flutter_webrtc": "1.6.2+hotfix.3 (repository path dependency)",
+          "webRTC_sdk_ios": "150.7871.01 (pinned in both iOS podspecs)",
+          "ios_sdk": "27.0",
+          "runtime": "NOT_RUN; CoreSimulatorService inventory failed and no physical iPhone is available in this environment"
+        },
+        "files_reviewed": [
+          "clients/flutter/packages/livekit_client/lib/src/audio/audio_session.dart",
+          "clients/flutter/packages/livekit_client/lib/src/audio/audio_manager.dart",
+          "clients/flutter/packages/livekit_client/ios/livekit_client/Sources/livekit_client/LiveKitPlugin.swift",
+          "clients/flutter/packages/flutter_webrtc/ios/flutter_webrtc.podspec",
+          "clients/flutter/packages/livekit_client/ios/livekit_client.podspec",
+          "clients/flutter/ios/Runner/Info.plist"
+        ],
+        "observation": "The app disables flutter_webrtc audio-session management and uses LiveKit’s engine observer to configure/activate the session from engine state. The default communication policy is playAndRecord/videoChat with Bluetooth/A2DP/AirPlay routing; UIBackgroundModes includes audio. The local wrapper does not register its own AVAudioSession interruption observer; audio interruption handling is delegated to the pinned WebRTC framework. The upstream RTCAudioSession interface states that WebRTC handles AVAudioSession notifications before optional application delegate callbacks; upstream source shows interruption, route, media-services-reset and app-active handling.",
+        "causal_status": "NO_STATIC_CONFIGURATION_DEFECT_CONFIRMED; IOS_RUNTIME_INTERRUPTION_ROOT_CAUSE_NOT_PROVEN",
+        "upstream_sources": [
+          "https://webrtc.googlesource.com/src/%2B/7bca8ca4e2d7833da719c22bc0e1368a1d81ddc9/sdk/objc/components/audio/RTCAudioSession.h",
+          "https://webrtc.googlesource.com/src.git/%2B/0b3a6e383e17c80e5f3adce826cce7bc202a01cf/sdk/objc/components/audio/RTCAudioSession.mm"
+        ],
+        "limitations": [
+          "The pinned WebRTC-SDK binary is not vendored for exact-source inspection; the upstream RTCAudioSession contract cannot substitute for runtime behavior of that binary.",
+          "No physical interruption, route-change, media-services-reset, background/lock or 60-minute paired audio scenario was run.",
+          "The iOS Simulator SDK is present, but the host CoreSimulatorService refused device/runtime enumeration during this audit."
+        ]
+      },
+      {
+        "name": "native_device_inventory_recheck_2026_11_16",
+        "result": "BLOCKED",
+        "executed_at_utc": "2026-11-16T23:35:27Z",
+        "commands": [
+          "adb devices -l",
+          "xcrun simctl list devices available",
+          "xcrun devicectl list devices (12-second bounded query)"
+        ],
+        "observed": {
+          "android_devices": [
+            "emulator-5554 (sdk_gphone64_arm64)"
+          ],
+          "ios_sdk": "27.0 installed",
+          "ios_simulator_runtime": "not discoverable because CoreSimulatorService connection was refused",
+          "ios_physical_device": "devicectl inventory timed out; availability could not be confirmed"
+        },
+        "observation": "No physical Android handset is attached. The iOS SDK is installed, but Simulator could not enumerate devices/runtimes and the bounded devicectl query did not return. The physical 60-minute Android/iOS paired-media gate remains NOT_RUN; this records current host availability only."
+      },
+      {
+        "name": "android_device_inventory_followup_2026_11_17",
+        "result": "BLOCKED",
+        "executed_at_utc": "2026-11-17T07:25:14Z",
+        "command": "adb devices -l",
+        "user_availability": "User reports Android devices only are available for acceptance; no iPhone is available.",
+        "observed": {
+          "android_devices": [
+            "emulator-5554 (sdk_gphone64_arm64)"
+          ],
+          "physical_android_handset": "not currently attached",
+          "ios_physical_device": "not available per user"
+        },
+        "observation": "ADB inventory currently exposes only the API 35 emulator. Android physical paired-media acceptance is still NOT_RUN pending a physical handset connection; iOS physical acceptance cannot be run with the reported device availability."
+      },
+      {
+        "name": "registered_web_voice_interface_and_resume",
+        "result": "PASS",
+        "command": "Playwright web-voice_interface stage within the registered local-feature run",
+        "run": ".out/local-features/20261117-120741",
+        "observation": "29 browser tests passed, including the mobile best-effort background notice, explicit no-redirect behavior, voice controls and accessibility/zoom regressions."
+      },
+      {
+        "name": "registered_web_real_stack_1440",
+        "result": "PASS",
+        "command": "./tools/qa/client_lifecycle/run.py --width 1440 --portable-proxy --critical",
+        "run": ".out/local-features/20261117-120741/web-real-stack-1440.log",
+        "observation": "Actual browser lifecycle and disposable API/LiveKit stack passed; roster/media fault injection and recovery completed, Tempo verified and owned resources removed."
+      },
+      {
+        "name": "registered_web_real_stack_393",
+        "result": "PASS",
+        "command": "./tools/qa/client_lifecycle/run.py --width 393 --portable-proxy --critical",
+        "run": ".out/local-features/20261117-120741/web-real-stack-393.log",
+        "observation": "Actual browser lifecycle and disposable API/LiveKit stack passed at mobile width; fault injection and recovery completed, Tempo verified and owned resources removed."
+      },
+      {
+        "name": "full_registered_web_suite_screen_profile_skip",
+        "result": "BLOCKED",
+        "command": "web-screen_profile stage within the registered local-feature run",
+        "run": ".out/local-features/20261117-120741",
+        "observation": "One existing minimal publisher/viewer baseline test was skipped; the stage reported 19 passed and 1 skipped, so the overall selected feature report remains BLOCKED."
+      },
+      {
+        "name": "neutral_candidate_path_real_stack_attempt",
+        "result": "FAIL_ENVIRONMENT",
+        "command": "./tools/qa/local_features/check.sh with the same selected features from bc785-validation",
+        "run": ".out/local-features/20261117-115749",
+        "observation": "Colima could not bind the temporary tempo-config directories under the neutral clone before assertions. The final required rerun from the original QA candidate path passed both real-stack sizes."
+      },
+      {
+        "name": "initial_preflight_approved_brief_traceability_before_task_scope_adjustment",
+        "result": "BLOCKED",
+        "command": "python -m tools.ci.preflight.run --base origin/master --json",
+        "observation": "Initial preflight was BLOCKED because the approved brief was unavailable while a new backlog row was present. The patch now selects existing leaf task T-022 and leaves requirements/backlog unchanged; a final preflight follows."
+      },
+      {
+        "name": "final_preflight_traceability_with_existing_task_T-022",
+        "result": "N/A",
+        "command": "python -m tools.ci.preflight.run --base origin/master --json",
+        "observation": "Final diff selects existing backlog task T-022 and changes no requirements or backlog. Preflight traceability is N/A; the unavailable approved product brief is not claimed to have been checked."
+      }
+    ]
+  },
+  "visual_review": {
+    "status": "PASS_SCOPED",
+    "screenshots_inspected_at_source_resolution": 11,
+    "screenshots": [
+      {
+        "path": ".out/local-features/20261116-234736/web-voice_interface/controls.browser-mobile-co-36b50-directing-to-another-client/mobile-background-voice-notice.png",
+        "sha256": "d2de4999ba1b34bf446d44f8ee46dc6570d5b5c7037fba67a5f8821b98a66b47",
+        "resolution_px": [
+          390,
+          900
+        ],
+        "visual_observation": "The Russian best-effort notice sits below connected status; participant cards and voice controls remain visible, without horizontal overflow or a redirect to another client."
+      },
+      {
+        "path": ".out/local-features/issue785-android-chrome-20261117/background-resume.png",
+        "sha256": "c3f129081fcbf597201bba2a34e565595d1042db8392cd3a250fc597bf11a46c",
+        "resolution_px": [
+          1082,
+          2055
+        ],
+        "visual_observation": "Android Chrome emulator after returning from Home: connected listener voice dock, one participant, and the best-effort background notice are visible. The navigation drawer is open; no reconnect spinner or app redirect is shown."
+      },
+      {
+        "path": ".out/local-features/issue785-browser-paired/android-chrome-paired-audio-after-resume.png",
+        "sha256": "b895c6510d6fb47c5adf55fb75ff213509705e55ee1abc97cc872994732c422f",
+        "resolution_px": [
+          1082,
+          2055
+        ],
+        "visual_observation": "After Android Home return, the dock shows «Голос подключён», two participants, browser background limitation notice and voice controls; no reconnect spinner or app redirect is visible."
+      },
+      {
+        "path": ".out/local-features/issue785-browser-paired-rerun/android-chrome-paired-audio-after-resume.png",
+        "sha256": "fc53420642bfd392116fd9fbc1c4db836862e622680c865404b61eac78891bb4",
+        "resolution_px": [
+          1082,
+          2055
+        ],
+        "visual_observation": "After the repeated Android Home scenario, the dock remains connected with two participants, the browser-background notice, and the voice controls. No reconnect spinner or app redirect is shown."
+      },
+      {
+        "path": ".out/local-features/20261117-012534/images/web-voice_interface/controls.browser-mobile-co-36b50-directing-to-another-client/mobile-background-voice-notice.png",
+        "sha256": "d2de4999ba1b34bf446d44f8ee46dc6570d5b5c7037fba67a5f8821b98a66b47",
+        "resolution_px": [
+          390,
+          900
+        ],
+        "visual_observation": "At source resolution, connected voice, two participants, browser background limitation notice and controls remain visible. No reconnect spinner, horizontal overflow or redirect to another client is visible."
+      },
+      {
+        "path": ".out/local-features/20261117-104824/web-voice_interface/controls.browser-mobile-co-36b50-directing-to-another-client/mobile-background-voice-notice.png",
+        "sha256": "d2de4999ba1b34bf446d44f8ee46dc6570d5b5c7037fba67a5f8821b98a66b47",
+        "resolution_px": [
+          390,
+          900
+        ],
+        "visual_observation": "At source resolution, the connected voice panel retains its background limitation notice and controls below the participant cards. There is no horizontal overflow, reconnect spinner, or redirect to another client."
+      },
+      {
+        "path": ".out/local-features/20261117-014330/android-runtime-issue689_listener_test/native-listener-realtime-recovered.png",
+        "sha256": "b76d56cf1640ac556854778fae74eb16c5d0e21b4a7f93a30995c968c2dc53d0",
+        "resolution_px": [
+          1080,
+          2400
+        ],
+        "visual_observation": "The API 35 emulator app shows its listener-only voice room as connected after the application socket recovered. One participant and muted microphone are visible; this is not a background-media screenshot."
+      },
+      {
+        "path": ".out/local-features/issue785-browser-paired-no-cdp/android-chrome-paired-audio-after-resume.png",
+        "sha256": "52c459b742bc74c61599dd0731a7ba49b0fa1604222438dd3d7bb21c40fe3bda",
+        "resolution_px": [
+          1082,
+          2055
+        ],
+        "visual_observation": "After returning to the same Android Chrome tab, the screenshot shows two participants, connected voice status, the browser background limitation notice and voice controls. No redirect to another client or reconnect spinner is visible."
+      },
+      {
+        "path": ".out/local-features/issue785-browser-paired-no-cdp-immediate/android-chrome-paired-audio-after-resume.png",
+        "sha256": "11c826e7fc87ef656758776209fb96b900b474e3c2bd827b07dc30799f994ab3",
+        "resolution_px": [
+          1082,
+          2055
+        ],
+        "visual_observation": "At first post-resume UI capture, the same Android Chrome voice page shows two participants, connected status, browser background limitation copy and controls; no app redirect or reconnect spinner is shown."
+      },
+      {
+        "path": ".out/local-features/20261117-120741/images/web-voice_interface/controls.browser-mobile-co-36b50-directing-to-another-client/mobile-background-voice-notice.png",
+        "sha256": "d2de4999ba1b34bf446d44f8ee46dc6570d5b5c7037fba67a5f8821b98a66b47",
+        "resolution_px": [
+          390,
+          900
+        ],
+        "visual_observation": "At source resolution, connected status, two participant cards, browser background limitation notice and four voice controls are visible. No horizontal overflow or redirect to another client."
+      },
+      {
+        "path": ".out/local-features/20261117-120741/images/web-real-stack/393/voice-connected-compact.png",
+        "sha256": "44df3437f33b32b5b24273b9c89bb88212448262f065a2cc54bbea87c8a6378b",
+        "resolution_px": [
+          1179,
+          2556
+        ],
+        "visual_observation": "At source resolution from the 393 CSS-pixel real-stack browser capture, connected listener state, two participants, pinned voice dock, background limitation notice and controls are visible. The roster scrolls above the dock; no horizontal overflow. This is a disposable browser stack capture, not a physical-device media test."
+      }
+    ],
+    "limits": [
+      "The Playwright screenshot is a browser fixture and does not prove decoded peer media or real mobile background behavior.",
+      "The Android Chrome screenshot is from an API 35 emulator, not a physical phone; its listener session had no second participant or decoded-audio assertion.",
+      "The overall Web report is FAIL because the participant-screen-preview img expectation failed after the voice stages; causal attribution remains unproven. web-screen_profile also has one skipped registered test.",
+      "Android native listener smoke has no microphone capture; its connected UI and roster do not prove background audio or media packets.",
+      "A follow-up paired Android Chrome run disconnected CDP during Home and observed visible → hidden → visible after restoring the same tab. RTP counters were sampled only before and after the combined hidden/resume interval, so continuous hidden-state audio and decoded playback remain unproven.",
+      "The latest broad local-feature report remains BLOCKED by one skipped screen-profile baseline test; web-voice_interface and both real-stack widths passed.",
+      "The approved product brief was unavailable for preflight traceability, and issue #785 physical paired media acceptance remains open. Only an Android emulator was connected to this host; no physical Android phone or iPhone acceptance is claimed."
+    ]
+  }
+}

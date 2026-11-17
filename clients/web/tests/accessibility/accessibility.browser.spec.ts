@@ -718,6 +718,7 @@ test('voice dock explains denied microphone access and exposes a retry at mobile
   await page.evaluate(() => { document.documentElement.style.fontSize = '200%' })
 
   const dock = page.getByTestId('voice-dock')
+  await expect(dock.getByRole('note')).toHaveText('В фоне браузер может приостановить голос. После возврата соединение проверяется.')
   const notice = dock.getByRole('status').filter({ hasText: 'Вы подключены как слушатель' })
   const retry = dock.getByRole('button', { name: 'Повторить доступ к микрофону' })
   await expect(notice).toContainText('браузер запретил доступ к микрофону')
