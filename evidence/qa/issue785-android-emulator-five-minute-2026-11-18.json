@@ -138,6 +138,23 @@
     "temporary_scenario_sha256": "df802a8a8a741e411509dd74c2b4bf4774c3992d2b3cb6e94ae2610b5a218d45",
     "exit_code": 0
   },
+  "clean_tree_realtime_websocket_interruption": {
+    "status": "PASS_SCOPED",
+    "source_tree": "6939a672a20b9fac1819410eff6369616fd9b98f",
+    "merged_commit_with_same_tree": "daa96b53ff1cee6d8629428e85afeb76bdb7c553",
+    "environment": "Android 15 API 35 emulator, Chrome 124.0.6367.219, listener only, synthetic Chromium sender, emulator -no-audio",
+    "scenario": "The page instrumentation closed application /api/v1/realtime WebSockets and immediately closed newly opened sockets for ten seconds; the isolated LiveKit SFU remained running. New sockets may briefly open before the handler closes them. The observation ended with zero open application realtime sockets, then the block was removed and an open socket was observed again.",
+    "observation_seconds": 10,
+    "inbound_audio_packets": [19, 519],
+    "total_samples_received": [22080, 501600],
+    "connected_peer_connections": [1, 1],
+    "audio_energy": [0.0000022656270096693928, 2.676586918331364],
+    "playback_after_realtime_reconnect": "A live enabled unmuted audio track was attached to an unpaused unmuted audio element; three observed AudioContexts were running.",
+    "temporary_log": ".out/pr-candidate-785/.out/issue785-ws-only-outage.log",
+    "temporary_log_sha256": "d99b87d1dca4d4e499698053be932a742bbc715da86cb45bc8dc75d230c01bb4",
+    "temporary_scenario_sha256": "2ff9a38061a3e9f2bb1a42ae5dff2ef1b252d94b4d2f9769f71729102b6df2ec",
+    "exit_code": 0
+  },
   "limitations": [
     "Cumulative RTP counters do not prove continuous packet delivery throughout the hidden interval or decoded audible sound.",
     "This emulator result does not prove physical Android or iOS behavior, lock-screen behavior, 60-minute media continuity, native client acceptance, or deployed release behavior.",
