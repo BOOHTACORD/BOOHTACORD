@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "issue": 785,
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "scope": "One-hour best-effort background observation of Android Chrome as a listener in a paired synthetic-media session, plus 30 seconds after returning to the same tab.",
+  "source": {
+    "tested_commit": "daa96b53ff1cee6d8629428e85afeb76bdb7c553",
+    "tested_tree": "6939a672a20b9fac1819410eff6369616fd9b98f",
+    "tracked_worktree_status": "clean",
+    "scenario_sha256": "a6de24fd2506f0387e74c5823c3b9c8d8b3fd880ab4e477d6b91a34663966f00",
+    "orchestrator_sha256": "0a8d04e28445fba9b495faba9fad27fbabb63a8d5e55d297fc5062c80e3ca006"
+  },
+  "environment": {
+    "receiver": "Android 15 / API 35 AOSP emulator, Chrome 124.0.6367.219, listener-only",
+    "sender": "Playwright Chromium publishing synthetic microphone audio",
+    "physical_device": false,
+    "emulator_audio_output": "disabled with -no-audio; audible playback was not verified"
+  },
+  "scenario": {
+    "configured_background_seconds": 3600,
+    "observed_background_seconds": 3599.59,
+    "background_action": "Android Home activity; return to the same Chrome tab",
+    "devtools_disconnected_during_background": true,
+    "resume_gesture_needed": false,
+    "visibility_events": [
+      "visible",
+      "hidden",
+      "visible"
+    ],
+    "lifecycle_timestamps_utc": {
+      "visible_before_background": "2026-11-17T22:11:24.920Z",
+      "hidden": "2026-11-17T22:11:26.233Z",
+      "visible_after_resume": "2026-11-17T23:11:25.823Z"
+    },
+    "post_resume_observation_seconds": 30,
+    "post_resume_sample_interval_seconds": 10
+  },
+  "media_counters": {
+    "receiver_before": {
+      "inbound_audio_packets": 18,
+      "inbound_audio_bytes": 10056
+    },
+    "receiver_at_resume": {
+      "inbound_audio_packets": 180138,
+      "inbound_audio_bytes": 85325067
+    },
+    "receiver_post_resume_samples": [
+      {
+        "inbound_audio_packets": 180144,
+        "inbound_audio_bytes": 85328598
+      },
+      {
+        "inbound_audio_packets": 180645,
+        "inbound_audio_bytes": 85569111
+      },
+      {
+        "inbound_audio_packets": 181145,
+        "inbound_audio_bytes": 85809931
+      },
+      {
+        "inbound_audio_packets": 181645,
+        "inbound_audio_bytes": 86050751
+      }
+    ],
+    "sender_after": {
+      "outbound_audio_packets": 181904,
+      "outbound_audio_bytes": 86170154
+    },
+    "observation": "Receiver RTP counters advanced by 180120 packets during the hidden interval and a further 1507 packets over the post-resume sample window."
+  },
+  "visual_review": {
+    "screenshot_path": ".out/local-features/issue785-browser-paired-no-cdp-immediate/android-chrome-paired-audio-after-resume.png",
+    "sha256": "0a4c8ade212f100a6a9553c977a83f2c9bafb873450d4fc6ed3f1883b1e4c8ac",
+    "resolution_px": [
+      1082,
+      2055
+    ],
+    "observation": "At source resolution, the resumed Chrome view shows connected voice status, two participant cards, the browser background limitation notice and voice controls. No reconnect spinner or client redirect is visible. This image does not prove audible playback."
+  },
+  "execution": {
+    "command": "python3 .out/issue785-pair-orchestrator.py",
+    "exit_code": 0,
+    "temporary_log_path": ".out/issue785-hour-background.log",
+    "temporary_log_sha256": "61cac47242cdd6e7b32723874680056cd0990718e796cd3d479f0ab395cc317a"
+  },
+  "limitations": [
+    "This is an Android emulator browser observation, not physical-device acceptance.",
+    "The emulator had no audio output; audible media and audio routing were not tested.",
+    "The test does not verify Flutter microphone foreground service, iOS audio session, lock-screen media on a physical phone, Wi-Fi/LTE handoff, or release artifacts.",
+    "Mobile Web remains best-effort; this result is not a promise of continuous background execution across browsers or operating systems."
+  ]
+}
