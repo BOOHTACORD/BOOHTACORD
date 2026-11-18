@@ -33,6 +33,15 @@ def native_target(target):
     return scopes[target]
 
 
+def remove_generated_android_plugin_registrant(root):
+    generated = (Path(root) / 'clients/flutter/android/app/src/main/java/io/flutter/plugins'
+                 / 'GeneratedPluginRegistrant.java')
+    try:
+        generated.unlink()
+    except FileNotFoundError:
+        pass
+
+
 def verify_device(platform, device):
     if platform == 'windows':
         if device != 'windows': raise ValueError('Select the Windows desktop target')
@@ -104,10 +113,14 @@ def main():
                                                'QA_CERT_SHA256':pin,'QA_PASSWORD':stack.password}))
                 defines.chmod(0o600)
                 with android_back_on_capture(args.platform,args.device,args.target,destination), android_microphone_permission(args.platform,args.device,args.target):
-                    run_owned(['flutter','drive','--driver','test_driver/local_qa.dart',
-                        '--target',args.target,'-d',args.device,
-                        '--dart-define-from-file',str(defines)],cwd=root/'clients/flutter',
-                        env=dict(os.environ,BOOHTACORD_NATIVE_CAPTURE_DIR=str(destination)),timeout=1200)
+                    try:
+                        run_owned(['flutter','drive','--driver','test_driver/local_qa.dart',
+                            '--target',args.target,'-d',args.device,
+                            '--dart-define-from-file',str(defines)],cwd=root/'clients/flutter',
+                            env=dict(os.environ,BOOHTACORD_NATIVE_CAPTURE_DIR=str(destination)),timeout=1200)
+                    finally:
+                        if args.platform == 'android':
+                            remove_generated_android_plugin_registrant(root)
                 (destination/'runtime.json').write_text(json.dumps({'status':'PASS','platform':args.platform,
                     'device':args.device,'mocks':args.platform=='windows','scope':scope,
                     'mocked_components':['preferences','secure_storage'] if args.platform=='windows' else [],
