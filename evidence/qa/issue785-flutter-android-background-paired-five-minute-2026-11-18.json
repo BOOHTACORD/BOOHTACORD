@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "issue": 785,
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "scope": "Five-minute Android 15 emulator test of Flutter listener-only voice with an independent synthetic-tone sender. The test observed inbound LiveKit RTP and decoded audio receiver statistics before and after Android Home, then verified post-resume progress. It does not prove speaker output or human audibility.",
+  "source": {
+    "tested_master_commit": "16ab13669a171be618d8eeef31dbc7e71153fe84",
+    "tested_master_tree": "a741d902ca943af4eac0e8f2eda12792751cf3b4",
+    "product_source_same_as_master": true,
+    "flutter_target": "clients/flutter/integration_test/issue785_background_listener_pair_test.dart",
+    "flutter_target_sha256": "ac2e249b3642befbbcd401ff524da1b39dd02fed6492b24d25126984abeb3fe8",
+    "runner": "tools/qa/critical_client_acceptance/issue785_android_flutter_background_pair.py",
+    "runner_sha256": "5dc6b75c26d147e1899c4096d0329efe5a8667139ad140fd64b22b00d3da6387",
+    "sender_scenario": "tools/qa/critical_client_acceptance/issue785_flutter_background_pair.mjs",
+    "sender_scenario_sha256": "d96e1a937b3a466cfa9057b8ff8e22f3c6dbf81de8b363fcd21291f3c92371af",
+    "qa_stack_source": "tools/qa/critical_client_acceptance/stack.py",
+    "qa_stack_source_sha256": "d0a442a982936a0ff6ebc70bf32eab984a09d71f4b7e287a5d598204b1902f42"
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 emulator",
+    "avd": "BOOHTACORD_QA_API35",
+    "device": "emulator-5554",
+    "device_model": "sdk_gphone64_arm64",
+    "physical_device": false,
+    "receiver": "BOOHTACORD Flutter Android listener-only client",
+    "sender": "Playwright Chromium using a generated 440 Hz WAV microphone source",
+    "server": "Owned disposable API/PostgreSQL/LiveKit QA stack; no production service"
+  },
+  "scenario": {
+    "join_mode": "listener-only",
+    "local_audio_publications": 0,
+    "microphone_foreground_service_active": false,
+    "background_action": "Android Home",
+    "home_activity_observed": true,
+    "background_seconds_requested": 300,
+    "background_seconds_observed": 300.01,
+    "application_socket_connected_after_resume": true,
+    "voice_phase_after_resume": "listener",
+    "same_livekit_room_instance_after_resume": true,
+    "subscribed_remote_audio_tracks_after_resume": 1,
+    "integration_elapsed_seconds": 332
+  },
+  "media_counters": {
+    "sender_before_background": {
+      "peer_connections": 1,
+      "active_peer_connections": 1,
+      "outbound_audio_packets": 24,
+      "outbound_audio_bytes": 13935
+    },
+    "sender_after_background_and_resume": {
+      "peer_connections": 1,
+      "active_peer_connections": 1,
+      "outbound_audio_packets": 18741,
+      "outbound_audio_bytes": 12123834
+    },
+    "receiver_before_background": {
+      "subscribed_audio_tracks": 1,
+      "inbound_audio_packets": 39,
+      "inbound_audio_bytes": 25233,
+      "total_samples_duration_seconds": 1.9900000000000015,
+      "total_audio_energy": 0.00031637813322335577
+    },
+    "receiver_at_resume": {
+      "subscribed_audio_tracks": 1,
+      "inbound_audio_packets": 15112,
+      "inbound_audio_bytes": 9777463,
+      "total_samples_duration_seconds": 303.3899999998691,
+      "total_audio_energy": 0.11856503195066359
+    },
+    "receiver_progressing_after_resume": {
+      "subscribed_audio_tracks": 1,
+      "inbound_audio_packets": 15140,
+      "inbound_audio_bytes": 9795580,
+      "total_samples_duration_seconds": 303.96999999986855,
+      "total_audio_energy": 0.11879262525090055
+    },
+    "receiver_post_resume_samples": [
+      {
+        "inbound_audio_packets": 15140,
+        "inbound_audio_bytes": 9795580,
+        "total_samples_duration_seconds": 303.96999999986855,
+        "total_audio_energy": 0.11879262525090055
+      },
+      {
+        "inbound_audio_packets": 15644,
+        "inbound_audio_bytes": 10121668,
+        "total_samples_duration_seconds": 314.0599999998594,
+        "total_audio_energy": 0.12275069622027424
+      },
+      {
+        "inbound_audio_packets": 16148,
+        "inbound_audio_bytes": 10447756,
+        "total_samples_duration_seconds": 324.1299999998502,
+        "total_audio_energy": 0.1267013919778862
+      },
+      {
+        "inbound_audio_packets": 16651,
+        "inbound_audio_bytes": 10773197,
+        "total_samples_duration_seconds": 334.18999999984106,
+        "total_audio_energy": 0.13064874634663506
+      }
+    ],
+    "result": "PASS_SCOPED: sender TX and receiver RTP/decoded-sample counters advanced; the Flutter receiver retained its Room and single audio subscription after returning from Home."
+  },
+  "visual_review": {
+    "screenshot": ".out/local-features/issue785-flutter-background-pair-2026-11-18-run5/screenshots/issue785-flutter-listener-after-background.png (local QA artifact, not committed)",
+    "sha256": "fdf7ca2bf497698735bf948a407c11da0820590078b80d7f16b51a051beee833",
+    "resolution_px": [
+      1080,
+      2400
+    ],
+    "observation": "At source resolution, Flutter shows the voice room, listener mode, two participants and the connected voice dock. The listener mic is muted and the independent sender mic is active. No obvious layout defect was observed. This UI capture is not acoustic evidence."
+  },
+  "execution": {
+    "command": "python3 -m tools.qa.critical_client_acceptance.issue785_android_flutter_background_pair --device emulator-5554 --background-seconds 300 --output .out/local-features/issue785-flutter-background-pair-2026-11-18-run5",
+    "exit_code": 0,
+    "runtime_result": ".out/local-features/issue785-flutter-background-pair-2026-11-18-run5/result.json (local QA artifact, not committed)",
+    "runtime_result_sha256": "b4fcb83b813f1e2b90f1b03d32c65ea52b9d29a3da7c2433b57bbe8fddc9fc02",
+    "receiver_result": ".out/local-features/issue785-flutter-background-pair-2026-11-18-run5/receiver-result.json (local QA artifact, not committed)",
+    "receiver_result_sha256": "4f4f9bc5afeca90a8127d877284be4b94b04426dd332c3f98c075ebb95c74814"
+  },
+  "cleanup": {
+    "owned_qa_stack_removed": true,
+    "qa_credentials_and_temporary_audio_removed": true,
+    "adb_reverse_mappings_removed": true,
+    "sender_browser_closed": true
+  },
+  "limitations": [
+    "The emulator receiver counters and decoded-sample energy do not prove audio reached a speaker or was audible to a person; acoustic loopback/human listening was not performed.",
+    "This is a five-minute Android emulator run, not the required physical Android/iPhone 60-minute paired acceptance.",
+    "Android secure keyguard, screen lock, network transitions, airplane mode, OS process kill, permission revoke, battery saver, incoming calls, and the mic-on FGS path were not tested here.",
+    "No iOS device/audio-session, Safari/PWA, release-signed artifact, production smoke or rollback was tested.",
+    "Issue #785 remains open; this scoped emulator evidence does not close its release gate."
+  ]
+}
