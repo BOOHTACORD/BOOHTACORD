@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "issue": 785,
+  "status": "FAIL",
+  "gate_closed": false,
+  "scope": "Android 15/API 35 emulator observation that the Flutter microphone foreground service remained foregrounded with the screen asleep for 60 minutes. This does not establish media receipt or audible continuity.",
+  "source": {
+    "master_commit": "63c47a2423088bd22badd2bb71b2da6b30ecb105",
+    "master_tree": "c9e7ceabef658bc89814ca77161800ef01e2ee6e",
+    "product_source_same_as_master": true,
+    "target": "clients/flutter/integration_test/android_noise_sfu_test.dart",
+    "target_sha256": "c0fad59371a9ae308398d1a501d322f8de0f62f2bfea20456c5af17f58f3fe6a",
+    "native_runner_sha256": "68c7e4672cd25614eccd48b6c0704ed109e9f1cd5e4663eecebfa77bc41d7977",
+    "native_runner_local_timeout_override_seconds": 4500,
+    "observer": ".out/issue785_android_fgs_watch.py",
+    "observer_final_write_fix_applied_after_run": true
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 emulator",
+    "avd": "BOOHTACORD_QA_API35",
+    "device": "emulator-5554",
+    "physical_device": false,
+    "application": "ru.boohtacord.app",
+    "target_sdk": 36,
+    "build": "Flutter Android debug APK",
+    "server": "Owned disposable Go/PostgreSQL/LiveKit QA stack",
+    "microphone_permission": "Granted by the isolated QA runner"
+  },
+  "observation": {
+    "status": "PASS_SCOPED",
+    "duration_requested_seconds": 3600,
+    "duration_observed_seconds": 3600.09,
+    "sample_interval_seconds": 30,
+    "sample_count": 121,
+    "all_samples_service_present": true,
+    "all_samples_is_foreground": true,
+    "all_samples_microphone_fgs_type": "0x00000080",
+    "all_samples_same_foreground_id": 9751,
+    "all_samples_start_foreground_count": 1,
+    "all_samples_screen_asleep": true,
+    "home_keyevent_sent": true,
+    "screen_off_keyevent_sent": true,
+    "secure_keyguard_lock": "NOT_VERIFIED"
+  },
+  "integration_runner": {
+    "status": "FAIL",
+    "exit_code": 1,
+    "failure": "Flutter test framework pumpAndSettle timed out in openAudioSettings() at android_noise_sfu_support.dart:16, reported at 60:12 after the app was backgrounded and the screen was later awakened.",
+    "test_target": "Android RNNoise processes microphone frames in a real SFU room",
+    "interpretation": "The widget-test harness could not settle after the long background interval. This is not evidence that media remained audible or that the app lifecycle test passed. The test did not reach its normal leaveVoice/logout assertions."
+  },
+  "post_runner_state": {
+    "microphone_service_present": false,
+    "avd_screen_awake": true,
+    "top_activity": "com.google.android.apps.nexuslauncher/.NexusLauncherActivity",
+    "app_process_present": false,
+    "normal_leave_cleanup": "NOT_VERIFIED",
+    "note": "Observed after the Flutter runner exited nonzero; service absence may result from test/process teardown and does not prove normal user leave cleanup."
+  },
+  "media": {
+    "android_audio_record_callbacks_observed": true,
+    "input_level": 0,
+    "receiver_rtp_or_decoded_audio_counters": "NOT_RUN",
+    "independent_receiver": "NOT_PRESENT",
+    "audible_output": "NOT_RUN"
+  },
+  "other_checks": {
+    "release_merged_manifest": "BLOCKED; with Java 17 the Gradle task stopped during project configuration because release signing values and an existing keystore are unavailable.",
+    "local_contracts": "FAIL in the prior host run (2 failures, 60 errors, 9 skipped) due macOS host/dependency limitations; commit remains blocked.",
+    "physical_android_ios_and_paired_audible_acceptance": "NOT_RUN"
+  },
+  "limitations": [
+    "Emulator state is not physical Android device acceptance.",
+    "The test did not measure independent receiver packets, decoded audio, or audibility.",
+    "The secure keyguard lock state was not verified; screen asleep alone is not proof of keyguard lock.",
+    "The Flutter integration runner failed after the background interval and the test did not reach its normal leave/logout assertions.",
+    "Release APK/AAB manifest, iOS audio session, network transitions, OS-forced service stop, and production smoke remain unverified.",
+    "Issue #785 remains open; this record does not close the release gate."
+  ]
+}
