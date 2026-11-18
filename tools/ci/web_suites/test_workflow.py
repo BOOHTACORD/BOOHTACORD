@@ -25,6 +25,16 @@ class WorkflowTests(unittest.TestCase):
             value['jobs']['browser']['timeout-minutes'] = minutes
             with self.subTest(minutes=minutes), self.assertRaises(ValueError): workflow.validate(value)
 
+    def test_sfu_budget_covers_the_network_and_firefox_audio_profiles(self):
+        value = document()
+        self.assertEqual('30', value['jobs']['sfu']['timeout-minutes'])
+        workflow.validate(value)
+        for minutes in ('20', '25', '35'):
+            changed = copy.deepcopy(value)
+            changed['jobs']['sfu']['timeout-minutes'] = minutes
+            with self.subTest(minutes=minutes), self.assertRaises(ValueError):
+                workflow.validate(changed)
+
     def test_actual_workflow_has_complete_mandatory_parallel_gate(self):
         workflow.validate(document())
 
