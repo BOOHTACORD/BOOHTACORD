@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "issue": 785,
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "scope": "Flutter Android listener-only integration against an owned disposable Go/PostgreSQL/LiveKit QA stack: close and recover the application realtime WebSocket while retaining the existing LiveKit Room and refreshing the authoritative voice roster.",
+  "source": {
+    "tested_commit": "daa96b53ff1cee6d8629428e85afeb76bdb7c553",
+    "tested_tree": "6939a672a20b9fac1819410eff6369616fd9b98f"
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP emulator; Flutter integration test",
+    "physical_device": false,
+    "target": "clients/flutter/integration_test/issue689_listener_test.dart",
+    "livekit_client_package_version": "2.13.0",
+    "server": "Owned disposable QA stack built from the same clean repository source; no production service",
+    "microphone_capture": "not used; listener-only"
+  },
+  "scenario": {
+    "join_mode": "listener-only",
+    "initial_room_and_fresh_roster": "observed",
+    "application_websocket": "closed by the test, then a replacement socket connected",
+    "recovery_assertions": {
+      "same_livekit_room_instance": true,
+      "voice_phase_remained_listener": true,
+      "roster_became_fresh_and_kept_self": true,
+      "legacy_sse_requests": 0,
+      "leave_and_logout_completed": true,
+      "flutter_test_exception": false
+    },
+    "result": "PASS_SCOPED"
+  },
+  "visual_review": {
+    "screenshot_path": ".out/issue785-native-listener/native-listener-realtime-recovered.png",
+    "sha256": "e9bcd2830848991e12b38e820cfb0983db30f5417143bf35beb3d1168b79d1ab",
+    "resolution_px": [
+      1080,
+      2400
+    ],
+    "observation": "At source resolution, Android Flutter shows the listener voice dock as connected after app-socket and roster recovery; no reconnect banner is visible. This capture does not prove audible media."
+  },
+  "execution": {
+    "command": "python3 -m tools.qa.local_features.native --platform android --device emulator-5554 --target integration_test/issue689_listener_test.dart",
+    "exit_code": 0,
+    "target_sha256": "dc17ceb27f74185c61e61e2fe78966394ab4f175eac5503ade8de901f3b87ce9",
+    "runner_sha256": "4ab87a6c37f9d26e8ba2f842e4ff7c67dd749676a9c71f75089a8caaf1c2bed5",
+    "runtime_report_sha256": "848a3165808a7d9203ff6c0fa9d7b0b5d94169fa9bc231c443e0f7267cadce5b"
+  },
+  "limits": {
+    "media": "NOT_RUN: no RTP counters, received samples, audio output or audible assertion in this target",
+    "background": "NOT_RUN: this Flutter integration target stayed foreground; no Android Home/lock duration is claimed",
+    "physical_acceptance": "NOT_RUN: emulator only; no physical Android or iOS device",
+    "release": "NOT_RUN: no installed release artifact or production rollout"
+  },
+  "limitations": [
+    "This is supplemental verification of Android Flutter app-socket recovery while a listener Room remains live; it is not the issue’s background-media acceptance.",
+    "Microphone FGS admission, background/lock behavior, audible playback, network switching, iOS audio session, and release artifacts remain unverified.",
+    "Issue #785 remains open and this result does not close its release gate."
+  ]
+}
