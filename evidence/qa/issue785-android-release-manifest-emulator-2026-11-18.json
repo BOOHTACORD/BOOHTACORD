@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "issue": 785,
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "scope": "Release-variant Android merged manifest inspection plus install/start smoke on the owned API 35 emulator. This does not establish production signing, login, voice transport, or audible continuity.",
+  "source": {
+    "master_commit": "3be2c90d813fecca3717c54f96a9c7f48e450c58",
+    "master_tree": "d211680b1073d7b7fe330272ba4e8bc31de5432b",
+    "product_sources_same_as_master": true,
+    "qa_checkout_note": "The build checkout included PR #828's test-harness/evidence changes; the Flutter product source and Android manifest matched master.",
+    "android_manifest": "clients/flutter/android/app/src/main/AndroidManifest.xml"
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 emulator",
+    "avd": "BOOHTACORD_QA_API35",
+    "device": "emulator-5554",
+    "physical_device": false,
+    "build_host": "macOS ARM64, Flutter 3.47.7, JDK 17, Android SDK 36",
+    "application": "ru.boohtacord.app",
+    "installed_version_name": "1.0.58",
+    "installed_version_code": 94,
+    "temporary_signer": "One-time QA PKCS#12 key; not the production upload/release key and not committed."
+  },
+  "release_apk": {
+    "path": "clients/flutter/build/app/outputs/flutter-apk/app-release.apk (temporary QA checkout; generated output not committed)",
+    "size_bytes": 56458035,
+    "sha256": "2690ca61dece6443fc33433d27aca1ea39e1b1eb17f82390ed6d6bfa4fad095b",
+    "install": "PASS; Android package manager installed the release APK on emulator-5554."
+  },
+  "merged_release_manifest": {
+    "path": "clients/flutter/build/app/intermediates/merged_manifests/release/processReleaseManifest/AndroidManifest.xml",
+    "sha256": "5e3b9734721ca21bdbb1ae8f2d6e2bdb72f648eccacea16f4a0b2d6aa1a2c0b2",
+    "target_sdk": 36,
+    "min_sdk": 24,
+    "record_audio": true,
+    "foreground_service": true,
+    "foreground_service_microphone": true,
+    "microphone_service": "ru.boohtacord.voice.start.MicrophoneService",
+    "microphone_service_exported": false,
+    "microphone_service_foreground_type": "microphone"
+  },
+  "start_smoke": {
+    "status": "PASS_SCOPED",
+    "activity": "ru.boohtacord.app/.MainActivity",
+    "explicit_activity_start": "PASS; am start -W returned and the app process was present.",
+    "top_resumed_activity": "ru.boohtacord.app/.MainActivity",
+    "visual_review": {
+      "screenshot": "/private/tmp/issue785-release-start.png (local QA artifact; not committed)",
+      "sha256": "5a0652a3ecd7738a1cf41f1df095754a09cba7cb6098c496f0064734fd9f87e5",
+      "resolution_px": [1080, 2400],
+      "observation": "At source resolution, the app displayed its white splash screen and centered BOOHTACORD logo. The app had not advanced to an authenticated screen."
+    },
+    "launcher_attempt": "The preceding monkey launcher attempt returned exit code 251; explicit MainActivity launch succeeded."
+  },
+  "limitations": [
+    "A temporary QA signer was used because the production release keystore is unavailable. This is not a production-signed release artifact.",
+    "The app remained at splash without QA server/configuration; authentication, voice join, microphone capture, LiveKit media, remote receiver packets, and audible audio were NOT_RUN.",
+    "This is an emulator result, not physical Android acceptance; iOS release/audio-session acceptance was NOT_RUN.",
+    "No production install, staged rollout, or production smoke was performed.",
+    "The physical paired 60-minute audible acceptance remains NOT_RUN and this record does not close issue #785's release gate."
+  ]
+}
