@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "issue": 785,
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "scope": "Five-minute Android Chrome mobile Web background/resume check with a listener-only Android receiver and an independent synthetic browser sender. RTP counters advanced after return. This is not Flutter microphone acceptance or proof of audible output.",
+  "source": {
+    "master_commit": "5250ed56c5cadf9b2426b02124643085033f1efe",
+    "master_tree": "1a84742efd9fd7a31bb6e8803aff9234de75aff5",
+    "product_source_same_as_master": true,
+    "runner": "tools/qa/critical_client_acceptance/issue785_android_chrome_pair.py",
+    "runner_sha256": "57646f9a588aff05192408aa6bb8a6135300900fccf1dd218c6e56e00807ac04",
+    "qa_stack_source": "tools/qa/critical_client_acceptance/stack.py",
+    "qa_stack_source_sha256": "d0a442a982936a0ff6ebc70bf32eab984a09d71f4b7e287a5d598204b1902f42",
+    "browser_scenario": "tools/qa/critical_client_acceptance/issue785_android_chrome_pair.mjs",
+    "browser_scenario_sha256": "2edbb0009d9348768cc19264822c086d7452441c87f396734a0e304c9892e919",
+    "web_build_command": "VITE_PUBLIC_ORIGIN=https://localhost:4810 npm run build --prefix clients/web",
+    "web_build_result": "PASS; 1060 modules transformed."
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 emulator",
+    "avd": "BOOHTACORD_QA_API35",
+    "device": "emulator-5554",
+    "device_model": "sdk_gphone64_arm64",
+    "physical_device": false,
+    "receiver": "Android Chrome 124.0.6367.219",
+    "sender": "Playwright Chromium with synthetic microphone input",
+    "qa_server": "Owned disposable API/PostgreSQL/LiveKit QA stack; no production service"
+  },
+  "scenario": {
+    "sender_mode": "Synthetic browser microphone source",
+    "receiver_mode": "Android Chrome voice listener with microphone disabled",
+    "background_action": "Android Home; Chrome DevTools Protocol detached for the full interval",
+    "home_activity_observed": true,
+    "background_seconds_requested": 300,
+    "background_seconds_observed_from_visibility_events": 299.377,
+    "visibility_sequence": ["visible", "hidden", "visible"],
+    "resume_gesture_needed": false,
+    "voice_status_after_resume": "connected",
+    "peer_connections_after_resume": 1,
+    "active_peer_connections_after_resume": 1,
+    "cdp_disconnected_during_background": true,
+    "runner_exit_code": 0,
+    "runtime_result_artifact": ".out/local-features/issue785-browser-paired-no-cdp-immediate/result.json (local QA artifact; not committed)",
+    "runtime_result_sha256": "1ca918313e13ec31b25d636ad4614e0c69d01ab1aa8d89ef5fcb56412f6e46dc"
+  },
+  "media_counters": {
+    "receiver_before_background": {
+      "inbound_audio_packets": 19,
+      "inbound_audio_bytes": 8937,
+      "active_peer_connections": 1
+    },
+    "receiver_at_resume": {
+      "inbound_audio_packets": 15109,
+      "inbound_audio_bytes": 7251759,
+      "active_peer_connections": 1
+    },
+    "receiver_after_three_ten_second_samples": {
+      "inbound_audio_packets": 16613,
+      "inbound_audio_bytes": 7984121,
+      "active_peer_connections": 1
+    },
+    "sender_after_resume": {
+      "outbound_audio_packets": 17085,
+      "outbound_audio_bytes": 8210011,
+      "active_peer_connections": 1
+    },
+    "result": "RTP packet and byte counters advanced after resume; the same single peer connection remained active."
+  },
+  "visual_review": {
+    "screenshot": ".out/local-features/issue785-browser-paired-no-cdp-immediate/android-chrome-paired-audio-after-resume.png (local QA artifact; not committed)",
+    "sha256": "b11ef0dc9c34bbdb589a30dafa5732ba63bcf32bc888d16b8a540bd230cb58d5",
+    "resolution_px": [1082, 2055],
+    "observation": "At source resolution, Android Chrome showed two voice participants, a connected status, the mobile-browser background limitation notice, and the voice controls. No obvious rendering defect was observed in this capture."
+  },
+  "cleanup": {
+    "qa_credential_file_removed": true,
+    "qa_stack_removed": true,
+    "run_owned_adb_reverse_and_forward_mappings_removed": true
+  },
+  "limitations": [
+    "The sender used synthetic Playwright audio; it was not the Flutter Android microphone.",
+    "RTP packet and byte counters do not prove decoded samples reached a speaker or were audible to a person; no acoustic loopback or human listening test was performed.",
+    "This is a five-minute emulator result, not physical Android acceptance or the physical paired 60-minute gate.",
+    "The screen was backgrounded to Android Home; secure keyguard lock was not exercised.",
+    "No Wi-Fi/LTE switch, airplane mode, process kill, permission revoke, battery saver, Safari/PWA, iOS audio session, production release, or production smoke was tested.",
+    "Issue #785 remains open; this scoped result does not close the release gate."
+  ]
+}
