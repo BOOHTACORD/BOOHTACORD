@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "issue": 785,
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "scope": "60-minute Android Flutter emulator background lifecycle test: microphone foreground-service state under Home + AVD screen-off, lifecycle-aware wake/resume, audio UI assertions, and normal leave/logout cleanup. No independent receiving participant or audible media acceptance.",
+  "source": {
+    "master_commit": "63c47a2423088bd22badd2bb71b2da6b30ecb105",
+    "master_tree": "c9e7ceabef658bc89814ca77161800ef01e2ee6e",
+    "product_source_same_as_master": true,
+    "test_target": "clients/flutter/integration_test/android_noise_sfu_test.dart",
+    "test_target_sha256": "c0fad59371a9ae308398d1a501d322f8de0f62f2bfea20456c5af17f58f3fe6a",
+    "lifecycle_support": "clients/flutter/integration_test/android_noise_sfu_support.dart",
+    "lifecycle_support_sha256": "fd80982227c8ccbd9fc6ae7d873c0a4f06dae5b20adc6adb9339cea6d29d7192",
+    "resume_helper": "clients/flutter/test/test_support/app_resume_wait.dart",
+    "resume_helper_sha256": "45c051d32a29bd5266d2a14df0273b4258c0b2f165444e320aa0b97ef79e380e",
+    "unit_test": "clients/flutter/test/features/background_microphone/app_resume_wait_test.dart",
+    "unit_test_sha256": "425bbf9381e4cc2f627c63762f5236b42b7ffded5476ffb1e86554f8001351cd",
+    "native_runner_sha256_during_run": "68c7e4672cd25614eccd48b6c0704ed109e9f1cd5e4663eecebfa77bc41d7977",
+    "native_runner_timeout_override_seconds": 4500,
+    "native_runner_override_restored_after_run": true
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 emulator",
+    "avd": "BOOHTACORD_QA_API35",
+    "device": "emulator-5554",
+    "physical_device": false,
+    "application": "ru.boohtacord.app",
+    "target_sdk": 36,
+    "build": "Flutter Android debug APK",
+    "server": "Owned disposable Go/PostgreSQL/LiveKit QA stack",
+    "microphone_permission": "Granted by the isolated QA runner"
+  },
+  "background_observation": {
+    "result": "PASS_SCOPED",
+    "scope": "Microphone foreground service state while the app was backgrounded and the AVD screen was asleep",
+    "duration_requested_seconds": 3600,
+    "duration_observed_seconds": 3600.09,
+    "sample_interval_seconds": 30,
+    "sample_count": 121,
+    "all_samples_service_present": true,
+    "all_samples_is_foreground": true,
+    "all_samples_microphone_fgs_type": "0x00000080",
+    "all_samples_foreground_id_present": true,
+    "all_samples_same_foreground_id": [
+      "9751"
+    ],
+    "all_samples_start_foreground_count_one": true,
+    "all_samples_screen_asleep": true,
+    "home_keyevent_sent": true,
+    "screen_off_keyevent_sent": true,
+    "secure_keyguard_lock": "NOT_VERIFIED",
+    "after_resume": {
+      "offset_seconds": 3600.09,
+      "service_present": true,
+      "is_foreground": true,
+      "foreground_id_present": true,
+      "foreground_service_type_bits": "0x00000080",
+      "start_foreground_count": 1,
+      "foreground_state_line": "isForeground=true foregroundId=9751 types=0x00000080 foregroundNoti=Notification(channel=boohtacord_voice_microphone shortcut=null contentView=null vibrate=null sound=null defaults=0 flags=ONGOING_EVENT|ONLY_ALERT_ONCE|FOREGROUND_SERVICE color=0x00000000 category=call vis=PRIVATE)",
+      "screen_asleep": false,
+      "home_is_top_activity": false,
+      "service_excerpt_sha256": "f437cedffdc4df2b42ff28f07d5d79d520d7bad041209997275df9f71881ead3"
+    },
+    "raw_observation": ".out/issue785-android-flutter-fgs-hour-resume-2026-11-18/android-fgs-background-observation.json"
+  },
+  "integration_runner": {
+    "status": "PASS",
+    "exit_code": 0,
+    "test_target": "clients/flutter/integration_test/android_noise_sfu_test.dart",
+    "result": "60:15 +2: All tests passed!",
+    "lifecycle_helper": "Waited for AppLifecycleState.resumed (up to 75 minutes) before widget interaction after the background interval.",
+    "generic_runtime_report": {
+      "status": "PASS",
+      "platform": "android",
+      "device": "emulator-5554",
+      "mocks": false,
+      "scope": "Android RNNoise microphone capture in an owned LiveKit room; physical acoustic quality not tested",
+      "mocked_components": [],
+      "media": "NOT_RUN",
+      "physical_device": false,
+      "android_back": "NOT_RUN"
+    },
+    "screenshot": ".out/issue785-android-flutter-fgs-hour-resume-2026-11-18/android-rnnoise-active.png",
+    "screenshot_sha256": "c9c67d3c41a681da4e1f5497fb54c290cd12414ce6aa75c875a3fffb2d3e93b2",
+    "unit_test": {
+      "command": "flutter test test/features/background_microphone/app_resume_wait_test.dart",
+      "exit_code": 0,
+      "result": "2 passed: waits until resumed; fails with bounded timeout when resume never occurs."
+    }
+  },
+  "post_leave_cleanup": {
+    "status": "PASS_SCOPED",
+    "microphone_service_found_after_runner_exit": false,
+    "application_pid_found_after_runner_exit": false,
+    "screen_awake": true,
+    "top_activity": "com.google.android.apps.nexuslauncher/.NexusLauncherActivity",
+    "observation_method": "Read-only adb dumpsys/pidof checks after runner completed normal leaveVoice/logout; MicrophoneService match and app PID were absent."
+  },
+  "visual_review": {
+    "resolution_px": [
+      1080,
+      2400
+    ],
+    "observation": "At source resolution, the returned app shows the Audio Settings screen, RNNoise 0.1 selected and active, with the connected Voice dock showing one participant. No visible defect observed in this capture."
+  },
+  "media": {
+    "local_audio_record_callbacks_observed": true,
+    "emulated_microphone_input_level": 0,
+    "receiver_rtp_or_decoded_audio_counters": "NOT_RUN",
+    "independent_receiver": "NOT_PRESENT",
+    "audible_output": "NOT_RUN"
+  },
+  "limitations": [
+    "This is AOSP emulator evidence, not physical Android device acceptance; OEM power management and secure keyguard behavior were not verified.",
+    "The run does not establish intelligible microphone transmission, receiver RTP, decoded audio, or audible output; the emulator input level was zero and there was no independent receiver.",
+    "The screen-off state is verified; secure keyguard lock remains NOT_VERIFIED.",
+    "Flutter release merged manifest/APK and production smoke remain unverified because release signing credentials/keystore are unavailable.",
+    "iOS audio session/device acceptance and the physical Android+iOS paired 60-minute audible gate remain NOT_RUN.",
+    "Wi-Fi/LTE, airplane mode, permission revoke, OS/FGS stop, incoming call, battery saver, listener-only audio, Bluetooth routing, and Safari/PWA matrix remain NOT_RUN.",
+    "Issue #785 remains open; this scoped result does not close its release gate."
+  ],
+  "prior_failed_attempt_record": "evidence/qa/issue785-android-flutter-fgs-background-hour-2026-11-18.json; the earlier harness timed out in pumpAndSettle after resume and did not perform leave/logout. This rerun records the lifecycle-aware fix and successful cleanup."
+}
