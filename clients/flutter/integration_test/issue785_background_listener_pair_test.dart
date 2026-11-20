@@ -145,7 +145,7 @@ void main() {
       await tester.runAsync(
         () => waitForAppBackgroundThenResume(
           readLifecycleState: () => binding.lifecycleState,
-          timeout: const Duration(minutes: 75),
+          timeout: const Duration(minutes: 5),
           pollInterval: const Duration(seconds: 5),
         ),
       );

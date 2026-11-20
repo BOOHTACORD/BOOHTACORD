@@ -117,7 +117,7 @@ def main():
              '--output', str(destination)],
             cwd=root,
             env=dict(os.environ),
-            timeout=seconds + 1200,
+            timeout=seconds + 300,
         )
         result = json.loads((destination / 'result.json').read_text(encoding='utf8'))
         (destination / 'runtime.json').write_text(json.dumps({
