@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "issue": 785,
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "scope": "Two-minute best-effort background/resume observation of Android Chrome as a listener in a paired synthetic-media session.",
+  "source": {
+    "base_commit": "0e9bcd9c335bf95bbdc0deddc5fd814c4093f10b",
+    "working_tree_changes_present": true,
+    "sha256": {
+      "scenario": "96e4f4a8aa50708bd916c6ce23fc73e2d5b6be2ad8547aaed935b62bb3017a42",
+      "timing_helper": "65cad2495caea072cf0fcbd62e03c771158fae232fc258a7bc491999e8c4cbb8",
+      "timing_test": "be50ca4d6b096b0784cb0f579d0c4e5e0a6343bc268109b858648e1e9e84a4e7",
+      "feature_registry": "71e7c78b354421df89eaa648d525621fd202ed1eb646eff4eab925f66fbd3727"
+    },
+    "post_run_registry_change": "Only the scenario scope wording changed after the run; the Android Chrome pair, timing helper, timing test, and focused-path registration were already present."
+  },
+  "environment": {
+    "receiver": "Android 15 / API 35 AOSP emulator, Chrome 124.0.6367.219, listener-only",
+    "sender": "Playwright Chromium publishing synthetic microphone audio",
+    "server": "Owned disposable API/PostgreSQL/LiveKit QA stack",
+    "physical_device": false,
+    "acoustic_output": "NOT_MEASURED"
+  },
+  "scenario": {
+    "configured_background_seconds": 120,
+    "observed_background_seconds": 121.6043215,
+    "background_action": "Android Home while Chrome ran without a DevTools connection; resume the same Chrome tab",
+    "home_activity_observed": true,
+    "devtools_disconnected_during_background": true,
+    "resume_gesture_needed": false,
+    "visibility_events": [
+      "visible",
+      "hidden",
+      "visible"
+    ]
+  },
+  "media_counters": {
+    "receiver_before": {
+      "peer_connections": 1,
+      "active_peer_connections": 1,
+      "connected_peer_connections": 1,
+      "inbound_audio_packets": 23,
+      "inbound_audio_bytes": 12019
+    },
+    "receiver_at_resume": {
+      "peer_connections": 1,
+      "active_peer_connections": 1,
+      "connected_peer_connections": 1,
+      "inbound_audio_packets": 6109,
+      "inbound_audio_bytes": 2946098
+    },
+    "receiver_after_resume": {
+      "peer_connections": 1,
+      "active_peer_connections": 1,
+      "connected_peer_connections": 1,
+      "inbound_audio_packets": 7616,
+      "inbound_audio_bytes": 3653644
+    },
+    "sender_after": {
+      "outbound_audio_packets": 8053,
+      "outbound_audio_bytes": 3860547
+    },
+    "observation": "Receiver RTP counters advanced by 6086 packets during the hidden interval and by 1507 more over the post-resume sample window. Exactly one peer connection remained connected. These are transport counters, not proof of audible playback."
+  },
+  "visual_review": {
+    "screenshot_path": ".out/local-features/issue785-browser-paired-no-cdp-immediate/android-chrome-paired-audio-after-resume.png",
+    "sha256": "24d00e255a6d03039457acb457d9a66d74fdaaebfb7c9923c988e0dbac164b9c",
+    "resolution_px": [
+      1082,
+      2055
+    ],
+    "observation": "At source resolution, the resumed Chrome view shows connected voice status, two participant cards, the background limitation notice, and voice controls. No reconnect banner appears; the explicit playback resume button is not needed in this run. No audible-output claim is made."
+  },
+  "execution": {
+    "command": "python3 -m tools.qa.critical_client_acceptance.issue785_android_chrome_pair --device emulator-5554",
+    "exit_code": 0,
+    "report_path": ".out/local-features/issue785-browser-paired-no-cdp-immediate/result.json"
+  },
+  "limitations": [
+    "This is Android emulator evidence, not physical-device acceptance.",
+    "RTP counters and browser connection state do not establish that a person heard audio or validate speaker/Bluetooth routing.",
+    "This does not verify iOS, Safari/PWA, physical lock-screen audio, Wi-Fi/LTE handoff, or release artifacts.",
+    "Mobile Web remains best-effort; this result does not promise continuous execution across browser or operating-system suspension."
+  ]
+}
