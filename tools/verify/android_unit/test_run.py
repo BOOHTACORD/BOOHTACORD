@@ -20,7 +20,7 @@ class RunnerTests(unittest.TestCase):
                  patch.object(run, 'validate', side_effect=list(EXPECTED.values())) as validate:
                 result = run.execute(mode)
                 self.assertEqual('PASS', result['status'])
-                self.assertEqual(51, result['tests'])
+                self.assertEqual(54, result['tests'])
                 command = call.call_args.args[0]
                 self.assertTrue(all(':' + p + ':testDebugUnitTest' in command for p in EXPECTED))
                 self.assertIn('--rerun-tasks', command)
