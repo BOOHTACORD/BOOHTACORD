@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:livekit_client/livekit_client.dart'
     hide ChatMessage, voiceReconnectAttemptLimit;
 
@@ -47,6 +49,7 @@ extension VoiceMicrophoneDeafen on VoiceController {
         await publishVoiceDeafened(api.transport, lease, true);
         if (!active(ticket, revision)) return;
         deafened = true;
+        unawaited(syncVoicePlaybackForeground());
       } else {
         for (final participant in room.remoteParticipants.values) {
           for (final publication in participant.audioTrackPublications) {
@@ -72,6 +75,7 @@ extension VoiceMicrophoneDeafen on VoiceController {
         if (!active(ticket, revision)) return;
         deafened = false;
         mutedBeforeDeafen = false;
+        unawaited(syncVoicePlaybackForeground());
       }
     } catch (cause) {
       if (!active(ticket, revision)) return;
@@ -100,6 +104,7 @@ extension VoiceMicrophoneDeafen on VoiceController {
         }
       }
       deafened = wasDeafened;
+      unawaited(syncVoicePlaybackForeground());
       error = formatError(cause);
     } finally {
       if (active(ticket, revision)) deafenChanging = false;

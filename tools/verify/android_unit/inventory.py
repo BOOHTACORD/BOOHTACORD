@@ -2,7 +2,10 @@
 import re
 
 EXPECTED = {
-    'boohtacord_voice_foreground': {'ru.boohtacord.voice.start.AdmissionPolicyTest': 5},
+    'boohtacord_voice_foreground': {
+        'ru.boohtacord.voice.start.AdmissionPolicyTest': 5,
+        'ru.boohtacord.voice.start.VoicePlaybackAdmissionPolicyTest': 3,
+    },
     'livekit_client': {'io.livekit.plugin.AudioResamplerTest': 11},
     'flutter_webrtc': {
         'com.cloudwebrtc.webrtc.record.FrameCaptureGateTest': 2,

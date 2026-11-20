@@ -13,6 +13,7 @@ import 'package:boohtacord_desktop/src/features/session/lifecycle/controller.dar
 import 'package:boohtacord_desktop/src/features/voice/roster_state/phase.dart';
 import 'package:boohtacord_desktop/src/models.dart';
 
+import '../test/test_support/app_resume_wait.dart';
 import 'issue689_support.dart';
 import 'local_qa_test.dart' show QaTls;
 
@@ -141,17 +142,36 @@ void main() {
         jsonEncode({'status': 'ready', 'receiverBeforeBackground': before}),
       );
 
-      var resumed = false;
-      for (var attempt = 0; attempt < 900; attempt++) {
-        final contents = await control.readAsString();
-        final command = jsonDecode(contents) as Map<String, dynamic>;
-        if (command['status'] == 'resume') {
-          resumed = true;
-          break;
-        }
-        await realDelay(const Duration(seconds: 1));
-      }
-      expect(resumed, isTrue, reason: 'runner did not resume the Android app');
+      await tester.runAsync(
+        () => waitForAppBackgroundThenResume(
+          readLifecycleState: () => binding.lifecycleState,
+          timeout: const Duration(minutes: 5),
+          pollInterval: const Duration(seconds: 5),
+        ),
+      );
+      final resumeCommand =
+          jsonDecode(await control.readAsString()) as Map<String, dynamic>;
+      expect(
+        resumeCommand['status'],
+        'resume',
+        reason: 'runner must hand off resume before opening the Android app',
+      );
+      final backgroundSeconds =
+          (resumeCommand['backgroundSecondsObserved'] as num).toDouble();
+      final playbackServiceSamples =
+          (resumeCommand['playbackServiceSamples'] as List<dynamic>)
+              .cast<Map<String, dynamic>>();
+      expect(backgroundSeconds, greaterThanOrEqualTo(120));
+      expect(playbackServiceSamples.length, greaterThanOrEqualTo(5));
+      expect(
+        playbackServiceSamples.every(
+          (sample) =>
+              sample['playback_foreground_service_active'] == true &&
+              sample['microphone_foreground_service_active'] == false,
+        ),
+        isTrue,
+        reason: 'playback FGS must remain active without microphone FGS in background',
+      );
 
       await waitFor(
         tester,
@@ -166,6 +186,21 @@ void main() {
         reason: 'background resume must retain one LiveKit Room instance',
       );
       final afterResume = (await tester.runAsync(readReceiverStats))!;
+      final backgroundDecodedSampleDuration =
+          (afterResume['totalSamplesDuration'] as double) -
+          (before['totalSamplesDuration'] as double);
+      expect(
+        backgroundDecodedSampleDuration,
+        greaterThanOrEqualTo(backgroundSeconds * 0.8),
+        reason:
+            'decoded remote audio must cover the Android background interval',
+      );
+      expect(
+        app.voicePlaybackBackgroundUnavailable,
+        isFalse,
+        reason:
+            'playback foreground coverage must remain available after resume',
+      );
       var progressing = false;
       Map<String, Object?> progress = afterResume;
       for (var attempt = 0; attempt < 30; attempt++) {
@@ -233,6 +268,10 @@ void main() {
             .inSeconds,
         'receiverBeforeBackground': before,
         'receiverAtResume': afterResume,
+        'backgroundSecondsObserved': backgroundSeconds,
+        'backgroundDecodedSampleDurationSeconds':
+            backgroundDecodedSampleDuration,
+        'playbackServiceSamples': playbackServiceSamples,
         'receiverProgressingAfterResume': progress,
         'receiverSamples': samples,
         'audioEvidence': 'LiveKit receiver RTP and audio receiver statistics; emulator acoustic output was not measured',

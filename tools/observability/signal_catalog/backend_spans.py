@@ -16,7 +16,8 @@ def inventory(root, producer, consumers, delivery):
             found += [(m.group(1), m.start(), 'event') for m in re.finditer(r'"(app\.registration\.welcome\.[^"]+)"', source)]
         for name, pos, kind in found:
             attrs = sorted(set(re.findall(r'attribute\.(?:String|Int|Float64|Bool)\(\s*"([^"]+)"', source)))
-            result.append({'scenario': scenario(name, path.as_posix()), 'producer': [producer(path, source.count('\n', 0, pos) + 1)],
+            relative_path = path.relative_to(root).as_posix()
+            result.append({'scenario': scenario(name, relative_path), 'producer': [producer(path, source.count('\n', 0, pos) + 1)],
                 'source_name': name, 'exported_name': name, 'type': 'span/event', 'unit': 'duration/timestamp ns',
                 'record_kind': kind, 'attributes_or_labels': attrs,
                 'attribute_scope': 'Literal attribute keys in producer; flow/session metadata may additionally come from shared binding helpers. No metric labels.',

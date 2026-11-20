@@ -17,6 +17,7 @@ import io.flutter.plugin.common.MethodChannel
 class VoiceMicrophonePlugin : FlutterPlugin, ActivityAware, MethodChannel.MethodCallHandler {
     private lateinit var context: Context
     private lateinit var channel: MethodChannel
+    private var playbackPlugin: VoicePlaybackPlugin? = null
     private val visibility = Visibility()
     private val handler = Handler(Looper.getMainLooper())
     private var pending: MethodChannel.Result? = null
@@ -25,6 +26,7 @@ class VoiceMicrophonePlugin : FlutterPlugin, ActivityAware, MethodChannel.Method
         channel = MethodChannel(binding.binaryMessenger, "boohtacord/voice_microphone")
         channel.setMethodCallHandler(this)
         (context as Application).registerActivityLifecycleCallbacks(visibility)
+        playbackPlugin = VoicePlaybackPlugin(context, binding.binaryMessenger, visibility)
         MicrophoneService.stopped = { channel.invokeMethod("stopped", null) }
     }
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
@@ -59,8 +61,13 @@ class VoiceMicrophonePlugin : FlutterPlugin, ActivityAware, MethodChannel.Method
     override fun onAttachedToActivity(binding: ActivityPluginBinding) { visibility.attach(binding.activity) }
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) { visibility.attach(binding.activity) }
     override fun onDetachedFromActivityForConfigChanges() { visibility.detach() }
-    override fun onDetachedFromActivity() { visibility.detach(); stop() }
+    override fun onDetachedFromActivity() {
+        visibility.detach()
+        playbackPlugin?.stop()
+        stop()
+    }
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+        playbackPlugin?.dispose(); playbackPlugin = null
         stop(); MicrophoneService.stopped = null; handler.removeCallbacksAndMessages(null)
         (context as Application).unregisterActivityLifecycleCallbacks(visibility)
         channel.setMethodCallHandler(null)

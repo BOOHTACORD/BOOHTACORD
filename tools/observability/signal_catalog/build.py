@@ -67,7 +67,7 @@ def metric_inventory():
                     # ConstMetric value kinds reviewed in pool/rate-limit/storage/SFU collectors.
                     item['type'] = 'Counter' if name.endswith('_total') else 'Gauge'
                 exported = name if item['transport'] == 'private-prometheus' else prometheus_name(name, item['type'], item['unit'])
-                result.append({'scenario': scenario(name, path.as_posix()), 'producer': [producer(path, item['line'])],
+                result.append({'scenario': scenario(name, path.relative_to(ROOT).as_posix()), 'producer': [producer(path, item['line'])],
                     'source_name': name, 'exported_name': exported, 'type': item['type'],
                     'unit': item['unit'] if item['unit'] != '1' else native_unit(name),
                     'declared_unit': item['unit'],

@@ -31,6 +31,36 @@ class SignalCatalogTest(unittest.TestCase):
             paths = [owner['path'] for owner in signal['producer']]
             self.assertEqual(paths, sorted(paths), signal['source_name'])
 
+    def test_backend_scenario_classification_ignores_checkout_directory_name(self):
+        from .backend_spans import inventory
+
+        with tempfile.TemporaryDirectory(prefix='voice-checkout-') as directory:
+            root = Path(directory)
+            source = root / 'backend/internal/identity/handler.go'
+            source.parent.mkdir(parents=True)
+            source.write_text('span.Start(ctx, "admin.account.update.server")\n')
+            result = inventory(
+                root,
+                lambda path, line=1: {'path': path.relative_to(root).as_posix(), 'line': line},
+                lambda *_args: [],
+                lambda transport: {'transport': transport, 'runtime_status': 'NOT_RUN'},
+            )
+            signal = next(row for row in result if row['source_name'] == 'admin.account.update.server')
+            self.assertEqual(signal['scenario'], 'admin')
+
+    def test_metric_scenario_classification_ignores_checkout_directory_name(self):
+        with tempfile.TemporaryDirectory(prefix='voice-checkout-') as directory:
+            root = Path(directory)
+            source = root / 'backend/internal/notifications/metrics.go'
+            source.parent.mkdir(parents=True)
+            source.write_text(
+                'meter.Float64Histogram("boohtacord.incident.http.duration", metric.WithUnit("s"))\n'
+            )
+            with patch.object(catalog_builder, 'ROOT', root):
+                result = catalog_builder.metric_inventory()
+            signal = next(row for row in result if row['source_name'] == 'boohtacord.incident.http.duration')
+            self.assertEqual(signal['scenario'], 'messages')
+
     def test_units_counters_and_histogram_series_have_distinct_contracts(self):
         self.assertEqual(prometheus_name('boohtacord.http.duration', 'Float64Histogram', 's'), 'boohtacord_http_duration_seconds')
         self.assertEqual(prometheus_name('voice_platform_calls_total', 'Int64Counter', '1'), 'voice_platform_calls_total')

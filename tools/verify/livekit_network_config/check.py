@@ -109,6 +109,11 @@ def main():
     expected_artifacts |= afk_source["repository_artifacts"]
     deafen_source = read(root, "evidence/media/livekit-network-voice-deafen-source-2026-11-14.json")
     expected_artifacts |= deafen_source["repository_artifacts"]
+    background_playback_source = read(
+        root,
+        "evidence/media/livekit-network-android-background-playback-2026-11-21.json",
+    )
+    expected_artifacts |= background_playback_source["repository_artifacts"]
     for path, expected in expected_artifacts.items():
         content = evidence_content(root, HISTORICAL_EVIDENCE_REVISION, path)
         content = content.replace(b"\r\n", b"\n")

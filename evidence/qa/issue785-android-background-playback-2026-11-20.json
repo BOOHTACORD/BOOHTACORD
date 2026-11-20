@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "issue": 785,
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "scope": "Android Flutter listener-only LiveKit playback while the app is backgrounded after a user-started session.",
+  "source": {
+    "tested_commit": "fee237ed91f43e157e089cf3e8c5361da2d5fe86",
+    "working_tree_changes_present": true,
+    "sha256": {
+      "integration_target": "5f8abd9e65043b652cd85eb5170f73685f56dc3c4436e551a5b482f6a5b013d1",
+      "paired_runner": "982e6008bde4e10624ec1d75f8ceeb3d09dcf096f9c48d73f80813dc8450a941",
+      "local_native_runner": "446b6ff88cf979e3fd1e35080842e7ceec240f5c8b2f16ec0e3b0444b140c617",
+      "playback_service": "276d10982b171fb6141ba99823e20d1be3e35f35a8d618e7cfd3e60840d00f7a",
+      "playback_plugin": "386f817487704a31bf9a05d3bcd291a9c0ce215c2c3d79dc97c002defe01547d",
+      "runtime_report": "8901493b8a650ac0c210524230db649644953ce0a21e15961c016bbbaf11a17a"
+    },
+    "tested_worktree_fingerprint": "a7f8b0d86fd6e99f517055698623c5a9b338915dcbc70cfa1a01aad0855b814f"
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 emulator",
+    "avd": "BOOHTACORD_QA_API35",
+    "device": "emulator-5554",
+    "physical_device": false,
+    "receiver": "Flutter Android listener-only client",
+    "sender": "Playwright Chromium with synthetic microphone input",
+    "server": "Owned disposable API/PostgreSQL/LiveKit QA stack"
+  },
+  "scenario": {
+    "receiver_microphone": "disabled; no local audio publications",
+    "background_action": "Android Home while sender continued publishing",
+    "background_seconds_requested": 120,
+    "background_seconds_observed": 120.002,
+    "microphone_foreground_service_active": false,
+    "playback_foreground_service_active": true,
+    "playback_service_samples": [
+      {
+        "offset_seconds": 0.0,
+        "playback_foreground_service_active": true,
+        "microphone_foreground_service_active": false
+      },
+      {
+        "offset_seconds": 30.136,
+        "playback_foreground_service_active": true,
+        "microphone_foreground_service_active": false
+      },
+      {
+        "offset_seconds": 60.28,
+        "playback_foreground_service_active": true,
+        "microphone_foreground_service_active": false
+      },
+      {
+        "offset_seconds": 90.424,
+        "playback_foreground_service_active": true,
+        "microphone_foreground_service_active": false
+      },
+      {
+        "offset_seconds": 120.002,
+        "playback_foreground_service_active": true,
+        "microphone_foreground_service_active": false
+      }
+    ],
+    "voice_phase_after_resume": "listener",
+    "application_socket_connected_after_resume": true,
+    "same_livekit_room_instance_after_resume": true
+  },
+  "media": {
+    "subscribed_audio_tracks": 1,
+    "local_audio_publications": 0,
+    "decoded_sample_duration_before_background_seconds": 1.9,
+    "decoded_sample_duration_at_resume_seconds": 127.02,
+    "decoded_sample_duration_during_background_seconds": 125.12,
+    "inbound_audio_packets_before_background": 37,
+    "inbound_audio_packets_at_resume": 6293,
+    "inbound_audio_bytes_before_background": 23939,
+    "inbound_audio_bytes_at_resume": 4071571,
+    "receiver_counters_advanced_after_resume": true,
+    "sender_outbound_audio_packets_before_background": 21,
+    "sender_outbound_audio_packets_after_background": 10924,
+    "result": "PASS_SCOPED: decoded LiveKit sample duration covered the background interval; RTP counters continued after resume. Acoustic output was not measured."
+  },
+  "visual_review": {
+    "screenshot_path": ".out/local-features/20261120-234706/android-runtime-issue785_background_listener_pair_test/screenshots/issue785-flutter-listener-after-background.png",
+    "sha256": "20fc514b1e14efe52423a65621328476fd82146a03e8c324d247074c09a3010d",
+    "resolution_px": [
+      1080,
+      2400
+    ],
+    "observation": "At source resolution, the connected voice dock and participant cards remain visible, the local microphone is visibly muted, and the view has no reconnect banner or overlapping controls. Dynamic channel and participant names truncate with ellipses. Emulator statistics do not prove audible speaker output."
+  },
+  "execution": {
+    "command": "BOOHTACORD_ISSUE785_BACKGROUND_SECONDS=120 python3 -m tools.qa.local_features.native --platform android --device emulator-5554 --target integration_test/issue785_background_listener_pair_test.dart --output .out/local-features/issue785-playback-fgs-2m-2026-11-20",
+    "exit_code": 0,
+    "runtime_report": ".out/local-features/issue785-playback-fgs-2m-2026-11-20/result.json",
+    "runtime_log": ".out/local-features/issue785-playback-fgs-2m-2026-11-20/flutter-drive.log"
+  },
+  "repeat_execution": {
+    "command": "./tools/qa/local_features/check.sh --feature voice --feature auth --feature chat --feature connection_status --feature idle_afk --feature screen --feature shell --platform android --base fee237ed91f43e157e089cf3e8c5361da2d5fe86 --real-stack",
+    "issue785_stage_status": "PASS",
+    "overall_report_status": "FAIL",
+    "report": ".out/local-features/20261120-230900/report.json",
+    "runtime_report": ".out/local-features/20261120-230900/android-runtime-issue785_background_listener_pair_test/runtime.json",
+    "result_sha256": "d53be03611beb8b377179a50bb9f79b4611cdecef6ec2ea8ce24c1739c1fd406",
+    "runtime_report_sha256": "9932d777d8cd8224cee826b8d09c7bff5ec3ad30b04753d0537bcab317a2f7c8",
+    "screenshot": ".out/local-features/20261120-230900/android-runtime-issue785_background_listener_pair_test/screenshots/issue785-flutter-listener-after-background.png",
+    "screenshot_sha256": "85c52ab7a44079c2f84fbe7e000c87cd06be5196397c470d711ff2c16a475b31",
+    "tested_runner_sha256": {
+      "paired_runner": "982e6008bde4e10624ec1d75f8ceeb3d09dcf096f9c48d73f80813dc8450a941",
+      "local_native_runner": "446b6ff88cf979e3fd1e35080842e7ceec240f5c8b2f16ec0e3b0444b140c617"
+    },
+    "scope_result": "120.004 seconds background; playback FGS active at five samples; microphone FGS inactive; 125.07 seconds of decoded samples; receiver packet counters advanced after resume.",
+    "overall_failures": [
+      "Flutter component stage initially passed an integration_test path to flutter test; registry path has since been corrected and a focused selection test passed.",
+      "Other owned Android native stages could not start the pinned Egress image because its user account was absent in the selected native platform image.",
+      "Flutter unit suite contains one intentionally opt-in TRACE_QA_NATIVE test skip, which the feature runner reports as BLOCKED."
+    ]
+  },
+  "limits": {
+    "acoustic_output": "NOT_RUN: emulator statistics do not establish audio reached a speaker or was audible.",
+    "physical_acceptance": "NOT_RUN: emulator only; no physical Android or iPhone device.",
+    "long_run": "NOT_RUN: this was a 120-second regression check, not the 60-minute physical-device criterion.",
+    "other_conditions": "NOT_RUN: screen lock/keyguard, audio-route changes, interruptions, network transitions, process kill, permission revoke, battery saver, iOS, signed release APK and production smoke."
+  },
+  "limitations": [
+    "Issue 785 release gate remains open.",
+    "A physical paired Android/iPhone acceptance is not available in this environment."
+  ],
+  "full_local_feature_run": {
+    "command": "env GIT_ALTERNATE_OBJECT_DIRECTORIES=/Volumes/SSD/DEV/BOOHTACORD/.git/objects BOOHTACORD_QA_EGRESS_PLATFORM=linux/amd64 BOOHTACORD_ISSUE785_BACKGROUND_SECONDS=120 ./tools/qa/local_features/check.sh --feature voice --feature auth --feature chat --feature connection_status --feature idle_afk --feature screen --feature shell --platform android --base fee237ed91f43e157e089cf3e8c5361da2d5fe86 --real-stack",
+    "report": ".out/local-features/20261120-234706/report.json",
+    "report_sha256": "220d811f8b1b308a5caf9f94d5e582d73bb5735bda95b06c37a1b67d9826cdfa",
+    "overall_status": "BLOCKED",
+    "source_stability": "PASS: unchanged source fingerprint a7f8b0d86fd6e99f517055698623c5a9b338915dcbc70cfa1a01aad0855b814f",
+    "stage_status": {
+      "flutter_unit": "BLOCKED: 1 opt-in TRACE_QA_NATIVE test skipped because its dedicated Collector/Tempo runtime environment was not configured for the ordinary unit stage.",
+      "flutter_component_captures": "PASS",
+      "android_runtime": "PASS",
+      "android_runtime_issue785_background_listener_pair_test": "PASS",
+      "other_selected_android_native_targets": "PASS"
+    },
+    "issue785_result": {
+      "path": ".out/local-features/20261120-234706/android-runtime-issue785_background_listener_pair_test/result.json",
+      "sha256": "8901493b8a650ac0c210524230db649644953ce0a21e15961c016bbbaf11a17a",
+      "runtime_report": ".out/local-features/20261120-234706/android-runtime-issue785_background_listener_pair_test/runtime.json",
+      "runtime_report_sha256": "9932d777d8cd8224cee826b8d09c7bff5ec3ad30b04753d0537bcab317a2f7c8",
+      "receiver_report": ".out/local-features/20261120-234706/android-runtime-issue785_background_listener_pair_test/receiver-result.json",
+      "receiver_report_sha256": "c0f8078f2825e81a01a63ecf7fdd4bee0aa5910fbd68c7a5bbe678c26b8f2acc",
+      "screenshot_path": ".out/local-features/20261120-234706/android-runtime-issue785_background_listener_pair_test/screenshots/issue785-flutter-listener-after-background.png",
+      "screenshot_sha256": "20fc514b1e14efe52423a65621328476fd82146a03e8c324d247074c09a3010d",
+      "background_seconds_observed": 120.004,
+      "decoded_sample_duration_during_background_seconds": 125.1,
+      "playback_foreground_service_active_at_all_five_samples": true,
+      "microphone_foreground_service_active_at_all_five_samples": false,
+      "same_livekit_room_after_resume": true,
+      "application_socket_connected_after_resume": true,
+      "receiver_counters_advanced_after_resume": true,
+      "acoustic_output": "NOT_MEASURED"
+    },
+    "visual_observation": "Connected voice dock and participant cards visible; local mic muted; no reconnect banner or overlapping controls; dynamic names truncate with ellipses.",
+    "limitations": [
+      "Emulator RTP and decoded sample statistics do not establish audio reached a speaker or was audible to a person.",
+      "This 120-second Android emulator test is not physical-device, iOS, screen-lock/keyguard, or 60-minute release acceptance.",
+      "Overall local-feature report remains BLOCKED by the independent opt-in telemetry unit test skip."
+    ]
+  },
+  "verification_results": {
+    "android_unit_inventory_test": {
+      "status": "PASS",
+      "command": "python3 -m unittest tools.verify.android_unit.test_run.RunnerTests.test_reviewed_sources_still_contain_all_fifty_four_cases",
+      "cases": 54,
+      "source_inventory_sha256": "c13c3958cfc1ba2d6202af8713fb20f45dab5b6d9e06d38ce11594b6b4093f91"
+    },
+    "android_kotlin_unit": {
+      "legacy": {
+        "status": "PASS",
+        "tests": 54,
+        "command": "JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home PATH=<OpenJDK17-bin>:$PATH python3 -m tools.verify.android_unit.run legacy",
+        "receipt": ".out/checks/android-unit/legacy/result.json",
+        "receipt_sha256": "53f1828f12987d1e31dd9e6b86d6357a6914d4aca3c3e653dab3e3ff530a4ca8"
+      },
+      "builtin": {
+        "status": "PASS",
+        "tests": 54,
+        "command": "JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home PATH=<OpenJDK17-bin>:$PATH python3 -m tools.verify.android_unit.run builtin",
+        "receipt": ".out/checks/android-unit/builtin/result.json",
+        "receipt_sha256": "8dec5893ba89c539315c38b12aab5b49dbbeaa88748dc57a74659cfc244f5311"
+      }
+    },
+    "signal_catalog": {
+      "status": "PASS",
+      "tests": "11 passed",
+      "commands": [
+        "python3 -m unittest tools.observability.signal_catalog.test_build",
+        "python3 -m tools.observability.signal_catalog.build --check"
+      ],
+      "notes": "Scenario classification now uses repository-relative producer paths and is independent of checkout directory name; checked-in generated catalog required no regeneration."
+    },
+    "livekit_network_config": {
+      "status": "PASS",
+      "command": "python3 -m unittest tools.verify.livekit_network_config.test_model.LiveKitNetworkConfigTests.test_checked_in_compose_and_prometheus_files_match_the_model",
+      "notes": "Added a separate source-only revalidation record; historical PASS records were left unchanged. No LiveKit network configuration or capacity claim changed."
+    },
+    "contracts_powershell": {
+      "status": "PASS",
+      "command": "PATH=/private/tmp/codex-issue785-bin:$PATH PYTHONPATH=/private/tmp/codex-issue785-python-deps GOCACHE=/private/tmp/codex-issue785-gocache pwsh -NoProfile -File tools/verify/contracts/verify-contracts.ps1",
+      "tests": "29 passed; OpenAPI 3.1 schema lint and 138-operation parity passed"
+    },
+    "native_contracts_aggregate": {
+      "status": "BLOCKED",
+      "command": "PYTHONPATH=/private/tmp/codex-issue785-python-deps GOCACHE=/private/tmp/codex-issue785-gocache python3 -m tools.ci.native.contracts",
+      "result": "1788 tests; 49 errors, 2 failures, 9 skipped",
+      "limitations": "This macOS sandbox lacks cmake and docker compose, blocks some loopback sockets and writes under ~/Applications, and uses ps calls disallowed by sandbox. Current-source companion issues discovered by this run (Android unit source inventory, LiveKit source revalidation and checkout-path-dependent catalog scenario) were subsequently fixed and their focused checks plus both Android unit modes passed. Aggregate runner was not rerun after those fixes."
+    }
+  }
+}

@@ -87,6 +87,7 @@ abstract class VoiceState extends ChangeNotifier
   bool microphoneMuted = false;
   bool microphoneAllowed = true;
   bool microphoneUnavailable = false;
+  bool voicePlaybackBackgroundUnavailable = false;
   bool deafened = false;
   bool deafenChanging = false;
   bool voiceStreamSoundEnabled = true;
@@ -136,10 +137,7 @@ abstract class VoiceState extends ChangeNotifier
       VoiceStreamStartTracker();
   late final VoiceParticipantSoundTracker voiceParticipantSoundTracker =
       VoiceParticipantSoundTracker(
-        (event) => playVoiceRoomEventSound(
-          enabled: false,
-          event: event,
-        ),
+        (event) => playVoiceRoomEventSound(enabled: false, event: event),
       );
   ScreenThumbnailCaptureQueue get screenThumbnailCaptureQueue =>
       screen.captureQueue;

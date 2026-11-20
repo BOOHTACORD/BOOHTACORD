@@ -53,3 +53,31 @@ reviewed 2026-10-09. Native compilation and lifecycle tests prove source behavio
 paired physical muted/unmuted background transfer remains an independent evidence
 gate, including peer audio counters and cleanup after stop/logout. See
 [implementation evidence](../../evidence/flutter/android-background-microphone-2026-10-09.md).
+
+## Amendment: user-started voice playback continuity (2026-11-18, #785)
+
+Listener-only sessions and connected sessions with microphone publication muted
+may keep remote LiveKit audio alive in the background with a separate private,
+nonsticky `mediaPlayback` foreground service. Declare
+`FOREGROUND_SERVICE_MEDIA_PLAYBACK`; start only after the user joins voice while
+the Activity is visible. This playback service does not request microphone
+permission, capture audio, route media through Go, or create another Room or
+connection. Keep `mediaPlayback`, `microphone`, and `mediaProjection` service
+types in separate services and never combine their types in one promotion.
+
+Keep the playback service active for the user-started audible voice session,
+including while microphone publication is enabled, so a microphone-service stop
+does not require a new prohibited background start to preserve listening. Deafen,
+leave, logout, lease revoke, terminal disconnect, task removal, and disposal stop
+the playback service. It is not sticky and is never restarted while the app is
+backgrounded. If Android stops it, report that background playback is not
+protected; after the Activity resumes, the app may start it again only while the
+same session remains active and audible. The microphone FGS continues to govern
+mic publication independently and never substitutes for playback coverage.
+
+This follows [Android media playback service requirements](https://developer.android.com/develop/background-work/services/fgs/service-types#media-playback)
+and [background FGS start restrictions](https://developer.android.com/develop/background-work/services/fgs/restrictions-bg-start),
+reviewed 2026-11-18. Source, contract and emulator receiver counters do not
+establish physical audibility or a production capability. Physical paired
+Android/iPhone 60-minute acceptance, audio-route/interruption matrix, release
+artifact and production smoke remain separate open gates under #785.

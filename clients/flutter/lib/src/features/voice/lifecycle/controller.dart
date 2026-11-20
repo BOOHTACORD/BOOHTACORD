@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:livekit_client/livekit_client.dart';
+import 'package:flutter/widgets.dart';
 
 import 'state.dart';
 import '../screen_preview/receive.dart';
@@ -12,6 +13,8 @@ import '../connection_stats/poll.dart';
 import '../stream_notice/events.dart';
 import '../background_microphone/session.dart';
 import '../background_microphone/admission.dart';
+import '../background_playback/session.dart';
+import '../background_playback/sync.dart';
 export 'types.dart';
 export '../shortcuts/execute.dart';
 export '../preferences/shortcuts.dart';
@@ -23,6 +26,7 @@ export '../microphone/mode.dart';
 export '../microphone/ptt.dart';
 export '../microphone/capture.dart';
 export '../microphone/deafen.dart';
+export '../background_playback/sync.dart';
 export '../lease_events/revocation.dart';
 export '../admission/join.dart';
 export '../room_events/bind.dart';
@@ -57,27 +61,46 @@ class VoiceController extends VoiceState {
     Room Function(RoomOptions)? roomFactory,
     Future<void> Function(Room, MediaDevice)? audioOutputDeviceSetter,
     MicrophoneForegroundSession? microphoneForeground,
+    VoicePlaybackForegroundSession? voicePlaybackForeground,
   }) : audioOutputDeviceSetter =
            audioOutputDeviceSetter ??
            ((room, device) => room.setAudioOutputDevice(device)),
        microphoneForeground =
            microphoneForeground ?? MicrophoneForegroundSession(),
+       voicePlaybackForeground =
+           voicePlaybackForeground ?? VoicePlaybackForegroundSession(),
        super(
          createRoom: roomFactory ?? ((options) => Room(roomOptions: options)),
        ) {
     this.microphoneForeground.onStopped = backgroundMicrophoneStopped;
+    this.voicePlaybackForeground.onStopped = backgroundPlaybackStopped;
+    _playbackLifecycle = AppLifecycleListener(
+      onStateChange: (state) {
+        if (state == AppLifecycleState.resumed &&
+            voicePlaybackBackgroundUnavailable &&
+            room != null &&
+            !deafened) {
+          unawaited(syncVoicePlaybackForeground());
+        }
+      },
+    );
   }
+  late final AppLifecycleListener _playbackLifecycle;
   final MicrophoneForegroundSession microphoneForeground;
+  final VoicePlaybackForegroundSession voicePlaybackForeground;
   final Future<void> Function(Room, MediaDevice) audioOutputDeviceSetter;
   final Map<String, RemoteTrackPublication> screenThumbnailPublications = {};
   static const voiceStreamSoundPreferenceKey = 'voice-screen-start-sound:v1';
   static const voiceRoomEventSoundPreferenceKey = 'voice-room-event-sounds:v1';
   @override
   void dispose() {
+    _playbackLifecycle.dispose();
     sounds.dispose();
-    soundObserver?.pause(); soundObserver = null;
+    soundObserver?.pause();
+    soundObserver = null;
     cancelVoiceRecovery();
     unawaited(microphoneForeground.dispose());
+    unawaited(voicePlaybackForeground.dispose());
     unawaited(flushVoiceVolumes());
     cancelVoiceShortcuts(release: true);
     disconnect.reset();

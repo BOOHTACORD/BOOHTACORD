@@ -16,6 +16,8 @@ from .update_catalog import write_catalog
 from .android_back.exercise import android_back_on_capture
 from .android_microphone import android_microphone_permission
 
+DEFAULT_ISSUE785_BACKGROUND_SECONDS = 120
+
 def native_target(target):
     scopes = {
         'integration_test/local_qa_test.dart': 'auth, authenticated workspace, profile/audio/admin panels, logout',
@@ -23,6 +25,7 @@ def native_target(target):
         'integration_test/issue689_listener_test.dart': 'real SFU listener, roster and app socket recovery; no microphone capture',
         'integration_test/issue786_deafen_test.dart': 'authenticated voice lease updates the replicated deafen attribute and v2 roster; no microphone capture or paired media claim',
         'integration_test/android_noise_sfu_test.dart': 'Android RNNoise microphone capture in an owned LiveKit room; physical acoustic quality not tested',
+        'integration_test/issue785_background_listener_pair_test.dart': 'paired Flutter Android listener-only session with synthetic sender; checks mediaPlayback FGS and receiver counters, not physical audibility',
         'integration_test/issue689_delivery_revocation_test.dart': 'native revocation delivery under synthetic backlog; no actual socket pressure',
         'integration_test/issue689_heartbeat_test.dart': 'native silent socket recovery against loopback; no real network switching or media',
         'integration_test/issue689_envelope_test.dart': 'native malformed maintenance envelope recovery against loopback; no real network switching or media',
@@ -31,6 +34,12 @@ def native_target(target):
     }
     if target not in scopes: raise ValueError('Unsupported native QA target')
     return scopes[target]
+
+
+def validate_issue785_background_seconds(seconds):
+    if seconds < 120:
+        raise ValueError('Issue 785 listener playback QA must run for at least 120 seconds')
+    return seconds
 
 
 def remove_generated_android_plugin_registrant(root):
@@ -88,12 +97,41 @@ def main():
     parser.add_argument('--output',required=True)
     parser.add_argument('--target',default='integration_test/local_qa_test.dart')
     args=parser.parse_args()
+    if args.target == 'integration_test/issue785_background_listener_pair_test.dart' and args.platform != 'android':
+        raise ValueError('Issue 785 listener playback integration is Android-only')
     if args.platform=='windows' and args.target!='integration_test/issue689_roster_test.dart':
         raise ValueError('Windows QA is restricted to the isolated issue689 scenario')
     scope=native_target(args.target)
     verify_device(args.platform,args.device)
     root=Path(__file__).resolve().parents[3]
     destination=Path(args.output).resolve();destination.mkdir(parents=True,exist_ok=True)
+    if args.target == 'integration_test/issue785_background_listener_pair_test.dart':
+        seconds = int(os.environ.get(
+            'BOOHTACORD_ISSUE785_BACKGROUND_SECONDS',
+            str(DEFAULT_ISSUE785_BACKGROUND_SECONDS),
+        ))
+        validate_issue785_background_seconds(seconds)
+        run_owned(
+            ['python3', '-m', 'tools.qa.critical_client_acceptance.issue785_android_flutter_background_pair',
+             '--device', args.device, '--background-seconds', str(seconds),
+             '--output', str(destination)],
+            cwd=root,
+            env=dict(os.environ),
+            timeout=seconds + 300,
+        )
+        result = json.loads((destination / 'result.json').read_text(encoding='utf8'))
+        (destination / 'runtime.json').write_text(json.dumps({
+            'status': result['status'],
+            'platform': 'android',
+            'device': args.device,
+            'physical_device': False,
+            'media': result['media_result'],
+            'playback_foreground_service_active': result['scenario']['playback_foreground_service_active'],
+            'microphone_foreground_service_active': result['scenario']['microphone_foreground_service_active'],
+            'background_seconds_observed': result['scenario']['background_seconds_observed'],
+            'scope': native_target(args.target),
+        }, ensure_ascii=False, indent=2) + '\n', encoding='utf8')
+        return
     local_api('https://localhost:4810/api/v1')
     with reversed_ports(args.device) if args.platform=='android' else nullcontext():
         with tempfile.TemporaryDirectory(prefix='native-qa-',dir=root/'.out') as temporary:

@@ -46,7 +46,20 @@ class NativeTargetTests(unittest.TestCase):
         self.assertIn('topology history', native_target('integration_test/issue689_topology_history_test.dart'))
         self.assertIn('required update', native_target('integration_test/update_required_test.dart'))
         self.assertIn('RNNoise', native_target('integration_test/android_noise_sfu_test.dart'))
+        self.assertIn('synthetic sender', native_target('integration_test/issue785_background_listener_pair_test.dart'))
         with self.assertRaises(ValueError): native_target('../unrelated.dart')
+
+    def test_issue785_playback_service_detection(self):
+        from tools.qa.critical_client_acceptance.issue785_android_flutter_background_pair import DEFAULT_BACKGROUND_SECONDS, playback_foreground_service_active, validate_background_seconds
+        from .native import DEFAULT_ISSUE785_BACKGROUND_SECONDS, validate_issue785_background_seconds
+        self.assertTrue(playback_foreground_service_active('ServiceRecord{ru.boohtacord.voice.start.VoicePlaybackService}'))
+        self.assertFalse(playback_foreground_service_active('ServiceRecord{ru.boohtacord.voice.start.MicrophoneService}'))
+        self.assertEqual(DEFAULT_BACKGROUND_SECONDS, 120)
+        self.assertEqual(DEFAULT_ISSUE785_BACKGROUND_SECONDS, 120)
+        self.assertEqual(validate_background_seconds(120), 120)
+        self.assertEqual(validate_issue785_background_seconds(120), 120)
+        with self.assertRaises(ValueError): validate_background_seconds(119)
+        with self.assertRaises(ValueError): validate_issue785_background_seconds(119)
 
 class GeneratedFlutterArtifactTests(unittest.TestCase):
     def test_removes_only_generated_android_plugin_registrant(self):
