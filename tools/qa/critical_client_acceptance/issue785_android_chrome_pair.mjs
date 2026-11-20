@@ -4,6 +4,11 @@ import path from 'node:path'
 import { createRequire } from 'node:module'
 import { execFileSync, spawnSync } from 'node:child_process'
 import { pathToFileURL } from 'node:url'
+import {
+  ISSUE785_ANDROID_CHROME_BACKGROUND_SECONDS,
+  backgroundElapsedSeconds,
+  waitForIssue785AndroidChromeBackground,
+} from './issue785_android_chrome_timing.mjs'
 
 const repo = process.cwd()
 const input = JSON.parse(fs.readFileSync('/private/tmp/issue785-browser-pair.json', 'utf8'))
@@ -21,6 +26,8 @@ const roomName = 'Issue785Pair' + String(Date.now()).slice(-7)
 let voiceChannelId
 let browser, senderContext, senderPage, androidBrowser, androidContext, androidPage
 let androidCdpDetachedForBackground = false
+let androidCdpDetachedDuringBackground = false
+let backgroundStartedAtMs = 0
 
 const installObserver = () => {
   window.__qaPeers = []
@@ -187,6 +194,7 @@ try {
   androidContext = null
   androidPage = null
   androidCdpDetachedForBackground = true
+  androidCdpDetachedDuringBackground = true
   execFileSync('adb', ['forward', '--remove', 'tcp:9222'], { stdio: 'ignore' })
   console.log('stage=android-cdp-detached')
   execFileSync('adb', ['shell', 'input', 'keyevent', '3'], { stdio: 'ignore' })
@@ -197,7 +205,8 @@ try {
     await new Promise(resolve => setTimeout(resolve, 500))
   }
   assert.match(homeActivity, /topResumedActivity=.*(?:nexuslauncher|Launcher)/i, 'Android Home must actually be foregrounded')
-  await new Promise(resolve => setTimeout(resolve, 300000))
+  backgroundStartedAtMs = performance.now()
+  await waitForIssue785AndroidChromeBackground()
   const foreground = spawnSync('adb', ['shell', 'am', 'start', '-n', 'com.android.chrome/com.google.android.apps.chrome.Main'], { stdio: 'ignore' })
   if (foreground.error) throw foreground.error
   await new Promise(resolve => setTimeout(resolve, 1500))
@@ -207,6 +216,8 @@ try {
   console.log('stage=android-cdp-reconnected')
   await androidPage.bringToFront()
   await expect.poll(() => androidPage.evaluate(() => document.visibilityState), { timeout: 20000 }).toBe('visible')
+  const backgroundObservedSeconds = backgroundElapsedSeconds(backgroundStartedAtMs, performance.now())
+  assert.ok(backgroundObservedSeconds >= ISSUE785_ANDROID_CHROME_BACKGROUND_SECONDS, 'Android Chrome must remain backgrounded for at least the configured reproduction window')
   const atResume = await audioCounters(androidPage)
   await expect(androidPage.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён', { timeout: 25000 })
   await expect.poll(async () => (await audioCounters(androidPage)).inboundAudioBytes, { timeout: 20000 }).toBeGreaterThan(atResume.inboundAudioBytes)
@@ -233,7 +244,7 @@ try {
   const result = {
     status: 'PASS_SCOPED', issue: 785,
     environment: { android: '15/API 35 emulator', chrome: '124.0.6367.219', receiver: 'Android Chrome', sender: 'Playwright Chromium with synthetic microphone' },
-    scenario: { senderMic: true, receiverListenerOnly: true, backgroundSeconds: 300, homeActivityObserved: true, cdpDisconnectedDuringBackground: !androidCdpDetachedForBackground, resumeGestureNeeded, visibilityEvents, lifecycleEvents: lifecycleObservation.lifecycle },
+    scenario: { senderMic: true, receiverListenerOnly: true, backgroundSeconds: ISSUE785_ANDROID_CHROME_BACKGROUND_SECONDS, backgroundObservedSeconds, homeActivityObserved: true, cdpDisconnectedDuringBackground: androidCdpDetachedDuringBackground, resumeGestureNeeded, visibilityEvents, lifecycleEvents: lifecycleObservation.lifecycle },
     mediaCounters: { receiverBefore: before, receiverAtResume: atResume, receiverAfter: after, senderBefore, senderAfter },
     mediaResult: 'PASS_SCOPED',
     lifecycleResult: visibilityEvents.includes('hidden') && visibilityEvents.includes('visible') ? 'PASS_SCOPED' : 'NOT_OBSERVED',

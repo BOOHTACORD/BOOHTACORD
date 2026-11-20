@@ -1069,10 +1069,14 @@
           "clients/web/src/voice/VoiceDock.vue",
           "clients/web/src/voice/voice_session.ts",
           "clients/web/src/voice/livekit_room_factory.ts",
-          "clients/web/src/voice/connection_state/store.ts"
+          "clients/web/src/voice/connection_state/store.ts",
+          "tools/qa/critical_client_acceptance/issue785_android_chrome_pair.py",
+          "tools/qa/critical_client_acceptance/issue785_android_chrome_pair.mjs",
+          "tools/qa/critical_client_acceptance/issue785_android_chrome_timing.mjs",
+          "tools/qa/critical_client_acceptance/issue785_android_chrome_timing.test.mjs"
         ],
         "actual": "tools/qa/critical_client_acceptance/voice_interface.mjs",
-        "scope": "On mobile Web resume, reconcile LiveKit media state separately from application WebSocket/roster liveness. If LiveKit reports blocked audio playback, offer an explicit button that calls Room.startAudio from the user's gesture; clear it only when playback is allowed. Keep reconnect bounded and lease/ACL checks unchanged. Show honest mobile-browser background copy without redirecting the user to another client. This is best effort and makes no promise of continuous execution while the browser suspends the page; physical mobile-browser media acceptance remains separate."
+        "scope": "On mobile Web resume, reconcile LiveKit media state separately from application WebSocket/roster liveness. If LiveKit reports blocked audio playback, offer an explicit button that calls Room.startAudio from the user's gesture; clear it only when playback is allowed. Keep reconnect bounded and lease/ACL checks unchanged. Show honest mobile-browser background copy without redirecting the user to another client. This is best effort and makes no promise of continuous execution while the browser suspends the page. The registered Android Chrome paired-media resume smoke observes at least 120 seconds in Home using a monotonic runner clock; physical mobile-browser and acoustic acceptance remain separate."
       },
       "issue785_android_listener_background_playback": {
         "issue": 785,
