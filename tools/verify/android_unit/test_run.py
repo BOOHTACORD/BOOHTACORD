@@ -8,9 +8,9 @@ from .inventory import EXPECTED, verify_sources
 
 
 class RunnerTests(unittest.TestCase):
-    def test_reviewed_sources_still_contain_all_fifty_one_cases(self):
+    def test_reviewed_sources_still_contain_all_fifty_four_cases(self):
         verify_sources(run.ROOT)
-        self.assertEqual(51, sum(sum(row.values()) for row in EXPECTED.values()))
+        self.assertEqual(54, sum(sum(row.values()) for row in EXPECTED.values()))
 
     def test_modes_run_all_tasks_and_require_each_plugin_result(self):
         for mode in ('legacy', 'builtin'):

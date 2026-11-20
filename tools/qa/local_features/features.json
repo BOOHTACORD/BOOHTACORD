@@ -616,7 +616,8 @@
   },
   "voice": {
     "android_native_targets": [
-      "integration_test/android_noise_sfu_test.dart"
+      "integration_test/android_noise_sfu_test.dart",
+      "integration_test/issue785_background_listener_pair_test.dart"
     ],
     "native_targets": [
       "integration_test/issue689_listener_test.dart",
@@ -730,7 +731,28 @@
       "clients/flutter/packages/livekit_client/.changes/audio-coexistence.md",
       "clients/web/tests/settings_hierarchy/audio_coexistence.browser.spec.ts",
       "clients/flutter/lib/src/services/audio_device_check.dart",
-      "clients/flutter/lib/src/services/sound_engine_lease.dart"
+      "clients/flutter/lib/src/services/sound_engine_lease.dart",
+      "clients/flutter/lib/src/features/voice/background_playback/**",
+      "clients/flutter/packages/boohtacord_voice_foreground/android/src/main/AndroidManifest.xml",
+      "clients/flutter/packages/boohtacord_voice_foreground/android/src/main/kotlin/ru/boohtacord/voice/start/**",
+      "clients/flutter/packages/boohtacord_voice_foreground/android/src/test/kotlin/ru/boohtacord/voice/start/VoicePlaybackAdmissionPolicyTest.kt",
+      "clients/flutter/test/android_playback_fgs_contract_test.dart",
+      "clients/flutter/test/features/voice/background_playback/**",
+      "clients/flutter/integration_test/issue785_background_listener_pair_test.dart",
+      "clients/flutter/test/features/background_microphone/app_resume_wait_test.dart",
+      "clients/flutter/test/test_support/app_resume_wait.dart",
+      "clients/flutter/lib/src/features/voice/lifecycle/controller.dart",
+      "clients/flutter/lib/src/features/voice/lifecycle/state.dart",
+      "clients/flutter/lib/src/features/voice/microphone/deafen.dart",
+      "clients/flutter/lib/src/screens/workspace_ui/voice_dock/status/handler.dart",
+      "clients/flutter/packages/boohtacord_voice_foreground/**",
+      "tools/qa/critical_client_acceptance/issue785_android_flutter_background_pair.py",
+      "docs/adr/ADR-006-android-client.md",
+      "evidence/qa/issue785-android-background-playback-2026-11-20.json",
+      "tools/qa/local_features/native.py",
+      "tools/qa/local_features/test_native.py",
+      "clients/flutter/test/features/voice/background_playback/controller_test.dart",
+      "clients/flutter/test/voice_scope/fakes.dart"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",
@@ -761,7 +783,14 @@
       "test/web_parity/audio_hierarchy_test.dart",
       "test/realtime_scope/long_outage_test.dart",
       "test/realtime_scope/retry_policy_test.dart",
-      "test/realtime_scope/roster_event_test.dart"
+      "test/realtime_scope/roster_event_test.dart",
+      "test/android_playback_fgs_contract_test.dart",
+      "test/features/voice/background_playback/session_test.dart",
+      "test/features/voice/background_playback/policy_test.dart",
+      "test/features/voice/background_playback/status_test.dart",
+      "test/features/background_microphone/app_resume_wait_test.dart",
+      "test/features/background_microphone/controller_test.dart",
+      "test/features/voice/background_playback/controller_test.dart"
     ],
     "acceptance": {
       "issue786_deafen_screen_audio": {
@@ -1044,6 +1073,43 @@
         ],
         "actual": "tools/qa/critical_client_acceptance/voice_interface.mjs",
         "scope": "On mobile Web resume, reconcile LiveKit media state separately from application WebSocket/roster liveness. If LiveKit reports blocked audio playback, offer an explicit button that calls Room.startAudio from the user's gesture; clear it only when playback is allowed. Keep reconnect bounded and lease/ACL checks unchanged. Show honest mobile-browser background copy without redirecting the user to another client. This is best effort and makes no promise of continuous execution while the browser suspends the page; physical mobile-browser media acceptance remains separate."
+      },
+      "issue785_android_listener_background_playback": {
+        "issue": 785,
+        "target": "integration_test/issue785_background_listener_pair_test.dart",
+        "focused": [
+          "clients/flutter/test/android_playback_fgs_contract_test.dart",
+          "clients/flutter/test/features/voice/background_playback/session_test.dart",
+          "clients/flutter/test/features/voice/background_playback/policy_test.dart",
+          "clients/flutter/test/features/voice/background_playback/status_test.dart",
+          "clients/flutter/packages/boohtacord_voice_foreground/android/src/test/kotlin/ru/boohtacord/voice/start/VoicePlaybackAdmissionPolicyTest.kt",
+          "clients/flutter/test/features/voice/background_playback/controller_test.dart"
+        ],
+        "scope": "A user-started listener or voice session starts a separate nonsticky mediaPlayback foreground service while the Android Activity is visible. It carries LiveKit playback through background, uses no microphone permission or media capture, and stops on deafen/leave/session disposal. An unexpected stop is reported; a new start is allowed only after the Activity resumes. Emulator RTP and decoded-sample counters are scoped integration evidence, not physical audibility or release acceptance.",
+        "platforms": {
+          "android": {
+            "entrypoint": "clients/flutter/packages/boohtacord_voice_foreground/android/src/main/kotlin/ru/boohtacord/voice/start/VoicePlaybackService.kt",
+            "tests": [
+              "test/android_playback_fgs_contract_test.dart",
+              "test/features/voice/background_playback/session_test.dart",
+              "test/features/voice/background_playback/policy_test.dart",
+              "test/features/voice/background_playback/status_test.dart",
+              "test/features/background_microphone/app_resume_wait_test.dart",
+              "test/features/background_microphone/controller_test.dart",
+              "integration_test/issue785_background_listener_pair_test.dart",
+              "clients/flutter/test/features/voice/background_playback/controller_test.dart"
+            ],
+            "runtime": "PASS_SCOPED",
+            "evidence": "evidence/qa/issue785-android-background-playback-2026-11-20.json",
+            "conditions": "2026-11-20 Android 15/API 35 AOSP emulator paired run passed for 120 seconds: mediaPlayback FGS stayed active at five 30-second samples, microphone FGS stayed inactive, and decoded receiver samples covered the Home interval. Emulator RTP/sample counters do not prove speaker audibility. Physical Android/iPhone audible 60-minute acceptance, lock/audio-route/interruption matrix, release APK and production smoke remain NOT_RUN."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/packages/livekit_client/ios/Classes/LiveKitPlugin.swift",
+            "tests": [],
+            "runtime": "BLOCKED",
+            "conditions": "This Android-only amendment does not change iOS. No iPhone is available for the required physical AVAudioSession and paired-media acceptance."
+          }
+        }
       }
     },
     "parity": [
@@ -1279,7 +1345,8 @@
       "issue787_pr7_web_viewer_aggregation": "PR7 adds Web receipt, selected-publication scope and diagnostic presentation for the existing bounded screen telemetry event. Web focused tests/build and registered Web real-stack lifecycle pass; the broad screen_profile browser suite remains BLOCKED by one pre-existing skipped publisher/viewer test. Flutter sender integration, auth/session/ACL behavior, messaging, AFK activity and connection retry policies are unchanged in this PR; socket end clears stale viewer telemetry. Cross-client paired sender-to-viewer, native runtime, media quality and capacity acceptance remain NOT_RUN. The store additionally exposes its existing screen-volume setter already referenced by the workspace UI; this fixes the missing typed export without changing volume policy.",
       "issue787_pr7_paired_web_followup": "2026-11-16 (#787 regression scope): the selected Web voice interface/disconnect and paired real-stack screen-share lifecycle stages passed. This follow-up changes no voice admission, mute/deafen, or transport behavior; native voice/device and paired Flutter sender acceptance remain NOT_RUN.",
       "issue787_pr8_web_target_caption": "2026-11-16 PR #818 changes only the Web screen-preview caption to identify the configured target. Voice admission, mute/deafen, transport and Flutter/iOS/Android behavior are unchanged. Focused Web tests and registered real-stack checks pass; native voice/device and paired media acceptance remain NOT_RUN.",
-      "issue785_mobile_web_resume": "2026-11-17 issue #785 browser recovery: Web VoiceSession reconciles LiveKit media state and playback permission on page resume; a blocked autoplay state exposes a user-gesture resume action. This is Web-only; Flutter/iOS/Android voice implementation and platform decisions are unchanged. Focused Web voice tests and registered browser/real-stack checks cover the browser path; physical background-media acceptance remains separate."
+      "issue785_mobile_web_resume": "2026-11-17 issue #785 browser recovery: Web VoiceSession reconciles LiveKit media state and playback permission on page resume; a blocked autoplay state exposes a user-gesture resume action. This is Web-only; Flutter/iOS/Android voice implementation and platform decisions are unchanged. Focused Web voice tests and registered browser/real-stack checks cover the browser path; physical background-media acceptance remains separate.",
+      "issue785_android_background_playback": "2026-11-20 Android issue #785 adds a separate mediaPlayback foreground service to a user-started voice session. A two-minute paired AOSP-emulator run confirms service continuity and decoded receiver samples; acoustic output is not measured. Web changes are unchanged; physical 60-minute Android/iPhone and release acceptance remain open. Evidence: evidence/qa/issue785-android-background-playback-2026-11-20.json."
     }
   },
   "screen": {
@@ -1840,6 +1907,7 @@
     ],
     "parity_review": {
       "issue786_deafen_screen_audio": "2026-11-14 issue #786 updates voice participant status and roster presentation only. Screen capture, preview lifecycle, viewer selection and media controls remain covered by existing regressions; paired physical media acceptance is NOT_RUN and native runtime acceptance is BLOCKED.",
+      "issue785_android_background_playback": "2026-11-20 Android issue #785 adds a mediaPlayback foreground service to a user-started voice session. Screen-share capture, preview, viewer selection, and transport are unchanged; their registered tests and platform acceptance remain separate.",
       "issue687_auto_capture": "The shared Flutter voice microphone capture confirms an internal Auto WebRTC fallback only after capture succeeds. Screen-sharing code and Web behavior are unchanged. Android/iOS native runtime, screen-sharing regression and real media acceptance remain NOT_RUN/BLOCKED.",
       "idle_afk_follow_up": "PR #783 adds workspace activity reporting used by idle presence. Screen-share capture, preview and viewer behavior are unchanged; existing screen regressions remain required.",
       "issue667_voice_large_text_review": "Shared Flutter voice participant cards switch to one column at narrow widths with large text. Web source is unchanged and its regression remains required; Android and iOS share the layout, but native runtime, screen reader and physical acceptance for this change remain NOT_RUN. Component tests and a 320 dp capture are recorded in the issue 667 evidence.",
@@ -3047,6 +3115,7 @@
     ],
     "parity_review": {
       "issue786_deafen_screen_audio": "2026-11-14 issue #786 passes replicated voice deafen status through shared workspace shell/member rows. Shell navigation, session lifecycle and channel selection are unchanged. Web browser tests and Flutter unit/capture tests pass; Android/iOS runtime and paired media acceptance remain unverified.",
+      "issue785_android_background_playback": "2026-11-20 Android issue #785 adds a playback-availability status to the existing voice dock and keeps playback in a user-started session. Workspace navigation, channel selection and shell lifecycle remain unchanged. The emulator result is scoped and does not establish physical release acceptance.",
       "issue667_voice_large_text_review": "Shared Flutter voice participant cards switch to one column at narrow widths with large text. Web source is unchanged and its regression remains required; Android and iOS share the layout, but native runtime, screen reader and physical acceptance for this change remain NOT_RUN. Component tests and a 320 dp capture are recorded in the issue 667 evidence.",
       "issue689_follow_up": "Issue 689 fences late Web workspace continuations and supersedes stale permission requests on realtime invalidation; Flutter fences realtime permission, topology, member, direct-list and recovery continuations at socket end. Shell regression suites remain required; current-source Android and iOS runtime acceptance remains open.",
       "native_1054_identity": "PR #702 updates shared native version and release metadata only. Web source is unchanged; Android and iOS runtime regression and physical acceptance remain NOT_RUN.",
@@ -3626,6 +3695,7 @@
       "revision": "PR #783",
       "scope": "Idle presence and AFK routing are implemented for Web and shared Flutter clients. Feature-level paired Web/mobile timing and automatic-move observation remain NOT_RUN; no iOS/Android device runtime is inferred from shared code or tests. See evidence/idle-afk-2026-11-14.md.",
       "speech_activity_follow_up": "2026-11-14 follow-up: active local voice speech reports authenticated activity heartbeats in Web and shared Flutter, so speaking resets the AFK inactivity timer. AFK assignment, timeout saving, and voice admission are unchanged. Focused regressions pass; paired Android/iOS device routing remains NOT_RUN.",
+      "issue785_android_background_playback": "2026-11-20 Android issue #785 changes background audio continuity for an already user-started voice session. AFK heartbeats, idle timers, activity sources and AFK voice routing are unchanged; the existing AFK regressions remain applicable.",
       "issue687_production_delivery": "RNNoise 0.2 and DeepFilterNet3 enabled in ordinary Web and Windows builds with version labels. Shared audio state retains Android/iOS/macOS existing engine selection. This overlapping scenario has no new device acceptance claim; browser/native engine evidence is separate.",
       "issue787_pr1_web_roster": "PR #797 (issue #787 PR1) changes only the Web screen-viewer participant popup/roster presentation and browser accessibility. No Flutter, shared native, Android or iOS implementation changed; native behavior and existing platform decisions are unchanged. Focused Web screen-share regressions and 393/1440px browser lifecycle checks pass. Android/iOS runtime and paired native media acceptance remain NOT_RUN; no media or capacity claim is added.",
       "issue787_pr2_stream_switcher": "2026-11-16 issue #787 PR2 adds a Web-only adaptive popup/grid around the existing cached-JPEG stream switcher. Selection still uses the existing ScreenViewer select path; only the selected LiveKit stream is rendered, and preview cards use cached images. Flutter/shared native implementations and media contracts are unchanged. Focused Web browser coverage passes; Android/iOS stream-switcher runtime, paired media quality and capacity acceptance remain NOT_RUN.",

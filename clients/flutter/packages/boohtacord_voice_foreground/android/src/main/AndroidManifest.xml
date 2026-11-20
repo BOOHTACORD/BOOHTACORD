@@ -1,9 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <application>
         <service android:name="ru.boohtacord.voice.start.MicrophoneService"
             android:exported="false" android:foregroundServiceType="microphone" />
+        <service android:name="ru.boohtacord.voice.start.VoicePlaybackService"
+            android:exported="false" android:foregroundServiceType="mediaPlayback" />
     </application>
 </manifest>

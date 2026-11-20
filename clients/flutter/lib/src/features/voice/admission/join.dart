@@ -2,7 +2,6 @@ import 'package:livekit_client/livekit_client.dart';
 
 import '../../../models.dart';
 import '../lifecycle/controller.dart';
-import '../connection_close/recovery.dart';
 import 'audio.dart';
 import 'connect_options.dart';
 import 'prepare.dart';
@@ -13,7 +12,10 @@ import '../../telemetry/action_scope/action.dart';
 import 'observe.dart';
 
 extension VoiceAdmissionJoin on VoiceController {
-  Future<void> joinVoice(GuildChannel channel, {bool listenerOnly = false}) async {
+  Future<void> joinVoice(
+    GuildChannel channel, {
+    bool listenerOnly = false,
+  }) async {
     final recovering = voiceRecoveryActive;
     cancelVoiceRecovery();
     if (recovering && voiceAdmissionPending) await leaveVoice();
@@ -91,7 +93,14 @@ extension VoiceAdmissionJoin on VoiceController {
       await applySavedVoiceVolumes(candidate);
       check();
       if (!listenerOnly) ActionScope.current?.step('microphone');
-      await enableVoiceMicrophone(candidate, listenerOnly || !microphoneAllowed, ticket, revision);
+      await enableVoiceMicrophone(
+        candidate,
+        listenerOnly || !microphoneAllowed,
+        ticket,
+        revision,
+      );
+      check();
+      await syncVoicePlaybackForeground();
       check();
       voiceParticipantSoundTracker.seed(
         candidate.remoteParticipants.values.map(

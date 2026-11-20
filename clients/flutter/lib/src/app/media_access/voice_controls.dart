@@ -29,6 +29,9 @@ mixin AppVoiceControlsAccess on AppOwners {
 
   set microphoneUnavailable(bool value) => voice.microphoneUnavailable = value;
 
+  bool get voicePlaybackBackgroundUnavailable =>
+      voice.voicePlaybackBackgroundUnavailable;
+
   bool get deafened => voice.deafened;
 
   set deafened(bool value) => voice.deafened = value;

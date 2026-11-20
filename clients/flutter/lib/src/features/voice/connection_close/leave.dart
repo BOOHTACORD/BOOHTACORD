@@ -9,7 +9,8 @@ import '../../telemetry/action_scope/action.dart';
 extension VoiceConnectionCloseLeave on VoiceController {
   Future<void> leaveVoice({bool explicit = true}) {
     sounds.silence();
-    soundObserver?.pause(); soundObserver = null;
+    soundObserver?.pause();
+    soundObserver = null;
     if (explicit) cancelVoiceRecovery();
     if (explicit &&
         (room != null || voiceAdmissionPending || disconnect.notice != null)) {
@@ -56,6 +57,7 @@ extension VoiceConnectionCloseLeave on VoiceController {
     audio.nativeMicrophone.pause();
     audio.microphoneMutedIntent = true;
     final stopMicrophoneService = microphoneForeground.stop();
+    final stopPlaybackService = voicePlaybackForeground.stop();
     final stopScreen = screen.stopScreenShare();
     room = null;
     pendingRoom = null;
@@ -75,6 +77,7 @@ extension VoiceConnectionCloseLeave on VoiceController {
     notifyListeners();
     await stopScreen;
     await stopMicrophoneService;
+    await stopPlaybackService;
     for (final target in {connected, pending}) {
       try {
         await target?.disconnect();
@@ -103,6 +106,7 @@ extension VoiceConnectionCloseLeave on VoiceController {
     microphoneMuted = false;
     microphoneAllowed = true;
     microphoneUnavailable = false;
+    voicePlaybackBackgroundUnavailable = false;
     deafened = false;
     deafenChanging = false;
     listenerOnly = false;

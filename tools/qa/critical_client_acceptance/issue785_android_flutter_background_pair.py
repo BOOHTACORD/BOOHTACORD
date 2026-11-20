@@ -6,6 +6,7 @@ import hashlib
 import json
 import math
 import os
+import re
 import shutil
 import socket
 import ssl
@@ -23,6 +24,8 @@ from tools.qa.local_features.native import verify_device
 PACKAGE = 'ru.boohtacord.app'
 CONTROL = 'issue785_flutter_pair_control.json'
 ORIGIN = 'https://localhost:4810/api/v1'
+MIN_BACKGROUND_SECONDS = 120
+DEFAULT_BACKGROUND_SECONDS = 120
 
 
 def adb(device, *args, check=True):
@@ -44,8 +47,9 @@ def control_json(device):
         raise RuntimeError('Android QA control file was not valid JSON') from error
 
 
-def set_control(device, status):
-    encoded = base64.b64encode(json.dumps({'status': status}).encode()).decode()
+def set_control(device, status, **metadata):
+    payload = {'status': status, **metadata}
+    encoded = base64.b64encode(json.dumps(payload).encode()).decode()
     command = (
         f"run-as {PACKAGE} sh -c 'printf %s {encoded} | base64 -d > "
         f"cache/{CONTROL}.tmp && mv cache/{CONTROL}.tmp cache/{CONTROL}'"
@@ -88,16 +92,23 @@ def tail(path, limit=6000):
         return ''
 
 
+def playback_foreground_service_active(service_dump):
+    return bool(re.search(r'(?i)(?:VoicePlaybackService|voice_playback)', service_dump))
+
+
+def validate_background_seconds(seconds):
+    if seconds < MIN_BACKGROUND_SECONDS:
+        raise ValueError('Issue 785 Android reproduction smoke must be at least 120 seconds')
+    return seconds
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--device', required=True)
-    parser.add_argument('--background-seconds', type=int, default=300)
+    parser.add_argument('--background-seconds', type=int, default=DEFAULT_BACKGROUND_SECONDS)
     parser.add_argument('--output', required=True)
     args = parser.parse_args()
-    if args.background_seconds < 300:
-        raise ValueError('Issue 785 Android background smoke must be at least 300 seconds')
-
-    import re
+    validate_background_seconds(args.background_seconds)
 
     root = Path(__file__).resolve().parents[3]
     device = args.device
@@ -219,7 +230,16 @@ def main():
                 )
                 if microphone_service_active:
                     raise RuntimeError('Listener-only Flutter session unexpectedly started a microphone service')
+                playback_service_active = playback_foreground_service_active(background_services)
+                if not playback_service_active:
+                    raise RuntimeError('Listener-only Flutter session did not start its mediaPlayback foreground service')
                 background_started = time.monotonic()
+                playback_service_samples = [{
+                    'offset_seconds': 0.0,
+                    'playback_foreground_service_active': playback_service_active,
+                    'microphone_foreground_service_active': microphone_service_active,
+                }]
+                next_service_sample = 30
                 print(f'Android Home observed; background duration target: {args.background_seconds}s', flush=True)
                 while time.monotonic() - background_started < args.background_seconds:
                     if flutter.poll() is not None:
@@ -227,11 +247,49 @@ def main():
                     elapsed = int(time.monotonic() - background_started)
                     if elapsed and elapsed % 60 == 0:
                         print(f'Android Home duration: {elapsed}s', flush=True)
+                    if elapsed >= next_service_sample:
+                        services = adb(
+                            device, 'shell', 'dumpsys', 'activity', 'services', PACKAGE,
+                        ).stdout
+                        microphone_active = bool(
+                            re.search(r'(?i)(?:Microphone|VoiceMicrophone).*Service', services)
+                        )
+                        playback_active = playback_foreground_service_active(services)
+                        sample = {
+                            'offset_seconds': round(time.monotonic() - background_started, 3),
+                            'playback_foreground_service_active': playback_active,
+                            'microphone_foreground_service_active': microphone_active,
+                        }
+                        playback_service_samples.append(sample)
+                        if microphone_active:
+                            raise RuntimeError('Listener-only background session unexpectedly started a microphone service')
+                        if not playback_active:
+                            raise RuntimeError('mediaPlayback foreground service stopped during Android Home')
+                        next_service_sample += 30
                     time.sleep(min(1, args.background_seconds - (time.monotonic() - background_started)))
                 observed_background = time.monotonic() - background_started
+                services = adb(device, 'shell', 'dumpsys', 'activity', 'services', PACKAGE).stdout
+                microphone_service_active = bool(
+                    re.search(r'(?i)(?:Microphone|VoiceMicrophone).*Service', services)
+                )
+                playback_service_active = playback_foreground_service_active(services)
+                playback_service_samples.append({
+                    'offset_seconds': round(observed_background, 3),
+                    'playback_foreground_service_active': playback_service_active,
+                    'microphone_foreground_service_active': microphone_service_active,
+                })
+                if microphone_service_active:
+                    raise RuntimeError('Listener-only background session unexpectedly started a microphone service')
+                if not playback_service_active:
+                    raise RuntimeError('mediaPlayback foreground service was not active at the end of Android Home')
+                set_control(
+                    device,
+                    'resume',
+                    backgroundSecondsObserved=round(observed_background, 3),
+                    playbackServiceSamples=playback_service_samples,
+                )
                 adb(device, 'shell', 'am', 'start', '-n', f'{PACKAGE}/.MainActivity')
                 wait_activity(device, re.compile(r'topResumedActivity=.*ru\.boohtacord\.app', re.I))
-                set_control(device, 'resume')
                 print('Android app resumed; waiting for Flutter receiver stats', flush=True)
                 result_deadline = time.monotonic() + 120
                 while time.monotonic() < result_deadline:
@@ -268,6 +326,8 @@ def main():
             raise RuntimeError('Flutter pair test did not store its final receiver observations')
         if not final_path.exists():
             raise RuntimeError('Synthetic sender did not save its final outbound counters')
+        shutil.copy2(flutter_log, output / 'flutter-drive.log')
+        shutil.copy2(node_log, output / 'sender.log')
         sender_after = json.loads(final_path.read_text(encoding='utf8'))
         sender_result = {
             'beforeBackground': pair['senderInitial'],
@@ -295,17 +355,19 @@ def main():
                 'background_seconds_requested': args.background_seconds,
                 'background_seconds_observed': round(observed_background, 3),
                 'microphone_foreground_service_active': microphone_service_active,
+                'playback_foreground_service_active': playback_service_active,
+                'playback_service_samples': playback_service_samples,
                 'voice_phase_after_resume': result_file['result']['voicePhase'],
                 'application_socket_connected_after_resume': result_file['result']['applicationSocketConnected'],
             },
             'receiver_media': result_file['result'],
             'sender_media': sender_result,
-            'media_result': 'PASS_SCOPED: LiveKit receiver packet/byte counters advanced after resume; acoustic output was not measured',
+            'media_result': 'PASS_SCOPED: LiveKit decoded sample duration covered the background interval and receiver packet/byte counters advanced after resume; acoustic output was not measured',
             'runtime_log': str(output / 'flutter-drive.log'),
             'screenshots': str(capture_dir),
             'limitations': [
                 'Emulator RTP and audio receiver statistics do not prove audio reached the speaker or was audible to a person.',
-                'This is a five-minute emulator run, not a physical-device or 60-minute acceptance.',
+                f'This is a {args.background_seconds}-second emulator run, not a physical-device acceptance.',
                 'No screen lock, secure keyguard, network transition, airplane mode, process kill, permission revoke, battery saver, iOS, or production release was tested.',
                 'Issue 785 release gate remains open.',
             ],

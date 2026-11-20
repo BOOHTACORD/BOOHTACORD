@@ -31,6 +31,9 @@ class SelectionTest(unittest.TestCase):
         selected = native_targets(catalog, ['voice'])
         self.assertIn('integration_test/issue689_listener_test.dart', selected)
         self.assertIn('integration_test/issue689_roster_test.dart', selected)
+        android_selected = native_targets(catalog, ['voice'], platform='android')
+        self.assertIn('integration_test/issue785_background_listener_pair_test.dart', android_selected)
+        self.assertNotIn('integration_test/issue785_background_listener_pair_test.dart', catalog['voice']['flutter'])
 
     def test_android_voice_capture_is_selected_only_for_android(self):
         catalog = json.loads(Path(__file__).with_name('features.json').read_text(encoding='utf8'))
