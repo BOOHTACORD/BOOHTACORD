@@ -9,6 +9,7 @@
     {"id":"cmp.web.noise_distribution_notices","paths":["clients/web/public/audio/deepfilternet/research-d375b2d/LICENSE-WorkAdventure.txt"]},
     {"id":"cmp.web.auto_preflight","paths":["clients/web/src/voice/noise_suppression/auto_preflight/benchmark.ts","clients/web/src/voice/noise_suppression/auto_preflight/client.ts","clients/web/src/voice/noise_suppression/auto_preflight/probe.worker.ts","clients/web/src/voice/noise_suppression/auto_preflight/worker_runner.ts","clients/web/src/voice/noise_suppression/microphone_adapter/auto_fixture.ts"]},
     {"id":"cmp.web.voice_recovery","source":{"parity_id":"voice.long_recovery","platform":"web"}},
+    {"id":"cmp.web.voice_admission_cleanup","paths":["clients/web/src/voice/admission_cleanup/cleanup.ts","clients/web/src/voice/room_admission/connect.ts","clients/web/src/voice/room_admission/disconnect.ts"]},
     {"id":"cmp.web.browser_resume_lifecycle","paths":["clients/web/src/voice/browser_resume/lifecycle.ts"]},
     {"id":"cmp.flutter.voice_recovery","source":{"parity_id":"voice.long_recovery","platform":"android"}},
     {"id":"cmp.web.voice_roster_recovery","source":{"parity_id":"voice.roster_long_recovery","platform":"web"}},
@@ -27,8 +28,8 @@
     {"id":"cmp.backend.voice_join_sound_processor","paths":["backend/internal/voice/join_sound/processor/remote.go"]},
     {"id":"cmp.web.idle_afk","source":{"parity_id":"idle_afk.status_and_voice","platform":"web"}},
     {"id":"cmp.flutter.idle_afk","source":{"parity_id":"idle_afk.status_and_voice","platform":"android"}},
-    {"id":"cmp.web.system_activity","paths":["clients/web/src/realtime/system_activity/controller.ts"]},
-    {"id":"cmp.flutter.windows_system_activity","paths":["clients/flutter/lib/src/features/realtime/system_activity/windows.dart"]},
+    {"id":"cmp.web.system_activity","paths":["clients/web/src/realtime/system_activity/controller.ts","clients/web/src/realtime/system_activity/Settings.vue","clients/web/src/realtime/system_activity/app_interaction.ts","clients/web/src/realtime/system_activity/browser.ts","clients/web/src/realtime/system_activity/realtime_reporter.ts","clients/web/src/realtime/system_activity/throttle.ts"]},
+    {"id":"cmp.flutter.windows_system_activity","paths":["clients/flutter/lib/src/features/realtime/system_activity/windows.dart","clients/flutter/lib/src/features/realtime/system_activity/capabilities.dart","clients/flutter/lib/src/features/realtime/system_activity/inactivity_reporter.dart","clients/flutter/lib/src/features/realtime/system_activity/poller.dart","clients/flutter/lib/src/features/realtime/system_activity/reporter.dart","clients/flutter/lib/src/features/realtime/system_activity/throttle.dart"]},
     {"id":"cmp.web.voice_activity_heartbeat","paths":["clients/web/src/realtime/voice_activity_heartbeat.ts"]},
     {"id":"cmp.flutter.voice_activity_heartbeat","paths":["clients/flutter/lib/src/features/realtime/lifecycle/voice_activity_heartbeat.dart"]},
     {"id":"cmp.backend.idle_presence","paths":["backend/internal/realtime/event_hub/activity.go","backend/internal/realtime/event_hub/activity_inactive.go","backend/internal/realtime/event_hub/reconnect_history.go","backend/internal/realtime/connect_session/event_stream.go","backend/internal/realtime/connect_session/stream_helpers.go"]},
@@ -61,7 +62,7 @@
     {
       "id":"voice.long_recovery", "title":"Восстановление голосового канала", "domain":"voice", "target_revision":null,
       "behavior_revisions":[], "parity_ids":["voice.long_recovery"],
-      "components":["cmp.web.voice_recovery","cmp.web.browser_resume_lifecycle","cmp.flutter.voice_recovery"],
+      "components":["cmp.web.voice_recovery","cmp.web.voice_admission_cleanup","cmp.web.browser_resume_lifecycle","cmp.flutter.voice_recovery"],
       "platforms": {
         "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
         "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},

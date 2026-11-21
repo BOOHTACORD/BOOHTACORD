@@ -1,6 +1,7 @@
 {
   "components": [
     {"id": "cmp.flutter.profile", "source": {"parity_id": "settings.profile", "platform": "android"}},
+    {"id": "cmp.web.profile_tabs", "paths": ["clients/web/src/identity/profile_tabs/navigation.ts"]},
     {"id": "cmp.flutter.workspace", "source": {"parity_id": "navigation.search", "platform": "android"}},
     {"id": "cmp.web.channel_navigation", "source": {"parity_id": "navigation.channel-favorites", "platform": "web"}},
     {"id": "cmp.flutter.channel_navigation", "source": {"parity_id": "navigation.channel-favorites", "platform": "android"}}
@@ -13,7 +14,7 @@
       "target_revision": null,
       "behavior_revisions": [],
       "parity_ids": ["settings.profile"],
-      "components": ["cmp.web.workspace", "cmp.flutter.profile"],
+      "components": ["cmp.web.workspace", "cmp.web.profile_tabs", "cmp.flutter.profile"],
       "platforms": {
         "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
         "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},

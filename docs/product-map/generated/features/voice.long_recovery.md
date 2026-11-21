@@ -20,4 +20,5 @@ ID: `voice.long_recovery`
 
 - cmp.flutter.voice\_recovery: [clients/flutter/lib/src/features/voice/connection\_close/recovery.dart](../../../../clients/flutter/lib/src/features/voice/connection_close/recovery.dart)
 - cmp.web.browser\_resume\_lifecycle: [clients/web/src/voice/browser\_resume/lifecycle.ts](../../../../clients/web/src/voice/browser_resume/lifecycle.ts)
+- cmp.web.voice\_admission\_cleanup: [clients/web/src/voice/admission\_cleanup/cleanup.ts](../../../../clients/web/src/voice/admission_cleanup/cleanup.ts), [clients/web/src/voice/room\_admission/connect.ts](../../../../clients/web/src/voice/room_admission/connect.ts), [clients/web/src/voice/room\_admission/disconnect.ts](../../../../clients/web/src/voice/room_admission/disconnect.ts)
 - cmp.web.voice\_recovery: [clients/web/src/voice/connection\_state/store.ts](../../../../clients/web/src/voice/connection_state/store.ts)
