@@ -10,6 +10,8 @@ export async function continued(observer, peer, room, input, step) {
   await expect.poll(() => observer.evaluate(() => window.__r1.opened), { timeout: 25000 }).toBeGreaterThan(before.opened)
   await expect.poll(() => observer.evaluate(() => window.__r1.generation), { timeout: 15000 }).not.toBe(before.generation)
   const roster = observer.locator('.voice-roster-preview').first()
+  await expect(observer.locator('.maintenance-banner')).toBeHidden({ timeout: 15000 })
+  await expect(observer.getByText('Голосовой канал · пока пусто', { exact: true })).toBeVisible({ timeout: 15000 })
   await expect(roster.locator('.voice-roster-empty')).toBeVisible()
   await observer.screenshot({ path: input.directory + '/after-api-restart.png' })
   step('account-switch-setup')
@@ -50,6 +52,6 @@ export async function continued(observer, peer, room, input, step) {
     await expect(observer.locator('.user-footer')).toContainText('qa_r1_member')
     await observer.screenshot({ path: input.directory + '/after-account-switch-old-response.png' })
   } finally { release() }
-  return { api_process_restart: 'PASS', generation_changed_after_restart: true,
+  return { api_process_restart: 'PASS', api_fresh_ui: true, generation_changed_after_restart: true,
     same_page_account_switch: 'PASS', late_previous_account_topology: 'IGNORED' }
 }
