@@ -49,3 +49,13 @@ describe('push to talk', () => {
     expect(states).toEqual([])
   })
 })
+
+it('requires a fresh key press after blur instead of accepting held-key autorepeat', () => {
+  const hub=new EventHub(), states:boolean[]=[]
+  const owner=new PushToTalk(hub,'KeyV',pressed=>states.push(pressed))
+  owner.start();hub.emit('keydown');hub.emit('blur')
+  const repeat={code:'KeyV',repeat:true};hub.emit('keydown',repeat)
+  expect(states).toEqual([true,false])
+  hub.emit('keyup');hub.emit('keydown');expect(states).toEqual([true,false,true])
+  owner.stop()
+})

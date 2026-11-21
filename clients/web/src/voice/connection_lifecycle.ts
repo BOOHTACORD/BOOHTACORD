@@ -72,7 +72,7 @@ export function installVoiceConnectionLifecycle(
       if (isTransport && disconnected) unexpectedDisconnect?.({
         channelId: disconnected.channelId,
         leaseId: disconnected.leaseId,
-        joinMode: disconnected.listenerOnly || disconnected.microphone !== 'PUBLISHED' || wasMuted || wasDeafened ? 'listener' : 'with-microphone',
+        joinMode: disconnected.pushToTalk || disconnected.listenerOnly || disconnected.microphone !== 'PUBLISHED' || wasMuted || wasDeafened ? 'listener' : 'with-microphone',
         deafened: wasDeafened,
       })
     },

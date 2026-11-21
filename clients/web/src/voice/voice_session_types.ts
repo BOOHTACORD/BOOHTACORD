@@ -8,6 +8,7 @@ export interface VoiceAdmission {
 }
 
 export interface ActiveVoiceSession extends JoinedVoiceRoom {
+  pushToTalk?: boolean
   listenerOnly?: boolean
   microphoneAllowed?: boolean
   channelId: string

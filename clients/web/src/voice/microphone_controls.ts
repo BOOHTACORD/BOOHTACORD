@@ -16,7 +16,7 @@ export function createMicrophoneControls(
   error: Ref<string | null>,
 ) {
   async function setMicrophoneMuted(muted: boolean): Promise<void> {
-    if (!active.value || active.value.microphoneAllowed === false || deafened.value) return
+    if (!active.value || active.value.microphoneAllowed === false || (deafened.value && !muted)) return
     error.value = null
     try {
       const microphone = await session.setMicrophoneMuted(muted)
