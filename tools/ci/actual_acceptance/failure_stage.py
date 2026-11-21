@@ -44,6 +44,8 @@ STAGES = frozenset({
     'screen-share-owner-stop-accepted', 'screen-share-owner-track-ended',
     'screen-share-view-removed',
     'settings-live-audio-accepted', 'settings-personal-api-accepted',
+    'settings-profile-open', 'settings-profile-cancelled', 'settings-profile-saved',
+    'settings-profile-restored', 'settings-security-cancelled', 'settings-notifications-visible',
     'voice-interface-room-ready', 'voice-interface-deafen-tested',
     'voice-interface-share-dialog-tested', 'voice-interface-search-tested',
     'voice-interface-audio-settings-tested', 'voice-interface-text-navigation-tested',
