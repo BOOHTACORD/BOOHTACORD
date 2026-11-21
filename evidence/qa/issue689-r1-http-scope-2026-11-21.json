@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "issue": 689,
+  "scope": "R1 Web protected HTTP/socket ownership",
+  "status": "PASS_SCOPED",
+  "base_master": "32825c9b8ed4ae24dbf3747b063f929f79fe2c44",
+  "implementation_commit": "ab02c1898108dca356a7c78290d564cf6b506c50",
+  "command": "python3 -m tools.qa.realtime_recovery.run",
+  "cli_exit_code": 0,
+  "runtime": {
+    "status": "PASS",
+    "actual_api": true,
+    "actual_sfu": true,
+    "transport": "native browser WebSocket",
+    "fault": "unmodified actual topology HTTP response delayed across two socket replacements",
+    "replacement_recovered_before_old_response": true,
+    "old_response_did_not_restore_participants": true,
+    "browser": "153.0.8010.12",
+    "opened": 6,
+    "physical_media_quality": "NOT_RUN",
+    "api_process_restart": "PASS",
+    "generation_changed_after_restart": true,
+    "same_page_account_switch": "PASS",
+    "late_previous_account_topology": "IGNORED",
+    "source_before": "ab02c1898108dca356a7c78290d564cf6b506c50 worktree-sha256=af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+    "source_after": "ab02c1898108dca356a7c78290d564cf6b506c50 worktree-sha256=af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+    "production_web_files": {
+      "index.html": "4e880caa64080141186595d804b83589923412a61cfd54d6ac1f5fa80c9a64dd",
+      "assets/index-Behv36i2.js": "9bce7f01c52b5928fc1eda3264891eeb5a51fde79326e6df42ad63819e83a747",
+      "assets/index-lRZ_7GLr.css": "1c1254e3c442b05b783a249f6e821ec077cc863e9bc8597d8edb5724098a83f7"
+    },
+    "source_stability": {
+      "name": "source-stability",
+      "status": "PASS",
+      "before": "ab02c1898108dca356a7c78290d564cf6b506c50 worktree-sha256=af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "after": "ab02c1898108dca356a7c78290d564cf6b506c50 worktree-sha256=af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+    }
+  },
+  "screenshots": [
+    {
+      "name": "populated.png",
+      "width": 1440,
+      "height": 960,
+      "sha256": "0430ea6444df4d31b49a560641c71cb42888dc09fe1267c65922a5958f231c51",
+      "visual_review": "PASS_SCOPED: reviewed at source resolution; no clipping or ghost participant"
+    },
+    {
+      "name": "new-empty-before-old-response.png",
+      "width": 1440,
+      "height": 960,
+      "sha256": "23b6519eee8e762a3ea794407eef5a9fb073b047bbee3f285f84bb22998b0910",
+      "visual_review": "PASS_SCOPED: reviewed at source resolution; no clipping or ghost participant"
+    },
+    {
+      "name": "new-empty-after-old-response.png",
+      "width": 1440,
+      "height": 960,
+      "sha256": "23b6519eee8e762a3ea794407eef5a9fb073b047bbee3f285f84bb22998b0910",
+      "visual_review": "PASS_SCOPED: reviewed at source resolution; no clipping or ghost participant"
+    },
+    {
+      "name": "after-api-restart.png",
+      "width": 1440,
+      "height": 960,
+      "sha256": "23b6519eee8e762a3ea794407eef5a9fb073b047bbee3f285f84bb22998b0910",
+      "visual_review": "PASS_SCOPED: reviewed at source resolution; no clipping or ghost participant"
+    },
+    {
+      "name": "after-account-switch-old-response.png",
+      "width": 1440,
+      "height": 960,
+      "sha256": "9b6712943194ef2a394bf560c8e7db699ff62e81fdfe83f4e1ac38c05c3a9e1c",
+      "visual_review": "PASS_SCOPED: reviewed at source resolution; no clipping or ghost participant"
+    }
+  ],
+  "unit": {
+    "web_nearest": 138,
+    "web_full_same_input_tree": 2031,
+    "flutter_realtime_roster_same_input_tree": 97,
+    "go_coordinator": 18,
+    "go_skips": 0,
+    "python_owned_control": 2
+  },
+  "limits": [
+    "Full R1 native platform runtime remains separate",
+    "No physical media/quality/capacity claim",
+    "Broader local-feature run FAIL/INTERRUPTED; targeted Windows baseline/candidate reruns passed"
+  ]
+}
