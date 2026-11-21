@@ -86,6 +86,8 @@ class FailureDiagnosticTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             log = Path(temporary) / 'lifecycle.log'
             for stage in ('settings-profile-open', 'settings-profile-cancelled',
+                          'settings-profile-save-disabled', 'settings-profile-draft-filled',
+                          'settings-profile-cancel-clicked', 'settings-profile-value-restored',
                           'settings-profile-saved', 'settings-profile-restored',
                           'settings-security-cancelled', 'settings-notifications-visible'):
                 with self.subTest(stage=stage):

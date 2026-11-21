@@ -25,3 +25,10 @@ class FailureLocationTests(unittest.TestCase):
                 ' at bad (tools/qa/critical_client_acceptance/media.mjs:9999999:2)\n')
             self.assertIsNone(last_failure_frame(path))
             self.assertIsNone(last_failure_frame(None))
+
+    def test_settings_failure_retains_only_owned_file_and_line(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)/'private.log'
+            path.write_text('stage=settings-profile-open\nError: private message\n'
+                ' at personalSettings (/private/tools/qa/client_lifecycle/settings_hierarchy.mjs:12:5)\n')
+            self.assertEqual(last_failure_frame(path), {'file': 'settings_hierarchy.mjs', 'line': 12})

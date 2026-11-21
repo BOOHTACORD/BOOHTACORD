@@ -45,6 +45,8 @@ STAGES = frozenset({
     'screen-share-view-removed',
     'settings-live-audio-accepted', 'settings-personal-api-accepted',
     'settings-profile-open', 'settings-profile-cancelled', 'settings-profile-saved',
+    'settings-profile-save-disabled', 'settings-profile-draft-filled', 'settings-profile-cancel-clicked',
+    'settings-profile-value-restored',
     'settings-profile-restored', 'settings-security-cancelled', 'settings-notifications-visible',
     'voice-interface-room-ready', 'voice-interface-deafen-tested',
     'voice-interface-share-dialog-tested', 'voice-interface-search-tested',
@@ -104,7 +106,7 @@ def last_failure_frame(log):
     stages = [m for m in MARKER.finditer(text) if m.group(1) in STAGES]
     if not stages: return None
     owned = (r'critical_client_acceptance/(?:roster_outage|media|voice_interface|teardown)'
-             r'|client_lifecycle/(?:journey/scenario|request)')
+             r'|client_lifecycle/(?:journey/scenario|request|settings_hierarchy)')
     pattern = r'(?:^|[/ (])tools/qa/('+owned+r')\.mjs:([1-9][0-9]{0,3}):[1-9][0-9]{0,3}(?=[)\s]|$)'
     match = re.search(pattern, text[stages[-1].end():])
     if match is None: return None
