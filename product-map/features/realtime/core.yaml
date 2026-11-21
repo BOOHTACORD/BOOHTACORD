@@ -1,6 +1,7 @@
 {
   "components": [
     {"id": "cmp.web.realtime_store", "source": {"parity_id": "realtime.recovery", "platform": "web"}},
+    {"id": "cmp.web.protected_recovery", "paths": ["clients/web/src/workspace/workspace_realtime.ts", "clients/web/src/workspace/protected_refresh/scope.ts", "clients/web/src/workspace/protected_refresh/gate.ts", "clients/web/src/workspace/protected_refresh/stores.ts", "clients/web/src/workspace/protected_refresh/types.ts", "clients/web/src/channel/topology_store.ts"], "depends_on": ["cmp.web.realtime_store"]},
     {"id": "cmp.flutter.realtime", "source": {"parity_id": "realtime.recovery", "platform": "android"}},
     {"id": "cmp.web.realtime_client", "source": {"parity_id": "screen.audience", "platform": "web"}},
     {"id": "cmp.flutter.screen_audience", "source": {"parity_id": "screen.audience", "platform": "android"}},
@@ -23,7 +24,7 @@
       "target_revision": null,
       "behavior_revisions": [],
       "parity_ids": ["realtime.recovery"],
-      "components": ["cmp.web.realtime_store", "cmp.flutter.realtime"],
+      "components": ["cmp.web.realtime_store", "cmp.web.protected_recovery", "cmp.flutter.realtime"],
       "platforms": {
         "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
         "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
