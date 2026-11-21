@@ -4,7 +4,7 @@
   "scope": "R1 Web protected HTTP/socket ownership",
   "status": "PASS_SCOPED",
   "base_master": "32825c9b8ed4ae24dbf3747b063f929f79fe2c44",
-  "implementation_commit": "ab02c1898108dca356a7c78290d564cf6b506c50",
+  "implementation_commit": "b18de3589f43ec89a777e17ac7f2b167b3dbe212",
   "command": "python3 -m tools.qa.realtime_recovery.run",
   "cli_exit_code": 0,
   "runtime": {
@@ -22,18 +22,18 @@
     "generation_changed_after_restart": true,
     "same_page_account_switch": "PASS",
     "late_previous_account_topology": "IGNORED",
-    "source_before": "ab02c1898108dca356a7c78290d564cf6b506c50 worktree-sha256=af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
-    "source_after": "ab02c1898108dca356a7c78290d564cf6b506c50 worktree-sha256=af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+    "source_before": "b18de3589f43ec89a777e17ac7f2b167b3dbe212 worktree-sha256=af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+    "source_after": "b18de3589f43ec89a777e17ac7f2b167b3dbe212 worktree-sha256=af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
     "production_web_files": {
-      "index.html": "4e880caa64080141186595d804b83589923412a61cfd54d6ac1f5fa80c9a64dd",
-      "assets/index-Behv36i2.js": "9bce7f01c52b5928fc1eda3264891eeb5a51fde79326e6df42ad63819e83a747",
+      "index.html": "f4bdb37d915eea699180b74c2b126e6aeb44300125c5836467359f6ee7be1495",
+      "assets/index-CpvCh1T3.js": "10bba6f35ef276538bdf63c0d51a468051279e4bf6c9dfa2d03e4461ab73a81b",
       "assets/index-lRZ_7GLr.css": "1c1254e3c442b05b783a249f6e821ec077cc863e9bc8597d8edb5724098a83f7"
     },
     "source_stability": {
       "name": "source-stability",
       "status": "PASS",
-      "before": "ab02c1898108dca356a7c78290d564cf6b506c50 worktree-sha256=af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
-      "after": "ab02c1898108dca356a7c78290d564cf6b506c50 worktree-sha256=af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+      "before": "b18de3589f43ec89a777e17ac7f2b167b3dbe212 worktree-sha256=af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "after": "b18de3589f43ec89a777e17ac7f2b167b3dbe212 worktree-sha256=af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
     }
   },
   "screenshots": [
@@ -62,28 +62,121 @@
       "name": "after-api-restart.png",
       "width": 1440,
       "height": 960,
-      "sha256": "23b6519eee8e762a3ea794407eef5a9fb073b047bbee3f285f84bb22998b0910",
+      "sha256": "3261f9e320ddbf5445548a9a28a03d4f5f6f412da04b153af660a93561580ba0",
       "visual_review": "PASS_SCOPED: reviewed at source resolution; no clipping or ghost participant"
     },
     {
       "name": "after-account-switch-old-response.png",
       "width": 1440,
       "height": 960,
-      "sha256": "9b6712943194ef2a394bf560c8e7db699ff62e81fdfe83f4e1ac38c05c3a9e1c",
+      "sha256": "cdd71899122ba436d49a564f5bffad26edb73f87f34a995d7f93b7d845d80d22",
       "visual_review": "PASS_SCOPED: reviewed at source resolution; no clipping or ghost participant"
     }
   ],
   "unit": {
-    "web_nearest": 138,
-    "web_full_same_input_tree": 2031,
+    "web_nearest": 140,
     "flutter_realtime_roster_same_input_tree": 97,
     "go_coordinator": 18,
     "go_skips": 0,
-    "python_owned_control": 2
+    "python_owned_control": 2,
+    "web_full_pre_followup": 2031,
+    "web_full_note": "2031 passed before the live-owner serialization follow-up; final required CI tracked in PR #837"
   },
   "limits": [
     "Full R1 native platform runtime remains separate",
     "No physical media/quality/capacity claim",
     "Broader local-feature run FAIL/INTERRUPTED; targeted Windows baseline/candidate reruns passed"
-  ]
+  ],
+  "previous_implementation_commit": "ab02c1898108dca356a7c78290d564cf6b506c50",
+  "burst_followup": {
+    "source_revision": "b18de3589f43ec89a777e17ac7f2b167b3dbe212",
+    "cli_exit_code": 0,
+    "local_red": "pre-followup burst50 max_parallel_topology=2",
+    "report": {
+      "status": "PASS",
+      "protected_refresh": {
+        "actual_api_bursts": [
+          {
+            "events": 1,
+            "active": {
+              "topology": 2,
+              "history": 1,
+              "history_latest": 1,
+              "history_before": 0,
+              "history_after": 0,
+              "history_at": 0,
+              "max_parallel": 1,
+              "max_parallel_history": 1,
+              "max_parallel_topology": 1
+            },
+            "hidden": {
+              "topology": 1,
+              "history": 0,
+              "history_latest": 0,
+              "history_before": 0,
+              "history_after": 0,
+              "history_at": 0,
+              "max_parallel": 1,
+              "max_parallel_history": 0,
+              "max_parallel_topology": 1
+            }
+          },
+          {
+            "events": 20,
+            "active": {
+              "topology": 6,
+              "history": 3,
+              "history_latest": 3,
+              "history_before": 0,
+              "history_after": 0,
+              "history_at": 0,
+              "max_parallel": 1,
+              "max_parallel_history": 1,
+              "max_parallel_topology": 1
+            },
+            "hidden": {
+              "topology": 3,
+              "history": 0,
+              "history_latest": 0,
+              "history_before": 0,
+              "history_after": 0,
+              "history_at": 0,
+              "max_parallel": 1,
+              "max_parallel_history": 0,
+              "max_parallel_topology": 1
+            }
+          },
+          {
+            "events": 50,
+            "active": {
+              "topology": 5,
+              "history": 4,
+              "history_latest": 4,
+              "history_before": 0,
+              "history_after": 0,
+              "history_at": 0,
+              "max_parallel": 1,
+              "max_parallel_history": 1,
+              "max_parallel_topology": 1
+            },
+            "hidden": {
+              "topology": 5,
+              "history": 0,
+              "history_latest": 0,
+              "history_before": 0,
+              "history_after": 0,
+              "history_at": 0,
+              "max_parallel": 1,
+              "max_parallel_history": 0,
+              "max_parallel_topology": 1
+            }
+          }
+        ],
+        "old_page_edit_delete": true,
+        "final_revision": 2,
+        "id_only_hints_preserved": true
+      }
+    },
+    "hosted_pre_followup": "44890836212 lifecycle FAIL; last retained stage critical-burst-hidden-channel-selected; inner assertion not retained"
+  }
 }

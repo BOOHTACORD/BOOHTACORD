@@ -6,7 +6,7 @@ not the complete multi-platform R1 or issue 689.
 ## Source and defect
 
 - Current master baseline: `32825c9b8ed4ae24dbf3747b063f929f79fe2c44`.
-- Tested clean implementation: `ab02c1898108dca356a7c78290d564cf6b506c50`.
+- Tested clean implementation: `b18de3589f43ec89a777e17ac7f2b167b3dbe212`.
 - Production workspace recovery reused a coalescer across socket incarnations.
   A held old topology GET prevented the new recovery from finishing. The
   regression failed before the fix: expected two requests, observed one.
@@ -21,8 +21,8 @@ not the complete multi-platform R1 or issue 689.
 
 | Check | Result |
 | --- | --- |
-| Nearest Web realtime/workspace/roster/topology tests | 138 PASS |
-| Full Web unit suite, identical product source tree | 2031 PASS |
+| Nearest Web realtime/workspace/roster/topology tests | 140 PASS |
+| Full Web unit suite before serialization follow-up | 2031 PASS (historical) |
 | Post-master-sync focused Web regressions | 18 PASS |
 | TypeScript and production Web builds, Windows and Linux | PASS |
 | Flutter realtime/roster tests, pinned 3.47.7 SDK | 97 PASS |
@@ -30,9 +30,10 @@ not the complete multi-platform R1 or issue 689.
 | Owned control HTTP tests | 2 PASS |
 | Client parity, no-SSE migration guard, signal catalog check | PASS |
 
-The full unit and Flutter runs preceded documentation/QA-only changes; their
-product input trees match the tested implementation. Flutter tests are not
-installed-client/native GUI acceptance. No Go production source changed.
+The 2031-test full Web run predates the live-owner serialization follow-up;
+it is historical, and final required CI is tracked in PR 837. The 140 nearest
+tests and real-stack run cover the final implementation. Flutter/Go production
+inputs are unchanged; Flutter tests are not installed-client/native acceptance.
 
 ## Real stack and visual observations
 
@@ -58,6 +59,22 @@ in the adjacent JSON; original screenshots remain ignored under `.out/`.
   view shows one peer; subsequent views show none, with the fresh text channel
   retained. After account switch the footer shows the member identity. Labels
   are readable and no relevant clipping or ghost participant was observed.
+
+## Serialization follow-up discovered during acceptance
+
+Pre-follow-up hosted CI 44890836212 failed lifecycle at the retained stage
+`critical-burst-hidden-channel-selected`; the public frame did not retain the
+inner burst assertion. A focused local run of the unchanged original burst
+controller reproduced a real candidate defect: burst50 had two concurrent
+topology GETs when UI and socket scopes overlapped. Two new unit regressions
+failed with two requests instead of one. Live UI reads now share the admitted
+socket owner; a closed socket still cannot block the replacement.
+
+The same original real-stack burst controller now passes series 1/20/50:
+maximum parallel topology/history GETs are one, hidden history reads are zero,
+and old-page edit/delete plus ID-only hint behavior pass. CLI exit 0 includes
+owned cleanup. The full R1 process-restart/account-switch scenario then passed
+again on the final clean immutable implementation, recorded in the JSON.
 
 ## Wider gate and limits
 
