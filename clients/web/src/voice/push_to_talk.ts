@@ -1,5 +1,6 @@
 export interface KeyboardEventLike {
   code: string
+  repeat?: boolean
   preventDefault(): void
   target: { closest?(selector: string): unknown } | null
 }
@@ -29,6 +30,8 @@ export class PushToTalk {
     this.source.addEventListener('visibilitychange', this.release)
   }
 
+  reset(): void { this.release() }
+
   stop(): void {
     this.source.removeEventListener('keydown', this.onKeyDown)
     this.source.removeEventListener('keyup', this.onKeyUp)
@@ -40,7 +43,7 @@ export class PushToTalk {
   private readonly onKeyDown = (event: KeyboardEventLike): void => {
     if (event.code !== this.key || interactiveTarget(event.target)) return
     event.preventDefault()
-    this.setPressed(true)
+    if (!event.repeat) this.setPressed(true)
   }
 
   private readonly onKeyUp = (event: KeyboardEventLike): void => {
