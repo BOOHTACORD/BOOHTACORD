@@ -15,7 +15,7 @@ export function createWorkspaceVoiceJoin(audioSettings:ReturnType<typeof useAudi
       await audioSettings.loadInput(voiceConnection.setInputDevice)
       await audioSettings.loadProcessing(voiceConnection.setAudioProcessing)
       await voiceConnection.join(channelId,transfer,voiceActivation.mode==='PTT'?'listener':joinMode)
-      if(voiceConnection.active&&voiceActivation.mode==='PTT'&&joinMode==='with-microphone') await voiceActivation.setMode('PTT')
+      if(voiceConnection.active&&voiceActivation.mode==='PTT') await voiceActivation.setMode('PTT')
       if(voiceConnection.active) voiceNavigation.confirmVoiceConnected(voiceConnection.active.channelId)
       finish(voiceConnection.active?.channelId===channelId?'completed':'failed')
     } catch(cause){finish('failed');throw cause}
