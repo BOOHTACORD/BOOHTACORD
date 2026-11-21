@@ -12,6 +12,7 @@ export function createProtectedRefreshGate(windowMs = 25) {
     finally { if (entries.get(key) === entry) entries.delete(key) }
   }
   return {
+    current: () => active,
     run(key: string, fetch: () => Promise<void>): Promise<void> {
       if (!active) return Promise.resolve()
       const current = entries.get(key)

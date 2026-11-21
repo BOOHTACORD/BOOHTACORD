@@ -210,7 +210,10 @@
       "clients/flutter/integration_test/issue689_support.dart",
       "clients/web/src/realtime/**",
       "clients/web/src/voice/roster_socket/**",
-      "clients/web/src/maintenance/**"
+      "clients/web/src/maintenance/**",
+      "clients/web/src/channel/topology_realtime.spec.ts",
+      "clients/web/src/workspace/realtime_incarnation.spec.ts",
+      "tools/qa/realtime_recovery/**"
     ],
     "web": [
       "tests/connection_status/playwright.config.ts"
@@ -611,7 +614,8 @@
       "issue272_roster_recovery": "Issue 689 replaced roster SSE with the shared WebSocket. Flutter retries that connection with bounded jitter throughout an outage; the long-outage unit test covers repeated failures. Android, iOS and real Web outage acceptance remain NOT_RUN.",
       "idle_afk_speech_activity": "2026-11-14 AFK follow-up: active local voice speech reports heartbeat activity to prevent AFK transfer while speaking. Connection status/recovery UI, reconnect policy, and WebSocket transport are unchanged; focused connection-status regressions remain required. Web/Flutter unit and browser regressions passed; native runtime for this follow-up is NOT_RUN.",
       "issue787_pr7_web_viewer_aggregation": "PR7 adds Web receipt, selected-publication scope and diagnostic presentation for the existing bounded screen telemetry event. Web focused tests/build and registered Web real-stack lifecycle pass; the broad screen_profile browser suite remains BLOCKED by one pre-existing skipped publisher/viewer test. Flutter sender integration, auth/session/ACL behavior, messaging, AFK activity and connection retry policies are unchanged in this PR; socket end clears stale viewer telemetry. Cross-client paired sender-to-viewer, native runtime, media quality and capacity acceptance remain NOT_RUN. Socket reconnect, connection status and recovery behavior are unchanged.",
-      "issue785_mobile_web_resume": "2026-11-17 issue #785 browser recovery: Web application realtime now rechecks stale heartbeat silence on page restore and supported network changes; LiveKit media state remains separate from application WebSocket state. Flutter/iOS/Android connection behavior is unchanged. Existing Web and native regressions remain required; no physical media acceptance is claimed."
+      "issue785_mobile_web_resume": "2026-11-17 issue #785 browser recovery: Web application realtime now rechecks stale heartbeat silence on page restore and supported network changes; LiveKit media state remains separate from application WebSocket state. Flutter/iOS/Android connection behavior is unchanged. Existing Web and native regressions remain required; no physical media acceptance is claimed.",
+      "issue689_r1_socket_http_recovery": "2026-11-21: Web socket-owned coalescing and topology late-response fencing. Explicit owned runtime: python3 -m tools.qa.realtime_recovery.run (real API/PostgreSQL/LiveKit, delayed unchanged HTTP response, populated-to-empty roster across two socket replacements). Shared Flutter and media behavior unchanged; evidence records scoped runtime separately from the standard feature runner."
     }
   },
   "voice": {
