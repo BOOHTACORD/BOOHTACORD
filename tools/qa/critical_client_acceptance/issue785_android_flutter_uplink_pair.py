@@ -31,6 +31,10 @@ def validate_background_seconds(seconds):
     return seconds
 
 
+def display_is_asleep(power_dump):
+    return bool(re.search(r'(?mi)^\s*mWakefulness=Asleep\s*$', power_dump))
+
+
 def receiver_progressed_during_background(samples, start_unix_ms, end_unix_ms):
     interval = [
         sample for sample in samples
@@ -61,6 +65,26 @@ def adb(device, *args, check=True):
         capture_output=True,
         text=True,
     )
+
+
+def wait_for_display(device, *, asleep, timeout=20):
+    deadline = time.monotonic() + timeout
+    last = ''
+    while time.monotonic() < deadline:
+        last = adb(device, 'shell', 'dumpsys', 'power').stdout
+        if display_is_asleep(last) == asleep:
+            return last
+        time.sleep(.25)
+    expected = 'asleep' if asleep else 'awake'
+    raise TimeoutError(f'Android display did not become {expected}')
+
+
+def wake_display(device):
+    power_dump = adb(device, 'shell', 'dumpsys', 'power', check=False).stdout
+    if display_is_asleep(power_dump):
+        adb(device, 'shell', 'input', 'keyevent', '26', check=False)
+        wait_for_display(device, asleep=False)
+    adb(device, 'shell', 'wm', 'dismiss-keyguard', check=False)
 
 
 def control_json(device):
@@ -114,6 +138,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--device', required=True)
     parser.add_argument('--background-seconds', type=int, default=DEFAULT_BACKGROUND_SECONDS)
+    parser.add_argument('--background-action', choices=('home', 'screen-off'), default='home')
     parser.add_argument('--output', required=True)
     args = parser.parse_args()
     validate_background_seconds(args.background_seconds)
@@ -246,13 +271,13 @@ def main():
                             if receiver_has_foreground_uplink(foreground_receiver):
                                 break
                         if flutter.poll() is not None:
-                            raise RuntimeError(f'Flutter publisher exited before Android Home:\n{tail(flutter_log, stack.password)}')
+                            raise RuntimeError(f'Flutter publisher exited before Android backgrounding:\n{tail(flutter_log, stack.password)}')
                         if receiver.poll() is not None:
-                            raise RuntimeError(f'Paired receiver exited before Android Home:\n{tail(receiver_log, stack.password)}')
+                            raise RuntimeError(f'Paired receiver exited before Android backgrounding:\n{tail(receiver_log, stack.password)}')
                         time.sleep(.5)
                     if not receiver_has_foreground_uplink(foreground_receiver):
                         raise RuntimeError(
-                            'Foreground pair precondition failed: independent receiver saw no inbound audio RTP before Android Home; '
+                            'Foreground pair precondition failed: independent receiver saw no inbound audio RTP before Android backgrounding; '
                             f'latest counters={foreground_receiver!r}'
                         )
                     print(
@@ -266,16 +291,25 @@ def main():
                     active = microphone_foreground_service_active(services)
                     if not active:
                         raise RuntimeError('Mic-enabled Flutter session did not start its microphone foreground service')
-                    adb(device, 'shell', 'input', 'keyevent', '3')
-                    launcher = wait_activity(device, re.compile(r'topResumedActivity=.*(?:nexuslauncher|Launcher)', re.I))
+                    if args.background_action == 'home':
+                        adb(device, 'shell', 'input', 'keyevent', '3')
+                        launcher = wait_activity(device, re.compile(r'topResumedActivity=.*(?:nexuslauncher|Launcher)', re.I))
+                        initial_screen_state = adb(device, 'shell', 'dumpsys', 'power').stdout
+                        if display_is_asleep(initial_screen_state):
+                            raise RuntimeError('Android Home unexpectedly turned the display off')
+                    else:
+                        adb(device, 'shell', 'input', 'keyevent', '26')
+                        initial_screen_state = wait_for_display(device, asleep=True)
+                        launcher = None
                     background_started = time.monotonic()
                     background_started_unix_ms = int(time.time() * 1000)
                     microphone_samples = [{
                         'offset_seconds': 0.0,
                         'microphone_foreground_service_active': active,
+                        'display_asleep': display_is_asleep(initial_screen_state),
                     }]
                     next_sample = 30
-                    print(f'Android Home observed; microphone background target: {args.background_seconds}s', flush=True)
+                    print(f'Android {args.background_action} observed; microphone background target: {args.background_seconds}s', flush=True)
                     while time.monotonic() - background_started < args.background_seconds:
                         if flutter.poll() is not None:
                             raise RuntimeError(f'Flutter integration exited while backgrounded:\n{tail(flutter_log, stack.password)}')
@@ -283,24 +317,34 @@ def main():
                         if elapsed >= next_sample:
                             services = adb(device, 'shell', 'dumpsys', 'activity', 'services', PACKAGE).stdout
                             active = microphone_foreground_service_active(services)
+                            screen_state = adb(device, 'shell', 'dumpsys', 'power').stdout
+                            asleep = display_is_asleep(screen_state)
                             microphone_samples.append({
                                 'offset_seconds': round(elapsed, 3),
                                 'microphone_foreground_service_active': active,
+                                'display_asleep': asleep,
                             })
                             if not active:
-                                raise RuntimeError('Microphone foreground service stopped during Android Home')
+                                raise RuntimeError(f'Microphone foreground service stopped during Android {args.background_action}')
+                            if args.background_action == 'screen-off' and not asleep:
+                                raise RuntimeError('Android display woke during the screen-off background interval')
                             next_sample += 30
                         time.sleep(min(1, max(0.0, args.background_seconds - elapsed)))
                     observed_background = time.monotonic() - background_started
                     background_ended_unix_ms = int(time.time() * 1000)
                     services = adb(device, 'shell', 'dumpsys', 'activity', 'services', PACKAGE).stdout
                     active = microphone_foreground_service_active(services)
+                    final_screen_state = adb(device, 'shell', 'dumpsys', 'power').stdout
+                    final_display_asleep = display_is_asleep(final_screen_state)
                     microphone_samples.append({
                         'offset_seconds': round(observed_background, 3),
                         'microphone_foreground_service_active': active,
+                        'display_asleep': final_display_asleep,
                     })
                     if not active:
-                        raise RuntimeError('Microphone foreground service was not active at the end of Android Home')
+                        raise RuntimeError(f'Microphone foreground service was not active at the end of Android {args.background_action}')
+                    if args.background_action == 'screen-off' and not final_display_asleep:
+                        raise RuntimeError('Android display was awake at the end of the screen-off background interval')
                     set_control(
                         device,
                         'resume',
@@ -309,6 +353,10 @@ def main():
                         backgroundEndedUnixMs=background_ended_unix_ms,
                         microphoneServiceSamples=microphone_samples,
                     )
+                    if args.background_action == 'screen-off':
+                        adb(device, 'shell', 'input', 'keyevent', '26')
+                        wait_for_display(device, asleep=False)
+                        adb(device, 'shell', 'wm', 'dismiss-keyguard', check=False)
                     adb(device, 'shell', 'am', 'start', '-n', f'{PACKAGE}/.MainActivity')
                     wait_activity(device, re.compile(r'topResumedActivity=.*ru\.boohtacord\.app', re.I))
                     result_deadline = time.monotonic() + 120
@@ -381,8 +429,12 @@ def main():
                 'server': 'Owned disposable API/PostgreSQL/LiveKit QA stack',
             },
             'scenario': {
-                'background_action': 'Android Home',
+                'background_action': 'Android Home' if args.background_action == 'home' else 'Android screen off (secure keyguard not asserted)',
                 'home_activity_observed': bool(launcher),
+                'screen_off_observed': args.background_action == 'screen-off' and all(
+                    sample['display_asleep'] for sample in microphone_samples
+                ),
+                'secure_keyguard': 'NOT_VERIFIED',
                 'background_seconds_requested': args.background_seconds,
                 'background_seconds_observed': round(observed_background, 3),
                 'microphone_foreground_service_samples': microphone_samples,
@@ -397,7 +449,7 @@ def main():
                 'RTP counters prove transport delivery, not microphone intelligibility or audible output.',
                 'The emulator microphone input may be silent; no acoustic loopback or independent human listening was used.',
                 'This is a 120-second AOSP emulator run, not physical Android acceptance.',
-                'Screen lock/keyguard, network transitions, airplane mode, OS-forced service stop, iOS, Safari/PWA, release APK, and production smoke remain unverified.',
+                'Secure keyguard, network transitions, airplane mode, OS-forced service stop, iOS, Safari/PWA, release APK, and production smoke remain unverified.',
                 'Issue 785 release gate remains open.',
             ],
         }
@@ -433,6 +485,8 @@ def main():
                 print(f'Receiver log:\n{tail(receiver_log, stack.password)}')
         finally:
             try:
+                if args.background_action == 'screen-off':
+                    wake_display(device)
                 stack.close()
             finally:
                 adb(device, 'shell', 'run-as', PACKAGE, 'rm', '-f', f'cache/{CONTROL}', check=False)

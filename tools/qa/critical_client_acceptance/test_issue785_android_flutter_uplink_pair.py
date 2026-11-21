@@ -2,6 +2,7 @@ import unittest
 
 from tools.qa.critical_client_acceptance.issue785_android_flutter_uplink_pair import (
     MIN_BACKGROUND_SECONDS,
+    display_is_asleep,
     receiver_has_foreground_uplink,
     receiver_progressed_during_background,
     validate_background_seconds,
@@ -16,6 +17,11 @@ class Issue785AndroidFlutterUplinkPairTest(unittest.TestCase):
     def test_rejects_shorter_than_reproduction_window(self):
         with self.assertRaises(ValueError):
             validate_background_seconds(119)
+
+    def test_detects_screen_off_power_state(self):
+        self.assertTrue(display_is_asleep('mWakefulness=Asleep\n'))
+        self.assertFalse(display_is_asleep('mWakefulness=Awake\n'))
+        self.assertFalse(display_is_asleep(''))
 
     def test_requires_independent_receiver_packets_to_advance_in_background(self):
         samples = [

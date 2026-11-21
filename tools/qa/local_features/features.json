@@ -1137,7 +1137,7 @@
           "tools/qa/local_features/test_native.py",
           "tools/qa/local_features/test_selection.py"
         ],
-        "scope": "With a user-started Flutter microphone session, keep the microphone FGS and the original LiveKit publication active while Android Home backgrounds the app. A separate listener measures inbound RTP packets and bytes during a measured 120-second emulator interval. This proves bounded transport continuity only; it does not claim acoustic audibility or physical-device/release acceptance.",
+        "scope": "With a user-started Flutter microphone session, keep the microphone FGS and the original LiveKit publication active through Android Home or a verified screen-off interval. A separate listener measures inbound RTP packets and bytes during a measured 120-second emulator interval. Screen-off does not assert secure keyguard; these checks prove bounded transport continuity only, not acoustic audibility or physical-device/release acceptance.",
         "platforms": {
           "android": {
             "entrypoint": "clients/flutter/packages/boohtacord_voice_foreground/android/src/main/kotlin/ru/boohtacord/voice/start/MicrophoneService.kt",
@@ -1149,7 +1149,7 @@
             ],
             "runtime": "PASS_SCOPED",
             "evidence": "evidence/qa/issue785-android-microphone-uplink-background-2026-11-21.json",
-            "conditions": "2026-11-21 Android 15/API 35 AOSP emulator paired run: independent browser listener received increasing inbound audio RTP during 120.004 seconds in Android Home; microphone FGS was active at five samples; same Room and mic track remained after resume; service stopped after leave. RTP does not establish acoustic audibility. Physical Android/iPhone, lock/audio-route/interruption matrix, production release and smoke remain NOT_RUN; issue gate remains open."
+            "conditions": "2026-11-21 Android 15/API 35 AOSP emulator paired Home run passed for 120.004 seconds. A second paired screen-off run passed for 120.001 seconds: screen asleep at all five samples, microphone FGS active at all five, independent receiver RTP advanced from 18 packets/3,634 bytes to 580 packets/48,172 bytes during the interval; same Room and mic track remained after resume; service stopped after leave. Detailed screen-off record: evidence/qa/issue785-android-microphone-uplink-screen-off-2026-11-21.json. Screen-off does not assert secure keyguard. RTP does not establish acoustic audibility. Physical Android/iPhone, secure keyguard/audio-route/interruption matrix, production release and smoke remain NOT_RUN; issue gate remains open."
           },
           "ios": {
             "entrypoint": "clients/flutter/packages/livekit_client/ios/Classes/LiveKitPlugin.swift",
