@@ -4,6 +4,8 @@ import '../../../core/http/transport.dart';
 import '../../../services/client_telemetry.dart';
 import '../../telemetry/action_scope/action.dart';
 import '../lifecycle/liveness.dart';
+import '../system_activity/capabilities.dart';
+import '../system_activity/windows.dart';
 
 class RealtimeConnectApi {
   RealtimeConnectApi(this.transport);
@@ -15,7 +17,11 @@ class RealtimeConnectApi {
       scheme: httpUri.scheme == 'http' ? 'ws' : 'wss',
       path: '${httpUri.path}/realtime',
       queryParameters: {
-        'capabilities': 'role_permissions_v1,flow_tracing_v1,screen_previews_v1,screen_viewers_v1,message_social_v1,notifications_v1,voice_roster_v2,maintenance_v1',
+        'capabilities': activityCapabilities(
+          'role_permissions_v1,flow_tracing_v1,screen_previews_v1,screen_viewers_v1,message_social_v1,notifications_v1,voice_roster_v2,maintenance_v1',
+          isWindows: Platform.isWindows,
+          initialIdle: _initialSystemIdle(),
+        ),
         'after': ?after,
       },
     );
@@ -35,5 +41,18 @@ class RealtimeConnectApi {
       rethrow;
     }
     return socket;
+  }
+}
+
+bool _initialSystemIdle() {
+  if (!Platform.isWindows) return false;
+  try {
+    final source = WindowsSystemActivity();
+    return initialIdleCapability(
+      locked: source.readLocked(),
+      idle: source.readIdle(),
+    );
+  } catch (_) {
+    return false;
   }
 }

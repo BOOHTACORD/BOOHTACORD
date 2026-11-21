@@ -1,4 +1,5 @@
 import { createSessionRecovery } from './session_recovery'
+import { createRealtimeActivityReporter } from '../system_activity/realtime_reporter'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { parseRealtimeEvent, realtimeTraceURL, realtimeURL, NewRealtimeEnvelopeError, type RealtimeEvent } from '../realtime_client'
@@ -19,14 +20,7 @@ export const useRealtimeStore = defineStore('realtime', () => {
   let delivery: Pick<ReturnType<typeof createRealtimeDelivery>, 'accept' | 'abort' | 'cursor' | 'disconnected' | 'reset'> | null = null
   let pendingConnection: (() => void) | null = null, retryNow: (() => void) | null = null
   let endSocketAttempt = () => {}, cancelSession = () => {}
-  let lastActivityReport = 0
-  function reportActivity(): void {
-    const current = socket
-    const now = Date.now()
-    if (state.value !== 'CONNECTED' || !current?.send || now - lastActivityReport < 10000) return
-    lastActivityReport = now
-    try { current.send(JSON.stringify({ type: 'activity' })) } catch { /* A reconnect will start a fresh activity interval. */ }
-  }
+  const activity = createRealtimeActivityReporter()
   function connect(onEvent: EventHandler, factory?: RealtimeSocketFactory, url?: string, options: RealtimeConnectOptions = {}): void {
     if (active) return
     active = true
@@ -65,9 +59,10 @@ export const useRealtimeStore = defineStore('realtime', () => {
       state.value = 'CONNECTING'
       let current: RealtimeSocket
       try {
-        const target = url ?? realtimeURL()
+        const { url: target, confirmed } = activity.target(url ?? realtimeURL())
         const after = delivery?.cursor()
         current = (factory ?? protocol!.open)(realtimeTraceURL(after ? `${target}${target.includes('?') ? '&' : '?'}after=${encodeURIComponent(after)}` : target, traceparent, tracestate,fields))
+        activity.attach(current, confirmed)
       } catch (cause) {
         attempt.end(); finish(true)
         error.value = cause instanceof Error ? cause.message : 'Realtime-СЃРѕРµРґРёРЅРµРЅРёРµ РЅРµРґРѕСЃС‚СѓРїРЅРѕ.'
@@ -115,5 +110,5 @@ export const useRealtimeStore = defineStore('realtime', () => {
     state.value = 'DISCONNECTED'
     error.value = null
   }
-  return { connect, disconnect, reconnect: () => retryNow?.(), reportActivity, error, state }
+  return { connect, disconnect, reconnect: () => retryNow?.(), reportActivity: () => activity.report(socket, state.value === 'CONNECTED'), reportInactive: () => activity.inactive(socket, state.value === 'CONNECTED'), setConfirmedActivity: activity.setEnabled, error, state }
 })

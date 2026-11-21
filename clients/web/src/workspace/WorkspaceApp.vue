@@ -10,6 +10,8 @@ import ScreenShareSetupDialog from '../voice/ScreenShareSetupDialog.vue'
 import AudioSettings from '../voice/AudioSettings.vue'
 import { useRealtimeStore } from '../realtime/realtime_store'
 import { startVoiceActivityHeartbeat } from '../realtime/voice_activity_heartbeat'
+import { startAppInteraction } from '../realtime/system_activity/app_interaction'
+import { createBrowserSystemActivity } from '../realtime/system_activity/browser'
 import { bindWorkspaceLogout } from './logout_flow'
 import { expireWorkspaceSession } from './session_expiry_media'
 import { useWorkspaceVoiceControls } from './voice_controls'
@@ -31,24 +33,27 @@ const controls = useWorkspaceVoiceControls(props.accountId)
 const { voiceConnection, leaveVoice } = controls
 const realtimeStore = useRealtimeStore()
 const reportActivity = () => realtimeStore.reportActivity()
-let stopVoiceActivityHeartbeat: () => void = () => {}
-const activityEvents = ['pointerdown', 'pointermove', 'keydown', 'touchstart', 'wheel'] as const
+let stopVoiceActivityHeartbeat: () => void = () => {}, stopAppInteraction: () => void = () => {}
+const systemActivity = createBrowserSystemActivity(reportActivity, () => realtimeStore.reportInactive())
+realtimeStore.setConfirmedActivity(() => systemActivity.enabled.value, () => systemActivity.isConfirmedIdle())
+const systemActivityRestored = systemActivity.restore()
 onMounted(() => {
-  activityEvents.forEach((event) => window.addEventListener(event, reportActivity, { passive: true }))
+  stopAppInteraction = startAppInteraction(window, () => { if (systemActivity.allowAppInteraction()) reportActivity() })
   stopVoiceActivityHeartbeat = startVoiceActivityHeartbeat(
     () => voiceConnection.state === 'CONNECTED' && voiceConnection.selfSpeaking && !voiceConnection.microphoneMuted && !voiceConnection.deafened && voiceConnection.active?.microphoneAllowed !== false,
     reportActivity,
   )
 })
 onBeforeUnmount(() => {
-  activityEvents.forEach((event) => window.removeEventListener(event, reportActivity))
+  stopAppInteraction(); systemActivity.stop()
+  realtimeStore.setConfirmedActivity(null)
   stopVoiceActivityHeartbeat()
 })
 const expireSession = () => expireWorkspaceSession(voiceConnection, () => emit('sessionExpired'))
 const { busy: logoutBusy, error: logoutError, signOut } = bindWorkspaceLogout(voiceConnection, leaveVoice, realtimeStore, () => emit('loggedOut'))
 const { activeVoiceChannel, audioSettings, loadAudioDevices, joinVoice, selectAudioDevice, selectedChannel, selectedChannelId, topologyStore, voiceActivation, adminSection, confirmScreenShare, openScreenShareSetup, screenShareSetupOpen, selectedScreenProfile, selectedScreenMode,
   activePanel, directMessageStore, memberHeaderExpandedState, membersOpen, modalDrawer, navOpen, selectedDirectMessage, selectChannel, selectDirectMessage, sidebarSection, toggleMembers, toggleNavigation, voiceStageWide, profileSettings, profileExitConfirmation,
-  voiceRoster, guildVoicePresence, guildPresence, guildMemberCount, permissions, profile, profileError, profileLoading, setProfile, voiceNavigationPresence, requestSupport, requestPanel, requestGuildPanel, requestSelectChannel, requestSelectDirectMessage, remoteNotifications, notificationTap, requestOpenDirectMessage, requestReturnToVoice, requestOpenDirectMessageFromMember, requestWorkspaceScrimClose, refreshTopology } = useWorkspaceComposition(props, controls, realtimeStore, expireSession)
+  voiceRoster, guildVoicePresence, guildPresence, guildMemberCount, permissions, profile, profileError, profileLoading, setProfile, voiceNavigationPresence, requestSupport, requestPanel, requestGuildPanel, requestSelectChannel, requestSelectDirectMessage, remoteNotifications, notificationTap, requestOpenDirectMessage, requestReturnToVoice, requestOpenDirectMessageFromMember, requestWorkspaceScrimClose, refreshTopology } = useWorkspaceComposition(props, controls, realtimeStore, expireSession, systemActivityRestored)
 </script>
 <template>
   <div class="app-frame">
@@ -97,7 +102,7 @@ const { activeVoiceChannel, audioSettings, loadAudioDevices, joinVoice, selectAu
           <template #admin>
             <AdminPanel v-if="props.role === 'ADMINISTRATOR'" v-model:section="adminSection" :account-id="props.accountId" :categories="topologyStore.topology?.categories ?? []" :revision="topologyStore.topology?.revision ?? 0" @topology-changed="refreshTopology" />
           </template>
-          <template #profile><ProfileSettings ref="profileSettings" :profile="profile" :loading="profileLoading" :load-error="profileError" :logout-busy="logoutBusy" :logout-error="logoutError" @saved="setProfile" @logout="signOut" @session-expired="expireSession" /></template>
+          <template #profile><ProfileSettings ref="profileSettings" :profile="profile" :loading="profileLoading" :load-error="profileError" :logout-busy="logoutBusy" :logout-error="logoutError" :system-activity="systemActivity" @saved="setProfile" @logout="signOut" @session-expired="expireSession" /></template>
           <template #audio>
             <AudioSettings :reset-audio-volumes="voiceConnection.resetAudioVolumes" :volume-warning="voiceConnection.voiceVolumeError" :activation-error="voiceActivation.error" :activation-mode="voiceActivation.mode" :touch-ptt-enabled="voiceActivation.touchPttEnabled" :connected="Boolean(voiceConnection.active)" :input-device-id="audioSettings.selectedInput" :input-warning="audioSettings.inputWarning" :input-switching="audioSettings.inputSwitching" :devices="audioSettings.devices" :error="audioSettings.error" :processing="audioSettings.processing"
               :actual-audio-diagnostics="voiceConnection.voiceAudioDiagnostics" :audio-profile-locked="!voiceConnection.canJoin" :processing-diagnostics="voiceConnection.audioProcessingDiagnostics" :microphone-track="voiceConnection.microphoneTrack" :ptt-key="voiceActivation.pttKey" :microphone-shortcut="voiceActivation.microphoneShortcut" :deafen-shortcut="voiceActivation.deafenShortcut" :state="audioSettings.state" @load="loadAudioDevices" @select="selectAudioDevice" @set-activation="voiceActivation.setMode"

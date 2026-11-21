@@ -1,5 +1,9 @@
 import '../../native_bindings.dart';
 import '../../../../features/realtime/lifecycle/voice_activity_heartbeat.dart';
+import '../../../../features/realtime/system_activity/poller.dart';
+import '../../../../features/realtime/system_activity/windows.dart';
+
+import 'dart:io';
 
 import '../lifecycle/context.dart';
 import '../handler_bindings.dart';
@@ -15,6 +19,19 @@ mixin WorkspaceScreenStateInitStateBinding on WorkspaceScreenStateContext {
 extension WorkspaceScreenStateInitStateAction on WorkspaceScreenStateContext {
   void executeWorkspaceScreenStateInitState() {
     workspaceShortcutAccount = widget.state.user?.accountId;
+    if (Platform.isWindows) {
+      try {
+        final source = WindowsSystemActivity();
+        workspaceSystemActivity = SystemActivityPoller(
+          readIdle: source.readIdle,
+          readLocked: source.readLocked,
+          report: widget.state.realtime.reportActivity,
+          reportInactive: widget.state.realtime.reportInactive,
+        )..start();
+      } catch (_) {
+        // Preserve application-scoped activity if the platform API is unavailable.
+      }
+    }
     workspaceVoiceActivityHeartbeat = VoiceActivityHeartbeat(
       isSpeaking: () {
         final voice = widget.state.voice;

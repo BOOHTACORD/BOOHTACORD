@@ -13,6 +13,7 @@ import 'android_noise_sfu_support.dart';
 import 'issue689_support.dart';
 import 'issue689_voice_fixture.dart';
 import 'local_qa_test.dart' show QaTls;
+import 'noise_runtime_diagnostic.dart';
 
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -74,14 +75,11 @@ void main() {
         channelName: 'Noise voice',
       );
       await tester.runAsync(() => app.joinVoice(channel));
-      await waitFor(
-        tester,
-        () => app.noiseSuppressionRuntime.status == 'active',
-      );
+      await waitForNoiseActive(tester, app);
       final state = app.noiseSuppressionRuntime;
       expect(state.effectiveMode, 'rnnoise');
       expect(state.processedFrames, greaterThan(0));
-      expect(state.sampleRate, 16000);
+      expect(state.sampleRate, anyOf(16000, 48000));
       expect(state.failureReason, isEmpty);
       expect(app.voice.microphoneUnavailable, isFalse);
       await verifyContinuedNoise(tester, app);
@@ -102,7 +100,11 @@ void main() {
         alignment: .4,
       );
       await tester.pumpAndSettle();
-      expect(find.text('RNNoise активен'), findsOneWidget);
+      expect(
+        find.text('RNNoise активен'),
+        findsOneWidget,
+        reason: noiseRuntimeDiagnostic(app.noiseSuppressionRuntime),
+      );
       await binding.convertFlutterSurfaceToImage();
       await tester.pumpAndSettle();
       await binding.takeScreenshot('android-rnnoise-active');

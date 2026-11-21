@@ -23,7 +23,7 @@ import { useServerNotifications } from '../../notification/server_preferences/st
 
 type Props = { role: 'MEMBER' | 'ADMINISTRATOR'; accountId: string; readiness?: ActionScope }
 
-export function useWorkspaceComposition(props: Props, controls: ReturnType<typeof useWorkspaceVoiceControls>, realtimeStore: ReturnType<typeof useRealtimeStore>, expireSession: () => void) {
+export function useWorkspaceComposition(props: Props, controls: ReturnType<typeof useWorkspaceVoiceControls>, realtimeStore: ReturnType<typeof useRealtimeStore>, expireSession: () => void, beforeRealtime?: Promise<void>) {
   const { activeVoiceChannel, audioSettings, loadAudioDevices, joinVoice, selectAudioDevice, selectedChannel, selectedChannelId, selectChannel: selectWorkspaceChannel, selectDirectMessage: selectWorkspaceDirectMessage, startScreen, topologyStore, voiceActivation, voiceConnection } = controls
   const adminSection = ref<AdminSection>('members')
   const { confirmScreenShare, openScreenShareSetup, screenShareSetupOpen, selectedScreenProfile, selectedScreenMode } = useScreenShareSetup(() => voiceConnection.screenState, startScreen, props.accountId)
@@ -68,7 +68,7 @@ export function useWorkspaceComposition(props: Props, controls: ReturnType<typeo
   function requestOpenDirectMessageFromMember(userId: string): Promise<void> { return beforeWorkspaceNavigation(() => openDirectMessageFromMember(userId)) }
   function requestWorkspaceScrimClose(): Promise<void> { return beforeWorkspaceNavigation(() => { closeDrawers(); activePanel.value = 'none' }) }
   function refreshTopology(): void { void topologyStore.refresh() }
-  bindWorkspaceReady({ readiness: props.readiness,
+  bindWorkspaceReady({ readiness: props.readiness, beforeStart: beforeRealtime,
     start: () => { permissions.start(props.accountId); voiceRoster.start(); workspaceRealtime.start() },
     refresh: () => Promise.all([topologyStore.refresh(), directMessageStore.refreshNavigation(), refreshProfile()]),
     failed: () => Boolean(topologyStore.error || directMessageStore.error || profileError.value),

@@ -1,11 +1,8 @@
 package connectsession
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"errors"
-	"io"
 	"net/http"
 	"time"
 
@@ -18,61 +15,26 @@ import (
 )
 
 func streamEvents(connection *websocket.Conn, authenticator sessionapi.Authenticator, cookie *http.Cookie, subscription *eventhub.Subscription, hub *eventhub.Hub, newID Identifier, now Clock, observer ConnectionObserver, replayedIDs map[replayKey]struct{}, maintenance *observestate.Subscription, roster RosterStream, maxRosterBytes int) {
-	readContext, stopRead := context.WithCancel(context.Background())
+	activity, inactivity, readClosed, stopRead := startActivityReader(connection, subscription != nil)
 	defer stopRead()
-	connection.SetReadLimit(1024)
-	activity := make(chan struct{}, 1)
-	readClosed := make(chan struct{})
-	go func() {
-		defer close(readClosed)
-		for {
-			typ, data, err := connection.Read(readContext)
-			if err != nil {
-				return
-			}
-			if typ != websocket.MessageText || subscription == nil || len(data) > 128 {
-				continue
-			}
-			var frame struct {
-				Type string `json:"type"`
-			}
-			decoder := json.NewDecoder(bytes.NewReader(data))
-			decoder.DisallowUnknownFields()
-			if decoder.Decode(&frame) == nil && frame.Type == "activity" {
-				var extra any
-				if decoder.Decode(&extra) != io.EOF {
-					continue
-				}
-				select {
-				case activity <- struct{}{}:
-				default:
-				}
-			}
-		}
-	}()
 	heartbeats, stopHeartbeat := heartbeat.Ticks(connection)
 	defer stopHeartbeat()
-	var events <-chan eventhub.Event
-	var overflowed <-chan struct{}
-	var maintenanceEvents <-chan observestate.State
+	events, overflowed := subscriptionChannels(subscription)
+	maintenanceEvents := maintenanceChannel(maintenance)
 	rosterEvents := rosterEventsOrNil(roster)
 	var checks <-chan rosterCheckResult
 	var cancelCheck context.CancelFunc
 	var version uint64
 	defer cancelPendingCheck(&cancelCheck)
 	firstMaintenance := true
-	if maintenance != nil {
-		maintenanceEvents = maintenance.Events()
-	}
-	if subscription != nil {
-		events, overflowed = subscription.Events(), subscription.Overflowed()
-	}
 	for {
 		select {
 		case <-readClosed:
 			return
 		case <-activity:
 			hub.ReportActivity(subscription, time.Now())
+		case <-inactivity:
+			hub.ReportInactive(subscription, time.Now())
 		case <-heartbeats:
 			if !writeHeartbeat(connection, newID, now) {
 				return
@@ -118,13 +80,12 @@ func streamEvents(connection *websocket.Conn, authenticator sessionapi.Authentic
 				continue
 			}
 			if result.version == version {
-				select {
-				case event := <-events:
-					if !writeHubEvent(connection, authenticator, cookie, subscription, hub, observer, replayedIDs, event) {
-						return
-					}
+				consumed, ok := writePendingHubEvent(events, connection, authenticator, cookie, subscription, hub, observer, replayedIDs)
+				if !ok {
+					return
+				}
+				if consumed {
 					version++
-				default:
 				}
 			}
 			if result.version != version {

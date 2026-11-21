@@ -24,6 +24,11 @@
     }
   },
   "$defs": {
+    "ClientActivityFrame": {
+      "description": "Authenticated client activity; inactive requires confirmed_activity_v1 and never carries local timestamps or identifiers. A confirmed client can additionally negotiate initial_idle_v1 only after detecting at least five minutes of inactivity; the server starts any AFK timer from its own clock.",
+      "type": "object", "additionalProperties": false, "required": ["type"],
+      "properties": { "type": { "enum": ["activity", "inactive"] } }
+    },
     "VoiceRosterParticipant": {
       "type": "object", "additionalProperties": false,
       "required": ["account_id", "display_name", "screen_sharing", "microphone_muted"],

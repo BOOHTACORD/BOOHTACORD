@@ -1,10 +1,8 @@
 import type { NoiseSuppressionRuntimeState } from './noise_suppression/types'
-import type { LiveKitCredential } from './admission_client'
 import type { BrowserAudioProcessingSettings } from './audio_processing_diagnostics'
 import { BoundedVoiceReconnectPolicy } from './bounded_voice_reconnect_policy'
 import {
   adaptiveMediaRoomOptions,
-  setMicrophone,
   type AudioProcessingOptions,
   type MicrophonePublishOptions,
   type MicrophoneState,
@@ -14,12 +12,9 @@ import type { RemoteParticipantController } from './remote_participant_controlle
 import { ScreenViewerController } from './screen_viewer_controller'
 import type { ScreenDiagnostics } from './screen_diagnostics'
 import type { VoiceConnectionStats } from './voice_connection_quality'
-import { awaitMediaConnection, mediaConnectionTimeoutMs } from './connection_deadline'
-import { defaultLiveKitRoomFactory } from './livekit_room_factory'
 import type { AudioInputSelection } from './audio_input_selection'
 import type { VoiceAudioDiagnostics } from './audio_diagnostics/model'
 import type { NetworkDiagnostics } from './network_diagnostics/model'
-import { activeAction } from '../telemetry/action_scope/scope'
 import type { LocalVideoTrack } from 'livekit-client'
 import type { ScreenPublisherPort } from './screen_publisher/types'
 import type { ScreenProfile } from './screen_profile/policy'
@@ -91,39 +86,4 @@ export interface JoinedVoiceRoom {
 
 export type VoiceJoinMode = 'with-microphone' | 'listener'
 
-export async function connectLiveKitRoom(
-  credential: LiveKitCredential,
-  makeRoom: VoiceRoomFactory = defaultLiveKitRoomFactory,
-  processing?: AudioProcessingOptions,
-  timeoutMs = mediaConnectionTimeoutMs,
-  joinMode: VoiceJoinMode = 'with-microphone',
-  inputDeviceId?: string,
-): Promise<JoinedVoiceRoom> {
-  const room = await makeRoom()
-  try {
-    await awaitMediaConnection(room.connect(credential.url, credential.token, { autoSubscribe: false }), timeoutMs)
-    if (inputDeviceId !== undefined) await awaitMediaConnection(room.switchActiveDevice('audioinput', inputDeviceId), timeoutMs)
-  } catch (cause) {
-    await room.disconnect()
-    throw cause
-  }
-
-  if (joinMode === 'listener' || credential.microphoneAllowed === false) return { room, microphone: 'MUTED' }
-
-  try {
-    activeAction()?.step('microphone')
-    return { room, microphone: await awaitMediaConnection(setMicrophone(room, true, processing), timeoutMs) }
-  } catch (cause) {
-    await room.disconnect()
-    throw cause
-  }
-}
-
-export async function connectLiveKitRoomWithProcessing(
-  credential: LiveKitCredential,
-  processing?: AudioProcessingOptions,
-  joinMode: VoiceJoinMode = 'with-microphone',
-  inputDeviceId?: string,
-): Promise<JoinedVoiceRoom> {
-  return connectLiveKitRoom(credential, defaultLiveKitRoomFactory, processing, undefined, joinMode, inputDeviceId)
-}
+export { connectLiveKitRoom, connectLiveKitRoomWithProcessing } from './room_admission/connect'

@@ -5,7 +5,7 @@ for(const kind of ['TEXT','DM'])for(const state of ['empty','messages','paginati
  test(`history log ${kind} ${state} keeps legal child roles and keyboard actions`,async({page})=>{
   await page.setViewportSize({width:390,height:844});await page.goto('/')
   await page.evaluate(async({kind,state})=>{
-   const load=(path:string)=>import(path),{createApp,h}=await load('/node_modules/.vite/deps/vue.js'),{createPinia}=await load('/node_modules/.vite/deps/pinia.js')
+   const load=(path:string)=>import(path),{createApp,h}=await load('/tests/browser_runtime/fixture_dependencies.ts'),{createPinia}=await load('/tests/browser_runtime/fixture_dependencies.ts')
    const {default:Component}=await load(kind==='TEXT'?'/src/conversation/TextHistoryList.vue':'/src/direct_message/DirectMessageHistoryList.vue')
    const {useMessageStore}=await load('/src/conversation/message_store.ts'),{useDirectMessageStore}=await load('/src/direct_message/direct_message_store.ts')
    const pinia=createPinia(),store=kind==='TEXT'?useMessageStore(pinia):useDirectMessageStore(pinia)

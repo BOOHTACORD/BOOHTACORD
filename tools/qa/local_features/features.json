@@ -161,6 +161,7 @@
       }
     ],
     "parity_review": {
+      "issue790_wip": "Issue #790 WIP changes shared Web/Flutter realtime and workspace paths for system activity. Feature-specific behavior is preserved; existing regressions remain required. Android/iOS native acceptance and macOS system detection remain NOT_RUN; no full platform parity is claimed.",
       "idle_afk_follow_up": "PR #783 adds idle status to roster; auth/session restore/reset behavior is unchanged. Auth regressions remain required; no new auth-specific runtime claim is made.",
       "issue689_follow_up": "Issue 689 bounds Web and shared Flutter socket opening, session checks and new-event envelopes for guest and authenticated connections. Prior Android heartbeat loopback passed; current-source full authentication real-stack and iOS runtime acceptance remain open.",
       "issue": 676,
@@ -614,6 +615,7 @@
       }
     ],
     "parity_review": {
+      "issue790_wip": "Issue #790 WIP changes shared Web/Flutter realtime and workspace paths for system activity. Feature-specific behavior is preserved; existing regressions remain required. Android/iOS native acceptance and macOS system detection remain NOT_RUN; no full platform parity is claimed.",
       "issue786_deafen_screen_audio": "2026-11-14 issue #786 changes only voice participant deafened status carried with roster state; connection recovery, retry policy and connection banners are unchanged. Web browser and Flutter unit/capture checks pass; Android runtime is blocked before assertions by the Tempo config mount and iOS runtime is BLOCKED without a Simulator.",
       "idle_afk_follow_up": "PR #783 adds authenticated activity events to realtime sessions. Connection recovery and reconnect policy are unchanged; existing status regressions remain required.",
       "issue689_follow_up": "Issue 689 adds heartbeat recovery, strict new-event envelopes, malformed and non-object frame recovery including Web replay reset, security-hint priority and stale permission-request fencing in Web and shared Flutter; Flutter also fences old ready, recovery, text and direct-history continuations. Complete current-source Android and iOS runtime acceptance remain open.",
@@ -650,12 +652,14 @@
       "clients/flutter/integration_test/android_noise_capture_test.dart",
       "clients/flutter/integration_test/android_noise_sfu_test.dart",
       "clients/flutter/integration_test/android_noise_sfu_support.dart",
+      "clients/flutter/integration_test/noise_runtime_diagnostic.dart",
       "clients/flutter/integration_test/issue785_background_microphone_uplink_test.dart",
       "tools/qa/critical_client_acceptance/issue785_android_flutter_uplink_pair.py",
       "tools/qa/critical_client_acceptance/issue785_flutter_uplink_receiver.mjs",
       "tools/qa/critical_client_acceptance/test_issue785_android_flutter_uplink_pair.py",
       "clients/flutter/test/android_noise_monitor_test.dart",
       "clients/flutter/test/android_noise_monitor_errors_test.dart",
+      "clients/flutter/test/features/voice/noise_runtime_diagnostic_test.dart",
       "evidence/noise-suppression/android-16khz-retry-2026-11-16.md",
       "clients/flutter/packages/flutter_webrtc/android/src/androidTest/java/com/cloudwebrtc/webrtc/audio/Rnnoise16kTest.java",
       "clients/flutter/packages/flutter_webrtc/android/src/main/cpp/rnnoise_capture_jni.cc",
@@ -789,6 +793,7 @@
     "flutter": [
       "test/android_noise_monitor_test.dart",
       "test/android_noise_monitor_errors_test.dart",
+      "test/features/voice/noise_runtime_diagnostic_test.dart",
       "test/voice_disconnect/visual_capture_test.dart",
       "test/voice_disconnect_notice_widget_test.dart",
       "test/voice_connection_recovery_visible_test.dart",
@@ -982,6 +987,12 @@
           "clients/flutter/test/screen_preview_receiver_test.dart"
         ],
         "scope": "Flutter retains and loads an authorized server preview hint even before its LiveKit participant/publication event arrives, retries a briefly unreadable frame without advancing its revision, and reads only through the server ACL. Component coverage does not prove paired native/media acceptance."
+      },
+      "web_failed_voice_join_cleanup": {
+        "focused": [
+          "clients/web/src/voice/room_admission/cleanup.spec.ts"
+        ],
+        "scope": "Web preserves the original connection or microphone failure and bounds SDK disconnect cleanup so the exact voice lease is released. This is failure handling, not proof of real network recovery or native media acceptance."
       },
       "flutter_voice_admission": {
         "focused": [
@@ -1382,6 +1393,8 @@
       }
     ],
     "parity_review": {
+      "issue790_bounded_voice_join_cleanup": "Web bounds failed-room disconnect cleanup and preserves the original join failure; a focused lease-release regression covers rejected and stalled teardown. Flutter, Android and iOS behavior is unchanged. Real-stack intermittent failures and physical media acceptance remain open.",
+      "issue790_voice_admission_cleanup": "Web releases a failed post-connect voice admission and preserves any newer session; focused Web unit regression and production build passed. Android emulator paired microphone passed, while the background listener aggregate failed once and passed a separate diagnostic retry; cause remains unconfirmed. iOS, macOS and physical media acceptance remain NOT_RUN.",
       "android_rnnoise_state_abi": "Android JNI previously indexed UNKNOWN=4 into its legacy four-element table and threw before microphone frames. Legacy numeric codes OFF=0/WebRTC=1/RNNoise=2/UNKNOWN=3 are restored; DeepFilter is appended as 4. A real Android API-35 x86_64 JNI instrumentation test failed before with ArrayIndexOutOfBoundsException and passed after for pending, one synthetic frame, reset and recovery. 25 Windows-host native C++ tests passed, including both engine hooks. Web implementation is unchanged. Physical speech, actual SFU/microphone, iOS and macOS device acceptance are NOT_RUN; this is state-ABI proof only.",
       "android_rnnoise_16k": "Android capture converts 16 kHz mono frames to the RNNoise 48 kHz model and back. Android permits bounded retries of transient native status timeouts; sustained timeouts and native failures retain fallback. Android retry and contrast change only Android UI. Web, iOS, macOS and Windows processing remain unchanged; native host regression and Android emulator JNI, loopback and real SFU capture were exercised. Physical-device audio quality and capacity remain NOT_RUN.",
       "issue687_native_auto_internal": "Internal shared Flutter Auto preserves explicit OFF and mute intent and remains hidden from the normal selector. Verified experimental DeepFilter falls back to measured RNNoise v0.2, then WebRTC. Separate marked optimized Windows probes passed six-second physical capture with direct peers and private local LiveKit for both engines. Cold bootstrap uses the total two-second preflight deadline. Product UI, sustained/acoustic/device/reconnect acceptance and Android/iOS runtime remain unverified.",
@@ -1977,6 +1990,7 @@
       }
     ],
     "parity_review": {
+      "issue790_wip": "Issue #790 WIP changes shared Web/Flutter realtime and workspace paths for system activity. Feature-specific behavior is preserved; existing regressions remain required. Android/iOS native acceptance and macOS system detection remain NOT_RUN; no full platform parity is claimed.",
       "issue786_deafen_screen_audio": "2026-11-14 issue #786 updates voice participant status and roster presentation only. Screen capture, preview lifecycle, viewer selection and media controls remain covered by existing regressions; paired physical media acceptance is NOT_RUN and native runtime acceptance is BLOCKED.",
       "issue785_android_background_playback": "2026-11-20 Android issue #785 adds a mediaPlayback foreground service to a user-started voice session. Screen-share capture, preview, viewer selection, and transport are unchanged; their registered tests and platform acceptance remain separate.",
       "issue687_auto_capture": "The shared Flutter voice microphone capture confirms an internal Auto WebRTC fallback only after capture succeeds. Screen-sharing code and Web behavior are unchanged. Android/iOS native runtime, screen-sharing regression and real media acceptance remain NOT_RUN/BLOCKED.",
@@ -2145,6 +2159,7 @@
       }
     ],
     "parity_review": {
+      "issue790_bounded_voice_cleanup": "Web voice admission now bounds failed-room SDK teardown and preserves the original error; screen telemetry behavior is unchanged. Focused voice tests and Web build pass; registered Web and Android regressions are recorded separately, with physical media acceptance still NOT_RUN.",
       "issue": 518,
       "decisions": {
         "web": "implementation_and_regression",
@@ -2166,6 +2181,7 @@
       "clients/flutter/lib/src/screens/workspace_ui/audio*",
       "clients/flutter/lib/src/screens/workspace_ui/personal*",
       "clients/web/src/identity/ProfileSettings.vue",
+      "clients/web/src/identity/profile_tabs/**",
       "clients/web/src/design/design_v2_profile_presentation.css",
       "clients/web/tests/settings_hierarchy/fixture.ts",
       "clients/web/tests/settings_hierarchy/hierarchy.browser.spec.ts",
@@ -2313,6 +2329,7 @@
       }
     ],
     "parity_review": {
+      "issue790_wip": "Issue #790 WIP changes shared Web/Flutter realtime and workspace paths for system activity. Feature-specific behavior is preserved; existing regressions remain required. Android/iOS native acceptance and macOS system detection remain NOT_RUN; no full platform parity is claimed.",
       "issue687_auto_internal": "Web and shared Flutter preserve an internal Auto request and existing defaults; Auto is hidden from normal settings. Native Auto selects pinned RNNoise v0.2 only after asynchronous inference preflight; explicitly enabled verified DeepFilter waits for its worker preflight, then falls back through measured RNNoise to WebRTC. Focused tests pass; actual Auto device/real-stack and Android/iOS runtime acceptance remain BLOCKED or NOT_RUN. Web performance preflight, adaptation and user-facing controls are not complete.",
       "android_rnnoise_retry_16k": "On Android a previously unavailable RNNoise mode remains selectable for retry and its selected menu row uses a readable dark focus color. Other platforms retain their selection guard and styling. Widget tests and Android emulator checks pass; physical-device acceptance remains NOT_RUN.",
       "idle_afk_follow_up": "PR #783 adds the AFK channel and inactivity timeout to Web/Flutter guild settings. The 2026-11-14 follow-up clarifies that active speech resets the timer in both clients; save behavior is unchanged. Focused copy, save/conflict and heartbeat regressions pass; dedicated AFK device routing remains NOT_RUN.",
@@ -3188,6 +3205,7 @@
       }
     ],
     "parity_review": {
+      "issue790_wip": "Issue #790 WIP changes shared Web/Flutter realtime and workspace paths for system activity. Feature-specific behavior is preserved; existing regressions remain required. Android/iOS native acceptance and macOS system detection remain NOT_RUN; no full platform parity is claimed.",
       "issue786_deafen_screen_audio": "2026-11-14 issue #786 passes replicated voice deafen status through shared workspace shell/member rows. Shell navigation, session lifecycle and channel selection are unchanged. Web browser tests and Flutter unit/capture tests pass; Android/iOS runtime and paired media acceptance remain unverified.",
       "issue785_android_background_playback": "2026-11-20 Android issue #785 adds a playback-availability status to the existing voice dock and keeps playback in a user-started session. Workspace navigation, channel selection and shell lifecycle remain unchanged. The emulator result is scoped and does not establish physical release acceptance.",
       "issue667_voice_large_text_review": "Shared Flutter voice participant cards switch to one column at narrow widths with large text. Web source is unchanged and its regression remains required; Android and iOS share the layout, but native runtime, screen reader and physical acceptance for this change remain NOT_RUN. Component tests and a 320 dp capture are recorded in the issue 667 evidence.",
@@ -3574,6 +3592,7 @@
       }
     ],
     "parity_review": {
+      "issue790_wip": "Issue #790 WIP changes shared Web/Flutter realtime and workspace paths for system activity. Feature-specific behavior is preserved; existing regressions remain required. Android/iOS native acceptance and macOS system detection remain NOT_RUN; no full platform parity is claimed.",
       "issue786_deafen_screen_audio": "2026-11-14 issue #786 adds deafened status presentation to shared workspace voice participant rows. Support consent, help flows and DM ACL behavior are unchanged. Web and Flutter regressions pass; Android runtime is blocked before assertions by the Tempo config mount and iOS runtime is BLOCKED without a Simulator.",
       "issue689_follow_up": "Issue 689 changes common Web and Flutter workspace realtime delivery and fences old Flutter topology, member and direct-list responses. Support-specific behavior is retained; existing Web and shared Flutter regression suites and current-source native acceptance remain required.",
       "idle_afk_follow_up": "2026-11-14 PR #783 extends member-presence rendering and voice roster state; support consent and delivery are unchanged. Existing support regressions remain required; no support runtime claim is added.",
@@ -3703,8 +3722,17 @@
       "clients/flutter/lib/src/screens/workspace_ui/voice_dock/**",
       "clients/flutter/lib/src/screens/workspace_ui/workspace_screen/**",
       "clients/flutter/lib/src/services/voice_lease_revocation.dart",
+      "clients/flutter/test/system_activity_poller_test.dart",
+      "clients/flutter/test/realtime_activity_throttle_test.dart",
+      "clients/flutter/test/realtime_activity_capabilities_test.dart",
+      "clients/flutter/test/realtime_inactivity_reporter_test.dart",
+      "clients/flutter/test/realtime_scope/activity_reporting_test.dart",
       "clients/web/src/admin/guild_settings/**",
+      "clients/web/src/identity/ProfileSettings.vue",
+      "clients/web/src/identity/profile_tabs/**",
       "clients/web/tests/control_consistency/behavior.browser.spec.ts",
+      "clients/web/tests/system_activity/**",
+      "clients/web/tests/system_activity_fallback/**",
       "clients/web/src/conversation/ConversationPane.vue",
       "clients/web/src/design/shell.css",
       "clients/web/src/identity/guild_presence*",
@@ -3718,6 +3746,8 @@
       "docs/observability/signal-catalog.json",
       "docs/product-map/generated/**",
       "evidence/idle-afk-2026-11-14.md",
+      "evidence/issue790-system-activity-2026-11-17.md",
+      "tools/verify/realtime_schema/test_activity_input.py",
       "evidence/media/livekit-network-afk-source-2026-11-14.json",
       "product-map/features/voice/core.yaml",
       "tools/ci/toolchains/native-inputs.json",
@@ -3727,38 +3757,68 @@
     ],
     "web": [
       "tests/control_consistency/playwright.config.ts",
-      "tests/member_roster/playwright.config.ts"
+      "tests/member_roster/playwright.config.ts",
+      "tests/system_activity/playwright.config.ts",
+      "tests/system_activity_fallback/fallback.playwright.config.ts"
     ],
     "flutter": [
       "test/guild_presence_state_test.dart",
       "test/admin_guild_settings_test.dart",
       "test/voice_lease_revocation_test.dart",
       "test/realtime_voice_activity_heartbeat_test.dart",
+      "test/system_activity_poller_test.dart",
+      "test/realtime_activity_throttle_test.dart",
+      "test/realtime_activity_capabilities_test.dart",
+      "test/realtime_inactivity_reporter_test.dart",
+      "test/realtime_scope/activity_reporting_test.dart",
       "test/workspace_screen_test.dart"
     ],
     "acceptance": {
       "idle_presence_and_afk_voice": {
         "focused": [
           "backend/internal/realtime/event_hub/idle_presence_test.go",
+          "backend/internal/realtime/event_hub/activity_multidevice_test.go",
+          "backend/internal/realtime/event_hub/activity_reconnect_test.go",
+          "backend/internal/realtime/event_hub/activity_guard_test.go",
+          "backend/internal/realtime/event_hub/activity_unconfirmed_test.go",
+          "backend/internal/realtime/connect_session/activity_reconnect_test.go",
+          "tools/verify/realtime_schema/test_activity_input.py",
           "clients/web/src/identity/guild_presence_idle.spec.ts",
           "clients/web/src/workspace/member_presence.spec.ts",
           "clients/web/tests/member_roster/roster.browser.spec.ts",
           "clients/web/src/realtime/voice_activity_heartbeat.spec.ts",
+          "clients/web/src/realtime/system_activity/controller.spec.ts",
+          "clients/web/src/realtime/system_activity/controller_initial_idle.spec.ts",
+          "clients/web/src/workspace/ready_lifecycle/bind.spec.ts",
+          "clients/web/src/identity/profile_tabs/navigation.spec.ts",
+          "clients/web/src/realtime/system_activity/app_interaction.spec.ts",
+          "clients/web/src/realtime/system_activity/throttle.spec.ts",
+          "clients/web/src/realtime/system_activity/socket.spec.ts",
+          "clients/web/tests/system_activity/detector.browser.spec.ts",
+          "clients/web/tests/system_activity_fallback/fallback.browser.spec.ts",
           "clients/web/tests/control_consistency/behavior.browser.spec.ts",
           "clients/web/src/voice/livekit_gateway.spec.ts",
           "clients/web/src/voice/voice_session.spec.ts",
           "backend/internal/voice/route_inactive_members/service_integration_test.go",
+          "backend/internal/voice/route_inactive_members/activity_recheck_integration_test.go",
+          "backend/internal/voice/route_inactive_members/activity_commit_integration_test.go",
           "backend/internal/voice/notify_lease_revocation/integration_database_test.go",
           "clients/flutter/test/guild_presence_state_test.dart",
           "clients/flutter/test/admin_guild_settings_test.dart",
           "clients/flutter/test/voice_lease_revocation_test.dart",
           "clients/flutter/test/realtime_voice_activity_heartbeat_test.dart",
+          "clients/flutter/test/system_activity_poller_test.dart",
+          "clients/flutter/test/realtime_activity_throttle_test.dart",
+          "clients/flutter/test/realtime_activity_capabilities_test.dart",
+          "clients/flutter/test/realtime_inactivity_reporter_test.dart",
+          "clients/flutter/test/realtime_scope/activity_reporting_test.dart",
           "clients/flutter/test/workspace_screen_test.dart"
         ],
         "scope": "Server-reported activity transitions connected accounts online/idle. Online and idle members share the 'В сети' roster group while idle remains an individual presence status. Workspace input and periodic local-speaker heartbeats keep active speakers online even when the app is unfocused; administrator AFK routing moves inactive voice leases, and AFK credentials prevent microphone publication. Shared authenticated Web real-stack and Android runtime smoke are recorded in evidence/idle-afk-2026-11-14.md; dedicated paired-client idle timing and UI-driven AFK move remain NOT_RUN."
       }
     },
     "parity_review": {
+      "issue790_in_progress": "Issue #790 work in progress adds opt-in Web IdleDetector and Windows system-input sampling. macOS, mobile lifecycle, reconnect semantics, native physical acceptance and paired AFK timing remain incomplete; no release or full parity is claimed.",
       "issue786_deafen_screen_audio": "2026-11-14 issue #786 adds participant deafen state and audio filtering; AFK activity reporting and status transitions are unchanged. Web browser, Flutter unit and component capture regressions pass; Android/iOS paired runtime and physical media verification remain NOT_RUN/BLOCKED.",
       "issue687_auto_rejoin": "Internal Auto confirms its WebRTC fallback after microphone capture; the AFK no-publication guard remains before capture. Focused Auto and AFK regressions are required, while paired native runtime acceptance remains NOT_RUN.",
       "issue": 783,
