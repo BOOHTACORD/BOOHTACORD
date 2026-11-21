@@ -23,9 +23,35 @@ extension R1History on R1Harness {
     await real(() => Future<void>.delayed(const Duration(milliseconds: 500)));
     await wait(() => app.realtime.delivery.cursor != null);
     final previousSocket = app.realtime.socket;
+    final reconnect = api.holdReconnect();
     api.durableCursorSent = false;
     await real(() => previousSocket!.close());
-    await wait(() => fresh && app.realtime.socket != previousSocket);
+    await real(
+      () => reconnect.reached.future.timeout(const Duration(seconds: 20)),
+    );
+    expect(app.realtime.connected, isFalse);
+    await realPeer(
+      () => peerApi.sendMessage(
+        text.id,
+        '68900000-0000-4000-8000-000000000002',
+        'Synthetic native R1 offline',
+      ),
+    );
+    expect(
+      app.conversation.messages.any(
+        (m) => m.body == 'Synthetic native R1 offline',
+      ),
+      isFalse,
+    );
+    reconnect.finish();
+    await wait(
+      () =>
+          fresh &&
+          app.realtime.socket != previousSocket &&
+          app.conversation.messages.any(
+            (m) => m.body == 'Synthetic native R1 offline',
+          ),
+    );
     expect(api.durableCursorSent, isTrue);
     expect(
       app.conversation.messages
@@ -34,6 +60,12 @@ extension R1History on R1Harness {
       1,
     );
     report['ordinary_reconnect_durable_replay'] = true;
+    expect(
+      app.conversation.messages
+          .where((m) => m.body == 'Synthetic native R1 offline')
+          .length,
+      1,
+    );
     final held = api.holdHistory();
     await real(() async {
       app.workspace.selectedChannel = null;

@@ -25,7 +25,7 @@ class NativeR1Api extends ApiClient {
   NativeR1Api._(this.guard) : super(client: guard);
   final GuardedHttpClient guard;
   final sockets = <WebSocket>[], barriers = <HeldRead>[];
-  HeldRead? nextTopology, nextHistory;
+  HeldRead? nextTopology, nextHistory, nextRealtime;
   bool forceResync = false, durableCursorSent = false;
   int topologyReads = 0, pollingRequests = 0;
   int get legacyRequests => guard.legacyRequests + pollingRequests;
@@ -40,6 +40,13 @@ class NativeR1Api extends ApiClient {
     final value = HeldRead();
     barriers.add(value);
     nextHistory = value;
+    return value;
+  }
+
+  HeldRead holdReconnect() {
+    final value = HeldRead();
+    barriers.add(value);
+    nextRealtime = value;
     return value;
   }
 
@@ -68,6 +75,9 @@ class NativeR1Api extends ApiClient {
 
   @override
   Future<WebSocket> openRealtime({String? after, HttpClient? client}) async {
+    final barrier = nextRealtime;
+    nextRealtime = null;
+    if (barrier != null) await barrier.hold();
     if (forceResync) {
       after = const Uuid().v4();
       forceResync = false;
