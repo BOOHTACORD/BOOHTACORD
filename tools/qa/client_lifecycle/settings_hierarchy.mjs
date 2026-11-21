@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import { api, expect, openNavigation } from './request.mjs'
+import { clickFailureStage } from './click_diagnostic.mjs'
 
 // Owned disposable accounts and actual Go API. Never emits credentials or payloads.
 export async function personalSettings(page, input, report) {
@@ -14,7 +15,7 @@ export async function personalSettings(page, input, report) {
   console.log('stage=settings-profile-save-disabled')
   await name.fill('Synthetic discarded name')
   console.log('stage=settings-profile-draft-filled')
-  await cancel.click()
+  try { await cancel.click() } catch (error) { console.log('stage=' + clickFailureStage(error)); throw error }
   console.log('stage=settings-profile-cancel-clicked')
   await expect(name).toHaveValue(original.display_name)
   console.log('stage=settings-profile-value-restored')

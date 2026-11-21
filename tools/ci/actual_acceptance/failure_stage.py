@@ -47,6 +47,8 @@ STAGES = frozenset({
     'settings-profile-open', 'settings-profile-cancelled', 'settings-profile-saved',
     'settings-profile-save-disabled', 'settings-profile-draft-filled', 'settings-profile-cancel-clicked',
     'settings-profile-value-restored',
+    'settings-cancel-pointer-blocked', 'settings-cancel-disabled', 'settings-cancel-ambiguous',
+    'settings-cancel-outside', 'settings-cancel-other',
     'settings-profile-restored', 'settings-security-cancelled', 'settings-notifications-visible',
     'voice-interface-room-ready', 'voice-interface-deafen-tested',
     'voice-interface-share-dialog-tested', 'voice-interface-search-tested',
