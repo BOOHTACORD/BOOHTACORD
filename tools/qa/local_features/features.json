@@ -617,7 +617,8 @@
   "voice": {
     "android_native_targets": [
       "integration_test/android_noise_sfu_test.dart",
-      "integration_test/issue785_background_listener_pair_test.dart"
+      "integration_test/issue785_background_listener_pair_test.dart",
+      "integration_test/issue785_background_microphone_uplink_test.dart"
     ],
     "native_targets": [
       "integration_test/issue689_listener_test.dart",
@@ -628,6 +629,10 @@
       "clients/flutter/integration_test/android_noise_capture_test.dart",
       "clients/flutter/integration_test/android_noise_sfu_test.dart",
       "clients/flutter/integration_test/android_noise_sfu_support.dart",
+      "clients/flutter/integration_test/issue785_background_microphone_uplink_test.dart",
+      "tools/qa/critical_client_acceptance/issue785_android_flutter_uplink_pair.py",
+      "tools/qa/critical_client_acceptance/issue785_flutter_uplink_receiver.mjs",
+      "tools/qa/critical_client_acceptance/test_issue785_android_flutter_uplink_pair.py",
       "clients/flutter/test/android_noise_monitor_test.dart",
       "clients/flutter/test/android_noise_monitor_errors_test.dart",
       "evidence/noise-suppression/android-16khz-retry-2026-11-16.md",
@@ -1112,6 +1117,45 @@
             "tests": [],
             "runtime": "BLOCKED",
             "conditions": "This Android-only amendment does not change iOS. No iPhone is available for the required physical AVAudioSession and paired-media acceptance."
+          }
+        }
+      },
+      "issue785_android_microphone_background_uplink": {
+        "issue": 785,
+        "target": "integration_test/issue785_background_microphone_uplink_test.dart",
+        "focused": [
+          "clients/flutter/test/features/background_microphone/session_test.dart",
+          "clients/flutter/test/features/background_microphone/controller_test.dart",
+          "clients/flutter/test/android_microphone_fgs_contract_test.dart",
+          "clients/flutter/integration_test/issue785_background_microphone_uplink_test.dart",
+          "tools/qa/critical_client_acceptance/issue785_android_flutter_uplink_pair.py",
+          "tools/qa/critical_client_acceptance/issue785_flutter_uplink_receiver.mjs",
+          "tools/qa/critical_client_acceptance/test_issue785_android_flutter_uplink_pair.py",
+          "tools/qa/local_features/android_microphone.py",
+          "tools/qa/local_features/test_android_microphone.py",
+          "tools/qa/local_features/native.py",
+          "tools/qa/local_features/test_native.py",
+          "tools/qa/local_features/test_selection.py"
+        ],
+        "scope": "With a user-started Flutter microphone session, keep the microphone FGS and the original LiveKit publication active while Android Home backgrounds the app. A separate listener measures inbound RTP packets and bytes during a measured 120-second emulator interval. This proves bounded transport continuity only; it does not claim acoustic audibility or physical-device/release acceptance.",
+        "platforms": {
+          "android": {
+            "entrypoint": "clients/flutter/packages/boohtacord_voice_foreground/android/src/main/kotlin/ru/boohtacord/voice/start/MicrophoneService.kt",
+            "tests": [
+              "test/features/background_microphone/session_test.dart",
+              "test/features/background_microphone/controller_test.dart",
+              "test/android_microphone_fgs_contract_test.dart",
+              "integration_test/issue785_background_microphone_uplink_test.dart"
+            ],
+            "runtime": "PASS_SCOPED",
+            "evidence": "evidence/qa/issue785-android-microphone-uplink-background-2026-11-21.json",
+            "conditions": "2026-11-21 Android 15/API 35 AOSP emulator paired run: independent browser listener received increasing inbound audio RTP during 120.004 seconds in Android Home; microphone FGS was active at five samples; same Room and mic track remained after resume; service stopped after leave. RTP does not establish acoustic audibility. Physical Android/iPhone, lock/audio-route/interruption matrix, production release and smoke remain NOT_RUN; issue gate remains open."
+          },
+          "ios": {
+            "entrypoint": "clients/flutter/packages/livekit_client/ios/Classes/LiveKitPlugin.swift",
+            "tests": [],
+            "runtime": "BLOCKED",
+            "conditions": "This Android-only scenario does not exercise iOS. Physical AVAudioSession and paired-media acceptance still requires a supported iPhone."
           }
         }
       }

@@ -3,12 +3,15 @@ from contextlib import contextmanager
 import subprocess
 import threading
 
-TARGET = 'integration_test/android_noise_sfu_test.dart'
+TARGETS = {
+    'integration_test/android_noise_sfu_test.dart',
+    'integration_test/issue785_background_microphone_uplink_test.dart',
+}
 
 
 @contextmanager
 def android_microphone_permission(platform, device, target):
-    if platform != 'android' or target != TARGET:
+    if platform != 'android' or target not in TARGETS:
         yield
         return
     if not device.startswith('emulator-'):

@@ -47,6 +47,7 @@ class NativeTargetTests(unittest.TestCase):
         self.assertIn('required update', native_target('integration_test/update_required_test.dart'))
         self.assertIn('RNNoise', native_target('integration_test/android_noise_sfu_test.dart'))
         self.assertIn('synthetic sender', native_target('integration_test/issue785_background_listener_pair_test.dart'))
+        self.assertIn('independent Web listener', native_target('integration_test/issue785_background_microphone_uplink_test.dart'))
         with self.assertRaises(ValueError): native_target('../unrelated.dart')
 
     def test_issue785_playback_service_detection(self):
@@ -60,6 +61,13 @@ class NativeTargetTests(unittest.TestCase):
         self.assertEqual(validate_issue785_background_seconds(120), 120)
         with self.assertRaises(ValueError): validate_background_seconds(119)
         with self.assertRaises(ValueError): validate_issue785_background_seconds(119)
+
+    def test_issue785_microphone_pair_uses_the_two_minute_window(self):
+        from tools.qa.critical_client_acceptance.issue785_android_flutter_uplink_pair import DEFAULT_BACKGROUND_SECONDS, MIN_BACKGROUND_SECONDS, validate_background_seconds
+        self.assertEqual(DEFAULT_BACKGROUND_SECONDS, 120)
+        self.assertEqual(MIN_BACKGROUND_SECONDS, 120)
+        self.assertEqual(validate_background_seconds(120), 120)
+        with self.assertRaises(ValueError): validate_background_seconds(119)
 
 class GeneratedFlutterArtifactTests(unittest.TestCase):
     def test_removes_only_generated_android_plugin_registrant(self):

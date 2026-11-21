@@ -1,0 +1,120 @@
+{
+  "issue": 785,
+  "scenario": "Android Flutter microphone publisher + independent browser listener through Android Home",
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "source": {
+    "base_commit": "24078b41dba78dc89537603a8cc4ccc4b9898fba",
+    "tested_worktree_changes": true,
+    "sha256_by_path": {
+      "clients/flutter/integration_test/issue785_background_microphone_uplink_test.dart": "8be8db3b8c66af660367e021e71868920bf0d32c5bb49e49eaad2cccd685717f",
+      "tools/qa/critical_client_acceptance/issue785_android_flutter_uplink_pair.py": "6e28900204cac8a756251d1ad6788f951d18ccb8d136030b4d25e1af20124d83",
+      "tools/qa/critical_client_acceptance/issue785_flutter_uplink_receiver.mjs": "3d02892dc6ae701f0b59ac402092b5cfad9eec8693caf43fd053e9f709e8c382",
+      "tools/qa/critical_client_acceptance/test_issue785_android_flutter_uplink_pair.py": "28cc5ce069258ff982f001473fe23068f66bbb83efce2d25b67c9b638d5973a4",
+      "tools/qa/local_features/android_microphone.py": "0ad57b2dc34cf1c858687407486cedb62d1b18096c0133c00529b7914c18baf8",
+      "tools/qa/local_features/native.py": "63d11c7b88e6c5cdb734fc7e5807b3bf0d8928c1974d08c2ac0043728de2a21f",
+      "tools/qa/local_features/test_android_microphone.py": "2ca23cc7c3f9c53574ed34c77393f9047f2ef34579f36d80306eb140cff356b5",
+      "tools/qa/local_features/test_native.py": "427f69264efed9aeb019f470212d8383b5a9658c4ab89c255388b859e72421d4",
+      "tools/qa/local_features/test_selection.py": "b66772dddc9902885a1535a3ec214e2d107d58d26f37d9f66f49716bc2421633"
+    }
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 emulator",
+    "avd": "BOOHTACORD_QA_API35",
+    "device": "emulator-5554",
+    "physical_device": false,
+    "publisher": "Flutter Android microphone foreground service",
+    "receiver": "Playwright Chromium listener-only participant",
+    "server": "Owned disposable API/PostgreSQL/LiveKit QA stack"
+  },
+  "observed": {
+    "background_action": "Android Home",
+    "background_seconds_requested": 120,
+    "background_seconds_observed": 120.004,
+    "home_activity_observed": true,
+    "microphone_foreground_service_samples": [
+      {
+        "offset_seconds": 0.0,
+        "microphone_foreground_service_active": true
+      },
+      {
+        "offset_seconds": 30.159,
+        "microphone_foreground_service_active": true
+      },
+      {
+        "offset_seconds": 60.421,
+        "microphone_foreground_service_active": true
+      },
+      {
+        "offset_seconds": 90.618,
+        "microphone_foreground_service_active": true
+      },
+      {
+        "offset_seconds": 120.004,
+        "microphone_foreground_service_active": true
+      }
+    ],
+    "microphone_service_stopped_after_leave": true,
+    "publisher_foreground_baseline": {
+      "packets_received": 11,
+      "bytes_received": 3153
+    },
+    "receiver_samples_in_background": 60,
+    "receiver_first_in_background": {
+      "observed_at_unix_ms": 1795218610224,
+      "peer_connections": 1,
+      "active_peer_connections": 1,
+      "connected_peer_connections": 1,
+      "inbound_audio_tracks": 1,
+      "inbound_audio_packets": 21,
+      "inbound_audio_bytes": 3945
+    },
+    "receiver_last_in_background": {
+      "observed_at_unix_ms": 1795218728330,
+      "peer_connections": 1,
+      "active_peer_connections": 1,
+      "connected_peer_connections": 1,
+      "inbound_audio_tracks": 1,
+      "inbound_audio_packets": 583,
+      "inbound_audio_bytes": 48484
+    },
+    "publisher_before_background": {
+      "audioPublicationCount": 1,
+      "microphoneTrackEnabled": true,
+      "packetsSent": 13,
+      "bytesSent": 3311
+    },
+    "publisher_after_resume": {
+      "audioPublicationCount": 1,
+      "microphoneTrackEnabled": true,
+      "packetsSent": 609,
+      "bytesSent": 50545
+    },
+    "same_room_after_resume": true,
+    "same_microphone_track_after_resume": true,
+    "voice_phase_after_resume": "connected",
+    "application_socket_connected_after_resume": true,
+    "receiver_validation": "Inbound audio RTP packets and bytes increased during the measured Android Home interval."
+  },
+  "visual_review": {
+    "screenshot": ".out/local-features/issue785-flutter-uplink-2m-2026-11-21-run4/screenshots/issue785-flutter-microphone-after-background.png",
+    "resolution_pixels": [
+      1080,
+      2412
+    ],
+    "observations": "Viewed at source resolution. Connected channel, two participants, microphone controls, and return-to-app state are visible. No text clipping or overlapping controls observed."
+  },
+  "root_cause": "NOT_ISOLATED: this 120-second Android emulator scenario did not reproduce media interruption. Physical-device, route, lock-screen, network, and OS-forced-stop variants remain untested.",
+  "limitations": [
+    "RTP counters establish transport delivery, not intelligibility or speaker audibility; no independent acoustic measurement was made.",
+    "AOSP Android 15 emulator only; not a physical Android device or iPhone.",
+    "No screen lock/keyguard, network transition, airplane mode, permission revoke, battery saver, or OS-forced FGS stop was exercised.",
+    "No production-signed artifact or production smoke was tested.",
+    "Issue 785 release gate remains open."
+  ],
+  "runtime_artifacts": {
+    "result": ".out/local-features/issue785-flutter-uplink-2m-2026-11-21-run4/result.json",
+    "flutter_log": ".out/local-features/issue785-flutter-uplink-2m-2026-11-21-run4/flutter-drive.log",
+    "receiver_log": ".out/local-features/issue785-flutter-uplink-2m-2026-11-21-run4/receiver.log"
+  }
+}
