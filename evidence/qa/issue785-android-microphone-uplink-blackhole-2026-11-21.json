@@ -1,0 +1,107 @@
+{
+  "issue": 785,
+  "scenario": "Android Flutter microphone publisher + independent browser listener through Home and a 30-second endpoint-scoped API/LiveKit blackhole",
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "source": {
+    "base_commit": "47a366538b737c39ddc190f89a455b90e81caa84",
+    "tested_worktree_changes": true,
+    "sha256_by_path": {
+      "tools/qa/critical_client_acceptance/issue785_android_flutter_uplink_pair.py": "adbfe1cdc610d6f8a8bec81da757636588dc8bfdbc0daf752ee9008457ae19aa",
+      "tools/qa/critical_client_acceptance/test_issue785_android_flutter_uplink_pair.py": "3e7bb57bb3ae1f9b181adcb25de6b58f63748b0399473503dcb388cbdfc08337"
+    }
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 emulator",
+    "avd": "BOOHTACORD_QA_API35",
+    "device": "emulator-5554",
+    "physical_device": false,
+    "publisher": "Flutter Android microphone foreground service",
+    "receiver": "Playwright Chromium listener-only participant",
+    "server": "Owned disposable API/PostgreSQL/LiveKit QA stack"
+  },
+  "observed": {
+    "background_action": "Android Home",
+    "background_seconds_requested": 120,
+    "background_seconds_observed": 120.01,
+    "home_activity_observed": true,
+    "microphone_foreground_service_samples": [
+      {"offset_seconds": 0.0, "microphone_foreground_service_active": true},
+      {"offset_seconds": 35.228, "microphone_foreground_service_active": true},
+      {"offset_seconds": 60.595, "microphone_foreground_service_active": true},
+      {"offset_seconds": 90.884, "microphone_foreground_service_active": true},
+      {"offset_seconds": 120.01, "microphone_foreground_service_active": true}
+    ],
+    "network_outage": {
+      "kind": "Endpoint-scoped Android loopback API/LiveKit blackhole",
+      "blocked_endpoints": ["TCP 127.0.0.1:4810,4881", "UDP 127.0.0.1:4882"],
+      "started_at_utc": "2026-11-21T01:19:13.146Z",
+      "ended_at_utc": "2026-11-21T01:19:43.244Z",
+      "duration_seconds": 30.098,
+      "firewall_drop_counters": {
+        "udp_4882": {"packets": 735, "bytes": 101408},
+        "tcp_4810_4881": {"packets": 528, "bytes": 637303}
+      },
+      "microphone_foreground_service_samples": [
+        {"offset_seconds": 0.017, "microphone_foreground_service_active": true},
+        {"offset_seconds": 5.061, "microphone_foreground_service_active": true},
+        {"offset_seconds": 10.099, "microphone_foreground_service_active": true},
+        {"offset_seconds": 15.152, "microphone_foreground_service_active": true},
+        {"offset_seconds": 20.207, "microphone_foreground_service_active": true},
+        {"offset_seconds": 25.266, "microphone_foreground_service_active": true}
+      ],
+      "receiver_before_blackhole": {
+        "inbound_audio_tracks": 1,
+        "inbound_audio_packets": 39,
+        "inbound_audio_bytes": 5067
+      },
+      "receiver_last_during_blackhole": {
+        "inbound_audio_tracks": 0,
+        "inbound_audio_packets": 0,
+        "inbound_audio_bytes": 0
+      },
+      "receiver_after_recovery": {
+        "inbound_audio_tracks": 1,
+        "inbound_audio_packets": 15,
+        "inbound_audio_bytes": 3470
+      },
+      "receiver_rtp_recovery_seconds": 3.331
+    },
+    "publisher_before_background": {
+      "audio_publication_count": 1,
+      "microphone_track_enabled": true,
+      "packets_sent": 13,
+      "bytes_sent": 3311
+    },
+    "publisher_after_resume": {
+      "voice_phase": "connected",
+      "application_socket_connected": true,
+      "microphone_foreground_service_active": true,
+      "same_room_object": true,
+      "same_microphone_track": true,
+      "packets_sent": 423,
+      "bytes_sent": 35804
+    },
+    "microphone_service_stopped_after_leave": true,
+    "media_result": "PASS_SCOPED: receiver RTP stopped during the injected endpoint blackhole and resumed 3.331 seconds after firewall rules were removed; microphone FGS stayed active at all six checks within the outage; transport counters do not prove audible output"
+  },
+  "visual_review": {
+    "screenshot": ".out/local-features/issue785-flutter-blackhole-2m-2026-11-21-final/screenshots/issue785-flutter-microphone-after-background.png",
+    "resolution_pixels": [1080, 2412],
+    "observations": "Inspected at source resolution. Connected voice state, channel, two participants and microphone controls are visible; no clipping or overlap observed."
+  },
+  "root_cause": "NOT_ISOLATED: the controlled Android emulator blackhole recovered within 3.331 seconds and did not reproduce the original delayed background failure. Physical device, route, OS and release variants remain untested.",
+  "limitations": [
+    "The endpoint-scoped blackhole targets AVD loopback API/LiveKit endpoints; it does not simulate Wi-Fi/LTE interface switching on physical hardware.",
+    "RTP counters prove packet transport, not microphone intelligibility or speaker audibility; no acoustic measurement was made.",
+    "Android AOSP emulator only; no physical Android device or iPhone was used.",
+    "Secure keyguard, OS-forced FGS stop, permission revoke, battery saver, iOS, Safari/PWA, production-signed release and production smoke remain NOT_RUN.",
+    "Issue 785 release gate remains open."
+  ],
+  "runtime_artifacts": {
+    "result": ".out/local-features/issue785-flutter-blackhole-2m-2026-11-21-final/result.json",
+    "flutter_log": ".out/local-features/issue785-flutter-blackhole-2m-2026-11-21-final/flutter-drive.log",
+    "receiver_result": ".out/local-features/issue785-flutter-blackhole-2m-2026-11-21-final/receiver-result.json",
+    "receiver_log": ".out/local-features/issue785-flutter-blackhole-2m-2026-11-21-final/receiver.log"
+  }
+}

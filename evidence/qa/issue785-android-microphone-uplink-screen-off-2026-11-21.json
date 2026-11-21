@@ -1,0 +1,86 @@
+{
+  "issue": 785,
+  "scenario": "Android Flutter microphone publisher + independent browser listener with Android display asleep",
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "source": {
+    "base_commit": "87a44108d95a26df6cf0b8dde1f720703793a730",
+    "tested_worktree_changes": true,
+    "sha256_by_path": {
+      "clients/flutter/integration_test/issue785_background_microphone_uplink_test.dart": "8be8db3b8c66af660367e021e71868920bf0d32c5bb49e49eaad2cccd685717f",
+      "tools/qa/critical_client_acceptance/issue785_android_flutter_uplink_pair.py": "6bfd627056e0b5e368a0ad9d2c9efcd13c725e137ad1c22c4e8511465f99116a",
+      "tools/qa/critical_client_acceptance/issue785_flutter_uplink_receiver.mjs": "3d02892dc6ae701f0b59ac402092b5cfad9eec8693caf43fd053e9f709e8c382",
+      "tools/qa/critical_client_acceptance/test_issue785_android_flutter_uplink_pair.py": "f1281ec490d991df061b4dc9776e6b843e54118e8d9667b3004926ff38adee6a",
+      "tools/qa/local_features/features.json": "7b31a5ee057a6dd0b8a1aad4a92485289718a684c34aa77b6e4bc524876d67ae"
+    }
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 emulator",
+    "avd": "BOOHTACORD_QA_API35",
+    "device": "emulator-5554",
+    "physical_device": false,
+    "publisher": "Flutter Android microphone foreground service",
+    "receiver": "Playwright Chromium listener-only participant",
+    "server": "Owned disposable API/PostgreSQL/LiveKit QA stack"
+  },
+  "observed": {
+    "background_action": "Android display screen-off; secure keyguard not asserted",
+    "screen_off_verified": true,
+    "secure_keyguard": "NOT_VERIFIED",
+    "background_seconds_requested": 120,
+    "background_seconds_observed": 120.001,
+    "microphone_foreground_service_samples": [
+      {"offset_seconds": 0.0, "active": true, "display_asleep": true},
+      {"offset_seconds": 30.197, "active": true, "display_asleep": true},
+      {"offset_seconds": 60.485, "active": true, "display_asleep": true},
+      {"offset_seconds": 90.725, "active": true, "display_asleep": true},
+      {"offset_seconds": 120.001, "active": true, "display_asleep": true}
+    ],
+    "independent_receiver_samples_in_interval": 60,
+    "receiver_first_in_interval": {
+      "inbound_audio_tracks": 1,
+      "inbound_audio_packets": 18,
+      "inbound_audio_bytes": 3634
+    },
+    "receiver_last_in_interval": {
+      "inbound_audio_tracks": 1,
+      "inbound_audio_packets": 580,
+      "inbound_audio_bytes": 48172
+    },
+    "publisher_before_background": {
+      "audio_publication_count": 1,
+      "microphone_track_enabled": true,
+      "packets_sent": 13,
+      "bytes_sent": 3311
+    },
+    "publisher_after_resume": {
+      "voice_phase": "connected",
+      "application_socket_connected": true,
+      "microphone_foreground_service_active": true,
+      "same_room_object": true,
+      "same_microphone_track": true,
+      "packets_sent": 609,
+      "bytes_sent": 50545
+    },
+    "microphone_service_stopped_after_leave": true,
+    "media_result": "PASS_SCOPED: independent receiver RTP counters advanced while Android reported the display asleep; acoustic output was not measured"
+  },
+  "visual_review": {
+    "screenshot": ".out/local-features/issue785-flutter-screen-off-2m-2026-11-21/screenshots/issue785-flutter-microphone-after-background.png",
+    "resolution_pixels": [1080, 2412],
+    "observations": "Inspected at source resolution after screen wake and resume. Connected voice state, channel, two participants and mic controls are visible; no clipping or overlap observed."
+  },
+  "root_cause": "NOT_ISOLATED: the 120-second screen-off emulator scenario did not reproduce media interruption. Secure keyguard, physical-device audio route, network and OS-forced-stop variants remain untested.",
+  "limitations": [
+    "RTP counters prove transport delivery, not microphone intelligibility or audible output.",
+    "The AOSP emulator had no secure keyguard configured; display sleep does not substitute for locked-device acceptance.",
+    "This is emulator evidence, not physical Android or iPhone acceptance.",
+    "Network transitions, airplane mode, permission revoke, battery saver, OS-forced FGS stop, iOS, Safari/PWA, production release and production smoke remain NOT_RUN.",
+    "Issue 785 release gate remains open."
+  ],
+  "runtime_artifacts": {
+    "result": ".out/local-features/issue785-flutter-screen-off-2m-2026-11-21/result.json",
+    "flutter_log": ".out/local-features/issue785-flutter-screen-off-2m-2026-11-21/flutter-drive.log",
+    "receiver_log": ".out/local-features/issue785-flutter-screen-off-2m-2026-11-21/receiver.log"
+  }
+}
