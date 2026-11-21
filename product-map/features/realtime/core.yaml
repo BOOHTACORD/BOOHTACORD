@@ -1,6 +1,7 @@
 {
   "components": [
-    {"id": "cmp.web.realtime_store", "source": {"parity_id": "realtime.recovery", "platform": "web"}},
+    {"id": "cmp.web.realtime_store", "source": {"parity_id": "realtime.recovery", "platform": "web"}, "depends_on": ["cmp.web.realtime_connection_lifecycle"]},
+    {"id": "cmp.web.realtime_connection_lifecycle", "paths": ["clients/web/src/realtime/connection_lifecycle/controller.ts", "clients/web/src/realtime/connection_lifecycle/session_recovery.ts"]},
     {"id": "cmp.web.protected_recovery", "paths": ["clients/web/src/workspace/workspace_realtime.ts", "clients/web/src/workspace/protected_refresh/scope.ts", "clients/web/src/workspace/protected_refresh/gate.ts", "clients/web/src/workspace/protected_refresh/stores.ts", "clients/web/src/workspace/protected_refresh/types.ts", "clients/web/src/channel/topology_store.ts"], "depends_on": ["cmp.web.realtime_store"]},
     {"id": "cmp.flutter.realtime", "source": {"parity_id": "realtime.recovery", "platform": "android"}},
     {"id": "cmp.web.realtime_client", "source": {"parity_id": "screen.audience", "platform": "web"}},

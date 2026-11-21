@@ -106,3 +106,7 @@ new clipping; narrow drawer obscures part of main content and recovery panel.
 Full Linux `python -m tools.ci.native.contracts` exits0 after prerequisites and
 inventory repair:1811 Python tests (27 platform/fixture skips), contracts and
 traceability/workflow/dependency/Compose checks PASS. Skips grant no device proof.
+
+The moved two-file owner is explicitly linked through the existing realtime
+component in product-map; regenerated viewer and20 focused catalog/ownership
+tests PASS. Ownership gate rejects no new runtime paths. Product code unchanged.
