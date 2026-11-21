@@ -1,0 +1,712 @@
+{
+  "status": "PASS_SCOPED",
+  "date": "2026-11-21",
+  "base": "8f358a9639c644208e57eb8f7177ce3ed812e35b",
+  "production_native_and_backend": "unchanged from base",
+  "runs": {
+    "windows": {
+      "runtime": {
+        "status": "PASS",
+        "platform": "windows",
+        "source_before": "8f358a9639c644208e57eb8f7177ce3ed812e35b worktree-sha256=0d87793d4ede0fbd05a4a7f286fa462e3fbc6174614eefa6fe91cfaecf9499c3",
+        "physical_android": false,
+        "storage_adapters": "test-only preferences and secure storage",
+        "scenario": {
+          "r2_public_faults": [
+            {
+              "mode": "public-upgrade-error",
+              "seen": 1,
+              "cancelled": false,
+              "elapsed_ms": 0,
+              "response_status": 0,
+              "recovered_ms": 1017
+            },
+            {
+              "mode": "public-upgrade-stall",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 8992,
+              "response_status": 101,
+              "recovered_ms": 10813
+            },
+            {
+              "mode": "public-ready-stall",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 8996,
+              "response_status": 101,
+              "recovered_ms": 10794
+            },
+            {
+              "mode": "public-split-budget",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 8994,
+              "response_status": 101,
+              "recovered_ms": 10793
+            }
+          ],
+          "public_scope_cancel": true,
+          "authenticated_connection_samples": [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "r2_faults": [
+            {
+              "mode": "upgrade-error",
+              "seen": 1,
+              "cancelled": false,
+              "elapsed_ms": 0,
+              "response_status": 0,
+              "recovered_ms": 895,
+              "identity_cookie_media_preserved": true
+            },
+            {
+              "mode": "upgrade-stall",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 13495,
+              "response_status": 101,
+              "recovered_ms": 16156,
+              "identity_cookie_media_preserved": true
+            },
+            {
+              "mode": "ready-stall",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 13495,
+              "response_status": 101,
+              "recovered_ms": 15754,
+              "identity_cookie_media_preserved": true
+            },
+            {
+              "mode": "split-budget",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 13492,
+              "response_status": 101,
+              "recovered_ms": 16111,
+              "identity_cookie_media_preserved": true
+            },
+            {
+              "mode": "session-stall",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 8999,
+              "response_status": 200,
+              "recovered_ms": 10963,
+              "identity_cookie_media_preserved": true
+            },
+            {
+              "mode": "session-late401",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 12001,
+              "response_status": 401,
+              "recovered_ms": 10980,
+              "identity_cookie_media_preserved": true
+            }
+          ],
+          "manual_cancel_logout_late401_server_expiry": true,
+          "status": "PASS"
+        },
+        "owned_resources_removed": true,
+        "source_after": "8f358a9639c644208e57eb8f7177ce3ed812e35b worktree-sha256=0d87793d4ede0fbd05a4a7f286fa462e3fbc6174614eefa6fe91cfaecf9499c3",
+        "source_stability": {
+          "name": "source-stability",
+          "status": "PASS",
+          "before": "8f358a9639c644208e57eb8f7177ce3ed812e35b worktree-sha256=0d87793d4ede0fbd05a4a7f286fa462e3fbc6174614eefa6fe91cfaecf9499c3",
+          "after": "8f358a9639c644208e57eb8f7177ce3ed812e35b worktree-sha256=0d87793d4ede0fbd05a4a7f286fa462e3fbc6174614eefa6fe91cfaecf9499c3"
+        }
+      },
+      "captures": [
+        {
+          "file": "populated.png",
+          "width": 1898,
+          "height": 1024,
+          "sha256": "0b45cc987ec940dc0058e0a5e0af2d24c1548788422a20d413d3883f023c5be0",
+          "review": "original resolution reviewed"
+        },
+        {
+          "file": "public-stalled.png",
+          "width": 1898,
+          "height": 1024,
+          "sha256": "a06bfb4f57cf7bfcaf5a4f57379c6b243c9ef7b74c0d3472f772be06e06fcfdb",
+          "review": "original resolution reviewed"
+        },
+        {
+          "file": "ready-stalled.png",
+          "width": 1898,
+          "height": 1024,
+          "sha256": "2501270192d71ba23a24a61ef22c12a03b0521d5ba14ec13dc069950adb45411",
+          "review": "original resolution reviewed"
+        },
+        {
+          "file": "recovered.png",
+          "width": 1898,
+          "height": 1024,
+          "sha256": "d6761fc9c8242c6c96af75f8c7b057c68ff20b90943ceb88b1c802f75cfb03d1",
+          "review": "original resolution reviewed"
+        },
+        {
+          "file": "session-stalled.png",
+          "width": 1898,
+          "height": 1024,
+          "sha256": "965c59bd3fe05fdb7cef40f24d473c06ffc75e7f827cface5254768492083a67",
+          "review": "original resolution reviewed"
+        }
+      ],
+      "artifact": {
+        "boohtacord_desktop.exe": "d22be5189c92d06701e0d7f644fd568195cd13fffd6409632602785a90d63b79",
+        "data/flutter_assets/kernel_blob.bin": "84c3a69d6a36a5bed1daf623afc66ae71f225ab94655c5d3406199c623f0a410"
+      }
+    },
+    "android": {
+      "runtime": {
+        "status": "PASS",
+        "platform": "android",
+        "source_before": "8f358a9639c644208e57eb8f7177ce3ed812e35b worktree-sha256=592b656c97ac3a677168dcd2f79fb33819331cf86747e3176d91f3822017d59a",
+        "physical_android": false,
+        "storage_adapters": "test-only preferences and secure storage",
+        "scenario": {
+          "r2_public_faults": [
+            {
+              "mode": "public-upgrade-error",
+              "seen": 1,
+              "cancelled": false,
+              "elapsed_ms": 0,
+              "response_status": 0,
+              "recovered_ms": 1371
+            },
+            {
+              "mode": "public-upgrade-stall",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 8969,
+              "response_status": 101,
+              "recovered_ms": 11160
+            },
+            {
+              "mode": "public-ready-stall",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 8978,
+              "response_status": 101,
+              "recovered_ms": 10827
+            },
+            {
+              "mode": "public-split-budget",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 8974,
+              "response_status": 101,
+              "recovered_ms": 10959
+            }
+          ],
+          "public_scope_cancel": true,
+          "authenticated_connection_samples": [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "r2_faults": [
+            {
+              "mode": "upgrade-error",
+              "seen": 1,
+              "cancelled": false,
+              "elapsed_ms": 0,
+              "response_status": 0,
+              "recovered_ms": 1624,
+              "identity_cookie_media_preserved": true
+            },
+            {
+              "mode": "upgrade-stall",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 13466,
+              "response_status": 101,
+              "recovered_ms": 16138,
+              "identity_cookie_media_preserved": true
+            },
+            {
+              "mode": "ready-stall",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 13470,
+              "response_status": 101,
+              "recovered_ms": 16228,
+              "identity_cookie_media_preserved": true
+            },
+            {
+              "mode": "split-budget",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 13473,
+              "response_status": 101,
+              "recovered_ms": 16367,
+              "identity_cookie_media_preserved": true
+            },
+            {
+              "mode": "session-stall",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 8998,
+              "response_status": 200,
+              "recovered_ms": 11234,
+              "identity_cookie_media_preserved": true
+            },
+            {
+              "mode": "session-late401",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 12001,
+              "response_status": 401,
+              "recovered_ms": 11167,
+              "identity_cookie_media_preserved": true
+            }
+          ],
+          "manual_cancel_logout_late401_server_expiry": true,
+          "status": "PASS"
+        },
+        "owned_resources_removed": true,
+        "source_after": "8f358a9639c644208e57eb8f7177ce3ed812e35b worktree-sha256=592b656c97ac3a677168dcd2f79fb33819331cf86747e3176d91f3822017d59a",
+        "source_stability": {
+          "name": "source-stability",
+          "status": "PASS",
+          "before": "8f358a9639c644208e57eb8f7177ce3ed812e35b worktree-sha256=592b656c97ac3a677168dcd2f79fb33819331cf86747e3176d91f3822017d59a",
+          "after": "8f358a9639c644208e57eb8f7177ce3ed812e35b worktree-sha256=592b656c97ac3a677168dcd2f79fb33819331cf86747e3176d91f3822017d59a"
+        }
+      },
+      "captures": [
+        {
+          "file": "populated.png",
+          "width": 1080,
+          "height": 2400,
+          "sha256": "69d8678ac8d6b5e4f908f208076b1b187dc79c0a3514df947bffd547cfe996cd",
+          "review": "original resolution reviewed"
+        },
+        {
+          "file": "public-stalled.png",
+          "width": 1080,
+          "height": 2400,
+          "sha256": "932af978c251f3d4dbd61d7c77a81dcdac134f3b23843eb7a51c8833d518480c",
+          "review": "original resolution reviewed"
+        },
+        {
+          "file": "ready-stalled.png",
+          "width": 1080,
+          "height": 2400,
+          "sha256": "ddb55d6664b2d0d3365b7413f5109d443b1b6c97f87ddbe97af69c79ac693316",
+          "review": "original resolution reviewed"
+        },
+        {
+          "file": "recovered.png",
+          "width": 1080,
+          "height": 2400,
+          "sha256": "7871b19797a037a86e4698e5ec976d2f34f6d339467c854d18743e5666c77ee2",
+          "review": "original resolution reviewed"
+        },
+        {
+          "file": "session-stalled.png",
+          "width": 1080,
+          "height": 2400,
+          "sha256": "bf52c9a2fc64d33d4b8d16a9b868b93b0693b7ef69d97650ed18454e003284d8",
+          "review": "original resolution reviewed"
+        }
+      ],
+      "artifact": {
+        "file": "app-debug.apk",
+        "sha256": "cfd0b0a018c83bfd9172b8e8413d6ab72f43d6a67a6ed7c48d9db031fa7a20c0",
+        "release": false
+      }
+    },
+    "web": {
+      "runtime": {
+        "status": "PASS",
+        "source_before": "8f358a9639c644208e57eb8f7177ce3ed812e35b worktree-sha256=568a794ef48bc294bdb59950c26eb0ad98211807cb4f1b09fe9a4c0791ae75e1",
+        "platform": "web",
+        "scenario": {
+          "status": "PASS",
+          "r2_faults": [
+            {
+              "mode": "upgrade-error",
+              "seen": 1,
+              "cancelled": false,
+              "elapsed_ms": 0,
+              "response_status": 0,
+              "recovered_ms": 1774,
+              "identity_cookie_media_preserved": true
+            },
+            {
+              "mode": "upgrade-stall",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 13485,
+              "response_status": 101,
+              "recovered_ms": 17011,
+              "identity_cookie_media_preserved": true
+            },
+            {
+              "mode": "ready-stall",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 13485,
+              "response_status": 101,
+              "recovered_ms": 17013,
+              "identity_cookie_media_preserved": true
+            },
+            {
+              "mode": "split-budget",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 13476,
+              "response_status": 101,
+              "recovered_ms": 16973,
+              "identity_cookie_media_preserved": true
+            },
+            {
+              "mode": "session-stall",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 9001,
+              "response_status": 200,
+              "recovered_ms": 11200,
+              "identity_cookie_media_preserved": true
+            },
+            {
+              "mode": "session-late401",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 12002,
+              "response_status": 401,
+              "recovered_ms": 11162,
+              "identity_cookie_media_preserved": true
+            }
+          ],
+          "r2_public_faults": [
+            {
+              "mode": "public-upgrade-error",
+              "seen": 1,
+              "cancelled": false,
+              "elapsed_ms": 0,
+              "response_status": 0,
+              "recovered_ms": 1785
+            },
+            {
+              "mode": "public-upgrade-stall",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 2694,
+              "response_status": 101,
+              "recovered_ms": 4948
+            },
+            {
+              "mode": "public-ready-stall",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 2704,
+              "response_status": 101,
+              "recovered_ms": 4831
+            },
+            {
+              "mode": "public-split-budget",
+              "seen": 1,
+              "cancelled": true,
+              "elapsed_ms": 2693,
+              "response_status": 101,
+              "recovered_ms": 4836
+            }
+          ],
+          "manual_cancel_logout_late401_server_expiry": true,
+          "public_scope_unload_cancel": true,
+          "actual_api": true,
+          "actual_sfu": true
+        },
+        "owned_resources_removed": true,
+        "source_after": "8f358a9639c644208e57eb8f7177ce3ed812e35b worktree-sha256=568a794ef48bc294bdb59950c26eb0ad98211807cb4f1b09fe9a4c0791ae75e1",
+        "source_stability": {
+          "name": "source-stability",
+          "status": "PASS",
+          "before": "8f358a9639c644208e57eb8f7177ce3ed812e35b worktree-sha256=568a794ef48bc294bdb59950c26eb0ad98211807cb4f1b09fe9a4c0791ae75e1",
+          "after": "8f358a9639c644208e57eb8f7177ce3ed812e35b worktree-sha256=568a794ef48bc294bdb59950c26eb0ad98211807cb4f1b09fe9a4c0791ae75e1"
+        },
+        "bundle_sha256": "785fc820fbefbc70371c237969d93ebfe10bc8828da6cb036a509a45fc97e9c0"
+      },
+      "captures": [
+        {
+          "file": "populated.png",
+          "width": 1440,
+          "height": 960,
+          "sha256": "3aa24095cc4bff377d7d0fba49154444de375e695c8cff78f135dc67133f8756",
+          "review": "original resolution reviewed"
+        },
+        {
+          "file": "public-stalled.png",
+          "width": 1440,
+          "height": 960,
+          "sha256": "18a3fb3c3cbff430b404c998749a57009e520229543fc2caf139d23d846c8b43",
+          "review": "original resolution reviewed"
+        },
+        {
+          "file": "ready-stall.png",
+          "width": 1440,
+          "height": 960,
+          "sha256": "5003e3df21003066fe1cdb9d7f8c27192aee2c1dfb5a1aa3711fc9ba06196bd0",
+          "review": "original resolution reviewed"
+        },
+        {
+          "file": "recovered.png",
+          "width": 1440,
+          "height": 960,
+          "sha256": "3aa24095cc4bff377d7d0fba49154444de375e695c8cff78f135dc67133f8756",
+          "review": "original resolution reviewed"
+        },
+        {
+          "file": "session-stall.png",
+          "width": 1440,
+          "height": 960,
+          "sha256": "4dffa31cb171ade0003c7b02ae76fec878d153e4bba2a963977df41532c6eb07",
+          "review": "original resolution reviewed"
+        },
+        {
+          "file": "upgrade-stall.png",
+          "width": 1440,
+          "height": 960,
+          "sha256": "b10bfb22db714ac349c640eb7fb1b51af868a82226e901a8fd1be2c8ebdb8d52",
+          "review": "original resolution reviewed"
+        }
+      ]
+    }
+  },
+  "public_production": {
+    "status": "PASS",
+    "scope": "read-only public production, no authenticated/session faults",
+    "origin": "https://v.bootybay.ru",
+    "transport": {
+      "opened": 1,
+      "ready": 1,
+      "snapshots": 1,
+      "upgradeMs": 16,
+      "readyMs": 17,
+      "snapshotMs": 18
+    },
+    "receiptStatus": 200,
+    "receiptSource": {
+      "source_revision": "8f358a9639c644208e57eb8f7177ce3ed812e35b"
+    }
+  },
+  "limits": [
+    "Android API35 x86_64 AVD, not physical Samsung",
+    "native test-only preference/secure-storage adapters",
+    "two native logical sessions in one process",
+    "listener-only LiveKit transport, no audible audio/media quality proof",
+    "no Apple, physical, installed update or long-duration acceptance",
+    "no authenticated production fault injection or manual deployment",
+    "full issue689 and R3-R9 remain open"
+  ],
+  "before_web_ready": {
+    "file": ".out/r2-web-run4/ready-stall.png",
+    "sha256": "95419d03f2f69da326d96fc88ed1531c0a0655b49e02d2342c8ee876e7fb2f75",
+    "source": "8f358a9639c644208e57eb8f7177ce3ed812e35b worktree-sha256=4dbf7f387257f905763f71f01e7f5e322385d7a9278bdac62c2e0a5a13d688ec",
+    "observed": "green connected and hidden retry before server ready"
+  },
+  "production_web_inputs": {
+    "clients/web/src/realtime/realtime_store.ts": "d1e0fe00ca49008834b911bd0124273be6fa3524980ff4e8200abdea904e7d27",
+    "clients/web/src/realtime/connection_lifecycle/controller.ts": "e781dcfd8a38fb103287dea1b3ecffb8c06ce89ccdbdb50fb9727a7560eea84d",
+    "clients/web/src/realtime/connection_lifecycle/session_recovery.ts": "90f9568d68b7f28e86d699d8ae72830ab868a7f9d563280b803ddcfb3affe6c7"
+  },
+  "canonical_report": {
+    "original_status": "FAIL",
+    "source": "8f358a9639c644208e57eb8f7177ce3ed812e35b worktree-sha256=63ab23082dc248b1d8cde04af5ef6180c789974a7b103568825c0f94bf9d7067",
+    "stages": [
+      {
+        "name": "web-unit",
+        "status": "PASS",
+        "skipped_tests": 0
+      },
+      {
+        "name": "web-build",
+        "status": "PASS"
+      },
+      {
+        "name": "web-accessibility",
+        "status": "FAIL",
+        "skipped_tests": null
+      },
+      {
+        "name": "web-auth_session_retention",
+        "status": "PASS",
+        "skipped_tests": 0
+      },
+      {
+        "name": "web-chat_rhythm",
+        "status": "PASS",
+        "skipped_tests": 0
+      },
+      {
+        "name": "web-connection_status",
+        "status": "PASS",
+        "skipped_tests": 0
+      },
+      {
+        "name": "web-control_consistency",
+        "status": "FAIL",
+        "skipped_tests": null
+      },
+      {
+        "name": "web-conversation_action_disclosure",
+        "status": "PASS",
+        "skipped_tests": 0
+      },
+      {
+        "name": "web-dm_starter",
+        "status": "FAIL",
+        "skipped_tests": null
+      },
+      {
+        "name": "web-member_roster",
+        "status": "PASS",
+        "skipped_tests": 0
+      },
+      {
+        "name": "web-mentions_inbox",
+        "status": "PASS",
+        "skipped_tests": 0
+      },
+      {
+        "name": "web-message_social",
+        "status": "PASS",
+        "skipped_tests": 0
+      },
+      {
+        "name": "web-mini_player",
+        "status": "PASS",
+        "skipped_tests": 0
+      },
+      {
+        "name": "web-password_generation",
+        "status": "PASS",
+        "skipped_tests": 0
+      },
+      {
+        "name": "web-password_reset_visibility",
+        "status": "PASS",
+        "skipped_tests": 0
+      },
+      {
+        "name": "web-quick_jump_people",
+        "status": "PASS",
+        "skipped_tests": 0
+      },
+      {
+        "name": "web-screen_profile",
+        "status": "BLOCKED",
+        "skipped_tests": 1
+      },
+      {
+        "name": "web-screen_share_ui",
+        "status": "PASS",
+        "skipped_tests": 0
+      },
+      {
+        "name": "web-search_dates",
+        "status": "PASS",
+        "skipped_tests": 0
+      },
+      {
+        "name": "web-search_presentation",
+        "status": "PASS",
+        "skipped_tests": 0
+      },
+      {
+        "name": "web-search_sessions",
+        "status": "PASS",
+        "skipped_tests": 0
+      },
+      {
+        "name": "web-voice_disconnect_notice",
+        "status": "PASS",
+        "skipped_tests": 0
+      },
+      {
+        "name": "web-voice_interface",
+        "status": "PASS",
+        "skipped_tests": 0
+      },
+      {
+        "name": "web-real-stack-1440",
+        "status": "FAIL"
+      },
+      {
+        "name": "web-real-stack-393",
+        "status": "FAIL"
+      },
+      {
+        "name": "source-stability",
+        "status": "PASS",
+        "before": "8f358a9639c644208e57eb8f7177ce3ed812e35b worktree-sha256=63ab23082dc248b1d8cde04af5ef6180c789974a7b103568825c0f94bf9d7067",
+        "after": "8f358a9639c644208e57eb8f7177ce3ed812e35b worktree-sha256=63ab23082dc248b1d8cde04af5ef6180c789974a7b103568825c0f94bf9d7067"
+      }
+    ],
+    "unit": "2035 tests PASS",
+    "targeted_connection_status": "10 tests PASS; original320x720 capture reviewed",
+    "followups": {
+      "browser_startup_failures": "exact failed accessibility/control/DM cases PASS with trace, no source or expectation changes; original failures retained",
+      "screen_profile": "19 PASS,1 pre-existing skipped case; remains BLOCKED outside R2",
+      "critical_runtime": "occupied488x port prevented initial setup; separate isolated viewport reruns recorded after completion"
+    }
+  },
+  "critical_viewport_reruns": [
+    {
+      "width": 1440,
+      "status": "PASS",
+      "cleanup": true,
+      "persisted_after_restart": true,
+      "elapsed_seconds": 182.04,
+      "capture": {
+        "file": "1440-chat-failed-media-connected.png",
+        "sha256": "7d4ce9bcbb1dbf44d0fbc839bd106ffc2ae92ad9832fa95feb4fa794ef4539d9",
+        "width": 2880,
+        "height": 1800
+      }
+    },
+    {
+      "width": 393,
+      "status": "PASS",
+      "cleanup": true,
+      "persisted_after_restart": true,
+      "elapsed_seconds": 163.81,
+      "capture": {
+        "file": "393-chat-failed-media-connected.png",
+        "sha256": "cce05340ede35b2077fd91a99549a94a9c1d4026f7b2d71833f0535ed1a7fb53",
+        "width": 1179,
+        "height": 2556
+      }
+    }
+  ],
+  "local_native_contracts": {
+    "status": "PASS",
+    "command": "python -m tools.ci.native.contracts",
+    "environment": "owned Linux checkout; pinned declared CI verification dependencies in private venv",
+    "python_tests": 1811,
+    "skipped_tests": 27,
+    "limits": "platform/fixture skips are not runtime/device acceptance"
+  }
+}
