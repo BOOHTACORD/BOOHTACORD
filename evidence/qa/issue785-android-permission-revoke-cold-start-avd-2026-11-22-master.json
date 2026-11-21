@@ -1,0 +1,61 @@
+{
+  "issue": 785,
+  "acceptance_status": "PASS_SCOPED",
+  "gate_closed": false,
+  "observed_at_local": "2026-11-22T01:25:04.939+03:00",
+  "source": {
+    "product_commit": "db952e8a14be71b7916ce968be961e9861ec9f73",
+    "product_source_modified": false,
+    "qa_harness_changes_committed": false
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 AVD",
+    "avd": "BOOHTACORD_QA_API35",
+    "serial": "emulator-5554",
+    "physical_device": false,
+    "publisher": "Flutter Android microphone foreground service",
+    "receiver": "Independent Playwright Chromium listener-only participant",
+    "server": "Disposable local API/PostgreSQL/LiveKit QA stack"
+  },
+  "scenario": {
+    "action": "Android Home",
+    "duration_seconds_observed": 120.0,
+    "permission_revoke_command": "adb shell pm revoke ru.boohtacord.app android.permission.RECORD_AUDIO",
+    "permission_revoke_offset_seconds": 5.02,
+    "flutter_driver_exit_offset_seconds": 5.173,
+    "activity_manager_kill": "11-22 01:23:11.599: Killing 5683:ru.boohtacord.app/u0a210 (adj 50): permissions revoked",
+    "app_process_absent_at_window_end": true,
+    "microphone_foreground_service_samples": [
+      {"offset_seconds": 0.0, "active": true},
+      {"offset_seconds": 30.516, "active": false},
+      {"offset_seconds": 60.837, "active": false},
+      {"offset_seconds": 90.186, "active": false},
+      {"offset_seconds": 120.0, "active": false}
+    ],
+    "receiver_media": {
+      "before_revoke": {"peer_connections": 1, "connected_peer_connections": 1, "inbound_audio_tracks": 1, "inbound_audio_packets": 39, "inbound_audio_bytes": 5372},
+      "last_rtp_increase_after_revoke": {"offset_seconds": 2.002, "inbound_audio_packets": 43, "inbound_audio_bytes": 5689},
+      "after_10_second_settle": {"peer_connections": 1, "connected_peer_connections": 1, "inbound_audio_tracks": 1, "inbound_audio_packets": 43, "inbound_audio_bytes": 5689},
+      "post_settle_samples": 52,
+      "post_settle_counters_never_increased": true,
+      "final": {"connected_peer_connections": 1, "inbound_audio_tracks": 0, "inbound_audio_packets": 0, "inbound_audio_bytes": 0}
+    },
+    "cold_start_after_permission_revoke": {
+      "status": "NOT_RUN",
+      "permission_status": "denied",
+      "app_package_present": false,
+      "reason": "The Flutter integration process exited after Android killed the app; the package was absent from the AVD before the launch probe.",
+      "fallback_ui": "NOT_RUN",
+      "automatic_voice_rejoin": "NOT_RUN",
+      "acoustic_output": "NOT_MEASURED"
+    }
+  },
+  "limitations": [
+    "This scoped result covers microphone permission revocation, Android process termination, FGS inactivity and receiver RTP plateau only.",
+    "The cold-start, fallback UI and automatic voice rejoin checks remain NOT_RUN because the app package was absent from the AVD after the integration process exited.",
+    "RTP counters establish transport cessation, not audible output or speech intelligibility.",
+    "This AVD run is not physical Android/iOS, secure keyguard, audio routing, interruption, release APK or production smoke acceptance.",
+    "Issue 785 release gate remains open."
+  ],
+  "local_runtime_output": ".out/issue785-permission-revoke-cold-start-2026-11-22-run5/result.json"
+}

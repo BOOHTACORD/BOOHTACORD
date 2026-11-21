@@ -24,6 +24,12 @@ void main() {
       const pin = String.fromEnvironment('QA_CERT_SHA256');
       const password = String.fromEnvironment('QA_PASSWORD');
       const channelId = String.fromEnvironment('QA_PAIR_CHANNEL_ID');
+      const expectMicrophoneServiceStop = bool.fromEnvironment(
+        'QA_EXPECT_MICROPHONE_SERVICE_STOP',
+      );
+      const expectMicrophonePermissionRevoke = bool.fromEnvironment(
+        'QA_EXPECT_MICROPHONE_PERMISSION_REVOKE',
+      );
       if (origin != 'https://localhost:4810/api/v1' ||
           pin.length != 64 ||
           password.isEmpty ||
@@ -152,37 +158,89 @@ void main() {
       final serviceSamples =
           (resumeCommand['microphoneServiceSamples'] as List<dynamic>)
               .cast<Map<String, dynamic>>();
+      final serviceStopExpected =
+          resumeCommand['expectedMicrophoneServiceStop'] == true;
+      final permissionRevokeExpected =
+          resumeCommand['expectedMicrophonePermissionRevoke'] == true;
+      expect(serviceStopExpected, expectMicrophoneServiceStop);
+      expect(permissionRevokeExpected, expectMicrophonePermissionRevoke);
+      expect(serviceStopExpected && permissionRevokeExpected, isFalse);
       expect(backgroundSeconds, greaterThanOrEqualTo(120));
       expect(serviceSamples.length, greaterThanOrEqualTo(5));
-      expect(
-        serviceSamples.every(
-          (sample) => sample['microphone_foreground_service_active'] == true,
-        ),
-        isTrue,
-        reason: 'microphone FGS must remain active across Android Home',
-      );
+      if (serviceStopExpected || permissionRevokeExpected) {
+        expect(
+          serviceSamples.first['microphone_foreground_service_active'],
+          isTrue,
+          reason: 'microphone FGS must be active before the injected stop',
+        );
+        expect(
+          serviceSamples.any(
+            (sample) => sample['microphone_foreground_service_active'] == false,
+          ),
+          isTrue,
+          reason: 'runner must observe the injected microphone FGS stop',
+        );
+        await tester.runAsync(() => app.voice.microphoneTail);
+        await waitFor(
+          tester,
+          () =>
+              app.room != null &&
+              app.voicePhase == VoicePhase.listener &&
+              app.realtime.connected &&
+              app.voice.microphoneMuted &&
+              app.voice.microphoneUnavailable &&
+              !app.voice.microphoneForeground.active,
+        );
+        expect(identical(app.room, initialRoom), isTrue);
+        expect(
+          initialRoom.localParticipant!.audioTrackPublications.any(
+            (publication) => publication.track != null && !publication.muted,
+          ),
+          isFalse,
+          reason: 'local microphone publication must be muted after FGS stop',
+        );
+        if (serviceStopExpected) {
+          expect(app.error, contains('Android остановил службу микрофона'));
+        } else {
+          expect(app.error, isNotNull);
+        }
+        await tester.pumpAndSettle();
+        expect(find.text('Микрофон недоступен'), findsOneWidget);
+        expect(find.text('Повторить'), findsOneWidget);
+      } else {
+        expect(
+          serviceSamples.every(
+            (sample) => sample['microphone_foreground_service_active'] == true,
+          ),
+          isTrue,
+          reason: 'microphone FGS must remain active across Android Home',
+        );
+        await waitFor(
+          tester,
+          () =>
+              app.room != null &&
+              app.voicePhase == VoicePhase.connected &&
+              app.realtime.connected &&
+              app.voice.microphoneForeground.active,
+        );
+        expect(identical(app.room, initialRoom), isTrue);
+        expect(
+          initialRoom.localParticipant!.audioTrackPublications.any(
+            (publication) =>
+                publication.track?.mediaStreamTrack.id == initialTrackId &&
+                !publication.muted,
+          ),
+          isTrue,
+          reason: 'the original microphone publication must survive background resume',
+        );
+        final afterResume = (await tester.runAsync(readPublisherStats))!;
+        expect(afterResume['microphoneTrackEnabled'], isTrue);
+        expect(app.voice.microphoneUnavailable, isFalse);
+      }
 
-      await waitFor(
-        tester,
-        () =>
-            app.room != null &&
-            app.voicePhase == VoicePhase.connected &&
-            app.realtime.connected &&
-            app.voice.microphoneForeground.active,
-      );
-      expect(identical(app.room, initialRoom), isTrue);
-      expect(
-        initialRoom.localParticipant!.audioTrackPublications.any(
-          (publication) =>
-              publication.track?.mediaStreamTrack.id == initialTrackId &&
-              !publication.muted,
-        ),
-        isTrue,
-        reason: 'the original microphone publication must survive background resume',
-      );
-      final afterResume = (await tester.runAsync(readPublisherStats))!;
-      expect(afterResume['microphoneTrackEnabled'], isTrue);
-      expect(app.voice.microphoneUnavailable, isFalse);
+      final afterResume = serviceStopExpected || permissionRevokeExpected
+          ? null
+          : (await tester.runAsync(readPublisherStats))!;
 
       await binding.convertFlutterSurfaceToImage();
       await tester.pumpAndSettle();
@@ -196,6 +254,9 @@ void main() {
         'microphoneForegroundServiceActiveAfterResume':
             app.voice.microphoneForeground.active,
         'sameRoomObjectAfterResume': identical(app.room, initialRoom),
+        'microphoneUnavailableAfterResume': app.voice.microphoneUnavailable,
+        'microphoneMutedAfterResume': app.voice.microphoneMuted,
+        'errorAfterResume': app.error == null ? null : 'present',
         'sameMicrophoneTrackAfterResume': initialRoom
             .localParticipant!
             .audioTrackPublications
@@ -209,7 +270,11 @@ void main() {
         'microphoneServiceSamples': serviceSamples,
         'publisherBeforeBackground': before,
         'publisherAfterResume': afterResume,
-        'receiverValidation': 'runner verifies independent inbound RTP counters during the background interval',
+        'receiverValidation': serviceStopExpected
+            ? 'independent receiver samples span explicit FGS stop; RTP advancement is checked across the whole interval'
+            : permissionRevokeExpected
+            ? 'independent receiver samples span RECORD_AUDIO revoke; RTP advancement is checked across the whole interval'
+            : 'runner verifies independent inbound RTP counters during the background interval',
         'screenshot': 'issue785-flutter-microphone-after-background',
       };
       await control.writeAsString(

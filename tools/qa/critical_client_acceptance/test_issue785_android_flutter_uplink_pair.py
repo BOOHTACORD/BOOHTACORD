@@ -1,4 +1,7 @@
+import time
 import unittest
+from types import SimpleNamespace
+from unittest.mock import patch
 
 from tools.qa.critical_client_acceptance.issue785_android_flutter_uplink_pair import (
     MIN_BACKGROUND_SECONDS,
@@ -9,10 +12,192 @@ from tools.qa.critical_client_acceptance.issue785_android_flutter_uplink_pair im
     validate_blackhole_seconds,
     validate_background_seconds,
     parse_blackhole_drop_counters,
+    validate_service_stop_after,
+    microphone_service_expected_active,
+    microphone_permission_status,
+    receiver_media_stop_after_permission_revoke,
+    service_stop_command_succeeded,
+    validate_microphone_permission_revoke_after,
+    permission_revoke_cold_start_result,
+    permission_revoke_cold_start_not_run,
+    latest_permission_revoke_kill,
+    flutter_drive_cleanup_flags,
+    validate_permission_revoke_cold_start,
+    permission_revoke_permission_persisted,
 )
+from tools.qa.local_features.android_microphone import android_microphone_permission
 
 
 class Issue785AndroidFlutterUplinkPairTest(unittest.TestCase):
+    def test_cold_start_probe_requires_permission_revoke_injection(self):
+        self.assertTrue(validate_permission_revoke_cold_start(True, 5))
+        self.assertFalse(validate_permission_revoke_cold_start(False, 0))
+        with self.assertRaises(ValueError):
+            validate_permission_revoke_cold_start(True, 0)
+
+    def test_permission_revoke_cold_start_requires_denied_mic_live_activity_and_stopped_fgs(self):
+        activity = 'topResumedActivity=ActivityRecord{... ru.boohtacord.app/.MainActivity}'
+        result = permission_revoke_cold_start_result('denied', '2053', activity, '')
+        self.assertIsNotNone(result)
+        self.assertTrue(result['app_process_running'])
+        self.assertTrue(result['main_activity_resumed'])
+        self.assertFalse(result['microphone_foreground_service_active'])
+        self.assertIsNone(permission_revoke_cold_start_result('granted', '2053', activity, ''))
+        self.assertIsNone(permission_revoke_cold_start_result('denied', '', activity, ''))
+        self.assertIsNone(permission_revoke_cold_start_result('denied', '2053', '', ''))
+        self.assertIsNone(permission_revoke_cold_start_result(
+            'denied', '2053', activity,
+            'ServiceRecord{abc ru.boohtacord.app/ru.boohtacord.voice.start.MicrophoneService}',
+        ))
+
+    def test_reads_microphone_permission_from_package_manager_dump(self):
+        self.assertEqual(
+            microphone_permission_status(
+                'android.permission.RECORD_AUDIO: granted=false, flags=[USER_SET]'
+            ),
+            'denied',
+        )
+        self.assertEqual(
+            microphone_permission_status(
+                'android.permission.RECORD_AUDIO: granted=true, flags=[USER_SET]'
+            ),
+            'granted',
+        )
+        self.assertIsNone(microphone_permission_status('Unable to find package'))
+
+    def test_cold_start_keeps_record_audio_denied_after_relaunch(self):
+        self.assertTrue(permission_revoke_permission_persisted(
+            'denied', 'android.permission.RECORD_AUDIO: granted=false, flags=[USER_SET]'
+        ))
+        self.assertFalse(permission_revoke_permission_persisted(
+            'denied', 'android.permission.RECORD_AUDIO: granted=true, flags=[USER_SET]'
+        ))
+        self.assertFalse(permission_revoke_permission_persisted('denied', 'Unable to find package'))
+        self.assertFalse(permission_revoke_permission_persisted('granted', 'granted=false'))
+
+    def test_unavailable_cold_start_is_recorded_without_claiming_recovery(self):
+        result = permission_revoke_cold_start_not_run(
+            'denied', 'Application package was absent from the AVD'
+        )
+        self.assertEqual(result['status'], 'NOT_RUN')
+        self.assertFalse(result['app_installed'])
+        self.assertEqual(result['permission_status'], 'denied')
+        self.assertEqual(result['automatic_voice_rejoin'], 'NOT_RUN')
+
+    def test_permission_revoke_kill_log_keeps_only_the_latest_matching_process_kill(self):
+        logcat = '\n'.join([
+            'ActivityManager: Killing 100:ru.boohtacord.app/u0a1 (adj 50): permissions revoked',
+            'AppOps: Operation not started: pkg=ru.boohtacord.app op=RECORD_AUDIO',
+            'ActivityManager: Killing 200:ru.boohtacord.app/u0a2 (adj 50): permissions revoked',
+        ])
+        self.assertEqual(
+            latest_permission_revoke_kill(logcat),
+            'ActivityManager: Killing 200:ru.boohtacord.app/u0a2 (adj 50): permissions revoked',
+        )
+
+    def test_cold_start_probe_keeps_flutter_app_installed_after_driver_exit(self):
+        self.assertEqual(flutter_drive_cleanup_flags(True), ['--keep-app-running'])
+        self.assertEqual(flutter_drive_cleanup_flags(False), [])
+
+    def test_service_stop_probe_requires_a_valid_in_background_offset(self):
+        self.assertEqual(validate_service_stop_after(5, 120), 5)
+        self.assertEqual(validate_service_stop_after(0, 120), 0)
+        with self.assertRaises(ValueError):
+            validate_service_stop_after(-1, 120)
+        with self.assertRaises(ValueError):
+            validate_service_stop_after(120, 120)
+
+    def test_service_stop_probe_expects_service_to_stop_only_after_injected_offset(self):
+        self.assertTrue(microphone_service_expected_active(0, 5))
+        self.assertTrue(microphone_service_expected_active(4.9, 5))
+        self.assertFalse(microphone_service_expected_active(5, 5))
+        self.assertFalse(microphone_service_expected_active(30, 5))
+
+    def test_accepts_run_as_service_stop_confirmation_despite_nonzero_exit(self):
+        self.assertTrue(service_stop_command_succeeded(255, '', 'Service stopped'))
+        self.assertFalse(service_stop_command_succeeded(255, '', 'Error stopping service'))
+        self.assertTrue(service_stop_command_succeeded(0, '', ''))
+
+    def test_permission_revoke_probe_requires_a_valid_in_background_offset(self):
+        self.assertEqual(validate_microphone_permission_revoke_after(5, 120), 5)
+        self.assertEqual(validate_microphone_permission_revoke_after(0, 120), 0)
+        with self.assertRaises(ValueError):
+            validate_microphone_permission_revoke_after(-1, 120)
+        with self.assertRaises(ValueError):
+            validate_microphone_permission_revoke_after(120, 120)
+
+    def test_permission_revoke_probe_grants_once_without_regrant_loop(self):
+        with patch('subprocess.run', return_value=SimpleNamespace(returncode=0)) as run:
+            with android_microphone_permission(
+                'android', 'emulator-5554',
+                'integration_test/issue785_background_microphone_uplink_test.dart',
+                regrant=False,
+            ):
+                for _ in range(50):
+                    if run.called:
+                        break
+                    time.sleep(.01)
+                time.sleep(.02)
+        run.assert_called_once()
+        self.assertEqual(run.call_args.args[0], [
+            'adb', '-s', 'emulator-5554', 'shell', 'pm', 'grant',
+            'ru.boohtacord.app', 'android.permission.RECORD_AUDIO',
+        ])
+        self.assertFalse(run.call_args.kwargs['check'])
+
+    def test_permission_revoke_receiver_counters_stop_after_settle_window(self):
+        samples = [
+            {'observed_at_unix_ms': 1000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 100, 'inbound_audio_bytes': 1000},
+            {'observed_at_unix_ms': 2000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 200, 'inbound_audio_bytes': 2000},
+            {'observed_at_unix_ms': 5000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 240, 'inbound_audio_bytes': 2400},
+            {'observed_at_unix_ms': 13001, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 240, 'inbound_audio_bytes': 2400},
+            {'observed_at_unix_ms': 25000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 240, 'inbound_audio_bytes': 2400},
+        ]
+        result = receiver_media_stop_after_permission_revoke(samples, 3000, 26000)
+        self.assertIsNotNone(result)
+        self.assertEqual(result['receiver_before_revoke']['inbound_audio_packets'], 200)
+        self.assertEqual(result['receiver_at_background_end']['inbound_audio_packets'], 240)
+
+    def test_permission_revoke_accepts_track_removal_and_stats_reset_after_uplink_stops(self):
+        samples = [
+            {'observed_at_unix_ms': 1000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 33, 'inbound_audio_bytes': 4900},
+            {'observed_at_unix_ms': 5000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 40, 'inbound_audio_bytes': 5378},
+            {'observed_at_unix_ms': 13001, 'inbound_audio_tracks': 0, 'inbound_audio_packets': 0, 'inbound_audio_bytes': 0},
+            {'observed_at_unix_ms': 25000, 'inbound_audio_tracks': 0, 'inbound_audio_packets': 0, 'inbound_audio_bytes': 0},
+        ]
+        result = receiver_media_stop_after_permission_revoke(samples, 3000, 26000)
+        self.assertIsNotNone(result)
+        self.assertEqual(result['last_rtp_counter_increase_after_revoke']['observed_at_unix_ms'], 5000)
+        self.assertEqual(result['receiver_at_background_end']['inbound_audio_tracks'], 0)
+
+    def test_permission_revoke_receiver_plateau_must_reach_window_end(self):
+        samples = [
+            {'observed_at_unix_ms': 1000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 100, 'inbound_audio_bytes': 1000},
+            {'observed_at_unix_ms': 2000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 200, 'inbound_audio_bytes': 2000},
+            {'observed_at_unix_ms': 5000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 240, 'inbound_audio_bytes': 2400},
+            {'observed_at_unix_ms': 13001, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 240, 'inbound_audio_bytes': 2400},
+            {'observed_at_unix_ms': 20000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 240, 'inbound_audio_bytes': 2400},
+        ]
+        self.assertIsNone(receiver_media_stop_after_permission_revoke(samples, 3000, 26000))
+
+    def test_permission_revoke_receiver_plateau_must_span_the_settle_duration(self):
+        samples = [
+            {'observed_at_unix_ms': 1000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 100, 'inbound_audio_bytes': 1000},
+            {'observed_at_unix_ms': 2000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 200, 'inbound_audio_bytes': 2000},
+            {'observed_at_unix_ms': 5000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 240, 'inbound_audio_bytes': 2400},
+            {'observed_at_unix_ms': 13001, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 240, 'inbound_audio_bytes': 2400},
+            {'observed_at_unix_ms': 19000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 240, 'inbound_audio_bytes': 2400},
+        ]
+        self.assertIsNone(receiver_media_stop_after_permission_revoke(samples, 3000, 19000))
+
+    def test_permission_revoke_receiver_counters_must_plateau_for_settle_window(self):
+        samples = [
+            {'observed_at_unix_ms': 1000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 100, 'inbound_audio_bytes': 1000},
+            {'observed_at_unix_ms': 13001, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 200, 'inbound_audio_bytes': 2000},
+            {'observed_at_unix_ms': 15000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 201, 'inbound_audio_bytes': 2010},
+        ]
+        self.assertIsNone(receiver_media_stop_after_permission_revoke(samples, 3000, 16000))
+
     def test_reproduction_window_is_two_minutes(self):
         self.assertEqual(MIN_BACKGROUND_SECONDS, 120)
         self.assertEqual(validate_background_seconds(120), 120)

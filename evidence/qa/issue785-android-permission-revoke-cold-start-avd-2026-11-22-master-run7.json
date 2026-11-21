@@ -1,0 +1,131 @@
+{
+  "issue": 785,
+  "acceptance_status": "PASS_SCOPED",
+  "gate_closed": false,
+  "observed_at_utc": "2026-11-21T23:07:27.585Z",
+  "source": {
+    "product_commit": "db952e8a14be71b7916ce968be961e9861ec9f73",
+    "product_source_modified": false,
+    "qa_harness_changes_committed": false
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 emulator",
+    "avd": "BOOHTACORD_QA_API35",
+    "serial": "emulator-5554",
+    "physical_device": false,
+    "publisher": "Flutter Android microphone foreground service",
+    "receiver": "Playwright Chromium listener-only participant",
+    "server": "Owned disposable API/PostgreSQL/LiveKit QA stack"
+  },
+  "scenario": {
+    "observation_window": {
+      "requested_seconds": 120,
+      "observed_seconds": 120.006,
+      "background_action": "Android Home",
+      "foreground_relaunch_probe_performed": true,
+      "returned_to_home_after_relaunch_probe_offset_seconds": 10.536,
+      "uninterrupted_home_interval": false
+    },
+    "permission_revoke_offset_seconds": 5.036,
+    "flutter_driver_exit_offset_seconds": 5.234,
+    "activity_manager_kill": "11-22 02:05:33.915   570   625 I ActivityManager: Killing 1483:ru.boohtacord.app/u0a224 (adj 50): permissions revoked",
+    "microphone_foreground_service_samples": [
+      {
+        "offset_seconds": 0.0,
+        "active": true,
+        "permission_revoked": false
+      },
+      {
+        "offset_seconds": 30.67,
+        "active": false,
+        "permission_revoked": true
+      },
+      {
+        "offset_seconds": 60.032,
+        "active": false,
+        "permission_revoked": true
+      },
+      {
+        "offset_seconds": 90.416,
+        "active": false,
+        "permission_revoked": true
+      },
+      {
+        "offset_seconds": 120.006,
+        "active": false,
+        "permission_revoked": true
+      }
+    ],
+    "receiver_media": {
+      "before_revoke": {
+        "observed_at_unix_ms": 1795302333489,
+        "peer_connections": 1,
+        "active_peer_connections": 1,
+        "connected_peer_connections": 1,
+        "inbound_audio_tracks": 1,
+        "inbound_audio_packets": 39,
+        "inbound_audio_bytes": 5372
+      },
+      "last_rtp_increase_after_revoke": {
+        "observed_at_unix_ms": 1795302335490,
+        "peer_connections": 1,
+        "active_peer_connections": 1,
+        "connected_peer_connections": 1,
+        "inbound_audio_tracks": 1,
+        "inbound_audio_packets": 43,
+        "inbound_audio_bytes": 5689
+      },
+      "after_settle_window": {
+        "observed_at_unix_ms": 1795302345497,
+        "peer_connections": 1,
+        "active_peer_connections": 1,
+        "connected_peer_connections": 1,
+        "inbound_audio_tracks": 1,
+        "inbound_audio_packets": 43,
+        "inbound_audio_bytes": 5689
+      },
+      "plateau_samples": 52,
+      "settle_seconds_after_revoke": 10,
+      "plateau_observed_seconds": 102.088,
+      "final_sample_lag_seconds": 1.779,
+      "at_observation_end": {
+        "observed_at_unix_ms": 1795302447585,
+        "peer_connections": 1,
+        "active_peer_connections": 1,
+        "connected_peer_connections": 1,
+        "inbound_audio_tracks": 0,
+        "inbound_audio_packets": 0,
+        "inbound_audio_bytes": 0
+      }
+    },
+    "cold_start_after_permission_revoke": {
+      "status": "PASS_SCOPED",
+      "app_package_present": true,
+      "app_process_running": true,
+      "main_activity_resumed": true,
+      "activity_component": "ru.boohtacord.app/.MainActivity",
+      "permission_status_before_launch": "denied",
+      "permission_status_after_relaunch": "denied",
+      "microphone_foreground_service_active": false,
+      "returned_to_home_after_relaunch_probe_offset_seconds": 10.536,
+      "screenshot_sha256": "92cd54c0bf4037dadb2389063960134a5c469a81ae6ae06efab296b05e605d3c",
+      "screenshot_resolution_px": [
+        1080,
+        2400
+      ],
+      "screenshot_visual_observation": "The app remained on the BOOHTACORD splash screen; fallback/retry UI was not visible.",
+      "automatic_voice_rejoin": "NOT_RUN",
+      "acoustic_output": "NOT_MEASURED"
+    }
+  },
+  "limitations": [
+    "Scoped to Android 15/API 35 AOSP AVD; no physical-device result.",
+    "The 120.006-second observer window included a brief foreground relaunch probe and return to Home at about 10.536 seconds; it was not an uninterrupted Home interval.",
+    "Cold launch returned MainActivity with RECORD_AUDIO still denied and microphone FGS inactive, but the screenshot remained at splash; fallback/retry UI and successful in-app recovery are not established.",
+    "Automatic voice rejoin and audible output were not tested.",
+    "RTP counters establish transport cessation, not audibility or speech intelligibility.",
+    "Issue 785 release gate remains open."
+  ],
+  "local_runtime_output": ".out/issue785-permission-revoke-cold-start-2026-11-22-run7/result.json",
+  "screenshot": ".out/issue785-permission-revoke-cold-start-2026-11-22-run7/after-permission-revoke-cold-start.png"
+}
