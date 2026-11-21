@@ -15,7 +15,7 @@ export const useTopologyStore = defineStore('channel-topology', () => {
   const ui = () => true
   let admission = ui, epoch = 0
 
-  async function drain(owner: number, current: () => boolean): Promise<void> {
+  async function drain(owner: number): Promise<void> {
     loading.value = true
     try {
       do {
@@ -24,12 +24,12 @@ export const useTopologyStore = defineStore('channel-topology', () => {
         const request = nextRequest
         try {
           const next = await loadTopology(request)
-          if (owner !== epoch || !current()) return
+          if (owner !== epoch || !admission()) return
           topology.value = next
         } catch (cause) {
-          if (owner === epoch && current()) error.value = requestFailureMessage(cause, 'Не удалось получить каналы.')
+          if (owner === epoch && admission()) error.value = requestFailureMessage(cause, 'Не удалось получить каналы.')
         }
-      } while (pending && owner === epoch && current())
+      } while (pending && owner === epoch && admission())
     } finally {
       if (owner === epoch) { loading.value = false; inFlight = null }
     }
@@ -38,13 +38,15 @@ export const useTopologyStore = defineStore('channel-topology', () => {
   function refreshOwned(request: TopologyRequest | undefined, current: () => boolean): Promise<void> {
     if (!current()) return Promise.resolve()
     nextRequest = request
-    if (inFlight && admission === current) {
+    if (inFlight && admission()) {
       // A hint received during a GET needs one fresh tail read, shared by all callers.
       pending = true
+      // Bind UI work to the live socket; ordinary reads cannot remove that fence.
+      if (current !== ui) admission = current
       return inFlight
     }
     admission = current
-    inFlight = drain(++epoch, current)
+    inFlight = drain(++epoch)
     return inFlight
   }
 

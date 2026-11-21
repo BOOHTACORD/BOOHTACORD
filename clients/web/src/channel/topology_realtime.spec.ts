@@ -39,3 +39,34 @@ it('rejects a late topology response immediately at socket end without requiring
   expect(store.error).toBeNull()
   expect(store.loading).toBe(false)
 })
+
+it('serializes ordinary UI refreshes with a live socket owner', async () => {
+  setActivePinia(createPinia())
+  let finish!: (value: { revision: number; categories: [] }) => void
+  vi.mocked(loadTopology).mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+    .mockResolvedValueOnce({ revision: 2, categories: [] })
+  const store = useTopologyStore(), current = () => true
+  const socket = store.refreshRealtime(current)
+  const ui = store.refresh()
+  expect(loadTopology).toHaveBeenCalledTimes(1)
+  finish({ revision: 1, categories: [] })
+  await Promise.all([socket, ui])
+  expect(loadTopology).toHaveBeenCalledTimes(2)
+  expect(store.topology?.revision).toBe(2)
+})
+
+it('binds an existing UI read to socket admission without a parallel request', async () => {
+  setActivePinia(createPinia())
+  let finish!: (value: { revision: number; categories: [] }) => void
+  vi.mocked(loadTopology).mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+  const store = useTopologyStore()
+  const ui = store.refresh()
+  let admitted = true
+  const socket = store.refreshRealtime(() => admitted)
+  expect(loadTopology).toHaveBeenCalledTimes(1)
+  admitted = false
+  finish({ revision: 1, categories: [] })
+  await Promise.all([ui, socket])
+  expect(loadTopology).toHaveBeenCalledTimes(1)
+  expect(store.topology).toBeNull()
+})
