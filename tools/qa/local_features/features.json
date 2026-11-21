@@ -753,6 +753,7 @@
       "clients/flutter/packages/boohtacord_voice_foreground/**",
       "tools/qa/critical_client_acceptance/issue785_android_flutter_background_pair.py",
       "docs/adr/ADR-006-android-client.md",
+      "evidence/qa/issue785-android-microphone-uplink-blackhole-2026-11-21.json",
       "evidence/qa/issue785-android-background-playback-2026-11-20.json",
       "tools/qa/local_features/native.py",
       "tools/qa/local_features/test_native.py",
@@ -1137,7 +1138,7 @@
           "tools/qa/local_features/test_native.py",
           "tools/qa/local_features/test_selection.py"
         ],
-        "scope": "With a user-started Flutter microphone session, keep the microphone FGS and the original LiveKit publication active through Android Home or a verified screen-off interval. A separate listener measures inbound RTP packets and bytes during a measured 120-second emulator interval. Screen-off does not assert secure keyguard; these checks prove bounded transport continuity only, not acoustic audibility or physical-device/release acceptance.",
+        "scope": "With a user-started Flutter microphone session, keep the microphone FGS and original LiveKit publication active through Android Home or a verified screen-off interval. A separate listener measures inbound RTP during a 120-second emulator interval. Optional --blackhole-seconds injects a root-AVD-only endpoint-scoped loopback API/LiveKit outage and checks packet pause and recovery within 15 seconds. Screen-off does not assert secure keyguard; RTP is transport evidence, not acoustic audibility or physical-device/release acceptance.",
         "platforms": {
           "android": {
             "entrypoint": "clients/flutter/packages/boohtacord_voice_foreground/android/src/main/kotlin/ru/boohtacord/voice/start/MicrophoneService.kt",
@@ -1148,8 +1149,8 @@
               "integration_test/issue785_background_microphone_uplink_test.dart"
             ],
             "runtime": "PASS_SCOPED",
-            "evidence": "evidence/qa/issue785-android-microphone-uplink-background-2026-11-21.json",
-            "conditions": "2026-11-21 Android 15/API 35 AOSP emulator paired Home run passed for 120.004 seconds. A second paired screen-off run passed for 120.001 seconds: screen asleep at all five samples, microphone FGS active at all five, independent receiver RTP advanced from 18 packets/3,634 bytes to 580 packets/48,172 bytes during the interval; same Room and mic track remained after resume; service stopped after leave. Detailed screen-off record: evidence/qa/issue785-android-microphone-uplink-screen-off-2026-11-21.json. Screen-off does not assert secure keyguard. RTP does not establish acoustic audibility. Physical Android/iPhone, secure keyguard/audio-route/interruption matrix, production release and smoke remain NOT_RUN; issue gate remains open."
+            "evidence": "evidence/qa/issue785-android-microphone-uplink-blackhole-2026-11-21.json",
+            "conditions": "2026-11-21 Android 15/API 35 AOSP emulator paired Home run with a 30.098-second endpoint-scoped loopback blackhole passed inside a 120.010-second interval. Firewall counted 735 UDP media and 528 TCP signaling/API drops; receiver RTP paused and resumed 3.331 seconds after rules were removed. Microphone FGS stayed active at all six five-second checks during the outage and all five background samples; the same Room and mic track remained after app resume, and leave stopped the service. Blackhole evidence is loopback-only and does not represent physical Wi-Fi/LTE switching. Home-only evidence: evidence/qa/issue785-android-microphone-uplink-background-2026-11-21.json. Screen-off evidence: evidence/qa/issue785-android-microphone-uplink-screen-off-2026-11-21.json. No acoustic output was measured. Physical Android/iPhone, secure keyguard/audio-route/interruption matrix, production release and smoke remain NOT_RUN; issue gate remains open."
           },
           "ios": {
             "entrypoint": "clients/flutter/packages/livekit_client/ios/Classes/LiveKitPlugin.swift",

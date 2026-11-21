@@ -23,12 +23,26 @@ CONTROL = 'issue785_flutter_uplink_control.json'
 ORIGIN = 'https://localhost:4810/api/v1'
 MIN_BACKGROUND_SECONDS = 120
 DEFAULT_BACKGROUND_SECONDS = 120
+BLACKHOLE_OFFSET_SECONDS = 5
+BLACKHOLE_RECOVERY_SECONDS = 15
+BLACKHOLE_RULES = (
+    ('-d', '127.0.0.1/32', '-p', 'tcp', '-m', 'multiport', '--dports', '4810,4881', '-j', 'DROP'),
+    ('-d', '127.0.0.1/32', '-p', 'udp', '--dport', '4882', '-j', 'DROP'),
+)
 
 
 def validate_background_seconds(seconds):
     if seconds < MIN_BACKGROUND_SECONDS:
         raise ValueError('Issue 785 Android microphone reproduction must be at least 120 seconds')
     return seconds
+
+
+def validate_blackhole_seconds(background_seconds, blackhole_seconds):
+    if blackhole_seconds < 0:
+        raise ValueError('Network blackhole duration cannot be negative')
+    if blackhole_seconds and blackhole_seconds + BLACKHOLE_OFFSET_SECONDS >= background_seconds:
+        raise ValueError('Network blackhole must leave time for post-outage recovery')
+    return blackhole_seconds
 
 
 def display_is_asleep(power_dump):
@@ -56,6 +70,92 @@ def receiver_has_foreground_uplink(sample):
         and sample.get('inbound_audio_packets', 0) > 0
         and sample.get('inbound_audio_bytes', 0) > 0
     )
+
+
+def receiver_blackhole_recovery(samples, started_unix_ms, ended_unix_ms, recovery_seconds=BLACKHOLE_RECOVERY_SECONDS):
+    before = [
+        sample for sample in samples
+        if sample.get('observed_at_unix_ms', -1) < started_unix_ms
+        and receiver_has_foreground_uplink(sample)
+    ]
+    during = [
+        sample for sample in samples
+        if started_unix_ms <= sample.get('observed_at_unix_ms', -1) <= ended_unix_ms
+    ]
+    after = [
+        sample for sample in samples
+        if ended_unix_ms < sample.get('observed_at_unix_ms', -1) <= ended_unix_ms + recovery_seconds * 1000
+        and receiver_has_foreground_uplink(sample)
+    ]
+    if not before or len(during) < 2 or not after:
+        return None
+    first_during, last_during = during[0], during[-1]
+    paused = (
+        last_during.get('inbound_audio_tracks', 0) == 0
+        or last_during.get('inbound_audio_packets', 0) <= first_during.get('inbound_audio_packets', 0)
+        or last_during.get('inbound_audio_bytes', 0) <= first_during.get('inbound_audio_bytes', 0)
+    )
+    if not paused:
+        return None
+    recovered = after[0]
+    return {
+        'receiver_before_blackhole': before[-1],
+        'receiver_last_during_blackhole': last_during,
+        'receiver_after_recovery': recovered,
+        'recovery_seconds': round((recovered['observed_at_unix_ms'] - ended_unix_ms) / 1000, 3),
+    }
+
+
+def parse_blackhole_drop_counters(output):
+    counters = {
+        'udp_4882': {'packets': 0, 'bytes': 0},
+        'tcp_4810_4881': {'packets': 0, 'bytes': 0},
+    }
+    for line in output.splitlines():
+        match = re.match(r'^\s*(\d+)\s+(\d+)\s+DROP\b', line)
+        if not match:
+            continue
+        if 'udp dpt:4882' in line:
+            key = 'udp_4882'
+        elif 'multiport dports 4810,4881' in line:
+            key = 'tcp_4810_4881'
+        else:
+            continue
+        counters[key] = {'packets': int(match.group(1)), 'bytes': int(match.group(2))}
+    return counters
+
+
+def install_blackhole(device):
+    if not device.startswith('emulator-'):
+        raise ValueError('Android network blackhole injection is restricted to AVD emulators')
+    if adb(device, 'shell', 'id', '-u').stdout.strip() != '0':
+        raise RuntimeError('Android emulator needs root adb for app server/media blackhole injection')
+    installed = []
+    try:
+        for rule in BLACKHOLE_RULES:
+            if adb(device, 'shell', 'iptables', '-C', 'OUTPUT', *rule, check=False).returncode == 0:
+                raise RuntimeError('A matching Android emulator blackhole firewall rule already exists')
+            adb(device, 'shell', 'iptables', '-I', 'OUTPUT', '1', *rule)
+            installed.append(rule)
+    except Exception:
+        remove_blackhole(device, installed)
+        raise
+    return installed
+
+
+def remove_blackhole(device, rules):
+    if not rules:
+        return {'udp_4882': {'packets': 0, 'bytes': 0}, 'tcp_4810_4881': {'packets': 0, 'bytes': 0}}
+    output = adb(device, 'shell', 'iptables', '-L', 'OUTPUT', '-v', '-n', '-x').stdout
+    counters = parse_blackhole_drop_counters(output)
+    failures = []
+    for rule in reversed(rules):
+        result = adb(device, 'shell', 'iptables', '-D', 'OUTPUT', *rule, check=False)
+        if result.returncode:
+            failures.append(result.stderr.strip() or 'iptables rule removal failed')
+    if failures:
+        raise RuntimeError('; '.join(failures))
+    return counters
 
 
 def adb(device, *args, check=True):
@@ -139,9 +239,11 @@ def main():
     parser.add_argument('--device', required=True)
     parser.add_argument('--background-seconds', type=int, default=DEFAULT_BACKGROUND_SECONDS)
     parser.add_argument('--background-action', choices=('home', 'screen-off'), default='home')
+    parser.add_argument('--blackhole-seconds', type=int, default=0)
     parser.add_argument('--output', required=True)
     args = parser.parse_args()
     validate_background_seconds(args.background_seconds)
+    validate_blackhole_seconds(args.background_seconds, args.blackhole_seconds)
 
     root = Path(__file__).resolve().parents[3]
     device = args.device
@@ -154,6 +256,17 @@ def main():
         raise RuntimeError('Android QA emulator is not fully booted')
     if any(f'tcp:{port}' in adb(device, 'reverse', '--list').stdout.split() for port in (4810, 4881)):
         raise ValueError('An existing QA reverse belongs to another run')
+    if args.blackhole_seconds:
+        if not device.startswith('emulator-'):
+            raise ValueError('The app-scoped network blackhole can run only on an Android emulator')
+        adb(device, 'root')
+        adb(device, 'wait-for-device')
+        if adb(device, 'shell', 'id', '-u').stdout.strip() != '0':
+            raise RuntimeError('Android emulator does not provide root adb for network blackhole injection')
+        if adb(device, 'shell', 'getprop', 'sys.boot_completed').stdout.strip() != '1':
+            raise RuntimeError('Android QA emulator did not finish booting after enabling root adb')
+        if any(f'tcp:{port}' in adb(device, 'reverse', '--list').stdout.split() for port in (4810, 4881)):
+            raise ValueError('An existing QA reverse belongs to another run')
     if control_json(device) is not None:
         raise FileExistsError('A stale Android pair QA control file exists')
 
@@ -174,6 +287,8 @@ def main():
     background_started_unix_ms = 0
     background_ended_unix_ms = 0
     microphone_samples = []
+    active_blackhole_rules = []
+    network_outage = None
     try:
         os.environ.update({
             'DOCKER_CONTEXT': 'colima-boohtacord-qa',
@@ -314,6 +429,68 @@ def main():
                         if flutter.poll() is not None:
                             raise RuntimeError(f'Flutter integration exited while backgrounded:\n{tail(flutter_log, stack.password)}')
                         elapsed = time.monotonic() - background_started
+                        if args.blackhole_seconds and network_outage is None and elapsed >= BLACKHOLE_OFFSET_SECONDS:
+                            active_blackhole_rules = install_blackhole(device)
+                            outage_started_unix_ms = int(time.time() * 1000)
+                            outage_started = time.monotonic()
+                            outage_service_samples = []
+                            next_outage_sample = outage_started
+                            print(
+                                f'Endpoint-scoped API/LiveKit blackhole active for {args.blackhole_seconds}s',
+                                flush=True,
+                            )
+                            outage_deadline = outage_started + args.blackhole_seconds
+                            while time.monotonic() < outage_deadline:
+                                if flutter.poll() is not None:
+                                    raise RuntimeError(
+                                        f'Flutter integration exited during network blackhole:\n{tail(flutter_log, stack.password)}'
+                                    )
+                                if time.monotonic() >= next_outage_sample:
+                                    outage_services = adb(
+                                        device,
+                                        'shell',
+                                        'dumpsys',
+                                        'activity',
+                                        'services',
+                                        PACKAGE,
+                                    ).stdout
+                                    service_active = microphone_foreground_service_active(outage_services)
+                                    outage_service_samples.append({
+                                        'offset_seconds': round(time.monotonic() - outage_started, 3),
+                                        'microphone_foreground_service_active': service_active,
+                                    })
+                                    if not service_active:
+                                        raise RuntimeError('Microphone FGS stopped during the Android network blackhole')
+                                    next_outage_sample += 5
+                                time.sleep(min(1, max(0.0, outage_deadline - time.monotonic())))
+                            drop_counters = remove_blackhole(device, active_blackhole_rules)
+                            active_blackhole_rules = []
+                            outage_ended_unix_ms = int(time.time() * 1000)
+                            dropped_packets = sum(value['packets'] for value in drop_counters.values())
+                            if dropped_packets <= 0:
+                                raise RuntimeError('Android firewall did not record dropped API/LiveKit packets')
+                            network_outage = {
+                                'kind': 'endpoint-scoped Android loopback API/LiveKit blackhole',
+                                'blocked_endpoints': [
+                                    'TCP 127.0.0.1:4810,4881',
+                                    'UDP 127.0.0.1:4882',
+                                ],
+                                'duration_seconds_requested': args.blackhole_seconds,
+                                'started_at_unix_ms': outage_started_unix_ms,
+                                'ended_at_unix_ms': outage_ended_unix_ms,
+                                'duration_seconds_observed': round(
+                                    (outage_ended_unix_ms - outage_started_unix_ms) / 1000,
+                                    3,
+                                ),
+                                'firewall_drop_counters': drop_counters,
+                                'microphone_foreground_service_samples': outage_service_samples,
+                            }
+                            print(
+                                'Endpoint-scoped API/LiveKit blackhole removed; dropped packets='
+                                f'{dropped_packets}',
+                                flush=True,
+                            )
+                            continue
                         if elapsed >= next_sample:
                             services = adb(device, 'shell', 'dumpsys', 'activity', 'services', PACKAGE).stdout
                             active = microphone_foreground_service_active(services)
@@ -404,6 +581,20 @@ def main():
             background_ended_unix_ms,
         ):
             raise RuntimeError('Independent receiver RTP counters did not advance inside the Flutter background interval')
+        if network_outage is not None:
+            if any(
+                network_outage['firewall_drop_counters'][key]['packets'] <= 0
+                for key in ('udp_4882', 'tcp_4810_4881')
+            ):
+                raise RuntimeError('Android firewall did not record drops for both LiveKit media and app API signaling')
+            recovery = receiver_blackhole_recovery(
+                samples,
+                network_outage['started_at_unix_ms'],
+                network_outage['ended_at_unix_ms'],
+            )
+            if recovery is None:
+                raise RuntimeError('Independent receiver did not show a media pause and recovery within 15 seconds of network restore')
+            network_outage.update(recovery)
         if len(microphone_samples) < 5 or not all(
             sample['microphone_foreground_service_active'] for sample in microphone_samples
         ):
@@ -441,6 +632,7 @@ def main():
                 'microphone_service_stopped_after_leave': cleanup,
                 'voice_phase_after_resume': result_file['result']['voicePhase'],
                 'same_room_after_resume': result_file['result']['sameRoomObjectAfterResume'],
+                'network_outage': network_outage,
             },
             'receiver_media': receiver_result,
             'publisher_media': result_file['result'],
@@ -449,9 +641,12 @@ def main():
                 'RTP counters prove transport delivery, not microphone intelligibility or audible output.',
                 'The emulator microphone input may be silent; no acoustic loopback or independent human listening was used.',
                 'This is a 120-second AOSP emulator run, not physical Android acceptance.',
-                'Secure keyguard, network transitions, airplane mode, OS-forced service stop, iOS, Safari/PWA, release APK, and production smoke remain unverified.',
                 'Issue 785 release gate remains open.',
-            ],
+            ] + (
+                ['The endpoint-scoped loopback blackhole does not simulate a physical Wi-Fi/LTE interface transition.']
+                if network_outage is not None else
+                ['Secure keyguard, network transitions, airplane mode, OS-forced service stop, iOS, Safari/PWA, release APK, and production smoke remain unverified.']
+            ),
         }
         (output / 'receiver-result.json').write_text(json.dumps(receiver_result, indent=2) + '\n', encoding='utf8')
         (output / 'result.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf8')
@@ -485,6 +680,9 @@ def main():
                 print(f'Receiver log:\n{tail(receiver_log, stack.password)}')
         finally:
             try:
+                if active_blackhole_rules:
+                    remove_blackhole(device, active_blackhole_rules)
+                    active_blackhole_rules = []
                 if args.background_action == 'screen-off':
                     wake_display(device)
                 stack.close()
