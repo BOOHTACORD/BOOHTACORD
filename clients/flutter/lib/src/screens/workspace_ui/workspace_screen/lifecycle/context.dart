@@ -1,11 +1,13 @@
 import '../../native_bindings.dart';
 import '../../../../features/realtime/lifecycle/voice_activity_heartbeat.dart';
+import '../../../../features/realtime/system_activity/poller.dart';
 
 import 'widget.dart';
 
 abstract class WorkspaceScreenStateContext extends State<WorkspaceScreen>
     with WidgetsBindingObserver, WindowListener {
   late VoiceActivityHeartbeat workspaceVoiceActivityHeartbeat;
+  SystemActivityPoller? workspaceSystemActivity;
   final workspaceMainSurfaceKey = GlobalKey(
     debugLabel: 'workspace-main-content',
   );

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { validCodePointLength } from '../validation/unicode_limits/unicode_limits'
 import { changeOwnPassword, deleteAvatar, loadOwnProfile, saveOwnProfile, uploadAvatar, type OwnProfile } from './profile_client'
 import AdminConfirmation from '../channel/AdminConfirmation.vue'
@@ -10,9 +10,12 @@ import JoinSoundPanel from '../voice/join_sound/Panel.vue'
 import SoundSettingsPanel from '../voice/sound_preferences/Panel.vue'
 import { voiceSoundPreferences, soundOutput, soundsDeafened, legacySoundReview } from '../voice/sound_playback/runtime'
 import LegacySoundReview from '../voice/sound_preferences/LegacyReview.vue'
+import SystemActivitySettings from '../realtime/system_activity/Settings.vue'
+import type { BrowserSystemActivity } from '../realtime/system_activity/browser'
+import { createProfileTabKeydown } from './profile_tabs/navigation'
 type ProfileTab = 'profile' | 'security' | 'notifications' | 'about'
 
-const props = defineProps<{ profile: OwnProfile | null; loading: boolean; loadError: string | null; logoutBusy?: boolean; logoutError?: string | null }>()
+const props = defineProps<{ profile: OwnProfile | null; loading: boolean; loadError: string | null; logoutBusy?: boolean; logoutError?: string | null; systemActivity?: BrowserSystemActivity }>()
 const emit = defineEmits<{ saved: [profile: OwnProfile]; logout: []; sessionExpired: [] }>()
 const displayName = ref(''); const currentPassword = ref(''); const newPassword = ref('')
 const busy = ref(false); const busyAction = ref<'name' | 'avatar' | 'password' | null>(null); const error = ref<string | null>(null); const profileStatus = ref<string | null>(null); const passwordStatus = ref<string | null>(null)
@@ -30,20 +33,7 @@ onBeforeUnmount(() => { if (focusFrame !== null) window.cancelAnimationFrame(foc
 watch(() => props.profile, (profile) => { displayName.value = profile?.display_name ?? '' }, { immediate: true })
 watch(displayName, () => { if (!busy.value) { error.value = null; profileStatus.value = null } })
 watch([currentPassword, newPassword], () => { if (!busy.value) { error.value = null; passwordStatus.value = null } })
-function onProfileTabKeydown(event: KeyboardEvent): void {
-  const currentIndex = profileTabs.indexOf(activeTab.value)
-  let nextIndex: number
-  switch (event.key) {
-    case 'ArrowRight': nextIndex = (currentIndex + 1) % profileTabs.length; break
-    case 'ArrowLeft': nextIndex = (currentIndex - 1 + profileTabs.length) % profileTabs.length; break
-    case 'Home': nextIndex = 0; break
-    case 'End': nextIndex = profileTabs.length - 1; break
-    default: return
-  }
-  event.preventDefault()
-  activeTab.value = profileTabs[nextIndex]
-  void nextTick(() => document.getElementById(`profile-tab-${activeTab.value}`)?.focus())
-}
+const onProfileTabKeydown = createProfileTabKeydown(activeTab, profileTabs)
 function fail(cause: unknown, fallback: string): void { error.value = cause instanceof Error ? cause.message : fallback }
 async function saveName(): Promise<void> {
   error.value = null; profileStatus.value = null
@@ -100,6 +90,7 @@ defineExpose({ hasUnsavedChanges })
       </form>
       <LegacySoundReview /><JoinSoundPanel :account-id="props.profile.account_id" :muted="legacySoundReview.blocked.value || soundsDeafened || !voiceSoundPreferences.settings.value.enabled || !voiceSoundPreferences.settings.value.joined" :volume="voiceSoundPreferences.settings.value.volume" :output="soundOutput" />
       </section>
+      <SystemActivitySettings v-if="props.systemActivity" :activity="props.systemActivity" />
     </template>
     <template v-else-if="props.profile && activeTab === 'security'">
       <section id="profile-panel-security" class="profile-panel" role="tabpanel" aria-labelledby="profile-tab-security" tabindex="0">

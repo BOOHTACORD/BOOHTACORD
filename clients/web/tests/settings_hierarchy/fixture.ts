@@ -4,6 +4,7 @@ import AdminPanel from '../../src/admin/panel/AdminPanel.vue'
 import AudioSettings from '../../src/voice/AudioSettings.vue'
 import { browserSupportsTouchPtt } from '../../src/voice/touch_ptt'
 import ProfileSettings from '../../src/identity/ProfileSettings.vue'
+import { createBrowserSystemActivity } from '../../src/realtime/system_activity/browser'
 import { describeAudioProcessing } from '../../src/voice/audio_processing_diagnostics'
 import { bindMicrophoneAccount, microphoneMeter, microphoneSettingsError } from '../../src/voice/microphone_processing/runtime'
 import type { AudioProcessingOptions } from '../../src/voice/livekit_gateway'
@@ -22,6 +23,7 @@ const processing = ref<AudioProcessingOptions>({ autoGainControl: false, echoCan
 const microphoneShortcut = ref<VoiceShortcutBinding|null>(null), deafenShortcut = ref<VoiceShortcutBinding|null>(null)
 const hasAvatar = params.get('avatar') === '1'
 const profile = ref<OwnProfile>({ account_id: id, login: hasAvatar ? 'pistol121' : 'fixture', display_name: hasAvatar ? 'Pistol121' : 'Тестовый участник', role: 'ADMINISTRATOR', avatar_url: hasAvatar ? '/profile-avatar-fixture.svg' : null })
+const systemActivity = params.get('systemActivity') === '1' ? createBrowserSystemActivity(() => {}) : undefined
 function audio() {
   const diagnostics = describeAudioProcessing(processing.value)
   if(params.get('phase') === 'processing-error') diagnostics.noiseSuppressionRuntime.status = 'error'
@@ -38,6 +40,6 @@ function audio() {
 }
 createApp({ render: () => h('main', { class: `workspace-main-panel workspace-main-panel--${surface}`, style: 'min-height:100vh;min-width:0' }, [
   surface === 'admin' ? h(AdminPanel, { accountId:id, categories, revision:1, section:section.value, 'onUpdate:section': value => { section.value=value } })
-    : surface === 'profile' ? h(ProfileSettings, { profile:profile.value, loading:false, loadError:null, onSaved:value => { profile.value=value } }) : audio(),
+    : surface === 'profile' ? h(ProfileSettings, { profile:profile.value, loading:false, loadError:null, systemActivity, onSaved:value => { profile.value=value } }) : audio(),
 ]) }).use(createPinia()).mount('#app')
 Object.assign(window, { settingsFixture: { microphoneFailure() { microphoneMeter.value = { ...microphoneMeter.value, clipping:true }; microphoneSettingsError.value = 'Не удалось сохранить настройки микрофона.' } } })

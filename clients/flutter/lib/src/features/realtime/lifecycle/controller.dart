@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
@@ -10,6 +9,7 @@ import 'recovery.dart';
 import 'open_deadline.dart';
 import 'session_deadline.dart';
 import 'liveness.dart';
+import '../system_activity/reporter.dart';
 
 import 'package:flutter/foundation.dart';
 
@@ -80,15 +80,9 @@ class RealtimeController extends ChangeNotifier {
   bool connected = false;
   bool checkingSession = false;
   bool disposed = false;
-  DateTime? _lastActivityReport;
-
-  void reportActivity() {
-    final current = socket;
-    final now = DateTime.now();
-    if (!connected || current == null || (_lastActivityReport != null && now.difference(_lastActivityReport!) < const Duration(seconds: 10))) return;
-    _lastActivityReport = now;
-    try { current.add(jsonEncode({'type': 'activity'})); } catch (_) { /* Reconnect refreshes activity state. */ }
-  }
+  final RealtimeActivityReporter _activity = RealtimeActivityReporter();
+  void reportActivity() => _activity.reportActivity(socket, connected: connected);
+  void reportInactive() => _activity.reportInactive(socket, connected: connected);
 
   ActionScope? handshake;
   bool hadConnection = false;

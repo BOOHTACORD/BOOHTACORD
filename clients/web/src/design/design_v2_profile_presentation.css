@@ -1,6 +1,6 @@
 /* R12 uses the live profile and account workflows within the settings shell. */
 .workspace-main-panel--profile { display: flex; flex-direction: column; overflow: hidden; padding: 0; }
-.workspace-main-panel--profile .profile-settings { display: grid; width: 100%; max-width: 944px; min-height: 0; flex: 1; align-content: start; gap: 0; overflow: auto; margin: 0 auto; padding: 32px 32px 48px; transform: none; }
+.workspace-main-panel--profile .profile-settings { display: grid; grid-auto-rows: max-content; width: 100%; max-width: 944px; min-height: 0; flex: 1; align-content: start; gap: 0; overflow: auto; margin: 0 auto; padding: 32px 32px 48px; transform: none; }
 .workspace-main-panel--profile .profile-settings header h1:focus { outline: none; }
 .workspace-main-panel--profile .profile-settings > header h1 { font-size: 1.5rem; line-height: 2rem; }
 .workspace-main-panel--profile .profile-settings > header p { margin-top: 8px; color: var(--gc-text-secondary); font-size: 0.875rem; line-height: 1.25rem; }

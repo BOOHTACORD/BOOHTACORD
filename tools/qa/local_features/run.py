@@ -11,6 +11,7 @@ from .report import write_report
 from .doctor import devices, boot_android
 from .selection import flutter_stage_result, native_targets, records_test_summary, stage_timeout, host_command
 from .source_identity import source_identity, source_stability
+from .paired_web.selection import requires_web_build
 
 
 def main():
@@ -77,6 +78,8 @@ def main():
         tests=sorted({t for f in features for t in catalog[f]['flutter']})
         if args.full_unit: stage('flutter-unit',['flutter','test'],flutter)
         stage('flutter-component-captures',['flutter','test',*tests],flutter)
+        if requires_web_build(set(platforms), native_targets(catalog, features, platform='android')):
+            stage('android-paired-web-build',['npm','run','build'],web)
         for platform in ['android','ios']:
             if platform not in platforms: continue
             ids=[item.split(':',1)[1] for item in args.native_device if item.startswith(platform+':')]

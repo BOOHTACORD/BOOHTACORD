@@ -13,6 +13,7 @@ mixin WorkspaceScreenStateDisposeBinding on WorkspaceScreenStateContext {
 
 extension WorkspaceScreenStateDisposeAction on WorkspaceScreenStateContext {
   void executeWorkspaceScreenStateDispose() {
+    workspaceSystemActivity?.stop();
     workspaceVoiceActivityHeartbeat.stop();
     widget.state.voice.cancelVoiceShortcuts();
     HardwareKeyboard.instance.removeHandler(workspaceHandleHardwareKey);

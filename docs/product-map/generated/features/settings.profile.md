@@ -19,4 +19,5 @@ ID: `settings.profile`
 ## Компоненты
 
 - cmp.flutter.profile: [clients/flutter/lib/src/screens/profile\_screen.dart](../../../../clients/flutter/lib/src/screens/profile_screen.dart)
+- cmp.web.profile\_tabs: [clients/web/src/identity/profile\_tabs/navigation.ts](../../../../clients/web/src/identity/profile_tabs/navigation.ts)
 - cmp.web.workspace: [clients/web/src/workspace/WorkspaceApp.vue](../../../../clients/web/src/workspace/WorkspaceApp.vue)

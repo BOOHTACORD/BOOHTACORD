@@ -48,6 +48,15 @@ func writeHubEvent(connection *websocket.Conn, authenticator sessionapi.Authenti
 	return true
 }
 
+func writePendingHubEvent(events <-chan eventhub.Event, connection *websocket.Conn, authenticator sessionapi.Authenticator, cookie *http.Cookie, subscription *eventhub.Subscription, hub *eventhub.Hub, observer ConnectionObserver, replayedIDs map[replayKey]struct{}) (bool, bool) {
+	select {
+	case event := <-events:
+		return true, writeHubEvent(connection, authenticator, cookie, subscription, hub, observer, replayedIDs, event)
+	default:
+		return false, true
+	}
+}
+
 func writeOverflow(connection *websocket.Conn, subscription *eventhub.Subscription, hub *eventhub.Hub, newID Identifier, now Clock) bool {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()

@@ -81,6 +81,21 @@ class FailureDiagnosticTests(unittest.TestCase):
                                    + 'stage=private-secret-do-not-publish\n')
                     self.assertEqual(last_failure_stage(log), stage)
 
+    def test_settings_milestones_are_retained_without_private_values(self):
+        from .failure_stage import last_failure_stage
+        with tempfile.TemporaryDirectory() as temporary:
+            log = Path(temporary) / 'lifecycle.log'
+            for stage in ('settings-profile-open', 'settings-profile-cancelled',
+                          'settings-profile-save-disabled', 'settings-profile-draft-filled',
+                          'settings-profile-cancel-clicked', 'settings-profile-value-restored',
+                          'settings-cancel-pointer-blocked', 'settings-cancel-disabled',
+                          'settings-cancel-ambiguous', 'settings-cancel-outside', 'settings-cancel-other',
+                          'settings-profile-saved', 'settings-profile-restored',
+                          'settings-security-cancelled', 'settings-notifications-visible'):
+                with self.subTest(stage=stage):
+                    log.write_text(f'stage={stage}\nstage=private-secret-do-not-publish\n')
+                    self.assertEqual(last_failure_stage(log), stage)
+
     def test_unknown_fields_stages_or_links_are_rejected(self):
         for case in ('extra', 'stage', 'large', 'link', 'duplicate'):
             with tempfile.TemporaryDirectory() as temporary, self.subTest(case=case):

@@ -8,6 +8,7 @@ import type { AudioInputSelection } from './audio_input_selection'
 import { tracedOperation } from '../telemetry/client_tracing'
 import { activeAction } from '../telemetry/action_scope/scope'
 import { telemetrySession } from '../telemetry/action_scope/session'
+import { cleanupFailedVoiceJoin } from './admission_cleanup/cleanup'
 
 interface VoiceAdmissionState {
   current(): ActiveVoiceSession | null
@@ -96,8 +97,7 @@ export class VoiceSessionAdmission {
         return current
       } catch (cause) {
         telemetrySession.endMedia()
-        try { await joinedRoom?.stopScreenPreview?.() } catch { /* Release follows settled local cleanup. */ }
-        if (lease) await within(() => this.state.admission.release(lease!.id)).catch(() => undefined)
+        await cleanupFailedVoiceJoin(this.state, joinedRoom, () => lease ? within(() => this.state.admission.release(lease!.id)) : Promise.resolve())
         throw cause
       }
     })

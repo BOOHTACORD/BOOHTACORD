@@ -18,6 +18,9 @@ func (hub *Hub) ReportActivity(subscription *Subscription, at time.Time) {
 	if at.IsZero() {
 		at = time.Now()
 	}
+	guard := hub.activityGuard(subscription.accountID)
+	guard.Lock()
+	defer guard.Unlock()
 	hub.mu.Lock()
 	defer hub.mu.Unlock()
 	connections := hub.accountConnections[subscription.accountID]
@@ -26,10 +29,12 @@ func (hub *Hub) ReportActivity(subscription *Subscription, at time.Time) {
 	}
 	// Bound authenticated activity traffic to at most one update per connection
 	// every five seconds. The client also throttles, but the server is authoritative.
-	if !subscription.lastActivity.IsZero() && at.Sub(subscription.lastActivity) < 5*time.Second {
+	if !subscription.inactivityOnly && !subscription.lastActivity.IsZero() && at.Sub(subscription.lastActivity) < 5*time.Second {
 		return
 	}
 	subscription.lastActivity = at
+	subscription.inactivityOnly = false
+	subscription.initiallyIdle = false
 	if hub.presenceStates[subscription.accountID] != "online" {
 		hub.presenceStates[subscription.accountID] = "online"
 		hub.publishLocked(presenceChanged(subscription.accountID, "active", at))
@@ -71,8 +76,7 @@ func (hub *Hub) SweepIdle(now time.Time, idleAfter time.Duration) int {
 		if hub.presenceStates[accountID] != "online" {
 			continue
 		}
-		last := latestActivity(connections)
-		if !last.IsZero() && !last.After(now.Add(-idleAfter)) {
+		if allPresenceIdle(connections, now.Add(-idleAfter)) {
 			hub.presenceStates[accountID] = "idle"
 			hub.publishLocked(presenceChanged(accountID, "idle", now))
 			changed++
@@ -95,44 +99,6 @@ func (hub *Hub) PresenceState(accountID string) string {
 		return "idle"
 	}
 	return "online"
-}
-
-// LastActivity returns the newest activity timestamp across connected clients.
-// It is consumed only by the local AFK routing worker; identifiers stay in memory.
-func (hub *Hub) LastActivity(accountID string) (time.Time, bool) {
-	if hub == nil || accountID == "" {
-		return time.Time{}, false
-	}
-	hub.mu.Lock()
-	defer hub.mu.Unlock()
-	connections := hub.accountConnections[accountID]
-	if len(connections) == 0 {
-		return time.Time{}, false
-	}
-	return latestActivity(connections), true
-}
-
-func (hub *Hub) IdleSince(accountID string) (time.Time, bool) {
-	if hub == nil || accountID == "" {
-		return time.Time{}, false
-	}
-	hub.mu.Lock()
-	defer hub.mu.Unlock()
-	if hub.presenceStates[accountID] != "idle" {
-		return time.Time{}, false
-	}
-	at := latestActivity(hub.accountConnections[accountID])
-	return at, !at.IsZero()
-}
-
-func latestActivity(connections map[*Subscription]struct{}) time.Time {
-	var latest time.Time
-	for connection := range connections {
-		if connection.lastActivity.After(latest) {
-			latest = connection.lastActivity
-		}
-	}
-	return latest
 }
 
 func presenceChanged(accountID, state string, at time.Time) Event {
