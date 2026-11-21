@@ -6,7 +6,7 @@ not the complete multi-platform R1 or issue 689.
 ## Source and defect
 
 - Current master baseline: `32825c9b8ed4ae24dbf3747b063f929f79fe2c44`.
-- Tested clean implementation: `b18de3589f43ec89a777e17ac7f2b167b3dbe212`.
+- Tested clean implementation: `c06c8a0fe24a6c944cb91d90f2487ef14f30cad3`.
 - Production workspace recovery reused a coalescer across socket incarnations.
   A held old topology GET prevented the new recovery from finishing. The
   regression failed before the fix: expected two requests, observed one.
@@ -51,7 +51,8 @@ in the adjacent JSON; original screenshots remain ignored under `.out/`.
 - The replacement showed an empty roster and fresh topology before releasing
   the old response; repeated probes found no restored participant afterward.
 - The owned API process was restarted. Reconnection used a changed server
-  generation and preserved the correct empty roster.
+  generation. The final assertion waits for the maintenance banner to hide
+  and the channel header to show fresh empty state before taking the capture.
 - An old account recovery was held; logout/login to a synthetic member happened
   in the same page without reload. Releasing the previous account's response
   did not change the member identity or restore the departed participant.
@@ -75,6 +76,11 @@ maximum parallel topology/history GETs are one, hidden history reads are zero,
 and old-page edit/delete plus ID-only hint behavior pass. CLI exit 0 includes
 owned cleanup. The full R1 process-restart/account-switch scenario then passed
 again on the final clean immutable implementation, recorded in the JSON.
+
+The visual review caught an earlier restart capture taken during transient
+restoration. The final QA-only follow-up explicitly waits for fresh UI; its
+clean runtime reports `api_fresh_ui: true`. No product source changed after the
+140-test and burst-controller follow-up.
 
 ## Wider gate and limits
 
