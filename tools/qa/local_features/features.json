@@ -557,6 +557,13 @@
         "cancellation": "clients/flutter/test/realtime_scope/late_failure_test.dart",
         "actual_socket": "clients/flutter/test/realtime_scope/socket_recovery_integration_test.dart",
         "scope": "Socket-open exceptions schedule one next bounded retry only after releasing connecting. Real owned loopback HTTP503 then WebSocket101/connection.ready requires automatic recovery. Closed session/server/installation/dispose boundaries do not retry. Not a production fault, Go ACL or native media acceptance."
+      },
+      "issue689_native_r1": {
+        "focused": [
+          "clients/flutter/integration_test/issue689_r1_native_test.dart",
+          "clients/flutter/test_driver/r1_native.dart"
+        ],
+        "scope": "Explicit owned native runtime: python -m tools.qa.realtime_recovery.native.run --platform windows|android --device <owned-target>. Real production AppState/HTTP/WS/LiveKit; unchanged actual HTTP results delayed across socket/account scopes; owned API process restart; native UI captures. Preferences/secure-storage adapters are test-only. No media-quality, physical Android, Apple or full R7 claim."
       }
     },
     "parity": [
@@ -615,7 +622,8 @@
       "idle_afk_speech_activity": "2026-11-14 AFK follow-up: active local voice speech reports heartbeat activity to prevent AFK transfer while speaking. Connection status/recovery UI, reconnect policy, and WebSocket transport are unchanged; focused connection-status regressions remain required. Web/Flutter unit and browser regressions passed; native runtime for this follow-up is NOT_RUN.",
       "issue787_pr7_web_viewer_aggregation": "PR7 adds Web receipt, selected-publication scope and diagnostic presentation for the existing bounded screen telemetry event. Web focused tests/build and registered Web real-stack lifecycle pass; the broad screen_profile browser suite remains BLOCKED by one pre-existing skipped publisher/viewer test. Flutter sender integration, auth/session/ACL behavior, messaging, AFK activity and connection retry policies are unchanged in this PR; socket end clears stale viewer telemetry. Cross-client paired sender-to-viewer, native runtime, media quality and capacity acceptance remain NOT_RUN. Socket reconnect, connection status and recovery behavior are unchanged.",
       "issue785_mobile_web_resume": "2026-11-17 issue #785 browser recovery: Web application realtime now rechecks stale heartbeat silence on page restore and supported network changes; LiveKit media state remains separate from application WebSocket state. Flutter/iOS/Android connection behavior is unchanged. Existing Web and native regressions remain required; no physical media acceptance is claimed.",
-      "issue689_r1_socket_http_recovery": "2026-11-21: Web socket-owned coalescing and topology late-response fencing. Explicit owned runtime: python3 -m tools.qa.realtime_recovery.run (real API/PostgreSQL/LiveKit, delayed unchanged HTTP response, populated-to-empty roster across two socket replacements). Shared Flutter and media behavior unchanged; evidence records scoped runtime separately from the standard feature runner."
+      "issue689_r1_socket_http_recovery": "2026-11-21: Web socket-owned coalescing and topology late-response fencing. Explicit owned runtime: python3 -m tools.qa.realtime_recovery.run (real API/PostgreSQL/LiveKit, delayed unchanged HTTP response, populated-to-empty roster across two socket replacements). Shared Flutter and media behavior unchanged; evidence records scoped runtime separately from the standard feature runner.",
+      "issue689_native_r1": "2026-11-21: Windows and Android native R1 acceptance extends delayed HTTP/reconnect/account-switch/API-restart coverage, with explicit owned native runner registered above. Shared Flutter production behavior is unchanged; Web production code is unchanged. Runtime PASS must be recorded independently per platform with source identity and native captures; acceptance not inferred from test registration."
     }
   },
   "voice": {

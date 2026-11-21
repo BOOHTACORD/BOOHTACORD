@@ -1,0 +1,144 @@
+{
+  "windows": {
+    "runtime": {
+      "status": "PASS",
+      "platform": "windows",
+      "source_before": "2b6e90d232e1abd3b5be36c525287bdd8ec298f6 worktree-sha256=852d3442a572c0b9bf5ab68bceb1ca3555ef2849050315e7079b1783d0791518",
+      "physical_android": false,
+      "storage_adapters": "test-only preferences and secure storage",
+      "scenario": {
+        "authenticated_connection_samples": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "replacement_before_old_response": true,
+        "old_response_no_ghost": true,
+        "api_restart_fresh_generation": true,
+        "ordinary_reconnect_durable_replay": true,
+        "late_history_fenced_then_recovered_once": true,
+        "durable_cursor_sent": true,
+        "same_app_account_switch_late_response_ignored": true,
+        "status": "PASS"
+      },
+      "owned_resources_removed": true,
+      "source_after": "2b6e90d232e1abd3b5be36c525287bdd8ec298f6 worktree-sha256=852d3442a572c0b9bf5ab68bceb1ca3555ef2849050315e7079b1783d0791518",
+      "source_stability": {
+        "name": "source-stability",
+        "status": "PASS",
+        "before": "2b6e90d232e1abd3b5be36c525287bdd8ec298f6 worktree-sha256=852d3442a572c0b9bf5ab68bceb1ca3555ef2849050315e7079b1783d0791518",
+        "after": "2b6e90d232e1abd3b5be36c525287bdd8ec298f6 worktree-sha256=852d3442a572c0b9bf5ab68bceb1ca3555ef2849050315e7079b1783d0791518"
+      }
+    },
+    "artifact_sha256": "ff7eb837857f9229995690bcfcce4ec549c1a355ddee70062adbb78550e08d8c",
+    "captures": {
+      "api-restarted-fresh.png": {
+        "size": [
+          1898,
+          1024
+        ],
+        "sha256": "f3a4c0696f4cd5356e554977d62338ea10d0d4f5995747c4450e9e2be03d1651"
+      },
+      "new-account-old-response-ignored.png": {
+        "size": [
+          1898,
+          1024
+        ],
+        "sha256": "ec7ff54f5bf5e729408ba77d40b6c5e9751ea71b1767fbb7a547ac2c7e167b11"
+      },
+      "populated.png": {
+        "size": [
+          1898,
+          1024
+        ],
+        "sha256": "416ffab8f846373343537b13583986fee6c46c2fa14b82cb1f380ace4d525052"
+      },
+      "replacement-after-old-response.png": {
+        "size": [
+          1898,
+          1024
+        ],
+        "sha256": "f3a4c0696f4cd5356e554977d62338ea10d0d4f5995747c4450e9e2be03d1651"
+      },
+      "replacement-before-old-response.png": {
+        "size": [
+          1898,
+          1024
+        ],
+        "sha256": "f3a4c0696f4cd5356e554977d62338ea10d0d4f5995747c4450e9e2be03d1651"
+      }
+    }
+  },
+  "android": {
+    "runtime": {
+      "status": "PASS",
+      "platform": "android",
+      "source_before": "2b6e90d232e1abd3b5be36c525287bdd8ec298f6 worktree-sha256=852d3442a572c0b9bf5ab68bceb1ca3555ef2849050315e7079b1783d0791518",
+      "physical_android": false,
+      "storage_adapters": "test-only preferences and secure storage",
+      "scenario": {
+        "authenticated_connection_samples": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "replacement_before_old_response": true,
+        "old_response_no_ghost": true,
+        "api_restart_fresh_generation": true,
+        "ordinary_reconnect_durable_replay": true,
+        "late_history_fenced_then_recovered_once": true,
+        "durable_cursor_sent": true,
+        "same_app_account_switch_late_response_ignored": true,
+        "status": "PASS"
+      },
+      "owned_resources_removed": true,
+      "source_after": "2b6e90d232e1abd3b5be36c525287bdd8ec298f6 worktree-sha256=852d3442a572c0b9bf5ab68bceb1ca3555ef2849050315e7079b1783d0791518",
+      "source_stability": {
+        "name": "source-stability",
+        "status": "PASS",
+        "before": "2b6e90d232e1abd3b5be36c525287bdd8ec298f6 worktree-sha256=852d3442a572c0b9bf5ab68bceb1ca3555ef2849050315e7079b1783d0791518",
+        "after": "2b6e90d232e1abd3b5be36c525287bdd8ec298f6 worktree-sha256=852d3442a572c0b9bf5ab68bceb1ca3555ef2849050315e7079b1783d0791518"
+      }
+    },
+    "artifact_sha256": "7f6c0e2c24b394fcbaa8be58e83541e5015bca8621abba73a75a6abd81212a2d",
+    "captures": {
+      "api-restarted-fresh.png": {
+        "size": [
+          1080,
+          2400
+        ],
+        "sha256": "2311ce6bdede864d77b382260efe601b8d9ef9d930a4f43435b9ebdb66eda862"
+      },
+      "new-account-old-response-ignored.png": {
+        "size": [
+          1080,
+          2400
+        ],
+        "sha256": "809cb8caae9dce41de0afaee56ebe5352b2f993ce2a5894df6078f271e2f4778"
+      },
+      "populated.png": {
+        "size": [
+          1080,
+          2400
+        ],
+        "sha256": "bb0d915d0d4908ab76bd569e8b67c4ae0d996001f4fdea8021d05fdb2bd00570"
+      },
+      "replacement-after-old-response.png": {
+        "size": [
+          1080,
+          2400
+        ],
+        "sha256": "2311ce6bdede864d77b382260efe601b8d9ef9d930a4f43435b9ebdb66eda862"
+      },
+      "replacement-before-old-response.png": {
+        "size": [
+          1080,
+          2400
+        ],
+        "sha256": "2311ce6bdede864d77b382260efe601b8d9ef9d930a4f43435b9ebdb66eda862"
+      }
+    }
+  }
+}
