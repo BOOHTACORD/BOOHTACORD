@@ -4,6 +4,7 @@ import path from 'node:path'
 import { createRequire } from 'node:module'
 import { execFileSync, spawnSync } from 'node:child_process'
 import { pathToFileURL } from 'node:url'
+import { androidChromeAdbArgs } from './issue785_android_chrome_device.mjs'
 import {
   ISSUE785_ANDROID_CHROME_BACKGROUND_SECONDS,
   backgroundElapsedSeconds,
@@ -12,6 +13,7 @@ import {
 
 const repo = process.cwd()
 const input = JSON.parse(fs.readFileSync('/private/tmp/issue785-browser-pair.json', 'utf8'))
+const adbArgs = (...args) => androidChromeAdbArgs(input.device, ...args)
 process.env.QA_ORIGIN = input.origin
 const require = createRequire(path.join(repo, 'clients/web/package.json'))
 const { chromium, expect } = require('@playwright/test')
@@ -127,7 +129,7 @@ async function joinAndroidAsListener(page) {
 }
 
 async function connectAndroidChrome({ addForward = false } = {}) {
-  if (addForward) execFileSync('adb', ['forward', 'tcp:9222', 'localabstract:chrome_devtools_remote'])
+  if (addForward) execFileSync('adb', adbArgs('forward', 'tcp:9222', 'localabstract:chrome_devtools_remote'))
   androidBrowser = await chromium.connectOverCDP('http://127.0.0.1:9222')
   androidContext = androidBrowser.contexts()[0]
   assert.ok(androidContext, 'Android Chrome must expose a browser context')
@@ -195,19 +197,19 @@ try {
   androidPage = null
   androidCdpDetachedForBackground = true
   androidCdpDetachedDuringBackground = true
-  execFileSync('adb', ['forward', '--remove', 'tcp:9222'], { stdio: 'ignore' })
+  execFileSync('adb', adbArgs('forward', '--remove', 'tcp:9222'), { stdio: 'ignore' })
   console.log('stage=android-cdp-detached')
-  execFileSync('adb', ['shell', 'input', 'keyevent', '3'], { stdio: 'ignore' })
+  execFileSync('adb', adbArgs('shell', 'input', 'keyevent', '3'), { stdio: 'ignore' })
   let homeActivity = ''
   for (let attempt = 0; attempt < 20; attempt++) {
-    homeActivity = execFileSync('adb', ['shell', 'dumpsys', 'activity', 'activities'], { encoding: 'utf8' })
+    homeActivity = execFileSync('adb', adbArgs('shell', 'dumpsys', 'activity', 'activities'), { encoding: 'utf8' })
     if (/topResumedActivity=.*(?:nexuslauncher|Launcher)/i.test(homeActivity)) break
     await new Promise(resolve => setTimeout(resolve, 500))
   }
   assert.match(homeActivity, /topResumedActivity=.*(?:nexuslauncher|Launcher)/i, 'Android Home must actually be foregrounded')
   backgroundStartedAtMs = performance.now()
   await waitForIssue785AndroidChromeBackground()
-  const foreground = spawnSync('adb', ['shell', 'am', 'start', '-n', 'com.android.chrome/com.google.android.apps.chrome.Main'], { stdio: 'ignore' })
+  const foreground = spawnSync('adb', adbArgs('shell', 'am', 'start', '-n', 'com.android.chrome/com.google.android.apps.chrome.Main'), { stdio: 'ignore' })
   if (foreground.error) throw foreground.error
   await new Promise(resolve => setTimeout(resolve, 1500))
   await connectAndroidChrome({ addForward: true })

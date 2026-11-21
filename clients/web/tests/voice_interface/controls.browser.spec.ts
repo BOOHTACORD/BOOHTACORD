@@ -71,8 +71,11 @@ test('empty voice roster centers its message and the dock hides voluntary-leave 
 
 test('mobile connected voice explains browser background recovery without redirecting to another client', async ({ page }, info) => {
   await open(page, 390)
+  const currentBrowserUrl = page.url()
+  const voiceDock = page.getByTestId('voice-dock')
   const notice = page.getByText('В фоне браузер может приостановить голос. После возврата соединение проверяется.', { exact: true })
   await expect(notice).toBeVisible()
+  await expect(voiceDock.getByRole('link', { name: /приложение|native|open app/i })).toHaveCount(0)
   await page.screenshot({ path: info.outputPath('mobile-background-voice-notice.png') })
   await page.setViewportSize({ width: 390, height: 480 })
   await expect(notice).toBeHidden()
@@ -87,6 +90,7 @@ test('mobile connected voice explains browser background recovery without redire
   await patch(page, { audioPlaybackBlocked: true })
   await expect(resumeAudio).toBeVisible()
   await resumeAudio.click()
+  await expect(page).toHaveURL(currentBrowserUrl)
   expect(await page.evaluate(() => (window as any).__voiceFixture.events)).toContain('resumeAudioPlayback')
   await patch(page, { audioPlaybackBlocked: false })
   await expect(resumeAudio).toHaveCount(0)

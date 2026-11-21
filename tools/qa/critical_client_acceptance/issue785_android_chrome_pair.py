@@ -72,7 +72,11 @@ def main():
         stack.start()
         with PAIR_FILE.open('x', encoding='utf8') as pair_input:
             pair_created = True
-            pair_input.write(json.dumps({'origin': ORIGIN, 'password': stack.password}))
+            pair_input.write(json.dumps({
+                'origin': ORIGIN,
+                'password': stack.password,
+                'device': args.device,
+            }))
         PAIR_FILE.chmod(0o600)
 
         script = Path(__file__).with_name('issue785_android_chrome_pair.mjs')

@@ -1,0 +1,86 @@
+{
+  "issue": 785,
+  "acceptance_status": "PASS_SCOPED",
+  "gate_closed": false,
+  "observed_at_local": "2026-11-22T00:36:37.964+03:00",
+  "source": {
+    "product_commit": "db952e8a14be71b7916ce968be961e9861ec9f73",
+    "product_source_modified": false,
+    "qa_harness_modified_for_probe": true,
+    "qa_harness_changes_committed": false,
+    "qa_harness_files": [
+      "clients/flutter/integration_test/issue785_background_microphone_uplink_test.dart",
+      "tools/qa/critical_client_acceptance/issue785_android_flutter_uplink_pair.py",
+      "tools/qa/critical_client_acceptance/issue785_flutter_uplink_receiver.mjs",
+      "tools/qa/critical_client_acceptance/test_issue785_android_flutter_uplink_pair.py",
+      "tools/qa/local_features/android_microphone.py"
+    ]
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 AVD",
+    "avd": "BOOHTACORD_QA_API35",
+    "serial": "emulator-5554",
+    "physical_device": false,
+    "publisher": "Flutter Android microphone foreground service",
+    "receiver": "Independent Playwright Chromium listener-only participant",
+    "server": "Disposable local API/PostgreSQL/LiveKit QA stack"
+  },
+  "scenario": {
+    "action": "Android Home",
+    "duration_seconds_observed": 120.010,
+    "permission_revoke_command": "adb shell pm revoke ru.boohtacord.app android.permission.RECORD_AUDIO",
+    "permission_revoke_offset_seconds": 5.032,
+    "flutter_driver_exit_offset_seconds": 6.088,
+    "activity_manager_kill": "2026-11-22T00:34:42.252+03:00; PID 2053; reason=permissions revoked",
+    "appops_record_audio_not_started": true,
+    "app_process_absent_at_window_end": true,
+    "microphone_service_samples": [
+      {"offset_seconds": 0.000, "active": true},
+      {"offset_seconds": 30.296, "active": false},
+      {"offset_seconds": 60.544, "active": false},
+      {"offset_seconds": 90.826, "active": false},
+      {"offset_seconds": 120.010, "active": false}
+    ]
+  },
+  "receiver_media": {
+    "samples_total": 110,
+    "sample_period_seconds": 2,
+    "before_revoke": {
+      "observed_at_local": "2026-11-22T00:34:41.531+03:00",
+      "inbound_audio_tracks": 1,
+      "inbound_audio_packets": 30,
+      "inbound_audio_bytes": 4119
+    },
+    "last_rtp_counter_increase_after_revoke": {
+      "observed_at_local": "2026-11-22T00:34:43.532+03:00",
+      "offset_after_kill_seconds": 1.280,
+      "inbound_audio_packets": 37,
+      "inbound_audio_bytes": 4751,
+      "delta_from_before_revoke": {"packets": 7, "bytes": 632}
+    },
+    "first_sample_after_10_second_settle": {
+      "observed_at_local": "2026-11-22T00:34:53.540+03:00",
+      "inbound_audio_tracks": 1,
+      "inbound_audio_packets": 37,
+      "inbound_audio_bytes": 4751
+    },
+    "post_settle_samples": 53,
+    "post_settle_counters_never_increased": true,
+    "inbound_track_absent_by": "2026-11-22T00:35:05.551+03:00",
+    "final_sample": {
+      "observed_at_local": "2026-11-22T00:36:37.964+03:00",
+      "connected_peer_connections": 1,
+      "inbound_audio_tracks": 0,
+      "inbound_audio_packets": 0,
+      "inbound_audio_bytes": 0
+    }
+  },
+  "limitations": [
+    "The runner exited successfully with PASS_SCOPED and asserted microphone FGS inactivity at all post-revoke samples.",
+    "The app process was terminated before fallback/retry UI could render; cold-start recovery and rejoin were NOT_RUN.",
+    "RTP counters establish transport cessation, not audible output or speech intelligibility.",
+    "This AVD run does not satisfy physical Android/iOS acceptance, secure keyguard, release APK or production smoke.",
+    "Issue 785 release gate remains open."
+  ],
+  "local_runtime_output": ".out/issue785-permission-revoke-current-master-2026-11-22-run4/result.json"
+}

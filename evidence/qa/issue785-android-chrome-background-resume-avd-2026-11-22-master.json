@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "issue": 785,
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "observed_at_utc": "2026-11-21T21:55:02.464Z",
+  "scope": "Two-minute best-effort background and resume observation of Android Chrome as a listener in a paired synthetic-media session.",
+  "source": {
+    "product_commit": "db952e8a14be71b7916ce968be961e9861ec9f73",
+    "product_source_modified": false,
+    "qa_harness_modified": true,
+    "qa_harness_committed": false,
+    "qa_harness_files": [
+      "tools/qa/critical_client_acceptance/issue785_android_chrome_pair.py",
+      "tools/qa/critical_client_acceptance/issue785_android_chrome_pair.mjs",
+      "tools/qa/critical_client_acceptance/issue785_android_chrome_device.mjs",
+      "tools/qa/critical_client_acceptance/issue785_android_chrome_device.test.mjs",
+      "tools/qa/critical_client_acceptance/issue785_android_chrome_timing.mjs",
+      "tools/qa/critical_client_acceptance/issue785_android_chrome_timing.test.mjs",
+      "tools/qa/local_features/features.json"
+    ],
+    "sha256": {
+      "issue785_android_chrome_pair.py": "b02965e7e2c95dd5edb26291ed9be6a723adbdee620e95deecc0d515a39adc47",
+      "issue785_android_chrome_pair.mjs": "99dc5cd36153c1169996cde090b06eeeddb8ef47c5b91675190b089bc4fb8a4c",
+      "issue785_android_chrome_device.mjs": "d7901735a90ca1d52105cb25dcb603024de7d7cb0aee33a0b1e73fce165c3a71",
+      "issue785_android_chrome_device.test.mjs": "9402b3d55df5884804e376fa0aeb4dc55a7ef1f3edecd2406627f2be71367cb6",
+      "issue785_android_chrome_timing.mjs": "65cad2495caea072cf0fcbd62e03c771158fae232fc258a7bc491999e8c4cbb8",
+      "issue785_android_chrome_timing.test.mjs": "be50ca4d6b096b0784cb0f579d0c4e5e0a6343bc268109b858648e1e9e84a4e7",
+      "feature_registry_at_run": "c644a642650212616c6c9a257d68f4be679c03e1339cf4ebb3060f95d5cc4785"
+    }
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 AVD",
+    "avd": "BOOHTACORD_QA_API35",
+    "serial": "emulator-5554",
+    "physical_device": false,
+    "build_fingerprint": "google/sdk_gphone64_arm64/emu64a:15/AE3A.240806.043/12960925:userdebug/dev-keys",
+    "browser": "Chrome 124.0.6367.219",
+    "sender": "Playwright Chromium publishing synthetic microphone audio",
+    "receiver": "Android Chrome listener-only participant",
+    "server": "Disposable local Go API, PostgreSQL, Caddy and LiveKit stack"
+  },
+  "scenario": {
+    "background_action": "Android Home with Chrome DevTools detached; resume the same Chrome tab",
+    "configured_home_window_seconds": 120,
+    "observed_home_to_resume_seconds": 121.611,
+    "home_activity_observed": true,
+    "devtools_disconnected_during_background": true,
+    "same_tab_resumed": true,
+    "resume_gesture_needed": false,
+    "visibility_events": [
+      "visible",
+      "hidden",
+      "visible"
+    ],
+    "visibility_event_timestamps_unix_ms": [
+      1795297982077,
+      1795297983118,
+      1795298102464
+    ],
+    "measured_hidden_to_visible_seconds": 119.346
+  },
+  "media_counters": {
+    "receiver_before_background": {
+      "peer_connections": 1,
+      "active_peer_connections": 1,
+      "connected_peer_connections": 1,
+      "inbound_audio_packets": 23,
+      "inbound_audio_bytes": 10171
+    },
+    "receiver_at_resume": {
+      "peer_connections": 1,
+      "active_peer_connections": 1,
+      "connected_peer_connections": 1,
+      "inbound_audio_packets": 6112,
+      "inbound_audio_bytes": 2915236
+    },
+    "receiver_after_resume": {
+      "peer_connections": 1,
+      "active_peer_connections": 1,
+      "connected_peer_connections": 1,
+      "inbound_audio_packets": 7617,
+      "inbound_audio_bytes": 3659057
+    },
+    "sender_after": {
+      "outbound_audio_packets": 8055,
+      "outbound_audio_bytes": 3865375
+    },
+    "delta_before_to_resume": {
+      "packets": 6089,
+      "bytes": 2905065
+    },
+    "delta_during_post_resume_sampling": {
+      "packets": 1505,
+      "bytes": 743821
+    },
+    "interpretation": "RTP counters advanced between the pre-background and first post-resume samples, and continued advancing afterward with one connected peer. Counters do not prove continuous delivery at every instant of the hidden interval or audible playback."
+  },
+  "visual_review": {
+    "screenshot": ".out/local-features/issue785-browser-paired-no-cdp-immediate/android-chrome-paired-audio-after-resume.png",
+    "sha256": "461da01a5a8122dd40635dbd4ad9c82e702fbfce8e6b93292d3f9df85d6a8967",
+    "resolution_px": [
+      1082,
+      2055
+    ],
+    "observation": "At source resolution, the resumed voice dock shows connected status, two participant cards, the browser-background limitation notice and voice controls. No reconnect banner appears and no playback-resume gesture was needed. The navigation button has a visible focus ring. This screenshot does not prove audible output."
+  },
+  "execution": {
+    "command": "python3 -m tools.qa.critical_client_acceptance.issue785_android_chrome_pair --device emulator-5554",
+    "exit_code": 0,
+    "runner_status": "PASS_SCOPED",
+    "node_tests": "4 passed (timing and AVD-target selection)",
+    "python_tests": "34 passed (issue785 QA harness and native feature selection)"
+  },
+  "limitations": [
+    "This is a paired synthetic-media run on an AOSP AVD, not a physical Android acceptance.",
+    "RTP statistics establish transport counters only; speaker audibility, Bluetooth routing and decoded listener audio were not measured.",
+    "The browser's measured hidden-to-visible interval was 119.346 seconds; the Home-to-resume interval was 121.611 seconds.",
+    "This run does not cover iOS Safari, installed PWA, physical lock-screen behavior, 5/15/60-minute windows, network handoff, acoustic output or the release gate.",
+    "The broad mobile browser matrix remains open; issue 785 release gate remains open."
+  ],
+  "local_runtime_output": ".out/local-features/issue785-browser-paired-no-cdp-immediate"
+}
