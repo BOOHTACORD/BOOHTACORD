@@ -13,8 +13,7 @@ import { applyDeletedMessageHint, shouldRefreshTextHistory } from './active_mess
 import { usePermissionStore } from '../authorization/permission_store'
 import { notifyOwnSessionsChanged } from '../identity/own_sessions/state'
 import { guildProfile } from '../guild/profile/state'
-import { createProtectedRefreshGate } from './protected_refresh/gate'
-import { coalesceStores } from './protected_refresh/stores'
+import { createProtectedRefreshScope } from './protected_refresh/scope'
 import { refreshEditedHints } from './protected_refresh/revisions'
 import { deliverProtectedHintBatch } from './protected_refresh/batch'
 import { processRealtime } from '../telemetry/realtime_flow/process'
@@ -36,9 +35,7 @@ import type { createRosterSocketState } from '../voice/roster_socket/state'
 export type { WorkspaceRealtimeStores } from './protected_refresh/types'
 export { refreshProtectedState } from './protected_refresh/full'
 export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtime: ReturnType<typeof useRealtimeStore>, presence: ReturnType<typeof useGuildPresence>, voice: ReturnType<typeof useVoiceConnectionStore>, accountID: string, onSessionExpired: () => void, maintenanceState?: ReturnType<typeof createMaintenanceState>, roster?: ReturnType<typeof createRosterSocketState>, moveToAfk?: (channelID: string) => Promise<void>) {
-  let gate = createProtectedRefreshGate()
-  const original = stores
-  stores = coalesceStores(original, gate)
+  const original = stores, protectedRefresh = createProtectedRefreshScope(stores)
   const voiceNavigation = useVoiceNavigationStore()
   const notifications = useNotificationStore()
   const permissions = usePermissionStore()
@@ -100,7 +97,7 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
     start(): void {
       active = true
       previews.resume()
-      gate = createProtectedRefreshGate(); stores = coalesceStores(original, gate)
+      stores = protectedRefresh.renew()
       lifecycle += 1
       notifications.start(accountID)
       realtime.connect(event => processRealtime([event],()=>deliver(event)), undefined, undefined, {
@@ -109,13 +106,13 @@ export function createWorkspaceRealtime(stores: WorkspaceRealtimeStores, realtim
           return processRealtime(events,()=>deliverProtectedHintBatch(events, deliver).then(() =>
             active && incarnation === own ? refreshEditedHints(original, events) : undefined))
         },
-        onRecovery: () => processRealtime([],()=>Promise.all([refreshProtectedState(stores), permissions.refresh(), guildProfile.refresh(), voice.refreshScreenWatchers(), contextHints.recover()]).then(() => undefined)),
+        onRecovery: () => processRealtime([],()=>Promise.all([refreshProtectedState(stores), permissions.refreshRealtime(), guildProfile.refresh(), voice.refreshScreenWatchers(), contextHints.recover()]).then(() => undefined)),
         checkSession: async signal => (await loadCurrentSession(undefined, signal))?.accountId === accountID,
         onSessionExpired,
         onSocketStart: () => { maintenance.start(); roster?.socketStart() },
-        onSocketEnd: () => { incarnation++; maintenance.stop(); roster?.socketEnd(); voice.clearScreenTelemetry() },
+        onSocketEnd: () => { incarnation++; if (active) stores = protectedRefresh.renew(); maintenance.stop(); roster?.socketEnd(); voice.clearScreenTelemetry() },
       })
     },
-    stop(): void { active = false; lifecycle += 1; contextHints.reset(); previews.clear(); gate.close(); realtime.disconnect(); notifications.stop() },
+    stop(): void { active = false; lifecycle += 1; contextHints.reset(); previews.clear(); protectedRefresh.close(); realtime.disconnect(); notifications.stop() },
   }
 }

@@ -19,4 +19,9 @@ ID: `realtime.recovery`
 ## Компоненты
 
 - cmp.flutter.realtime: [clients/flutter/lib/src/features/realtime/lifecycle/controller.dart](../../../../clients/flutter/lib/src/features/realtime/lifecycle/controller.dart)
+- cmp.web.protected\_recovery: [clients/web/src/workspace/workspace\_realtime.ts](../../../../clients/web/src/workspace/workspace_realtime.ts), [clients/web/src/workspace/protected\_refresh/scope.ts](../../../../clients/web/src/workspace/protected_refresh/scope.ts), [clients/web/src/workspace/protected\_refresh/gate.ts](../../../../clients/web/src/workspace/protected_refresh/gate.ts), [clients/web/src/workspace/protected\_refresh/stores.ts](../../../../clients/web/src/workspace/protected_refresh/stores.ts), [clients/web/src/workspace/protected\_refresh/types.ts](../../../../clients/web/src/workspace/protected_refresh/types.ts), [clients/web/src/channel/topology\_store.ts](../../../../clients/web/src/channel/topology_store.ts)
 - cmp.web.realtime\_store: [clients/web/src/realtime/realtime\_store.ts](../../../../clients/web/src/realtime/realtime_store.ts)
+
+## Связи компонентов
+
+- cmp.web.protected\_recovery → cmp.web.realtime\_store (зависит от)

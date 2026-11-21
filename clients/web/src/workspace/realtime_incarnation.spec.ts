@@ -4,6 +4,7 @@ import type { RealtimeEvent } from '../realtime/realtime_client'
 import type { RealtimeConnectOptions } from '../realtime/realtime_connection_types'
 import { useNotificationStore } from '../notification/notification_store'
 import { createWorkspaceRealtime } from './workspace_realtime'
+import { guildProfile } from '../guild/profile/state'
 
 const messageID = '22222222-2222-4222-8222-222222222222'
 const channelID = '11111111-1111-4111-8111-111111111111'
@@ -50,4 +51,23 @@ it('does not start a follow-up edited-message refresh from an old socket', async
   finish(); await pending
   expect(value.stores.messages.refreshMessages).not.toHaveBeenCalled()
   value.workspace.stop()
+})
+
+it('finishes replacement-socket recovery while the old topology request is still pending', async () => {
+  const value = setup()
+  const profile = vi.spyOn(guildProfile, 'refresh').mockResolvedValue()
+  let finishOld!: () => void
+  value.stores.topology.refresh.mockImplementationOnce(() => new Promise<void>(resolve => { finishOld = resolve }))
+  const oldRecovery = value.options.onRecovery!()
+  try {
+    await vi.waitFor(() => expect(finishOld).toBeTypeOf('function'))
+    value.options.onSocketEnd?.(); value.options.onSocketStart?.()
+    let recovered = false
+    const newRecovery = Promise.resolve(value.options.onRecovery!()).then(() => { recovered = true })
+    await vi.waitFor(() => expect(value.stores.topology.refresh).toHaveBeenCalledTimes(2))
+    await vi.waitFor(() => expect(recovered).toBe(true))
+    finishOld(); await oldRecovery; await newRecovery
+  } finally {
+    finishOld?.(); value.workspace.stop(); profile.mockRestore()
+  }
 })

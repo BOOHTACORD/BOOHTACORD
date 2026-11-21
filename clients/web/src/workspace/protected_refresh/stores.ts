@@ -4,7 +4,8 @@ import { createProtectedRefreshGate } from './gate'
 export function coalesceStores(stores: WorkspaceRealtimeStores, gate: ReturnType<typeof createProtectedRefreshGate>): WorkspaceRealtimeStores {
   const { topology, messages, directMessages } = stores
   return {
-    topology: { get error() { return topology.error }, refresh: () => gate.run('topology', () => topology.refresh()) },
+    topology: { get error() { return topology.error }, refresh: () => gate.run('topology',
+      () => topology.refreshRealtime ? topology.refreshRealtime(gate.current) : topology.refresh()) },
     messages: {
       get channelId() { return messages.channelId }, get error() { return messages.error },
       applyDeletedHint: (channelId, messageId) => messages.applyDeletedHint?.(channelId, messageId),

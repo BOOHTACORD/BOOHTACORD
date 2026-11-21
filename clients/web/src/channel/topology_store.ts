@@ -12,8 +12,10 @@ export const useTopologyStore = defineStore('channel-topology', () => {
   let inFlight: Promise<void> | null = null
   let pending = false
   let nextRequest: TopologyRequest | undefined
+  const ui = () => true
+  let admission = ui, epoch = 0
 
-  async function drain(): Promise<void> {
+  async function drain(owner: number): Promise<void> {
     loading.value = true
     try {
       do {
@@ -21,27 +23,34 @@ export const useTopologyStore = defineStore('channel-topology', () => {
         error.value = null
         const request = nextRequest
         try {
-          topology.value = await loadTopology(request)
+          const next = await loadTopology(request)
+          if (owner !== epoch || !admission()) return
+          topology.value = next
         } catch (cause) {
-          error.value = requestFailureMessage(cause, 'Не удалось получить каналы.')
+          if (owner === epoch && admission()) error.value = requestFailureMessage(cause, 'Не удалось получить каналы.')
         }
-      } while (pending)
+      } while (pending && owner === epoch && admission())
     } finally {
-      loading.value = false
-      inFlight = null
+      if (owner === epoch) { loading.value = false; inFlight = null }
     }
   }
 
-  function refresh(request?: TopologyRequest): Promise<void> {
+  function refreshOwned(request: TopologyRequest | undefined, current: () => boolean): Promise<void> {
+    if (!current()) return Promise.resolve()
     nextRequest = request
-    if (inFlight) {
+    if (inFlight && admission()) {
       // A hint received during a GET needs one fresh tail read, shared by all callers.
       pending = true
+      // Bind UI work to the live socket; ordinary reads cannot remove that fence.
+      if (current !== ui) admission = current
       return inFlight
     }
-    inFlight = drain()
+    admission = current
+    inFlight = drain(++epoch)
     return inFlight
   }
 
-  return { topology, loading, error, refresh }
+  const refresh = (request?: TopologyRequest) => refreshOwned(request, ui)
+  const refreshRealtime = (current: () => boolean) => refreshOwned(undefined, current)
+  return { topology, loading, error, refresh, refreshRealtime }
 })

@@ -1,4 +1,8 @@
-interface Refreshable { error: string | null; refresh(): Promise<void> }
+interface Refreshable {
+  error: string | null
+  refresh(): Promise<void>
+  refreshRealtime?(current: () => boolean): Promise<void>
+}
 interface TextHistory extends Refreshable {
   channelId: string | null
   applyDeletedHint?(channelId: string, messageId: string): void
