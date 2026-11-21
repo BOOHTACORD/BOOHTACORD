@@ -42,7 +42,13 @@ class Stack(Base):
         ready('http://127.0.0.1:4980')
         self.start_api()
         configs = self.work/'proxy'; configs.mkdir()
-        (configs/'Caddyfile').write_text('''{
+        (configs/'Caddyfile').write_text(self.proxy_config(), encoding='utf-8')
+        self.container('proxy', 'caddy:2.10.0-alpine', '--publish', '127.0.0.1:4910:4910',
+                       *read_only_directory_mount(configs, '/etc/caddy'))
+        ready(ORIGIN+'/api/v1/health')
+
+    def proxy_config(self):
+        return '''{
  admin off
  auto_https disable_redirects
 }
@@ -57,7 +63,4 @@ https://localhost:4910 {
   reverse_proxy '''+self.owner+'''-api:8080
  }
 }
-''', encoding='utf-8')
-        self.container('proxy', 'caddy:2.10.0-alpine', '--publish', '127.0.0.1:4910:4910',
-                       *read_only_directory_mount(configs, '/etc/caddy'))
-        ready(ORIGIN+'/api/v1/health')
+'''

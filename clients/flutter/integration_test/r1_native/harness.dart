@@ -30,7 +30,8 @@ class R1Tls extends HttpOverrides {
 }
 
 class R1Harness {
-  R1Harness(this.tester, this.binding);
+  R1Harness(this.tester, this.binding, {this.beforeAuthenticate});
+  final Future<void> Function()? beforeAuthenticate;
   final WidgetTester tester;
   final IntegrationTestWidgetsFlutterBinding binding;
   late NativeR1Api api, peerApi;
@@ -83,6 +84,7 @@ class R1Harness {
       ),
     );
     await real(app.initialize);
+    await beforeAuthenticate?.call();
     await real(() => app.authenticate('qa_admin', password, register: false));
     await wait(() => app.phase == AppPhase.ready && app.realtime.connected);
     await realPeer(peer.initialize);

@@ -23,6 +23,7 @@ def main():
     parser.add_argument('--device', required=True)
     parser.add_argument('--flutter', default='flutter')
     parser.add_argument('--adb', default='adb')
+    parser.add_argument('--scenario', choices=('r1', 'r2'), default='r1')
     parser.add_argument('--output', default='.out/r1-native-'+time.strftime('%Y%m%d-%H%M%S'))
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[4]
@@ -37,7 +38,11 @@ def main():
     result = dict(status='FAIL', platform=args.platform, source_before=source,
                   physical_android=False, storage_adapters='test-only preferences and secure storage')
     with tempfile.TemporaryDirectory(prefix='r1-native-', dir=root/'.out') as directory:
-        work = Path(directory); stack = Stack(root, work)
+        work = Path(directory)
+        fixture = Stack
+        if args.scenario == 'r2':
+            from tools.qa.realtime_connect.fixture.stack import Stack as fixture
+        stack = fixture(root, work)
         try:
             stack.start()
             with socket.create_connection(('127.0.0.1', 4910), timeout=5) as plain:
@@ -48,12 +53,13 @@ def main():
                 defines = work/'defines.json'
                 defines.write_text(json.dumps(dict(QA_API_BASE='https://localhost:4910/api/v1',
                     QA_CERT_SHA256=pin, QA_PASSWORD=stack.password,
-                    QA_CONTROL_URL=control['url'], QA_CONTROL_TOKEN=control['token'])), encoding='utf-8')
+                    QA_CONTROL_URL=control['url'], QA_CONTROL_TOKEN=control['token'],
+                    QA_R2_TOKEN=getattr(stack, 'fault_token', ''))), encoding='utf-8')
                 defines.chmod(0o600)
                 with (destination/'private-run.log').open('w', encoding='utf-8') as log:
                     run_native([args.flutter, 'drive', *(['--no-pub'] if args.platform == 'windows' else []),
                         '--driver', 'test_driver/r1_native.dart',
-                        '--target', 'integration_test/issue689_r1_native_test.dart', '-d', args.device,
+                        '--target', f'integration_test/issue689_{args.scenario}_native_test.dart', '-d', args.device,
                         '--dart-define-from-file', str(defines)], cwd=root/'clients/flutter',
                         env=dict(os.environ, BOOHTACORD_NATIVE_CAPTURE_DIR=str(destination)),
                         stdout=log, stderr=subprocess.STDOUT)
@@ -72,7 +78,7 @@ def main():
             if result['source_stability']['status'] != 'PASS': result['status'] = 'BLOCKED'
             (destination/'runtime.json').write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')
     if result['status'] != 'PASS': raise SystemExit('Native source stability failed')
-    print('R1_NATIVE_PASS '+args.platform)
+    print(args.scenario.upper()+'_NATIVE_PASS '+args.platform)
 
 
 if __name__ == '__main__': main()
