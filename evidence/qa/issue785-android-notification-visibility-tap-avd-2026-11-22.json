@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "issue": 785,
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "recorded_at_utc": "2026-11-22T04:07:54Z",
+  "scope": "Android 15/API 35 AOSP AVD: visibility of the microphone foreground-service notification with POST_NOTIFICATIONS granted, and launch of MainActivity from its tap action.",
+  "source": {
+    "product_source_commit": "11839b7516d5aaab6eb028c3972c178246b415fd",
+    "master_merge_commit": "a28d4bfd6034cd0debb30cc6d8722099df07a721",
+    "product_source_matches_master": true,
+    "qa_runner_modified": false,
+    "note": "The notification and service implementation were unchanged from the source-bound commit; a manual ADB tap caused the existing Flutter lifecycle integration test to observe an early resume."
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 emulator",
+    "avd": "BOOHTACORD_QA_API35",
+    "serial": "emulator-5554",
+    "physical_device": false,
+    "publisher": "Flutter Android microphone foreground service",
+    "receiver": "Independent Chromium listener-only participant",
+    "server": "Disposable local Go/PostgreSQL/LiveKit QA stack"
+  },
+  "scenario": {
+    "preconditions": {
+      "voice_session_active": true,
+      "microphone_foreground_service_active": true,
+      "record_audio": "Granted by the existing AVD QA runner.",
+      "post_notifications": "Set to granted with adb after app installation and before the foreground service started; the Android permission prompt and explicit user choice were not exercised."
+    },
+    "notification_visibility": {
+      "background_action": "Android Home",
+      "notification_row_visible": true,
+      "channel_id": "boohtacord_voice_session",
+      "channel_importance": "LOW",
+      "title": "BOOHTACORD — голосовой сеанс",
+      "body": "Голос и микрофон активны. Откройте приложение для управления.",
+      "screenshot": {
+        "local_path": ".out/issue785-notification-api35-granted-20261122/notification-visible-before-tap.png",
+        "width": 1080,
+        "height": 2400,
+        "sha256": "08ce52513784c636c4ccfba0aac4261b8c6dbe3cda2bb4d2c18fdecc3be54800"
+      }
+    },
+    "notification_tap": {
+      "action": "ADB tap inside the visible notification card.",
+      "top_resumed_activity_after_2_seconds": "ru.boohtacord.app/.MainActivity",
+      "microphone_foreground_service_active_after_tap": true,
+      "service_start_foreground_count_after_tap": 1,
+      "flutter_integration_test": "FAIL_HARNESS_EARLY_RESUME",
+      "failure_reason": "The test expected the runner's scheduled control status 'resume', but the notification tap resumed the app while the control file still had status 'ready'.",
+      "same_room_after_tap": "NOT_VERIFIED",
+      "receiver_rtp_after_tap": "NOT_VERIFIED",
+      "audible_output": "NOT_MEASURED"
+    },
+    "permission_denied_observation": {
+      "separate_run_post_notifications_app_op": "ignore",
+      "notification_row_visible": false,
+      "notification_manager_num_posted_by_app": 0,
+      "late_permission_grant_while_service_was_active_created_visible_row": false,
+      "screenshot_sha256": "c5761212db5270568cbc172def93d3992e803d29d906def3e9a055b91dc23f91"
+    }
+  },
+  "raw_local_artifacts": {
+    "successful_background_baseline_result_sha256": "bd05cd34e2379b9229be56e0126d978089f6d5d38296b711ed7e72950caee8ba",
+    "early_resume_flutter_log_sha256": "cf1cc350eff917297c16027f7c378ea0a41bf2d6edc256def23953d0516fba0c",
+    "retention": "Screenshots and raw .out results/logs remain local runtime artifacts and are not committed."
+  },
+  "limitations": [
+    "This is an API 35 AOSP AVD result, not physical-device acceptance.",
+    "The permission was granted with adb; the Android consent prompt path was not tested.",
+    "The integration test aborted on the early notification-driven resume, so same-room recovery and receiver RTP after tapping remain unverified.",
+    "RTP from the separate 120-second baseline run is transport evidence only and does not prove acoustic audibility or intelligibility.",
+    "Android API 33/34, logout/revoke/listener-only exact-once cleanup, permission-revoke rejoin, iOS, physical audio routing and release gates remain open."
+  ]
+}

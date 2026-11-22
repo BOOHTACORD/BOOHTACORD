@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "issue": 785,
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "recorded_at_utc": "2026-11-22T06:01:00Z",
+  "scope": "Android 15/API 35 AOSP AVD paired Flutter microphone FGS background/resume check on current master, with an early Activity resume while the runner control remained ready.",
+  "source": {
+    "product_source_commit": "a28d4bfd6034cd0debb30cc6d8722099df07a721",
+    "working_tree_clean_product_source": true,
+    "qa_harness_changes_present": true,
+    "tested_files_sha256": {
+      "integration_test": "b32f5dbdf746eb95ce4b55c52a52df46a0ae6b1ac713ca405ead55911c2316e9",
+      "control_wait_helper": "f47e23b0bf7efd988fbaf60fabbf22ebad0744980e9ebc26070118024c075512",
+      "control_wait_tests": "23655880caeaef5d79b9fc4f431a1c5961749f46403eb1528b76d8c81b9a0686"
+    }
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 emulator",
+    "avd": "BOOHTACORD_QA_API35",
+    "serial": "emulator-5554",
+    "physical_device": false,
+    "publisher": "Flutter Android microphone foreground service",
+    "receiver": "Independent Playwright Chromium listener-only participant",
+    "server": "Owned disposable API/PostgreSQL/LiveKit QA stack"
+  },
+  "scenario": {
+    "command": "PYTHONPATH=. python3 -m tools.qa.critical_client_acceptance.issue785_android_flutter_uplink_pair --device emulator-5554 --background-seconds 120 --background-action home --output .out/issue785-master-a28-early-resume-avd-20261122-retry2",
+    "background_action": "Android Home",
+    "early_resume": {
+      "trigger": "ADB am start -n ru.boohtacord.app/.MainActivity during the measured Home interval; the existing Activity task was brought to the foreground.",
+      "trigger_offset_seconds": "NOT_MEASURED",
+      "notification_tap_exercised": false,
+      "control_wait": "Flutter integration test tolerated ready after early resume and awaited the later resume command from the runner."
+    },
+    "background_and_resume": {
+      "background_seconds_requested": 120,
+      "background_seconds_observed": 120.002,
+      "microphone_foreground_service_samples": [
+        {
+          "offset_seconds": 0.0,
+          "microphone_foreground_service_active": true,
+          "display_asleep": false
+        },
+        {
+          "offset_seconds": 30.171,
+          "microphone_foreground_service_active": true,
+          "display_asleep": false,
+          "service_stop_injected": false,
+          "microphone_permission_revoked": false
+        },
+        {
+          "offset_seconds": 60.375,
+          "microphone_foreground_service_active": true,
+          "display_asleep": false,
+          "service_stop_injected": false,
+          "microphone_permission_revoked": false
+        },
+        {
+          "offset_seconds": 90.625,
+          "microphone_foreground_service_active": true,
+          "display_asleep": false,
+          "service_stop_injected": false,
+          "microphone_permission_revoked": false
+        },
+        {
+          "offset_seconds": 120.002,
+          "microphone_foreground_service_active": true,
+          "display_asleep": false,
+          "service_stop_injected": false,
+          "microphone_permission_revoked": false
+        }
+      ],
+      "same_room_after_resume": true,
+      "same_microphone_track_after_resume": true,
+      "voice_phase_after_resume": "connected",
+      "application_socket_connected_after_resume": true,
+      "microphone_unavailable_after_resume": false,
+      "microphone_muted_after_resume": false,
+      "publisher_rtp_before_background": {
+        "audioPublicationCount": 1,
+        "microphoneTrackEnabled": true,
+        "packetsSent": 13,
+        "bytesSent": 3311
+      },
+      "publisher_rtp_after_resume": {
+        "audioPublicationCount": 1,
+        "microphoneTrackEnabled": true,
+        "packetsSent": 593,
+        "bytesSent": 49277
+      },
+      "receiver_samples_during_background": 60,
+      "receiver_samples_with_rtp_during_background": 60,
+      "receiver_first_rtp_during_background": {
+        "observed_at_unix_ms": 1795327076880,
+        "packets": 26,
+        "bytes": 4268
+      },
+      "receiver_last_rtp_during_background": {
+        "observed_at_unix_ms": 1795327194970,
+        "packets": 588,
+        "bytes": 48806
+      },
+      "microphone_service_stopped_after_explicit_leave": true
+    }
+  },
+  "raw_local_artifacts": {
+    "runner_result_sha256": "c841d3597ebeccdb25caa0b5e83bcac97c12ab6b43bb752af0bca3c96fc9d752",
+    "flutter_result_sha256": "bac2f5aa79d9f277336f0a8ab6b7ca0167d3a9093ef2d1ff991e5a1a39d946a8",
+    "receiver_result_sha256": "5b304396823de6d34f15eb727f9fcfa92da7f195ef207fb3a92179fb949d2128",
+    "flutter_drive_log_sha256": "026f62863dc274d591c6f91d39f087620548f2bc2c7695926e31734f1cf83b76",
+    "receiver_log_sha256": "25e93f2ab0125c0c6976a58b9b1da1b40b9891728c699e0d5b9b9f56d39308c3",
+    "retention": "Raw .out logs/results are local runtime artifacts and are not committed."
+  },
+  "limitations": [
+    "This was an Activity launch, not a notification tap; the notification permission prompt and human permission choice were not tested.",
+    "This is an API35 AOSP AVD run, not physical Android acceptance.",
+    "RTP confirms transport progress, not microphone intelligibility, audibility, or audio routing.",
+    "Secure keyguard, Android API33/34, iOS, network transitions, release APK, and production smoke remain unverified.",
+    "Issue 785 release gate remains open."
+  ]
+}

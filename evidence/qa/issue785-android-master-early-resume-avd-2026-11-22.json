@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "issue": 785,
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "recorded_at_utc": "2026-11-22T05:33:03Z",
+  "scope": "Verify the latest-master Issue 785 Android paired integration harness waits through an early Activity resume while its control file remains ready, then checks background RTP and same-room recovery.",
+  "source": {
+    "product_source_commit": "d82f28e38889a003bf06dc909152ff9ec29457c7",
+    "qa_harness_changes_in_worktree": true,
+    "qa_harness_files": [
+      {
+        "path": "clients/flutter/integration_test/issue785_background_microphone_uplink_test.dart",
+        "sha256": "ad667ca8501828f1ce0a25960dad23167c055cc202861fe5500e8a2b49251c2f"
+      },
+      {
+        "path": "clients/flutter/test/test_support/issue785_control_wait.dart",
+        "sha256": "f47e23b0bf7efd988fbaf60fabbf22ebad0744980e9ebc26070118024c075512"
+      },
+      {
+        "path": "clients/flutter/test/features/background_microphone/issue785_control_wait_test.dart",
+        "sha256": "23655880caeaef5d79b9fc4f431a1c5961749f46403eb1528b76d8c81b9a0686"
+      }
+    ],
+    "note": "The test ran with this worktree's resume-control wait patch atop current master. Focused unit tests passed 3/3. Product code was not modified."
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 emulator",
+    "avd": "BOOHTACORD_QA_API35",
+    "serial": "emulator-5554",
+    "physical_device": false,
+    "publisher": "Flutter Android microphone foreground service",
+    "receiver": "Independent Chromium listener-only participant",
+    "server": "Disposable local Go/PostgreSQL/LiveKit QA stack"
+  },
+  "scenario": {
+    "early_resume": {
+      "background_action": "Android Home",
+      "trigger": "ADB am start ru.boohtacord.app/.MainActivity before the runner's scheduled 120-second resume; this was an Activity launch, not a notification tap.",
+      "trigger_offset_seconds": "NOT_MEASURED",
+      "control_wait_behavior": "The app may resume while the runner control is still ready; the test waits for the later resume command.",
+      "post_notifications": "Denied after the integration APK install, so no microphone notification row was available in this run."
+    },
+    "background_and_resume": {
+      "background_seconds_requested": 120,
+      "background_seconds_observed": 120.006,
+      "microphone_foreground_service_samples": [
+        {"offset_seconds": 0.0, "active": true},
+        {"offset_seconds": 30.192, "active": true},
+        {"offset_seconds": 60.422, "active": true},
+        {"offset_seconds": 90.633, "active": true},
+        {"offset_seconds": 120.006, "active": true}
+      ],
+      "same_room_after_resume": true,
+      "same_microphone_track_after_resume": true,
+      "voice_phase_after_resume": "connected",
+      "application_socket_connected_after_resume": true,
+      "microphone_unavailable_after_resume": false,
+      "microphone_muted_after_resume": false,
+      "publisher_rtp_after_resume": {"packets_sent": 589, "bytes_sent": 48959},
+      "receiver_rtp_first_active_during_background": {"observed_at_unix_ms": 1795325412651, "packets": 21, "bytes": 3945},
+      "receiver_rtp_last_active_during_background": {"observed_at_unix_ms": 1795325530758, "packets": 583, "bytes": 48484},
+      "receiver_rtp_samples_with_audio_during_background": 60,
+      "microphone_service_stopped_after_explicit_leave": true,
+      "screenshot": {
+        "local_path": ".out/issue785-notification-tap-avd-2026-11-22-master/screenshots/issue785-flutter-microphone-after-background.png",
+        "width": 1080,
+        "height": 2400,
+        "sha256": "cb672c61f8b8329281349a5b88048492af7426e4af8dd7a23819cdac00ea7be8"
+      },
+      "visual_observation": "At source resolution the resumed Flutter screen showed the same connected voice channel and two participants; no clipping was visible in the captured state. This screenshot does not prove the exact notification tap path."
+    }
+  },
+  "raw_local_artifacts": {
+    "runner_result_sha256": "0cb57addf11bd8f757090e26e6537ec0cb549909509ceabdbf097d089ac45f01",
+    "flutter_drive_log_sha256": "3bb560cf51ec9f1bfb0df105a69140e97af0fbc4502dae4603ad75cde36e6b2c",
+    "receiver_log_sha256": "25e93f2ab0125c0c6976a58b9b1da1b40b9891728c699e0d5b9b9f56d39308c3",
+    "retention": "Screenshots and raw .out results/logs are local runtime artifacts and are not committed."
+  },
+  "limitations": [
+    "This is an API 35 AOSP AVD result, not physical-device acceptance; the connected Pixel was not used.",
+    "This latest-master run resumed MainActivity directly; actual notification visibility and tap were exercised in a separate successful AVD run documented in issue785-android-notification-tap-recovery-avd-2026-11-22.json.",
+    "The microphone permission prompt, human permission choice, RTP intelligibility and audible output were not tested.",
+    "Secure keyguard, Android API 33/34, iOS, physical audio routing, silent network outage, release APK and production smoke remain open.",
+    "Issue 785 remains open; this scoped emulator result does not close the release gate."
+  ]
+}

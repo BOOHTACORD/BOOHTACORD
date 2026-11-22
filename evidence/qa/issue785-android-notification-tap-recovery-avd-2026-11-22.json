@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "issue": 785,
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "recorded_at_utc": "2026-11-22T05:25:05Z",
+  "scope": "Android 15/API 35 AOSP AVD paired voice run: open the visible microphone FGS notification while the app is in Android Home, then verify same-room voice and independent receiver RTP through the scheduled 120-second background interval.",
+  "source": {
+    "product_source_commit": "11839b7516d5aaab6eb028c3972c178246b415fd",
+    "product_source_matches_master": true,
+    "qa_harness_changes_in_worktree": true,
+    "qa_harness_files": [
+      {
+        "path": "clients/flutter/integration_test/issue785_background_microphone_uplink_test.dart",
+        "sha256": "b32f5dbdf746eb95ce4b55c52a52df46a0ae6b1ac713ca405ead55911c2316e9"
+      },
+      {
+        "path": "clients/flutter/test/test_support/issue785_control_wait.dart",
+        "sha256": "f47e23b0bf7efd988fbaf60fabbf22ebad0744980e9ebc26070118024c075512"
+      },
+      {
+        "path": "clients/flutter/test/features/background_microphone/issue785_control_wait_test.dart",
+        "sha256": "23655880caeaef5d79b9fc4f431a1c5961749f46403eb1528b76d8c81b9a0686"
+      }
+    ],
+    "note": "Product implementation was unchanged. The integration harness now treats ready as pending after an early lifecycle resume until the paired runner publishes resume; the focused unit tests passed 3/3."
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 emulator",
+    "avd": "BOOHTACORD_QA_API35",
+    "serial": "emulator-5554",
+    "physical_device": false,
+    "publisher": "Flutter Android microphone foreground service",
+    "receiver": "Independent Chromium listener-only participant",
+    "server": "Disposable local Go/PostgreSQL/LiveKit QA stack"
+  },
+  "scenario": {
+    "preconditions": {
+      "voice_session_active": true,
+      "record_audio": "Granted by the existing AVD QA runner.",
+      "post_notifications": "Granted by adb before this run and before the microphone FGS started; the Android permission prompt and explicit user choice were not exercised."
+    },
+    "notification_tap": {
+      "background_action": "Android Home",
+      "notification_row_visible": true,
+      "tap_offset_seconds_estimate": 39.204,
+      "top_resumed_activity_after_tap": "ru.boohtacord.app/.MainActivity",
+      "screenshot_before_tap": {
+        "local_path": ".out/issue785-notification-tap-avd-2026-11-22-retry/notification-shade.png",
+        "width": 1080,
+        "height": 2400,
+        "sha256": "16b9a5d15133cceaf85dd6d08eab50ab521fc64700ef39d7d9b0915ead62b6cc"
+      },
+      "screenshot_after_tap": {
+        "local_path": ".out/issue785-notification-tap-avd-2026-11-22-retry/app-after-notification-tap.png",
+        "width": 1080,
+        "height": 2400,
+        "sha256": "feb037dd9e3f9a864adea64db47971669ad454d71aa1548bcf038df95f2e7cb0"
+      },
+      "visual_note": "The post-tap capture was taken while Flutter integration_test was waiting on the runner control file and shows a black app surface; it is not counted as a UI visual-acceptance screenshot."
+    },
+    "background_and_resume": {
+      "status": "PASS_SCOPED",
+      "background_seconds_requested": 120,
+      "background_seconds_observed": 120.009,
+      "microphone_foreground_service_samples": [
+        {"offset_seconds": 0.0, "active": true},
+        {"offset_seconds": 30.149, "active": true},
+        {"offset_seconds": 60.4, "active": true},
+        {"offset_seconds": 90.669, "active": true},
+        {"offset_seconds": 120.009, "active": true}
+      ],
+      "same_room_after_resume": true,
+      "same_microphone_track_after_resume": true,
+      "voice_phase_after_resume": "connected",
+      "application_socket_connected_after_resume": true,
+      "microphone_unavailable_after_resume": false,
+      "microphone_muted_after_resume": false,
+      "publisher_rtp_after_resume": {"packets_sent": 591, "bytes_sent": 49118},
+      "receiver_rtp_before_tap": {"observed_at_unix_ms": 1795324941724, "packets": 199, "bytes": 18056},
+      "receiver_rtp_after_tap": {"observed_at_unix_ms": 1795324943725, "packets": 208, "bytes": 18692},
+      "receiver_rtp_at_background_end": {"observed_at_unix_ms": 1795325023789, "packets": 590, "bytes": 48965},
+      "receiver_rtp_samples_with_audio_during_background": 60,
+      "microphone_service_stopped_after_explicit_leave": true
+    }
+  },
+  "raw_local_artifacts": {
+    "runner_result_sha256": "35b965d1eb3388118e701d6b655dc15f1fbdbba7c2565eae4eca6587c10497a3",
+    "flutter_drive_log_sha256": "d90a0d401325dc323309675a3d76731692ae964af0759d4456296fe08649548f",
+    "receiver_log_sha256": "25e93f2ab0125c0c6976a58b9b1da1b40b9891728c699e0d5b9b9f56d39308c3",
+    "retention": "Screenshots and raw .out results/logs are local runtime artifacts and are not committed."
+  },
+  "limitations": [
+    "This is an API 35 AOSP AVD result, not physical-device acceptance; the connected Pixel was not used.",
+    "The notification permission prompt and a human permission choice were not tested.",
+    "Independent RTP proves transport delivery, not intelligible microphone audio or audible output.",
+    "The post-tap black-surface capture is not visual acceptance evidence.",
+    "Android API 33/34, physical Android, iOS, secure keyguard, network transitions, silent WS failure, release APK and production smoke remain open.",
+    "Issue 785 remains open; this scoped emulator result does not close the release gate."
+  ]
+}
