@@ -21,7 +21,8 @@ class PlanTests(unittest.TestCase):
                      'tools/ci/select_changes/dependencies.json',
                      'tools/ci/select_changes/test_routing.py',
                      'tools/ci/actual_acceptance/plan-v1.json',
-                     'tools/ci/actual_acceptance/test_plan.py'):
+                     'tools/ci/actual_acceptance/test_plan.py',
+                     'tools/verify/livekit_network_config/check.py'):
             with self.subTest(path=path):
                 result = plan.select([path])
                 self.assertEqual(result['profiles'], [])

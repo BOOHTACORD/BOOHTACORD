@@ -1,0 +1,12 @@
+{
+  "kind": "source-only-livekit-network-revalidation",
+  "observed_at": "2026-11-22",
+  "scope": "Refresh repository artifact digests after adding explicit CI and actual-acceptance routing for the Issue 785 paired Android QA harness and its selector tests. No LiveKit deployment, network configuration, metrics boundary, or media-capability claim changed.",
+  "runtime_or_media_verification": "No LiveKit media or deployment verification is claimed. Issue 785 Android AVD acceptance is recorded separately in evidence/qa/issue785-android-normal-apk-revoke-cold-start-avd-2026-11-22-master-0717d7a.json.",
+  "repository_artifacts": {
+    "tools/ci/select_changes/dependencies.json": "sha256:bdc4616e270fa200dac3a942dd5b526900dee39f5e05ce00c799adb912a0af0e",
+    "tools/ci/select_changes/test_routing.py": "sha256:fdf682f92030939793dcf1aeb1fc40ebcdad19d430539043bb18ae95fc5b2b53",
+    "tools/ci/actual_acceptance/plan-v1.json": "sha256:aff63c185113f5c0640f0590d5ec05e5951f36bd157137f3f64ce988188f5915",
+    "tools/ci/actual_acceptance/test_plan.py": "sha256:19bc5350beccdf5bde8aea9c744a8f8f69eba222427cad233076729784ea2745"
+  }
+}
