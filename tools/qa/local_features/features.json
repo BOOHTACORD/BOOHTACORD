@@ -2378,7 +2378,8 @@
       "clients/flutter/lib/src/features/admin/*",
       "clients/flutter/lib/src/features/guild/*",
       "clients/flutter/lib/src/features/admin/guild_settings/**",
-      "clients/flutter/lib/src/features/authorization/permissions/**"
+      "clients/flutter/lib/src/features/authorization/permissions/**",
+      "clients/flutter/lib/src/screens/admin_ui/copy_reset_link/**"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts"
@@ -2393,7 +2394,9 @@
       "test/admin_telemetry/api_test.dart",
       "test/admin_telemetry/controller_test.dart",
       "test/admin_telemetry/panel_test.dart",
-      "test/admin_accessibility/search_focus_test.dart"
+      "test/admin_accessibility/search_focus_test.dart",
+      "test/admin_accessibility/role_save_lifecycle_test.dart",
+      "test/admin_accessibility/reset_copy_failure_test.dart"
     ],
     "acceptance": {
       "issue295": {
@@ -2439,6 +2442,13 @@
           "clients/flutter/test/admin_accessibility/search_focus_test.dart"
         ],
         "scope": "Sequential editing updates retain focus and IME at scales 1/1.3/2 with and without keyboard insets. Physical Gboard/Back acceptance remains required."
+      },
+      "local_rescue_20261122": {
+        "focused": [
+          "clients/flutter/test/admin_accessibility/role_save_lifecycle_test.dart",
+          "clients/flutter/test/admin_accessibility/reset_copy_failure_test.dart"
+        ],
+        "scope": "Cancel permission saves after owner removal, reload or changed draft; clear stale clipboard feedback before retry. Fixture widget tests cover shared Flutter behavior; native and physical acceptance are reported separately."
       }
     },
     "parity": [
@@ -2490,7 +2500,8 @@
         "android": "implementation_and_regression"
       },
       "scope": " 2026-10-28 (PR #590): #585: shared Flutter member-search editor identity, sequential editing and test IME/focus at 1/1.3/2x; Web admin unchanged with CI regressions. Android/iOS share the implementation; physical Gboard, TalkBack and voice acceptance remain NOT_RUN. 2026-11-14 (PR #783): added the AFK voice channel and inactivity timeout to Web and Flutter guild admin settings. Focused Web and Flutter settings tests pass; feature-specific device/paired-client route acceptance remains NOT_RUN.",
-      "idle_afk_speech_activity": "2026-11-14: Web and shared Flutter guild-admin copy now says active voice speech resets the AFK timer. AFK save and routing behavior are unchanged; focused copy tests pass, paired device routing remains NOT_RUN."
+      "idle_afk_speech_activity": "2026-11-14: Web and shared Flutter guild-admin copy now says active voice speech resets the AFK timer. AFK save and routing behavior are unchanged; focused copy tests pass, paired device routing remains NOT_RUN.",
+      "local_rescue_20261122": "Shared Flutter permission saves now revalidate the live owner, API, editable role, generation and immutable draft after confirmation. Clipboard retries clear stale feedback. Web admin is unchanged. Windows-host focused widget regressions pass; Android/iOS use the same code, with owned native and physical acceptance recorded separately; physical checks remain NOT_RUN."
     }
   },
   "chat": {
@@ -2840,7 +2851,9 @@
       "test/updates/required_action_test.dart",
       "test/updates/required_action_failure_test.dart",
       "test/updates/required_api_test.dart",
-      "test/updates/required_stale_test.dart"
+      "test/updates/required_stale_test.dart",
+      "test/updates/evaluator_test.dart",
+      "test/updates/package_build_test.dart"
     ],
     "native_targets": [
       "integration_test/update_required_test.dart"
@@ -2858,7 +2871,8 @@
         "ios": "implementation_and_regression",
         "android": "implementation_and_regression"
       },
-      "scope": "Required-update presentation is registered for Web and shared Flutter. Browser and widget tests cover the gate; current-source native release, real catalog and iOS runtime acceptance remain NOT_RUN."
+      "scope": "Required-update presentation is registered for Web and shared Flutter. Browser and widget tests cover the gate; current-source native release, real catalog and iOS runtime acceptance remain NOT_RUN.",
+      "local_rescue_20261122": "Web and shared Flutter reject a matching release ID with contradictory order, version or declared build. Shared evaluator fixtures cover both; Flutter preserves Android per-ABI installed build normalization. Existing minimum-version, expiry and package checks remain in place. Browser/native acceptance is separate from pure evaluator tests."
     },
     "parity": [
       {

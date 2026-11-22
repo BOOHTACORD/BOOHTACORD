@@ -1,5 +1,6 @@
 {
   "components": [
+    {"id": "cmp.backend.session_revalidation", "paths": ["backend/internal/realtime/connect_session/session_monitor.go", "backend/internal/realtime/connect_session/session_monitor_spread.go"]},
     {"id": "cmp.web.realtime_store", "source": {"parity_id": "realtime.recovery", "platform": "web"}, "depends_on": ["cmp.web.realtime_connection_lifecycle"]},
     {"id": "cmp.web.realtime_connection_lifecycle", "paths": ["clients/web/src/realtime/connection_lifecycle/controller.ts", "clients/web/src/realtime/connection_lifecycle/session_recovery.ts"]},
     {"id": "cmp.web.protected_recovery", "paths": ["clients/web/src/workspace/workspace_realtime.ts", "clients/web/src/workspace/protected_refresh/scope.ts", "clients/web/src/workspace/protected_refresh/gate.ts", "clients/web/src/workspace/protected_refresh/stores.ts", "clients/web/src/workspace/protected_refresh/types.ts", "clients/web/src/channel/topology_store.ts"], "depends_on": ["cmp.web.realtime_store"]},
@@ -25,7 +26,7 @@
       "target_revision": null,
       "behavior_revisions": [],
       "parity_ids": ["realtime.recovery"],
-      "components": ["cmp.web.realtime_store", "cmp.web.protected_recovery", "cmp.flutter.realtime"],
+      "components": ["cmp.web.realtime_store", "cmp.web.protected_recovery", "cmp.flutter.realtime", "cmp.backend.session_revalidation"],
       "platforms": {
         "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
         "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},

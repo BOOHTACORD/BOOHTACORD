@@ -1,14 +1,41 @@
+import 'package:flutter/foundation.dart' show mapEquals;
+
 import '../native_bindings.dart';
 import '../lifecycle/context.dart';
 import '../feedback/handler.dart';
 
 extension RoleSaveAction on RolePermissionsContext {
   Future<void> executeSavePermissions() async {
+    if (!mounted ||
+        saving ||
+        loading ||
+        denied ||
+        !dirty ||
+        role != GuildRole.member ||
+        selected?.editable != true) {
+      return;
+    }
+    final api = widget.api;
+    final expectedRevision = revision;
+    final generation = loadGeneration;
     final before = Map<GuildPermission, bool>.of(baseline);
+    final proposed = Map<GuildPermission, bool>.of(draft);
     final newDeletes = deleteKeys.any(
       (key) => baseline[key] != true && draft[key] == true,
     );
     if (newDeletes && !await confirmDeletes()) return;
+    if (!mounted ||
+        saving ||
+        loading ||
+        denied ||
+        widget.api != api ||
+        role != GuildRole.member ||
+        selected?.editable != true ||
+        revision != expectedRevision ||
+        generation != loadGeneration ||
+        !mapEquals(proposed, draft)) {
+      return;
+    }
     mutate(() {
       saving = true;
       error = null;
@@ -16,11 +43,12 @@ extension RoleSaveAction on RolePermissionsContext {
       conflict = false;
     });
     try {
-      await widget.api.saveMemberRolePolicy(
-        revision: revision,
-        values: draft,
+      await api.saveMemberRolePolicy(
+        revision: expectedRevision,
+        values: proposed,
         confirmDeleteGrants: newDeletes,
       );
+      if (!mounted) return;
       final refreshed = await loadRoles(reset: true);
       if (!mounted) return;
       await widget.onSaved();

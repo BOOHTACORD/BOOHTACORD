@@ -37,7 +37,12 @@ export function evaluateUpdate(local: LocalIdentity | null, policy: UpdatePolicy
   if (local.installed_version && local.version && local.installed_version !== local.version) return 'identity_conflict'
   if (local.installed_build && local.native_build && local.installed_build !== local.native_build) return 'identity_conflict'
   if (local.package_name && local.expected_package_name && local.package_name !== local.expected_package_name) return 'identity_conflict'
-  if (target.release_id === local.release_id) return 'up_to_date'
+  if (target.release_id === local.release_id) {
+    if (target.release_order !== local.release_order ||
+        (local.version != null && target.version !== local.version) ||
+        (local.native_build != null && target.native_build !== local.native_build)) return 'identity_conflict'
+    return 'up_to_date'
+  }
   if (target.release_order > local.release_order) return 'update_available'
   if (target.release_order < local.release_order) return 'current_ahead'
   return 'identity_conflict'

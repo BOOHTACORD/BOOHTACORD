@@ -1,5 +1,6 @@
 import 'model.dart';
 import 'package_identity/build_number.dart';
+import 'identity_match.dart';
 
 part 'required_policy.dart';
 
@@ -84,7 +85,11 @@ UpdateResult evaluateUpdate(
       local.packageName != local.expectedPackageName) {
     return UpdateResult.identityConflict;
   }
-  if (target.releaseId == local.releaseId) return UpdateResult.upToDate;
+  if (target.releaseId == local.releaseId) {
+    return updateTargetMatchesIdentity(local, target)
+        ? UpdateResult.upToDate
+        : UpdateResult.identityConflict;
+  }
   if (target.releaseOrder > local.releaseOrder) {
     return UpdateResult.updateAvailable;
   }
