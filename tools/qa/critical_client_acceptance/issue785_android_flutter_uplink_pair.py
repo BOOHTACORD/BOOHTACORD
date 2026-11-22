@@ -257,6 +257,29 @@ def receiver_has_foreground_uplink(sample):
     )
 
 
+def receiver_uplink_advanced_after(samples, started_at_unix_ms, timeout_seconds=20):
+    deadline = started_at_unix_ms + timeout_seconds * 1000
+    after = [
+        sample for sample in samples
+        if started_at_unix_ms <= sample.get('observed_at_unix_ms', -1) <= deadline
+    ]
+    for previous, current in zip(after, after[1:]):
+        if (
+            current.get('inbound_audio_tracks', 0) > 0
+            and current.get('inbound_audio_packets', 0) > previous.get('inbound_audio_packets', 0)
+            and current.get('inbound_audio_bytes', 0) > previous.get('inbound_audio_bytes', 0)
+        ):
+            return {
+                'sample_before_progress': previous,
+                'first_progress_sample': current,
+                'progress_seconds_after_action': round(
+                    (current['observed_at_unix_ms'] - started_at_unix_ms) / 1000,
+                    3,
+                ),
+            }
+    return None
+
+
 def receiver_blackhole_recovery(samples, started_unix_ms, ended_unix_ms, recovery_seconds=BLACKHOLE_RECOVERY_SECONDS):
     before = [
         sample for sample in samples
@@ -1166,6 +1189,23 @@ def main():
             raise RuntimeError(f'Paired receiver did not save final counters:\n{tail(receiver_log, stack.password)}')
         receiver_result = json.loads(final_path.read_text(encoding='utf8'))
         samples = receiver_result.get('samples', [])
+        microphone_retry_after_service_stop = None
+        if args.service_stop_after_seconds:
+            retry_result = (result_file or {}).get('result', {}).get(
+                'microphoneRetryAfterServiceStop'
+            )
+            if not retry_result or not retry_result.get('retryStartedAtUnixMs'):
+                raise RuntimeError('Flutter did not report a microphone retry after the controlled FGS stop')
+            retry_receiver_progress = receiver_uplink_advanced_after(
+                samples,
+                retry_result['retryStartedAtUnixMs'],
+            )
+            if retry_receiver_progress is None:
+                raise RuntimeError('Independent receiver saw no inbound RTP progress after microphone Retry')
+            microphone_retry_after_service_stop = {
+                **retry_result,
+                'independentReceiverRtp': retry_receiver_progress,
+            }
         revoke_media = None
         if permission_revoke_process_exit_observed:
             revoke_media = receiver_media_stop_after_permission_revoke(
@@ -1337,6 +1377,7 @@ def main():
                     'offset_seconds': round(permission_revoke_observed_offset, 3),
                     'started_at_unix_ms': permission_revoke_started_unix_ms,
                 } if args.microphone_permission_revoke_after_seconds else None,
+                'microphone_retry_after_service_stop': microphone_retry_after_service_stop,
             },
             'receiver_media': receiver_result,
             'publisher_media': result_file['result'],
