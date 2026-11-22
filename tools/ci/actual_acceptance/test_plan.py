@@ -16,6 +16,19 @@ class PlanTests(unittest.TestCase):
         self.assertEqual(product_catalog['physical_required'],[])
         self.assertFalse(product_catalog['uncertain'])
         self.assertEqual(plan.select(['tools/qa/local_features/features.json'])['profiles'],[])
+        for path in ('tools/qa/critical_client_acceptance/issue785_android_flutter_uplink_pair.py',
+                     'tools/qa/critical_client_acceptance/test_issue785_android_flutter_uplink_pair.py',
+                     'tools/ci/select_changes/dependencies.json',
+                     'tools/ci/select_changes/test_routing.py',
+                     'tools/ci/actual_acceptance/plan-v1.json',
+                     'tools/ci/actual_acceptance/test_plan.py',
+                     'tools/verify/livekit_network_config/check.py'):
+            with self.subTest(path=path):
+                result = plan.select([path])
+                self.assertEqual(result['profiles'], [])
+                self.assertEqual(result['release_required'], [])
+                self.assertEqual(result['physical_required'], [])
+                self.assertFalse(result['uncertain'])
         self.assertEqual(plan.select(['new-unknown/file'])['profiles'],list(plan.PROFILES))
         self.assertEqual(plan.select(None)['profiles'],list(plan.PROFILES))
         self.assertTrue(plan.select(['clients/flutter/lib/src/features/updates/desktop/controller.dart'])['release_required'])

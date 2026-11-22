@@ -24,6 +24,8 @@ from tools.qa.critical_client_acceptance.issue785_android_flutter_uplink_pair im
     flutter_drive_cleanup_flags,
     validate_permission_revoke_cold_start,
     permission_revoke_permission_persisted,
+    normal_product_apk_install_command,
+    build_web_client,
 )
 from tools.qa.local_features.android_microphone import android_microphone_permission
 
@@ -98,6 +100,28 @@ class Issue785AndroidFlutterUplinkPairTest(unittest.TestCase):
     def test_cold_start_probe_keeps_flutter_app_installed_after_driver_exit(self):
         self.assertEqual(flutter_drive_cleanup_flags(True), ['--keep-app-running'])
         self.assertEqual(flutter_drive_cleanup_flags(False), [])
+
+    def test_permission_revoke_cold_start_installs_the_ordinary_product_apk(self):
+        self.assertEqual(
+            normal_product_apk_install_command(
+                'emulator-5554', '/tmp/ordinary-app-debug.apk'
+            ),
+            [
+                'adb', '-s', 'emulator-5554', 'install', '-r', '-d',
+                '/tmp/ordinary-app-debug.apk',
+            ],
+        )
+
+    def test_pair_runner_builds_production_web_for_the_owned_loopback_origin(self):
+        with patch('subprocess.run', return_value=SimpleNamespace(returncode=0)) as run:
+            build_web_client('/repo', 'https://localhost:4810')
+        run.assert_called_once()
+        self.assertEqual(run.call_args.args[0], ['npm', 'run', 'build'])
+        self.assertEqual(str(run.call_args.kwargs['cwd']), '/repo/clients/web')
+        self.assertEqual(
+            run.call_args.kwargs['env']['VITE_PUBLIC_ORIGIN'],
+            'https://localhost:4810',
+        )
 
     def test_service_stop_probe_requires_a_valid_in_background_offset(self):
         self.assertEqual(validate_service_stop_after(5, 120), 5)

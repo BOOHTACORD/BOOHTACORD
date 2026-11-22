@@ -109,6 +109,8 @@ def main():
     expected_artifacts |= afk_source["repository_artifacts"]
     deafen_source = read(root, "evidence/media/livekit-network-voice-deafen-source-2026-11-14.json")
     expected_artifacts |= deafen_source["repository_artifacts"]
+    ci_routing = read(root, "evidence/media/livekit-network-config-ci-routing-2026-11-22.json")
+    expected_artifacts |= ci_routing["repository_artifacts"]
     background_playback_source = read(
         root,
         "evidence/media/livekit-network-android-background-playback-2026-11-21.json",

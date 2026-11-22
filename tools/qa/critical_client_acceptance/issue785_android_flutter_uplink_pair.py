@@ -72,6 +72,48 @@ def flutter_drive_cleanup_flags(preserve_package_for_cold_start):
     return ['--keep-app-running'] if preserve_package_for_cold_start else []
 
 
+def normal_product_apk_install_command(device, apk_path):
+    return ['adb', '-s', device, 'install', '-r', '-d', str(apk_path)]
+
+
+def build_web_client(root, public_origin):
+    owned_origin = ORIGIN.removesuffix('/api/v1')
+    if public_origin != owned_origin:
+        raise ValueError('Paired Android QA must build the browser client for its owned loopback origin')
+    subprocess.run(
+        ['npm', 'run', 'build'],
+        cwd=Path(root) / 'clients/web',
+        env=dict(os.environ, VITE_PUBLIC_ORIGIN=public_origin),
+        stdout=subprocess.DEVNULL,
+        check=True,
+    )
+
+
+def build_normal_product_apk(root, work):
+    flutter_root = Path(root) / 'clients/flutter'
+    built_apk = flutter_root / 'build/app/outputs/flutter-apk/app-debug.apk'
+    preserved_apk = Path(work) / 'normal-product-app-debug.apk'
+    build_log = Path(work) / 'normal-product-apk-build.log'
+    with build_log.open('w', encoding='utf8') as log:
+        result = subprocess.run(
+            ['flutter', 'build', 'apk', '--debug', '--no-pub'],
+            cwd=flutter_root,
+            stdout=log,
+            stderr=subprocess.STDOUT,
+            text=True,
+            check=False,
+        )
+    if result.returncode:
+        raise RuntimeError(
+            'Ordinary Flutter product APK build failed:\n' + tail(build_log, limit=3000)
+        )
+    if not built_apk.is_file() or built_apk.stat().st_size == 0:
+        raise RuntimeError('Flutter product APK build produced no app-debug.apk')
+    shutil.copy2(built_apk, preserved_apk)
+    digest = hashlib.sha256(preserved_apk.read_bytes()).hexdigest()
+    return preserved_apk, digest
+
+
 def microphone_permission_status(package_dump):
     match = re.search(
         r'(?mi)^\s*android\.permission\.RECORD_AUDIO:\s*granted=(true|false)\b',
@@ -405,14 +447,49 @@ def latest_permission_revoke_kill(logcat):
     return observations[-1] if observations else None
 
 
-def relaunch_after_permission_revoke(device, output, root, permission_status):
+def relaunch_after_permission_revoke(
+    device,
+    output,
+    root,
+    permission_status,
+    normal_product_apk,
+    normal_product_apk_sha256,
+    flutter_driver,
+):
     if permission_status != 'denied':
         raise RuntimeError('RECORD_AUDIO was not denied before the cold-start probe')
+    if flutter_driver is not None and flutter_driver.poll() is None:
+        try:
+            flutter_driver.wait(timeout=15)
+        except subprocess.TimeoutExpired:
+            return permission_revoke_cold_start_not_run(
+                permission_status,
+                'Flutter integration driver did not exit after Android killed its app process',
+                app_installed=True,
+            )
+    if not normal_product_apk.is_file():
+        return permission_revoke_cold_start_not_run(
+            permission_status,
+            'Ordinary Flutter product APK was not available for the cold-start probe',
+            app_installed=True,
+        )
+    install = subprocess.run(
+        normal_product_apk_install_command(device, normal_product_apk),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if install.returncode:
+        return permission_revoke_cold_start_not_run(
+            permission_status,
+            'Ordinary Flutter product APK could not replace the integration-test APK',
+            app_installed=True,
+        )
     installed_path = adb(device, 'shell', 'pm', 'path', PACKAGE, check=False).stdout.strip()
     if not installed_path.startswith('package:'):
         return permission_revoke_cold_start_not_run(
             permission_status,
-            'Application package was absent from the AVD after the integration process exited',
+            'Application package was absent after installing the ordinary Flutter product APK',
         )
     launched = adb(
         device,
@@ -500,6 +577,8 @@ def relaunch_after_permission_revoke(device, output, root, permission_status):
         'activity_component': f'{PACKAGE}/.MainActivity',
         'microphone_permission_revoked': True,
         'permission_status_after_relaunch': permission_status_after_relaunch,
+        'ordinary_product_apk_installed': True,
+        'ordinary_product_apk_sha256': normal_product_apk_sha256,
         'screenshot': str(screenshot.relative_to(root)),
         'screenshot_sha256': hashlib.sha256(capture.stdout).hexdigest(),
         'screenshot_resolution_px': [width, height],
@@ -593,6 +672,8 @@ def main():
     permission_revoke_kill_log = []
     permission_revoke_cold_start = None
     permission_revoke_permission_status = None
+    normal_product_apk = None
+    normal_product_apk_sha256 = None
     try:
         os.environ.update({
             'DOCKER_CONTEXT': 'colima-boohtacord-qa',
@@ -601,6 +682,17 @@ def main():
             'QA_ORIGIN': ORIGIN.removesuffix('/api/v1'),
             'QA_DB_OWNER': stack.owner,
         })
+        build_web_client(root, ORIGIN.removesuffix('/api/v1'))
+        if args.relaunch_after_permission_revoke:
+            normal_product_apk, normal_product_apk_sha256 = build_normal_product_apk(
+                root,
+                work,
+            )
+            print(
+                'Built ordinary Flutter product APK for the post-revoke cold-start probe: '
+                f'{normal_product_apk_sha256}',
+                flush=True,
+            )
         for port in (4810, 4881):
             adb(device, 'reverse', f'tcp:{port}', f'tcp:{port}')
             created_reverse.append(port)
@@ -756,6 +848,9 @@ def main():
                                     output,
                                     root,
                                     permission_revoke_permission_status,
+                                    normal_product_apk,
+                                    normal_product_apk_sha256,
+                                    flutter,
                                 )
                         if flutter.poll() is not None:
                             if not (args.microphone_permission_revoke_after_seconds and microphone_permission_revoke_injected):
@@ -780,6 +875,9 @@ def main():
                                         output,
                                         root,
                                         permission_revoke_permission_status,
+                                        normal_product_apk,
+                                        normal_product_apk_sha256,
+                                        flutter,
                                     )
                         if (
                             args.service_stop_after_seconds
@@ -891,6 +989,9 @@ def main():
                                     output,
                                     root,
                                     permission_revoke_permission_status,
+                                    normal_product_apk,
+                                    normal_product_apk_sha256,
+                                    flutter,
                                 )
                                 permission_revoke_cold_start['launched_after_revoke_offset_seconds'] = round(
                                     time.monotonic() - background_started,
