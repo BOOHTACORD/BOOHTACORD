@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "issue": 785,
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "observed_at_utc": "2026-11-22T01:12:35.200Z",
+  "scope": "Android 15/API 35 AVD microphone permission revocation, resulting app process death, media cessation, and cold launch of the ordinary Flutter APK with RECORD_AUDIO still denied.",
+  "source": {
+    "tested_commit": "0717d7ad003c614dd7a97ebbddc0cefd0ac3478b",
+    "product_source_modified": false,
+    "qa_harness_changes_present": true,
+    "qa_harness_sha256": {
+      "runner": "4e26dde6d61e3795d0b01612ee8e6f3a2bc716630282c7ad6ba86e91bd63be9c",
+      "focused_tests": "5f63f953c595c6bd027549b5e5afcdf44e6ac1d5ac192f6e714d3b19f159a62a"
+    },
+    "ordinary_product_apk_sha256": "c7f20abd42a503f734a3346cf921ad1348d4997547afe0a3815e47f135a2c6b0"
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 emulator",
+    "avd": "BOOHTACORD_QA_API35",
+    "serial": "emulator-5554",
+    "physical_device": false,
+    "publisher": "Flutter Android microphone foreground service",
+    "receiver": "Playwright Chromium listener-only participant",
+    "server": "Owned disposable API/PostgreSQL/LiveKit QA stack"
+  },
+  "scenario": {
+    "command": "python3 -m tools.qa.critical_client_acceptance.issue785_android_flutter_uplink_pair --device emulator-5554 --background-seconds 120 --microphone-permission-revoke-after-seconds 5 --relaunch-after-permission-revoke --output .out/issue785-current-master-20261122/run16",
+    "background_action": "Android Home",
+    "background_seconds_requested": 120,
+    "background_seconds_observed": 120.001,
+    "permission_revoke": {
+      "command": "adb pm revoke android.permission.RECORD_AUDIO",
+      "offset_seconds": 5.028,
+      "android_process_kill_confirmed": true,
+      "flutter_driver_exit_offset_seconds": 5.173
+    },
+    "microphone_foreground_service": {
+      "active_at_start": true,
+      "active_at_30_seconds": false,
+      "active_at_60_seconds": false,
+      "active_at_90_seconds": false,
+      "active_at_120_seconds": false,
+      "service_stop_injected": false
+    },
+    "receiver_media_stop": {
+      "inbound_audio_packets_before_revoke": 32,
+      "inbound_audio_bytes_before_revoke": 4744,
+      "last_increase_after_revoke_seconds": 2.001,
+      "inbound_audio_packets_at_last_increase": 40,
+      "inbound_audio_bytes_at_last_increase": 5378,
+      "plateau_samples": 53,
+      "settle_window_seconds": 10,
+      "plateau_observed_seconds": 104.085,
+      "inbound_track_present_at_observation_end": false,
+      "receiver_peer_remained_connected": true
+    },
+    "cold_start_after_permission_revoke": {
+      "status": "PASS_SCOPED",
+      "ordinary_product_apk_installed": true,
+      "permission_status_before_and_after_launch": "denied",
+      "app_process_running": true,
+      "main_activity_resumed": true,
+      "activity_component": "ru.boohtacord.app/.MainActivity",
+      "microphone_foreground_service_active": false,
+      "launch_offset_seconds": 9.996,
+      "screenshot": ".out/issue785-current-master-20261122/run16/after-permission-revoke-cold-start.png",
+      "screenshot_sha256": "f971e68914436ffcab7cff7170a6eb19e3b0dd58d823d3f5407b65a2b107df70",
+      "screenshot_resolution_px": [
+        1080,
+        2400
+      ],
+      "visual_observation": "Ordinary app rendered the generic session-check failure screen and retry action. The disposable local TLS endpoint produced HandshakeException; successful session recovery is not established.",
+      "automatic_voice_rejoin": "NOT_RUN",
+      "acoustic_output": "NOT_MEASURED"
+    }
+  },
+  "limitations": [
+    "This is a 120-second Android 15/API 35 AOSP AVD result; no physical-device acceptance was performed.",
+    "The generic retry action was visible, but this was not an active-voice fallback or successful rejoin test.",
+    "The QA endpoint used a disposable local TLS certificate and cold start showed HandshakeException.",
+    "RTP counters establish transport cessation, not acoustic audibility or intelligibility.",
+    "iOS, browser background behavior, secure lock, routing/interruption, network switching and release gates remain unverified."
+  ],
+  "local_runtime_output": ".out/issue785-current-master-20261122/run16/result.json",
+  "local_runtime_output_sha256": "bcad7260bc3f505e2ca0699ef2f02c861f3a8e92191d2b7a456d038eea044c48",
+  "focused_test": {
+    "command": "python3 -m unittest tools.ci.select_changes.test_routing tools.ci.actual_acceptance.test_plan tools.qa.critical_client_acceptance.test_issue785_android_flutter_uplink_pair",
+    "result": "35 passed"
+  },
+  "screenshot": ".out/issue785-current-master-20261122/run16/after-permission-revoke-cold-start.png"
+}

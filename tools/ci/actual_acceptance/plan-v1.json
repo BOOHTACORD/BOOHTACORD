@@ -6,6 +6,8 @@
   "rules": [
     {"paths": ["docs/**", "product-map/**", "evidence/**", "backlog/**", "README.md", "LICENSE", ".gitignore"], "profiles": [], "release": [], "physical": []},
     {"paths": ["tools/qa/local_features/features.json"], "profiles": [], "release": [], "physical": []},
+    {"paths": ["tools/qa/critical_client_acceptance/issue785_android_flutter_uplink_pair.py", "tools/qa/critical_client_acceptance/test_issue785_android_flutter_uplink_pair.py"], "profiles": [], "release": [], "physical": []},
+    {"paths": ["tools/ci/select_changes/dependencies.json", "tools/ci/select_changes/test_routing.py", "tools/ci/actual_acceptance/plan-v1.json", "tools/ci/actual_acceptance/test_plan.py"], "profiles": [], "release": [], "physical": []},
     {"paths": ["tools/qa/client_lifecycle/**", "tools/qa/refresh_baseline/**", "tools/qa/upload_reservations/**"], "profiles": ["lifecycle"], "release": [], "physical": []},
     {"paths": ["tools/qa/next_client_acceptance/**", "clients/web/src/direct_message/**", "clients/web/src/conversation/**", "clients/web/src/search/**"], "profiles": ["lifecycle", "next"], "release": [], "physical": []},
     {"paths": ["tools/qa/sfu_snapshot_measure/**"], "profiles": ["sfu"], "release": [], "physical": []},

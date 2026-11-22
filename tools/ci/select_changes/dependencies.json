@@ -58,6 +58,20 @@
     },
     {
       "paths": [
+        "tools/qa/critical_client_acceptance/issue785_android_flutter_uplink_pair.py",
+        "tools/qa/critical_client_acceptance/test_issue785_android_flutter_uplink_pair.py"
+      ],
+      "gates": [
+        "contracts",
+        "backend",
+        "web",
+        "flutter"
+      ],
+      "server": false,
+      "native": false
+    },
+    {
+      "paths": [
         "tools/qa/local_features/features.json"
       ],
       "gates": [
