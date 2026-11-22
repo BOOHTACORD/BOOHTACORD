@@ -13,6 +13,7 @@ import 'package:boohtacord_desktop/src/features/session/lifecycle/controller.dar
 import 'package:boohtacord_desktop/src/models.dart';
 
 import '../test/test_support/app_resume_wait.dart';
+import '../test/test_support/issue785_control_wait.dart';
 import 'issue689_support.dart';
 import 'local_qa_test.dart' show QaTls;
 
@@ -157,9 +158,22 @@ void main() {
           pollInterval: const Duration(seconds: 5),
         ),
       );
-      final resumeCommand =
-          jsonDecode(await control.readAsString()) as Map<String, dynamic>;
-      expect(resumeCommand['status'], 'resume');
+      final resumeCommand = (await tester.runAsync(
+        () => waitForControlStatus(
+          read: () async {
+            final value = jsonDecode(await control.readAsString());
+            if (value is! Map<String, dynamic>) {
+              throw const FormatException(
+                'Issue 785 control file must contain a JSON object',
+              );
+            }
+            return value.cast<String, Object?>();
+          },
+          expectedStatus: 'resume',
+          pendingStatuses: const {'ready'},
+          timeout: const Duration(minutes: 5),
+        ),
+      ))!;
       final backgroundSeconds =
           (resumeCommand['backgroundSecondsObserved'] as num).toDouble();
       final backgroundStartedUnixMs =
