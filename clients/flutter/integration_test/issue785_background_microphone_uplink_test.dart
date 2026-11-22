@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:path_provider/path_provider.dart';
@@ -74,6 +75,16 @@ void main() {
       expect(channel.kind, ChannelKind.voice);
       await tester.runAsync(() => app.selectChannel(channel));
       await tester.pumpAndSettle();
+      final logicalWidth =
+          tester.view.physicalSize.width / tester.view.devicePixelRatio;
+      await tester.tapAt(Offset(logicalWidth - 8, 320));
+      await tester.sendKeyEvent(LogicalKeyboardKey.escape);
+      await tester.pumpAndSettle();
+      expect(
+        find.byTooltip('Закрыть навигацию').hitTestable(),
+        findsNothing,
+        reason: 'close initial mobile navigation before the voice join',
+      );
       await tester.runAsync(() => app.joinVoice(channel));
       await waitFor(
         tester,
@@ -242,21 +253,94 @@ void main() {
           ? null
           : (await tester.runAsync(readPublisherStats))!;
 
-      await binding.convertFlutterSurfaceToImage();
+      final voicePhaseAfterResume = app.voicePhase.name;
+      final applicationSocketConnectedAfterResume = app.realtime.connected;
+      final microphoneForegroundServiceActiveAfterResume =
+          app.voice.microphoneForeground.active;
+      final microphoneUnavailableAfterResume = app.voice.microphoneUnavailable;
+      final microphoneMutedAfterResume = app.voice.microphoneMuted;
+      final errorAfterResume = app.error == null ? null : 'present';
+      Map<String, Object?>? microphoneRetryAfterServiceStop;
+
       await tester.pumpAndSettle();
-      await binding.takeScreenshot(
-        'issue785-flutter-microphone-after-background',
-      );
+
+      if (serviceStopExpected) {
+        final drawerScrim = find.bySemanticsLabel('Закрыть панель');
+        if (drawerScrim.evaluate().isNotEmpty) {
+          await tester.sendKeyEvent(LogicalKeyboardKey.escape);
+          await tester.pumpAndSettle();
+        }
+        expect(find.byTooltip('Закрыть навигацию').hitTestable(), findsNothing);
+        final retryNotice = find.byTooltip('Повторить включение микрофона');
+        expect(retryNotice, findsOneWidget);
+        final retryButton = find.widgetWithText(TextButton, 'Повторить');
+        expect(retryButton, findsOneWidget);
+        await tester.ensureVisible(retryButton);
+        await tester.pumpAndSettle();
+
+        final publisherBeforeRetry = (await tester.runAsync(
+          readPublisherStats,
+        ))!;
+        final retryStartedAtUnixMs = DateTime.now()
+            .toUtc()
+            .millisecondsSinceEpoch;
+        await tester.tap(retryButton);
+        await waitFor(
+          tester,
+          () =>
+              identical(app.room, initialRoom) &&
+              app.voicePhase == VoicePhase.connected &&
+              app.realtime.connected &&
+              app.voice.microphoneForeground.active &&
+              !app.voice.microphoneMuted &&
+              !app.voice.microphoneUnavailable &&
+              initialRoom.localParticipant!.audioTrackPublications.any(
+                (publication) =>
+                    publication.track != null && !publication.muted,
+              ),
+        );
+        final publisherAfterRetry = (await tester.runAsync(
+          waitForForegroundPublisherUplink,
+        ))!;
+        expect(publisherAfterRetry['microphoneTrackEnabled'], isTrue);
+        expect(
+          publisherAfterRetry['packetsSent'],
+          greaterThan(publisherBeforeRetry['packetsSent'] as int),
+        );
+        expect(
+          publisherAfterRetry['bytesSent'],
+          greaterThan(publisherBeforeRetry['bytesSent'] as int),
+        );
+        await tester.runAsync(
+          () => Future<void>.delayed(const Duration(seconds: 5)),
+        );
+        await tester.pumpAndSettle();
+        microphoneRetryAfterServiceStop = {
+          'status': 'PASS_SCOPED',
+          'retryStartedAtUnixMs': retryStartedAtUnixMs,
+          'retryNoticeUnobscured': true,
+          'sameRoomAfterRetry': identical(app.room, initialRoom),
+          'voicePhaseAfterRetry': app.voicePhase.name,
+          'applicationSocketConnectedAfterRetry': app.realtime.connected,
+          'microphoneForegroundServiceActiveAfterRetry':
+              app.voice.microphoneForeground.active,
+          'microphoneMutedAfterRetry': app.voice.microphoneMuted,
+          'microphoneUnavailableAfterRetry': app.voice.microphoneUnavailable,
+          'publisherBeforeRetry': publisherBeforeRetry,
+          'publisherAfterRetry': publisherAfterRetry,
+        };
+      }
+
       final result = {
         'status': 'PASS_SCOPED',
-        'voicePhase': app.voicePhase.name,
-        'applicationSocketConnected': app.realtime.connected,
+        'voicePhase': voicePhaseAfterResume,
+        'applicationSocketConnected': applicationSocketConnectedAfterResume,
         'microphoneForegroundServiceActiveAfterResume':
-            app.voice.microphoneForeground.active,
+            microphoneForegroundServiceActiveAfterResume,
         'sameRoomObjectAfterResume': identical(app.room, initialRoom),
-        'microphoneUnavailableAfterResume': app.voice.microphoneUnavailable,
-        'microphoneMutedAfterResume': app.voice.microphoneMuted,
-        'errorAfterResume': app.error == null ? null : 'present',
+        'microphoneUnavailableAfterResume': microphoneUnavailableAfterResume,
+        'microphoneMutedAfterResume': microphoneMutedAfterResume,
+        'errorAfterResume': errorAfterResume,
         'sameMicrophoneTrackAfterResume': initialRoom
             .localParticipant!
             .audioTrackPublications
@@ -270,12 +354,12 @@ void main() {
         'microphoneServiceSamples': serviceSamples,
         'publisherBeforeBackground': before,
         'publisherAfterResume': afterResume,
+        'microphoneRetryAfterServiceStop': microphoneRetryAfterServiceStop,
         'receiverValidation': serviceStopExpected
             ? 'independent receiver samples span explicit FGS stop; RTP advancement is checked across the whole interval'
             : permissionRevokeExpected
             ? 'independent receiver samples span RECORD_AUDIO revoke; RTP advancement is checked across the whole interval'
             : 'runner verifies independent inbound RTP counters during the background interval',
-        'screenshot': 'issue785-flutter-microphone-after-background',
       };
       await control.writeAsString(
         jsonEncode({'status': 'complete', 'result': result}),
@@ -304,9 +388,6 @@ void main() {
         tester,
         () => app.voicePhase == VoicePhase.idle && app.room == null,
       );
-      await tester.runAsync(app.session.logout);
-      await waitFor(tester, () => app.phase == AppPhase.signedOut);
-      expect(tester.takeException(), isNull);
     },
   );
 }

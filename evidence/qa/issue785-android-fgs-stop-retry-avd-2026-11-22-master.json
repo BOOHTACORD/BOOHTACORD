@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "issue": 785,
+  "status": "PASS_SCOPED",
+  "gate_closed": false,
+  "recorded_at_utc": "2026-11-22T03:13:17Z",
+  "scope": "Android 15/API 35 AOSP AVD active-voice fallback after controlled microphone foreground-service stop, explicit user Retry, and independent receiver RTP resumption.",
+  "source": {
+    "product_source_commit": "d82f28e38889a003bf06dc909152ff9ec29457c7",
+    "runtime_checkout_commit": "0717d7ad003c614dd7a97ebbddc0cefd0ac3478b",
+    "product_source_matches_current_master": true,
+    "comparison": "Tracked clients/flutter/lib, clients/flutter/android, clients/flutter/packages, pubspec.yaml and pubspec.lock matched the current master checkout byte-for-byte. Only the issue-specific integration test and QA harness were changed for the run.",
+    "qa_harness_changes_present": true,
+    "tested_files_sha256": {
+      "flutter_integration_test": "90f98d076c19fd4c17fd9bf8ece2157144a7ecde0bbd06140eaf5585b380f85c",
+      "qa_runner": "b174a223d2f2a6a0e9564d65eb3bdc596246acbff39bc7df824d0f2c135bcd8f",
+      "focused_tests": "4a2cf6ef990ce9166941d58233977c8b2a57bb727829f777aad54ce59e669ed3"
+    }
+  },
+  "environment": {
+    "runtime": "Android 15 / API 35 AOSP ARM64 emulator",
+    "avd": "BOOHTACORD_QA_API35",
+    "serial": "emulator-5554",
+    "physical_device": false,
+    "publisher": "Flutter Android microphone foreground service",
+    "receiver": "Independent Playwright Chromium listener-only participant",
+    "server": "Disposable local Go/PostgreSQL/LiveKit QA stack"
+  },
+  "scenario": {
+    "command": "PYTHONPATH=. python3 tools/qa/critical_client_acceptance/issue785_android_flutter_uplink_pair.py --device emulator-5554 --background-seconds 120 --service-stop-after-seconds 5 --output .out/issue785-current-master-fgs-retry16-avd-20261122",
+    "background_action": "Android Home",
+    "background_seconds_requested": 120,
+    "background_seconds_observed": 120.007,
+    "fgs_stop": {
+      "kind": "Explicit adb am stopservice; not an OS-forced stop",
+      "offset_seconds": 5.03,
+      "service_active_at_start": true,
+      "service_inactive_at_30_60_90_and_120_seconds": true
+    },
+    "fallback_after_resume": {
+      "same_room_object": true,
+      "voice_phase": "listener",
+      "application_socket_connected": true,
+      "microphone_foreground_service_active": false,
+      "microphone_muted": true,
+      "microphone_unavailable": true,
+      "retry_notice_present_and_unobscured": true,
+      "retry_button_tapped_by_flutter_integration_test": true
+    },
+    "retry": {
+      "publisher_before": {
+        "audio_publications": 1,
+        "microphone_track_enabled": false,
+        "packets_sent": 43,
+        "bytes_sent": 5689
+      },
+      "publisher_after": {
+        "audio_publications": 1,
+        "microphone_track_enabled": true,
+        "packets_sent": 47,
+        "bytes_sent": 6006
+      },
+      "same_room_object": true,
+      "voice_phase": "connected",
+      "application_socket_connected": true,
+      "microphone_foreground_service_active": true,
+      "microphone_muted": false,
+      "microphone_unavailable": false,
+      "independent_receiver_rtp": {
+        "peer_connections": 1,
+        "inbound_audio_tracks": 1,
+        "sample_before_progress": {
+          "packets": 93,
+          "bytes": 9667
+        },
+        "first_progress_sample": {
+          "packets": 103,
+          "bytes": 10459
+        },
+        "progress_seconds_after_retry": 2.744
+      }
+    },
+    "leave_stopped_microphone_service": true,
+    "screenshot_captured": false
+  },
+  "raw_local_artifacts": {
+    "result_json_sha256": "6d618919944fd47cfabf8dec936c7283485c9c44352174a14ee34ea7aab85264",
+    "receiver_result_json_sha256": "a50fd9eda7b40e9aa730b7573cb30c9cfb41490ce2aba20875f3ac6a1b3cb189",
+    "flutter_result_json_sha256": "2855934b1017e93ca02235c70e097057b0fd716af9099bd37b699c691c333e59",
+    "retention": "Raw .out logs and result files are local runtime artifacts and are not committed."
+  },
+  "limitations": [
+    "This is a 120-second Android 15/API 35 AOSP AVD run, not physical-device acceptance.",
+    "FGS termination was an explicit test injection, not proof of OS-forced termination.",
+    "RTP packet/byte counters establish transport progress, not acoustic audibility, intelligibility or audio routing.",
+    "Permission-revoke cold-start/rejoin, iOS, physical Android, secure keyguard and the 60-minute release gate remain unverified."
+  ]
+}

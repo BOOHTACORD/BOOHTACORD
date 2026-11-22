@@ -9,6 +9,7 @@ from tools.qa.critical_client_acceptance.issue785_android_flutter_uplink_pair im
     receiver_has_foreground_uplink,
     receiver_blackhole_recovery,
     receiver_progressed_during_background,
+    receiver_uplink_advanced_after,
     validate_blackhole_seconds,
     validate_background_seconds,
     parse_blackhole_drop_counters,
@@ -31,6 +32,33 @@ from tools.qa.local_features.android_microphone import android_microphone_permis
 
 
 class Issue785AndroidFlutterUplinkPairTest(unittest.TestCase):
+    def test_receiver_confirms_rtp_progress_after_microphone_retry(self):
+        samples = [
+            {'observed_at_unix_ms': 1000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 10, 'inbound_audio_bytes': 100},
+            {'observed_at_unix_ms': 3000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 10, 'inbound_audio_bytes': 100},
+            {'observed_at_unix_ms': 5000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 12, 'inbound_audio_bytes': 160},
+        ]
+        result = receiver_uplink_advanced_after(samples, 2000)
+        self.assertEqual(result['first_progress_sample'], samples[2])
+        self.assertEqual(result['progress_seconds_after_action'], 3)
+
+    def test_receiver_requires_post_action_progress_inside_bounded_window(self):
+        stale_only = [
+            {'observed_at_unix_ms': 1000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 10, 'inbound_audio_bytes': 100},
+            {'observed_at_unix_ms': 3000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 15, 'inbound_audio_bytes': 150},
+        ]
+        plateau = [
+            {'observed_at_unix_ms': 2000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 10, 'inbound_audio_bytes': 100},
+            {'observed_at_unix_ms': 4000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 10, 'inbound_audio_bytes': 100},
+        ]
+        too_late = [
+            {'observed_at_unix_ms': 2000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 10, 'inbound_audio_bytes': 100},
+            {'observed_at_unix_ms': 25000, 'inbound_audio_tracks': 1, 'inbound_audio_packets': 12, 'inbound_audio_bytes': 160},
+        ]
+        self.assertIsNone(receiver_uplink_advanced_after(stale_only, 2000))
+        self.assertIsNone(receiver_uplink_advanced_after(plateau, 2000))
+        self.assertIsNone(receiver_uplink_advanced_after(too_late, 2000))
+
     def test_cold_start_probe_requires_permission_revoke_injection(self):
         self.assertTrue(validate_permission_revoke_cold_start(True, 5))
         self.assertFalse(validate_permission_revoke_cold_start(False, 0))
