@@ -46,7 +46,7 @@ All commands below run against the candidate working source unless noted.
 | `python -m unittest discover -s tools/qa/backend_load -t .` | PASS: 6 tests, including 10 redirect subcases |
 | `python -m tools.ci.native.contracts` (isolated WSL Linux clone) | PASS: Python 1847 tests, 27 known skips; contract/schema/action/SBOM checks pass |
 | `pwsh -NoProfile -File tools/verify/spec_traceability/verify-spec-traceability.ps1` | PASS: 39 requirements and actual approved brief SHA verified |
-| `python -m tools.product_map generate --check` | PASS, no regeneration |
+| `python -m tools.product_map generate --check` | PASS after catalog companions were generated |
 | `python -m tools.product_map validate-parity` | PASS for implemented parity projection; not a claim of full-map validation |
 | `python -m tools.observability.signal_catalog.build --check` | PASS, no regeneration |
 | `python -m tools.verify.client_parity.run --base origin/master` | PASS |
@@ -95,3 +95,11 @@ Physical audio, screen throughput, load capacity, installed-client update,
 macOS runtime and production behavior are outside this patch's acceptance scope.
 Hosted PR gates remain required until exact-head CI succeeds; local unit results
 do not replace backend database, Windows build or actual-acceptance jobs.
+
+Post-commit ownership exposed two new unmapped runtime files. The catalog now
+links session revalidation and both update evaluators to their existing features;
+the Flutter controller's evaluator import is an explicit dependency. Existing
+IDs, revision history and UNKNOWN platform states remain intact. Generated map
+companions were rebuilt. Catalog tests (33), ownership tests (22), transition,
+new-path ownership and generation checks pass. This follow-up changes metadata
+only; the application source exercised above is unchanged.

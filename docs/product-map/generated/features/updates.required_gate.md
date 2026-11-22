@@ -19,4 +19,6 @@ ID: `updates.required_gate`
 ## Компоненты
 
 - cmp.flutter.required\_update: [clients/flutter/lib/src/features/updates/required\_page.dart](../../../../clients/flutter/lib/src/features/updates/required_page.dart)
+- cmp.flutter.update\_evaluator: [clients/flutter/lib/src/features/updates/evaluator.dart](../../../../clients/flutter/lib/src/features/updates/evaluator.dart), [clients/flutter/lib/src/features/updates/identity\_match.dart](../../../../clients/flutter/lib/src/features/updates/identity_match.dart)
 - cmp.web.required\_update: [clients/web/src/updates/RequiredUpdateGate.vue](../../../../clients/web/src/updates/RequiredUpdateGate.vue)
+- cmp.web.update\_evaluator: [clients/web/src/updates/update\_store.ts](../../../../clients/web/src/updates/update_store.ts), [clients/web/src/updates/evaluator.ts](../../../../clients/web/src/updates/evaluator.ts)
