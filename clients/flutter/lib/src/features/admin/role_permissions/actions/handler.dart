@@ -10,17 +10,19 @@ extension RoleActionsAction on RolePermissionsContext {
         spacing: 8,
         children: [
           OutlinedButton(
-            onPressed: saving ? null : loadDefaults,
+            onPressed: saving || loading || denied ? null : loadDefaults,
             child: const Text('По умолчанию'),
           ),
           TextButton(
-            onPressed: !dirty || saving
+            onPressed: !dirty || saving || loading
                 ? null
                 : () => mutate(() => draft = Map.of(baseline)),
             child: const Text('Отмена'),
           ),
           FilledButton(
-            onPressed: !dirty || saving || denied ? null : savePermissions,
+            onPressed: !dirty || saving || loading || denied
+                ? null
+                : savePermissions,
             child: Semantics(
               liveRegion: saving,
               child: Text(saving ? 'Сохраняем…' : 'Сохранить'),

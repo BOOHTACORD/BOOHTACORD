@@ -13,6 +13,7 @@ UpdatePolicy policy(int order, {String platform = 'android'}) => UpdatePolicy(
   state: UpdatePolicyState.published,
   target: UpdateTarget(
     releaseId: '$platform-direct-stable-r$order', releaseOrder: order,
+    version: '1.0.30', nativeBuild: '$order',
     arches: const ['any'],
   ),
 );

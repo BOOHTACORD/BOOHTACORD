@@ -10,7 +10,11 @@ extension AdminScreenStateAdminCopyResetLinkBindingAction
     on AdminScreenStateContext {
   Future<void> executeAdminCopyResetLink() async {
     final link = adminResetLink;
-    if (link == null) return;
+    if (link == null || !mounted) return;
+    adminMutateView(() {
+      adminAccountsStatus = null;
+      adminAccountsError = null;
+    });
     try {
       await Clipboard.setData(ClipboardData(text: link.url));
       if (mounted) {

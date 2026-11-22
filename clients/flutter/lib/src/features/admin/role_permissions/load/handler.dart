@@ -4,6 +4,7 @@ import '../feedback/handler.dart';
 
 extension RoleLoadAction on RolePermissionsContext {
   Future<bool> executeLoadRoles({required bool reset}) async {
+    if (!mounted) return false;
     final generation = ++loadGeneration;
     mutate(() {
       loading = true;
