@@ -91,6 +91,11 @@ owned setup; they do not promise 60 FPS for all content/devices/networks.
 - The installer/full package are local unsigned candidates, not public releases.
   The measured manifest records signing and working-tree state explicitly.
   Hosted CI and the broad actual/physical matrices remain open required gates.
+- The first hosted run stopped at the reviewed native-input audit: the changed
+  Windows SDK pin needed its inventory companion. Reviewed that pin and the four
+  CMake loader/build inputs, retained the rejecting audit, and updated only those
+  hashes. All 28 related toolchain/setup tests plus `toolchains.auxiliary` and
+  `toolchains.workflows` pass locally; the replacement hosted run is separate.
 
 ## Limits that remain open
 
