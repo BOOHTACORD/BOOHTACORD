@@ -3,6 +3,10 @@
 This local fork is based on `flutter_webrtc 1.6.2+hotfix.3`. Keep these changes
 when rebasing or restoring the package from pub.dev.
 
+## Windows compositor window capture and SDK cache
+
+Windows pins libwebrtc.m150.7871.07 separately from Linux and verifies the upstream archive SHA-256. SDK and download caches include version and architecture so an older cached binary cannot silently satisfy a new pin. The desktop factory requests the SDK Windows.Graphics.Capture path for windows, retains its platform-capability fallback and visible system capture border, and does not require foreground focus. Display capture retains the SDK DirectX path. Existing cursor choices and capture-start rollback remain. Local synthetic peer-pair counters are evidence of capture/encode/decode only, not physical scanout, production SFU acceptance or guaranteed 60 FPS. See the 2026-11-24 Windows FPS evidence.
+
 ## macOS lazy factory readiness
 
 `ensurePeerConnectionFactoryReady` now exercises the Mac lazy ADM path with an

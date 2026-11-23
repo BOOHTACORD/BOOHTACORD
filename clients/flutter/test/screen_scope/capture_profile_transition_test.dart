@@ -33,7 +33,7 @@ void main() {
   );
 
   test(
-    'Windows FPS change requires restart and preserves active profile',
+    'Windows unknown source requires explicit restart and preserves profile',
     () async {
       final previousPlatform = debugDefaultTargetPlatformOverride;
       debugDefaultTargetPlatformOverride = TargetPlatform.windows;

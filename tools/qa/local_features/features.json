@@ -1654,7 +1654,10 @@
       "test/screen_preview_sender_stop_test.dart",
       "test/features/workspace/short_viewport/measured_status_test.dart",
       "test/features/voice/viewer_pending/fallback_test.dart",
-      "test/features/voice/viewer_pending/presentation_test.dart"
+      "test/features/voice/viewer_pending/presentation_test.dart",
+      "test/screen_scope/windows_capture_restart_test.dart",
+      "test/screen_scope/windows_restart_boundary_test.dart",
+      "test/features/screen/capture/update_notice_test.dart"
     ],
     "acceptance": {
       "android_stationary_first_frame_584": {
@@ -2045,7 +2048,8 @@
       "issue787_pr8_web_target_caption": "2026-11-16 PR #818 marks the participant preview profile as configured `Цель:` on Web, preserving the distinction from measured quality. It changes no Flutter/iOS/Android code or media transport. Focused Web tests and registered real-stack checks pass; native/device, hardware QoE and capacity evidence remain NOT_RUN.",
       "issue785_mobile_web_resume": "2026-11-17 issue #785 browser recovery: Web VoiceSession lifecycle now reconciles voice media state after page resume; screen capture, stream selection, and screen-share transport are unchanged. No Flutter/iOS/Android code changed. Existing screen regressions remain required; this change makes no screen media or capacity claim.",
       "issue689_r1_socket_http_recovery": "2026-11-21 R1: workspace socket replacement renews protected HTTP admission. Existing screen telemetry clearing and watcher recovery are preserved; no capture, media or Flutter/iOS/Android implementation change. Web workspace/unit/build and real-stack roster/API-restart/account-switch acceptance PASS_SCOPED; physical and native screen/media acceptance remains NOT_RUN in this packet.",
-      "issue689_r2_ready_acceptance": "2026-11-21 R2: The Web socket owner moved behind the stable realtime_store re-export and waits for ready; screen publication, telemetry, permissions and native source are unchanged. Existing Web regressions remain required; no screen/media acceptance is inferred. Shared Flutter Android/iOS implementation is unchanged; Android emulator and Windows native R2 transport acceptance passed, physical/Apple-specific acceptance is separate."
+      "issue689_r2_ready_acceptance": "2026-11-21 R2: The Web socket owner moved behind the stable realtime_store re-export and waits for ready; screen publication, telemetry, permissions and native source are unchanged. Existing Web regressions remain required; no screen/media acceptance is inferred. Shared Flutter Android/iOS implementation is unchanged; Android emulator and Windows native R2 transport acceptance passed, physical/Apple-specific acceptance is separate.",
+      "windows_screen_fps_20261124": "Windows-only screen capture selects the pinned WGC-capable SDK and restarts the same known source when its selected FPS changes, preserving the voice connection and screen-audio selection. Stop, logout, explicit source start and room replacement cancel stale restarts. Web, Android, iOS and macOS capture/consent policies retain their existing paths. Native loopback counters and focused tests are recorded separately; no production SFU, physical cross-client, universal 60-FPS or capacity claim."
     }
   },
   "screen_metrics": {

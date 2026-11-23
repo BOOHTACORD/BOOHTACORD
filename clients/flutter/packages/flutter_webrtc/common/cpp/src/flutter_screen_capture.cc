@@ -1,5 +1,6 @@
 #include "flutter_screen_capture.h"
 #include "flutter_utf8_sanitize.h"
+#include "screen_capture/desktop_factory.h"
 
 #include <stdexcept>
 
@@ -369,7 +370,8 @@ void FlutterScreenCapture::GetDisplayMedia(
   }
 
   scoped_refptr<RTCDesktopCapturer> desktop_capturer =
-      base_->desktop_device_->CreateDesktopCapturer(source, show_cursor);
+      CreateProfiledDesktopCapturer(base_->desktop_device_.get(), source,
+                                   show_cursor);
 
   if (!desktop_capturer.get()) {
     cleanup_failed_capture();

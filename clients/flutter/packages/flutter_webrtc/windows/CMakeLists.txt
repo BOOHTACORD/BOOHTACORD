@@ -40,7 +40,7 @@ include_directories(
   "${CMAKE_CURRENT_SOURCE_DIR}"
   "${CMAKE_CURRENT_SOURCE_DIR}/../common/cpp/include"
   "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/svpng"
-  "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/libwebrtc/include"
+  "${LIBWEBRTC_SDK_DIR}/include"
 )
 
 apply_standard_settings(${PLUGIN_NAME})
@@ -51,7 +51,7 @@ target_include_directories(${PLUGIN_NAME} INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}"
   "${CMAKE_CURRENT_SOURCE_DIR}/../common/cpp/include"
   "${CMAKE_CURRENT_SOURCE_DIR}/../common/rnnoise"
-  "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/libwebrtc/include"
+  "${LIBWEBRTC_SDK_DIR}/include"
 )
 if(BOOHTA_DEEPFILTER_EXPERIMENTAL_NATIVE)
   foreach(hash_var BOOHTA_DEEPFILTER_DLL_SHA256 BOOHTA_DEEPFILTER_MODEL_SHA256)
@@ -73,7 +73,7 @@ target_link_libraries(${PLUGIN_NAME} PRIVATE
   flutter
   flutter_wrapper_plugin
   boohta_rnnoise
-  "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/libwebrtc/lib/libwebrtc.dll.lib"
+  "${LIBWEBRTC_SDK_DIR}/lib/libwebrtc.dll.lib"
   avrt.lib
   ksuser.lib
   mmdevapi.lib
@@ -85,7 +85,7 @@ target_link_libraries(${PLUGIN_NAME} PRIVATE
 
 # List of absolute paths to libraries that should be bundled with the plugin
 set(flutter_webrtc_bundled_libraries
-  "${CMAKE_CURRENT_SOURCE_DIR}/../third_party/libwebrtc/lib/libwebrtc.dll"
+  "${LIBWEBRTC_SDK_DIR}/lib/libwebrtc.dll"
   PARENT_SCOPE
 )
 
@@ -94,3 +94,4 @@ add_subdirectory(
   "${CMAKE_CURRENT_BINARY_DIR}/audio_device_selection_tests"
 )
 add_dependencies(${PLUGIN_NAME} audio_device_selection_test)
+add_dependencies(${PLUGIN_NAME} desktop_capture_factory_test)

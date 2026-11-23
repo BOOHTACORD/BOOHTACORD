@@ -1,3 +1,8 @@
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+  include("${CMAKE_CURRENT_LIST_DIR}/cmake/windows_sdk.cmake")
+  return()
+endif()
+
 include(ExternalProject)
 
 # Flutter adds plugins to example builds through .plugin_symlinks. Windows
@@ -84,40 +89,7 @@ set(ZIPFILE "${LIBWEBRTC_THIRD_PARTY_DIR}/downloads/${LIBWEBRTC_ASSET}.zip")
 # Final URL = <base>/<binary_version>/<asset>.zip
 set(DOWNLOAD_URL "${LIBWEBRTC_DOWNLOAD_URL_BASE}/${LIBWEBRTC_BINARY_VERSION}/${LIBWEBRTC_ASSET}.zip")
 
-function(_libwebrtc_extract_and_normalize zip_path dest_dir)
-  # Extract into an isolated staging dir so we can normalize the top-level
-  # layout regardless of what folder name the archive uses (e.g.
-  # libwebrtc-linux-x64-release/ vs. libwebrtc/ vs. files at the root).
-  set(_staging "${dest_dir}/.libwebrtc_extract")
-  file(REMOVE_RECURSE "${_staging}")
-  file(MAKE_DIRECTORY "${_staging}")
-  file(ARCHIVE_EXTRACT INPUT "${zip_path}" DESTINATION "${_staging}")
-
-  if(EXISTS "${dest_dir}/libwebrtc")
-    file(REMOVE_RECURSE "${dest_dir}/libwebrtc")
-  endif()
-
-  file(GLOB _entries "${_staging}/*")
-  list(LENGTH _entries _entry_count)
-  set(_promoted FALSE)
-  if(_entry_count EQUAL 1)
-    list(GET _entries 0 _only)
-    if(IS_DIRECTORY "${_only}")
-      file(RENAME "${_only}" "${dest_dir}/libwebrtc")
-      set(_promoted TRUE)
-    endif()
-  endif()
-  if(NOT _promoted)
-    # Archive root holds the files directly — wrap them in libwebrtc/.
-    file(MAKE_DIRECTORY "${dest_dir}/libwebrtc")
-    foreach(_entry IN LISTS _entries)
-      get_filename_component(_name "${_entry}" NAME)
-      file(RENAME "${_entry}" "${dest_dir}/libwebrtc/${_name}")
-    endforeach()
-  endif()
-
-  file(REMOVE_RECURSE "${_staging}")
-endfunction()
+include("${CMAKE_CURRENT_LIST_DIR}/cmake/extract_sdk.cmake")
 
 if(NOT EXISTS "${ZIPFILE}")
   message(NOTICE "download: ${DOWNLOAD_URL}")

@@ -12,7 +12,9 @@ extension ScreenShareStart on ScreenShareController {
     ScreenShareContentMode? contentMode,
     VideoDimensions? sourceDimensions,
     bool captureScreenAudio = false,
+    bool retainUserQuality = false,
   }) async {
+    if (closing != null) qualityIntentRevision++;
     final ticket = scope.capture();
     final admitted = revision;
     await closing;
@@ -29,8 +31,10 @@ extension ScreenShareStart on ScreenShareController {
     error = null;
     this.quality = quality ?? this.quality;
     this.contentMode = contentMode ?? this.contentMode;
-    userQualityCeiling = this.quality;
-    manualQualityRevision++;
+    if (!retainUserQuality) {
+      userQualityCeiling = this.quality;
+      manualQualityRevision++;
+    }
     adaptation.invalidate();
     captureRestartRequired = false;
     this.sourceDimensions = sourceDimensions;
