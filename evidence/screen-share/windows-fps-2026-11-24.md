@@ -96,6 +96,11 @@ owned setup; they do not promise 60 FPS for all content/devices/networks.
   CMake loader/build inputs, retained the rejecting audit, and updated only those
   hashes. All 28 related toolchain/setup tests plus `toolchains.auxiliary` and
   `toolchains.workflows` pass locally; the replacement hosted run is separate.
+- The next CI run exposed the stale development version defaults and missing
+  product-map ownership for the two quality helpers. Updated defaults to the
+  existing 1.0.60+96/r75 identity and registered the actual quality component,
+  retaining UNKNOWN platform acceptance. Profile (22) and product-map (28)
+  focused tests pass; generated documentation matches its catalog.
 
 ## Limits that remain open
 
