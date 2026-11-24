@@ -1,0 +1,33 @@
+{
+  "components": [
+    {
+      "id": "cmp.flutter.screen_quality",
+      "paths": [
+        "clients/flutter/lib/src/features/screen/quality/update.dart",
+        "clients/flutter/lib/src/features/screen/quality/capture_change.dart",
+        "clients/flutter/lib/src/features/screen/quality/drain.dart",
+        "clients/flutter/lib/src/features/screen/quality/guard.dart"
+      ]
+    }
+  ],
+  "features": [
+    {
+      "id": "screen.publisher.quality",
+      "title": "Качество исходящей демонстрации",
+      "domain": "screen",
+      "description": "Применение профиля публикации; Windows пересоздаёт тот же источник при смене FPS с сохранением границ сеанса и отмены.",
+      "target_revision": null,
+      "behavior_revisions": [],
+      "parity_ids": [],
+      "components": ["cmp.flutter.screen_quality"],
+      "depends_on": ["voice.controls"],
+      "platforms": {
+        "web": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "windows": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "macos": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "android": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null},
+        "ios": {"applicability": "UNKNOWN", "state": "UNKNOWN", "revision": null}
+      }
+    }
+  ]
+}

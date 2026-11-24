@@ -2,7 +2,8 @@ import 'package:flutter/foundation.dart';
 
 String screenShareUpdateNotice(TargetPlatform platform) => switch (platform) {
   TargetPlatform.windows =>
-    'Изменение FPS требует остановить и снова запустить демонстрацию. '
+    'При изменении FPS трансляция автоматически перезапустится '
+        'с тем же источником. Голос останется подключён. '
         'Разрешение ограничивается на этапе кодирования.',
   TargetPlatform.macOS =>
     'Для применения нового профиля захвата остановите и снова запустите '

@@ -3,11 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:boohtacord_desktop/src/features/screen/capture/update_notice.dart';
 
 void main() {
-  test('Windows explains that a changed FPS needs a capture restart', () {
+  test('Windows explains an automatic same-source FPS restart', () {
     final notice = screenShareUpdateNotice(TargetPlatform.windows);
 
     expect(notice, contains('FPS'));
-    expect(notice, contains('остановить и снова запустить'));
+    expect(notice, contains('автоматически'));
+    expect(notice, contains('тем же источником'));
+    expect(notice, contains('Голос останется подключён'));
     expect(notice, contains('кодирования'));
   });
 

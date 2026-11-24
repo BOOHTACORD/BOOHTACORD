@@ -52,3 +52,13 @@ add_custom_command(TARGET screen_audio_source_test POST_BUILD
   COMMAND $<TARGET_FILE:screen_audio_source_test>
   VERBATIM
 )
+
+if(WIN32 AND LIBWEBRTC_SDK_DIR)
+  add_executable(desktop_capture_factory_test desktop_capture_factory_test.cc)
+  target_include_directories(desktop_capture_factory_test PRIVATE ../include "${LIBWEBRTC_SDK_DIR}/include")
+  target_compile_features(desktop_capture_factory_test PRIVATE cxx_std_17)
+  target_compile_options(desktop_capture_factory_test PRIVATE /UNDEBUG)
+  add_test(NAME desktop_capture_factory_test COMMAND desktop_capture_factory_test)
+  add_custom_command(TARGET desktop_capture_factory_test POST_BUILD
+    COMMAND $<TARGET_FILE:desktop_capture_factory_test> VERBATIM)
+endif()

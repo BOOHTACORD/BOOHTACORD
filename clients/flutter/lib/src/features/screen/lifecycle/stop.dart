@@ -4,12 +4,12 @@ import '../../telemetry/action_scope/failure.dart';
 
 extension ScreenShareStop on ScreenShareController {
   Future<void> stopScreenShare() {
+    qualityIntentRevision++;
+    pendingQualityUpdate = null;
     final previous = closing;
     if (previous != null) return previous;
     adaptation.invalidate();
     captureRestartRequired = false;
-    qualityIntentRevision++;
-    pendingQualityUpdate = null;
     final operation = closeCapture(++revision);
     closing = operation;
     return operation.whenComplete(() {
