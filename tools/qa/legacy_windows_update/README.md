@@ -40,3 +40,8 @@ python -m unittest tools.qa.legacy_windows_update.test_policy \
 Missing window/semantics/version, corrupt files, incorrect offer, timeout or
 cleanup failure cannot pass. Hardware/media, private user-profile migration,
 authenticated settings, backend-restart and broader release gates are separate.
+
+The final receipt is published only after the owned root is removed. Windows may
+briefly retain its directory handle after the uninstaller returns; cleanup retries
+that owned path for at most10 seconds, then fails. Ownership/parent/link guards
+remain active. A real Windows child-CWD lock regression checks this boundary.

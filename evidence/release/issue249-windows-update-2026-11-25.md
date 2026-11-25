@@ -66,3 +66,22 @@ promotion/revision/concurrency regression tests remain required; production is
 read-only. The historical29/r52 target is not forced over a newer stable release.
 
 Commands and safety boundaries: [owned acceptance](../../tools/qa/legacy_windows_update/README.md).
+
+## First actual Windows run — UI PASS, overall FAIL
+
+[CI45673955929](https://github.com/BOOHTACORD/BOOHTACORD/actions/runs/45673955929),
+tested merge source `e9f0db3dc6e955bfa1ad9116965d101d9e6893e9`, retained artifact
+15051099181 SHA256 `513aad41fd22d9f9c46099c08b15f1ab9a456ac86cf20f0fd6a2f65d1fc45d83`.
+Actual original1.0.32/46 offer/details and installed1.0.60/96 observations passed;
+manifest hashes and before/after revision48 matched. All three images were viewed
+at source resolution: old offer controls and details target are visible; the
+legacy summary has large underlined wrapping and the small desktop clips its
+lower area. The current login/version96 fits and shows no false offer. No claim
+of repairing the immutable old layout or authenticated settings is made.
+
+The job correctly failed when TemporaryDirectory removed a still-held Windows
+root after uninstall. Its early PASS JSON is rejected as whole-run acceptance.
+The fix moves receipt publication after a bounded, ownership-checked root removal;
+permanent locks write FAIL.29 nearest guards pass, including a real Windows
+child-process CWD lock. Shipping clients, selectors and native observation logic
+are unchanged; exact-head native CI and final visual review remain required.

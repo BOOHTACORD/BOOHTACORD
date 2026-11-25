@@ -5,12 +5,12 @@ from pathlib import Path
 import platform
 import subprocess
 import sys
-import tempfile
 import time
 from tools.ci.native.process import ROOT, output
 from tools.qa.desktop_updates.windows_process import close_owned, running_at
 from .packages import BASELINE, read_policy, release_files, verify_files
 from .policy import require_hosted, target, validate_observation
+from .owned import scope
 
 
 def observe(executable, mode, release, destination):
@@ -42,9 +42,7 @@ def main():
     report={'status':'FAIL','source_revision':output('git','rev-parse','HEAD'),
             'windows':platform.version(),'production_mutations':False,'user_machine':False,
             'current_ui_scope':'visible version and no incorrect offer; authenticated settings NOT_RUN'}
-    with tempfile.TemporaryDirectory(prefix='boohtacord-legacy-',dir=os.environ['RUNNER_TEMP']) as work:
-        root=Path(work).resolve()
-        assert root.parent==Path(os.environ['RUNNER_TEMP']).resolve()
+    with scope(Path(os.environ['RUNNER_TEMP']),report,destination/'result.json') as root:
         baseline=root/'baseline/boohtacord_desktop.exe'
         installed=root/'installed/current/boohtacord_desktop.exe'
         try:
@@ -79,8 +77,6 @@ def main():
             except Exception:
                 report['status']='FAIL';report['owned_processes_closed']=False
                 raise
-            finally:
-                (destination/'result.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print('Original old Windows client and installed stable update acceptance PASS')
 
 
