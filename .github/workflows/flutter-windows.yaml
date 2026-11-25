@@ -188,6 +188,8 @@ jobs:
           path: .out/ci/
       - name: Verify full native manifest, checksums and installer identity
         run: python -m tools.ci.windows_gates.transfer verify
+      - name: Test owned cleanup and actual Windows directory locks
+        run: python -m unittest tools.qa.legacy_windows_update.test_owned
       - name: Accept original old Windows client against the public stable catalog
         timeout-minutes: 8
         run: python -m tools.qa.legacy_windows_update.run

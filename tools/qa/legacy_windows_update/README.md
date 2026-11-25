@@ -34,7 +34,7 @@ Offline guards:
 ```sh
 python -m unittest tools.qa.legacy_windows_update.test_policy \
   tools.qa.legacy_windows_update.test_packages tools.qa.legacy_windows_update.test_workflow \
-  tools.qa.legacy_windows_update.test_catalog
+  tools.qa.legacy_windows_update.test_catalog tools.qa.legacy_windows_update.test_owned
 ```
 
 Missing window/semantics/version, corrupt files, incorrect offer, timeout or
@@ -45,3 +45,4 @@ The final receipt is published only after the owned root is removed. Windows may
 briefly retain its directory handle after the uninstaller returns; cleanup retries
 that owned path for at most10 seconds, then fails. Ownership/parent/link guards
 remain active. A real Windows child-CWD lock regression checks this boundary.
+The Windows job runs that unit module explicitly before the published-EXE journey.
