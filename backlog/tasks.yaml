@@ -503,6 +503,11 @@ tasks:
     requirements: [REQ-CHAT-01, REQ-CHAT-02]
     depends_on: [T-010, T-020]
     evidence: [backend-chat-tests]
+  - id: WEB-141
+    title: Web history measurement delivery and retained editing acceptance (GitHub #141)
+    requirements: [REQ-CHAT-01, REQ-CHAT-02, REQ-QUALITY-02]
+    depends_on: [T-040, T-050]
+    evidence: [clients/web/src/conversation/history_window/measurement_delivery/frame.spec.ts, clients/web/tests/chat_rhythm/history_measurements.browser.spec.ts, tools/qa/history_edit_retention/README.md, evidence/qa/web-history-edit-retention-2026-11-25.md]
   - id: T-041
     title: Direct messages and search
     requirements: [REQ-DM-01, REQ-SEARCH-01, REQ-SECURITY-02]

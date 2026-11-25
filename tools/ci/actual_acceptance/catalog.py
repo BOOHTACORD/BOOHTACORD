@@ -6,6 +6,7 @@ OPERATIONS={
     'lifecycle':[
         [PY,'-m','unittest','tools.ci.actual_acceptance.test_failure_location','tools.ci.actual_acceptance.test_roster_stage','tools.qa.client_lifecycle.test_services','tools.qa.client_lifecycle.test_telemetry','tools.qa.critical_client_acceptance.test_stack','tools.qa.refresh_baseline.test_archive','tools.qa.upload_reservations.test_measure','tools.qa.upload_reservations.test_scenario','tools.qa.upload_reservations.test_client'],
         ['node','--test','tools/qa/critical_client_acceptance/requests.test.mjs',
+         'tools/qa/history_edit_retention/test_seed.mjs',
          'tools/qa/critical_client_acceptance/roster_websocket_observer.test.mjs',
          'tools/qa/critical_client_acceptance/roster_diagnostics.test.mjs',
          'tools/qa/critical_client_acceptance/sfu_control.test.mjs',

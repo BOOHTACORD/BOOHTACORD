@@ -2,6 +2,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, onUpdated, ref, watch, 
 import { buildVirtualOffsets, findVirtualRange, type HistoryRow, type RenderedRow } from './window'
 import { useEditingPin } from './editing_pin'
 import { shouldPreserveLatestPosition } from './follow_latest'
+import { createResizeDelivery } from './measurement_delivery/frame'
 
 export function useHistoryWindow<T extends HistoryRow>(rows: ComputedRef<T[]>, root: Ref<HTMLOListElement | null>, hasOlder: ComputedRef<boolean>, compact: Ref<boolean>, isEditing?: (id: string) => boolean) {
   const measured = ref(new Map<string, number>()), scrollTop = ref(0), viewportHeight = ref(600)
@@ -23,6 +24,7 @@ export function useHistoryWindow<T extends HistoryRow>(rows: ComputedRef<T[]>, r
   const topSpacer = computed(() => range.value.top), bottomSpacer = computed(() => range.value.bottom)
   let observer: ResizeObserver | undefined
   const observed = new Set<Element>()
+  const measurements = createResizeDelivery(resize)
 
   function readViewport(): void {
     const element = root.value
@@ -42,7 +44,7 @@ export function useHistoryWindow<T extends HistoryRow>(rows: ComputedRef<T[]>, r
   }
   function observeRows(): void {
     if (!observer || !root.value) return
-    for (const element of observed) if (!root.value.contains(element)) { observer.unobserve(element); observed.delete(element) }
+    for (const element of observed) if (!root.value.contains(element)) { observer.unobserve(element); measurements.forget(element); observed.delete(element) }
     root.value.querySelectorAll('[data-virtual-key], [data-history-control]').forEach((element) => {
       if (!observed.has(element)) { observed.add(element); observer!.observe(element) }
     })
@@ -78,6 +80,7 @@ export function useHistoryWindow<T extends HistoryRow>(rows: ComputedRef<T[]>, r
     const next = new Map(measured.value)
     for (const entry of entries) {
       const element = entry.target as HTMLElement, key = element.dataset.virtualKey
+      if (!root.value?.contains(element)) continue
       const row = key ? rowsByKey.value.get(key) : undefined
       const height = element.getBoundingClientRect().height - (row?.gap ?? 0)
       if (key && row && height > 0 && Math.abs((next.get(key) ?? 0) - height) > 0.5) next.set(key, height)
@@ -94,7 +97,7 @@ export function useHistoryWindow<T extends HistoryRow>(rows: ComputedRef<T[]>, r
       })
     }
   }
-  onMounted(() => { readViewport(); if (typeof ResizeObserver !== 'undefined') { observer = new ResizeObserver(resize); if (root.value) observer.observe(root.value); observeRows() }; window.addEventListener('resize', readViewport) })
+  onMounted(() => { readViewport(); if (typeof ResizeObserver !== 'undefined') { observer = new ResizeObserver((entries) => measurements.schedule(entries)); if (root.value) observer.observe(root.value); observeRows() }; window.addEventListener('resize', readViewport) })
   watch(hasOlder, (hasPage) => { controlHeight.value = hasPage ? 44 : 0 })
   watch(rows, (current) => {
     const keys = new Set(current.map((row) => row.key))
@@ -108,6 +111,6 @@ export function useHistoryWindow<T extends HistoryRow>(rows: ComputedRef<T[]>, r
     if (active === false) editingPin.clear()
   }, { flush: 'sync' })
   onUpdated(observeRows)
-  onBeforeUnmount(() => { observer?.disconnect(); observed.clear(); window.removeEventListener('resize', readViewport) })
+  onBeforeUnmount(() => { observer?.disconnect(); measurements.dispose(); observed.clear(); window.removeEventListener('resize', readViewport) })
   return { compact, range, renderedRows, topSpacer, bottomSpacer, readViewport, syncScroll, pinFocused, releaseFocus, setEditing: editingPin.setEditing, clearPins, offsetOf, scrollToMessage, rowStyle }
 }

@@ -13,6 +13,7 @@ import { memberChannel } from './member_channel.mjs'
 import { memberLog } from './member_log.mjs'
 import { memberDM } from './member_dm.mjs'
 import { memberGlobalSearch } from './member_global_search.mjs'
+import { historyAcceptance } from '../../history_edit_retention/acceptance.mjs'
 const input = JSON.parse(readFileSync(process.env.QA_INPUT, 'utf8'))
 assert.equal(origin, 'https://localhost:4810')
 // The owned SFU advertises only loopback ICE candidates; permit that interface in this local fixture.
@@ -73,6 +74,7 @@ try {
     console.log('stage=actual-media-faults-accepted')
     await resetLinks(browser, a, flowAccount.account_id, input, report, redactions)
     console.log('stage=actual-reset-links-accepted')
+    await historyAcceptance(a, b, input, report)
   }
   await sessions(a, b, guest, report, input.directory, redactions, input.critical ? {
     prepare: () => prepareSessionRevoke(b), check: () => checkSessionRevoke(b, report),
