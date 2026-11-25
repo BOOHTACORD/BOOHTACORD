@@ -35,4 +35,14 @@ describe('text attachment upload client', () => {
     await expect(uploadTextAttachment('text-1', oversized, request)).rejects.toThrow('ограничению')
     expect(request).not.toHaveBeenCalled()
   })
+
+  it('accepts an image exactly at the inclusive25MB boundary', async () => {
+    const file = new File([new Uint8Array(25_000_000)], 'maximum.png', { type: 'image/png' })
+    const request = vi.fn().mockResolvedValue(new Response(JSON.stringify({
+      id: 'maximum', original_name: file.name, byte_size: file.size,
+    }), { status: 201 }))
+    await expect(uploadTextAttachment('text-1', file, request)).resolves.toMatchObject({ sizeBytes: 25_000_000 })
+    expect(request).toHaveBeenCalledOnce()
+    expect((request.mock.calls[0]?.[1]?.body as FormData).get('file')).toMatchObject({ size: 25_000_000 })
+  })
 })

@@ -1,5 +1,6 @@
 {
   "components": [
+    {"id":"cmp.web.attachment_upload_queue","paths":["clients/web/src/conversation/upload_queue/failure.ts","clients/web/src/conversation/upload_queue/text_layout.css","clients/web/src/conversation/upload_queue/queue.ts","clients/web/src/conversation/upload_queue/runner.ts","clients/web/src/conversation/upload_queue/types.ts","clients/web/src/conversation/upload_queue/transport.ts","clients/web/src/conversation/upload_queue/drop.ts","clients/web/src/conversation/upload_queue/QueueList.vue"]},
     {"id":"cmp.web.protected_image_viewer","paths":["clients/web/src/conversation/ProtectedImageViewer.vue","clients/web/src/conversation/protected_image_preview/use_protected_image_preview.ts","clients/web/src/conversation/protected_image_preview/viewer.css","clients/web/src/conversation/protected_image_viewer/component.vue","clients/web/src/conversation/protected_image_viewer/dialog.ts","clients/web/src/conversation/protected_image_viewer/preview.ts","clients/web/src/conversation/protected_image_viewer/viewer.css"]},
     {"id":"cmp.web.workspace","source":{"parity_id":"auth.session","platform":"web"}},
     {"id":"cmp.web.history_measurements","paths":["clients/web/src/conversation/history_window/use.ts","clients/web/src/conversation/history_window/measurement_delivery/frame.ts"]},
@@ -29,7 +30,7 @@
     {
       "id":"chat.text-dm", "title":"Текстовые каналы и личные сообщения", "domain":"chat", "target_revision":null,
       "behavior_revisions":[], "parity_ids":["chat.text-dm"],
-      "components":["cmp.web.workspace","cmp.web.history_measurements","cmp.web.protected_image_viewer","cmp.flutter.conversation"],
+      "components":["cmp.web.workspace","cmp.web.history_measurements","cmp.web.protected_image_viewer","cmp.web.attachment_upload_queue","cmp.flutter.conversation"],
       "platforms": {
         "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
         "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
