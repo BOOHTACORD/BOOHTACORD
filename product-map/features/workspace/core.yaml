@@ -1,5 +1,6 @@
 {
   "components": [
+    {"id":"cmp.web.protected_image_viewer","paths":["clients/web/src/conversation/ProtectedImageViewer.vue","clients/web/src/conversation/protected_image_preview/use_protected_image_preview.ts","clients/web/src/conversation/protected_image_preview/viewer.css","clients/web/src/conversation/protected_image_viewer/component.vue","clients/web/src/conversation/protected_image_viewer/dialog.ts","clients/web/src/conversation/protected_image_viewer/preview.ts","clients/web/src/conversation/protected_image_viewer/viewer.css"]},
     {"id":"cmp.web.workspace","source":{"parity_id":"auth.session","platform":"web"}},
     {"id":"cmp.web.history_measurements","paths":["clients/web/src/conversation/history_window/use.ts","clients/web/src/conversation/history_window/measurement_delivery/frame.ts"]},
     {"id":"cmp.flutter.session","source":{"parity_id":"auth.session","platform":"android"}},
@@ -28,7 +29,7 @@
     {
       "id":"chat.text-dm", "title":"Текстовые каналы и личные сообщения", "domain":"chat", "target_revision":null,
       "behavior_revisions":[], "parity_ids":["chat.text-dm"],
-      "components":["cmp.web.workspace","cmp.web.history_measurements","cmp.flutter.conversation"],
+      "components":["cmp.web.workspace","cmp.web.history_measurements","cmp.web.protected_image_viewer","cmp.flutter.conversation"],
       "platforms": {
         "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
         "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
