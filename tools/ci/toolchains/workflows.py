@@ -4,7 +4,7 @@ from .spec import ROOT, approved_versions
 
 NPM = {'ci-actual-acceptance.yaml', 'ci-contracts.yaml', 'ci-frontend.yaml', 'client-lifecycle-acceptance.yaml',
        'next-client-acceptance.yaml', 'qa-compatible-rollback.yaml', 'web-ci-shadow.yaml',
-       'audio-web-research.yaml'}
+       'audio-web-research.yaml', 'deploy-production.yaml', 'install-retained-release.yaml'}
 
 
 def validate(documents, root):

@@ -79,3 +79,40 @@ jobs:
           build-run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           ssh-private-key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+
+  smoke:
+    needs: install
+    if: github.repository == 'BOOHTACORD/BOOHTACORD' && github.ref == 'refs/heads/master' && needs.install.result == 'success'
+    environment: production-smoke
+    concurrency:
+      group: v-bootybay-production
+      cancel-in-progress: false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: ${{ runner.os == 'Linux' && '3.12.15' || '3.12.10' }}
+      - name: Verify selected Python interpreter
+        run: python -m tools.ci.toolchains.runtime python
+      - name: Prepare locked dependency cache inputs
+        run: python3 -m tools.ci.toolchains.cache_inputs npm
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: .out/ci/cache-inputs/npm.json
+      - name: Install locked browser test dependencies
+        working-directory: clients/web
+        run: npm ci --ignore-scripts
+      - name: Verify installed source and basic browser voice journey
+        env:
+          EXPECTED_REVISION: ${{ github.event.workflow_run.head_sha }}
+          SMOKE_LOGIN: ${{ secrets.PRODUCTION_SMOKE_LOGIN }}
+          SMOKE_PASSWORD: ${{ secrets.PRODUCTION_SMOKE_PASSWORD }}
+        run: node tools/qa/production_smoke/run.mjs
