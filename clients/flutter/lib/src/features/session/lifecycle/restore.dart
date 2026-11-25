@@ -18,6 +18,7 @@ extension SessionRestoration on SessionController {
     effects.error(null);
     changed();
     ActionScope? readiness;
+    var deadlineExpired = false;
     try {
       final account =
           await (() async {
@@ -45,11 +46,14 @@ extension SessionRestoration on SessionController {
             return account;
           })().timeout(
             startupTimeout,
-            onTimeout: () => throw ApiFailure(
-              'Подключение не завершилось вовремя. '
-              '${Platform.isMacOS ? 'Проверьте системный запрос доступа к Связке ключей и соединение. ' : 'Проверьте соединение. '}'
-              'Повторите попытку.',
-            ),
+            onTimeout: () {
+              deadlineExpired = true;
+              throw ApiFailure(
+                'Подключение не завершилось вовремя. '
+                '${Platform.isMacOS ? 'Проверьте системный запрос доступа к Связке ключей и соединение. ' : 'Проверьте соединение. '}'
+                'Повторите попытку.',
+              );
+            },
           );
       if (!ticket.isActive) return;
       user = account;
@@ -67,9 +71,17 @@ extension SessionRestoration on SessionController {
     } catch (cause) {
       readiness?.finish('failed', reason: 'dependency');
       if (!ticket.isActive) return;
+      if (deadlineExpired) {
+        // Future.timeout cannot cancel storage/native work. Retire its tickets
+        // before showing retry so late completions cannot prepare the account.
+        scope.close();
+        effects.invalidateOperations?.call();
+      }
       user = previousUser;
       phase = AppPhase.connectionError;
       effects.error(effects.message(cause));
+      changed();
+      return;
     }
     if (ticket.isActive) changed();
   }

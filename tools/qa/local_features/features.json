@@ -1,7 +1,8 @@
 {
   "auth": {
     "native_targets": [
-      "integration_test/issue689_roster_test.dart"
+      "integration_test/issue689_roster_test.dart",
+      "integration_test/startup_retry_test.dart"
     ],
     "paths": [
       "clients/web/src/identity/*",
@@ -39,7 +40,9 @@
       "test/auth_rate_limit_test.dart",
       "test/session_lifecycle/authentication_failure_test.dart",
       "test/authentication_password_policy_test.dart",
-      "test/reset_preflight_contract_test.dart"
+      "test/reset_preflight_contract_test.dart",
+      "test/session_lifecycle/startup_timeout_test.dart",
+      "test/session_lifecycle/startup_retry_test.dart"
     ],
     "acceptance": {
       "issue689_banner_viewport": {
@@ -118,6 +121,14 @@
           "clients/web/tests/password_reset_visibility/visibility.browser.spec.ts"
         ],
         "scope": "Read-only digest eligibility check with <=2s query deadline before shared KDF admission. Invalid/expired/used capabilities and observed cancellation do no unnecessary KDF or mutation. Final unchanged atomic Consume rechecks eligibility; real PostgreSQL verifies expiry race, concurrent services, rollback and session/lease revocation outbox/audit. Existing Web/shared Flutter generic 400, safe 500, AUTH_BUSY and success semantics retained; no automatic retries/logout. Native smoke and fixture error cases are separate evidence."
+      },
+      "startup_timeout_retry": {
+        "focused": [
+          "clients/flutter/test/session_lifecycle/startup_timeout_test.dart",
+          "clients/flutter/test/session_lifecycle/startup_retry_test.dart"
+        ],
+        "native": "clients/flutter/integration_test/startup_retry_test.dart",
+        "scope": "FLUTTER-STARTUP-01 / FE-67: timeout retires the expired generation before showing retry; late storage/platform/session/preparation results cannot apply account state. A real saved-session response is held while the native retry restores the owned account. OS requests are not force-cancelled. macOS Keychain prompt and physical iOS acceptance remain separate."
       }
     },
     "parity": [
@@ -173,7 +184,8 @@
       "scope": "SEC-003: shared backend read-only reset capability preflight; existing Web/shared Flutter error and success implementation retained and regression-tested without auto retry/logout. Source 16e6a49a151bbc32c1c18a3a3479e1e0ca4c1768: 1623 Web and 1617 Flutter tests PASS (1 Flutter skip), desktop real API and Android/iOS native smoke PASS. Original local report retains 17 PASS / mobile burst-50 FAIL before reset; unchanged same-source exact mobile lifecycle rerun PASS including reset completion and used-link rejection. Relevant original-resolution result/form/native auth-workspace images reviewed; no baseline approval or physical/media/deployment claim. Evidence: evidence/security/sec03-reset-preflight-2026-10-23.md. 2026-11-07 issue #676 draft: unwired shared Flutter voice sound policy; existing session and connection behavior unchanged. Device and audio acceptance remain NOT_RUN. 2026-11-07 PR #674: shared Flutter member profile navigation and live directory; Web live directory and registration guidance. Existing unaffected behavior remains subject to regression checks. Android physical isolated stack tested for password, live member and chat-to-DM; Windows, iOS and full platform acceptance not verified. No media, deployment or release claim.  2026-11-07 issue #675: shared Flutter historical welcome author lookup; unaffected feature behavior retains existing regression tests. Android, iOS and physical media acceptance are not claimed.",
       "revision": "open-pr-677-integration-2026-11-08",
       "issue787_pr7_web_viewer_aggregation": "PR7 adds Web receipt, selected-publication scope and diagnostic presentation for the existing bounded screen telemetry event. Web focused tests/build and registered Web real-stack lifecycle pass; the broad screen_profile browser suite remains BLOCKED by one pre-existing skipped publisher/viewer test. Flutter sender integration, auth/session/ACL behavior, messaging, AFK activity and connection retry policies are unchanged in this PR; socket end clears stale viewer telemetry. Cross-client paired sender-to-viewer, native runtime, media quality and capacity acceptance remain NOT_RUN. The new telemetry event is scoped to the current guild socket and does not change authentication or authorization flows.",
-      "issue689_r2_ready_acceptance": "2026-11-21 R2: The Web authenticated socket stays CONNECTING until typed connection.ready; timeout and late401 do not clear the session. Logout and actual server revocation still expire the current owner. No authentication API/ACL or Flutter production code changed. Shared Flutter Android/iOS implementation is unchanged; Android emulator and Windows native R2 transport acceptance passed, physical/Apple-specific acceptance is separate."
+      "issue689_r2_ready_acceptance": "2026-11-21 R2: The Web authenticated socket stays CONNECTING until typed connection.ready; timeout and late401 do not clear the session. Logout and actual server revocation still expire the current owner. No authentication API/ACL or Flutter production code changed. Shared Flutter Android/iOS implementation is unchanged; Android emulator and Windows native R2 transport acceptance passed, physical/Apple-specific acceptance is separate.",
+      "startup_timeout_retry": "2026-11-25 FLUTTER-STARTUP-01: shared Flutter Windows/Android/iOS/macOS startup generation fence and existing retry UI. Vue unchanged. Focused four-stage timeout and late-success/null/error regressions required; native saved-session retry runs on available QA targets. Physical Keychain, signed Mac and iOS acceptance remain NOT_RUN."
     }
   },
   "connection_status": {
