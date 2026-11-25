@@ -19,10 +19,13 @@ class TrustedDeliveryWorkflowTests(unittest.TestCase):
         self.assertNotIn('secrets.', text)
         self.assertNotIn('DEPLOY_', text)
         steps = job['steps']
+        discovery = next(s for s in steps if s.get('run') == 'python -m tools.qa.trusted_delivery.discover')
+        self.assertEqual('retained', discovery['id'])
+        self.assertEqual({'GITHUB_TOKEN': '${{ github.token }}'}, discovery['env'])
         actual = next(s for s in steps if s.get('run') == 'python -m tools.qa.trusted_delivery.network')
         self.assertNotIn('continue-on-error', actual)
-        self.assertEqual({'GITHUB_TOKEN': '${{ github.token }}', 'BUILD_RUN_ID': '39268498370',
-                          'REQUESTED_REVISION': 'fe482078a2fa4e4964b6758770980d4b1a0b2fa6'}, actual['env'])
+        self.assertEqual({'GITHUB_TOKEN': '${{ github.token }}', 'BUILD_RUN_ID': '${{ steps.retained.outputs.run_id }}',
+                          'REQUESTED_REVISION': '${{ steps.retained.outputs.revision }}'}, actual['env'])
         uploads = [s for s in steps if s.get('uses') == 'actions/upload-artifact@v7']
         self.assertEqual(1, len(uploads))
         self.assertEqual('always()', uploads[0]['if'])

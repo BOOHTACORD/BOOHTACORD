@@ -13,6 +13,8 @@ def release_guard(prefix):
 
 
 GUARDS = {
+    ('deploy-production.yaml', 'smoke'): MASTER + " && needs.install.result == 'success'",
+    ('install-retained-release.yaml', 'smoke'): MASTER + " && needs.install.result == 'success'",
     ('native-release-tag.yaml', 'prepare-tag'): MASTER + " && github.event_name == 'workflow_dispatch'",
     ('deploy-production.yaml', 'install'): UPSTREAM + " && needs.route.outputs.has_bundle == 'true' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'master' && github.event.workflow_run.head_repository.full_name == github.repository",
     ('build-server.yaml', 'bundle'): MASTER + " && needs.changes.outputs.server_release_impact == 'true'",
@@ -33,6 +35,7 @@ GUARDS = {
     ('install-retained-release.yaml', 'install'): MASTER,
 }
 DIAGNOSTICS = {('audit-attachment-volume.yaml','audit'),('qa08-active-upload.yaml','sample'),('qa11-preflight.yaml','inspect')}
+SMOKE = {('deploy-production.yaml', 'smoke'), ('install-retained-release.yaml', 'smoke')}
 
 WRITERS = {('android-release.yaml', 'android-release'), ('windows-release.yaml', 'windows-release'),
            ('native-release-tag.yaml', 'prepare-tag'),
@@ -92,10 +95,11 @@ def check(workflows):
             secrets = sensitive(job)
             if untrusted:
                 require(not secrets and all(v == 'read' for v in permissions.values()))
+            expected_environment = 'production-smoke' if identity in SMOKE else ('production-diagnostics' if identity in DIAGNOSTICS else 'production')
             if identity in GUARDS:
-                require(job.get('if') == GUARDS[identity] and job.get('environment') == ('production-diagnostics' if identity in DIAGNOSTICS else 'production'))
+                require(job.get('if') == GUARDS[identity] and job.get('environment') == expected_environment)
             if secrets:
-                require(identity in GUARDS and job.get('environment') == ('production-diagnostics' if identity in DIAGNOSTICS else 'production'))
+                require(identity in GUARDS and job.get('environment') == expected_environment)
             for step in job.get('steps', []):
                 require(step.get('continue-on-error') in (None, False, 'false'))
                 if step.get('uses', '').startswith('actions/checkout@'):

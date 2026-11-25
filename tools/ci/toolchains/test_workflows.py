@@ -14,6 +14,18 @@ class ToolchainWorkflowTests(unittest.TestCase):
     def test_actual_sdk_and_dependency_cache_contract(self):
         validate(self.documents(), ROOT)
 
+    def test_production_smoke_dependency_install_is_unconditional_and_locked(self):
+        for name in ('deploy-production.yaml', 'install-retained-release.yaml'):
+            for mutation in ('conditional', 'cache'):
+                documents = self.documents()
+                steps = documents[name]['jobs']['smoke']['steps']
+                if mutation == 'conditional':
+                    next(step for step in steps if 'npm ci' in step.get('run', ''))['if'] = 'false'
+                else:
+                    next(step for step in steps if step.get('uses', '').startswith('actions/setup-node@'))['with']['cache-dependency-path'] = 'unrelated'
+                with self.subTest(name=name, mutation=mutation), self.assertRaises(ValueError):
+                    validate(documents, ROOT)
+
     def test_contract_dependencies_match_audio_metric_pins(self):
         base = set((ROOT / 'tools/requirements-ci.txt').read_text().splitlines())
         audio = (ROOT / 'tools/audio/speech_metrics/requirements.txt').read_text().splitlines()

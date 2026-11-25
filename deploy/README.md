@@ -30,6 +30,11 @@ bundle. The installer selects the retained release's exact Compose file and
 passes its environment file explicitly, independently of the working directory.
 It imports verified images and never invokes the development overlay.
 
+After installation, the separate [production smoke journey](../tools/qa/production_smoke/README.md)
+checks the installed source, login and voice connection. Production release jobs
+require approval in the GitHub `production` environment. A failed smoke job
+does not automatically roll back the installed release.
+
 The project is still `voice-platform`. Services, operator commands, migration
 dependencies, published ports and networks retain their identities. Existing
 `postgres-data`, `attachments-data`, `caddy-data`, and `caddy-config` volumes

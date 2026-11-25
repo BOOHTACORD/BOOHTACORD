@@ -1,4 +1,5 @@
 import copy
+import subprocess
 import unittest
 from pathlib import Path
 import yaml
@@ -15,6 +16,24 @@ class DeliveryWorkflowTests(unittest.TestCase):
 
     def test_current_delivery_graph(self):
         check(self.workflows)
+
+    def test_production_smoke_scenario_contract(self):
+        root = Path(__file__).resolve().parents[3]
+        subprocess.run(['node', '--test', 'tools/qa/production_smoke/scenario.test.mjs'],
+                       cwd=root, check=True, capture_output=True, timeout=30)
+
+    def test_production_smoke_cannot_be_skipped_or_use_a_different_revision(self):
+        for workflow in ('deploy-production.yaml', 'install-retained-release.yaml'):
+            for mutation in ('missing', 'dependency', 'identity', 'skip', 'secret'):
+                broken = copy.deepcopy(self.workflows)
+                job = broken[workflow]['jobs']['smoke']
+                if mutation == 'missing': del broken[workflow]['jobs']['smoke']
+                elif mutation == 'dependency': job['needs'] = 'route'
+                elif mutation == 'identity': job['steps'][-1]['env']['EXPECTED_REVISION'] = 'master'
+                elif mutation == 'skip': job['steps'][-1]['continue-on-error'] = 'true'
+                else: job['steps'][-1]['env']['DEPLOY_SSH_PRIVATE_KEY'] = '${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}'
+                with self.subTest(workflow=workflow, mutation=mutation), self.assertRaises((ValueError, KeyError)):
+                    check(broken)
 
     def test_install_jobs_cover_the_full_bounded_delivery_budget(self):
         for workflow in ('deploy-production.yaml', 'install-retained-release.yaml'):

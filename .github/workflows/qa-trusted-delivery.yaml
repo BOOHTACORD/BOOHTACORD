@@ -32,12 +32,17 @@ jobs:
       - name: Verify selected Python interpreter
         run: python -m tools.ci.toolchains.runtime python
       - name: Verify transport proof failure handling
-        run: python -m unittest tools.qa.trusted_delivery.test_network
+        run: python -m unittest tools.qa.trusted_delivery.test_network tools.qa.trusted_delivery.test_discover
+      - name: Discover a retained verified master producer
+        id: retained
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python -m tools.qa.trusted_delivery.discover
       - name: Download the actual retained master producer with the shipping network path
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          BUILD_RUN_ID: '39268498370'
-          REQUESTED_REVISION: fe482078a2fa4e4964b6758770980d4b1a0b2fa6
+          BUILD_RUN_ID: ${{ steps.retained.outputs.run_id }}
+          REQUESTED_REVISION: ${{ steps.retained.outputs.revision }}
         run: python -m tools.qa.trusted_delivery.network
       - name: Retain only the sanitized transport proof
         if: always()

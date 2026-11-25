@@ -16,6 +16,8 @@ def commands(job):
 
 
 def check(workflows):
+    from .production_smoke import check as check_smoke
+    check_smoke(workflows)
     from tools.ci.master_quality.workflow import validate as validate_master
     validate_master(workflows)
     from tools.ci.backend_gates.workflow import validate as validate_backend
@@ -76,6 +78,8 @@ def check(workflows):
             require(workflow.get('concurrency') == expected_lock,
                     'Retained install/recovery/rollback must share the non-cancellable production lock')
         for job_name, job in workflow['jobs'].items():
+            if name in ('deploy-production.yaml', 'install-retained-release.yaml') and job_name == 'smoke':
+                continue  # Separately verified, read-only smoke job; it cannot deploy.
             if name == 'deploy-production.yaml' and job_name == 'route':
                 continue
             if name == 'deploy-production.yaml':
