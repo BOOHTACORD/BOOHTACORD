@@ -2796,6 +2796,17 @@
           "tools/qa/history_edit_retention/run.py"
         ],
         "scope": "#141: owned built-Web/API history eviction, exact edit/selection, save conflict and finite 50/500/5000/10000 message profiles. No native or physical media claim."
+      },
+      "web_protected_image_viewer": {
+        "task": "FE-53",
+        "focused": [
+          "clients/web/src/conversation/protected_image_viewer.spec.ts",
+          "clients/web/tests/accessibility/protected_image_viewer.browser.spec.ts",
+          "clients/web/tests/accessibility/protected_image_failures.browser.spec.ts",
+          "clients/web/tests/accessibility/protected_image_lifecycle.browser.spec.ts"
+        ],
+        "real_stack": "python -m tools.qa.protected_image_viewer.run",
+        "scope": "Web TEXT/DM modal lifecycle, Escape and opener focus, Tab containment, protected normalization/original bytes, same-scope stale responses, live deletion and current ACL. Windows Edge and Linux Chromium; responsive 1440/393/320. Android Chrome and physical/Apple-specific acceptance are separate and not inferred."
       }
     },
     "parity": [
@@ -2861,7 +2872,8 @@
       "web_only_follow_up": "2026-11-08 PR #682: Web TEXT/DM read cursors advance as messages become visible; search opens and briefly highlights the target in normal history, and sending follows the new message. Web unit, browser and real-stack regressions are recorded in evidence/qa/web-chat-reading-navigation-2026-11-08.md. Flutter/iOS/Android code is unchanged; no native runtime claim. 2026-11-08 PR #683: Web silently restores the exact TEXT/DM reading position, removes per-conversation mini-search, keeps primary search navigation in ordinary history, and follows sent messages. Flutter/iOS/Android sources and behavior are unchanged; Web regressions are included in this PR. 2026-11-09 PR #697: Web opens first chat history at the newest messages while restoring saved anchors, keeps the mini stream preview below the text/DM header, and shows protected peer avatars in ordinary DM rows. Message read/write and ACL behavior are unchanged; Flutter/iOS/Android implementations are unchanged.",
       "issue787_pr7_web_viewer_aggregation": "PR7 adds Web receipt, selected-publication scope and diagnostic presentation for the existing bounded screen telemetry event. Web focused tests/build and registered Web real-stack lifecycle pass; the broad screen_profile browser suite remains BLOCKED by one pre-existing skipped publisher/viewer test. Flutter sender integration, auth/session/ACL behavior, messaging, AFK activity and connection retry policies are unchanged in this PR; socket end clears stale viewer telemetry. Cross-client paired sender-to-viewer, native runtime, media quality and capacity acceptance remain NOT_RUN. Message history, read cursors, DM ACLs and send behavior are unchanged.",
       "issue689_r2_ready_acceptance": "2026-11-21 R2: Only Web connection readiness presentation changed; durable hint delivery, cursor acknowledgement, messaging and resync behavior are preserved. The original94 realtime tests passed both before and after extraction. Shared Flutter Android/iOS implementation is unchanged; Android emulator and Windows native R2 transport acceptance passed, physical/Apple-specific acceptance is separate.",
-      "issue141_history_measurement_delivery": "2026-11-25: Web history batches observed size changes into the next animation frame to avoid ResizeObserver delivery loops. Existing scoped edit state, one DOM pin, cache limits, paging and server ACL are preserved. Flutter Android/iOS source and runtime behavior are unchanged; native acceptance is not inferred. Critical lifecycle acceptance now checks real-API history edit eviction and conflict saving."
+      "issue141_history_measurement_delivery": "2026-11-25: Web history batches observed size changes into the next animation frame to avoid ResizeObserver delivery loops. Existing scoped edit state, one DOM pin, cache limits, paging and server ACL are preserved. Flutter Android/iOS source and runtime behavior are unchanged; native acceptance is not inferred. Critical lifecycle acceptance now checks real-API history edit eviction and conflict saving.",
+      "fe53_web_protected_image_viewer": "2026-11-26 FE-53: Web-only protected TEXT/DM viewer closes on resource changes, aborts stale requests and restores its actual opener with explicit keyboard containment. Existing normalized PNG preview, separate protected original download, retry/404/410 rendering and styles are preserved. Flutter Android/iOS/Windows viewer code and earlier native gates are unchanged. Focused behavior/browser checks and real API uploads, denials and live deletion have dedicated acceptance; Windows Edge and responsive Chromium results do not certify physical mobile or Apple runtime."
     }
   },
   "update_required": {

@@ -6,7 +6,7 @@ import TextMessageAttachments from '../TextMessageAttachments.vue'
 import DirectMessageAttachments from '../../direct_message/DirectMessageAttachments.vue'
 
 const preview = vi.hoisted(() => ({ failed: false }))
-vi.mock('./use_protected_image_preview', async () => {
+vi.mock('../protected_image_viewer/preview', async () => {
   const { ref } = await import('vue')
   return { useProtectedImagePreview: () => ({
     imageUrl: ref('blob:normalized-preview'), loading: ref(false), unavailable: ref(false),

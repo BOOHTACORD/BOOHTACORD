@@ -8,6 +8,11 @@ action_catalog:
   verification: backlog/VERIFICATION_TODO.md
   completed: DONE.md
 tasks:
+  - id: FE-53
+    title: Complete protected Web TEXT and DM image viewer lifecycle and acceptance
+    requirements: [REQ-STORAGE-02, REQ-CHAT-01, REQ-DM-01, REQ-UI-01, REQ-UI-02, REQ-SECURITY-01]
+    depends_on: [T-040, T-041, T-044, T-050]
+    evidence: [clients/web/src/conversation/protected_image_viewer.spec.ts, clients/web/tests/accessibility/protected_image_viewer.browser.spec.ts, clients/web/tests/accessibility/protected_image_failures.browser.spec.ts, clients/web/tests/accessibility/protected_image_lifecycle.browser.spec.ts, tools/qa/protected_image_viewer/scenario.mjs, tools/qa/local_features/features.json, evidence/qa/web-protected-image-viewer-2026-11-25.md]
   - id: VD786-001
     title: Decouple deafen state from screen-share audio across Web and Flutter (GitHub #786)
     requirements: [REQ-VOICE-01, REQ-UI-01, REQ-SECURITY-01, REQ-QUALITY-01]
