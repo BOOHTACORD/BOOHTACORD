@@ -20,6 +20,7 @@ DEFAULT_ISSUE785_BACKGROUND_SECONDS = 120
 
 def native_target(target):
     scopes = {
+        'integration_test/startup_retry_test.dart': 'real saved-session response held across startup timeout; manual retry, late response fence, workspace socket and explicit logout; Windows storage mocked',
         'integration_test/local_qa_test.dart': 'auth, authenticated workspace, profile/audio/admin panels, logout',
         'integration_test/issue689_roster_test.dart': 'auth, public/auth maintenance handoff, synthetic unknown banner, voice roster socket and manual reconnect',
         'integration_test/issue689_listener_test.dart': 'real SFU listener, roster and app socket recovery; no microphone capture',
@@ -102,8 +103,10 @@ def main():
         raise ValueError('Issue 785 listener playback integration is Android-only')
     if args.target == 'integration_test/issue785_background_microphone_uplink_test.dart' and args.platform != 'android':
         raise ValueError('Issue 785 microphone uplink integration is Android-only')
-    if args.platform=='windows' and args.target!='integration_test/issue689_roster_test.dart':
-        raise ValueError('Windows QA is restricted to the isolated issue689 scenario')
+    if args.platform=='windows' and args.target not in {
+        'integration_test/issue689_roster_test.dart', 'integration_test/startup_retry_test.dart',
+    }:
+        raise ValueError('Windows QA requires an isolated in-memory storage scenario')
     scope=native_target(args.target)
     verify_device(args.platform,args.device)
     root=Path(__file__).resolve().parents[3]

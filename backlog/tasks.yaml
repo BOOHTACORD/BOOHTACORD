@@ -593,6 +593,11 @@ tasks:
     requirements: [REQ-UI-01, REQ-UI-02, REQ-AUTH-01, REQ-SECURITY-01, REQ-VOICE-01]
     depends_on: [T-050]
     evidence: [android-client-tests, android-release-apk, evidence/android]
+  - id: FLUTTER-STARTUP-01
+    title: Retire expired Flutter startup attempts before manual retry (FE-67)
+    requirements: [REQ-UI-01, REQ-UI-02, REQ-AUTH-01, REQ-SECURITY-01]
+    depends_on: [T-010, T-050, T-051]
+    evidence: [clients/flutter/test/session_lifecycle/startup_timeout_test.dart, clients/flutter/test/session_lifecycle/startup_retry_test.dart, clients/flutter/integration_test/startup_retry_test.dart, evidence/qa/flutter-startup-timeout-2026-11-25.md]
   - id: FV2-001
     title: Flutter Design V2 canonical theme tokens and shared controls
     requirements: [REQ-UI-01, REQ-UI-02, REQ-PLATFORM-01]

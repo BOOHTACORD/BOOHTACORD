@@ -22,6 +22,13 @@ class SelectionTest(unittest.TestCase):
             'integration_test/local_qa_test.dart', 'integration_test/issue689_roster_test.dart'])
         self.assertEqual(native_targets(catalog, []), ['integration_test/local_qa_test.dart'])
 
+    def test_auth_selects_startup_retry_in_addition_to_existing_native_smoke(self):
+        catalog = json.loads(Path(__file__).with_name('features.json').read_text(encoding='utf8'))
+        for platform in ('android', 'ios', 'windows'):
+            selected = native_targets(catalog, ['auth'], platform=platform)
+            self.assertIn('integration_test/local_qa_test.dart', selected)
+            self.assertIn('integration_test/startup_retry_test.dart', selected)
+
     def test_rejects_unknown_native_target(self):
         with self.assertRaises(ValueError):
             native_targets({'x': {'native_targets': ['arbitrary.dart']}}, ['x'])
