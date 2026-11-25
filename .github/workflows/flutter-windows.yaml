@@ -188,6 +188,19 @@ jobs:
           path: .out/ci/
       - name: Verify full native manifest, checksums and installer identity
         run: python -m tools.ci.windows_gates.transfer verify
+      - name: Test owned cleanup and actual Windows directory locks
+        run: python -m unittest tools.qa.legacy_windows_update.test_owned
+      - name: Accept original old Windows client against the public stable catalog
+        timeout-minutes: 8
+        run: python -m tools.qa.legacy_windows_update.run
+      - name: Retain original-client update observations
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: legacy-windows-update-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .out/legacy-windows-update/
+          if-no-files-found: error
+          retention-days: 30
       - name: Prepare public Go SDK and dependency cache inputs
         run: python -m tools.ci.toolchains.cache_inputs go
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
