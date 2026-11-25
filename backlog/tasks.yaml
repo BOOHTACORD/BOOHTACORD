@@ -1073,6 +1073,11 @@ tasks:
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02]
     depends_on: [UPD-004, UPD-005, T-054]
     evidence: [contracts/client-build.json, native-artifact-manifests]
+  - id: WIN-249
+    title: Original Windows 1.0.32 update offer and current stable installed acceptance
+    requirements: [REQ-PLATFORM-01, REQ-DEPLOY-01, REQ-QUALITY-02]
+    depends_on: [UPD-002, UPD-007, UPD-008, UPD-009, T-054]
+    evidence: [tools/qa/legacy_windows_update/README.md, tools/qa/legacy_windows_update/test_policy.py, tools/qa/legacy_windows_update/test_packages.py, tools/qa/legacy_windows_update/test_workflow.py, evidence/release/issue249-windows-update-2026-11-25.md]
   - id: UPD-009
     title: Atomic catalog promotion and withdrawal tooling
     requirements: [REQ-DEPLOY-01, REQ-QUALITY-02]
