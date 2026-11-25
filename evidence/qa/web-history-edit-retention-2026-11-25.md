@@ -33,6 +33,8 @@ one focused DOM pin, reversible paging and server ACL are preserved.
   inspected at original resolution: focus/selection and controls fit, no clipping.
   No unrelated visual baseline is approved by this review.
 - Hosted PR CI is pending at commit time; its final result is tracked on the PR.
+- CI's base-relative ownership check subsequently required an explicit component
+  path for the new helper; the mapping fix passed 39 map tests and transition/ownership checks.
 
 ```sh
 npm test --prefix clients/web -- src/conversation/history_window/

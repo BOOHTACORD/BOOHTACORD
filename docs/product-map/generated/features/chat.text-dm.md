@@ -19,4 +19,5 @@ ID: `chat.text-dm`
 ## Компоненты
 
 - cmp.flutter.conversation: [clients/flutter/lib/src/features/conversation/lifecycle/controller.dart](../../../../clients/flutter/lib/src/features/conversation/lifecycle/controller.dart)
+- cmp.web.history\_measurements: [clients/web/src/conversation/history\_window/use.ts](../../../../clients/web/src/conversation/history_window/use.ts), [clients/web/src/conversation/history\_window/measurement\_delivery/frame.ts](../../../../clients/web/src/conversation/history_window/measurement_delivery/frame.ts)
 - cmp.web.workspace: [clients/web/src/workspace/WorkspaceApp.vue](../../../../clients/web/src/workspace/WorkspaceApp.vue)

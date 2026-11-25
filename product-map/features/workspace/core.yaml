@@ -1,6 +1,7 @@
 {
   "components": [
     {"id":"cmp.web.workspace","source":{"parity_id":"auth.session","platform":"web"}},
+    {"id":"cmp.web.history_measurements","paths":["clients/web/src/conversation/history_window/use.ts","clients/web/src/conversation/history_window/measurement_delivery/frame.ts"]},
     {"id":"cmp.flutter.session","source":{"parity_id":"auth.session","platform":"android"}},
     {"id":"cmp.flutter.conversation","source":{"parity_id":"chat.text-dm","platform":"android"}},
     {"id":"cmp.flutter.screen_viewer","source":{"parity_id":"screen.viewer.commands","platform":"android"}},
@@ -27,7 +28,7 @@
     {
       "id":"chat.text-dm", "title":"Текстовые каналы и личные сообщения", "domain":"chat", "target_revision":null,
       "behavior_revisions":[], "parity_ids":["chat.text-dm"],
-      "components":["cmp.web.workspace","cmp.flutter.conversation"],
+      "components":["cmp.web.workspace","cmp.web.history_measurements","cmp.flutter.conversation"],
       "platforms": {
         "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
         "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
