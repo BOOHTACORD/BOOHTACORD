@@ -55,17 +55,17 @@ export async function clipboard(page, text, image = true, noise = false) {
     await navigator.clipboard.write([new ClipboardItem(parts)])
   }, { text, image, noise, png: qaImage().toString('base64') })
 }
-export async function paste(page) {
-  await page.locator('#message-body').focus(); await page.keyboard.press('Control+V')
+export async function paste(page, selector = '#message-body') {
+  await page.locator(selector).focus(); await page.keyboard.press('Control+V')
 }
-export async function capture(page, directory, name) {
+export async function capture(page, directory, name, selector = '#message-body') {
   await page.evaluate(async () => { await document.fonts.ready; await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))) })
-  const field = page.locator('#message-body')
+  const field = page.locator(selector)
   const bounds = await field.boundingBox(), viewport = page.viewportSize()
   assert.ok(bounds && bounds.width >= 96 && bounds.x >= 0 && bounds.x+bounds.width <= viewport.width && bounds.y+bounds.height <= viewport.height)
   await page.screenshot({ path: directory+'/'+name+'.png' })
 }
-export async function send(page, prefix) {
+export async function send(page, prefix, selector = '#message-body') {
   const observation = await page.evaluate(() => window.pastedImage); assert.equal(observation.trusted, true)
   const pending = page.waitForResponse(r => r.request().method() === 'POST' && new URL(r.url()).pathname === '/api/v1'+prefix+'/messages')
   await page.getByRole('button', { name: 'Отправить сообщение', exact: true }).click()
@@ -75,6 +75,6 @@ export async function send(page, prefix) {
   const row = page.locator(`[data-message-id="${sent.id}"]`), saving = page.waitForEvent('download')
   await row.locator('.attachment-card__download').click()
   assert.equal(createHash('sha256').update(await readFile(await (await saving).path())).digest('hex'), observation.hash)
-  await expect(page.locator('#message-body')).toHaveValue('')
+  await expect(page.locator(selector)).toHaveValue('')
   return confirmed
 }

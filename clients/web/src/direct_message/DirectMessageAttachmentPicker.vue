@@ -2,7 +2,7 @@
 import { vActionHint } from '../shared/action_hint/directive'
 import { onBeforeUnmount, ref, watch } from 'vue'
 import type { TextMessageAttachment } from '../conversation/message_client'
-import { uploadDirectMessageAttachment } from './direct_message_attachment_upload_client'
+import { uploadDirectMessageAttachment } from './attachment_upload/client'
 import { createManagedUploadQueue } from '../conversation/upload_queue/queue'
 import { progressRequest } from '../conversation/upload_queue/transport'
 import { useCompactComposerActions } from '../conversation/use_compact_composer_actions'
@@ -21,8 +21,11 @@ const { items, pending, error, clear, restore, upload, addFiles, retry, cancel, 
   (id, file, control) => uploadDirectMessageAttachment(id, file, progressRequest(control)), props.initialAttachments,
 )
 onBeforeUnmount(dispose)
-watch(() => props.clearToken, clear)
-watch(() => props.directMessageId, () => restore(props.initialAttachments ?? []))
+// Restore the new scope atomically; an earlier clear would overwrite its saved files.
+watch([() => props.directMessageId, () => props.clearToken], ([id], [previous]) => {
+  if (id === previous) clear()
+  else restore(props.initialAttachments ?? [])
+})
 
 function addPastedFiles(files: File[]): void { void upload(files) }
 defineExpose({ addPastedFiles })

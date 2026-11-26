@@ -12,9 +12,9 @@ from tools.qa.upload_reservations.measure import await_reserved, sample
 from tools.qa.upload_reservations.stack import UploadStack
 
 
-def main():
+def main(scenario='tools/qa/clipboard_paste/scenario.mjs', destination_name='clipboard-paste', task_label='TEXT'):
     root = Path(__file__).resolve().parents[3]
-    destination = root / '.out/clipboard-paste'
+    destination = root / '.out' / destination_name
     destination.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='private-', dir=destination) as private:
         work = Path(private)
@@ -27,7 +27,7 @@ def main():
             payload.chmod(0o600)
             environment = dict(os.environ, QA_ORIGIN='https://localhost:4810', QA_INPUT=str(payload),
                                QA_RESULT=str(destination/'result.json'))
-            process = subprocess.Popen(['xvfb-run', '-a', 'node', 'tools/qa/clipboard_paste/scenario.mjs'],
+            process = subprocess.Popen(['xvfb-run', '-a', 'node', scenario],
                                        cwd=root, env=environment, start_new_session=True)
             completed, admission, deadline = set(), {}, time.monotonic()+420
             while process.poll() is None:
@@ -71,7 +71,7 @@ def main():
             stack.close()
     result['owned_resources_removed'] = True
     (destination/'result.json').write_text(json.dumps(result, indent=2)+'\n')
-    print('Actual TEXT clipboard, storage507/retry and scope cancellation PASS; owned resources removed')
+    print(f'Actual {task_label} clipboard, storage507/retry and scope cancellation PASS; owned resources removed')
     return 0
 
 

@@ -8,6 +8,11 @@ action_catalog:
   verification: backlog/VERIFICATION_TODO.md
   completed: DONE.md
 tasks:
+  - id: FE-55
+    title: Complete Web DM image clipboard and participant-only upload acceptance
+    requirements: [REQ-DM-01, REQ-STORAGE-01, REQ-STORAGE-02, REQ-STORAGE-03, REQ-UI-01, REQ-UI-02]
+    depends_on: [T-041, T-044, T-050]
+    evidence: [clients/web/src/direct_message/attachment_upload/client.spec.ts, clients/web/src/direct_message/direct_message_attachments.spec.ts, clients/web/tests/accessibility/dm_clipboard_paste.browser.spec.ts, tools/qa/dm_clipboard/run.py, tools/qa/local_features/features.json, evidence/qa/web-dm-clipboard-2026-11-26.md]
   - id: FE-54
     title: Complete Web TEXT clipboard image paste and actual storage retry acceptance
     requirements: [REQ-CHAT-01, REQ-STORAGE-01, REQ-STORAGE-02, REQ-STORAGE-03, REQ-UI-01, REQ-UI-02]

@@ -27,8 +27,8 @@ export async function mount(page: Page) {
   await expect(page.locator('#message-body')).toBeEnabled()
   return state
 }
-export async function paste(page: Page, text = '', count = 1, bytes?: number) {
-  await page.locator('#message-body').evaluate((input, value) => {
+export async function paste(page: Page, text = '', count = 1, bytes?: number, selector = '#message-body') {
+  await page.locator(selector).evaluate((input, value) => {
     const data = new DataTransfer()
     if (value.text) data.setData('text/plain', value.text)
     for (let i = 0; i < value.count; i++) data.items.add(new File([
