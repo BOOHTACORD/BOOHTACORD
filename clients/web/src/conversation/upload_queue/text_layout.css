@@ -1,0 +1,4 @@
+/* A full-width upload row must not leave the following editor with zero width. */
+.text-conversation .message-composer:has(.upload-queue) > textarea {
+  min-width: min(8rem, 100%);
+}

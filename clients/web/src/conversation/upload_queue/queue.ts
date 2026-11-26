@@ -1,6 +1,7 @@
 import { computed, ref, shallowRef } from 'vue'
 import { MAX_MESSAGE_ATTACHMENTS } from '../attachment_limits'
 import { drain } from './runner'
+import { uploadFailureMessage } from './failure'
 import type { Emit, Item, Prepared, State, Upload } from './types'
 
 export function createManagedUploadQueue<T extends Prepared>(scope: () => string, disabled: () => boolean,
@@ -12,7 +13,7 @@ export function createManagedUploadQueue<T extends Prepared>(scope: () => string
   const pending = computed(() => items.value.some(item => item.status === 'queued' || item.status === 'uploading'))
   const blocked = computed(() => items.value.some(item => item.status !== 'done'))
   const state: State<T> = { items, scope, upload: uploadFile, active: null, version: 0, running: null,
-    failed: cause => { error.value = cause instanceof Error ? cause.message : 'Не удалось загрузить вложение.' },
+    failed: cause => { error.value = uploadFailureMessage(cause) },
     publish: () => { items.value = [...items.value]; emit('change', [...attachments.value]); emit('pending', blocked.value) } }
   function dispose(): void { state.version++; state.active?.abort(); state.active = null; state.running = null }
   function clear(): void { dispose(); items.value = []; error.value = null; state.publish() }

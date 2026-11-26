@@ -1,4 +1,5 @@
 import type { Prepared, State } from './types'
+import { uploadFailureMessage } from './failure'
 
 export function drain<T extends Prepared>(state: State<T>): Promise<void> {
   if (state.running) return state.running
@@ -20,7 +21,7 @@ export function drain<T extends Prepared>(state: State<T>): Promise<void> {
       } catch (cause) {
         if (!current()) return
         if (state.items.value.includes(item)) {
-          item.status = 'failed'; item.error = cause instanceof Error ? cause.message : 'Не удалось загрузить вложение.'
+          item.status = 'failed'; item.error = uploadFailureMessage(cause)
           state.failed(cause)
         }
       } finally {

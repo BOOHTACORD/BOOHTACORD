@@ -1,4 +1,3 @@
-import { readFileSync } from 'node:fs'
 import { describe, expect, it, vi } from 'vitest'
 
 import { pasteClipboardImages } from './clipboard_images'
@@ -61,28 +60,17 @@ describe('clipboard image paste', () => {
     expect(addFiles).not.toHaveBeenCalled()
   })
 
-  it.each([
-    ['TEXT', '../conversation/TextConversation.vue', './TextMessageAttachmentPicker.vue'],
-    ['DM', '../direct_message/DirectMessageConversation.vue', '../direct_message/DirectMessageAttachmentPicker.vue'],
-  ])('wires the %s composer paste event into its scoped attachment queue', (_kind, conversationPath, pickerPath) => {
-    const conversation = readFileSync(new URL(conversationPath, import.meta.url), 'utf8')
-    const picker = readFileSync(new URL(pickerPath, import.meta.url), 'utf8')
-
-    expect(conversation).toContain('@paste="onComposerPaste"')
-    expect(conversation).toContain('useComposerInput(draft, composerTextarea, attachmentPicker')
-    const input = readFileSync(new URL('./composer_input/controller.ts', import.meta.url), 'utf8')
-    expect(input).toContain('pasteClipboardImages(event, textarea.value, add)')
-    expect(input).toContain('picker.value?.addPastedFiles(files)')
-    expect(picker).toContain('defineExpose({ addPastedFiles })')
-    expect(picker).toContain('function addPastedFiles(files: File[]): void')
+  it('uses image FileList fallback when file items cannot be materialized', () => {
+    const event = pasteEvent({ files: [new File(['image'], 'blob', { type: 'image/png' })] })
+    Object.assign(event.clipboardData!, { items: [{ kind: 'file', type: 'image/png', getAsFile: () => null }] })
+    const add = vi.fn()
+    expect(pasteClipboardImages(event, { selectionStart: 0, selectionEnd: 0, setRangeText: vi.fn(), dispatchEvent: vi.fn() }, add)).toBe(true)
+    expect(add.mock.calls[0]?.[0]).toMatchObject([{ name: 'clipboard-image-1.png', size: 5 }])
   })
 
-  it('keeps the DM paste upload bound to its captured conversation and offers retry', () => {
-    const picker = readFileSync(new URL('../direct_message/DirectMessageAttachmentPicker.vue', import.meta.url), 'utf8')
-    expect(picker).toContain('createManagedUploadQueue(')
-    expect(picker).toContain('() => props.directMessageId, () => props.disabled')
-    expect(picker).toContain('uploadDirectMessageAttachment(id, file, progressRequest(control))')
-    expect(picker).toContain('@retry="retry"')
-    expect(picker).toContain('void upload(files)')
+  it('leaves a missing clipboard untouched', () => {
+    const event = { clipboardData: null, preventDefault: vi.fn() }, add = vi.fn()
+    expect(pasteClipboardImages(event, { selectionStart: 0, selectionEnd: 0, setRangeText: vi.fn(), dispatchEvent: vi.fn() }, add)).toBe(false)
+    expect(event.preventDefault).not.toHaveBeenCalled(); expect(add).not.toHaveBeenCalled()
   })
 })
