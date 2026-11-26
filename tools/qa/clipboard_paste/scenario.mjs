@@ -43,6 +43,8 @@ try {
     await signal(input, 'release-'+width)
     await page.getByRole('button', { name: /^Повторить загрузку / }).click()
     await expect(page.locator('[data-upload-status="done"]')).toHaveCount(1); assert.equal(sends, 1)
+    await channel(page, fixture.bName, fixture.b); await expect(page.locator('[data-upload-status]')).toHaveCount(0)
+    await channel(page, fixture.aName, fixture.a); await expect(page.locator('[data-upload-status="done"]')).toHaveCount(1)
     assert.equal((await send(page, prefix)).body, '')
     report.checks[width+'_actual_507_reservation_release_same_file_retry_attachment_only'] = 'PASS'
     phase = width+' real throttled upload and channel switch'

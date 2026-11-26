@@ -53,6 +53,9 @@ test('TEXT scope change cancels pending paste and never imports old IDs into the
     await page.evaluate(() => window.clipboardFixture.select('first'))
     await expect(page.locator('[data-upload-status]')).toHaveCount(0)
     await expect(page.locator('#message-body')).toHaveValue('Первый черновик')
+    await page.evaluate(() => window.clipboardFixture.select('second'))
+    await expect(page.locator('#message-body')).toHaveValue('Другой черновик')
+    await expect(page.locator('[data-upload-status="done"]')).toHaveCount(1)
     expect(state.sends).toHaveLength(0)
   } finally { state.release() }
 })

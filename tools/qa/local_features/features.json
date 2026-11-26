@@ -2580,7 +2580,12 @@
       "clients/flutter/lib/src/features/text/system_welcome/*",
       "tools/qa/local_features/features.json",
       "clients/web/src/conversation/history_window/measurement_delivery/*",
-      "tools/qa/history_edit_retention/*"
+      "tools/qa/history_edit_retention/*",
+      "clients/web/tests/accessibility/dm_clipboard_paste.browser.spec.ts",
+      "clients/web/tests/dm_clipboard/*",
+      "clients/web/tests/clipboard_paste/*",
+      "tools/qa/dm_clipboard/*",
+      "tools/qa/clipboard_paste/*"
     ],
     "web": [
       "tests/conversation_action_disclosure/playwright.config.ts",
@@ -2817,6 +2822,18 @@
         ],
         "real_stack": "python -m tools.qa.clipboard_paste.run",
         "scope": "Web TEXT trusted Ctrl+V on an owned Xvfb clipboard: plain/mixed image/text, selection, explicit send, actual capacity507, reservation release and retry, throttled upload cancellation and channel draft isolation. Windows Edge component events are separate from real OS clipboard acceptance. No native Flutter, physical mobile or FE-55 acceptance claim. TEXT populated-queue editor remains visible and has a usable width at320/393/1440px and100/200% text."
+      },
+      "web_dm_clipboard": {
+        "task": "FE-55",
+        "focused": [
+          "clients/web/tests/accessibility/dm_clipboard_paste.browser.spec.ts",
+          "clients/web/src/direct_message/attachment_upload/client.spec.ts",
+          "clients/web/src/direct_message/direct_message_attachments.spec.ts",
+          "clients/web/tests/accessibility/clipboard_paste.browser.spec.ts"
+        ],
+        "runtime": "python -m tools.qa.dm_clipboard.run",
+        "evidence": "evidence/qa/web-dm-clipboard-2026-11-26.md",
+        "scope": "Web DM image paste, text/selection, explicit send, scoped cancellation, storage507/retry and participant-only ACL. Synthetic component events do not prove OS clipboard; native/physical Flutter and media acceptance remain separate."
       }
     },
     "parity": [
@@ -2884,7 +2901,8 @@
       "issue689_r2_ready_acceptance": "2026-11-21 R2: Only Web connection readiness presentation changed; durable hint delivery, cursor acknowledgement, messaging and resync behavior are preserved. The original94 realtime tests passed both before and after extraction. Shared Flutter Android/iOS implementation is unchanged; Android emulator and Windows native R2 transport acceptance passed, physical/Apple-specific acceptance is separate.",
       "issue141_history_measurement_delivery": "2026-11-25: Web history batches observed size changes into the next animation frame to avoid ResizeObserver delivery loops. Existing scoped edit state, one DOM pin, cache limits, paging and server ACL are preserved. Flutter Android/iOS source and runtime behavior are unchanged; native acceptance is not inferred. Critical lifecycle acceptance now checks real-API history edit eviction and conflict saving.",
       "fe53_web_protected_image_viewer": "2026-11-26 FE-53: Web-only protected TEXT/DM viewer closes on resource changes, aborts stale requests and restores its actual opener with explicit keyboard containment. Existing normalized PNG preview, separate protected original download, retry/404/410 rendering and styles are preserved. Flutter Android/iOS/Windows viewer code and earlier native gates are unchanged. Focused behavior/browser checks and real API uploads, denials and live deletion have dedicated acceptance; Windows Edge and responsive Chromium results do not certify physical mobile or Apple runtime.",
-      "fe54_web_text_clipboard": "2026-11-26 FE-54: existing Web clipboard extraction and TEXT/DM queue scope, send policy and limits are preserved. Shared Web upload queues now explain only known507/INSUFFICIENT_STORAGE errors in Russian while retaining explicit retry of the same file; other errors retain prior behavior. TEXT paste gains actual clipboard/API/capacity acceptance and behavior tests replacing source-string checks. Native Flutter Android/iOS/Windows code is unchanged. FE-55 DM and physical/native clipboard gates are not inferred from TEXT acceptance. A scoped TEXT queue stylesheet prevents zero-width editor collapse after image paste; style.css is only its import edge. Four reproduced narrow-layout failures pass after the fix."
+      "fe54_web_text_clipboard": "2026-11-26 FE-54: existing Web clipboard extraction and TEXT/DM queue scope, send policy and limits are preserved. Shared Web upload queues now explain only known507/INSUFFICIENT_STORAGE errors in Russian while retaining explicit retry of the same file; other errors retain prior behavior. TEXT paste gains actual clipboard/API/capacity acceptance and behavior tests replacing source-string checks. Native Flutter Android/iOS/Windows code is unchanged. FE-55 DM and physical/native clipboard gates are not inferred from TEXT acceptance. A scoped TEXT queue stylesheet prevents zero-width editor collapse after image paste; style.css is only its import edge. Four reproduced narrow-layout failures pass after the fix.",
+      "fe55_web_dm_clipboard": "2026-11-26 FE-55: Web DM upload preserves existing bounded errors and forwards typed HTTP status/code to the shared queue so known507 is explained with explicit same-file retry. The implementation moves into direct_message/attachment_upload; its old export remains a thin forwarding edge and the DM picker uses the native child import. Existing DM layout, extraction, limits, scoping, send policy, API and ACL are preserved. Optional selectors/coordinator arguments extend owned clipboard QA helpers while keeping TEXT defaults. Android/iOS/Windows/macOS Flutter source is unchanged; native clipboard and physical/platform acceptance are not inferred. A stronger TEXT/DM return test reproduced loss of ready attachments: independent reset watchers emitted an empty change before restoring the saved scope. Both native picker bindings now coalesce scope/token changes atomically; same-scope explicit clear and pending upload cancellation remain. Focused browser tests and owned clipboard journeys cover ready-file return and independent drafts."
     }
   },
   "update_required": {
@@ -3704,7 +3722,8 @@
       "revision": "pr-683-web-chat-ux-2026-11-08",
       "web_only_follow_up": "2026-11-08 PR #682: Web TEXT/DM read cursors advance only when messages enter the visible history; search opens and briefly highlights the target, and sending follows the new message. Web unit, browser and real-stack regressions are recorded in evidence/qa/web-chat-reading-navigation-2026-11-08.md. Flutter/iOS/Android code is unchanged; no native runtime claim. 2026-11-08 PR #683: Web DM/support history silently restores reading position and removes per-conversation mini-search. Public support consent, send/ACL behavior, and message privacy are unchanged. Flutter/iOS/Android sources and behavior are unchanged; the registered Web support scenarios remain in scope. 2026-11-09 PR #697: Web places the retained mini stream preview below the DM header. Support consent, pair-only ACL, publication and messaging behavior are unchanged; Flutter/iOS/Android support implementations are unchanged.",
       "idle_afk_speech_activity": "2026-11-14 AFK follow-up: changes to shared workspace/realtime paths do not alter support consent, delivery, or pair-only access. Support regressions remain required; no support-specific runtime claim is added.",
-      "issue785_mobile_web_resume": "2026-11-17 issue #785 browser recovery: shared Web workspace composition adds only the voice background limitation notice and explicit audio-resume control; support consent, publication, delivery, and pair-only ACL flows are unchanged. No Flutter/iOS/Android code changed; existing support regressions remain required."
+      "issue785_mobile_web_resume": "2026-11-17 issue #785 browser recovery: shared Web workspace composition adds only the voice background limitation notice and explicit audio-resume control; support consent, publication, delivery, and pair-only ACL flows are unchanged. No Flutter/iOS/Android code changed; existing support regressions remain required.",
+      "fe55_dm_upload_binding": "2026-11-26 FE-55: the support DM picker import follows the same native upload implementation moved into attachment_upload; its old API export forwards. The uploader preserves diagnostics and annotates status/code for known507 queue presentation. Support publication consent, blocked-form predicate, broker routing, identity and server ACL are unchanged; no public support publication or Flutter behavior is introduced. Retain registered support/accessibility and full client regression checks. The same picker now batches scope/reset to preserve its saved ready attachments on return, retaining explicit same-scope clear and cancellation on unmount. The surrounding publicationBlocked/consent form conditions are unchanged."
     }
   },
   "notifications": {

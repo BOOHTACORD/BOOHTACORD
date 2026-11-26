@@ -19,8 +19,11 @@ const { items, pending, error, clear, restore, upload, addFiles, retry, cancel, 
   () => props.channelId, () => props.disabled, emit, undefined, props.initialAttachments,
 )
 onBeforeUnmount(dispose)
-watch(() => props.clearToken, clear)
-watch(() => props.channelId, () => restore(props.initialAttachments ?? []))
+// Restore the new scope atomically; an earlier clear would overwrite its saved files.
+watch([() => props.channelId, () => props.clearToken], ([id], [previous]) => {
+  if (id === previous) clear()
+  else restore(props.initialAttachments ?? [])
+})
 
 function addPastedFiles(files: File[]): void { void upload(files) }
 defineExpose({ addPastedFiles })
