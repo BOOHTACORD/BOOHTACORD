@@ -783,6 +783,8 @@
       "clients/flutter/integration_test/issue785_background_listener_pair_test.dart",
       "clients/flutter/test/features/background_microphone/app_resume_wait_test.dart",
       "clients/flutter/test/test_support/app_resume_wait.dart",
+      "clients/flutter/test/test_support/app_resume_frames.dart",
+      "clients/flutter/test/features/background_microphone/app_resume_frames_test.dart",
       "clients/flutter/lib/src/features/voice/lifecycle/controller.dart",
       "clients/flutter/lib/src/features/voice/lifecycle/state.dart",
       "clients/flutter/lib/src/features/voice/microphone/deafen.dart",
@@ -802,7 +804,8 @@
       "evidence/qa/issue785-android-permission-revoke-cold-start-avd-2026-11-22-master.json",
       "evidence/qa/issue785-android-permission-revoke-process-death-avd-2026-11-22-master.json",
       "evidence/qa/issue785-android-permission-revoke-cold-start-avd-2026-11-22-master-run6.json",
-      "evidence/qa/issue785-android-permission-revoke-cold-start-avd-2026-11-22-master-run7.json"
+      "evidence/qa/issue785-android-permission-revoke-cold-start-avd-2026-11-22-master-run7.json",
+      "tools/qa/client_lifecycle/background_fault/**"
     ],
     "web": [
       "tests/accessibility/playwright.config.ts",
@@ -842,7 +845,10 @@
       "test/features/background_microphone/app_resume_wait_test.dart",
       "test/features/background_microphone/controller_test.dart",
       "test/features/voice/background_playback/controller_test.dart",
-      "test/features/background_microphone/start_races_test.dart"
+      "test/features/background_microphone/start_races_test.dart",
+      "test/features/voice/background_playback/start_races_test.dart",
+      "test/features/voice/background_playback/sync_races_test.dart",
+      "test/features/background_microphone/app_resume_frames_test.dart"
     ],
     "acceptance": {
       "issue786_deafen_screen_audio": {
@@ -1147,7 +1153,10 @@
           "clients/flutter/test/features/voice/background_playback/policy_test.dart",
           "clients/flutter/test/features/voice/background_playback/status_test.dart",
           "clients/flutter/packages/boohtacord_voice_foreground/android/src/test/kotlin/ru/boohtacord/voice/start/VoicePlaybackAdmissionPolicyTest.kt",
-          "clients/flutter/test/features/voice/background_playback/controller_test.dart"
+          "clients/flutter/test/features/voice/background_playback/controller_test.dart",
+          "clients/flutter/test/features/voice/background_playback/start_races_test.dart",
+          "tools/qa/client_lifecycle/background_fault",
+          "clients/flutter/test/features/voice/background_playback/sync_races_test.dart"
         ],
         "scope": "A user-started listener or voice session starts a separate nonsticky mediaPlayback foreground service while the Android Activity is visible. It carries LiveKit playback through background, uses no microphone permission or media capture, and stops on deafen/leave/session disposal. An unexpected stop is reported; a new start is allowed only after the Activity resumes. Emulator RTP and decoded-sample counters are scoped integration evidence, not physical audibility or release acceptance.",
         "platforms": {
@@ -1469,7 +1478,8 @@
       "issue785_android_background_playback": "2026-11-20 Android issue #785 adds a separate mediaPlayback foreground service to a user-started voice session. A two-minute paired AOSP-emulator run confirms service continuity and decoded receiver samples; acoustic output is not measured. Web changes are unchanged; physical 60-minute Android/iPhone and release acceptance remain open. Evidence: evidence/qa/issue785-android-background-playback-2026-11-20.json.",
       "issue689_r2_ready_acceptance": "2026-11-21 R2: The Web application socket now reports CONNECTED only after typed ready. No LiveKit gateway, media or Flutter production code changed. R2 actual Web/Windows/Android listener rooms survived the app-socket faults; this does not prove audible media or physical-device quality. Shared Flutter Android/iOS implementation is unchanged; Android emulator and Windows native R2 transport acceptance passed, physical/Apple-specific acceptance is separate.",
       "web_push_to_talk_recovery": "2026-11-21: Web-only PTT re-arms listener joins, resets held inputs on room/connection changes, and cancels microphone restoration on explicit mute even during pending deafen. VAD default, AFK publication guard, protected editing/modal targets and touch semantics remain. Real two-client decoded synthetic media passed 26 checkpoints, including actual window focus loss and owned SFU restart. Flutter/Windows native/Android/iOS production code is unchanged; native PTT and physical/heard quality are NOT_RUN.",
-      "issue785_microphone_start_generation": "2026-11-27 Android microphone foreground-session starts share one pending native request. Native service loss and explicit stop invalidate pending completion; a superseded failure cannot stop a newer explicit session. Desktop and iOS still make no microphone FGS calls. No background restart, permission bypass, new Room or mute-intent change is introduced. Deferred-response regressions are separate from paired emulator, physical audibility and release acceptance."
+      "issue785_microphone_start_generation": "2026-11-27 Android microphone foreground-session starts share one pending native request. Native service loss and explicit stop invalidate pending completion; a superseded failure cannot stop a newer explicit session. Desktop and iOS still make no microphone FGS calls. No background restart, permission bypass, new Room or mute-intent change is introduced. Deferred-response regressions are separate from paired emulator, physical audibility and release acceptance.",
+      "issue785_playback_start_generation": "Android mediaPlayback service promotion shares a pending request and rejects obsolete completion/cleanup. No microphone permission/capture, background auto-start, Room replacement or change to explicit deafen/leave intent is introduced. Web/iOS/desktop behavior is unchanged; native and physical acceptance remains separately recorded. Existing screen, AFK and voice regressions remain required. Playback coverage UI updates are also fenced by request revision and Room identity, preserving newer deafen/re-enable results and current failure notices."
     }
   },
   "screen": {
@@ -2065,7 +2075,8 @@
       "issue689_r1_socket_http_recovery": "2026-11-21 R1: workspace socket replacement renews protected HTTP admission. Existing screen telemetry clearing and watcher recovery are preserved; no capture, media or Flutter/iOS/Android implementation change. Web workspace/unit/build and real-stack roster/API-restart/account-switch acceptance PASS_SCOPED; physical and native screen/media acceptance remains NOT_RUN in this packet.",
       "issue689_r2_ready_acceptance": "2026-11-21 R2: The Web socket owner moved behind the stable realtime_store re-export and waits for ready; screen publication, telemetry, permissions and native source are unchanged. Existing Web regressions remain required; no screen/media acceptance is inferred. Shared Flutter Android/iOS implementation is unchanged; Android emulator and Windows native R2 transport acceptance passed, physical/Apple-specific acceptance is separate.",
       "windows_screen_fps_20261124": "Windows-only screen capture selects the pinned WGC-capable SDK and restarts the same known source when its selected FPS changes, preserving the voice connection and screen-audio selection. Stop, logout, explicit source start and room replacement cancel stale restarts. Web, Android, iOS and macOS capture/consent policies retain their existing paths. Native loopback counters and focused tests are recorded separately; no production SFU, physical cross-client, universal 60-FPS or capacity claim.",
-      "issue785_microphone_start_generation": "Android microphone FGS completion is generation-fenced and concurrent start calls are shared. Screen capture, projection service, publication and viewer audio are unchanged; existing screen regression checks remain required. No screen-media or capacity acceptance is inferred from this change."
+      "issue785_microphone_start_generation": "Android microphone FGS completion is generation-fenced and concurrent start calls are shared. Screen capture, projection service, publication and viewer audio are unchanged; existing screen regression checks remain required. No screen-media or capacity acceptance is inferred from this change.",
+      "issue785_playback_start_generation": "Android mediaPlayback service promotion shares a pending request and rejects obsolete completion/cleanup. No microphone permission/capture, background auto-start, Room replacement or change to explicit deafen/leave intent is introduced. Web/iOS/desktop behavior is unchanged; native and physical acceptance remains separately recorded. Existing screen, AFK and voice regressions remain required. Playback coverage UI updates are also fenced by request revision and Room identity, preserving newer deafen/re-enable results and current failure notices."
     }
   },
   "screen_metrics": {
@@ -3970,7 +3981,8 @@
       "issue689_r1_socket_http_recovery": "2026-11-21 R1: protected HTTP gates are scoped to the Web socket; AFK move triggers, speech activity and heartbeat policy are preserved. Web realtime/workspace unit regressions passed; real-stack scope is roster/recovery, not AFK timing. Shared Flutter/iOS/Android source unchanged; native AFK acceptance NOT_RUN in this packet.",
       "issue689_r2_ready_acceptance": "2026-11-21 R2: Web socket activity remains gated on the connected owner, now confirmed by typed ready rather than HTTP101. AFK triggers, heartbeat interval and server policy are unchanged. Existing realtime activity regressions pass; this packet does not claim AFK timing acceptance. Shared Flutter Android/iOS implementation is unchanged; Android emulator and Windows native R2 transport acceptance passed, physical/Apple-specific acceptance is separate.",
       "web_push_to_talk_recovery": "2026-11-21: Web-only PTT re-arms listener joins, resets held inputs on room/connection changes, and cancels microphone restoration on explicit mute even during pending deafen. VAD default, AFK publication guard, protected editing/modal targets and touch semantics remain. Real two-client decoded synthetic media passed 26 checkpoints, including actual window focus loss and owned SFU restart. Flutter/Windows native/Android/iOS production code is unchanged; native PTT and physical/heard quality are NOT_RUN.",
-      "issue785_microphone_start_generation": "Android microphone foreground-session start/stop bookkeeping is generation-fenced. AFK activity, timers, heartbeat, routing and server policy are unchanged; existing AFK regressions remain required. No physical background-voice acceptance is claimed."
+      "issue785_microphone_start_generation": "Android microphone foreground-session start/stop bookkeeping is generation-fenced. AFK activity, timers, heartbeat, routing and server policy are unchanged; existing AFK regressions remain required. No physical background-voice acceptance is claimed.",
+      "issue785_playback_start_generation": "Android mediaPlayback service promotion shares a pending request and rejects obsolete completion/cleanup. No microphone permission/capture, background auto-start, Room replacement or change to explicit deafen/leave intent is introduced. Web/iOS/desktop behavior is unchanged; native and physical acceptance remains separately recorded. Existing screen, AFK and voice regressions remain required. Playback coverage UI updates are also fenced by request revision and Room identity, preserving newer deafen/re-enable results and current failure notices."
     },
     "parity": [
       {

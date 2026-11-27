@@ -16,6 +16,8 @@ class VoicePlaybackForegroundSession {
       channel.setMethodCallHandler((call) async {
         if (call.method == 'stopped' && !_disposed) {
           _generation++;
+          _synchronization++;
+          _starting = null;
           active = false;
           onStopped?.call();
         }
@@ -32,7 +34,12 @@ class VoicePlaybackForegroundSession {
   bool _disposed = false;
   bool _ownsHandler = false;
   int _generation = 0;
+  int _synchronization = 0;
+  Future<bool>? _starting;
   void Function()? onStopped;
+  int beginSynchronization() => ++_synchronization;
+  bool isSynchronizationCurrent(int request) =>
+      !_disposed && request == _synchronization;
 
   Future<bool> canStart() async {
     if (_disposed) return false;
@@ -44,10 +51,13 @@ class VoicePlaybackForegroundSession {
     }
   }
 
-  Future<bool> start() async {
-    if (_disposed) return false;
-    if (!_android) return true;
-    final generation = _generation;
+  Future<bool> start() {
+    if (_disposed) return Future.value(false);
+    if (!_android) return Future.value(true);
+    return _starting ??= _start(_generation);
+  }
+
+  Future<bool> _start(int generation) async {
     try {
       final ready = await _invoke('start').timeout(const Duration(seconds: 5));
       if (_disposed || generation != _generation) return false;
@@ -55,13 +65,16 @@ class VoicePlaybackForegroundSession {
       if (!ready) await stop();
       return ready;
     } catch (_) {
-      await stop();
+      if (!_disposed && generation == _generation) await stop();
       return false;
+    } finally {
+      if (generation == _generation) _starting = null;
     }
   }
 
   Future<void> stop() async {
     _generation++;
+    _starting = null;
     active = false;
     if (_android) {
       try {

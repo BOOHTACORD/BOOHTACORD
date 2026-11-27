@@ -5,6 +5,12 @@ import 'policy.dart';
 
 extension VoiceBackgroundPlayback on VoiceController {
   Future<bool> syncVoicePlaybackForeground() async {
+    final targetRoom = room;
+    final request = voicePlaybackForeground.beginSynchronization();
+    bool current() =>
+        !disposed &&
+        identical(room, targetRoom) &&
+        voicePlaybackForeground.isSynchronizationCurrent(request);
     final keep = shouldKeepVoicePlaybackForeground(
       isAndroid: voicePlaybackForeground.isAndroid,
       voiceActive: room != null && voicePhase != VoicePhase.leaving,
@@ -12,6 +18,7 @@ extension VoiceBackgroundPlayback on VoiceController {
     );
     if (!keep) {
       await voicePlaybackForeground.stop();
+      if (!current()) return false;
       if (voicePlaybackBackgroundUnavailable) {
         voicePlaybackBackgroundUnavailable = false;
         notifyListeners();
@@ -25,12 +32,15 @@ extension VoiceBackgroundPlayback on VoiceController {
       }
       return true;
     }
-    if (!await voicePlaybackForeground.canStart()) {
+    final permitted = await voicePlaybackForeground.canStart();
+    if (!current()) return false;
+    if (!permitted) {
       voicePlaybackBackgroundUnavailable = true;
       notifyListeners();
       return false;
     }
     final started = await voicePlaybackForeground.start();
+    if (!current()) return false;
     final stillNeeded = shouldKeepVoicePlaybackForeground(
       isAndroid: voicePlaybackForeground.isAndroid,
       voiceActive: room != null && voicePhase != VoicePhase.leaving,
