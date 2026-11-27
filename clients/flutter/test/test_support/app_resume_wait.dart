@@ -2,10 +2,26 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 
+import 'app_resume_frames.dart';
+
 Future<void> waitForAppBackgroundThenResume({
   required AppLifecycleState? Function() readLifecycleState,
   required Duration timeout,
   Duration pollInterval = const Duration(milliseconds: 100),
+  Future<void> Function(Duration duration)? delay,
+}) => withResumeFrames(
+  () => _waitForAppBackgroundThenResume(
+    readLifecycleState: readLifecycleState,
+    timeout: timeout,
+    pollInterval: pollInterval,
+    delay: delay,
+  ),
+);
+
+Future<void> _waitForAppBackgroundThenResume({
+  required AppLifecycleState? Function() readLifecycleState,
+  required Duration timeout,
+  required Duration pollInterval,
   Future<void> Function(Duration duration)? delay,
 }) async {
   if (timeout < Duration.zero) {
