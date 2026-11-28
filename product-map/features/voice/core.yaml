@@ -10,7 +10,9 @@
     {"id":"cmp.web.auto_preflight","paths":["clients/web/src/voice/noise_suppression/auto_preflight/benchmark.ts","clients/web/src/voice/noise_suppression/auto_preflight/client.ts","clients/web/src/voice/noise_suppression/auto_preflight/probe.worker.ts","clients/web/src/voice/noise_suppression/auto_preflight/worker_runner.ts","clients/web/src/voice/noise_suppression/microphone_adapter/auto_fixture.ts"]},
     {"id":"cmp.web.voice_recovery","source":{"parity_id":"voice.long_recovery","platform":"web"}},
     {"id":"cmp.web.voice_admission_cleanup","paths":["clients/web/src/voice/admission_cleanup/cleanup.ts","clients/web/src/voice/room_admission/connect.ts","clients/web/src/voice/room_admission/disconnect.ts"]},
-    {"id":"cmp.web.browser_resume_lifecycle","paths":["clients/web/src/voice/browser_resume/lifecycle.ts"]},
+    {"id":"cmp.web.browser_resume_lifecycle","paths":["clients/web/src/voice/browser_resume/lifecycle.ts","clients/web/src/voice/browser_resume/session_binding.ts"]},
+    {"id":"cmp.web.voice_signal_rejoin","paths":["clients/web/src/voice/room_admission/establish.ts","clients/web/src/voice/room_admission/intent.ts","clients/web/src/voice/room_admission/defaults.ts","clients/web/src/voice/room_admission/admission_context.ts"],"depends_on":["cmp.web.voice_admission_cleanup"]},
+    {"id":"cmp.web.voice_rejoin_fixtures","paths":["clients/web/src/voice/room_admission/session_fixture.ts","clients/web/src/voice/connection_state/join_fixture.ts"]},
     {"id":"cmp.flutter.voice_recovery","source":{"parity_id":"voice.long_recovery","platform":"android"}},
     {"id":"cmp.web.voice_roster_recovery","source":{"parity_id":"voice.roster_long_recovery","platform":"web"}},
     {"id":"cmp.flutter.voice_roster_recovery","source":{"parity_id":"voice.roster_long_recovery","platform":"android"}},
@@ -62,7 +64,7 @@
     {
       "id":"voice.long_recovery", "title":"Восстановление голосового канала", "domain":"voice", "target_revision":null,
       "behavior_revisions":[], "parity_ids":["voice.long_recovery"],
-      "components":["cmp.web.voice_recovery","cmp.web.voice_admission_cleanup","cmp.web.browser_resume_lifecycle","cmp.flutter.voice_recovery"],
+      "components":["cmp.web.voice_recovery","cmp.web.voice_admission_cleanup","cmp.web.voice_signal_rejoin","cmp.web.voice_rejoin_fixtures","cmp.web.browser_resume_lifecycle","cmp.flutter.voice_recovery"],
       "platforms": {
         "web":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},
         "windows":{"applicability":"UNKNOWN","state":"UNKNOWN","revision":null},

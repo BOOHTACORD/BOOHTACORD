@@ -68,6 +68,10 @@ services, multiple/missing nodes, absent heartbeats and an unapplied fault.
   widths (1440/393) and unchanged endpoint source fingerprints.
 - Native Contracts: PASS, 1894 Python tests / 28 declared platform/opt-in skips.
   Derived parity/projection, flow bindings and signal-catalog check PASS.
+- First hosted Contracts failed on seven unregistered new component paths.
+  Added explicit mappings and regenerated the viewer; catalog transition and
+  new-path ownership checks pass. All 35 tested runtime/test/registry hashes
+  remain unchanged. The initial hosted failure is retained, not relabeled PASS.
 - Hosted exact-head CI and merge/master verification remain pending; final
   delivery results are recorded in the PR and issue, not predicted here.
 
@@ -95,6 +99,7 @@ All 35 changed runtime/test/registry files match Windows and Linux after
 UTF-8/LF normalization. Sorted compact JSON rows `{path,sha256_lf,lines}`
 bundle SHA256: `85a8a406a8e7a287a843ffec51c5ba0b38afd917e8b782ec746a98ed830816d2`.
 Final captures `.out/client-lifecycle/<width>/web-rejoin-recovered.png`:
+
 - 1440: `106cc4b724d1c6e54f7c9f1055e9dfa60167c2c2788d51e9d4c2b9609012e6cd`.
 - 393: `6f7680ba34d0493cb90f0d335e8e8ede1be23c5bec46f594fcbaae6fec66f819`.
 Both source-sized captures were reviewed: connected dock, recovered decoded
