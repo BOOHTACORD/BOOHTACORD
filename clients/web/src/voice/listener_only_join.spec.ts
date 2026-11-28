@@ -43,7 +43,7 @@ describe('listener-only voice join', () => {
 
     await expect(session.join('voice-1', false, 'listener')).resolves.toMatchObject({ microphone: 'MUTED', channelId: 'voice-1' })
 
-    expect(joinRoom).toHaveBeenCalledWith(credential, expect.any(Object), 'listener', 'default')
+    expect(joinRoom).toHaveBeenCalledWith(credential, expect.any(Object), 'listener', 'default', expect.objectContaining({ refreshCredential: expect.any(Function) }))
     expect(admission.release).not.toHaveBeenCalled()
   })
 })

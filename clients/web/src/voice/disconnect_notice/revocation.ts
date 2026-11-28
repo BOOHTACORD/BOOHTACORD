@@ -70,5 +70,8 @@ export function createVoiceConnectionRevocation(context: RevocationContext) {
   }
 
   function resetPending(): void { pendingLocalReason = null; pendingLeaseReasons.clear() }
-  return { resetPending, disconnectLocal, revokeLease, takeJoinRevocation, takePostLeaveReason }
+  function joinCancelled(leaseID: string): boolean {
+    return pendingLocalReason !== null || pendingLeaseReasons.has(leaseID) || terminal.notice.value?.source === 'server'
+  }
+  return { joinCancelled, resetPending, disconnectLocal, revokeLease, takeJoinRevocation, takePostLeaveReason }
 }

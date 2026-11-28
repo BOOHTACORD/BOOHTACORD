@@ -5,6 +5,8 @@ import { awaitMediaConnection, mediaConnectionTimeoutMs } from '../connection_de
 import { defaultLiveKitRoomFactory } from '../livekit_room_factory'
 import { activeAction } from '../../telemetry/action_scope/scope'
 import { disconnectFailedRoom } from './disconnect'
+import { establishVoiceRoom } from './establish'
+import { assertJoinIntent, type VoiceRoomJoinOptions } from './intent'
 
 export async function connectLiveKitRoom(
   credential: LiveKitCredential,
@@ -13,21 +15,18 @@ export async function connectLiveKitRoom(
   timeoutMs = mediaConnectionTimeoutMs,
   joinMode: VoiceJoinMode = 'with-microphone',
   inputDeviceId?: string,
+  options: VoiceRoomJoinOptions = {},
 ): Promise<JoinedVoiceRoom> {
-  const room = await makeRoom()
+  const { room, credential: connectedCredential } = await establishVoiceRoom(credential, makeRoom, timeoutMs, options)
   try {
-    await awaitMediaConnection(room.connect(credential.url, credential.token, { autoSubscribe: false }), timeoutMs)
     if (inputDeviceId !== undefined) await awaitMediaConnection(room.switchActiveDevice('audioinput', inputDeviceId), timeoutMs)
-  } catch (cause) {
-    await disconnectFailedRoom(room)
-    throw cause
-  }
+    assertJoinIntent(options)
+    if (joinMode === 'listener' || connectedCredential.microphoneAllowed === false) return { room, microphone: 'MUTED' }
 
-  if (joinMode === 'listener' || credential.microphoneAllowed === false) return { room, microphone: 'MUTED' }
-
-  try {
     activeAction()?.step('microphone')
-    return { room, microphone: await awaitMediaConnection(setMicrophone(room, true, processing), timeoutMs) }
+    const microphone = await awaitMediaConnection(setMicrophone(room, true, processing), timeoutMs)
+    assertJoinIntent(options)
+    return { room, microphone }
   } catch (cause) {
     await disconnectFailedRoom(room)
     throw cause
@@ -39,6 +38,7 @@ export async function connectLiveKitRoomWithProcessing(
   processing?: AudioProcessingOptions,
   joinMode: VoiceJoinMode = 'with-microphone',
   inputDeviceId?: string,
+  options?: VoiceRoomJoinOptions,
 ): Promise<JoinedVoiceRoom> {
-  return connectLiveKitRoom(credential, defaultLiveKitRoomFactory, processing, undefined, joinMode, inputDeviceId)
+  return connectLiveKitRoom(credential, defaultLiveKitRoomFactory, processing, undefined, joinMode, inputDeviceId, options)
 }

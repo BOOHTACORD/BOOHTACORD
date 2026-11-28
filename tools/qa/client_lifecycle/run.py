@@ -83,6 +83,7 @@ def main():
             sources = list((root/'tools/qa/client_lifecycle').glob('*.py'))
             sources += list((root/'tools/qa/client_lifecycle').glob('*.mjs'))
             sources += list((root/'tools/qa/client_lifecycle/journey').glob('*.*'))
+            sources += list((root/'tools/qa/client_lifecycle/web_rejoin').glob('*.mjs'))
             sources += list((root/'tools/qa/critical_client_acceptance').glob('*.*'))
             sources += list((root/'clients/web/src').rglob('*.css'))
             sources += list((root/'clients/web/src').rglob('*.vue'))
