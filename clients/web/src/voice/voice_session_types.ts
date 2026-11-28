@@ -1,5 +1,6 @@
 import type { LiveKitCredential, VoiceLease } from './admission_client'
 import type { AudioProcessingOptions, JoinedVoiceRoom, ScreenProfile, VoiceJoinMode } from './livekit_gateway'
+import type { VoiceRoomJoinOptions } from './room_admission/intent'
 
 export interface VoiceAdmission {
   acquire(channelId: string, transfer: boolean): Promise<VoiceLease>
@@ -16,7 +17,7 @@ export interface ActiveVoiceSession extends JoinedVoiceRoom {
   screenProfile: ScreenProfile | null
 }
 
-export type RoomJoiner = (credential: LiveKitCredential, processing?: AudioProcessingOptions, joinMode?: VoiceJoinMode, inputDeviceId?: string) => Promise<JoinedVoiceRoom>
+export type RoomJoiner = (credential: LiveKitCredential, processing?: AudioProcessingOptions, joinMode?: VoiceJoinMode, inputDeviceId?: string, options?: VoiceRoomJoinOptions) => Promise<JoinedVoiceRoom>
 export interface VoiceConnectionObserver {
   admitted?(leaseID: string, channelID: string): void
   audioPlaybackChanged?(blocked: boolean): void

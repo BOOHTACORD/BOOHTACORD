@@ -1,29 +1,12 @@
-import type { ActiveVoiceSession, VoiceAdmission, RoomJoiner } from './voice_session_types'
-import type { VoiceReconnectMonitor } from './voice_reconnect_monitor'
-import type { VoiceDeafen } from './voice_deafen'
-import type { VoiceAudioProcessing } from './voice_audio_processing'
-import type { VoiceScreenSession } from './voice_screen_session'
+import type { ActiveVoiceSession, VoiceAdmission } from './voice_session_types'
+import type { VoiceAdmissionState } from './room_admission/admission_context'
+import { assertJoinIntent } from './room_admission/intent'
 import type { VoiceJoinMode } from './livekit_gateway'
 import type { AudioInputSelection } from './audio_input_selection'
 import { tracedOperation } from '../telemetry/client_tracing'
 import { activeAction } from '../telemetry/action_scope/scope'
 import { telemetrySession } from '../telemetry/action_scope/session'
 import { cleanupFailedVoiceJoin } from './admission_cleanup/cleanup'
-
-interface VoiceAdmissionState {
-  current(): ActiveVoiceSession | null
-  setCurrent(value: ActiveVoiceSession | null): void
-  admission: VoiceAdmission
-  joinRoom: RoomJoiner
-  inputDeviceId(): string
-  setInputDeviceId(value: string): void
-  stopInputSelection(): (() => void) | undefined
-  setStopInputSelection(value?: () => void): void
-  monitor: VoiceReconnectMonitor
-  audioProcessing: VoiceAudioProcessing
-  deafen: VoiceDeafen
-  screen: VoiceScreenSession
-}
 
 export class VoiceSessionAdmission {
   private readonly disconnectingRooms = new WeakSet<ActiveVoiceSession['room']>()
@@ -34,6 +17,7 @@ export class VoiceSessionAdmission {
     channelId: string,
     transfer: boolean,
     joinMode: VoiceJoinMode,
+    isCurrent?: () => boolean,
   ): Promise<ActiveVoiceSession> {
     if (!this.state.current()) telemetrySession.beginMedia()
     return tracedOperation('voice.join', async (within) => {
@@ -49,7 +33,13 @@ export class VoiceSessionAdmission {
         telemetrySession.bindMediaLease(acquired.id)
         this.state.monitor.notifyAdmitted(acquired.id, acquired.channelId)
         action?.step('credential')
-        const credential = await within(() => this.state.admission.credential(acquired.id))
+        let credential = await within(() => this.state.admission.credential(acquired.id))
+        const options = { current: isCurrent, refreshCredential: async () => {
+          assertJoinIntent({ current: isCurrent })
+          credential = await within(() => this.state.admission.credential(acquired.id))
+          return credential
+        } }
+        assertJoinIntent(options)
         const effectiveJoinMode = joinMode === 'listener' || credential.microphoneAllowed === false
           ? 'listener'
           : 'with-microphone'
@@ -59,10 +49,12 @@ export class VoiceSessionAdmission {
           this.state.audioProcessing.value,
           effectiveJoinMode,
           this.state.inputDeviceId(),
+          options,
         ))
         joinedRoom = joined.room
+        assertJoinIntent(options)
         const current: ActiveVoiceSession = {
-          listenerOnly: effectiveJoinMode === 'listener',
+          listenerOnly: effectiveJoinMode === 'listener' || credential.microphoneAllowed === false,
           microphoneAllowed: credential.microphoneAllowed,
           channelId: acquired.channelId,
           leaseId: acquired.id,

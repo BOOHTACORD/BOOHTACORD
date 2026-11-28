@@ -29,6 +29,7 @@ export function createConnectionJoin(context:JoinContext) {
     let transferForJoin=transfer
     terminal.reset(); revocation.resetPending()
     const generation = terminal.generation
+    const current = () => generation === terminal.generation && !revocation.joinCancelled(terminal.leaseID ?? '')
     state.value = 'JOINING'
     error.value = null
     transferRequired.value = transferForJoin
@@ -41,12 +42,12 @@ export function createConnectionJoin(context:JoinContext) {
       if(generation!==terminal.generation) return
       let joined:ActiveVoiceSession
       try {
-        joined=await session.join(channelId,transferForJoin,joinMode)
+        joined=await session.join(channelId,transferForJoin,joinMode,current)
       } catch(cause) {
         if(transferForJoin || !allowTransfer || !requiresTransfer(cause)) throw cause
         transferForJoin=true
         transferRequired.value=true
-        joined=await session.join(channelId,true,joinMode)
+        joined=await session.join(channelId,true,joinMode,current)
       }
       transferRequired.value=false
       if (generation !== terminal.generation) {await session.revoke(joined.leaseId);return}

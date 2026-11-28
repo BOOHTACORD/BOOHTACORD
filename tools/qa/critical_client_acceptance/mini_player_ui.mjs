@@ -1,26 +1,8 @@
 import assert from 'node:assert/strict'
-import { createRequire } from 'node:module'
-import { api, channel, expect, openNavigation, security, login } from '../client_lifecycle/request.mjs'
+import { api, channel, expect, openNavigation } from '../client_lifecycle/request.mjs'
 import { selectVisibleStream } from './select_stream.mjs'
-const require = createRequire(new URL('../../../clients/web/package.json', import.meta.url))
-const { SignalRequest } = require('@livekit/protocol')
-
-export async function observeMiniSubscriptions(page) {
-  const counts = { subscribe: 0, unsubscribe: 0 }
-  await page.routeWebSocket(url => new URL(url).pathname.startsWith('/qa-sfu'), socket => {
-    const server = socket.connectToServer()
-    socket.onMessage(data => {
-      try {
-        const request = typeof data === 'string' ? SignalRequest.fromJsonString(data) : SignalRequest.fromBinary(data)
-        const subscription = request.message?.case === 'subscription' ? request.message.value : request.subscription
-        if (subscription) counts[subscription.subscribe ? 'subscribe' : 'unsubscribe'] += subscription.trackSids?.length || subscription.participantTracks?.reduce((n, p) => n + (p.trackSids?.length || 0), 0) || 0
-      } catch { /* Forward every frame unchanged; retain counts only. */ }
-      server.send(data)
-    })
-    server.onMessage(data => socket.send(data))
-  })
-  return () => ({ ...counts })
-}
+import { logoutAndRejoin } from '../client_lifecycle/web_rejoin/rejoin.mjs'
+export { observeMiniSubscriptions } from '../client_lifecycle/web_rejoin/subscriptions.mjs'
 
 export async function miniPlayerInterface(sender, receiver, input, report, subscriptions) {
   const mini = receiver.locator('.voice-room--mini')
@@ -122,29 +104,7 @@ export async function miniPlayerInterface(sender, receiver, input, report, subsc
   await selectVisibleStream(receiver)
   await expect.poll(() => receiver.locator('video.screen-player').evaluate(v => v.videoWidth > 0)).toBe(true)
   await expect(receiver.getByRole('button', { name: /закрепить просмотр|открепить просмотр/i })).toHaveCount(0)
-  await channel(receiver, 'Text')
-  await receiver.evaluate(() => {
-    const video = document.querySelector('video.screen-player'), audio = document.querySelector('.screen-viewer audio')
-    window.__qaLogoutMedia = { video, audio, peers: window.__qaPeers.filter(p => p.connectionState === 'connected') }
-  })
-  await security(receiver)
-  await expect(mini).toBeVisible()
-  await receiver.getByRole('button', { name: 'Выйти из аккаунта', exact: true }).click()
-  await receiver.getByRole('dialog', { name: 'Подтвердите выход из аккаунта' }).getByRole('button', { name: 'Выйти', exact: true }).click()
-  await expect(receiver.locator('.authentication-page')).toBeVisible()
-  await expect(receiver.locator('.screen-viewer, .voice-room--mini')).toHaveCount(0)
-  await expect.poll(() => receiver.evaluate(() => {
-    const state = window.__qaLogoutMedia
-    return !state.video.srcObject && !state.audio.srcObject && state.peers.every(p => p.connectionState === 'closed')
-  })).toBe(true)
-  console.log('stage=mini-player-auto-retained-logout-clean')
-  await login(receiver, 'qa_member', input.password)
-  await channel(receiver, 'VoiceLab')
-  await receiver.getByRole('button', { name: 'Без микрофона', exact: true }).click()
-  await expect(receiver.getByTestId('voice-dock').locator('.voice-status')).toHaveText('Голос подключён', { timeout: 30000 })
-  await selectVisibleStream(receiver)
-  await expect.poll(() => receiver.locator('video.screen-player').evaluate(v => v.videoWidth > 0)).toBe(true)
-  console.log('stage=mini-player-controls-and-cleanup-accepted')
+  await logoutAndRejoin(receiver, input, report)
   report.mini_player_interface = { actual_api_sfu: true, source: 'synthetic canvas and quiet oscillator', text_and_dm_send: true,
     same_video_audio_tracks_and_peer_connections: true, no_extra_subscription_during_navigation: true,
     pause_video_and_audio: true, mute_and_volume_retained: true, expand_escape_returns_to_automatic_mini_player: true, explicit_stop_two_unsubscriptions: true,
